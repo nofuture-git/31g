@@ -24,5 +24,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// Gets the money sum of all assets for the current time
         /// </summary>
         Pecuniam TotalCurrentExpectedValue { get; }
+
+        /// <summary>
+        /// Adds the given item to the personal assets
+        /// </summary>
+        /// <param name="item"></param>
+        void AddItem(Pondus item);
+
     }
 }

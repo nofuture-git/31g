@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             options = options ?? OpesOptions.RandomOpesOptions();
             var income = new AmericanIncome();
-            income.ResolveItems(options);
+            income.RandomizeAllItems(options);
             return income;
         }
 
@@ -109,7 +109,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 _employment.Add(employment);
         }
 
-        protected internal override void AddItem(Pondus otherIncome)
+        public override void AddItem(Pondus otherIncome)
         {
             if (otherIncome != null)
                 _otherIncome.Add(otherIncome);
@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void RandomizeAllItems(OpesOptions options)
         {
             options = options ?? new OpesOptions();
 
@@ -412,7 +412,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var cloneOptions = options.GetClone();
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
-                emply.ResolveItems(options);
+                emply.RandomizeAllItems(options);
                 empls.Add(emply);
             }
 

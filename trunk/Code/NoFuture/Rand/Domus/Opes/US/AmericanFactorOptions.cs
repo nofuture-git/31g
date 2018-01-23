@@ -40,6 +40,10 @@ namespace NoFuture.Rand.Domus.Opes.US
             return o;
         }
 
+        /// <summary>
+        /// Gets a options object for <see cref="AmericanFactors"/> at random
+        /// </summary>
+        /// <returns></returns>
         [RandomFactory]
         public static AmericanFactorOptions RandomFactorOptions()
         {

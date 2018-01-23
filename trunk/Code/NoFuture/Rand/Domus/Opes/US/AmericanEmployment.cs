@@ -100,7 +100,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 Inception = options.Inception,
                 Terminus = options.Terminus
             };
-            emply.ResolveItems(options);
+            emply.RandomizeAllItems(options);
             return emply;
         }
 
@@ -136,7 +136,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void RandomizeAllItems(OpesOptions options)
         {
             options = options ?? new OpesOptions();
             if (options.Inception == DateTime.MinValue)
@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
             }
             var deductions = new AmericanDeductions(this);
-            deductions.ResolveItems(options);
+            deductions.RandomizeAllItems(options);
             Deductions = deductions;
         }
         
@@ -286,7 +286,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             return incomeName2Rate;
         }
 
-        protected internal override void AddItem(Pondus p)
+        public override void AddItem(Pondus p)
         {
             if (IsInRange(p))
             {

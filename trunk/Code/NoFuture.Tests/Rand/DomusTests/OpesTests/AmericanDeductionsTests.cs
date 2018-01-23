@@ -11,6 +11,29 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
     public class AmericanDeductionsTests
     {
         [TestMethod]
+        public void TestCtor()
+        {
+            var testInput = new AmericanEmployment();
+            var testSubject = new AmericanDeductions(testInput);
+
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreEqual(0, testSubject.MyItems.Count);
+            Assert.AreEqual(Pecuniam.Zero, testSubject.TotalAnnualDeductions);
+
+            testSubject.AddItem("FICA", "Government", 1200D.ToPecuniam());
+            var testResultSum = testSubject.TotalAnnualDeductions;
+            Assert.IsNotNull( testResultSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(1200D.ToPecuniam().Neg, testResultSum);
+
+            testSubject.AddItem("State Tax", "Government", 600D.ToPecuniam());
+            testResultSum = testSubject.TotalAnnualDeductions;
+            Assert.IsNotNull(testResultSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(1800D.ToPecuniam().Neg, testResultSum);
+        }
+
+        [TestMethod]
         public void TestGetInsuranceDeductionName2RandRates()
         {
             var testInput = new AmericanEmployment();
@@ -138,7 +161,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testInput = new AmericanEmployment();
             var testSubject = new AmericanDeductions(testInput);
 
-            testSubject.ResolveItems(null);
+            testSubject.RandomizeAllItems(null);
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
@@ -155,7 +178,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             var options = new OpesOptions {SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1)};
 
-            testInput.ResolveItems(options);
+            testInput.RandomizeAllItems(options);
 
             //check input is good
             Assert.IsNotNull(testInput.MyItems);
@@ -167,7 +190,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             var testSubject = new AmericanDeductions(testInput);
 
-            testSubject.ResolveItems(null);
+            testSubject.RandomizeAllItems(null);
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
@@ -192,7 +215,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             var options = new OpesOptions { SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1) };
 
-            testInput.ResolveItems(options);
+            testInput.RandomizeAllItems(options);
 
             //check input is good
             Assert.IsNotNull(testInput.MyItems);
@@ -203,7 +226,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsTrue(Math.Round(diff) == 0.0D);
 
             var testSubject = new AmericanDeductions(testInput);
-            testSubject.ResolveItems(null);
+            testSubject.RandomizeAllItems(null);
 
             var testResults = testSubject.GetDeductionsAt(DateTime.Today.AddDays(-182));
             var allDeductionsItesm = WealthBaseTests.GetExpectedNamesFromXml("deduction");
@@ -248,12 +271,12 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testInput = new AmericanEmployment();
             var options = new OpesOptions { SumTotal = 75000D.ToPecuniam(), Inception = DateTime.Today.AddYears(-1) };
 
-            testInput.ResolveItems(options);
+            testInput.RandomizeAllItems(options);
 
             var testSubject = new AmericanDeductions(testInput);
 
             options.IsPayingChildSupport = true;
-            testSubject.ResolveItems(options);
+            testSubject.RandomizeAllItems(options);
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);

@@ -52,5 +52,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// The gross monetary sum of employment income 
         /// </summary>
         Pecuniam TotalAnnualExpectedGrossEmploymentIncome { get; }
+
+        /// <summary>
+        /// Adds the given item to the income
+        /// </summary>
+        /// <param name="item"></param>
+        void AddItem(Pondus item);
+
     }
 }

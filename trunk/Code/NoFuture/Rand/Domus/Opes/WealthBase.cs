@@ -142,7 +142,20 @@ namespace NoFuture.Rand.Domus.Opes
         /// Adds the <see cref="item"/> to <see cref="MyItems"/>
         /// </summary>
         /// <param name="item"></param>
-        protected internal abstract void AddItem(Pondus item);
+        public abstract void AddItem(Pondus item);
+
+        /// <summary>
+        /// Convenience method to add an item with just the essential values.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="groupName"></param>
+        /// <param name="expectedValue"></param>
+        public virtual void AddItem(string name, string groupName, Pecuniam expectedValue)
+        {
+            var p = new Pondus(new VocaBase(name, groupName));
+            p.My.ExpectedValue = expectedValue;
+            AddItem(p);
+        }
 
         /// <summary>
         /// Maps the <see cref="Division"/> groups names to a function which produces that group&apos;s item names and rate.
@@ -151,11 +164,11 @@ namespace NoFuture.Rand.Domus.Opes
         protected abstract Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions();
 
         /// <summary>
-        /// The general &quot;Do It&quot; function. Typically this would be invoked 
-        /// right after the ctor.
+        /// Gets all the items of the given Opes type as random values based on the 
+        /// options.
         /// </summary>
         /// <param name="options"></param>
-        protected internal abstract void ResolveItems(OpesOptions options);
+        protected internal abstract void RandomizeAllItems(OpesOptions options);
 
         /// <summary>
         /// Calculate a yearly income at random.
@@ -886,7 +899,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// The reusable\common parts of <see cref="ResolveItems"/> 
+        /// The reusable\common parts of <see cref="RandomizeAllItems"/> 
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -906,7 +919,7 @@ namespace NoFuture.Rand.Domus.Opes
         }
 
         /// <summary>
-        /// The reusable\common parts of <see cref="ResolveItems"/> 
+        /// The reusable\common parts of <see cref="RandomizeAllItems"/> 
         /// </summary>
         /// <param name="grp2Rate"></param>
         /// <param name="options"></param>

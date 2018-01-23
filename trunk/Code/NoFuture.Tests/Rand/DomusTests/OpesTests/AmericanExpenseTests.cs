@@ -11,6 +11,27 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
     [TestClass]
     public class AmericanExpenseTests
     {
+        [TestMethod]
+        public void TestCtor()
+        {
+            var testSubject = new AmericanExpenses();
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreEqual(0, testSubject.MyItems.Count);
+
+            testSubject.AddItem("Gas", "Utility", 65D.ToPecuniam());
+            var testResultSum = testSubject.TotalAnnualExpectedExpenses;
+            Assert.IsNotNull(testResultSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(65D.ToPecuniam().Neg, testResultSum);
+
+            testSubject.AddItem("Groceries", "Personal", 600D.ToPecuniam());
+            testResultSum = testSubject.TotalAnnualExpectedExpenses;
+            Assert.IsNotNull(testResultSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(665D.ToPecuniam().Neg, testResultSum);
+
+        }
+
         #region FAQ
 
         [TestMethod]
@@ -523,7 +544,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             var testOptions = new OpesOptions {SumTotal = 10000.0D.ToPecuniam()};
             var testSubject = new AmericanExpenses();
 
-            testSubject.ResolveItems(testOptions);
+            testSubject.RandomizeAllItems(testOptions);
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);

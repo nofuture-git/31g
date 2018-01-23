@@ -24,5 +24,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="dt"></param>
         /// <returns></returns>
         Pondus[] GetDeductionsAt(DateTime? dt);
+
+        /// <summary>
+        /// Adds the given item to the deductions
+        /// </summary>
+        /// <param name="item"></param>
+        void AddItem(Pondus item);
+
     }
 }

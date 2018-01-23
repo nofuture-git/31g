@@ -56,5 +56,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// The deductions associated to this employment
         /// </summary>
         ITributum Deductions { get; set; }
+
+        /// <summary>
+        /// Adds the given item to the employment
+        /// </summary>
+        /// <param name="item"></param>
+        void AddItem(Pondus item);
+
     }
 }

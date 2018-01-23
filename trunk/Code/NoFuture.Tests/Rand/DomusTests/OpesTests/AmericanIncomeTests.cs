@@ -12,6 +12,26 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
     public class AmericanIncomeTests
     {
         [TestMethod]
+        public void TestCtor()
+        {
+            var testSubject = new AmericanIncome();
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreEqual(0, testSubject.MyItems.Count);
+
+            testSubject.AddItem("Lottery","Subito", 10000D.ToPecuniam());
+            var testResultSum = testSubject.TotalAnnualExpectedIncome;
+            Assert.IsNotNull(testResultSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(10000D.ToPecuniam(), testResultSum);
+
+            testSubject.AddItem("something else", "Subitio", 900D.ToPecuniam());
+            testResultSum = testSubject.TotalAnnualExpectedIncome;
+            Assert.IsNotNull(testResultSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(10900D.ToPecuniam(), testResultSum);
+        }
+
+        [TestMethod]
         public void TestGetEmploymentRanges()
         {
             var testSubject = new AmericanIncome();
@@ -174,7 +194,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         {
             var testSubject = new AmericanIncome();
 
-            testSubject.ResolveItems(null);
+            testSubject.RandomizeAllItems(null);
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);

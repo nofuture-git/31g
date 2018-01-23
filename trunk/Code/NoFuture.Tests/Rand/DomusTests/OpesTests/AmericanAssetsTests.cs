@@ -10,6 +10,27 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
     [TestClass]
     public class AmericanAssetsTests
     {
+        [TestMethod]
+        public void TestCtor()
+        {
+            var testSubject = new AmericanAssets();
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreEqual(0, testSubject.MyItems.Count);
+
+            
+            testSubject.AddItem("Futures", "Securities", 9000D.ToPecuniam());
+            var testResultSum = testSubject.TotalCurrentExpectedValue;
+
+            Assert.IsNotNull(testResultSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(9000D.ToPecuniam(), testResultSum);
+
+            testSubject.AddItem("Stocks", "Securities", 2000D.ToPecuniam());
+
+            testResultSum = testSubject.TotalCurrentExpectedValue;
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(11000D.ToPecuniam(), testResultSum);
+        }
 
         [TestMethod]
         public void TestGetGroupPortionsFromByFactorTables()
@@ -129,7 +150,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         {
             var testSubject = new AmericanAssets();
 
-            testSubject.ResolveItems(new OpesOptions(){Inception = new DateTime(DateTime.Today.Year, 1,1)});
+            testSubject.RandomizeAllItems(new OpesOptions(){Inception = new DateTime(DateTime.Today.Year, 1,1)});
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);

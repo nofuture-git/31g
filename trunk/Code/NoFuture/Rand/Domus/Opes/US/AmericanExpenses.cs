@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             options = options ?? OpesOptions.RandomOpesOptions();
             var exp = new AmericanExpenses();
-            exp.ResolveItems(options);
+            exp.RandomizeAllItems(options);
             return exp;
         }
 
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             }
         }
 
-        protected internal override void AddItem(Pondus expense)
+        public override void AddItem(Pondus expense)
         {
             if (expense == null)
                 return;
@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void RandomizeAllItems(OpesOptions options)
         {
             options = options ?? new OpesOptions();
             var stDt = options.Inception == DateTime.MinValue ? GetYearNeg(-1) : options.Inception;

@@ -56,6 +56,18 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testResult.GivenDirectly);
             Assert.AreEqual(2, testResult.GivenDirectly.Count);
 
+            Assert.IsNotNull(testResult.FactorOptions);
+
+            var testInputFr = testInput.FactorOptions;
+            var testResultFt = testResult.FactorOptions;
+
+            Assert.AreEqual(testInputFr.BirthDate, testResultFt.BirthDate);
+            Assert.AreEqual(testInputFr.EducationLevel, testResultFt.EducationLevel);
+            Assert.AreEqual(testInputFr.Gender, testResultFt.Gender);
+            Assert.AreEqual(testInputFr.MaritialStatus, testResultFt.MaritialStatus);
+            Assert.AreEqual(testInputFr.Race, testResultFt.Race);
+            Assert.AreEqual(testInputFr.Region, testResultFt.Region);
+
         }
     }
 }

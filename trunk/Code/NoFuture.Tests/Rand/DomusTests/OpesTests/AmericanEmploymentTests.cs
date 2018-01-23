@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Org;
@@ -10,6 +11,28 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
     [TestClass]
     public class AmericanEmploymentTests
     {
+        [TestMethod]
+        public void TestCtor()
+        {
+            var testSubject = new AmericanEmployment();
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreEqual(0, testSubject.MyItems.Count);
+            Assert.AreEqual(Pecuniam.Zero, testSubject.TotalAnnualPay);
+
+            testSubject.AddItem("Salary", "Pay", 55000D.ToPecuniam());
+            var testResultSum = testSubject.TotalAnnualPay;
+            Assert.IsNotNull(testResultSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(55000D.ToPecuniam(), testResultSum);
+
+            testSubject.AddItem("Tips", "Pay", 8000D.ToPecuniam());
+            testResultSum = testSubject.TotalAnnualPay;
+            Assert.IsNotNull(testResultSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
+            Assert.AreEqual(63000D.ToPecuniam(), testResultSum);
+
+        }
+
         [TestMethod]
         public void TestGetYearsOfServiceInDates()
         {
@@ -82,7 +105,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         {
             var testSubject = new AmericanEmployment();
 
-            testSubject.ResolveItems(null);
+            testSubject.RandomizeAllItems(null);
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);

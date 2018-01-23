@@ -23,5 +23,11 @@ namespace NoFuture.Rand.Domus.Opes
         /// A monetary sum of all current expenses
         /// </summary>
         Pecuniam TotalAnnualExpectedExpenses { get; }
+
+        /// <summary>
+        /// Adds the given item to the expenses
+        /// </summary>
+        /// <param name="item"></param>
+        void AddItem(Pondus item);
     }
 }

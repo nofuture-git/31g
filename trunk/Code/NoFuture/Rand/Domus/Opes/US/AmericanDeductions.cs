@@ -21,6 +21,10 @@ namespace NoFuture.Rand.Domus.Opes.US
         private readonly HashSet<Pondus> _deductions = new HashSet<Pondus>();
         private readonly AmericanEmployment _employment;
 
+        /// <summary>
+        /// Only makes sense in the context of employment
+        /// </summary>
+        /// <param name="employment"></param>
         internal AmericanDeductions(AmericanEmployment employment)
         {
             _employment = employment ?? throw new ArgumentNullException(nameof(employment));
@@ -52,7 +56,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         #region methods
 
-        protected internal override void AddItem(Pondus d)
+        public override void AddItem(Pondus d)
         {
             d.My.ExpectedValue = d.My.ExpectedValue.Neg;
             _deductions.Add(d);
@@ -69,7 +73,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void RandomizeAllItems(OpesOptions options)
         {
             options = options ?? new OpesOptions();
 

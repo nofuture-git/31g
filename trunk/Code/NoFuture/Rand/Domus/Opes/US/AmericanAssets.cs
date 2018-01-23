@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             options = options ?? OpesOptions.RandomOpesOptions();
             var assets = new AmericanAssets();
-            assets.ResolveItems(options);
+            assets.RandomizeAllItems(options);
             return assets;
         }
 
@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             return GetAt(dt, MyItems);
         }
 
-        protected internal override void AddItem(Pondus item)
+        public override void AddItem(Pondus item)
         {
             if (item == null)
                 return;
@@ -110,7 +110,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             };
         }
 
-        protected internal override void ResolveItems(OpesOptions options)
+        protected internal override void RandomizeAllItems(OpesOptions options)
         {
             options = options ?? new OpesOptions();
             AssignFactorValues(options.FactorOptions);
@@ -257,7 +257,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
                 var termInYears = isMortgage ? 30 : 5;
 
-                Func<bool> irresp = (() => false);
+                Func<bool> irresp = () => false;
                 if (buyer != null)
                     irresp = buyer.GetRandomActsIrresponsible;
 
