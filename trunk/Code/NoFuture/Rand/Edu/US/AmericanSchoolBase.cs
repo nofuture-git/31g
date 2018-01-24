@@ -12,8 +12,8 @@ namespace NoFuture.Rand.Edu.US
     [Serializable]
     public abstract class AmericanSchoolBase
     {
-        public UsState State { get; set; }
         public string StateName { get; set; }
+        public string StateAbbrev { get; set; }
         public string Name { get; set; }
 
         internal const string US_HIGH_SCHOOL_DATA = "US_HighSchools_Data.xml";

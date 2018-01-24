@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
 {
-    [TestClass]
+    [TestFixture]
     public class PesonalityTests
     {
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             var testSubject = new NoFuture.Rand.Domus.Pneuma.Personality();
@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
             Assert.IsNotNull(testSubject.Neuroticism.Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomActsIrresponsible()
         {
             var testSubject = Personality.RandomPersonality();
@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestEquals()
         {
             var testSubject00 = Personality.RandomPersonality();

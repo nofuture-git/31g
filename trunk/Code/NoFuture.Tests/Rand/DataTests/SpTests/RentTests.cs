@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class RentTests
     {
-        [TestMethod]
+        [Test]
         public void TestCountMonths()
         {
             var dt1 = new DateTime(DateTime.Today.Year, 1, 14);
@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual(5, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetMinPayment()
         {
             //most straight foward example
@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual(new Pecuniam(300-700), testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetExpectedRent()
         {
             //most straight foward example
@@ -140,7 +140,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual(new Pecuniam(350 + 700 * 3), testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetAvgAmericanRentByYear()
         {
             var testResult = Rent.GetAvgAmericanRentByYear(null);
@@ -148,7 +148,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomRent()
         {
             var testResult = Rent.RandomRent();
@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomRentWithHistory()
         {
             var testResult = Rent.RandomRentWithHistory();

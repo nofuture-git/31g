@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Tests.GeoTests
 {
-    [TestClass]
+    [TestFixture]
     public class UsCityStateZipTests
     {
-        [TestMethod]
+        [Test]
         public void RandomUsZipWithRespectToPopTest()
         {
             var testResult = UsCityStateZip.RandomAmericanPartialZipCode();
@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Tests.GeoTests
                 System.Diagnostics.Debug.WriteLine(testResult);
             }
         }
-        [TestMethod]
+        [Test]
         public void AmericanRaceRatioByZipCodeTests()
         {
             const string TEST_ZIP = "92071";
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Tests.GeoTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void AmericanRaceTests()
         {
             const string TEST_ZIP = "92071";

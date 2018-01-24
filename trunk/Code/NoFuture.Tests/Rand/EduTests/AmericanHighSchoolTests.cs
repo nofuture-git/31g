@@ -1,13 +1,13 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Edu.US;
 
 namespace NoFuture.Rand.Tests.EduTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanHighSchoolTests
     {
-        [TestMethod]
+        [Test]
         public void TestNatlGradRate()
         {
             var testResults = AmericanHighSchool.NatlGradRate();
@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Tests.EduTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetHighSchoolsByState()
         {
             var testResults = AmericanHighSchool.GetHighSchoolsByState("Arizona");
@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests.EduTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetHighSchoolsByZipCode()
         {
             var hs = AmericanHighSchool.GetHighSchoolsByZipCode("62644");
@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Tests.EduTests
             Assert.IsFalse(hs.All(h => h.Equals(AmericanHighSchool.GetDefaultHs())));
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomHighSchool()
         {
             var testResult = AmericanHighSchool.RandomHighSchool();

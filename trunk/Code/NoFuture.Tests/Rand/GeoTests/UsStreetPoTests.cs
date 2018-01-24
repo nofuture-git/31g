@@ -1,15 +1,15 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 
 namespace NoFuture.Rand.Tests.GeoTests
 {
-    [TestClass]
+    [TestFixture]
     public class UsStreetPoTests
     {
 
-        [TestMethod]
+        [Test]
         public void TryParseTests()
         {
             var testInput = "102 MAIN ST APT 101";

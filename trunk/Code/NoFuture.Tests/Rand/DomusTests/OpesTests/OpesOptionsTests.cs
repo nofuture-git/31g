@@ -1,15 +1,15 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Opes;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
-    [TestClass]
+    [TestFixture]
     public class OpesOptionsTests
     {
-        [TestMethod]
+        [Test]
         public void TestGetClone()
         {
             var testInput = new OpesOptions

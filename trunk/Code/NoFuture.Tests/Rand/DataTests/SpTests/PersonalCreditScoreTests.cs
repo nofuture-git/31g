@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class PersonalCreditScoreTests
     {
-        [TestMethod]
+        [Test]
         public void TestGetAgePenalty()
         {
             var testInput = new PersonalCreditScore(DateTime.Today.AddYears(-36));

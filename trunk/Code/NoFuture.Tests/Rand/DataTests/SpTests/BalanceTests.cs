@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class BalanceTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestGetCurrentNoInterest()
         {
             var testBalance = new Balance();
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
 
 
-        [TestMethod]
+        [Test]
         public void TestGetPaymentSum()
         {
             var testSubject = new Balance();
@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestTransactionsGetCurrent()
         {
             var testBalance = new Balance();
@@ -126,7 +126,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestTransactionsGetCurrentWithVariableRate()
         {
             //set some past date 
@@ -153,7 +153,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetTransactionsFromUpTo()
         {
             //set some past date 
@@ -175,7 +175,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestSort()
         {
             var testBalance = new Balance();

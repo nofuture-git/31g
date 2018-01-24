@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Util.Core.Math;
@@ -7,11 +7,11 @@ using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class LoanTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestGetMinPayment()
         {
             var testSubject = new FixedRateLoan(DateTime.Now.AddYears(-3).Date, 0.0125F);
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(testResult.Amount);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGet30yearBalance()
         {
             var testSubject = new FixedRateLoan(DateTime.Today, 0.0885F, new Pecuniam(150000)) {Rate = 0.05F};
@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(v);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetStatus()
         {
             var testSubject = new FixedRateLoan(DateTime.Now.AddYears(-3).Date, 0.0125F);
@@ -101,7 +101,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual(SpStatus.Late, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDelinquency()
         {
             var testSubject = new FixedRateLoan(DateTime.Now.AddYears(-3).Date, 0.0125F);

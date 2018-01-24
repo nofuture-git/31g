@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         protected internal override void RandomizeAllItems(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
 
             var ranges = _employment.MyItems.Any()
                 ? _employment.MyItems.Select(e => new Tuple<DateTime, DateTime?>(e.Inception, e.Terminus))

@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class TradeLineTests
     {
-        [TestMethod]
+        [Test]
         public void TestGetCurrent()
         {
             var testSubject = new TradeLine(DateTime.Now.AddDays(-370));

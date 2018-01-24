@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
 {
-    [TestClass]
+    [TestFixture]
     public class TraitTests
     {
-        [TestMethod]
+        [Test]
         public void TestEquals()
         {
             var test00 = new NoFuture.Rand.Domus.Pneuma.Openness();

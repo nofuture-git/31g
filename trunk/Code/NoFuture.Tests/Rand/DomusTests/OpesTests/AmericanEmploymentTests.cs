@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
@@ -8,10 +8,10 @@ using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanEmploymentTests
     {
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             var testSubject = new AmericanEmployment();
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetYearsOfServiceInDates()
         {
             //still employed
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetPayName2RandRates()
         {
             var testSubject = new AmericanEmployment();
@@ -72,7 +72,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(1D, Math.Round(testResultSum));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGroupNames()
         {
             var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Employment);
@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetItemNames()
         {
             var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Employment);
@@ -100,7 +100,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveItems()
         {
             var testSubject = new AmericanEmployment();
@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testNetIncome);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomEmployment()
         {
             var testSubject = AmericanEmployment.RandomEmployment(new OpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });

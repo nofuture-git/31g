@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests.OrgTests
 {
-    [TestClass]
+    [TestFixture]
     public class StandardIndustryClassificationTests
     {
-        [TestMethod]
+        [Test]
         public void TestRandomSic()
         {
             var testResult = StandardIndustryClassification.RandomSic();

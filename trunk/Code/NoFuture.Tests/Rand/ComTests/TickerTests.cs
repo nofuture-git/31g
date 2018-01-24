@@ -1,13 +1,13 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Com;
+using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.ComTests
 {
-    [TestClass]
+    [TestFixture]
     public class TickerTests
     {
-        [TestMethod]
+        [Test]
         public void TestEquals()
         {
             var t0 = new TickerSymbol {InstrumentType = "Common Stock", Symbol = "NFLX:US", Country = "USA"};
@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Tests.ComTests
             Assert.IsTrue(t0.Equals(t1));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTickerCompare()
         {
             var testTickers = new[]

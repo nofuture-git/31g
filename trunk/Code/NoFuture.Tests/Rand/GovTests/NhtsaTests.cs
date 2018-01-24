@@ -1,20 +1,20 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Gov.US.Nhtsa;
 
 namespace NoFuture.Rand.Tests.GovTests
 {
-    [TestClass]
+    [TestFixture]
     public class NhtsaTests
     {
-        [TestMethod]
+        [Test]
         public void TestVinNoValues()
         {
             var testSubject = new Vin();
             Assert.AreEqual("000000A0200000000", testSubject.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetChkDigit()
         {
             var testSubject = new Vin
@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.AreEqual('1',testREsult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestVinSetValue()
         {
             var testVinValue = "3N1CN7AP0GL861987";
@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.AreEqual("861987", testSubject.Vis.SequentialNumber);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetModelYearYyyy()
         {
             var testVinValue = "3N1CN7AP0GL861987";
@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.AreEqual(2016,testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestVinToString()
         {
             var testVinValue = "3N1CN7AP0GL861987";
@@ -69,7 +69,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.AreEqual(testVinValue, testSubject.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestVinEquality()
         {
             var testVinValue = "3N1CN7AP0GL861987";
@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Tests.GovTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomVin()
         {
             for (var i = 0; i < 45; i++)
@@ -104,7 +104,7 @@ namespace NoFuture.Rand.Tests.GovTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandoManufacturerId()
         {
             var testResult = Vin.GetRandomManufacturerId();

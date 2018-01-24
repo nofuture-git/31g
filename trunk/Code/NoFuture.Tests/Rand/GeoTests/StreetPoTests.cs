@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Geo;
 
 namespace NoFuture.Rand.Tests.GeoTests
 {
-    [TestClass]
+    [TestFixture]
     public class StreetPoTests
     {
-        [TestMethod]
+        [Test]
         public void AmericanTest()
         {
             var testResult = StreetPo.RandomAmericanStreet();

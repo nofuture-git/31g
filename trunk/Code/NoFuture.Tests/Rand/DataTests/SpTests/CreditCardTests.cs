@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
@@ -10,10 +10,10 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class CreditCardTests
     {
-        [TestMethod]
+        [Test]
         public void TestCreditCardNumber()
         {
             var testInput = new List<Rchar>();
@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsTrue(testResult10);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCreditCardCtor()
         {
             var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(testSubject.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestMakePayment()
         {
             var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetMinPayment()
         {
             var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
@@ -108,7 +108,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomMasterCardNumber()
         {
             var testResult = MasterCardCc.RandomMasterCardNumber();
@@ -117,7 +117,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(testResult.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomVisaNumber()
         {
             var testResult = VisaCc.RandomVisaNumber();
@@ -126,7 +126,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(testResult.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomDiscoverNumber()
         {
             var testResult = DiscoverCc.RandomDiscoverNumber();
@@ -135,7 +135,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(testResult.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomAmexNumber()
         {
             var testResult = AmexCc.RandomAmexNumber();

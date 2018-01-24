@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class CusipTests
     {
-        [TestMethod]
+        [Test]
         public void TestLetter2Num()
         {
             var testResult = Cusip.Letter2Num['A'];
@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual(35, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestNum2Num()
         {
             var testResult = Cusip.Num2Num['0'];
@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual(9, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCusipChkDigit()
         {
             Assert.AreEqual(0, Cusip.CusipChkDigit("03783310"));
@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual(5, Cusip.CusipChkDigit("68389X10"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandom()
         {
             var testSubject = new Cusip();
@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsTrue(testSubject.Validate(testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetValue()
         {
             var testSubject = new Cusip();
@@ -77,7 +77,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual("28", testSubject.Issue);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIssueGroup()
         {
             var testSubject = new Cusip {Value = "U4OR21282"};
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsTrue(testSubject.Validate("U4OR21282"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSearchCompanyName()
         {
             var testResult = Com.Firm.GetSearchCompanyName("HNI Corporation");
@@ -111,7 +111,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual("PARSONS & CO INC",testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetNameFull()
         {
             var testResult = Com.Firm.GetNameFull("BRAND BKG CO");

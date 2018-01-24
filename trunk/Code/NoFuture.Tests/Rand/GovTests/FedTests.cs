@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Gov.US.Fed;
 
 namespace NoFuture.Rand.Tests.GovTests
 {
-    [TestClass]
+    [TestFixture]
     public class FedTests
     {
-        [TestMethod]
+        [Test]
         public void TestRoutingTransitNumber()
         {
             var testSubject = RoutingTransitNumber.RandomRoutingNumber();

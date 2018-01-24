@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class DepositAccountTests
     {
-        [TestMethod]
+        [Test]
         public void TestTransferFundsInBankAccounts()
         {
             var savingAcct = DepositAccount.RandomSavingAccount();

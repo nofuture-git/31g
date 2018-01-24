@@ -1,18 +1,17 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
-using NoFuture.Rand.Gov.US;
+using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class AccountTests
     {
-        [TestMethod]
+        [Test]
         public void TestGetRandomBankAccount()
         {
             var p = new American(Etx.RandomAdultBirthDate(), Gender.Female);
@@ -32,7 +31,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsPin()
         {
             var testSubject = new CheckingAccount(null, DateTime.Today.AddDays(-65),

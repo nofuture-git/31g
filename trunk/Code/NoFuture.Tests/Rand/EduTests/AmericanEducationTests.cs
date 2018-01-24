@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Edu.US;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Tests.EduTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanEducationTests
     {
-        [TestMethod]
+        [Test]
         public void RandomEducationNullArgs()
         {
             var testResult = AmericanEducation.RandomEducation();
@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Tests.EduTests
             Debug.WriteLine(testResult.College);
         }
 
-        [TestMethod]
+        [Test]
         public void RandomEducationYoungChild()
         {
             var testResult = AmericanEducation.RandomEducation(DateTime.Now.AddYears(-9), "FL", "32162");
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Tests.EduTests
             Assert.IsNull(testResult.College.Item1);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomGraduationDate()
         {
             var normDist = new NormalDistEquation {Mean = 4.469, StdDev = 0.5145};
@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Tests.EduTests
             Assert.IsTrue(new[]{5,12}.Contains(testResult.Month));
         }
 
-        [TestMethod]
+        [Test]
         public void TestEduLevel()
         {
             var hs = AmericanHighSchool.RandomHighSchool();

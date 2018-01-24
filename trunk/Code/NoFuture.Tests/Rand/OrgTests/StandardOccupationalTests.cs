@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests.OrgTests
 {
-    [TestClass]
+    [TestFixture]
     public class StandardOccupationalTests
     {
-        [TestMethod]
+        [Test]
         public void TestSocMajorGroups()
         {
             var testResult = StandardOccupationalClassification.AllGroups;
@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Tests.OrgTests
             Assert.AreNotEqual(0, testResult.Length);
             foreach (var majorGrp in testResult)
             {
-                Assert.IsInstanceOfType(majorGrp, typeof(SocMajorGroup));
+                Assert.IsInstanceOf<SocMajorGroup>(majorGrp);
                 System.Diagnostics.Debug.WriteLine($"{majorGrp.Value} {majorGrp.Description}");
                 foreach (var minorGrp in majorGrp.Divisions)
                 {
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Tests.OrgTests
                         {
                             foreach (var cip in detailGrp.Divisions)
                             {
-                                Assert.IsInstanceOfType(cip, typeof(ClassificationOfInstructionalPrograms));
+                                Assert.IsInstanceOf<ClassificationOfInstructionalPrograms>(cip);
                                 System.Diagnostics.Debug.WriteLine($"\t\t\t{cip.Description}");
                             }
                         }

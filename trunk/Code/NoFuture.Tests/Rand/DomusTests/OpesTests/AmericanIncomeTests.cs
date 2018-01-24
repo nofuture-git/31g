@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
@@ -8,10 +8,10 @@ using NoFuture.Rand.Domus.Pneuma;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanIncomeTests
     {
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             var testSubject = new AmericanIncome();
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(10900D.ToPecuniam(), testResultSum);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetEmploymentRanges()
         {
             var testSubject = new AmericanIncome();
@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveEmployment()
         {
             var testSubject = new AmericanIncome();
@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResult.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomIncomeAmount()
         {
             //no args test
@@ -63,7 +63,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetIncomeYearsInDates()
         {
             var testSubject = new AmericanIncome();
@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(t);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetJudgementIncomeNames2RandomRates()
         {
             var testSubject = new AmericanIncome();
@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSubitoIncomeNames2RandomRates()
         {
             var testSubject = new AmericanIncome();
@@ -110,7 +110,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRealPropertyIncomeNames2RandomRates()
         {
             var testSubject = new AmericanIncome();
@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSecuritiesIncomeNames2RandomRates()
         {
             var testSubject = new AmericanIncome();
@@ -144,7 +144,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetInstitutionalIncomeNames2RandomRates()
         {
             var testSubject = new AmericanIncome();
@@ -161,7 +161,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGroupNames()
         {
             var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Income);
@@ -175,7 +175,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetItemNames()
         {
             var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Income);
@@ -189,7 +189,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveItems()
         {
             var testSubject = new AmericanIncome();
@@ -202,7 +202,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             foreach(var item in testSubject.MyItems)
                 System.Diagnostics.Debug.WriteLine(item);
         }
-        [TestMethod]
+        [Test]
         public void TestRandomIncome()
         {
             var testSubject = AmericanIncome.RandomIncome(new OpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });

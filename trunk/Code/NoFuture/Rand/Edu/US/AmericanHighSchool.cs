@@ -78,7 +78,6 @@ namespace NoFuture.Rand.Edu.US
         {
             return _dfHs ?? (_dfHs = new AmericanHighSchool
             {
-                State = UsState.GetStateByPostalCode("DC"),
                 StateName = "DC",
                 Name = "G.E.D.",
                 PostalCode = "20024",
@@ -118,6 +117,12 @@ namespace NoFuture.Rand.Edu.US
                 HsXml.SelectNodes($"//state[@name='{usState}']//high-school");
 
             var parsedList = ParseHighSchoolsFromNodeList(elements);
+            foreach (var hs in parsedList)
+            {
+                hs.StateAbbrev = usState.StateAbbrev;
+                hs.StateName = usState.ToString();
+            }
+
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff} End GetHighSchoolsByState");
             return parsedList;
         }
@@ -131,6 +136,7 @@ namespace NoFuture.Rand.Edu.US
         /// <returns></returns>
         public static AmericanHighSchool[] GetHighSchoolsByZipCode(string zipCode)
         {
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff} Start GetHighSchoolsByZipCode");
             zipCode = zipCode ?? "";
             zipCode = new string(zipCode.ToCharArray().Where(char.IsDigit).ToArray());
             if (string.IsNullOrWhiteSpace(zipCode))
@@ -145,11 +151,31 @@ namespace NoFuture.Rand.Edu.US
                         ? $"//zip-code[@prefix='{zipCode}']//high-school" 
                         : $"//zip-stat[@value='{zipCode}']/high-school";
 
+            //just get this once for all 
+            var stateXpath = $"{xpath}/../../..";
+            var stateName = "";
+            var stateAbbrev = "";
+            var stateNode = HsXml.SelectSingleNode(stateXpath);
+            if (stateNode?.Attributes != null)
+            {
+                var attr = stateNode.Attributes["name"];
+                stateName = attr.Value;
+
+                attr = stateNode.Attributes["abbreviation"];
+                stateAbbrev = attr.Value;
+            }
+
             var elements = HsXml.SelectNodes(xpath);
             if(elements == null || elements.Count <= 0)
                 return GetHighSchoolsByState();
 
             var parsedList = ParseHighSchoolsFromNodeList(elements);
+            foreach (var hs in parsedList)
+            {
+                hs.StateAbbrev = stateAbbrev;
+                hs.StateName = stateName;
+            }
+            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff} End GetHighSchoolsByZipCode");
             return parsedList;
         }
 
@@ -250,14 +276,8 @@ namespace NoFuture.Rand.Edu.US
                     attr = zipStatNode.Attributes["value"];
                 hs.PostalCode = attr?.Value;
 
-                var xpath = $"//high-school[@name='{hs.Name.EscapeString(EscapeStringType.XML)}']/../../.. ";
-                var stateNode = HsXml.SelectSingleNode(xpath);
-                if (stateNode?.Attributes != null)
-                {
-                    attr = stateNode.Attributes["name"];
-                    hs.StateName = attr.Value;
-                }
                 hs.Name = Etc.CapWords(hs.Name, ' ');
+                hs.Name = Etc.CapWords(hs.Name, '/');
                 return true;
             }
             catch(Exception ex)

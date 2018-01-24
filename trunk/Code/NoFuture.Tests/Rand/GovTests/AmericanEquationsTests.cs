@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tests.GovTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanEquationsTests
     {
-        [TestMethod]
+        [Test]
         public void TestHealthInsuranceCostPerPerson()
         {
             var testSubject = AmericanEquations.HealthInsuranceCostPerPerson;
@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Tests.GovTests
             System.Diagnostics.Debug.WriteLine(testSubject);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFederalIncomeTaxRate()
         {
             var testSubject = AmericanEquations.FederalIncomeTaxRate;
@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Tests.GovTests
             System.Diagnostics.Debug.WriteLine(testSubject);
 
         }
-        [TestMethod]
+        [Test]
         public void TestEquations()
         {
             var baseDob = new DateTime(2016, 2, 16, 15, 55, 02);

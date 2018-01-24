@@ -1,14 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class PondusTests
     {
-        [TestMethod]
+        [Test]
         public void TestEquals()
         {
             var testSubject = new Pondus("test")
@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestCopyFrom()
         {
             var testSubject = new Pondus("TestCorporation");

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class SecuredFixedRateLoanTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomLoanWithHistory()
         {
             var testResult = SecuredFixedRateLoan.RandomSecuredFixedRateLoanWithHistory(new Pecuniam(8200.94M),
@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecuredFixedRateLoan()
         {
             var testResult = new SecuredFixedRateLoan(null, new DateTime(DateTime.Today.Year, 1, 1), new Pecuniam(12143.06M), 0.016667f, 5);
@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsFalse(testResult.Balance.IsEmpty);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomLoan()
         {
             var testResult = SecuredFixedRateLoan.RandomSecuredFixedRateLoan(new Pecuniam(8200.94M),
@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetCurrentPayoff_DelinqAlot()
         {
             var testLoan = new SecuredFixedRateLoan(null, new DateTime(2013, 10, 13), 0.016667f, new Pecuniam(1461.62M))
@@ -118,7 +118,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetCurrentPayoff()
         {
             //intial 

@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests.OrgTests
 {
-    [TestClass]
+    [TestFixture]
     public class NorthAmericanIndustryTests
     {
-        [TestMethod]
+        [Test]
         public void TestSuperSectors()
         {
             var testResult = NorthAmericanIndustryClassification.AllSectors;
@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Tests.OrgTests
             Assert.AreNotEqual(0, testResult.Length);
             foreach (var ss in testResult)
             {
-                Assert.IsInstanceOfType(ss, typeof(NaicsSuperSector));
+                Assert.IsInstanceOf<NaicsSuperSector>(ss);
                 System.Diagnostics.Debug.WriteLine($"{ss.Value} {ss.Description}");
                 foreach (var s in ss.Divisions)
                 {
@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Tests.OrgTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomMarket()
         {
             var testResult = NaicsMarket.RandomMarket();
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Tests.OrgTests
             System.Diagnostics.Debug.WriteLine(testResult.Description);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomSuperSector()
         {
             var testResult = NaicsSuperSector.RandomSuperSector();
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Tests.OrgTests
             System.Diagnostics.Debug.WriteLine(testResult.Description);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomPrimarySector()
         {
             var testResult = NaicsPrimarySector.RandomPrimarySector();
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Tests.OrgTests
             System.Diagnostics.Debug.WriteLine(testResult.Description);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomSector()
         {
             var testResult = NaicsSector.RandomSector();

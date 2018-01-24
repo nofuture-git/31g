@@ -1,13 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Tests", "_Tests", "{DCD744E4-D218-4B3C-A1E1-4D7C33401CE8}"
-	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		NoFuture.vsmdi = NoFuture.vsmdi
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A18BF978-7283-4166-84C6-83D489F04169}"
 	ProjectSection(SolutionItems) = preProject

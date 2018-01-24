@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanAssetsTests
     {
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             var testSubject = new AmericanAssets();
@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(11000D.ToPecuniam(), testResultSum);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGroupPortionsFromByFactorTables()
         {
             var testSubject = new AmericanAssets();
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRealPropertyName2RandomRates()
         {
             var testSubject = new AmericanAssets();
@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetPersonalPropertyAssetNames2Rates()
         {
             var testSubject = new AmericanAssets();
@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetInstitutionalAssetName2Rates()
         {
             var testSubject = new AmericanAssets();
@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetSecuritiesAssetNames2RandomRates()
         {
             var testSubject = new AmericanAssets();
@@ -117,7 +117,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetGroupNames()
         {
             var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Assets);
@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetItemNames()
         {
             var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Assets);
@@ -145,7 +145,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveItems()
         {
             var testSubject = new AmericanAssets();
@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(item);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomAssets()
         {
             var testSubject = AmericanAssets.RandomAssets(new OpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });

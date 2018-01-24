@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Edu.US;
 using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.EduTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanUniversityTests
     {
-        [TestMethod]
+        [Test]
         public void TestNatlGradRate()
         {
             var testResults = AmericanUniversity.NatlGradRate();
@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Tests.EduTests
             Assert.IsFalse(testResults.IsEmpty());
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetUniversities()
         {
             var testResults = AmericanUniversity.GetUniversitiesByState("Arizona");
@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Tests.EduTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetAmericanUniversity()
         {
             var testResult = AmericanEducation.GetAmericanUniversity(null);

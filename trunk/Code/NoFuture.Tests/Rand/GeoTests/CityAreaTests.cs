@@ -1,16 +1,16 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 
 namespace NoFuture.Rand.Tests.GeoTests
 {
-    [TestClass]
+    [TestFixture]
     public class CityAreaTests
     {
 
-        [TestMethod]
+        [Test]
         public void AmericanTest()
         {
             var testResult = CityArea.RandomAmericanCity();
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             System.Diagnostics.Debug.WriteLine(testResult.ZipCode);
         }
 
-        [TestMethod]
+        [Test]
         public void CanadianTest()
         {
             var testResult = CityArea.RandomCanadianCity();
@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             System.Diagnostics.Debug.WriteLine(testResult.PostalCode);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryParse()
         {
             var testAddresses = new[]
@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Console.WriteLine(usCityStateZip.StateAbbrev);
         }
 
-        [TestMethod]
+        [Test]
         public void TestEquality()
         {
             var addressNumber = Path.GetRandomFileName();
@@ -125,7 +125,7 @@ namespace NoFuture.Rand.Tests.GeoTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestUsCityStateZipCtor()
         {
             var addrData = new AddressData {StateAbbrev = "NV", PostalCode = "89421"};
@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             System.Diagnostics.Debug.WriteLine(testResult.City);
 
         }
-        [TestMethod]
+        [Test]
         public void TestUsCityStateZipCtorPickWithMsa()
         {
             var addrData = new AddressData { StateAbbrev = "FL", PostalCode = "32701" };
@@ -143,7 +143,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.IsNotNull(testResult.Msa);
             System.Diagnostics.Debug.WriteLine(testResult.City);
         }
-        [TestMethod]
+        [Test]
         public void TestUsCityStateZipCtorPickSuburb()
         {
             var addrData = new AddressData { StateAbbrev = "FL", PostalCode = "32101" };
@@ -153,7 +153,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             System.Diagnostics.Debug.WriteLine(testResult.City);
         }
 
-        [TestMethod]
+        [Test]
         public void TestUsCityStateZipCtorStateAndCityOnly()
         {
             var addrData = new AddressData {StateAbbrev = "NC", City = "CHARLOTTE"};
@@ -167,7 +167,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.IsNotNull(testResult.Msa);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetZipCode()
         {
             var addrData = new AddressData();
@@ -178,7 +178,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.AreEqual("20006", addrData.PostalCode);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetState()
         {
             var addrData = new AddressData();
@@ -190,7 +190,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.AreEqual("DC", addrData.StateAbbrev);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetCity()
         {
             var addrData = new AddressData();
@@ -211,7 +211,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             System.Diagnostics.Debug.WriteLine($"{addrData.City} {addrData.StateAbbrev}");
         }
 
-        [TestMethod]
+        [Test]
         public void TestFinesseCityName()
         {
             var testOutput = UsCityStateZip.FinesseCityName("CANDLER-MCAFEE");

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanDeductionsTests
     {
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             var testInput = new AmericanEmployment();
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(1800D.ToPecuniam().Neg, testResultSum);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetInsuranceDeductionName2RandRates()
         {
             var testInput = new AmericanEmployment();
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGovernmentDeductionName2Rates()
         {
 
@@ -83,7 +83,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testOptions.SumTotal);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetEmploymentDeductionName2Rates()
         {
             var testInput = new AmericanEmployment();
@@ -107,7 +107,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testOptions.SumTotal);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetJudgementDeductionName2RandomRates()
         {
             var testInput = new AmericanEmployment();
@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(1D, Math.Round(testResultSum));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGroupNames()
         {
             var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Deduction);
@@ -141,7 +141,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetItemNames()
         {
             var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Deduction);
@@ -155,7 +155,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveItems()
         {
             var testInput = new AmericanEmployment();
@@ -170,7 +170,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(p);
         }
 
-        [TestMethod]
+        [Test]
         public void TestDeductionsRatioToIncome()
         {
             var testInput = new AmericanEmployment();
@@ -207,7 +207,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(totalDeductions);
         }
 
-        [TestMethod]
+        [Test]
         public void TestDeductionsAllPresent()
         {
             var testInput = new AmericanEmployment();
@@ -237,7 +237,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(Pondus.GetExpectedAnnualSum(testResults));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGroupNames2Portions()
         {
             var testInput = new AmericanEmployment();
@@ -265,7 +265,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS).Item2);
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveItemsWithJudgements()
         {
             var testInput = new AmericanEmployment();

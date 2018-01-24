@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class IdentityTests
     {
-        [TestMethod]
+        [Test]
         public void TestValueLastFour()
         {
             var testSubject = new TestIdentifier {Value = "abcOP99"};
@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Tests
             Assert.AreEqual("XXXOP99", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestEquals()
         {
             var testSubject = new TestIdentifier {Value = "8955662"};
@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Tests
             Assert.IsTrue(testSubject.Equals(testInput));
         }
 
-        [TestMethod]
+        [Test]
         public void TestToString()
         {
             var testSubject = new TestIdentifier { Value = "my value" };

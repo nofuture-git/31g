@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.GovTests
 {
-    [TestClass]
+    [TestFixture]
     public class SocialSecurityNumberTests
     {
-        [TestMethod]
+        [Test]
         public void TestRandomSsn()
         {
             var testResult = SocialSecurityNumber.RandomSsn();
@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Tests.GovTests
             System.Diagnostics.Debug.Write(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSetValue()
         {
             var testSubject = new SocialSecurityNumber();
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.AreEqual("8845", testSubject.SerialNumber);
         }
 
-        [TestMethod]
+        [Test]
         public void TestValidate()
         {
             var testSubject = new SocialSecurityNumber();

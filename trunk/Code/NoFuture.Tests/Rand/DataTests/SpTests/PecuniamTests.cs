@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class PecuniamTests
     {
-        [TestMethod]
+        [Test]
         public void TestOps()
         {
             var test00 = Pecuniam.Zero;
@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsTrue(new Pecuniam(2.0M) != new Pecuniam(1.0M));
         }
 
-        [TestMethod]
+        [Test]
         public void TestEquals()
         {
             var test01 = new Pecuniam(138.0M);
@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsTrue(test01.Equals(test02));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandPecuniam()
         {
             var testResult = Pecuniam.RandomPecuniam();
@@ -55,14 +55,21 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsTrue(testResult.Amount % 100M == 0);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(RahRowRagee))]
+        [Test]
         public void TestDifferentCurrencyIsException()
         {
             var usd = new Pecuniam(10M);
             var yen = new Pecuniam(10M, CurrencyAbbrev.JPY);
 
-            var shouldFail = usd + yen;
+            try
+            {
+                var shouldBlow = usd + yen;
+                Assert.False(false);
+            }
+            catch
+            {
+                Assert.True(true);
+            }
         }
     }
 }

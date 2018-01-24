@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Geo;
@@ -7,10 +7,10 @@ using NoFuture.Rand.Geo.US;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class MortgageTests
     {
-        [TestMethod]
+        [Test]
         public void TestGetEstimatedMarketValueAt()
         {
             var testSubject = GetTestSubject();
@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetEstimatedEquityAt()
         {
             var testSubject = GetTestSubject();
@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestMonthlyPayment()
         {
             var testSubject = GetTestSubject();
@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.AreEqual(testResult.Abs.Amount, 1990.59M);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMinPaymentRate()
         {
             var testSubject = GetTestSubject();

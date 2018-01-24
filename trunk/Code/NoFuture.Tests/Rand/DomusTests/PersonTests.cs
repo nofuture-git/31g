@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.US;
@@ -11,16 +11,15 @@ using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Util.Core;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NoFuture.Rand.Tests.DomusTests
 {
-    [TestClass]
+    [TestFixture]
     public class PersonTests
     {
 
 
-        [TestMethod]
+        [Test]
         public void AmericanTests()
         {
             var testDob = new DateTime(1974,5,6);
@@ -32,7 +31,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.IsNotNull(testResult.BirthCert);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAmericanFull()
         {
             var testResult = new American(DateTime.Now.AddYears(-36), Gender.Female, true);
@@ -40,7 +39,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.AreNotEqual(0, testResult.GetMother().GetChildrenAt(null));
         }
 
-        [TestMethod]
+        [Test]
         public void NorthAmericanEduTests()
         {
             var amer = new American(Etx.RandomAdultBirthDate(), Gender.Female);
@@ -52,7 +51,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Debug.WriteLine(testResult.College);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAmericanFemaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
@@ -62,7 +61,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAmericanMaleFirstName()
         {
             var testDob = new DateTime(1980, 10, 1);
@@ -72,7 +71,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAmericanLastName()
         {
             var testResult = AmericanUtil.RandomAmericanLastName();
@@ -81,7 +80,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetAmericanMaritialStatus()
         {
             //too young 
@@ -94,7 +93,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Debug.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1982, 1, 31), Gender.Female));
         }
 
-        [TestMethod]
+        [Test]
         public void TestSolveForParent()
         {
             DateTime testDob = new DateTime(1984,4,22);
@@ -108,7 +107,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Debug.WriteLine(father.BirthCert.DateOfBirth);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSolveForSpouse()
         {
             var testDob = new DateTime(1982, 8, 19);
@@ -122,7 +121,7 @@ namespace NoFuture.Rand.Tests.DomusTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestFemaleDob2ProbChildless()
         {
             var testResult = AmericanEquations.FemaleYob2ProbChildless.SolveForY(1951);
@@ -132,7 +131,7 @@ namespace NoFuture.Rand.Tests.DomusTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestSolveForNumberOfChildren()
         {
             var testResult = AmericanUtil.RandomNumberOfChildren(new DateTime(1974, 8, 11), null);
@@ -151,7 +150,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetChildBirthDate()
         {
             var inputDob = DateTime.Now.AddYears(-50);
@@ -169,7 +168,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestNorthAmericanWithFamily()
         {
             var testResult = new American(DateTime.Now.AddYears(-40), Gender.Female, true);
@@ -179,7 +178,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveParents()
         {
             var testResult = new American(DateTime.Now.AddYears(-40), Gender.Female);
@@ -192,7 +191,7 @@ namespace NoFuture.Rand.Tests.DomusTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetMaritalStatus()
         {
             var testSubject = new American(DateTime.Now.AddYears(-40), Gender.Female);
@@ -210,7 +209,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsValidDobOfChild()
         {
             var testPerson = new American(new DateTime(1955,6,20), Gender.Female, false);
@@ -253,7 +252,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Debug.WriteLine(testDob);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSpouseAt()
         {
             //test with full timestamps
@@ -305,7 +304,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.IsTrue(testResult.Est.Equals(secondSpouse));
         }
 
-        [TestMethod]
+        [Test]
         public void TestDeathDate()
         {
             var dob = Etx.RandomAdultBirthDate();
@@ -315,7 +314,7 @@ namespace NoFuture.Rand.Tests.DomusTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetNorthAmericanEdu()
         {
             var testSubject = Person.RandomAmerican();

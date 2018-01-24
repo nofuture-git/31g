@@ -1,13 +1,13 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Tests.TeleTests
 {
-    [TestClass]
+    [TestFixture]
     public class EmailTests
     {
-        [TestMethod]
+        [Test]
         public void TestRandomEmailUri_UsCommon()
         {
             var testResult = Tele.Email.RandomEmail("booty", true);
@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestRandomEmailUriPersonal()
         {
             var testResult = Email.RandomEmail(true, "Robert", "Edward", "Lee");
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Tests.TeleTests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomEmailUri()
         {
             var testResult = Email.RandomEmail(null);
@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests.TeleTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetChildishRandomEmail()
         {
             var testResult = Email.RandomChildishEmail();

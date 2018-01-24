@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
 {
-    [TestClass]
+    [TestFixture]
     public class DimensionTests
     {
-        [TestMethod]
+        [Test]
         public void TestEquals()
         {
             var test00 = new Domus.Pneuma.Dimension(0.31D,0.125D);

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
@@ -8,10 +8,10 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanExpenseTests
     {
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             var testSubject = new AmericanExpenses();
@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         #region FAQ
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_NoOptions()
         {
             //what happens if you just invoke it with no options whatsoever?
@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_SingleGivenDirectly()
         {
             //what happens if its just a single item and no SumTotal?
@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(1D, singleItem.Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_TwoGivenDirectly()
         {
             var testSubject = new AmericanExpenses();
@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(0.1D, secondItem.Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_TwoGivenDirectlyAndSumWhichEquals()
         {
             var testSubject = new AmericanExpenses();
@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(0.1D, secondItem.Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_TwoGivenDirectlyAndSumWhichLt()
         {
             var testSubject = new AmericanExpenses();
@@ -148,7 +148,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_TwoGivenDirectlyAndSumWhichGt()
         {
             var testSubject = new AmericanExpenses();
@@ -184,7 +184,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_JustSumTotal()
         {
             var testSubject = new AmericanExpenses();
@@ -207,7 +207,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_UnmatchedNames()
         {
             var testSubject = new AmericanExpenses();
@@ -229,7 +229,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_GivenDirectlyValueOfZero()
         {
             var testSubject = new AmericanExpenses();
@@ -254,8 +254,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(RahRowRagee))]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_EverythingZeroOut()
         {
             var testSubject = new AmericanExpenses();
@@ -271,10 +270,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             testOptions.GivenDirectly.Add(new Mereo("Other", WealthBase.ExpenseGroupNames.DEBT) { ExpectedValue = Pecuniam.Zero });
 
             //this is actually exceptional and so an exception is thrown
-            var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
+            Assert.Throws<RahRowRagee>(() =>  testSubject.GetDebtExpenseNames2RandomRates(testOptions));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_SumTotalIsZero()
         {
             var testSubject = new AmericanExpenses();
@@ -291,7 +290,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_GivenDirectlyOverlapZeroOuts()
         {
             var testSubject = new AmericanExpenses();
@@ -316,7 +315,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDebtExpenseNames2RandRates_SumTotalExceedsAndZeroOuts()
         {
             var testSubject = new AmericanExpenses();
@@ -339,7 +338,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         #endregion
 
-        [TestMethod]
+        [Test]
         public void TestGetHomeExpenseNames2RandomRates()
         {
             var testSubject = new AmericanExpenses();
@@ -369,7 +368,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetUtilityExpenseNames2RandomRates()
         {
             var testSubject = new AmericanExpenses();
@@ -386,7 +385,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetTransportationExpenseNames2RandomRates()
         {
             var testSubject = new AmericanExpenses();
@@ -421,7 +420,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetInsuranceExpenseNames2RandomRates()
         {
             var testSubject = new AmericanExpenses();
@@ -457,7 +456,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetPersonalExpenseNames2RandomRates()
         {
             var testSubject = new AmericanExpenses();
@@ -475,7 +474,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetChildrenExpenseNames2RandomRates()
         {
             var testSubject = new AmericanExpenses();
@@ -492,7 +491,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(rate);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetHealthExpenseNames2RandomRates()
         {
             var testSubject = new AmericanExpenses();
@@ -510,7 +509,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetGroupNames()
         {
             var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Expense);
@@ -524,7 +523,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetItemNames()
         {
             var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Expense);
@@ -538,7 +537,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveItems()
         {
             var testOptions = new OpesOptions {SumTotal = 10000.0D.ToPecuniam()};
@@ -553,7 +552,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(item);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomExpenses()
         {
             var testSubject = AmericanExpenses.RandomExpenses(new OpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.TeleTests
 {
-    [TestClass]
+    [TestFixture]
     public class NetTests
     {
-        [TestMethod]
+        [Test]
         public void WebmailDomainsTest()
         {
             var testResult = Tele.Net.WebmailDomains;
@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Tests.TeleTests
             Assert.AreNotEqual(0, testResult.Length);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomUriHost()
         {
             var testResult = Tele.Net.RandomUriHost(false);
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Tests.TeleTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomHttpUri()
         {
             var testResult = Tele.Net.RandomHttpUri();
@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestRandomHttpUri_00()
         {
             for (var i = 0; i < 10; i++)

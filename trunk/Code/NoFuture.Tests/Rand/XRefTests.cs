@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
@@ -8,11 +8,11 @@ using NoFuture.Rand.Gov.US.Fed;
 
 namespace NoFuture.Rand.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class XRefTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestXrefOnTypes()
         {
 
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Tests
             Assert.IsNull(testTarget.CIK);
             Assert.IsTrue(!testTarget.TickerSymbols.Any());
         }
-        [TestMethod]
+        [Test]
         public void TestAddXrefValues()
         {
             var testXrefId = new Tuple<Type, string>(typeof(NoFuture.Rand.Com.Bank), "BANK OF AMER NA");

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class VocaTests
     {
-        [TestMethod]
+        [Test]
         public void TestUpsertName()
         {
             var testSubject = new VocaBase();
@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Tests
             Assert.AreEqual("TechnicalName", testResult.Item2);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetName()
         {
             var testSubject = new VocaBase();
@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests
             Assert.AreEqual("TestCorporation", testSubject.GetName(KindsOfNames.Legal));
         }
 
-        [TestMethod]
+        [Test]
         public void TestAnyOfKindOfName()
         {
             var testSubject = new VocaBase();
@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Tests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestAnyOfNameAs()
         {
             var testSubject = new VocaBase();
@@ -72,7 +72,7 @@ namespace NoFuture.Rand.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestAnyOfKindAndValue()
         {
             var testSubject = new VocaBase();
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveNameByKind()
         {
             var testSubject = new VocaBase();
@@ -104,7 +104,7 @@ namespace NoFuture.Rand.Tests
             Assert.IsNotNull(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveNameByValue()
         {
             var testSubject = new VocaBase();
@@ -121,7 +121,7 @@ namespace NoFuture.Rand.Tests
             Assert.AreEqual(0, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveNameByKindAndValue()
         {
             var testSubject = new VocaBase();
@@ -136,7 +136,7 @@ namespace NoFuture.Rand.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestEquals()
         {
             var testSubject = new VocaBase();

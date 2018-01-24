@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
@@ -8,16 +8,16 @@ using NoFuture.Rand.Gov.US.TheStates;
 
 namespace NoFuture.Rand.Tests.GovTests
 {
-    [TestClass]
+    [TestFixture]
     public class UsStateTests
     {
-        [TestMethod]
+        [Test]
         public void GetStateTest()
         {
             var testState = "AZ";
             var testResult = UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
-            Assert.IsInstanceOfType(testResult, typeof(Arizona));
+            Assert.IsInstanceOf<Arizona>(testResult);
 
             Assert.AreEqual(testState,testResult.StateAbbrev);
 
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Tests.GovTests
             testState = "AR";
             testResult = UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
-            Assert.IsInstanceOfType(testResult, typeof(Arkansas));
+            Assert.IsInstanceOf<Arkansas>(testResult);
 
             Assert.AreEqual(testState, testResult.StateAbbrev);
 
@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Tests.GovTests
             testState = "CA";
             testResult = UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
-            Assert.IsInstanceOfType(testResult, typeof(California));
+            Assert.IsInstanceOf<California>(testResult);
 
             Assert.AreEqual(testState, testResult.StateAbbrev);
 
@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Tests.GovTests
             testState = "CT";
             testResult = UsState.GetStateByPostalCode(testState);
             Assert.IsNotNull(testResult);
-            Assert.IsInstanceOfType(testResult, typeof(Connecticut));
+            Assert.IsInstanceOf<Connecticut>(testResult);
 
             Assert.AreEqual(testState, testResult.StateAbbrev);
 
@@ -74,7 +74,7 @@ namespace NoFuture.Rand.Tests.GovTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetStateByName()
         {
             var testResult = UsState.GetStateByName("New York");
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Tests.GovTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetStateAll()
         {
             var noUse = UsState.GetStateByPostalCode("AZ");//the internal member is a singleton, this gets it pop'ed
@@ -105,7 +105,7 @@ namespace NoFuture.Rand.Tests.GovTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetStateData()
         {
             var testStateName = "Maryland";
@@ -129,7 +129,7 @@ namespace NoFuture.Rand.Tests.GovTests
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomState()
         {
             var testResult = UsState.RandomUsState();

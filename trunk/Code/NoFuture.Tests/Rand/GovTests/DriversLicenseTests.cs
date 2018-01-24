@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.GovTests
 {
-    [TestClass]
+    [TestFixture]
     public class DriversLicenseTests
     {
-        [TestMethod]
+        [Test]
         public void TestRandomDriversLicense()
         {
             var testResult = DriversLicense.RandomDriversLicense();

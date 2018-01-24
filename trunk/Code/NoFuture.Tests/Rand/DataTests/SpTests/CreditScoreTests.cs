@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
@@ -8,11 +8,11 @@ using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
-    [TestClass]
+    [TestFixture]
     public class CreditScoreTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestGetScore()
         {
             var testSubject = new Data.Sp.PersonalCreditScore();
@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
             Assert.IsTrue(expected >= testSubject.GetScore(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomInterestRate()
         {
             var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomMax()
         {
             var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class EtxTests
     {
-        [TestMethod]
+        [Test]
         public void TestExtWord()
         {
             var testResult = Etx.RandomWord();
@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Tests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIntNumber()
         {
             //handles in a range
@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Tests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestRandomValueInNormalDist()
         {
             var mean = 500;
@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Tests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomValueInNormalDist_SmallRange()
         {
             for (var i = 0; i < 256; i++)
@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Tests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomRChars()
         {
             var testResult = Etx.RandomRChars();
@@ -122,7 +122,7 @@ namespace NoFuture.Rand.Tests
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomDouble()
         {
             var testResult = Etx.RandomDouble(0, 3);
@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Tests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomDouble_WithDoubles()
         {
             var testResult = Etx.RandomDouble(0.7139, 0.7889);
@@ -144,7 +144,7 @@ namespace NoFuture.Rand.Tests
             Assert.IsTrue(testResult < 0);
         }
 
-        [TestMethod]
+        [Test]
         public void TestDiscreteRange()
         {
             //handles only one thing
@@ -182,7 +182,7 @@ namespace NoFuture.Rand.Tests
             Assert.IsTrue(new[] { ".com" , ".net", ".edu", ".org" }.Contains(testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestDiscreteRangeEqProb()
         {
             var discreteRange = new[] {24, 18, 12, 6};
@@ -193,7 +193,7 @@ namespace NoFuture.Rand.Tests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandomPortions()
         {
             var testResults = Etx.RandomPortions(6);
@@ -203,7 +203,7 @@ namespace NoFuture.Rand.Tests
             var testResultsSum = testResults.Sum();
             Assert.IsTrue(testResultsSum > 0.99D && testResultsSum < 1.01D);
         }
-        [TestMethod]
+        [Test]
         public void TestDiminishingPortions()
         {
             var testResults = Etx.RandomDiminishingPortions(12);
@@ -223,7 +223,7 @@ namespace NoFuture.Rand.Tests
                 System.Diagnostics.Debug.WriteLine(t);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRandShuffle()
         {
             var testInput = new[] {"", ".", "-", "_", "+", "=", "--", "__"};
@@ -237,7 +237,7 @@ namespace NoFuture.Rand.Tests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryAtOrAbove()
         {
             var runningCount = new List<int>();
@@ -253,7 +253,7 @@ namespace NoFuture.Rand.Tests
             Assert.IsTrue(totalTestRslt < 15);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryAtOrBelow()
         {
             var runningCount = new List<int>();
@@ -270,7 +270,7 @@ namespace NoFuture.Rand.Tests
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestEnglishWords()
         {
             var testResult = Core.Etx.EnglishWords;
@@ -282,7 +282,7 @@ namespace NoFuture.Rand.Tests
             Assert.AreEqual(1386, testResultItem.Item2);
         }
 
-        [TestMethod]
+        [Test]
         public void TestListRandomFactories()
         {
             var testResult = Etx.ListRandomFactories();

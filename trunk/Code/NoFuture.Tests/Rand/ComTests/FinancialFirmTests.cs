@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Geo;
+﻿using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
+using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.ComTests
 {
-    [TestClass]
+    [TestFixture]
     public class FinancialFirmTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomBank()
         {
             var testInput = new UsCityStateZip(new AddressData {City = "New York City", StateAbbrev = "NY"});

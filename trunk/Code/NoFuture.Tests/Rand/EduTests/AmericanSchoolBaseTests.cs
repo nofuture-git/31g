@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Edu.US;
 using NoFuture.Rand.Gov;
@@ -7,11 +7,11 @@ using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.EduTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanSchoolBaseTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestSolvePercentHsGradByStateAndRace()
         {
             //test resolves to simple natl average given no input

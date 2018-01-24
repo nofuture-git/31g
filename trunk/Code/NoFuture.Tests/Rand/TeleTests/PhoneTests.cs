@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Tests.TeleTests
 {
-    [TestClass]
+    [TestFixture]
     public class PhoneTests
     {
-        [TestMethod]
+        [Test]
         public void AmericanPhoneTests()
         {
             var testResult = Phone.RandomAmericanPhone();
@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Tests.TeleTests
             System.Diagnostics.Debug.WriteLine(testResult.SubscriberNumber);
         }
 
-        [TestMethod]
+        [Test]
         public void AmericanPhoneByStateTests()
         {
             const string TEST_STATE_WITH_MANY = "CA";
@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Tests.TeleTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void CanadianPhoneByProvidenceTests()
         {
             const string TEST_STATE_WITH_MANY = "ON";
@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Tests.TeleTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryParse()
         {
             var testInput = "5184154299";

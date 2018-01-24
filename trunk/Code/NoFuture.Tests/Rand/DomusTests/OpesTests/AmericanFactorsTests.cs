@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Gov;
@@ -7,10 +7,10 @@ using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
-    [TestClass]
+    [TestFixture]
     public class AmericanFactorsTests
     {
-        [TestMethod]
+        [Test]
         public void TestGetRandomFactorValue()
         {
             var stdDev = 0.2685D;
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsTrue(isInRange);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetFactorBaseValue()
         {
             var testResult = AmericanFactors.GetFactorBaseValue(FactorTables.CheckingAccount);
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetFactor()
         {
             var testFactor = FactorTables.HomeEquity;

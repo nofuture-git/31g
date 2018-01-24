@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
@@ -14,11 +14,11 @@ using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
-    [TestClass]
+    [TestFixture]
     public class WealthBaseTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestGetFactor()
         {
             var testResult = AmericanFactors.GetFactor(FactorTables.HomeDebt,
@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetFactorBaseValue()
         {
             var testResult = AmericanFactors.GetFactorBaseValue(FactorTables.VehicleDebt);
@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(81000.0D, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetPaycheck()
         {
             var amer = new American(Etx.RandomAdultBirthDate(), Gender.Female);
@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsTrue(testResult.Amount > 0.0M);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetXmlEduName()
         {
             var testResult = AmericanFactors.GetXmlEduName(OccidentalEdu.Bachelor);
@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
 
 
-        [TestMethod]
+        [Test]
         public void TestGetIncomeItemNames()
         {
             var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetIncomeItemNames();
@@ -78,7 +78,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine($"{i.Name} {i.GetName(KindsOfNames.Group)}");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDeductionItemNames()
         {
             var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetDeductionItemNames();
@@ -89,7 +89,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(i);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetExpenseItemNames()
         {
             var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetExpenseItemNames();
@@ -100,7 +100,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(i);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetAssetItemNames()
         {
             var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetAssetItemNames();
@@ -111,7 +111,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
                 System.Diagnostics.Debug.WriteLine(i);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetRandomRateFromClassicHook()
         {
             var testSubject = new AmericanIncome();
@@ -125,7 +125,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetYearNeg()
         {
             var testSubject = new AmericanIncome();
@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             System.Diagnostics.Debug.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGroupNames2Portions()
         {
             var testInput = new OpesOptions();
@@ -163,7 +163,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetItemNames2Portions()
         {
             var testInput = new OpesOptions();
