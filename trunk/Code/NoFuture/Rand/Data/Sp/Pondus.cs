@@ -9,10 +9,12 @@ namespace NoFuture.Rand.Data.Sp
 {
     /// <inheritdoc cref="Receivable" />
     /// <summary>
-    /// A composition type to bind a time and a name to expected and actual money
+    /// A capital concrete composition type to 
+    /// bind time and names with expected and actual money value.
+    /// Is Latin for weight.
     /// </summary>
     [Serializable]
-    public class Pondus : Receivable//, IMine<IMereo>
+    public class Pondus : Receivable
     {
         public Pondus(string name)
         {
@@ -45,7 +47,7 @@ namespace NoFuture.Rand.Data.Sp
 
             var p = Pecuniam.Zero;
             foreach (var i in items)
-                p += i?.Expectation?.ExpectedValue ?? Pecuniam.Zero;
+                p += i?.Expectation?.Value ?? Pecuniam.Zero;
             return p;
         }
 
@@ -61,10 +63,10 @@ namespace NoFuture.Rand.Data.Sp
             var sum = 0M;
             foreach (var item in items)
             {
-                if (item?.Expectation?.ExpectedValue == null ||
+                if (item?.Expectation?.Value == null ||
                     !Mereo.Interval2AnnualPayMultiplier.ContainsKey(item.Expectation.Interval))
                     continue;
-                sum += item.Expectation.ExpectedValue.Amount * Mereo.Interval2AnnualPayMultiplier[item.Expectation.Interval];
+                sum += item.Expectation.Value.Amount * Mereo.Interval2AnnualPayMultiplier[item.Expectation.Interval];
             }
             return new Pecuniam(sum);
         }
@@ -77,9 +79,7 @@ namespace NoFuture.Rand.Data.Sp
         public override bool Equals(object obj)
         {
             //asserts the names equal
-            var p = obj as Pondus;
-
-            if (p == null)
+            if (!(obj is Pondus p))
                 return base.Equals(obj);
             var namesEqual = p.Expectation.Equals(Expectation);
 
@@ -96,8 +96,8 @@ namespace NoFuture.Rand.Data.Sp
 
         public override string ToString()
         {
-            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Expectation?.ExpectedValue.ToString(), Expectation.Name,
-                Expectation.GetName(KindsOfNames.Group), Expectation.Interval.ToString(), Inception, Terminus);
+            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Expectation?.Value.ToString(), Expectation?.Name,
+                Expectation?.GetName(KindsOfNames.Group), Expectation?.Interval.ToString(), Inception, Terminus);
             return d.ToString();
         }
     }

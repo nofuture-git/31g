@@ -145,7 +145,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             {
                 givenDirectly.Add(new Mereo(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY)
                 {
-                    ExpectedValue = (_homeEquityRate * amt.ToDouble()).ToPecuniam()
+                    Value = (_homeEquityRate * amt.ToDouble()).ToPecuniam()
                 });
             }
 
@@ -153,21 +153,21 @@ namespace NoFuture.Rand.Domus.Opes.US
             {
                 givenDirectly.Add(new Mereo(PERSONAL_PROPERTY_MOTOR_VEHICLES, AssetGroupNames.PERSONAL_PROPERTY)
                 {
-                    ExpectedValue = (_carEquityRate * amt.ToDouble()).ToPecuniam()
+                    Value = (_carEquityRate * amt.ToDouble()).ToPecuniam()
                 });
             }
             if (!assignedCheckingDirectly)
             {
                 givenDirectly.Add(new Mereo(INSTITUTIONAL_CHECKING, AssetGroupNames.INSTITUTIONAL)
                 {
-                    ExpectedValue = (_checkingAccountRate * amt.ToDouble()).ToPecuniam()
+                    Value = (_checkingAccountRate * amt.ToDouble()).ToPecuniam()
                 });
             }
             if (!assignedSavingDirectly)
             {
                 givenDirectly.Add(new Mereo(INSTITUTIONAL_SAVINGS, AssetGroupNames.INSTITUTIONAL)
                 {
-                    ExpectedValue = (_savingsAccountRate * amt.ToDouble()).ToPecuniam()
+                    Value = (_savingsAccountRate * amt.ToDouble()).ToPecuniam()
                 });
             }
 
@@ -207,7 +207,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 p = DepositAccount.RandomCheckingAccount(options.PersonsName, startDate,
                     $"{Etx.RandomInteger(1, 9999):0000}");
                 ((DepositAccount)p).Deposit(startDate.AddDays(-1), checkingAmt.ToPecuniam());
-                p.Expectation.ExpectedValue = checkingAmt.ToPecuniam();
+                p.Expectation.Value = checkingAmt.ToPecuniam();
             }
             else if (isSavingsAccount)
             {
@@ -216,7 +216,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                     : _savingsAccountRate * amt.ToDouble();
                 p = DepositAccount.RandomSavingAccount(options.PersonsName, startDate);
                 ((DepositAccount)p).Deposit(startDate.AddDays(-1), savingAmt.ToPecuniam());
-                p.Expectation.ExpectedValue = savingAmt.ToPecuniam();
+                p.Expectation.Value = savingAmt.ToPecuniam();
             }
             else if (isMortgage || isCarLoan)
             {
@@ -270,15 +270,15 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var loan = (SecuredFixedRateLoan) p;
                 if (isMortgage)
                 {
-                    p.Expectation.ExpectedValue = homeEquityAmt.ToPecuniam();
+                    p.Expectation.Value = homeEquityAmt.ToPecuniam();
                     HousePayment =
-                        new Mereo(item, grp) {ExpectedValue = loan.MonthlyPayment, Interval = Interval.Monthly};
+                        new Mereo(item, grp) {Value = loan.MonthlyPayment, Interval = Interval.Monthly};
                 }
                 else
                 {
-                    p.Expectation.ExpectedValue = carEquityAmt.ToPecuniam();
+                    p.Expectation.Value = carEquityAmt.ToPecuniam();
                     CarPayment =
-                        new Mereo(item, grp) {ExpectedValue = loan.MonthlyPayment, Interval = Interval.Monthly};
+                        new Mereo(item, grp) {Value = loan.MonthlyPayment, Interval = Interval.Monthly};
                 }
             }
             else
@@ -311,7 +311,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 options.GivenDirectly.Add(
                     new Mereo(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY)
                     {
-                        ExpectedValue = Pecuniam.Zero
+                        Value = Pecuniam.Zero
                     });
             }
             options.PossibleZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Rights" });
@@ -335,10 +335,10 @@ namespace NoFuture.Rand.Domus.Opes.US
             if (!livesInCountry)
             {
                 options.GivenDirectly.Add(
-                    new Mereo("Crops", AssetGroupNames.PERSONAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
+                    new Mereo("Crops", AssetGroupNames.PERSONAL_PROPERTY) { Value = Pecuniam.Zero });
 
                 options.GivenDirectly.Add(
-                    new Mereo("Livestock", AssetGroupNames.PERSONAL_PROPERTY) {ExpectedValue = Pecuniam.Zero});
+                    new Mereo("Livestock", AssetGroupNames.PERSONAL_PROPERTY) {Value = Pecuniam.Zero});
             }
 
             var d = GetItemNames2Portions(AssetGroupNames.PERSONAL_PROPERTY, options);

@@ -9,14 +9,13 @@ namespace NoFuture.Rand.Data.Sp
     /// </summary>
     public interface IAsset
     {
-
         /// <summary>
         /// The current value of this asset
         /// </summary>
         Pecuniam Value { get; }
 
         /// <summary>
-        /// Get the loans status for the given <see cref="dt"/>
+        /// Get the status for the given asset at time <see cref="dt"/>
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>

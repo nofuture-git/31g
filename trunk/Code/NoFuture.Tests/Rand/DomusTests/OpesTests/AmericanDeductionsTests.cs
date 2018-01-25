@@ -258,7 +258,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS).Item2);
 
             var testOptions = new OpesOptions();
-            testOptions.GivenDirectly.Add(new Mereo(WealthBase.DeductionGroupNames.JUDGMENTS) {ExpectedValue =  1000.ToPecuniam()});
+            testOptions.GivenDirectly.Add(new Mereo(WealthBase.DeductionGroupNames.JUDGMENTS) {Value =  1000.ToPecuniam()});
 
             testResults = testSubject.GetGroupNames2Portions(testOptions);
             Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS));
@@ -283,8 +283,8 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             var testResultItem = testSubject.MyItems.FirstOrDefault(x => x.Expectation.Name == "Child Support");
             Assert.IsNotNull(testResultItem);
-            Assert.AreNotEqual(0.ToPecuniam(), testResultItem.Expectation.ExpectedValue);
-            System.Diagnostics.Debug.WriteLine(testResultItem.Expectation.ExpectedValue);
+            Assert.AreNotEqual(0.ToPecuniam(), testResultItem.Expectation.Value);
+            System.Diagnostics.Debug.WriteLine(testResultItem.Expectation.Value);
         }
     }
 }

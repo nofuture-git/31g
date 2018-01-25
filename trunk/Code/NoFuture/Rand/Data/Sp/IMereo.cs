@@ -5,11 +5,11 @@ using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IVoca" />
     /// <summary>
     /// Represents a name of any kind of money entry
     /// </summary>
-    public interface IMereo : IVoca
+    public interface IMereo : IVoca, IIdentifier<Pecuniam>
     {
         /// <summary>
         /// The time frame associated to this money entry
@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Data.Sp
         Classification Classification { get; set; }
 
         /// <summary>
-        /// Convenience method to get the Legal name
+        /// Convenience method to get or set the Legal name
         /// </summary>
         string Name { get; set; }
 
@@ -33,13 +33,8 @@ namespace NoFuture.Rand.Data.Sp
         List<string> ExempliGratia { get; }
 
         /// <summary>
-        /// The expected money worth
-        /// </summary>
-        Pecuniam ExpectedValue { get; set; }
-
-        /// <summary>
         /// Both assigns <see cref="Interval"/> to Annually and increases the
-        /// <see cref="ExpectedValue"/> to match.
+        /// Value to match.
         /// </summary>
         void AdjustToAnnualInterval();
     }

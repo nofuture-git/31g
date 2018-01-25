@@ -6,7 +6,8 @@ using NoFuture.Rand.Org;
 namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
-    /// Expresses a single form of personal employment in time
+    /// Expresses a single form of personal employment in time.
+    /// Is Latin for work.
     /// </summary>
     public interface ILaboris : ITempore
     {

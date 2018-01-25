@@ -4,7 +4,8 @@ using NoFuture.Rand.Data.Sp;
 namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
-    /// Expresses a personal income in time
+    /// Expresses a personal income in time.
+    /// Is Latin for revenue.
     /// </summary>
     public interface IReditus
     {

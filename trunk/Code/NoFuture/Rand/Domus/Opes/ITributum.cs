@@ -4,7 +4,8 @@ using NoFuture.Rand.Data.Sp;
 namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
-    /// Expresses a single form of deductions associated to an employment in time
+    /// Expresses a single form of deductions associated to an employment in time.
+    /// Is Latin for tax.
     /// </summary>
     public interface ITributum //Consequentia
     {

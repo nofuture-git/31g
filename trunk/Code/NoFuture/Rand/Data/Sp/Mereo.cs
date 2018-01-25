@@ -14,9 +14,12 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public class Mereo : VocaBase, IMereo
     {
+        #region fields
         private static Dictionary<Interval, int> _interval2Multiplier;
-        private readonly List<string> _eg = new List<string>();
         private Pecuniam _expectedValue = Pecuniam.Zero;
+        #endregion
+
+        #region ctors
         public Mereo()
         {
         }
@@ -36,13 +39,15 @@ namespace NoFuture.Rand.Data.Sp
 
         public Mereo(IMereo mereo) : this((IVoca)mereo)
         {
-            ExpectedValue = mereo.ExpectedValue;
+            Value = mereo.Value;
             Interval = mereo.Interval;
             Classification = mereo.Classification;
             foreach(var eg in mereo.ExempliGratia)
                 ExempliGratia.Add(eg);
         }
+        #endregion
 
+        #region properties
         public Interval Interval { get; set; }
         public Classification Classification { get; set; }
 
@@ -52,20 +57,24 @@ namespace NoFuture.Rand.Data.Sp
             set => UpsertName(KindsOfNames.Legal, value);
         }
 
-        public List<string> ExempliGratia => _eg;
+        public List<string> ExempliGratia { get; } = new List<string>();
 
-        public Pecuniam ExpectedValue
+        public string Abbrev => Name;
+        public string Src { get; set; }
+
+        public Pecuniam Value
         {
             get => _expectedValue ?? (_expectedValue = Pecuniam.Zero);
             set => _expectedValue = value;
         }
+        #endregion 
 
         public void AdjustToAnnualInterval()
         {
             if (Interval == Interval.Annually)
                 return;
 
-            var hasExpectedValue = ExpectedValue != null && ExpectedValue != Pecuniam.Zero;
+            var hasExpectedValue = Value != null && Value != Pecuniam.Zero;
             var hasMultiplier = Interval2AnnualPayMultiplier.ContainsKey(Interval);
 
             if (!hasExpectedValue || !hasMultiplier)
@@ -75,13 +84,13 @@ namespace NoFuture.Rand.Data.Sp
             }
 
             var multiplier = Interval2AnnualPayMultiplier[Interval];
-            ExpectedValue = (ExpectedValue.ToDouble() * multiplier).ToPecuniam();
+            Value = (Value.ToDouble() * multiplier).ToPecuniam();
             Interval = Interval.Annually;
         }
 
         public override string ToString()
         {
-            return new Tuple<string, string, Pecuniam, Interval>(Name, GetName(KindsOfNames.Group), ExpectedValue,
+            return new Tuple<string, string, Pecuniam, Interval>(Name, GetName(KindsOfNames.Group), Value,
                 Interval).ToString();
         }
         /// <summary>

@@ -3,6 +3,8 @@ using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <inheritdoc cref="IAsset" />
+    /// <inheritdoc cref="ITradeLine" />
     /// <summary>
     /// Represents money owed by debtors
     /// </summary>
@@ -26,5 +28,10 @@ namespace NoFuture.Rand.Data.Sp
         /// Represents the expected value of the given receivable
         /// </summary>
         IMereo Expectation { get; }
+
+        /// <summary>
+        /// Get the status, if applicable, of the receivable at the current time.
+        /// </summary>
+        SpStatus? CurrentStatus { get; }
     }
 }

@@ -153,7 +153,7 @@ namespace NoFuture.Rand.Domus.Opes
         public virtual void AddItem(string name, string groupName, Pecuniam expectedValue)
         {
             var p = new Pondus(new VocaBase(name, groupName));
-            p.Expectation.ExpectedValue = expectedValue;
+            p.Expectation.Value = expectedValue;
             AddItem(p);
         }
 
@@ -241,7 +241,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (items == null)
                 return null;
-            var o = items.Where(x => x.Terminus == null && x.Expectation.ExpectedValue != Pecuniam.Zero).ToList();
+            var o = items.Where(x => x.Terminus == null && x.Expectation.Value != Pecuniam.Zero).ToList();
             o.Sort(Comparer);
             return o.ToArray();
         }
@@ -488,7 +488,7 @@ namespace NoFuture.Rand.Domus.Opes
 
             //get the direct assign's total
             var givenDirectTotal = givenDirectlyItems
-                .Select(x => Math.Round(x.ExpectedValue?.Abs.ToDouble() ?? 0.0D, DF_ROUND_DECIMAL_PLACES)).Sum();
+                .Select(x => Math.Round(x.Value?.Abs.ToDouble() ?? 0.0D, DF_ROUND_DECIMAL_PLACES)).Sum();
 
             //get total given by the caller if any
             var sumTotal = (options.SumTotal ?? Pecuniam.Zero).ToDouble();
@@ -534,7 +534,7 @@ namespace NoFuture.Rand.Domus.Opes
             }
 
             //apply any GivenDirectly's of zero like PossiableZeroOuts
-            foreach (var dr in givenDirectlyItems.Where(o => o.ExpectedValue == Pecuniam.Zero))
+            foreach (var dr in givenDirectlyItems.Where(o => o.Value == Pecuniam.Zero))
             {
                 if (actualZeroOuts.All(z => z.Item1 != dr.Name))
                     actualZeroOuts.Add(new Tuple<string, double>(dr.Name, 0.0D));
@@ -572,13 +572,13 @@ namespace NoFuture.Rand.Domus.Opes
             {
                 var dName = d.Name;
                 if (String.IsNullOrWhiteSpace(dName)
-                    || d.ExpectedValue == null
-                    || d.ExpectedValue == Pecuniam.Zero)
+                    || d.Value == null
+                    || d.Value == Pecuniam.Zero)
                     continue;
                 if (calcDict.ContainsKey(dName))
-                    calcDict[dName] += d.ExpectedValue.Abs.ToDouble();
+                    calcDict[dName] += d.Value.Abs.ToDouble();
                 else
-                    calcDict.Add(dName, d.ExpectedValue.Abs.ToDouble());
+                    calcDict.Add(dName, d.Value.Abs.ToDouble());
             }
 
             var calcMap = new List<Tuple<string, double>>();
@@ -945,8 +945,8 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var item in grpRates.Keys)
             {
                 var p = GetPondusForItemAndGroup(item, grpName, options);
-                if (p.Expectation.ExpectedValue == null || p.Expectation.ExpectedValue == Pecuniam.Zero)
-                    p.Expectation.ExpectedValue = CalcValue(options.SumTotal, grpRates[item] * grpRate);
+                if (p.Expectation.Value == null || p.Expectation.Value == Pecuniam.Zero)
+                    p.Expectation.Value = CalcValue(options.SumTotal, grpRates[item] * grpRate);
                 p.Expectation.Interval = options.Interval;
                 itemsout.Add(p);
             }

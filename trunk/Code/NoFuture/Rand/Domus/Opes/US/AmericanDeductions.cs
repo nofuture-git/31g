@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public override void AddItem(Pondus d)
         {
-            d.Expectation.ExpectedValue = d.Expectation.ExpectedValue.Neg;
+            d.Expectation.Value = d.Expectation.Value.Neg;
             _deductions.Add(d);
         }
 
@@ -147,19 +147,19 @@ namespace NoFuture.Rand.Domus.Opes.US
             options.GivenDirectly.Add(
                 new Mereo("Health", DeductionGroupNames.INSURANCE)
                 {
-                    ExpectedValue = expectedHealthInsCost.ToPecuniam()
+                    Value = expectedHealthInsCost.ToPecuniam()
                 });
 
             options.GivenDirectly.Add(
                 new Mereo("Dental", DeductionGroupNames.INSURANCE)
                 {
-                    ExpectedValue = expectedDentalInsCost.ToPecuniam()
+                    Value = expectedDentalInsCost.ToPecuniam()
                 });
 
             options.GivenDirectly.Add(
                 new Mereo("Vision", DeductionGroupNames.INSURANCE)
                 {
-                    ExpectedValue = expectedVisionInsCost.ToPecuniam()
+                    Value = expectedVisionInsCost.ToPecuniam()
                 });
             var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.GetAge());
 
@@ -204,22 +204,22 @@ namespace NoFuture.Rand.Domus.Opes.US
             options.GivenDirectly.Add(
                 new Mereo("Federal tax", DeductionGroupNames.INSURANCE)
                 {
-                    ExpectedValue = fedTaxAmt.ToPecuniam()
+                    Value = fedTaxAmt.ToPecuniam()
                 });
             options.GivenDirectly.Add(
                 new Mereo("State tax", DeductionGroupNames.INSURANCE)
                 {
-                    ExpectedValue = stateTaxAmt.ToPecuniam()
+                    Value = stateTaxAmt.ToPecuniam()
                 });
             options.GivenDirectly.Add(
                 new Mereo("FICA", DeductionGroupNames.INSURANCE)
                 {
-                    ExpectedValue = ficaTaxAmt.ToPecuniam()
+                    Value = ficaTaxAmt.ToPecuniam()
                 });
             options.GivenDirectly.Add(
                 new Mereo("Medicare", DeductionGroupNames.INSURANCE)
                 {
-                    ExpectedValue = medicareTaxAmt.ToPecuniam()
+                    Value = medicareTaxAmt.ToPecuniam()
                 });
 
             //this will be used later to create Pondus so only overwrite it if is unassigned
@@ -258,7 +258,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             options.GivenDirectly.Add(
                 new Mereo("Registered Retirement Savings Plan", DeductionGroupNames.INSURANCE)
                 {
-                    ExpectedValue = retirementAmt.ToPecuniam()
+                    Value = retirementAmt.ToPecuniam()
                 });
             var unionDuesAmt = StandardOccupationalClassification.IsLaborUnion(_employment.Occupation)
                 ? pay * GetRandomValueFrom(0.04)
@@ -267,7 +267,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             options.GivenDirectly.Add(
                 new Mereo("Union Dues", DeductionGroupNames.INSURANCE)
                 {
-                    ExpectedValue = unionDuesAmt.ToPecuniam()
+                    Value = unionDuesAmt.ToPecuniam()
                 });
 
             //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
@@ -311,7 +311,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 options.GivenDirectly.Add(
                     new Mereo(CHILD_SUPPORT, DeductionGroupNames.JUDGMENTS)
                     {
-                        ExpectedValue = childSupport.ToPecuniam()
+                        Value = childSupport.ToPecuniam()
                     });
             }
 
@@ -322,7 +322,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var randRate = Etx.RandomDouble(0.01, 0.25);
                 var spouseSupport = Math.Round(randRate * pay, 2);
                 options.GivenDirectly.Add(
-                    new Mereo(ALIMONY, DeductionGroupNames.JUDGMENTS) {ExpectedValue = spouseSupport.ToPecuniam()});
+                    new Mereo(ALIMONY, DeductionGroupNames.JUDGMENTS) {Value = spouseSupport.ToPecuniam()});
             }
 
             var d = GetItemNames2Portions(DeductionGroupNames.JUDGMENTS, options);

@@ -1,0 +1,35 @@
+digraph noFutureRandDataSp {
+    node [fontname=Consolas, shape=box]
+    
+    IIdentifier [label="IIdentifier<Pecuniam>"]
+    
+    Mortgage -> SecuredFixedRateLoan
+    SecuredFixedRateLoan -> FixedRateLoan
+    CreditCardAccount -> FixedRateLoan
+    CreditCardAccount -> IAccount
+    FixedRateLoan -> LoanBase
+    LoanBase -> Pondus
+    Rent -> Pondus
+    CheckingAccount -> DepositAccount
+    SavingsAccount -> DepositAccount
+    DepositAccount -> Pondus
+    DepositAccount -> IAccount
+    Receivable -> IReceivable
+    Receivable -> TradeLine
+    IReceivable -> ITradeLine
+    IReceivable -> IAsset
+    IReceivable -> IMereo [style="dotted"]
+    Mereo -> VocaBase
+    Mereo -> IMereo
+    IMereo -> IVoca
+    VocaBase -> IVoca
+    IMereo -> IIdentifier
+    IIdentifier -> ICited
+    LoanBase -> ILoan
+    TradeLine -> ITradeLine
+    ITradeLine -> ITempore
+    ITradeLine -> ITransactionable
+    IAccount -> IAsset
+    IAccount -> ITempore
+    Pondus -> Receivable
+}

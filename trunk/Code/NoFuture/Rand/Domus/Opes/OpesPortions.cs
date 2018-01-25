@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <summary>
         /// The means to assign an items value directly; thereby, removing
         /// all the randomness of its value - the resulting portion will be equal
-        /// to the <see cref="IMereo.ExpectedValue"/> over <see cref="SumTotal"/>
+        /// to the <see cref="IMereo.Value"/> over <see cref="SumTotal"/>
         /// </summary>
         public List<IMereo> GivenDirectly { get; } = new List<IMereo>();
 

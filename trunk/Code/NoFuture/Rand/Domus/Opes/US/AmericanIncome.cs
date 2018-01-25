@@ -154,11 +154,11 @@ namespace NoFuture.Rand.Domus.Opes.US
 
                 //there aren't ever random but calculated off gross and net income(s)
                 if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.PUBLIC_BENEFITS))
-                    cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.PUBLIC_BENEFITS){ExpectedValue = Pecuniam.Zero});
+                    cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.PUBLIC_BENEFITS){Value = Pecuniam.Zero});
 
                 //make the caller assign these directly
                 if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.JUDGMENTS))
-                    cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.JUDGMENTS) { ExpectedValue = Pecuniam.Zero });
+                    cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.JUDGMENTS) { Value = Pecuniam.Zero });
 
                 var items = GetItemsForRange(cloneOptions);
                 foreach (var item in items)
@@ -278,14 +278,14 @@ namespace NoFuture.Rand.Domus.Opes.US
                 switch (incomeItem.Name)
                 {
                     case "Supplemental Nutrition Assistance Program":
-                        p.Expectation.ExpectedValue = snapAmt;
+                        p.Expectation.Value = snapAmt;
                         break;
                     case "Housing Choice Voucher Program Section 8":
-                        p.Expectation.ExpectedValue = hudAmt;
+                        p.Expectation.Value = hudAmt;
                         break;
                     //TODO implement the other welfare programs
                     default:
-                        p.Expectation.ExpectedValue = Pecuniam.Zero;
+                        p.Expectation.Value = Pecuniam.Zero;
                         break;
                 }
 

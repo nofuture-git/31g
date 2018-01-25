@@ -5,6 +5,7 @@ namespace NoFuture.Rand.Domus.Opes
 {
     /// <summary>
     /// Represents personal assets in time. 
+    /// Is Latin for affairs.
     /// </summary>
     public interface IRebus
     {
