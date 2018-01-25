@@ -3,6 +3,10 @@ using NoFuture.Rand.Data.Sp.Enums;
 
 namespace NoFuture.Rand.Data.Sp
 {
+    /// <inheritdoc cref="TradeLine" />
+    /// <inheritdoc cref="IReceivable" />
+    /// <summary>
+    /// </summary>
     [Serializable]
     public abstract class Receivable : TradeLine, IReceivable
     {

@@ -16,28 +16,28 @@ namespace NoFuture.Rand.Data.Sp
     {
         public Pondus(string name)
         {
-            My = new Mereo(name);
+            Expectation = new Mereo(name);
         }
         public Pondus(string name, Interval interval)
         {
-            My = new Mereo(name) {Interval = interval};
+            Expectation = new Mereo(name) {Interval = interval};
         }
         public Pondus(IVoca names)
         {
-            My = new Mereo(names);
+            Expectation = new Mereo(names);
         }
 
         public Pondus(IVoca names, Interval interval)
         {
-            My = new Mereo(names) {Interval = interval};
+            Expectation = new Mereo(names) {Interval = interval};
         }
 
         public Pondus(DateTime startDate) : base(startDate)
         {
-            My = new Mereo();
+            Expectation = new Mereo();
         }
 
-        public virtual IMereo My { get; }
+        public virtual IMereo Expectation { get; }
 
         public static Pecuniam GetExpectedSum(IEnumerable<Pondus> items)
         {
@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Data.Sp
 
             var p = Pecuniam.Zero;
             foreach (var i in items)
-                p += i?.My?.ExpectedValue ?? Pecuniam.Zero;
+                p += i?.Expectation?.ExpectedValue ?? Pecuniam.Zero;
             return p;
         }
 
@@ -62,10 +62,10 @@ namespace NoFuture.Rand.Data.Sp
             var sum = 0M;
             foreach (var item in items)
             {
-                if (item?.My?.ExpectedValue == null ||
-                    !Mereo.Interval2AnnualPayMultiplier.ContainsKey(item.My.Interval))
+                if (item?.Expectation?.ExpectedValue == null ||
+                    !Mereo.Interval2AnnualPayMultiplier.ContainsKey(item.Expectation.Interval))
                     continue;
-                sum += item.My.ExpectedValue.Amount * Mereo.Interval2AnnualPayMultiplier[item.My.Interval];
+                sum += item.Expectation.ExpectedValue.Amount * Mereo.Interval2AnnualPayMultiplier[item.Expectation.Interval];
             }
             return new Pecuniam(sum);
         }
@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Data.Sp
 
             if (p == null)
                 return base.Equals(obj);
-            var namesEqual = p.My.Equals(My);
+            var namesEqual = p.Expectation.Equals(Expectation);
 
             var sDtEq = Inception == p.Inception;
             var eDtEq = Terminus == p.Terminus;
@@ -92,13 +92,13 @@ namespace NoFuture.Rand.Data.Sp
 
         public override int GetHashCode()
         {
-            return Inception.GetHashCode() + Terminus?.GetHashCode() ?? 1 + My?.GetHashCode() ?? 1;
+            return Inception.GetHashCode() + Terminus?.GetHashCode() ?? 1 + Expectation?.GetHashCode() ?? 1;
         }
 
         public override string ToString()
         {
-            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(My?.ExpectedValue.ToString(), My.Name,
-                My.GetName(KindsOfNames.Group), My.Interval.ToString(), Inception, Terminus);
+            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Expectation?.ExpectedValue.ToString(), Expectation.Name,
+                Expectation.GetName(KindsOfNames.Group), Expectation.Interval.ToString(), Inception, Terminus);
             return d.ToString();
         }
     }

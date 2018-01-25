@@ -153,7 +153,7 @@ namespace NoFuture.Rand.Domus.Opes
         public virtual void AddItem(string name, string groupName, Pecuniam expectedValue)
         {
             var p = new Pondus(new VocaBase(name, groupName));
-            p.My.ExpectedValue = expectedValue;
+            p.Expectation.ExpectedValue = expectedValue;
             AddItem(p);
         }
 
@@ -241,7 +241,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             if (items == null)
                 return null;
-            var o = items.Where(x => x.Terminus == null && x.My.ExpectedValue != Pecuniam.Zero).ToList();
+            var o = items.Where(x => x.Terminus == null && x.Expectation.ExpectedValue != Pecuniam.Zero).ToList();
             o.Sort(Comparer);
             return o.ToArray();
         }
@@ -945,9 +945,9 @@ namespace NoFuture.Rand.Domus.Opes
             foreach (var item in grpRates.Keys)
             {
                 var p = GetPondusForItemAndGroup(item, grpName, options);
-                if (p.My.ExpectedValue == null || p.My.ExpectedValue == Pecuniam.Zero)
-                    p.My.ExpectedValue = CalcValue(options.SumTotal, grpRates[item] * grpRate);
-                p.My.Interval = options.Interval;
+                if (p.Expectation.ExpectedValue == null || p.Expectation.ExpectedValue == Pecuniam.Zero)
+                    p.Expectation.ExpectedValue = CalcValue(options.SumTotal, grpRates[item] * grpRate);
+                p.Expectation.Interval = options.Interval;
                 itemsout.Add(p);
             }
 
@@ -970,7 +970,7 @@ namespace NoFuture.Rand.Domus.Opes
                 Inception = options.Inception,
                 Terminus = options.Terminus,
             };
-            p.My.UpsertName(KindsOfNames.Group, grpName);
+            p.Expectation.UpsertName(KindsOfNames.Group, grpName);
             return p;
         }
 

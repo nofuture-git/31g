@@ -6,6 +6,6 @@
     /// <typeparam name="T"></typeparam>
     public interface IMine<T>
     {
-        T My { get; }
+        T Expectation { get; }
     }
 }

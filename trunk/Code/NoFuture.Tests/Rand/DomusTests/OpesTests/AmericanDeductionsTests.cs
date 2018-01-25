@@ -281,10 +281,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
 
-            var testResultItem = testSubject.MyItems.FirstOrDefault(x => x.My.Name == "Child Support");
+            var testResultItem = testSubject.MyItems.FirstOrDefault(x => x.Expectation.Name == "Child Support");
             Assert.IsNotNull(testResultItem);
-            Assert.AreNotEqual(0.ToPecuniam(), testResultItem.My.ExpectedValue);
-            System.Diagnostics.Debug.WriteLine(testResultItem.My.ExpectedValue);
+            Assert.AreNotEqual(0.ToPecuniam(), testResultItem.Expectation.ExpectedValue);
+            System.Diagnostics.Debug.WriteLine(testResultItem.Expectation.ExpectedValue);
         }
     }
 }

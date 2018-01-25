@@ -16,8 +16,14 @@ namespace NoFuture.Rand.Data.Sp
         /// </summary>
         Interval Interval { get; set; }
 
+        /// <summary>
+        /// Contractual classification of the money item
+        /// </summary>
         Classification Classification { get; set; }
 
+        /// <summary>
+        /// Convenience method to get the Legal name
+        /// </summary>
         string Name { get; set; }
 
         /// <summary>

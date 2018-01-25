@@ -7,6 +7,7 @@ using NoFuture.Rand.Data.Sp.Enums;
 namespace NoFuture.Rand.Data.Sp
 {
     /// <inheritdoc cref="IMereo"/>
+    /// <inheritdoc cref="VocaBase"/>
     /// <summary>
     /// Base implementation a name of any kind of money entry
     /// </summary>

@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public override void AddItem(Pondus d)
         {
-            d.My.ExpectedValue = d.My.ExpectedValue.Neg;
+            d.Expectation.ExpectedValue = d.Expectation.ExpectedValue.Neg;
             _deductions.Add(d);
         }
 
@@ -340,8 +340,9 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public override string ToString()
         {
-            var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(_employment.EmployingCompanyName, _employment.Occupation?.ToString(),
-                _employment.Inception, _employment.Terminus, Pondus.GetExpectedSum(MyItems));
+            var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(_employment.EmployingCompanyName,
+                _employment.Occupation?.ToString(),
+                _employment.Inception, _employment.Terminus, Pondus.GetExpectedAnnualSum(GetCurrent(MyItems)));
             return t.ToString();
         }
 

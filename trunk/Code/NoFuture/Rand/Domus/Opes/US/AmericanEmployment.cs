@@ -290,7 +290,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             if (IsInRange(p))
             {
-                p.My.ExpectedValue = p.My.ExpectedValue.Abs;
+                p.Expectation.ExpectedValue = p.Expectation.ExpectedValue.Abs;
                 _pay.Add(p);
             }
         }

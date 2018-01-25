@@ -32,12 +32,12 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
             //same dates, diff name
             testCompare.Terminus = DateTime.Today.AddDays(1);
-            testCompare.My.Name = "test2";
+            testCompare.Expectation.Name = "test2";
 
             Assert.IsFalse(testSubject.Equals(testCompare));
 
             //null date is diff date
-            testCompare.My.Name = "test";
+            testCompare.Expectation.Name = "test";
             testCompare.Terminus = null;
 
             Assert.IsFalse(testSubject.Equals(testCompare));
@@ -48,11 +48,11 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         public void TestCopyFrom()
         {
             var testSubject = new Pondus("TestCorporation");
-            testSubject.My.UpsertName(KindsOfNames.Group, "Company");
+            testSubject.Expectation.UpsertName(KindsOfNames.Group, "Company");
 
-            var testSubject2 = new Pondus(testSubject.My);
-            Assert.AreEqual(testSubject.My.Name, testSubject2.My.Name);
-            var groupName = testSubject2.My.GetName(KindsOfNames.Group);
+            var testSubject2 = new Pondus(testSubject.Expectation);
+            Assert.AreEqual(testSubject.Expectation.Name, testSubject2.Expectation.Name);
+            var groupName = testSubject2.Expectation.GetName(KindsOfNames.Group);
             Assert.IsNotNull(groupName);
 
             Assert.AreEqual("Company", groupName);

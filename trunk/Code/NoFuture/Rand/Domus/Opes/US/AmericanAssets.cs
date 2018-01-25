@@ -175,7 +175,6 @@ namespace NoFuture.Rand.Domus.Opes.US
             {
                 options.DerivativeSlope = -0.2D;
                 options.GivenDirectly.AddRange(givenDirectly);
-                //MyOptions = options;
             }
             return base.GetGroupNames2Portions(options);
         }
@@ -205,9 +204,10 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var checkingAmt = amt == null || amt == Pecuniam.Zero
                     ? _randCheckingAcctAmt
                     : _checkingAccountRate * amt.ToDouble();
-                p = DepositAccount.RandomCheckingAccount(options.PersonsName, startDate, $"{Etx.RandomInteger(1, 9999):0000}");
+                p = DepositAccount.RandomCheckingAccount(options.PersonsName, startDate,
+                    $"{Etx.RandomInteger(1, 9999):0000}");
                 ((DepositAccount)p).Deposit(startDate.AddDays(-1), checkingAmt.ToPecuniam());
-                p.My.ExpectedValue = checkingAmt.ToPecuniam();
+                p.Expectation.ExpectedValue = checkingAmt.ToPecuniam();
             }
             else if (isSavingsAccount)
             {
@@ -216,7 +216,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                     : _savingsAccountRate * amt.ToDouble();
                 p = DepositAccount.RandomSavingAccount(options.PersonsName, startDate);
                 ((DepositAccount)p).Deposit(startDate.AddDays(-1), savingAmt.ToPecuniam());
-                p.My.ExpectedValue = savingAmt.ToPecuniam();
+                p.Expectation.ExpectedValue = savingAmt.ToPecuniam();
             }
             else if (isMortgage || isCarLoan)
             {
@@ -270,13 +270,15 @@ namespace NoFuture.Rand.Domus.Opes.US
                 var loan = (SecuredFixedRateLoan) p;
                 if (isMortgage)
                 {
-                    p.My.ExpectedValue = homeEquityAmt.ToPecuniam();
-                    HousePayment = new Mereo(item, grp) {ExpectedValue = loan.MonthlyPayment, Interval = Interval.Monthly};
+                    p.Expectation.ExpectedValue = homeEquityAmt.ToPecuniam();
+                    HousePayment =
+                        new Mereo(item, grp) {ExpectedValue = loan.MonthlyPayment, Interval = Interval.Monthly};
                 }
                 else
                 {
-                    p.My.ExpectedValue = carEquityAmt.ToPecuniam();
-                    CarPayment = new Mereo(item, grp) {ExpectedValue = loan.MonthlyPayment, Interval = Interval.Monthly};
+                    p.Expectation.ExpectedValue = carEquityAmt.ToPecuniam();
+                    CarPayment =
+                        new Mereo(item, grp) {ExpectedValue = loan.MonthlyPayment, Interval = Interval.Monthly};
                 }
             }
             else
@@ -288,8 +290,8 @@ namespace NoFuture.Rand.Domus.Opes.US
                 };
             }
 
-            p.My.Name = item;
-            p.My.UpsertName(KindsOfNames.Group, grp);
+            p.Expectation.Name = item;
+            p.Expectation.UpsertName(KindsOfNames.Group, grp);
             return p;
         }
 
@@ -307,7 +309,10 @@ namespace NoFuture.Rand.Domus.Opes.US
             if (options.IsRenting)
             {
                 options.GivenDirectly.Add(
-                    new Mereo(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
+                    new Mereo(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY)
+                    {
+                        ExpectedValue = Pecuniam.Zero
+                    });
             }
             options.PossibleZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Rights" });
             var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, options);
@@ -333,7 +338,7 @@ namespace NoFuture.Rand.Domus.Opes.US
                     new Mereo("Crops", AssetGroupNames.PERSONAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
 
                 options.GivenDirectly.Add(
-                    new Mereo("Livestock", AssetGroupNames.PERSONAL_PROPERTY) { ExpectedValue = Pecuniam.Zero });
+                    new Mereo("Livestock", AssetGroupNames.PERSONAL_PROPERTY) {ExpectedValue = Pecuniam.Zero});
             }
 
             var d = GetItemNames2Portions(AssetGroupNames.PERSONAL_PROPERTY, options);

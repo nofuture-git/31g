@@ -38,7 +38,6 @@ namespace NoFuture.Rand.Geo.US
 
         #region fields
 
-        private UsState _myState;
         private static Dictionary<string, double> _zipCodePrefix2Pop = new Dictionary<string, double>();
         #endregion
 

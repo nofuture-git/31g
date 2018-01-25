@@ -278,14 +278,14 @@ namespace NoFuture.Rand.Domus.Opes.US
                 switch (incomeItem.Name)
                 {
                     case "Supplemental Nutrition Assistance Program":
-                        p.My.ExpectedValue = snapAmt;
+                        p.Expectation.ExpectedValue = snapAmt;
                         break;
                     case "Housing Choice Voucher Program Section 8":
-                        p.My.ExpectedValue = hudAmt;
+                        p.Expectation.ExpectedValue = hudAmt;
                         break;
                     //TODO implement the other welfare programs
                     default:
-                        p.My.ExpectedValue = Pecuniam.Zero;
+                        p.Expectation.ExpectedValue = Pecuniam.Zero;
                         break;
                 }
 
