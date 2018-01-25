@@ -82,5 +82,7 @@ namespace NoFuture.Rand.Core
         /// </summary>
         /// <returns></returns>
         KindsOfNames[] GetCurrentKindsOfNames();
+
+        void CopyFrom(IVoca voca);
     }
 }

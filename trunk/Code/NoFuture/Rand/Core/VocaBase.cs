@@ -113,7 +113,7 @@ namespace NoFuture.Rand.Core
             return Names.Select(n => n.Item1).ToArray();
         }
 
-        protected internal void CopyFrom(IVoca voca)
+        public void CopyFrom(IVoca voca)
         {
             if (voca == null)
                 return;

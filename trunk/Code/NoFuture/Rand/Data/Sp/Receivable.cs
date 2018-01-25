@@ -10,10 +10,10 @@ namespace NoFuture.Rand.Data.Sp
     [Serializable]
     public abstract class Receivable : TradeLine, IReceivable
     {
+        private readonly IMereo _expectation = new Mereo();
         #region ctor
         protected Receivable(DateTime openedDate):base(openedDate)
         {
-
         }
         protected Receivable(){ }
         #endregion
@@ -31,6 +31,7 @@ namespace NoFuture.Rand.Data.Sp
         }
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
         public virtual Pecuniam Value => Balance.GetCurrent(DateTime.Now, 0f);
+        public IMereo Expectation => _expectation;
 
         #endregion
 

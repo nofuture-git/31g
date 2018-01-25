@@ -12,32 +12,31 @@ namespace NoFuture.Rand.Data.Sp
     /// A composition type to bind a time and a name to expected and actual money
     /// </summary>
     [Serializable]
-    public class Pondus : Receivable, IMine<IMereo>
+    public class Pondus : Receivable//, IMine<IMereo>
     {
         public Pondus(string name)
         {
-            Expectation = new Mereo(name);
+            Expectation.Name = name;
         }
         public Pondus(string name, Interval interval)
         {
-            Expectation = new Mereo(name) {Interval = interval};
+            Expectation.Name = name;
+            Expectation.Interval = interval;
         }
         public Pondus(IVoca names)
         {
-            Expectation = new Mereo(names);
+            Expectation.CopyFrom(names);
         }
 
         public Pondus(IVoca names, Interval interval)
         {
-            Expectation = new Mereo(names) {Interval = interval};
+            Expectation.CopyFrom(names);
+            Expectation.Interval = interval;
         }
 
         public Pondus(DateTime startDate) : base(startDate)
         {
-            Expectation = new Mereo();
         }
-
-        public virtual IMereo Expectation { get; }
 
         public static Pecuniam GetExpectedSum(IEnumerable<Pondus> items)
         {

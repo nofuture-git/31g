@@ -21,5 +21,10 @@ namespace NoFuture.Rand.Data.Sp
         /// <param name="dt"></param>
         /// <returns></returns>
         Pecuniam GetMinPayment(DateTime dt);
+
+        /// <summary>
+        /// Represents the expected value of the given receivable
+        /// </summary>
+        IMereo Expectation { get; }
     }
 }
