@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
@@ -49,10 +50,9 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             return new AmericanFactorOptions
             {
-                EducationLevel = (OccidentalEdu.HighSchool | OccidentalEdu.Grad),
+                EducationLevel = Etx.RandomPickOne(AmericanData.EducationLevelAvgs),
                 Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs),
-                Region = Etx.RandomPickOne(new[]
-                    {AmericanRegion.Midwest, AmericanRegion.Northeast, AmericanRegion.South, AmericanRegion.West}),
+                Region = Etx.RandomPickOne(AmericanData.RegionPopulationAvgs),
                 Gender = Etx.RandomCoinToss() ? Gender.Male : Gender.Female,
                 BirthDate = Etx.RandomAdultBirthDate()
             };

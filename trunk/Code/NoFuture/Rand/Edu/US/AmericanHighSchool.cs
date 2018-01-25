@@ -277,7 +277,6 @@ namespace NoFuture.Rand.Edu.US
                 hs.PostalCode = attr?.Value;
 
                 hs.Name = Etc.CapWords(hs.Name, ' ');
-                hs.Name = Etc.CapWords(hs.Name, '/');
                 return true;
             }
             catch(Exception ex)

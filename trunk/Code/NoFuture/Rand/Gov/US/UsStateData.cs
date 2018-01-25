@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Gov.US
     {
         #region constants
         protected const string RATE = "rate";
-        protected const string STATE = "state";
+        protected const string NATIONAL = "national";
         protected const string NAME = "name";
         protected const string CRIME = "crime";
         private const string US_STATES_DATA = "US_States_Data.xml";
@@ -20,6 +20,7 @@ namespace NoFuture.Rand.Gov.US
 
         #region fields
         private readonly string _stateName;
+        private readonly string _nodeName;
         #endregion
 
         #region ctor
@@ -27,20 +28,29 @@ namespace NoFuture.Rand.Gov.US
         public UsStateData(string name)
         {
             const string REGION = "region";
-            if (string.IsNullOrWhiteSpace(name))
-                return;
-            var usState = UsState.GetState(name);
-            
-            _stateName = usState.ToString();
+            const string STATE = "state";
+            _nodeName = STATE;
+            if (string.IsNullOrWhiteSpace(name) || string.Equals(name, "United States", StringComparison.OrdinalIgnoreCase))
+            {
+                _nodeName = "national";
+                _stateName = "United States";
+            }
+            else
+            {
+                var usState = UsState.GetState(name);
+                if (usState == null)
+                    return;
+                _stateName = usState.ToString();
+            }
+
             UsStateDataXml = UsStateDataXml ??
                              Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA,
                                  Assembly.GetExecutingAssembly());
-            if (UsStateDataXml == null)
-                return;
-            var myNameNode = UsStateDataXml.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']") as XmlElement;
+            var myNameNode = UsStateDataXml?.SelectSingleNode($"//{_nodeName}[@{NAME}='{_stateName}']") as XmlElement;
             if (myNameNode == null)
                 return;
-            if (Enum.TryParse(myNameNode.Attributes[REGION].Value, out AmericanRegion reg))
+            if (myNameNode.HasAttribute(REGION) &&
+                Enum.TryParse(myNameNode.Attributes[REGION].Value, out AmericanRegion reg))
                 Region = reg;
             AverageEarnings = GetAvgEarningsPerYear(myNameNode);
             GetEmploymentSectorData(UsStateDataXml);
@@ -77,6 +87,9 @@ namespace NoFuture.Rand.Gov.US
         public List<Tuple<OccidentalEdu, double>> PercentOfGrads { get; } = new List<Tuple<OccidentalEdu, double>>();
 
         public AmericanRegion Region { get; }
+
+        public string StateName => _stateName;
+
         #endregion
 
         #region methods
@@ -88,8 +101,6 @@ namespace NoFuture.Rand.Gov.US
         /// <returns></returns>
         public static UsStateData GetStateData(string stateName)
         {
-            if (string.IsNullOrWhiteSpace(stateName))
-                return null;
             return new UsStateData(stateName);
         }
 
@@ -106,7 +117,7 @@ namespace NoFuture.Rand.Gov.US
             
             foreach (var propertyCrime in Enum.GetNames(typeof(PropertyCrime)))
             {
-                var crimeNode = xml.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']//{CRIME}[@{NAME}='{propertyCrime}']");
+                var crimeNode = xml.SelectSingleNode($"//{_nodeName}[@{NAME}='{_stateName}']//{CRIME}[@{NAME}='{propertyCrime}']");
                 if (crimeNode?.Attributes?[RATE]?.Value == null ||
                     !double.TryParse(crimeNode.Attributes?[RATE]?.Value, out var crimeRate)) continue;
                 if (!Enum.TryParse(propertyCrime, out PropertyCrime crime))
@@ -127,7 +138,7 @@ namespace NoFuture.Rand.Gov.US
 
             foreach (var violentCrime in Enum.GetNames(typeof(ViolentCrime)))
             {
-                var crimeNode = xml.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']//{CRIME}[@{NAME}='{violentCrime}']");
+                var crimeNode = xml.SelectSingleNode($"//{_nodeName}[@{NAME}='{_stateName}']//{CRIME}[@{NAME}='{violentCrime}']");
                 if (crimeNode?.Attributes?[RATE]?.Value == null ||
                     !double.TryParse(crimeNode?.Attributes?[RATE]?.Value, out var crimeRate)) continue;
                 if (!Enum.TryParse(violentCrime, out ViolentCrime crime))
@@ -149,7 +160,7 @@ namespace NoFuture.Rand.Gov.US
             if (xml == null)
                 return;
 
-            var eduNode = xml.SelectSingleNode($"//{STATE}[@{NAME}='{_stateName}']/{EDU_DATA}");
+            var eduNode = xml.SelectSingleNode($"//{_nodeName}[@{NAME}='{_stateName}']/{EDU_DATA}");
             var strVal = eduNode?.Attributes?[PERCENT_HIGHSCHOOL_GRAD]?.Value;
             if (!string.IsNullOrWhiteSpace(strVal) && double.TryParse(strVal, out var highSchoolGrad))
             {
@@ -172,7 +183,7 @@ namespace NoFuture.Rand.Gov.US
             xml = UsStateDataXml ??
                   Core.XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_STATES_DATA,
                       Assembly.GetExecutingAssembly());
-            var econDataNodes = xml?.SelectNodes($"//{STATE}[@{NAME}='{_stateName}']//{SECTOR}");
+            var econDataNodes = xml?.SelectNodes($"//{_nodeName}[@{NAME}='{_stateName}']//{SECTOR}");
             if (econDataNodes == null)
                 return;
             for (var i = 0; i < econDataNodes.Count; i++)
@@ -200,10 +211,10 @@ namespace NoFuture.Rand.Gov.US
         protected internal static LinearEquation GetAvgEarningsPerYear(XmlNode someNode)
         {
             const string AVG_EARNINGS_PER_YEAR = "avg-earning-per-year";
-            var cityNode = someNode as XmlElement;
-            if (String.IsNullOrWhiteSpace(cityNode?.Attributes[AVG_EARNINGS_PER_YEAR]?.Value))
+            var stateNode = someNode as XmlElement;
+            if (String.IsNullOrWhiteSpace(stateNode?.Attributes[AVG_EARNINGS_PER_YEAR]?.Value))
                 return null;
-            var attrVal = cityNode.Attributes[AVG_EARNINGS_PER_YEAR].Value;
+            var attrVal = stateNode.Attributes[AVG_EARNINGS_PER_YEAR].Value;
             return !LinearEquation.TryParse(attrVal, out var lq) ? null : lq;
         }
 

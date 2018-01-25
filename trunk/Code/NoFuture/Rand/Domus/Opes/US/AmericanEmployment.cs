@@ -138,9 +138,15 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         protected internal override void RandomizeAllItems(OpesOptions options)
         {
+            //expecting the caller to have passed in a hire-date to termination-date
             options = options ?? new OpesOptions();
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
+            if (Inception == DateTime.MinValue)
+                Inception = options.Inception;
+
+            //this is a single company employment; 
+            //however, its expected one receives different pay as the years progress
             var yearsOfService = GetYearsOfServiceInDates(options);
             var isCurrentEmployee = options.Terminus == null;
 
@@ -158,6 +164,10 @@ namespace NoFuture.Rand.Domus.Opes.US
                     AddItem(item);
 
             }
+
+            if (options.Terminus != null)
+                Terminus = options.Terminus;
+
             var deductions = new AmericanDeductions(this);
             deductions.RandomizeAllItems(options);
             Deductions = deductions;

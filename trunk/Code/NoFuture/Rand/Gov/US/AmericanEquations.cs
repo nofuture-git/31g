@@ -180,12 +180,10 @@ namespace NoFuture.Rand.Gov.US
                 : new NormalDistEquation { Mean = AmericanData.AVG_MAX_AGE_FEMALE, StdDev = AmericanData.STD_DEV_FEMALE_LIFE_EXPECTANCY };
         }
 
-
-
         /// <summary>
-        /// TODO, this is the value for OH, need to get an averages for all data
+        /// The average slope and intercept of all states in US_States_Data.xml
         /// </summary>
-        public static LinearEquation NatlAverageEarnings = new LinearEquation(-2046735.65519574, 1042.04539007091);
+        public static LinearEquation NatlAverageEarnings => UsStateData.GetStateData(null).AverageEarnings;
 
         /// <summary>
         /// This is an attempt to have a way to calculate the federal poverty level over a range of years.

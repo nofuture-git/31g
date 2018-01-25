@@ -112,6 +112,7 @@ namespace NoFuture.Rand.Tests.GovTests
             var testState = UsState.GetStateByName(testStateName);
             var testResult = UsStateData.GetStateData(testState.ToString());
             Assert.IsNotNull(testResult);
+            Assert.AreEqual("Maryland", testResult.StateName);
             Assert.IsNotNull(testResult.AverageEarnings);
             Assert.AreNotEqual(0,testResult.EmploymentSectors.Count);
             Assert.AreNotEqual(0, testResult.PercentOfGrads.Count);
@@ -126,7 +127,18 @@ namespace NoFuture.Rand.Tests.GovTests
                 var attempt = Etx.RandomRollAboveOrAt((int) Math.Round(percentCollegeGrad.Item2*2), Etx.Dice.OneHundred);
                 System.Diagnostics.Debug.WriteLine(attempt);
             }
-            
+
+            //expected to resolve to national
+            testResult = UsStateData.GetStateData(null);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual("United States", testResult.StateName);
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.AverageEarnings);
+            Assert.AreNotEqual(0, testResult.EmploymentSectors.Count);
+            Assert.AreNotEqual(0, testResult.PercentOfGrads.Count);
+            Assert.AreNotEqual(0, testResult.PropertyCrimeRate.Count);
+            Assert.AreNotEqual(0, testResult.ViolentCrimeRate.Count);
+
         }
 
         [Test]

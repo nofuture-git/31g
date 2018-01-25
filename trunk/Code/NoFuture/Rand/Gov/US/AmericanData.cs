@@ -150,6 +150,33 @@ namespace NoFuture.Rand.Gov.US
                 {AmericanDeathCert.MannerOfDeath.Natural, 92.591 }
             };
 
+        /// <summary>
+        /// src https://en.wikipedia.org/wiki/Educational_attainment_in_the_United_States 
+        /// </summary>
+        public static Dictionary<OccidentalEdu, double> EducationLevelAvgs =>
+            new Dictionary<OccidentalEdu, double>
+            {
+                {OccidentalEdu.None, 10.43},
+                {OccidentalEdu.Grad | OccidentalEdu.HighSchool, 28.13},
+                {OccidentalEdu.Some | OccidentalEdu.Assoc, 18.46},
+                {OccidentalEdu.Grad | OccidentalEdu.Assoc, 9.99},
+                {OccidentalEdu.Grad | OccidentalEdu.Bachelor, 23.33},
+                {OccidentalEdu.Grad | OccidentalEdu.Master, 7.19},
+                {OccidentalEdu.Grad | OccidentalEdu.Doctorate, 2.49}
+            };
+
+        /// <summary>
+        /// Sum of x-ref between US_Zip_Data, US_Zip_ProbTable and US_States_Data
+        /// </summary>
+        public static Dictionary<AmericanRegion, double> RegionPopulationAvgs =>
+            new Dictionary<AmericanRegion, double>
+            {
+                {AmericanRegion.South, 36.396},
+                {AmericanRegion.West, 24.084},
+                {AmericanRegion.Midwest, 20.8962},
+                {AmericanRegion.Northeast, 18.6229}
+            };
+
         #endregion
     }
 }

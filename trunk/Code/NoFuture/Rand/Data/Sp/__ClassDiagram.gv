@@ -18,7 +18,7 @@ digraph noFutureRandDataSp {
     Receivable -> TradeLine
     IReceivable -> ITradeLine
     IReceivable -> IAsset
-    IReceivable -> IMereo [style="dotted"]
+    IReceivable -> IMereo [style="dotted", label="Expectation",fontname=Consolas, fontsize=8]
     Mereo -> VocaBase
     Mereo -> IMereo
     IMereo -> IVoca
@@ -32,4 +32,8 @@ digraph noFutureRandDataSp {
     IAccount -> IAsset
     IAccount -> ITempore
     Pondus -> Receivable
+    ITradeLine -> IBalance [style="dotted"]
+    Balance -> IBalance
+    Balance -> TransactionHistory
+    VariableRateLoan -> LoanBase
 }

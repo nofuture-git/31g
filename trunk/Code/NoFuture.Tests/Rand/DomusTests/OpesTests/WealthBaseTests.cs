@@ -47,10 +47,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             options.FactorOptions.BirthDate = Etx.RandomAdultBirthDate();
             var testSubject = new AmericanIncome();
 
-            System.Diagnostics.Debug.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
+            System.Console.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
             var testResult = testSubject.GetRandomYearlyIncome(null, options, 1.0.ToPecuniam());
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Amount > 0.0M);
         }

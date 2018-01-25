@@ -3,6 +3,33 @@
   <rand>
     <data>
       <source>
+        <national name="United States" avg-earning-per-year="-2165959.28783073,1101.74969799204">
+          <econ-data>
+            <sector category-ID="Construction" percent-employed="5.8512" />
+            <sector category-ID="Other Services" percent-employed="4.553" />
+            <sector category-ID="Trade, Transportation, and Utilities" percent-employed="22.7208" />
+            <sector category-ID="Farming and Logging" percent-employed="1.044" />
+            <sector category-ID="Manufacturing" percent-employed="12.82" />
+            <sector category-ID="Professional and Business Services" percent-employed="13.0641" />
+            <sector category-ID="Leisure and Hospitality" percent-employed="11.5727" />
+            <sector category-ID="Government" percent-employed="20.0884" />
+            <sector category-ID="Information" percent-employed="2.4035" />
+          </econ-data>
+          <!--
+          this is not the averages of the data here in but rather from another source 
+          https://en.wikipedia.org/wiki/Educational_attainment_in_the_United_States
+          -->
+          <edu-data percent-highschool-grad="89.57" percent-college-grad="33.0" />
+          <crime-data>
+            <crime type="Violent" name="Robbery" rate="0.1071321" />
+            <crime type="Violent" name="Assault" rate="0.2507198" />
+            <crime type="Violent" name="Rape" rate="0.0317904" />
+            <crime type="Violent" name="Murder" rate="0.0478388" />
+            <crime type="Property" name="Burglary" rate="0.6534443" />
+            <crime type="Property" name="GTA" rate="0.264217" />
+            <crime type="Property" name="Theft" rate="2.0780653" />
+          </crime-data>
+        </national>
         <states>
           <state name="Alabama" avg-earning-per-year="-1918692.60413191,976.184335491814" region="South">
             <econ-data>

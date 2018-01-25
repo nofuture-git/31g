@@ -8,6 +8,6 @@ namespace NoFuture.Rand.Gov
     {
         Burglary = 1,
         Theft = 2,
-        Gta = 4
+        GTA = 4
     }
 }
