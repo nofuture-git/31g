@@ -10,7 +10,6 @@ using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
-using NoFuture.Rand.Gov.US.Fed;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;

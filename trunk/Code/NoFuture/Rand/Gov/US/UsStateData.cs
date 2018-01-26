@@ -6,6 +6,9 @@ using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Gov.US
 {
+    /// <summary>
+    /// Represents statistical data associated a particular US State
+    /// </summary>
     [Serializable]
     public class UsStateData
     {

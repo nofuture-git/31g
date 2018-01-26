@@ -35,8 +35,6 @@ namespace NoFuture.Rand.Domus.Opes.US
         #endregion
 
         #region properties
-        public virtual string Src { get; set; }
-        public virtual string Abbrev => IncomeGroupNames.EMPLOYMENT;
         public virtual string EmployingCompanyName { get; set; }
         public virtual int FiscalYearEndDay { get; set; } = 1;
         public virtual bool IsOwner { get; set; }

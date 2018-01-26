@@ -8,6 +8,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// <summary>
     /// Excercises control over the generation of random portions whose sum equals 1.
     /// </summary>
+    [Serializable]
     public class OpesPortions
     {
         private double _derivativeSlope;

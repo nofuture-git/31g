@@ -2,6 +2,7 @@
 using System.Globalization;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Geo.US;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Geo
 {
@@ -24,9 +25,9 @@ namespace NoFuture.Rand.Geo
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Join(" ", data.AddressNumber, data.StreetNameDirectional, data.StreetName, 
+            return Etc.DistillSpaces(string.Join(" ", data.AddressNumber, data.StreetNameDirectional, data.StreetName, 
                 data.StreetType, data.SecondaryUnitDesignator,
-                data.SecondaryUnitId).Trim();
+                data.SecondaryUnitId).Trim());
         }
 
         public override bool Equals(object obj)

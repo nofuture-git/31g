@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
@@ -9,6 +8,7 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes.US
 {
+    [Serializable]
     public class AmericanFactorOptions
     {
         public OccidentalEdu EducationLevel { get; set; }

@@ -155,7 +155,7 @@ namespace NoFuture.Rand.Geo.US
 
             GetCity(lastLine, addrData);
 
-            cityStateZip = new UsCityStateZip(addrData, pickSuburbAtRandom);
+            cityStateZip = new UsCityStateZip(addrData, pickSuburbAtRandom) {Src = lastLine};
             return true;
         }
 

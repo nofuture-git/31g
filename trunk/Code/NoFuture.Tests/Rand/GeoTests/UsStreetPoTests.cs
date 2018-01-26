@@ -53,6 +53,72 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.AreEqual("Commerce", testResultOut.StreetName);
             Assert.AreEqual("Street", testResultOut.StreetKind);
 
+            var oddAddrs = new[]
+            {
+                "115 112th ave NE Apt 103",
+                "117-D PARK CHARLES BLVD. S.",
+                "1503 Anna Ruby Lane NW",
+                "2625 Piedmont rd. STE 56-407",
+                "2834 S 2475 E",
+                "30930 HIGHWAY 431 LOT 13",
+                "3428 S. King Dr.",
+                "40 CEDAR POINTE LOOP",
+                "4004 S 1500 E",
+                "4211 AVENUE R",
+                "44W244 Plato Rd",
+                "5311 Wong Dr  #208",
+                "E9805 190TH AVE",
+                "HCR 70 BOX 126",
+                "N75W15375 COLONY RD",
+                "P.O. BOX 1049",
+                "P.O. Box 521653",
+                "PMB 189",
+            };
+            foreach (var addr in oddAddrs)
+            {
+                testResultOut = null;
+                testResult = UsStreetPo.TryParse(addr, out testResultOut);
+                Assert.IsTrue(testResult);
+                Console.WriteLine($"Original: '{addr}'");
+                Console.WriteLine($"PostBox: '{testResultOut.PostBox}'");
+                Console.WriteLine($"StreetName: '{testResultOut.StreetName}'" );
+                Console.WriteLine($"StreetKind: '{testResultOut.StreetKind}'");
+                Console.WriteLine($"SecondaryUnit: '{testResultOut.SecondaryUnit}'");
+                Console.WriteLine($"CountyTownship: '{testResultOut.CountyTownship}'");
+            }
+
+            /*
+         "115 112th ave NE Apt 103",
+         "117-D PARK CHARLES BLVD. S.",
+         "1503 Anna Ruby Lane NW",
+         "2625 Piedmont rd. STE 56-407",
+         "2834 S 2475 E",
+         "30930 HIGHWAY 431 LOT 13",
+         "3428 S. King Dr.",
+         "40 CEDAR POINTE LOOP",
+         "4004 S 1500 E",
+         "4211 AVENUE R",
+         "44W244 Plato Rd",
+         "5311 Wong Dr  #208",
+         "E9805 190TH AVE",
+         "HCR 70 BOX 126",
+         "N75W15375 COLONY RD",
+         "P.O. BOX 1049",
+         "P.O. Box 521653",
+         "PMB 189",
+          */
+
         }
+
+        [Test]
+        public void TestToString()
+        {
+            var testSubject = NoFuture.Rand.Geo.StreetPo.RandomAmericanStreet();
+            var testResult = testSubject.ToString();
+
+            Assert.IsFalse(testResult.Contains("  "));
+
+        }
+
     }
 }

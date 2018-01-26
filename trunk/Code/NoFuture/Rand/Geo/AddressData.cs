@@ -18,8 +18,17 @@ namespace NoFuture.Rand.Geo
         /// this is the &apos;1600&apos;
         /// </summary>
         public string AddressNumber { get; set; }
+
+        /// <summary>
+        /// Typically the &apos;NW&apos;, &apos;S&apos; part of an address 
+        /// immediately after the AddressNumber
+        /// </summary>
         public string StreetNameDirectional { get; set; }
         public string StreetName { get; set; }
+
+        /// <summary>
+        /// The &apos;Drive&apos;, &apos;AVE.&apos; part of an address
+        /// </summary>
         public string StreetType { get; set; }
         public string SecondaryUnitDesignator { get; set; }
         public string SecondaryUnitId { get; set; }
@@ -86,5 +95,6 @@ namespace NoFuture.Rand.Geo
                    Lng.GetHashCode() +
                    Lat.GetHashCode();
         }
+
     }
 }

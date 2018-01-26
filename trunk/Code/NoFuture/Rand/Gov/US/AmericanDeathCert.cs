@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Gov.US
 {
     /// <summary>
+    /// The form of an American Death Certificate based on the CDC
     /// https://www.cdc.gov/nchs/data/dvs/death11-03final-acc.pdf
     /// </summary>
     [Serializable]
@@ -15,6 +17,7 @@ namespace NoFuture.Rand.Gov.US
         /// <summary>
         /// Item 37.
         /// </summary>
+        [Serializable]
         public enum MannerOfDeath
         {
             Natural,
@@ -29,6 +32,20 @@ namespace NoFuture.Rand.Gov.US
         {
             CauseOfDeath = new Stack<string>();
             Category = mannerOfDeath;
+        }
+
+        public AmericanDeathCert(MannerOfDeath mannerOfDeath, IVoca personName) : this(mannerOfDeath, (string) null)
+        {
+            if (personName == null)
+                return;
+
+            PersonFullName = Etc.DistillSpaces(
+                string.Join(" ", personName.GetName(KindsOfNames.First),
+                    personName.GetName(KindsOfNames.Middle),
+                    personName.GetName(KindsOfNames.Surname)));
+
+            if (string.IsNullOrWhiteSpace(PersonFullName))
+                PersonFullName = personName.GetName(KindsOfNames.Legal);
         }
 
         /// <summary>

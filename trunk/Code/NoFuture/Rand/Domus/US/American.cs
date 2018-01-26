@@ -557,9 +557,10 @@ namespace NoFuture.Rand.Domus.US
                 var d = Convert.ToInt32(Math.Round(GetAgeAt(null) * 0.15));
                 myMaritialStatus = MaritialStatus.Widowed;
                 spouse.DeathCert = spouse.DeathCert ??
-                                   new AmericanDeathCert(AmericanDeathCert.MannerOfDeath.Natural, spouse.FullName)
+                                   new AmericanDeathCert(Etx.RandomPickOne(AmericanData.MannerOfDeathAvgs),
+                                       spouse.FullName)
                                    {
-                                       DateOfDeath = Etx.RandomDate(Etx.RandomInteger(1, d)*-1, null)
+                                       DateOfDeath = Etx.RandomDate(Etx.RandomInteger(1, d) * -1)
                                    };
             }
 
@@ -833,7 +834,7 @@ namespace NoFuture.Rand.Domus.US
                 if (_myGender == Gender.Female && DateTime.Now >= marriedOn)
                 {
                     if (LastName != null && !AnyOfKindOfName(KindsOfNames.Maiden))
-                        UpsertName(KindsOfNames.Maiden, BirthCert.GetFatherLastName() ?? LastName);
+                        UpsertName(KindsOfNames.Maiden, BirthCert.GetFatherSurname() ?? LastName);
 
                     LastName = spouse.LastName;
                 }

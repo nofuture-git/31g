@@ -214,6 +214,24 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
+        /// Reduces all repeating sequeence of 
+        /// space-characters (x20) to a single space.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string DistillSpaces(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+            while (value.Contains("  "))
+            {
+                value = value.Replace("  ", " ");
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// Converts line endings to CrLf
         /// </summary>
         /// <param name="fileContent"></param>

@@ -187,7 +187,7 @@ namespace NoFuture.Rand.Geo.US
             addrData.StreetName = streetName.Replace("#", "").Trim();//per the standard, these should be removed
 
             //consider whatever remains as the street's name
-            streetPo = new UsStreetPo(addrData);
+            streetPo = new UsStreetPo(addrData) {Src = addressLine};
             return true;
         }
     }

@@ -1,4 +1,7 @@
 ﻿using System;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Gov
 {
@@ -9,8 +12,21 @@ namespace NoFuture.Rand.Gov
         {
             PersonFullName = personFullName;
         }
+
+        protected VitalRecord(IVoca personName)
+        {
+            if (personName == null)
+                return;
+
+            PersonFullName = Etc.DistillSpaces(
+                string.Join(" ", personName.GetName(KindsOfNames.First),
+                                 personName.GetName(KindsOfNames.Surname)));
+
+            if (string.IsNullOrWhiteSpace(PersonFullName))
+                PersonFullName = personName.GetName(KindsOfNames.Legal);
+        }
+
         public string Src { get; set; }
-        public abstract string Abbrev { get; }
         public string PersonFullName { get; set; }
     }
 }
