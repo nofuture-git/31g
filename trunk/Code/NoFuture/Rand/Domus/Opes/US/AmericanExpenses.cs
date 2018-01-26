@@ -15,6 +15,7 @@ namespace NoFuture.Rand.Domus.Opes.US
     [Serializable]
     public class AmericanExpenses : WealthBase, IExpense
     {
+        private const double PERCENT_EXPENSE_OF_INCOME = 0.85;
         private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
 
         public virtual Pondus[] CurrentExpectedExpenses => GetCurrent(MyItems);
@@ -84,7 +85,8 @@ namespace NoFuture.Rand.Domus.Opes.US
 
             if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
             {
-                var randIncome = Math.Round(GetRandomYearlyIncome(options.Inception, options).ToDouble() * 85);
+                var randIncome = Math.Round(GetRandomYearlyIncome(options.Inception, options).ToDouble() *
+                                            PERCENT_EXPENSE_OF_INCOME);
                 options.SumTotal = randIncome.ToPecuniam();
             }
 
