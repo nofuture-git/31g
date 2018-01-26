@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.US;
-using NoFuture.Rand.Edu;
-using NoFuture.Rand.Edu.US;
-using NoFuture.Rand.Geo;
-using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
-using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tests.DomusTests
 {
     [TestFixture]
     public class PersonTests
     {
-
-
         [Test]
         public void AmericanTests()
         {
@@ -43,7 +37,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void NorthAmericanEduTests()
         {
             var amer = new American(Etx.RandomAdultBirthDate(), Gender.Female);
-            var testResult = amer.GetEducationByPerson();
+            var testResult = amer.GetRandomEducation();
 
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
@@ -214,9 +208,9 @@ namespace NoFuture.Rand.Tests.DomusTests
         {
             var testPerson = new American(new DateTime(1955,6,20), Gender.Female, false);
 
-            testPerson._children.Add(new Child(new American(new DateTime(1976, 10, 2), Gender.Female, false)));
-            testPerson._children.Add(new Child(new American(new DateTime(1986, 3, 11), Gender.Female, false)));
-            testPerson._children.Add(new Child(new American(new DateTime(1982, 12, 30), Gender.Female, false)));
+            testPerson.AddChild(new American(new DateTime(1976, 10, 2), Gender.Female, false));
+            testPerson.AddChild(new American(new DateTime(1986, 3, 11), Gender.Female, false));
+            testPerson.AddChild(new American(new DateTime(1982, 12, 30), Gender.Female, false));
 
             var testDob = new DateTime(1985, 9, 10);//conception ~ 12/4/1984
 
@@ -238,8 +232,8 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.IsTrue(testResult);
 
             testPerson = new American(new DateTime(1982,4,13), Gender.Female, false);
-            testPerson._children.Add(new Child(new American(new DateTime(2007, 8, 30), Gender.Male)));
-            testPerson._children.Add(new Child(new American(new DateTime(2009, 12, 20), Gender.Female)));
+            testPerson.AddChild(new American(new DateTime(2007, 8, 30), Gender.Male));
+            testPerson.AddChild(new American(new DateTime(2009, 12, 20), Gender.Female));
 
             testDob = new DateTime(2009,3,6);
             Assert.IsFalse(testPerson.IsValidDobOfChild(testDob));
@@ -318,10 +312,18 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestGetNorthAmericanEdu()
         {
             var testSubject = Person.RandomAmerican();
-            var testEdu = testSubject.Education;
+            var testEdu = testSubject.GetEducationAt(null);
             Assert.IsNotNull(testEdu);
 
             Debug.WriteLine(testEdu);
+        }
+
+        [Test]
+        public void TestGetParent()
+        {
+            var testSubject = Person.RandomAmerican();
+            Assert.IsNotNull(testSubject.Parents);
+            Assert.AreNotEqual(0,testSubject.Parents.Count());
 
         }
     }

@@ -52,9 +52,17 @@ namespace NoFuture.Rand.Core
             return cname?.Item2;
         }
 
-        public virtual bool AnyOfKindOfName(KindsOfNames k)
+        public virtual bool AnyOfKind(KindsOfNames k)
         {
             return Names.Any(x => x.Item1 == k);
+        }
+
+        public virtual bool AnyOfKindContaining(KindsOfNames k)
+        {
+            var allMyKinds = Names.SelectMany(x => ToDiscreteKindsOfNames(x.Item1)).ToArray();
+            var allItsKinds = ToDiscreteKindsOfNames(k);
+
+            return allItsKinds.All(ak => allMyKinds.Contains(ak));
         }
 
         public virtual bool AnyOfNameAs(string name)
@@ -99,11 +107,24 @@ namespace NoFuture.Rand.Core
 
         public override bool Equals(object obj)
         {
-            var voca = obj as IVoca;
-            if(voca == null || GetCountOfNames() != voca.GetCountOfNames())
-                return base.Equals(obj);
+            return obj is IVoca voca && Equals(voca, this);
+        }
 
-            return Names.All(v => voca.AnyOfKindAndValue(v.Item1, v.Item2));
+        public static bool Equals(IVoca obj1, IVoca obj2)
+        {
+            if (obj1 == null || obj2 == null)
+                return false;
+
+            if ( obj1.GetCountOfNames() != obj2.GetCountOfNames())
+                return false;
+
+            foreach (var kon1 in obj1.GetAllKindsOfNames())
+            {
+                if (!obj2.AnyOfKindAndValue(kon1, obj1.GetName(kon1)))
+                    return false;
+            }
+
+            return true;
         }
 
         public override int GetHashCode()
@@ -111,7 +132,7 @@ namespace NoFuture.Rand.Core
             return Names.GetHashCode();
         }
 
-        public KindsOfNames[] GetCurrentKindsOfNames()
+        public KindsOfNames[] GetAllKindsOfNames()
         {
             return Names.Select(n => n.Item1).ToArray();
         }
@@ -121,8 +142,27 @@ namespace NoFuture.Rand.Core
             if (voca == null)
                 return;
 
-            foreach(var k in voca.GetCurrentKindsOfNames())
+            foreach(var k in voca.GetAllKindsOfNames())
                 UpsertName(k, voca.GetName(k));
+        }
+
+        /// <summary>
+        /// Turns a bitwise combination of <see cref="KindsOfNames"/> into a discrete list
+        /// </summary>
+        /// <param name="kon"></param>
+        /// <returns></returns>
+        public static KindsOfNames[] ToDiscreteKindsOfNames(KindsOfNames kon)
+        {
+            var vals = Enum.GetValues(typeof(KindsOfNames)).Cast<KindsOfNames>().ToArray();
+            var dKon = new List<KindsOfNames>();
+            foreach (var val in vals)
+            {
+                var d = (UInt32) val & (UInt32) kon;
+                if(d == (UInt32)val)
+                    dKon.Add(val);
+            }
+            
+            return dKon.Distinct().ToArray();
         }
     }
 }

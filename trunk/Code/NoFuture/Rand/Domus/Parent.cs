@@ -1,19 +1,31 @@
 ﻿using System;
+using System.Linq;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Domus
 {
     [Serializable]
-    public class Parent : IRelation
+    public class Parent : VocaBase, IRelation
     {
-        public Parent(IPerson p)
+        public Parent(IPerson p, KindsOfNames k)
         {
             Est = p;
+            Names.Add(new Tuple<KindsOfNames, string>(k, string.Empty));
         }
         public IPerson Est { get; }
 
         public override string ToString()
         {
-            return string.Join(" ", Est?.FirstName, Est?.LastName);
+            var parentTitle = "";
+
+            var kons = GetAllKindsOfNames();
+            if (kons.Any())
+            {
+                parentTitle = string.Join(",", ToDiscreteKindsOfNames(kons.First()));
+            }
+
+            return string.Join(" ", parentTitle, Est?.FirstName, Est?.LastName);
         }
 
         public override int GetHashCode()
@@ -27,7 +39,7 @@ namespace NoFuture.Rand.Domus
             if (p?.Est == null || Est == null)
                 return false;
 
-            return p.Est.Equals(Est);
+            return base.Equals(p) && p.Est.Equals(Est);
         }
     }
 }

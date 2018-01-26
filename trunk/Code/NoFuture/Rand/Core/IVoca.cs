@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Core.Enums;
+﻿using System.Collections.Generic;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Core
 {
@@ -29,7 +30,15 @@ namespace NoFuture.Rand.Core
         /// </summary>
         /// <param name="k"></param>
         /// <returns></returns>
-        bool AnyOfKindOfName(KindsOfNames k);
+        bool AnyOfKind(KindsOfNames k);
+
+        /// <summary>
+        /// Asserts if there are any entries 
+        /// which contain at least <see cref="k"/> in their combination.
+        /// </summary>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        bool AnyOfKindContaining(KindsOfNames k);
 
         /// <summary>
         /// Asserts if there is at least one entry by the given <see cref="name"/> value
@@ -81,8 +90,12 @@ namespace NoFuture.Rand.Core
         /// Gets an array of all the <see cref="KindsOfNames"/> currently present/
         /// </summary>
         /// <returns></returns>
-        KindsOfNames[] GetCurrentKindsOfNames();
+        KindsOfNames[] GetAllKindsOfNames();
 
+        /// <summary>
+        /// Helper method to quickly move data from one to another
+        /// </summary>
+        /// <param name="voca"></param>
         void CopyFrom(IVoca voca);
     }
 }

@@ -23,9 +23,9 @@ namespace NoFuture.Rand.Domus.US
     public class American : Person
     {
         #region fields
-        internal readonly HashSet<Spouse> _spouses = new HashSet<Spouse>();
+        private readonly HashSet<Spouse> _spouses = new HashSet<Spouse>();
         private IEducation _edu;
-        internal readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
+        private readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
             new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
         private SocialSecurityNumber _ssn;
         private DriversLicense _dl;
@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Domus.US
         public American(DateTime dob, Gender myGender)
         {
             var dobAddr = CityArea.RandomAmericanCity();
-            _birthCert = new AmericanBirthCert(FullName)
+            BirthCert = new AmericanBirthCert(FullName)
             {
                 DateOfBirth = dob,
                 City = dobAddr.City,
@@ -50,23 +50,21 @@ namespace NoFuture.Rand.Domus.US
             };
 
             //almost always returns null
-            _deathCert = AmericanUtil.GetRandomDeathCert(this);
-            _myGender = myGender;
+            DeathCert = AmericanUtil.GetRandomDeathCert(this);
+            MyGender = myGender;
 
-            var fname = _myGender != Gender.Unknown
-                ? AmericanUtil.RandomAmericanFirstName(_myGender, _birthCert.DateOfBirth)
+            FirstName = MyGender != Gender.Unknown
+                ? AmericanUtil.RandomAmericanFirstName(MyGender, BirthCert.DateOfBirth)
                 : "Pat";
 
-            UpsertName(KindsOfNames.First, fname);
-            var lname = AmericanUtil.RandomAmericanLastName();
-            UpsertName(KindsOfNames.Surname, lname);
+            LastName = AmericanUtil.RandomAmericanLastName();
             
-            MiddleName = AmericanUtil.RandomAmericanFirstName(_myGender, _birthCert.DateOfBirth);
-            while (string.Equals(fname, MiddleName, StringComparison.OrdinalIgnoreCase))
+            MiddleName = AmericanUtil.RandomAmericanFirstName(MyGender, BirthCert.DateOfBirth);
+            while (string.Equals(FirstName, MiddleName, StringComparison.OrdinalIgnoreCase))
             {
-                MiddleName = AmericanUtil.RandomAmericanFirstName(_myGender, _birthCert.DateOfBirth);
+                MiddleName = AmericanUtil.RandomAmericanFirstName(MyGender, BirthCert.DateOfBirth);
             }
-            _ssn = SocialSecurityNumber.RandomSsn();
+            Ssn = SocialSecurityNumber.RandomSsn();
             if (Race <= 0)
                 Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs);
         }
@@ -85,18 +83,18 @@ namespace NoFuture.Rand.Domus.US
             if (isDead)
                 return;
             var homeAddr = PostalAddress.RandomAmericanAddress();
-            _addresses.Add(homeAddr);
+            GetAddresses().Add(homeAddr);
             var csz = homeAddr.HomeCityArea as UsCityStateZip;
 
             var abbrv = csz?.StateAbbrev;
 
             if(Etx.RandomRollAboveOrAt(6, Etx.Dice.Ten))
-                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.RandomAmericanPhone(abbrv)));
+                AddPhoneNumber(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, Phone.RandomAmericanPhone(abbrv)));
 
             var isSmallChild = GetAgeAt(null) < 12;
 
             if (!isSmallChild)
-                _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.RandomAmericanPhone(abbrv)));
+                AddPhoneNumber(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, Phone.RandomAmericanPhone(abbrv)));
             
             Race = UsCityStateZip.GetAmericanRace(csz?.ZipCode);
             if (Race <= 0)
@@ -117,15 +115,15 @@ namespace NoFuture.Rand.Domus.US
         /// <param name="father"></param>
         public American(DateTime dob, Gender myGender, IPerson mother, IPerson father): this(dob, myGender)
         {
-            _mother = mother;
-            _father = father;
-            _birthCert.MotherName = string.Join(" ", _mother?.FirstName, _mother?.LastName);
-            _birthCert.FatherName = string.Join(" ", _father?.FirstName, _father?.LastName);
-            var nAmerMother = _mother as American;
-            if (nAmerMother == null)
+            AddParent(mother, KindsOfNames.Biological | KindsOfNames.Mother);
+            AddParent(father, KindsOfNames.Biological | KindsOfNames.Father);
+
+            BirthCert.MotherName = GetMother()?.FullName;
+            BirthCert.FatherName = GetFather()?.FullName;
+            if (!(mother is American nAmerMother))
                 return;
-            var americanBirthCert = (AmericanBirthCert) _birthCert;
-            var nAmerFather = _father as American;
+            var americanBirthCert = (AmericanBirthCert) BirthCert;
+            var nAmerFather = father as American;
 
             var birthPlace = nAmerMother.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip ??
                              nAmerFather?.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip ??
@@ -144,7 +142,13 @@ namespace NoFuture.Rand.Domus.US
         /// <summary>
         /// Helper property to get the an American&apos;s full name.
         /// </summary>
-        public string FullName => string.Join(" ", FirstName, MiddleName, LastName);
+        public override string FullName => string.Join(" ", FirstName, MiddleName, LastName);
+
+        public override IEducation Education
+        {
+            get => _edu;
+            set => _edu = value;
+        }
 
         /// <summary>
         /// Helper method to get a home phone.
@@ -211,7 +215,7 @@ namespace NoFuture.Rand.Domus.US
 
         #endregion
 
-        #region public methods
+        #region methods
         /// <summary>
         /// Gets this person's <see cref="MaritialStatus"/> at time <see cref="dt"/>
         /// </summary>
@@ -280,7 +284,7 @@ namespace NoFuture.Rand.Domus.US
         {
             if (_edu == null)
             {
-                _edu = GetEducationByPerson();
+                _edu = GetRandomEducation();
             }
 
             if (dt == null)
@@ -308,7 +312,18 @@ namespace NoFuture.Rand.Domus.US
 
         }
 
-        protected internal AmericanEducation GetEducationByPerson()
+        public void AddPhoneNumber(Tuple<KindsOfLabels, NorthAmericanPhone> phone)
+        {
+            if (phone?.Item2 == null)
+                return;
+            _phoneNumbers.Add(phone);
+        }
+
+        /// <summary>
+        /// Gets an education at random using this persons data.
+        /// </summary>
+        /// <returns></returns>
+        protected internal AmericanEducation GetRandomEducation()
         {
             var dob = BirthCert?.DateOfBirth ?? Etx.RandomAdultBirthDate();
 
@@ -339,7 +354,7 @@ namespace NoFuture.Rand.Domus.US
             Func<Child, bool> isUnderageChild =
                 child => child?.Est is American && !((American) child.Est).IsLegalAdult(dt);
 
-            var underAgeChildren =_children.Where(x => isUnderageChild(x)).ToList();
+            var underAgeChildren =Children.Where(x => isUnderageChild(x)).ToList();
 
             var ms = GetMaritalStatusAt(dt);
             if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouseAt(dt).Est is American)
@@ -432,10 +447,6 @@ namespace NoFuture.Rand.Domus.US
             return p + q + m;
         }
 
-        #endregion
-
-        #region internal methods
-
         /// <summary>
         /// Invokes <see cref="ResolveParents"/>, <see cref="ResolveSpouse"/> and <see cref="ResolveChildren"/>.
         /// Only Parents are certian the other resolutions contrained by age and randomness.
@@ -449,7 +460,7 @@ namespace NoFuture.Rand.Domus.US
                 ResolveParents();
 
             //resolve spouse to each other
-            ResolveSpouse(AmericanUtil.RandomMaritialStatus(_birthCert.DateOfBirth, MyGender));
+            ResolveSpouse(AmericanUtil.RandomMaritialStatus(BirthCert.DateOfBirth, MyGender));
             //to solve for childern when gender -eq Male
             ResolveChildren();
             AlignCohabitantsHomeDataAt(dt, GetAddressAt(null));
@@ -468,20 +479,20 @@ namespace NoFuture.Rand.Domus.US
             ThrowOnBirthDateNull(this);
 
             //create current instance mother
-            _mother = _mother ??
-                      AmericanUtil.RandomParent(_birthCert.DateOfBirth, Gender.Female);
+            var mother = GetMother() ??
+                      AmericanUtil.RandomParent(BirthCert.DateOfBirth, Gender.Female);
             //line mothers last name with child
-            UpsertName(KindsOfNames.Surname, _mother.LastName);
+            UpsertName(KindsOfNames.Surname, mother.LastName);
 
-            var myMother = (American) _mother;
+            var myMother = (American)mother;
             myMother.Race = Race;
-            BirthCert.MotherName = string.Join(" ", _mother.FirstName, _mother.LastName);
+            BirthCert.MotherName = string.Join(" ", mother.FullName);
 
             //add self as one of mother's children
-            myMother._children.Add(new Child(this));
+            myMother.AddChild(this);
 
             //TODO reslove this using data from census.gov
-            var birthCity = myMother.GetAddressAt(_birthCert.DateOfBirth)?.HomeCityArea as UsCityStateZip;
+            var birthCity = myMother.GetAddressAt(BirthCert.DateOfBirth)?.HomeCityArea as UsCityStateZip;
             if (birthCity != null)
             {
                 ((AmericanBirthCert) BirthCert).City = birthCity.City;
@@ -489,14 +500,16 @@ namespace NoFuture.Rand.Domus.US
             }
 
             //resolve mother's spouse(s)
-            var motherMaritalStatus = AmericanUtil.RandomMaritialStatus(_mother.BirthCert.DateOfBirth, Gender.Female);
+            var motherMaritalStatus = AmericanUtil.RandomMaritialStatus(mother.BirthCert.DateOfBirth, Gender.Female);
             myMother.ResolveSpouse(motherMaritalStatus);
             
             //resolve for siblings
             myMother.ResolveChildren();
 
+            AddParent(myMother, KindsOfNames.Mother | KindsOfNames.Biological);
+
             //father is whoever was married to mother around time of birth
-            var myFather = myMother.GetSpouseNear(_birthCert.DateOfBirth)?.Est as American;
+            var myFather = myMother.GetSpouseNear(BirthCert.DateOfBirth)?.Est as American;
 
             //mother not married at time of birth
             if (motherMaritalStatus == MaritialStatus.Single || myFather == null)
@@ -504,22 +517,16 @@ namespace NoFuture.Rand.Domus.US
                 //small percent of father unknown
                 if (Etx.RandomRollAboveOrAt(98, Etx.Dice.OneHundred))
                     return;
-                _father =
-                    _father ??
-                    AmericanUtil.RandomParent(_birthCert.DateOfBirth, Gender.Male);
+                AddParent(AmericanUtil.RandomParent(BirthCert.DateOfBirth, Gender.Male),
+                    KindsOfNames.Biological | KindsOfNames.Father);
                 return;
             }
             //mother will receive last name of spouse
             myFather.Race = Race;
-            _father = myFather;
-            _birthCert.FatherName = string.Join(" ", _father.FirstName, _father.LastName);
-
-            //last name assigned from birth father
-            if (_father != null)
-            {
-                UpsertName(KindsOfNames.Surname, _father.LastName);
-                ((American) _father)._children.Add(new Child(this));
-            }
+            BirthCert.FatherName = string.Join(" ", myFather.FullName);
+            UpsertName(KindsOfNames.Surname, myFather.LastName);
+            myFather.AddChild(this);
+            AddParent(myFather, KindsOfNames.Biological | KindsOfNames.Father);
         }
 
         /// <summary>
@@ -537,19 +544,19 @@ namespace NoFuture.Rand.Domus.US
 
             ThrowOnBirthDateNull(this);
 
-            var equationDt = AmericanEquations.ProtectAgainstDistantTimes(_birthCert.DateOfBirth);
+            var equationDt = AmericanEquations.ProtectAgainstDistantTimes(BirthCert.DateOfBirth);
 
             var avgAgeMarriage = MyGender == Gender.Female
                 ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(equationDt.ToDouble())
                 : AmericanEquations.MaleAge2FirstMarriage.SolveForY(equationDt.ToDouble());
-            var currentAge = Etc.CalcAge(_birthCert.DateOfBirth, dt);
+            var currentAge = Etc.CalcAge(BirthCert.DateOfBirth, dt);
 
             //all other MaritialStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
 
             var marriedOn = Etx.RandomDate(-1*yearsMarried, dt).Date.AddHours(12);
 
-            var spouse = (American)AmericanUtil.RandomSpouse(_birthCert.DateOfBirth, MyGender);
+            var spouse = (American)AmericanUtil.RandomSpouse(BirthCert.DateOfBirth, MyGender);
 
             //set death date if widowed
             if (myMaritialStatus == MaritialStatus.Widowed || spouse.DeathCert != null)
@@ -587,7 +594,7 @@ namespace NoFuture.Rand.Domus.US
                     ageSpread = 10;
 
                 //get a second spouse
-                var secondSpouse = (American)AmericanUtil.RandomSpouse(_birthCert.DateOfBirth, MyGender, ageSpread);
+                var secondSpouse = (American)AmericanUtil.RandomSpouse(BirthCert.DateOfBirth, MyGender, ageSpread);
 
                 //random second marriage date
                 var remarriedOn = Etx.RandomDate(Convert.ToInt32(Math.Round(AmericanData.YEARS_BEFORE_NEXT_MARRIAGE)),
@@ -621,11 +628,11 @@ namespace NoFuture.Rand.Domus.US
 
             //two extremes
             var teenPregEquation = AmericanEquations.GetProbTeenPregnancyByRace(Race);
-            var teenageAge = Etx.RandomInteger(15, 19);
-            var teenageYear = _birthCert.DateOfBirth.AddYears(teenageAge).Year;
+            var teenageAge = Etx.RandomInteger(AmericanUtil.MIN_AGE_TO_BE_PARENT, 19);
+            var teenageYear = BirthCert.DateOfBirth.AddYears(teenageAge).Year;
             var propTeenagePreg = teenPregEquation.SolveForY(teenageYear);
 
-            var propLifetimeChildless = AmericanUtil.SolveForProbabilityChildless(_birthCert.DateOfBirth,
+            var propLifetimeChildless = AmericanUtil.SolveForProbabilityChildless(BirthCert.DateOfBirth,
                 Education?.EduFlag ?? OccidentalEdu.None);
 
             //far high-end is no children for whole life
@@ -635,20 +642,20 @@ namespace NoFuture.Rand.Domus.US
             //other extreme is teenage preg
             if (Etx.MyRand.NextDouble() <= propTeenagePreg)
             {
-                var teenPregChildDob = Etx.RandomDate(teenageAge, _birthCert.DateOfBirth);
+                var teenPregChildDob = Etx.RandomDate(teenageAge, BirthCert.DateOfBirth);
                 AddChild(teenPregChildDob);
                 currentNumChildren += 1;
             }
             
             //last is averages
-            var numOfChildren = AmericanUtil.RandomNumberOfChildren(_birthCert.DateOfBirth, null);
+            var numOfChildren = AmericanUtil.RandomNumberOfChildren(BirthCert.DateOfBirth, null);
 
             if (numOfChildren <= 0)
                 return;
 
             for (var i = currentNumChildren; i < numOfChildren; i++)
             {
-                var childDob = AmericanUtil.RandomChildBirthDate(_birthCert.DateOfBirth, i, null);
+                var childDob = AmericanUtil.RandomChildBirthDate(BirthCert.DateOfBirth, i, null);
                 if (childDob == null)
                     continue;
 
@@ -706,27 +713,28 @@ namespace NoFuture.Rand.Domus.US
             };
 
             //check that child does not share the same first name as a sibling
-            while (_children.Any(x => x.Est.FirstName == nAmerChild.FirstName))
+            while (Children.Any(x => x.Est.FirstName == nAmerChild.FirstName))
             {
                 nAmerChild.UpsertName(KindsOfNames.First,
                     AmericanUtil.RandomAmericanFirstName(nAmerChild.MyGender, myChildDob));
             }
 
             //child has ref to father, father needs ref to child
-            var nAmerFather = spouseAtChildDob?.Est as American;
-            if (nAmerFather != null && nAmerFather.MyGender == Gender.Male 
-                && nAmerFather.Children.All(x => !nAmerChild.Equals(x.Est)))
+            if (spouseAtChildDob?.Est is American nAmerFather && nAmerFather.MyGender == Gender.Male
+                                                              && nAmerFather.Children.All(
+                                                                  x => !nAmerChild.Equals(x.Est)))
             {
-                nAmerFather._children.Add(new Child(nAmerChild));
+                nAmerFather.AddChild(nAmerChild);
             }
+
             //resolve spouse, no grand-children
             if (isChildAdult)
             {
                 nAmerChild.ResolveSpouse(AmericanUtil.RandomMaritialStatus(myChildDob, myChildGender));
                 nAmerChild.AlignCohabitantsHomeDataAt(DateTime.Now, nAmerChild.GetAddressAt(null));
             }
-            
-            _children.Add(new Child(nAmerChild));
+
+            AddChild(nAmerChild);
         }
 
         /// <summary>
@@ -743,7 +751,7 @@ namespace NoFuture.Rand.Domus.US
         /// </returns>
         protected internal bool IsTwin(DateTime childDob, out DateTime minutesAfterChildDob)
         {
-            var siblingsBdays = _children.Where(x => x.Est.BirthCert != null).Select(x => x.Est.BirthCert.DateOfBirth).ToList();
+            var siblingsBdays = Children.Where(x => x.Est.BirthCert != null).Select(x => x.Est.BirthCert.DateOfBirth).ToList();
 
             if (siblingsBdays.Any(x => DateTime.Compare(x.Date, childDob.Date) == 0))
             {
@@ -785,7 +793,7 @@ namespace NoFuture.Rand.Domus.US
             var clildDobTuple = new Tuple<DateTime, DateTime>(childDob.AddDays(-1 * PREG_DAYS), childDob);
 
             var bdayTuples =
-                _children.Where(x => x.Est.BirthCert != null)
+                Children.Where(x => x.Est.BirthCert != null)
                     .Select(
                         x =>
                             new Tuple<DateTime, DateTime>(x.Est.BirthCert.DateOfBirth.AddDays(-1*(PREG_DAYS + MS_DAYS)),
@@ -831,9 +839,9 @@ namespace NoFuture.Rand.Domus.US
             if (separatedOn == null)
             {
                 //when this is the bride
-                if (_myGender == Gender.Female && DateTime.Now >= marriedOn)
+                if (MyGender == Gender.Female && DateTime.Now >= marriedOn)
                 {
-                    if (LastName != null && !AnyOfKindOfName(KindsOfNames.Maiden))
+                    if (LastName != null && !AnyOfKind(KindsOfNames.Maiden))
                         UpsertName(KindsOfNames.Maiden, BirthCert.GetFatherSurname() ?? LastName);
 
                     LastName = spouse.LastName;
@@ -869,7 +877,7 @@ namespace NoFuture.Rand.Domus.US
         protected internal void AddEmailAddress()
         {
             if (GetAgeAt(null) > 10)
-                _netUris.Add(
+                AddUri(
                     Email.RandomEmail(GetAgeAt(null) >= UsState.AGE_OF_ADULT, GetName(KindsOfNames.First),
                         MiddleName, GetName(KindsOfNames.Surname)).ToUri());
         }
@@ -881,6 +889,16 @@ namespace NoFuture.Rand.Domus.US
                 return UsState.AGE_OF_ADULT;
             var myHomeState = UsState.GetStateByPostalCode(GetAddressAt(null)?.HomeCityArea?.AddressData?.StateAbbrev);
             return myHomeState?.AgeOfMajority ?? UsState.AGE_OF_ADULT;
+        }
+
+        protected internal HashSet<Spouse> GetSpouses()
+        {
+            return _spouses;
+        }
+
+        protected internal List<Tuple<KindsOfLabels, NorthAmericanPhone>> GetPhoneNumbers()
+        {
+            return _phoneNumbers;
         }
         #endregion
     }

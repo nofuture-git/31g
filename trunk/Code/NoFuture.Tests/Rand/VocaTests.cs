@@ -50,10 +50,10 @@ namespace NoFuture.Rand.Tests
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former | KindsOfNames.Technical, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            Assert.IsTrue(testSubject.AnyOfKindOfName(KindsOfNames.Legal));
-            Assert.IsTrue(testSubject.AnyOfKindOfName(KindsOfNames.Former | KindsOfNames.Technical));
+            Assert.IsTrue(testSubject.AnyOfKind(KindsOfNames.Legal));
+            Assert.IsTrue(testSubject.AnyOfKind(KindsOfNames.Former | KindsOfNames.Technical));
 
-            Assert.IsFalse(testSubject.AnyOfKindOfName(KindsOfNames.Legal | KindsOfNames.Technical));
+            Assert.IsFalse(testSubject.AnyOfKind(KindsOfNames.Legal | KindsOfNames.Technical));
         }
 
 
@@ -154,5 +154,41 @@ namespace NoFuture.Rand.Tests
             Assert.IsFalse(testSubject.Equals(testSubject2));
         }
 
+        [Test]
+        public void TestToToDiscreteKindsOfNames()
+        {
+            var testResult = VocaBase.ToDiscreteKindsOfNames(KindsOfNames.Legal | KindsOfNames.Technical);
+            Assert.IsNotNull(testResult);
+            var tra = testResult.ToArray();
+            Assert.AreEqual(2, tra.Length);
+            Assert.IsTrue(tra.Contains(KindsOfNames.Legal));
+            Assert.IsTrue(tra.Contains(KindsOfNames.Technical));
+
+        }
+
+        [Test]
+        public void TestAnyOfKindContaining()
+        {
+            var testSubject = new VocaBase();
+            testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former | KindsOfNames.Technical | KindsOfNames.Legal, "TechnicalName"));
+            testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
+
+            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Former));
+            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Technical));
+            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Legal));
+
+            Assert.IsFalse(testSubject.AnyOfKind(KindsOfNames.Former));
+            Assert.IsFalse(testSubject.AnyOfKind(KindsOfNames.Technical));
+
+
+            testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Abbrev | KindsOfNames.Group | KindsOfNames.Colloquial, "TestCorporation"));
+
+            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Abbrev));
+            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Group));
+            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Colloquial));
+
+
+
+        }
     }
 }

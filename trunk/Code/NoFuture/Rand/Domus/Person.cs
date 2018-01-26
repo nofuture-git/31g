@@ -21,25 +21,21 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region fields
-        protected internal IPerson _mother;
-        protected internal IPerson _father;
-        protected internal readonly List<Uri> _netUris = new List<Uri>();
-        protected internal readonly HashSet<Child> _children = new HashSet<Child>();
+        private readonly HashSet<Uri> _netUris = new HashSet<Uri>();
+        private readonly HashSet<Child> _children = new HashSet<Child>();
         private readonly Personality _personality = Personality.RandomPersonality();
-        protected internal IComparer<ITempore> _comparer = new TemporeComparer();
-        protected internal BirthCert _birthCert;
-        protected internal readonly List<PostalAddress> _addresses = new List<PostalAddress>();
-        protected internal Gender _myGender;
-        protected internal List<Tuple<KindsOfNames, Parent>> _parents = new List<Tuple<KindsOfNames, Parent>>();
+        private readonly List<PostalAddress> _addresses = new List<PostalAddress>();
+        private Gender _myGender;
+        private readonly HashSet<Parent> _parents = new HashSet<Parent>();
         #endregion
 
         #region properties
-        public virtual Gender MyGender
+        public Gender MyGender
         {
             get => _myGender;
             set => _myGender = value;
         }
-        public virtual BirthCert BirthCert => _birthCert;
+        public BirthCert BirthCert { get; set; }
         public virtual DeathCert DeathCert { get; set; }
         public virtual string FirstName
         {
@@ -53,53 +49,14 @@ namespace NoFuture.Rand.Domus
         }
         public virtual IEnumerable<Uri> NetUri => _netUris;
         public Personality Personality => _personality;
-        public virtual IEducation Education => GetEducationAt(null);
+        public abstract IEducation Education { get; set; }
         public PostalAddress Address => GetAddressAt(null);
         public IRelation Spouse => GetSpouseAt(null);
         public int Age => GetAgeAt(null);
         public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
         public IEnumerable<Child> Children => _children;
-        public IEnumerable<Tuple<KindsOfNames, Parent>> Parents
-        {
-            get
-            {
-                if(_parents.Count > 0)
-                    return _parents;
-
-                var f = GetFather();
-                var m = GetMother();
-                if (f == null && m == null)
-                    return _parents;
-
-                var lbl = KindsOfNames.Biological;
-                if (!IsLegalAdult(null))
-                    lbl = KindsOfNames.Legal | lbl;
-
-                _parents.Add(new Tuple<KindsOfNames, Parent>(lbl | KindsOfNames.Father,
-                    new Parent(f)));
-                _parents.Add(new Tuple<KindsOfNames, Parent>(lbl | KindsOfNames.Mother,
-                    new Parent(m)));
-
-                Action<IPerson> addStepParent = person => _parents.Add(
-                    new Tuple<KindsOfNames, Parent>(
-                        KindsOfNames.Step |
-                        (person.GetSpouseAt(null).Est.MyGender == Gender.Female
-                            ? KindsOfNames.Mother
-                            : KindsOfNames.Father),
-                        new Parent(person.GetSpouseAt(null).Est)));
-
-                Func<IPerson, IPerson, bool> isParentSpouseStepParent =
-                    (p0, p1) => p0 != null && p0.MaritialStatus == MaritialStatus.Remarried && p0.GetSpouseAt(null).Est.Equals(p1);
-
-                if(isParentSpouseStepParent(f,m))
-                    addStepParent(f);
-                if (isParentSpouseStepParent(m,f))
-                    addStepParent(m);
-
-                return _parents;
-            }
-        }
-
+        public IEnumerable<Parent> Parents => _parents;
+        public virtual string FullName => string.Join(" ", FirstName, LastName);
         #endregion
 
         #region methods
@@ -120,25 +77,14 @@ namespace NoFuture.Rand.Domus
 
         public abstract IEducation GetEducationAt(DateTime? dt);
 
-        /// <summary>
-        /// Resolves the <see cref="PostalAddress"/> which was current 
-        /// at time <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt">Null for the current time right now.</param>
-        /// <returns></returns>
         public virtual PostalAddress GetAddressAt(DateTime? dt)
         {
-            _addresses.Sort(_comparer);
+            _addresses.Sort(new TemporeComparer());
             return dt == null
                 ? _addresses.LastOrDefault()
                 : _addresses.LastOrDefault(a => a.IsInRange(dt.Value));
         }
 
-        /// <summary>
-        /// Helper method to get the age at time <see cref="atTime"/>
-        /// </summary>
-        /// <param name="atTime">Null for the current time right now.</param>
-        /// <returns></returns>
         public int GetAgeAt(DateTime? atTime)
         {
             var dt = atTime ?? DateTime.Now;
@@ -150,47 +96,78 @@ namespace NoFuture.Rand.Domus
             return Util.Core.Etc.CalcAge(BirthCert.DateOfBirth, dt);
         }
 
-        /// <summary>
-        /// Helper method to get the opposite gender.
-        /// </summary>
-        /// <returns><see cref="Gender.Unknown"/> returns the same.</returns>
-        public Gender GetMyOppositeGender()
-        {
-            if(MyGender == Gender.Unknown)
-                return Gender.Unknown;
-
-            return MyGender == Gender.Female ? Gender.Male : Gender.Female;
-        }
-
-        /// <summary>
-        /// Handles details of adding <see cref="addr"/> to 
-        /// this instance's history of addresses.
-        /// </summary>
-        /// <param name="addr"></param>
         public void AddAddress(PostalAddress addr)
         {
             if (addr == null)
                 return;
-            //TODO enhance to have previous address
-            _addresses.Clear();
             _addresses.Add(addr);
+        }
+
+        public void AddParent(IPerson parent, KindsOfNames parentalTitle)
+        {
+            if (parent?.BirthCert == null || parent.BirthCert.DateOfBirth == DateTime.MinValue || parent.Age <= 0)
+                return;
+            var diffInAge = parent.Age - Age;
+            if (diffInAge < AmericanUtil.MIN_AGE_TO_BE_PARENT)
+                return;
+            _parents.Add(new Parent(parent, parentalTitle));
+        }
+
+        public void AddChild(IPerson child)
+        {
+            if (child?.BirthCert == null || child.BirthCert.DateOfBirth == DateTime.MinValue || child.Age <= 0)
+                return;
+            var diffInAge = Age - child.Age;
+            if (diffInAge < AmericanUtil.MIN_AGE_TO_BE_PARENT)
+                return;
+            _children.Add(new Child(child));
+        }
+
+        public void AddUri(Uri uri)
+        {
+            if(uri != null)
+                _netUris.Add(uri);
         }
 
         protected internal abstract bool IsLegalAdult(DateTime? dt);
 
         /// <summary>
-        /// Gets the mother, as another 
-        /// instance of <see cref="IPerson"/>, of this instance.
+        /// Gets the Biological Mother
         /// </summary>
         /// <returns></returns>
-        protected internal virtual IPerson GetMother() { return _mother; }
+        protected internal IPerson GetMother()
+        {
+            return GetParent(KindsOfNames.Mother | KindsOfNames.Biological);
+        }
 
         /// <summary>
         /// Gets the father, as another 
         /// instance of <see cref="IPerson"/>, of this instance.
         /// </summary>
         /// <returns></returns>
-        protected internal virtual IPerson GetFather() { return _father; }
+        protected internal IPerson GetFather()
+        {
+            return GetParent(KindsOfNames.Father | KindsOfNames.Biological);
+        }
+
+        protected internal IPerson GetParent(KindsOfNames parentalTitle)
+        {
+            var parent = Parents.FirstOrDefault(p => p.AnyOfKind(parentalTitle));
+
+            if (parent?.Est == null)
+            {
+                parent = Parents.FirstOrDefault(p =>
+                    p.AnyOfKindContaining(parentalTitle));
+            }
+
+            return parent?.Est;
+        }
+
+        protected internal List<PostalAddress> GetAddresses()
+        {
+            return _addresses;
+        }
+
         #endregion
 
         #region static api

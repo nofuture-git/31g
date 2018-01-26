@@ -6,22 +6,22 @@ namespace NoFuture.Rand.Core.Enums
     [Flags]
     public enum KindsOfNames : UInt32
     {
-        None = 0,
-        Legal = 1,
-        First = 2,
-        Surname = 4,
-        Abbrev = 8,
-        Group = 16,
-        Colloquial = 32,
-        Mother = 64,
-        Father = 128,
-        Adopted = 256,
-        Biological = 512,
-        Spouse = 1024,
-        Middle = 2048,
-        Former = 4096,
-        Step = 8192,
-        Maiden = 16384,
-        Technical = 32768
+        None = 1,
+        Legal = 2,
+        First = 4,
+        Surname = 8,
+        Abbrev = 16,
+        Group = 32,
+        Colloquial = 64,
+        Mother = 128,
+        Father = 256,
+        Adopted = 512,
+        Biological = 1024,
+        Spouse = 2048,
+        Middle = 4096,
+        Former = 8192,
+        Step = 16384,
+        Maiden = 32768,
+        Technical = 65536
     }
 }

@@ -28,6 +28,7 @@ namespace NoFuture.Rand.Domus.US
     /// </remarks>
     public static class AmericanUtil
     {
+        internal const int MIN_AGE_TO_BE_PARENT = 15;
         internal const string US_FIRST_NAMES = "US_FirstNames.xml";
         internal const string US_LAST_NAMES = "US_LastNames.xml";
         internal static XmlDocument FirstNamesXml;
@@ -403,17 +404,17 @@ namespace NoFuture.Rand.Domus.US
             if (addrMatchTo == null)
                 return;
             thisPerson.AddAddress(addrMatchTo);
-            thisPerson._phoneNumbers.Clear();
-            if (livesWithThisOne._phoneNumbers.Any(p => p.Item1 == KindsOfLabels.Home))
+            thisPerson.GetPhoneNumbers().Clear();
+            if (livesWithThisOne.GetPhoneNumbers().Any(p => p.Item1 == KindsOfLabels.Home))
             {
-                thisPerson._phoneNumbers.Add(livesWithThisOne._phoneNumbers.First(p => p.Item1 == KindsOfLabels.Home));
+                thisPerson.AddPhoneNumber(livesWithThisOne.GetPhoneNumbers().First(p => p.Item1 == KindsOfLabels.Home));
             }
             if (thisPerson.GetAgeAt(null) < 12 ||
                 String.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
                 return;
 
             var mobilePhone = Phone.RandomAmericanPhone(addrMatchTo.HomeCityArea.GetPostalCodePrefix());
-            thisPerson._phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
+            thisPerson.AddPhoneNumber(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
                 mobilePhone));
         }
 
@@ -424,7 +425,7 @@ namespace NoFuture.Rand.Domus.US
         /// <returns></returns>
         public static List<Spouse> DumpAllSpouses(American nAmer)
         {
-            return nAmer._spouses.ToList();
+            return nAmer.GetSpouses().ToList();
         }
     }
 }
