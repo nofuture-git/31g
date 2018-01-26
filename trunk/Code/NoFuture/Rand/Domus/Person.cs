@@ -26,6 +26,7 @@ namespace NoFuture.Rand.Domus
         protected internal readonly List<Uri> _netUris = new List<Uri>();
         protected internal readonly HashSet<Child> _children = new HashSet<Child>();
         private readonly Personality _personality = Personality.RandomPersonality();
+        protected internal IComparer<ITempore> _comparer = new TemporeComparer();
         protected internal BirthCert _birthCert;
         protected internal readonly List<PostalAddress> _addresses = new List<PostalAddress>();
         protected internal Gender _myGender;
@@ -127,10 +128,10 @@ namespace NoFuture.Rand.Domus
         /// <returns></returns>
         public virtual PostalAddress GetAddressAt(DateTime? dt)
         {
-            //TODO enhance to have previous address
+            _addresses.Sort(_comparer);
             return dt == null
-                ? _addresses.FirstOrDefault()
-                : (_addresses.FirstOrDefault(x => x.Inception <= dt.Value) ?? _addresses.FirstOrDefault());
+                ? _addresses.LastOrDefault()
+                : _addresses.LastOrDefault(a => a.IsInRange(dt.Value));
         }
 
         /// <summary>
