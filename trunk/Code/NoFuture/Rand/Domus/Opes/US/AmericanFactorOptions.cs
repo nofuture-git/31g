@@ -54,7 +54,13 @@ namespace NoFuture.Rand.Domus.Opes.US
                 Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs),
                 Region = Etx.RandomPickOne(AmericanData.RegionPopulationAvgs),
                 Gender = Etx.RandomCoinToss() ? Gender.Male : Gender.Female,
-                BirthDate = Etx.RandomAdultBirthDate()
+                BirthDate = Etx.RandomAdultBirthDate(),
+                MaritialStatus = Etx.RandomPickOne(new[]
+                {
+                    MaritialStatus.Divorced, MaritialStatus.Married,
+                    MaritialStatus.Remarried, MaritialStatus.Separated,
+                    MaritialStatus.Single
+                })
             };
         }
     }

@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Core
         /// <summary>
         /// Gets the count of <see cref="KindsOfNames"/> to value pairs
         /// </summary>
-        int CountOfNames { get; }
+        int GetCountOfNames();
 
         /// <summary>
         /// Gets an array of all the <see cref="KindsOfNames"/> currently present/

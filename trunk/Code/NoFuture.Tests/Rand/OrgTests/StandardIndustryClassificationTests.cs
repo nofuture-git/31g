@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Tests.OrgTests
         [Test]
         public void TestRandomSic()
         {
-            var testResult = StandardIndustryClassification.RandomSic();
+            var testResult = StandardIndustryClassification.RandomStandardIndustryClassification();
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult.Value);
         }

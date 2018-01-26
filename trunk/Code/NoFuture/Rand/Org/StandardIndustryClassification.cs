@@ -47,10 +47,11 @@ namespace NoFuture.Rand.Org
         /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static StandardIndustryClassification RandomSic(Predicate<StandardIndustryClassification> filterBy = null)
+        public static StandardIndustryClassification RandomStandardIndustryClassification(
+            Predicate<StandardIndustryClassification> filterBy = null)
         {
             var secSics = AllSicWithSecResults;
-            if(filterBy == null)
+            if (filterBy == null)
                 return secSics[Etx.RandomInteger(0, secSics.Length - 1)];
 
             secSics = secSics.Where(s => filterBy(s)).ToArray();

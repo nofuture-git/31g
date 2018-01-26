@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Tests.OrgTests
         [Test]
         public void TestRandomMarket()
         {
-            var testResult = NaicsMarket.RandomMarket();
+            var testResult = NaicsMarket.RandomNaicsMarket();
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult.Description);
         }
@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Tests.OrgTests
         [Test]
         public void TestRandomSuperSector()
         {
-            var testResult = NaicsSuperSector.RandomSuperSector();
+            var testResult = NaicsSuperSector.RandomNaicsSuperSector();
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult.Description);
         }
@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Tests.OrgTests
         [Test]
         public void TestRandomPrimarySector()
         {
-            var testResult = NaicsPrimarySector.RandomPrimarySector();
+            var testResult = NaicsPrimarySector.RandomNaicsPrimarySector();
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult.Description);
         }
@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Tests.OrgTests
         [Test]
         public void TestRandomSector()
         {
-            var testResult = NaicsSector.RandomSector();
+            var testResult = NaicsSector.RandomNaicsSector();
             Assert.IsNotNull(testResult);
             System.Diagnostics.Debug.WriteLine(testResult.Description);
         }

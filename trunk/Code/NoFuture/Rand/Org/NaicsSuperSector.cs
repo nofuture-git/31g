@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Org
         /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static NaicsSuperSector RandomSuperSector(Predicate<NaicsSuperSector> filterBy = null)
+        public static NaicsSuperSector RandomNaicsSuperSector(Predicate<NaicsSuperSector> filterBy = null)
         {
             var superSectors = NorthAmericanIndustryClassification.AllSectors;
             if (superSectors == null)

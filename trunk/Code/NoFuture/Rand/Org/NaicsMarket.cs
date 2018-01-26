@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Org
@@ -17,9 +16,9 @@ namespace NoFuture.Rand.Org
         /// </param>
         /// <returns></returns>
         [RandomFactory]
-        public static NaicsMarket RandomMarket(Predicate<NaicsMarket> filterBy = null)
+        public static NaicsMarket RandomNaicsMarket(Predicate<NaicsMarket> filterBy = null)
         {
-            var randParent = NaicsSector.RandomSector();
+            var randParent = NaicsSector.RandomNaicsSector();
             return randParent?.GetRandomClassification(filterBy);
         }
     }

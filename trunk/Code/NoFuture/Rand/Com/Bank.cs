@@ -122,6 +122,7 @@ namespace NoFuture.Rand.Com
             bank.BusinessAddress = new Tuple<UsStreetPo, UsCityStateZip>(null,
                 new UsCityStateZip(new AddressData {City = city, StateAbbrev = state}));
             bank.Rssd = new ResearchStatisticsSupervisionDiscount {Value = rssd};
+            bank.RoutingNumber = RoutingTransitNumber.RandomRoutingNumber();
             bank.UpsertName(KindsOfNames.Legal, name);
             bank.UpsertName(KindsOfNames.Abbrev, abbrev);
 

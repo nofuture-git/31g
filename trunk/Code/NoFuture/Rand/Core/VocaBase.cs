@@ -30,7 +30,10 @@ namespace NoFuture.Rand.Core
             Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Group, groupName));
         }
 
-        public int CountOfNames => Names.Count;
+        public int GetCountOfNames()
+        {
+            return Names.Count;
+        }
 
         public virtual void UpsertName(KindsOfNames k, string name)
         {
@@ -97,7 +100,7 @@ namespace NoFuture.Rand.Core
         public override bool Equals(object obj)
         {
             var voca = obj as IVoca;
-            if(voca == null || CountOfNames != voca.CountOfNames)
+            if(voca == null || GetCountOfNames() != voca.GetCountOfNames())
                 return base.Equals(obj);
 
             return Names.All(v => voca.AnyOfKindAndValue(v.Item1, v.Item2));
