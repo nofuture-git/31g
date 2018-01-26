@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Org
 {
+    /// <inheritdoc />
     /// <summary>
     /// An intermediate base type to keep from having alot of redundant code for the TryThisParseXml
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [Serializable]
     public abstract class ClassificationBase<T> : XmlDocXrefIdentifier where T:XmlDocXrefIdentifier, new()
     {
         protected readonly List<T> divisions = new List<T>();
@@ -34,8 +38,7 @@ namespace NoFuture.Rand.Org
 
             foreach (var cNode in elem.ChildNodes)
             {
-                var cElem = cNode as XmlElement;
-                if (cElem == null)
+                if (!(cNode is XmlElement cElem))
                     continue;
                 var sector = new T();
                 if (sector.TryThisParseXml(cElem))
@@ -49,6 +52,23 @@ namespace NoFuture.Rand.Org
         {
             //Value Description
             return string.Join("-", Value, Description);
+        }
+
+        protected internal virtual T GetRandomClassification(Predicate<T> filterBy = null)
+        {
+            var allInThisGroup = Divisions;
+            if (allInThisGroup == null)
+                return null;
+
+            if (filterBy != null)
+            {
+                allInThisGroup = allInThisGroup.Where(p => filterBy(p)).ToList();
+                if (!allInThisGroup.Any())
+                    return null;
+            }
+
+            var pickOne = Etx.RandomInteger(0, allInThisGroup.Count - 1);
+            return allInThisGroup[pickOne];
         }
     }
 }

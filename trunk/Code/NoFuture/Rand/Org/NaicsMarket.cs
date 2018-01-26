@@ -19,20 +19,8 @@ namespace NoFuture.Rand.Org
         [RandomFactory]
         public static NaicsMarket RandomMarket(Predicate<NaicsMarket> filterBy = null)
         {
-            var randSector = NaicsSector.RandomSector();
-
-            var markets = randSector.Divisions;
-            if (markets == null)
-                return null;
-
-            if (filterBy != null)
-            {
-                markets = markets.Where(m => filterBy(m)).ToList();
-                if (!markets.Any())
-                    return null;
-            }
-            var pickOne = Etx.RandomInteger(0, markets.Count - 1);
-            return markets[pickOne];
+            var randParent = NaicsSector.RandomSector();
+            return randParent?.GetRandomClassification(filterBy);
         }
     }
 }

@@ -22,24 +22,8 @@ namespace NoFuture.Rand.Org
         [RandomFactory]
         public static NaicsPrimarySector RandomPrimarySector(Predicate<NaicsPrimarySector> filterBy = null)
         {
-            var superSectors = NorthAmericanIndustryClassification.AllSectors;
-            if (superSectors == null)
-                return null;
-
-            
-            var randSuperSector = NaicsSuperSector.RandomSuperSector();
-
-            var primarySectors = randSuperSector.Divisions;
-            if (primarySectors == null)
-                return null;
-
-            if (filterBy != null)
-            {
-                primarySectors = primarySectors.Where(p => filterBy(p)).ToList();
-            }
-
-            var pickOne = Etx.RandomInteger(0, primarySectors.Count - 1);
-            return primarySectors[pickOne];
+            var randParent = NaicsSuperSector.RandomSuperSector();
+            return randParent?.GetRandomClassification(filterBy);
         }
     }
 }

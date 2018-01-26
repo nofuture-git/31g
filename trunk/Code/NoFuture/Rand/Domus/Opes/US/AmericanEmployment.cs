@@ -137,7 +137,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         protected internal override void RandomizeAllItems(OpesOptions options)
         {
             //expecting the caller to have passed in a hire-date to termination-date
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
             if (Inception == DateTime.MinValue)
@@ -178,7 +178,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual List<Tuple<DateTime, DateTime?>> GetYearsOfServiceInDates(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
             var ranges = new List<Tuple<DateTime, DateTime?>>();
 
             var stDt = options.Inception.Date;

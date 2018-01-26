@@ -167,12 +167,14 @@ namespace NoFuture.Rand.Gov.US
             var strVal = eduNode?.Attributes?[PERCENT_HIGHSCHOOL_GRAD]?.Value;
             if (!string.IsNullOrWhiteSpace(strVal) && double.TryParse(strVal, out var highSchoolGrad))
             {
-                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.HighSchool | OccidentalEdu.Grad, highSchoolGrad));
+                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.HighSchool | OccidentalEdu.Grad,
+                    Math.Round(highSchoolGrad, 2)));
             }
             strVal = eduNode?.Attributes?[PERCENT_COLLEGE_GRAD]?.Value;
             if (!string.IsNullOrWhiteSpace(strVal) && double.TryParse(strVal, out var collegeGrad))
             {
-                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.Bachelor | OccidentalEdu.Grad, collegeGrad));
+                PercentOfGrads.Add(new Tuple<OccidentalEdu, double>(OccidentalEdu.Bachelor | OccidentalEdu.Grad,
+                    Math.Round(collegeGrad, 2)));
             }
         }
 

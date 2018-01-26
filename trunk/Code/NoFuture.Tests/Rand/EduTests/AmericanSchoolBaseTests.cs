@@ -18,12 +18,11 @@ namespace NoFuture.Rand.Tests.EduTests
             var testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(null, null);
 
             //test resolves to natl avg's when no state
-            Assert.AreEqual(82.0, testResult);
+            Assert.AreEqual(89.6, testResult);
             testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(null, NorthAmericanRace.Mixed);
-            Assert.AreEqual(82.0, testResult);
+            Assert.AreEqual(89.6, testResult);
             testResult = AmericanSchoolBase.SolvePercentGradByStateAndRace(null, NorthAmericanRace.AmericanIndian);
-            Assert.AreEqual(70.0, testResult);
-
+            Assert.AreEqual(77.6, testResult);
             var testState = UsState.GetStateByPostalCode("CA");
             var testStateData = UsStateData.GetStateData(testState.ToString());
             Assert.IsNotNull(testStateData);

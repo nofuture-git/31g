@@ -112,7 +112,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         protected internal override void RandomizeAllItems(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
             AssignFactorValues(options.FactorOptions);
             options.Interval = Interval.Annually;
             var items = GetItemsForRange(options);
@@ -122,7 +122,7 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
 
             var amt = options.SumTotal == null || options.SumTotal == Pecuniam.Zero
                 ? _totalEquity.ToPecuniam()
@@ -184,7 +184,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = RiskFreeInterestRate.DF_VALUE;
 
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
 
             var startDate = options.Inception;
             var amt = options.SumTotal;
@@ -302,7 +302,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
 
             options.DerivativeSlope = -0.2D;
 
@@ -326,7 +326,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
             options.PossibleZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
 
             //remove obvious rural related items for everyone except those who are way out in the country
@@ -352,7 +352,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
             options.PossibleZeroOuts.AddRange(new[]
             {
                 "Certificate of Deposit", "Insurance Policies",
@@ -374,7 +374,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// <returns></returns>
         protected internal Dictionary<string, double> GetSecuritiesAssetNames2RandomRates(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
             var tOptions = options.GetClone();
             tOptions.PossibleZeroOuts.AddRange(new[] { "Derivatives" });
             var d = GetItemNames2Portions(AssetGroupNames.SECURITIES, tOptions);

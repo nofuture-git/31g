@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Org
 {
@@ -16,5 +17,18 @@ namespace NoFuture.Rand.Org
         public override string LocalName => "cip-code";
 
         public override string Abbrev => "CIP";
+
+        /// <summary>
+        /// Gets a Classification of Instructional Programs at Random
+        /// </summary>
+        /// <param name="filterBy"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static ClassificationOfInstructionalPrograms RandomClassificationInstructionalProgram(
+            Predicate<ClassificationOfInstructionalPrograms> filterBy = null)
+        {
+            var randParent = SocDetailedOccupation.RandomSocDetailedOccupation();
+            return randParent?.GetRandomClassification(filterBy);
+        }
     }
 }

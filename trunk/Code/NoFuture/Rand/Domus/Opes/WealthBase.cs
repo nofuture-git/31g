@@ -386,7 +386,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </returns>
         public virtual List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
 
             var grpNames = GetGroupNames(Division);
 
@@ -404,7 +404,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// </returns>
         public virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName, OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
 
             //get all the item names we are targeting
             var itemNames = GetItemNames(Division).Where(x =>
@@ -904,7 +904,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         protected internal virtual Pondus[] GetItemsForRange(OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
 
             var itemsout = new List<Pondus>();
 
@@ -925,7 +925,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         protected internal virtual Pondus[] GetItemsForRange(Tuple<string, double> grp2Rate, OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
 
             var itemsout = new List<Pondus>();
 
@@ -963,7 +963,7 @@ namespace NoFuture.Rand.Domus.Opes
         /// <returns></returns>
         protected internal virtual Pondus GetPondusForItemAndGroup(string itemName, string grpName, OpesOptions options)
         {
-            options = options ?? new OpesOptions();
+            options = options ?? OpesOptions.RandomOpesOptions();
             var p = new Pondus(itemName, options.Interval)
             {
                 Inception = options.Inception,

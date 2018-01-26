@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Xml;
-using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Org
 {
@@ -60,8 +58,7 @@ namespace NoFuture.Rand.Org
                 var tempList = new List<NaicsSuperSector>();
                 foreach (var node in ssElements)
                 {
-                    var ssElem = node as XmlElement;
-                    if (ssElem == null)
+                    if (!(node is XmlElement ssElem))
                         continue;
                     ssOut = new NaicsSuperSector();
                     if (ssOut.TryThisParseXml(ssElem))

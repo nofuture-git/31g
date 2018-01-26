@@ -148,6 +148,11 @@ namespace NoFuture.Rand.Org
             return new[] { "35-301", "35-303", "35-304", "39-30" }.Any(s => soc.Value.StartsWith(s));
         }
 
+        /// <summary>
+        /// Asserts if the given occupation is likely associated with a Labor Union
+        /// </summary>
+        /// <param name="soc"></param>
+        /// <returns></returns>
         public static bool IsLaborUnion(SocDetailedOccupation soc)
         {
             return new[]
@@ -157,6 +162,11 @@ namespace NoFuture.Rand.Org
             }.Any(s => soc.Value.StartsWith(s));
         }
 
+        /// <summary>
+        /// Asserts if the given occupation is likely to require a higher education degree
+        /// </summary>
+        /// <param name="soc"></param>
+        /// <returns></returns>
         public static bool IsDegreeRequired(SocDetailedOccupation soc)
         {
             return new[]
