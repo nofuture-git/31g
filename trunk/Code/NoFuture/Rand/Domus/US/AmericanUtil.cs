@@ -260,7 +260,7 @@ namespace NoFuture.Rand.Domus.US
             //move the adjusted child-dob date back by calc'ed years 
             var parentDob = dtPm.AddYears(Convert.ToInt32(Math.Round(avgAgeCouldMarry, 0))*-1);
 
-            var aParent = new American(parentDob, parentGender, false);
+            var aParent = American.RandomAmerican(parentDob, parentGender, false);
             return aParent;
         }
 
@@ -289,7 +289,7 @@ namespace NoFuture.Rand.Domus.US
             var spouseDob = myDob.Value.AddYears(ageDiff).AddDays(Etx.RandomInteger(1, 360) * Etx.RandomPlusOrMinus());
 
             //define spouse
-            return new American(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);
+            return American.RandomAmerican(spouseDob, gender == Gender.Female ? Gender.Male : Gender.Female);
 
         }
 

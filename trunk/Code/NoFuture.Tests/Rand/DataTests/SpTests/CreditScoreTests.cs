@@ -4,7 +4,6 @@ using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
-using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
@@ -35,7 +34,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [Test]
         public void TestGetRandomInterestRate()
         {
-            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
+            var testInput = American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore(testInput.BirthCert.DateOfBirth)
             {
@@ -52,7 +51,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [Test]
         public void TestGetRandomMax()
         {
-            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
+            var testInput = American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female);
 
             var testSubject = new Data.Sp.PersonalCreditScore(testInput.BirthCert.DateOfBirth)
             {

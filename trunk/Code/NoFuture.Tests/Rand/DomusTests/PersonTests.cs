@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Domus;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
@@ -17,7 +16,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void AmericanTests()
         {
             var testDob = new DateTime(1974,5,6);
-            var testResult = new American(testDob, Gender.Female);
+            var testResult = American.RandomAmerican(testDob, Gender.Female);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(Gender.Unknown, testResult.MyGender);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.LastName));
@@ -28,7 +27,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestAmericanFull()
         {
-            var testResult = new American(DateTime.Now.AddYears(-36), Gender.Female, true);
+            var testResult = American.RandomAmerican(DateTime.Now.AddYears(-36), Gender.Female, true);
             Assert.IsNotNull(testResult.GetMother());
             Assert.AreNotEqual(0, testResult.GetMother().GetChildrenAt(null));
         }
@@ -36,7 +35,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void NorthAmericanEduTests()
         {
-            var amer = new American(Etx.RandomAdultBirthDate(), Gender.Female);
+            var amer = American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female);
             var testResult = amer.GetRandomEducation();
 
             Assert.IsNotNull(testResult);
@@ -165,7 +164,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestNorthAmericanWithFamily()
         {
-            var testResult = new American(DateTime.Now.AddYears(-40), Gender.Female, true);
+            var testResult = American.RandomAmerican(DateTime.Now.AddYears(-40), Gender.Female, true);
 
             Assert.IsNotNull(testResult.GetMother());
             Assert.IsNotNull(testResult.GetFather());
@@ -175,7 +174,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestResolveParents()
         {
-            var testResult = new American(DateTime.Now.AddYears(-40), Gender.Female);
+            var testResult = American.RandomAmerican(DateTime.Now.AddYears(-40), Gender.Female);
             Assert.IsNull(testResult.GetMother());
             Assert.IsNull(testResult.GetFather());
             testResult.ResolveParents();
@@ -188,7 +187,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestGetMaritalStatus()
         {
-            var testSubject = new American(DateTime.Now.AddYears(-40), Gender.Female);
+            var testSubject = American.RandomAmerican(DateTime.Now.AddYears(-40), Gender.Female);
 
             var testResult = testSubject.GetMaritalStatusAt(null);
 
@@ -206,11 +205,11 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestIsValidDobOfChild()
         {
-            var testPerson = new American(new DateTime(1955,6,20), Gender.Female, false);
+            var testPerson = American.RandomAmerican(new DateTime(1955,6,20), Gender.Female, false);
 
-            testPerson.AddChild(new American(new DateTime(1976, 10, 2), Gender.Female, false));
-            testPerson.AddChild(new American(new DateTime(1986, 3, 11), Gender.Female, false));
-            testPerson.AddChild(new American(new DateTime(1982, 12, 30), Gender.Female, false));
+            testPerson.AddChild(American.RandomAmerican(new DateTime(1976, 10, 2), Gender.Female, false));
+            testPerson.AddChild(American.RandomAmerican(new DateTime(1986, 3, 11), Gender.Female, false));
+            testPerson.AddChild(American.RandomAmerican(new DateTime(1982, 12, 30), Gender.Female, false));
 
             var testDob = new DateTime(1985, 9, 10);//conception ~ 12/4/1984
 
@@ -231,9 +230,9 @@ namespace NoFuture.Rand.Tests.DomusTests
             testResult = testPerson.IsValidDobOfChild(testDob);
             Assert.IsTrue(testResult);
 
-            testPerson = new American(new DateTime(1982,4,13), Gender.Female, false);
-            testPerson.AddChild(new American(new DateTime(2007, 8, 30), Gender.Male));
-            testPerson.AddChild(new American(new DateTime(2009, 12, 20), Gender.Female));
+            testPerson = American.RandomAmerican(new DateTime(1982,4,13), Gender.Female, false);
+            testPerson.AddChild(American.RandomAmerican(new DateTime(2007, 8, 30), Gender.Male));
+            testPerson.AddChild(American.RandomAmerican(new DateTime(2009, 12, 20), Gender.Female));
 
             testDob = new DateTime(2009,3,6);
             Assert.IsFalse(testPerson.IsValidDobOfChild(testDob));
@@ -258,12 +257,12 @@ namespace NoFuture.Rand.Tests.DomusTests
                 DateTime.Now.Second);
 
 
-            var testPerson = new American(new DateTime((DateTime.Today.Year - 42), 6, 20), Gender.Female);
-            var firstSpouse = new American(new DateTime((DateTime.Today.Year - 46), 4, 4), Gender.Male);
+            var testPerson = American.RandomAmerican(new DateTime((DateTime.Today.Year - 42), 6, 20), Gender.Female);
+            var firstSpouse = American.RandomAmerican(new DateTime((DateTime.Today.Year - 46), 4, 4), Gender.Male);
 
             testPerson.AddSpouse(firstSpouse, firstMarriageDate, firstDivorceDate);
 
-            var secondSpouse = new American(new DateTime((DateTime.Today.Year - 43), 12, 16), Gender.Male);
+            var secondSpouse = American.RandomAmerican(new DateTime((DateTime.Today.Year - 43), 12, 16), Gender.Male);
             testPerson.AddSpouse(secondSpouse, secondMarriageDate);
 
             //expect true when on day-of-wedding
@@ -311,7 +310,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestGetNorthAmericanEdu()
         {
-            var testSubject = Person.RandomAmerican();
+            var testSubject = American.RandomAmerican();
             var testEdu = testSubject.GetEducationAt(null);
             Assert.IsNotNull(testEdu);
 
@@ -321,7 +320,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestGetParent()
         {
-            var testSubject = Person.RandomAmerican();
+            var testSubject = American.RandomAmerican();
             Assert.IsNotNull(testSubject.Parents);
             Assert.AreNotEqual(0,testSubject.Parents.Count());
 

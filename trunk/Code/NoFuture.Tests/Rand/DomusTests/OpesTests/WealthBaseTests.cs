@@ -8,7 +8,6 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
-using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 
@@ -41,13 +40,10 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [Test]
         public void TestGetPaycheck()
         {
-            var amer = new American(Etx.RandomAdultBirthDate(), Gender.Female);
             var options = new OpesOptions {IsRenting = true};
             options.FactorOptions.Gender = Gender.Female;
             options.FactorOptions.BirthDate = Etx.RandomAdultBirthDate();
             var testSubject = new AmericanIncome();
-
-            System.Console.WriteLine(string.Join(" ", amer.Age, amer.MaritialStatus, amer.Education, amer.Race));
 
             var testResult = testSubject.GetRandomYearlyIncome(null, options, 1.0.ToPecuniam());
             Console.WriteLine(testResult);

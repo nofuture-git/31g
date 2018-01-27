@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [Test]
         public void TestCreditCardCtor()
         {
-            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
+            var testInput = American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female);
             var testSubject = new VisaCc(testInput, DateTime.Today, null);
 
             Assert.IsNotNull(testSubject.Number);
@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [Test]
         public void TestMakePayment()
         {
-            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
+            var testInput = American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female);
             var testSubject = new CreditCardAccount(new VisaCc(testInput, DateTime.Today.AddDays(-15), null), CreditCardAccount.DF_MIN_PMT_RATE, new Pecuniam(1800.0M));
             Assert.IsTrue(testSubject.Max == new Pecuniam(1800.0M));
 
@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [Test]
         public void TestGetMinPayment()
         {
-            var testInput = new American(Etx.RandomAdultBirthDate(), Gender.Female);
+            var testInput = American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female);
             var testSubject = new CreditCardAccount(new VisaCc(testInput, new DateTime(2014,1,11), null), CreditCardAccount.DF_MIN_PMT_RATE, new Pecuniam(1800.0M));
 
             testSubject.AddPositiveValue(new DateTime(2014, 1, 11), new Pecuniam(63.32M));

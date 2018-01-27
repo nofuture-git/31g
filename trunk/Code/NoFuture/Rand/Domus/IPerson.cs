@@ -8,6 +8,9 @@ using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Domus
 {
+    /// <summary>
+    /// A general representation of a person
+    /// </summary>
     public interface IPerson : IVoca
     {
         #region properties

@@ -9,6 +9,7 @@ using NoFuture.Rand.Edu;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus
 {
@@ -117,8 +118,7 @@ namespace NoFuture.Rand.Domus
         {
             if (child?.BirthCert == null || child.BirthCert.DateOfBirth == DateTime.MinValue || child.Age <= 0)
                 return;
-            var diffInAge = Age - child.Age;
-            if (diffInAge < AmericanUtil.MIN_AGE_TO_BE_PARENT)
+            if (!IsValidDobOfChild(child.BirthCert.DateOfBirth))
                 return;
             _children.Add(new Child(child));
         }
@@ -168,37 +168,6 @@ namespace NoFuture.Rand.Domus
             return _addresses;
         }
 
-        #endregion
-
-        #region static api
-        /// <summary>
-        /// Returns a new <see cref="US.American"/> with all values selected at random.
-        /// </summary>
-        /// <returns></returns>
-        [RandomFactory]
-        public static American RandomAmerican()
-        {
-            return new American(Etx.RandomAdultBirthDate(), Etx.RandomCoinToss() ? Gender.Female : Gender.Male,
-                true);
-        }
-
-        /// <summary>
-        /// Returns a new <see cref="US.American"/> with all values select at random.
-        /// The City, Providence and Postal Code are limited to the major Canadian cities.
-        /// </summary>
-        /// <returns></returns>
-        [RandomFactory]
-        public static American RandomCanadian()
-        {
-            var canadian = RandomAmerican();
-            var cpp = CityArea.RandomCanadianCity();
-            var str = canadian.GetAddressAt(null)?.HomeStreetPo;
-            canadian.AddAddress(new PostalAddress { HomeCityArea = cpp, HomeStreetPo = str });
-
-            return canadian;
-        }
-
-
         /// <summary>
         /// Helper method to throw an ex when the Birth Cert is 
         /// unassigned.
@@ -214,6 +183,85 @@ namespace NoFuture.Rand.Domus
                         $"The random person named {p.LastName}, {p.FirstName} " +
                         "does not have a Date Of Birth assigned.");
         }
+
+        /// <summary>
+        /// Tests if the <see cref="childDob"/> is a real possiablity 
+        /// given the presence of siblings and thier date-of-birth.
+        /// </summary>
+        /// <param name="childDob"></param>
+        /// <returns>
+        /// True when the <see cref="childDob"/> is possiable given 
+        /// the this instance's age at this time and the date-of-birth
+        /// of siblings.
+        /// </returns>
+        /// <remarks>
+        /// Is coded with implicit presumption of <see cref="IPerson.MyGender"/> 
+        /// being <see cref="Gender.Female"/>, but does not test as such.
+        /// </remarks>
+        protected internal bool IsValidDobOfChild(DateTime childDob)
+        {
+            ThrowOnBirthDateNull(this);
+
+            var maxDate = BirthCert.DateOfBirth.AddYears(55);
+            var minDate = BirthCert.DateOfBirth.AddYears(13);
+
+            if (childDob < minDate || childDob > maxDate)
+            {
+                throw new RahRowRagee(
+                    $"The Child Date-of-Birth, {childDob}, does not fall " +
+                    $"within a rational range given the mother's Date-of-Birth of {BirthCert.DateOfBirth}");
+            }
+            var clildDobTuple = new Tuple<DateTime, DateTime>(childDob.AddDays(-1 * PREG_DAYS), childDob);
+
+            var bdayTuples =
+                Children.Where(x => x.Est.BirthCert != null)
+                    .Select(
+                        x =>
+                            new Tuple<DateTime, DateTime>(x.Est.BirthCert.DateOfBirth.AddDays(-1*(PREG_DAYS + MS_DAYS)),
+                                x.Est.BirthCert.DateOfBirth.AddDays(MS_DAYS))).ToList();
+            foreach (var s in bdayTuples)
+            {
+                var xDoC = s.Item1;
+                var xDoB = s.Item2;
+
+                var yDoC = clildDobTuple.Item1;
+                var yDoB = clildDobTuple.Item2;
+
+                //neither of the (y) values can appear between the x values
+                if (yDoC.IsBetween(xDoC, xDoB) || yDoB.IsBetween(xDoC, xDoB))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Handle detail for random <see cref="childDob"/> being the same date as 
+        /// an existing sibling.  
+        /// </summary>
+        /// <param name="childDob"></param>
+        /// <param name="minutesAfterChildDob"></param>
+        /// <returns>
+        /// False when no sibling shares the same DOB (year, month, day)
+        /// True when one or more siblings shares this DOB.
+        /// The <see cref="minutesAfterChildDob"/> will be equal to the
+        /// sibling's DOB plus 120 to 539 seconds.
+        /// </returns>
+        protected internal bool IsTwin(DateTime childDob, out DateTime minutesAfterChildDob)
+        {
+            var siblingsBdays = Children.Where(x => x.Est.BirthCert != null).Select(x => x.Est.BirthCert.DateOfBirth).ToList();
+
+            if (siblingsBdays.Any(x => DateTime.Compare(x.Date, childDob.Date) == 0))
+            {
+                childDob = siblingsBdays.Last(x => DateTime.Compare(x.Date, childDob.Date) == 0);
+                minutesAfterChildDob = childDob.AddMinutes(Etx.RandomInteger(2, 8)).AddSeconds(Etx.RandomInteger(0, 59));
+                return true;
+            }
+            minutesAfterChildDob = DateTime.MinValue;
+            return false;
+        }
+
         #endregion
+
     }
 }
