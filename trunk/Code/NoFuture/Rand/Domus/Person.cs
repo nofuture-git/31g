@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Domus
         #region fields
         private readonly HashSet<Uri> _netUris = new HashSet<Uri>();
         private readonly HashSet<Child> _children = new HashSet<Child>();
-        private readonly Personality _personality = Personality.RandomPersonality();
+
         private readonly List<PostalAddress> _addresses = new List<PostalAddress>();
         private Gender _myGender;
         private readonly HashSet<Parent> _parents = new HashSet<Parent>();
@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Domus
             set => UpsertName(KindsOfNames.Surname, value);
         }
         public virtual IEnumerable<Uri> NetUri => _netUris;
-        public Personality Personality => _personality;
+        public Personality Personality { get; set; }
         public abstract IEducation Education { get; set; }
         public PostalAddress Address => GetAddressAt(null);
         public IRelation Spouse => GetSpouseAt(null);

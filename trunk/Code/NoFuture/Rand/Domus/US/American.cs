@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Edu.US;
 using NoFuture.Rand.Geo;
@@ -739,6 +740,7 @@ namespace NoFuture.Rand.Domus.US
                 City = dobAddr.City,
                 State = dobAddr.StateAbbrev
             };
+            amer.Personality = Personality.RandomPersonality();
 
             //almost always returns null
             amer.DeathCert = AmericanUtil.GetRandomDeathCert(amer);

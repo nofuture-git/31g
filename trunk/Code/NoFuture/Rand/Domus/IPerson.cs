@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Domus
         string LastName { get; set; }
         Gender MyGender { get; set; }
         IEnumerable<Uri> NetUri { get; }
-        Pneuma.Personality Personality { get; }
+        Pneuma.Personality Personality { get; set; }
         IEducation Education { get; set; }
         IRelation Spouse { get; }
         MaritialStatus MaritialStatus { get; }
