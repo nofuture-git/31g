@@ -13,6 +13,7 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus
 {
+    /// <inheritdoc cref="IPerson" />
     [Serializable]
     public abstract class Person : VocaBase, IPerson
     {
@@ -28,6 +29,8 @@ namespace NoFuture.Rand.Domus
         private readonly List<PostalAddress> _addresses = new List<PostalAddress>();
         private Gender _myGender;
         private readonly HashSet<Parent> _parents = new HashSet<Parent>();
+        private readonly HashSet<Spouse> _spouses = new HashSet<Spouse>();
+
         #endregion
 
         #region properties
@@ -65,8 +68,6 @@ namespace NoFuture.Rand.Domus
 
         public abstract Spouse GetSpouseAt(DateTime? dt);
 
-        public abstract Spouse GetSpouseNear(DateTime? dt);
-
         public virtual List<Child> GetChildrenAt(DateTime? dt)
         {
             var ddt = dt.GetValueOrDefault(DateTime.Now);
@@ -94,7 +95,7 @@ namespace NoFuture.Rand.Domus
             if (DeathCert != null && dt > DeathCert.DateOfDeath)
                 dt = DeathCert.DateOfDeath;
 
-            return Util.Core.Etc.CalcAge(BirthCert.DateOfBirth, dt);
+            return Etc.CalcAge(BirthCert.DateOfBirth, dt);
         }
 
         public void AddAddress(PostalAddress addr)
@@ -108,25 +109,92 @@ namespace NoFuture.Rand.Domus
         {
             if (parent?.BirthCert == null || parent.BirthCert.DateOfBirth == DateTime.MinValue || parent.Age <= 0)
                 return;
-            var diffInAge = parent.Age - Age;
-            if (diffInAge < AmericanUtil.MIN_AGE_TO_BE_PARENT)
+            if (!(parent is Person pparent))
                 return;
+
+            //I may have already been added to parent's children so my DoB would always looks invalid
+            var isThisMe = pparent.Children.Any(c =>
+                c.Est.BirthCert.DateOfBirth == BirthCert.DateOfBirth && c.Est.Equals(this));
+
+            //insure that my DOB is in a rational range of the parents
+            if (!isThisMe && !pparent.IsValidDobOfChild(BirthCert.DateOfBirth, parentalTitle))
+                return;
+
             _parents.Add(new Parent(parent, parentalTitle));
         }
 
-        public void AddChild(IPerson child)
+        public void AddChild(IPerson child, KindsOfNames? myParentalTitle = null)
         {
             if (child?.BirthCert == null || child.BirthCert.DateOfBirth == DateTime.MinValue || child.Age <= 0)
                 return;
-            if (!IsValidDobOfChild(child.BirthCert.DateOfBirth))
+            var title = myParentalTitle ?? (MyGender == Gender.Female ? KindsOfNames.Mother : KindsOfNames.Father) |
+                        KindsOfNames.Biological;
+
+            if (!IsValidDobOfChild(child.BirthCert.DateOfBirth, title))
                 return;
+
             _children.Add(new Child(child));
         }
+
+        public void AddSpouse(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null)
+        {
+            //we need this or will will blow out the stack 
+            if (GetSpouses().Any(x => DateTime.Compare(x.MarriedOn.Date, marriedOn.Date) == 0))
+                return;
+            var spouses = GetSpouses();
+            //check that everyone is alive
+            if (DeathCert != null && marriedOn > DeathCert.DateOfDeath)
+                return;
+
+            if (spouse.DeathCert != null && marriedOn > spouse.DeathCert.DateOfDeath)
+                return;
+
+            if (separatedOn == null)
+            {
+                //when this is the bride
+                if (MyGender == Gender.Female && DateTime.Now >= marriedOn)
+                {
+                    if (LastName != null && !AnyOfKind(KindsOfNames.Maiden))
+                        UpsertName(KindsOfNames.Maiden, BirthCert.GetFatherSurname() ?? LastName);
+
+                    LastName = spouse.LastName;
+                }
+            }
+            else if (MyGender == Gender.Female && DateTime.Now >= separatedOn.Value)
+            {
+                //add ex-husband last name to list
+                UpsertName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);
+
+                //set back to maiden name
+                var maidenName = GetName(KindsOfNames.Maiden);
+                if (!String.IsNullOrWhiteSpace(maidenName))
+                    LastName = maidenName;
+            }
+            spouses.Add(new Spouse(this, spouse, marriedOn, separatedOn, spouses.Count + 1));
+
+            //recepricate to spouse
+            spouse.AddSpouse(this, marriedOn, separatedOn);
+        }
+
 
         public void AddUri(Uri uri)
         {
             if(uri != null)
                 _netUris.Add(uri);
+        }
+
+        protected internal HashSet<Spouse> GetSpouses()
+        {
+            return _spouses;
+        }
+
+        public virtual Spouse GetSpouseNear(DateTime? dt)
+        {
+            var ddt = (dt ?? DateTime.Now).Date;
+
+            return GetSpouseAt(ddt) ??
+                   GetSpouseAt(ddt.AddDays(-1 * (PREG_DAYS + MS_DAYS))) ??
+                   GetSpouseAt(ddt.AddDays(PREG_DAYS + MS_DAYS));
         }
 
         protected internal abstract bool IsLegalAdult(DateTime? dt);
@@ -135,7 +203,7 @@ namespace NoFuture.Rand.Domus
         /// Gets the Biological Mother
         /// </summary>
         /// <returns></returns>
-        protected internal IPerson GetMother()
+        protected internal IPerson GetBiologicalMother()
         {
             return GetParent(KindsOfNames.Mother | KindsOfNames.Biological);
         }
@@ -145,7 +213,7 @@ namespace NoFuture.Rand.Domus
         /// instance of <see cref="IPerson"/>, of this instance.
         /// </summary>
         /// <returns></returns>
-        protected internal IPerson GetFather()
+        protected internal IPerson GetBiologicalFather()
         {
             return GetParent(KindsOfNames.Father | KindsOfNames.Biological);
         }
@@ -189,6 +257,7 @@ namespace NoFuture.Rand.Domus
         /// given the presence of siblings and thier date-of-birth.
         /// </summary>
         /// <param name="childDob"></param>
+        /// <param name="myParentalTitle"></param>
         /// <returns>
         /// True when the <see cref="childDob"/> is possiable given 
         /// the this instance's age at this time and the date-of-birth
@@ -198,26 +267,40 @@ namespace NoFuture.Rand.Domus
         /// Is coded with implicit presumption of <see cref="IPerson.MyGender"/> 
         /// being <see cref="Gender.Female"/>, but does not test as such.
         /// </remarks>
-        protected internal bool IsValidDobOfChild(DateTime childDob)
+        protected internal bool IsValidDobOfChild(DateTime childDob, KindsOfNames? myParentalTitle = null)
         {
             ThrowOnBirthDateNull(this);
+            var title = myParentalTitle ?? (MyGender == Gender.Female ? KindsOfNames.Mother : KindsOfNames.Father) |
+                        KindsOfNames.Biological;
+            var p2C = IsValidDobOfChild2Parent(childDob);
+            if (!p2C)
+                return false;
 
-            var maxDate = BirthCert.DateOfBirth.AddYears(55);
-            var minDate = BirthCert.DateOfBirth.AddYears(13);
+            return !ToDiscreteKindsOfNames(title).Contains(KindsOfNames.Biological) ||
+                   IsValidDobChild2Siblings(childDob);
+        }
 
-            if (childDob < minDate || childDob > maxDate)
-            {
-                throw new RahRowRagee(
-                    $"The Child Date-of-Birth, {childDob}, does not fall " +
-                    $"within a rational range given the mother's Date-of-Birth of {BirthCert.DateOfBirth}");
-            }
+        /// <summary>
+        /// Checks that a child&apos;s birth date is in a rational range considering the 
+        /// birth dates of their siblings
+        /// </summary>
+        /// <param name="childDob"></param>
+        /// <returns></returns>
+        protected internal bool IsValidDobChild2Siblings(DateTime childDob)
+        {
+            //there are not siblings
+            if (!Children.Any())
+                return true;
+
+            //check the childs dob against their siblings
             var clildDobTuple = new Tuple<DateTime, DateTime>(childDob.AddDays(-1 * PREG_DAYS), childDob);
 
             var bdayTuples =
                 Children.Where(x => x.Est.BirthCert != null)
                     .Select(
                         x =>
-                            new Tuple<DateTime, DateTime>(x.Est.BirthCert.DateOfBirth.AddDays(-1*(PREG_DAYS + MS_DAYS)),
+                            new Tuple<DateTime, DateTime>(
+                                x.Est.BirthCert.DateOfBirth.AddDays(-1 * (PREG_DAYS + MS_DAYS)),
                                 x.Est.BirthCert.DateOfBirth.AddDays(MS_DAYS))).ToList();
             foreach (var s in bdayTuples)
             {
@@ -233,6 +316,26 @@ namespace NoFuture.Rand.Domus
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Validates that the child&apos;s birth date is rational compared to the parent&apos;s
+        /// </summary>
+        /// <param name="childDob"></param>
+        protected internal bool IsValidDobOfChild2Parent(DateTime childDob)
+        {
+            //check the childs dob against the parent
+            var maxDate = MyGender == Gender.Female
+                ? BirthCert.DateOfBirth.AddYears(55)
+                : BirthCert.DateOfBirth.AddYears(80);
+            var minDate = BirthCert.DateOfBirth.AddYears(AmericanUtil.MIN_AGE_TO_BE_PARENT);
+
+            if (childDob < minDate || childDob > maxDate)
+            {
+                return false;
+            }
+
+            return DeathCert == null || DeathCert.DateOfDeath >= childDob;
         }
 
         /// <summary>

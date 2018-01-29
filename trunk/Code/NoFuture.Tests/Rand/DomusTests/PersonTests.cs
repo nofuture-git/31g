@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
@@ -28,8 +29,8 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestAmericanFull()
         {
             var testResult = American.RandomAmerican(DateTime.Now.AddYears(-36), Gender.Female, true);
-            Assert.IsNotNull(testResult.GetMother());
-            Assert.AreNotEqual(0, testResult.GetMother().GetChildrenAt(null));
+            Assert.IsNotNull(testResult.GetBiologicalMother());
+            Assert.AreNotEqual(0, testResult.GetBiologicalMother().GetChildrenAt(null));
         }
 
         [Test]
@@ -166,8 +167,8 @@ namespace NoFuture.Rand.Tests.DomusTests
         {
             var testResult = American.RandomAmerican(DateTime.Now.AddYears(-40), Gender.Female, true);
 
-            Assert.IsNotNull(testResult.GetMother());
-            Assert.IsNotNull(testResult.GetFather());
+            Assert.IsNotNull(testResult.GetBiologicalMother());
+            Assert.IsNotNull(testResult.GetBiologicalFather());
             
         }
 
@@ -175,11 +176,11 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestResolveParents()
         {
             var testResult = American.RandomAmerican(DateTime.Now.AddYears(-40), Gender.Female);
-            Assert.IsNull(testResult.GetMother());
-            Assert.IsNull(testResult.GetFather());
+            Assert.IsNull(testResult.GetBiologicalMother());
+            Assert.IsNull(testResult.GetBiologicalFather());
             testResult.ResolveParents();
-            Assert.IsNotNull(testResult.GetMother());
-            Assert.IsNotNull(testResult.GetFather());
+            Assert.IsNotNull(testResult.GetBiologicalMother());
+            Assert.IsNotNull(testResult.GetBiologicalFather());
 
 
         }
@@ -324,6 +325,66 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.IsNotNull(testSubject.Parents);
             Assert.AreNotEqual(0,testSubject.Parents.Count());
 
+        }
+
+        [Test]
+        public void TestAddParent()
+        {
+            var testMother = American.RandomAmerican(new DateTime(1970, 1, 1), Gender.Female);
+            var testChild =
+                American.RandomAmerican(testMother.BirthCert.DateOfBirth.AddYears(25).AddDays(28), Gender.Female);
+
+            testChild.AddParent(testMother, KindsOfNames.Biological | KindsOfNames.Mother);
+
+            Assert.AreEqual(1, testChild.Parents.Count());
+
+            var testResult =
+                testChild.Parents.FirstOrDefault(c => c.AnyOfKind(KindsOfNames.Biological | KindsOfNames.Mother));
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(testMother, testResult.Est);
+
+            //nothing changes 
+            testChild.AddParent(testMother, KindsOfNames.Biological | KindsOfNames.Mother);
+            testResult =
+                testChild.Parents.FirstOrDefault(c => c.AnyOfKind(KindsOfNames.Biological | KindsOfNames.Mother));
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(testMother, testResult.Est);
+
+            //adding a Parent does not add a child 
+            Assert.AreEqual(0, testResult.Est.Children.Count());
+
+            //cannot add when biological limits are exceeded
+            testMother = American.RandomAmerican(new DateTime(1993, 1, 1), Gender.Female);
+            testChild =
+                American.RandomAmerican(new DateTime(1996, 1, 1), Gender.Female);
+
+            testChild.AddParent(testMother, KindsOfNames.Mother | KindsOfNames.Biological);
+            Assert.AreEqual(0, testChild.Parents.Count());
+        }
+
+        [Test]
+        public void TestAddChild()
+        {
+            var testMother = American.RandomAmerican(new DateTime(1970, 1, 1), Gender.Female);
+            var testChild00 =
+                American.RandomAmerican(testMother.BirthCert.DateOfBirth.AddYears(25).AddDays(28), Gender.Female);
+
+            testMother.AddChild(testChild00);
+
+            Assert.AreEqual(1, testMother.Children.Count());
+
+            var testChild01 = American.RandomAmerican(testChild00.BirthCert.DateOfBirth.AddDays(28), Gender.Female);
+
+            //cannot add this child since DoB violates biological constraints
+            testMother.AddChild(testChild01);
+            Assert.AreEqual(1, testMother.Children.Count());
+
+            //but this is ok
+            testMother.AddChild(testChild01, KindsOfNames.Mother | KindsOfNames.Adopted);
+            Assert.AreEqual(2, testMother.Children.Count());
+
+            //adding child does not add parent
+            Assert.IsNull(testChild01.GetParent(KindsOfNames.Mother | KindsOfNames.Adopted));
         }
     }
 }

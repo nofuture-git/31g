@@ -58,17 +58,19 @@ namespace NoFuture.Rand.Domus
         Spouse GetSpouseAt(DateTime? dt);
 
         /// <summary>
+        /// Gets the <see cref="Domus.Spouse"/> at 
+        /// <see cref="dt"/>, or 308 days befor or after <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">Null for the current time</param>
+        /// <returns></returns>
+        Spouse GetSpouseNear(DateTime? dt);
+
+        /// <summary>
         /// Resolve the edu of this instance at time <see cref="dt"/>
         /// </summary>
         /// <param name="dt">Null for the current time right now.</param>
         /// <returns></returns>
         IEducation GetEducationAt(DateTime? dt);
-
-        /// <summary>
-        /// Adds the given postal address to the person
-        /// </summary>
-        /// <param name="addr"></param>
-        void AddAddress(PostalAddress addr);
 
         /// <summary>
         /// Resolves the <see cref="PostalAddress"/> which was current 
@@ -77,6 +79,19 @@ namespace NoFuture.Rand.Domus
         /// <param name="dt">Null for the current time right now.</param>
         /// <returns></returns>
         PostalAddress GetAddressAt(DateTime? dt);
+
+        /// <summary>
+        /// Helper method to get the age at time <see cref="atTime"/>
+        /// </summary>
+        /// <param name="atTime">Null for the current time right now.</param>
+        /// <returns></returns>
+        int GetAgeAt(DateTime? atTime);
+
+        /// <summary>
+        /// Adds the given postal address to the person
+        /// </summary>
+        /// <param name="addr"></param>
+        void AddAddress(PostalAddress addr);
 
         /// <summary>
         /// Adds the given person as a parent of <see cref="parentalTitle"/> kind.
@@ -88,11 +103,26 @@ namespace NoFuture.Rand.Domus
         void AddParent(IPerson parent, KindsOfNames parentalTitle);
 
         /// <summary>
-        /// Helper method to get the age at time <see cref="atTime"/>
+        /// Handles detail of adding a assigning a spouse to this instance and 
+        /// reciprocating such assignment to the <see cref="spouse"/>.  Additionaly
+        /// handles the assignment of names (i.e. <see cref="KindsOfNames.Surname"/> 
+        /// and <see cref="KindsOfNames.Maiden"/>).
         /// </summary>
-        /// <param name="atTime">Null for the current time right now.</param>
-        /// <returns></returns>
-        int GetAgeAt(DateTime? atTime);
+        /// <param name="spouse"></param>
+        /// <param name="marriedOn"></param>
+        /// <param name="separatedOn"></param>
+        void AddSpouse(IPerson spouse, DateTime marriedOn, DateTime? separatedOn = null);
+
+        /// <summary>
+        /// Adds the <see cref="IPerson"/> as a child of this 
+        /// person assuming the child$&apos;s birth date is rational in comparision
+        /// </summary>
+        /// <param name="child"></param>
+        /// <param name="myParentalTitle">
+        /// The default is Biological Mother or Father - use this 
+        /// to override that default (e.g. Adopted, etc.)
+        /// </param>
+        void AddChild(IPerson child, KindsOfNames? myParentalTitle = null);
 
         /// <summary>
         /// Adds the given <see cref="uri"/> to this person
