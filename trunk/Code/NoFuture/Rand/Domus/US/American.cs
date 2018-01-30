@@ -720,13 +720,13 @@ namespace NoFuture.Rand.Domus.US
             //[http://www.pewresearch.org/fact-tank/2014/07/08/two-of-every-five-u-s-households-have-only-wireless-phones/]
             if (Etx.RandomRollAboveOrAt(6, Etx.Dice.Ten))
                 amer.AddPhoneNumber(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home,
-                    Phone.RandomAmericanPhone(abbrv)));
+                    NorthAmericanPhone.RandomAmericanPhone(abbrv)));
 
             var isSmallChild = amer.GetAgeAt(null) < 12;
 
             if (!isSmallChild)
                 amer.AddPhoneNumber(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
-                    Phone.RandomAmericanPhone(abbrv)));
+                    NorthAmericanPhone.RandomAmericanPhone(abbrv)));
 
             amer.Race = UsCityStateZip.GetAmericanRace(csz?.ZipCode);
             if (amer.Race <= 0)

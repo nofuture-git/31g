@@ -5,11 +5,13 @@ using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Geo.CA;
 using NoFuture.Rand.Geo.US;
-using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Geo
 {
+    /// <summary>
+    /// Base type representing the second half of a typical Postal Address
+    /// </summary>
     [Serializable]
     public abstract class CityArea : ICited
     {
@@ -77,13 +79,17 @@ namespace NoFuture.Rand.Geo
         /// <param name="zipCodePrefix">
         /// Optional, will be picked at random with respect to population if whitespace or null.
         /// </param>
+        /// <param name="pickSuburbAtRandom">
+        /// Optional, will pick the actual metro city itself or one if its surrounding suburbs at random.
+        /// Set to false to force just the major metro city.
+        /// </param>
         /// <returns></returns>
         /// <remarks>
         /// Ranking is by population totals sourced from
         /// https://www.census.gov/geo/maps-data/data/docs/rel/zcta_cbsa_rel_10.txt
         /// </remarks>
         [RandomFactory]
-        public static UsCityStateZip RandomAmericanCity(string zipCodePrefix = null)
+        public static UsCityStateZip RandomAmericanCity(string zipCodePrefix = null, bool pickSuburbAtRandom = true)
         {
             const string HAS_HIGH_SCHOOL = "has-high-school";
             const string VALUE = "value";
@@ -139,7 +145,10 @@ namespace NoFuture.Rand.Geo
                 var pickNum = Etx.RandomInteger(0, zipCodes.Length - 1);
                 ctz.PostalCode = zipCodes[pickNum];
             }
-            return new UsCityStateZip(ctz);
+            var rr =  new UsCityStateZip(ctz);
+
+            rr.SetAddrDataToXmlValues(pickSuburbAtRandom);
+            return rr;
         }
 
         /// <summary>

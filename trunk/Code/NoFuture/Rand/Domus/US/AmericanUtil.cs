@@ -413,7 +413,7 @@ namespace NoFuture.Rand.Domus.US
                 String.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
                 return;
 
-            var mobilePhone = Phone.RandomAmericanPhone(addrMatchTo.HomeCityArea.GetPostalCodePrefix());
+            var mobilePhone = NorthAmericanPhone.RandomAmericanPhone(addrMatchTo.HomeCityArea.GetPostalCodePrefix());
             thisPerson.AddPhoneNumber(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
                 mobilePhone));
         }

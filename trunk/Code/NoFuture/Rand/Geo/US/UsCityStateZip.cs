@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Geo.US
 {
     /// <summary>
     /// A type to represent the typical City, State and ZIP code of a US Postal Address
+    /// (i.e. the second line of a US Postal Address)
     /// </summary>
     [Serializable]
     public class UsCityStateZip : CityArea
@@ -49,16 +50,8 @@ namespace NoFuture.Rand.Geo.US
         /// <param name="d">
         /// The criteria which on this this instance is situated.
         /// </param>
-        /// <param name="pickSuburbAtRandom">
-        /// Optional, will pick the actual metro city itself or one if its surrounding suburbs at random.
-        /// Set to false to force just the major metro city.
-        /// </param>
-        public UsCityStateZip(AddressData d, bool pickSuburbAtRandom = true) : base(d)
+        public UsCityStateZip(AddressData d) : base(d)
         {
-            var xmlNode = GetCityXmlNode();
-            if (xmlNode == null)
-                return;
-            ParseCityXmlNode(xmlNode, pickSuburbAtRandom);
         }
 
         #endregion
@@ -74,8 +67,20 @@ namespace NoFuture.Rand.Geo.US
         /// The additional 4 digits appearing after the 5 digit ZZIP Code
         /// </summary>
         public string PostalCodeAddonFour => data.PostalCodeSuffix;
+
+        /// <summary>
+        /// The Metropolitan Statistical Area of the given US City
+        /// </summary>
         public MStatArea Msa { get; set; }
+
+        /// <summary>
+        /// The core base statistical area of the given US City
+        /// </summary>
         public ComboMStatArea CbsaCode { get; set; }
+
+        /// <summary>
+        /// The average earning, over time, for the given US City
+        /// </summary>
         public LinearEquation AverageEarnings { get; set; }
 
         /// <summary>
@@ -120,6 +125,17 @@ namespace NoFuture.Rand.Geo.US
         }
 
         /// <summary>
+        /// Fetches and assigns the <see cref="AverageEarnings"/>, <see cref="Msa"/> and the <see cref="CbsaCode"/>
+        /// </summary>
+        public virtual void GetXmlData()
+        {
+            var xmlNode = GetCityXmlNode();
+            if (xmlNode == null)
+                return;
+            ParseCityXmlNode(xmlNode);
+        }
+
+        /// <summary>
         /// Attempts to turn <see cref="lastLine"/> into an instance of <see cref="UsCityStateZip"/>
         /// </summary>
         /// <param name="lastLine">
@@ -155,7 +171,8 @@ namespace NoFuture.Rand.Geo.US
 
             GetCity(lastLine, addrData);
 
-            cityStateZip = new UsCityStateZip(addrData, pickSuburbAtRandom) {Src = lastLine};
+            cityStateZip = new UsCityStateZip(addrData) {Src = lastLine};
+            cityStateZip.GetXmlData();
             return true;
         }
 
@@ -174,9 +191,7 @@ namespace NoFuture.Rand.Geo.US
 
             city = city.Replace(",", String.Empty).Trim();
 
-            //need to deal with oddities 
-            if (String.Equals("new york", city, StringComparison.OrdinalIgnoreCase))
-                city = "New York City";
+            city = FinesseCityName(city);
 
             addrData.City = city;
         }
@@ -285,8 +300,7 @@ namespace NoFuture.Rand.Geo.US
         }
 
         /// <summary>
-        /// Based on the <see cref="ZipCode"/> and <see cref="StateName"/> are 
-        /// assigned, picks a node, City node at random
+        /// Based on the <see cref="ZipCode"/> and <see cref="StateName"/> that are assigned.
         /// </summary>
         /// <returns></returns>
         protected internal XmlNode GetCityXmlNode()
@@ -318,11 +332,11 @@ namespace NoFuture.Rand.Geo.US
             //search by first 3 of Zip Code
             else if (!String.IsNullOrWhiteSpace(data.PostalCode) && data.PostalCode.Length >= 3)
             {
-                var zipCodePrefix= data.PostalCode.Substring(0, 3);
+                var zipCodePrefix = data.PostalCode.Substring(0, 3);
                 searchCrit = $"//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']/..";
                 matchedNodes = UsCityXml.SelectNodes(searchCrit);
             }
-            
+
             if (matchedNodes == null || matchedNodes.Count <= 0)
                 return null;
             if (matchedNodes.Count == 1)
@@ -334,7 +348,7 @@ namespace NoFuture.Rand.Geo.US
                 var matchedElem = matchedNode as XmlElement;
                 if (matchedElem == null)
                     continue;
-                if(!matchedElem.HasAttributes)
+                if (!matchedElem.HasAttributes)
                     continue;
                 var hasMsaCode = !String.IsNullOrWhiteSpace(matchedElem.GetAttribute(MSA_CODE));
                 var hasCbsaCode = !String.IsNullOrWhiteSpace(matchedElem.GetAttribute(CBSA_CODE));
@@ -483,22 +497,18 @@ namespace NoFuture.Rand.Geo.US
         }
 
         /// <summary>
-        /// Parses into this instance the data defined in <see cref="node"/>
+        /// Assigns the Msa and AverageEarnings properties based on a match to the underlying data.
         /// </summary>
         /// <param name="node"></param>
-        /// <param name="pickSuburbAtRandom">Optional, will choose a suburb of the given metro area.</param>
-        protected internal void ParseCityXmlNode(XmlNode node, bool pickSuburbAtRandom = true)
+        protected internal void ParseCityXmlNode(XmlNode node)
         {
             const string METRO = "Metro";
             const string MSA_TYPE = "msa-type";
             const string CBSA_TYPE = "cbsa-type";
 
             var cityNode = node as XmlElement;
-            if (cityNode?.Attributes[NAME] == null)
-                return;
-            data.City = cityNode.Attributes[NAME].Value ?? data.City;
 
-            if (!String.IsNullOrWhiteSpace(cityNode.Attributes[MSA_CODE]?.Value))
+            if (!String.IsNullOrWhiteSpace(cityNode?.Attributes[MSA_CODE]?.Value))
             {
                 Msa = new MStatArea { Value = cityNode.Attributes[MSA_CODE].Value };
                 if (!String.IsNullOrWhiteSpace(cityNode.Attributes[MSA_TYPE]?.Value))
@@ -508,7 +518,7 @@ namespace NoFuture.Rand.Geo.US
                         : UrbanCentric.City | UrbanCentric.Small;
                 }
             }
-            if (!String.IsNullOrWhiteSpace(cityNode.Attributes[CBSA_CODE]?.Value))
+            if (!String.IsNullOrWhiteSpace(cityNode?.Attributes[CBSA_CODE]?.Value))
             {
                 Msa = new MStatArea { Value = cityNode.Attributes[CBSA_CODE].Value };
                 if (!String.IsNullOrWhiteSpace(cityNode.Attributes[CBSA_TYPE]?.Value))
@@ -520,7 +530,19 @@ namespace NoFuture.Rand.Geo.US
             }
             AverageEarnings = GetAvgEarningsPerYear(cityNode) ??
                               UsStateData.GetStateData(StateName)?.AverageEarnings;
-            if(pickSuburbAtRandom)
+        }
+
+        /// <summary>
+        /// Overwrites the data of this instance with the values present in the underlying xml data.
+        /// </summary>
+        /// <param name="pickSuburbAtRandom"></param>
+        protected internal void SetAddrDataToXmlValues(bool pickSuburbAtRandom = true)
+        {
+            var cityNode = GetCityXmlNode() as XmlElement;
+            if (cityNode?.Attributes[NAME] == null)
+                return;
+            data.City = cityNode.Attributes[NAME].Value ?? data.City;
+            if (pickSuburbAtRandom)
                 GetSuburbCityName(cityNode);
         }
 

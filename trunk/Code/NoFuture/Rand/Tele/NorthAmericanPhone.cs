@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Xml;
 using NoFuture.Rand.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tele
 {
+    /// <inheritdoc />
     /// <summary>
     /// Telephone numbers in North America based on the  North American Numbering Plan
     /// </summary>
@@ -36,23 +40,15 @@ namespace NoFuture.Rand.Tele
 
         public NorthAmericanPhone(params Tuple<PhoneCodes, string>[] parts)
         {
-            _areaCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.AreaCode)?.Item2 ?? GetRandomAreaCode();
+            _areaCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.AreaCode)?.Item2 ?? "";
             _centralOfficeCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.CentralOfficeCode)?.Item2 ??
-                                 GetRandomCentralOfficeCode();
+                                 "";
             _subscriberCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.SubscriberCode)?.Item2 ??
-                              $"{Etx.MyRand.Next(1, 9999):0000}";
-            if (!IsValid(AreaCode, 3))
-                _areaCode = GetRandomAreaCode();
-            if (!IsValid(CentralOfficeCode, 3))
-                _centralOfficeCode = GetRandomCentralOfficeCode();
-            if (!IsValid(SubscriberNumber, 4))
-                _subscriberCode = $"{Etx.MyRand.Next(1, 9999):0000}";
+                              "";
         }
+
         public NorthAmericanPhone()
         {
-            _areaCode = GetRandomAreaCode();
-            _centralOfficeCode = GetRandomCentralOfficeCode();
-            _subscriberCode = $"{Etx.MyRand.Next(1, 9999):0000}";
         }
         #endregion
 
@@ -105,7 +101,7 @@ namespace NoFuture.Rand.Tele
         #endregion
 
         #region methods
-        public virtual Uri ToUri()
+        public override Uri ToUri()
         {
             return new Uri("tel:" + Unformatted);
         }
@@ -229,10 +225,111 @@ namespace NoFuture.Rand.Tele
             return phstr.ToString();
         }
 
-        private bool IsValid(string v, int len)
+        /// <summary>
+        /// Gets a <see cref="NorthAmericanPhone"/> whose Area Code, Central Office and 
+        /// Subscriber number are all random values.
+        /// </summary>
+        /// <remarks>
+        /// Area Codes are of grammer [2-9][1-9][2-9].
+        /// Central Office are of grammer [2-9] ('0' '0' | [1-9] [2-9] | [2-9] [1-9] )
+        /// Subscriber number is of grammer [0-9][0-9][0-9][1-9]
+        /// </remarks>
+        /// <returns></returns>
+        [RandomFactory]
+        public static NorthAmericanPhone RandomAmericanPhone()
         {
-            return !string.IsNullOrWhiteSpace(v) && v.ToCharArray().All(char.IsDigit) && v.ToCharArray().Length == len;
+            var d = new Tuple<PhoneCodes, string>(PhoneCodes.AreaCode, GetRandomAreaCode());
+            var coc = new Tuple<PhoneCodes, string>(PhoneCodes.CentralOfficeCode, GetRandomCentralOfficeCode());
+            var sc = new Tuple<PhoneCodes, string>(PhoneCodes.SubscriberCode, $"{Etx.MyRand.Next(1, 9999):0000}");
+
+            return new NorthAmericanPhone(d, coc, sc);
         }
+
+        /// <summary>
+        /// Gets a <see cref="NorthAmericanPhone"/> whose area code is pertinent 
+        /// to the given US State.
+        /// </summary>
+        /// <param name="state">Works with both the postal abbreviation and the full name</param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static NorthAmericanPhone RandomAmericanPhone(string state)
+        {
+            var d = new Tuple<PhoneCodes, string>(PhoneCodes.AreaCode, GetRandomAreaCode("us", state));
+            var coc = new Tuple<PhoneCodes, string>(PhoneCodes.CentralOfficeCode, GetRandomCentralOfficeCode());
+            var sc = new Tuple<PhoneCodes, string>(PhoneCodes.SubscriberCode, $"{Etx.MyRand.Next(1, 9999):0000}");
+
+            return new NorthAmericanPhone(d, coc, sc); 
+        }
+
+        /// <summary>
+        /// Gets a <see cref="NorthAmericanPhone"/> whose area code is pertinent 
+        /// to the given Canadian Providence.
+        /// </summary>
+        /// <param name="providence">
+        /// Works with both the postal abbreviation and the full name.
+        /// Default is Ontario src [https://en.wikipedia.org/wiki/List_of_Canadian_provinces_and_territories_by_population]
+        /// </param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static NorthAmericanPhone RandomCanadianPhone(string providence = "ON")
+        {
+            var d = new Tuple<PhoneCodes, string>(PhoneCodes.AreaCode, GetRandomAreaCode("ca", providence));
+            var coc = new Tuple<PhoneCodes, string>(PhoneCodes.CentralOfficeCode, GetRandomCentralOfficeCode());
+            var sc = new Tuple<PhoneCodes, string>(PhoneCodes.SubscriberCode, $"{Etx.MyRand.Next(1, 9999):0000}");
+
+            return new NorthAmericanPhone(d, coc, sc);
+        }
+
+        //same code only the resource changes
+        internal static string GetRandomAreaCode(string countryCode, string stateQry)
+        {
+            const string AREA_CODE_PLURAL = "area-codes";
+            const string STATE = "state";
+            const string PROVIDENCE = "providence";
+            const string ABBREVIATION = "abbreviation";
+            const string NAME = "name";
+
+            XmlNode state;
+            if (string.IsNullOrWhiteSpace(countryCode))
+                countryCode = "us";
+
+            var qryBy = stateQry.Length == 2 ? ABBREVIATION : NAME;
+
+            if (qryBy == NAME)
+            {
+                stateQry = string.Join(" ", Etc.DistillToWholeWords(stateQry));
+            }
+
+            if (countryCode.ToLower() == "ca")
+            {
+                CaAreaCodeXml = CaAreaCodeXml ??
+                                XmlDocXrefIdentifier.GetEmbeddedXmlDoc(CA_AREA_CODE_DATA,
+                                    Assembly.GetExecutingAssembly());
+                if (CaAreaCodeXml == null)
+                    return null;
+                state = CaAreaCodeXml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{PROVIDENCE}[@{qryBy}='{stateQry}']");
+            }
+            else
+            {
+                UsAreaCodeXml = UsAreaCodeXml ??
+                                XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_AREA_CODE_DATA,
+                                    Assembly.GetExecutingAssembly());
+                if (UsAreaCodeXml == null)
+                    return null;
+                state = UsAreaCodeXml.SelectSingleNode($"//{AREA_CODE_PLURAL}/{STATE}[@{qryBy}='{stateQry}']");
+            }
+
+            if (state == null)
+                return null;
+
+            var areaCodes = state.ChildNodes;
+            if (areaCodes.Count == 0)
+                return null;
+
+            var pickone = Etx.MyRand.Next(0, areaCodes.Count);
+            return areaCodes[pickone].InnerText;
+        }
+
         #endregion
     }
 }

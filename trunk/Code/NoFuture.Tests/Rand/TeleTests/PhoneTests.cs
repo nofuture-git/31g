@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Tests.TeleTests
@@ -9,7 +10,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         [Test]
         public void AmericanPhoneTests()
         {
-            var testResult = Phone.RandomAmericanPhone();
+            var testResult = NorthAmericanPhone.RandomAmericanPhone();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.AreaCode));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.CentralOfficeCode));
@@ -19,9 +20,9 @@ namespace NoFuture.Rand.Tests.TeleTests
 
             Assert.IsTrue(testResult.ToString().Contains("-"));
 
-            System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
-            System.Diagnostics.Debug.WriteLine(testResult.CentralOfficeCode);
-            System.Diagnostics.Debug.WriteLine(testResult.SubscriberNumber);
+            Console.WriteLine(testResult.AreaCode);
+            Console.WriteLine(testResult.CentralOfficeCode);
+            Console.WriteLine(testResult.SubscriberNumber);
         }
 
         [Test]
@@ -30,17 +31,17 @@ namespace NoFuture.Rand.Tests.TeleTests
             const string TEST_STATE_WITH_MANY = "CA";
             const string TEST_STATE_WITH_ONE = "DC";
 
-            var testResult = Phone.RandomAmericanPhone(TEST_STATE_WITH_MANY);
+            var testResult = NorthAmericanPhone.RandomAmericanPhone(TEST_STATE_WITH_MANY);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
-            System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
+            Console.WriteLine(testResult.AreaCode);
 
-            testResult = Phone.RandomAmericanPhone(TEST_STATE_WITH_ONE);
+            testResult = NorthAmericanPhone.RandomAmericanPhone(TEST_STATE_WITH_ONE);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
-            System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
+            Console.WriteLine(testResult.AreaCode);
 
         }
 
@@ -50,17 +51,17 @@ namespace NoFuture.Rand.Tests.TeleTests
             const string TEST_STATE_WITH_MANY = "ON";
             const string TEST_STATE_WITH_ONE = "YT";
 
-            var testResult = Phone.RandomCanadianPhone(TEST_STATE_WITH_MANY);
+            var testResult = NorthAmericanPhone.RandomCanadianPhone(TEST_STATE_WITH_MANY);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
-            System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
+            Console.WriteLine(testResult.AreaCode);
 
-            testResult = Phone.RandomCanadianPhone(TEST_STATE_WITH_ONE);
+            testResult = NorthAmericanPhone.RandomCanadianPhone(TEST_STATE_WITH_ONE);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.AreaCode);
 
-            System.Diagnostics.Debug.WriteLine(testResult.AreaCode);
+            Console.WriteLine(testResult.AreaCode);
 
         }
 

@@ -3,6 +3,12 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Gov.US.Census
 {
+    /// <summary>
+    /// Metropolitan Statistical Area - a geographical region with 
+    /// a relatively high population density at its core and 
+    /// close econonmic ties throughout the area.
+    /// [https://en.wikipedia.org/wiki/Metropolitan_statistical_area]
+    /// </summary>
     [Serializable]
     public class MStatArea : Identifier
     {

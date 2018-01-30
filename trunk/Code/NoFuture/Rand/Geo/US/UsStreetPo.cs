@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace NoFuture.Rand.Geo.US
 {
+    /// <summary>
+    /// The typical Line 1 of a US Postal Address
+    /// </summary>
     [Serializable]
     public class UsStreetPo : StreetPo
     {
