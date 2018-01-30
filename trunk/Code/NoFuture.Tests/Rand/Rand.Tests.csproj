@@ -113,14 +113,6 @@
       <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
       <Name>Rand.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NoFuture\Rand\Domus\Opes\Rand.Domus.Opes.csproj">
-      <Project>{195a7d49-9e70-4d99-b55d-ea15c4da2b62}</Project>
-      <Name>Rand.Domus.Opes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NoFuture\Rand\Domus\Pneuma\Rand.Domus.Pneuma.csproj">
-      <Project>{00c35283-af89-48a4-8035-8270d5302ce5}</Project>
-      <Name>Rand.Domus.Pneuma</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Rand\Domus\Rand.Domus.csproj">
       <Project>{abb95017-a946-4b8b-902c-69fe01e99720}</Project>
       <Name>Rand.Domus</Name>
@@ -137,9 +129,17 @@
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
       <Name>Rand.Gov</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Rand\Opes\Rand.Opes.csproj">
+      <Project>{195a7d49-9e70-4d99-b55d-ea15c4da2b62}</Project>
+      <Name>Rand.Opes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Rand\Org\Rand.Org.csproj">
       <Project>{cc5df72f-e8e4-4341-a653-8dcee8dbe3ba}</Project>
       <Name>Rand.Org</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Rand\Pneuma\Rand.Pneuma.csproj">
+      <Project>{00c35283-af89-48a4-8035-8270d5302ce5}</Project>
+      <Name>Rand.Pneuma</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Rand\Sp\Rand.Sp.csproj">
       <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>

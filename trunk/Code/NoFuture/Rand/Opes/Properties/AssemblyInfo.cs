@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Rand.Domus.Pneuma")]
-[assembly: AssemblyDescription("Contains types related to personality used in NoFuture.Rand")]
+[assembly: AssemblyTitle("NoFuture.Rand.Opes")]
+[assembly: AssemblyDescription("Contains personal income and wealth types used by NoFuture.Rand")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Rand.Domus.Pneuma")]
+[assembly: AssemblyProduct("NoFuture.Rand.Opes")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,8 +20,9 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("00c35283-af89-48a4-8035-8270d5302ce5")]
+[assembly: Guid("195a7d49-9e70-4d99-b55d-ea15c4da2b62")]
 [assembly: InternalsVisibleTo("NoFuture.Rand.Tests")]
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
