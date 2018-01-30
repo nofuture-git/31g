@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using NoFuture.Rand.Sp;
+﻿using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
+using NUnit.Framework;
 using Dbg = System.Diagnostics.Debug;
 
-namespace NoFuture.Rand.Tests.DataTests.SpTests
+namespace NoFuture.Rand.Tests.SpTests
 {
     [TestFixture]
     public class CusipTests

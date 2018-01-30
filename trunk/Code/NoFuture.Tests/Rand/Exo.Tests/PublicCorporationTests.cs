@@ -2,11 +2,9 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Exo;
-using NoFuture.Rand.Exo.Tests;
 using NoFuture.Rand.Gov.US.Sec;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Exo.Tests
 {
     [TestClass]
     public class PublicCorporationTests

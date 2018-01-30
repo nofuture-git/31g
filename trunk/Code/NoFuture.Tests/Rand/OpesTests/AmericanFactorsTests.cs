@@ -1,11 +1,11 @@
 ﻿using System;
-using NUnit.Framework;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Opes;
 using NoFuture.Rand.Opes.US;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DomusTests.OpesTests
+namespace NoFuture.Rand.Tests.OpesTests
 {
     [TestFixture]
     public class AmericanFactorsTests

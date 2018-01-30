@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Linq;
-using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Exo.NfXml;
-using NoFuture.Rand.Exo.Tests;
 
-namespace NoFuture.Tests.Rand.NfXmlTests
+namespace NoFuture.Rand.Exo.Tests.NfXmlTests
 {
     [TestClass]
     public class SecXbrlInstanceFileTests
     {
-
-
         [TestMethod]
         public void TestParseContent()
         {

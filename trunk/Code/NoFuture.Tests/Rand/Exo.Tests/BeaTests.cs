@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace NoFuture.Tests.Rand
+namespace NoFuture.Rand.Exo.Tests
 {
     [TestClass]
     public class BeaTests

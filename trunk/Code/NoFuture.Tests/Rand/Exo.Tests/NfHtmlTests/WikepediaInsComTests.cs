@@ -2,9 +2,8 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Exo.NfHtml;
-using NoFuture.Rand.Exo.Tests;
 
-namespace NoFuture.Tests.Rand.NfHtmlTests
+namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
 {
     [TestClass]
     public class WikepediaInsComTests

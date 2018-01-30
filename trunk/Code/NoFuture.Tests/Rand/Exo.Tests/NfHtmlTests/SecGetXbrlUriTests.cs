@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Exo;
 using NoFuture.Rand.Exo.NfHtml;
-using NoFuture.Rand.Exo.Tests;
 using NoFuture.Rand.Gov.US.Sec;
 
-namespace NoFuture.Tests.Rand.NfHtmlTests
+namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
 {
     [TestClass]
     public class SecGetXbrlUriTests

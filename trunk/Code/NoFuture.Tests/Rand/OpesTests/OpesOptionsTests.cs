@@ -1,10 +1,10 @@
 ﻿using System;
-using NUnit.Framework;
 using NoFuture.Rand.Opes;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DomusTests.OpesTests
+namespace NoFuture.Rand.Tests.OpesTests
 {
     [TestFixture]
     public class OpesOptionsTests

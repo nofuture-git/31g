@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Sp;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DataTests.SpTests
+namespace NoFuture.Rand.Tests.SpTests
 {
     [TestFixture]
     public class CreditScoreTests

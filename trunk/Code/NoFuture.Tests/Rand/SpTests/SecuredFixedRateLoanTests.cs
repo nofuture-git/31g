@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using NUnit.Framework;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DataTests.SpTests
+namespace NoFuture.Rand.Tests.SpTests
 {
     [TestFixture]
     public class SecuredFixedRateLoanTests

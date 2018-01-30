@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
 using NoFuture.Rand.Opes;
 using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Sp;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DomusTests.OpesTests
+namespace NoFuture.Rand.Tests.OpesTests
 {
     [TestFixture]
     public class AmericanAssetsTests

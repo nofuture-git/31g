@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov;
@@ -10,8 +9,9 @@ using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Opes;
 using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Sp;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DomusTests.OpesTests
+namespace NoFuture.Rand.Tests.OpesTests
 {
     [TestFixture]
     public class WealthBaseTests

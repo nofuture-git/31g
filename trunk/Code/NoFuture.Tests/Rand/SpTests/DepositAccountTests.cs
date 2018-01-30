@@ -1,8 +1,8 @@
 ﻿using System;
-using NUnit.Framework;
 using NoFuture.Rand.Sp;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DataTests.SpTests
+namespace NoFuture.Rand.Tests.SpTests
 {
     [TestFixture]
     public class DepositAccountTests

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Exo.NfPdf;
-using NoFuture.Rand.Exo.Tests;
 
-namespace NoFuture.Tests.Rand.NfPdfTests
+namespace NoFuture.Rand.Exo.Tests.NfPdfTests
 {
     [TestClass]
     public class Sec13fCuispListTests

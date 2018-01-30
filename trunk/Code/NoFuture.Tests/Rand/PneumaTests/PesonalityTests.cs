@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using NoFuture.Rand.Pneuma;
+﻿using NoFuture.Rand.Pneuma;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
+namespace NoFuture.Rand.Tests.PneumaTests
 {
     [TestFixture]
     public class PesonalityTests

@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Exo.NfText;
 
-namespace NoFuture.Tests.Rand.NfTextTests
+namespace NoFuture.Rand.Exo.Tests.NfTextTests
 {
     [TestClass]
     public class TestFedLrgBnk
