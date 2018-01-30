@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Hbm;
-using NoFuture.Hbm.DbQryContainers;
 using NoFuture.Hbm.SortingContainers;
-using NoFuture.Rand.Data;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Hbm.TestDbQryContainers
 {

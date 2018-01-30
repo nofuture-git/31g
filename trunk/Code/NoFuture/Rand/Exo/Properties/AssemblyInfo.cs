@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Rand.Data.Exo")]
+[assembly: AssemblyTitle("NoFuture.Rand.Exo")]
 [assembly: AssemblyDescription("NoFuture Rand Exogenous data")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Rand.Data.Exo")]
+[assembly: AssemblyProduct("NoFuture.Rand.Exo")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

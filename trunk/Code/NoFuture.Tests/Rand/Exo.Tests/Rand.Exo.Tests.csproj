@@ -78,13 +78,9 @@
       <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
       <Name>Rand.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\NoFuture\Rand\Data\Exo\Rand.Data.Exo.csproj">
+    <ProjectReference Include="..\..\..\NoFuture\Rand\Exo\Rand.Exo.csproj">
       <Project>{5b142ecb-4a49-427a-8086-b4e9c717d651}</Project>
-      <Name>Rand.Data.Exo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NoFuture\Rand\Data\Sp\Rand.Data.Sp.csproj">
-      <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
-      <Name>Rand.Data.Sp</Name>
+      <Name>Rand.Exo</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Rand\Geo\Rand.Geo.csproj">
       <Project>{924edbc5-1492-4574-97e9-a1d85635aa1c}</Project>
@@ -97,6 +93,10 @@
     <ProjectReference Include="..\..\..\NoFuture\Rand\Org\Rand.Org.csproj">
       <Project>{cc5df72f-e8e4-4341-a653-8dcee8dbe3ba}</Project>
       <Name>Rand.Org</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Rand\Sp\Rand.Sp.csproj">
+      <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
+      <Name>Rand.Sp</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Rand\Tele\Rand.Tele.csproj">
       <Project>{bf24172c-6472-4059-860f-46f7a9fc78df}</Project>

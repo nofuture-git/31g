@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Rand.Data.Sp")]
+[assembly: AssemblyTitle("NoFuture.Rand.Sp")]
 [assembly: AssemblyDescription("Contains the general money types used in NoFuture.Rand")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Quest Diagnostics Incorporated")]
+[assembly: AssemblyProduct("NoFuture.Rand.Sp")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

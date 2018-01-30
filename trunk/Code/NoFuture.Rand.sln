@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Core", "NoFuture\Util\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Tests", "NoFuture.Tests\Rand\Rand.Tests.csproj", "{820AD70D-2461-42DE-8FD5-9AF7B9B444E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Data.Sp", "NoFuture\Rand\Data\Sp\Rand.Data.Sp.csproj", "{193F1DF6-F471-4164-B5BB-8752C306DF7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Data.Sp", "NoFuture\Rand\Sp\Rand.Sp.csproj", "{193F1DF6-F471-4164-B5BB-8752C306DF7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Gov", "NoFuture\Rand\Gov\Rand.Gov.csproj", "{BB60D20C-259F-4FB3-9BA3-58E859BD712D}"
 EndProject

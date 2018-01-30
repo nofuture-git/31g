@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data;
 
 namespace NoFuture.Tests.Hbm
 {

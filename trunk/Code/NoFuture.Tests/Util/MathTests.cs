@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data;
 using NoFuture.Shared.Core;
-using NoFuture.Timeline;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Tests.Util
