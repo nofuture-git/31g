@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp.Cc;
+using NoFuture.Rand.Sp.Cc;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     [Serializable]
     public class CheckingAccount : DepositAccount

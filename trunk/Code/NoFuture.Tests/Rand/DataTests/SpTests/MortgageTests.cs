@@ -1,9 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Domus;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
+using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {

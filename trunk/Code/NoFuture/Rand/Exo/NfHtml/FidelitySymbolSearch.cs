@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Data.Exo.NfHtml
 {

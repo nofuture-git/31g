@@ -5,11 +5,11 @@ using System.Xml;
 using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
+using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {

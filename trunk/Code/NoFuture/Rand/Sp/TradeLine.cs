@@ -1,8 +1,8 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Sp.Enums;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc />
     /// <summary>

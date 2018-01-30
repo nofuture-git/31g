@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// A loan whose rate changes in time

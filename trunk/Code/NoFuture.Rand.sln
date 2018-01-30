@@ -35,9 +35,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Com", "NoFuture\Rand\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Domus", "NoFuture\Rand\Domus\Rand.Domus.csproj", "{ABB95017-A946-4B8B-902C-69FE01E99720}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Domus.Pneuma", "NoFuture\Rand\Domus\Pneuma\Rand.Domus.Pneuma.csproj", "{00C35283-AF89-48A4-8035-8270D5302CE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Domus.Pneuma", "NoFuture\Rand\Pneuma\Rand.Pneuma.csproj", "{00C35283-AF89-48A4-8035-8270D5302CE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Domus.Opes", "NoFuture\Rand\Domus\Opes\Rand.Domus.Opes.csproj", "{195A7D49-9E70-4D99-B55D-EA15C4DA2B62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Domus.Opes", "NoFuture\Rand\Opes\Rand.Opes.csproj", "{195A7D49-9E70-4D99-B55D-EA15C4DA2B62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rand.Org", "NoFuture\Rand\Org\Rand.Org.csproj", "{CC5DF72F-E8E4-4341-A653-8DCEE8DBE3BA}"
 EndProject

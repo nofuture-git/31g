@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     [Serializable]
     public class FixedRateLoan : LoanBase<float>

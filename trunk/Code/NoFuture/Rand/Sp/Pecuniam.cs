@@ -1,9 +1,9 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// Basic Money object pattern 

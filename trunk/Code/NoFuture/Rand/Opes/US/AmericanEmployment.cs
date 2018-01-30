@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Org;
+using NoFuture.Rand.Sp;
+using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Domus.Opes.US
 {

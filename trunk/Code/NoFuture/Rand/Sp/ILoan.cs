@@ -1,5 +1,5 @@
 ﻿
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// Represent finacial loan from a money-lending agent

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NoFuture.Rand.Data.Sp.Enums
+namespace NoFuture.Rand.Sp.Enums
 {
     /// <summary>
     /// Kinds of business ownership

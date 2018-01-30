@@ -1,5 +1,5 @@
-﻿using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Enums;
+﻿using NoFuture.Rand.Sp;
+using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Domus.Opes
 {

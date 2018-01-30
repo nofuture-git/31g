@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp.Enums;
-using NoFuture.Util.Core;
+using NoFuture.Rand.Sp.Enums;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// Commitee on Uniform Securities Identification Procedures.

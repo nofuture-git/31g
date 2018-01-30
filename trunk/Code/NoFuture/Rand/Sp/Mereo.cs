@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Sp.Enums;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="IMereo"/>
     /// <inheritdoc cref="VocaBase"/>

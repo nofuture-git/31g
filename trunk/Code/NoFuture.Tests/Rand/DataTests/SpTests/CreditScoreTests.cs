@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
@@ -14,7 +15,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         [Test]
         public void TestGetScore()
         {
-            var testSubject = new Data.Sp.PersonalCreditScore();
+            var testSubject = new PersonalCreditScore();
 
             var testAgeRstl = testSubject.GetAgePenalty(null);
             Debug.WriteLine($"age penalty {testAgeRstl}");
@@ -36,7 +37,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         {
             var testInput = American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female);
 
-            var testSubject = new Data.Sp.PersonalCreditScore(testInput.BirthCert.DateOfBirth)
+            var testSubject = new PersonalCreditScore(testInput.BirthCert.DateOfBirth)
             {
                 OpennessZscore = testInput.Personality?.Openness?.Value?.Zscore ?? 0D,
                 ConscientiousnessZscore = testInput.Personality?.Conscientiousness?.Value?.Zscore ?? 0D
@@ -53,7 +54,7 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
         {
             var testInput = American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female);
 
-            var testSubject = new Data.Sp.PersonalCreditScore(testInput.BirthCert.DateOfBirth)
+            var testSubject = new PersonalCreditScore(testInput.BirthCert.DateOfBirth)
             {
                 OpennessZscore = testInput.Personality?.Openness?.Value?.Zscore ?? 0D,
                 ConscientiousnessZscore = testInput.Personality?.Conscientiousness?.Value?.Zscore ?? 0D

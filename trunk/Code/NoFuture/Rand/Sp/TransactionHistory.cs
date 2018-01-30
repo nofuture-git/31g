@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// Represent an ordered set of <see cref="Transaction"/> in time.

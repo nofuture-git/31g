@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
+using NoFuture.Rand.Sp;
+using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests

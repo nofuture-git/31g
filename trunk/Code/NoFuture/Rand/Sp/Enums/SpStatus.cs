@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Data.Sp.Enums
+namespace NoFuture.Rand.Sp.Enums
 {
     [Serializable]
     public enum SpStatus

@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Org;
+using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {

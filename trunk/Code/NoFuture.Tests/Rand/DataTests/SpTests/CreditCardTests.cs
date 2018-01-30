@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Cc;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Sp;
+using NoFuture.Rand.Sp.Cc;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests

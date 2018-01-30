@@ -1,11 +1,11 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Sp.Cc;
+using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// Represents a loan which is borrowed on some kind of secured property

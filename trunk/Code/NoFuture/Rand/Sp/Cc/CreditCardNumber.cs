@@ -2,7 +2,7 @@
 using NoFuture.Rand.Core;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Data.Sp.Cc
+namespace NoFuture.Rand.Sp.Cc
 {
     /// <summary>
     /// Represents a credit card number with algo for check digit

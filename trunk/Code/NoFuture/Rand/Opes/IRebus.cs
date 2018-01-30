@@ -1,5 +1,5 @@
 ﻿using System;
-using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Domus.Opes
 {

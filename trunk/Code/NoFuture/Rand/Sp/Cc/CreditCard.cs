@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 
-namespace NoFuture.Rand.Data.Sp.Cc
+namespace NoFuture.Rand.Sp.Cc
 {
     /// <summary>
     /// Creates new instance with properties randomly assigned, 

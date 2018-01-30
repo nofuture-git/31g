@@ -2,7 +2,7 @@
 using NoFuture.Rand.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     [Serializable]
     public class Mortgage : SecuredFixedRateLoan

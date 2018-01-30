@@ -1,10 +1,9 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// Represents a Rent or Lease

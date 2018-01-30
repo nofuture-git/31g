@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
-using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Sp;
+using NoFuture.Rand.Sp.Enums;
 using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests

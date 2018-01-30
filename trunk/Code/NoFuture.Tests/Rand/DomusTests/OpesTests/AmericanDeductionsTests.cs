@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
+using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {

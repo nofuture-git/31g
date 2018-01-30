@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// Represents a currency value in-time in 

@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Sp.Cc
+namespace NoFuture.Rand.Sp.Cc
 {
     [Serializable]
     public class DiscoverCc : CreditCard

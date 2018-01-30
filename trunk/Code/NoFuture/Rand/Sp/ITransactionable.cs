@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// A general type for duality of financial transactions (e.g. Buy\Sell, Long\Short, CashIn\CashOut),

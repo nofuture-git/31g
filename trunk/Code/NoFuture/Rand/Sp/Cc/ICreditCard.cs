@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Data.Sp.Cc
+namespace NoFuture.Rand.Sp.Cc
 {
     /// <summary>
     /// Represents the std properites from a card-issuer

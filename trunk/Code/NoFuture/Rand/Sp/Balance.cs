@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     [Serializable]
     public class Balance : TransactionHistory, IBalance

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
-using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {

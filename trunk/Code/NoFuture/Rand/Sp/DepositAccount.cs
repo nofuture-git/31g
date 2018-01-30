@@ -1,9 +1,9 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp.Cc;
-using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Sp.Cc;
+using NoFuture.Rand.Sp.Enums;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// Base type for a depository account held at a commercial bank.

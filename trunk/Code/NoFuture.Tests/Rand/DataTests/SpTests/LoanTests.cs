@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Data.Sp;
-using NoFuture.Rand.Data.Sp.Enums;
+using NoFuture.Rand.Sp;
+using NoFuture.Rand.Sp.Enums;
 using NoFuture.Util.Core.Math;
 using Dbg = System.Diagnostics.Debug;
 

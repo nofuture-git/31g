@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Data.Sp
+namespace NoFuture.Rand.Sp
 {
     [Serializable]
     public abstract class CreditScore : Identifier

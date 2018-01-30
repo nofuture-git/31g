@@ -1,8 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Data.Sp.Enums;
 
-namespace NoFuture.Rand.Data.Sp.Cc
+namespace NoFuture.Rand.Sp.Cc
 {
     /// <summary>
     /// Represents a personal credit card in the form of 
@@ -24,7 +23,7 @@ namespace NoFuture.Rand.Data.Sp.Cc
         {
             Cc = cc;
             _ccMax = ccMax ?? new Pecuniam(1000);
-            FormOfCredit = Enums.FormOfCredit.Revolving;
+            FormOfCredit = Rand.Sp.Enums.FormOfCredit.Revolving;
             DueFrequency = new TimeSpan(30, 0, 0, 0);
         }
         #endregion

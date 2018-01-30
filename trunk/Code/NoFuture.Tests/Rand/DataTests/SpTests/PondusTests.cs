@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Tests.DataTests.SpTests
 {
