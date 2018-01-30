@@ -1,13 +1,13 @@
 try{
-if(-not [NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
+if(-not [NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
 {
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("md5sum",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-SHA256HashString",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AesEncryptedValue",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AesDecryptedValue",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HMACSHA1HashString",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Protect-File",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Unprotect-File",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("md5sum",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-SHA256HashString",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AesEncryptedValue",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-AesDecryptedValue",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-HMACSHA1HashString",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Protect-File",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Unprotect-File",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -48,7 +48,7 @@ function Get-SHA256HashString
         
         $data = [System.Text.Encoding]::UTF8.GetBytes($value)
         
-        $salt = [System.Text.Encoding]::UTF8.GetBytes([System.Convert]::FromBase64String([NoFuture.Shared.Core.NfConfig+SecurityKeys]::AesIV))
+        $salt = [System.Text.Encoding]::UTF8.GetBytes([System.Convert]::FromBase64String([NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::AesIV))
         
         $dataAndSalt = [byte[]]($data + $salt)
         
@@ -91,7 +91,7 @@ function Get-HMACSHA1HashString
     )
     Process
     {
-        $privKey = [System.Convert]::FromBase64String([NoFuture.Shared.Core.NfConfig+SecurityKeys]::HMACSHA1.Replace("-", "+").Replace("_", "/"))
+        $privKey = [System.Convert]::FromBase64String([NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::HMACSHA1.Replace("-", "+").Replace("_", "/"))
         $hmacsha1 = New-Object System.Security.Cryptography.HMACSHA1
         $hmacsha1.Key = $privKey
         return ([System.Convert]::ToBase64String($hmacsha1.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Value))).Replace("-", "+").Replace("_", "/"))
@@ -147,11 +147,11 @@ function Get-AesEncryptedValue
         $aesM.Mode = [System.Security.Cryptography.CipherMode]::CBC
         $aesM.Padding = [System.Security.Cryptography.PaddingMode]::PKCS7
         if([string]::IsNullOrWhiteSpace($Key)){
-            $Key = [NoFuture.Shared.Core.NfConfig+SecurityKeys]::AesEncryptionKey
+            $Key = [NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::AesEncryptionKey
         }
         $aesM.Key = [System.Convert]::FromBase64String($Key)
         if([string]::IsNullOrWhiteSpace($Iv)){
-            $Iv = [NoFuture.Shared.Core.NfConfig+SecurityKeys]::AesIV
+            $Iv = [NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::AesIV
         }
         $aesM.IV = [System.Convert]::FromBase64String($Iv)
         
@@ -213,11 +213,11 @@ function Get-AesDecryptedValue
         $aesM.Mode = [System.Security.Cryptography.CipherMode]::CBC
         $aesM.Padding = [System.Security.Cryptography.PaddingMode]::PKCS7
         if([string]::IsNullOrWhiteSpace($Key)){
-            $Key = [NoFuture.Shared.Core.NfConfig+SecurityKeys]::AesEncryptionKey
+            $Key = [NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::AesEncryptionKey
         }
         $aesM.Key = [System.Convert]::FromBase64String($Key)
         if([string]::IsNullOrWhiteSpace($Iv)){
-            $Iv = [NoFuture.Shared.Core.NfConfig+SecurityKeys]::AesIV
+            $Iv = [NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::AesIV
         }
         $aesM.IV = [System.Convert]::FromBase64String($Iv)
         
@@ -318,7 +318,7 @@ function Protect-File
         
         $Path = (Resolve-Path $Path).Path
 
-        $nfx509CertPath = [NoFuture.Shared.Core.NfConfig+SecurityKeys]::NoFutureX509Cert
+        $nfx509CertPath = [NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::NoFutureX509Cert
 
         if([string]::IsNullOrWhiteSpace($nfx509CertPath) -or -not (Test-Path $nfx509CertPath)){
             Write-Host "Don't know where to find the NoFuture x509 cert at.  Set the shared var at SecurityKeys NoFutureX509Cert"
@@ -385,7 +385,7 @@ function Unprotect-File
 
         $Path = (Resolve-Path $Path).Path
 
-        $nfx509CertPath = [NoFuture.Shared.Core.NfConfig+SecurityKeys]::NoFutureX509Cert
+        $nfx509CertPath = [NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::NoFutureX509Cert
 
         if([string]::IsNullOrWhiteSpace($nfx509CertPath)){
             Write-Host "Don't know where to find the NoFuture x509 cert at.  Set the shared var at SecurityKeys NoFutureX509Cert"

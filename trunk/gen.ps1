@@ -1,15 +1,15 @@
 try{
-if(-not [NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
+if(-not [NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.ContainsValue($MyInvocation.MyCommand))
 {
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Convert-CsvToCsCode",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Convert-PsObjsToCsCode",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-FlattenedType",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Write-CsCodeAutoMapper",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Write-CsCodeAssignRand",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-TypePdbLines",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DotGraphFlattenedType",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DotGraphClassDiagram",$MyInvocation.MyCommand)
-[NoFuture.Shared.Core.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DotGraphAssemblyDiagram",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Convert-CsvToCsCode",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Convert-PsObjsToCsCode",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-FlattenedType",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Write-CsCodeAutoMapper",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Write-CsCodeAssignRand",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-TypePdbLines",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DotGraphFlattenedType",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DotGraphClassDiagram",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DotGraphAssemblyDiagram",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -107,7 +107,7 @@ function Convert-PsObjsToCsCode
     Process
     {
         
-        $tempDir = [NoFuture.Shared.Core.NfConfig+TempDirectories]::Root
+        $tempDir = [NoFuture.Shared.Cfg.NfConfig+TempDirectories]::Root
         if([string]::IsNullOrWhiteSpace($OutputDir) -or -not (Test-Path $OutputDir)){
             $outDir = $tempDir
         }
@@ -838,7 +838,7 @@ function Get-DotGraphAssemblyDiagram
     Process
     {
         #validate input
-        $graphDir = ([NoFuture.Shared.Core.NfConfig+TempDirectories]::Graph)
+        $graphDir = ([NoFuture.Shared.Cfg.NfConfig+TempDirectories]::Graph)
 
         if([string]::IsNullOrWhiteSpace($graphDir)){
             Write-Host "Assign a directory to the global NoFuture.Shared.Core.NfConfig+TempDirectories.Graph variable" -ForegroundColor Yellow
@@ -952,7 +952,7 @@ function Get-DotGraphFlattenedType
     Process
     {
         #validate input
-        $graphDir = ([NoFuture.Shared.Core.NfConfig+TempDirectories]::Graph)
+        $graphDir = ([NoFuture.Shared.Cfg.NfConfig+TempDirectories]::Graph)
 
         if([string]::IsNullOrWhiteSpace($graphDir)){
             Write-Host "Assign a directory to the global NoFuture.Shared.Core.NfConfig+TempDirectories.Graph variable" -ForegroundColor Yellow
@@ -1011,7 +1011,7 @@ function Get-DotGraphClassDiagram
     Process
     {
         #validate input
-        $graphDir = ([NoFuture.Shared.Core.NfConfig+TempDirectories]::Graph)
+        $graphDir = ([NoFuture.Shared.Cfg.NfConfig+TempDirectories]::Graph)
 
         if([string]::IsNullOrWhiteSpace($graphDir)){
             Write-Host "Assign a directory to the global NoFuture.Shared.Core.NfConfig+TempDirectories.Graph variable" -ForegroundColor Yellow
@@ -1069,7 +1069,7 @@ function Invoke-DotExe
             break;
         }
         
-        $dotExe = ([NoFuture.Shared.Core.NfConfig+X86]::DotExe)
+        $dotExe = ([NoFuture.Shared.Cfg.NfConfig+X86]::DotExe)
         if(-not (Test-Path $dotExe)){
             Write-Host "The dot.exe is not located at $dotExe" -ForegroundColor Yellow
             break;
@@ -1081,7 +1081,7 @@ function Invoke-DotExe
         }
         elseif(-not([System.IO.Path]::IsPathRooted($OutputFile))){
             if(-not $OutputFile.Contains([System.IO.Path]::DirectorySeparatorChar)){
-                $OutputFile = Join-Path ([NoFuture.Shared.Core.NfConfig+TempDirectories]::Graph) $OutputFile
+                $OutputFile = Join-Path ([NoFuture.Shared.Cfg.NfConfig+TempDirectories]::Graph) $OutputFile
             }
         }
         

@@ -58,7 +58,7 @@ function Invoke-Antlr
     )
     Process
     {
-        $binCopy = [NoFuture.Shared.Core.NfConfig+JavaTools]::Antlr
+        $binCopy = [NoFuture.Shared.Cfg.NfConfig+JavaTools]::Antlr
         $antlr = Join-Path $env:CLASSPATH.Replace("*","") ([System.IO.Path]::GetFileName($binCopy))
 
         #get a copy prior to any modifications
@@ -126,10 +126,10 @@ function Invoke-AntlrToJavaSrc
     )
     Process
     {
-        $ms = [NoFuture.Shared.Core.NfConfig]::ThreadSleepTime
+        $ms = [NoFuture.Shared.Cfg.NfConfig]::ThreadSleepTime
         $pushFlag = $false
-        $javaSrc = ([NoFuture.Shared.Core.NfConfig+TempDirectories]::JavaSrc)
-        $antlrFilePath = ([NoFuture.Shared.Core.NfConfig+JavaTools]::Antlr)
+        $javaSrc = ([NoFuture.Shared.Cfg.NfConfig+TempDirectories]::JavaSrc)
+        $antlrFilePath = ([NoFuture.Shared.Cfg.NfConfig+JavaTools]::Antlr)
 
         $antlrFile = [System.IO.Path]::GetFileName($antlrFilePath)
         $antlr = Join-Path $env:CLASSPATH.Replace("*","") $antlrFile
@@ -313,8 +313,8 @@ function Invoke-StanfordPostTagger
         }
 
         #get path to jar and dependent resources
-        $binCopy = [NoFuture.Shared.Core.NfConfig+JavaTools]::StanfordPostTagger
-        $biggestModel = (ls -Path ([NoFuture.Shared.Core.NfConfig+JavaTools]::StanfordPostTaggerModels) | ? {$_.Extension -eq ".tagger"} | Sort-Object -Property Length -Descending | Select-Object -First 1)
+        $binCopy = [NoFuture.Shared.Cfg.NfConfig+JavaTools]::StanfordPostTagger
+        $biggestModel = (ls -Path ([NoFuture.Shared.Cfg.NfConfig+JavaTools]::StanfordPostTaggerModels) | ? {$_.Extension -eq ".tagger"} | Sort-Object -Property Length -Descending | Select-Object -First 1)
         $model = $biggestModel.FullName
 
         #expect jar to be in classpath
