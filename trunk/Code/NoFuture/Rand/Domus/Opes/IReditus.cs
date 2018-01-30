@@ -54,5 +54,11 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         Pecuniam TotalAnnualExpectedGrossEmploymentIncome { get; }
 
+        /// <summary>
+        /// Adds an employment income to this object
+        /// </summary>
+        /// <param name="employment"></param>
+        void AddEmployment(ILaboris employment);
+
     }
 }

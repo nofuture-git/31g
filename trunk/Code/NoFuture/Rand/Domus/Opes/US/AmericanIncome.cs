@@ -9,7 +9,6 @@ using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Org;
-using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Domus.Opes.US
 {
@@ -103,7 +102,7 @@ namespace NoFuture.Rand.Domus.Opes.US
             return GetAt(dt, MyItems);
         }
 
-        protected internal virtual void AddEmployment(ILaboris employment)
+        public virtual void AddEmployment(ILaboris employment)
         {
             if (employment != null)
                 _employment.Add(employment);

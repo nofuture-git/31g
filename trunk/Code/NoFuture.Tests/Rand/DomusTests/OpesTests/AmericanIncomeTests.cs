@@ -5,6 +5,8 @@ using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Gov.US;
+using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {
@@ -241,6 +243,32 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.AreEqual(Pecuniam.Zero, testResult);
             testResult = testSubject.TotalAnnualExpectedIncome;
             Assert.AreEqual(9600.0D.ToPecuniam(), testResult);
+
+            var testEmployment = new AmericanEmployment();
+            var occ = new SocDetailedOccupation { Value = "Accountant" };
+            testEmployment.Occupation = occ;
+            testEmployment.AddItem("Salary", 55000.0);
+
+            testSubject.AddEmployment(testEmployment);
+            testResult = testSubject.TotalAnnualExpectedGrossEmploymentIncome;
+            Assert.AreEqual(55000.0.ToPecuniam(), testResult);
+            testResult = testSubject.TotalAnnualExpectedNetEmploymentIncome;
+            Assert.AreEqual(55000.0.ToPecuniam(), testResult);
+            testResult = testSubject.TotalAnnualExpectedIncome;
+            Assert.AreEqual((55000.0 + 9600.0D).ToPecuniam(), testResult);
+
+            var tax = new AmericanDeductions(testEmployment);
+            testEmployment.Deductions = tax;
+
+            var fedTax = 55000.0D * AmericanEquations.FederalIncomeTaxRate.SolveForY(55000.0);
+            tax.AddItem("Federal", fedTax);
+
+            testResult = testSubject.TotalAnnualExpectedGrossEmploymentIncome;
+            Assert.AreEqual(55000.0.ToPecuniam(), testResult);
+            testResult = testSubject.TotalAnnualExpectedNetEmploymentIncome;
+            Assert.AreEqual((55000.0 - fedTax).ToPecuniam(), testResult);
+            testResult = testSubject.TotalAnnualExpectedIncome;
+            Assert.AreEqual((55000.0 + 9600.0D - fedTax).ToPecuniam(), testResult);
 
         }
     }
