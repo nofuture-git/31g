@@ -6,7 +6,7 @@ using NoFuture.Rand.Org;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 
-namespace NoFuture.Rand.Domus.Opes.US
+namespace NoFuture.Rand.Opes.US
 {
     /// <inheritdoc cref="ILaboris" />
     /// <inheritdoc cref="WealthBase" />

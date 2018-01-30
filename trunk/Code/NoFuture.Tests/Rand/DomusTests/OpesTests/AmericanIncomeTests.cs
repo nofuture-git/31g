@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using NoFuture.Rand.Domus.Opes;
-using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Gov.US;
+using NoFuture.Rand.Opes;
+using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Sp;
 

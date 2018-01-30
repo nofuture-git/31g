@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Opes
 {
     /// <summary>
     /// Defines the kinds of factors effecting wealth.

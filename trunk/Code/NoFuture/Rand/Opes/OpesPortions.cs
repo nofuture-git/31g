@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Opes
 {
     /// <summary>
     /// Excercises control over the generation of random portions whose sum equals 1.

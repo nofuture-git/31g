@@ -6,7 +6,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 
-namespace NoFuture.Rand.Domus.Opes.US
+namespace NoFuture.Rand.Opes.US
 {
     /// <summary>
     /// Applies each of the <see cref="FactorTables"/> to the given <see cref="AmericanFactorOptions"/>

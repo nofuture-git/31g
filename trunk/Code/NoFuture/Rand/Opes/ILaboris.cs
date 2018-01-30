@@ -3,7 +3,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Sp;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Opes
 {
     /// <summary>
     /// Expresses a single form of personal employment in time.

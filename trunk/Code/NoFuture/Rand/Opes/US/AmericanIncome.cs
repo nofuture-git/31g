@@ -10,7 +10,7 @@ using NoFuture.Rand.Pneuma;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 
-namespace NoFuture.Rand.Domus.Opes.US
+namespace NoFuture.Rand.Opes.US
 {
     /// <inheritdoc cref="IReditus" />
     /// <inheritdoc cref="WealthBase" />

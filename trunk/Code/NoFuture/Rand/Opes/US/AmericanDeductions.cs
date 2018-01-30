@@ -9,7 +9,7 @@ using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Domus.Opes.US
+namespace NoFuture.Rand.Opes.US
 {
     /// <inheritdoc cref="WealthBase"/>
     /// <inheritdoc cref="ITributum"/>

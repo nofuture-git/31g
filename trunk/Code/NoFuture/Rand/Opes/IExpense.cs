@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Sp;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Opes
 {
     /// <summary>
     /// Expresses a personal expense in time

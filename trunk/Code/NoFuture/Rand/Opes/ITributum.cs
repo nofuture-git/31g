@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Sp;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Opes
 {
     /// <summary>
     /// Expresses a single form of deductions associated to an employment in time.

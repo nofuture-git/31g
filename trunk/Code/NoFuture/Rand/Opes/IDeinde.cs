@@ -1,7 +1,7 @@
 ﻿using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 
-namespace NoFuture.Rand.Domus.Opes
+namespace NoFuture.Rand.Opes
 {
     /// <summary>
     /// A wealth base containing methods common to all forms of Opes types

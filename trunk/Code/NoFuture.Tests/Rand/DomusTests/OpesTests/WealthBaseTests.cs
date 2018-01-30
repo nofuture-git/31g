@@ -5,10 +5,10 @@ using System.Xml;
 using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Domus.Opes;
-using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
+using NoFuture.Rand.Opes;
+using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [Test]
         public void TestGetIncomeItemNames()
         {
-            var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetIncomeItemNames();
+            var testResult = WealthBase.GetIncomeItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -77,7 +77,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [Test]
         public void TestGetDeductionItemNames()
         {
-            var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetDeductionItemNames();
+            var testResult = WealthBase.GetDeductionItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [Test]
         public void TestGetExpenseItemNames()
         {
-            var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetExpenseItemNames();
+            var testResult = WealthBase.GetExpenseItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [Test]
         public void TestGetAssetItemNames()
         {
-            var testResult = NoFuture.Rand.Domus.Opes.WealthBase.GetAssetItemNames();
+            var testResult = WealthBase.GetAssetItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 

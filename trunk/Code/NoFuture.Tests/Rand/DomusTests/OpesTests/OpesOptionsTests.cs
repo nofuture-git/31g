@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Domus.Opes;
+using NoFuture.Rand.Opes;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 

@@ -6,7 +6,7 @@ using NoFuture.Rand.Gov.US;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Domus.Opes.US
+namespace NoFuture.Rand.Opes.US
 {
     [Serializable]
     public class AmericanFactorOptions

@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Domus.Opes;
-using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
+using NoFuture.Rand.Opes;
+using NoFuture.Rand.Opes.US;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 {

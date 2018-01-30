@@ -6,7 +6,7 @@ using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 
-namespace NoFuture.Rand.Domus.Opes.US
+namespace NoFuture.Rand.Opes.US
 {
     /// <inheritdoc cref="IExpense" />
     /// <inheritdoc cref="WealthBase" />
