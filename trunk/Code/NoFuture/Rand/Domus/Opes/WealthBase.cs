@@ -6,6 +6,7 @@ using System.Reflection;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
@@ -149,10 +150,12 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="name"></param>
         /// <param name="groupName"></param>
         /// <param name="expectedValue"></param>
-        public virtual void AddItem(string name, string groupName, Pecuniam expectedValue)
+        /// <param name="interval"></param>
+        public virtual void AddItem(string name, string groupName, Pecuniam expectedValue, Interval interval = Interval.Annually)
         {
             var p = new Pondus(new VocaBase(name, groupName));
             p.Expectation.Value = expectedValue;
+            p.Expectation.Interval = interval;
             AddItem(p);
         }
 

@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// Represents personal assets in time. 
     /// Is Latin for affairs.
     /// </summary>
-    public interface IRebus
+    public interface IRebus : IDeinde
     {
         /// <summary>
         /// Gets a list of assets as they were at time <see cref="dt"/>
@@ -25,12 +25,6 @@ namespace NoFuture.Rand.Domus.Opes
         /// Gets the money sum of all assets for the current time
         /// </summary>
         Pecuniam TotalCurrentExpectedValue { get; }
-
-        /// <summary>
-        /// Adds the given item to the personal assets
-        /// </summary>
-        /// <param name="item"></param>
-        void AddItem(Pondus item);
 
     }
 }

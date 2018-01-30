@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// Expresses a personal income in time.
     /// Is Latin for revenue.
     /// </summary>
-    public interface IReditus
+    public interface IReditus : IDeinde
     {
         /// <summary>
         /// Returns the <see cref="ILaboris"/> right Now
@@ -53,12 +53,6 @@ namespace NoFuture.Rand.Domus.Opes
         /// The gross monetary sum of employment income 
         /// </summary>
         Pecuniam TotalAnnualExpectedGrossEmploymentIncome { get; }
-
-        /// <summary>
-        /// Adds the given item to the income
-        /// </summary>
-        /// <param name="item"></param>
-        void AddItem(Pondus item);
 
     }
 }

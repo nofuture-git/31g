@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// <summary>
     /// Expresses a personal expense in time
     /// </summary>
-    public interface IExpense
+    public interface IExpense : IDeinde
     {
 
         /// <summary>
@@ -24,10 +24,5 @@ namespace NoFuture.Rand.Domus.Opes
         /// </summary>
         Pecuniam TotalAnnualExpectedExpenses { get; }
 
-        /// <summary>
-        /// Adds the given item to the expenses
-        /// </summary>
-        /// <param name="item"></param>
-        void AddItem(Pondus item);
     }
 }

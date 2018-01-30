@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Domus.Opes
     /// Expresses a single form of deductions associated to an employment in time.
     /// Is Latin for tax.
     /// </summary>
-    public interface ITributum //Consequentia
+    public interface ITributum : IDeinde
     {
         /// <summary>
         /// List of the current deductions on this employment
@@ -25,12 +25,5 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="dt"></param>
         /// <returns></returns>
         Pondus[] GetDeductionsAt(DateTime? dt);
-
-        /// <summary>
-        /// Adds the given item to the deductions
-        /// </summary>
-        /// <param name="item"></param>
-        void AddItem(Pondus item);
-
     }
 }

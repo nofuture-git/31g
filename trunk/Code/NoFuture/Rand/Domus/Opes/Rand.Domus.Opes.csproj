@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDeinde.cs" />
     <Compile Include="OpesPortions.cs" />
     <Compile Include="US\AmericanAssets.cs" />
     <Compile Include="US\AmericanDeductions.cs" />
