@@ -144,17 +144,19 @@ namespace NoFuture.Rand.Domus.Opes
         /// <param name="item"></param>
         public abstract void AddItem(Pondus item);
 
-        /// <summary>
-        /// Convenience method to add an item with just the essential values.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="groupName"></param>
-        /// <param name="expectedValue"></param>
-        /// <param name="interval"></param>
         public virtual void AddItem(string name, string groupName, Pecuniam expectedValue, Interval interval = Interval.Annually)
         {
             var p = new Pondus(new VocaBase(name, groupName));
             p.Expectation.Value = expectedValue;
+            p.Expectation.Interval = interval;
+            AddItem(p);
+        }
+
+        public virtual void AddItem(string name, double expectedValue, Interval interval = Interval.Annually,
+            CurrencyAbbrev c = CurrencyAbbrev.USD)
+        {
+            var p = new Pondus(new VocaBase(name, Division.ToString()));
+            p.Expectation.Value = new Pecuniam(Convert.ToDecimal(expectedValue), c);
             p.Expectation.Interval = interval;
             AddItem(p);
         }

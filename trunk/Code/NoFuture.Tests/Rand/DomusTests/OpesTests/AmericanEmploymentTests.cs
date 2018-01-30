@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
+using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests.DomusTests.OpesTests
@@ -130,11 +131,55 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
         [Test]
         public void TestRandomEmployment()
         {
-            var testSubject = AmericanEmployment.RandomEmployment(new OpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });
+            var testSubject =
+                AmericanEmployment.RandomEmployment(new OpesOptions
+                {
+                    Inception = new DateTime(DateTime.Today.Year, 1, 1)
+                });
             Assert.IsNotNull(testSubject);
 
-            //Assert.IsNotNull(testSubject.MyItems);
-            //Assert.AreNotEqual(0, testSubject.MyItems.Count);
+            Assert.IsNotNull(testSubject.MyItems);
+            Assert.AreNotEqual(0, testSubject.MyItems.Count);
+        }
+
+        [Test]
+        public void TestAddItems()
+        {
+            var testSubject = new AmericanEmployment();
+
+            var testResult = testSubject.TotalAnnualPay;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+            testResult = testSubject.TotalAnnualNetPay;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+
+            var occ = new SocDetailedOccupation {Value = "Accountant"};
+            testSubject.Occupation = occ;
+            testSubject.AddItem("Salary", 55000.0);
+            testResult = testSubject.TotalAnnualPay;
+            Assert.AreEqual(55000.0.ToPecuniam(), testResult);
+            testResult = testSubject.TotalAnnualNetPay;
+            Assert.AreEqual(55000.0.ToPecuniam(), testResult);
+
+            var tax = new AmericanDeductions(testSubject);
+            testSubject.Deductions = tax;
+            testResult = testSubject.TotalAnnualPay;
+            Assert.AreEqual(55000.0.ToPecuniam(), testResult);
+            testResult = testSubject.TotalAnnualNetPay;
+            Assert.AreEqual(55000.0.ToPecuniam(), testResult);
+
+            var fedTax = 55000.0D * AmericanEquations.FederalIncomeTaxRate.SolveForY(55000.0);
+
+            tax.AddItem("Federal", fedTax);
+            testResult = testSubject.TotalAnnualPay;
+            Assert.AreEqual(55000.0.ToPecuniam(), testResult);
+            testResult = testSubject.TotalAnnualNetPay;
+            Assert.AreEqual((55000.0 - fedTax).ToPecuniam(), testResult);
+
+            testSubject.AddItem("Commission", 5000.0D);
+            testResult = testSubject.TotalAnnualPay;
+            Assert.AreEqual(60000.0.ToPecuniam(), testResult);
+            testResult = testSubject.TotalAnnualNetPay;
+            Assert.AreEqual((60000.0 - fedTax).ToPecuniam(), testResult);
         }
     }
 }

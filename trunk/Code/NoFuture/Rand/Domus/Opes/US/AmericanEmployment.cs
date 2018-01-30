@@ -46,9 +46,24 @@ namespace NoFuture.Rand.Domus.Opes.US
 
         public virtual Pondus[] CurrentPay => GetCurrent(MyItems);
 
+        /// <summary>
+        /// Convenience method which is more straight-foward than <see cref="Inception"/>
+        /// </summary>
+        public virtual DateTime StartDate
+        {
+            get => Inception;
+            set => Inception = value;
+        }
+
         public virtual DateTime Inception
         {
-            get => _startDate;
+            get
+            {
+                //don't let this out as year 1
+                if (_startDate == DateTime.MinValue)
+                    _startDate = GetYearNeg(-1);
+                return _startDate;
+            }
             set => _startDate = value;
         }
 
@@ -59,7 +74,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         }
 
         public Pecuniam TotalAnnualPay => Pondus.GetExpectedAnnualSum(CurrentPay).Abs;
-        public Pecuniam TotalAnnualNetPay => TotalAnnualPay - Deductions.TotalAnnualDeductions.Abs;
+        public Pecuniam TotalAnnualNetPay => TotalAnnualPay - Deductions?.TotalAnnualDeductions.Abs ?? Pecuniam.Zero;
 
         protected internal override List<Pondus> MyItems
         {

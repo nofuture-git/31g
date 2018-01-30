@@ -211,5 +211,37 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
         }
+
+        [Test]
+        public void TestAddItems()
+        {
+            var testSubject = new AmericanIncome();
+
+            var testResult = testSubject.TotalAnnualExpectedGrossEmploymentIncome;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+            testResult = testSubject.TotalAnnualExpectedNetEmploymentIncome;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+            testResult = testSubject.TotalAnnualExpectedIncome;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+
+            testSubject.AddItem("stocks", "securities", 9000.0D.ToPecuniam());
+
+            testResult = testSubject.TotalAnnualExpectedGrossEmploymentIncome;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+            testResult = testSubject.TotalAnnualExpectedNetEmploymentIncome;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+            testResult = testSubject.TotalAnnualExpectedIncome;
+            Assert.AreEqual(9000.0D.ToPecuniam(), testResult);
+
+            testSubject.AddItem("savings", "Banks", 600.0D.ToPecuniam());
+
+            testResult = testSubject.TotalAnnualExpectedGrossEmploymentIncome;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+            testResult = testSubject.TotalAnnualExpectedNetEmploymentIncome;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+            testResult = testSubject.TotalAnnualExpectedIncome;
+            Assert.AreEqual(9600.0D.ToPecuniam(), testResult);
+
+        }
     }
 }
