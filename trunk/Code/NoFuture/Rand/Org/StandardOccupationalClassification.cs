@@ -119,6 +119,9 @@ namespace NoFuture.Rand.Org
         /// <returns></returns>
         public static bool IsWages(SocDetailedOccupation soc)
         {
+            if (soc == null)
+                return false;
+
             return new[]
             {
                 "27-10", "27-20", "27-402", "37", "35-20",
@@ -135,6 +138,8 @@ namespace NoFuture.Rand.Org
         /// <returns></returns>
         public static bool IsCommissions(SocDetailedOccupation soc)
         {
+            if (soc == null)
+                return false;
             return new[] { "41-203", "41-30", "41-40", "41-90" }.Any(s => soc.Value.StartsWith(s));
         }
 
@@ -145,6 +150,8 @@ namespace NoFuture.Rand.Org
         /// <returns></returns>
         public static bool IsTips(SocDetailedOccupation soc)
         {
+            if (soc == null)
+                return false;
             return new[] { "35-301", "35-303", "35-304", "39-30" }.Any(s => soc.Value.StartsWith(s));
         }
 
@@ -155,6 +162,8 @@ namespace NoFuture.Rand.Org
         /// <returns></returns>
         public static bool IsLaborUnion(SocDetailedOccupation soc)
         {
+            if (soc == null)
+                return false;
             return new[]
             {
                 "25", "27-20", "29-11", "29-20", "47-20", "47-50", "49-30",
@@ -169,6 +178,8 @@ namespace NoFuture.Rand.Org
         /// <returns></returns>
         public static bool IsDegreeRequired(SocDetailedOccupation soc)
         {
+            if (soc == null)
+                return false;
             return new[]
             {
                 "11-903", "11-904", "11-911", "11-912", "13-201", "15-20", "17-20", "17-21", "17-1011", "19-102",

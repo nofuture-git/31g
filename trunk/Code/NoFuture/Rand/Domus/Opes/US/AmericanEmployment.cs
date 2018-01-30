@@ -25,15 +25,6 @@ namespace NoFuture.Rand.Domus.Opes.US
         private DateTime? _endDate;
         #endregion
 
-        #region ctors
-
-        public AmericanEmployment()
-        {
-            Occupation = StandardOccupationalClassification.RandomOccupation();
-        }
-
-        #endregion
-
         #region properties
         public virtual string EmployingCompanyName { get; set; }
         public virtual int FiscalYearEndDay { get; set; } = 1;

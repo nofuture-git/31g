@@ -25,12 +25,11 @@ namespace NoFuture.Rand.Domus.Opes.US
         /// Only makes sense in the context of employment
         /// </summary>
         /// <param name="employment"></param>
-        internal AmericanDeductions(AmericanEmployment employment)
+        public AmericanDeductions(AmericanEmployment employment)
         {
             _employment = employment ?? throw new ArgumentNullException(nameof(employment));
             if (_employment.Inception == DateTime.MinValue)
                 _employment.Inception = GetYearNeg(-1);
-
         }
 
         #region properties
