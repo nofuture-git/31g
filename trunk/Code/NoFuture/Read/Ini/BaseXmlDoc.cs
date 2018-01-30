@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Read

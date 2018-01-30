@@ -6,8 +6,8 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Binary

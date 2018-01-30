@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Shared
 {

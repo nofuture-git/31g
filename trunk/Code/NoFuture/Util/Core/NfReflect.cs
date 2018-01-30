@@ -6,8 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Util.Core
 {

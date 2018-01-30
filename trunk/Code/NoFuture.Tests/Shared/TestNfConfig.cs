@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared.Core;
-using static NoFuture.Shared.Core.Cfg.NfConfig;
+using static NoFuture.Shared.Cfg.NfConfig;
 
 namespace NoFuture.Tests.Shared
 {

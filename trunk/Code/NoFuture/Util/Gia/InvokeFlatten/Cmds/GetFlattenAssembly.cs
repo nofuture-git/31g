@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util.Gia.Args;
 using NoFuture.Util.NfConsole;
 

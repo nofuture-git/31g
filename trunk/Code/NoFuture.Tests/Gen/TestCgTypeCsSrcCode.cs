@@ -5,8 +5,8 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Gen;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Tests.Gen
 {

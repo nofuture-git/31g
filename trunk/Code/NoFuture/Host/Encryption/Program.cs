@@ -7,8 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using NoFuture.Host.Encryption.Sjcl;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util;
 using NoFuture.Util.NfConsole;
 

@@ -3,8 +3,8 @@ using System.Linq;
 using System.Reflection;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Hbm.DbQryContainers.MetadataDump
 {

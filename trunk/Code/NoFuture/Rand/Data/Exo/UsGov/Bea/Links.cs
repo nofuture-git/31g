@@ -1,5 +1,5 @@
-﻿using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
+﻿using NoFuture.Shared.Cfg;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Data.Exo.UsGov.Bea
 {

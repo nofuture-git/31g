@@ -3,8 +3,8 @@ using System.IO.Compression;
 using System.IO;
 using System.Linq;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Util.Binary
 {

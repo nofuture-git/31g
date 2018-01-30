@@ -5,8 +5,8 @@ using System.Reflection;
 using System.Configuration;
 using System.Text;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 

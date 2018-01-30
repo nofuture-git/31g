@@ -5,7 +5,6 @@ using System.Text;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 

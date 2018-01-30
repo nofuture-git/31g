@@ -1,6 +1,6 @@
 ﻿using System;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Rand.Data.Exo.UsGov.Bls
 {

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Read;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NoFuture.Tests

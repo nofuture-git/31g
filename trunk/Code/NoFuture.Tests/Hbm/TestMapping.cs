@@ -2,8 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Hbm.DbQryContainers;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Tests.Hbm
 {

@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using NoFuture.Shared.Core;
 
-namespace NoFuture.Shared.Core.Cfg
+namespace NoFuture.Shared.Cfg
 {
     /// <summary>
     /// Represents a central runtime hub from which all the other parts of the 

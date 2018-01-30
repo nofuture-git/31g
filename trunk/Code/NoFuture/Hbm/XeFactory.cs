@@ -3,7 +3,6 @@ using System.IO;
 using System.Xml.Linq;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfType;

@@ -3,8 +3,8 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Util.NfConsole
 {
