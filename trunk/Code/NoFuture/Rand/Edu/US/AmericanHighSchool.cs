@@ -6,7 +6,6 @@ using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
-using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
@@ -74,6 +73,10 @@ namespace NoFuture.Rand.Edu.US
             return GetNatlGradRates(HsXml, DF_NATL_AVG);
         }
 
+        /// <summary>
+        /// A standin for a kind of Null High School
+        /// </summary>
+        /// <returns></returns>
         public static AmericanHighSchool GetDefaultHs()
         {
             return _dfHs ?? (_dfHs = new AmericanHighSchool
@@ -97,7 +100,6 @@ namespace NoFuture.Rand.Edu.US
         /// <returns></returns>
         public static AmericanHighSchool[] GetHighSchoolsByState(string state = null)
         {
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff} Start GetHighSchoolsByState");
             HsXml = HsXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_HIGH_SCHOOL_DATA,
                 Assembly.GetExecutingAssembly());
             if (HsXml == null)
@@ -123,7 +125,6 @@ namespace NoFuture.Rand.Edu.US
                 hs.StateName = usState.ToString();
             }
 
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff} End GetHighSchoolsByState");
             return parsedList;
         }
 
@@ -136,7 +137,6 @@ namespace NoFuture.Rand.Edu.US
         /// <returns></returns>
         public static AmericanHighSchool[] GetHighSchoolsByZipCode(string zipCode)
         {
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff} Start GetHighSchoolsByZipCode");
             zipCode = zipCode ?? "";
             zipCode = new string(zipCode.ToCharArray().Where(char.IsDigit).ToArray());
             if (string.IsNullOrWhiteSpace(zipCode))
@@ -175,7 +175,6 @@ namespace NoFuture.Rand.Edu.US
                 hs.StateAbbrev = stateAbbrev;
                 hs.StateName = stateName;
             }
-            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fffff} End GetHighSchoolsByZipCode");
             return parsedList;
         }
 
@@ -276,7 +275,7 @@ namespace NoFuture.Rand.Edu.US
                     attr = zipStatNode.Attributes["value"];
                 hs.PostalCode = attr?.Value;
 
-                hs.Name = Etc.CapWords(hs.Name, ' ');
+                hs.Name = Etc.CapWords(hs.Name.Replace("JR\\SR", "Jr\\Sr"), ' ');
                 return true;
             }
             catch(Exception ex)

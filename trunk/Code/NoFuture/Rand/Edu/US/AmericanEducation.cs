@@ -10,6 +10,7 @@ using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Edu.US
 {
+    /// <inheritdoc />
     /// <summary>
     /// Represents the composite of personal education over time.
     /// </summary>
