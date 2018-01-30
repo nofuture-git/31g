@@ -344,7 +344,7 @@ namespace NoFuture.Rand.Data.Exo
 
             publicCorporation.BusinessAddress =
                 new Tuple<UsStreetPo, UsCityStateZip>(new UsStreetPo(bizAddr) { Src = myDynData.SourceUri.ToString() },
-                    new UsCityStateZip(bizAddr, false) { Src = myDynData.SourceUri.ToString() });
+                    new UsCityStateZip(bizAddr) { Src = myDynData.SourceUri.ToString() });
 
             var mailAddr = new AddressData();
             if (!String.IsNullOrWhiteSpace(pr.MailAddrStreet))
@@ -364,7 +364,7 @@ namespace NoFuture.Rand.Data.Exo
                 mailAddr.PostalCode = pr.MailPostalCode;
 
             publicCorporation.MailingAddress = new Tuple<UsStreetPo, UsCityStateZip>(new UsStreetPo(mailAddr) { Src = myDynData.SourceUri.ToString() },
-                new UsCityStateZip(mailAddr, false) { Src = myDynData.SourceUri.ToString() });
+                new UsCityStateZip(mailAddr) { Src = myDynData.SourceUri.ToString() });
 
             var phs = new List<NorthAmericanPhone>();
             if (publicCorporation.Phone != null && publicCorporation.Phone.Length > 0)

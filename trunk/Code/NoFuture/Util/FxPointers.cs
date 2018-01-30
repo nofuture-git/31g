@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util.Binary;
 
 namespace NoFuture.Util

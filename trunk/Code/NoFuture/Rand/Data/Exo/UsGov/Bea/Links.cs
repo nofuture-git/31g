@@ -1,4 +1,5 @@
 ﻿using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Rand.Data.Exo.UsGov.Bea
 {

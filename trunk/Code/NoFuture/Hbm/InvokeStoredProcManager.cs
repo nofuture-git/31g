@@ -13,6 +13,7 @@ using NoFuture.Hbm.SortingContainers;
 using NoFuture.Util;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 

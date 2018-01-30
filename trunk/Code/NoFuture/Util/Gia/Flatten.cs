@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 using NoFuture.Util.Gia.Args;

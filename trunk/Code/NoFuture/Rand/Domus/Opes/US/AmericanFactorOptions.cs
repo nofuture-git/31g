@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Domus.Opes.US
         {
             var o = new AmericanFactorOptions();
 
-            var pi = GetType().GetProperties(NfConfig.DefaultFlags).Where(p => p.CanWrite).ToList();
+            var pi = GetType().GetProperties(OpesOptions.DefaultFlags).Where(p => p.CanWrite).ToList();
             foreach (var p in pi)
             {
                 var gVal = p.GetValue(this);

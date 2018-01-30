@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Gia;

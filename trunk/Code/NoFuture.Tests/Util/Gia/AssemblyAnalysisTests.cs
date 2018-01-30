@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Tests.Util.Gia
 {

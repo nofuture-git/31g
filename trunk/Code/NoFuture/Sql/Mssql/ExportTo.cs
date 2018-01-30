@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using NoFuture.Shared.Core;
 using NoFuture.Sql.Mssql.Md;
+using NoFuture.Util.Binary;
 
 namespace NoFuture.Sql.Mssql
 {
@@ -25,6 +27,8 @@ namespace NoFuture.Sql.Mssql
     public class ExportTo
     {
         private const StringComparison Oic = StringComparison.OrdinalIgnoreCase;
+        public const int SQL_SERVER_FALSE = 0;
+        public const int SQL_SERVER_TRUE = 1;
 
         /// <summary>
         /// Composes  SQL syntax as an insert, update or merge (based on the <see cref="stmtType"/>) statement given the various inputs.
@@ -47,7 +51,7 @@ namespace NoFuture.Sql.Mssql
 
             //#get the table and schema names out of the expression
             var tempPsObj = GetTableSchemaAndNameFromExpression(sqlStmt);
-            if (string.IsNullOrWhiteSpace(tempPsObj.TableName))
+            if (String.IsNullOrWhiteSpace(tempPsObj.TableName))
             {
                 throw new RahRowRagee("The sql expression is either invalid or the 'from' statement " +
                                       "does not specify a fully qualified name ([catalog].[dbo].[tablename])");
@@ -62,9 +66,9 @@ namespace NoFuture.Sql.Mssql
             var mergeDataLine = new List<string>();
 
             Func<PsMetadata, string, bool> isSkipColumn =
-                (metadata, key) => metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) ||
-                                   metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)) ||
-                                   metaData.TimestampColumns.Any(x => string.Equals(x, key, Oic));
+                (metadata, key) => metaData.AutoNumKeys.Any(x => String.Equals(x, key, Oic)) ||
+                                   metaData.IsComputedKeys.Any(x => String.Equals(x, key, Oic)) ||
+                                   metaData.TimestampColumns.Any(x => String.Equals(x, key, Oic));
 
             //#for each database record
             foreach (DataRow currec in results)
@@ -80,19 +84,19 @@ namespace NoFuture.Sql.Mssql
                 var counter = 0;
                 foreach (var key in colNames)
                 {
-                    if (string.IsNullOrWhiteSpace(key))
+                    if (String.IsNullOrWhiteSpace(key))
                         continue;
 
                     if (isSkipColumn(metaData, key))
                         continue;
 
                     //#eval out all 'DBNull.Value'
-                    var val = string.IsNullOrWhiteSpace(currec[key].ToString()) ? "NULL" : currec[key].ToString();
+                    var val = String.IsNullOrWhiteSpace(currec[key].ToString()) ? "NULL" : currec[key].ToString();
 
                     //handle byte arrays different since ToString is not a value-literal
-                    if (string.Equals(val, "System.Byte[]", Oic))
+                    if (String.Equals(val, "System.Byte[]", Oic))
                     {
-                        val = "0x" + Util.Binary.ByteArray.PrintByteArray((byte[]) currec[key]);
+                        val = "0x" + ByteArray.PrintByteArray((byte[]) currec[key]);
                     }
 
                     //#truncate varcharesque values then wrap them in single quotes
@@ -107,7 +111,7 @@ namespace NoFuture.Sql.Mssql
                         var uws = $"{formattedPair.Item1} = {formattedPair.Item2}";
 
                         //#set a where statement off the primary key if that primary key was present in the select stmt
-                        if (metaData.PkKeys.Keys.Any(x => string.Equals(x, key, Oic)))
+                        if (metaData.PkKeys.Keys.Any(x => String.Equals(x, key, Oic)))
                             updateWhere.Add(uws);
                         else
                             setStmt.Add(uws);
@@ -133,21 +137,21 @@ namespace NoFuture.Sql.Mssql
                 {
                     //#close the blocks
                     insertSyntax.AppendFormat("\nINSERT INTO [{0}].[{1}]\n(\n\t", tableSchema, tableName);
-                    insertSyntax.Append(string.Join(",\n\t", insertStmt));
+                    insertSyntax.Append(String.Join(",\n\t", insertStmt));
                     insertSyntax.Append("\n)\nVALUES\n(\n\t");
-                    insertSyntax.Append(string.Join(",\n\t", insertVals));
+                    insertSyntax.Append(String.Join(",\n\t", insertVals));
                     insertSyntax.Append("\n)\n");
                     continue;
                 }
                 if (stmtType == ExportToStatementType.UPDATE)
                 {
                     updateSyntax.AppendFormat("\nUPDATE  [{0}].[{1}]\nSET     {2}\nWHERE   {3}\n", tableSchema, tableName,
-                        string.Join(",\n        ", setStmt), string.Join(" AND ", updateWhere));
+                        String.Join(",\n        ", setStmt), String.Join(" AND ", updateWhere));
                 }
 
                 if (stmtType == ExportToStatementType.MERGE)
                 {
-                    mergeDataLine.Add($"({string.Join(",\n             ", mergeVals)})");
+                    mergeDataLine.Add($"({String.Join(",\n             ", mergeVals)})");
                 }
             }
 
@@ -155,7 +159,7 @@ namespace NoFuture.Sql.Mssql
                 return stmtType == ExportToStatementType.INSERT ? insertSyntax.ToString() : updateSyntax.ToString();
 
             //draft the MERGE statement
-            var mergeData = string.Join("\n    ,", mergeDataLine);
+            var mergeData = String.Join("\n    ,", mergeDataLine);
             var matchOnColumn = new List<string>();
             var otherColumn = new List<string>();
 
@@ -165,39 +169,39 @@ namespace NoFuture.Sql.Mssql
 
             foreach (var key in colNames)
             {
-                if (string.IsNullOrWhiteSpace(key))
+                if (String.IsNullOrWhiteSpace(key))
                     continue;
                 if (isSkipColumn(metaData,key))
                     continue;
 
-                if (metaData.PkKeys.Keys.Any(x => string.Equals(x, key, Oic)))
+                if (metaData.PkKeys.Keys.Any(x => String.Equals(x, key, Oic)))
                     matchOnColumn.Add($"[{key}]");
                 else
                     otherColumn.Add($"[{key}]");
             }
 
-            var matchOnList = matchOnColumn.Select(matchOn => string.Format("target.{0} = source.{0}", matchOn)).ToList();
-            var updateSetList = otherColumn.Select(ot => string.Format("{0} = source.{0}", ot)).ToList();
+            var matchOnList = matchOnColumn.Select(matchOn => String.Format("target.{0} = source.{0}", matchOn)).ToList();
+            var updateSetList = otherColumn.Select(ot => String.Format("{0} = source.{0}", ot)).ToList();
             var insertNameList = metaData.IsIdentityInsert ? otherColumn : colNames;
             var insertValList = metaData.IsIdentityInsert
                 ? otherColumn.Select(ot => $"source.{ot}").ToList()
                 : colNames.Select(cn => $"source.{cn}").ToList();
-            var mergeSrcList = colNames.Where(c => !string.IsNullOrWhiteSpace(c) && !isSkipColumn(metaData, c));
+            var mergeSrcList = colNames.Where(c => !String.IsNullOrWhiteSpace(c) && !isSkipColumn(metaData, c));
 
             var mergeStatementBuilder = new StringBuilder();
             mergeStatementBuilder.AppendFormat("MERGE [{0}].[{1}] AS target\n", tableSchema, tableName);
             mergeStatementBuilder.Append("USING (\n");
             mergeStatementBuilder.Append("VALUES\n     ");
             mergeStatementBuilder.Append(mergeData);
-            mergeStatementBuilder.AppendFormat("\n    ) AS source (\n             {0})\n", string.Join(",\n             ", mergeSrcList));
-            mergeStatementBuilder.AppendFormat("ON ({0})\n", string.Join(" AND ", matchOnList));
+            mergeStatementBuilder.AppendFormat("\n    ) AS source (\n             {0})\n", String.Join(",\n             ", mergeSrcList));
+            mergeStatementBuilder.AppendFormat("ON ({0})\n", String.Join(" AND ", matchOnList));
             mergeStatementBuilder.AppendLine("WHEN MATCHED THEN");
-            mergeStatementBuilder.AppendFormat("  UPDATE SET {0}\n", string.Join(",\n             ", updateSetList));
+            mergeStatementBuilder.AppendFormat("  UPDATE SET {0}\n", String.Join(",\n             ", updateSetList));
             mergeStatementBuilder.AppendLine("WHEN NOT MATCHED THEN");
             mergeStatementBuilder.AppendFormat("    INSERT ( {0}\n           )\n",
-                string.Join(",\n             ", insertNameList));
+                String.Join(",\n             ", insertNameList));
             mergeStatementBuilder.AppendFormat("    VALUES ( {0}\n           );\n",
-                string.Join(",\n             ", insertValList));
+                String.Join(",\n             ", insertValList));
 
             return mergeStatementBuilder.ToString();
         }
@@ -213,12 +217,12 @@ namespace NoFuture.Sql.Mssql
         /// Set to true to have a small comment block appear, which includes the ordinal and column name, to the left of the <see cref="value"/>
         /// </param>
         /// <returns></returns>
-        internal static Tuple<string,string> FormatKeyValue(string key, string value, int len, int counter, bool withNameMarker = false)
+        internal static Tuple<string, string> FormatKeyValue(string key, string value, int len, int counter, bool withNameMarker = false)
         {
-            if (string.Equals(value, bool.TrueString, StringComparison.OrdinalIgnoreCase))
-                value = Constants.SQL_SERVER_TRUE.ToString(CultureInfo.InvariantCulture);
-            if (string.Equals(value, bool.FalseString, StringComparison.OrdinalIgnoreCase))
-                value = Constants.SQL_SERVER_FALSE.ToString(CultureInfo.InvariantCulture);
+            if (String.Equals(value, Boolean.TrueString, StringComparison.OrdinalIgnoreCase))
+                value = SQL_SERVER_TRUE.ToString(CultureInfo.InvariantCulture);
+            if (String.Equals(value, Boolean.FalseString, StringComparison.OrdinalIgnoreCase))
+                value = SQL_SERVER_FALSE.ToString(CultureInfo.InvariantCulture);
             var val = withNameMarker ? $"/*{counter:000}-{key}*/ {value}" : value;
             key = $"[{key}]";
 
@@ -261,7 +265,7 @@ namespace NoFuture.Sql.Mssql
                         fromBuffer[j] = sql[i + j];
 
 
-                    if (string.Equals(" from ", new string(fromBuffer), StringComparison.OrdinalIgnoreCase))
+                    if (String.Equals(" from ", new string(fromBuffer), StringComparison.OrdinalIgnoreCase))
                     {
                         flagHavePassedFrom = true;
                         //move ahead in the stream
@@ -284,7 +288,7 @@ namespace NoFuture.Sql.Mssql
                     flagInSqrBraces = false;
                     continue;
                 }
-                if (!flagInSqrBraces && char.IsWhiteSpace(sql[i]))
+                if (!flagInSqrBraces && Char.IsWhiteSpace(sql[i]))
                 {
                     endIdx = i;
                     break;
@@ -295,7 +299,7 @@ namespace NoFuture.Sql.Mssql
                 endIdx = sqlStmt.Length;
 
             var targetString = sqlStmt.Substring(startIdx, endIdx - startIdx);
-            System.Diagnostics.Debug.WriteLine(targetString);
+            Debug.WriteLine(targetString);
             flagInSqrBraces = false;
             
             startIdx = 0;
@@ -360,16 +364,16 @@ namespace NoFuture.Sql.Mssql
         /// <returns></returns>
         public static string GetQryValueWrappedWithLimit(PsMetadata metaData, string key, string val, int maxLength)
         {
-            if (string.IsNullOrWhiteSpace(key))
+            if (String.IsNullOrWhiteSpace(key))
                 return val;
 
             if (metaData == null)
                 return val;
 
-            if (metaData.AutoNumKeys.Any(x => string.Equals(x, key, Oic)) ||
-                metaData.IsComputedKeys.Any(x => string.Equals(x, key, Oic)))
+            if (metaData.AutoNumKeys.Any(x => String.Equals(x, key, Oic)) ||
+                metaData.IsComputedKeys.Any(x => String.Equals(x, key, Oic)))
                 return val;
-            if (!metaData.TickKeys.Any(x => string.Equals(x, key, Oic)) || string.Equals(val, "NULL", Oic))
+            if (!metaData.TickKeys.Any(x => String.Equals(x, key, Oic)) || String.Equals(val, "NULL", Oic))
                 return val;
 
             if (val.Contains("'"))
@@ -387,10 +391,10 @@ namespace NoFuture.Sql.Mssql
         /// <param name="sqlStmt"></param>
         /// <param name="metaData"></param>
         /// <returns></returns>
-        public static string TransformSelectStarToLiterals(string sqlStmt, List<Md.Common> metaData)
+        public static string TransformSelectStarToLiterals(string sqlStmt, List<Common> metaData)
         {
             const string MARKER = " * ";
-            if (string.IsNullOrWhiteSpace(sqlStmt))
+            if (String.IsNullOrWhiteSpace(sqlStmt))
                 return null;
             if (metaData == null || metaData.Count <= 0)
                 return sqlStmt;
@@ -404,7 +408,7 @@ namespace NoFuture.Sql.Mssql
                 metaData.Select(
                     md =>
                         md.DataType == "binary"
-                            ? string.Format("rtrim(convert(char(34), {0}, 1)) AS {0}", md.ColumnName)
+                            ? String.Format("rtrim(convert(char(34), {0}, 1)) AS {0}", md.ColumnName)
                             : md.ColumnName).ToList();
 
             var startAt = sqlStmt.ToLower().IndexOf(MARKER, StringComparison.Ordinal) + MARKER.Length;
@@ -413,7 +417,7 @@ namespace NoFuture.Sql.Mssql
 
             var sqlRight = sqlStmt.Substring(startAt, sqlStmt.Length - startAt);
             var sqlLeft = sqlStmt.Substring(0, startAt - MARKER.Length);
-            return $"{sqlLeft} {string.Join(", ", criterion)} {sqlRight}";
+            return $"{sqlLeft} {String.Join(", ", criterion)} {sqlRight}";
         }
     }
 }

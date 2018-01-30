@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Util.Core
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Data.Sp;
@@ -26,6 +27,9 @@ namespace NoFuture.Rand.Domus.Opes
     {
         private readonly AmericanFactorOptions _factorOptions;
         private CityArea _cityArea;
+        internal const BindingFlags DefaultFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance |
+                                              BindingFlags.NonPublic |
+                                              BindingFlags.Public | BindingFlags.Static;
 
         #region properties
 
@@ -167,7 +171,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var o = new OpesOptions(FactorOptions.GetClone());
 
-            var pi = GetType().GetProperties(NfConfig.DefaultFlags).Where(p => p.CanWrite).ToList();
+            var pi = GetType().GetProperties(DefaultFlags).Where(p => p.CanWrite).ToList();
             foreach (var p in pi)
             {
                 var gVal = p.GetValue(this);

@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
@@ -801,7 +802,7 @@ namespace NoFuture.Gen
 
             var cgMem = new CgMember
             {
-                Name = Constants.CTOR_NAME,
+                Name = NfConfig.CTOR_NAME,
                 IsCtor = true,
                 TypeName = typeName,
                 MetadataToken = ci.MetadataToken

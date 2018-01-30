@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -293,8 +292,8 @@ namespace NoFuture.Util.Core
                 return new[] {value};
 
             value = ToPascelCase(value);
-            value = TransformCaseToSeparator(value, NfConfig.DefaultCharSeparator);
-            return value.Split(NfConfig.DefaultCharSeparator).Distinct().ToArray();
+            value = TransformCaseToSeparator(value, Constants.DefaultCharSeparator);
+            return value.Split(Constants.DefaultCharSeparator).Distinct().ToArray();
         }
 
         /// <summary>
@@ -568,7 +567,7 @@ namespace NoFuture.Util.Core
                 return String.Empty;
 
             if (separator == null)
-                separator = NfConfig.DefaultTypeSeparator;
+                separator = Constants.DefaultTypeSeparator;
 
             name = name.Trim();
             name =
@@ -629,7 +628,7 @@ namespace NoFuture.Util.Core
             var nameFormatted = new StringBuilder();
             var markStart = false;
             var nameChars = name.ToCharArray();
-            var sepChars = NfConfig.PunctuationChars.ToList();
+            var sepChars = Constants.PunctuationChars.ToList();
             sepChars.Add(' ');
             for (var i = 0; i < nameChars.Length; i++)
             {
@@ -701,7 +700,7 @@ namespace NoFuture.Util.Core
                 return String.Empty;
 
             if (separator == null)
-                separator = NfConfig.DefaultTypeSeparator;
+                separator = Constants.DefaultTypeSeparator;
 
             if (!name.Contains(separator.ToString()))
                 return name;

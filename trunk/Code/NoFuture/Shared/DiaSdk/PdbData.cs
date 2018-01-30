@@ -2,6 +2,7 @@
 using System.Runtime.Serialization.Json;
 using System.Text;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Shared.DiaSdk
 {

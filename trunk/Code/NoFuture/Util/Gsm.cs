@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Gsm
 {

@@ -1,7 +1,8 @@
 ﻿using System.Xml;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static NoFuture.Shared.Core.NfConfig;
+using NoFuture.Shared.Core;
+using static NoFuture.Shared.Core.Cfg.NfConfig;
 
 namespace NoFuture.Tests.Shared
 {
@@ -27,7 +28,7 @@ namespace NoFuture.Tests.Shared
             Init(TEST_FILE);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin", BinDirectories.Root);
             var puncChars = @"! # $ % & \ ' ( ) * + , - . / : ; < = > ? @ [ ] ^ _ ` { | } ~";
-            Assert.AreEqual(puncChars, string.Join(" ", PunctuationChars));
+            Assert.AreEqual(puncChars, string.Join(" ", Constants.PunctuationChars));
 
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp", TempDirectories.Root);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\sql", TempDirectories.Sql);

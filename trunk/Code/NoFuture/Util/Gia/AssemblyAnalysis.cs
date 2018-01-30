@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 using NoFuture.Util.Gia.InvokeCmds;
@@ -378,7 +379,7 @@ namespace NoFuture.Util.Gia
             if (string.IsNullOrWhiteSpace(tokenName))
                 return null;
 
-            var sep = NfConfig.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
+            var sep = Constants.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
 
             //assembly name and namespace being equal will have equal portion removed, add it back
             if (!string.IsNullOrWhiteSpace(owningAsmName) && tokenName.StartsWith(sep))

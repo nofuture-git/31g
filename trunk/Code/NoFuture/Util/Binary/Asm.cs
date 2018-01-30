@@ -8,6 +8,7 @@ using System.Text;
 using System.Reflection.Emit;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Util.Binary
 {

@@ -2,6 +2,7 @@
 using NoFuture.Gen.InvokeDia2Dump;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Tests.Gen
 {

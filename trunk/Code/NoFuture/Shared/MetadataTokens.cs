@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Shared
 {
@@ -274,7 +275,7 @@ namespace NoFuture.Shared
         public bool IsPartialName()
         {
             return !String.IsNullOrWhiteSpace(Name) &&
-                   Name.StartsWith(NfConfig.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture));
+                   Name.StartsWith(Constants.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture));
         }
 
         public override bool Equals(object obj)

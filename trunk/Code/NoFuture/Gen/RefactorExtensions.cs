@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Util;
 using NoFuture.Util.Core;

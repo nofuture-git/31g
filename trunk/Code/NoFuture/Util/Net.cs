@@ -13,6 +13,7 @@ using System.Security.Principal;
 using Newtonsoft.Json;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Util
 {
@@ -305,7 +306,7 @@ namespace NoFuture.Util
         }
 
         /// <summary>
-        /// These are intended as my own additions to the contents from <see cref="Constants.HOST_TXT"/>.
+        /// These are intended as my own additions to the contents from <see cref="NfConfig.HOST_TXT"/>.
         /// </summary>
         public static string[] MyRestrictedDomains => new[] {
             "*.imwx.com", 

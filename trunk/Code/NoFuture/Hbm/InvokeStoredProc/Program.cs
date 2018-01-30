@@ -9,6 +9,7 @@ using System.Threading;
 using System.Configuration;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util;
 using NoFuture.Util.NfConsole;
 

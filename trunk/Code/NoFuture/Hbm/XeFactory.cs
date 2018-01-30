@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml.Linq;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
@@ -21,7 +22,7 @@ namespace NoFuture.Hbm
 
         public static XElement HibernateConfigurationNode(string connectionString, string outputNamespace)
         {
-            outputNamespace = Etc.CapWords(outputNamespace, NfConfig.DefaultTypeSeparator);
+            outputNamespace = Etc.CapWords(outputNamespace, Constants.DefaultTypeSeparator);
             XNamespace hbmXmlNs = Globals.HBM_XML_NS;
             var hbmConfigNode = new XElement(hbmXmlNs + Nm.HIBERNATE_CONFIGURATION);
             var sessionFactoryNode = new XElement(Nm.SESSION_FACTORY);

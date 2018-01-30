@@ -117,6 +117,10 @@
       <Project>{ecc8c5b3-a36f-40d5-9ddf-7a286b92c998}</Project>
       <Name>Antlr</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Shared\Cfg\Shared.Cfg.csproj">
+      <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
+      <Name>Shared.Cfg</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Shared\Core\Shared.Core.csproj">
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Tokens.InvokeNfTypeName.Cmds;
 using NoFuture.Util;
 using NoFuture.Util.Gia;

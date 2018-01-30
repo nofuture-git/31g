@@ -6,6 +6,7 @@ using NoFuture.Hbm;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 
 namespace NoFuture.Tests.Hbm
 {

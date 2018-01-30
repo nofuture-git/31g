@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.Win32;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using RDotNet;
 
 namespace NoFuture.Util.Re

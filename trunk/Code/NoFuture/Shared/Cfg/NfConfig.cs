@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 
-namespace NoFuture.Shared.Core
+namespace NoFuture.Shared.Core.Cfg
 {
     /// <summary>
     /// Represents a central runtime hub from which all the other parts of the 
@@ -25,6 +25,43 @@ namespace NoFuture.Shared.Core
         /// other paths in <see cref="FILE_NAME"/> are leafs.
         /// </summary>
         internal const string MY_PS_HOME_VAR_NAME = "myPsHome";
+
+        /// <summary>
+        /// Common name give to constructors in runtime type defs
+        /// </summary>
+        public const string CTOR_NAME = ".ctor";
+
+        /// <summary>
+        /// The location within the Registry where one may set 
+        /// domains to a specific Zone.
+        /// </summary>
+        public const string REGISTRY_ZONE_PATH =
+            @"HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
+
+        /// <summary>
+        /// Useful link to a very extensive list of domains used 
+        /// by advertisers.  Its original intention was for use in 
+        /// 'Hosts' file.
+        /// </summary>
+        public const string HOST_TXT = "http://winhelp2002.mvps.org/hosts.txt";
+
+        /// <summary>
+        /// see http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnection.connectionstring(v=vs.90).aspx
+        /// </summary>
+        public static string[] MsSqlConnStrKeywords =
+        {
+            "Application Name", "Async", "AttachDBFilename", "extended properties", "Initial File Name",
+            "Connect Timeout",
+            "Connection Timeout", "Context Connection", "Current Language", "Data Source", "Server", "Address", "Addr",
+            "Network Address",
+            "Encrypt", "Enlist", "Failover Partner", "Initial Catalog", "Database", "Integrated Security",
+            "Trusted_Connection", "MultipleActiveResultSets",
+            "Network Library", "Net", "Packet Size", "Password", "Pwd", "Persist Security Info", "Replication",
+            "Transaction Binding", "TrustServerCertificate",
+            "Type System Version", "User ID", "User Instance", "Workstation ID", "Connection Lifetime", "Enlist",
+            "Max Pool Size", "Min Pool Size", "Pooling"
+        };
+
         #endregion
 
         #region fields
@@ -32,8 +69,7 @@ namespace NoFuture.Shared.Core
         /// Is the key-value hash which links the id's in <see cref="FILE_NAME"/> 
         /// to the properties of the <see cref="NfConfig"/> 
         /// </summary>
-        private static Dictionary<string, Action<string>> _cfgIdName2PropertyAssigment = new Dictionary
-            <string, Action<string>>
+        private static Dictionary<string, Action<string>> _cfgIdName2PropertyAssigment = new Dictionary<string, Action<string>>
         {
             {"certFileNoFutureX509", s => SecurityKeys.NoFutureX509Cert = s},
             {"favicon", s => Favicon = s },
@@ -121,11 +157,11 @@ namespace NoFuture.Shared.Core
             {"binary-file-extensions", s => BinaryFileExtensions = s.Split(' ')},
             {"search-directory-exclusions", s => ExcludeCodeDirectories = s.Split(' ')},
             {"default-block-size", s => DefaultBlockSize = Convert.ToInt32(s)},
-            {"default-type-separator", s => DefaultTypeSeparator = Convert.ToChar(s)},
-            {"default-char-separator", s => DefaultCharSeparator = Convert.ToChar(s)},
+            {"default-type-separator", s => Constants.DefaultTypeSeparator = Convert.ToChar(s)},
+            {"default-char-separator", s => Constants.DefaultCharSeparator = Convert.ToChar(s)},
             {"cmd-line-arg-switch", s => CmdLineArgSwitch = s},
             {"cmd-line-arg-assign", s => CmdLineArgAssign = Convert.ToChar(s)},
-            {"punctuation-chars", s => PunctuationChars = s.Split(' ').Select(Convert.ToChar).ToArray()},
+            {"punctuation-chars", s => Constants.PunctuationChars = s.Split(' ').Select(Convert.ToChar).ToArray()},
             {"cscExe", s => DotNet.CscCompiler = s},
             {"vbcExe", s => DotNet.VbcCompiler = s},
         };
@@ -154,7 +190,7 @@ namespace NoFuture.Shared.Core
             };
 
             var nfCfg = "";
-            foreach (var dir in searchDirs.Where(x => !string.IsNullOrWhiteSpace(x)))
+            foreach (var dir in searchDirs.Where(x => !String.IsNullOrWhiteSpace(x)))
             {
                 nfCfg = Path.Combine(dir, FILE_NAME);
                 if (File.Exists(nfCfg))
@@ -174,10 +210,10 @@ namespace NoFuture.Shared.Core
         /// <returns></returns>
         public static bool Init(string nfCfg)
         {
-            if (string.IsNullOrWhiteSpace(nfCfg))
+            if (String.IsNullOrWhiteSpace(nfCfg))
             {
                 nfCfg = FindNfConfigFile();
-                if(string.IsNullOrWhiteSpace(nfCfg))
+                if(String.IsNullOrWhiteSpace(nfCfg))
                     throw new FileNotFoundException($"Cannot locate a copy of {FILE_NAME}");
             }
             var cfgXml = new XmlDocument();
@@ -282,12 +318,12 @@ namespace NoFuture.Shared.Core
                 var idElem = idNode as XmlElement;
                 if (idElem == null
                     || !idElem.HasAttributes
-                    || string.IsNullOrWhiteSpace(idElem.Attributes["id"]?.Value))
+                    || String.IsNullOrWhiteSpace(idElem.Attributes["id"]?.Value))
                     continue;
 
                 var hasValueAttr = idElem.HasAttribute("value");
                 var hasValueAttrWithAssignment = hasValueAttr &&
-                                                 !string.IsNullOrWhiteSpace(idElem.Attributes["value"]?.Value);
+                                                 !String.IsNullOrWhiteSpace(idElem.Attributes["value"]?.Value);
 
                 //has value attr assigned to empty string
                 if (hasValueAttr && !hasValueAttrWithAssignment)
@@ -299,7 +335,7 @@ namespace NoFuture.Shared.Core
                     //expecting CDATA values
                     var cDataNode = idElem.FirstChild;
                     var cDataElem = cDataNode as XmlCDataSection;
-                    if (string.IsNullOrWhiteSpace(cDataElem?.Value))
+                    if (String.IsNullOrWhiteSpace(cDataElem?.Value))
                         continue;
                     val = cDataElem.Value;
                 }
@@ -328,17 +364,17 @@ namespace NoFuture.Shared.Core
         /// <returns></returns>
         internal static string GetCdataValue(XmlDocument cfgXml, string nodeName)
         {
-            if (cfgXml == null || string.IsNullOrWhiteSpace(nodeName))
-                return string.Empty;
+            if (cfgXml == null || String.IsNullOrWhiteSpace(nodeName))
+                return String.Empty;
 
             var n = cfgXml.SelectSingleNode($"//{nodeName}");
             var e = n as XmlElement;
             if (e == null || !e.HasChildNodes)
-                return string.Empty;
+                return String.Empty;
             var cdataNode = e.FirstChild;
             var cdata = cdataNode as XmlCDataSection;
 
-            return cdata?.Value ?? string.Empty;
+            return cdata?.Value ?? String.Empty;
         }
         #endregion
 
@@ -399,12 +435,6 @@ namespace NoFuture.Shared.Core
         /// </summary>
         public static string SymbolsPath { get; set; } = @"C:\Symbols";
 
-        public static char DefaultTypeSeparator { get; set; } = '.';
-
-        /// <summary>
-        /// The comma is a typical delimiter in many programming constructs.
-        /// </summary>
-        public static char DefaultCharSeparator { get; set; } = ',';
 
         /// <summary>
         /// The op char used to delimit the start of a command line switch.
@@ -418,11 +448,6 @@ namespace NoFuture.Shared.Core
 
         public static long DefaultBlockSize { get; set; } = 256;
 
-        public static char[] PunctuationChars { get; set; } = {
-            '!', '"', '#', '$', '%', '&', '\\', '\'', '(', ')',
-            '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>',
-            '?','@', '[', ']', '^', '_', '`', '{', '|', '}', '~'
-        };
 
         public static string[] CodeFileExtensions { get; set; } =
         {
@@ -521,6 +546,7 @@ namespace NoFuture.Shared.Core
             @"\packages\",
             @"\__pycache__\" //common to python in VS
         };
+
         #endregion
 
         #region inner types
@@ -538,7 +564,7 @@ namespace NoFuture.Shared.Core
                 get
                 {
                     var nfAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                    if (string.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
+                    if (String.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
                         throw new DirectoryNotFoundException("The Environment.GetFolderPath for " +
                                                              "SpecialFolder.ApplicationData returned a bad path.");
                     nfAppData = Path.Combine(nfAppData, "NoFuture");

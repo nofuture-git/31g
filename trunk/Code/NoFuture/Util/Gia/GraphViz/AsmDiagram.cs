@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.Core.Cfg;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
