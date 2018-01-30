@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Geo;
+﻿using System;
+using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NUnit.Framework;
 
@@ -20,14 +21,14 @@ namespace NoFuture.Rand.Tests.ComTests
             Assert.AreEqual("New York City",testResult.BusinessAddress.Item2.City);
             Assert.IsNotNull(testResult.BusinessAddress.Item2.StateName);
             Assert.AreEqual("NY", testResult.BusinessAddress.Item2.StateAbbrev);
-            System.Diagnostics.Debug.WriteLine(testResult.Name);
+            Console.WriteLine(testResult.Name);
 
             testResult = NoFuture.Rand.Com.Bank.RandomBank(null);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual("", testResult.Name);
             Assert.IsNotNull(testResult.BusinessAddress);
             Assert.IsNotNull(testResult.BusinessAddress.Item2);
-            System.Diagnostics.Debug.WriteLine(testResult.Name);
+            Console.WriteLine(testResult.Name);
         }
     }
 }

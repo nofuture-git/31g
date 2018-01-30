@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Tele;
@@ -94,11 +93,6 @@ namespace NoFuture.Rand.Com
             _sector = naics.Item2;
             _market = naics.Item3;
         }
-
-
-
-
-
 
         private static Dictionary<string, string> _fullWord2Abbrev = new Dictionary<string, string>();
 
