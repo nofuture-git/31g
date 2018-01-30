@@ -41,6 +41,7 @@
     <Compile Include="ProgressMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegexCatalog.cs" />
+    <Compile Include="NfSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\RegexLiterals.txt" />

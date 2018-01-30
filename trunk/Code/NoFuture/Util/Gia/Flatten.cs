@@ -222,7 +222,7 @@ namespace NoFuture.Util.Gia
             }
 
             var typeNamesList =
-                currentType.GetProperties(Constants.DefaultFlags)
+                currentType.GetProperties(NfSettings.DefaultFlags)
                     .Where(
                         x =>
                             (NfReflect.IsValueTypeProperty(x) && limitOnPi(x, limitOnValueType)
@@ -251,7 +251,7 @@ namespace NoFuture.Util.Gia
             //then recurse the object types
             foreach (
                 var p in
-                    currentType.GetProperties(Constants.DefaultFlags)
+                    currentType.GetProperties(NfSettings.DefaultFlags)
                         .Where(x => !NfReflect.IsValueTypeProperty(x)))
             {
                 currentDepth += 1;

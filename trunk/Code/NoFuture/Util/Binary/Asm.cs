@@ -35,7 +35,7 @@ namespace NoFuture.Util.Binary
                 if (!String.IsNullOrWhiteSpace(_resolveAsmLog))
                     return _resolveAsmLog;
                 var logDir = String.IsNullOrWhiteSpace(NfConfig.TempDirectories.Debug) || !Directory.Exists(NfConfig.TempDirectories.Debug)
-                    ? Constants.AppData
+                    ? NfSettings.AppData
                     : NfConfig.TempDirectories.Debug;
                 _resolveAsmLog = Path.Combine(logDir, DEFAULT_ASM_LOG_FILE_NAME);
                 return _resolveAsmLog;

@@ -379,7 +379,7 @@ namespace NoFuture.Util.Gia
             if (string.IsNullOrWhiteSpace(tokenName))
                 return null;
 
-            var sep = Constants.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
+            var sep = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
 
             //assembly name and namespace being equal will have equal portion removed, add it back
             if (!string.IsNullOrWhiteSpace(owningAsmName) && tokenName.StartsWith(sep))
@@ -440,7 +440,7 @@ namespace NoFuture.Util.Gia
                 Id = asmType.MetadataToken,
                 RslvAsmIdx = asmIdx,
                 Items =
-                    asmType.GetMembers(Constants.DefaultFlags)
+                    asmType.GetMembers(NfSettings.DefaultFlags)
                         .Select(x => GetMetadataToken(x, true, asmIdx))
                         .Distinct()
                         .ToArray()

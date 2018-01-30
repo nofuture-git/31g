@@ -55,7 +55,7 @@ namespace NoFuture.Util.NfConsole
             {
                 var logDir = SysCfg.GetAppCfgSetting(TEMP_DIR_DEBUG);
                 if (string.IsNullOrWhiteSpace(logDir))
-                    logDir = Constants.AppData;
+                    logDir = NfSettings.AppData;
                 var myName = MyName;
                 myName = NfPath.SafeFilename(myName);
                 logDir = string.IsNullOrWhiteSpace(myName) ? logDir : Path.Combine(logDir, myName);

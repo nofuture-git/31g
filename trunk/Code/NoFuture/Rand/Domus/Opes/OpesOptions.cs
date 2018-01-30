@@ -167,7 +167,7 @@ namespace NoFuture.Rand.Domus.Opes
         {
             var o = new OpesOptions(FactorOptions.GetClone());
 
-            var pi = GetType().GetProperties(Constants.DefaultFlags).Where(p => p.CanWrite).ToList();
+            var pi = GetType().GetProperties(NfSettings.DefaultFlags).Where(p => p.CanWrite).ToList();
             foreach (var p in pi)
             {
                 var gVal = p.GetValue(this);

@@ -58,7 +58,7 @@ namespace NoFuture.Util.NfConsole
         public void WriteOutputToDisk(byte[] bytes, string fileExt = ".json")
         {
             var tn = GetType().FullName;
-            var dir = MyProgram == null ? Constants.AppData : MyProgram.LogDirectory;
+            var dir = MyProgram == null ? NfSettings.AppData : MyProgram.LogDirectory;
             File.WriteAllBytes(Path.Combine(dir, tn + fileExt), bytes);
         }
         #endregion

@@ -28,7 +28,7 @@ namespace NoFuture.Tests.Shared
             Init(TEST_FILE);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin", BinDirectories.Root);
             var puncChars = @"! # $ % & \ ' ( ) * + , - . / : ; < = > ? @ [ ] ^ _ ` { | } ~";
-            Assert.AreEqual(puncChars, string.Join(" ", Constants.PunctuationChars));
+            Assert.AreEqual(puncChars, string.Join(" ", NfSettings.PunctuationChars));
 
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp", TempDirectories.Root);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\sql", TempDirectories.Sql);
@@ -112,13 +112,13 @@ namespace NoFuture.Tests.Shared
             var binFiles =
                 "001 002 003 004 005 006 007 008 009 010 7z aas acm addin adm am amx ani apk apl aps aux avi ax bak bcf bcm bin bmp bpd bpl browser bsc btr bud cab cache camp cap cat cch ccu cdf-ms cdmp chk chm chr chs cht clb cmb cmdline cmf com comments compiled compositefont cov cpa cpl cpx crmlog crt csd ctm cty cur cw dat data db dcf dcr default delete dem desklink devicemetadata-ms diagpkg dic dir dll dlm dls dmp dnl doc docx drv ds dts dub dvd dvr-ms dxt ebd edb efi emf err ess etl ev1 ev2 ev3 evm evtx ex_ exe exp fe fon ftl fx gdl gif gmmp grl grm gs_4_0 h1c h1s h1t hdr hex hit hlp hpi hpx iad icc icm ico id idb idx iec if2 ilk imd ime inf_loc ins inx ipa ird jar jmx jnt job jpeg jpg jpn jrs jtp kor ldo lex lg1 lg2 lib library-ms lng lnk log lrc lts lxa mac man map mapimail mdb mdbx mfl mib mid mllr mni mof mp3 mp4 mpg msc msi msm msstyles mst msu mui mum mzz ncb ndx ngr nlp nls nlt ntf nupkg obj ocx olb old opt out pch pdb pdf phn pkc plugin pnf png ppd pptx prm prof propdesc prq prx ps_2_0 ps_4_0 psd ptxml pub que rat rdl reg res resources resx rld rll rom rpo rs rtf s3 sbr scc scr sdb sdi ses shp smp sqm ssm stl swf sys t4 tag tar.gz tbl tbr tha tif tiff tlb tmp toc tpi trie1 tsp ttc ttf tts tx_ txt uaq uce udt uni uninstall unt url vch vdf ver vp vs_1_1 vs_4_0 vsd vspscc wav wdf web wih wim win32manifest wma wmf wmv wmz wtv wwd x32 xex xlb xls xlsx zfsendtotarget zip";
 
-            Assert.AreEqual(codeFiles, string.Join(" ", Constants.CodeFileExtensions));
-            Assert.AreEqual(cfgFiles, string.Join(" ", Constants.ConfigFileExtensions));
-            Assert.AreEqual(binFiles, string.Join(" ", Constants.BinaryFileExtensions));
+            Assert.AreEqual(codeFiles, string.Join(" ", NfSettings.CodeFileExtensions));
+            Assert.AreEqual(cfgFiles, string.Join(" ", NfSettings.ConfigFileExtensions));
+            Assert.AreEqual(binFiles, string.Join(" ", NfSettings.BinaryFileExtensions));
 
             var exDirs =
                 "bin obj Interop TestResults _svn .svn _ReSharper _TeamCity .git .nuget .vs lib build dist packages __pycache__";
-            Assert.AreEqual(exDirs, string.Join(" ", Constants.ExcludeCodeDirectories));
+            Assert.AreEqual(exDirs, string.Join(" ", NfSettings.ExcludeCodeDirectories));
 
         }
 
