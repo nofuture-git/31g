@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Domus.Pneuma
+namespace NoFuture.Rand.Pneuma
 {
     [Serializable]
     public class Extraversion : Trait

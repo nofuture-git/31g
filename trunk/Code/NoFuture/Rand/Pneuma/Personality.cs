@@ -2,7 +2,7 @@
 using System.Linq;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Domus.Pneuma
+namespace NoFuture.Rand.Pneuma
 {
     /// <inheritdoc />
     /// <summary>

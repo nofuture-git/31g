@@ -5,6 +5,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
+using NoFuture.Rand.Pneuma;
 
 namespace NoFuture.Rand.Domus
 {
@@ -21,7 +22,7 @@ namespace NoFuture.Rand.Domus
         string LastName { get; set; }
         Gender MyGender { get; set; }
         IEnumerable<Uri> NetUri { get; }
-        Pneuma.Personality Personality { get; set; }
+        Personality Personality { get; set; }
         IEducation Education { get; set; }
         IRelation Spouse { get; }
         MaritialStatus MaritialStatus { get; }

@@ -2,7 +2,7 @@
 using System.Globalization;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Domus.Pneuma
+namespace NoFuture.Rand.Pneuma
 {
     [Serializable]
     public class Dimension

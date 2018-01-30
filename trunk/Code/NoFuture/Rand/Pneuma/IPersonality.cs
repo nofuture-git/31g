@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Domus.Pneuma
+﻿namespace NoFuture.Rand.Pneuma
 {
     /// <summary>
     /// For making random decisions

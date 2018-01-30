@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Pneuma;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
@@ -9,8 +10,8 @@ namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
         [Test]
         public void TestEquals()
         {
-            var test00 = new NoFuture.Rand.Domus.Pneuma.Openness();
-            var test01 = new Domus.Pneuma.Openness();
+            var test00 = new Openness();
+            var test01 = new Openness();
 
             test01.Value = test00.Value;
 

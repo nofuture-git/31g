@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Pneuma;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
@@ -9,8 +10,8 @@ namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
         [Test]
         public void TestEquals()
         {
-            var test00 = new Domus.Pneuma.Dimension(0.31D,0.125D);
-            var test01 = new Domus.Pneuma.Dimension(0.31D, 0.125D);
+            var test00 = new Dimension(0.31D,0.125D);
+            var test01 = new Dimension(0.31D, 0.125D);
 
             Assert.IsTrue(test00.Equals(test01));
         }

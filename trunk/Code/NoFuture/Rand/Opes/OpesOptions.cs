@@ -4,10 +4,10 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Domus.Opes.US;
-using NoFuture.Rand.Domus.Pneuma;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov.US;
+using NoFuture.Rand.Pneuma;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
@@ -207,7 +207,7 @@ namespace NoFuture.Rand.Domus.Opes
                 Inception = Etx.RandomDate(-1, null, true),
                 HomeLocation = CityArea.RandomAmericanCity(),
                 IsRenting = Etx.RandomCoinToss(),
-                Personality = Pneuma.Personality.RandomPersonality(),
+                Personality = Rand.Pneuma.Personality.RandomPersonality(),
                 NumberOfCreditCards = Etx.RandomInteger(0, 3),
                 NumberOfVehicles = 1,
                 PersonsName = name,

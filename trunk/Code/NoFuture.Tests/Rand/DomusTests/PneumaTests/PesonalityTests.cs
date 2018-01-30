@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using NoFuture.Rand.Domus.Pneuma;
+using NoFuture.Rand.Pneuma;
 
 namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
 {
@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Tests.DomusTests.PneumaTests
         [Test]
         public void TestCtor()
         {
-            var testSubject = new NoFuture.Rand.Domus.Pneuma.Personality();
+            var testSubject = new Personality();
             Assert.IsNotNull(testSubject.Openness.Value);
             Assert.IsNotNull(testSubject.Conscientiousness.Value);
             Assert.IsNotNull(testSubject.Extraversion.Value);
