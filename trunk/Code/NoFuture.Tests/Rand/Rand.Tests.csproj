@@ -47,28 +47,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTests\SpTests\BalanceTests.cs" />
-    <Compile Include="DataTests\SpTests\PersonalCreditScoreTests.cs" />
-    <Compile Include="DataTests\SpTests\DepositAccountTests.cs" />
-    <Compile Include="DomusTests\PneumaTests\TraitTests.cs" />
-    <Compile Include="DomusTests\PneumaTests\DimensionTests.cs" />
+    <Compile Include="SpTests\BalanceTests.cs" />
+    <Compile Include="SpTests\PersonalCreditScoreTests.cs" />
+    <Compile Include="SpTests\DepositAccountTests.cs" />
+    <Compile Include="PneumaTests\TraitTests.cs" />
+    <Compile Include="PneumaTests\DimensionTests.cs" />
     <Compile Include="EduTests\AmericanSchoolBaseTests.cs" />
-    <Compile Include="DataTests\SpTests\CreditCardTests.cs" />
-    <Compile Include="DataTests\SpTests\CreditScoreTests.cs" />
-    <Compile Include="DataTests\SpTests\CusipTests.cs" />
-    <Compile Include="DataTests\SpTests\PondusTests.cs" />
-    <Compile Include="DataTests\SpTests\MortgageTests.cs" />
-    <Compile Include="DataTests\SpTests\SecuredFixedRateLoanTests.cs" />
-    <Compile Include="DataTests\SpTests\AccountTests.cs" />
-    <Compile Include="DataTests\SpTests\LoanTests.cs" />
-    <Compile Include="DomusTests\OpesTests\AmericanAssetsTests.cs" />
-    <Compile Include="DomusTests\OpesTests\AmericanDeductionsTests.cs" />
-    <Compile Include="DomusTests\OpesTests\AmericanEmploymentTests.cs" />
-    <Compile Include="DomusTests\OpesTests\AmericanIncomeTests.cs" />
-    <Compile Include="DomusTests\OpesTests\OpesOptionsTests.cs" />
-    <Compile Include="DomusTests\OpesTests\AmericanExpenseTests.cs" />
-    <Compile Include="DomusTests\OpesTests\AmericanFactorsTests.cs" />
-    <Compile Include="DataTests\SpTests\TradeLineTests.cs" />
+    <Compile Include="SpTests\CreditCardTests.cs" />
+    <Compile Include="SpTests\CreditScoreTests.cs" />
+    <Compile Include="SpTests\CusipTests.cs" />
+    <Compile Include="SpTests\PondusTests.cs" />
+    <Compile Include="SpTests\MortgageTests.cs" />
+    <Compile Include="SpTests\SecuredFixedRateLoanTests.cs" />
+    <Compile Include="SpTests\AccountTests.cs" />
+    <Compile Include="SpTests\LoanTests.cs" />
+    <Compile Include="OpesTests\AmericanAssetsTests.cs" />
+    <Compile Include="OpesTests\AmericanDeductionsTests.cs" />
+    <Compile Include="OpesTests\AmericanEmploymentTests.cs" />
+    <Compile Include="OpesTests\AmericanIncomeTests.cs" />
+    <Compile Include="OpesTests\OpesOptionsTests.cs" />
+    <Compile Include="OpesTests\AmericanExpenseTests.cs" />
+    <Compile Include="OpesTests\AmericanFactorsTests.cs" />
+    <Compile Include="SpTests\TradeLineTests.cs" />
     <Compile Include="EduTests\AmericanHighSchoolTests.cs" />
     <Compile Include="EduTests\AmericanUniversityTests.cs" />
     <Compile Include="EduTests\AmericanEducationTests.cs" />
@@ -84,15 +84,15 @@
     <Compile Include="GovTests\DriversLicenseTests.cs" />
     <Compile Include="IdentityTests.cs" />
     <Compile Include="GovTests\NhtsaTests.cs" />
-    <Compile Include="DomusTests\OpesTests\WealthBaseTests.cs" />
-    <Compile Include="DataTests\SpTests\PecuniamTests.cs" />
+    <Compile Include="OpesTests\WealthBaseTests.cs" />
+    <Compile Include="SpTests\PecuniamTests.cs" />
     <Compile Include="DomusTests\PersonTests.cs" />
     <Compile Include="OrgTests\StandardIndustryClassificationTests.cs" />
     <Compile Include="OrgTests\NorthAmericanIndustryTests.cs" />
     <Compile Include="OrgTests\StandardOccupationalTests.cs" />
     <Compile Include="TeleTests\PhoneTests.cs" />
-    <Compile Include="DomusTests\PneumaTests\PesonalityTests.cs" />
-    <Compile Include="DataTests\SpTests\RentTests.cs" />
+    <Compile Include="PneumaTests\PesonalityTests.cs" />
+    <Compile Include="SpTests\RentTests.cs" />
     <Compile Include="ComTests\TickerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GovTests\UsStateTests.cs" />
@@ -158,7 +158,9 @@
       <Name>Util.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DataTests\" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

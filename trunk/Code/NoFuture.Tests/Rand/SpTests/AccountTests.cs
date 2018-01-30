@@ -6,7 +6,7 @@ using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Cc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DataTests.SpTests
+namespace NoFuture.Rand.Tests.SpTests
 {
     [TestFixture]
     public class AccountTests

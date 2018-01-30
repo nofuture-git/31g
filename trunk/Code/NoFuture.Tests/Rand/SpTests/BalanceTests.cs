@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NUnit.Framework;
 using NoFuture.Rand.Sp;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.DataTests.SpTests
+namespace NoFuture.Rand.Tests.SpTests
 {
     [TestFixture]
     public class BalanceTests
@@ -24,12 +24,10 @@ namespace NoFuture.Rand.Tests.DataTests.SpTests
 
             var testResult = testBalance.GetCurrent(DateTime.Now, 0);
             Assert.AreEqual(1309.86M, testResult.Amount);
-            System.Diagnostics.Debug.WriteLine(testResult.Amount);
+            Console.WriteLine(testResult.Amount);
 
 
         }
-
-
 
         [Test]
         public void TestGetPaymentSum()
