@@ -168,5 +168,22 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
         }
+
+        [Test]
+        public void TestAddItems()
+        {
+            var testSubject = new AmericanAssets();
+            var testResult = testSubject.TotalCurrentExpectedValue;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+
+            testSubject.AddItem("Home",120000.0D);
+            testResult = testSubject.TotalCurrentExpectedValue;
+            Assert.AreEqual(120000.0D.ToPecuniam(), testResult);
+
+            testSubject.AddItem("Car", 25000);
+            testResult = testSubject.TotalCurrentExpectedValue;
+            Assert.AreEqual((120000.0D + 25000).ToPecuniam(), testResult);
+
+        }
     }
 }

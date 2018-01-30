@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using NoFuture.Rand.Data.Sp;
+using NoFuture.Rand.Data.Sp.Enums;
 using NoFuture.Rand.Domus.Opes;
 using NoFuture.Rand.Domus.Opes.US;
 using NoFuture.Shared.Core;
@@ -560,6 +561,22 @@ namespace NoFuture.Rand.Tests.DomusTests.OpesTests
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
+        }
+
+        [Test]
+        public void TestAddItems()
+        {
+            var testSubject = new AmericanExpenses();
+            var testResult = testSubject.TotalAnnualExpectedExpenses;
+            Assert.AreEqual(Pecuniam.Zero, testResult);
+
+            testSubject.AddItem("Rent", 900.0D, Interval.Monthly);
+            testResult = testSubject.TotalAnnualExpectedExpenses;
+            Assert.AreEqual((900.0D * -12).ToPecuniam(), testResult);
+
+            testSubject.AddItem("Tractor", 1850);
+            testResult = testSubject.TotalAnnualExpectedExpenses;
+            Assert.AreEqual(((900.0D * -12) - 1850).ToPecuniam(), testResult);
         }
     }
 }
