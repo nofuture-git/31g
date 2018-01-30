@@ -440,7 +440,7 @@ namespace NoFuture.Util.Gia
                 Id = asmType.MetadataToken,
                 RslvAsmIdx = asmIdx,
                 Items =
-                    asmType.GetMembers(NfConfig.DefaultFlags)
+                    asmType.GetMembers(Constants.DefaultFlags)
                         .Select(x => GetMetadataToken(x, true, asmIdx))
                         .Distinct()
                         .ToArray()

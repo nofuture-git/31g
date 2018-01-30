@@ -41,7 +41,7 @@ namespace NoFuture.Read
         #endregion
 
         #region base api
-        public virtual string DirectoryName => Path.GetDirectoryName(_fileFullName) ?? NfConfig.TempDirectories.AppData;
+        public virtual string DirectoryName => Path.GetDirectoryName(_fileFullName) ?? Constants.AppData;
         public virtual string FileName => Path.GetFileName(_fileFullName);
         protected internal string OriginalReadFileFullName => _originalReadFile;
         internal XmlDocument Xml => _xmlDocument;

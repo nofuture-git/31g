@@ -26,7 +26,7 @@ namespace NoFuture.Util.Re
 
                 _rTempDir =
                     Path.Combine(string.IsNullOrWhiteSpace(NfConfig.TempDirectories.TsvCsv)
-                        ? NfConfig.TempDirectories.AppData
+                        ? Constants.AppData
                         : NfConfig.TempDirectories.TsvCsv);
                 return _rTempDir;
             }

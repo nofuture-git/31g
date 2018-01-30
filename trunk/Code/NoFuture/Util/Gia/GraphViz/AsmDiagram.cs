@@ -206,7 +206,7 @@ namespace NoFuture.Util.Gia.GraphViz
 
                 foreach (
                     var p in
-                        asmType.GetProperties(NfConfig.DefaultFlags)
+                        asmType.GetProperties(Constants.DefaultFlags)
                             .Where(
                                 x =>
                                     !string.IsNullOrWhiteSpace(x.PropertyType.Namespace) &&

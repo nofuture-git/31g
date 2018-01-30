@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Util.Core
@@ -42,7 +41,7 @@ namespace NoFuture.Util.Core
         /// <param name="fullName">Is required to have an extension.</param>
         /// <param name="runExtDirFilters">
         /// Filters out known binary files extensions and excludes 
-        /// file in directories defined in <see cref="NfConfig.ExcludeCodeDirectories"/>
+        /// file in directories defined in <see cref="Constants.ExcludeCodeDirectories"/>
         /// </param>
         /// <returns></returns>
         public static int GetTxtFileLineCount(string fullName, bool runExtDirFilters = true)
@@ -67,7 +66,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Writes the <see cref="content"/> to a temp file in <see cref="NfConfig.TempDirectories.AppData"/>
+        /// Writes the <see cref="content"/> to a temp file in <see cref="Constants.AppData"/>
         /// </summary>
         /// <param name="fileNamePrefix"></param>
         /// <param name="content"></param>
@@ -126,13 +125,13 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Gets a full path to a random file name in directory <see cref="NfConfig.TempDirectories.AppData"/>
+        /// Gets a full path to a random file name in directory <see cref="Constants.AppData"/>
         /// </summary>
         /// <param name="fileNamePrefix"></param>
         /// <returns></returns>
         public static string GetRandomFileFullName(string fileNamePrefix = null)
         {
-            return Path.Combine(NfConfig.TempDirectories.AppData,
+            return Path.Combine(Constants.AppData,
                 (fileNamePrefix ?? Etc.DEFAULT_NAME_PREFIX) + Path.GetRandomFileName());
         }
 
@@ -294,7 +293,7 @@ namespace NoFuture.Util.Core
                             break;
                     }
 
-                    var dumpFileName = Path.Combine(fileDir ?? NfConfig.TempDirectories.AppData,
+                    var dumpFileName = Path.Combine(fileDir ?? Constants.AppData,
                         String.Format("{0}.{1:000}{2}", fileBreakCounter >= 0 ? bareFileName : "_" + bareFileName,
                             fileBreakCounter, fileExt));
 
@@ -327,7 +326,7 @@ namespace NoFuture.Util.Core
                 //we still need to drop the head of the file
                 if (fileStream.Position > 0)
                 {
-                    var dumpFileName = Path.Combine(fileDir ?? NfConfig.TempDirectories.AppData,
+                    var dumpFileName = Path.Combine(fileDir ?? Constants.AppData,
                         String.Format("{0}.{1:000}{2}", fileBreakCounter >= 0 ? bareFileName : "_" + bareFileName,
                             fileBreakCounter, fileExt));
 
@@ -476,9 +475,9 @@ namespace NoFuture.Util.Core
 
         /// <summary>
         /// Asserts that <see cref="somePath"/> has an extension 
-        /// which is represented by the lists at <see cref="NfConfig.CodeFileExtensions"/>
-        /// or <see cref="NfConfig.ConfigFileExtensions"/> 
-        /// or <see cref="NfConfig.BinaryFileExtensions"/>
+        /// which is represented by the lists at <see cref="Constants.CodeFileExtensions"/>
+        /// or <see cref="Constants.ConfigFileExtensions"/> 
+        /// or <see cref="Constants.BinaryFileExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
@@ -486,47 +485,47 @@ namespace NoFuture.Util.Core
         {
             var ext = Path.GetExtension(somePath);
             return !String.IsNullOrEmpty(ext) &&
-                   (NfConfig.CodeFileExtensions.Select(x => "." + x).Contains(ext) ||
-                    NfConfig.ConfigFileExtensions.Select(x => "." + x).Contains(ext) || 
-                    NfConfig.BinaryFileExtensions.Select(x => "." + x).Contains(ext));
+                   (Constants.CodeFileExtensions.Select(x => "." + x).Contains(ext) ||
+                    Constants.ConfigFileExtensions.Select(x => "." + x).Contains(ext) || 
+                    Constants.BinaryFileExtensions.Select(x => "." + x).Contains(ext));
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> is a file path
-        /// with one of the extensions in <see cref="NfConfig.CodeFileExtensions"/>
+        /// with one of the extensions in <see cref="Constants.CodeFileExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
         public static bool IsCodeFileExtension(string somePath)
         {
-            return IsExtensionType(somePath, NfConfig.CodeFileExtensions);
+            return IsExtensionType(somePath, Constants.CodeFileExtensions);
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> is a file path
-        /// with one of the extensions in <see cref="NfConfig.ConfigFileExtensions"/>
+        /// with one of the extensions in <see cref="Constants.ConfigFileExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
         public static bool IsConfigFileExtension(string somePath)
         {
-            return IsExtensionType(somePath, NfConfig.ConfigFileExtensions);
+            return IsExtensionType(somePath, Constants.ConfigFileExtensions);
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> is a file path
-        /// with one of the extensions in <see cref="NfConfig.BinaryFileExtensions"/>
+        /// with one of the extensions in <see cref="Constants.BinaryFileExtensions"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
         public static bool IsBinaryFileExtension(string somePath)
         {
-            return IsExtensionType(somePath, NfConfig.BinaryFileExtensions);
+            return IsExtensionType(somePath, Constants.BinaryFileExtensions);
         }
 
         /// <summary>
         /// Asserts the <see cref="somePath"/> contains at least
-        /// one of the values in <see cref="NfConfig.ExcludeCodeDirectories"/>
+        /// one of the values in <see cref="Constants.ExcludeCodeDirectories"/>
         /// </summary>
         /// <param name="somePath"></param>
         /// <returns></returns>
@@ -535,7 +534,7 @@ namespace NoFuture.Util.Core
             if (String.IsNullOrWhiteSpace(somePath))
                 return false;
             return somePath.Contains(new string(new[] {Path.DirectorySeparatorChar})) &&
-                   NfConfig.ExcludeCodeDirectories.Any(somePath.Contains);
+                   Constants.ExcludeCodeDirectories.Any(somePath.Contains);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

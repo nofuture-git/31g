@@ -409,7 +409,7 @@ namespace NoFuture.Gen
             //have events go first since they tend to be speard across fields and properties
             foreach (
                 var evtInfo in
-                    asmType.GetEvents(NfConfig.DefaultFlags))
+                    asmType.GetEvents(Constants.DefaultFlags))
             {
                 var evtHandlerType = evtInfo.NfEventHandlerType().ToString();
 
@@ -423,7 +423,7 @@ namespace NoFuture.Gen
             }
 
             var asmMembers =
-                asmType.GetMembers(NfConfig.DefaultFlags);
+                asmType.GetMembers(Constants.DefaultFlags);
 
             foreach (var mi in asmMembers)
             {

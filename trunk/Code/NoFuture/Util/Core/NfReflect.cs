@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Util.Core
@@ -528,7 +527,7 @@ namespace NoFuture.Util.Core
                 return null;
 
             //get a MethodInfo by probable property name
-            var allMethods = ty.GetMethods((NfConfig.DefaultFlags));
+            var allMethods = ty.GetMethods((Constants.DefaultFlags));
 
             var propName2Mi = new Dictionary<string, List<MethodInfo>>();
 
