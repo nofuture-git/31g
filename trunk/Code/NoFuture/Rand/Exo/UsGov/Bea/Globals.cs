@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using NoFuture.Rand.Exo.UsGov.Bea;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bea
+namespace NoFuture.Rand.Exo.UsGov.Bea
 {
     /// <summary>
     /// Disclaimer: "This product uses the Bureau of Economic Analysis (BEA) Data API but is not endorsed or certified by BEA."
@@ -34,7 +35,7 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bea
     }//end Globals
 }//end NoFuture.Rand.Gov.Bea
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bea
+namespace NoFuture.Rand.Exo.UsGov.Bea
 {
     public class Frequency : BeaParameter
     {

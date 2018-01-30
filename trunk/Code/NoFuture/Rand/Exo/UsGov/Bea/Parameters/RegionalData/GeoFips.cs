@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-namespace NoFuture.Rand.Data.Exo.UsGov.Bea.Parameters.RegionalData
+namespace NoFuture.Rand.Exo.UsGov.Bea.Parameters.RegionalData
 {
     public class GeoFips : BeaParameter
     {

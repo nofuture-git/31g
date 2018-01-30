@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using NoFuture.Rand.Gov.US.Sec;
 
-namespace NoFuture.Rand.Data.Exo.NfXml
+namespace NoFuture.Rand.Exo.NfXml
 {
     public class Edgar
     {
@@ -76,7 +76,5 @@ namespace NoFuture.Rand.Data.Exo.NfXml
             }
         }
         #endregion
-
-
     }
 }

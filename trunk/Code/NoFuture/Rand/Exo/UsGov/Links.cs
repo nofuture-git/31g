@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Data.Exo.UsGov
+namespace NoFuture.Rand.Exo.UsGov
 {
     public static class Links
     {

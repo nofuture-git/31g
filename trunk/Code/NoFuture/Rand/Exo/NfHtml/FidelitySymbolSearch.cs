@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Sp;
 
-namespace NoFuture.Rand.Data.Exo.NfHtml
+namespace NoFuture.Rand.Exo.NfHtml
 {
     public class FidelitySymbolSearch : NfHtmlDynDataBase
     {

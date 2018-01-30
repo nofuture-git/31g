@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bls
+namespace NoFuture.Rand.Exo.UsGov.Bls
 {
     public class EmploymentCostIndex : ISeries
     {

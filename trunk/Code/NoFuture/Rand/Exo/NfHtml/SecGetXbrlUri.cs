@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using NoFuture.Rand.Data.Exo.NfXml;
+using NoFuture.Rand.Exo.NfXml;
 using NoFuture.Rand.Gov.US.Sec;
 using NoFuture.Tokens;
 using NoFuture.Tokens.ParseResults;
 
-namespace NoFuture.Rand.Data.Exo.NfHtml
+namespace NoFuture.Rand.Exo.NfHtml
 {
     /// <summary>
     /// The uri to an individual XBRL xml file is embedded inside the

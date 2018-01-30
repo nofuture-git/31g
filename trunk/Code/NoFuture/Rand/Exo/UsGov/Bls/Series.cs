@@ -2,7 +2,7 @@
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bls
+namespace NoFuture.Rand.Exo.UsGov.Bls
 {
     public abstract class BlsSeriesBase : ISeries
     {

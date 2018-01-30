@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Exo.NfXml;
+using NoFuture.Rand.Exo.NfXml;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov.US;
@@ -14,7 +14,7 @@ using NoFuture.Rand.Org;
 using NoFuture.Rand.Tele;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.Exo
+namespace NoFuture.Rand.Exo
 {
     /// <summary>
     /// Joins dynamic data from source to the Nf Rand type

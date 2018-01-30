@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Com;
-using NoFuture.Rand.Data.Exo;
-using NoFuture.Rand.Data.Exo.NfXml;
+using NoFuture.Rand.Exo;
+using NoFuture.Rand.Exo.NfXml;
 using NoFuture.Rand.Exo.Tests;
 using NoFuture.Rand.Gov.US.Sec;
 

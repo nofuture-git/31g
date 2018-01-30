@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bea
+namespace NoFuture.Rand.Exo.UsGov.Bea
 {
     public interface IBeaData
     {

@@ -7,7 +7,7 @@ using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov.US.Fed;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.Exo.NfText
+namespace NoFuture.Rand.Exo.NfText
 {
     public class FedLrgBnk : NfDynDataBase
     {

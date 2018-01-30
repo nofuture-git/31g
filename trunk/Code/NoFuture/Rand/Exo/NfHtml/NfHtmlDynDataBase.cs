@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace NoFuture.Rand.Data.Exo.NfHtml
+namespace NoFuture.Rand.Exo.NfHtml
 {
     [Serializable]
     public abstract class NfHtmlDynDataBase : NfDynDataBase

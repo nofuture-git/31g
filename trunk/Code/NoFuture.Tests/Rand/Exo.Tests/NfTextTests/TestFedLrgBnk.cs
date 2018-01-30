@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data.Exo.NfText;
+using NoFuture.Rand.Exo.NfText;
 
 namespace NoFuture.Tests.Rand.NfTextTests
 {

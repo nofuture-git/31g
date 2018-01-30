@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-namespace NoFuture.Rand.Data.Exo.UsGov.Bls.Codes
+namespace NoFuture.Rand.Exo.UsGov.Bls.Codes
 {
     public class CeSupersector 
     {

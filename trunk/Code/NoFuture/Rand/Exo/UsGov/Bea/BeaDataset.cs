@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using NoFuture.Rand.Data.Exo.UsGov.Bea.Parameters.GDPbyIndustry;
-using NoFuture.Rand.Data.Exo.UsGov.Bea.Parameters.Iip;
-using NoFuture.Rand.Data.Exo.UsGov.Bea.Parameters.Ita;
+using NoFuture.Rand.Exo.UsGov.Bea.Parameters.GDPbyIndustry;
+using NoFuture.Rand.Exo.UsGov.Bea.Parameters.Iip;
+using NoFuture.Rand.Exo.UsGov.Bea.Parameters.Ita;
+using NoFuture.Rand.Exo.UsGov.Bea.Parameters.RegionalData;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bea
+namespace NoFuture.Rand.Exo.UsGov.Bea
 {
     public class GDPbyIndustry : BeaDataSet
     {
@@ -239,14 +240,14 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bea
         #region fields
         private BeaYear _beaYear;
         private Frequency _freq;
-        private Parameters.Nipa.TableID _tableId;
+        private Rand.Exo.UsGov.Bea.Parameters.Nipa.TableID _tableId;
         #endregion
 
         #region ctors
 
         public Nipa()
         {
-            _tableId = new Data.Exo.UsGov.Bea.Parameters.Nipa.TableID
+            _tableId = new Rand.Exo.UsGov.Bea.Parameters.Nipa.TableID
             {
                 Options = BeaParameterOptions.IsRequired
             };
@@ -265,10 +266,10 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bea
         #endregion
 
         #region parameters
-        public Data.Exo.UsGov.Bea.Parameters.Nipa.TableID TableIdParam
+        public Rand.Exo.UsGov.Bea.Parameters.Nipa.TableID TableIdParam
         {
             get { return _tableId; }
-            set { _tableId = (Data.Exo.UsGov.Bea.Parameters.Nipa.TableID) BeaParameter.PerserveOptions(_tableId, value); }
+            set { _tableId = (Rand.Exo.UsGov.Bea.Parameters.Nipa.TableID) BeaParameter.PerserveOptions(_tableId, value); }
         }
         public virtual BeaYear BeaYearParam
         {
@@ -289,14 +290,14 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bea
         #region fields
         private BeaYear _beaYear;
         private Frequency _freq;
-        private Parameters.NIUnderlyingDetail.TableID _tableId;
+        private Rand.Exo.UsGov.Bea.Parameters.NIUnderlyingDetail.TableID _tableId;
         #endregion
         
         #region ctors
 
         public NIUnderlyingDetail()
         {
-            _tableId = new Data.Exo.UsGov.Bea.Parameters.NIUnderlyingDetail.TableID
+            _tableId = new Rand.Exo.UsGov.Bea.Parameters.NIUnderlyingDetail.TableID
             {
                 Options = BeaParameterOptions.IsRequired
             };
@@ -315,10 +316,10 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bea
         #endregion
         
         #region parameters
-        public Parameters.NIUnderlyingDetail.TableID TableIdParam
+        public Rand.Exo.UsGov.Bea.Parameters.NIUnderlyingDetail.TableID TableIdParam
         {
             get { return _tableId; }
-            set { _tableId = (Parameters.NIUnderlyingDetail.TableID) BeaParameter.PerserveOptions(_tableId, value); }
+            set { _tableId = (Rand.Exo.UsGov.Bea.Parameters.NIUnderlyingDetail.TableID) BeaParameter.PerserveOptions(_tableId, value); }
         }
 
         public virtual BeaYear BeaYearParam
@@ -338,7 +339,7 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bea
     public class RegionalData : BeaDataSet
     {
         #region fields
-        private Parameters.RegionalData.KeyCode _keyCode;
+        private KeyCode _keyCode;
         private Parameters.RegionalData.GeoFips _geoFips;
         private BeaYear _beaYear;
         #endregion
@@ -347,7 +348,7 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bea
 
         public RegionalData()
         {
-            _keyCode = new Parameters.RegionalData.KeyCode
+            _keyCode = new KeyCode
             {
                 Options = BeaParameterOptions.IsRequired
             };
@@ -370,10 +371,10 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bea
         #endregion
 
         #region parameters
-        public Parameters.RegionalData.KeyCode KeyCodeParam 
+        public KeyCode KeyCodeParam 
         { 
             get { return _keyCode; }
-            set { _keyCode = (Parameters.RegionalData.KeyCode) BeaParameter.PerserveOptions(_keyCode, value); }
+            set { _keyCode = (KeyCode) BeaParameter.PerserveOptions(_keyCode, value); }
         }
 
         public Parameters.RegionalData.GeoFips GeoFipsParam

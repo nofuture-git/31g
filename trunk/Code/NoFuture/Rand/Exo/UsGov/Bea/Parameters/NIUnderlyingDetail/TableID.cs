@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bea.Parameters.NIUnderlyingDetail
+namespace NoFuture.Rand.Exo.UsGov.Bea.Parameters.NIUnderlyingDetail
 {
     public class TableID : BeaParameter
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Com;
 
-namespace NoFuture.Rand.Data.Exo.NfHtml
+namespace NoFuture.Rand.Exo.NfHtml
 {
     public class BloombergSymbolSearch : NfHtmlDynDataBase
     {

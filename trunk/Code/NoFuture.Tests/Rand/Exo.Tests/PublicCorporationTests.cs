@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Exo;
+using NoFuture.Rand.Exo;
 using NoFuture.Rand.Exo.Tests;
 using NoFuture.Rand.Gov.US.Sec;
 

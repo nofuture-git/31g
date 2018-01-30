@@ -5,8 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Rand;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Data.Exo;
-using NoFuture.Rand.Data.Exo.NfHtml;
+using NoFuture.Rand.Exo;
+using NoFuture.Rand.Exo.NfHtml;
 using NoFuture.Rand.Exo.Tests;
 using NoFuture.Rand.Gov.US.Sec;
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bea.Parameters.GDPbyIndustry
+namespace NoFuture.Rand.Exo.UsGov.Bea.Parameters.GDPbyIndustry
 {
     public class TableID : BeaParameter
     {

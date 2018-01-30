@@ -1,7 +1,7 @@
 ﻿using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bea
+namespace NoFuture.Rand.Exo.UsGov.Bea
 {
     /// <summary>
     /// Contains the links used to make RESTful calls to the BEA's API

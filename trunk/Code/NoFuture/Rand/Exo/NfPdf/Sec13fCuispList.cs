@@ -6,7 +6,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.Exo.NfPdf
+namespace NoFuture.Rand.Exo.NfPdf
 {
     public class Sec13FCuispList : NfDynDataBase
     {

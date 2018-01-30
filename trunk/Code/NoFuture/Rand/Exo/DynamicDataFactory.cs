@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Data.Exo.NfHtml;
-using NoFuture.Rand.Data.Exo.NfText;
-using NoFuture.Rand.Data.Exo.NfXml;
+using NoFuture.Rand.Exo.NfHtml;
+using NoFuture.Rand.Exo.NfText;
+using NoFuture.Rand.Exo.NfXml;
 
-namespace NoFuture.Rand.Data.Exo
+namespace NoFuture.Rand.Exo
 {
     public static class DynamicDataFactory
     {

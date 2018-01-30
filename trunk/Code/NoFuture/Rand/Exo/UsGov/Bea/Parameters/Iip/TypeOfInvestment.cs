@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bea.Parameters.Iip
+namespace NoFuture.Rand.Exo.UsGov.Bea.Parameters.Iip
 {
     public class TypeOfInvestment : BeaParameter
     {

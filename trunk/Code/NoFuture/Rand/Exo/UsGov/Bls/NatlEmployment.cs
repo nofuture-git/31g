@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text;
+using NoFuture.Rand.Exo.UsGov.Bls.Codes;
 
-namespace NoFuture.Rand.Data.Exo.UsGov.Bls
+namespace NoFuture.Rand.Exo.UsGov.Bls
 {
     public class NatlEmployment : ISeries
     {
@@ -11,7 +12,7 @@ namespace NoFuture.Rand.Data.Exo.UsGov.Bls
 
         public Bls.Codes.CeSupersector Supersector { get; set; }
         public Bls.Codes.CeIndustry Industry { get; set; }
-        public Bls.Codes.CeDatatype Datatype { get; set; }
+        public CeDatatype Datatype { get; set; }
 
         public override string ToString()
         {

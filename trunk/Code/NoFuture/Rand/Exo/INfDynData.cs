@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Data.Exo
+namespace NoFuture.Rand.Exo
 {
     public interface INfDynData
     {

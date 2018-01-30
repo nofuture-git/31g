@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Rand.Data.Exo.NfXml;
+using NoFuture.Rand.Exo.NfXml;
 using NoFuture.Rand.Exo.Tests;
 
 namespace NoFuture.Tests.Rand.NfXmlTests

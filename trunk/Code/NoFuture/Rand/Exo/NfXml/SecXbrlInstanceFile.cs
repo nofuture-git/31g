@@ -6,7 +6,7 @@ using System.Xml;
 using NoFuture.Rand.Gov.US.Sec;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.Exo.NfXml
+namespace NoFuture.Rand.Exo.NfXml
 {
     public class SecXbrlInstanceFile : NfDynDataBase
     {

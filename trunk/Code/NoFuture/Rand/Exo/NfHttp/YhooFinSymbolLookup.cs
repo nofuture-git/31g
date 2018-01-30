@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Com;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Data.Exo.NfHttp
+namespace NoFuture.Rand.Exo.NfHttp
 {
     public class YhooFinSymbolLookup : NfDynDataBase
     {
