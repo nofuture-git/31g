@@ -48,6 +48,16 @@ namespace NoFuture.Rand.Gov.US
                 PersonFullName = personName.GetName(KindsOfNames.Legal);
         }
 
+        public AmericanDeathCert(MannerOfDeath mannerOfDeath, DateTime dateOfDeath) : base(dateOfDeath)
+        {
+            CauseOfDeath = new Stack<string>();
+            Category = mannerOfDeath;
+        }
+
+        public AmericanDeathCert(MannerOfDeath mannerOfDeath) : this(mannerOfDeath, (string)null)
+        {
+        }
+
         /// <summary>
         /// 32. PART I. Enter the chain of events--diseases, injuries, or 
         /// complications--that directly caused the death. 

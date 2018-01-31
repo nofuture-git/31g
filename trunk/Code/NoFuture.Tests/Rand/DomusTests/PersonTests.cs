@@ -5,8 +5,11 @@ using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Domus.US;
+using NoFuture.Rand.Geo;
+using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
+using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Tests.DomusTests
 {
@@ -385,6 +388,56 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             //adding child does not add parent
             Assert.IsNull(testChild01.GetParent(KindsOfNames.Mother | KindsOfNames.Adopted));
+        }
+
+        [Test]
+        public void TestAsPoco()
+        {
+            var dob = Etx.RandomAdultBirthDate();
+            var gender = Gender.Female;
+            var firstName = AmericanUtil.RandomAmericanFirstName(gender, dob);
+            var middleName = AmericanUtil.RandomAmericanFirstName(gender, dob);
+            var lastName = AmericanUtil.RandomAmericanLastName();
+
+            var testSubject = new American
+            {
+                BirthCert = new AmericanBirthCert(dob),
+                MyGender = gender,
+                FirstName = firstName,
+                LastName = lastName,
+                MiddleName = middleName
+            };
+
+            var addrLine1 = "4455 Deweier St.";
+            var addrLine2 = "Huntington Beach, CA 90802";
+
+            PostalAddress.TryParseAmericanAddress(addrLine1, addrLine2, out var address);
+            testSubject.AddAddress(address);
+
+            Assert.AreEqual($"{firstName} {middleName} {lastName}", testSubject.FullName);
+            Assert.IsNotNull(testSubject.Address);
+            Assert.AreEqual($"{addrLine1} {addrLine2}", testSubject.Address.ToString());
+
+            var phNum = "707-884-5563";
+            NorthAmericanPhone.TryParse(phNum, out var naph);
+            naph.Descriptor = KindsOfLabels.Mobile;
+            testSubject.AddPhone(naph);
+    
+            var testResultPhone = testSubject.PhoneNumbers.FirstOrDefault(p => p.Descriptor == KindsOfLabels.Mobile);
+            Assert.IsNotNull(testResultPhone as NorthAmericanPhone);
+            var namerTestResultPhone = testResultPhone as NorthAmericanPhone;
+            Assert.AreEqual("707", namerTestResultPhone.AreaCode);
+            Assert.AreEqual("884", namerTestResultPhone.CentralOfficeCode);
+            Assert.AreEqual("5563", namerTestResultPhone.SubscriberNumber);
+
+            var testEmail = "Gauis.Ceaser@romanempire.net";
+            testSubject.AddUri(testEmail);
+
+            var testResultEmail = testSubject.NetUri.FirstOrDefault(u => u.Scheme == Uri.UriSchemeMailto);
+            Assert.IsNotNull(testResultEmail);
+            Assert.IsTrue(testResultEmail.ToString().EndsWith(testEmail));
+
+            
         }
     }
 }

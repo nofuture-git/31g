@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core.Enums;
 using NUnit.Framework;
 using NoFuture.Rand.Tele;
 
@@ -114,6 +115,30 @@ namespace NoFuture.Rand.Tests.TeleTests
             Assert.AreEqual("518", testResultOut.AreaCode);
             Assert.AreEqual("415", testResultOut.CentralOfficeCode);
             Assert.AreEqual("4299", testResultOut.SubscriberNumber);
+        }
+
+        [Test]
+        public void TestToUri()
+        {
+            var testSubject = new NorthAmericanPhone();
+            testSubject.Value = "707-855-4512";
+            testSubject.Descriptor = KindsOfLabels.Mobile;
+            var testResult = testSubject.ToUri();
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual("tel:7078554512;phone-context=Mobile.KindsOfLabels.Enums.Core.Rand.NoFuture", testResult.ToString());
+        }
+
+        [Test]
+        public void TestTryParseUri()
+        {
+            var testInput = "tel:7078554512;phone-context=Mobile.KindsOfLabels.Enums.Core.Rand.NoFuture";
+            NorthAmericanPhone testOutput;
+            var testResult = NorthAmericanPhone.TryParse(new Uri(testInput), out testOutput);
+            Assert.IsTrue(testResult);
+            Assert.IsNotNull(testOutput);
+            Assert.AreEqual("7078554512", testOutput.Unformatted);
+            Assert.AreEqual(KindsOfLabels.Mobile, testOutput.Descriptor);
+
         }
     }
 }

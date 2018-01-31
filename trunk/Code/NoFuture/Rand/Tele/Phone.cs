@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Util.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Tele
 {
@@ -13,9 +12,19 @@ namespace NoFuture.Rand.Tele
     [Serializable]
     public abstract class Phone : Identifier
     {
+        public const string UriSchemaTelephone = "tel";
+
         public abstract string Notes { get; set; }
         public abstract string Formatted { get; }
         public abstract string Unformatted { get; }
+
+        public KindsOfLabels? Descriptor { get; set; }
+
+        /// <summary>
+        /// Drafts the phone number as a URI according to RFC 3966
+        /// https://tools.ietf.org/html/rfc3966#page-4
+        /// </summary>
+        /// <returns></returns>
         public abstract Uri ToUri();
 
         internal const string US_AREA_CODE_DATA = "US_AreaCode_Data.xml";

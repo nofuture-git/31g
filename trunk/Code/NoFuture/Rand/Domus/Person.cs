@@ -8,6 +8,7 @@ using NoFuture.Rand.Edu;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Pneuma;
+using NoFuture.Rand.Tele;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
@@ -25,12 +26,13 @@ namespace NoFuture.Rand.Domus
         #region fields
         private readonly HashSet<Uri> _netUris = new HashSet<Uri>();
         private readonly HashSet<Child> _children = new HashSet<Child>();
-
+        private BirthCert _myBirthCert;
+        private DeathCert _myDeathCert;
         private readonly List<PostalAddress> _addresses = new List<PostalAddress>();
         private Gender _myGender;
         private readonly HashSet<Parent> _parents = new HashSet<Parent>();
         private readonly HashSet<Spouse> _spouses = new HashSet<Spouse>();
-
+        
         #endregion
 
         #region properties
@@ -39,8 +41,27 @@ namespace NoFuture.Rand.Domus
             get => _myGender;
             set => _myGender = value;
         }
-        public BirthCert BirthCert { get; set; }
-        public virtual DeathCert DeathCert { get; set; }
+
+        public BirthCert BirthCert
+        {
+            get => _myBirthCert;
+            set
+            {
+                _myBirthCert = value;
+                ThrowOnDeathBeforeBirth();
+                SyncBirthCert2Person();
+            }
+        }
+
+        public virtual DeathCert DeathCert
+        {
+            get => _myDeathCert;
+            set
+            {
+                _myDeathCert = value;
+                ThrowOnDeathBeforeBirth();
+            }
+        }
         public virtual string FirstName
         {
             get => GetName(KindsOfNames.First);
@@ -61,6 +82,7 @@ namespace NoFuture.Rand.Domus
         public IEnumerable<Child> Children => _children;
         public IEnumerable<Parent> Parents => _parents;
         public virtual string FullName => string.Join(" ", FirstName, LastName);
+        public abstract IEnumerable<Phone> PhoneNumbers { get; }
         #endregion
 
         #region methods
@@ -176,11 +198,28 @@ namespace NoFuture.Rand.Domus
             spouse.AddSpouse(this, marriedOn, separatedOn);
         }
 
+        public abstract void AddPhone(NorthAmericanPhone phone);
+
+        public abstract void AddPhone(string phoneNumber, KindsOfLabels? descriptor = null);
 
         public void AddUri(Uri uri)
         {
             if(uri != null)
                 _netUris.Add(uri);
+        }
+
+        public virtual void AddUri(string uri)
+        {
+            if (string.IsNullOrWhiteSpace(uri))
+                return;
+
+            if (!uri.StartsWith(Uri.UriSchemeMailto) &&
+                System.Text.RegularExpressions.Regex.IsMatch(uri, @"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"))
+                uri = $"{Uri.UriSchemeMailto}:{uri}";
+            if (!Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out var oUri))
+                return;
+
+            AddUri(oUri);
         }
 
         protected internal HashSet<Spouse> GetSpouses()
@@ -362,6 +401,40 @@ namespace NoFuture.Rand.Domus
             }
             minutesAfterChildDob = DateTime.MinValue;
             return false;
+        }
+
+        /// <summary>
+        /// Helper method to keep the same data, stored in two independent places, in sync with each other.
+        /// </summary>
+        protected internal void SyncBirthCert2Person()
+        {
+            if (_myBirthCert == null)
+                return;
+
+            if (string.IsNullOrWhiteSpace(_myBirthCert.PersonFullName))
+                _myBirthCert.PersonFullName = FullName;
+
+            if (string.IsNullOrWhiteSpace(_myBirthCert.MotherName))
+            {
+                var mother = GetBiologicalMother();
+                _myBirthCert.MotherName = mother?.FullName;
+            }
+                
+            
+            if (string.IsNullOrWhiteSpace(_myBirthCert.FatherName))
+            {
+                var father = GetBiologicalFather();
+                _myBirthCert.FatherName = father?.FullName;
+            }
+        }
+
+        protected internal void ThrowOnDeathBeforeBirth()
+        {
+            //check that death date is not before birth date
+            if (_myDeathCert != null && _myBirthCert != null && _myBirthCert.DateOfBirth > _myDeathCert.DateOfDeath)
+                throw new InvalidOperationException($"This person {FullName} is assigned a date " +
+                                                    $"of death as {_myDeathCert.DateOfDeath} and a birth " +
+                                                    $"date of {_myBirthCert.DateOfBirth} which is impossiable.");
         }
 
         #endregion

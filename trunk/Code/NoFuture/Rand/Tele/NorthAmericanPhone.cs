@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tele
@@ -20,6 +22,8 @@ namespace NoFuture.Rand.Tele
     [Serializable]
     public class NorthAmericanPhone : Phone
     {
+        private const string PHONE_CONTEXT = "phone-context";
+
         #region fields
         private string _areaCode;
         private string _centralOfficeCode;
@@ -103,7 +107,18 @@ namespace NoFuture.Rand.Tele
         #region methods
         public override Uri ToUri()
         {
-            return new Uri("tel:" + Unformatted);
+            if(Descriptor == null)
+                return new Uri($"{UriSchemaTelephone}:{Unformatted}");
+
+            var domainname = Descriptor.Value.ToString();
+
+            var d = typeof(KindsOfLabels).FullName?.Split('.').Reverse();
+            if (d != null && d.Any())
+            {
+                domainname = $"{domainname}.{string.Join(".", d)}";
+            }
+            
+            return new Uri($"{UriSchemaTelephone}:{Unformatted};{PHONE_CONTEXT}={domainname}");
         }
 
         public override bool Equals(object obj)
@@ -177,7 +192,50 @@ namespace NoFuture.Rand.Tele
                 new Tuple<PhoneCodes, string>(PhoneCodes.SubscriberCode, sn));
 
             return true;
+        }
 
+        /// <summary>
+        /// Attempts to parse a Uri into a <see cref="NorthAmericanPhone"/>
+        /// </summary>
+        /// <param name="phUri"></param>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public static bool TryParse(Uri phUri, out NorthAmericanPhone phone)
+        {
+            phone = null;
+            if (phUri == null || phUri.Scheme != UriSchemaTelephone)
+                return false;
+
+            var absPath = phUri.AbsolutePath;
+            if (string.IsNullOrWhiteSpace(absPath))
+                return false;
+            var p = $";{PHONE_CONTEXT}=".EscapeString();
+            p = $@"([0-9]+){p}([a-zA-Z0-9_\.]+)";
+
+            var hasPhoneNumber = RegexCatalog.IsRegexMatch(absPath, p, out var phNum, 1);
+            var hasDescriptor = RegexCatalog.IsRegexMatch(absPath, p, out var descriptor, 2);
+            
+            if (!hasPhoneNumber)
+                return false;
+            
+            var isNAmerPhone = TryParse(phNum, out phone);
+            if (!isNAmerPhone)
+                return false;
+
+            if (!hasDescriptor || string.IsNullOrWhiteSpace(descriptor))
+                return true;
+
+            descriptor = descriptor.Split('.').First();
+            if (Enum.TryParse(descriptor, true, out KindsOfLabels lbl))
+            {
+                phone.Descriptor = lbl;
+            }
+            else
+            {
+                phone.Notes = descriptor;
+            }
+
+            return true;
         }
 
         /// <summary>

@@ -26,8 +26,7 @@ namespace NoFuture.Rand.Domus.US
         #region fields
 
         private IEducation _edu;
-        private readonly List<Tuple<KindsOfLabels, NorthAmericanPhone>> _phoneNumbers = 
-            new List<Tuple<KindsOfLabels, NorthAmericanPhone>>();
+        private readonly List<NorthAmericanPhone> _phoneNumbers = new List<NorthAmericanPhone>();
         private SocialSecurityNumber _ssn;
         private DriversLicense _dl;
         private DeathCert _deathCert;
@@ -43,31 +42,17 @@ namespace NoFuture.Rand.Domus.US
             set => _edu = value;
         }
 
-        /// <summary>
-        /// Gets the phone home phone of the given person
-        /// </summary>
-        public NorthAmericanPhone HomePhone
-        {
-            get
-            {
-                var hph = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Home);
-                return hph?.Item2;
-            }
-            set => _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home, value));
-        }
+        public override IEnumerable<Phone> PhoneNumbers => _phoneNumbers;
 
         /// <summary>
-        /// Helper method to get the mobile phone.
+        /// Gets the phone home phone of the given person if any.
         /// </summary>
-        public NorthAmericanPhone MobilePhone
-        {
-            get
-            {
-                var mobilePh = _phoneNumbers.FirstOrDefault(x => x.Item1 == KindsOfLabels.Mobile);
-                return mobilePh?.Item2;
-            }
-            set => _phoneNumbers.Add(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile, value));
-        }
+        public NorthAmericanPhone HomePhone => _phoneNumbers.FirstOrDefault(x => x.Descriptor == KindsOfLabels.Home);
+
+        /// <summary>
+        /// Gets the mobile phone of the given person if any.
+        /// </summary>
+        public NorthAmericanPhone MobilePhone => _phoneNumbers.FirstOrDefault(x => x.Descriptor == KindsOfLabels.Mobile);
 
         /// <summary>
         /// Get or sets the United States <see cref="SocialSecurityNumber"/> 
@@ -188,11 +173,16 @@ namespace NoFuture.Rand.Domus.US
 
         }
 
-        public void AddPhoneNumber(Tuple<KindsOfLabels, NorthAmericanPhone> phone)
+        public override void AddPhone(NorthAmericanPhone phone)
         {
-            if (phone?.Item2 == null)
+            if (phone == null)
                 return;
             _phoneNumbers.Add(phone);
+        }
+
+        public override void AddPhone(string phoneNumber, KindsOfLabels? descriptor = null)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -637,7 +627,7 @@ namespace NoFuture.Rand.Domus.US
             return myHomeState?.AgeOfMajority ?? UsState.AGE_OF_ADULT;
         }
 
-        protected internal List<Tuple<KindsOfLabels, NorthAmericanPhone>> GetPhoneNumbers()
+        protected internal List<NorthAmericanPhone> GetPhoneNumbers()
         {
             return _phoneNumbers;
         }
@@ -719,14 +709,20 @@ namespace NoFuture.Rand.Domus.US
             //may be null
             //[http://www.pewresearch.org/fact-tank/2014/07/08/two-of-every-five-u-s-households-have-only-wireless-phones/]
             if (Etx.RandomRollAboveOrAt(6, Etx.Dice.Ten))
-                amer.AddPhoneNumber(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Home,
-                    NorthAmericanPhone.RandomAmericanPhone(abbrv)));
+            {
+                var hmPhone = NorthAmericanPhone.RandomAmericanPhone(abbrv);
+                hmPhone.Descriptor = KindsOfLabels.Home;
+                amer.AddPhone(hmPhone);
+            }
 
             var isSmallChild = amer.GetAgeAt(null) < 12;
 
             if (!isSmallChild)
-                amer.AddPhoneNumber(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
-                    NorthAmericanPhone.RandomAmericanPhone(abbrv)));
+            {
+                var mobilePh = NorthAmericanPhone.RandomAmericanPhone(abbrv);
+                mobilePh.Descriptor = KindsOfLabels.Mobile;
+                amer.AddPhone(mobilePh);
+            }
 
             amer.Race = UsCityStateZip.GetAmericanRace(csz?.ZipCode);
             if (amer.Race <= 0)

@@ -19,6 +19,15 @@ namespace NoFuture.Rand.Gov
         {
         }
 
+        public BirthCert(DateTime dateOfBirth)
+        {
+            DateOfBirth = dateOfBirth;
+        }
+
+        public BirthCert()
+        {
+        }
+
         public virtual string MotherName { get; set; }
         public virtual string FatherName { get; set; }
         public DateTime DateOfBirth { get; set; }

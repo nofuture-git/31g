@@ -6,6 +6,7 @@ using NoFuture.Rand.Edu;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Pneuma;
+using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Domus
 {
@@ -30,6 +31,7 @@ namespace NoFuture.Rand.Domus
         IEnumerable<Parent> Parents { get; }
         PostalAddress Address { get; }
         string FullName { get; }
+        IEnumerable<Phone> PhoneNumbers { get; }
 
         #endregion
 
@@ -125,11 +127,21 @@ namespace NoFuture.Rand.Domus
         /// </param>
         void AddChild(IPerson child, KindsOfNames? myParentalTitle = null);
 
+        void AddPhone(NorthAmericanPhone phone);
+
+        void AddPhone(string phoneNumber, KindsOfLabels? descriptor = null);
+
         /// <summary>
         /// Adds the given <see cref="uri"/> to this person
         /// </summary>
         /// <param name="uri"></param>
         void AddUri(Uri uri);
+
+        /// <summary>
+        /// Parses and, when valid, adds the <see cref="uri"/> to this person
+        /// </summary>
+        /// <param name="uri"></param>
+        void AddUri(string uri);
 
         #endregion
     }

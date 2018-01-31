@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var options = new OpesOptions {IsRenting = true};
             options.FactorOptions.Gender = Gender.Female;
-            options.FactorOptions.BirthDate = Etx.RandomAdultBirthDate();
+            options.FactorOptions.DateOfBirth = Etx.RandomAdultBirthDate();
             var testSubject = new AmericanIncome();
 
             var testResult = testSubject.GetRandomYearlyIncome(null, options, 1.0.ToPecuniam());

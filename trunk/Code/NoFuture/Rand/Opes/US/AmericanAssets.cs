@@ -234,7 +234,7 @@ namespace NoFuture.Rand.Opes.US
                     : _carEquityRate * amt.ToDouble();
 
                 var baseRate = isMortgage ? FED_RATE : FED_RATE + 3.2;
-                var creditScore = new PersonalCreditScore(options.FactorOptions.BirthDate)
+                var creditScore = new PersonalCreditScore(options.FactorOptions.DateOfBirth)
                 {
                     OpennessZscore = options.Personality?.Openness?.Value?.Zscore ?? 0D,
                     ConscientiousnessZscore = options.Personality?.Conscientiousness?.Value?.Zscore ?? 0D

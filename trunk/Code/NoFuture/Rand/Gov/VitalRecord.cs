@@ -26,6 +26,11 @@ namespace NoFuture.Rand.Gov
                 PersonFullName = personName.GetName(KindsOfNames.Legal);
         }
 
+        protected VitalRecord()
+        {
+
+        }
+
         public string Src { get; set; }
         public string PersonFullName { get; set; }
     }

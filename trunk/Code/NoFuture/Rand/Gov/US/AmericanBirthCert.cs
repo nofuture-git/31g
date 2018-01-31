@@ -29,6 +29,15 @@ namespace NoFuture.Rand.Gov.US
                 PersonFullName = personName.GetName(KindsOfNames.Legal);
         }
 
+        public AmericanBirthCert(DateTime dateOfBirth) : base(dateOfBirth)
+        {
+
+        }
+
+        public AmericanBirthCert()
+        {
+        }
+
         public string State { get; set; }
         public string City { get; set; }
 

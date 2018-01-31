@@ -17,6 +17,16 @@ namespace NoFuture.Rand.Gov
         {
         }
 
+        public DeathCert(DateTime dateOfDeath)
+        {
+            DateOfDeath = dateOfDeath;
+        }
+
+        public DeathCert()
+        {
+
+        }
+
         public DateTime DateOfDeath { get; set; }
 
         public override string ToString()

@@ -405,17 +405,17 @@ namespace NoFuture.Rand.Domus.US
                 return;
             thisPerson.AddAddress(addrMatchTo);
             thisPerson.GetPhoneNumbers().Clear();
-            if (livesWithThisOne.GetPhoneNumbers().Any(p => p.Item1 == KindsOfLabels.Home))
+            if (livesWithThisOne.GetPhoneNumbers().Any(p => p.Descriptor == KindsOfLabels.Home))
             {
-                thisPerson.AddPhoneNumber(livesWithThisOne.GetPhoneNumbers().First(p => p.Item1 == KindsOfLabels.Home));
+                thisPerson.AddPhone(livesWithThisOne.GetPhoneNumbers().First(p => p.Descriptor == KindsOfLabels.Home));
             }
             if (thisPerson.GetAgeAt(null) < 12 ||
                 String.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
                 return;
 
             var mobilePhone = NorthAmericanPhone.RandomAmericanPhone(addrMatchTo.HomeCityArea.GetPostalCodePrefix());
-            thisPerson.AddPhoneNumber(new Tuple<KindsOfLabels, NorthAmericanPhone>(KindsOfLabels.Mobile,
-                mobilePhone));
+            mobilePhone.Descriptor = KindsOfLabels.Mobile;
+            thisPerson.AddPhone(mobilePhone);
         }
 
         /// <summary>

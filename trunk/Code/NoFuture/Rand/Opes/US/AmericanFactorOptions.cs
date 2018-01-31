@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Opes.US
 
         public AmericanRegion Region { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         public Gender Gender { get; set; }
 
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Opes.US
 
         public int GetAge()
         {
-            return Etc.CalcAge(BirthDate);
+            return Etc.CalcAge(DateOfBirth);
         }
 
         public AmericanFactorOptions GetClone()
@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Opes.US
                 Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs),
                 Region = Etx.RandomPickOne(AmericanData.RegionPopulationAvgs),
                 Gender = Etx.RandomCoinToss() ? Gender.Male : Gender.Female,
-                BirthDate = Etx.RandomAdultBirthDate(),
+                DateOfBirth = Etx.RandomAdultBirthDate(),
                 MaritialStatus = Etx.RandomPickOne(new[]
                 {
                     MaritialStatus.Divorced, MaritialStatus.Married,

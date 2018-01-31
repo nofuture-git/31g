@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testInputFr = testInput.FactorOptions;
             var testResultFt = testResult.FactorOptions;
 
-            Assert.AreEqual(testInputFr.BirthDate, testResultFt.BirthDate);
+            Assert.AreEqual(testInputFr.DateOfBirth, testResultFt.DateOfBirth);
             Assert.AreEqual(testInputFr.EducationLevel, testResultFt.EducationLevel);
             Assert.AreEqual(testInputFr.Gender, testResultFt.Gender);
             Assert.AreEqual(testInputFr.MaritialStatus, testResultFt.MaritialStatus);
