@@ -127,8 +127,17 @@ namespace NoFuture.Rand.Domus
         /// </param>
         void AddChild(IPerson child, KindsOfNames? myParentalTitle = null);
 
-        void AddPhone(NorthAmericanPhone phone);
+        /// <summary>
+        /// Add the given phone number to this person
+        /// </summary>
+        /// <param name="phone"></param>
+        void AddPhone(Phone phone);
 
+        /// <summary>
+        /// Parses and, when valid, adds the phone number to this person
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <param name="descriptor"></param>
         void AddPhone(string phoneNumber, KindsOfLabels? descriptor = null);
 
         /// <summary>

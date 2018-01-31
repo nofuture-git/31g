@@ -173,16 +173,23 @@ namespace NoFuture.Rand.Domus.US
 
         }
 
-        public override void AddPhone(NorthAmericanPhone phone)
+        public override void AddPhone(Phone phone)
         {
-            if (phone == null)
+            if (!(phone is NorthAmericanPhone namerPhone))
                 return;
-            _phoneNumbers.Add(phone);
+            
+            _phoneNumbers.Add(namerPhone);
         }
 
         public override void AddPhone(string phoneNumber, KindsOfLabels? descriptor = null)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+                return;
+            if (!NorthAmericanPhone.TryParse(phoneNumber, out var namerPhone))
+                return;
+
+            namerPhone.Descriptor = descriptor;
+            _phoneNumbers.Add(namerPhone);
         }
 
         /// <summary>

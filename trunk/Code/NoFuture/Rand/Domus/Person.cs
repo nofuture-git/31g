@@ -198,13 +198,14 @@ namespace NoFuture.Rand.Domus
             spouse.AddSpouse(this, marriedOn, separatedOn);
         }
 
-        public abstract void AddPhone(NorthAmericanPhone phone);
+        public abstract void AddPhone(Phone phone);
 
         public abstract void AddPhone(string phoneNumber, KindsOfLabels? descriptor = null);
 
         public void AddUri(Uri uri)
         {
-            if(uri != null)
+            //don't allow callers to add telephone Uri's since there is another storage place for those
+            if(uri != null && uri.Scheme != Phone.UriSchemaTelephone)
                 _netUris.Add(uri);
         }
 
