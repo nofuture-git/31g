@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NoFuture.Tokens.ParseResults
+namespace NoFuture.Antlr.CSharp4
 {
     public class CsharpParseResults
     {

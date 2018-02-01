@@ -1,16 +1,14 @@
 ﻿using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using NoFuture.Antlr.Grammers;
-using NoFuture.Tokens.ParseResults;
 
-namespace NoFuture.Tokens
+namespace NoFuture.Antlr.CSharp4
 {
     public class CsharpParseTree : CSharp4BaseListener
     {
         private readonly CsharpParseResults _parseResults = new CsharpParseResults();
 
-        public CsharpParseResults Results { get { return _parseResults; } }
+        public CsharpParseResults Results => _parseResults;
 
         public override void ExitSpecific_catch_clause(CSharp4Parser.Specific_catch_clauseContext context)
         {

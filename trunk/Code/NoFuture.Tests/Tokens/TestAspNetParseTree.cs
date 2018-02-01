@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Antlr.CSharp4;
 using NoFuture.Antlr.HTML;
 
 namespace NoFuture.Tests.Tokens
@@ -40,7 +41,7 @@ namespace NoFuture.Tests.Tokens
 
             Assert.IsTrue(System.IO.File.Exists(testFile));
 
-            var testResult = NoFuture.Tokens.CsharpParseTree.InvokeParse(testFile);
+            var testResult = CsharpParseTree.InvokeParse(testFile);
 
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.CatchBlocks);
