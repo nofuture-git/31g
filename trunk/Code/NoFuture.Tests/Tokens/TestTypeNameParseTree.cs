@@ -2,10 +2,6 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NoFuture.Antlr.DotNetIlTypeName;
-using NoFuture.Gen;
-using NoFuture.Tokens;
-using NoFuture.Tokens.ParseResults;
-using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Tests.Tokens
 {

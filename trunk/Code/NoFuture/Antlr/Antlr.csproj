@@ -53,10 +53,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ErlangConfigBaseListener.cs" />
-    <Compile Include="ErlangConfigLexer.cs" />
-    <Compile Include="ErlangConfigListener.cs" />
-    <Compile Include="ErlangConfigParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,7 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GenAntlrV4CSharpCodeFile.ps1" />
-    <None Include="Grammers\ErlangConfig.g4" />
     <None Include="Grammers\VbScript.g4" />
     <None Include="packages.config" />
   </ItemGroup>
