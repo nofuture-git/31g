@@ -62,8 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParseResults\CsharpParseResults.cs" />
-    <Compile Include="CsharpParseTree.cs" />
     <Compile Include="ErlangConfigParseTree.cs" />
     <Compile Include="Etx.cs" />
     <Compile Include="ParseResults\Erlang.cs" />
@@ -77,6 +75,10 @@
     <ProjectReference Include="..\Antlr\Antlr.csproj">
       <Project>{ecc8c5b3-a36f-40d5-9ddf-7a286b92c998}</Project>
       <Name>Antlr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Antlr\CSharp4\Antlr.CSharp4.csproj">
+      <Project>{a6737375-69b5-4771-8666-9ad8355f99fc}</Project>
+      <Name>Antlr.CSharp4</Name>
     </ProjectReference>
     <ProjectReference Include="..\Antlr\DotNetIlTypeName\Antlr.DotNetIlTypeName.csproj">
       <Project>{c5c8202a-b474-48fa-974a-74c79511a80f}</Project>

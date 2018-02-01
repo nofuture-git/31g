@@ -53,11 +53,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSharp4BaseListener.cs" />
-    <Compile Include="CSharp4Lexer.cs" />
-    <Compile Include="CSharp4Listener.cs" />
-    <Compile Include="CSharp4Parser.cs" />
-    <Compile Include="CSharp4PreProcessor.cs" />
     <Compile Include="ErlangConfigBaseListener.cs" />
     <Compile Include="ErlangConfigLexer.cs" />
     <Compile Include="ErlangConfigListener.cs" />
@@ -70,8 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GenAntlrV4CSharpCodeFile.ps1" />
-    <None Include="Grammers\CSharp4.g4" />
-    <None Include="Grammers\CSharp4PreProcessor.g4" />
     <None Include="Grammers\ErlangConfig.g4" />
     <None Include="Grammers\VbScript.g4" />
     <None Include="packages.config" />

@@ -150,6 +150,10 @@
     <Compile Include="Util\EquationsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NoFuture\Antlr\CSharp4\Antlr.CSharp4.csproj">
+      <Project>{a6737375-69b5-4771-8666-9ad8355f99fc}</Project>
+      <Name>Antlr.CSharp4</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoFuture\Antlr\DotNetIlTypeName\Antlr.DotNetIlTypeName.csproj">
       <Project>{c5c8202a-b474-48fa-974a-74c79511a80f}</Project>
       <Name>Antlr.DotNetIlTypeName</Name>
