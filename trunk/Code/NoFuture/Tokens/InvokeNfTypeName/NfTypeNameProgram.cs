@@ -2,17 +2,19 @@
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Tokens.InvokeNfTypeName.Cmds;
 using NoFuture.Util;
-using NoFuture.Util.Gia;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.NfType;
 
 namespace NoFuture.Tokens.InvokeNfTypeName
 {
+    /// <summary>
+    /// The actual remote process which is both launched and in duplex communication with 
+    /// the <see cref="NfTypeNameProcess"/>
+    /// </summary>
     public class NfTypeNameProgram : SocketConsole
     {
         #region fields

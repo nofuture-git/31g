@@ -26,8 +26,6 @@ namespace NoFuture.Util.NfType
         private static NfTypeNameProcess _myProcess;
         #endregion
 
-
-
         #region ReadOnly Properties
 
         /// <summary>
@@ -129,8 +127,8 @@ namespace NoFuture.Util.NfType
 
             if(_myProcess == null || !_myProcess.IsMyProcessRunning)
                 _myProcess = new NfTypeNameProcess(null);
-
-            var parseItem = _myProcess.GetNfTypeName(name);
+            
+            var parseItem = TypeNameParseTree.ParseIl(name);
             if (parseItem == null)
                 return;
             _className = NfReflect.GetTypeNameWithoutNamespace(parseItem.FullName);
@@ -199,8 +197,4 @@ namespace NoFuture.Util.NfType
             return true;
         }
     }
-}
-
-namespace NoFuture.Util.Core
-{
 }
