@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using NoFuture.Antlr.HTML;
 
 namespace NoFuture.Rand.Exo.NfHtml
 {
@@ -29,7 +30,7 @@ namespace NoFuture.Rand.Exo.NfHtml
                 return null;
 
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(webResponseBody));
-            var htmlRslts = Tokens.AspNetParseTree.InvokeParse(ms);
+            var htmlRslts = AspNetParseTree.InvokeParse(ms);
 
             if (string.IsNullOrWhiteSpace(htmlRslts?.HtmlOnly))
                 return null;

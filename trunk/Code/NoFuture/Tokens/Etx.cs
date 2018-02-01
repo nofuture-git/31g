@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using NoFuture.Antlr.HTML;
 
 namespace NoFuture.Tokens
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Tokens.ParseResults
+namespace NoFuture.Antlr.HTML
 {
     public class HtmlParseResults
     {

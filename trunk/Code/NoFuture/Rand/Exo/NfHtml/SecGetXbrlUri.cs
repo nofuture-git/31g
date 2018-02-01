@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NoFuture.Antlr.HTML;
 using NoFuture.Rand.Exo.NfXml;
 using NoFuture.Rand.Gov.US.Sec;
 using NoFuture.Tokens;

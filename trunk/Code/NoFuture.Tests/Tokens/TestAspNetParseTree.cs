@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Antlr.HTML;
 
 namespace NoFuture.Tests.Tokens
 {
@@ -13,7 +14,7 @@ namespace NoFuture.Tests.Tokens
 
             Assert.IsTrue(System.IO.File.Exists(testFile));
 
-            var testResult = NoFuture.Tokens.AspNetParseTree.InvokeParse(testFile);
+            var testResult = AspNetParseTree.InvokeParse(testFile);
 
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Tags2Attrs);
