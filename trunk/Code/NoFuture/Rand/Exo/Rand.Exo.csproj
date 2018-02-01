@@ -113,10 +113,6 @@
     <None Include="UsGov\Bea\bea_web_service_api_user_guide.pdf" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Antlr\Antlr.csproj">
-      <Project>{ecc8c5b3-a36f-40d5-9ddf-7a286b92c998}</Project>
-      <Name>Antlr</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Antlr\HTML\Antlr.HTML.csproj">
       <Project>{3bb71c0a-b6ad-4e55-b49d-417bc2da7d39}</Project>
       <Name>Antlr.HTML</Name>

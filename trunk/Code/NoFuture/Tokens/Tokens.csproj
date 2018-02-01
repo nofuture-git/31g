@@ -70,25 +70,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Antlr\Antlr.csproj">
-      <Project>{ecc8c5b3-a36f-40d5-9ddf-7a286b92c998}</Project>
-      <Name>Antlr</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Antlr\CSharp4\Antlr.CSharp4.csproj">
-      <Project>{a6737375-69b5-4771-8666-9ad8355f99fc}</Project>
-      <Name>Antlr.CSharp4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Antlr\DotNetIlTypeName\Antlr.DotNetIlTypeName.csproj">
-      <Project>{c5c8202a-b474-48fa-974a-74c79511a80f}</Project>
-      <Name>Antlr.DotNetIlTypeName</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Antlr\HTML\Antlr.HTML.csproj">
       <Project>{3bb71c0a-b6ad-4e55-b49d-417bc2da7d39}</Project>
       <Name>Antlr.HTML</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Shared\Cfg\Shared.Cfg.csproj">
-      <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
-      <Name>Shared.Cfg</Name>
     </ProjectReference>
     <ProjectReference Include="..\Shared\Core\Shared.Core.csproj">
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
@@ -97,10 +81,6 @@
     <ProjectReference Include="..\Util\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Util\Util.csproj">
-      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
-      <Name>Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
