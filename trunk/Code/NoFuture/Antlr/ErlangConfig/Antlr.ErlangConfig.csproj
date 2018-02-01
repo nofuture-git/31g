@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ErlangConfig.g4" />
-    <None Include="GetCSharpAntlrCodeFiles.ps1" />
+    <None Include="GetAntlrCodeFiles.ps1" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

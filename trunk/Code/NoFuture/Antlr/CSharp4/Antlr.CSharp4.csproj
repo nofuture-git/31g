@@ -50,7 +50,7 @@
   <ItemGroup>
     <None Include="CSharp4.g4" />
     <None Include="CSharp4PreProcessor.g4" />
-    <None Include="GetCSharpAntlrCodeFiles.ps1" />
+    <None Include="GetAntlrCodeFiles.ps1" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
