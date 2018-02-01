@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Tokens.ParseResults
+namespace NoFuture.Antlr.ErlangConfig
 {
     public class RabbitConfig
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Antlr.ErlangConfig;
 
 namespace NoFuture.Tests.Tokens
 {
@@ -12,7 +13,7 @@ namespace NoFuture.Tests.Tokens
         [TestMethod]
         public void TestInvokeParse()
         {
-            var testResults = NoFuture.Tokens.ErlangConfigParseTree.InvokeParse(ErlangTestConfigFile);
+            var testResults = ErlangConfigParseTree.InvokeParse(ErlangTestConfigFile);
 
             Assert.IsNotNull(testResults);
 

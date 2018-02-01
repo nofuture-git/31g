@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using NoFuture.Antlr.Grammers;
-using NoFuture.Tokens.ParseResults;
 
-namespace NoFuture.Tokens
+namespace NoFuture.Antlr.ErlangConfig
 {
-
-
     public class ErlangConfigParseTree : ErlangConfigBaseListener
     {
         #region consts
