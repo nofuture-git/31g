@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using NoFuture.Shared;
+using NoFuture.Antlr.DotNetIlTypeName;
 using NoFuture.Shared.Core;
 using NoFuture.Tokens;
-using NoFuture.Tokens.ParseResults;
-using NoFuture.Util;
 using NoFuture.Util.Core;
-using NoFuture.Util.NfType;
-using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Gen.LangRules
 {
@@ -681,7 +676,7 @@ namespace NoFuture.Gen.LangRules
             if (string.IsNullOrWhiteSpace(typeToString))
                 return "object";
 
-            var tnpi = Tokens.Etx.ParseIl(typeToString);
+            var tnpi = TypeNameParseTree.ParseIl(typeToString);
             var bldr = new StringBuilder();
             ConvertToCs(tnpi, bldr);
             return bldr.ToString().Replace("+",".");

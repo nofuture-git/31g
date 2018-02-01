@@ -76,7 +76,6 @@
     <None Include="GenAntlrV4CSharpCodeFile.ps1" />
     <None Include="Grammers\CSharp4.g4" />
     <None Include="Grammers\CSharp4PreProcessor.g4" />
-    <None Include="Grammers\DotNetIlTypeName.g4" />
     <None Include="Grammers\ErlangConfig.g4" />
     <None Include="Grammers\HTMLLexer.g4" />
     <None Include="Grammers\HTMLParser.g4" />

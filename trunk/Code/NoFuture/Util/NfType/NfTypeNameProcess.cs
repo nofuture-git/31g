@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NoFuture.Shared;
+using NoFuture.Antlr.DotNetIlTypeName;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;

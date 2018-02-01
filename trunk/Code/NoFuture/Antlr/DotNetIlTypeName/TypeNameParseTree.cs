@@ -1,15 +1,32 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using NoFuture.Antlr.Grammers;
-using NoFuture.Util.NfType.InvokeCmds;
 
-namespace NoFuture.Tokens
+namespace NoFuture.Antlr.DotNetIlTypeName
 {
     public class TypeNameParseTree : DotNetIlTypeNameBaseListener
     {
+        /// <summary>
+        /// Helper method to get parsed results without having a reference to NoFuture.Antlr
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        public static NfTypeNameParseItem ParseIl(string typeName)
+        {
+            if (String.IsNullOrWhiteSpace(typeName))
+                return null;
+
+            var rslts = TypeNameParseTree.InvokeParse(typeName);
+            if (rslts == null || !rslts.Any())
+                return null;
+
+            return rslts.First();
+        }
+
         protected ParseTreeProperty<NfTypeNameParseItem> MyDotNetNames = new ParseTreeProperty<NfTypeNameParseItem>();
         protected ParseTreeProperty<NfTypeNameParseItem> MyGenericArgs = new ParseTreeProperty<NfTypeNameParseItem>();
 
@@ -64,9 +81,9 @@ namespace NoFuture.Tokens
             netName.AssemblyFullName = ConcatDotNetAsmName(context.dotNetAsmName());
             netName.PublicKeyTokenValue = GetPublicKeyTokenValue(context.dotNetAsmName());
             var fk = context.GENERIC_COUNTER().GetText() ?? "0";
-            fk = fk.Replace("`", string.Empty);
+            fk = fk.Replace("`", String.Empty);
             byte genCount;
-            if (byte.TryParse(fk, out genCount) && genCount > 0)
+            if (Byte.TryParse(fk, out genCount) && genCount > 0)
                 netName.GenericCounter = genCount;
 
             var genericArgs = new List<NfTypeNameParseItem>();
@@ -119,7 +136,7 @@ namespace NoFuture.Tokens
 
         internal static string ConcatDotNetName(DotNetIlTypeNameParser.DotNetNameContext context)
         {
-            return context == null ? string.Empty : context.GetText();
+            return context == null ? String.Empty : context.GetText();
         }
 
         public static IEnumerable<NfTypeNameParseItem> InvokeParse(string typeName)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NoFuture.Antlr.DotNetIlTypeName;
 using NoFuture.Gen;
 using NoFuture.Tokens;
 using NoFuture.Tokens.ParseResults;
@@ -73,7 +74,7 @@ namespace NoFuture.Tests.Tokens
             }
         }
 
-        internal static void PrintTypeItemContent(NoFuture.Util.NfType.InvokeCmds.NfTypeNameParseItem item, int count)
+        internal static void PrintTypeItemContent(NfTypeNameParseItem item, int count)
         {
             System.Diagnostics.Debug.WriteLine($"{new string('\t', count)}{item.FullName}");
             System.Diagnostics.Debug.WriteLine($"{new string('\t', count)}{item.AssemblyFullName}");

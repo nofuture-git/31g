@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using NoFuture.Antlr.DotNetIlTypeName;
 using NoFuture.Util.Core;
-using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Util.NfType
 {

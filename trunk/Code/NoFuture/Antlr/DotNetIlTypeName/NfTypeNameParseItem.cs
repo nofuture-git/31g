@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Util.NfType.InvokeCmds
+namespace NoFuture.Antlr.DotNetIlTypeName
 {
     [Serializable]
     public class NfTypeNameParseItem

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
+using NoFuture.Antlr.DotNetIlTypeName;
 using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
-using NoFuture.Util.NfType.InvokeCmds;
 
 namespace NoFuture.Tokens.InvokeNfTypeName.Cmds
 {
@@ -20,7 +20,7 @@ namespace NoFuture.Tokens.InvokeNfTypeName.Cmds
                     throw new ItsDeadJim("No Type Name given to parse.");
                 var nm = Encoding.UTF8.GetString(arg);
                 MyProgram.PrintToConsole(nm);
-                var f = Etx.ParseIl(nm);
+                var f = TypeNameParseTree.ParseIl(nm);
                 return JsonEncodedResponse(f);
 
             }
