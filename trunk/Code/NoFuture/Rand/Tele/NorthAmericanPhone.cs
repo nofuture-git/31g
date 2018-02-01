@@ -210,7 +210,7 @@ namespace NoFuture.Rand.Tele
             if (string.IsNullOrWhiteSpace(absPath))
                 return false;
             var p = $";{PHONE_CONTEXT}=".EscapeString();
-            p = $@"([0-9]+){p}([a-zA-Z0-9_\.]+)";
+            p = $@"([0-9]+){p}([a-zA-Z0-9_\.\-]+)";
 
             var hasPhoneNumber = RegexCatalog.IsRegexMatch(absPath, p, out var phNum, 1);
             var hasDescriptor = RegexCatalog.IsRegexMatch(absPath, p, out var descriptor, 2);

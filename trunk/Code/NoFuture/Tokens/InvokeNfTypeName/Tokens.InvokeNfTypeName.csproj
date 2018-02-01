@@ -64,6 +64,10 @@
     <Content Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Antlr\DotNetIlTypeName\Antlr.DotNetIlTypeName.csproj">
+      <Project>{c5c8202a-b474-48fa-974a-74c79511a80f}</Project>
+      <Name>Antlr.DotNetIlTypeName</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Shared\Cfg\Shared.Cfg.csproj">
       <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
       <Name>Shared.Cfg</Name>

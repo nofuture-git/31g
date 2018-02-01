@@ -150,6 +150,10 @@
     <Compile Include="Util\EquationsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NoFuture\Antlr\DotNetIlTypeName\Antlr.DotNetIlTypeName.csproj">
+      <Project>{c5c8202a-b474-48fa-974a-74c79511a80f}</Project>
+      <Name>Antlr.DotNetIlTypeName</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoFuture\Domain\Carriage\Domain.Carriage.csproj">
       <Project>{e48b5e3d-7e4e-4f3f-81ed-a36e9ca90c20}</Project>
       <Name>Domain.Carriage</Name>

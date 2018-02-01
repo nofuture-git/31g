@@ -115,6 +115,14 @@ namespace NoFuture.Rand.Tests.TeleTests
             Assert.AreEqual("518", testResultOut.AreaCode);
             Assert.AreEqual("415", testResultOut.CentralOfficeCode);
             Assert.AreEqual("4299", testResultOut.SubscriberNumber);
+
+            testInput = "(518)-415-4299";
+            testResult = NorthAmericanPhone.TryParse(testInput, out testResultOut);
+            Assert.IsTrue(testResult);
+            Assert.IsNotNull(testResultOut);
+            Assert.AreEqual("518", testResultOut.AreaCode);
+            Assert.AreEqual("415", testResultOut.CentralOfficeCode);
+            Assert.AreEqual("4299", testResultOut.SubscriberNumber);
         }
 
         [Test]

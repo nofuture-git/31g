@@ -69,7 +69,6 @@
     <Compile Include="Etx.cs" />
     <Compile Include="ParseResults\Erlang.cs" />
     <Compile Include="ParseResults\HtmlParseResults.cs" />
-    <Compile Include="TypeNameParseTree.cs" />
     <Compile Include="XDocFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -80,6 +79,10 @@
     <ProjectReference Include="..\Antlr\Antlr.csproj">
       <Project>{ecc8c5b3-a36f-40d5-9ddf-7a286b92c998}</Project>
       <Name>Antlr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Antlr\DotNetIlTypeName\Antlr.DotNetIlTypeName.csproj">
+      <Project>{c5c8202a-b474-48fa-974a-74c79511a80f}</Project>
+      <Name>Antlr.DotNetIlTypeName</Name>
     </ProjectReference>
     <ProjectReference Include="..\Shared\Cfg\Shared.Cfg.csproj">
       <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>

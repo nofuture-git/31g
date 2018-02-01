@@ -58,10 +58,6 @@
     <Compile Include="CSharp4Listener.cs" />
     <Compile Include="CSharp4Parser.cs" />
     <Compile Include="CSharp4PreProcessor.cs" />
-    <Compile Include="DotNetIlTypeNameBaseListener.cs" />
-    <Compile Include="DotNetIlTypeNameLexer.cs" />
-    <Compile Include="DotNetIlTypeNameListener.cs" />
-    <Compile Include="DotNetIlTypeNameParser.cs" />
     <Compile Include="ErlangConfigBaseListener.cs" />
     <Compile Include="ErlangConfigLexer.cs" />
     <Compile Include="ErlangConfigListener.cs" />
@@ -78,6 +74,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GenAntlrV4CSharpCodeFile.ps1" />
+    <None Include="Grammers\CSharp4.g4" />
+    <None Include="Grammers\CSharp4PreProcessor.g4" />
+    <None Include="Grammers\DotNetIlTypeName.g4" />
+    <None Include="Grammers\ErlangConfig.g4" />
+    <None Include="Grammers\HTMLLexer.g4" />
+    <None Include="Grammers\HTMLParser.g4" />
+    <None Include="Grammers\VbScript.g4" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
