@@ -102,7 +102,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='javaJavaRtJarTool' value='$(binJavaRootDir)\jre\lib\rt.jar' />
             <add id='javaJarTool' value='$(binJavaRootDir)\bin\jar.exe' />
             <add id='javaJRunScriptTool' value='$(binJavaRootDir)\bin\jrunscript.exe' />
-            <add id='javaAntlrTool' value='$(binRootDir)\antlr-4.7-complete.jar' />
+            <add id='javaAntlrTool' value='$(binRootDir)\antlr-4.7.1-complete.jar' />
             <add id='javaStanfordPostTaggerTool' value='$(binRootDir)\stanford-postagger-2015-12-09\stanford-postagger.jar' />
             <add id='javaStanfordPostTaggerModelsTool' value='$(binRootDir)\stanford-postagger-2015-12-09\models\' />
           </java>

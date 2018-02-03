@@ -22,19 +22,56 @@ Gotchas
      the definitions of more generic ones.
 //if DEC_OCTET is a specific kind of Int
 //  and if we defined it below 'INT' it won't work.
+//  this extends for both the lexer and parser rule!
+
+decOctet : DEC_OCTET ;
 
 DEC_OCTET : ([0-9])
          | ([1-9]) ([0-9])
-		 | ('1')([0-9])([0-9])
-		 | ('2') ([0-4]) ([0-9])
-		 | ('2') ('5') ([0-5])
-		 ;
-		 
+         | ('1')([0-9])([0-9])
+         | ('2') ([0-4]) ([0-9])
+         | ('2') ('5') ([0-5])
+         ;
+
+//notice this is a parser rule and its below a lexer rule.
+number : INT ;
+
 INT : DIGIT+ ;
 
 HEX_FOUR : HEX (HEX (HEX (HEX)?)?)? ;
 HEX : DIGIT | [a-fA-F] ;
 DIGIT : [0-9] ;	 
+
+ - explict ranges don't work when they have overlap
+ 
+//for the classic YYYY-MM-DD, you can't have different rules
+// for month and day because every value of a month can also 
+// be a day
+ 
+date : year ('-' month ('-' day)? )? ;
+
+//given "2022-10-01", Grun will complain it can't match the "day"
+// however, if you then move "day" and "DAY" above "month" and 
+// "MONTH" it will complain it can match the "month" - best to 
+// just stick with simple matches like "INT : DIGIT+ ;"
+month : MONTH ;
+   
+MONTH
+   : ('0') ([1-9])
+   | ('1') ([0-2])
+   ;
+   
+day : DAY ;
+   
+DAY
+   : ('0') ([1-9])
+   | ([1-2]) ([0-9])
+   | ('3') ([0-1])
+   ;
+
+year : YEAR ;
+   
+YEAR : ([0-9]) ([0-9]) ([0-9]) ([0-9]) ; 
 
  - we want to ignore the space char (\u0020) except when its in 
    side of quotes
