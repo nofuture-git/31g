@@ -58,17 +58,12 @@
       <HintPath>..\packages\Jurassic.2.2.1\lib\net35\Jurassic.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="NoFuture.Antlr, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\NoFuture\bin\NoFuture.Antlr.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -166,10 +161,6 @@
       <Project>{3bb71c0a-b6ad-4e55-b49d-417bc2da7d39}</Project>
       <Name>Antlr.HTML</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NoFuture\Domain\Carriage\Domain.Carriage.csproj">
-      <Project>{e48b5e3d-7e4e-4f3f-81ed-a36e9ca90c20}</Project>
-      <Name>Domain.Carriage</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NoFuture\Domain\Engine\Domain.Engine.csproj">
       <Project>{9dac506b-cc22-43d2-9e72-a463e0015a03}</Project>
       <Name>Domain.Engine</Name>
@@ -193,10 +184,6 @@
     <ProjectReference Include="..\NoFuture\Host\Encryption\Host.Encryption.csproj">
       <Project>{ca799f4d-800a-48b9-92a4-69c728135eb5}</Project>
       <Name>Host.Encryption</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NoFuture\Rand\Core\Rand.Core.csproj">
-      <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
-      <Name>Rand.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Read\Ini\Read.csproj">
       <Project>{335212c4-7f96-4647-8d9b-f1a4e61b735b}</Project>
@@ -245,10 +232,6 @@
     <ProjectReference Include="..\NoFuture\Util\Util.Pos\Util.Pos.csproj">
       <Project>{39627590-0d97-4de2-b598-172b04587550}</Project>
       <Name>Util.Pos</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NoFuture\Util\Util.Re\Util.Re.csproj">
-      <Project>{d572d6a3-0b77-451f-a1fe-efee1767bf9c}</Project>
-      <Name>Util.Re</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

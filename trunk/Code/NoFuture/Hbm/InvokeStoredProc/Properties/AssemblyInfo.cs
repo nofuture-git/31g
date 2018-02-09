@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Hbm.InvokeStoredProc")]
+[assembly: AssemblyTitle("NoFuture.Hbm.InvokeStoredProc")]
 [assembly: AssemblyDescription("Autonomous process to database call which is, in turn, killable.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Hbm.InvokeStoredProc")]
+[assembly: AssemblyProduct("NoFuture.Hbm.InvokeStoredProc")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

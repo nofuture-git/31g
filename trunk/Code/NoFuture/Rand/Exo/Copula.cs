@@ -318,9 +318,7 @@ namespace NoFuture.Rand.Exo
                 ? publicCorporation.SIC
                 : new StandardIndustryClassification { Value = pr.Sic, Src = myDynData.SourceUri.ToString() };
 
-            publicCorporation.UsStateOfIncorporation = String.IsNullOrWhiteSpace(pr.IncorpState)
-                ? publicCorporation.UsStateOfIncorporation
-                : UsState.GetStateByPostalCode(pr.IncorpState);
+            publicCorporation.UsStateOfIncorporation = pr.IncorpState;
 
             if (publicCorporation.SIC != null && !String.IsNullOrWhiteSpace(pr.SicDesc))
                 publicCorporation.SIC.Description = pr.SicDesc;
