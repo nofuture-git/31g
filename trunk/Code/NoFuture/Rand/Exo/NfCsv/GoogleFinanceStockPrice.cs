@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Exo.NfCsv
 {
     public class GoogleFinanceStockPrice : NfDynDataBase
     {
+        public const string GOOG_FIN_HOST = "finance.google.com";
         public GoogleFinanceStockPrice(Uri src) : base(src)
         {
         }
@@ -22,14 +22,14 @@ namespace NoFuture.Rand.Exo.NfCsv
         /// <returns></returns>
         public static Uri GetUri(string ticker, DateTime? startDate = null, DateTime? endDate = null)
         {
-            const string GOOG_FIN = "http://finance.google.com/finance/historical";
+            var googFin = $"http://{GOOG_FIN_HOST}/finance/historical";
 
             if(string.IsNullOrWhiteSpace(ticker))
                 throw new ArgumentNullException(nameof(ticker));
             var stDt = startDate.GetValueOrDefault(DateTime.Today.AddDays(-60));
             var endDt = endDate.GetValueOrDefault(DateTime.Today);
 
-            var uri = $"{GOOG_FIN}?q={ticker}";
+            var uri = $"{googFin}?q={ticker}";
             uri += $"&{GetQueryStringDate(stDt)}";
             uri += $"&{GetQueryStringDate(endDt,true)}";
             uri += "&output=csv";
@@ -45,7 +45,44 @@ namespace NoFuture.Rand.Exo.NfCsv
 
         public override IEnumerable<dynamic> ParseContent(object content)
         {
-            throw new NotImplementedException();
+            var csv = content as string;
+            if (string.IsNullOrWhiteSpace(csv))
+                return null;
+
+            var lines = csv.Split(Constants.LF);
+            if (lines.Length <= 1)
+                return null;
+
+            var dataOut = new List<dynamic>();
+            //TODO - too fragile, need a CSV parser
+            for (var i = 1; i < lines.Length - 1; i++)
+            {
+                var lineData = lines[i].Split(',');
+                if(lineData.Length < 6)
+                    continue;
+
+                if (new[]
+                {
+                    DateTime.TryParse(lineData[0], out DateTime date), double.TryParse(lineData[1], out var open),
+                    double.TryParse(lineData[2], out var high), double.TryParse(lineData[3], out var low),
+                    double.TryParse(lineData[4], out var close), int.TryParse(lineData[5], out var volume)
+                }.Any(p => p == false))
+                {
+                    continue;
+                }
+
+                dataOut.Add(new
+                {
+                    Date = date,
+                    Open = open,
+                    High = high,
+                    Low = low,
+                    Close = close,
+                    Volume = volume
+                });
+            }
+
+            return dataOut;
         }
     }
 }

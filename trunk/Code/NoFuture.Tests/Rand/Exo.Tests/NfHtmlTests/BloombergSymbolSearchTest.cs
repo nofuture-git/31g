@@ -831,7 +831,7 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
         #endregion
 
         [Test]
-        public void TestMethod1()
+        public void TestParseContent()
         {
             var testSubject = new BloombergSymbolSearch(null);
             var testResult = testSubject.ParseContent(_testData);
@@ -844,14 +844,14 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
         [Test]
         public void TestPreParser()
         {
-            var testFile = TestAssembly.UnitTestsRoot + @"\Rand\BloombergSearchRslt_multiple.html";
+            var testFile = TestAssembly.TestDataDir + @"\BloombergSearchRslt_multiple.html";
 
             var testInput = System.IO.File.ReadAllText(testFile);
             var testResult = NfHtmlDynDataBase.PreParser(testInput);
 
             Assert.AreNotEqual(testInput.Length, testResult.Length);
 
-            System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\Rand\BloombergSearchRslt_tr.html", testResult);
+            System.IO.File.WriteAllText(TestAssembly.TestDataDir + @"\Rand\BloombergSearchRslt_tr.html", testResult);
 
         }
     }

@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Exo.Tests.NfPdfTests
         public void TestParseContent()
         {
             //not added to src control - too big for just tests
-            var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\13flist2016q2.pdf";
+            var testFile = TestAssembly.TestDataDir + @"\13flist2016q2.pdf";
             Assert.IsTrue(System.IO.File.Exists(testFile));
             var testInput = System.IO.File.ReadAllBytes(testFile);
             Assert.AreNotEqual(0,testInput.Length);
@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Exo.Tests.NfPdfTests
                 testContent.Add($"{tIn} {tTe}");
                 
             }
-            System.IO.File.AppendAllLines(TestAssembly.UnitTestsRoot + @"\ExampleDlls\CusipChkDigitTest.txt", testContent);
+            System.IO.File.AppendAllLines(TestAssembly.TestDataDir + @"\CusipChkDigitTest.txt", testContent);
         }
     }
 }

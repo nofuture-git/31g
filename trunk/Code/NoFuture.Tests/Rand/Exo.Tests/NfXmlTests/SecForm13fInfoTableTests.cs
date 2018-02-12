@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
         [Test]
         public void TestParseContent()
         {
-            var contentFile = TestAssembly.UnitTestsRoot + @"\Rand\form13fInfoTable.xml";
+            var contentFile = TestAssembly.TestDataDir + @"\form13fInfoTable.xml";
             var content = System.IO.File.ReadAllText(contentFile);
 
             var testSubject = new SecForm13FInfoTable(null);

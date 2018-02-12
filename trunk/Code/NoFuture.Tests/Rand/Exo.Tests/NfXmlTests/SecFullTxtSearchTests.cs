@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
         [Test]
         public void TestMethod1()
         {
-            var testXmlFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\srch-edgar.xml";
+            var testXmlFile = TestAssembly.TestDataDir + @"\SecByFullText.xml";
             var testSubject = new SecFullTxtSearch(new Uri("http://localhost"));
 
             var testResult = testSubject.ParseContent(System.IO.File.ReadAllText(testXmlFile));

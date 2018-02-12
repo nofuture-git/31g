@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Exo.Tests
             testSubject.UpsertName(KindsOfNames.Legal, "TrueBlue, Inc.");
             testSubject.SecReports.Add(new Form10K {XmlLink = testUri});
             var testContent =
-                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl.xml");
+                System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\ExampleSecXbrl.xml");
             var testResult = Copula.TryMergeXbrlInto10K(testContent,
                 testUri,
                 ref testSubject);

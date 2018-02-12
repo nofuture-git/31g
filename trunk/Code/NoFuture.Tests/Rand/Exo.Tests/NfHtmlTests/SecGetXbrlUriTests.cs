@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
                 "https://www.sec.gov/Archives/edgar/data/1593936/000155837016004206/0001558370-16-004206-index.htm");
             var testContent =
                 System.IO.File.ReadAllText(
-                   TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecIndexHtm.html");
+                   TestAssembly.TestDataDir + @"\ExampleSecIndexHtm.html");
             var testSubject = new NoFuture.Rand.Com.PublicCorporation { CIK = new CentralIndexKey { Value = "0000768899" }};
             testSubject.UpsertName(KindsOfNames.Legal, "TrueBlue, Inc.");
             testSubject.SecReports.Add(new Form10K {HtmlFormLink = testUri });

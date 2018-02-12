@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Exo.Tests
         [Test]
         public void TestTryParseFfiecInstitutionProfileAspxHtml()
         {
-            var testContent = System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\Rand\ffiecHtml.html");
+            var testContent = System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\ffiecHtml.html");
 
             Bank firmOut = new Bank();
             var testResult = Copula.TryParseFfiecInstitutionProfileAspxHtml(testContent, new Uri(UsGov.Links.Ffiec.SEARCH_URL_BASE),

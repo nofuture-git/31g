@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Exo.NfCsv;
 using NoFuture.Rand.Exo.NfHtml;
 using NoFuture.Rand.Exo.NfText;
 using NoFuture.Rand.Exo.NfXml;
@@ -18,7 +19,7 @@ namespace NoFuture.Rand.Exo
             if (uri == null)
                 throw new ArgumentNullException(nameof(uri));
 
-            if (uri.Host == "www.bloomberg.com")
+            if (uri.Host == BloombergSymbolSearch.BLOOMBERG_HOST)
             {
                 return new BloombergSymbolSearch(uri);
             }
@@ -47,6 +48,11 @@ namespace NoFuture.Rand.Exo
             if (uri.Host == new Uri(UsGov.Links.Ffiec.SEARCH_URL_BASE).Host)
             {
                 return new FfiecInstitProfile(uri);
+            }
+
+            if (uri.Host == GoogleFinanceStockPrice.GOOG_FIN_HOST)
+            {
+                return new GoogleFinanceStockPrice(uri);
             }
 
             throw new NotImplementedException();

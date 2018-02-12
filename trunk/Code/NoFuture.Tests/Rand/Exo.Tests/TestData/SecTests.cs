@@ -10,9 +10,9 @@ namespace NoFuture.Rand.Exo.Tests.TestData
     public class SecTests
     {
 
-        public string SEC_BY_SIC_XML_PATH = TestAssembly.UnitTestsRoot + @"\Rand\SecBySIC.xml";
-        public string SEC_BY_CIK_XML_PATH = TestAssembly.UnitTestsRoot + @"\Rand\SecByCIK.xml";
-        public string SEC_BY_FULLTEXT_XML_PATH = TestAssembly.UnitTestsRoot + @"\Rand\SecByFullText.xml";
+        public string SEC_BY_SIC_XML_PATH = TestAssembly.TestDataDir + @"\SecBySIC.xml";
+        public string SEC_BY_CIK_XML_PATH = TestAssembly.TestDataDir + @"\SecByCIK.xml";
+        public string SEC_BY_FULLTEXT_XML_PATH = TestAssembly.TestDataDir + @"\SecByFullText.xml";
 
         [Test]
         public void TestTryGetCorpData()

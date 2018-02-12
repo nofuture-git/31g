@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
         [Test]
         public void TestParseContent()
         {
-            var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\wikipedia_ListInsComs.html";
+            var testFile = TestAssembly.TestDataDir + @"\wikipedia_ListInsComs.html";
             Assert.IsTrue(System.IO.File.Exists(testFile));
             var testContent = System.IO.File.ReadAllText(testFile);
             Assert.IsNotNull(testContent);

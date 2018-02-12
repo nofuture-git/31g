@@ -7,11 +7,12 @@ namespace NoFuture.Rand.Exo.NfHtml
 {
     public class BloombergSymbolSearch : NfHtmlDynDataBase
     {
+        public const string BLOOMBERG_HOST = "www.bloomberg.com";
         public BloombergSymbolSearch(Uri srcUri):base(srcUri) { }
 
         public static Uri GetUri(PublicCorporation com)
         {
-            return new Uri("http://www.bloomberg.com/markets/symbolsearch?query=" + com.UrlEncodedName + "&commit=Find+Symbols");
+            return new Uri($"http://{BLOOMBERG_HOST}/markets/symbolsearch?query={com.UrlEncodedName}&commit=Find+Symbols");
         }
 
         public override IEnumerable<dynamic> ParseContent(object content)

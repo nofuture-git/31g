@@ -77,6 +77,15 @@ namespace Notes_LINQ_Common
 			
 			//use Alist.Select(x => x).Except(BList.Select(y => y)).ToList(); like
 			// pattern when the set ops are just on simple lists
+            
+            //get an initialized array of integers
+            var myInts = System.Linq.Enumerable.Range(0,30); //makes array like {0,1,2,...29};
+            
+            //zip array's
+            var mynames = new[]{"first","second","third", "forth"};
+            var myValues = new[]{0.22,0.56,0.15,0.07};
+            var zipped = mynames.Zip(myValues, (n,v) => new Tuple<string,double>(n,v)).ToList();
+            
 		}
 	}
 }
