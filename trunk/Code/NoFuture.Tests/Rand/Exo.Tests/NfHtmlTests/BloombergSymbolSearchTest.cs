@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Exo.NfHtml;
 
 namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
 {
-    [TestClass]
+    [TestFixture]
     public class BloombergSymbolSearchTest
     {
         #region
@@ -830,7 +830,7 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
 ";
         #endregion
 
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
             var testSubject = new BloombergSymbolSearch(null);
@@ -841,7 +841,7 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestPreParser()
         {
             var testFile = TestAssembly.UnitTestsRoot + @"\Rand\BloombergSearchRslt_multiple.html";

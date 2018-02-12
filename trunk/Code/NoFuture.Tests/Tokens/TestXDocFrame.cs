@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Tokens;
 
 namespace NoFuture.Tests.Tokens
 {
-    [TestClass]
+    [TestFixture]
     public class TestXDocFrame
     {
-        [TestMethod]
+        [Test]
         public void TestSkipAndTakeWorksLikePs1()
         {
             var myList = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
@@ -18,29 +18,29 @@ namespace NoFuture.Tests.Tokens
 
             var left = myList.Take(myI).ToList();
             var printMySkipTakeList = string.Join(",", left);
-            System.Diagnostics.Debug.WriteLine(printMySkipTakeList);
+            Console.WriteLine(printMySkipTakeList);
 
             var right = myList.Skip(myI+1).Take(lastIndex).ToList();
             left.AddRange(right);
 
             printMySkipTakeList = string.Join(",", left);
-            System.Diagnostics.Debug.WriteLine(printMySkipTakeList);
+            Console.WriteLine(printMySkipTakeList);
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestFindAllCharTokens()
         {
             var testInput = @"open something named{ accessMod type name { someStatement; someOtherStatement; accessMod type name(someArg){someBody;} somefinalStatement; }}";
             var testSubject = new NoFuture.Tokens.XDocFrame();
             var testResults = testSubject.FindAllCharTokens(testInput, '{', '}');
 
-            System.Diagnostics.Debug.WriteLine(string.Join(",",testResults.Item1));
-            System.Diagnostics.Debug.WriteLine(string.Join(",",testResults.Item2));
+            Console.WriteLine(string.Join(",",testResults.Item1));
+            Console.WriteLine(string.Join(",",testResults.Item2));
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestFindTokenMatch()
         {
             var testArr0 = new List<int> {20, 42, 107};
@@ -53,7 +53,7 @@ namespace NoFuture.Tests.Tokens
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestFindEnclosingTokens_Char()
         {
             var testInput = @"open something named{ accessMod type name { someStatement; someOtherStatement; accessMod type name(someArg){someBody;} somefinalStatement; }}";
@@ -66,11 +66,11 @@ namespace NoFuture.Tests.Tokens
 
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}",t.Start, t.End));
+                Console.WriteLine(string.Format("{0},{1}",t.Start, t.End));
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestFindEnclosingTokens_Word()
         {
             var testWordStart = "begin";
@@ -87,14 +87,14 @@ namespace NoFuture.Tests.Tokens
 
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", t.Start, t.End));
-                System.Diagnostics.Debug.WriteLine(testInput.Substring(t.Start, testWordStart.Length));
-                System.Diagnostics.Debug.WriteLine(testInput.Substring(t.End - testWordEnd.Length, testWordEnd.Length));
+                Console.WriteLine(string.Format("{0},{1}", t.Start, t.End));
+                Console.WriteLine(testInput.Substring(t.Start, testWordStart.Length));
+                Console.WriteLine(testInput.Substring(t.End - testWordEnd.Length, testWordEnd.Length));
 
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendHeadToken()
         {
             var testTokens = new List<NoFuture.Tokens.Token>
@@ -113,12 +113,12 @@ namespace NoFuture.Tests.Tokens
 
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", t.Start, t.End));
+                Console.WriteLine(string.Format("{0},{1}", t.Start, t.End));
 
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestInterlaceTokens()
         {
             var testTokens = new List<NoFuture.Tokens.Token>
@@ -134,13 +134,13 @@ namespace NoFuture.Tests.Tokens
             Assert.IsNotNull(testResults);
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1},{2},{3}", t.Start, t.End, t.Register, t.ChildTo));
+                Console.WriteLine(string.Format("{0},{1},{2},{3}", t.Start, t.End, t.Register, t.ChildTo));
 
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestSetTabCount()
         {
             var testTokens = new List<Token>
@@ -156,12 +156,12 @@ namespace NoFuture.Tests.Tokens
             Assert.IsNotNull(testResults);
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0},{1},{2},{3},{4}", t.Start, t.End, t.Register, t.ChildTo, t.Tab));
+                Console.WriteLine(string.Format("{0},{1},{2},{3},{4}", t.Start, t.End, t.Register, t.ChildTo, t.Tab));
 
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGaps()
         {
             var testInput =
@@ -177,13 +177,13 @@ namespace NoFuture.Tests.Tokens
 
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0}, {1}, {2}, {3}", t.Start, t.End, t.Span, t.ChildTo));
+                Console.WriteLine(string.Format("{0}, {1}, {2}, {3}", t.Start, t.End, t.Span, t.ChildTo));
             }
 
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetTokens()
         {
             var testInput =
@@ -203,12 +203,12 @@ namespace NoFuture.Tests.Tokens
 
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}", t.Start, t.End, t.Span, t.Register, t.Tab));
+                Console.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}", t.Start, t.End, t.Span, t.Register, t.Tab));
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetXDocFrame()
         {
             var testInput =
@@ -220,7 +220,7 @@ namespace NoFuture.Tests.Tokens
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestApplyXDocFrame()
         {
             var testInput =

@@ -1,13 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using NUnit.Framework;
 using NoFuture.Gsm;
 using System.Text.RegularExpressions;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class GsmTests
     {
-        [TestMethod]
+        [Test]
         public void TestAtCmdRegexPattern()
         {
             var testInput00 = "+CPBR: 117,\"9137681400\",129,\"TractorSupply Co\"";
@@ -17,22 +18,22 @@ namespace NoFuture.Tests.Util
 
             var testSubject00 = System.Text.RegularExpressions.Regex.Match(testInput00, string.Format("({0})", Utility.AT_CMD_REGEX_PATTERN));
             Assert.IsTrue(testSubject00.Success);
-            System.Diagnostics.Debug.WriteLine(testSubject00.Groups[0].Value);
+            Console.WriteLine(testSubject00.Groups[0].Value);
 
             var testSubject01 = System.Text.RegularExpressions.Regex.Match(testInput01, string.Format("({0})", Utility.AT_CMD_REGEX_PATTERN));
             Assert.IsTrue(testSubject01.Success);
-            System.Diagnostics.Debug.WriteLine(testSubject01.Groups[0].Value);
+            Console.WriteLine(testSubject01.Groups[0].Value);
 
             var testSubject02 = System.Text.RegularExpressions.Regex.Match(testInput02, string.Format("({0})", Utility.AT_CMD_REGEX_PATTERN));
             Assert.IsTrue(testSubject02.Success);
-            System.Diagnostics.Debug.WriteLine(testSubject02.Groups[0].Value);
+            Console.WriteLine(testSubject02.Groups[0].Value);
 
             var testSubject03 = System.Text.RegularExpressions.Regex.Match(testInput03, string.Format("({0})", Utility.AT_CMD_REGEX_PATTERN));
             Assert.IsTrue(testSubject03.Success);
-            System.Diagnostics.Debug.WriteLine(testSubject03.Groups[0].Value);
+            Console.WriteLine(testSubject03.Groups[0].Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestOkRspnRegexPattern()
         {
             var testInput00 = "+CPBS: \"AD\",129,1250\n\nOK";
@@ -48,7 +49,7 @@ namespace NoFuture.Tests.Util
             Assert.IsFalse(testResult02);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSmsSummaryTryParse()
         {
             var testInput = "+CMGL: 6,\"REC READ\",\"+13235557557\" Boss has some news she wants to tell you ";
@@ -71,7 +72,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(" k", testOutput.Message);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSmsSummaryTryParseToList()
         {
             var testInput = @"
@@ -98,12 +99,12 @@ OK
             Assert.AreEqual(6,testOutput.Length);
             foreach(var sms in testOutput)
             {
-                System.Diagnostics.Debug.WriteLine(sms.Message);
+                Console.WriteLine(sms.Message);
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsCmdOutputError()
         {
             var testInput00 = "AT+CFFF?\nERROR\n\n";
@@ -123,7 +124,7 @@ OK
             Assert.IsFalse(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestStripOffAtCommand()
         {
             var testInput00 = "+CPBR: 117,\"9137681400\",129,\"TractorSupply Co\"";
@@ -140,7 +141,7 @@ OK
             Assert.AreEqual(testControl, testOutput02);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPhoneBookTryParse()
         {
             var testInput = "\"AD\",129,1250";
@@ -172,7 +173,7 @@ OK
             Assert.IsTrue(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPhoneTypeToString()
         {
             var testSubject = new PhoneBookEntryType(129);
@@ -180,7 +181,7 @@ OK
             Assert.AreEqual("129",testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPhoneBookEntryToStringFull()
         {
             var testControl = "120,\"18008626190\",129,\"UMB MortgageServices\",\"Banking\",\"18004445555\",128,\"Direct Line\",\"jim.bo@banking.com\",\"sip:+1-212-555-1212:1234@gateway.com;user=phone\",\"tel:+1-212-555-1212\",0";
@@ -204,7 +205,7 @@ OK
             Assert.AreEqual(testControl, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPhoneBookEntryMin()
         {
             var testControl = "120,\"18008626190\",129,\"UMB MortgageServices\"";
@@ -219,7 +220,7 @@ OK
             Assert.AreEqual(testControl,testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPhoneBookEntryParseOwnToString()
         {
 
@@ -259,7 +260,7 @@ OK
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestPhoneBookEntryTryParse()
         {
             var testInputFull = "+CPBR: 120,\"18008626190\",129,\"UMB MortgageServices\",0,\"Banking\",\"18004445555\",128,\"Direct Line\",\"jim.bo@banking.com\",\"sip:+1-212-555-1212:1234@gateway.com;user=phone\",\"tel:+1-212-555-1212\"";
@@ -302,7 +303,7 @@ OK
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestPhoneBookentryTryParsePartial()
         {
             var testInput00 = "+CPBR: 120,\"18008626190\",129,\"UMB MortgageServices\",0";

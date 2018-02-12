@@ -1,17 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Read;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NoFuture.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class TestRead
     {
         public string TEST_CSPROJ = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012\AdventureWorks2012\DoNotUse_VsProjFileTests.csproj";
@@ -29,7 +29,7 @@ namespace NoFuture.Tests
 
         public Hashtable Regex2Values;
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             InitConfigs();
@@ -57,7 +57,7 @@ namespace NoFuture.Tests
             System.Threading.Thread.Sleep(500);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSwapAllProjRef2BinRef()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -71,7 +71,7 @@ namespace NoFuture.Tests
             testSubject.SaveAs(testRslt);
         }
 
-        [TestMethod]
+        [Test]
         public void TestUpdateHintPathTo()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -84,7 +84,7 @@ namespace NoFuture.Tests
             testSubject.SaveAs(testRslt);
         }
 
-        [TestMethod]
+        [Test]
         public void TestDropNodesNamed()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -115,7 +115,7 @@ namespace NoFuture.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestVsProjectTypeGuids()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -129,7 +129,7 @@ namespace NoFuture.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetBinRefByGuidComment()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -139,7 +139,7 @@ namespace NoFuture.Tests
             Assert.IsNotNull(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestReduceToOnlyBuildConfig()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -153,7 +153,7 @@ namespace NoFuture.Tests
             testSubject.SaveAs(testRslt);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetListCompileItemNodes()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -165,7 +165,7 @@ namespace NoFuture.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSlnProjectEntry()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -173,10 +173,10 @@ namespace NoFuture.Tests
 
             var testResult = NoFuture.Read.Vs.SlnFile.GetSlnProjectEntry(testSubject, TestAssembly.UnitTestsRoot);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestProjectConfigurations()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -186,10 +186,10 @@ namespace NoFuture.Tests
             Assert.IsNotNull(testResults);
             Assert.AreNotEqual(0,testResults);
             foreach(var t in testResults)
-                System.Diagnostics.Debug.WriteLine(t);
+                Console.WriteLine(t);
         }
 
-        [TestMethod]
+        [Test]
         public void TestProjectGuid()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -200,7 +200,7 @@ namespace NoFuture.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestSaveSlnVer14()
         {
             var testInput = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -216,7 +216,7 @@ namespace NoFuture.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetNet40ProjFile()
         {
             //test file is present
@@ -290,7 +290,7 @@ namespace NoFuture.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestExeConfigTransforms00()
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST00_EXE_CONFIG);
@@ -301,7 +301,7 @@ namespace NoFuture.Tests
             Assert.IsTrue(System.IO.File.Exists(testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestExeConfigTransforms01()
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST01_EXE_CONFIG);
@@ -312,7 +312,7 @@ namespace NoFuture.Tests
             Assert.IsTrue(System.IO.File.Exists(testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestExeConfigTransforms02()
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST02_EXE_CONFIG);
@@ -323,7 +323,7 @@ namespace NoFuture.Tests
             Assert.IsTrue(System.IO.File.Exists(testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestExeConfigReadTransform()
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST_TRANS00_CONFIG);
@@ -334,7 +334,7 @@ namespace NoFuture.Tests
             Assert.IsTrue(System.IO.File.Exists(testResult));
 
         }
-        [TestMethod]
+        [Test]
         public void TestAddAppSettingItem00()
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST00_EXE_CONFIG);
@@ -342,7 +342,7 @@ namespace NoFuture.Tests
             testSubject.Save();
         }
 
-        [TestMethod]
+        [Test]
         public void TestAddAppSettingItem01()
         {
             var testSubject = new NoFuture.Read.Config.ExeConfig(TEST03_EXE_CONFIG);//no appSettings node
@@ -350,18 +350,18 @@ namespace NoFuture.Tests
             testSubject.Save();
         }
 
-        [TestMethod]
+        [Test]
         public void TestSpliceInXmlNs()
         {
             var testInput = "//docNode/sectionNode/listNode/itemNode[someAttr='applesauce']";
 
             var testResult = BaseXmlDoc.SpliceInXmlNs(testInput, "Wz");
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("//Wz:docNode/Wz:sectionNode/Wz:listNode/Wz:itemNode[someAttr='applesauce']", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAddNugetPkgRestoreNodes()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -375,7 +375,7 @@ namespace NoFuture.Tests
             testSubject.SaveAs(testRslt);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetProjectReferences()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(@"C:\Projects\We\source\Bfw.Dal.Transform\Bfw.Dal.Transform.csproj");
@@ -390,13 +390,13 @@ namespace NoFuture.Tests
             while (testResult.Count > 0)
             {
                 var testResultI = testResult.Dequeue();
-                System.Diagnostics.Debug.WriteLine(testResultI.AssemblyName);
+                Console.WriteLine(testResultI.AssemblyName);
             }
 
-            System.Diagnostics.Debug.WriteLine(bldScript);
+            Console.WriteLine(bldScript);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetCompileItems()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -409,11 +409,11 @@ namespace NoFuture.Tests
 
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(t);
+                Console.WriteLine(t);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetContentItems()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -426,11 +426,11 @@ namespace NoFuture.Tests
 
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(t);
+                Console.WriteLine(t);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetBinaryReferences()
         {
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
@@ -443,11 +443,11 @@ namespace NoFuture.Tests
 
             foreach (var t in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(t);
+                Console.WriteLine(t);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetAsCompileCmd()
         {
             NfConfig.DotNet.CscCompiler =

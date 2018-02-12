@@ -1,10 +1,11 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Linq;
+using NUnit.Framework;
 using NoFuture.Util.Pos;
 
 namespace NoFuture.Tests.Util.Pos
 {
-    [TestClass]
+    [TestFixture]
     public class PennTreebankTagsetTests
     {
         public static string[] AllCodes = new string[]
@@ -21,17 +22,17 @@ namespace NoFuture.Tests.Util.Pos
                                                   ".", ","
                                               };
 
-        [TestMethod]
+        [Test]
         public void TestAllCodesRepresented()
         {
             foreach (var allCode in AllCodes)
             {
-                System.Diagnostics.Debug.WriteLine(allCode);
+                Console.WriteLine(allCode);
                 Assert.IsNotNull(NoFuture.Util.Pos.PtTagset.GetTagset(allCode));
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestParseResults()
         {
             const string TEST_INPUT = "This/DT is/VBZ a/DT sample/NN sentence/NN";
@@ -40,29 +41,29 @@ namespace NoFuture.Tests.Util.Pos
 
             for (var i = 0; i < testOutList.Length; i++ )
             {
-                System.Diagnostics.Debug.WriteLine("{0,-8}{1}",i,testOutList[i].Value);
+                Console.WriteLine("{0,-8}{1}",i,testOutList[i].Value);
             }
 
             Assert.IsTrue(testResult);
             Assert.AreEqual(5, testOutList.Count());
 
-            Assert.IsInstanceOfType(testOutList[0], typeof(NoFuture.Util.Pos.Determiner));
+            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Determiner), testOutList[0]);
             Assert.AreEqual("This", testOutList[0].Value);
 
-            Assert.IsInstanceOfType(testOutList[1], typeof(NoFuture.Util.Pos.Verb3rdPersonSingularPresent));
+            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Verb3rdPersonSingularPresent),testOutList[1]);
             Assert.AreEqual("is", testOutList[1].Value);
 
-            Assert.IsInstanceOfType(testOutList[2],typeof(NoFuture.Util.Pos.Determiner));
+            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Determiner),testOutList[2]);
             Assert.AreEqual("a", testOutList[2].Value);
 
-            Assert.IsInstanceOfType(testOutList[3], typeof(NoFuture.Util.Pos.NounSingularOrMass));
+            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.NounSingularOrMass),testOutList[3]);
             Assert.AreEqual("sample", testOutList[3].Value);
 
-            Assert.IsInstanceOfType(testOutList[4], typeof(NoFuture.Util.Pos.NounSingularOrMass));
+            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.NounSingularOrMass), testOutList[4]);
             Assert.AreEqual("sentence",testOutList[4].Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSentenceBreakParse()
         {
             NoFuture.Util.Pos.PtTagset.TagDelimiter = '_';
@@ -74,11 +75,11 @@ namespace NoFuture.Tests.Util.Pos
             Assert.IsNotNull(testOutList);
             Assert.AreNotEqual(0 ,testOutList.Length);
             Assert.IsTrue(testOutList.Length > 8);
-            Assert.IsInstanceOfType(testOutList[7], typeof(NoFuture.Util.Pos.Comma));
+            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Comma), testOutList[7]);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryParseJaggedArray()
         {
             TagsetBase[][] tagsOut;
@@ -90,7 +91,7 @@ namespace NoFuture.Tests.Util.Pos
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestParseResultsBySentences()
         {
             NoFuture.Util.Pos.PtTagset.TagDelimiter = '_';
@@ -105,24 +106,24 @@ namespace NoFuture.Tests.Util.Pos
             Assert.IsNotNull(testOutList[0]);
             Assert.AreNotEqual(0,testOutList[0].Length);
 
-            System.Diagnostics.Debug.WriteLine("Number of sentences '{0}'", testOutList.Length);
+            Console.WriteLine("Number of sentences '{0}'", testOutList.Length);
 
             for (var i = 0; i < testOutList.Length;i++ )
             {
-                System.Diagnostics.Debug.WriteLine("Sentence '{0}' length is '{1}'",i,testOutList[i].Length);
+                Console.WriteLine("Sentence '{0}' length is '{1}'",i,testOutList[i].Length);
             }
 
             Assert.IsNotNull(testOutList[1]);
             Assert.AreNotEqual(0,testOutList[1].Length);
 
-            Assert.IsInstanceOfType(testOutList[1][0], typeof(NoFuture.Util.Pos.Determiner));
-            Assert.IsInstanceOfType(testOutList[1][1], typeof(NoFuture.Util.Pos.Adjective));
+            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Determiner),testOutList[1][0]);
+            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Adjective),testOutList[1][1]);
 
             var secondtolastValue = testOutList[36][0].Value;
             var lastValue = testOutList[36][1].Value;
 
-            System.Diagnostics.Debug.WriteLine(secondtolastValue);
-            System.Diagnostics.Debug.WriteLine(lastValue);
+            Console.WriteLine(secondtolastValue);
+            Console.WriteLine(lastValue);
         }
 
         private string _largeTestFile = @"

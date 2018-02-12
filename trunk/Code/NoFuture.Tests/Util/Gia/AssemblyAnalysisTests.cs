@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Util.Gia
 {
-    [TestClass]
+    [TestFixture]
     public class AssemblyAnalysisTests
     {
-        [TestMethod]
+        [Test]
         public void TestMapAssemblyWordLeftAndRight()
         {
             var testAsm =
@@ -32,7 +32,7 @@ namespace NoFuture.Tests.Util.Gia
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestToMetadataTokenName()
         {
             NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
@@ -70,13 +70,13 @@ namespace NoFuture.Tests.Util.Gia
             var testResult = NoFuture.Util.Gia.AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Name);
-            System.Diagnostics.Debug.WriteLine(testResult.Name);
+            Console.WriteLine(testResult.Name);
             Assert.AreEqual("AdventureWorks.VeryBadCode.BasicGenerics::TakesGenericArg(System.Collections.Generic.List`1[SomeSecondDll.MyFirstMiddleClass])", testResult.Name);
 
             testMethod = testType.GetMember("TakesThisAsmGenericArg").FirstOrDefault();
             Assert.IsNotNull(testMethod);
             testResult = NoFuture.Util.Gia.AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
-            System.Diagnostics.Debug.WriteLine(testResult.Name);
+            Console.WriteLine(testResult.Name);
             Assert.AreEqual("AdventureWorks.VeryBadCode.BasicGenerics::TakesThisAsmGenericArg(System.Collections.Generic.List`1[AdventureWorks.VeryBadCode.Order])", testResult.Name);
 
         }

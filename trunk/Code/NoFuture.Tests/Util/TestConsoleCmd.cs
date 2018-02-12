@@ -1,22 +1,22 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class TestConsoleCmd
     {
-        [TestMethod]
+        [Test]
         public void TestParseArgsToKeyValueHash()
         {
             var testcmd = "-connStr=Server=localhost;Database=ApexQA01;Trusted_Connection=True;";
             var testResult = ConsoleCmd.ParseArgKey2StringHash(testcmd);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult.Value.Value);
+            Console.WriteLine(testResult.Value.Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestArgHash()
         {
             var testCmd = new[]
@@ -28,7 +28,7 @@ namespace NoFuture.Tests.Util
             var testResult = ConsoleCmd.ArgHash(testCmd);
             Assert.IsNotNull(testResult);
             foreach(var k in testResult.Keys)
-                System.Diagnostics.Debug.WriteLine(string.Format("{0}\n\t\t{1}",k,testResult[k]));
+                Console.WriteLine(string.Format("{0}\n\t\t{1}",k,testResult[k]));
         }
     }
 }

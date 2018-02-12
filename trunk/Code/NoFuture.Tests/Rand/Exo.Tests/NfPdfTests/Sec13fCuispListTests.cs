@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Exo.NfPdf;
 
 namespace NoFuture.Rand.Exo.Tests.NfPdfTests
 {
-    [TestClass]
+    [TestFixture]
     public class Sec13fCuispListTests
     {
-        [TestMethod]
+        [Test]
         public void TestTryParseCusipLine()
         {
             var testInput = "989701 13 1 ZIONS BANCORPORATION *W EXP 11/14/201";
@@ -19,10 +19,10 @@ namespace NoFuture.Rand.Exo.Tests.NfPdfTests
             Assert.IsNotNull(testResultOut);
             Assert.AreNotEqual(0,testResultOut.Length);
             foreach(var i in testResultOut)
-                System.Diagnostics.Debug.WriteLine(i);
+                System.Console.WriteLine(i);
         }
 
-        [TestMethod]
+        [Test]
         public void TestParseContent()
         {
             //not added to src control - too big for just tests

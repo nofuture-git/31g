@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace NoFuture.Tests.Sql
 {
-    [TestClass]
+    [TestFixture]
     public class TestPsTypeInfo
     {
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             var testInputAllBoolStrings = new List<string>

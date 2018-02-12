@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Exo.NfHtml;
 
 namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
 {
-    [TestClass]
+    [TestFixture]
     public class WikepediaInsComTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestParseContent()
         {
             var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\wikipedia_ListInsComs.html";
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
 
             Assert.AreNotEqual(0, testResultArray.Length);
             foreach(var i in testResultArray)
-                System.Diagnostics.Debug.WriteLine(i);
+                System.Console.WriteLine(i);
 
         }
     }

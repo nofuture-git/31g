@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Util;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class TestVs
     {
 

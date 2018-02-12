@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Hbm.DbQryContainers;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
@@ -7,10 +7,10 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Hbm
 {
-    [TestClass]
+    [TestFixture]
     public class TestMapping
     {
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             NfConfig.TempDirectories.Hbm = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles";
@@ -21,49 +21,49 @@ namespace NoFuture.Tests.Hbm
             NoFuture.Hbm.Mapping.HbmOneToMany = new SortedOneToMany();
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSingleHbmXml()
         {
             var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableWithCompositePk");
             Assert.IsTrue(System.IO.File.Exists(testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSingleHbmXml2()
         {
             var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableWithFkRefToMulti");
             Assert.IsTrue(System.IO.File.Exists(testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSingleHbmXml3()
         {
             var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableWithFkToComposite");
             Assert.IsTrue(System.IO.File.Exists(testResult));
             
         }
-        [TestMethod]
+        [Test]
         public void TestGetSingleHbmXml4()
         {
             var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableWithNoPkButWithUqIdx");
             Assert.IsTrue(System.IO.File.Exists(testResult));
 
         }
-        [TestMethod]
+        [Test]
         public void TestGetSingleHbmXml5()
         {
             var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableWithNoPkMultipleIx");
             Assert.IsTrue(System.IO.File.Exists(testResult));
 
         }
-        [TestMethod]
+        [Test]
         public void TestGetSingleHbmXml6()
         {
             var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableWithNoPkSingleUqIxMutliColumns");
             Assert.IsTrue(System.IO.File.Exists(testResult));
 
         }
-        [TestMethod]
+        [Test]
         public void TestGetSingleHbmXml7()
         {
             var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableWithVarcharPk");
@@ -71,14 +71,20 @@ namespace NoFuture.Tests.Hbm
 
         }
         
-        [TestMethod]
-        [ExpectedException(typeof(ItsDeadJim))]
+        [Test]
         public void TestGetSingleHbmXml8()
         {
-            var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableIncompatiableWithOrm");
+            try
+            {
+                var testResult = NoFuture.Hbm.Mapping.GetSingleHbmXml("NoFuture.TestHbm", "dbo.TableIncompatiableWithOrm");
+            }
+            catch (ItsDeadJim)
+            {
+                Assert.True(true);
+            }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetHbmNamedQueryXml()
         {
             var testResult = NoFuture.Hbm.Mapping.GetHbmNamedQueryXml("NoFuture.TestHbm.Prox", "dbo.MyStoredProc");

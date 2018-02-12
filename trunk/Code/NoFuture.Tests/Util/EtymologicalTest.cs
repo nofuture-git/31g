@@ -1,16 +1,16 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Util;
 using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class EtymologicalTest
     {
 
 
-        [TestMethod]
+        [Test]
         public void TestNomenclatureToponyms()
         {
             var testSubject = new NoFuture.Util.Etymological.Biz.Toponyms();
@@ -41,7 +41,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestNomenclatureChronos()
         {
             var testSubject = new NoFuture.Util.Etymological.Biz.Chronos();
@@ -56,7 +56,7 @@ namespace NoFuture.Tests.Util
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestToPlural()
         {
             var testResult = NoFuture.Util.Etymological.En.ToPlural("Birth");

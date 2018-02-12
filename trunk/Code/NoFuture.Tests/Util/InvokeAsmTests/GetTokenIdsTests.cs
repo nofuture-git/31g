@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using System.IO;
 using NoFuture.Shared.Cfg;
@@ -10,10 +11,10 @@ using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 
 namespace NoFuture.Tests.Util.InvokeAsmTests
 {
-    [TestClass]
+    [TestFixture]
     public class GetTokenIdsTests
     {
-        [TestMethod]
+        [Test]
         public void TestResolveCallOfCall()
         {
             NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
@@ -79,7 +80,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             Assert.IsTrue(testTokens.Any(x => x.Id == targetTokenType));
             var testTokenRslt = testTokens.First(x => x.Id == targetTokenType);
             var tokenPrint = MetadataTokenId.Print(testTokenRslt);
-            System.Diagnostics.Debug.WriteLine(tokenPrint);
+            Console.WriteLine(tokenPrint);
 
             var testFlattenedRslt = MetadataTokenId.FlattenToDistinct(testTokenRslt);
             Assert.IsTrue(tokenPrint.Split('\n').Length >= testFlattenedRslt.Length);
@@ -91,11 +92,11 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
 
             foreach (var tname in testTokenNames)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0}.{1} ({2})", tname.RslvAsmIdx,tname.Id.ToString("X4"), tname.Name));
+                Console.WriteLine(string.Format("{0}.{1} ({2})", tname.RslvAsmIdx,tname.Id.ToString("X4"), tname.Name));
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlattenToDistinct()
         {
             var t0 = new MetadataTokenId
@@ -167,7 +168,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             Assert.AreEqual(3, t1x0.Items.Length);
         }
 
-        [TestMethod]
+        [Test]
         public void TestToAdjancencyMatrix()
         {
             var testDataFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\GetTokenIdsData.json";

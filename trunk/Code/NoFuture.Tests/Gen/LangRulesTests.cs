@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.SqlServer.Server;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Text.RegularExpressions;
 using NoFuture.Gen;
 using NoFuture.Shared;
@@ -12,7 +12,7 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Gen
 {
-    [TestClass]
+    [TestFixture]
     public class LangRulesTests
     {
 
@@ -471,7 +471,7 @@ namespace NoFuture.Tests.Gen
                 "}"
             };
         
-        [TestMethod]
+        [Test]
         public void TestRemoveLineComments()
         {
             var testInput01 = @"
@@ -504,12 +504,12 @@ namespace NoFuture.Tests.Gen
             Assert.AreEqual(testInput.Length, testResults.Length);
             foreach (var line in testResults)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("[{0}]", line));
+                Console.WriteLine(string.Format("[{0}]", line));
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveLineCommentsWithEmbeddedUri()
         {
             var testInput = new[]
@@ -534,10 +534,10 @@ namespace NoFuture.Tests.Gen
                 NoFuture.Gen.Settings.LangStyle.LineComment);
 
             foreach(var ln in testResult)
-                System.Diagnostics.Debug.WriteLine(ln);
+                Console.WriteLine(ln);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsOddNumberCurlyBraces()
         {
             var inputString = new String[]
@@ -564,12 +564,12 @@ namespace NoFuture.Tests.Gen
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveBlockComments()
         {
             var testInput = new[] { " int myInt; /*block comments*/" };
             var testOutput = NoFuture.Gen.Settings.LangStyle.RemoveBlockComments(testInput);
-            System.Diagnostics.Debug.WriteLine(string.Format("[{0}]", testOutput));
+            Console.WriteLine(string.Format("[{0}]", testOutput));
             Assert.AreEqual(" int myInt;                   ", testOutput[0]);
             testInput = new[] { " int myInt; /*block comments*/ foreach(var s in t){;}" };
             testOutput = NoFuture.Gen.Settings.LangStyle.RemoveBlockComments(testInput);
@@ -621,7 +621,7 @@ namespace NoFuture.Tests.Gen
             Assert.AreEqual(testInput.Length, testOutput.Length);
         }
 
-        [TestMethod]
+        [Test]
         public void TestExtractUptoKeyword()
         {
             var testInput = new[]
@@ -673,7 +673,7 @@ namespace NoFuture.Tests.Gen
             Assert.AreEqual(18, testResult.Length);
             foreach (var ln in testResult)
             {
-                System.Diagnostics.Debug.WriteLine(ln);
+                Console.WriteLine(ln);
             }
 
             testInput = new[]
@@ -689,7 +689,7 @@ namespace NoFuture.Tests.Gen
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestExtractUsingStatements()
         {
             var testInput = new[]
@@ -765,12 +765,12 @@ namespace NoFuture.Tests.Gen
 
             var testResult = NoFuture.Gen.Settings.LangStyle.ExtractNamespaceImportStatements(testInput);
 
-            System.Diagnostics.Debug.WriteLine(string.Join("\n", testResult));
+            Console.WriteLine(string.Join("\n", testResult));
             Assert.AreEqual(17, testResult.Length);
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlattenCodeToCharStream()
         {
             var testInput = new[]
@@ -792,7 +792,7 @@ namespace NoFuture.Tests.Gen
             };
             var testResult = NoFuture.Gen.Settings.LangStyle.FlattenCodeToCharStream(testInput);
 
-            //System.Diagnostics.Debug.WriteLine(new string(testResult.ToArray()));
+            //Console.WriteLine(new string(testResult.ToArray()));
 
             testInput = new[]
             {
@@ -832,11 +832,11 @@ namespace NoFuture.Tests.Gen
 
             testResult = NoFuture.Gen.Settings.LangStyle.FlattenCodeToCharStream(testInput);
 
-            System.Diagnostics.Debug.WriteLine(new string(testResult.ToArray()));
+            Console.WriteLine(new string(testResult.ToArray()));
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryDeriveTypeNameFromFile()
         {
             var testInput = new[]
@@ -1026,7 +1026,7 @@ namespace NoFuture.Tests.Gen
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestCleanupPdbLinesCodeBlock()
         {
             var testInput = new[]
@@ -1130,7 +1130,7 @@ namespace NoFuture.Tests.Gen
             Assert.AreNotEqual(0, testResult.Length);
             foreach (var ln in testResult)
             {
-                System.Diagnostics.Debug.WriteLine(ln);
+                Console.WriteLine(ln);
             }
 
             testInput = new[]
@@ -1233,11 +1233,11 @@ namespace NoFuture.Tests.Gen
             Assert.AreNotEqual(0, testResult.Length);
             foreach (var ln in testResult)
             {
-                System.Diagnostics.Debug.WriteLine(ln);
+                Console.WriteLine(ln);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestCleanupPdbLinesCodeBlock02()
         {
             var testInput = new[]
@@ -1271,11 +1271,11 @@ namespace NoFuture.Tests.Gen
 
             foreach (var ln in testResult)
             {
-                System.Diagnostics.Debug.WriteLine(ln);
+                Console.WriteLine(ln);
             }            
         }
 
-        [TestMethod]
+        [Test]
         public void TestCleanupPdbLinesCodeBlock03()
         {
             var testInput = new[]
@@ -1308,11 +1308,11 @@ namespace NoFuture.Tests.Gen
 
             foreach (var ln in testResult)
             {
-                System.Diagnostics.Debug.WriteLine(ln);
+                Console.WriteLine(ln);
             }             
         }
 
-        [TestMethod]
+        [Test]
         public void TestCurlyBraceCount()
         {
             var testInput = new[]
@@ -1337,7 +1337,7 @@ namespace NoFuture.Tests.Gen
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGenUseIsNotDefaultValueTest()
         {
             var testResult = NoFuture.Gen.Settings.LangStyle.GenUseIsNotDefaultValueTest(null, null);
@@ -1368,7 +1368,7 @@ namespace NoFuture.Tests.Gen
             Assert.AreEqual("myVariable != null", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryFindFirstLineInClass()
         {
             var testFileContent =
@@ -1379,10 +1379,10 @@ namespace NoFuture.Tests.Gen
                 out testResultOut);
             Assert.IsTrue(testResult);
             Assert.AreNotEqual(0, testResultOut);
-            System.Diagnostics.Debug.WriteLine(testResultOut);
+            Console.WriteLine(testResultOut);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryFindFirstLineInClass_ss()
         {
             var testTypeName = "PlummetToxic.DPP.Onss.ViewWankathon";
@@ -1391,10 +1391,10 @@ namespace NoFuture.Tests.Gen
                 out testResultOut);
             Assert.IsTrue(testResult);
             Assert.AreNotEqual(0, testResultOut);
-            System.Diagnostics.Debug.WriteLine(testResultOut);
+            Console.WriteLine(testResultOut);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryFindLastLineInClass()
         {
             var testFileContent =
@@ -1406,17 +1406,17 @@ namespace NoFuture.Tests.Gen
             Assert.IsTrue(testResult);
             Assert.AreNotEqual(int.MaxValue, testResultOut);
             Assert.AreNotEqual(testFileContent.Length, testResultOut);
-            System.Diagnostics.Debug.WriteLine(testResultOut);
+            Console.WriteLine(testResultOut);
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestEscStringLiterals()
         {
             var irregular = false;
             var input = "        revRoom.ValidationExpression = \"^[a-zA-Z0-9''\" + Convert.ToString(ConfigurationManager.AppSettings[\"PreyNameAllowedCharecters\"]) + \"]+$\";";
             var testResult = NoFuture.Gen.Settings.LangStyle.EscStringLiterals(input, EscapeStringType.UNICODE, ref irregular);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
 
@@ -1572,19 +1572,19 @@ namespace NoFuture.Tests.Gen
             testInput.Append('"');
             testInput.Append(';');
             testResult = NoFuture.Gen.Settings.LangStyle.EscStringLiterals(testInput.ToString(), EscapeStringType.UNICODE, ref irregular);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
 
             testResult = NoFuture.Gen.Settings.LangStyle.EscStringLiterals(testInput.ToString(),
                 EscapeStringType.BLANK, ref irregular);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestEscStringLiteralsHereString()
         {
             var testInput = "var myJsScript = @\"";
@@ -1623,7 +1623,7 @@ namespace NoFuture.Tests.Gen
 
             for (var i = 0; i < testExampleHereString.Length; i++)
             {
-                //System.Diagnostics.Debug.WriteLine(string.Format("'{0}'",testExampleOut[i]));
+                //Console.WriteLine(string.Format("'{0}'",testExampleOut[i]));
                 Assert.AreEqual(testExampleHereString[i].Length, testExampleOut[i].Length);
             }
             testIrregular = false;
@@ -1647,19 +1647,19 @@ namespace NoFuture.Tests.Gen
             }
             for (var i = 0; i < testExampleHereString.Length; i++)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("'{0}'",testExampleOut[i]));
+                Console.WriteLine(string.Format("'{0}'",testExampleOut[i]));
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestExtractAllStringLiterals()
         {
             var input =
                 "        revRoom.ValidationExpression = \"^[a-zA-Z0-9''\" + Convert.ToString(ConfigurationManager.AppSettings[\"PreyNameAllowedCharecters\"]) + \"]+$\";";
             var testResult = NoFuture.Gen.Settings.LangStyle.ExtractAllStringLiterals(input);
             foreach (var k in testResult.Keys)
-                System.Diagnostics.Debug.WriteLine(string.Format("[{0}] - '{1}'", k, testResult[k]));
+                Console.WriteLine(string.Format("[{0}] - '{1}'", k, testResult[k]));
 
             Assert.AreEqual(3, testResult.Count);
             var testInput = new StringBuilder();
@@ -1815,17 +1815,17 @@ namespace NoFuture.Tests.Gen
             testInput.Append(';');
             testResult = Settings.LangStyle.ExtractAllStringLiterals(testInput.ToString());
             foreach (var k in testResult.Keys)
-                System.Diagnostics.Debug.WriteLine(string.Format("[{0}] - '{1}'", k, testResult[k]));
+                Console.WriteLine(string.Format("[{0}] - '{1}'", k, testResult[k]));
             Assert.AreEqual(2, testResult.Count);
 
             input = "var aHereString = @\"Here Is a Here String\";";
             testResult = Settings.LangStyle.ExtractAllStringLiterals(input);
             foreach (var k in testResult.Keys)
-                System.Diagnostics.Debug.WriteLine(string.Format("[{0}] - '{1}'", k, testResult[k]));
+                Console.WriteLine(string.Format("[{0}] - '{1}'", k, testResult[k]));
 
             Assert.IsNotNull(testResult);
             Assert.AreEqual(1, testResult.Count);
-            System.Diagnostics.Debug.WriteLine(input.ToCharArray()[18]);
+            Console.WriteLine(input.ToCharArray()[18]);
 
             input = new string(new[] {'@', '"', '\\', '"'});
 
@@ -1837,7 +1837,7 @@ namespace NoFuture.Tests.Gen
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestToCsParam()
         {
             var testSubject = new CgMember()
@@ -1855,35 +1855,35 @@ namespace NoFuture.Tests.Gen
 
             var testResult = NoFuture.Gen.Settings.LangStyle.ToParam(testSubject, true);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult.ToString().StartsWith("Func<"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTransformClrTypeSyntax()
         {
             var testInput = "System.Collections.Generic.List`1[SomeSecondDll.MyFirstMiddleClass]";
             var testResult = Settings.LangStyle.TransformClrTypeSyntax(testInput);
             Assert.IsNotNull(testResult);
             
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(Settings.DefaultLang == CgLangs.Cs);
             Assert.AreEqual("System.Collections.Generic.List<SomeSecondDll.MyFirstMiddleClass>",testResult);
 
             testInput = "MyDomain.SomeWhere.LowerLib.IRepository`1";
             testResult = Settings.LangStyle.TransformClrTypeSyntax(testInput);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("MyDomain.SomeWhere.LowerLib.IRepository<>", testResult);
 
             testInput = "MyDomain.SomeWhere.LowerLib.IRepository`2";
             testResult = Settings.LangStyle.TransformClrTypeSyntax(testInput);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("MyDomain.SomeWhere.LowerLib.IRepository<,>", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTransformClrTypeSyntax_HyperComplex()
         {
             var testInput =
@@ -1902,7 +1902,7 @@ namespace NoFuture.Tests.Gen
             Assert.AreEqual("NeedItInIl.DomainAdapterBase<AThirdDll.Whatever,System.Tuple<string,int,System.Collections.Generic.IEnumerable<MoreBinaries.DomainObject.MyInnerType>>>", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestToSignatureRegex()
         {
             var testCgMember = new CgMember() {Name = "PopulateDdlForSomething"};
@@ -1932,12 +1932,12 @@ namespace NoFuture.Tests.Gen
 
             testInput = Settings.LangStyle.ToSignatureRegex(testCgMember);
             Assert.IsNotNull(testInput);
-            System.Diagnostics.Debug.WriteLine(testInput);
+            Console.WriteLine(testInput);
 
             Assert.IsTrue(Regex.IsMatch("             protected string AProperty",testInput));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDecoratorRegex()
         {
             //var testCsRegex00 =

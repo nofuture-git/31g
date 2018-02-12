@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Rand.Exo.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class PublicCorporationTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestMergeTickerLookupFromJson()
         {
             var testInput =
@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Exo.Tests
             Assert.AreNotEqual(0, testSubject.TickerSymbols.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryMergeXbrl()
         {
             var testUri = new Uri("https://www.sec.gov/Archives/edgar/data/1593936/000155837016004206/mik-20160130.xml");

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Hbm;
 using NoFuture.Hbm.SortingContainers;
 using NoFuture.Shared;
@@ -10,10 +10,10 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Hbm
 {
-    [TestClass]
+    [TestFixture]
     public class TestSorting
     {
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             NfConfig.TempDirectories.Hbm = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles";
@@ -21,21 +21,21 @@ namespace NoFuture.Tests.Hbm
             NfConfig.SqlCatalog = "Whatever";
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsNoPkAndAllNonNullable()
         {
             var testResult = NoFuture.Hbm.Sorting.IsNoPkAndAllNonNullable("dbo.TableIncompatiableWithOrm");
             Assert.IsTrue(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetHbmDbPkData()
         {
             var testResult = NoFuture.Hbm.Sorting.GetHbmDbPkData();
             Assert.IsNotNull(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetHbmDbFkData()
         {
             var testInput = NoFuture.Hbm.Sorting.GetHbmDbPkData();
@@ -43,43 +43,43 @@ namespace NoFuture.Tests.Hbm
             Assert.IsNotNull(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetHbmDbSubsequentData()
         {
             var testREsult = NoFuture.Hbm.Sorting.GetHbmDbSubsequentData();
             Assert.IsNotNull(testREsult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAllTablesWithPk()
         {
             var testResult = NoFuture.Hbm.Sorting.AllTablesWithPkNames;
             Assert.IsNotNull(testResult);
             foreach(var i in testResult)
-                System.Diagnostics.Debug.WriteLine(i);
+                Console.WriteLine(i);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAllStoredProcs()
         {
             var testResult = NoFuture.Hbm.Sorting.AllStoredProx;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
             foreach(var procMeta in testResult.Keys)
-                System.Diagnostics.Debug.WriteLine(procMeta);
+                Console.WriteLine(procMeta);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAddNoPkAllNonNullableToDoNotReference()
         {
             var testResult = Settings.AddNoPkAllNonNullableToBlockedNameList();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0,testResult);
             foreach(var t in NoFuture.Hbm.Settings.DoNotReference)
-                System.Diagnostics.Debug.WriteLine(t);
+                Console.WriteLine(t);
         }
 
-        [TestMethod]
+        [Test]
         public void TestNullableDateEquality()
         {
             System.DateTime? dt1 = null;
@@ -91,7 +91,7 @@ namespace NoFuture.Tests.Hbm
             Assert.IsTrue(dt1 == dt2);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetHbmFksWhichArePks()
         {
             NfConfig.TempDirectories.Hbm = @"C:\Projects\31g\trunk\temp\code\hbm";
@@ -104,10 +104,10 @@ namespace NoFuture.Tests.Hbm
 
             //foreach (var dkf in pkManifold.Keys)
             //{
-            //    System.Diagnostics.Debug.WriteLine(dkf);
+            //    Console.WriteLine(dkf);
             //    foreach (var fkpkVal in pkManifold[dkf])
             //    {
-            //        System.Diagnostics.Debug.WriteLine(string.Format("\t{0}", fkpkVal));
+            //        Console.WriteLine(string.Format("\t{0}", fkpkVal));
             //    }
                 
             //}
@@ -115,10 +115,10 @@ namespace NoFuture.Tests.Hbm
 
             //foreach (var dkf in fkManifold.Keys)
             //{
-            //    System.Diagnostics.Debug.WriteLine(dkf);
+            //    Console.WriteLine(dkf);
             //    foreach (var fkpkVal in fkManifold[dkf])
             //    {
-            //        System.Diagnostics.Debug.WriteLine(string.Format("\t{0}", fkpkVal));
+            //        Console.WriteLine(string.Format("\t{0}", fkpkVal));
             //    }
                 
             //}
@@ -127,10 +127,10 @@ namespace NoFuture.Tests.Hbm
 
             //foreach (var fkpk in fkPkCols.Keys)
             //{
-            //    System.Diagnostics.Debug.WriteLine(fkpk);
+            //    Console.WriteLine(fkpk);
             //    foreach (var fkpkVal in fkPkCols[fkpk])
             //    {
-            //        System.Diagnostics.Debug.WriteLine(string.Format("\t{0}", fkpkVal));
+            //        Console.WriteLine(string.Format("\t{0}", fkpkVal));
             //    }
             //}
 
@@ -140,19 +140,19 @@ namespace NoFuture.Tests.Hbm
 
             //foreach (var i in compKeys.KeyManyToOne.Keys)
             //{
-            //    System.Diagnostics.Debug.WriteLine(i);
+            //    Console.WriteLine(i);
             //    foreach (var k in compKeys.KeyManyToOne[i])
             //    {
-            //        System.Diagnostics.Debug.WriteLine(k.ToJsonString());
+            //        Console.WriteLine(k.ToJsonString());
             //    }
-            //    System.Diagnostics.Debug.WriteLine("---------------------");
+            //    Console.WriteLine("---------------------");
             //}
 
-            //System.Diagnostics.Debug.WriteLine("---------------------------------------------");
+            //Console.WriteLine("---------------------------------------------");
 
             //foreach (var km in keyManytoOneColumns)
             //{
-            //    System.Diagnostics.Debug.WriteLine(km.ToJsonString());
+            //    Console.WriteLine(km.ToJsonString());
             //}
             var hbmKeyManyToOne = compKeys.KeyManyToOne;
 
@@ -166,25 +166,25 @@ namespace NoFuture.Tests.Hbm
             //        string.Equals(x.constraint_name, "dbo.FK_ClinicBreaks_ClinicTieredStationSetupDetails", Sorting.C))
             //    .ToList())
             //{
-            //    System.Diagnostics.Debug.WriteLine(dkjf.ToJsonString());
+            //    Console.WriteLine(dkjf.ToJsonString());
             //}
 
-            System.Diagnostics.Debug.WriteLine("");
-            System.Diagnostics.Debug.WriteLine("-------------------------------------------------");
-            System.Diagnostics.Debug.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("-------------------------------------------------");
+            Console.WriteLine("");
 
             foreach (var key in hbmKeyManyToOne.Keys)
             {
-                //System.Diagnostics.Debug.WriteLine(key);
+                //Console.WriteLine(key);
                 foreach (var kd in dk)
                 {
-                    //System.Diagnostics.Debug.WriteLine("\t"  + key + " : " + kd.constraint_name);
+                    //Console.WriteLine("\t"  + key + " : " + kd.constraint_name);
                     var dKmtoColumnData = hbmKeyManyToOne[key].Where(
                                 x =>
                                     string.Equals(x.constraint_name, kd.constraint_name, Sorting.C)).ToList();
                     foreach (var eo in dKmtoColumnData)
                     {
-                        System.Diagnostics.Debug.WriteLine("\t\t" + key + " : " + kd.constraint_name + " : " + eo.column_name);
+                        Console.WriteLine("\t\t" + key + " : " + kd.constraint_name + " : " + eo.column_name);
                     }
 
                 }
@@ -194,7 +194,7 @@ namespace NoFuture.Tests.Hbm
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestLinqExpr()
         {
             var A = new Dictionary<string, List<string>>
@@ -206,47 +206,47 @@ namespace NoFuture.Tests.Hbm
                 {"dbo.Table10", new List<string> {"column10", "column11", "column02"}}
             };
 
-            System.Diagnostics.Debug.WriteLine("Union");
+            Console.WriteLine("Union");
 
             var union = A.SelectMany(x => x.Value).Union(B.SelectMany(y => y.Value));
             foreach (var r in union)
-                System.Diagnostics.Debug.WriteLine(r);
+                Console.WriteLine(r);
 
-            System.Diagnostics.Debug.WriteLine("");
+            Console.WriteLine("");
 
-            System.Diagnostics.Debug.WriteLine("Intesect");
+            Console.WriteLine("Intesect");
             var intersect = A.SelectMany(x => x.Value).Intersect(B.SelectMany(y => y.Value));
             foreach(var r in intersect)
-                System.Diagnostics.Debug.WriteLine(r);
+                Console.WriteLine(r);
 
-            System.Diagnostics.Debug.WriteLine("");
+            Console.WriteLine("");
 
-            System.Diagnostics.Debug.WriteLine("Set Difference");
+            Console.WriteLine("Set Difference");
             var setDiff = A.SelectMany(x => x.Value).Except(B.SelectMany(y => y.Value));
             foreach(var r in setDiff)
-                System.Diagnostics.Debug.WriteLine(r);
+                Console.WriteLine(r);
 
-            System.Diagnostics.Debug.WriteLine("");
+            Console.WriteLine("");
 
-            System.Diagnostics.Debug.WriteLine("Symetric Difference");
+            Console.WriteLine("Symetric Difference");
             var symetricDiff =
                 A.SelectMany(x => x.Value)
                     .Except(B.SelectMany(y => y.Value))
                     .Union(B.SelectMany(y => y.Value).Except(A.SelectMany(x => x.Value)));
 
             foreach(var r in symetricDiff)
-                System.Diagnostics.Debug.WriteLine(r);
+                Console.WriteLine(r);
 
-            System.Diagnostics.Debug.WriteLine("");
+            Console.WriteLine("");
 
             var Alist = new List<string> {"column10", "column11", "column12", "column00"};
             var BList = new List<string> {"column10", "column11", "column02"};
 
             var simpleListSetDiff = Alist.Select(x => x).Except(BList.Select(y => y)).ToList();
 
-            System.Diagnostics.Debug.WriteLine("Set Difference (on simple lists)");
+            Console.WriteLine("Set Difference (on simple lists)");
             foreach(var li in simpleListSetDiff)
-                System.Diagnostics.Debug.WriteLine(li);
+                Console.WriteLine(li);
 
             //powershell'esque array splice
             var myList = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,17 };
@@ -255,7 +255,7 @@ namespace NoFuture.Tests.Hbm
             var left = myList.Take(16).ToList();
             var right = myList.Skip(16).Take(myList.Count).ToList();
             foreach(var dk in right)
-                System.Diagnostics.Debug.WriteLine(dk);
+                Console.WriteLine(dk);
             
         }
 

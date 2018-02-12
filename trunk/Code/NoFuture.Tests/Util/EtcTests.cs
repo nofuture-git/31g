@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
@@ -8,20 +8,20 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class EtcTests
     {
-        [TestMethod]
+        [Test]
         public void TestDistillSpaces()
         {
             var testInput = @"    He has refused his Assent to Laws, the most wholesome and necessary for the public good.
     He has forbidden his Governors to pass Laws of immediate and pressing importance, ";
             var testResult = Etc.DistillString(testInput);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestToOrdinal()
         {
             Assert.AreEqual("1st", 1.ToOrdinal());
@@ -33,7 +33,7 @@ namespace NoFuture.Tests.Util
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestCapitalizeFirstLetterOfWholeWords()
         {
             const string typicalTypeName = "noFuture.util.etc";
@@ -49,10 +49,10 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual("Nofuture.Util.Etc",testResult);
 
             testResult = Etc.CapWords("WINSTON SALEM".ToLower(), ' ');
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestEscapeString()
         {
             const string DEC_EXPECT = "&#73;&#32;&#97;&#109;&#32;&#100;&#101;&#99;&#105;&#109;&#97;&#108;";
@@ -78,7 +78,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestPrintInCenter()
         {
             var textInput = "Judea";
@@ -88,10 +88,10 @@ namespace NoFuture.Tests.Util
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(string.Format("|{0}|", testResult));
+            Console.WriteLine(string.Format("|{0}|", testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestMergeString()
         {
             var testPrimaryInput = "   <~~~Some~Name";
@@ -101,10 +101,10 @@ namespace NoFuture.Tests.Util
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestBinaryMergeString()
         {
             var firstString = " a typical string ";
@@ -114,10 +114,10 @@ namespace NoFuture.Tests.Util
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCalcLuhnCheckDigit()
         {
             var testResult = Etc.CalcLuhnCheckDigit("455673758689985");
@@ -144,7 +144,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(5, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestDistillTabs()
         {
             var testInput =
@@ -158,7 +158,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(" a bcd ef ",testResult);
 
         }
-        [TestMethod]
+        [Test]
         public void TestTransformScreamingCapsToCamelCase()
         {
             const string TEST_INPUT = "USER_NAME";
@@ -166,7 +166,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual("userName", testOutput);
         }
 
-        [TestMethod]
+        [Test]
         public void TestToCamelCase()
         {
             const string TEST_INPUT = "UserName";
@@ -197,7 +197,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestTransformCamelCaseToSeparator()
         {
             const string TEST_INPUT = "UserName";
@@ -208,24 +208,24 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual("user_Name", testOutput);
 
         }
-        [TestMethod]
+        [Test]
         public void TestToPascelCase()
         {
             var testResult = Etc.ToPascelCase("dbo.DELETED_LookupDetails");
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("DboDeletedLookupDetails",testResult);
 
             testResult = Etc.ToPascelCase("dbo.DELETED_LookupDetails", true);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("Dbo.Deleted_LookupDetails",testResult);
 
             testResult = Etc.ToPascelCase("Test.dbo.SET_OP_lli", true);
             Assert.AreEqual("Test.dbo.Set_Op_lli",testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestDistillToWholeWords()
         {
             var testResult =
@@ -252,7 +252,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual("TheVariousThingsWhichAllowYouToReadThis", string.Join("",testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestFormatCsvHeaders()
         {
             var testInput = new string[]
@@ -263,10 +263,10 @@ namespace NoFuture.Tests.Util
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             foreach(var tr in testResult)
-                System.Diagnostics.Debug.WriteLine(tr);
+                Console.WriteLine(tr);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFormatJson()
         {
             var testJson =
@@ -275,19 +275,19 @@ namespace NoFuture.Tests.Util
             Assert.IsNotNull(testResult);
 
             testResult = Etc.FormatJson(testJson, true);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFormatXml()
         {
             var testXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><buildTypes><buildType id=\"Whiskey_Quebec_Motel_Romeo_Whiskey_Alpha\" name=\"API\"><builds><build id=\"9945412\" number=\"0000FF.0A.344D1.2B\" status=\"SUCCESS\"><statusText>Success</statusText></build></builds></buildType></buildTypes>";
             var testResult = Etc.FormatXml(testXml);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsBetween()
         {
             
@@ -298,7 +298,7 @@ namespace NoFuture.Tests.Util
             Assert.IsTrue(new DateTime(2010, 1, 1).IsBetween(new DateTime(2009, 1, 1), new DateTime(2010, 1, 2)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestJaroWinklerDistance()
         {
             var testResult = Etc.JaroWinklerDistance("test", "test");
@@ -309,13 +309,13 @@ namespace NoFuture.Tests.Util
 
             testResult = Etc.JaroWinklerDistance("kitty", "kite");
             Assert.IsTrue(testResult - 0.848 < 0.001);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testResult = Etc.JaroWinklerDistance(null, null);
             Assert.AreEqual(1.0, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestLevenshteinDistance()
         {
             var testResult = Etc.LevenshteinDistance("kitten", "sitting");
@@ -325,14 +325,14 @@ namespace NoFuture.Tests.Util
             testResult = Etc.LevenshteinDistance("Brian", "Brain");
             Assert.AreEqual(2D, testResult);
 
-            System.Diagnostics.Debug.WriteLine(Etc.LevenshteinDistance("kitty", "kitten"));
-            System.Diagnostics.Debug.WriteLine(Etc.LevenshteinDistance("kitty", "kite"));
+            Console.WriteLine(Etc.LevenshteinDistance("kitty", "kitten"));
+            Console.WriteLine(Etc.LevenshteinDistance("kitty", "kite"));
 
             //testResult = Etc.LevenshteinDistance("sword", "swath", true);
-            //System.Diagnostics.Debug.WriteLine(testResult);
+            //Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestShortestDistance()
         {
             var testIn = "kitty";
@@ -353,7 +353,7 @@ namespace NoFuture.Tests.Util
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestToYears()
         {
             var testInput = new TimeSpan(365, 0, 0, 0);
@@ -367,6 +367,17 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(1D, testResult);
             System.Diagnostics.Debug.Write(testResult);
 
+        }
+
+        [Test]
+        public void TestMonthAbbrev()
+        {
+            var testInput = new DateTime(DateTime.Today.Year,1,1);
+            var testResult = testInput.MonthAbbrev();
+            Assert.AreEqual("Jan", testResult);
+
+            testResult = testInput.AddMonths(11).MonthAbbrev();
+            Assert.AreEqual("Dec", testResult);
         }
     }
 }

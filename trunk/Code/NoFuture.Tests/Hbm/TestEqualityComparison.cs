@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Hbm
 {
-    [TestClass]
+    [TestFixture]
     public class TestEqualityComparison
     {
         public const string MY_TEST_STRING = "myTestString";
-        [TestMethod]
+        [Test]
         public void TestHowStringHashcodeWorks()
         {
             var testString00 = MY_TEST_STRING;
@@ -23,7 +23,7 @@ namespace NoFuture.Tests.Hbm
             Assert.AreEqual(testString01.GetHashCode(), testString02.ToString().GetHashCode());
         }
 
-        [TestMethod]
+        [Test]
         public void TestHowTypeHashcodeWorks()
         {
             var testType00 = typeof (int);
@@ -34,7 +34,7 @@ namespace NoFuture.Tests.Hbm
             Assert.IsTrue(testType00 == testType01.GetType());
         }
 
-        [TestMethod]
+        [Test]
         public void TestHowTupleHashcodeWorks()
         {
             var testTuple00 = new Tuple<string, Type>(MY_TEST_STRING, typeof (int));
@@ -43,7 +43,7 @@ namespace NoFuture.Tests.Hbm
             Assert.AreEqual(testTuple00.GetHashCode(), testTuple01.GetHashCode());
         }
 
-        [TestMethod]
+        [Test]
         public void TestHowListOfTupleHashcodeWorks()
         {
             var testList00 = new []

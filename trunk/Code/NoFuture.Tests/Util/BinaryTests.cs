@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class BinaryTests
     {
-        [TestMethod]
+        [Test]
         public void TestShiftArrayContent()
         {
             var testSource = @"
@@ -50,39 +50,39 @@ namespace NoFuture.Tests.Util
             var testSrcBuffer = System.Text.Encoding.UTF8.GetBytes(testSource);
             var testRcvOut = NoFuture.Util.Binary.ByteArray.ShiftArrayContent(testRcvBuffer, ref testSrcBuffer, "},");
             
-            System.Diagnostics.Debug.WriteLine(System.Text.Encoding.UTF8.GetString(testSrcBuffer));
-            System.Diagnostics.Debug.WriteLine("----");
-            System.Diagnostics.Debug.WriteLine(System.Text.Encoding.UTF8.GetString(testRcvOut));
+            Console.WriteLine(System.Text.Encoding.UTF8.GetString(testSrcBuffer));
+            Console.WriteLine("----");
+            Console.WriteLine(System.Text.Encoding.UTF8.GetString(testRcvOut));
             
 
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestFromDWord()
         {
             uint testInput = 1999;
             var testOutput = NoFuture.Util.Binary.ByteArray.FromDWord(testInput);
             Assert.IsNotNull(testOutput);
             Assert.IsFalse(testOutput.All(x => x == 0));
-            System.Diagnostics.Debug.WriteLine(NoFuture.Util.Binary.ByteArray.PrettyPrintByteArray(testOutput));
+            Console.WriteLine(NoFuture.Util.Binary.ByteArray.PrettyPrintByteArray(testOutput));
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestToDWord()
         {
             var testResult = NoFuture.Util.Binary.ByteArray.ToDWord((byte)0xF5, (byte)0xFF, (byte)0xFF, (byte)0xEB);
             Assert.AreEqual(-167772181, testResult);
-            System.Diagnostics.Debug.WriteLine(testResult.ToString("X4"));
-            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+            Console.WriteLine(testResult.ToString("X4"));
+            Console.WriteLine(testResult.ToString());
 
             testResult = NoFuture.Util.Binary.ByteArray.ToDWord(0xA, 0, 0, 0x15);
             Assert.AreEqual(167772181, testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestBitwise()
         {
             byte p = 1;
@@ -108,7 +108,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestCompressionPropositions()
         {
             var testResult =
@@ -116,7 +116,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(185,testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDpxAdjGraph()
         {
             var testInput = new List<Tuple<RankedMetadataTokenAsm, RankedMetadataTokenAsm[]>>();

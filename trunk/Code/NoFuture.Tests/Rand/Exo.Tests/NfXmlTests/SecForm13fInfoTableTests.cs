@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Exo.NfXml;
 
 namespace NoFuture.Rand.Exo.Tests.NfXmlTests
 {
-    [TestClass]
+    [TestFixture]
     public class SecForm13fInfoTableTests
     {
-        [TestMethod]
+        [Test]
         public void TestParseContent()
         {
             var contentFile = TestAssembly.UnitTestsRoot + @"\Rand\form13fInfoTable.xml";

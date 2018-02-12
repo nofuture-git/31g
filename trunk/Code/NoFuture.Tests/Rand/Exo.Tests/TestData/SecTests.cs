@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Exo.NfXml;
 using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Rand.Exo.Tests.TestData
 {
-    [TestClass]
+    [TestFixture]
     public class SecTests
     {
 
@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Exo.Tests.TestData
         public string SEC_BY_CIK_XML_PATH = TestAssembly.UnitTestsRoot + @"\Rand\SecByCIK.xml";
         public string SEC_BY_FULLTEXT_XML_PATH = TestAssembly.UnitTestsRoot + @"\Rand\SecByFullText.xml";
 
-        [TestMethod]
+        [Test]
         public void TestTryGetCorpData()
         {
             var xmlContent = System.IO.File.ReadAllText(SEC_BY_CIK_XML_PATH);
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Exo.Tests.TestData
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestParseCompanyFullTextSearch()
         {
             var xmlContent = System.IO.File.ReadAllText(SEC_BY_FULLTEXT_XML_PATH);
@@ -68,23 +68,23 @@ namespace NoFuture.Rand.Exo.Tests.TestData
 
             foreach (var r in testResult)
             {
-                System.Diagnostics.Debug.WriteLine($"Name: {r.Name}; CIK: {r.CIK.Value}");
+                System.Console.WriteLine($"Name: {r.Name}; CIK: {r.CIK.Value}");
                 foreach (var a in r.SecReports)
                 {
                     var ar = a as Form10K;
                     if (ar == null)
                         continue;
-                    System.Diagnostics.Debug.WriteLine("IsLate: {2}; Accession Number: {0}; Link: {1}",
+                    System.Console.WriteLine("IsLate: {2}; Accession Number: {0}; Link: {1}",
                         ar.AccessionNumber, ar.InteractiveFormLink, ar.IsLate);
-                    System.Diagnostics.Debug.WriteLine($"HtmlLink: {ar.HtmlFormLink}");
+                    System.Console.WriteLine($"HtmlLink: {ar.HtmlFormLink}");
 
                 }
-                System.Diagnostics.Debug.WriteLine("----------");
+                System.Console.WriteLine("----------");
             }
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestParseAccessionNumFromSummary()
         {
             var testResult =
@@ -92,10 +92,10 @@ namespace NoFuture.Rand.Exo.Tests.TestData
                     "<b>Filed Date:</b> 04/15/2015 <b>Accession Number:</b> 0001549727-15-000033 <b>Size:</b> 3 MB");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("0001549727-15-000033", testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            System.Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCtorInteractiveLink()
         {
             const string cik = "805729";
@@ -107,7 +107,7 @@ namespace NoFuture.Rand.Exo.Tests.TestData
             Assert.AreEqual(expectedRslt, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetUriFullTextSearch()
         {
             var testInput = new Edgar.FullTextSearch();
@@ -115,37 +115,37 @@ namespace NoFuture.Rand.Exo.Tests.TestData
 
             var testResult = SecFullTxtSearch.GetUri(testInput);
 
-            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+            System.Console.WriteLine(testResult.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryGetDayOfYearFiscalEnd()
         {
             int testResultOut;
             var testResult = Copula.TryGetDayOfYearFiscalEnd("--12-25", out testResultOut);
-            System.Diagnostics.Debug.WriteLine(testResultOut);
+            System.Console.WriteLine(testResultOut);
             Assert.IsTrue(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestParseNameFromTitle()
         {
             var testResult = Copula.ParseNameFromTitle("10-K - 1347 Property Insurance Holdings, Inc.");
-            System.Diagnostics.Debug.WriteLine(testResult.Item2);
-            Assert.IsInstanceOfType(testResult.Item1, typeof(Form10K));
+            System.Console.WriteLine(testResult.Item2);
+            Assert.IsInstanceOf(typeof(Form10K), testResult.Item1);
             Assert.AreEqual("1347 Property Insurance Holdings, Inc.", testResult.Item2);
             testResult = Copula.ParseNameFromTitle("13F-HR - 10-15 ASSOCIATES, INC.");
-            Assert.IsInstanceOfType(testResult.Item1, typeof(Form13Fhr));
+            Assert.IsInstanceOf(typeof(Form13Fhr), testResult.Item1);
             Assert.AreEqual("10-15 ASSOCIATES, INC.", testResult.Item2);
-            System.Diagnostics.Debug.WriteLine(testResult.Item2);
+            System.Console.WriteLine(testResult.Item2);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecFormFactory()
         {
             var testResult = SecForm.SecFormFactory("10-K");
             Assert.IsNotNull(testResult);
-            Assert.IsInstanceOfType(testResult, typeof(Form10K));
+            Assert.IsInstanceOf(typeof(Form10K), testResult);
         }
     }
 }

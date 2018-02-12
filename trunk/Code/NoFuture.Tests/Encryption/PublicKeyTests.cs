@@ -1,34 +1,34 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 
 namespace NoFuture.Tests.Encryption
 {
-    [TestClass]
+    [TestFixture]
     public class PublicKeyTests
     {
         public const string CIPHER_KEY = "5cK+?XLr_Gc0Rt@0bYW$7JMpTmj";
 
-        [TestMethod]
+        [Test]
         public void TestToCipherText()
         {
             var testInput = "plain text";
             var testResult = NoFuture.Encryption.Sjcl.BulkCipherKey.ToEncryptedText(testInput, CIPHER_KEY);
-            Assert.IsInstanceOfType(testResult, typeof(CipherText));
+            Assert.IsInstanceOf(typeof(CipherText),testResult);
         }
-        [TestMethod]
+        [Test]
         public void TestTogglePlainText()
         {
             var testInput = "plain text";
             var cipherText = NoFuture.Encryption.Sjcl.BulkCipherKey.ToEncryptedText(testInput, CIPHER_KEY);
-            Assert.IsInstanceOfType(cipherText, typeof(CipherText));
+            Assert.IsInstanceOf(typeof(CipherText),cipherText);
             Console.WriteLine(cipherText.ToString());
             var testResult = NoFuture.Encryption.Sjcl.BulkCipherKey.ToPlainText(cipherText, CIPHER_KEY);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(String.Empty,testResult);
             Assert.AreEqual(testInput,testResult);
         }
-        [TestMethod]
+        [Test]
         public void TestToPlainTextWithEscCharInData()
         {
             var pk = "5cK+?XLr_Gc0Rt@0bYW$7JMpTmj";

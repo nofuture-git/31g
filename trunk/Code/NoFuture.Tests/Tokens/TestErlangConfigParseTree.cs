@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Antlr.ErlangConfig;
 
 namespace NoFuture.Tests.Tokens
 {
-    [TestClass]
+    [TestFixture]
     public class TestErlangConfigParseTree
     {
         public string ErlangTestConfigFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\rabbitmq.config";
 
-        [TestMethod]
+        [Test]
         public void TestInvokeParse()
         {
             var testResults = ErlangConfigParseTree.InvokeParse(ErlangTestConfigFile);
@@ -79,20 +79,20 @@ namespace NoFuture.Tests.Tokens
             Assert.IsNotNull(testResults.MgmtRabbit.Global.PolicyValues.FirstOrDefault(x => x.Equals(new Tuple<int,int>(60,5))));
             foreach (var f in testResults.MgmtRabbit.Global.PolicyValues)
             {
-                System.Diagnostics.Debug.WriteLine(f);
+                Console.WriteLine(f);
             }
 
             Assert.IsNotNull(testResults.MgmtRabbit.Basic);
             Assert.AreNotEqual(0, testResults.MgmtRabbit.Basic.PolicyValues.Length);
             foreach (var f in testResults.MgmtRabbit.Basic.PolicyValues)
             {
-                System.Diagnostics.Debug.WriteLine(f);
+                Console.WriteLine(f);
             }
             Assert.IsNotNull(testResults.MgmtRabbit.Detailed);
             Assert.AreNotEqual(0, testResults.MgmtRabbit.Detailed.PolicyValues.Length);
             foreach (var f in testResults.MgmtRabbit.Detailed.PolicyValues)
             {
-                System.Diagnostics.Debug.WriteLine(f);
+                Console.WriteLine(f);
             }
 
             Assert.IsNotNull(testResults.Tracing.Directory);

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Shared
 {
-    [TestClass]
+    [TestFixture]
     public class TestRegexCatalog
     {
         public Hashtable Regex2Values;
@@ -15,7 +15,7 @@ namespace NoFuture.Tests.Shared
 
         private const string _hardCodedIpV4 = "10.130.55.36";
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             
@@ -33,7 +33,7 @@ namespace NoFuture.Tests.Shared
            
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsRegexMatch()
         {
             string testResultOut;
@@ -55,7 +55,7 @@ namespace NoFuture.Tests.Shared
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestAreAnyRegexMatch()
         {
             var testResult = RegexCatalog.AreAnyRegexMatch("www.TheDomainName.com",
@@ -71,7 +71,7 @@ namespace NoFuture.Tests.Shared
             Assert.IsTrue(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppropriateAllRegex()
         {
             var testResultOut = _hardCodedIpV4;
@@ -79,7 +79,7 @@ namespace NoFuture.Tests.Shared
             Assert.AreEqual(Regex2Values[_hardCodedIpV4],testResultOut);
         }
 
-        [TestMethod]
+        [Test]
         public void TestToRegexExpression()
         {
             var testInput = "Dependent (18 yrs +)";
@@ -87,7 +87,7 @@ namespace NoFuture.Tests.Shared
 
             Assert.IsNotNull(testResult);
             System.Text.RegularExpressions.Regex.IsMatch("Dependents", testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
     }
 }

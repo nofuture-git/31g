@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Hbm;
 using NoFuture.Shared;
 
 namespace NoFuture.Tests.Hbm
 {
-    [TestClass]
+    [TestFixture]
     public class TestHbmFileContent
     {
         public string TestFilePath = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles\localhost\Whatever";
@@ -15,7 +15,7 @@ namespace NoFuture.Tests.Hbm
         public const string StoredProcXmlTestFile = "Dbo.MyStoredProc.hbm.xml";
 
 
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             var testResult =
@@ -40,7 +40,7 @@ namespace NoFuture.Tests.Hbm
             Assert.AreNotEqual(0, testResult.CompositeKeyProperties);
             Assert.AreNotEqual(0, testResult.ListProperties.Count);
             foreach (var k in testResult.IdAsSimpleProperties.Keys)
-                System.Diagnostics.Debug.WriteLine(string.Join(" : ", new[] { k, testResult.IdAsSimpleProperties[k] }));
+                Console.WriteLine(string.Join(" : ", new[] { k, testResult.IdAsSimpleProperties[k] }));
 
             testResult =
                 new NoFuture.Hbm.SortingContainers.HbmFileContent(Path.Combine(TestFilePath, StoredProcXmlTestFile));
@@ -55,23 +55,23 @@ namespace NoFuture.Tests.Hbm
             Assert.AreNotEqual(0, testResult.SpConstNames);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCreateXpath()
         {
             var testResult = NoFuture.Hbm.SortingContainers.HbmFileContent.CreateXpath("hibernate-mapping", "class",
                 "id");
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("//hbm:hibernate-mapping/hbm:class/hbm:id", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetColumnDataByPropertyName()
         {
             var testSubject = new NoFuture.Hbm.SortingContainers.HbmFileContent(Path.Combine(TestFilePath, CompositeIdXmlTestFile));
             foreach (var kl in testSubject.IdAsSimpleProperties.Keys)
             {
-                System.Diagnostics.Debug.WriteLine(kl);
+                Console.WriteLine(kl);
                 var testResult = testSubject.GetColumnDataByPropertyName(kl);
                 Assert.IsNotNull(testResult);
                 Assert.AreNotEqual(0, testResult.Length);
@@ -79,7 +79,7 @@ namespace NoFuture.Tests.Hbm
 
             foreach (var s in testSubject.SimpleProperties.Keys)
             {
-                System.Diagnostics.Debug.WriteLine(s);
+                Console.WriteLine(s);
                 var testResult = testSubject.GetColumnDataByPropertyName(s);
                 Assert.IsNotNull(testResult);
                 Assert.AreNotEqual(0, testResult.Length);

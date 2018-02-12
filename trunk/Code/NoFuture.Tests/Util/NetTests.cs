@@ -1,11 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class NetTests
     {
-        [TestMethod]
+        [Test]
         public void TestGetProxyAuthHeaderValue()
         {
             var username = "Aladdin";
@@ -19,14 +20,14 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetNetStatUri()
         {
             var testResult = NoFuture.Util.Net.GetNetStatIp("23.235.44.133:443 ");
             Assert.IsNotNull(testResult);
             Assert.IsFalse(testResult.Equals(System.Net.IPAddress.Loopback));
             Assert.AreEqual("23.235.44.133", testResult.ToString());
-            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+            Console.WriteLine(testResult.ToString());
 
 
             testResult = NoFuture.Util.Net.GetNetStatIp("[::]:0            ");
@@ -55,7 +56,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetNetStatServiceByPort()
         {
             var testResult = NoFuture.Util.Net.GetNetStatServiceByPort("tcp", "127.0.0.1:563");

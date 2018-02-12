@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Domain
 {
-    [TestClass]
+    [TestFixture]
     public class AspTappetTests
     {
-        [TestMethod]
+        [Test]
         public void TestGetFilePathSegment()
         {
             var teststring = "http://localhost:8080/MyAppdomain/Myresouces/MyFile.cshtml?q=6&value=Hello%20Uri";
@@ -29,14 +29,14 @@ namespace NoFuture.Tests.Domain
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGlobalWebConfigAspExtensions()
         {
             var testResult = NoFuture.Domain.AspTappet.GetGlobalWebConfigAspExtensions();
             Assert.IsNotNull(testResult);
             foreach (var ext in testResult)
             {
-                System.Diagnostics.Debug.WriteLine(ext);
+                Console.WriteLine(ext);
             }
         }
     }

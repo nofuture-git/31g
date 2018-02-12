@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Gen;
 using NoFuture.Util.Pos;
 
 namespace NoFuture.Tests.Gen
 {
-    [TestClass]
+    [TestFixture]
     public class EtcTests
     {
-        [TestMethod]
+        [Test]
         public void TestCgMemberCompare()
         {
             var testSubject = new CgMemberCompare();
@@ -69,16 +69,16 @@ namespace NoFuture.Tests.Gen
             foreach (var obj in myCgType.SortedMethods)
             {
                 var cg = obj as CgMember;
-                System.Diagnostics.Debug.WriteLine(string.Format("----{0}", cg.Name));
+                Console.WriteLine(string.Format("----{0}", cg.Name));
                 foreach (var arg in cg.Args)
                 {
-                    System.Diagnostics.Debug.WriteLine(arg.ToString());
+                    Console.WriteLine(arg.ToString());
                 }
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestCgMemberCompareMany()
         {
             var myCgType = new CgType() { Methods = new List<CgMember>() };
@@ -505,11 +505,11 @@ namespace NoFuture.Tests.Gen
             Assert.AreEqual(testResult.Count, myCgType.Methods.Count);
 
             foreach(var d in testResult)
-                System.Diagnostics.Debug.WriteLine(NoFuture.Gen.Settings.LangStyle.ToDecl(d));
+                Console.WriteLine(NoFuture.Gen.Settings.LangStyle.ToDecl(d));
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestCgMemberEquals()
         {
             var args1 = new List<CgArg>
@@ -548,7 +548,7 @@ namespace NoFuture.Tests.Gen
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestCodeBlockUseMyLocals()
         {
             var inputString = new String[]
@@ -609,7 +609,7 @@ namespace NoFuture.Tests.Gen
             Assert.AreEqual(0, testSubject.CodeBlockUsesMyArgs(inputString));
         }
 
-        [TestMethod]
+        [Test]
         public void TestContainsThisMember()
         {
             var args1 = new List<CgArg>
@@ -661,7 +661,7 @@ namespace NoFuture.Tests.Gen
             Assert.IsTrue(testSubject.ContainsThisMember(cgTwo));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetGraphVizClassDiagram()
         {
             var testAsm =
@@ -686,7 +686,7 @@ namespace NoFuture.Tests.Gen
             System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\GraphVizClassDiagram.gv", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsInterfaceImpl()
         {
             //has simple no-arg interface

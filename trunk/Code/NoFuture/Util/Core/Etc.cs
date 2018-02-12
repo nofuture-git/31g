@@ -110,18 +110,26 @@ namespace NoFuture.Util.Core
                 return 0D;
 
             var tr = Constants.TropicalYear;
-            //if (ts == tr)
-            //    return 1D;
 
             return ts.TotalMilliseconds / tr.TotalMilliseconds;
+        }
 
-            //var rslt = ts.Days / (double) tr.Days;
-            //rslt += ts.Hours / (double) tr.Hours / tr.Days;
-            //rslt += ts.Minutes / (double) tr.Minutes / tr.Hours / tr.Days;
-            //rslt += ts.Seconds / (double)tr.Seconds / tr.Minutes / tr.Hours / tr.Days;
-            //rslt += ts.Milliseconds / (double)tr.Milliseconds / tr.Seconds / tr.Minutes / tr.Hours / tr.Days;
-
-            //return rslt;
+        /// <summary>
+        /// Gets the three char month abbrevation for the <see cref="d"/>
+        /// similar to VB.NET DateAndTime.MonthName and R&apos;s month.abb constant
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static string MonthAbbrev(this DateTime d)
+        {
+            var monthAbbrevs = new[]
+            {
+                "Jan", "Feb", "Mar",
+                "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep",
+                "Oct", "Nov", "Dec"
+            };
+            return monthAbbrevs[d.Month-1];
         }
 
         /// <summary>

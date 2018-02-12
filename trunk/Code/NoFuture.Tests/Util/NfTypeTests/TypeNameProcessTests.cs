@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
@@ -7,10 +7,10 @@ using NoFuture.Util.NfType;
 
 namespace NoFuture.Tests.Util.NfTypeTests
 {
-    [TestClass]
+    [TestFixture]
     public class TypeNameProcessTests
     {
-        [TestMethod]
+        [Test]
         public void TestInvocation()
         {
             NfConfig.CustomTools.InvokeNfTypeName =
@@ -20,7 +20,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
                 testSubject.GetNfTypeName(
                     "log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL");
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult.AssemblyFullName);
+            Console.WriteLine(testResult.AssemblyFullName);
         }
     }
 }

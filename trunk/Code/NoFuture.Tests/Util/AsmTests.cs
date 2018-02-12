@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection.Emit;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class AsmTests
     {
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
             var testInputFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\MethodBodyIl02.bin";
@@ -24,10 +24,10 @@ namespace NoFuture.Tests.Util
             Assert.AreNotEqual(0, testResult.Length);
 
             foreach (var t in testResult)
-                System.Diagnostics.Debug.WriteLine(t.ToString("X4"));
+                Console.WriteLine(t.ToString("X4"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetMetadataToken()
         {
             NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
@@ -63,12 +63,12 @@ namespace NoFuture.Tests.Util
 
             foreach (var t in testResult.Items)
             {
-                System.Diagnostics.Debug.WriteLine("----");
-                System.Diagnostics.Debug.WriteLine(t.Id.ToString("X4"));
-                System.Diagnostics.Debug.WriteLine("----");
+                Console.WriteLine("----");
+                Console.WriteLine(t.Id.ToString("X4"));
+                Console.WriteLine("----");
                 foreach (var tt in t.Items)
                 {
-                    System.Diagnostics.Debug.WriteLine(tt.Id.ToString("X4"));
+                    Console.WriteLine(tt.Id.ToString("X4"));
                 }
             }
         }

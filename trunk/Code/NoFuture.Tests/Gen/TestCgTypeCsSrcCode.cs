@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Gen;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
@@ -10,11 +10,11 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Gen
 {
-    [TestClass]
+    [TestFixture]
     public class TestCgTypeSrcCode
     {
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             NfConfig.TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
@@ -22,7 +22,7 @@ namespace NoFuture.Tests.Gen
             NfConfig.CustomTools.Dia2Dump = TestAssembly.RootBin + @"\Dia2Dump.exe";
             NfConfig.CustomTools.InvokeGetCgType = TestAssembly.RootBin + @"\NoFuture.Gen.InvokeGetCgOfType.exe";
         }
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
@@ -32,7 +32,7 @@ namespace NoFuture.Tests.Gen
             var testResult = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFilterOutLinesNotInMethods()
         {
             var testInputAffrim = new List<Tuple<int, int>>
@@ -54,7 +54,7 @@ namespace NoFuture.Tests.Gen
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestMyRefactoredLines()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
@@ -73,13 +73,13 @@ namespace NoFuture.Tests.Gen
 
             foreach (var k in refactoredTestResults.Keys)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Replace lines {0} to {1} with the line '{2}'", k.Item1, k.Item2, refactoredTestResults[k]));
+                Console.WriteLine(string.Format("Replace lines {0} to {1} with the line '{2}'", k.Item1, k.Item2, refactoredTestResults[k]));
             }
 
-            System.Diagnostics.Debug.WriteLine(string.Join("\n",testCgMember.GetMyCgLines()));
+            Console.WriteLine(string.Join("\n",testCgMember.GetMyCgLines()));
         }
 
-        [TestMethod]
+        [Test]
         public void TestMoveMethods()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
@@ -112,7 +112,7 @@ namespace NoFuture.Tests.Gen
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestBlankOutMethods()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
@@ -139,7 +139,7 @@ namespace NoFuture.Tests.Gen
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestMyOriginalLines()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
@@ -159,7 +159,7 @@ namespace NoFuture.Tests.Gen
             Assert.IsNotNull(testResult);
 
             foreach(var ln in testResult)
-                System.Diagnostics.Debug.WriteLine(ln);
+                Console.WriteLine(ln);
         }
     }
 }

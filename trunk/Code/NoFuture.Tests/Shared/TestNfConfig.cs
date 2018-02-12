@@ -1,15 +1,16 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared.Core;
 using static NoFuture.Shared.Cfg.NfConfig;
 
 namespace NoFuture.Tests.Shared
 {
-    [TestClass]
+    [TestFixture]
     public class TestNfConfig
     {
-        [TestMethod]
+        [Test]
         public void TestGetIdValueHash()
         {
             var cfgXml = new XmlDocument();
@@ -19,10 +20,10 @@ namespace NoFuture.Tests.Shared
             Assert.IsNotNull(idValueHash);
             Assert.AreNotEqual(0, idValueHash.Count);
             foreach(var k in idValueHash.Keys)
-                System.Diagnostics.Debug.WriteLine("{" + $"\"{k}\", @\"{idValueHash[k]}\"" + "}," );
+                Console.WriteLine("{" + $"\"{k}\", @\"{idValueHash[k]}\"" + "}," );
         }
 
-        [TestMethod]
+        [Test]
         public void TestInit()
         {
             Init(TEST_FILE);
@@ -122,22 +123,22 @@ namespace NoFuture.Tests.Shared
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestExpandCfgValue()
         {
             var testResult = ExpandCfgValue(testInput, @"$(tempRootDir)\httpAppDomain");
             Assert.IsNotNull(testInput);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveIdValueHash()
         {
             ResolveIdValueHash(testInput);
             Assert.IsNotNull(testInput);
             Assert.AreNotEqual(0, testInput.Count);
             foreach (var k in testInput.Keys)
-                System.Diagnostics.Debug.WriteLine($"{k} = {testInput[k]}");
+                Console.WriteLine($"{k} = {testInput[k]}");
         }
 
         #region testInputs

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Timeline;
 using NoFuture.Util;
 
 namespace NoFuture.Tests.Timeline
 {
-    [TestClass]
+    [TestFixture]
     public class TestDrawings
     {
-        [TestMethod]
+        [Test]
         public void RulePrintTestHighToLow()
         {
             var testSubject = new NoFuture.Timeline.Rule() {EndValue = 750, StartValue = 950};
@@ -20,11 +20,11 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void RulePrintTestLowToHigh()
         {
             var testSubject = new NoFuture.Timeline.Rule() { EndValue = 25, StartValue = 90 };
@@ -33,11 +33,11 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             
         }
 
-        [TestMethod]
+        [Test]
         public void RulePrintTestDivideUneven()
         {
             var ruler = new Rule { StartValue = 950, EndValue = 775 };
@@ -46,10 +46,10 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void BlockDrawHeaderTest()
         {
             var testSubject = new NoFuture.Timeline.Block();
@@ -59,16 +59,16 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testSubject.Title = "Rome";
             testResult = testSubject.DrawHeader();
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void RuleGetIndexRuleTest()
         {
             var testSubject = new NoFuture.Timeline.Rule() { EndValue = 25, StartValue = 90 };
@@ -80,13 +80,13 @@ namespace NoFuture.Tests.Timeline
             var c = 0;
             foreach (var idx in testResult)
             {
-                System.Diagnostics.Debug.WriteLine("Index '{0}', Value '{1}'",c, idx);
+                Console.WriteLine("Index '{0}', Value '{1}'",c, idx);
                 c += 1;
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void CalcEntryIndexTest()
         {
             var testSubject = new NoFuture.Timeline.Rule() { EndValue = 750, StartValue = 950 };
@@ -96,10 +96,10 @@ namespace NoFuture.Tests.Timeline
             Assert.AreNotEqual(-1, testResult.Item1);
             Assert.AreNotEqual(-1, testResult.Item2);
 
-            System.Diagnostics.Debug.WriteLine("Start Index '{0}', End Index '{1}'", testResult.Item1, testResult.Item2);
+            Console.WriteLine("Start Index '{0}', End Index '{1}'", testResult.Item1, testResult.Item2);
         }
 
-        [TestMethod]
+        [Test]
         public void CalcEntryIndexTestOob()
         {
             var testRuler = new Rule() { EndValue = 575, StartValue = 775 };
@@ -111,18 +111,18 @@ namespace NoFuture.Tests.Timeline
                                 Ruler = testRuler,
                                 Location = PrintLocation.Left
                             };
-            System.Diagnostics.Debug.WriteLine(testEntry);
-            System.Diagnostics.Debug.WriteLine(testEntry.CalcHeight());
+            Console.WriteLine(testEntry);
+            Console.WriteLine(testEntry.CalcHeight());
             var testResult = testRuler.CalcEntryIndex(testEntry);
 
             Assert.AreNotEqual(-1, testResult.Item1);
             Assert.AreNotEqual(-1, testResult.Item2);
 
-            System.Diagnostics.Debug.WriteLine("Start Index '{0}', End Index '{1}'", testResult.Item1, testResult.Item2);
+            Console.WriteLine("Start Index '{0}', End Index '{1}'", testResult.Item1, testResult.Item2);
 
         }
 
-        [TestMethod]
+        [Test]
         public void InnerBlockDrawHeaderTest()
         {
             var testSubject = new NoFuture.Timeline.Block() {Title = "Judea"};
@@ -130,10 +130,10 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void EntryPrintTest()
         {
             var testSubject = new NoFuture.Timeline.Entry();
@@ -142,20 +142,20 @@ namespace NoFuture.Tests.Timeline
 
             var testResult = testSubject.ToString();
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.IsNotNull(testResult);
 
             testSubject.Location = PrintLocation.Left;
             testResult = testSubject.ToString();
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
 
             testSubject.Location = PrintLocation.Right;
             testResult = testSubject.ToString();
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
 
             testSubject.Text = "Late Republic";
@@ -163,25 +163,25 @@ namespace NoFuture.Tests.Timeline
             
             testResult = testSubject.ToString();
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.IsNotNull(testResult);
 
             testSubject.Location = PrintLocation.Left;
             testResult = testSubject.ToString();
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
 
             testSubject.Location = PrintLocation.Right;
             testResult = testSubject.ToString();
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void EntryCalcHeightTest()
         {
             var testD00 = new NoFuture.Timeline.Rule() { EndValue = 750, StartValue = 950 };
@@ -191,16 +191,16 @@ namespace NoFuture.Tests.Timeline
             testSubject.EndValue = 845;
 
             var testCtrl = testD00.CalcEntryIndex(testSubject);
-            System.Diagnostics.Debug.WriteLine("Start Index '{0}', End Index '{1}'", testCtrl.Item1, testCtrl.Item2);
+            Console.WriteLine("Start Index '{0}', End Index '{1}'", testCtrl.Item1, testCtrl.Item2);
 
             var testResult = testSubject.CalcHeight();
             Assert.AreNotEqual(0, testResult);
 
-            System.Diagnostics.Debug.WriteLine("Test result calc height '{0}'",testResult);
+            Console.WriteLine("Test result calc height '{0}'",testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void ToTextCanvasTest()
         {
             var testD00 = new NoFuture.Timeline.Rule() { EndValue = 750, StartValue = 950 };
@@ -222,11 +222,11 @@ namespace NoFuture.Tests.Timeline
                 var index = item.Index;
                 var hashMark = item.HashMarkValue;
 
-                System.Diagnostics.Debug.WriteLine("[{0}] - [{1,-18}] '{2}'",index, hashMark,text);
+                Console.WriteLine("[{0}] - [{1,-18}] '{2}'",index, hashMark,text);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void MergeToTextCanvasTest()
         {
             var testRuler = new NoFuture.Timeline.Rule() { EndValue = 25, StartValue = 90 };
@@ -250,10 +250,10 @@ namespace NoFuture.Tests.Timeline
             var testResult = testSubjectA.ToTextCanvas(testRuler).Merge(testSubjectB.ToTextCanvas(testRuler), testRuler);
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void BlockToStringTest()
         {
             var testRuler = new NoFuture.Timeline.Rule() { EndValue = 20, StartValue = 90 };
@@ -269,10 +269,10 @@ namespace NoFuture.Tests.Timeline
             var testResult = testSubjectB.ToString();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);            
+            Console.WriteLine(testResult);            
         }
 
-        [TestMethod]
+        [Test]
         public void MergeBlockToEntryTest()
         {
             var testRuler = new NoFuture.Timeline.Rule() { EndValue = 20, StartValue = 90 };
@@ -289,11 +289,11 @@ namespace NoFuture.Tests.Timeline
 
             var testResult = testSubjectA.ToTextCanvas(testRuler).Merge(testSubjectB.ToTextCanvas(testRuler), testRuler);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void ConcatBlockTest()
         {
             var rule = new Rule() { StartValue = 2100, EndValue = 1500 };
@@ -309,11 +309,11 @@ namespace NoFuture.Tests.Timeline
             testResult = testResult.Concat(larsa.ToTextCanvas(rule), rule);
             testResult = testResult.Concat(babylon.ToTextCanvas(rule), rule);
             
-            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+            Console.WriteLine(testResult.ToString());
 
         }
 
-        [TestMethod]
+        [Test]
         public void PrintEntriesToCanvasTest()
         {
             var testRuler = new Rule() { EndValue = 575, StartValue = 775 };
@@ -353,10 +353,10 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void PrintEntriesToCanvasWithInnerBlockTest()
         {
             var rule = new Rule() { StartValue = 2100, EndValue = 1500 };
@@ -390,19 +390,19 @@ namespace NoFuture.Tests.Timeline
             if (mesopotamia._innerBlocks.Count > 0)
             {
                 myInnerBlockCanvas = mesopotamia._innerBlocks[0].PrintEntriesOnCanvas();
-                System.Diagnostics.Debug.WriteLine(myInnerBlockCanvas);
+                Console.WriteLine(myInnerBlockCanvas);
                 for (var i = 1; i < mesopotamia._innerBlocks.Count; i++)
                 {
-                    System.Diagnostics.Debug.WriteLine(myInnerBlockCanvas);
+                    Console.WriteLine(myInnerBlockCanvas);
                     myInnerBlockCanvas = myInnerBlockCanvas.Concat(mesopotamia._innerBlocks[i].PrintEntriesOnCanvas(), rule);
                 }
             }
-            System.Diagnostics.Debug.WriteLine(myInnerBlockCanvas);
+            Console.WriteLine(myInnerBlockCanvas);
 
 
         }
 
-        [TestMethod]
+        [Test]
         public void PrintPlateTest()
         {
             var testRuler = new Rule() { EndValue = 575, StartValue = 775 };
@@ -475,10 +475,10 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void PrintPlateWithInnerPlatesTest()
         {
             var ruler = new Rule {StartValue = 950, EndValue = 775};
@@ -516,11 +516,11 @@ namespace NoFuture.Tests.Timeline
 
             var testResult = testSubject.ToString();
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void GetRequiredWidthTest()
         {
             var ruler = new Rule { StartValue = 950, EndValue = 775 };
@@ -532,12 +532,12 @@ namespace NoFuture.Tests.Timeline
 
             Assert.AreNotEqual(0, testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
 
         }
 
-        [TestMethod]
+        [Test]
         public void PlateConcatAllBlocksTest()
         {
             var ruler = new Rule { StartValue = 950, EndValue = 775 };
@@ -585,13 +585,13 @@ namespace NoFuture.Tests.Timeline
                 foreach (var span in item.Ranges)
                 {
                     var subText = itemText.Substring(span.StartIndex, span.Length);
-                    System.Diagnostics.Debug.WriteLine("{0} {1} {2} {3} {4} '{5}'",item.Index, item.HashMarkValue,span.Id,span.StartIndex,span.Length, subText);
+                    Console.WriteLine("{0} {1} {2} {3} {4} '{5}'",item.Index, item.HashMarkValue,span.Id,span.StartIndex,span.Length, subText);
                 }
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void PlateComposeArrowRight()
         {
             var testRangeBetwixt = 16 + 28 + 18;
@@ -604,11 +604,11 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void PlateComposeArrowLeft()
         {
             var testRangeBetwixt = 16 + 28 + 18;
@@ -621,10 +621,10 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void PlateGetRangeLenBetwixt()
         {
 
@@ -656,13 +656,13 @@ namespace NoFuture.Tests.Timeline
                 testBlockRightId,
                 new List<TextRange>() {testRange00, testRange01, testRange02, testRange03, testRange04});
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.AreNotEqual(0,testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void PlateGetLeftAPriorLen()
         {
 
@@ -693,10 +693,10 @@ namespace NoFuture.Tests.Timeline
 
             Assert.AreNotEqual(0,testResult);
             Assert.AreEqual(testRange00.Length+testRange01.Length, testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void PlateDetermineArrowDirectionTest()
         {
 
@@ -731,7 +731,7 @@ namespace NoFuture.Tests.Timeline
 
         }
 
-        [TestMethod]
+        [Test]
         public void PlateComposeArrowTest()
         {
             var ruler = new Rule { StartValue = 950, EndValue = 775 };
@@ -775,10 +775,10 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void PlateToStringWithNotesTest()
         {
             var ruler = new Rule() {StartValue = 525, EndValue = 310};
@@ -805,10 +805,10 @@ namespace NoFuture.Tests.Timeline
 
             Assert.IsNotNull(testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void PlateSplitBlockTest()
         {
             var rule = new Rule() {StartValue = 2050, EndValue = 1500};
@@ -835,10 +835,10 @@ namespace NoFuture.Tests.Timeline
 
             var testResult = plate.ToString();
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TextAfterBlockEnd()
         {
             var rule = new Rule() { StartValue = 780, EndValue = 500, RuleLineSpacing = 7 };
@@ -849,10 +849,10 @@ namespace NoFuture.Tests.Timeline
 
             plate.AddBlock(judah);
 
-            System.Diagnostics.Debug.WriteLine(plate.ToString());
+            Console.WriteLine(plate.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateBCE3000to2000()
         {
             var testSubject = new Occidental();
@@ -861,7 +861,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateBCE2000to1500()
         {
             var testSubject = new Occidental();
@@ -871,7 +871,7 @@ namespace NoFuture.Tests.Timeline
 
 
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateBCE1600to1200()
         {
             var testSubject = new Occidental();
@@ -880,7 +880,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateBCE1250to900()
         {
             var testSubject = new Occidental();
@@ -889,7 +889,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateBCE922to750()
         {
             var testSubject = new Occidental();
@@ -898,7 +898,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateBCE780to500()
         {
             var testSubject = new Occidental();
@@ -907,7 +907,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateBCE500to325()
         {
             var testSubject = new Occidental();
@@ -916,7 +916,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateBCE325to27()
         {
             var testSubject = new Occidental();
@@ -925,7 +925,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE30to105()
         {
             var testSubject = new Occidental();
@@ -934,7 +934,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
 
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE105to325()
         {
             var testSubject = new Occidental();
@@ -942,7 +942,7 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE325to550()
         {
             var testSubject = new Occidental();
@@ -950,7 +950,7 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE550to825()
         {
             var testSubject = new Occidental();
@@ -959,7 +959,7 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE825to1075()
         {
             var testSubject = new Occidental();
@@ -967,7 +967,7 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE1075to1350()
         {
             var testSubject = new Occidental();
@@ -975,7 +975,7 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE1350to1500()
         {
             var testSubject = new Occidental();
@@ -984,7 +984,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
 
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE1500to1700()
         {
             var testSubject = new Occidental();
@@ -993,7 +993,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
 
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE1700to1788()
         {
             var testSubject = new Occidental();
@@ -1002,7 +1002,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
 
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE1788to1865()
         {
             var testSubject = new Occidental();
@@ -1011,7 +1011,7 @@ namespace NoFuture.Tests.Timeline
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
 
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE1865to1914()
         {
             var testSubject = new Occidental();
@@ -1019,7 +1019,7 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE1914to1945()
         {
             var testSubject = new Occidental();
@@ -1027,7 +1027,7 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
-        [TestMethod]
+        [Test]
         public void TestOccidentalPlateCE1945to1992()
         {
             var testSubject = new Occidental();
@@ -1035,7 +1035,7 @@ namespace NoFuture.Tests.Timeline
 
             testPlate.ToPdf(TestAssembly.UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
         }
-        [TestMethod]
+        [Test]
         public void TestFastPlate()
         {
             var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", null, "Resource Owner", "User-Agent", "Client", "Auth Server");
@@ -1056,10 +1056,10 @@ namespace NoFuture.Tests.Timeline
             testSubject.Blk("Auth Server").Txt("More Dots").Blk("User-Agent");
             testSubject.Blk("User-Agent").Txt("Stop Dots").Blk("Client");
 
-            System.Diagnostics.Debug.WriteLine(testSubject.ToString());
+            Console.WriteLine(testSubject.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestFastPlateHashTableExample()
         {
             var myHashTable = new System.Collections.Hashtable()
@@ -1087,10 +1087,10 @@ namespace NoFuture.Tests.Timeline
                 .Blk(3.3)
                 .Blk(5.1)
                 ;
-            System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
+            Console.WriteLine(myFPlate.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestFastPlateJsonExample()
         {
             var myExampleJson = @"
@@ -1121,7 +1121,7 @@ namespace NoFuture.Tests.Timeline
             var idx2Nm = myFPlate.GetIndex2Name();
             foreach (var key in idx2Nm.Keys)
             {
-                System.Diagnostics.Debug.WriteLine($"{key} {idx2Nm[key]}");
+                Console.WriteLine($"{key} {idx2Nm[key]}");
             }
 
             myFPlate.Blk(2.0)
@@ -1143,10 +1143,10 @@ namespace NoFuture.Tests.Timeline
 
             var myBlk = myFPlate.GetBlockByName("DataLayer");
             Assert.IsNotNull(myBlk);
-            System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
+            Console.WriteLine(myFPlate.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestFastPlateExample()
         {
             var myFPlate = new FastPlate("Band Practice", null, "Left side", "Middle side", "Right side");
@@ -1155,11 +1155,11 @@ namespace NoFuture.Tests.Timeline
             myFPlate.Blk("Left side").Txt("yeah - bring it on").Blk("Right side").Blk(null);
             myFPlate.Blk("Middle side").Txt("no people,").Blk("Left side").Blk(null);
             myFPlate.Blk("Middle side").Txt("lets bring it off.").Blk("Right side");
-            System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
+            Console.WriteLine(myFPlate.ToString());
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestFastPlateWithListValues()
         {
             var testSubject = new FastPlate("OAuth 2.0 Authorization Code Flow", null, "Resource Owner", "User-Agent", "Client", "Auth Server");
@@ -1173,11 +1173,11 @@ namespace NoFuture.Tests.Timeline
             testSubject.Blk("User-Agent").Txt("Post Auth code to Redirect").Blk("Client");
             testSubject.Blk("Client").Txt("Send Auth Code & Redirect").Blk("Auth Server");
             testSubject.Blk("Auth Server").Txt("Return Access Token").Blk("Client");
-            System.Diagnostics.Debug.WriteLine(testSubject.ToString());
+            Console.WriteLine(testSubject.ToString());
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestPrintYearsRange()
         {
             //  ((789,797),(804,816)) as "789-97\804-16"
@@ -1240,7 +1240,7 @@ namespace NoFuture.Tests.Timeline
             Assert.AreEqual("842-806",testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestParseYearsRange()
         {
             var testSubject = new Rule { StartValue = 700, EndValue = 850 };
@@ -1300,7 +1300,7 @@ namespace NoFuture.Tests.Timeline
             Assert.AreEqual(1610, testList[0].Item2);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPrintStartEndValue()
         {
             var testRule = new Rule { StartValue = 510, EndValue = 320 };
@@ -1320,7 +1320,7 @@ namespace NoFuture.Tests.Timeline
             Assert.AreEqual("1944", testResult);
 
         }
-        [TestMethod]
+        [Test]
         public void TestTerritoryEntry()
         {
             var testSubject = new TerritoryEntry("MO") {StartValue = 1821};
@@ -1333,7 +1333,7 @@ namespace NoFuture.Tests.Timeline
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestLeaderEntry()
         {
             var testSubject = new LeaderEntry("Washington",new int?[,] { { 1789, 1797 } })
@@ -1378,7 +1378,7 @@ namespace NoFuture.Tests.Timeline
             Assert.AreEqual("[Josiah 640-609]",testSubject.Text);
         }
 
-        [TestMethod]
+        [Test]
         public void TestScienceAdvEntry()
         {
             var testSubject = new ScienceAdvEntry("Ohm's law", "Ohm")
@@ -1397,7 +1397,7 @@ namespace NoFuture.Tests.Timeline
             Assert.AreEqual("Faraday[law of induction](1831)", testSubject.Text);
         }
 
-        [TestMethod]
+        [Test]
         public void TestLiteraryWorkEntry()
         {
             var testSubject = new LiteraryWorkEntry("Origin of Species", "Darwin")
@@ -1419,7 +1419,7 @@ namespace NoFuture.Tests.Timeline
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestPhilosopherEntry()
         {
             var testSubject = new PhilosopherEntry("Wittgenstein", 1889, 1951);
@@ -1438,7 +1438,7 @@ namespace NoFuture.Tests.Timeline
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestProphetEntry()
         {
             var testSubject = new ProphetEntry("Iggy");
@@ -1449,7 +1449,7 @@ namespace NoFuture.Tests.Timeline
             Assert.AreEqual("Haggai, Zechariah", testSubject.Name);
         }
 
-        [TestMethod]
+        [Test]
         public void TestHeresyEntry()
         {
             var testSubject = new HeresyEntry("Disco", "not cool");
@@ -1463,7 +1463,7 @@ namespace NoFuture.Tests.Timeline
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestExplorerEntry()
         {
             var testSubject = new ExplorerEntry("H.Hudson", "Hudson Riv.&Bay");

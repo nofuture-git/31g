@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Com;
 
 namespace NoFuture.Rand.Exo.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class CopulaTests
     {
-        [TestMethod]
+        [Test]
         public void TestTryParseFfiecInstitutionProfileAspxHtml()
         {
             var testContent = System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\Rand\ffiecHtml.html");
@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Exo.Tests
             Bank firmOut = new Bank();
             var testResult = Copula.TryParseFfiecInstitutionProfileAspxHtml(testContent, new Uri(UsGov.Links.Ffiec.SEARCH_URL_BASE),
                 ref firmOut);
-            System.Diagnostics.Debug.WriteLine(firmOut.RoutingNumber);
+            System.Console.WriteLine(firmOut.RoutingNumber);
             Assert.IsTrue(testResult);
 
         }

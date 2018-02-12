@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Hbm.DbQryContainers.MetadataDump;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
@@ -7,10 +7,10 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Hbm.TestDbQryContainers
 {
-    [TestClass]
+    [TestFixture]
     public class TestAllContainers
     {
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             NfConfig.TempDirectories.Hbm = @"C:\Projects\31g\trunk\temp\code\hbm";
@@ -18,7 +18,7 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
             NfConfig.SqlCatalog = "Whatever";
         }
 
-        [TestMethod]
+        [Test]
         public void TestColumnNames()
         {
             var testSubject = new HbmAllKeys();
@@ -26,10 +26,10 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult);
             foreach(var n in testResult)
-                System.Diagnostics.Debug.WriteLine(n);
+                Console.WriteLine(n);
         }
 
-        [TestMethod]
+        [Test]
         public void TestHbmAllColumns()
         {
             var testSubject = new HbmAllColumns();
@@ -39,7 +39,7 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
             Assert.IsNotNull(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestHbmAllIndex()
         {
             var testSubject = new HbmAllIndex();
@@ -50,7 +50,7 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
             System.Diagnostics.Debug.Write(testResult.Length);
         }
 
-        [TestMethod]
+        [Test]
         public void TestHbmAllKeys()
         {
             var testSubject = new HbmAllKeys();
@@ -58,7 +58,7 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
             Assert.IsNotNull(testSubject.OutputPath);
         }
 
-        [TestMethod]
+        [Test]
         public void TestHbmAutoIncrement()
         {
             var testSubject = new HbmAutoIncrement();
@@ -66,7 +66,7 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
             Assert.IsNotNull(testSubject.OutputPath);
         }
 
-        [TestMethod]
+        [Test]
         public void TestHbmConstraints()
         {
             var testSubject = new HbmContraints();
@@ -74,7 +74,7 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
             Assert.IsNotNull(testSubject.OutputPath);
         }
 
-        [TestMethod]
+        [Test]
         public void TestHbmFlatData()
         {
             var testSubject = new HbmFlatData();
@@ -82,7 +82,7 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
             Assert.IsNotNull(testSubject.OutputPath);
         }
 
-        [TestMethod]
+        [Test]
         public void TestHbmPrimaryKeys()
         {
             var testSubject = new HbmPrimaryKeys();

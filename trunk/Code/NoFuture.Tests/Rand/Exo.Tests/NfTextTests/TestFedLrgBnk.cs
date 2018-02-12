@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using NoFuture.Rand.Exo.NfText;
 
 namespace NoFuture.Rand.Exo.Tests.NfTextTests
 {
-    [TestClass]
+    [TestFixture]
     public class TestFedLrgBnk
     {
-        [TestMethod]
+        [Test]
         public void TestSplitLrgBnkListLine()
         {
             var testInput = @" PROSPERITY BK                  55      664756     EL CAMPO, TX           SNM    21,674   21,674 100   82     265   0   N    0";
@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Exo.Tests.NfTextTests
             Assert.AreEqual("EL CAMPO, TX", testOutput[3]);
             foreach (var l in testOutput)
             {
-                System.Diagnostics.Debug.WriteLine(l);
+                System.Console.WriteLine(l);
             }
         }
     }

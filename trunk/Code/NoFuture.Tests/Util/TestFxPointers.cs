@@ -1,31 +1,37 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class TestFxPointers
     {
         private const string TEMPDIR = @"C:\TEMP";
-        [TestMethod]
-        [ExpectedException(typeof(ItsDeadJim))]
+        [Test]
         public void TestResolveAssemblyEventHandler_BadAsmName()
         {
             var arg = new ResolveEventArgs("this-is-not an assembly name",
                 AppDomain.CurrentDomain.GetAssemblies().First());
-            var testResult = NoFuture.Util.FxPointers.ResolveReflectionOnlyAssembly(new object(), arg);
+            try
+            {
+                var testResult = NoFuture.Util.FxPointers.ResolveReflectionOnlyAssembly(new object(), arg);
+            }
+            catch (ItsDeadJim)
+            {
+                Assert.True(true);
+            }
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveAssembly_CoreAsm()
         {
             var asmArg = AppDomain.CurrentDomain.GetAssemblies().First();
-            System.Diagnostics.Debug.WriteLine(asmArg.Location);
+            Console.WriteLine(asmArg.Location);
             var arg =
                 new ResolveEventArgs(
                     "System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
@@ -34,7 +40,7 @@ namespace NoFuture.Tests.Util
             Assert.IsNotNull(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveAssembly_InAssemblySearchPath()
         {
             MakeSomeAssemblies();

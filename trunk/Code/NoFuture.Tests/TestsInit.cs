@@ -1,9 +1,9 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Tests
 {
-    [TestClass]
+    [SetUpFixture]
     public sealed class TestAssembly
     {
         private static string _testRoot;
@@ -11,8 +11,8 @@ namespace NoFuture.Tests
         public static string UnitTestsRoot => _testRoot;
         public static string RootBin => _rootBin;
 
-        [AssemblyInitialize]
-        public static void AssemblyInitialize(TestContext context)
+        [OneTimeSetUp]
+        public static void AssemblyInitialize()
         {
             _testRoot = @"C:\Projects\31g\trunk\Code\NoFuture.Tests";
             if(!System.IO.Directory.Exists(_testRoot))
@@ -23,25 +23,6 @@ namespace NoFuture.Tests
                 throw new InvalidOperationException("The root directory, in which all NoFuture binaries are " +
                                                     "built to, was not found.");
 
-        }
-
-        [AssemblyCleanup]
-        public static void AssemblyCleanup()
-        {
-        }
-        int SumNums(int from, int to)
-        {
-            return
-             (from > to)
-               ? 0
-               : from + SumNums(from + 1, to);
-        }
-
-        [TestMethod]
-        public void TestSumNums()
-        {
-            var testResult = SumNums(5, 10);
-            System.Diagnostics.Debug.WriteLine(testResult);
         }
     }
 }

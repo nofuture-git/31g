@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Copula.cs" />
     <Compile Include="DynamicDataFactory.cs" />
+    <Compile Include="NfCsv\GoogleFinanceStockPrice.cs" />
     <Compile Include="UsGov\Bea\BeaDataset.cs" />
     <Compile Include="UsGov\Bea\Globals.cs" />
     <Compile Include="UsGov\Bea\IBeaData.cs" />
@@ -128,6 +129,10 @@
     <ProjectReference Include="..\..\Tokens\Tokens.csproj">
       <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
       <Name>Tokens</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Util\Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Com\Rand.Com.csproj">
       <Project>{47a161dd-d5d4-4e02-8161-9e311e50664e}</Project>

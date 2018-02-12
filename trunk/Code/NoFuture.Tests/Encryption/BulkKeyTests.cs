@@ -1,27 +1,27 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 
 namespace NoFuture.Tests.Encryption
 {
-    [TestClass]
+    [TestFixture]
     public class BulkKeyTests
     {
         public const string BK = "ABCDE1234";
 
-        [TestMethod]
+        [Test]
         public void TestToCipherText()
         {
             var testInput = "plain text";
             var testResult = NoFuture.Encryption.Sjcl.BulkCipherKey.ToEncryptedText(testInput, BK);
-            Assert.IsInstanceOfType(testResult, typeof(CipherText));
+            Assert.IsInstanceOf(typeof(CipherText),testResult);
         }
-        [TestMethod]
+        [Test]
         public void TestTogglePlainText()
         {
             var testInput = "plain text";
             var cipherText = NoFuture.Encryption.Sjcl.BulkCipherKey.ToEncryptedText(testInput, BK);
-            Assert.IsInstanceOfType(cipherText, typeof(CipherText));
+            Assert.IsInstanceOf(typeof(CipherText), cipherText);
             var testResult = NoFuture.Encryption.Sjcl.BulkCipherKey.ToPlainText(cipherText, BK);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(String.Empty, testResult);

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Host.Encryption
 {
 
-    [TestClass]
+    [TestFixture]
     public class ProgramTests
     {
         private Process _testProgram;
@@ -25,8 +25,7 @@ namespace NoFuture.Tests.Host.Encryption
 
         public const string TEST_INPUT = "plain text";
 
-        [TestMethod]
-        [Ignore]
+        [Test]
         public void TestStartProgram()
         {
             StartTestProgram();
@@ -35,7 +34,7 @@ namespace NoFuture.Tests.Host.Encryption
             Assert.IsFalse(_testProgram.HasExited);
         }
 
-        [TestMethod]
+        [Test]
         public void TestBkToCipherTextOnSocket()
         {
             _bkToCipherText = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -65,7 +64,7 @@ namespace NoFuture.Tests.Host.Encryption
             Console.WriteLine(cipherText.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestBkToPlainTextOnSocket()
         {
             var cipherText =
@@ -97,7 +96,7 @@ namespace NoFuture.Tests.Host.Encryption
             Console.WriteLine(plaintext);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSha256HashOnSocket()
         {
             _sha256Hash = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

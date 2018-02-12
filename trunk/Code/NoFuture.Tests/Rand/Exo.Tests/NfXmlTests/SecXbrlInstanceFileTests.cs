@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Exo.NfXml;
 
 namespace NoFuture.Rand.Exo.Tests.NfXmlTests
 {
-    [TestClass]
+    [TestFixture]
     public class SecXbrlInstanceFileTests
     {
-        [TestMethod]
+        [Test]
         public void TestParseContent()
         {
             var testXmlFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl.xml";
@@ -89,7 +89,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetXmlAndNsMgr()
         {
             var content =
@@ -118,7 +118,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
                 testResult.Item2.LookupNamespace(SecXbrlInstanceFile.XmlNs.ROOTNS));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryParseDollar()
         {
             var xml = new System.Xml.XmlDocument();
@@ -135,7 +135,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
             Assert.AreEqual(1668929M, testResultOut);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryGetYear()
         {
             var content =
@@ -154,7 +154,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
             Assert.AreEqual(2015, testResultOut);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetNodeDollarYear()
         {
             var content =
@@ -165,7 +165,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
             Assert.IsTrue(testResult.Any());
 
             foreach(var tr in testResult)
-                System.Diagnostics.Debug.WriteLine(tr);
+                System.Console.WriteLine(tr);
 
             content =
                 System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\ExampleSecXbrl2.xml");
@@ -175,7 +175,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
             Assert.IsTrue(testResult.Any());
 
             foreach (var tr in testResult)
-                System.Diagnostics.Debug.WriteLine(tr);
+                System.Console.WriteLine(tr);
 
         }
     }

@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Hbm;
 
 namespace NoFuture.Tests.Hbm
 {
-    [TestClass]
+    [TestFixture]
     public class TestInvokeStoredProcManager
     {
-        [TestMethod]
+        [Test]
         public void TestInvokeStoredProcExeMessage()
         {
             var testSubject = new NoFuture.Hbm.InvokeStoredProcExeMessage()

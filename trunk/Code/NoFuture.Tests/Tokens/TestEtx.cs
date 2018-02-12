@@ -1,12 +1,12 @@
 ﻿using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Tokens
 {
-    [TestClass]
+    [TestFixture]
     public class TestEtx
     {
-        [TestMethod]
+        [Test]
         public void TestGetHtmlAsXml()
         {
             var testContent00 = TestAssembly.UnitTestsRoot + @"\Rand\BloombergSearchRslt_multiple.html";

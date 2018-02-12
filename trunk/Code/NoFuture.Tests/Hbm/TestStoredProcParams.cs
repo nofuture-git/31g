@@ -2,17 +2,17 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Hbm
 {
-    [TestClass]
+    [TestFixture]
     public class TestStoredProcParams
     {
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             NfConfig.TempDirectories.Hbm = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles";
@@ -20,7 +20,7 @@ namespace NoFuture.Tests.Hbm
             NfConfig.SqlCatalog = "Whatever";
         }
 
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
             var testItems = NoFuture.Hbm.Sorting.DbContainers.StoredProcsAndParams.Data;
@@ -30,21 +30,21 @@ namespace NoFuture.Tests.Hbm
             foreach (var item in testItems)
             {
                 var asDbType = item.GetSqlDataType();
-                System.Diagnostics.Debug.WriteLine(asDbType);
+                Console.WriteLine(asDbType);
             }
                 
         }
 
-        [TestMethod]
+        [Test]
         public void TestQueryKeysNames()
         {
             var testSubject = new NoFuture.Hbm.DbQryContainers.MetadataDump.HbmStoredProcsAndParams();
             Assert.IsNotNull(testSubject.QueryKeysNames);
             foreach(var qryKey in testSubject.QueryKeysNames)
-                System.Diagnostics.Debug.WriteLine(qryKey);
+                Console.WriteLine(qryKey);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAsTsql()
         {
             var testItems = NoFuture.Hbm.Sorting.AllStoredProx;
@@ -86,7 +86,7 @@ namespace NoFuture.Tests.Hbm
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestDataReaderMultidataset()
         {
             var ti = NoFuture.Hbm.Sorting.AllStoredProx["dbo.MyStoredProc"];
@@ -108,7 +108,7 @@ namespace NoFuture.Tests.Hbm
                             while (dataReader.Read())
                             {
                                 var fldCount = dataReader.FieldCount;
-                                System.Diagnostics.Debug.WriteLine(fldCount);
+                                Console.WriteLine(fldCount);
                             }
 
                         } while (dataReader.NextResult());

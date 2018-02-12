@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NoFuture.Util.Gia;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Util.Gia
 {
-    [TestClass]
+    [TestFixture]
     public class AsmDiagramTests
     {
         private Assembly GetTestAsm()
@@ -28,7 +27,7 @@ namespace NoFuture.Tests.Util.Gia
             return testAsm;
         }
 
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
 
@@ -43,7 +42,7 @@ namespace NoFuture.Tests.Util.Gia
             System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\AsmDiagramTest.gv", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetDupIndices()
         {
             var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(GetTestAsm());
@@ -58,7 +57,7 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsTrue(f.AreCounterparts(t));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetAdjacencyMatrix()
         {
             var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(GetTestAsm());
@@ -77,18 +76,18 @@ namespace NoFuture.Tests.Util.Gia
                 {
                     ln.Add(testResult.Item2[i,j]);
                 }
-                System.Diagnostics.Debug.WriteLine(string.Join(" ", ln));
+                Console.WriteLine(string.Join(" ", ln));
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetAdjacencyMatrixJson()
         {
             var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(GetTestAsm());
             var testResult = testSubject.GetAdjacencyMatrixJson();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
     }

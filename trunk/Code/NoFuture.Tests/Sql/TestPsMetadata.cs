@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Sql
 {
-    [TestClass]
+    [TestFixture]
     public class TestPsMetadata
     {
-        [TestMethod]
+        [Test]
         public void TestLongestColumnNameLen()
         {
             const string Longest = "mmmmmmmmmmmmmmmmmmmmmmmmm";

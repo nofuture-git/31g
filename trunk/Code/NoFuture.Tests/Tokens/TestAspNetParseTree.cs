@@ -1,14 +1,14 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Antlr.CSharp4;
 using NoFuture.Antlr.HTML;
 
 namespace NoFuture.Tests.Tokens
 {
-    [TestClass]
+    [TestFixture]
     public class TestAspNetParseTree
     {
-        [TestMethod]
+        [Test]
         public void TestPoc()
         {
             var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AccountEdit.aspx";
@@ -23,18 +23,18 @@ namespace NoFuture.Tests.Tokens
             foreach (var key in testResult.Tags2Attrs.Keys)
             {
                 //var attrs = string.Join("|", testResult.DistinctTags[key]);
-                System.Diagnostics.Debug.WriteLine(key);
+                Console.WriteLine(key);
             }
 
             Assert.IsNotNull(testResult.ScriptBodies);
             Assert.AreNotEqual(0,testResult.ScriptBodies.Count);
             foreach (var script in testResult.ScriptBodies)
             {
-                System.Diagnostics.Debug.WriteLine(script);
+                Console.WriteLine(script);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestCsharpParse()
         {
             var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\SimpleExample.cs";
@@ -49,7 +49,7 @@ namespace NoFuture.Tests.Tokens
 
             foreach (var c in testResult.CatchBlocks)
             {
-                System.Diagnostics.Debug.WriteLine(c);
+                Console.WriteLine(c);
             }
         }
     }

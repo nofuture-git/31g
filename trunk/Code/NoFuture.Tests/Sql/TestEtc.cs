@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Sql
 {
-    [TestClass]
+    [TestFixture]
     public class TestEtc
     {
         public const string sqlQry = "SELECT * FROM [AdventureWorks2012].[Production].[Location]";
@@ -15,7 +15,7 @@ namespace NoFuture.Tests.Sql
 
         public const string insertQry =
             "INSERT INTO [Person].[Person]([PersonType],[Title],[FirstName],[MiddleName],[LastName]) VALUES ('EM',NULL,'Ken','J','Sánchez')";
-        [TestMethod]
+        [Test]
         public void TestMakeSqlCommand()
         {
             var expectedResult =
@@ -25,7 +25,7 @@ namespace NoFuture.Tests.Sql
             Assert.AreEqual(expectedResult, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMakeSqlCommandHeaderOff()
         {
             NfConfig.Switches.SqlCmdHeadersOff = true;
@@ -37,7 +37,7 @@ namespace NoFuture.Tests.Sql
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestMakeSqlCommandDdlQry()
         {
             NfConfig.Switches.SqlCmdHeadersOff = false;
@@ -50,7 +50,7 @@ namespace NoFuture.Tests.Sql
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestMakeInputFilesSqlCmd()
         {
             System.IO.File.AppendAllText(sqlQryFile, string.Empty);
@@ -63,12 +63,12 @@ namespace NoFuture.Tests.Sql
             var testResult = NoFuture.Sql.Mssql.Etc.MakeInputFilesSqlCmd(sqlQryFile, "localhost", "AdventureWorks2012");
 
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.AreEqual(@"sqlcmd.exe -S localhost -d AdventureWorks2012 -i " + TestAssembly.UnitTestsRoot + @"\Sql\TestMakeInputfileSqlCmd.sql", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPrintCurrentDbSettings()
         {
             NoFuture.Sql.Mssql.Etc.AddSqlServer("YEOLDE2", new[] { "ABDev", "OxomOne", "OxomOneQC", "TramnOne" });
@@ -90,11 +90,11 @@ namespace NoFuture.Tests.Sql
             var testResult = NoFuture.Sql.Mssql.Etc.PrintCurrentDbSettings();
 
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestSetMssqlSettings()
         {
             NoFuture.Sql.Mssql.Etc.AddSqlServer("YEOLDE2", new[] { "ABDev", "OxomOne", "OxomOneQC", "TramnOne" });
@@ -118,7 +118,7 @@ namespace NoFuture.Tests.Sql
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.AreEqual(NfConfig.SqlServer, "ZXHUH0416SQL2\\SQLPROD2");
             Assert.AreEqual(NfConfig.SqlCatalog, "HappeninNow");

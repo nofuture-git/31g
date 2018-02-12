@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Util.Gia
 {
-    [TestClass]
+    [TestFixture]
     public class FlattenTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestFlattenTypeMembers()
         {
             var testAsm =
@@ -43,10 +43,10 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsNotNull(printLines);
             System.IO.File.WriteAllLines(TestAssembly.UnitTestsRoot + @"\FlattenedExample.txt", printLines);
             foreach (var p in printLines)
-                System.Diagnostics.Debug.WriteLine(p);
+                Console.WriteLine(p);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlattenTypeMembersWithLimit()
         {
             var limitOn = "System.String";
@@ -81,10 +81,10 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsNotNull(printLines);
             System.IO.File.WriteAllLines(TestAssembly.UnitTestsRoot + @"\FlattenedExample.txt", printLines);
             foreach(var p in printLines)
-                System.Diagnostics.Debug.WriteLine(p);
+                Console.WriteLine(p);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlattenTypeGetGraphVizMrecords()
         {
             var testAsm =
@@ -118,10 +118,10 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
             foreach(var fj in testResult)
-                System.Diagnostics.Debug.WriteLine(fj.ToGraphVizString());
+                Console.WriteLine(fj.ToGraphVizString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlattenTypeGetGraphVizEdges()
         {
             var testAsm =
@@ -153,11 +153,11 @@ namespace NoFuture.Tests.Util.Gia
             var testResult = flattenedType.GetGraphVizEdges;
             Assert.IsNotNull(testResult);
             foreach (var fj in testResult)
-                System.Diagnostics.Debug.WriteLine(fj.ToGraphVizString());
+                Console.WriteLine(fj.ToGraphVizString());
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlattentypeToGraphVizString()
         {
             var testAsm =
@@ -192,7 +192,7 @@ namespace NoFuture.Tests.Util.Gia
             System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\TestGraphVizFlatType.gv", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlattenType_DeleteMe()
         {
             var testAsm =
@@ -207,14 +207,14 @@ namespace NoFuture.Tests.Util.Gia
             var lastItem = testResult.LastOrDefault();
 
             Assert.IsNotNull(lastItem);
-            System.Diagnostics.Debug.WriteLine(lastItem);
+            Console.WriteLine(lastItem);
 
             var lf = lastItem.Items.Count;
 
             var lastLine = lastItem.Items[lf - 2];
 
             Assert.IsNotNull(lastLine);
-            System.Diagnostics.Debug.WriteLine(lastLine.TypeFullName);
+            Console.WriteLine(lastLine.TypeFullName);
         }
     }
 }

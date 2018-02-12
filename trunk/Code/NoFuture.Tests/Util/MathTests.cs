@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class MathTests
     {
-        [TestMethod]
+        [Test]
         public void TestAreEqual()
         {
             var typicalMatrix = new[,]
@@ -21,7 +22,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestEigenvalueExpression()
         {
             var typicalMatrix = new[,]
@@ -32,7 +33,7 @@ namespace NoFuture.Tests.Util
             var eigenvalueExpression = MatrixExpressions.EigenvalueExpression(2);
 
             var eigenvalueFunc = eigenvalueExpression.Compile();
-            System.Diagnostics.Debug.WriteLine(eigenvalueExpression.ToString());
+            Console.WriteLine(eigenvalueExpression.ToString());
             var myEigenvalues = new List<double>();
             for (var i = 10; i >= -10; i--)
             {
@@ -42,7 +43,7 @@ namespace NoFuture.Tests.Util
 
             foreach (var eigenVal in myEigenvalues)
             {
-                System.Diagnostics.Debug.WriteLine(eigenVal);
+                Console.WriteLine(eigenVal);
             }
 
             Assert.AreNotEqual(0, myEigenvalues.Count);
@@ -55,13 +56,13 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestEigenVector3X3()
         {
             var eigenvalueExpression = MatrixExpressions.EigenvalueExpression(3);
 
             var eigenvalueFunc = eigenvalueExpression.Compile();
-            System.Diagnostics.Debug.WriteLine(eigenvalueExpression.ToString());
+            Console.WriteLine(eigenvalueExpression.ToString());
             var myEigenvalues = new List<double>();
 
             var threeByThree = new[,]
@@ -78,11 +79,11 @@ namespace NoFuture.Tests.Util
             }
             foreach (var eigenVal in myEigenvalues)
             {
-                System.Diagnostics.Debug.WriteLine(eigenVal);
+                Console.WriteLine(eigenVal);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestEigenVectors()
         {
             var typicalMatrix = new[,]
@@ -102,7 +103,7 @@ namespace NoFuture.Tests.Util
             //https://www.khanacademy.org/math/linear-algebra/alternate_bases/eigen_everything/v/linear-algebra-introduction-to-eigenvalues-and-eigenvectors
             // " the line that they span will not change" its just extended in the same direction
             var really = Matrix.Product(typicalMatrix, new double[,] {{0.6D}, {0.4D}});
-            System.Diagnostics.Debug.WriteLine(really.Print());//yep, this really is the {{0.6D}, {0.4D}}
+            Console.WriteLine(really.Print());//yep, this really is the {{0.6D}, {0.4D}}
 
             typicalMatrix = new[,]
             {
@@ -120,7 +121,7 @@ namespace NoFuture.Tests.Util
             //  result in a 2x1 matrix of zeros
         }
 
-        [TestMethod]
+        [Test]
         public void TestToleranceEqualityOps()
         {
             var dbl1 = 5.675D;
@@ -131,7 +132,7 @@ namespace NoFuture.Tests.Util
             Assert.IsTrue(equalityOpWithThreshold);
         }
 
-        [TestMethod]
+        [Test]
         public void TestDeterminant()
         {
             var typicalMatrix = new[,]
@@ -145,7 +146,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(-2350, testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestExtensionMethods()
         {
             var aSqrMatrix = new[,]
@@ -163,7 +164,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetaAllOnesMatrix()
         {
             var testResult = Matrix.GetAllOnesMatrix(2, 1);
@@ -178,7 +179,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestMatrixProduct()
         {
             var col = new double[,] {{1}, {1}};
@@ -188,7 +189,7 @@ namespace NoFuture.Tests.Util
             var lenTop = testResult.GetLongLength(0);
             var lenBottom = testResult.GetLongLength(1);
 
-            System.Diagnostics.Debug.WriteLine("{0}X{1}",lenTop, lenBottom);
+            Console.WriteLine("{0}X{1}",lenTop, lenBottom);
 
             Assert.AreEqual(1D, testResult[0, 0]);
             Assert.AreEqual(1D, testResult[0, 1]);
@@ -217,7 +218,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(5D, testResult[1, 2]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMatrixTranspose()
         {
             var testInput = new[,]
@@ -233,7 +234,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(1D, testResult[0, 1]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMatrixDeviation()
         {
             var typicalMatrix = new[,]
@@ -251,11 +252,11 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(-2D, testResult[1, 1]);
             Assert.AreEqual(1.5D, testResult[1, 2]);
 
-            System.Diagnostics.Debug.WriteLine(testResult.Print());
+            Console.WriteLine(testResult.Print());
            
         }
 
-        [TestMethod]
+        [Test]
         public void TestMatrixPrint()
         {
             var testInput = new[,]
@@ -267,11 +268,11 @@ namespace NoFuture.Tests.Util
                 {30D, 30D, 30D}
             };
 
-            System.Diagnostics.Debug.WriteLine(testInput.Print());
+            Console.WriteLine(testInput.Print());
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestMatrixCovariance()
         {
             var testInput = new[,]
@@ -298,7 +299,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(720D, testResult[2, 2]);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRomanNumberConversion()
         {
             var testSubject = "XLIX";
@@ -306,23 +307,23 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(49,testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestLinearEquation()
         {
             //y = 0.1056x - 181.45
             var myEq = new LinearEquation {Intercept = -181.45, Slope = 0.1056};
             var dob = 1974.477451;
             var x = myEq.SolveForY(dob);
-            System.Diagnostics.Debug.WriteLine(x);
+            Console.WriteLine(x);
             Assert.IsTrue(x > 27 && x < 28);
 
             var y = myEq.SolveForX(27.0548188256);
-            System.Diagnostics.Debug.WriteLine(y);
+            Console.WriteLine(y);
             Assert.AreEqual(dob, y);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestPerDiemInterest()
         {
             var testResult = 1541M.PerDiemInterest(0.13f, 30);
@@ -336,14 +337,14 @@ namespace NoFuture.Tests.Util
 
             testResult = 48000M.PerDiemInterest(-0.15f, Constants.TropicalYear.TotalDays*20);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testResult = 900M.PerDiemInterest(0.055F, 150);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestLnEq()
         {
             var testSubject = new NaturalLogEquation { Slope = 7.123, Intercept = -55.44 };
@@ -354,11 +355,11 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(System.Math.Round(X_IN), System.Math.Round(solveX));
         }
 
-        [TestMethod]
+        [Test]
         public void TestNormalDist()
         {
             var testSubject = new NormalDistEquation() {Mean = 0, StdDev = 1};
-            System.Diagnostics.Debug.WriteLine(string.Format("{0}\t{1}","x","f(x)"));
+            Console.WriteLine(string.Format("{0}\t{1}","x","f(x)"));
             for (var i = 0; i <= 30; i++)
             {
                 for (var j = 0; j < 10; j++)
@@ -367,13 +368,13 @@ namespace NoFuture.Tests.Util
                     var testResult = testSubject.SolveForY(z);
                     //var testResult = (z - testSubject.Mean)/testSubject.StdDev;
                     //System.Diagnostics.Debug.Write(string.Format(" {0} ", z));
-                    System.Diagnostics.Debug.WriteLine(string.Format("{0}\t{1}", z, testResult));
+                    Console.WriteLine(string.Format("{0}\t{1}", z, testResult));
                 }
                 
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestNormalDistGetZScore()
         {
             var testSubject = new NormalDistEquation { Mean = 0, StdDev = 1 };

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Antlr.DotNetIlTypeName;
 
 namespace NoFuture.Tests.Tokens
 {
-    [TestClass]
+    [TestFixture]
     public class TestTypeNameParseTree
     {
-        [TestMethod]
+        [Test]
         public void TestInvokeParse()
         {
             var testInput = "NeedItInIl.DomainAdapterBase`2[[AThirdDll.Whatever, AThirdDll, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Tuple`3[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.Collections.Generic.IEnumerable`1[[MoreBinaries.DomainObject+MyInnerType, MoreBinaries, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]";
@@ -23,7 +23,7 @@ namespace NoFuture.Tests.Tokens
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestInvokeParseSimpleGeneric()
         {
             var testInput = "System.Collections.Generic.List`1[SomeSecondDll.MyFirstMiddleClass]";
@@ -39,7 +39,7 @@ namespace NoFuture.Tests.Tokens
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestInvokeParseAsmNameOnly()
         {
             var testInput =
@@ -55,7 +55,7 @@ namespace NoFuture.Tests.Tokens
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestInvokeParseSimpleName()
         {
             var testInput = "NoFuture.Util.TypeName";
@@ -72,9 +72,9 @@ namespace NoFuture.Tests.Tokens
 
         internal static void PrintTypeItemContent(NfTypeNameParseItem item, int count)
         {
-            System.Diagnostics.Debug.WriteLine($"{new string('\t', count)}{item.FullName}");
-            System.Diagnostics.Debug.WriteLine($"{new string('\t', count)}{item.AssemblyFullName}");
-            System.Diagnostics.Debug.WriteLine($"{new string('\t', count)}{item.GenericCounter}");
+            Console.WriteLine($"{new string('\t', count)}{item.FullName}");
+            Console.WriteLine($"{new string('\t', count)}{item.AssemblyFullName}");
+            Console.WriteLine($"{new string('\t', count)}{item.GenericCounter}");
             if (item.GenericItems == null)
                 return;
             foreach (var typeNameParseItem in item.GenericItems)

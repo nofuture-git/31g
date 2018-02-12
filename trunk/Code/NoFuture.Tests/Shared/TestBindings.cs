@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace NoFuture.Tests.Shared
 {
-    [TestClass]
+    [TestFixture]
     public class TestBindings
     {
-        [TestMethod]
+        [Test]
         public void TestNetTcpBindings()
         {
             var testInput = TestAssembly.UnitTestsRoot + @"\Shared\NetTcpBindingExample.xml";
@@ -16,7 +16,7 @@ namespace NoFuture.Tests.Shared
             Assert.AreNotEqual(0, testResult.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCustomBindings()
         {
             var testInput = TestAssembly.UnitTestsRoot + @"\Shared\CustomBindingExample.config";
@@ -27,7 +27,7 @@ namespace NoFuture.Tests.Shared
             Assert.AreNotEqual(0, testResults.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void TestWsHttpBinding()
         {
             var testInput = TestAssembly.UnitTestsRoot + @"\Shared\WsHttpBindingExample.xml";
@@ -38,7 +38,7 @@ namespace NoFuture.Tests.Shared
             Assert.AreNotEqual(0, testResult.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void TestNetMsmqBinding()
         {
             var testInput = TestAssembly.UnitTestsRoot + @"\Shared\MsmqBindingExample.xml";

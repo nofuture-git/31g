@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
@@ -8,17 +9,17 @@ using NoFuture.Util.NfType;
 
 namespace NoFuture.Tests.Util.NfTypeTests
 {
-    [TestClass]
+    [TestFixture]
     public class TypeNameTests
     {
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             NfConfig.CustomTools.InvokeNfTypeName =
                 @"C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Tokens.InvokeNfTypeName.exe";
         }
 
-        [TestMethod]
+        [Test]
         public void TestCtor()
         {
             var asmFullNameWithProcArch =
@@ -37,7 +38,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
             var testThree = new NfTypeName(classAsmQualifiedName);
             var testFour = new NfTypeName(nsClassName);
 
-            System.Diagnostics.Debug.WriteLine(testOne.AssemblyQualifiedName);
+            Console.WriteLine(testOne.AssemblyQualifiedName);
             Assert.IsTrue(string.IsNullOrWhiteSpace(testOne.AssemblyQualifiedName));
 
             Assert.IsTrue(string.IsNullOrWhiteSpace(testTwo.AssemblyQualifiedName));
@@ -60,7 +61,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
             testThree =
                 new NfTypeName(
                     "NoFuture.MyDatabase.Dbo.AccountExecutives, NoFuture.MyDatabase, Version=0.0.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a");
-            System.Diagnostics.Debug.WriteLine($"Original String: '{testThree.RawString}'");
+            Console.WriteLine($"Original String: '{testThree.RawString}'");
             Assert.AreEqual("NoFuture.MyDatabase.dll", testThree.AssemblyFileName);
             Assert.AreEqual("NoFuture.MyDatabase, Version=0.0.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a", testThree.AssemblyFullName);
             Assert.AreEqual("NoFuture.MyDatabase",testThree.AssemblySimpleName);
@@ -76,13 +77,13 @@ namespace NoFuture.Tests.Util.NfTypeTests
             Assert.AreEqual("My_SillyName_NoNamespace_Pos_Class", testSix.ClassName);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSafeDotNetTypeName()
         {
             var testResult = Etc.SafeDotNetTypeName("dbo.123ProcName");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("dbo.123ProcName",testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testResult = Etc.SafeDotNetTypeName(null);
             Assert.IsNotNull(testResult);
@@ -91,63 +92,63 @@ namespace NoFuture.Tests.Util.NfTypeTests
             testResult = Etc.SafeDotNetTypeName(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testInput = "     ";
             testResult = Etc.SafeDotNetTypeName(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testResult = Etc.SafeDotNetTypeName("dbo.DELETED_LookupDetails");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("dbo.DELETED_LookupDetails", testResult);
 
             testResult = Etc.SafeDotNetTypeName("Â© The End");
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestSafeDotNetIdentifier()
         {
             var testResult = Etc.SafeDotNetIdentifier("Personal Ph #",true);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("Personal_u0020Ph_u0020_u0023", testResult);
 
             testResult = Etc.SafeDotNetIdentifier("Personal Ph #");
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("PersonalPh",testResult);
 
             testResult = Etc.SafeDotNetIdentifier("global::Some_Aspx_Page_With_No_Namespace");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.AreEqual("globalSome_Aspx_Page_With_No_Namespace", testResult);
 
             testResult =
                 Etc.SafeDotNetIdentifier(
                     "<p><font style='font-size:11px;font-family:calibri;text-align:left'>", true);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.IsTrue(testResult.StartsWith(Etc.DefaultNamePrefix + "_u003cp_u003e_u003cfont_u0020style"));
 
             testResult =
                 Etc.SafeDotNetIdentifier("Â© The End Â©", false);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.AreEqual("TheEnd",testResult);
 
             testResult =
                 Etc.SafeDotNetIdentifier("Â© The End Â©", true);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.AreEqual("_u00c2_u00a9_u0020The_u0020End_u0020_u00c2_u00a9", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetTypeNameFromArrayAndGeneric()
         {
             var testResult = NfReflect.GetLastTypeNameFromArrayAndGeneric("int[]");
@@ -177,34 +178,34 @@ namespace NoFuture.Tests.Util.NfTypeTests
             var testResults =
                 NfReflect.GetTypeNamesFromGeneric(
                     "System.Tuple`3[System.Collections.Generic.List`1[System.String], System.String, System.Tuple`2[System.Int32, System.String]]");
-            System.Diagnostics.Debug.WriteLine(string.Join(" | ", testResults));
+            Console.WriteLine(string.Join(" | ", testResults));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetTypeNameWithoutNamespace()
         {
             var testResult = NfReflect.GetTypeNameWithoutNamespace("NoFuture.Asm.Fii.MyType");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("MyType",testResult);
 
             testResult = NfReflect.GetTypeNameWithoutNamespace("My_SillyName_NoNamespace_Pos_Class");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("My_SillyName_NoNamespace_Pos_Class", testResult);
 
             testResult =
                 NfReflect.GetNamespaceWithoutTypeName(
                     "Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual(testResult, "OperatorUIController");
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetNamespaceWithoutTypeName()
         {
             var testResult = NfReflect.GetNamespaceWithoutTypeName("NoFuture.Asm.Fii.MyType");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("NoFuture.Asm.Fii", testResult);
 
             var testResult2 = NfReflect.GetNamespaceWithoutTypeName("My_SillyName_NoNamespace_Pos_Class");
@@ -214,7 +215,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
             testResult =
                 NfReflect.GetNamespaceWithoutTypeName(
                     "global::Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("Wanker.DCF.UI.Controller.Operator",testResult);
 
             testResult = NfReflect.GetNamespaceWithoutTypeName("NeedItInIl.DomainAdapterBase`2[[AThirdDll.Whatever, AThirdDll, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]," +
@@ -225,25 +226,25 @@ namespace NoFuture.Tests.Util.NfTypeTests
                                                                 "NeedItInIl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
 
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual("NeedItInIl", testResult);
 
             testResult =
                 NfReflect.GetNamespaceWithoutTypeName(
                     "Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual(testResult, "Wanker.DCF.UI.Controller.Operator");
 
             testResult =
                 NfReflect.GetNamespaceWithoutTypeName(
                     ".Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual(testResult, "Controller.Operator");
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsClrMethodForProperty()
         {
             var testInput = "get_MyProperty";

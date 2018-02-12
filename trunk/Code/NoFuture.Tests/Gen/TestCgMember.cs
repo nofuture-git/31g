@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Gen;
 using NoFuture.Shared;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 
 namespace NoFuture.Tests.Gen
 {
-    [TestClass]
+    [TestFixture]
     public class TestCgMember
     {
-        [TestMethod]
+        [Test]
         public void TestToCsDecl()
         {
             var testSubject = new CgMember()
@@ -31,18 +31,18 @@ namespace NoFuture.Tests.Gen
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
             Assert.IsTrue(testResult.StartsWith(testSubject.TypeName));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testSubject.TypeName = "MyNamespace.Here.MyTypeName";
             testSubject.Name = ".ctor";
             testSubject.IsCtor = true;
             testResult = NoFuture.Gen.Settings.LangStyle.ToDecl(testSubject);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         
         }
 
-        [TestMethod]
+        [Test]
         public void TestToCsStmt()
         {
             var testSubject = new CgMember()
@@ -58,14 +58,14 @@ namespace NoFuture.Tests.Gen
                 TypeName = "System.String"
             };
             var testResult = NoFuture.Gen.Settings.LangStyle.ToStmt(testSubject, "MyNamespace.Here", "MyTypeName");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
             Assert.IsTrue(testResult.StartsWith("return"));
 
             testSubject.TypeName = "void";
             testResult = NoFuture.Gen.Settings.LangStyle.ToStmt(testSubject, "MyNamespace.Here", "MyTypeName");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.IsTrue(testResult.StartsWith("MyNamespace"));
 
@@ -75,10 +75,10 @@ namespace NoFuture.Tests.Gen
             testResult = NoFuture.Gen.Settings.LangStyle.ToStmt(testSubject, null, null);
             Assert.IsNotNull(testResult);
             Assert.AreEqual("new MyNamespace.Here.MyTypeName(param1,param2,param3);", testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAsInvokeRegexPattern()
         {
             var testSubject = new CgMember()
@@ -97,19 +97,19 @@ namespace NoFuture.Tests.Gen
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
             Assert.AreNotEqual(".",testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(System.Text.RegularExpressions.Regex.IsMatch("MyMethodName(11,\"a string literal\",true)",testResult));
 
             testSubject.IsStatic = true;
             testSubject.MyCgType = new CgType {Namespace = "NoFuture.TestNs", Name = "Something"};
             testSubject.IsGeneric = true;
             testResult = testSubject.AsInvokeRegexPattern();
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
 
             testSubject.IsStatic = false;
             testResult = testSubject.AsInvokeRegexPattern("myVar", "myVar.ItsTypes.Types.Type");
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
 
             testSubject.MyCgType.IsEnum = true;
@@ -117,7 +117,7 @@ namespace NoFuture.Tests.Gen
             testSubject.Name = "MyEnum";
             testSubject.MyCgType.EnumValueDictionary.Add("MyType", new[] { "Instance", "NonPublic", "Public", "DeclaredOnly" });
             testResult = testSubject.AsInvokeRegexPattern();
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsNotNull(testResult);
 
             testSubject = new CgMember()
@@ -130,11 +130,11 @@ namespace NoFuture.Tests.Gen
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty, testResult);
             Assert.AreNotEqual(".", testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestAsInvokeRegexPattern02()
         {
             var testSubject = new CgMember()
@@ -149,7 +149,7 @@ namespace NoFuture.Tests.Gen
             var testCompare =
                 "command.Parameters.Add(new SqlParameter(\"@createUser\", Convert.ToString(Session[SessionContants.LoggedInEntityId])));";
             Assert.IsFalse(System.Text.RegularExpressions.Regex.IsMatch(testCompare, testResult));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testCompare = "somethingElse.InvokeMe(4,true,\"sd\");var mysomething=ToString()";
             Assert.IsTrue(System.Text.RegularExpressions.Regex.IsMatch(testCompare, testResult));
@@ -624,7 +624,7 @@ namespace NoFuture.Tests.Gen
         };
         #endregion
 
-        [TestMethod]
+        [Test]
         public void TestMyStartEnclosure()
         {
             var testCgMem = new CgMember()
@@ -639,7 +639,7 @@ namespace NoFuture.Tests.Gen
             Assert.IsNotNull(testResult);
             Assert.AreEqual(362, testResult.Item1);
             Assert.AreEqual(1,testResult.Item2);
-            System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
+            Console.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
 
             testCgMem = new CgMember()
             {
@@ -658,10 +658,10 @@ namespace NoFuture.Tests.Gen
             Assert.IsNotNull(testResult);
             Assert.AreEqual(354, testResult.Item1);
             Assert.AreEqual(1, testResult.Item2);
-            System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
+            Console.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetMyEndEnclosure()
         {
             var testCgMem = new CgMember()
@@ -681,7 +681,7 @@ namespace NoFuture.Tests.Gen
             var testSrcFile = TestFileContent;
 
             var testResult = testCgMem.GetMyEndEnclosure(testSrcFile);
-            System.Diagnostics.Debug.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
+            Console.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
         }
 
     }

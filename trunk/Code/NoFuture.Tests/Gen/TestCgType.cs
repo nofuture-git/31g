@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Gen;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
@@ -9,11 +9,11 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Gen
 {
-    [TestClass]
+    [TestFixture]
     public class TestCgType
     {
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             NfConfig.TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
@@ -22,7 +22,7 @@ namespace NoFuture.Tests.Gen
             NfConfig.CustomTools.InvokeGetCgType = TestAssembly.RootBin + @"\NoFuture.Gen.InvokeGetCgOfType.exe";
             NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls");
         }
-        [TestMethod]
+        [Test]
         public void TestToGraphVizString()
         {
             var testAsm =
@@ -48,14 +48,14 @@ namespace NoFuture.Tests.Gen
             var castTestResult = cgType;
             var testResult = castTestResult.ToGraphVizNode();
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testResult = castTestResult.ToGraphVizEdge();
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestResolveAllMetadataTokens()
         {
             NfConfig.UseReflectionOnlyLoad = false;
@@ -80,11 +80,11 @@ namespace NoFuture.Tests.Gen
 
             foreach (var opCodeCall in testResultCgMem.OpCodeCallAndCallvirts)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("{0} {1} {2}", opCodeCall.DeclaringTypeAsmName, opCodeCall.Name, opCodeCall.TypeName));
+                Console.WriteLine(string.Format("{0} {1} {2}", opCodeCall.DeclaringTypeAsmName, opCodeCall.Name, opCodeCall.TypeName));
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestFindCgMethodByTokenName()
         {
             NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Exo.NfHtml;
 using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
 {
-    [TestClass]
+    [TestFixture]
     public class SecGetXbrlUriTests
     {
-        [TestMethod]
+        [Test]
         public void TestParseContent()
         {
             var testUri = new Uri(
@@ -27,13 +27,13 @@ namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
             Assert.IsTrue(testResult);
             var testResultItem = testSubject.SecReports.FirstOrDefault(x =>x is Form10K && ((Form10K)x).HtmlFormLink == testUri);
             Assert.IsNotNull(testResultItem);
-            Assert.IsInstanceOfType(testResultItem, typeof(Form10K));
+            Assert.IsInstanceOf(typeof(Form10K), testResultItem);
             Assert.IsNotNull( ((Form10K)testResultItem).XmlLink);
             Assert.IsNotNull(testSubject.EIN);
             Assert.AreEqual("371737959", testSubject.EIN.Value);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetXbrlXmlPartialUri()
         {
             var testInput = new List<string>

@@ -1,9 +1,9 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Rand.Exo.Tests
 {
-    [TestClass]
+    [SetUpFixture]
     public sealed class TestAssembly
     {
         private static string _testRoot;
@@ -11,8 +11,8 @@ namespace NoFuture.Rand.Exo.Tests
         public static string UnitTestsRoot => _testRoot;
         public static string RootBin => _rootBin;
 
-        [AssemblyInitialize]
-        public static void AssemblyInitialize(TestContext context)
+        [OneTimeSetUp]
+        public static void AssemblyInitialize()
         {
             _testRoot = @"C:\Projects\31g\trunk\Code\NoFuture.Tests";
             if (!System.IO.Directory.Exists(_testRoot))
@@ -23,11 +23,6 @@ namespace NoFuture.Rand.Exo.Tests
                 throw new InvalidOperationException("The root directory, in which all NoFuture binaries are " +
                                                     "built to, was not found.");
 
-        }
-
-        [AssemblyCleanup]
-        public static void AssemblyCleanup()
-        {
         }
     }
 }

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NoFuture.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Quest Diagnostics Incorporated")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NoFuture.Tests")]
-[assembly: AssemblyCopyright("Copyright © Quest Diagnostics Incorporated 2013")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class TestNfPath
     {
-        [TestMethod]
+        [Test]
         public void TestConvertToCrLf()
         {
             var testFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\MixLineEndings.xml";
@@ -20,7 +20,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryGetRelPath()
         {
             var testInput = @"admin\SomeFile.fs";
@@ -58,40 +58,40 @@ namespace NoFuture.Tests.Util
                 NfPath.TryGetRelPath(
                     @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012",
                     ref testInput);
-            System.Diagnostics.Debug.WriteLine(testInput);
+            Console.WriteLine(testInput);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveRedundantPathLeafs()
         {
             var testInput = @"..\Ind.BusinessLogic.Provider\..\Ind.Lookup\Ind.Lookup_Bin.csproj";
             var testResult = NfPath.RemoveRedundantPathLeafs(testInput);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual(@"..\Ind.Lookup\Ind.Lookup_Bin.csproj", testResult);
 
             testInput = @"..\SomeSubProj.WithDots.MoreDots\SomeSubProj.WithDots.MoreDots.fsproj";
             testResult = NfPath.RemoveRedundantPathLeafs(testInput);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual(testInput, testResult);
 
             testInput = @"..\SomeSubProj.WithDots.MoreDots\.\SomeSubProj.WithDots.MoreDots.fsproj";
             testResult = NfPath.RemoveRedundantPathLeafs(testInput);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual(@"..\SomeSubProj.WithDots.MoreDots\SomeSubProj.WithDots.MoreDots.fsproj", testResult);
 
             
             testInput = @"..\Bfw.Scheduling\Bfw.Scheduling.Scaling\..\..\Bfw.BusinessLogic.Manager.Contract\Bfw.BusinessLogic.Manager.Contract_Bin.csproj";
             testResult = NfPath.RemoveRedundantPathLeafs(testInput);
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.AreEqual(@"..\Bfw.BusinessLogic.Manager.Contract\Bfw.BusinessLogic.Manager.Contract_Bin.csproj", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestBreakUpFileOverMaxJsonLength()
         {
             var testPath = TestAssembly.UnitTestsRoot + @"\Util\TestChunkData\diaSdkData.lines.json";// 
@@ -99,7 +99,7 @@ namespace NoFuture.Tests.Util
             var testResults = NfPath.TrySplitFileOnMarker(testPath, null);//5762048
         }
 
-        [TestMethod]
+        [Test]
         public void TestSafeFilename()
         {
             var testInput = "\"A name in quotes\"";
@@ -108,7 +108,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual("A name in quotes", testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryResolveEnvVar()
         {
             var testEnvVar = "windir";
@@ -141,7 +141,7 @@ namespace NoFuture.Tests.Util
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestHasKnownExtension()
         {
             var testResult =
@@ -149,7 +149,7 @@ namespace NoFuture.Tests.Util
             Assert.IsTrue(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsCodeFileExtension()
         {
             Assert.IsTrue(NfPath.IsCodeFileExtension(".cs"));
@@ -157,7 +157,7 @@ namespace NoFuture.Tests.Util
             Assert.IsTrue(NfPath.IsCodeFileExtension(@"C:\Projects\MyCodeFile.cs"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestContainsExcludeCodeDirectory()
         {
             Assert.IsTrue(NfPath.ContainsExcludeCodeDirectory(@"C:\Projects\Wanker\Services\WCF\WSXXX\bin\QA3"));

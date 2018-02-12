@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Util.NfTypeTests
 {
-    [TestClass]
+    [TestFixture]
     public class MeasurePropertyDistanceTests
     {
-        [TestMethod]
+        [Test]
         public void TestTryAssignProperties()
         {
             var testInput = new TestDtoLikeType
@@ -27,7 +27,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
 
             var testOutput = new Entity();
             var testResult = NfReflect.TryAssignValueTypeProperties(testInput, testOutput, null);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             Assert.IsNotNull(testOutput.Gender);
 
@@ -50,11 +50,11 @@ namespace NoFuture.Tests.Util.NfTypeTests
             Assert.AreEqual("e.krabs@bikinibottom.net", testOutput.Contact.Email);
 
             foreach(var l in NfReflect.GetAssignPropertiesData("\t"))
-                System.Diagnostics.Debug.WriteLine(l);
+                Console.WriteLine(l);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryAssignPropertiesWithNulls()
         {
             var testInput = new TestDtoLikeType();
@@ -62,13 +62,13 @@ namespace NoFuture.Tests.Util.NfTypeTests
 
             var testResult = NfReflect.TryAssignProperties(testInput, testOutput);
             Assert.AreNotEqual(0,testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             foreach (var l in NfReflect.GetAssignPropertiesData())
-                System.Diagnostics.Debug.WriteLine(l);
+                Console.WriteLine(l);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryAssignPropertiesReverse()
         {
             var testOutput = new TestDtoLikeType();
@@ -82,13 +82,13 @@ namespace NoFuture.Tests.Util.NfTypeTests
                 Id = 0
             };
             var testResult = NfReflect.TryAssignProperties(testInput, testOutput);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             foreach (var l in NfReflect.GetAssignPropertiesData())
-                System.Diagnostics.Debug.WriteLine(l);
+                Console.WriteLine(l);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetPropertyValuetype()
         {
             var testContext = new Address();
@@ -97,7 +97,7 @@ namespace NoFuture.Tests.Util.NfTypeTests
 
             Assert.IsNotNull(testResult);
             Assert.AreEqual("System.Int32", testResult.FullName);
-            System.Diagnostics.Debug.WriteLine(testResult.FullName);
+            Console.WriteLine(testResult.FullName);
         }
     }
 

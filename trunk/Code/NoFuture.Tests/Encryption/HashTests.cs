@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Encryption
 {
-    [TestClass]
+    [TestFixture]
     public class HashTests
     {
-        [TestMethod]
+        [Test]
         public void TestSign()
         {
             var testInput = "plain text to sign";
@@ -17,7 +17,7 @@ namespace NoFuture.Tests.Encryption
             Assert.IsTrue(!String.IsNullOrWhiteSpace(testResult));
         }
 
-        [TestMethod]
+        [Test]
         public void TestSignCalc()
         {
             var testInput = "plain text to sign";

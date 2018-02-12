@@ -1,17 +1,17 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace NoFuture.Tests.Hbm
 {
-    [TestClass]
+    [TestFixture]
     public class TestConfigFile
     {
-        [TestMethod]
+        [Test]
         public void TestHibernateConfigurationNode()
         {
             var testResult = NoFuture.Hbm.XeFactory.HibernateConfigurationNode("myConnectionString", "NoFuture");
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -113,6 +114,38 @@ namespace NoFuture.Tokens
                 cdata = cdata.Where(filter).ToArray();
             }
             return cdata.Length > 0;
+        }
+
+        /// <summary>
+        /// Gets only the body of all script tags from the web response content
+        /// </summary>
+        /// <param name="webResponseText"></param>
+        /// <param name="filter"></param>
+        /// <param name="scriptBodies"></param>
+        /// <returns></returns>
+        public static bool TryGetScriptBodies(string webResponseText, Func<string, bool> filter, out string[] scriptBodies)
+        {
+            scriptBodies = null;
+            if (string.IsNullOrWhiteSpace(webResponseText))
+                return false;
+
+            var ms = new MemoryStream(Encoding.UTF8.GetBytes(webResponseText));
+            var antlrHtml = AspNetParseTree.InvokeParse(ms);
+            if (antlrHtml == null)
+                return false;
+
+            var innerText = antlrHtml.CharData;
+
+            if (innerText.Count <= 0)
+                return false;
+
+            scriptBodies = antlrHtml.ScriptBodies.ToArray();
+
+            if (filter != null)
+            {
+                scriptBodies = scriptBodies.Where(filter).ToArray();
+            }
+            return scriptBodies.Length > 0;
         }
     }
 }

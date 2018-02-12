@@ -2,14 +2,14 @@
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Encryption
 {
-    [TestClass]
+    [TestFixture]
     public class Nfx509Tests
     {
         public const string TEST_PWD = "Test1234";
@@ -17,13 +17,13 @@ namespace NoFuture.Tests.Encryption
         public string TEST_CERT_CER_PATH = TestAssembly.UnitTestsRoot + @"\Encryption\MyTestCert01.cer";
         public string TEST_PLAINTEXT = TestAssembly.UnitTestsRoot + @"\Encryption\TestPlainText.txt";
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             NoFuture.Util.FxPointers.AddSHA512ToCryptoConfig();
         }
 
-        [TestMethod]
+        [Test]
         public void TestCreateAndSave()
         {
             var dn = new NoFuture.Encryption.NfX509.DistinguishedName("MyTestCert01");
@@ -34,7 +34,7 @@ namespace NoFuture.Tests.Encryption
             File.WriteAllBytes(TEST_CERT_PFX_PATH, pfx);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetCerOfTestPfx()
         {
             var myCert = new X509Certificate2(TEST_CERT_PFX_PATH, TEST_PWD);
@@ -44,7 +44,7 @@ namespace NoFuture.Tests.Encryption
                     Path.GetFileNameWithoutExtension(TEST_CERT_PFX_PATH) + ".cer"), myCerCert);
         }
 
-        [TestMethod]
+        [Test]
         public void TestEncryptFile()
         {
             
@@ -61,7 +61,7 @@ namespace NoFuture.Tests.Encryption
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestDecryptFile()
         {
             Assert.IsTrue(File.Exists(TEST_PLAINTEXT + Constants.NF_CRYPTO_EXT));

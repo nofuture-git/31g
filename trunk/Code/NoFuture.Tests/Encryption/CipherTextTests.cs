@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Shared;
 
 namespace NoFuture.Tests.Encryption
 {
-    [TestClass]
+    [TestFixture]
     public class CipherTextTests
     {
-        [TestMethod]
+        [Test]
         public void TestToString()
         {
             var testSubject = new CipherText
@@ -40,7 +40,7 @@ namespace NoFuture.Tests.Encryption
             Assert.IsTrue(testResult.Contains(string.Format("\"ts\":{0}", testSubject.ts)));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryParse()
         {
             var testValues = new CipherText
@@ -75,7 +75,7 @@ namespace NoFuture.Tests.Encryption
             Assert.IsTrue(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void ToggleStringJson()
         {
             var testValues = new CipherText

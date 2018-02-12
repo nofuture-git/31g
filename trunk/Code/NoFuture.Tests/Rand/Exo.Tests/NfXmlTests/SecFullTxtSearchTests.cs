@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Rand.Exo.NfXml;
 
 namespace NoFuture.Rand.Exo.Tests.NfXmlTests
 {
-    [TestClass]
+    [TestFixture]
     public class SecFullTxtSearchTests
     {
 
-        [TestMethod]
+        [Test]
         public void TestMethod1()
         {
             var testXmlFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\srch-edgar.xml";

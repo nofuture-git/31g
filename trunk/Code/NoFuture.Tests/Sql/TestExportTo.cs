@@ -4,89 +4,89 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Sql.Mssql;
 using NoFuture.Sql.Mssql.Md;
 
 namespace NoFuture.Tests.Sql
 {
-    [TestClass]
+    [TestFixture]
     public class TestExportTo
     {
         private const string QRY = "SELECT TOP 32 * FROM [AdventureWorks2012].[Person].[Person]";
 
-        [TestMethod]
+        [Test]
         public void TestGetTableSchemaAndNameFromExpression()
         {
             var testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from MyTable");
             Assert.AreEqual("MyTable", testResult.TableName);
 
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from MyTable where id = 12");
             Assert.AreEqual("MyTable", testResult.TableName);
 
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from [MyTable]");
             Assert.AreEqual("MyTable", testResult.TableName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from dbo.MyTable");
             Assert.AreEqual("MyTable", testResult.TableName);
             Assert.AreEqual("dbo", testResult.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from [dbo].[MyTable]");
             Assert.AreEqual("MyTable", testResult.TableName);
             Assert.AreEqual("dbo", testResult.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from [dbo].[MyTable] where id = 12");
             Assert.AreEqual("MyTable", testResult.TableName);
             Assert.AreEqual("dbo", testResult.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from dbo.MyTable where id = 12");
             Assert.AreEqual("MyTable", testResult.TableName);
             Assert.AreEqual("dbo", testResult.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from MyDb.dbo.MyTable");
             Assert.AreEqual("MyTable", testResult.TableName);
             Assert.AreEqual("dbo", testResult.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from [MyDb].[dbo].[MyTable]");
             Assert.AreEqual("MyTable", testResult.TableName);
             Assert.AreEqual("dbo", testResult.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             //MSSQL lets you use anything as long as its in square braces
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from [MyDb].[MySchema.Data].[MyTable]");
             Assert.AreEqual("MyTable", testResult.TableName);
             Assert.AreEqual("MySchema.Data", testResult.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from [BBG].[Ordering].[Transactions] WHERE Id = '1145221B'");
             Assert.AreEqual("Transactions", testResult.TableName);
             Assert.AreEqual("Ordering", testResult.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult = ExportTo.GetTableSchemaAndNameFromExpression("select * from [BBG].[Ordering].[Transactions]\n\tWHERE Id = '1145221B'");
             Assert.AreEqual("Transactions", testResult.TableName);
             Assert.AreEqual("Ordering", testResult.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             var testResult2 = ExportTo.GetTableSchemaAndNameFromExpression("[BBG].[Ordering].[Transactions]");
             Assert.AreEqual("Transactions", testResult2.TableName);
             Assert.AreEqual("Ordering", testResult2.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             var testResult3 = ExportTo.GetTableSchemaAndNameFromExpression("[Ordering].Transactions");
             Assert.AreEqual("Transactions", testResult2.TableName);
             Assert.AreEqual("Ordering", testResult2.SchemaName);
-            System.Diagnostics.Debug.WriteLine("----------------------------");
+            Console.WriteLine("----------------------------");
 
             testResult =
                 ExportTo.GetTableSchemaAndNameFromExpression(
@@ -95,7 +95,7 @@ namespace NoFuture.Tests.Sql
             Assert.AreEqual("dbo", testResult.SchemaName);
         }
 
-        [TestMethod]
+        [Test]
         public void TestScriptDataBodyInsert()
         {
             var dt = ReadSerializedTableFromDisk("NoFuture.Tests.Sql.DataTable.Person.bin");
@@ -103,10 +103,10 @@ namespace NoFuture.Tests.Sql
                 SerializedTableMetadata(), dt);
 
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestScriptDataBodyUpdate()
         {
             var dt = ReadSerializedTableFromDisk("NoFuture.Tests.Sql.DataTable.Person.bin");
@@ -114,10 +114,10 @@ namespace NoFuture.Tests.Sql
                 SerializedTableMetadata(), dt);
 
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestScriptDataBodyMerge()
         {
             var dt = ReadSerializedTableFromDisk("NoFuture.Tests.Sql.DataTable.Person.bin");
@@ -125,11 +125,11 @@ namespace NoFuture.Tests.Sql
                 SerializedTableMetadata(), dt);
 
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             
         }
 
-        [TestMethod]
+        [Test]
         public void TestTransformSelectStarToLiterals()
         {
             var testInput00 = new List<Common>
@@ -148,10 +148,10 @@ namespace NoFuture.Tests.Sql
             var testResult = NoFuture.Sql.Mssql.ExportTo.TransformSelectStarToLiterals(QRY, testInput00);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(string.Empty,testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFormatKeyValue()
         {
             var testResult = NoFuture.Sql.Mssql.ExportTo.FormatKeyValue("LastName", "Tamburello", 0, 2);
@@ -167,7 +167,7 @@ namespace NoFuture.Tests.Sql
             Assert.AreEqual("Tamburello", testResult.Item2);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetQryValueWrappedWithLimit()
         {
             var testResult = ExportTo.GetQryValueWrappedWithLimit(SerializedTableMetadata(),
@@ -197,7 +197,7 @@ namespace NoFuture.Tests.Sql
 
         }
 
-        [TestMethod]
+        [Test]
         public void RecreateBinFiles()
         {
             DataTable testOutput;

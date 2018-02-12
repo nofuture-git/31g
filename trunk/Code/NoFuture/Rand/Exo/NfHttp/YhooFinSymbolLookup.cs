@@ -12,9 +12,15 @@ namespace NoFuture.Rand.Exo.NfHttp
 
         public static Uri GetUri(PublicCorporation com)
         {
-            return new Uri("http://finance.yahoo.com/q?s=" + com.UrlEncodedName + "&ql=1");
+            return new Uri("https://finance.yahoo.com/q?s=" + com.UrlEncodedName + "&ql=1");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        [Obsolete("Implemenation changed, data embedded in JSON at SimilarSymbolsStore")]
         public override IEnumerable<dynamic> ParseContent(object content)
         {
             var headers = content as Hashtable;

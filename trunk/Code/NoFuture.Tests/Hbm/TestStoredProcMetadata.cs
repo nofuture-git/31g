@@ -1,51 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Hbm.SortingContainers;
 
 namespace NoFuture.Tests.Hbm
 {
-    [TestClass]
+    [TestFixture]
     public class TestStoredProcMetadata
     {
-        [TestMethod]
+        [Test]
         public void TestToHbmSql()
         {
             var testSubject = new NoFuture.Hbm.SortingContainers.StoredProcMetadata();
             testSubject.ProcName = "dbo.MyStoredProc";
             var testResult = testSubject.ToHbmSql();
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult.Contains("EXEC [dbo].[MyStoredProc]"));
 
             testSubject.ProcName = "MyStoredProc";
             testResult = testSubject.ToHbmSql();
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult.Contains("EXEC [MyStoredProc]"));
 
             testSubject.ProcName = "my.dot.schema.MyStoredProc";
             testResult = testSubject.ToHbmSql();
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult.Contains("EXEC [my.dot.schema].[MyStoredProc]"));
 
             testSubject.ProcName = "MyStoredProc.";
             testResult = testSubject.ToHbmSql();
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult.Contains("EXEC [MyStoredProc]"));
 
             testSubject.ProcName = ".MyStoredProc";
             testResult = testSubject.ToHbmSql();
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult.Contains("EXEC [MyStoredProc]"));
 
             testSubject.ProcName = ".MyStoredProc.";
             testResult = testSubject.ToHbmSql();
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult.Contains("EXEC [MyStoredProc]"));
 
             testSubject.Parameters = new List<StoredProcParamItem>
@@ -57,7 +57,7 @@ namespace NoFuture.Tests.Hbm
 
             testResult = testSubject.ToHbmSql();
             Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult.Contains("EXEC [MyStoredProc]"));
             Assert.IsTrue(testResult.Contains(":parameter1,"));
             Assert.IsTrue(testResult.Contains(":parameter2,"));
@@ -65,7 +65,7 @@ namespace NoFuture.Tests.Hbm
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestTryParseToHbmSql()
         {
             var tesSubject = @"
@@ -86,15 +86,15 @@ EXEC [MyStoredProc]
             Assert.IsNotNull(testOutParamNames);
             Assert.AreNotEqual(0, testOutParamNames.Length);
 
-            System.Diagnostics.Debug.WriteLine(string.Format("Db Name: '{0}'", testOutDbName));
+            Console.WriteLine(string.Format("Db Name: '{0}'", testOutDbName));
             foreach (var testOutPn in testOutParamNames)
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("Param Name: '{0}'", testOutPn));
+                Console.WriteLine(string.Format("Param Name: '{0}'", testOutPn));
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestDotNetType()
         {
             var testSubject = new StoredProcParamItem {DataType = "datetime", IsNullable = true};

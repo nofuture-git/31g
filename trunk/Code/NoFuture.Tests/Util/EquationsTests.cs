@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Tests.Util
 {
-    [TestClass]
+    [TestFixture]
     public class EquationsTests
     {
-        [TestMethod]
+        [Test]
         public void TestLinearEquation()
         {
             var testSubject = new LinearEquation {Intercept = 4, Slope = 2};
@@ -19,7 +19,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(x, testResultX);
 
         }
-        [TestMethod]
+        [Test]
         public void TestExponentialEquation()
         {
             var testSubject = new ExponentialEquation() {ConstantValue = 4, Power = 3.5};
@@ -36,11 +36,11 @@ namespace NoFuture.Tests.Util
             };
 
             testResultY = testSubject.SolveForY(50);
-            System.Diagnostics.Debug.WriteLine(testResultY);
+            Console.WriteLine(testResultY);
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestNaturalLogEquation()
         {
             var testSubject = new NaturalLogEquation {Intercept = 2, Slope = 1.2};
@@ -48,7 +48,7 @@ namespace NoFuture.Tests.Util
             var x = 11.0D;
             var testResultY = testSubject.SolveForY(x);
             var testResultX = testSubject.SolveForX(testResultY);
-            System.Diagnostics.Debug.WriteLine(testResultX);
+            Console.WriteLine(testResultX);
 
             Assert.AreEqual(x, Math.Round(testResultX));//some kind of float-pt loss 
         }
