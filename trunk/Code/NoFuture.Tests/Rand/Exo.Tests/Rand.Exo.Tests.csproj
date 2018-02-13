@@ -49,10 +49,12 @@
   <ItemGroup>
     <Compile Include="BeaTests.cs" />
     <Compile Include="CopulaTests.cs" />
-    <Compile Include="NfJsonTests\GoogleFinanceStockPriceTests.cs" />
     <Compile Include="NfHtmlTests\BloombergSymbolSearchTest.cs" />
     <Compile Include="NfHtmlTests\SecGetXbrlUriTests.cs" />
     <Compile Include="NfHtmlTests\WikepediaInsComTests.cs" />
+    <Compile Include="NfJsonTests\IexApiTests.cs" />
+    <Compile Include="NfJsonTests\IexCompanyTests.cs" />
+    <Compile Include="NfJsonTests\IexKeyStatsTests.cs" />
     <Compile Include="NfPdfTests\Sec13fCuispListTests.cs" />
     <Compile Include="NfTextTests\TestFedLrgBnk.cs" />
     <Compile Include="NfXmlTests\SecForm13fInfoTableTests.cs" />

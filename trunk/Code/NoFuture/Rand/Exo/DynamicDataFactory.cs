@@ -54,9 +54,16 @@ namespace NoFuture.Rand.Exo
                 return new FfiecInstitProfile(uri);
             }
 
-            if (uri.Host == GoogleFinanceStockPrice.GOOG_FIN_HOST)
+            if (uri.Host == new Uri(IexApi.IEX_API_HOST).Host)
             {
-                return new GoogleFinanceStockPrice(uri);
+                if(uri.LocalPath.EndsWith("/stats"))
+                    return new IexKeyStats(uri);
+                if(uri.LocalPath.EndsWith("company"))
+                    return new IexCompany(uri);
+                if(uri.LocalPath.EndsWith("logo"))
+                    return new IexLogo(uri);
+
+                return new IexApi(uri);
             }
 
             throw new NotImplementedException();

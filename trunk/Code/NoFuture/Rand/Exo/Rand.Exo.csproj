@@ -52,7 +52,10 @@
   <ItemGroup>
     <Compile Include="Copula.cs" />
     <Compile Include="DynamicDataFactory.cs" />
-    <Compile Include="NfJson\GoogleFinanceStockPrice.cs" />
+    <Compile Include="NfJson\IexApi.cs" />
+    <Compile Include="NfJson\IexCompany.cs" />
+    <Compile Include="NfJson\IexKeyStats.cs" />
+    <Compile Include="NfJson\IexLogo.cs" />
     <Compile Include="UsGov\Bea\BeaDataset.cs" />
     <Compile Include="UsGov\Bea\Globals.cs" />
     <Compile Include="UsGov\Bea\IBeaData.cs" />
@@ -99,7 +102,6 @@
     <Compile Include="NfHtml\NfHtmlDynDataBase.cs" />
     <Compile Include="NfHtml\SecGetXbrlUri.cs" />
     <Compile Include="NfHtml\WikipediaInsCom.cs" />
-    <Compile Include="NfHttp\YhooFinSymbolLookup.cs" />
     <Compile Include="NfPdf\Sec13fCuispList.cs" />
     <Compile Include="NfText\FedLrgBnk.cs" />
     <Compile Include="NfXml\Edgar.cs" />
