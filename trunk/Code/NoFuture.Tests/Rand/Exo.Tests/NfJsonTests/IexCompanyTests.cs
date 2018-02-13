@@ -21,6 +21,8 @@ namespace NoFuture.Rand.Exo.Tests.NfJsonTests
             var singleResult = testResult.First();
             var someValue = singleResult.companyName;
             Assert.AreEqual("Apple Inc.", someValue.Value);
+            someValue = singleResult.Src;
+            Assert.AreEqual(testSubject.Src, someValue.Value);
 
         }
     }

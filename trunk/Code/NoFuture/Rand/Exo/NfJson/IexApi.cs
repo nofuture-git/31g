@@ -41,11 +41,14 @@ namespace NoFuture.Rand.Exo.NfJson
             data = data.Trim();
             if (data.StartsWith("//"))
                 data = data.Substring(2, data.Length - 2);
-            
-            if(data.StartsWith("{"))
-                return new []{ Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(data)};
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<dynamic>>(data);
+            var dataOut = data.StartsWith("{")
+                ? new[] {Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(data)}
+                : Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<dynamic>>(data);
+            foreach (var d in dataOut)
+                d.Src = this.Src;
+
+            return dataOut;
         }
     }
 }
