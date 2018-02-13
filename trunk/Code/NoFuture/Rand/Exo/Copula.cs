@@ -6,7 +6,6 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Exo.NfXml;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
-using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Gov.US.Fed;
 using NoFuture.Rand.Gov.US.Irs;
 using NoFuture.Rand.Gov.US.Sec;
@@ -102,10 +101,10 @@ namespace NoFuture.Rand.Exo
 
             var myDynData = DynamicDataFactory.GetDataParser(srcUri);
             var myDynDataRslt = myDynData.ParseContent(webResponseBody);
-            if (myDynDataRslt == null || !myDynDataRslt.Any<dynamic>())
+            if (myDynDataRslt == null || !myDynDataRslt.Any())
                 return false;
 
-            var xbrlDyn = myDynDataRslt.First<dynamic>();
+            var xbrlDyn = myDynDataRslt.First();
             var cik = xbrlDyn.Cik;
             if (pc.CIK.Value != cik)
                 return false;
@@ -226,6 +225,13 @@ namespace NoFuture.Rand.Exo
             }
         }
 
+        /// <summary>
+        /// Parses the xml (atom) content from the SEC&apos;s full-text search into and 
+        /// array of corporations.
+        /// </summary>
+        /// <param name="rssContent"></param>
+        /// <param name="srcUri"></param>
+        /// <returns></returns>
         public static PublicCorporation[] ParseSecEdgarFullTextSearch(string rssContent, Uri srcUri)
         {
             if (String.IsNullOrWhiteSpace(rssContent))
@@ -293,6 +299,13 @@ namespace NoFuture.Rand.Exo
 
         }
 
+        /// <summary>
+        /// Try to parse the xml (atom) content from the SEC returned from a search on a CIK.
+        /// </summary>
+        /// <param name="xmlContent"></param>
+        /// <param name="srcUri"></param>
+        /// <param name="publicCorporation"></param>
+        /// <returns></returns>
         public static bool TryParseSecEdgarCikSearch(string xmlContent, Uri srcUri, ref PublicCorporation publicCorporation)
         {
             if (String.IsNullOrWhiteSpace(xmlContent))

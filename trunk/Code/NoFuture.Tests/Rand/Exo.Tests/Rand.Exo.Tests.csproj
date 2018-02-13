@@ -49,7 +49,7 @@
   <ItemGroup>
     <Compile Include="BeaTests.cs" />
     <Compile Include="CopulaTests.cs" />
-    <Compile Include="NfCsvTests\GoogleFinanceStockPriceTests.cs" />
+    <Compile Include="NfJsonTests\GoogleFinanceStockPriceTests.cs" />
     <Compile Include="NfHtmlTests\BloombergSymbolSearchTest.cs" />
     <Compile Include="NfHtmlTests\SecGetXbrlUriTests.cs" />
     <Compile Include="NfHtmlTests\WikepediaInsComTests.cs" />

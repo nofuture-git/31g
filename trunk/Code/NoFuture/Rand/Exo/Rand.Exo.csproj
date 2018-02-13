@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Copula.cs" />
     <Compile Include="DynamicDataFactory.cs" />
-    <Compile Include="NfCsv\GoogleFinanceStockPrice.cs" />
+    <Compile Include="NfJson\GoogleFinanceStockPrice.cs" />
     <Compile Include="UsGov\Bea\BeaDataset.cs" />
     <Compile Include="UsGov\Bea\Globals.cs" />
     <Compile Include="UsGov\Bea\IBeaData.cs" />

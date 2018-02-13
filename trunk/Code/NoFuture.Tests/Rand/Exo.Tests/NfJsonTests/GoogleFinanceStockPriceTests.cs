@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Exo.NfCsv;
+using NoFuture.Rand.Exo.NfJson;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Exo.Tests.NfCsvTests
@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Exo.Tests.NfCsvTests
         [Test]
         public void TestParseContent()
         {
-            var testFile = TestAssembly.TestDataDir + @"\goog.csv";
+            var testFile = TestAssembly.TestDataDir + @"\GoogleFinanceData.txt";
             var testInput = System.IO.File.ReadAllText(testFile);
             var testSubject = new GoogleFinanceStockPrice(null);
             var testResult = testSubject.ParseContent(testInput);

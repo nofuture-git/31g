@@ -1,11 +1,15 @@
 ﻿using System;
-using NoFuture.Rand.Exo.NfCsv;
 using NoFuture.Rand.Exo.NfHtml;
+using NoFuture.Rand.Exo.NfJson;
 using NoFuture.Rand.Exo.NfText;
 using NoFuture.Rand.Exo.NfXml;
 
 namespace NoFuture.Rand.Exo
 {
+    /// <summary>
+    /// A factory class to get the various forms of exogenous data based on the 
+    /// source URI.
+    /// </summary>
     public static class DynamicDataFactory
     {
         /// <summary>
