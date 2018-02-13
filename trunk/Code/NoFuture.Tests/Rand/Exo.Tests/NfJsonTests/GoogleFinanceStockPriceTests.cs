@@ -3,7 +3,7 @@ using System.Linq;
 using NoFuture.Rand.Exo.NfJson;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Exo.Tests.NfCsvTests
+namespace NoFuture.Rand.Exo.Tests.NfJsonTests
 {
     [TestFixture]
     public class GoogleFinanceStockPriceTests
