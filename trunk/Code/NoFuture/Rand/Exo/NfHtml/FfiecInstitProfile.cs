@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Exo.NfHtml
             if (webResponseBody == null)
                 return null;
             string[] d;
-            if (!Tokens.Etx.TryGetCdata(webResponseBody, null, out d))
+            if (!Antlr.HTML.HtmlParseResults.TryGetCdata(webResponseBody, null, out d))
             {
                 return null;
             }

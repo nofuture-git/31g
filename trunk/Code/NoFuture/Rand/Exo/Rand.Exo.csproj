@@ -34,9 +34,6 @@
     <Reference Include="Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Antlr4.Runtime.4.6.4\lib\net45\Antlr4.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=2.0.20.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\HtmlAgilityPack.Net45.2.0.20\lib\net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
     <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
     </Reference>
@@ -98,7 +95,6 @@
     <Compile Include="NfDynDataBase.cs" />
     <Compile Include="NfHtml\BloombergSymbolSearch.cs" />
     <Compile Include="NfHtml\FfiecInstitProfile.cs" />
-    <Compile Include="NfHtml\FidelitySymbolSearch.cs" />
     <Compile Include="NfHtml\NfHtmlDynDataBase.cs" />
     <Compile Include="NfHtml\SecGetXbrlUri.cs" />
     <Compile Include="NfHtml\WikipediaInsCom.cs" />
@@ -120,21 +116,9 @@
       <Project>{3bb71c0a-b6ad-4e55-b49d-417bc2da7d39}</Project>
       <Name>Antlr.HTML</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\Cfg\Shared.Cfg.csproj">
-      <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
-      <Name>Shared.Cfg</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Shared\Core\Shared.Core.csproj">
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Tokens\Tokens.csproj">
-      <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
-      <Name>Tokens</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Util\Core\Util.Core.csproj">
-      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
-      <Name>Util.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Com\Rand.Com.csproj">
       <Project>{47a161dd-d5d4-4e02-8161-9e311e50664e}</Project>
@@ -159,10 +143,6 @@
     <ProjectReference Include="..\Tele\Rand.Tele.csproj">
       <Project>{bf24172c-6472-4059-860f-46f7a9fc78df}</Project>
       <Name>Rand.Tele</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sp\Rand.Sp.csproj">
-      <Project>{193f1df6-f471-4164-b5bb-8752c306df7b}</Project>
-      <Name>Rand.Data.Sp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

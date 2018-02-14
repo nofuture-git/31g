@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Exo.NfHtml
                 return null;
 
             string[] d;
-            if (!Tokens.Etx.TryGetCdata(webResponseBody, null, out d))
+            if (!Antlr.HTML.HtmlParseResults.TryGetCdata(webResponseBody, null, out d))
                 return null;
             var innerText = d.ToList();
             if (innerText.Count <= 0)

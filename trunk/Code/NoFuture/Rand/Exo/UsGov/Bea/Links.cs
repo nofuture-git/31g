@@ -1,5 +1,4 @@
-﻿using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
+﻿using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Exo.UsGov.Bea
 {
@@ -9,15 +8,15 @@ namespace NoFuture.Rand.Exo.UsGov.Bea
     public class Links
     {
         public const string BeaBaseAccessUri = "https://www.bea.gov/api/data";
-
+        public static string BeaDataApiKey { get; set; }
         public static string BeaStdUri
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(NfConfig.SecurityKeys.BeaDataApiKey))
+                if (string.IsNullOrWhiteSpace(BeaDataApiKey))
                     throw new RahRowRagee(
                         "The 'NoFuture.Globals.SecurityKeys.BeaDataApiKey' must be set before calling this property.");
-                return string.Format("{0}?&UserID={1}&", BeaBaseAccessUri, NfConfig.SecurityKeys.BeaDataApiKey);
+                return $"{BeaBaseAccessUri}?&UserID={BeaDataApiKey}&";
             }
         }
 
@@ -32,13 +31,12 @@ namespace NoFuture.Rand.Exo.UsGov.Bea
 
         public static string GetBeaParameterListUri(string dataSetName)
         {
-            return string.Format("{0}method=getparameterlist&datasetname={1}&", BeaStdUri, dataSetName);
+            return $"{BeaStdUri}method=getparameterlist&datasetname={dataSetName}&";
         }
 
         public static string GetBeaParameterValuesUri(string dataSetName, string parameterName)
         {
-            return string.Format("{0}method=GetParameterValues&datasetname={1}&ParameterName={2}&",
-                BeaStdUri, dataSetName, parameterName);
+            return $"{BeaStdUri}method=GetParameterValues&datasetname={dataSetName}&ParameterName={parameterName}&";
         }
     }
 }

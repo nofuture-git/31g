@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Exo.UsGov.Bls
@@ -8,6 +7,8 @@ namespace NoFuture.Rand.Exo.UsGov.Bls
     {
         public abstract Uri ApiLink { get; }
         public abstract string Prefix { get; }
+
+        public static string BlsApiRegistrationKey { get; set; }
 
         /// <summary>
         /// Creates the body for a Multiseries POST to the 
@@ -52,8 +53,8 @@ namespace NoFuture.Rand.Exo.UsGov.Bls
                                             "of 50 - the passed in arg has a count " +
                                             $"of {seriesCodes.Length}.");
 
-            if (string.IsNullOrWhiteSpace(NfConfig.SecurityKeys.BlsApiRegistrationKey))
-                throw new RahRowRagee($"The '{nameof(NfConfig.SecurityKeys.BlsApiRegistrationKey)}' " +
+            if (string.IsNullOrWhiteSpace(BlsApiRegistrationKey))
+                throw new RahRowRagee($"The '{nameof(BlsApiRegistrationKey)}' " +
                                                  "must be set before calling this property.");
             var payload =
                 new Payload
@@ -61,7 +62,7 @@ namespace NoFuture.Rand.Exo.UsGov.Bls
                     seriesid = seriesCodes,
                     startyear = $"{sYear}",
                     endyear = $"{eYear}",
-                    registrationKey = NfConfig.SecurityKeys.BlsApiRegistrationKey
+                    registrationKey = BlsApiRegistrationKey
                 };
             return Newtonsoft.Json.JsonConvert.SerializeObject(payload);
         }
