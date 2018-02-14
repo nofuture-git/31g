@@ -6,6 +6,11 @@ using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Rand.Exo.NfXml
 {
+    /// <summary>
+    /// Type used to contain various functionality used to interface with 
+    /// the SEC&apos;s Edgar data.
+    /// </summary>
+    [Serializable]
     public class Edgar
     {
         #region constants
@@ -19,7 +24,7 @@ namespace NoFuture.Rand.Exo.NfXml
 
         #region inner types
         /// <summary>
-        /// see [http://www.sec.gov/edgar/searchedgar/edgarzones.htm]
+        /// see [https://www.sec.gov/edgar/searchedgar/edgarzones.htm]
         /// </summary>
         [Serializable]
         public class FullTextSearch

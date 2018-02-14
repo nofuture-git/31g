@@ -4,6 +4,10 @@ using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Exo.NfHtml
 {
+    /// <summary>
+    /// Used to cross-reference a company&apos;s name to its public ticker symbol
+    /// </summary>
+    [Serializable]
     public class FidelitySymbolSearch : NfHtmlDynDataBase
     {
         public FidelitySymbolSearch(Uri src) : base(src)

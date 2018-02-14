@@ -6,6 +6,10 @@ using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Rand.Exo.NfXml
 {
+    /// <summary>
+    /// Parse the XML content from the SEC based on a <see cref="CentralIndexKey"/> search.
+    /// </summary>
+    [Serializable]
     public class SecCikSearch : NfDynDataBase
     {
         public SecCikSearch(Uri src):base(src) { }

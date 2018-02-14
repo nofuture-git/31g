@@ -14,6 +14,7 @@ namespace NoFuture.Rand.Exo.NfHtml
     /// The uri to an individual XBRL xml file is embedded inside the
     /// html from <see cref="SecForm.HtmlFormLink"/>
     /// </summary>
+    [Serializable]
     public class SecGetXbrlUri : NfHtmlDynDataBase
     {
         public SecGetXbrlUri(Uri src):base(src) { }

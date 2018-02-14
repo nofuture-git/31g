@@ -6,6 +6,11 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Exo.NfHtml
 {
+    /// <summary>
+    /// Used to cross-reference a RSSD id, assigned by the US Federal Reserve, to a
+    /// financial institution&apos;s name.
+    /// </summary>
+    [Serializable]
     public class FfiecInstitProfile : NfHtmlDynDataBase
     {
         public FfiecInstitProfile(Uri srcUri):base(srcUri) { }

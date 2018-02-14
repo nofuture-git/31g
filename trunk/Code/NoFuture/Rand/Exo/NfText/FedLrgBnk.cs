@@ -9,6 +9,11 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Exo.NfText
 {
+    /// <summary>
+    /// Parse the annual text file report from the US Federal Reserve 
+    /// <see cref="RELEASE_URL"/>
+    /// </summary>
+    [Serializable]
     public class FedLrgBnk : NfDynDataBase
     {
         public const string RELEASE_URL = "http://www.federalreserve.gov/releases/lbr/current/lrg_bnk_lst.txt";

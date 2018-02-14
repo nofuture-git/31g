@@ -5,6 +5,10 @@ using NoFuture.Rand.Com;
 
 namespace NoFuture.Rand.Exo.NfHtml
 {
+    /// <summary>
+    /// Used to cross-reference a company&apos;s name to its public ticker symbol
+    /// </summary>
+    [Serializable]
     public class BloombergSymbolSearch : NfHtmlDynDataBase
     {
         public const string BLOOMBERG_HOST = "www.bloomberg.com";

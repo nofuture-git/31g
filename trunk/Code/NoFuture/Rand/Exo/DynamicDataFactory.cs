@@ -10,6 +10,7 @@ namespace NoFuture.Rand.Exo
     /// A factory class to get the various forms of exogenous data based on the 
     /// source URI.
     /// </summary>
+    [Serializable]
     public static class DynamicDataFactory
     {
         /// <summary>

@@ -8,6 +8,11 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Exo.NfXml
 {
+    /// <summary>
+    /// Parses the content of a eXtensible Business Reporting Language filed with the SEC
+    /// see [https://en.wikipedia.org/wiki/XBRL]
+    /// </summary>
+    [Serializable]
     public class SecXbrlInstanceFile : NfDynDataBase
     {
         #region inner types

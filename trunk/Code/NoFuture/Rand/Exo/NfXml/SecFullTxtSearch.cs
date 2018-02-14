@@ -5,6 +5,10 @@ using System.Xml;
 
 namespace NoFuture.Rand.Exo.NfXml
 {
+    /// <summary>
+    /// Parse the XML content from the SEC based on a <see cref="Edgar.FullTextSearch"/> search.
+    /// </summary>
+    [Serializable]
     public class SecFullTxtSearch : NfDynDataBase
     {
         public SecFullTxtSearch(Uri src):base(src) { }

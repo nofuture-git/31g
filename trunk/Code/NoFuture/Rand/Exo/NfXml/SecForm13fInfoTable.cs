@@ -5,6 +5,10 @@ using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Rand.Exo.NfXml
 {
+    /// <summary>
+    /// Parse the XML content from the SEC based on a <see cref="Form13Fhr"/> search.
+    /// </summary>
+    [Serializable]
     public class SecForm13FInfoTable : NfDynDataBase
     {
         public SecForm13FInfoTable(Uri src) : base(src) { }
@@ -20,6 +24,7 @@ namespace NoFuture.Rand.Exo.NfXml
             if (xmlContent == null)
                 return new List<dynamic>();
             const string NS = "ns";
+            //TODO - did this also have a schema change to https ?
             const string XMLNS = "http://www.sec.gov/edgar/document/thirteenf/informationtable";
 
             var infoTable = new XmlDocument();

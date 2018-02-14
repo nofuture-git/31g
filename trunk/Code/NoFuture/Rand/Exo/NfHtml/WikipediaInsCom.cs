@@ -8,6 +8,9 @@ using NoFuture.Antlr.HTML;
 
 namespace NoFuture.Rand.Exo.NfHtml
 {
+    /// <summary>
+    /// Used to get a list of US Insurance company names from Wikipedia content
+    /// </summary>
     public class WikipediaInsCom : NfHtmlDynDataBase
     {
         private static readonly string[] _skipThese = new[]

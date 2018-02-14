@@ -2,6 +2,9 @@
 
 namespace NoFuture.Rand.Gov.US.Sec
 {
+    /// <summary>
+    /// A quarterly report filed by Fund Managers with the SEC
+    /// </summary>
     [Serializable]
     public class Form13Fhr : SecForm
     {

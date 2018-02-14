@@ -8,6 +8,11 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Exo.NfPdf
 {
+    /// <summary>
+    /// Parses quarterly PDF reports from the SEC listing all 
+    /// Commitee on Uniform Securities Identification Procedures currently defined.
+    /// </summary>
+    [Serializable]
     public class Sec13FCuispList : NfDynDataBase
     {
         #region contants

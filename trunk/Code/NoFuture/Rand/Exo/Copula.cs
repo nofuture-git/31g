@@ -16,7 +16,9 @@ using NoFuture.Shared.Core;
 namespace NoFuture.Rand.Exo
 {
     /// <summary>
-    /// Joins dynamic data from source to the Nf Rand type
+    /// Joins dynamic data, which may take almost any form, from source(s) and either 
+    /// merges it to instantiated Nf Rand types or operates like a factory creating 
+    /// the Nf Rand type.
     /// </summary>
     public static class Copula
     {
@@ -72,10 +74,10 @@ namespace NoFuture.Rand.Exo
                 return false;
             var myDynData = DynamicDataFactory.GetDataParser(srcUri);
             var myDynDataRslt = myDynData.ParseContent(webResponseBody);
-            if (myDynDataRslt == null || !myDynDataRslt.Any<dynamic>())
+            if (myDynDataRslt == null || !myDynDataRslt.Any())
                 return false;
 
-            var xrblUriStr = myDynDataRslt.First<dynamic>().XrblUri;
+            var xrblUriStr = myDynDataRslt.First().XrblUri;
 
             pcAnnualRpt.XmlLink = new Uri(xrblUriStr);
             var irsId = myDynDataRslt.First<dynamic>().IrsId as string;
