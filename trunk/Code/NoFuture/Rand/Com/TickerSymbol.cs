@@ -60,8 +60,8 @@ namespace NoFuture.Rand.Com
                 _symbolXref.Add(new NasdaqIntegratedSymbology("Preferred when distributed", "p/WD", "PRWD", "-$", ".D"));
                 _symbolXref.Add(new NasdaqIntegratedSymbology("When distributed", "/WD", "WD", "$", ".Z"));
                 _symbolXref.Add(new NasdaqIntegratedSymbology("Warrants", "/WS", "WS", "+", ".W"));
-                _symbolXref.Add(new NasdaqIntegratedSymbology("Warrants Class �A�*", "/WS/A", "WSA", "+A", ".W or .A**"));
-                _symbolXref.Add(new NasdaqIntegratedSymbology("Warrants Class �B�*", "/WS/B", "WSB", "+B", ""));
+                _symbolXref.Add(new NasdaqIntegratedSymbology("Warrants Class \"A\"*", "/WS/A", "WSA", "+A", ".W or .A**"));
+                _symbolXref.Add(new NasdaqIntegratedSymbology("Warrants Class \"B\"*", "/WS/B", "WSB", "+B", ""));
                 _symbolXref.Add(new NasdaqIntegratedSymbology("Called", "/CL", "CL", "*", ""));
                 _symbolXref.Add(new NasdaqIntegratedSymbology("Class \"A\" Called*", "/A/CL", "ACL", ".A*", ".A"));
                 _symbolXref.Add(new NasdaqIntegratedSymbology("Preferred called", "p/CL", "PRCL", "-*", "$"));

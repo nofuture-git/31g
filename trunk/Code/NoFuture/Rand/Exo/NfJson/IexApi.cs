@@ -50,5 +50,20 @@ namespace NoFuture.Rand.Exo.NfJson
 
             return dataOut;
         }
+
+        /// <summary>
+        /// Cross reference to the abbreviation for &quot;type&quot; returned in the IEX call to 
+        /// /ref-data/symbols to the full name.
+        /// </summary>
+        public static Dictionary<string, string> SymbolTypeAbbrev2Name => new Dictionary<string, string>
+        {
+            {"ad", "American Depositary Receipt"},
+            {"re", "Real Estate Investment Trust"},
+            {"et", "Exchange Traded Fund"},
+            {"ce", "Closed End Fund"},
+            {"si", "Secondary Issue"},
+            {"lp", "Limited Partnerships"},
+            {"cs", "Common Stock"}
+        };
     }
 }
