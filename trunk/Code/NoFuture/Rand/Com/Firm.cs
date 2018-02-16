@@ -26,6 +26,7 @@ namespace NoFuture.Rand.Com
         private NaicsSector _sector;
         private NaicsMarket _market;
         private int _fiscalYearEndDay = 1;
+        private readonly HashSet<Uri> _netUris = new HashSet<Uri>();
         #endregion
 
         #region properties
@@ -35,6 +36,8 @@ namespace NoFuture.Rand.Com
             get => GetName(KindsOfNames.Legal);
             set => UpsertName(KindsOfNames.Legal, value);
         }
+        public IEnumerable<Uri> NetUri => _netUris;
+        public string Description { get; set; }
         public Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
         public Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }
@@ -643,6 +646,26 @@ namespace NoFuture.Rand.Com
         }
 
 
+        public void AddUri(Uri uri)
+        {
+            //don't allow callers to add telephone Uri's since there is another storage place for those
+            if (uri != null && uri.Scheme != Tele.Phone.UriSchemaTelephone)
+                _netUris.Add(uri);
+        }
+
+        public virtual void AddUri(string uri)
+        {
+            if (string.IsNullOrWhiteSpace(uri))
+                return;
+
+            if (!uri.StartsWith(Uri.UriSchemeMailto) &&
+                System.Text.RegularExpressions.Regex.IsMatch(uri, @"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"))
+                uri = $"{Uri.UriSchemeMailto}:{uri}";
+            if (!Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out var oUri))
+                return;
+
+            AddUri(oUri);
+        }
 
         #endregion
     }

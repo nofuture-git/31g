@@ -133,6 +133,17 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
+        /// Utility method to convert a .NET DateTime type into Unix time
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static int ToUnixTime(this DateTime dt)
+        {
+            var unixEpochTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return (Int32)(dt.ToUniversalTime().Subtract(unixEpochTime)).TotalSeconds;
+        }
+
+        /// <summary>
         /// Returns a date as a rational number (e.g. 2016.684476658052) 
         /// where day of year is divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>
         /// </summary>

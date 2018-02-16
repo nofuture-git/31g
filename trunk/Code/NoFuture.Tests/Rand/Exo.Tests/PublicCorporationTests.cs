@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Exo.Tests
 
             Assert.IsTrue(testResult);
             Assert.IsNotNull(testSubject.TickerSymbols);
-            Assert.AreNotEqual(0, testSubject.TickerSymbols.Count);
+            Assert.AreNotEqual(0, testSubject.TickerSymbols.ToArray().Length);
         }
 
         [Test]

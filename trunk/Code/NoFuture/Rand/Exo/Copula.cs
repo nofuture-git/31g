@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Exo.NfXml;
@@ -22,6 +23,87 @@ namespace NoFuture.Rand.Exo
     /// </summary>
     public static class Copula
     {
+        /// <summary>
+        /// Adds in company data returned from a call to the IEX Company RESTful method
+        /// </summary>
+        /// <param name="rawJsonContent">The raw JSON returned from IEX</param>
+        /// <param name="srcUri"></param>
+        /// <param name="corp"></param>
+        /// <returns></returns>
+        public static bool TryParseIexCompanyJson(string rawJsonContent, Uri srcUri, ref PublicCorporation corp)
+        {
+            if (string.IsNullOrWhiteSpace(rawJsonContent))
+                return false;
+            if (corp == null)
+                return false;
+
+            var myDynData = DynamicDataFactory.GetDataParser(srcUri);
+            var myDynDataRslt = myDynData.ParseContent(rawJsonContent);
+
+            if (myDynDataRslt == null || !myDynDataRslt.Any())
+                return false;
+
+            var pd = myDynDataRslt.First();
+            var tickerSymbol = pd.symbol;
+            var exchange = pd.exchange;
+            var description = pd.description;
+            var website = pd.website;
+
+            if (string.IsNullOrWhiteSpace(corp.Name))
+                corp.Name = pd.companyName;
+
+            var nfTicker = corp.TickerSymbols.FirstOrDefault(t => t.Symbol == tickerSymbol) ??
+                           new TickerSymbol {Symbol = tickerSymbol};
+            nfTicker.Exchange = exchange;
+            if(corp.TickerSymbols.All(t => t.Symbol != tickerSymbol))
+                corp.AddTickerSymbol(nfTicker);
+            corp.Description = description;
+            corp.AddUri((string)website);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Adds in key statistics data returned from a call to the IEX keystats RESTful method into the <see cref="corp"/>&apos;s URI collection.
+        /// </summary>
+        /// <param name="rawJsonContent">The raw JSON returned from IEX</param>
+        /// <param name="srcUri"></param>
+        /// <param name="corp"></param>
+        /// <param name="atTime">Optional, allows caller to assign the timestamp, defaults to universial time</param>
+        /// <returns></returns>
+        public static bool TryParseIexKeyStatsJson(string rawJsonContent, Uri srcUri, ref PublicCorporation corp, DateTime? atTime = null)
+        {
+            if (string.IsNullOrWhiteSpace(rawJsonContent))
+                return false;
+            if (corp == null)
+                return false;
+
+            var dt = Util.Core.Etc.ToUnixTime(atTime.GetValueOrDefault(DateTime.Now));
+
+            var myDynData = DynamicDataFactory.GetDataParser(srcUri);
+            var myDynDataRslt = myDynData.ParseContent(rawJsonContent);
+
+            if (myDynDataRslt == null || !myDynDataRslt.Any())
+                return false;
+
+            var pd = myDynDataRslt.First();
+            var symbol = pd.symbol;
+
+            if (string.IsNullOrWhiteSpace(corp.Name))
+                corp.Name = pd.companyName;
+            corp.AddUri(new Uri($"iex://keystats/{symbol}/year5ChangePercent?value={pd.year5ChangePercent}&dt={dt}"));
+            corp.AddUri(new Uri($"iex://keystats/{symbol}/year2ChangePercent?value={pd.year2ChangePercent}&dt={dt}"));
+            corp.AddUri(new Uri($"iex://keystats/{symbol}/year1ChangePercent?value={pd.year1ChangePercent}&dt={dt}"));
+            corp.AddUri(new Uri($"iex://keystats/{symbol}/day200MovingAvg?value={pd.day200MovingAvg}&dt={dt}"));
+            corp.AddUri(new Uri($"iex://keystats/{symbol}/day50MovingAvg?value={pd.day50MovingAvg}&dt={dt}"));
+            corp.AddUri(new Uri($"iex://keystats/{symbol}/beta?value={pd.beta}&dt={dt}"));
+            corp.AddUri(new Uri($"iex://keystats/{symbol}/week52high?value={pd.week52high}&dt={dt}"));
+            corp.AddUri(new Uri($"iex://keystats/{symbol}/week52low?value={pd.week52low}&dt={dt}"));
+            corp.AddUri(new Uri($"iex://keystats/{symbol}/week52change?value={pd.week52change}&dt={dt}"));
+
+            return true;
+        }
+
         /// <summary>
         /// Attempts to get the ABA number based on RSSD 
         /// </summary>
@@ -120,7 +202,7 @@ namespace NoFuture.Rand.Exo
                 pc.TickerSymbols.All(x => !String.Equals(x.Symbol, ticker, StringComparison.OrdinalIgnoreCase)))
             {
                 ticker = ticker.ToUpper();
-                pc.TickerSymbols.Add(new TickerSymbol { Symbol = ticker, Country = "USA" });
+                pc.AddTickerSymbol(new TickerSymbol { Symbol = ticker, Country = "USA" });
             }
 
             var legalName = xbrlDyn.Name;
@@ -210,7 +292,7 @@ namespace NoFuture.Rand.Exo
                         existing.InstrumentType = dd.InstrumentType;
                         continue;
                     }
-                    pc.TickerSymbols.Add(new TickerSymbol
+                    pc.AddTickerSymbol(new TickerSymbol
                     {
                         Symbol = dd.Symbol,
                         InstrumentType = dd.InstrumentType,
@@ -219,7 +301,7 @@ namespace NoFuture.Rand.Exo
                     });
                 }
 
-                return pc.TickerSymbols.Count > 0;
+                return pc.TickerSymbols.ToArray().Length > 0;
             }
             catch
             {

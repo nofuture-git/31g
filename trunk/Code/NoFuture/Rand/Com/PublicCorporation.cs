@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
@@ -15,24 +16,28 @@ namespace NoFuture.Rand.Com
     public class PublicCorporation : Firm
     {
         private readonly List<SecForm> _secReports = new List<SecForm>();
-        private List<TickerSymbol> _tickerSymbols = new List<TickerSymbol>();
+        private readonly HashSet<TickerSymbol> _tickerSymbols = new HashSet<TickerSymbol>();
 
         public EmployerIdentificationNumber EIN { get; set; }
         public CentralIndexKey CIK { get; set; }
         public List<SecForm> SecReports => _secReports;
         public string UsStateOfIncorporation { get; set; }
-        public Uri[] WebDomains { get; set; }
-        public List<TickerSymbol> TickerSymbols
+        public IEnumerable<TickerSymbol> TickerSymbols
         {
             get
             {
-                _tickerSymbols.Sort(new TickerComparer(Name));
-                return _tickerSymbols;
+                var t = _tickerSymbols.ToList();
+                t.Sort(new TickerComparer(Name));
+                return t;
             }
-            set => _tickerSymbols = value;
         }
 
         public string UrlEncodedName => Util.Core.Etc.EscapeString(GetSearchCompanyName(Name));
+
+        public void AddTickerSymbol(TickerSymbol symbol)
+        {
+            _tickerSymbols.Add(symbol);
+        }
 
         public override void LoadXrefXmlData()
         {
@@ -54,5 +59,6 @@ namespace NoFuture.Rand.Com
                 XRefGroup.SetTypeXrefValue(elem, this);
             }
         }
+
     }
 }

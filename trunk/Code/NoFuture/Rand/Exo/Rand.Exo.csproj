@@ -120,6 +120,10 @@
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Util\Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Com\Rand.Com.csproj">
       <Project>{47a161dd-d5d4-4e02-8161-9e311e50664e}</Project>
       <Name>Rand.Com</Name>

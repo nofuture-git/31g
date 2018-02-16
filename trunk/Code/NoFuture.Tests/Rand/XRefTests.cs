@@ -34,8 +34,8 @@ namespace NoFuture.Rand.Tests
             Assert.AreNotEqual(0, testTarget.TickerSymbols);
 
             System.Diagnostics.Debug.WriteLine(testTarget.CIK.ToString());
-            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols[0].Symbol);
-            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols[0].Exchange);
+            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols.ToArray()[0].Symbol);
+            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols.ToArray()[0].Exchange);
             System.Diagnostics.Debug.WriteLine(testTarget.SIC.ToString());
 
             //test nothing found - no problems and no change
