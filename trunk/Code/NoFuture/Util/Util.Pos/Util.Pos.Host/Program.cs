@@ -3,8 +3,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using NoFuture.Exceptions;
-using NoFuture.Tools;
+using NoFuture.Shared.Cfg;
+using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.Pos.Host.Cmds;
 using Cfg = System.Configuration.ConfigurationManager;
@@ -44,12 +44,12 @@ namespace NoFuture.Util.Pos.Host
 
                 p.ParseProgramArgs();
 
-                JavaTools.StanfordPostTaggerModels = Cfg.AppSettings["NoFuture.JavaTools.StanfordPostTaggerModels"];
-                if (string.IsNullOrWhiteSpace(JavaTools.StanfordPostTaggerModels) ||
-                    !Directory.Exists(JavaTools.StanfordPostTaggerModels))
+                NfConfig.JavaTools.StanfordPostTaggerModels = Cfg.AppSettings["NoFuture.JavaTools.StanfordPostTaggerModels"];
+                if (string.IsNullOrWhiteSpace(NfConfig.JavaTools.StanfordPostTaggerModels) ||
+                    !Directory.Exists(NfConfig.JavaTools.StanfordPostTaggerModels))
                     throw new ItsDeadJim("The Stanford Post Tagger Models are not assigned in the config file");
 
-                p.PrintToConsole($"models @ {JavaTools.StanfordPostTaggerModels}");
+                p.PrintToConsole($"models @ {NfConfig.JavaTools.StanfordPostTaggerModels}");
 
                 //open ports
                 p.LaunchListeners();
@@ -123,7 +123,7 @@ namespace NoFuture.Util.Pos.Host
                                       $"[{CmdPort}].");
 
             _taskFactory.StartNew(
-                () => HostCmd(new PosParserCmd(this), CmdPort.GetValueOrDefault(PosParserHost.DF_START_PORT)));
+                () => HostCmd(new PosParserCmd(this), CmdPort.GetValueOrDefault(NfConfig.NfDefaultPorts.PartOfSpeechPaserHost)));
             //print settings
             PrintToConsole($"InvokeFlatten listening on port [{CmdPort}]");
 

@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Linq;
 using edu.stanford.nlp.tagger.maxent;
-using NoFuture.Exceptions;
-using NoFuture.Tools;
+using NoFuture.Shared.Cfg;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Util.Pos.Host
 {
@@ -54,20 +54,20 @@ namespace NoFuture.Util.Pos.Host
 
         internal static string PathToModel()
         {
-            if (string.IsNullOrWhiteSpace(JavaTools.StanfordPostTaggerModels) || !Directory.Exists(JavaTools.StanfordPostTaggerModels))
+            if (string.IsNullOrWhiteSpace(NfConfig.JavaTools.StanfordPostTaggerModels) || !Directory.Exists(NfConfig.JavaTools.StanfordPostTaggerModels))
             {
                 throw new RahRowRagee("The global variable NoFuture.JavaTools.StanfordPostTaggerModels " +
                                       "needs to be assigned to the directory containing the tagger's models.");
             }
 
-            var di = new DirectoryInfo(JavaTools.StanfordPostTaggerModels);
+            var di = new DirectoryInfo(NfConfig.JavaTools.StanfordPostTaggerModels);
             var models = di.GetFiles("*.tagger");
             if (models == null || models.Length <= 0)
                 throw new RahRowRagee(
                     string.Format(
                         "The directory '{0}' does not contain any files " +
                         "ending in the expected extension of .tagger",
-                        JavaTools.StanfordPostTaggerModels));
+                        NfConfig.JavaTools.StanfordPostTaggerModels));
 
             var model = models.OrderByDescending(x => x.Length).First();
             return model.FullName;
