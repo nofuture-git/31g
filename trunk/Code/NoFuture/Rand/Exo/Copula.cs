@@ -267,6 +267,9 @@ namespace NoFuture.Rand.Exo
             if(xbrlDyn.TextBlocks is IEnumerable<Tuple<string, string>> textBlocks && textBlocks.Any())
                 rptTenK.TextBlocks.AddRange(textBlocks);
 
+            if (xbrlDyn.FootNotes is IEnumerable<Tuple<string, string>> footNotes && footNotes.Any())
+                rptTenK.TextBlocks.AddRange(footNotes);
+
             return true;
         }
 

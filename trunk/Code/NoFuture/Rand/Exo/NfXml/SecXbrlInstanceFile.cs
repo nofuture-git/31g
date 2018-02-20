@@ -120,6 +120,7 @@ namespace NoFuture.Rand.Exo.NfXml
             }
 
             var textBlocks = GetTextBlocks();
+            var footNotes = GetFootNotes();
 
             return new List<dynamic>
             {
@@ -136,7 +137,8 @@ namespace NoFuture.Rand.Exo.NfXml
                     NetIncome = netIncome,
                     OperatingIncome = operateIncome,
                     Revenue = salesRev, 
-                    TextBlocks = textBlocks
+                    TextBlocks = textBlocks,
+                    FootNotes = footNotes
                 }
             };
         }
@@ -210,12 +212,53 @@ namespace NoFuture.Rand.Exo.NfXml
             {
                 if (!(textBlockNodes[i] is XmlElement tbnElem))
                     continue;
-                if (!Antlr.HTML.HtmlParseResults.TryGetCdata(tbnElem.InnerText, null, out var cdata))
-                    continue;
-                textBlocks.Add(new Tuple<string, string>(tbnElem.Name, string.Join("  ", cdata)));
+                try
+                {
+                    var txtBlkXml = new XmlDocument();
+                    txtBlkXml.LoadXml(tbnElem.InnerText);
+                    var cdata = txtBlkXml.DocumentElement?.InnerText;
+                    if (string.IsNullOrWhiteSpace(cdata))
+                        continue;
+                    textBlocks.Add(new Tuple<string, string>(tbnElem.Name, cdata));
+                }
+                catch (XmlException) { }
             }
 
             return textBlocks;
+        }
+
+        /// <summary>
+        /// Gets the text content of all nodes whose local name is &apos;footnote&apos;
+        /// </summary>
+        /// <param name="xmlContent"></param>
+        /// <returns></returns>
+        public IEnumerable<Tuple<string, string>> GetFootNotes(string xmlContent = null)
+        {
+            if (!string.IsNullOrWhiteSpace(xmlContent))
+            {
+                var xmlNsMgr = GetXmlAndNsMgr(xmlContent);
+
+                _xml = xmlNsMgr.Item1;
+                _nsMgr = xmlNsMgr.Item2;
+            }
+
+            if (_xml == null || _nsMgr == null)
+                throw new RahRowRagee("You must either pass in the xml content yourself," +
+                                      " call this method after having made a call to ParseContent.");
+
+            var footNoteNodes = _xml.SelectNodes("//*[local-name() = 'footnote']");
+            if (footNoteNodes == null || footNoteNodes.Count <= 0)
+                return null;
+
+            var footNotes = new List<Tuple<string, string>>();
+            for (var i = 0; i < footNoteNodes.Count; i++)
+            {
+                if (!(footNoteNodes[i] is XmlElement fnnElem))
+                    continue;
+                footNotes.Add(new Tuple<string, string>(fnnElem.Name, fnnElem.InnerText));
+            }
+
+            return footNotes;
         }
 
         /// <summary>
