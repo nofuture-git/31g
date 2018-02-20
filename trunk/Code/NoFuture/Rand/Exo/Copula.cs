@@ -270,6 +270,9 @@ namespace NoFuture.Rand.Exo
             if (xbrlDyn.FootNotes is IEnumerable<Tuple<string, string>> footNotes && footNotes.Any())
                 rptTenK.TextBlocks.AddRange(footNotes);
 
+            if (xbrlDyn.OperationDescription is IEnumerable<Tuple<string, string>> opDesc && opDesc.Any())
+                rptTenK.TextBlocks.AddRange(opDesc);
+
             return true;
         }
 

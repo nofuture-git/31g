@@ -121,6 +121,7 @@ namespace NoFuture.Rand.Exo.NfXml
 
             var textBlocks = GetTextBlocks();
             var footNotes = GetFootNotes();
+            var operationsDescription = GetOperationsDescription();
 
             return new List<dynamic>
             {
@@ -138,7 +139,8 @@ namespace NoFuture.Rand.Exo.NfXml
                     OperatingIncome = operateIncome,
                     Revenue = salesRev, 
                     TextBlocks = textBlocks,
-                    FootNotes = footNotes
+                    FootNotes = footNotes,
+                    OperationDescription = operationsDescription
                 }
             };
         }
@@ -203,28 +205,8 @@ namespace NoFuture.Rand.Exo.NfXml
                 throw new RahRowRagee("You must either pass in the xml content yourself," +
                                       " call this method after having made a call to ParseContent.");
 
-            var textBlockNodes = _xml.SelectNodes("//*[contains(local-name(),'TextBlock')]");
-            if (textBlockNodes == null || textBlockNodes.Count <= 0)
-                return null;
-
-            var textBlocks = new List<Tuple<string, string>>();
-            for (var i = 0; i < textBlockNodes.Count; i++)
-            {
-                if (!(textBlockNodes[i] is XmlElement tbnElem))
-                    continue;
-                try
-                {
-                    var txtBlkXml = new XmlDocument();
-                    txtBlkXml.LoadXml(tbnElem.InnerText);
-                    var cdata = txtBlkXml.DocumentElement?.InnerText;
-                    if (string.IsNullOrWhiteSpace(cdata))
-                        continue;
-                    textBlocks.Add(new Tuple<string, string>(tbnElem.Name, cdata));
-                }
-                catch (XmlException) { }
-            }
-
-            return textBlocks;
+            return GetEmbeddedHtmlContentFromInnerText(_xml, "//*[contains(local-name(),'TextBlock')]");
+            
         }
 
         /// <summary>
@@ -259,6 +241,58 @@ namespace NoFuture.Rand.Exo.NfXml
             }
 
             return footNotes;
+        }
+
+        /// <summary>
+        /// Get the content of the us-gaap NatureOfOperations from the xml content
+        /// </summary>
+        /// <param name="xmlContent"></param>
+        /// <returns></returns>
+        public IEnumerable<Tuple<string, string>> GetOperationsDescription(string xmlContent = null)
+        {
+            if (!string.IsNullOrWhiteSpace(xmlContent))
+            {
+                var xmlNsMgr = GetXmlAndNsMgr(xmlContent);
+
+                _xml = xmlNsMgr.Item1;
+                _nsMgr = xmlNsMgr.Item2;
+            }
+
+            if (_xml == null || _nsMgr == null)
+                throw new RahRowRagee("You must either pass in the xml content yourself," +
+                                      " call this method after having made a call to ParseContent.");
+
+            return GetEmbeddedHtmlContentFromInnerText(_xml, "//*[local-name() = 'NatureOfOperations']");
+        }
+
+        internal static IEnumerable<Tuple<string, string>> GetEmbeddedHtmlContentFromInnerText(XmlDocument xml,
+            string xpath)
+        {
+            if (xml == null || string.IsNullOrWhiteSpace(xpath))
+                return null;
+
+            var blockNodes = xml.SelectNodes(xpath);
+            if (blockNodes == null || blockNodes.Count <= 0)
+                return null;
+
+            var dataout = new List<Tuple<string, string>>();
+            for (var i = 0; i < blockNodes.Count; i++)
+            {
+                if (!(blockNodes[i] is XmlElement tbnElem))
+                    continue;
+                try
+                {
+                    var txtBlkXml = new XmlDocument();
+                    txtBlkXml.LoadXml(tbnElem.InnerText);
+                    var cdata = txtBlkXml.DocumentElement?.InnerText;
+                    if (string.IsNullOrWhiteSpace(cdata))
+                        continue;
+                    dataout.Add(new Tuple<string, string>(tbnElem.Name, cdata));
+                }
+                catch (XmlException) { }
+            }
+
+            return dataout;
         }
 
         /// <summary>
