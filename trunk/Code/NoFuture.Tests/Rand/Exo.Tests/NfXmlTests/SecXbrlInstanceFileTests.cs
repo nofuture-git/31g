@@ -183,7 +183,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
         public void TestGetTextBlocks()
         {
             var content =
-                System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\ExampleSecXbrl.xml");
+                System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\ExampleSecXbrl3.xml");
             var testSubject = new SecXbrlInstanceFile(new Uri("http://localhost"));
             var testResults = testSubject.GetTextBlocks(content);
 
@@ -192,22 +192,6 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
 
             var examples = testResults.Take(3);
             foreach(var eg in examples)
-                Console.Write(eg);
-        }
-
-        [Test]
-        public void TestGetFootNotes()
-        {
-            var content =
-                System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\ExampleSecXbrl2.xml");
-            var testSubject = new SecXbrlInstanceFile(new Uri("http://localhost"));
-            var testResults = testSubject.GetFootNotes(content);
-
-            Assert.IsNotNull(testResults);
-            Assert.AreNotEqual(0, testResults.Count());
-
-            var examples = testResults.Take(3);
-            foreach (var eg in examples)
                 Console.Write(eg);
         }
     }

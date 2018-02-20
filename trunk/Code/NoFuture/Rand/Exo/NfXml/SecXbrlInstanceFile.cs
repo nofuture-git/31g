@@ -120,8 +120,6 @@ namespace NoFuture.Rand.Exo.NfXml
             }
 
             var textBlocks = GetTextBlocks();
-            var footNotes = GetFootNotes();
-            var operationsDescription = GetOperationsDescription();
 
             return new List<dynamic>
             {
@@ -138,9 +136,7 @@ namespace NoFuture.Rand.Exo.NfXml
                     NetIncome = netIncome,
                     OperatingIncome = operateIncome,
                     Revenue = salesRev, 
-                    TextBlocks = textBlocks,
-                    FootNotes = footNotes,
-                    OperationDescription = operationsDescription
+                    TextBlocks = textBlocks
                 }
             };
         }
@@ -205,67 +201,19 @@ namespace NoFuture.Rand.Exo.NfXml
                 throw new RahRowRagee("You must either pass in the xml content yourself," +
                                       " call this method after having made a call to ParseContent.");
 
-            return GetEmbeddedHtmlContentFromInnerText(_xml, "//*[contains(local-name(),'TextBlock')]");
+            return GetEmbeddedHtmlContentFromInnerText(_xml, "//*[contains(text(),'<div style')]");
             
         }
 
         /// <summary>
-        /// Gets the text content of all nodes whose local name is &apos;footnote&apos;
+        /// Assumes the content of all the nodes at the given <see cref="xpath"/> have inner text
+        /// which is actually embedded html - parses said html getting only the actual text keyed on 
+        /// the elements name.
         /// </summary>
-        /// <param name="xmlContent"></param>
+        /// <param name="xml"></param>
+        /// <param name="xpath"></param>
         /// <returns></returns>
-        public IEnumerable<Tuple<string, string>> GetFootNotes(string xmlContent = null)
-        {
-            if (!string.IsNullOrWhiteSpace(xmlContent))
-            {
-                var xmlNsMgr = GetXmlAndNsMgr(xmlContent);
-
-                _xml = xmlNsMgr.Item1;
-                _nsMgr = xmlNsMgr.Item2;
-            }
-
-            if (_xml == null || _nsMgr == null)
-                throw new RahRowRagee("You must either pass in the xml content yourself," +
-                                      " call this method after having made a call to ParseContent.");
-
-            var footNoteNodes = _xml.SelectNodes("//*[local-name() = 'footnote']");
-            if (footNoteNodes == null || footNoteNodes.Count <= 0)
-                return null;
-
-            var footNotes = new List<Tuple<string, string>>();
-            for (var i = 0; i < footNoteNodes.Count; i++)
-            {
-                if (!(footNoteNodes[i] is XmlElement fnnElem))
-                    continue;
-                footNotes.Add(new Tuple<string, string>(fnnElem.Name, fnnElem.InnerText));
-            }
-
-            return footNotes;
-        }
-
-        /// <summary>
-        /// Get the content of the us-gaap NatureOfOperations from the xml content
-        /// </summary>
-        /// <param name="xmlContent"></param>
-        /// <returns></returns>
-        public IEnumerable<Tuple<string, string>> GetOperationsDescription(string xmlContent = null)
-        {
-            if (!string.IsNullOrWhiteSpace(xmlContent))
-            {
-                var xmlNsMgr = GetXmlAndNsMgr(xmlContent);
-
-                _xml = xmlNsMgr.Item1;
-                _nsMgr = xmlNsMgr.Item2;
-            }
-
-            if (_xml == null || _nsMgr == null)
-                throw new RahRowRagee("You must either pass in the xml content yourself," +
-                                      " call this method after having made a call to ParseContent.");
-
-            return GetEmbeddedHtmlContentFromInnerText(_xml, "//*[local-name() = 'NatureOfOperations']");
-        }
-
-        internal static IEnumerable<Tuple<string, string>> GetEmbeddedHtmlContentFromInnerText(XmlDocument xml,
+        public static IEnumerable<Tuple<string, string>> GetEmbeddedHtmlContentFromInnerText(XmlDocument xml,
             string xpath)
         {
             if (xml == null || string.IsNullOrWhiteSpace(xpath))
@@ -283,7 +231,15 @@ namespace NoFuture.Rand.Exo.NfXml
                 try
                 {
                     var txtBlkXml = new XmlDocument();
-                    txtBlkXml.LoadXml(tbnElem.InnerText);
+                    var htmlText = tbnElem.InnerText;
+                    foreach (var k in Util.Core.Etc.HtmlEscStrings)
+                    {
+                        var replaceWith = new string(new []{(char)k.Item1});
+                        var htmlEscTxt = k.Item2;
+                        htmlText = htmlText.Replace(htmlEscTxt, replaceWith);
+                    }
+
+                    txtBlkXml.LoadXml(htmlText);
                     var cdata = txtBlkXml.DocumentElement?.InnerText;
                     if (string.IsNullOrWhiteSpace(cdata))
                         continue;
