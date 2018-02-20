@@ -44,13 +44,13 @@ namespace NoFuture.Rand.Exo
                 return false;
 
             var pd = myDynDataRslt.First();
-            var tickerSymbol = pd.symbol;
-            var exchange = pd.exchange;
-            var description = pd.description;
-            var website = pd.website;
+            var tickerSymbol = pd.symbol.Value;
+            var exchange = pd.exchange.Value;
+            var description = pd.description.Value;
+            var website = pd.website.Value;
 
             if (string.IsNullOrWhiteSpace(corp.Name))
-                corp.Name = pd.companyName;
+                corp.Name = pd.companyName.Value;
 
             var nfTicker = corp.TickerSymbols.FirstOrDefault(t => t.Symbol == tickerSymbol) ??
                            new TickerSymbol {Symbol = tickerSymbol};
@@ -263,6 +263,9 @@ namespace NoFuture.Rand.Exo
             }
 
             rptTenK.Src = srcUri?.ToString();
+
+            if(xbrlDyn.TextBlocks is IEnumerable<Tuple<string, string>> textBlocks && textBlocks.Any())
+                rptTenK.TextBlocks.AddRange(textBlocks);
 
             return true;
         }

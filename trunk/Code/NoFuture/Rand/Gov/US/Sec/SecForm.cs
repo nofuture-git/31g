@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NoFuture.Rand.Core;
@@ -14,6 +15,7 @@ namespace NoFuture.Rand.Gov.US.Sec
 
         #region fields
         protected string secFormNumber;
+        private readonly List<Tuple<string, string>> _textBlocks = new List<Tuple<string, string>>();
         #endregion
 
         #region properties
@@ -34,6 +36,12 @@ namespace NoFuture.Rand.Gov.US.Sec
         public bool IsLate { get; set; }
         public string AccessionNumber { get => Value; set => Value = value; }
         public Uri XmlLink { get; set; }
+
+        /// <summary>
+        /// Represents any kind of text found in an SEC report which is tagged with 
+        /// some kind of label so that it has a sense of context.
+        /// </summary>
+        public List<Tuple<string, string>> TextBlocks => _textBlocks;
         #endregion
 
         #region methods

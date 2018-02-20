@@ -17,6 +17,10 @@ Examples
    for all 'ul' siblings and under each of these the 'li/a'.  This 
    is useful for document-level lists whose only clue is relative position
 //div[contains(text(),'Main article')]/following-sibling::ul/li/a
+
+ - find nodes, on any xml namespace, whose node-name contains the 
+   text 'TextBlock'
+//*[contains(local-name(),'TextBlock')]
 ----
 
 ----

@@ -6,6 +6,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.US.Irs;
 using NoFuture.Rand.Gov.US.Sec;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Com
 {
@@ -32,7 +33,7 @@ namespace NoFuture.Rand.Com
             }
         }
 
-        public string UrlEncodedName => Util.Core.Etc.EscapeString(GetSearchCompanyName(Name));
+        public string UrlEncodedName => Util.Core.Etc.EscapeString(GetSearchCompanyName(Name), EscapeStringType.URI);
 
         public void AddTickerSymbol(TickerSymbol symbol)
         {

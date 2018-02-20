@@ -52,6 +52,7 @@ namespace NoFuture.Rand.Exo.NfXml
 
         #region fields
         private XmlNamespaceManager _nsMgr;
+        private XmlDocument _xml;
         #endregion
 
         #region ctor
@@ -75,35 +76,32 @@ namespace NoFuture.Rand.Exo.NfXml
             if (xmlNsMgr?.Item1 == null || xmlNsMgr.Item2 == null)
                 return null;
 
-            var xml = xmlNsMgr.Item1;
+            _xml = xmlNsMgr.Item1;
             _nsMgr = xmlNsMgr.Item2;
 
-            var amendmentFlag = false;
-            bool.TryParse(xml.SelectSingleNode($"//{XmlNs.DEI}:AmendmentFlag", _nsMgr)?.InnerText ?? bool.FalseString,
-                out amendmentFlag);
+            bool.TryParse(_xml.SelectSingleNode($"//{XmlNs.DEI}:AmendmentFlag", _nsMgr)?.InnerText ?? bool.FalseString,
+                out var amendmentFlag);
 
-            var endOfYear = 0;
-            var endOfYearStr = xml.SelectSingleNode($"//{XmlNs.DEI}:CurrentFiscalYearEndDate", _nsMgr)?.InnerText ??
+            var endOfYearStr = _xml.SelectSingleNode($"//{XmlNs.DEI}:CurrentFiscalYearEndDate", _nsMgr)?.InnerText ??
                                string.Empty;
-            Copula.TryGetDayOfYearFiscalEnd(endOfYearStr,out endOfYear);
+            Copula.TryGetDayOfYearFiscalEnd(endOfYearStr,out var endOfYear);
 
-            var cik = xml.SelectSingleNode($"//{XmlNs.DEI}:EntityCentralIndexKey", _nsMgr)?.InnerText;
-            var numOfShares = 0;
+            var cik = _xml.SelectSingleNode($"//{XmlNs.DEI}:EntityCentralIndexKey", _nsMgr)?.InnerText;
             int.TryParse(
-                xml.SelectSingleNode($"//{XmlNs.DEI}:EntityCommonStockSharesOutstanding", _nsMgr)?.InnerText ?? String.Empty,
-                out numOfShares);
-            var name = xml.SelectSingleNode($"//{XmlNs.DEI}:EntityRegistrantName", _nsMgr)?.InnerText;
-            var ticker = xml.SelectSingleNode($"//{XmlNs.DEI}:TradingSymbol", _nsMgr)?.InnerText;
+                _xml.SelectSingleNode($"//{XmlNs.DEI}:EntityCommonStockSharesOutstanding", _nsMgr)?.InnerText ?? String.Empty,
+                out var numOfShares);
+            var name = _xml.SelectSingleNode($"//{XmlNs.DEI}:EntityRegistrantName", _nsMgr)?.InnerText;
+            var ticker = _xml.SelectSingleNode($"//{XmlNs.DEI}:TradingSymbol", _nsMgr)?.InnerText;
 
-            var assets = GetNodeDollarYear(xml, $"//{XmlNs.US_GAAP}:Assets", _nsMgr);
-            var liabilities = GetNodeDollarYear(xml, $"//{XmlNs.US_GAAP}:Liabilities", _nsMgr);
+            var assets = GetNodeDollarYear(_xml, $"//{XmlNs.US_GAAP}:Assets", _nsMgr);
+            var liabilities = GetNodeDollarYear(_xml, $"//{XmlNs.US_GAAP}:Liabilities", _nsMgr);
 
-            var netIncome = GetNodeDollarYear(xml, $"//{XmlNs.US_GAAP}:NetIncomeLoss",_nsMgr);
+            var netIncome = GetNodeDollarYear(_xml, $"//{XmlNs.US_GAAP}:NetIncomeLoss",_nsMgr);
 
             List<Tuple<int, decimal>> operateIncome = new List<Tuple<int, decimal>>();
             foreach (var anotherName in new[] {"OperatingIncomeLoss", "BenefitsLossesAndExpenses"})
             {
-                operateIncome = GetNodeDollarYear(xml,
+                operateIncome = GetNodeDollarYear(_xml,
                     $"//{XmlNs.US_GAAP}:{anotherName}", _nsMgr);
                 if (operateIncome.Any())
                     break;
@@ -115,11 +113,13 @@ namespace NoFuture.Rand.Exo.NfXml
                     new[]
                     {"Revenues", "RetailRevenue", "SalesRevenueNet", "SalesRevenueServicesNet", "SalesRevenueGoodsNet"})
             {
-                salesRev = GetNodeDollarYear(xml,
+                salesRev = GetNodeDollarYear(_xml,
                     $"//{XmlNs.US_GAAP}:{anotherName}", _nsMgr);
                 if (salesRev.Any())
                     break;
             }
+
+            var textBlocks = GetTextBlocks();
 
             return new List<dynamic>
             {
@@ -135,7 +135,8 @@ namespace NoFuture.Rand.Exo.NfXml
                     Liabilities = liabilities,
                     NetIncome = netIncome,
                     OperatingIncome = operateIncome,
-                    Revenue = salesRev
+                    Revenue = salesRev, 
+                    TextBlocks = textBlocks
                 }
             };
         }
@@ -154,22 +155,8 @@ namespace NoFuture.Rand.Exo.NfXml
             var xml = new XmlDocument();
             xml.LoadXml(xmlContent);
 
-            if (!xml.HasChildNodes)
-                return null;
-            var rootElement = xml.DocumentElement;
-            if (rootElement == null)
-                return null;
-
             //namespace url's can change from file to file
-            var xmlNsDict = new Dictionary<string, string>();
-            foreach (var xmlNs in rootElement.Attributes.Cast<XmlAttribute>())
-            {
-                var nsName = xmlNs.Name.Contains(":") ? xmlNs.Name.Split(':')[1] : xmlNs.Name;
-                var nsVal = xmlNs.Value;
-                if (xmlNsDict.ContainsKey(nsName))
-                    continue;
-                xmlNsDict.Add(nsName, nsVal);
-            }
+            var xmlNsDict = GetXmlNamespaces(xml);
 
             var nsMgr = new XmlNamespaceManager(xml.NameTable);
             nsMgr.AddNamespace(XmlNs.DEI,
@@ -187,10 +174,75 @@ namespace NoFuture.Rand.Exo.NfXml
             else if (xmlNsDict.ContainsKey(XmlNs.XBR_LI))
             {
                 nsMgr.AddNamespace(XmlNs.ROOTNS, xmlNsDict[XmlNs.XBR_LI] ?? "http://www.xbrl.org/2003/instance");
-
             }
 
             return new Tuple<XmlDocument, XmlNamespaceManager>(xml, nsMgr);
+        }
+
+        /// <summary>
+        /// Gets the raw text content of all the xml elements whose element name contains 
+        /// the key word &apos;TextBlock&apos;
+        /// </summary>
+        /// <param name="xmlContent"></param>
+        /// <returns>
+        /// Each item represents the content of one TextBlock&apos;s InnerText content
+        /// </returns>
+        public IEnumerable<Tuple<string,string>> GetTextBlocks(string xmlContent = null)
+        {
+            if (!string.IsNullOrWhiteSpace(xmlContent))
+            {
+                var xmlNsMgr = GetXmlAndNsMgr(xmlContent);
+
+                _xml = xmlNsMgr.Item1;
+                _nsMgr = xmlNsMgr.Item2;
+            }
+
+            if(_xml == null || _nsMgr == null)
+                throw new RahRowRagee("You must either pass in the xml content yourself," +
+                                      " call this method after having made a call to ParseContent.");
+
+            var textBlockNodes = _xml.SelectNodes("//*[contains(local-name(),'TextBlock')]");
+            if (textBlockNodes == null || textBlockNodes.Count <= 0)
+                return null;
+
+            var textBlocks = new List<Tuple<string, string>>();
+            for (var i = 0; i < textBlockNodes.Count; i++)
+            {
+                if (!(textBlockNodes[i] is XmlElement tbnElem))
+                    continue;
+                if (!Antlr.HTML.HtmlParseResults.TryGetCdata(tbnElem.InnerText, null, out var cdata))
+                    continue;
+                textBlocks.Add(new Tuple<string, string>(tbnElem.Name, string.Join("  ", cdata)));
+            }
+
+            return textBlocks;
+        }
+
+        /// <summary>
+        /// Helper method to get the xml namespaces to uri from the document element
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        internal static Dictionary<string, string> GetXmlNamespaces(XmlDocument xml)
+        {
+            if (!xml.HasChildNodes)
+                return null;
+            var rootElement = xml.DocumentElement;
+            if (rootElement == null)
+                return null;
+
+            //namespace url's can change from file to file
+            var xmlNsDict = new Dictionary<string, string>();
+            foreach (var xmlNs in rootElement.Attributes.Cast<XmlAttribute>())
+            {
+                var nsName = xmlNs.Name.Contains(":") ? xmlNs.Name.Split(':')[1] : xmlNs.Name;
+                var nsVal = xmlNs.Value;
+                if (xmlNsDict.ContainsKey(nsName))
+                    continue;
+                xmlNsDict.Add(nsName, nsVal);
+            }
+
+            return xmlNsDict;
         }
 
         /// <summary>
@@ -236,9 +288,7 @@ namespace NoFuture.Rand.Exo.NfXml
                 if (diffInLen > 4)
                     continue;
 
-                decimal usd;
-                var yyyy = 0;
-                if (TryParseDollar(nodes[i], out usd) && TryGetYear(contextRefVal, xml, nsMgr, out yyyy))
+                if (TryParseDollar(nodes[i], out var usd) && TryGetYear(contextRefVal, xml, nsMgr, out var yyyy))
                 {
                     year2usdMoreInfo.Add(new Tuple<int, decimal, string>(yyyy, usd, contextRefVal));
                 }
@@ -296,16 +346,13 @@ namespace NoFuture.Rand.Exo.NfXml
         internal static bool TryParseDollar(XmlNode node, out decimal val)
         {
             val = 0M;
-            var elem = node as XmlElement;
-            if (elem == null)
+            if (!(node is XmlElement elem))
                 return false;
 
-            var moneyValue = 0M;
-            if (!decimal.TryParse(elem.InnerText, out moneyValue))
+            if (!decimal.TryParse(elem.InnerText, out var moneyValue))
                 return false;
 
-            var decPls = 0;
-            int.TryParse(elem.Attributes["decimals"]?.Value ?? string.Empty, out decPls);
+            int.TryParse(elem.Attributes["decimals"]?.Value ?? string.Empty, out var decPls);
             for (var i = 0; i < Math.Abs(decPls); i++)
             {
                 moneyValue *= 0.1M;
@@ -331,8 +378,7 @@ namespace NoFuture.Rand.Exo.NfXml
                 return false;
 
             //allow for some kind of fall-back value based on the contextRef text itself
-            string regexParsed;
-            if (RegexCatalog.IsRegexMatch(contextRef, DF_YEAR_PARSE_REGEX, out regexParsed, 1))
+            if (RegexCatalog.IsRegexMatch(contextRef, DF_YEAR_PARSE_REGEX, out var regexParsed, 1))
             {
                 int.TryParse(regexParsed, out yyyy);
             }
