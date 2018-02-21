@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Shared
+namespace NoFuture.Shared.Core
 {
     /// <summary>
     /// src [https://catalog.ldc.upenn.edu/docs/LDC99T42/tagguid1.pdf]

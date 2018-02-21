@@ -6,6 +6,7 @@ using System.Reflection;
 using NUnit.Framework;
 using NoFuture.Gen;
 using NoFuture.Shared;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Pos;
 
 namespace NoFuture.Tests.Gen

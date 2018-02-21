@@ -929,7 +929,7 @@ namespace NoFuture.Util.Core
             if (!isValid)
                 return null;
 
-            var asType = JsonConvert.DeserializeObject<dynamic>(jsonString);
+            var asType = JsonConvert.DeserializeObject(jsonString);
 
             jsonString = JsonConvert.SerializeObject(asType, Formatting.Indented);
 
