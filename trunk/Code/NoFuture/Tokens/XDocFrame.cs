@@ -95,7 +95,7 @@ namespace NoFuture.Tokens
                 throw new ItsDeadJim("The input string arg is empty.");
             }
 
-            inputString = Etc.DistillString(inputString);
+            inputString = Etc.DistillCrLf(inputString);
             inputString = Etc.DistillTabs(inputString);
 
             var tokens = GetTokens(inputString);
@@ -131,7 +131,7 @@ namespace NoFuture.Tokens
             }
 
             //crit - the indices must match the original so process like frame f(x) did
-            inputString = Etc.DistillString(inputString);
+            inputString = Etc.DistillCrLf(inputString);
             inputString = Etc.DistillTabs(inputString);
 
             XDocIter(xDoc,inputString);

@@ -1348,7 +1348,7 @@
               <secondary-sector ID="512" Description="Motion Picture and Sound Recording Industries">
                 <ternary-sector ID="5121" Description="Motion Picture and Video Industries">
                   <sic-code value="7812" sec-results="True" />
-                  <sic-code value="7829" sec-results="True" />
+                  <sic-code value="7829" sec-results="False" />
                   <sic-code value="7832" sec-results="False" />
                   <sic-code value="7833" sec-results="False" />
                 </ternary-sector>

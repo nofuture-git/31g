@@ -629,7 +629,7 @@ namespace NoFuture.Rand.Com
             }
 
             //only one space between unique words
-            var searchCompanyName = comName.ToString().ToUpper().DistillString();
+            var searchCompanyName = comName.ToString().ToUpper().DistillCrLf();
 
             //remove stop words 
             var nameParts = new List<string>();

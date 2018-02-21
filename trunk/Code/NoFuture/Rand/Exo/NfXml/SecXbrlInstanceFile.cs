@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Gov.US.Sec;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Exo.NfXml
 {
@@ -148,7 +149,7 @@ namespace NoFuture.Rand.Exo.NfXml
         /// <returns></returns>
         internal static Tuple<XmlDocument, XmlNamespaceManager> GetXmlAndNsMgr(string content)
         {
-            var xmlContent = content as string;
+            var xmlContent = content;
             if (string.IsNullOrWhiteSpace(xmlContent))
                 return null;
 
@@ -201,7 +202,7 @@ namespace NoFuture.Rand.Exo.NfXml
                 throw new RahRowRagee("You must either pass in the xml content yourself," +
                                       " call this method after having made a call to ParseContent.");
 
-            return GetEmbeddedHtmlContentFromInnerText(_xml, "//*[contains(text(),'<div style')]");
+            return GetEmbeddedHtmlContentFromInnerText(_xml, "//*[contains(text(),' style=')]");
             
         }
 
@@ -232,18 +233,19 @@ namespace NoFuture.Rand.Exo.NfXml
                 {
                     var txtBlkXml = new XmlDocument();
                     var htmlText = tbnElem.InnerText;
-                    foreach (var k in Util.Core.Etc.HtmlEscStrings)
+                    foreach (var k in Etc.HtmlEscStrings)
                     {
                         var replaceWith = new string(new []{(char)k.Item1});
                         var htmlEscTxt = k.Item2;
                         htmlText = htmlText.Replace(htmlEscTxt, replaceWith);
                     }
 
+                    htmlText = $"<nfNode>{htmlText}</nfNode>";
                     txtBlkXml.LoadXml(htmlText);
                     var cdata = txtBlkXml.DocumentElement?.InnerText;
                     if (string.IsNullOrWhiteSpace(cdata))
                         continue;
-                    dataout.Add(new Tuple<string, string>(tbnElem.Name, cdata));
+                    dataout.Add(new Tuple<string, string>(tbnElem.Name, cdata.DistillString()));
                 }
                 catch (XmlException) { }
             }

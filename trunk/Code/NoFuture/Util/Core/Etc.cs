@@ -174,13 +174,30 @@ namespace NoFuture.Util.Core
             }
         }
 
+
+        /// <summary>
+        /// Calls in tandem <see cref="DistillCrLf"/>, <see cref="DistillTabs"/>
+        /// and <see cref="DistillSpaces"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string DistillString(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+            value = DistillCrLf(value);
+            value = DistillTabs(value);
+            value = DistillSpaces(value);
+            return value;
+        }
+
         /// <summary>
         /// Distills the continous spaces into a single space and 
         /// replaces Cr [0x0D] and Lf [0x0A] characters with a single space.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static string DistillString(this string value)
+        public static string DistillCrLf(this string value)
         {
             if (String.IsNullOrWhiteSpace(value))
                 return null;
@@ -241,12 +258,16 @@ namespace NoFuture.Util.Core
         {
             if (string.IsNullOrWhiteSpace(value))
                 return null;
-            while (value.Contains("  "))
+            value = value.Replace((char) 0xA0, (char) 0x20);
+            while (true)
             {
-                value = value.Replace("  ", " ");
+                if (value.Contains("  "))
+                {
+                    value = value.Replace("  ", " ");
+                    continue;
+                }
+                return value.Replace("  ", " ");
             }
-
-            return value;
         }
 
         /// <summary>

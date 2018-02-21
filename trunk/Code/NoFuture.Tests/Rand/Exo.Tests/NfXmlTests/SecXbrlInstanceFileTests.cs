@@ -182,7 +182,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
         [Test]
         public void TestGetTextBlocks()
         {
-            var content =
+            var content = 
                 System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\ExampleSecXbrl3.xml");
             var testSubject = new SecXbrlInstanceFile(new Uri("http://localhost"));
             var testResults = testSubject.GetTextBlocks(content);

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Util;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Util
@@ -12,14 +10,87 @@ namespace NoFuture.Tests.Util
     public class EtcTests
     {
         [Test]
-        public void TestDistillSpaces()
+        public void TestDistillCrLf()
         {
             var testInput = @"    He has refused his Assent to Laws, the most wholesome and necessary for the public good.
     He has forbidden his Governors to pass Laws of immediate and pressing importance, ";
-            var testResult = Etc.DistillString(testInput);
+            var testResult = Etc.DistillCrLf(testInput);
 
             Console.WriteLine(testResult);
         }
+
+        [Test]
+        public void TestDistillSpaces()
+        {
+            var testResult = Etc.DistillSpaces("              here             is          to many           spaces");
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(" here is to many spaces", testResult);
+
+            testResult =
+                Etc.DistillSpaces(
+                    "            December 31,      2016    2015   (in millions)Net operating losses         ");
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(" December 31, 2016 2015 (in millions)Net operating losses ", testResult);
+            Console.WriteLine(testResult);
+
+        }
+
+        [Test]
+        public void TestDistillString()
+        {
+            var testInput = @"
+ 
+						 
+						 
+						 
+						 
+						 
+						  
+						 December 31,      2016    2015 
+						 (in millions)Net operating losses
+						 
+						 
+						 
+						 
+						 
+						 Balance at January 1, 
+						 $4.2
+				
+						 $78.1
+				Permanent loss of tax benefit related to NOLs limited by ownership change
+						 
+						   —
+						 
+						 (72.5)
+				NOL generated (utilized)
+						 
+						 (2.2)
+				
+						 
+						 (1.7)
+				NOL expired unused
+						 
+						   —
+						 
+						   —Other, including changes in foreign exchange rates
+						 
+						 0.1
+				
+						 
+						 0.3
+				Balance at December 31, 
+						 $  2.1
+				
+						 $4.2
+				 
+";
+            var testResult = testInput.DistillString();
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(" December 31, 2016 2015 (in millions)Net operating losses Balance at January 1, $4.2 $78.1 Permanent loss of tax benefit related to NOLs limited by ownership change — (72.5) NOL generated (utilized) (2.2) (1.7) NOL expired unused — —Other, including changes in foreign exchange rates 0.1 0.3 Balance at December 31, $ 2.1 $4.2 ", testResult);
+            Console.WriteLine(testResult);
+
+        }
+
 
         [Test]
         public void TestToOrdinal()

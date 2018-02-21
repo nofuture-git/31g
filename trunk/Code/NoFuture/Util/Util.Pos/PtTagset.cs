@@ -171,7 +171,7 @@ namespace NoFuture.Util.Pos
             {
                 return tagset.ToArray();
             }
-            taggedString = Etc.DistillString(taggedString);
+            taggedString = Etc.DistillCrLf(taggedString);
 
             var valueArray = taggedString.Split(' ');
 
