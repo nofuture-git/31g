@@ -9,6 +9,34 @@ namespace NoFuture.Rand.Gov.US.Sec
     [Serializable]
     public abstract class SecForm : Identifier
     {
+        /// <summary>
+        /// Inner type to order the <see cref="SecForm.TextBlocks"/> by the length of
+        /// Item2
+        /// </summary>
+        internal class TextBlockComparer : IComparer<Tuple<string, string>>
+        {
+            private const int Y_IS_GT_X = -1;
+            private const int X_IS_GT_Y = 1;
+
+            public int Compare(Tuple<string, string> x, Tuple<string, string> y)
+            {
+                if (x == null && y == null)
+                    return 0;
+                if (x?.Item2 == null)
+                    return Y_IS_GT_X;
+                if (y?.Item2 == null)
+                    return X_IS_GT_Y;
+
+                var xItem2Len = x.Item2.Length;
+                var yItem2Len = y.Item2.Length;
+
+                if (xItem2Len == yItem2Len)
+                    return 0;
+
+                return xItem2Len > yItem2Len ? X_IS_GT_Y : Y_IS_GT_X;
+            }
+        }
+
         #region constants
         public const string NOTIFICATION_OF_INABILITY_TO_TIMELY_FILE = "NT";
         #endregion
@@ -16,6 +44,7 @@ namespace NoFuture.Rand.Gov.US.Sec
         #region fields
         protected string secFormNumber;
         private readonly List<Tuple<string, string>> _textBlocks = new List<Tuple<string, string>>();
+        private readonly IComparer<Tuple<string, string>> _textBlockComparer = new TextBlockComparer();
         #endregion
 
         #region properties
@@ -41,7 +70,14 @@ namespace NoFuture.Rand.Gov.US.Sec
         /// Represents any kind of text found in an SEC report which is tagged with 
         /// some kind of label so that it has a sense of context.
         /// </summary>
-        public List<Tuple<string, string>> TextBlocks => _textBlocks;
+        public List<Tuple<string, string>> TextBlocks
+        {
+            get
+            {
+                _textBlocks.Sort(_textBlockComparer);
+                return _textBlocks;
+            }
+        }
         #endregion
 
         #region methods

@@ -60,6 +60,14 @@ namespace NoFuture.Rand.Exo.Tests
 
             Assert.AreEqual(2695680M, tenK2015.Revenue);
 
+            Assert.IsNotNull(tenK2015.TextBlocks);
+            Assert.AreNotEqual(0, tenK2015.TextBlocks.Count);
+
+            var lastTb = tenK2015.TextBlocks.Last();
+            var firstTb = tenK2015.TextBlocks.First();
+
+            Assert.IsTrue(lastTb.Item2.Length > firstTb.Item2.Length);
+
         }
     }
 }
