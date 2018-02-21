@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="ITagset.cs" />
     <Compile Include="ProgressMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegexCatalog.cs" />
