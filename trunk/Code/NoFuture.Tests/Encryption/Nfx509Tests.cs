@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using NoFuture.Encryption;
 using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
@@ -57,14 +58,14 @@ namespace NoFuture.Tests.Encryption
 
             NoFuture.Encryption.NfX509.EncryptFile(TEST_PLAINTEXT, TEST_CERT_CER_PATH);
 
-            Assert.IsTrue(File.Exists(TEST_PLAINTEXT + Constants.NF_CRYPTO_EXT));
+            Assert.IsTrue(File.Exists(TEST_PLAINTEXT + NfX509.NF_CRYPTO_EXT));
 
         }
 
         [Test]
         public void TestDecryptFile()
         {
-            Assert.IsTrue(File.Exists(TEST_PLAINTEXT + Constants.NF_CRYPTO_EXT));
+            Assert.IsTrue(File.Exists(TEST_PLAINTEXT + NfX509.NF_CRYPTO_EXT));
 
             if (File.Exists(TEST_PLAINTEXT))
             {
@@ -72,7 +73,7 @@ namespace NoFuture.Tests.Encryption
             }
             Thread.Sleep(1000);
 
-            NoFuture.Encryption.NfX509.DecryptFile(TEST_PLAINTEXT + Constants.NF_CRYPTO_EXT, TEST_CERT_PFX_PATH, TEST_PWD);
+            NoFuture.Encryption.NfX509.DecryptFile(TEST_PLAINTEXT + NfX509.NF_CRYPTO_EXT, TEST_CERT_PFX_PATH, TEST_PWD);
 
             Assert.IsTrue(File.Exists(TEST_PLAINTEXT));
 

@@ -200,7 +200,9 @@ namespace NoFuture.Util.Core
         /// This will break one file into many on the <see cref="tupleMarker"/> having either <see cref="maxLength"/> or less.
         /// </summary>
         /// <param name="path"></param>
-        /// <param name="maxLength"></param>
+        /// <param name="maxLength">
+        /// The max size allowed by PowerShell 3.0's ConvertTo-Json cmdlet.
+        /// </param>
         /// <param name="tupleMarker">
         /// Delimiter, itself being limited to three chars.
         /// Pass in null to have it default to the char sequence of "}," (x7D x2C)
@@ -212,7 +214,7 @@ namespace NoFuture.Util.Core
         /// NOTE: the split will proceed with or without a match to the marker.  If the <see cref="tupleMarker"/> never appears in the 
         /// <see cref="path"/> even once, then expect every file to be exactly the size of <see cref="maxLength"/>
         /// </remarks>
-        public static bool TrySplitFileOnMarker(string path, Tuple<char?, char?, char?> tupleMarker, int maxLength = Constants.MAX_JSON_LEN)
+        public static bool TrySplitFileOnMarker(string path, Tuple<char?, char?, char?> tupleMarker, int maxLength = 2097152)
         {
             String marker;
             if (tupleMarker == null)

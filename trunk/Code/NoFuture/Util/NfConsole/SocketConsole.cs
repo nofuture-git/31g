@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Core;
 
 namespace NoFuture.Util.NfConsole
 {
@@ -17,6 +14,8 @@ namespace NoFuture.Util.NfConsole
     /// </summary>
     public abstract class SocketConsole : Program
     {
+        public const int SOCKET_LISTEN_NUM = 5;
+
         protected SocketConsole(string[] args, bool isVisable)
             : base(args, isVisable)
         {
@@ -47,7 +46,7 @@ namespace NoFuture.Util.NfConsole
                 var endPt = new IPEndPoint(IPAddress.Loopback, cmdPort);
                 PrintToConsole($"Listening on port {cmdPort}");
                 socket.Bind(endPt);
-                socket.Listen(Constants.SOCKET_LISTEN_NUM);
+                socket.Listen(SOCKET_LISTEN_NUM);
 
                 for (; ; )//ever
                 {

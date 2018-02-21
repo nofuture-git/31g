@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using edu.stanford.nlp.tagger.maxent;
+using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 

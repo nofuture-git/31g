@@ -231,7 +231,6 @@ namespace NoFuture.Rand.Exo.NfXml
                     continue;
                 try
                 {
-                    var txtBlkXml = new XmlDocument();
                     var htmlText = tbnElem.InnerText;
                     foreach (var k in Etc.HtmlEscStrings)
                     {
@@ -240,7 +239,13 @@ namespace NoFuture.Rand.Exo.NfXml
                         htmlText = htmlText.Replace(htmlEscTxt, replaceWith);
                     }
 
+                    //want node break to be preserved as spaces
+                    htmlText = htmlText.Replace("</", " </");
+
+                    //inner html may not have a document node 
                     htmlText = $"<nfNode>{htmlText}</nfNode>";
+
+                    var txtBlkXml = new XmlDocument();
                     txtBlkXml.LoadXml(htmlText);
                     var cdata = txtBlkXml.DocumentElement?.InnerText;
                     if (string.IsNullOrWhiteSpace(cdata))

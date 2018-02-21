@@ -16,6 +16,7 @@ namespace NoFuture.Encryption
     public class NfX509
     {
         public const string MS_CRYPTO_PROV_NAME = "Microsoft Enhanced RSA and AES Cryptographic Provider";
+        public const string NF_CRYPTO_EXT = ".nfk"; //nofuture kruptos
 
         /// <summary>
         /// https://tools.ietf.org/html/rfc4519
@@ -30,7 +31,7 @@ namespace NoFuture.Encryption
 
             public DistinguishedName(string cn)
             {
-                CommonName = string.IsNullOrWhiteSpace(cn) ? "NoFuture" : cn;
+                CommonName = String.IsNullOrWhiteSpace(cn) ? "NoFuture" : cn;
                 OrgName = "NoFuture";
                 OrgUnit = null;
                 City = "Spook City";
@@ -45,16 +46,16 @@ namespace NoFuture.Encryption
             {
                 var dn = new List<string> {"CN=" + CommonName, "C=US"};
 
-                if (!string.IsNullOrWhiteSpace(OrgName))
+                if (!String.IsNullOrWhiteSpace(OrgName))
                     dn.Add("O=" + OrgName);
-                if (!string.IsNullOrWhiteSpace(OrgUnit))
+                if (!String.IsNullOrWhiteSpace(OrgUnit))
                     dn.Add("OU=" + OrgUnit);
-                if (!string.IsNullOrWhiteSpace(City))
+                if (!String.IsNullOrWhiteSpace(City))
                     dn.Add("L=" + City);
-                if (!string.IsNullOrWhiteSpace(State))
+                if (!String.IsNullOrWhiteSpace(State))
                     dn.Add("S=" + State);
 
-                return string.Join(";", dn);
+                return String.Join(";", dn);
             }
         }
 
@@ -163,10 +164,10 @@ namespace NoFuture.Encryption
         public static void EncryptFile(string path, string certCerPath)
         {
             //test inputs
-            TestEnDeCryptInputs(path, certCerPath, string.Empty);
+            TestEnDeCryptInputs(path, certCerPath, String.Empty);
 
             var encFile = Path.Combine(Path.GetDirectoryName(path) ?? Environment.CurrentDirectory,
-                Path.GetFileName(path) + Constants.NF_CRYPTO_EXT);
+                Path.GetFileName(path) + NF_CRYPTO_EXT);
 
             //import the cert
             var cert = new X509Certificate2(certCerPath);
@@ -296,9 +297,9 @@ namespace NoFuture.Encryption
 
         private static bool TestEnDeCryptInputs(string path, string certCerPath, string certPassword)
         {
-            if (string.IsNullOrWhiteSpace(path))
+            if (String.IsNullOrWhiteSpace(path))
                 throw new ArgumentNullException(nameof(path));
-            if (string.IsNullOrWhiteSpace(certCerPath))
+            if (String.IsNullOrWhiteSpace(certCerPath))
                 throw new ArgumentNullException(nameof(certCerPath));
             if (certPassword == null)
                 throw new ArgumentNullException(nameof(certPassword));

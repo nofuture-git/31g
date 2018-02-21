@@ -191,7 +191,7 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
             Assert.AreNotEqual(0,testResults.Count());
 
             var examples = testResults.Take(3);
-            foreach(var eg in examples)
+            foreach (var eg in examples)
                 Console.Write(eg);
         }
     }

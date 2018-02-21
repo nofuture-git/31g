@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.ComponentModel;
-using System.Reflection;
 
 namespace NoFuture.Shared.Core
 {
@@ -22,17 +20,6 @@ namespace NoFuture.Shared.Core
     }
 
     /// <summary>
-    /// Common versions of the .NET framework
-    /// </summary>
-    public enum DotNetVersion
-    {
-        NET11,
-        NET20,
-        NET35,
-        NET4Plus
-    }
-
-    /// <summary>
     /// Misc. constant values used throughout.
     /// </summary>
     public class Constants
@@ -40,16 +27,9 @@ namespace NoFuture.Shared.Core
         [EditorBrowsable(EditorBrowsableState.Never)]
         public const string ENUM = "System.Enum";
 
-        public const string NF_CRYPTO_EXT = ".nfk"; //nofuture kruptos
         public const char LF = (char)0xA;
         public const char CR = (char)0xD;
         public const string TYPE_METHOD_NAME_SPLIT_ON = "::";
-
-        public const int SOCKET_LISTEN_NUM = 5;
-        /// <summary>
-        /// The max size allowed by PowerShell 3.0's ConvertTo-Json cmdlet.
-        /// </summary>
-        public const int MAX_JSON_LEN = 2097152;
 
         public const double DBL_TROPICAL_YEAR = 365.24255;
 

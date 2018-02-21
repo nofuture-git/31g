@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Shared;
 using NUnit.Framework;
 using NoFuture.Util.Pos;
 
@@ -36,7 +37,7 @@ namespace NoFuture.Tests.Util.Pos
         public void TestParseResults()
         {
             const string TEST_INPUT = "This/DT is/VBZ a/DT sample/NN sentence/NN";
-            NoFuture.Util.Pos.TagsetBase[] testOutList = null;
+            TagsetBase[] testOutList = null;
             var testResult = NoFuture.Util.Pos.PtTagset.TryParse(TEST_INPUT, out testOutList);
 
             for (var i = 0; i < testOutList.Length; i++ )
@@ -47,19 +48,19 @@ namespace NoFuture.Tests.Util.Pos
             Assert.IsTrue(testResult);
             Assert.AreEqual(5, testOutList.Count());
 
-            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Determiner), testOutList[0]);
+            Assert.IsInstanceOf(typeof(Determiner), testOutList[0]);
             Assert.AreEqual("This", testOutList[0].Value);
 
-            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Verb3rdPersonSingularPresent),testOutList[1]);
+            Assert.IsInstanceOf(typeof(Verb3rdPersonSingularPresent),testOutList[1]);
             Assert.AreEqual("is", testOutList[1].Value);
 
-            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Determiner),testOutList[2]);
+            Assert.IsInstanceOf(typeof(Determiner),testOutList[2]);
             Assert.AreEqual("a", testOutList[2].Value);
 
-            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.NounSingularOrMass),testOutList[3]);
+            Assert.IsInstanceOf(typeof(NounSingularOrMass),testOutList[3]);
             Assert.AreEqual("sample", testOutList[3].Value);
 
-            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.NounSingularOrMass), testOutList[4]);
+            Assert.IsInstanceOf(typeof(NounSingularOrMass), testOutList[4]);
             Assert.AreEqual("sentence",testOutList[4].Value);
         }
 
@@ -67,7 +68,7 @@ namespace NoFuture.Tests.Util.Pos
         public void TestSentenceBreakParse()
         {
             NoFuture.Util.Pos.PtTagset.TagDelimiter = '_';
-            NoFuture.Util.Pos.TagsetBase[] testOutList;
+            TagsetBase[] testOutList;
 
             var testInput = @"When_WRB in_IN the_DT Course_NNP of_IN human_JJ events_NNS ,_, it_PRP becomes_VBZ necessary_JJ for_IN one_CD people_NNS to_TO dissolve_VB the_DT political_JJ bands_NNS which_WDT have_VBP connected_VBN them_PRP with_IN another_DT ,_, and_CC to_TO assume_VB among_IN the_DT powers_NNS of_IN the_DT earth_NN ,_, the_DT separate_JJ and_CC equal_JJ station_NN to_TO which_WDT the_DT Laws_NNPS of_IN Nature_NNP and_CC of_IN Nature_NNP 's_POS God_NNP entitle_VB them_PRP ,_, a_DT decent_JJ respect_NN to_TO the_DT opinions_NNS of_IN mankind_NN requires_VBZ that_IN they_PRP should_MD declare_VB the_DT causes_NNS which_WDT impel_VBP them_PRP to_TO the_DT separation_NN ._.";
             var testResult = NoFuture.Util.Pos.PtTagset.TryParse(testInput, out testOutList);
@@ -75,7 +76,7 @@ namespace NoFuture.Tests.Util.Pos
             Assert.IsNotNull(testOutList);
             Assert.AreNotEqual(0 ,testOutList.Length);
             Assert.IsTrue(testOutList.Length > 8);
-            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Comma), testOutList[7]);
+            Assert.IsInstanceOf(typeof(Comma), testOutList[7]);
 
         }
 
@@ -95,7 +96,7 @@ namespace NoFuture.Tests.Util.Pos
         public void TestParseResultsBySentences()
         {
             NoFuture.Util.Pos.PtTagset.TagDelimiter = '_';
-            NoFuture.Util.Pos.TagsetBase[][] testOutList;
+            TagsetBase[][] testOutList;
             
             var testResult = NoFuture.Util.Pos.PtTagset.TryParse(_largeTestFile, out testOutList);
             Assert.IsTrue(testResult);
@@ -116,8 +117,8 @@ namespace NoFuture.Tests.Util.Pos
             Assert.IsNotNull(testOutList[1]);
             Assert.AreNotEqual(0,testOutList[1].Length);
 
-            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Determiner),testOutList[1][0]);
-            Assert.IsInstanceOf(typeof(NoFuture.Util.Pos.Adjective),testOutList[1][1]);
+            Assert.IsInstanceOf(typeof(Determiner),testOutList[1][0]);
+            Assert.IsInstanceOf(typeof(Adjective),testOutList[1][1]);
 
             var secondtolastValue = testOutList[36][0].Value;
             var lastValue = testOutList[36][1].Value;

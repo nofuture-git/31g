@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
