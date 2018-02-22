@@ -10,20 +10,22 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Com
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Represents a publicly traded corporation
+    /// Represents a publicly traded company 
+    /// (a.k.a. publicly traded company, publicly held company, publicly listed company, public corporation)
     /// </summary>
     [Serializable]
     public class PublicCompany : Firm
     {
         private readonly List<SecForm> _secReports = new List<SecForm>();
-        private readonly HashSet<TickerSymbol> _tickerSymbols = new HashSet<TickerSymbol>();
+        private List<TickerSymbol> _tickerSymbols = new List<TickerSymbol>();
 
         public EmployerIdentificationNumber EIN { get; set; }
         public CentralIndexKey CIK { get; set; }
         public List<SecForm> SecReports => _secReports;
         public string UsStateOfIncorporation { get; set; }
-        public IEnumerable<TickerSymbol> TickerSymbols
+        public List<TickerSymbol> TickerSymbols
         {
             get
             {
@@ -31,6 +33,7 @@ namespace NoFuture.Rand.Com
                 t.Sort(new TickerComparer(Name));
                 return t;
             }
+            set => _tickerSymbols = value;
         }
 
         public string UrlEncodedName => Util.Core.Etc.EscapeString(GetSearchCompanyName(Name), EscapeStringType.URI);

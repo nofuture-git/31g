@@ -119,8 +119,10 @@ namespace NoFuture.Rand.Com
             var abbrev = bankXml.GetAttribute("abbrev");
             var rssd = bankXml.GetAttribute("rssd");
 
-            bank.BusinessAddress = new Tuple<UsStreetPo, UsCityStateZip>(null,
-                new UsCityStateZip(new AddressData {City = city, StateAbbrev = state}));
+            bank.BusinessAddress = new PostalAddress
+            {
+                CityArea = new UsCityStateZip(new AddressData {City = city, StateAbbrev = state})
+            };
             bank.Rssd = new ResearchStatisticsSupervisionDiscount {Value = rssd};
             bank.RoutingNumber = RoutingTransitNumber.RandomRoutingNumber();
             bank.UpsertName(KindsOfNames.Legal, name);

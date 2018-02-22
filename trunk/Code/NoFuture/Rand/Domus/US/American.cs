@@ -206,7 +206,7 @@ namespace NoFuture.Rand.Domus.US
                     Gender.Female) as American
                 : GetBiologicalMother() as American;
             var dtAtAge18 = dob.AddYears(UsState.AGE_OF_ADULT);
-            var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.HomeCityArea as UsCityStateZip ?? CityArea.RandomAmericanCity();
+            var homeCityArea = mother?.GetAddressAt(dtAtAge18)?.CityArea as UsCityStateZip ?? CityArea.RandomAmericanCity();
             return AmericanEducation.RandomEducation(dob, homeCityArea.StateAbbrev, homeCityArea.ZipCode);
         }
 
@@ -260,7 +260,7 @@ namespace NoFuture.Rand.Domus.US
 
                 if (namerLivesWith.Address == null)
                     namerLivesWith.AddAddress(
-                        PostalAddress.RandomAmericanAddress(Address.HomeCityArea.GetPostalCodePrefix()));
+                        PostalAddress.RandomAmericanAddress(Address.CityArea.GetPostalCodePrefix()));
 
                 AmericanUtil.SetNAmerCohabitants(namerChild, namerLivesWith);
             }
@@ -280,7 +280,7 @@ namespace NoFuture.Rand.Domus.US
             if (_dl != null)
                 return _dl;
 
-            var csz = GetAddressAt(dt)?.HomeCityArea;
+            var csz = GetAddressAt(dt)?.CityArea;
             var amerCsz = csz as UsCityStateZip;
             var dlFormats = UsState.GetState(amerCsz?.StateName)?.DriversLicenseFormats;
             if (dlFormats == null || !dlFormats.Any())
@@ -363,7 +363,7 @@ namespace NoFuture.Rand.Domus.US
             myMother.AddChild(this);
 
             //TODO reslove this using data from census.gov
-            var birthCity = myMother.GetAddressAt(BirthCert.DateOfBirth)?.HomeCityArea as UsCityStateZip;
+            var birthCity = myMother.GetAddressAt(BirthCert.DateOfBirth)?.CityArea as UsCityStateZip;
             if (birthCity != null)
             {
                 ((AmericanBirthCert) BirthCert).City = birthCity.City;
@@ -630,7 +630,7 @@ namespace NoFuture.Rand.Domus.US
         {
             if (GetAddressAt(null) == null)
                 return UsState.AGE_OF_ADULT;
-            var myHomeState = UsState.GetStateByPostalCode(GetAddressAt(null)?.HomeCityArea?.AddressData?.StateAbbrev);
+            var myHomeState = UsState.GetStateByPostalCode(GetAddressAt(null)?.CityArea?.AddressData?.StateAbbrev);
             return myHomeState?.AgeOfMajority ?? UsState.AGE_OF_ADULT;
         }
 
@@ -709,7 +709,7 @@ namespace NoFuture.Rand.Domus.US
 
             var homeAddr = PostalAddress.RandomAmericanAddress();
             amer.GetAddresses().Add(homeAddr);
-            var csz = homeAddr.HomeCityArea as UsCityStateZip;
+            var csz = homeAddr.CityArea as UsCityStateZip;
 
             var abbrv = csz?.StateAbbrev;
 
@@ -768,8 +768,8 @@ namespace NoFuture.Rand.Domus.US
             var americanBirthCert = (AmericanBirthCert)amer.BirthCert;
             var nAmerFather = father as American;
 
-            var birthPlace = nAmerMother.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip ??
-                             nAmerFather?.GetAddressAt(dob)?.HomeCityArea as UsCityStateZip ??
+            var birthPlace = nAmerMother.GetAddressAt(dob)?.CityArea as UsCityStateZip ??
+                             nAmerFather?.GetAddressAt(dob)?.CityArea as UsCityStateZip ??
                              CityArea.RandomAmericanCity();
 
             americanBirthCert.City = birthPlace.City;

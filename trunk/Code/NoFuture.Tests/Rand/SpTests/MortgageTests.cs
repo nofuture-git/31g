@@ -66,8 +66,8 @@ namespace NoFuture.Rand.Tests.SpTests
                 StreetName = "lmnop",
                 StreetType = "st"
             };
-            addr.HomeCityArea = new UsCityStateZip(addrData);
-            addr.HomeStreetPo = new UsStreetPo(addrData);
+            addr.CityArea = new UsCityStateZip(addrData);
+            addr.Street = new UsStreetPo(addrData);
 
             var testSubject = new Mortgage(addr, purchaseDate, rate, purchasePrice.ToPecuniam());
 

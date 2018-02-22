@@ -851,7 +851,7 @@ BLOOMBERG.gpt.render({""ad_description"":""blp.persfin/invest//ticker//lookup"",
 
             Assert.AreNotEqual(testInput.Length, testResult.Length);
 
-            System.IO.File.WriteAllText(TestAssembly.TestDataDir + @"\Rand\BloombergSearchRslt_tr.html", testResult);
+            System.IO.File.WriteAllText(TestAssembly.TestDataDir + @"\BloombergSearchRslt_tr.html", testResult);
 
         }
     }

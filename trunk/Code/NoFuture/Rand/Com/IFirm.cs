@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Geo.US;
+using NoFuture.Rand.Geo;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Tele;
 
@@ -16,8 +16,8 @@ namespace NoFuture.Rand.Com
         string Name { get; set; }
         string Description { get; set; }
         IEnumerable<Uri> NetUri { get; }
-        Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
-        Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
+        PostalAddress MailingAddress { get; set; }
+        PostalAddress BusinessAddress { get; set; }
         NorthAmericanPhone[] Phone { get; set; }
         StandardIndustryClassification SIC { get; set; }
         NaicsPrimarySector PrimarySector { get; set; }

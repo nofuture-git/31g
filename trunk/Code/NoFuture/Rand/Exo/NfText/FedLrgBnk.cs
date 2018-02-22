@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov.US.Fed;
 using NoFuture.Shared.Core;
@@ -46,7 +47,7 @@ namespace NoFuture.Rand.Exo.NfText
             bank.UpsertName(KindsOfNames.Abbrev, li.BankName);
             bank.Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
             if (UsCityStateZip.TryParse(li.Location, out UsCityStateZip cityOut, false))
-                bank.BusinessAddress = new Tuple<UsStreetPo, UsCityStateZip>(null, cityOut);
+                bank.BusinessAddress = new PostalAddress {CityArea = cityOut};
             if (TypeOfBankAbbrev3Enum.ContainsKey(li.Chtr))
                 bank.BankType = TypeOfBankAbbrev3Enum[li.Chtr];
             var assets = new BankAssetsSummary { Src = FedLrgBnk.RELEASE_URL };

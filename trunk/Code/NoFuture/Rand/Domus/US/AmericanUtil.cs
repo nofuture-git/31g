@@ -410,10 +410,10 @@ namespace NoFuture.Rand.Domus.US
                 thisPerson.AddPhone(livesWithThisOne.GetPhoneNumbers().First(p => p.Descriptor == KindsOfLabels.Home));
             }
             if (thisPerson.GetAgeAt(null) < 12 ||
-                String.IsNullOrWhiteSpace(addrMatchTo.HomeCityArea?.GetPostalCodePrefix()))
+                String.IsNullOrWhiteSpace(addrMatchTo.CityArea?.GetPostalCodePrefix()))
                 return;
 
-            var mobilePhone = NorthAmericanPhone.RandomAmericanPhone(addrMatchTo.HomeCityArea.GetPostalCodePrefix());
+            var mobilePhone = NorthAmericanPhone.RandomAmericanPhone(addrMatchTo.CityArea.GetPostalCodePrefix());
             mobilePhone.Descriptor = KindsOfLabels.Mobile;
             thisPerson.AddPhone(mobilePhone);
         }

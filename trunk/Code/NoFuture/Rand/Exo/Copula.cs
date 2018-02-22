@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Exo
                            new TickerSymbol {Symbol = tickerSymbol};
             nfTicker.Exchange = exchange;
             if(corp.TickerSymbols.All(t => t.Symbol != tickerSymbol))
-                corp.AddTickerSymbol(nfTicker);
+                corp.TickerSymbols.Add(nfTicker);
             corp.Description = description;
             corp.AddUri((string)website);
 
@@ -202,7 +202,7 @@ namespace NoFuture.Rand.Exo
                 pc.TickerSymbols.All(x => !String.Equals(x.Symbol, ticker, StringComparison.OrdinalIgnoreCase)))
             {
                 ticker = ticker.ToUpper();
-                pc.AddTickerSymbol(new TickerSymbol { Symbol = ticker, Country = "USA" });
+                pc.TickerSymbols.Add(new TickerSymbol { Symbol = ticker, Country = "USA" });
             }
 
             var legalName = xbrlDyn.Name;
@@ -295,7 +295,7 @@ namespace NoFuture.Rand.Exo
                         existing.InstrumentType = dd.InstrumentType;
                         continue;
                     }
-                    pc.AddTickerSymbol(new TickerSymbol
+                    pc.TickerSymbols.Add(new TickerSymbol
                     {
                         Symbol = dd.Symbol,
                         InstrumentType = dd.InstrumentType,
@@ -440,9 +440,11 @@ namespace NoFuture.Rand.Exo
             if (!String.IsNullOrWhiteSpace(pr.BizPostalCode))
                 bizAddr.PostalCode = pr.BizPostalCode;
 
-            publicCompany.BusinessAddress =
-                new Tuple<UsStreetPo, UsCityStateZip>(new UsStreetPo(bizAddr) { Src = myDynData.SourceUri.ToString() },
-                    new UsCityStateZip(bizAddr) { Src = myDynData.SourceUri.ToString() });
+            publicCompany.BusinessAddress = new PostalAddress
+            {
+                Street = new UsStreetPo(bizAddr) {Src = myDynData.SourceUri.ToString()},
+                CityArea = new UsCityStateZip(bizAddr) {Src = myDynData.SourceUri.ToString()}
+            };
 
             var mailAddr = new AddressData();
             if (!String.IsNullOrWhiteSpace(pr.MailAddrStreet))
@@ -461,8 +463,11 @@ namespace NoFuture.Rand.Exo
             if (!String.IsNullOrWhiteSpace(pr.MailPostalCode))
                 mailAddr.PostalCode = pr.MailPostalCode;
 
-            publicCompany.MailingAddress = new Tuple<UsStreetPo, UsCityStateZip>(new UsStreetPo(mailAddr) { Src = myDynData.SourceUri.ToString() },
-                new UsCityStateZip(mailAddr) { Src = myDynData.SourceUri.ToString() });
+            publicCompany.MailingAddress = new PostalAddress
+            {
+                Street = new UsStreetPo(mailAddr) {Src = myDynData.SourceUri.ToString()},
+                CityArea = new UsCityStateZip(mailAddr) {Src = myDynData.SourceUri.ToString()}
+            };
 
             var phs = new List<NorthAmericanPhone>();
             if (publicCompany.Phone != null && publicCompany.Phone.Length > 0)

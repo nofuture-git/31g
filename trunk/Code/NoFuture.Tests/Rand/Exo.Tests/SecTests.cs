@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Exo.NfXml;
+using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov.US.Sec;
 
 namespace NoFuture.Rand.Exo.Tests.TestData
@@ -35,20 +36,32 @@ namespace NoFuture.Rand.Exo.Tests.TestData
             Assert.IsNotNull(testResultOut.MailingAddress);
             Assert.IsNotNull(testResultOut.BusinessAddress);
 
-            Assert.AreEqual("250", testResultOut.BusinessAddress.Item1.PostBox);
-            Assert.AreEqual("GLEN", testResultOut.BusinessAddress.Item1.StreetName);
-            Assert.AreEqual("ST", testResultOut.BusinessAddress.Item1.StreetKind);
+            Assert.IsInstanceOf(typeof(UsStreetPo), testResultOut.MailingAddress.Street);
+            Assert.IsInstanceOf(typeof(UsCityStateZip), testResultOut.MailingAddress.CityArea);
 
-            Assert.AreEqual("250", testResultOut.MailingAddress.Item1.PostBox);
-            //Assert.AreEqual("GLEN STREET", testResultOut.MailingAddress.Item1.StreetName);
+            var mailingAddrStreet = (UsStreetPo)testResultOut.MailingAddress.Street;
+            var mailingAddrCity = (UsCityStateZip) testResultOut.MailingAddress.CityArea;
 
-            Assert.AreEqual("GLENS FALLS", testResultOut.BusinessAddress.Item2.City);
-            Assert.AreEqual("NY", testResultOut.BusinessAddress.Item2.StateAbbrev);
-            Assert.AreEqual("12801", testResultOut.BusinessAddress.Item2.ZipCode);
+            Assert.IsInstanceOf(typeof(UsStreetPo), testResultOut.BusinessAddress.Street);
+            Assert.IsInstanceOf(typeof(UsCityStateZip), testResultOut.BusinessAddress.CityArea);
 
-            Assert.AreEqual("GLENS FALLS", testResultOut.MailingAddress.Item2.City);
-            Assert.AreEqual("NY", testResultOut.MailingAddress.Item2.StateAbbrev);
-            Assert.AreEqual("12801", testResultOut.MailingAddress.Item2.ZipCode);
+            var bizAddrStreet = (UsStreetPo)testResultOut.BusinessAddress.Street;
+            var bizAddrCity = (UsCityStateZip)testResultOut.BusinessAddress.CityArea;
+
+            Assert.AreEqual("250", mailingAddrStreet.PostBox);
+
+            Assert.AreEqual("250", bizAddrStreet.PostBox);
+            Assert.AreEqual("GLEN", bizAddrStreet.StreetName);
+            Assert.AreEqual("ST", bizAddrStreet.StreetKind);
+
+
+            Assert.AreEqual("GLENS FALLS", bizAddrCity.City);
+            Assert.AreEqual("NY", bizAddrCity.StateAbbrev);
+            Assert.AreEqual("12801", bizAddrCity.ZipCode);
+
+            Assert.AreEqual("GLENS FALLS", mailingAddrCity.City);
+            Assert.AreEqual("NY", mailingAddrCity.StateAbbrev);
+            Assert.AreEqual("12801", mailingAddrCity.ZipCode);
 
             Assert.IsNotNull(testResultOut.Phone);
             Assert.IsNotNull(testResultOut.Phone[0]);
@@ -101,7 +114,7 @@ namespace NoFuture.Rand.Exo.Tests.TestData
             const string cik = "805729";
             const string acc = "0001549727-15-000033";
             var expectedRslt =
-                new Uri("http://www.sec.gov/cgi-bin/viewer?action=view&cik=" + cik + "&accession_number=" + acc +
+                new Uri("https://www.sec.gov/cgi-bin/viewer?action=view&cik=" + cik + "&accession_number=" + acc +
                         "&xbrl_type=v");
             var testResult = Form10K.CtorInteractiveLink(cik, acc);
             Assert.AreEqual(expectedRslt, testResult);

@@ -10,15 +10,15 @@ namespace NoFuture.Rand.Geo
     [Serializable]
     public class PostalAddress : DiachronIdentifier
     {
-        public StreetPo HomeStreetPo { get; set; }
-        public CityArea HomeCityArea { get; set; }
+        public StreetPo Street { get; set; }
+        public CityArea CityArea { get; set; }
         public bool IsLeased { get; set; }
 
         public override string Abbrev => "Addr";
 
         public override string ToString()
         {
-            return string.Join(" ", HomeStreetPo, HomeCityArea);
+            return string.Join(" ", Street, CityArea);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Geo
         {
             var csz = CityArea.RandomAmericanCity(zipCodePrefix);
             var homeAddr = StreetPo.RandomAmericanStreet();
-            return new PostalAddress { HomeStreetPo = homeAddr, HomeCityArea = csz };
+            return new PostalAddress { Street = homeAddr, CityArea = csz };
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Geo
             if (!UsCityStateZip.TryParse(cityStateZipLine2, out var csz))
                 return false;
 
-            address = new PostalAddress {HomeStreetPo = po, HomeCityArea = csz};
+            address = new PostalAddress {Street = po, CityArea = csz};
             return true;
         }
     }

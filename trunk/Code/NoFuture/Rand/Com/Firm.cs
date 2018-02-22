@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Tele;
@@ -38,8 +39,8 @@ namespace NoFuture.Rand.Com
         }
         public IEnumerable<Uri> NetUri => _netUris;
         public string Description { get; set; }
-        public Tuple<UsStreetPo, UsCityStateZip> MailingAddress { get; set; }
-        public Tuple<UsStreetPo, UsCityStateZip> BusinessAddress { get; set; }
+        public PostalAddress MailingAddress { get; set; }
+        public PostalAddress BusinessAddress { get; set; }
         public NorthAmericanPhone[] Phone { get; set; }
         public StandardIndustryClassification SIC { get; set; }
         public NaicsPrimarySector PrimarySector

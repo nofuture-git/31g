@@ -161,6 +161,9 @@ namespace NoFuture.Rand.Core
             var propertyName = nameAttr.Value;
             var pi = rtInstance.GetType().GetProperty(propertyName);
 
+            if (pi == null || !pi.CanWrite)
+                return;
+
             var valueAttr = elem.Attributes[VALUE];
             if (!string.IsNullOrWhiteSpace(valueAttr?.Value))
             {
