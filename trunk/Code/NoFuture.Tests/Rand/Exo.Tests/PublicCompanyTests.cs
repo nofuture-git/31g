@@ -7,7 +7,7 @@ using NoFuture.Rand.Gov.US.Sec;
 namespace NoFuture.Rand.Exo.Tests
 {
     [TestFixture]
-    public class PublicCorporationTests
+    public class PublicCompanyTests
     {
 
         [Test]

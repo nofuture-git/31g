@@ -42,7 +42,7 @@
     <Compile Include="Firm.cs" />
     <Compile Include="IFirm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublicCorporation.cs" />
+    <Compile Include="PublicCompany.cs" />
     <Compile Include="TickerComparer.cs" />
     <Compile Include="TickerSymbol.cs" />
     <Compile Include="TypeOfBank.cs" />

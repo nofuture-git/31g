@@ -4,8 +4,8 @@ using System.Text;
 namespace NoFuture.Rand.Gov.US.Sec
 {
     /// <summary>
-    /// The annual report public corporations file with the SEC - is 
-    /// equivalent to an Annual Report
+    /// The annual report public corporations file with the SEC - it is 
+    /// equivalent, but the same as, an Annual Report
     /// </summary>
     [Serializable]
     public class Form10K : SecForm

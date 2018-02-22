@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Com
     /// Represents a publicly traded corporation
     /// </summary>
     [Serializable]
-    public class PublicCorporation : Firm
+    public class PublicCompany : Firm
     {
         private readonly List<SecForm> _secReports = new List<SecForm>();
         private readonly HashSet<TickerSymbol> _tickerSymbols = new HashSet<TickerSymbol>();
