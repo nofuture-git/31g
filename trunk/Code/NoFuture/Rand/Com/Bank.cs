@@ -8,14 +8,16 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov.US.Fed;
+using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Com
 {
+    /// <inheritdoc />
     /// <summary>
     /// Represent a bank which is under the auspices of the US Federal Reserve
     /// </summary>
     [Serializable]
-    public class Bank : FinancialFirm
+    public class Bank : PublicCompany
     {
         internal const string US_BANKS = "US_Banks.xml";
         internal static XmlDocument UsBanksXml;
@@ -25,7 +27,21 @@ namespace NoFuture.Rand.Com
         public RoutingTransitNumber RoutingNumber { get; set; }
         public FdicNum FdicNumber { get; set; }
         public TypeOfBank BankType { get; set; }
+        public bool IsInternational { get; set; }
+        public Dictionary<DateTime, BankAssetsSummary> Assets { get; set; }
         #endregion
+
+        public Bank()
+        {
+            const string FIFTY_TWO = "52";
+            var superSectors = NorthAmericanIndustryClassification.AllSectors;
+            if (superSectors == null || superSectors.Length <= 0)
+                return;
+
+            PrimarySector =
+                superSectors.SelectMany(x => x.Divisions)
+                    .FirstOrDefault(x => x.Value == FIFTY_TWO);
+        }
 
         #region methods
 

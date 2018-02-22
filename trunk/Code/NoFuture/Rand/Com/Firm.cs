@@ -5,15 +5,15 @@ using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo;
-using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Tele;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Com
 {
+    /// <inheritdoc cref="IFirm" />
     /// <summary>
-    /// A base implementation of <see cref="IFirm"/>
+    /// A base implementation of <see cref="T:NoFuture.Rand.Com.IFirm" />
     /// </summary>
     [Serializable]
     public abstract class Firm : VocaBase, IFirm

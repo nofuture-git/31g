@@ -38,7 +38,6 @@
   <ItemGroup>
     <Compile Include="Bank.cs" />
     <Compile Include="BankAssetsSummary.cs" />
-    <Compile Include="FinancialFirm.cs" />
     <Compile Include="Firm.cs" />
     <Compile Include="IFirm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
