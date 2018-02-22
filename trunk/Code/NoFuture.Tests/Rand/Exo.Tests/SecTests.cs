@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Exo.Tests.TestData
         {
             var xmlContent = System.IO.File.ReadAllText(SEC_BY_CIK_XML_PATH);
 
-            var testResultOut = new PublicCorporation();
+            var testResultOut = new PublicCompany();
             var testResult = Copula.TryParseSecEdgarCikSearch(xmlContent,
                 new Uri(
                     "http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=041215216456&type=10-K&dateb=&owner=exclude&count=100&output=atom"),

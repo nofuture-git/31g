@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Com
     /// A public corporation which is in the Finacial sector
     /// </summary>
     [Serializable]
-    public class FinancialFirm : PublicCorporation
+    public class FinancialFirm : PublicCompany
     {
         public FinancialFirm()
         {

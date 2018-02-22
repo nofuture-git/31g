@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Exo.Tests
         {
             var testContent = System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\IexCompanyResponse.json");
 
-            var corp = new PublicCorporation();
+            var corp = new PublicCompany();
             var testResult = Copula.TryParseIexCompanyJson(testContent, IexCompany.GetUri("AAPL"), ref corp);
             Assert.IsTrue( testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(corp.Description));
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Exo.Tests
         {
             var testContent = System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\IexKeyStatsResponse.json");
 
-            var corp = new PublicCorporation();
+            var corp = new PublicCompany();
             var testResult = Copula.TryParseIexKeyStatsJson(testContent, IexKeyStats.GetUri("AAPL"), ref corp);
             Assert.IsTrue(testResult);
 

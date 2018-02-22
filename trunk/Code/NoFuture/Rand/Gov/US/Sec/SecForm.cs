@@ -6,6 +6,17 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Gov.US.Sec
 {
+    /// <summary>
+    /// &quot;
+    /// The federal securities laws require public companies to disclose 
+    /// information on an ongoing basis. For example, domestic companies 
+    /// must submit annual reports on Form 10-K, quarterly reports on 
+    /// Form 10-Q, and current reports on Form 8-K for a number of 
+    /// specified events and must comply with a variety of other 
+    /// disclosure requirements.
+    /// &quot;
+    /// src [https://www.sec.gov/fast-answers/answers-form10khtm.html]
+    /// </summary>
     [Serializable]
     public abstract class SecForm : Identifier
     {

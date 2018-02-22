@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Exo
         /// <param name="srcUri"></param>
         /// <param name="corp"></param>
         /// <returns></returns>
-        public static bool TryParseIexCompanyJson(string rawJsonContent, Uri srcUri, ref PublicCorporation corp)
+        public static bool TryParseIexCompanyJson(string rawJsonContent, Uri srcUri, ref PublicCompany corp)
         {
             if (string.IsNullOrWhiteSpace(rawJsonContent))
                 return false;
@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Exo
         /// <param name="corp"></param>
         /// <param name="atTime">Optional, allows caller to assign the timestamp, defaults to universial time</param>
         /// <returns></returns>
-        public static bool TryParseIexKeyStatsJson(string rawJsonContent, Uri srcUri, ref PublicCorporation corp, DateTime? atTime = null)
+        public static bool TryParseIexKeyStatsJson(string rawJsonContent, Uri srcUri, ref PublicCompany corp, DateTime? atTime = null)
         {
             if (string.IsNullOrWhiteSpace(rawJsonContent))
                 return false;
@@ -149,7 +149,7 @@ namespace NoFuture.Rand.Exo
         /// <param name="srcUri"></param>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static bool TryGetXmlLink(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
+        public static bool TryGetXmlLink(object webResponseBody, Uri srcUri, ref PublicCompany pc)
         {
             var pcAnnualRpt = pc.SecReports?.FirstOrDefault(x => x.HtmlFormLink == srcUri);
             if (pcAnnualRpt == null)
@@ -176,7 +176,7 @@ namespace NoFuture.Rand.Exo
         /// <param name="srcUri"></param>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static bool TryMergeXbrlInto10K(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
+        public static bool TryMergeXbrlInto10K(object webResponseBody, Uri srcUri, ref PublicCompany pc)
         {
             var rptTenK =
                 pc?.SecReports.FirstOrDefault(x => x is Form10K && ((Form10K)x).XmlLink == srcUri) as Form10K;
@@ -271,13 +271,13 @@ namespace NoFuture.Rand.Exo
         }
 
         /// <summary>
-        /// Merges the ticker symbol data contained in <see cref="webResponseBody"/> into the instance of <see cref="PublicCorporation"/>
+        /// Merges the ticker symbol data contained in <see cref="webResponseBody"/> into the instance of <see cref="PublicCompany"/>
         /// </summary>
         /// <param name="webResponseBody"></param>
         /// <param name="srcUri"></param>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static bool TryMergeTickerLookup(object webResponseBody, Uri srcUri, ref PublicCorporation pc)
+        public static bool TryMergeTickerLookup(object webResponseBody, Uri srcUri, ref PublicCompany pc)
         {
             try
             {
@@ -319,7 +319,7 @@ namespace NoFuture.Rand.Exo
         /// <param name="rssContent"></param>
         /// <param name="srcUri"></param>
         /// <returns></returns>
-        public static PublicCorporation[] ParseSecEdgarFullTextSearch(string rssContent, Uri srcUri)
+        public static PublicCompany[] ParseSecEdgarFullTextSearch(string rssContent, Uri srcUri)
         {
             if (String.IsNullOrWhiteSpace(rssContent))
                 return null;
@@ -330,7 +330,7 @@ namespace NoFuture.Rand.Exo
             if (myDynDataRslts == null || !myDynDataRslts.Any<object>())
                 return null;
 
-            var corporations = new List<PublicCorporation>();
+            var corporations = new List<PublicCompany>();
             foreach (var dd in myDynDataRslts)
             {
 
@@ -350,7 +350,7 @@ namespace NoFuture.Rand.Exo
                 var corp = corporations.Any(x => String.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase))
                     ? corporations.First(
                         x => String.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase))
-                    : new PublicCorporation();
+                    : new PublicCompany();
 
                 corp.UpsertName(KindsOfNames.Legal, corpName);
 
@@ -391,9 +391,9 @@ namespace NoFuture.Rand.Exo
         /// </summary>
         /// <param name="xmlContent"></param>
         /// <param name="srcUri"></param>
-        /// <param name="publicCorporation"></param>
+        /// <param name="publicCompany"></param>
         /// <returns></returns>
-        public static bool TryParseSecEdgarCikSearch(string xmlContent, Uri srcUri, ref PublicCorporation publicCorporation)
+        public static bool TryParseSecEdgarCikSearch(string xmlContent, Uri srcUri, ref PublicCompany publicCompany)
         {
             if (String.IsNullOrWhiteSpace(xmlContent))
                 return false;
@@ -406,22 +406,22 @@ namespace NoFuture.Rand.Exo
 
             var pr = myDynDataRslt.First<dynamic>();
 
-            if (publicCorporation == null)
-                publicCorporation = new PublicCorporation();
+            if (publicCompany == null)
+                publicCompany = new PublicCompany();
 
             if (!String.IsNullOrWhiteSpace(pr.Name))
-                publicCorporation.UpsertName(KindsOfNames.Legal, pr.Name);
-            publicCorporation.CIK = String.IsNullOrWhiteSpace(pr.Cik)
-                ? publicCorporation.CIK
+                publicCompany.UpsertName(KindsOfNames.Legal, pr.Name);
+            publicCompany.CIK = String.IsNullOrWhiteSpace(pr.Cik)
+                ? publicCompany.CIK
                 : new CentralIndexKey { Value = pr.Cik, Src = myDynData.SourceUri.ToString() };
-            publicCorporation.SIC = String.IsNullOrWhiteSpace(pr.Sic)
-                ? publicCorporation.SIC
+            publicCompany.SIC = String.IsNullOrWhiteSpace(pr.Sic)
+                ? publicCompany.SIC
                 : new StandardIndustryClassification { Value = pr.Sic, Src = myDynData.SourceUri.ToString() };
 
-            publicCorporation.UsStateOfIncorporation = pr.IncorpState;
+            publicCompany.UsStateOfIncorporation = pr.IncorpState;
 
-            if (publicCorporation.SIC != null && !String.IsNullOrWhiteSpace(pr.SicDesc))
-                publicCorporation.SIC.Description = pr.SicDesc;
+            if (publicCompany.SIC != null && !String.IsNullOrWhiteSpace(pr.SicDesc))
+                publicCompany.SIC.Description = pr.SicDesc;
 
             var bizAddr = new AddressData();
             if (!String.IsNullOrWhiteSpace(pr.BizAddrStreet))
@@ -440,7 +440,7 @@ namespace NoFuture.Rand.Exo
             if (!String.IsNullOrWhiteSpace(pr.BizPostalCode))
                 bizAddr.PostalCode = pr.BizPostalCode;
 
-            publicCorporation.BusinessAddress =
+            publicCompany.BusinessAddress =
                 new Tuple<UsStreetPo, UsCityStateZip>(new UsStreetPo(bizAddr) { Src = myDynData.SourceUri.ToString() },
                     new UsCityStateZip(bizAddr) { Src = myDynData.SourceUri.ToString() });
 
@@ -461,13 +461,13 @@ namespace NoFuture.Rand.Exo
             if (!String.IsNullOrWhiteSpace(pr.MailPostalCode))
                 mailAddr.PostalCode = pr.MailPostalCode;
 
-            publicCorporation.MailingAddress = new Tuple<UsStreetPo, UsCityStateZip>(new UsStreetPo(mailAddr) { Src = myDynData.SourceUri.ToString() },
+            publicCompany.MailingAddress = new Tuple<UsStreetPo, UsCityStateZip>(new UsStreetPo(mailAddr) { Src = myDynData.SourceUri.ToString() },
                 new UsCityStateZip(mailAddr) { Src = myDynData.SourceUri.ToString() });
 
             var phs = new List<NorthAmericanPhone>();
-            if (publicCorporation.Phone != null && publicCorporation.Phone.Length > 0)
+            if (publicCompany.Phone != null && publicCompany.Phone.Length > 0)
             {
-                phs.AddRange(publicCorporation.Phone);
+                phs.AddRange(publicCompany.Phone);
             }
             NorthAmericanPhone phOut;
             if (NorthAmericanPhone.TryParse(pr.BizPhone, out phOut) && phs.All(x => !x.Equals(phOut)))
@@ -481,7 +481,7 @@ namespace NoFuture.Rand.Exo
                 phOut.Src = myDynData.SourceUri.ToString();
                 phs.Add(phOut);
             }
-            publicCorporation.Phone = phs.ToArray();
+            publicCompany.Phone = phs.ToArray();
 
             if (pr.FormerNames != null)
             {
@@ -490,7 +490,7 @@ namespace NoFuture.Rand.Exo
                     var strFnDt = fn.FormerDate ?? String.Empty;
                     var strFnVal = fn.FormerName ?? String.Empty;
 
-                    publicCorporation.UpsertName(KindsOfNames.Former, $"{strFnVal}[{strFnDt}]");
+                    publicCompany.UpsertName(KindsOfNames.Former, $"{strFnVal}[{strFnDt}]");
                 }
             }
 
@@ -498,7 +498,7 @@ namespace NoFuture.Rand.Exo
             {
                 int fyed;
                 if (TryGetDayOfYearFiscalEnd(pr.FiscalYearEnd, out fyed))
-                    publicCorporation.FiscalYearEndDay = fyed;
+                    publicCompany.FiscalYearEndDay = fyed;
             }
 
             return true;

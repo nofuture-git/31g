@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Exo.Tests.NfHtmlTests
             var testContent =
                 System.IO.File.ReadAllText(
                    TestAssembly.TestDataDir + @"\ExampleSecIndexHtm.html");
-            var testSubject = new NoFuture.Rand.Com.PublicCorporation { CIK = new CentralIndexKey { Value = "0000768899" }};
+            var testSubject = new NoFuture.Rand.Com.PublicCompany { CIK = new CentralIndexKey { Value = "0000768899" }};
             testSubject.UpsertName(KindsOfNames.Legal, "TrueBlue, Inc.");
             testSubject.SecReports.Add(new Form10K {HtmlFormLink = testUri });
             var testResult = Copula.TryGetXmlLink(testContent,testUri,ref testSubject);

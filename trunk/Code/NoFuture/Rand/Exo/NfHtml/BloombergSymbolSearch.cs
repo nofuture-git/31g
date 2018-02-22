@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Exo.NfHtml
         public const string BLOOMBERG_HOST = "www.bloomberg.com";
         public BloombergSymbolSearch(Uri srcUri):base(srcUri) { }
 
-        public static Uri GetUri(PublicCorporation com)
+        public static Uri GetUri(PublicCompany com)
         {
             return new Uri($"http://{BLOOMBERG_HOST}/markets/symbolsearch?query={com.UrlEncodedName}&commit=Find+Symbols");
         }
