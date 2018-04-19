@@ -38,11 +38,6 @@ namespace NoFuture.Rand.Com
 
         public string UrlEncodedName => Util.Core.Etc.EscapeString(GetSearchCompanyName(Name), EscapeStringType.URI);
 
-        public void AddTickerSymbol(TickerSymbol symbol)
-        {
-            _tickerSymbols.Add(symbol);
-        }
-
         public override void LoadXrefXmlData()
         {
             var firmName = Name;

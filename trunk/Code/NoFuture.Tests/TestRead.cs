@@ -121,12 +121,34 @@ namespace NoFuture.Tests
             var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
             Assert.IsNotNull(testSubject);
 
-            var testResults = testSubject.VsProjectTypeGuids;
+            var testResults = testSubject.GetMainProjectTypeGuid();
             Assert.AreNotEqual("{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}", testResults);
-            var testRslt = Path.GetDirectoryName(TEST_CSPROJ);
-            testRslt = Path.Combine(testRslt, "DoNotUse_VsProjFileTests-COPY.csproj");
-            testSubject.SaveAs(testRslt);
+            Console.WriteLine(testResults);
+        }
 
+        [Test]
+        public void TestIsWebApplication()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+
+            var testResult = testSubject.IsWebApplication;
+            Assert.IsTrue(testResult);
+
+        }
+
+        [Test]
+        public void TestIsWebApplication_Set()
+        {
+            var testSubject = new NoFuture.Read.Vs.ProjFile(TEST_CSPROJ);
+            Assert.IsNotNull(testSubject);
+            testSubject.IsWebApplication = true;
+            var testResult = testSubject.IsWebApplication;
+            Assert.IsTrue(testResult);
+
+            testSubject.IsWebApplication = true;
+            var allGuids = testSubject.ProjectTypeGuids;
+            Assert.IsTrue(allGuids.Length == 2);
         }
 
         [Test]

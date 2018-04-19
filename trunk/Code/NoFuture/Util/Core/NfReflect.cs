@@ -654,9 +654,8 @@ namespace NoFuture.Util.Core
                     }
 
                     var fromPv = fromPi.GetValue(fromObj);
-                    if (fromPv == null)
+                    if (fromPv == null && TryGetInstanceOfPiType(fromPi, out fromPv))
                     {
-                        fromPv = Activator.CreateInstance(fromPi.PropertyType);
                         fromPi.SetValue(fromObj, fromPv);
                     }
                     rScores.AddRange(TryAssignValueTypeProperties(fromPv, toObj, prevActions, fromPi.Name));
@@ -1012,6 +1011,26 @@ namespace NoFuture.Util.Core
 
             //default out to no operation
             return noop;
+        }
+
+        /// <summary>
+        /// Try to instantiate the <see cref="pi"/>&apos;s underlying property.
+        /// </summary>
+        /// <param name="pi"></param>
+        /// <param name="newInstance"></param>
+        /// <param name="takeCtorWithHighestNumOfArgs">
+        /// When a type has multiple ctor&apos;s - this switch controls the behaviour of takeing the 
+        /// one with the hightest number of args.  Set to false to take the least number of args.
+        /// </param>
+        /// <returns></returns>
+        public static bool TryGetInstanceOfPiType(PropertyInfo pi, out object newInstance, bool takeCtorWithHighestNumOfArgs = true)
+        {
+            newInstance = null;
+            if (pi?.PropertyType == null)
+                return false;
+
+            newInstance = Activator.CreateInstance(pi.PropertyType);
+            return true;
         }
 
         #endregion 

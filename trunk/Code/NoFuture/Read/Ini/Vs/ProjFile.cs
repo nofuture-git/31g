@@ -30,6 +30,8 @@ namespace NoFuture.Read.Vs
         /// </summary>
         public const string NS = "vs";
 
+        internal static int CURLY_OPEN_GUID_CURLY_CLOSE_LEN = ("{" + Guid.Empty + "}").Length;
+
         #endregion
 
         #region internal types
@@ -100,7 +102,6 @@ namespace NoFuture.Read.Vs
         private readonly List<ProjectReference> _projRefCache = new List<ProjectReference>();
         private bool _isChanged;
         private readonly List<Tuple<FileSystemInfo, AssemblyName>> _debugBinFsi2AsmName;
-        private string _projTypeGuids;
         private string _destLibDirectory;
         #endregion
 
@@ -222,29 +223,70 @@ namespace NoFuture.Read.Vs
             }
         }
 
+        public bool IsWebApplication
+        {
+            get
+            {
+                var webAppProjTypeGuid = SlnFile.GetWebApplicationProjectType();
+                if (string.IsNullOrEmpty(webAppProjTypeGuid))
+                    return false;
+                var pguids = ProjectTypeGuids;
+                return pguids.Any(p => string.Equals(p, webAppProjTypeGuid, StringComparison.OrdinalIgnoreCase));
+            }
+            set
+            {
+                var webAppProjTypeGuid = SlnFile.GetWebApplicationProjectType();
+                if (string.IsNullOrEmpty(webAppProjTypeGuid))
+                    return;
+                var setAs = value;
+                var cguids = ProjectTypeGuids.ToList();
+                if (setAs)
+                {
+                    cguids.Add(webAppProjTypeGuid);
+                    ProjectTypeGuids = cguids.ToArray();
+                }
+                else
+                {
+                    ProjectTypeGuids = cguids.Where(cg => !string.Equals(cg, webAppProjTypeGuid)).ToArray();
+                }
+            }
+        }
+
         /// <summary>
         /// The VS project type guid, these are often not present in project files
         /// and mostly used by .sln files.  See the markup on <see cref="SlnFile.VisualStudioProjTypeGuids"/>
         /// </summary>
-        public string VsProjectTypeGuids
+        public string[] ProjectTypeGuids
         {
             get
             {
-                _projTypeGuids = GetInnerText("//{0}:PropertyGroup/{0}:ProjectTypeGuids") ?? _projTypeGuids;
-                //keep this value to only one proj type guid
-                if (_projTypeGuids != null && _projTypeGuids.Length > ("{" + Guid.Empty + "}").Length)
-                {
-                    var ext = Path.GetExtension(FileName) ?? ".csproj";
-                    _projTypeGuids = SlnFile.VisualStudioProjTypeGuids[ext];
-                    SetInnerText("//{0}:PropertyGroup/{0}:ProjectTypeGuids", _projTypeGuids);
-
-                }
-                return _projTypeGuids;
+                var guids = GetInnerText("//{0}:PropertyGroup/{0}:ProjectTypeGuids");
+                if (string.IsNullOrEmpty(guids))
+                    return new string[] { };
+                var isMultiProjTypeGuid = guids.Length > CURLY_OPEN_GUID_CURLY_CLOSE_LEN;
+                return isMultiProjTypeGuid ? guids.Split(';') : new[] { guids };
             }
             set
             {
-                SetInnerText("//{0}:PropertyGroup/{0}:ProjectTypeGuids", value);
-                _projTypeGuids = value;
+                var vvs = value;
+                if (vvs == null || !vvs.Any())
+                    return;
+                var vv = new List<string>();
+                foreach (var vt in vvs)
+                {
+                    if (string.IsNullOrWhiteSpace(vt))
+                        continue;
+                    if (vt.Length != CURLY_OPEN_GUID_CURLY_CLOSE_LEN)
+                        continue;
+                    Guid gout;
+                    if (!Guid.TryParse(vt.Replace("{", "").Replace("}", ""), out gout))
+                        continue;
+                    if (vv.Any(pg => string.Equals(pg, vt, StringComparison.OrdinalIgnoreCase)))
+                        continue;
+                    vv.Add(vt);
+                }
+                var innerStr = string.Join(";", vv);
+                SetInnerText("//{0}:PropertyGroup/{0}:ProjectTypeGuids", innerStr);
             }
         }
 
@@ -400,6 +442,37 @@ namespace NoFuture.Read.Vs
         #endregion
 
         #region instance methods
+
+        /// <summary>
+        /// A VS project&apos;s type may be more-than-one (e.g. a C# Web Application); 
+        /// however, the .sln file only wants to know about the one of them - this gets
+        /// that one.
+        /// </summary>
+        /// <returns></returns>
+        public string GetMainProjectTypeGuid()
+        {
+            var ext = Path.GetExtension(FileName) ?? ".csproj";
+            var dfGuid = SlnFile.VisualStudioProjTypeGuids[ext];
+            var projGuids = ProjectTypeGuids;
+            if (!projGuids.Any() || projGuids.All(string.IsNullOrEmpty))
+            {
+                return dfGuid;
+            }
+            //get only guids key'ed on a proj file 
+            var projFileGuids =
+                SlnFile.VisualStudioProjTypeGuids.Keys.Where(k => Regex.IsMatch(k, @"\x2E(vcx|cs|fs|vb)proj"))
+                    .Select(k => SlnFile.VisualStudioProjTypeGuids[k]).ToList();
+            foreach (var pg in projGuids)
+            {
+                foreach (var pfg in projFileGuids)
+                {
+                    if (string.Equals(pfg, pg, StringComparison.OrdinalIgnoreCase))
+                        return pg;
+                }
+            }
+
+            return dfGuid;
+        }
 
         /// <summary>
         /// Copies all Reference nodes in this instance over to <see cref="targetProjFile"/>

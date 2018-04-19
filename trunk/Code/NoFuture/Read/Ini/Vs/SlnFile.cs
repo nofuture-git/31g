@@ -20,7 +20,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 ";
+        private const string _vsSlnHeaderV15 = @"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+";
+
+        private const string emptySlnContent = @"
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
+";
+
         private const string SLN_EXT = ".sln";
+
+        internal const string WEB_APPLICATION = "web application";
         #endregion
 
         #region fields
@@ -95,10 +112,26 @@ MinimumVisualStudioVersion = 10.0.40219.1
                 slnProjGuid2Description.Add(".csproj", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}");
                 slnProjGuid2Description.Add(".vbproj", "{F184B08F-C81C-45F6-A57F-5ABD9991F28F}");
                 slnProjGuid2Description.Add(".fsproj", "{F2A71F9B-5D33-465A-A702-920D77279786}");
-                slnProjGuid2Description.Add(".vcproj", "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}");
+                slnProjGuid2Description.Add(".vcxproj", "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}");
+                slnProjGuid2Description.Add(WEB_APPLICATION, "{349C5851-65DF-11DA-9384-00065B846F21}");
 
                 return slnProjGuid2Description;
             }
+        }
+
+        /// <summary>
+        /// Helper method to get the project-type-guid for a web application
+        /// </summary>
+        /// <returns></returns>
+        internal static string GetWebApplicationProjectType()
+        {
+            if (!VisualStudioProjTypeGuids.ContainsKey(WEB_APPLICATION))
+                return null;
+            var webAppProjTypeGuid = VisualStudioProjTypeGuids[WEB_APPLICATION];
+            if (string.IsNullOrEmpty(webAppProjTypeGuid) ||
+                webAppProjTypeGuid.Length > ProjFile.CURLY_OPEN_GUID_CURLY_CLOSE_LEN)
+                return null;
+            return webAppProjTypeGuid;
         }
 
         /// <summary>
@@ -120,6 +153,20 @@ EndGlobal
 ";
 
             var emptySln = _vsSlnHeaderV14 + emptySlnContent;
+            File.WriteAllText(fullName, emptySln);
+        }
+
+
+        /// <summary>
+        /// Creates an empty version 15 .sln file.
+        /// </summary>
+        /// <param name="fullName"></param>
+        public static void CreateEmptySlnVer15(string fullName)
+        {
+            if (string.IsNullOrWhiteSpace(fullName))
+                throw new ArgumentNullException(nameof(fullName));
+
+            var emptySln = _vsSlnHeaderV15 + emptySlnContent;
             File.WriteAllText(fullName, emptySln);
         }
 
@@ -223,7 +270,7 @@ EndGlobal
         /// Drafts the two typical lines found, per project, in a .sln file.
         /// </summary>
         /// <param name="projFile">
-        /// If the projFile has its <see cref="ProjFile.VsProjectTypeGuids"/> property assigned then 
+        /// If the projFile has its <see cref="ProjFile.GetMainProjectTypeGuid()"/> property assigned then 
         /// that value is used; elsewise, a match is looked up in <see cref="VisualStudioProjTypeGuids"/>
         /// </param>
         /// <param name="slnDir"></param>
@@ -238,12 +285,12 @@ EndGlobal
             if (string.IsNullOrWhiteSpace(projGuid))
                 return null;
 
-            if (string.IsNullOrWhiteSpace(projFile.VsProjectTypeGuids) && !VisualStudioProjTypeGuids.ContainsKey(projExt))
+            if (string.IsNullOrWhiteSpace(projFile.GetMainProjectTypeGuid()) && !VisualStudioProjTypeGuids.ContainsKey(projExt))
                 throw new NotImplementedException("There is no VS Project Type Guid defined for " +
                                                   $"a '{projExt}' file type.  Assign the ProjFile's " +
                                                   "VsProjectTypeGuids directly.");
 
-            var projTypeGuid = projFile.VsProjectTypeGuids ?? VisualStudioProjTypeGuids[projExt];
+            var projTypeGuid = projFile.GetMainProjectTypeGuid() ?? VisualStudioProjTypeGuids[projExt];
 
             var projName = Path.GetFileNameWithoutExtension(projFile.FileName);
 
