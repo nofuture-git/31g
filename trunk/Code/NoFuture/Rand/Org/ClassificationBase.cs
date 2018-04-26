@@ -18,7 +18,10 @@ namespace NoFuture.Rand.Org
 
         public string Description { get; set; }
 
-        public List<T> Divisions => divisions;
+        public List<T> GetDivisions()
+        {
+            return divisions;
+        }
 
         public override bool TryThisParseXml(XmlElement elem)
         {
@@ -56,7 +59,7 @@ namespace NoFuture.Rand.Org
 
         protected internal virtual T GetRandomClassification(Predicate<T> filterBy = null)
         {
-            var allInThisGroup = Divisions;
+            var allInThisGroup = GetDivisions();
             if (allInThisGroup == null)
                 return null;
 

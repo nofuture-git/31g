@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
@@ -23,15 +24,14 @@ namespace NoFuture.Rand.Com
 
         public EmployerIdentificationNumber EIN { get; set; }
         public CentralIndexKey CIK { get; set; }
-        public List<SecForm> SecReports => _secReports;
+        public IEnumerable<SecForm> SecReports => _secReports;
         public string UsStateOfIncorporation { get; set; }
         public List<TickerSymbol> TickerSymbols
         {
             get
             {
-                var t = _tickerSymbols.ToList();
-                t.Sort(new TickerComparer(Name));
-                return t;
+                _tickerSymbols.Sort(new TickerComparer(Name));
+                return _tickerSymbols;
             }
             set => _tickerSymbols = value;
         }
@@ -59,5 +59,59 @@ namespace NoFuture.Rand.Com
             }
         }
 
+        public virtual void AddSecReport(SecForm secReport)
+        {
+            if (secReport == null)
+                return;
+            _secReports.Add(secReport);
+        }
+
+        public virtual void AddTickerSymbol(TickerSymbol ticker)
+        {
+            if (ticker == null)
+                return;
+            _tickerSymbols.Add(ticker);
+        }
+
+        /// <summary>
+        /// Attempts to assign the <see cref="Description"/> to the 
+        /// the &apos;DESCRIPTION OF BUSINESS&apos; found in the 10-K report
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetForm10KDescriptionOfBiz()
+        {
+            const string UNKNOWN = "UNKNOWN";
+
+            //see if there are any sec reports
+            if (!_secReports.Any())
+            {
+                return UNKNOWN;
+            }
+
+            //get the latest one annual report
+            var secRptDates = _secReports.Where(sec => sec is Form10K).Select(sec => sec.FilingDate);
+
+            //sort them by most-recent filing first
+            secRptDates = secRptDates.OrderByDescending(sec => sec);
+
+            foreach (var rptDate in secRptDates)
+            {
+                var secRpt = _secReports.FirstOrDefault(sec => sec.FilingDate == rptDate);
+                if (secRpt == null || !secRpt.GetTextBlocks().Any())
+                    continue;
+                if (!(secRpt is Form10K from10K))
+                    continue;
+
+                //search for a text block with this common text
+                var descOfBiz = from10K.GetDescriptionOfBiz();
+                if (string.IsNullOrWhiteSpace(descOfBiz))
+                    continue;
+
+                //finding it, assign it and return it
+                return descOfBiz;
+            }
+
+            return UNKNOWN;
+        }
     }
 }

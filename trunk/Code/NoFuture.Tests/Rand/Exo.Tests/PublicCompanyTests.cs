@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Exo.Tests
                 CIK = new CentralIndexKey {Value = "0000768899"}
             };
             testSubject.UpsertName(KindsOfNames.Legal, "TrueBlue, Inc.");
-            testSubject.SecReports.Add(new Form10K {XmlLink = testUri});
+            testSubject.AddSecReport(new Form10K {XmlLink = testUri});
             var testContent =
                 System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\ExampleSecXbrl.xml");
             var testResult = Copula.TryMergeXbrlInto10K(testContent,
@@ -46,14 +46,15 @@ namespace NoFuture.Rand.Exo.Tests
 
             Assert.AreEqual(2695680M, tenK2015.Revenue);
 
-            Assert.IsNotNull(tenK2015.TextBlocks);
-            Assert.AreNotEqual(0, tenK2015.TextBlocks.Count);
+            Assert.IsNotNull(tenK2015.GetTextBlocks());
+            Assert.AreNotEqual(0, tenK2015.GetTextBlocks().Count);
 
-            var lastTb = tenK2015.TextBlocks.Last();
-            var firstTb = tenK2015.TextBlocks.First();
+            var lastTb = tenK2015.GetTextBlocks().Last();
+            var firstTb = tenK2015.GetTextBlocks().First();
 
             Assert.IsTrue(lastTb.Item2.Length > firstTb.Item2.Length);
 
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testSubject.GetForm10KDescriptionOfBiz()));
         }
     }
 }

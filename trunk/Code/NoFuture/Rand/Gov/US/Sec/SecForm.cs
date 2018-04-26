@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Gov.US.Sec
     public abstract class SecForm : Identifier
     {
         /// <summary>
-        /// Inner type to order the <see cref="SecForm.TextBlocks"/> by the length of
+        /// Inner type to order the <see cref="SecForm.GetTextBlocks()"/> by the length of
         /// Item2
         /// </summary>
         internal class TextBlockComparer : IComparer<Tuple<string, string>>
@@ -50,6 +50,7 @@ namespace NoFuture.Rand.Gov.US.Sec
 
         #region constants
         public const string NOTIFICATION_OF_INABILITY_TO_TIMELY_FILE = "NT";
+        private const StringComparison STR_OPT = StringComparison.OrdinalIgnoreCase;
         #endregion
 
         #region fields
@@ -77,24 +78,52 @@ namespace NoFuture.Rand.Gov.US.Sec
         public string AccessionNumber { get => Value; set => Value = value; }
         public Uri XmlLink { get; set; }
 
+
+        #endregion
+
+        protected SecForm(string secFormNumber)
+        {
+            this.secFormNumber = secFormNumber;
+        }
+
+        #region methods
+
         /// <summary>
         /// Represents any kind of text found in an SEC report which is tagged with 
         /// some kind of label so that it has a sense of context.
         /// </summary>
-        public List<Tuple<string, string>> TextBlocks
+        public List<Tuple<string, string>> GetTextBlocks()
         {
-            get
-            {
-                _textBlocks.Sort(_textBlockComparer);
-                return _textBlocks;
-            }
+            _textBlocks.Sort(_textBlockComparer);
+            return _textBlocks;
         }
-        #endregion
 
-        #region methods
-        protected SecForm(string secFormNumber)
+        /// <summary>
+        /// Adds a single text block tuple to the underlying data
+        /// </summary>
+        /// <param name="textBlock"></param>
+        public void AddTextBlock(Tuple<string, string> textBlock)
         {
-            this.secFormNumber = secFormNumber;
+            if (textBlock == null)
+                return;
+            if (_textBlocks.Any(tb =>
+                string.Equals(tb.Item1, textBlock.Item1, STR_OPT) && string.Equals(tb.Item2, textBlock.Item2, STR_OPT)))
+                return;
+            _textBlocks.Add(textBlock);
+        }
+
+        /// <summary>
+        /// Adds a range of text block tuples to the underlying data
+        /// </summary>
+        /// <param name="textBlocks"></param>
+        public void AddRangeTextBlocks(IEnumerable<Tuple<string, string>> textBlocks)
+        {
+            if (textBlocks == null || !textBlocks.Any())
+                return;
+            foreach (var tb in textBlocks)
+            {
+                AddTextBlock(tb);
+            }
         }
 
         /// <summary>

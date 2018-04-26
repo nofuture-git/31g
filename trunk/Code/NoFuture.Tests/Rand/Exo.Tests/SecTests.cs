@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Exo.NfXml;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov.US.Sec;
+using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Exo.Tests.TestData
 {
@@ -63,11 +65,15 @@ namespace NoFuture.Rand.Exo.Tests.TestData
             Assert.AreEqual("NY", mailingAddrCity.StateAbbrev);
             Assert.AreEqual("12801", mailingAddrCity.ZipCode);
 
-            Assert.IsNotNull(testResultOut.Phone);
-            Assert.IsNotNull(testResultOut.Phone[0]);
-            Assert.AreEqual("518", testResultOut.Phone[0].AreaCode);
-            Assert.AreEqual("415", testResultOut.Phone[0].CentralOfficeCode);
-            Assert.AreEqual("4299", testResultOut.Phone[0].SubscriberNumber);
+            Assert.IsNotNull(testResultOut.PhoneNumbers);
+            var testResultPhones = testResultOut.PhoneNumbers.ToList();
+            var testResultPhone = testResultPhones[0];
+            Assert.IsNotNull(testResultPhone);
+            Assert.IsInstanceOf<NorthAmericanPhone>(testResultPhone);
+            var testResultNAmerPhone = (NorthAmericanPhone) testResultPhone;
+            Assert.AreEqual("518", testResultNAmerPhone.AreaCode);
+            Assert.AreEqual("415", testResultNAmerPhone.CentralOfficeCode);
+            Assert.AreEqual("4299", testResultNAmerPhone.SubscriberNumber);
 
         }
 

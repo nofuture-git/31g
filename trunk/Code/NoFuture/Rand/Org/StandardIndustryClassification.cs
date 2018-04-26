@@ -74,15 +74,15 @@ namespace NoFuture.Rand.Org
                         return null;
                     _allSics.AddRange(AllSectors.SelectMany(
                         s =>
-                            s.Divisions
+                            s.GetDivisions()
                                 .SelectMany(
                                     ps =>
-                                        ps.Divisions
+                                        ps.GetDivisions()
                                             .SelectMany(
                                                 ns =>
-                                                    ns.Divisions
+                                                    ns.GetDivisions()
                                                         .SelectMany(
-                                                            mk => mk.Divisions)
+                                                            mk => mk.GetDivisions())
                                             )
                                 )));
                 }
@@ -105,13 +105,13 @@ namespace NoFuture.Rand.Org
                 return null;
             foreach (var s in AllSectors)
             {
-                foreach (var ps in s.Divisions)
+                foreach (var ps in s.GetDivisions())
                 {
-                    foreach (var ns in ps.Divisions)
+                    foreach (var ns in ps.GetDivisions())
                     {
-                        foreach (var mk in ns.Divisions)
+                        foreach (var mk in ns.GetDivisions())
                         {
-                            var ssic = mk.Divisions
+                            var ssic = mk.GetDivisions()
                                 .FirstOrDefault(x => x.Equals(sic));
                             if (ssic == null)
                                 continue;

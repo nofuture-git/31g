@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Org
 
             if (!_socs.Any())
                 _socs.AddRange(AllGroups.SelectMany(g =>
-                    g.Divisions.SelectMany(two => two.Divisions.SelectMany(three => three.Divisions))));
+                    g.GetDivisions().SelectMany(two => two.GetDivisions().SelectMany(three => three.GetDivisions()))));
 
             var pickOne = Etx.RandomPickOne(_soc2Prob) ?? DF_OCCUPATION;
             if(filterBy == null)
@@ -107,7 +107,7 @@ namespace NoFuture.Rand.Org
         {
             if (!_socs.Any())
                 _socs.AddRange(AllGroups.SelectMany(g =>
-                    g.Divisions.SelectMany(two => two.Divisions.SelectMany(three => three.Divisions))));
+                    g.GetDivisions().SelectMany(two => two.GetDivisions().SelectMany(three => three.GetDivisions()))));
 
             return _socs.FirstOrDefault(s => s.Value == id);
         }

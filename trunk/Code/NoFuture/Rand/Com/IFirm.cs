@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Tele;
@@ -18,7 +19,7 @@ namespace NoFuture.Rand.Com
         IEnumerable<Uri> NetUri { get; }
         PostalAddress MailingAddress { get; set; }
         PostalAddress BusinessAddress { get; set; }
-        NorthAmericanPhone[] Phone { get; set; }
+        IEnumerable<Phone> PhoneNumbers { get; }
         StandardIndustryClassification SIC { get; set; }
         NaicsPrimarySector PrimarySector { get; set; }
         NaicsSector Sector { get; set; }
@@ -41,5 +42,18 @@ namespace NoFuture.Rand.Com
         /// </summary>
         /// <param name="uri"></param>
         void AddUri(string uri);
+
+        /// <summary>
+        /// Add the given phone number to this person
+        /// </summary>
+        /// <param name="phone"></param>
+        void AddPhone(Phone phone);
+
+        /// <summary>
+        /// Parses and, when valid, adds the phone number to this person
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <param name="descriptor"></param>
+        void AddPhone(string phoneNumber, KindsOfLabels? descriptor = null);
     }
 }

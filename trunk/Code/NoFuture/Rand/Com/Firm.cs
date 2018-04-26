@@ -28,6 +28,7 @@ namespace NoFuture.Rand.Com
         private NaicsMarket _market;
         private int _fiscalYearEndDay = 1;
         private readonly HashSet<Uri> _netUris = new HashSet<Uri>();
+        private readonly List<NorthAmericanPhone> _phoneNumbers = new List<NorthAmericanPhone>();
         #endregion
 
         #region properties
@@ -38,10 +39,10 @@ namespace NoFuture.Rand.Com
             set => UpsertName(KindsOfNames.Legal, value);
         }
         public IEnumerable<Uri> NetUri => _netUris;
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
         public PostalAddress MailingAddress { get; set; }
         public PostalAddress BusinessAddress { get; set; }
-        public NorthAmericanPhone[] Phone { get; set; }
+        public IEnumerable<Phone> PhoneNumbers => _phoneNumbers;
         public StandardIndustryClassification SIC { get; set; }
         public NaicsPrimarySector PrimarySector
         {
@@ -85,6 +86,25 @@ namespace NoFuture.Rand.Com
 
         #region methods
         public abstract void LoadXrefXmlData();
+
+        public virtual void AddPhone(Phone phone)
+        {
+            if (!(phone is NorthAmericanPhone namerPhone))
+                return;
+
+            _phoneNumbers.Add(namerPhone);
+        }
+
+        public virtual void AddPhone(string phoneNumber, KindsOfLabels? descriptor = null)
+        {
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+                return;
+            if (!NorthAmericanPhone.TryParse(phoneNumber, out var namerPhone))
+                return;
+
+            namerPhone.Descriptor = descriptor;
+            _phoneNumbers.Add(namerPhone);
+        }
 
         protected internal void ResolveNaicsOnSic()
         {

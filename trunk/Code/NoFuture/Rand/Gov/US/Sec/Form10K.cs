@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NoFuture.Rand.Gov.US.Sec
 {
@@ -50,6 +52,22 @@ namespace NoFuture.Rand.Gov.US.Sec
             qry.Append("xbrl_type=v");
 
             return new Uri("https://www.sec.gov/cgi-bin/viewer" + qry);
+        }
+
+        /// <summary>
+        /// Attempts to find &apos;DESCRIPTION OF BUSINESS&apos; from the 
+        /// text blocks.
+        /// </summary>
+        /// <returns></returns>
+        public string GetDescriptionOfBiz()
+        {
+            if (!GetTextBlocks().Any())
+                return null;
+
+            //search for a text block with this common text
+            var descOfBiz = GetTextBlocks().FirstOrDefault(tb =>
+                Regex.IsMatch(tb.Item2, @"DESCRIPTION\s+OF\s+BUSINESS", RegexOptions.IgnoreCase));
+            return descOfBiz?.Item2;
         }
     }
 }

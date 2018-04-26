@@ -53,10 +53,10 @@ namespace NoFuture.Rand.Exo
                 corp.Name = pd.companyName.Value;
 
             var nfTicker = corp.TickerSymbols.FirstOrDefault(t => t.Symbol == tickerSymbol) ??
-                           new TickerSymbol {Symbol = tickerSymbol};
+                           new TickerSymbol {Symbol = tickerSymbol, Src = srcUri.ToString()};
             nfTicker.Exchange = exchange;
             if(corp.TickerSymbols.All(t => t.Symbol != tickerSymbol))
-                corp.TickerSymbols.Add(nfTicker);
+                corp.AddTickerSymbol(nfTicker);
             corp.Description = description;
             corp.AddUri((string)website);
 
@@ -202,7 +202,7 @@ namespace NoFuture.Rand.Exo
                 pc.TickerSymbols.All(x => !String.Equals(x.Symbol, ticker, StringComparison.OrdinalIgnoreCase)))
             {
                 ticker = ticker.ToUpper();
-                pc.TickerSymbols.Add(new TickerSymbol { Symbol = ticker, Country = "USA" });
+                pc.AddTickerSymbol(new TickerSymbol { Symbol = ticker, Country = "USA", Src = srcUri.ToString()});
             }
 
             var legalName = xbrlDyn.Name;
@@ -265,7 +265,7 @@ namespace NoFuture.Rand.Exo
             rptTenK.Src = srcUri?.ToString();
 
             if(xbrlDyn.TextBlocks is IEnumerable<Tuple<string, string>> textBlocks && textBlocks.Any())
-                rptTenK.TextBlocks.AddRange(textBlocks);
+                rptTenK.AddRangeTextBlocks(textBlocks);
 
             return true;
         }
@@ -295,7 +295,7 @@ namespace NoFuture.Rand.Exo
                         existing.InstrumentType = dd.InstrumentType;
                         continue;
                     }
-                    pc.TickerSymbols.Add(new TickerSymbol
+                    pc.AddTickerSymbol(new TickerSymbol
                     {
                         Symbol = dd.Symbol,
                         InstrumentType = dd.InstrumentType,
@@ -378,7 +378,7 @@ namespace NoFuture.Rand.Exo
                     secForm.CIK = corp.CIK;
                 }
 
-                corp.SecReports.Add(secForm);
+                corp.AddSecReport(secForm);
                 if (!corporations.Any(x => String.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase)))
                     corporations.Add(corp);
             }
@@ -469,24 +469,18 @@ namespace NoFuture.Rand.Exo
                 CityArea = new UsCityStateZip(mailAddr) {Src = myDynData.SourceUri.ToString()}
             };
 
-            var phs = new List<NorthAmericanPhone>();
-            if (publicCompany.Phone != null && publicCompany.Phone.Length > 0)
-            {
-                phs.AddRange(publicCompany.Phone);
-            }
             NorthAmericanPhone phOut;
-            if (NorthAmericanPhone.TryParse(pr.BizPhone, out phOut) && phs.All(x => !x.Equals(phOut)))
+            if (NorthAmericanPhone.TryParse(pr.BizPhone, out phOut) && publicCompany.PhoneNumbers.All(x => !x.Equals(phOut)))
             {
                 phOut.Src = myDynData.SourceUri.ToString();
-                phs.Add(phOut);
+                publicCompany.AddPhone(phOut);
             }
 
-            if (NorthAmericanPhone.TryParse(pr.MailPhone, out phOut) && phs.All(x => !x.Equals(phOut)))
+            if (NorthAmericanPhone.TryParse(pr.MailPhone, out phOut) && publicCompany.PhoneNumbers.All(x => !x.Equals(phOut)))
             {
                 phOut.Src = myDynData.SourceUri.ToString();
-                phs.Add(phOut);
+                publicCompany.AddPhone(phOut);
             }
-            publicCompany.Phone = phs.ToArray();
 
             if (pr.FormerNames != null)
             {

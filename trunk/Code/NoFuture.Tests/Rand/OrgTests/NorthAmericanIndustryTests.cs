@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Tests.OrgTests
             {
                 Assert.IsInstanceOf<NaicsSuperSector>(ss);
                 System.Diagnostics.Debug.WriteLine($"{ss.Value} {ss.Description}");
-                foreach (var s in ss.Divisions)
+                foreach (var s in ss.GetDivisions())
                 {
                     System.Diagnostics.Debug.WriteLine(s.Description);
                 }

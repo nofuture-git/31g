@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Xml;
 using NUnit.Framework;
 using NoFuture.Rand.Exo.NfXml;
 
@@ -87,6 +88,17 @@ namespace NoFuture.Rand.Exo.Tests.NfXmlTests
                 if (tR.Item1 == 2015)
                     Assert.AreEqual(2695680M, tR.Item2);
             }
+        }
+
+        [Test]
+        public void TestGetEmbeddedHtmlContentFromInnerText()
+        {
+            var testXmlFile = TestAssembly.TestDataDir + @"\ExampleSecXbrl4.xml";
+            var xml = new XmlDocument();
+            xml.LoadXml(System.IO.File.ReadAllText(testXmlFile));
+            var testResult = SecXbrlInstanceFile.GetEmbeddedHtmlContentFromInnerText(xml, "//*[contains(text(),' style=')]");
+            Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.Any());
         }
 
         [Test]

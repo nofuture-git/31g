@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Com
                 return;
 
             PrimarySector =
-                superSectors.SelectMany(x => x.Divisions)
+                superSectors.SelectMany(x => x.GetDivisions())
                     .FirstOrDefault(x => x.Value == FIFTY_TWO);
         }
 

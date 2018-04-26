@@ -33,10 +33,10 @@ namespace NoFuture.Rand.Tests
             Assert.IsNotNull(testTarget.CIK);
             Assert.AreNotEqual(0, testTarget.TickerSymbols);
 
-            System.Diagnostics.Debug.WriteLine(testTarget.CIK.ToString());
-            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols.ToArray()[0].Symbol);
-            System.Diagnostics.Debug.WriteLine(testTarget.TickerSymbols.ToArray()[0].Exchange);
-            System.Diagnostics.Debug.WriteLine(testTarget.SIC.ToString());
+            Console.WriteLine(testTarget.CIK.ToString());
+            Console.WriteLine(testTarget.TickerSymbols.ToArray()[0].Symbol);
+            Console.WriteLine(testTarget.TickerSymbols.ToArray()[0].Exchange);
+            Console.WriteLine(testTarget.SIC.ToString());
 
             //test nothing found - no problems and no change
             testTarget = new Bank();

@@ -236,6 +236,11 @@ namespace NoFuture.Rand.Exo.NfXml
                     {
                         var replaceWith = new string(new []{(char)k.Item1});
                         var htmlEscTxt = k.Item2;
+
+                        //HACK, deals with crap html like <div style="font-family: "Times New Roman", Times, serif;">
+                        if (k.Item2 == "&quot;")
+                            replaceWith = "'";
+
                         htmlText = htmlText.Replace(htmlEscTxt, replaceWith);
                     }
 

@@ -16,14 +16,14 @@ namespace NoFuture.Rand.Tests.OrgTests
             {
                 Assert.IsInstanceOf<SocMajorGroup>(majorGrp);
                 System.Diagnostics.Debug.WriteLine($"{majorGrp.Value} {majorGrp.Description}");
-                foreach (var minorGrp in majorGrp.Divisions)
+                foreach (var minorGrp in majorGrp.GetDivisions())
                 {
                     System.Diagnostics.Debug.WriteLine($"\t\t{minorGrp.Description}");
-                    foreach (var boardGrp in minorGrp.Divisions)
+                    foreach (var boardGrp in minorGrp.GetDivisions())
                     {
-                        foreach (var detailGrp in boardGrp.Divisions)
+                        foreach (var detailGrp in boardGrp.GetDivisions())
                         {
-                            foreach (var cip in detailGrp.Divisions)
+                            foreach (var cip in detailGrp.GetDivisions())
                             {
                                 Assert.IsInstanceOf<ClassificationOfInstructionalPrograms>(cip);
                                 System.Diagnostics.Debug.WriteLine($"\t\t\t{cip.Description}");

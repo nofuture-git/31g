@@ -427,7 +427,7 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             Assert.AreEqual($"{firstName} {middleName} {lastName}", testSubject.FullName);
             Assert.IsNotNull(testSubject.Address);
-            Assert.AreEqual($"{addrLine1} {addrLine2}", testSubject.Address.ToString());
+            Assert.AreEqual($"{addrLine1}  {addrLine2}", testSubject.Address.ToString());
 
             var phNum = "707-884-5563";
             NorthAmericanPhone.TryParse(phNum, out var naph);
@@ -447,8 +447,6 @@ namespace NoFuture.Rand.Tests.DomusTests
             var testResultEmail = testSubject.NetUri.FirstOrDefault(u => u.Scheme == Uri.UriSchemeMailto);
             Assert.IsNotNull(testResultEmail);
             Assert.IsTrue(testResultEmail.ToString().EndsWith(testEmail));
-
-            
         }
     }
 }
