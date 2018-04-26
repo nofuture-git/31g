@@ -10,14 +10,13 @@ namespace NoFuture.Rand.Geo
     /// Base type representing the first half of a typical Postal Address
     /// </summary>
     [Serializable]
-    public abstract class StreetPo : ICited
+    public abstract class StreetPo : GeoBase, ICited
     {
-        protected readonly AddressData data;
-
-        protected StreetPo(AddressData d) { data = d; }
+        protected StreetPo(AddressData d) : base(d)
+        {
+        }
 
         public virtual string Src { get; set; }
-        public AddressData Data => data;
 
         /// <summary>
         /// Prints the address as it would appear as post marked.
@@ -25,6 +24,7 @@ namespace NoFuture.Rand.Geo
         /// <returns></returns>
         public override string ToString()
         {
+            var data = GetData();
             return Etc.DistillSpaces(string.Join(" ", data.AddressNumber, data.StreetNameDirectional, data.StreetName, 
                 data.StreetType, data.SecondaryUnitDesignator,
                 data.SecondaryUnitId).Trim());
@@ -33,12 +33,12 @@ namespace NoFuture.Rand.Geo
         public override bool Equals(object obj)
         {
             var addr = obj as StreetPo;
-            return addr != null && Data.Equals(addr.Data);
+            return addr != null && GetData().Equals(addr.GetData());
         }
 
         public override int GetHashCode()
         {
-            return Data.GetHashCode();
+            return GetData().GetHashCode();
         }
 
         /// <summary>

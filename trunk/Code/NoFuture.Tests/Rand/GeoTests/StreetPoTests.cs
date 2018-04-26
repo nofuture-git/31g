@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using NoFuture.Rand.Geo;
 
 namespace NoFuture.Rand.Tests.GeoTests
@@ -15,10 +16,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StreetName));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StreetKind));
 
-            testResult.Data.SecondaryUnitDesignator = "UNIT DESG";
-            testResult.Data.SecondaryUnitId = "4451";
-
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
     }

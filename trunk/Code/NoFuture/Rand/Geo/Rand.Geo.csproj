@@ -39,6 +39,7 @@
     <Compile Include="AddressData.cs" />
     <Compile Include="CA\CaCityProvidencePost.cs" />
     <Compile Include="CityArea.cs" />
+    <Compile Include="GeoBase.cs" />
     <Compile Include="PostalAddress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreetPo.cs" />

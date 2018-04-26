@@ -415,18 +415,11 @@ namespace NoFuture.Rand.Domus
             if (string.IsNullOrWhiteSpace(_myBirthCert.PersonFullName))
                 _myBirthCert.PersonFullName = FullName;
 
-            if (string.IsNullOrWhiteSpace(_myBirthCert.MotherName))
-            {
-                var mother = GetBiologicalMother();
-                _myBirthCert.MotherName = mother?.FullName;
-            }
-                
-            
-            if (string.IsNullOrWhiteSpace(_myBirthCert.FatherName))
-            {
-                var father = GetBiologicalFather();
-                _myBirthCert.FatherName = father?.FullName;
-            }
+            var mother = GetBiologicalMother();
+            _myBirthCert.MotherName = mother?.FullName ?? _myBirthCert.MotherName;
+
+            var father = GetBiologicalFather();
+            _myBirthCert.FatherName = father?.FullName ?? _myBirthCert.FatherName;
         }
 
         protected internal void ThrowOnDeathBeforeBirth()

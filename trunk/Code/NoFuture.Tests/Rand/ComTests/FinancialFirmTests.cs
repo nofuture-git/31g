@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Tests.ComTests
         [Test]
         public void TestGetRandomBank()
         {
-            var testInput = new UsCityStateZip(new AddressData {City = "New York City", StateAbbrev = "NY"});
+            var testInput = new UsCityStateZip(new AddressData {City = "New York City", RegionAbbrev = "NY"});
             var testResult = NoFuture.Rand.Com.Bank.RandomBank(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual("",testResult.Name);

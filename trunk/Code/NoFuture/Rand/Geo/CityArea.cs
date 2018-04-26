@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Geo
     /// Base type representing the second half of a typical Postal Address
     /// </summary>
     [Serializable]
-    public abstract class CityArea : ICited
+    public abstract class CityArea : GeoBase, ICited
     {
         #region constants
 
@@ -34,7 +34,6 @@ namespace NoFuture.Rand.Geo
         #endregion
 
         #region fields
-        protected readonly AddressData data;
         internal static XmlDocument UsZipCodeXml;
         internal static XmlDocument CaPostCodeXml;
         internal static XmlDocument UsZipProbXml;
@@ -42,35 +41,41 @@ namespace NoFuture.Rand.Geo
         #endregion
 
         #region ctor
-        protected CityArea(AddressData d)
+        protected CityArea(AddressData d) :base(d)
         {
-            data = d;
         }
         #endregion
 
         #region properties
         public virtual string Src { get; set; }
-        public virtual AddressData AddressData => data;
+        public string City => GetData().City;
+
         #endregion
 
         #region methods
+
+        public virtual string GetRegionAbbrev()
+        {
+            return GetData().RegionAbbrev ?? "";
+        }
+
         public virtual string GetPostalCodePrefix()
         {
-            if (String.IsNullOrWhiteSpace(data?.PostalCode) || data.PostalCode.Length < 3)
+            if (String.IsNullOrWhiteSpace(GetData().PostalCode) || GetData().PostalCode.Length < 3)
                 return null;
-            return data.PostalCode.Substring(0, 3);
+            return GetData().PostalCode.Substring(0, 3);
 
         }
 
         public override bool Equals(object obj)
         {
             var ca = obj as CityArea;
-            return ca != null && AddressData.Equals(ca.AddressData);
+            return ca != null && GetData().Equals(ca.GetData());
         }
 
         public override int GetHashCode()
         {
-            return AddressData.GetHashCode();
+            return GetData().GetHashCode();
         }
 
         /// <summary>
@@ -97,7 +102,7 @@ namespace NoFuture.Rand.Geo
             var ctz = new AddressData
             {
                 PostalCode = $"{UsCityStateZip.DF_ZIPCODE_PREFIX}{Etx.RandomInteger(1, 99):00}",
-                StateAbbrev = UsCityStateZip.DF_STATE_ABBREV
+                RegionAbbrev = UsCityStateZip.DF_STATE_ABBREV
             };
 
             //pick a zip code prefix at random
@@ -119,11 +124,11 @@ namespace NoFuture.Rand.Geo
             }
 
             //get the containing us state
-            ctz.StateName =  randZipCode.ParentNode.Attributes[NAME].Value;
-            var nfState = UsState.GetStateByName(ctz.StateName) ??
+            ctz.RegionName =  randZipCode.ParentNode.Attributes[NAME].Value;
+            var nfState = UsState.GetStateByName(ctz.RegionName) ??
                           UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV);
 
-            ctz.StateAbbrev = nfState.StateAbbrev ?? UsCityStateZip.DF_STATE_ABBREV;
+            ctz.RegionAbbrev = nfState.StateAbbrev ?? UsCityStateZip.DF_STATE_ABBREV;
             ctz.PostalCodeSuffix = $"{Etx.MyRand.Next(1, 9999):0000}";
 
             if (!randZipCode.HasChildNodes)
@@ -187,8 +192,8 @@ namespace NoFuture.Rand.Geo
             if (providenceElem == null)
                 return dfReturn;
 
-            ctz.StateAbbrev = providenceElem.GetAttribute(ABBREVIATION);
-            ctz.StateName = providenceElem.GetAttribute(NAME);
+            ctz.RegionAbbrev = providenceElem.GetAttribute(ABBREVIATION);
+            ctz.RegionName = providenceElem.GetAttribute(NAME);
             
             var postalPrefix = randPostalCode.GetAttribute(PREFIX);
             postalPrefix = String.IsNullOrWhiteSpace(postalPrefix) ? DF_FIRST_THREE_CHARS : postalPrefix;

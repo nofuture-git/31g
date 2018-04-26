@@ -137,7 +137,7 @@ namespace NoFuture.Rand.Com
 
             bank.BusinessAddress = new PostalAddress
             {
-                CityArea = new UsCityStateZip(new AddressData {City = city, StateAbbrev = state})
+                CityArea = new UsCityStateZip(new AddressData {City = city, RegionAbbrev = state})
             };
             bank.Rssd = new ResearchStatisticsSupervisionDiscount {Value = rssd};
             bank.RoutingNumber = RoutingTransitNumber.RandomRoutingNumber();
@@ -167,12 +167,12 @@ namespace NoFuture.Rand.Com
             XmlElement bankXmlElem = null;
             var pickFromList = new List<XmlElement>();
 
-            if (!string.IsNullOrWhiteSpace(ca?.AddressData?.City) &&
-                !string.IsNullOrWhiteSpace(ca.AddressData?.StateAbbrev))
+            if (!string.IsNullOrWhiteSpace(ca?.City) &&
+                !string.IsNullOrWhiteSpace(ca.GetRegionAbbrev()))
             {
-                var cityName = UsCityStateZip.FinesseCityName(ca.AddressData.City);
+                var cityName = UsCityStateZip.FinesseCityName(ca.City);
 
-                var nodes = UsBanksXml.SelectNodes($"//com[@us-state='{ca.AddressData.StateAbbrev.ToUpper()}']");
+                var nodes = UsBanksXml.SelectNodes($"//com[@us-state='{ca.GetRegionAbbrev().ToUpper()}']");
                 if (nodes != null && nodes.Count > 0)
                 {
                     foreach (var node in nodes)

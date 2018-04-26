@@ -5,7 +5,7 @@ using NoFuture.Rand.Geo.US;
 namespace NoFuture.Rand.Geo
 {
     /// <summary>
-    /// A composition type to contain a home address.
+    /// A composition type to contain a postal address.
     /// </summary>
     [Serializable]
     public class PostalAddress : DiachronIdentifier
@@ -16,9 +16,17 @@ namespace NoFuture.Rand.Geo
 
         public override string Abbrev => "Addr";
 
+        public override string Value
+        {
+            get => ToString();
+            set => throw new NotImplementedException(
+                "Full address parser not supported, caller " +
+                $"needs to assign the {nameof(Street)} and {nameof(CityArea)}");
+        }
+
         public override string ToString()
         {
-            return string.Join(" ", Street, CityArea);
+            return string.Join("  ", Street, CityArea);
         }
 
         /// <summary>

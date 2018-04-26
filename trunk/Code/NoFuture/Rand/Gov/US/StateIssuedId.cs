@@ -8,8 +8,8 @@ namespace NoFuture.Rand.Gov.US
     [Serializable]
     public abstract class StateIssuedId : GovernmentId
     {
-        public UsState IssuingState { get; set; }
-
+        protected internal UsState IssuingState { get; set; }
+        public string StateAbbrev => IssuingState?.StateAbbrev;
         public string FullLegalName { get; set; }
         public DateTime Dob { get; set; }
         public string Gender { get; set; }

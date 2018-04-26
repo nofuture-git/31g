@@ -105,6 +105,17 @@ namespace NoFuture.Rand.Tests.DomusTests
         }
 
         [Test]
+        public void TestRandomParentBirthDate()
+        {
+            DateTime testDob = new DateTime(1984, 4, 22);
+            var parentDob = AmericanUtil.RandomParentBirthDate(testDob);
+            var yearsExpected = 365 * 14;
+
+            var diff = testDob - parentDob;
+            Assert.IsTrue(diff.TotalDays > yearsExpected);
+        }
+
+        [Test]
         public void TestSolveForSpouse()
         {
             var testDob = new DateTime(1982, 8, 19);

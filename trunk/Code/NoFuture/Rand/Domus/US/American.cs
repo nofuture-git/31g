@@ -45,16 +45,6 @@ namespace NoFuture.Rand.Domus.US
         public override IEnumerable<Phone> PhoneNumbers => _phoneNumbers;
 
         /// <summary>
-        /// Gets the phone home phone of the given person if any.
-        /// </summary>
-        public NorthAmericanPhone HomePhone => _phoneNumbers.FirstOrDefault(x => x.Descriptor == KindsOfLabels.Home);
-
-        /// <summary>
-        /// Gets the mobile phone of the given person if any.
-        /// </summary>
-        public NorthAmericanPhone MobilePhone => _phoneNumbers.FirstOrDefault(x => x.Descriptor == KindsOfLabels.Mobile);
-
-        /// <summary>
         /// Get or sets the United States <see cref="SocialSecurityNumber"/> 
         /// of this instance.
         /// </summary>
@@ -630,7 +620,7 @@ namespace NoFuture.Rand.Domus.US
         {
             if (GetAddressAt(null) == null)
                 return UsState.AGE_OF_ADULT;
-            var myHomeState = UsState.GetStateByPostalCode(GetAddressAt(null)?.CityArea?.AddressData?.StateAbbrev);
+            var myHomeState = UsState.GetStateByPostalCode(GetAddressAt(null)?.CityArea?.GetRegionAbbrev());
             return myHomeState?.AgeOfMajority ?? UsState.AGE_OF_ADULT;
         }
 
@@ -644,9 +634,9 @@ namespace NoFuture.Rand.Domus.US
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static American RandomAmerican()
+        public static American RandomAmerican(bool withFamily = true)
         {
-            return RandomAmerican(Etx.RandomAdultBirthDate(), Etx.RandomCoinToss() ? Gender.Female : Gender.Male, true);
+            return RandomAmerican(Etx.RandomAdultBirthDate(), Etx.RandomCoinToss() ? Gender.Female : Gender.Male, withFamily);
         }
 
         /// <summary>
@@ -668,6 +658,7 @@ namespace NoFuture.Rand.Domus.US
                 City = dobAddr.City,
                 State = dobAddr.StateAbbrev
             };
+
             amer.Personality = Personality.RandomPersonality();
 
             //almost always returns null
@@ -685,6 +676,9 @@ namespace NoFuture.Rand.Domus.US
             {
                 amer.MiddleName = AmericanUtil.RandomAmericanFirstName(amer.MyGender, amer.BirthCert.DateOfBirth);
             }
+
+            amer.BirthCert.PersonFullName = amer.FullName;
+
             amer.Ssn = SocialSecurityNumber.RandomSsn();
             if (amer.Race <= 0)
                 amer.Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs);
@@ -708,6 +702,7 @@ namespace NoFuture.Rand.Domus.US
                 return amer;
 
             var homeAddr = PostalAddress.RandomAmericanAddress();
+            homeAddr.Inception = Etx.RandomDate(-5);
             amer.GetAddresses().Add(homeAddr);
             var csz = homeAddr.CityArea as UsCityStateZip;
 

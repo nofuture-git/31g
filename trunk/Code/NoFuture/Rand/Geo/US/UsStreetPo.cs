@@ -65,10 +65,10 @@ namespace NoFuture.Rand.Geo.US
 
         #region properties
         public string CountyTownship { get; set; }
-        public string PostBox => data.AddressNumber;
-        public string StreetName => data.StreetName;
-        public string StreetKind => data.StreetType;
-        public string SecondaryUnit => $"{data.SecondaryUnitDesignator} {data.SecondaryUnitId}".Trim();
+        public string PostBox => GetData().AddressNumber;
+        public string StreetName => GetData().StreetName;
+        public string StreetKind => GetData().StreetType;
+        public string SecondaryUnit => $"{GetData().SecondaryUnitDesignator} {GetData().SecondaryUnitId}".Trim();
         #endregion
 
         /// <summary>

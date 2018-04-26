@@ -239,6 +239,31 @@ namespace NoFuture.Rand.Domus.US
         [RandomFactory]
         public static IPerson RandomParent(DateTime? childDob, Gender parentGender, LinearEquation age2FirstMarriageEq = null)
         {
+            var parentDob = RandomParentBirthDate(childDob, parentGender, age2FirstMarriageEq);
+
+            var aParent = American.RandomAmerican(parentDob, parentGender, false);
+            return aParent;
+        }
+
+        /// <summary>
+        /// Returns a date-of-birth for the parent of the person born on <see cref="childDob"/> at random.
+        /// </summary>
+        /// <param name="childDob">
+        /// Optional, defaults to a random adult birth date
+        /// </param>
+        /// <param name="parentGender">
+        /// Optional, will coin-toss if its null.
+        /// </param>
+        /// <param name="age2FirstMarriageEq">
+        /// Optional, allow caller to control equation used.
+        /// </param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static DateTime RandomParentBirthDate(DateTime? childDob = null, Gender? parentGender = null,
+            LinearEquation age2FirstMarriageEq = null)
+        {
+            parentGender = parentGender ?? (Etx.RandomCoinToss() ? Gender.Female : Gender.Male);
+
             if (age2FirstMarriageEq == null)
             {
                 age2FirstMarriageEq = parentGender == Gender.Male
@@ -258,10 +283,9 @@ namespace NoFuture.Rand.Domus.US
                 age2FirstMarriageEq.SolveForY(dtPm.ToDouble());
 
             //move the adjusted child-dob date back by calc'ed years 
-            var parentDob = dtPm.AddYears(Convert.ToInt32(Math.Round(avgAgeCouldMarry, 0))*-1);
+            var parentDob = dtPm.AddYears(Convert.ToInt32(Math.Round(avgAgeCouldMarry, 0)) * -1);
 
-            var aParent = American.RandomAmerican(parentDob, parentGender, false);
-            return aParent;
+            return parentDob;
         }
 
         /// <summary>

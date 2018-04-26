@@ -428,14 +428,14 @@ namespace NoFuture.Rand.Exo
             {
                 UsStreetPo temp;
                 if (UsStreetPo.TryParse(pr.BizAddrStreet, out temp))
-                    bizAddr = temp.Data;
+                    bizAddr = temp.GetData();
             }
 
             if (!String.IsNullOrWhiteSpace(pr.BizAddrCity))
                 bizAddr.City = pr.BizAddrCity;
 
             if (!String.IsNullOrWhiteSpace(pr.BizAddrState))
-                bizAddr.StateAbbrev = pr.BizAddrState;
+                bizAddr.RegionAbbrev = pr.BizAddrState;
 
             if (!String.IsNullOrWhiteSpace(pr.BizPostalCode))
                 bizAddr.PostalCode = pr.BizPostalCode;
@@ -451,14 +451,14 @@ namespace NoFuture.Rand.Exo
             {
                 UsStreetPo temp;
                 if (UsStreetPo.TryParse(pr.MailAddrStreet, out temp))
-                    mailAddr = temp.Data;
+                    mailAddr = temp.GetData();
             }
 
             if (!String.IsNullOrWhiteSpace(pr.MailAddrCity))
                 mailAddr.City = pr.MailAddrCity;
 
             if (!String.IsNullOrWhiteSpace(pr.MailAddrState))
-                mailAddr.StateAbbrev = pr.MailAddrState;
+                mailAddr.RegionAbbrev = pr.MailAddrState;
 
             if (!String.IsNullOrWhiteSpace(pr.MailPostalCode))
                 mailAddr.PostalCode = pr.MailPostalCode;
