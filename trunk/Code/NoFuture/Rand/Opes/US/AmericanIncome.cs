@@ -305,7 +305,7 @@ namespace NoFuture.Rand.Opes.US
             var tenPercentGrossIncome = netAnnualIncome.ToDouble() / 12 * 0.1;
 
             var sum = thirtyPercentAdjIncome + tenPercentGrossIncome + 25.0D;
-            return sum.ToPecuniam().Abs;
+            return sum.ToPecuniam().GetAbs();
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace NoFuture.Rand.Opes.US
             if(netAnnualIncome == null)
                 return Pecuniam.Zero;
             var thirtyPercentAdjIncome = netAnnualIncome.ToDouble() / 12 * 0.3;
-            return thirtyPercentAdjIncome.ToPecuniam().Abs;
+            return thirtyPercentAdjIncome.ToPecuniam().GetAbs();
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace NoFuture.Rand.Opes.US
             {
                 var pay = Pondus.GetExpectedAnnualSum(emp.GetPayAt(dt));
                 var ded = Pondus.GetExpectedAnnualSum(emp.Deductions?.GetDeductionsAt(dt)) ?? Pecuniam.Zero;
-                sum += pay - ded.Abs;
+                sum += pay - ded.GetAbs();
             }
 
             return sum;

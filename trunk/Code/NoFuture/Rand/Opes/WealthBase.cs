@@ -495,7 +495,7 @@ namespace NoFuture.Rand.Opes
 
             //get the direct assign's total
             var givenDirectTotal = givenDirectlyItems
-                .Select(x => Math.Round(x.Value?.Abs.ToDouble() ?? 0.0D, DF_ROUND_DECIMAL_PLACES)).Sum();
+                .Select(x => Math.Round(x.Value.GetAbs().ToDouble(), DF_ROUND_DECIMAL_PLACES)).Sum();
 
             //get total given by the caller if any
             var sumTotal = (options.SumTotal ?? Pecuniam.Zero).ToDouble();
@@ -583,9 +583,9 @@ namespace NoFuture.Rand.Opes
                     || d.Value == Pecuniam.Zero)
                     continue;
                 if (calcDict.ContainsKey(dName))
-                    calcDict[dName] += d.Value.Abs.ToDouble();
+                    calcDict[dName] += d.Value.GetAbs().ToDouble();
                 else
-                    calcDict.Add(dName, d.Value.Abs.ToDouble());
+                    calcDict.Add(dName, d.Value.GetAbs().ToDouble());
             }
 
             var calcMap = new List<Tuple<string, double>>();
@@ -667,7 +667,7 @@ namespace NoFuture.Rand.Opes
             if (egs.Any())
             {
                 foreach (var eg in egs)
-                    mereo.ExempliGratia.Add(eg);
+                    mereo.GetExempliGratia().Add(eg);
             }
 
             return !String.IsNullOrWhiteSpace(itemName);

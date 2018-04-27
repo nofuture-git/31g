@@ -24,13 +24,13 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testResultSum = testSubject.TotalAnnualDeductions;
             Assert.IsNotNull( testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
-            Assert.AreEqual(1200D.ToPecuniam().Neg, testResultSum);
+            Assert.AreEqual(1200D.ToPecuniam().GetNeg(), testResultSum);
 
             testSubject.AddItem("State Tax", "Government", 600D.ToPecuniam());
             testResultSum = testSubject.TotalAnnualDeductions;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
-            Assert.AreEqual(1800D.ToPecuniam().Neg, testResultSum);
+            Assert.AreEqual(1800D.ToPecuniam().GetNeg(), testResultSum);
         }
 
         [Test]

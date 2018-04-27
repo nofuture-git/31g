@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Sp
         /// Other names or common examples of this money entry item 
         /// (e.g. Alimony is also known as Spousal Support)
         /// </summary>
-        List<string> ExempliGratia { get; }
+        List<string> GetExempliGratia();
 
         /// <summary>
         /// Both assigns <see cref="Interval"/> to Annually and increases the

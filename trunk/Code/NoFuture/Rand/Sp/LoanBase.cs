@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Sp
         {
             if (amount != null && amount.Amount != 0)
             {
-                Balance.AddTransaction(openedDate, amount.Abs, new Mereo("Initial Transaction"), Pecuniam.Zero);
+                Balance.AddTransaction(openedDate, amount.GetAbs(), new Mereo("Initial Transaction"), Pecuniam.Zero);
             }
             FormOfCredit = Enums.FormOfCredit.Installment;
             DueFrequency = DefaultDueFrequency;
@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Sp
                 return Pecuniam.Zero;
 
             var amt = bal.Amount * Convert.ToDecimal(MinPaymentRate);
-            return new Pecuniam(Math.Round(amt, 2)).Neg;
+            return new Pecuniam(Math.Round(amt, 2)).GetNeg();
         }
 
         /// <summary>

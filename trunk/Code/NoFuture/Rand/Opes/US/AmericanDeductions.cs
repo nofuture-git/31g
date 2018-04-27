@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Opes.US
         #region properties
 
         public virtual Pondus[] CurrentDeductions => GetCurrent(MyItems);
-        public Pecuniam TotalAnnualDeductions => Pondus.GetExpectedAnnualSum(CurrentDeductions).Neg;
+        public Pecuniam TotalAnnualDeductions => Pondus.GetExpectedAnnualSum(CurrentDeductions).GetNeg();
         public virtual Pondus[] GetDeductionsAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Opes.US
 
         public override void AddItem(Pondus d)
         {
-            d.Expectation.Value = d.Expectation.Value.Neg;
+            d.Expectation.Value = d.Expectation.Value.GetNeg();
             _deductions.Add(d);
         }
 

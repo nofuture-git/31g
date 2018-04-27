@@ -73,8 +73,8 @@ namespace NoFuture.Rand.Opes.US
             set => _endDate = value;
         }
 
-        public Pecuniam TotalAnnualPay => Pondus.GetExpectedAnnualSum(CurrentPay).Abs;
-        public Pecuniam TotalAnnualNetPay => TotalAnnualPay - Deductions?.TotalAnnualDeductions.Abs ?? Pecuniam.Zero;
+        public Pecuniam TotalAnnualPay => Pondus.GetExpectedAnnualSum(CurrentPay).GetAbs();
+        public Pecuniam TotalAnnualNetPay => TotalAnnualPay - (Deductions?.TotalAnnualDeductions)?.GetAbs() ?? Pecuniam.Zero;
 
         protected internal override List<Pondus> MyItems
         {
@@ -304,7 +304,7 @@ namespace NoFuture.Rand.Opes.US
         {
             if (IsInRange(p))
             {
-                p.Expectation.Value = p.Expectation.Value.Abs;
+                p.Expectation.Value = p.Expectation.Value.GetAbs();
                 _pay.Add(p);
             }
         }

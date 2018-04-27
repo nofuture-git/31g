@@ -210,6 +210,15 @@ namespace NoFuture.Rand.Edu.US
                         univ.CrimeRate = crimeRate;
                 }
 
+                if (!(node.ParentNode is XmlElement stateNode) || stateNode.LocalName != "state")
+                    return true;
+
+                attr = stateNode.Attributes["name"];
+                univ.StateName = attr == null ? string.Empty : attr.Value;
+
+                attr = stateNode.Attributes["abbreviation"];
+                univ.StateAbbrev = attr == null ? string.Empty : attr.Value;
+
                 return true;
             }
             catch

@@ -93,8 +93,8 @@ namespace NoFuture.Rand.Sp
         {
             if (amt == Pecuniam.Zero)
                 return;
-            fee = fee == null ? Pecuniam.Zero : fee.Neg;
-            Balance.AddTransaction(dt, amt.Neg, note, fee);
+            fee = fee == null ? Pecuniam.Zero : fee.GetNeg();
+            Balance.AddTransaction(dt, amt.GetNeg(), note, fee);
         }
 
         /// <summary>
@@ -109,8 +109,8 @@ namespace NoFuture.Rand.Sp
         {
             if (val == Pecuniam.Zero)
                 return false;
-            fee = fee == null ? Pecuniam.Zero : fee.Abs;
-            Balance.AddTransaction(dt, val.Abs, note, fee);
+            fee = fee == null ? Pecuniam.Zero : fee.GetAbs();
+            Balance.AddTransaction(dt, val.GetAbs(), note, fee);
             return true;
         }
         #endregion

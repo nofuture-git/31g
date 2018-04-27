@@ -17,6 +17,8 @@ namespace NoFuture.Rand.Sp
         #region fields
         private static Dictionary<Interval, int> _interval2Multiplier;
         private Pecuniam _expectedValue = Pecuniam.Zero;
+        private readonly List<string> _exempliGratia = new List<string>();
+
         #endregion
 
         #region ctors
@@ -42,8 +44,8 @@ namespace NoFuture.Rand.Sp
             Value = mereo.Value;
             Interval = mereo.Interval;
             Classification = mereo.Classification;
-            foreach(var eg in mereo.ExempliGratia)
-                ExempliGratia.Add(eg);
+            foreach(var eg in mereo.GetExempliGratia())
+                GetExempliGratia().Add(eg);
         }
         #endregion
 
@@ -57,8 +59,6 @@ namespace NoFuture.Rand.Sp
             set => UpsertName(KindsOfNames.Legal, value);
         }
 
-        public List<string> ExempliGratia { get; } = new List<string>();
-
         public string Abbrev => Name;
         public string Src { get; set; }
 
@@ -68,6 +68,11 @@ namespace NoFuture.Rand.Sp
             set => _expectedValue = value;
         }
         #endregion 
+
+        public List<string> GetExempliGratia()
+        {
+            return _exempliGratia;
+        }
 
         public void AdjustToAnnualInterval()
         {

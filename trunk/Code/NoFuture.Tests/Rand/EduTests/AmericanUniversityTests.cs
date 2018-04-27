@@ -46,5 +46,17 @@ namespace NoFuture.Rand.Tests.EduTests
             testResult = AmericanEducation.GetAmericanUniversity("AZ");
             Assert.IsNotNull(testResult);
         }
+
+        [Test]
+        public void TestRandomUniversity()
+        {
+            var testResult = AmericanUniversity.RandomUniversity("CA");
+            Assert.IsNotNull(testResult);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Name));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StateName));
+            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StateAbbrev));
+            Assert.IsNotNull(testResult.PercentOfStateStudents);
+            Assert.IsFalse(testResult.PercentOfStateStudents == 0.0f);
+        }
     }
 }

@@ -30,13 +30,13 @@ namespace NoFuture.Rand.Sp
         #region properties
         public virtual Decimal Amount => _amount;
         public virtual Identifier Id => _currency;
-        public virtual Pecuniam Abs => new Pecuniam(Math.Abs(_amount));
-        public virtual Pecuniam Neg => new Pecuniam(-1*Math.Abs(_amount));
         public static Pecuniam Zero => new Pecuniam(0.0M);
-        public virtual Pecuniam Round => new Pecuniam(Math.Round(_amount, 2));
         #endregion
 
         #region methods
+        public virtual Pecuniam GetAbs() => new Pecuniam(Math.Abs(_amount));
+        public virtual Pecuniam GetNeg() => new Pecuniam(-1 * Math.Abs(_amount));
+        public virtual Pecuniam GetRounded() => new Pecuniam(Math.Round(_amount, 2));
 
         public virtual double ToDouble()
         {

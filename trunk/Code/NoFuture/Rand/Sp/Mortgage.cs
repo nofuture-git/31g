@@ -68,8 +68,8 @@ namespace NoFuture.Rand.Sp
             if(qDt < Inception)
                 return Pecuniam.Zero;
 
-            var qRemaining = GetValueAt(qDt).Abs;
-            var mv = (marketValue ?? GetEstimatedMarketValueAt(qDt)).Abs;
+            var qRemaining = GetValueAt(qDt).GetAbs();
+            var mv = (marketValue ?? GetEstimatedMarketValueAt(qDt)).GetAbs();
             return mv - qRemaining;
         }
 
@@ -92,7 +92,7 @@ namespace NoFuture.Rand.Sp
             var numDays = (qDt - pDt).TotalDays;
 
             var marketValue =
-                PurchasePrice.Abs.Amount.PerDiemInterest(ExpectedAppreciationRate,numDays);
+                PurchasePrice.GetAbs().Amount.PerDiemInterest(ExpectedAppreciationRate,numDays);
 
             return marketValue.ToPecuniam();
         }

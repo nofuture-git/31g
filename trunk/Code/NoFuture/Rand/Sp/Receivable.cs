@@ -102,7 +102,7 @@ namespace NoFuture.Rand.Sp
                     new Tuple<DateTime, DateTime>(ddt.AddDays((DueFrequency ?? DefaultDueFrequency).TotalDays * -1),
                         ddt));
 
-            return lastPayment.Abs < GetMinPayment(ddt).Abs
+            return lastPayment.GetAbs() < GetMinPayment(ddt).GetAbs()
                 ? SpStatus.Late
                 : SpStatus.Current;
         }

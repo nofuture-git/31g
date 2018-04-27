@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Tests.SpTests
             var testSubject = GetTestSubject();
             var testResult = testSubject.MonthlyPayment;
             Assert.IsNotNull(testResult);
-            Assert.AreEqual(testResult.Abs.Amount, 1990.59M);
+            Assert.AreEqual(testResult.GetAbs().Amount, 1990.59M);
         }
 
         [Test]

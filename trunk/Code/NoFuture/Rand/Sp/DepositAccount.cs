@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Sp
         public override Pecuniam GetMinPayment(DateTime dt)
         {
             var d = Balance.GetCurrent(dt, 0.0F);
-            return d < Pecuniam.Zero ? d.Abs : Pecuniam.Zero;
+            return d < Pecuniam.Zero ? d.GetAbs() : Pecuniam.Zero;
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Sp
             if (fromAccount.Inception < dt
                 || toAccount.Inception < dt)
                 return;
-            amt = amt.Abs;
+            amt = amt.GetAbs();
 
             while (fromAccount.Value < amt)
             {
