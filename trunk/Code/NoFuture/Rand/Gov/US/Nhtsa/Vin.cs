@@ -71,10 +71,10 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
         #endregion
 
         #region properties
-        public WorldManufacturerId Wmi { get; set; }
-        public VehicleDescription Vds { get; set; }
-        public char? CheckDigit => _chkDigit;
-        public VehicleIdSection Vis { get; set; }
+        protected internal WorldManufacturerId Wmi { get; set; }
+        protected internal VehicleDescription Vds { get; set; }
+        protected internal char? CheckDigit => _chkDigit;
+        protected internal VehicleIdSection Vis { get; set; }
         public string Description { get; set; }
         public bool IsNhtsaValidated { get; set; }
 

@@ -15,12 +15,22 @@ namespace NoFuture.Rand.Sp
             AtTime = atTime;
             Cash = amt;
             Description = description;
+            if (Description is IMereo mereo)
+            {
+                //having another money amount here is confusing
+                mereo.Value = null;
+            }
         }
         public Transaction(DateTime atTime, Pecuniam amt, Pecuniam fee, IVoca description = null)
         {
             AtTime = atTime;
             Cash = amt;
             Description = description;
+            if (Description is IMereo mereo)
+            {
+                //having another money amount here is confusing
+                mereo.Value = null;
+            }
             Fee = fee;
         }
         #endregion
