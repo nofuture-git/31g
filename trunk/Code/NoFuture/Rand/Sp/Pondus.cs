@@ -40,6 +40,22 @@ namespace NoFuture.Rand.Sp
         {
         }
 
+        /// <summary>
+        /// Gets the name from the Exceptation
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                if (Expectation == null)
+                    return null;
+                var grpName = Expectation.GetName(KindsOfNames.Group);
+                return string.IsNullOrWhiteSpace(grpName)
+                    ? Expectation.Name
+                    : string.Join(", ", grpName, Expectation.Name);
+            }
+        }
+
         public static Pecuniam GetExpectedSum(IEnumerable<Pondus> items)
         {
             if(items == null || !items.Any())

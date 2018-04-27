@@ -12,6 +12,11 @@ namespace NoFuture.Rand.Core
     public interface IVoca
     {
         /// <summary>
+        /// Convenience method to get or set the Legal name
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
         /// Adds or replaces the name by the given pair
         /// </summary>
         /// <param name="k"></param>

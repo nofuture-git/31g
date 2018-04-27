@@ -30,6 +30,12 @@ namespace NoFuture.Rand.Core
             Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Group, groupName));
         }
 
+        public virtual string Name
+        {
+            get => GetName(KindsOfNames.Legal);
+            set => UpsertName(KindsOfNames.Legal, value);
+        }
+
         public int GetCountOfNames()
         {
             return Names.Count;

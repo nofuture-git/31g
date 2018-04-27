@@ -15,11 +15,13 @@ namespace NoFuture.Rand.Sp
             AtTime = atTime;
             Cash = amt;
             Description = description;
-            if (Description is IMereo mereo)
-            {
-                //having another money amount here is confusing
-                mereo.Value = null;
-            }
+            if (!(Description is IMereo mereo))
+                return;
+
+            //having another money amount here is confusing
+            var asVoca = new VocaBase();
+            asVoca.CopyFrom(mereo);
+            Description = asVoca;
         }
         public Transaction(DateTime atTime, Pecuniam amt, Pecuniam fee, IVoca description = null)
         {
@@ -29,7 +31,9 @@ namespace NoFuture.Rand.Sp
             if (Description is IMereo mereo)
             {
                 //having another money amount here is confusing
-                mereo.Value = null;
+                var asVoca = new VocaBase();
+                asVoca.CopyFrom(mereo);
+                Description = asVoca;
             }
             Fee = fee;
         }

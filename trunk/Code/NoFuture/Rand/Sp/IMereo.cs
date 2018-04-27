@@ -22,11 +22,6 @@ namespace NoFuture.Rand.Sp
         Classification Classification { get; set; }
 
         /// <summary>
-        /// Convenience method to get or set the Legal name
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
         /// Other names or common examples of this money entry item 
         /// (e.g. Alimony is also known as Spousal Support)
         /// </summary>

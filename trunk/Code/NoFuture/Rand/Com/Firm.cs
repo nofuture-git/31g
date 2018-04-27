@@ -33,11 +33,6 @@ namespace NoFuture.Rand.Com
 
         #region properties
 
-        public string Name
-        {
-            get => GetName(KindsOfNames.Legal);
-            set => UpsertName(KindsOfNames.Legal, value);
-        }
         public IEnumerable<Uri> NetUri => _netUris;
         public virtual string Description { get; set; }
         public PostalAddress MailingAddress { get; set; }

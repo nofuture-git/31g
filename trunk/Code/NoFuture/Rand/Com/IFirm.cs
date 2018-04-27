@@ -14,7 +14,6 @@ namespace NoFuture.Rand.Com
     /// </summary>
     public interface IFirm : IVoca
     {
-        string Name { get; set; }
         string Description { get; set; }
         IEnumerable<Uri> NetUri { get; }
         PostalAddress MailingAddress { get; set; }

@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Gov.US
             var usState = UsState.GetState(state);
             usState = usState ?? UsState.RandomUsState();
 
-            var formats = usState.DriversLicenseFormats;
+            var formats = usState.GetDriversLicenseFormats();
             var format = formats.Length == 1 ? formats.First() : formats[Etx.RandomInteger(0, formats.Length - 1)];
 
             return format.ToString();

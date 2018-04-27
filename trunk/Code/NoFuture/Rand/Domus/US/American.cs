@@ -272,7 +272,7 @@ namespace NoFuture.Rand.Domus.US
 
             var csz = GetAddressAt(dt)?.CityArea;
             var amerCsz = csz as UsCityStateZip;
-            var dlFormats = UsState.GetState(amerCsz?.StateName)?.DriversLicenseFormats;
+            var dlFormats = UsState.GetState(amerCsz?.StateName)?.GetDriversLicenseFormats();
             if (dlFormats == null || !dlFormats.Any())
                 return null;
             _dl = dlFormats[0].IssueNewLicense(dt);

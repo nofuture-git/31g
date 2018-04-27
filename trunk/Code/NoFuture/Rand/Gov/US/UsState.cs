@@ -22,12 +22,14 @@ namespace NoFuture.Rand.Gov.US
         #region fields
         protected readonly string _stateAbbrev;
         protected DriversLicense[] dlFormats;
+        protected readonly string _stateName;
         #endregion
 
         #region ctor
         protected UsState(string stateAbbrv)
         {
             _stateAbbrev = stateAbbrv;
+            _stateName = Etc.TransformCaseToSeparator(GetType().Name, ' ');
         }
         #endregion
 
@@ -41,13 +43,17 @@ namespace NoFuture.Rand.Gov.US
         public string StateAbbrev => _stateAbbrev;
 
         /// <summary>
-        /// Derived from [https://insurancelink.custhelp.com/app/answers/detail/a_id/1631/~/license-formats-for-individual-states]
+        /// The name of the state
         /// </summary>
-        public virtual DriversLicense[] DriversLicenseFormats => dlFormats;
+        public string StateName => ToString();
 
         #endregion
 
         #region methods
+        /// <summary>
+        /// Derived from [https://insurancelink.custhelp.com/app/answers/detail/a_id/1631/~/license-formats-for-individual-states]
+        /// </summary>
+        public virtual DriversLicense[] GetDriversLicenseFormats() => dlFormats;
 
         /// <summary>
         /// This is always resolved on the first entry found in the <see cref="dlFormats"/>.

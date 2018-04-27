@@ -53,12 +53,6 @@ namespace NoFuture.Rand.Sp
         public Interval Interval { get; set; }
         public Classification Classification { get; set; }
 
-        public virtual string Name
-        {
-            get => GetName(KindsOfNames.Legal);
-            set => UpsertName(KindsOfNames.Legal, value);
-        }
-
         public string Abbrev => Name;
         public string Src { get; set; }
 
