@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <no-future>
   <rand>
-    <data>
-      <source>
+    <gov>
+      <data>
         <vin src="http://vpic.nhtsa.dot.gov/api/vehicles/GetWMIsForManufacturer">
           <vehicle-type name="car">
             <wmi id="Chrysler">
@@ -831,7 +831,7 @@
             </wmi>
           </vehicle-type>
         </vin>
-      </source>
-    </data>
+      </data>
+    </gov>
   </rand>
 </no-future>

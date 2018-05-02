@@ -146,7 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="US\Nhtsa\Vin_Wmi.xml" />
+    <EmbeddedResource Include="Data\Vin_Wmi.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\US_States_Data.xml" />
