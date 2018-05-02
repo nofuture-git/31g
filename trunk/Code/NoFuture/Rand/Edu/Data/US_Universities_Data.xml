@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <noFuture>
   <rand>
-    <data>
-      <source>
+    <edu>
+      <data>
         <universities>
           <national>
             <avg-graduation-rate natl-percent="30.0" american-indian="12.0" asian="54.0" hispanic="16.4" black="16.5" white="30.7" pacific="54.0" mixed-race="30.0"/>
@@ -734,7 +734,7 @@
           </state>
           </states>
         </universities>
-      </source>
-    </data>
+      </data>
+    </edu>
   </rand>
 </noFuture>

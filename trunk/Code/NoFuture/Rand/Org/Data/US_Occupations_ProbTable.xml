@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<no-future>
+<noFuture>
   <rand>
-    <data>
-      <source>
+    <org>
+      <data>
         <!--
         Source https://www.bls.gov/oes/tables.htm
         May 2004 - 2016 average across all years
@@ -829,7 +829,7 @@
           <ternary-group ID="53-7121" prob="0.01027" />
           <ternary-group ID="53-7199" prob="0.0278" />        
         </occupations>
-      </source>
-    </data>
+      </data>
+    </org>
   </rand>
-</no-future>
+</noFuture>

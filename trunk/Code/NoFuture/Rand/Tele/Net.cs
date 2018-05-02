@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Tele
 
                 var strmRdr = new StreamReader(data);
                 var webmailData = strmRdr.ReadToEnd();
-                if (string.IsNullOrWhiteSpace(webmailData))
+                if (String.IsNullOrWhiteSpace(webmailData))
                     return null;
 
                 _webMaildomains = webmailData.Split(Constants.LF).ToArray();
@@ -108,7 +108,7 @@ namespace NoFuture.Rand.Tele
         /// <param name="addQry"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static Uri RandomHttpUri(bool useHttps = false, bool addQry = false)
+        public static string RandomHttpUri(bool useHttps = false, bool addQry = false)
         {
 
             var pathSeg = new List<string>();
@@ -137,7 +137,7 @@ namespace NoFuture.Rand.Tele
             };
 
             if (!addQry)
-                return uri.Uri;
+                return uri.ToString();
 
             var qry = new List<string>();
             var qryParms = Etx.RandomInteger(1, 5);
@@ -160,11 +160,62 @@ namespace NoFuture.Rand.Tele
                     qryParam.Add(Etx.RandomConsonant(Etx.RandomCoinToss()).ToString());
 
                 }
-                qry.Add(String.Join("_", qryParam) + "=" + Etx.RandomSuprise());
+                qry.Add(String.Join("_", qryParam) + "=" + Uri.EscapeDataString(Etx.RandomSuprise()));
+            }
+            
+            uri.Query = String.Join("&", qry);
+            return uri.ToString();
+        }
+
+        /// <summary>
+        /// Create a computed application user name at random 
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static string RandomUsername(string firstName = null, string lastName = null)
+        {
+            var username = new List<string>();
+            firstName = firstName ?? Etx.RandomWord();
+            lastName = lastName ?? Etx.RandomWord();
+            username.Add(firstName);
+
+            var hasDigit = Etx.RandomDouble() <= 0.2797293477;
+
+            if (hasDigit)
+            {
+                var trailingDigits = Etx.RandomInteger(0, 9).ToString();
+                var digitProbTable = new[] { 0.219754472, 0.134423069, 0.101839372, 0.056182959 };
+                foreach (var dpt in digitProbTable)
+                {
+                    var addAnotherDigit = Etx.RandomDouble() <= dpt;
+                    if (addAnotherDigit)
+                    {
+                        trailingDigits += Etx.RandomInteger(0, 9).ToString();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                username.Add(lastName + trailingDigits);
+            }
+            else
+            {
+                username.Add(lastName);
             }
 
-            uri.Query = String.Join("&", qry);
-            return uri.Uri;
+            var sepTable = new Dictionary<string, double>
+            {
+                {"", 0.521730559},
+                {".", 0.391696793},
+                {"_", 0.073830063},
+                {"-", 0.012742585}
+            };
+            var sep = Etx.RandomPickOne(sepTable);
+            return String.Join(sep, username);
         }
     }
 }

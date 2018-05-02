@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <noFuture>
   <rand>
-    <data>
-      <source>
+    <geo>
+      <data>
         <zip-codes>
           <zip-code prefix="010" prob="0.1623" />
           <zip-code prefix="011" prob="0.0584" />
@@ -873,7 +873,7 @@
           <zip-code prefix="998" prob="0.0108" />
           <zip-code prefix="999" prob="0.0047" />
         </zip-codes>
-      </source>
-    </data>
+      </data>
+    </geo>
   </rand>
 </noFuture>

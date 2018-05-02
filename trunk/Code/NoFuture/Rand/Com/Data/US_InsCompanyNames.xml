@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <noFuture>
   <rand>
-    <data>
-      <source>
+    <com>
+      <data>
         <insurance>
           <category name="Life">
             <com name="21st Century Insurance" />
@@ -181,7 +181,7 @@
           <category name="Supplemental" />
           <category name="Travel" />
         </insurance>
-      </source>
-    </data>
+      </data>
+    </com>
   </rand>
 </noFuture>

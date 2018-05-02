@@ -609,10 +609,19 @@ namespace NoFuture.Rand.Domus.US
         /// </summary>
         protected internal void AddEmailAddress()
         {
-            if (GetAgeAt(null) > 10)
-                AddUri(
-                    Email.RandomEmail(GetAgeAt(null) >= UsState.AGE_OF_ADULT, GetName(KindsOfNames.First),
-                        MiddleName, GetName(KindsOfNames.Surname)).ToUri());
+            var age = GetAgeAt(null);
+            if (age < 10)
+                return;
+            if (age < GetMyHomeStatesAgeOfMajority())
+            {
+                AddUri(Email.RandomChildishEmail().ToUri());
+                return;
+            }
+
+            var fname = GetName(KindsOfNames.First);
+            var lname = GetName(KindsOfNames.Surname);
+            var username = Net.RandomUsername(fname, lname);
+            AddUri(Email.RandomEmail(username, true).ToUri());
         }
 
         //min. age a person could be married at

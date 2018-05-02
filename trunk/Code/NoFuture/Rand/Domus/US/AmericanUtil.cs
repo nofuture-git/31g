@@ -117,7 +117,6 @@ namespace NoFuture.Rand.Domus.US
             return lnameNodes.ChildNodes[p].InnerText;
         }
 
-
         /// <summary>
         /// Generates a random past date based on the <see cref="numberOfSiblings"/> and the Mother's Date of Birth.
         /// </summary>

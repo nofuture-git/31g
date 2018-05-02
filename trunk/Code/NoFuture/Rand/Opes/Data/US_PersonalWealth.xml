@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<no-future>
+<noFuture>
   <rand>
-    <data>
-      <source>
+    <opes>
+      <data>
         <wealth src="https://www2.census.gov/programs-surveys/demo/tables/wealth/2013/wealth-asset-ownership/wealth-tables-2013.xlsx">
           <table name="CheckingAccount" value="1000.0">
             <factor name="Edu">
@@ -232,7 +232,7 @@
             </factor>
           </table>          
         </wealth>
-      </source>
-    </data>
+      </data>
+    </opes>
   </rand>
-</no-future>
+</noFuture>

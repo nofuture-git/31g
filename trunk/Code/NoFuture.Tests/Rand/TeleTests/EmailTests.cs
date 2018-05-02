@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using NoFuture.Rand.Tele;
 
@@ -16,21 +17,18 @@ namespace NoFuture.Rand.Tests.TeleTests
             Assert.AreEqual(2, testResultParts.Length);
             Assert.IsTrue(Net.UsWebmailDomains.Contains(testResultParts[1]));
             Assert.AreEqual("booty", testResultParts[0]);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
 
         [Test]
         public void TestRandomEmailUriPersonal()
         {
-            var testResult = Email.RandomEmail(true, "Robert", "Edward", "Lee");
+            var testResult = Email.RandomEmail(Net.RandomUsername("Robert", "Lee"));
             Assert.IsNotNull(testResult);
-            Assert.IsTrue(testResult.Value.Contains("lee"));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Assert.IsTrue(testResult.Value.ToLower().Contains("lee"));
+            Console.WriteLine(testResult);
 
-            testResult = Email.RandomEmail(false, "Robert", "Edward", "Lee");
-            Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.WriteLine(testResult);
         }
 
         [Test]
@@ -39,7 +37,7 @@ namespace NoFuture.Rand.Tests.TeleTests
             var testResult = Email.RandomEmail(null);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Value));
-            System.Diagnostics.Debug.WriteLine(testResult.ToUri());
+            Console.WriteLine(testResult.ToUri());
 
         }
 
@@ -49,7 +47,7 @@ namespace NoFuture.Rand.Tests.TeleTests
             var testResult = Email.RandomChildishEmail();
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Value));
-            System.Diagnostics.Debug.WriteLine(testResult.ToString());
+            Console.WriteLine(testResult.ToString());
 
         }
     }

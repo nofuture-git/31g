@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <noFuture>
   <rand>
-    <data>
-      <source>
+    <com>
+      <data>
         <banks src="http://www.federalreserve.gov/releases/lbr/current/lrg_bnk_lst.txt">
           <com name="JPMorgan Chase Bank, N.A." abbrev="JPMORGAN CHASE BK NA" rssd="852218" us-state="OH" city="Columbus"/>
           <com name="Bank Of America, N.A." abbrev="BANK OF AMER NA" rssd="480228" us-state="NC" city="Charlotte"/>
@@ -706,7 +706,7 @@
           <com name="Jeff Davis Bank &amp; Trust Company" abbrev="JEFF DAVIS B&amp;TC" rssd="980531" us-state="LA" city="Jennings"/>
           <com name="Lone Star Saint Bank Of West Texas" abbrev="LONE STAR ST BK OF WEST TX" rssd="3607062" us-state="TX" city="Lubbock"/>
         </banks>
-      </source>
-    </data>
+      </data>
+    </com>
   </rand>
 </noFuture>

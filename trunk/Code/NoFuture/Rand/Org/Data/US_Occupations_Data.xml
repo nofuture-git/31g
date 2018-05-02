@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<nofuture>
+<noFuture>
   <rand>
-    <data>
-      <source>
+    <org>
+      <data>
         <occupations src="https://www.bls.gov/soc/soc_structure_2010.xls">
           <category ID="11-0000" Description="Management Occupations">
             <primary-group ID="11-1000" Description="Top Executives">
@@ -6355,7 +6355,7 @@
             </primary-group>
           </category>
         </occupations>
-      </source>
-    </data>
+      </data>
+    </org>
   </rand>
-</nofuture>
+</noFuture>

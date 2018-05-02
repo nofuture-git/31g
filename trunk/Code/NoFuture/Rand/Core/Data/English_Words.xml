@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <noFuture>
   <rand>
-    <data>
-      <source>
+    <core>
+      <data>
         <words src="http://www.talkenglish.com">
           <word lang="en" count="4506">a</word>
           <word lang="en" count="2041">you</word>
@@ -2308,9 +2308,9 @@
           <word lang="en" count="1">disappointed</word>
           <word lang="en" count="1">grass</word>
           <word lang="en" count="1">smart</word>
-          <word lang="en" count="1">award</word>          
+          <word lang="en" count="1">award</word>
         </words>
-      </source>
-    </data>
+      </data>
+    </core>
   </rand>
 </noFuture>

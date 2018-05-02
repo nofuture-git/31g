@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <noFuture>
   <rand>
-    <data>
-      <source>
+    <geo>
+      <data>
         <cities>
           <state name="Alaska" abbreviation="AK">
             <city name="Anchorage" msa-code="11260" msa-type="Metro" fips-code="03000" avg-earning-per-year="-2419272.65,1233.14">
@@ -18290,7 +18290,7 @@
             </city>
           </state>
         </cities>
-      </source>
-    </data>
+      </data>
+    </geo>
   </rand>
 </noFuture>

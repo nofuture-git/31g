@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Core
         #region methods
 
         /// <summary>
-        /// Adds a simple Identifier name value to <see cref="TreeData.XRefXml"/>
+        /// Adds a simple Identifier name value to XRef data
         /// </summary>
         /// <param name="xRefId"></param>
         /// <param name="id"></param>
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Core
         /// </param>
         public static bool AddXrefValues(Tuple<Type, string> xRefId, Identifier id, string propertyName = null)
         {
-            const string SOURCE = "source";
+            const string SOURCE = "data";
             if (string.IsNullOrWhiteSpace(xRefId?.Item2) || xRefId.Item1 == null)
                 return false;
             if(id == null)

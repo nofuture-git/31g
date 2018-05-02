@@ -19,45 +19,11 @@ namespace NoFuture.Rand.Tele
         /// <summary>
         /// Creates a random email address in a typical format
         /// </summary>
-        /// <param name="names"></param>
-        /// <param name="usCommonOnly">
-        /// true uses <see cref="Net.UsWebmailDomains"/>
-        /// false uses <see cref="Net.WebmailDomains"/>
-        /// </param>
-        /// <returns></returns>
-        [RandomFactory]
-        public static Email RandomEmail(bool usCommonOnly, params string[] names)
-        {
-            if (names == null || !names.Any())
-                return RandomEmail(null);
-
-            var fname = names.First().ToLower();
-            var lname = names.Last().ToLower();
-            string mi = null;
-            if (names.Length > 2)
-            {
-                mi = names[1].ToLower();
-                mi = Etx.RandomCoinToss() ? mi.First().ToString() : mi;
-            }
-
-            var unParts = new List<string> { Etx.RandomCoinToss() ? fname : fname.First().ToString(), mi, lname };
-            var totalLength = unParts.Sum(x => x.Length);
-            if (totalLength <= 7)
-                return RandomEmail(String.Join(Etx.RandomCoinToss() ? "" : "_", String.Join(Etx.RandomCoinToss() ? "." : "_", unParts),
-                    Etx.RandomInteger(100, 9999)), usCommonOnly);
-            return RandomEmail(totalLength > 20
-                ? String.Join(Etx.RandomCoinToss() ? "." : "_", unParts.Take(2))
-                : String.Join(Etx.RandomCoinToss() ? "." : "_", unParts), usCommonOnly);
-        }
-
-        /// <summary>
-        /// Creates a random email address in a typical format
-        /// </summary>
         /// <returns></returns>
         [RandomFactory]
         public static Email RandomEmail()
         {
-            return RandomEmail(true);
+            return RandomEmail(null, true);
         }
 
         /// <summary>
@@ -87,18 +53,8 @@ namespace NoFuture.Rand.Tele
         public static Email RandomEmail(string username, bool usCommonOnly = false)
         {
             var host = Net.RandomUriHost(false, usCommonOnly);
-            if (!String.IsNullOrWhiteSpace(username))
-                return new Email {Value = String.Join("@", username, host)};
-            var bunchOfWords = new List<string>();
-            for (var i = 0; i < 4; i++)
-            {
-                bunchOfWords.Add(Etc.CapWords(Etx.RandomWord(), ' '));
-            }
-            username = String.Join((Etx.RandomCoinToss() ? "." : "_"), Etx.RandomPickOne(bunchOfWords.ToArray()),
-                Etx.RandomPickOne(bunchOfWords.ToArray()));
-            return new Email {Value = String.Join("@", username, host)};
+            username = username ?? Net.RandomUsername();
+            return new Email { Value = String.Join("@", username, host) };
         }
-
-
     }
 }

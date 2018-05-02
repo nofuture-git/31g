@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <noFuture>
   <rand>
-    <data>
-      <source>
+    <com>
+      <data>
         <x-ref-group data-type="NoFuture.Rand.Com.Bank">
           <x-data-reference>
             <x-ref>
@@ -410,7 +410,7 @@
             </add>
           </x-data-reference>
         </x-ref-group>
-      </source>
-    </data>
+      </data>
+    </com>
   </rand>
 </noFuture>

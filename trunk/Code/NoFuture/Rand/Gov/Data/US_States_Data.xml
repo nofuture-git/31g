@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <noFuture>
   <rand>
-    <data>
-      <source>
+    <gov>
+      <data>
         <national name="United States" avg-earning-per-year="-2165959.28783073,1101.74969799204">
           <econ-data>
             <sector category-ID="Construction" percent-employed="5.8512" />
@@ -1205,7 +1205,7 @@
             </crime-data>
           </state>
         </states>
-      </source>
-    </data>
+      </data>
+    </gov>
   </rand>
 </noFuture>
