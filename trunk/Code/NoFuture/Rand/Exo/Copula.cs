@@ -432,7 +432,7 @@ namespace NoFuture.Rand.Exo
             }
 
             if (!String.IsNullOrWhiteSpace(pr.BizAddrCity))
-                bizAddr.City = pr.BizAddrCity;
+                bizAddr.Locality = pr.BizAddrCity;
 
             if (!String.IsNullOrWhiteSpace(pr.BizAddrState))
                 bizAddr.RegionAbbrev = pr.BizAddrState;
@@ -455,7 +455,7 @@ namespace NoFuture.Rand.Exo
             }
 
             if (!String.IsNullOrWhiteSpace(pr.MailAddrCity))
-                mailAddr.City = pr.MailAddrCity;
+                mailAddr.Locality = pr.MailAddrCity;
 
             if (!String.IsNullOrWhiteSpace(pr.MailAddrState))
                 mailAddr.RegionAbbrev = pr.MailAddrState;

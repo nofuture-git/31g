@@ -61,13 +61,15 @@ namespace NoFuture.Rand.Geo.US
         public const string POUND_UNIT_ID = @"\x20\x23\x20?([0-9]+)";
         #endregion
 
-        public UsStreetPo(AddressData d) : base(d) { }
+        public UsStreetPo(AddressData d) : base(d)
+        {
+        }
 
         #region properties
         public string CountyTownship { get; set; }
-        public string PostBox => GetData().AddressNumber;
-        public string StreetName => GetData().StreetName;
-        public string StreetKind => GetData().StreetType;
+        public string PostBox => GetData().ThoroughfareNumber;
+        public string StreetName => GetData().ThoroughfareName;
+        public string StreetKind => GetData().ThoroughfareType;
         public string SecondaryUnit => $"{GetData().SecondaryUnitDesignator} {GetData().SecondaryUnitId}".Trim();
         #endregion
 
@@ -105,9 +107,9 @@ namespace NoFuture.Rand.Geo.US
             //get the address box number off the front of the string
             var addrData = new AddressData
             {
-                AddressNumber = string.Empty,
-                StreetName = string.Empty,
-                StreetType = string.Empty,
+                ThoroughfareNumber = string.Empty,
+                ThoroughfareName = string.Empty,
+                ThoroughfareType = string.Empty,
                 SecondaryUnitDesignator = string.Empty,
                 SecondaryUnitId = string.Empty
             };
@@ -115,7 +117,7 @@ namespace NoFuture.Rand.Geo.US
             var addrNumber = matches.Groups[1].Success && matches.Groups[1].Captures.Count > 0
                 ? matches.Groups[1].Captures[0].Value
                 : string.Empty;
-            addrData.AddressNumber = addrNumber.Trim();
+            addrData.ThoroughfareNumber = addrNumber.Trim();
 
             Func<Regex, string, string> getStreetKind = (regex1, s) =>
             {
@@ -130,14 +132,14 @@ namespace NoFuture.Rand.Geo.US
             regex = new Regex(US_POSTAL_STREET_KIND_REGEX, RegexOptions.IgnoreCase);
             if (regex.IsMatch(addressLine))
             {
-                addrData.StreetType = getStreetKind(regex, addressLine);
+                addrData.ThoroughfareType = getStreetKind(regex, addressLine);
             }
             else
             {
                 regex = new Regex(US_POSTAL_STREET_KIND_FULLNAME_REGEX, RegexOptions.IgnoreCase);
                 if (regex.IsMatch(addressLine))
                 {
-                    addrData.StreetType = getStreetKind(regex, addressLine);
+                    addrData.ThoroughfareType = getStreetKind(regex, addressLine);
                 }
             }
 
@@ -178,16 +180,16 @@ namespace NoFuture.Rand.Geo.US
             //consider whatever remains after rem of other parts as 'StreetName'
             var streetName = addressLine;
 
-            if(addrData.AddressNumber.Length > 0)
-                streetName = streetName.Replace(addrData.AddressNumber, string.Empty);
-            if(addrData.StreetType.Length > 0)
-                streetName = streetName.Replace(addrData.StreetType, string.Empty);
+            if(addrData.ThoroughfareNumber.Length > 0)
+                streetName = streetName.Replace(addrData.ThoroughfareNumber, string.Empty);
+            if(addrData.ThoroughfareType.Length > 0)
+                streetName = streetName.Replace(addrData.ThoroughfareType, string.Empty);
             if(addrData.SecondaryUnitDesignator.Length > 0)
                 streetName = streetName.Replace(addrData.SecondaryUnitDesignator, string.Empty);
             if(addrData.SecondaryUnitId.Length > 0)
                 streetName = streetName.Replace(addrData.SecondaryUnitId, string.Empty);
 
-            addrData.StreetName = streetName.Replace("#", "").Trim();//per the standard, these should be removed
+            addrData.ThoroughfareName = streetName.Replace("#", "").Trim();//per the standard, these should be removed
 
             //consider whatever remains as the street's name
             streetPo = new UsStreetPo(addrData) {Src = addressLine};

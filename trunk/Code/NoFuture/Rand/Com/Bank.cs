@@ -137,7 +137,7 @@ namespace NoFuture.Rand.Com
 
             bank.BusinessAddress = new PostalAddress
             {
-                CityArea = new UsCityStateZip(new AddressData {City = city, RegionAbbrev = state})
+                CityArea = new UsCityStateZip(new AddressData {Locality = city, RegionAbbrev = state})
             };
             bank.Rssd = new ResearchStatisticsSupervisionDiscount {Value = rssd};
             bank.RoutingNumber = RoutingTransitNumber.RandomRoutingNumber();

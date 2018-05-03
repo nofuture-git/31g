@@ -52,6 +52,7 @@ namespace NoFuture.Rand.Geo.US
         /// </param>
         public UsCityStateZip(AddressData d) : base(d)
         {
+            GetData().NationState = "US";
         }
 
         #endregion
@@ -65,7 +66,7 @@ namespace NoFuture.Rand.Geo.US
         /// <summary>
         /// The additional 4 digits appearing after the 5 digit ZZIP Code
         /// </summary>
-        public string PostalCodeAddonFour => GetData().PostalCodeSuffix;
+        public string PostalCodeAddonFour => GetData().SortingCode;
 
         /// <summary>
         /// The Metropolitan Statistical Area of the given US City
@@ -119,9 +120,9 @@ namespace NoFuture.Rand.Geo.US
         public override string ToString()
         {
             var data = GetData();
-            return !String.IsNullOrWhiteSpace(data.PostalCodeSuffix)
-                ? $"{data.City}, {data.RegionAbbrev} {data.PostalCode}-{data.PostalCodeSuffix}"
-                : $"{data.City}, {data.RegionAbbrev} {data.PostalCode}";
+            return !String.IsNullOrWhiteSpace(data.SortingCode)
+                ? $"{data.Locality}, {data.RegionAbbrev} {data.PostalCode}-{data.SortingCode}"
+                : $"{data.Locality}, {data.RegionAbbrev} {data.PostalCode}";
         }
 
         /// <summary>
@@ -161,9 +162,9 @@ namespace NoFuture.Rand.Geo.US
             var addrData = new AddressData
             {
                 PostalCode = String.Empty,
-                PostalCodeSuffix = String.Empty,
+                SortingCode = String.Empty,
                 RegionAbbrev = String.Empty,
-                City = String.Empty
+                Locality = String.Empty
             };
             GetZipCode(lastLine, addrData);
 
@@ -182,8 +183,8 @@ namespace NoFuture.Rand.Geo.US
             var city = lastLine ?? "";
             if (!String.IsNullOrEmpty(addrData.PostalCode))
                 city = city.Replace(addrData.PostalCode, String.Empty);
-            if (!String.IsNullOrEmpty(addrData.PostalCodeSuffix))
-                city = city.Replace($"-{addrData.PostalCodeSuffix}", String.Empty);
+            if (!String.IsNullOrEmpty(addrData.SortingCode))
+                city = city.Replace($"-{addrData.SortingCode}", String.Empty);
             if (!String.IsNullOrEmpty(addrData.RegionAbbrev) && city.Contains(" " + addrData.RegionAbbrev))
                 city = city.Replace(" " + addrData.RegionAbbrev, String.Empty);
             if (!String.IsNullOrEmpty(addrData.RegionAbbrev) && city.Contains("," + addrData.RegionAbbrev))
@@ -193,7 +194,7 @@ namespace NoFuture.Rand.Geo.US
 
             city = FinesseCityName(city);
 
-            addrData.City = city;
+            addrData.Locality = city;
         }
 
         internal static void GetState(string lastLine, AddressData addrData)
@@ -229,7 +230,7 @@ namespace NoFuture.Rand.Geo.US
                 : String.Empty;
 
             addrData.PostalCode = fiveDigitZip.Trim();
-            addrData.PostalCodeSuffix = zipPlusFour.Replace("-", String.Empty).Trim();
+            addrData.SortingCode = zipPlusFour.Replace("-", String.Empty).Trim();
         }
 
         /// <summary>
@@ -313,10 +314,10 @@ namespace NoFuture.Rand.Geo.US
             XmlNodeList matchedNodes = null;
             var data = GetData();
             //search by city-state
-            if (!String.IsNullOrWhiteSpace(data.RegionAbbrev) && !String.IsNullOrWhiteSpace(data.City) &&
+            if (!String.IsNullOrWhiteSpace(data.RegionAbbrev) && !String.IsNullOrWhiteSpace(data.Locality) &&
                 UsState.GetStateByPostalCode(data.RegionAbbrev) != null)
             {
-                var cityName = FinesseCityName(data.City);
+                var cityName = FinesseCityName(data.Locality);
                 searchCrit =
                     $"//state[@abbreviation='{data.RegionAbbrev}']/city[@name='{cityName.EscapeString(EscapeStringType.XML)}']";
                 matchedNodes = UsCityXml.SelectNodes(searchCrit);
@@ -541,7 +542,7 @@ namespace NoFuture.Rand.Geo.US
             var cityNode = GetCityXmlNode() as XmlElement;
             if (cityNode?.Attributes[NAME] == null)
                 return;
-            GetData().City = cityNode.Attributes[NAME].Value ?? GetData().City;
+            GetData().Locality = cityNode.Attributes[NAME].Value ?? GetData().Locality;
             if (pickSuburbAtRandom)
                 GetSuburbCityName(cityNode);
             ParseCityXmlNode(cityNode);
@@ -588,7 +589,7 @@ namespace NoFuture.Rand.Geo.US
             var suburbName = pickedPlace.GetAttribute(NAME);
             if (String.IsNullOrWhiteSpace(suburbName))
                 return;
-            GetData().City = suburbName;
+            GetData().Locality = suburbName;
         }
         #endregion
     }

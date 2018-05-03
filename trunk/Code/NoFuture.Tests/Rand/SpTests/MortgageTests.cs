@@ -60,11 +60,11 @@ namespace NoFuture.Rand.Tests.SpTests
             var addr = new PostalAddress();
             var addrData = new AddressData
             {
-                AddressNumber = "123",
-                City = "abc",
+                ThoroughfareNumber = "123",
+                Locality = "abc",
                 PostalCode = "99999",
-                StreetName = "lmnop",
-                StreetType = "st"
+                ThoroughfareName = "lmnop",
+                ThoroughfareType = "st"
             };
             addr.CityArea = new UsCityStateZip(addrData);
             addr.Street = new UsStreetPo(addrData);

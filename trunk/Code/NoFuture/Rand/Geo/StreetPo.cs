@@ -25,8 +25,8 @@ namespace NoFuture.Rand.Geo
         public override string ToString()
         {
             var data = GetData();
-            return Etc.DistillSpaces(string.Join(" ", data.AddressNumber, data.StreetNameDirectional, data.StreetName, 
-                data.StreetType, data.SecondaryUnitDesignator,
+            return Etc.DistillSpaces(string.Join(" ", data.ThoroughfareNumber, data.ThoroughfareDirectional, data.ThoroughfareName, 
+                data.ThoroughfareType, data.SecondaryUnitDesignator,
                 data.SecondaryUnitId).Trim());
         }
 
@@ -59,111 +59,111 @@ namespace NoFuture.Rand.Geo
             switch (pickOne)
             {
                 case 0:
-                    addressData.StreetType = "St";
+                    addressData.ThoroughfareType = "St";
                     break;
                 case 1:
-                    addressData.StreetType = "Rd";
+                    addressData.ThoroughfareType = "Rd";
                     break;
                 case 2:
-                    addressData.StreetType = "Blvd";
+                    addressData.ThoroughfareType = "Blvd";
                     break;
                 case 3:
-                    addressData.StreetType = "Ln";
+                    addressData.ThoroughfareType = "Ln";
                     break;
                 case 4:
-                    addressData.StreetType = "Drive";
+                    addressData.ThoroughfareType = "Drive";
                     break;
                 case 5:
-                    addressData.StreetType = "Ct";
+                    addressData.ThoroughfareType = "Ct";
                     break;
                 case 6:
-                    addressData.StreetType = $"Unit #{Etx.MyRand.Next(1, 99)}";
+                    addressData.ThoroughfareType = $"Unit #{Etx.MyRand.Next(1, 99)}";
                     break;
                 case 7:
-                    addressData.StreetType = "Hwy";
+                    addressData.ThoroughfareType = "Hwy";
                     break;
                 case 8:
-                    addressData.StreetType = "Avenue";
+                    addressData.ThoroughfareType = "Avenue";
                     break;
                 case 9:
-                    addressData.StreetType = $"Alt {Etx.MyRand.Next(0, 99):000}";
+                    addressData.ThoroughfareType = $"Alt {Etx.MyRand.Next(0, 99):000}";
                     break;
                 default:
-                    addressData.StreetType = string.Empty;
+                    addressData.ThoroughfareType = string.Empty;
                     break;
             }
 
             switch (pickAnother)
             {
                 case 0:
-                    addressData.StreetName = "Second";
+                    addressData.ThoroughfareName = "Second";
                     break;
                 case 1:
-                    addressData.StreetName = "Third";
+                    addressData.ThoroughfareName = "Third";
                     break;
                 case 2:
-                    addressData.StreetName = "First";
+                    addressData.ThoroughfareName = "First";
                     break;
                 case 3:
-                    addressData.StreetName = "Fourth";
+                    addressData.ThoroughfareName = "Fourth";
                     break;
                 case 4:
-                    addressData.StreetName = "Park";
+                    addressData.ThoroughfareName = "Park";
                     break;
                 case 5:
-                    addressData.StreetName = "Main";
+                    addressData.ThoroughfareName = "Main";
                     break;
                 case 6:
-                    addressData.StreetName = "Sixth";
+                    addressData.ThoroughfareName = "Sixth";
                     break;
                 case 7:
-                    addressData.StreetName = "Oak";
+                    addressData.ThoroughfareName = "Oak";
                     break;
                 case 8:
-                    addressData.StreetName = "Seventh";
+                    addressData.ThoroughfareName = "Seventh";
                     break;
                 case 9:
-                    addressData.StreetName = "Pine";
+                    addressData.ThoroughfareName = "Pine";
                     break;
                 case 10:
-                    addressData.StreetName = "Maple";
+                    addressData.ThoroughfareName = "Maple";
                     break;
                 case 11:
-                    addressData.StreetName = "Cedar";
+                    addressData.ThoroughfareName = "Cedar";
                     break;
                 case 12:
-                    addressData.StreetName = "Eighth";
+                    addressData.ThoroughfareName = "Eighth";
                     break;
                 case 13:
-                    addressData.StreetName = "Elm";
+                    addressData.ThoroughfareName = "Elm";
                     break;
                 case 14:
-                    addressData.StreetName = "View";
+                    addressData.ThoroughfareName = "View";
                     break;
                 case 15:
-                    addressData.StreetName = "Washington";
+                    addressData.ThoroughfareName = "Washington";
                     break;
                 case 16:
-                    addressData.StreetName = "Ninth";
+                    addressData.ThoroughfareName = "Ninth";
                     break;
                 case 17:
-                    addressData.StreetName = "Lake";
+                    addressData.ThoroughfareName = "Lake";
                     break;
                 case 18:
-                    addressData.StreetName = "Hill";
+                    addressData.ThoroughfareName = "Hill";
                     break;
                 case 19:
-                    addressData.StreetName = "Manor";
+                    addressData.ThoroughfareName = "Manor";
                     break;
                 case 20:
-                    addressData.StreetName = "Jefferson";
+                    addressData.ThoroughfareName = "Jefferson";
                     break;
                 default:
-                    addressData.StreetName = string.Empty;
+                    addressData.ThoroughfareName = string.Empty;
                     break;
             }
 
-            addressData.AddressNumber = Etx.MyRand.Next(0, 999).ToString(CultureInfo.InvariantCulture);
+            addressData.ThoroughfareNumber = Etx.MyRand.Next(0, 999).ToString(CultureInfo.InvariantCulture);
 
             return new UsStreetPo(addressData);
 

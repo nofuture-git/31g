@@ -48,7 +48,8 @@ namespace NoFuture.Rand.Geo
 
         #region properties
         public virtual string Src { get; set; }
-        public string City => GetData().City;
+        public string City => GetData().Locality;
+        public string Country => GetData().NationState;
 
         #endregion
 
@@ -119,7 +120,7 @@ namespace NoFuture.Rand.Geo
                 UsZipCodeXml.SelectSingleNode(xpathString);
             if (randZipCode?.ParentNode?.Attributes?[NAME] == null)
             {
-                ctz.City = UsCityStateZip.DF_CITY_NAME;
+                ctz.Locality = UsCityStateZip.DF_CITY_NAME;
                 return new UsCityStateZip(ctz);
             }
 
@@ -129,7 +130,7 @@ namespace NoFuture.Rand.Geo
                           UsState.GetStateByPostalCode(UsCityStateZip.DF_STATE_ABBREV);
 
             ctz.RegionAbbrev = nfState.StateAbbrev ?? UsCityStateZip.DF_STATE_ABBREV;
-            ctz.PostalCodeSuffix = $"{Etx.MyRand.Next(1, 9999):0000}";
+            ctz.SortingCode = $"{Etx.MyRand.Next(1, 9999):0000}";
 
             if (!randZipCode.HasChildNodes)
             {
@@ -202,7 +203,7 @@ namespace NoFuture.Rand.Geo
             var municipalityNode = randPostalCode.ChildNodes.OfType<XmlElement>()
                 .FirstOrDefault(x => x.LocalName == MUNICIPALITY && !String.IsNullOrWhiteSpace(x.InnerText));
 
-            ctz.City = municipalityNode?.InnerText ?? DF_CITY;
+            ctz.Locality = municipalityNode?.InnerText ?? DF_CITY;
 
             return new CaCityProvidencePost(ctz);
         }

@@ -8,7 +8,10 @@ namespace NoFuture.Rand.Geo.CA
     [Serializable]
     public class CaCityProvidencePost : CityArea
     {
-        public CaCityProvidencePost(AddressData d) : base(d) { }
+        public CaCityProvidencePost(AddressData d) : base(d)
+        {
+            GetData().NationState = "CA";
+        }
         public string ProvidenceAbbrv => GetData().RegionAbbrev;
         public string Providence => GetData().RegionName;
         public string PostalCode => GetData().PostalCode;
