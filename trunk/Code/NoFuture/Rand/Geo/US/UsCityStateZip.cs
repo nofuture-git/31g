@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Geo.US
         public string ZipCode => GetData().PostalCode;
 
         /// <summary>
-        /// The additional 4 digits appearing after the 5 digit ZZIP Code
+        /// The additional 4 digits appearing after the 5 digit ZIP Code
         /// </summary>
         public string PostalCodeAddonFour => GetData().SortingCode;
 

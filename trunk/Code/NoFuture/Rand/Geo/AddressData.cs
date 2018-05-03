@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Geo
 {
     /// <summary>
     /// An underlying data store which allows for a postal address 
-    /// to be expressed in various forms
+    /// to be expressed in various forms.
     /// </summary>
     [Serializable]
     public class AddressData
@@ -21,9 +21,15 @@ namespace NoFuture.Rand.Geo
 
         /// <summary>
         /// Typically the &apos;NW&apos;, &apos;S&apos; part of an address 
-        /// immediately after the AddressNumber
+        /// immediately after the ThoroughfareNumber
         /// </summary>
         public string ThoroughfareDirectional { get; set; }
+
+        /// <summary>
+        /// Typical American address 
+        /// as &apos;1600 Pennsylvania Ave NW, Washington, DC 20500&apos;
+        /// this is the &apos;Pennsylvania&apos; (a.k.a. the street name).
+        /// </summary>
         public string ThoroughfareName { get; set; }
 
         /// <summary>
@@ -32,8 +38,12 @@ namespace NoFuture.Rand.Geo
         public string ThoroughfareType { get; set; }
         public string SecondaryUnitDesignator { get; set; }
         public string SecondaryUnitId { get; set; }
-        public string MajorMetro { get; set; }
 
+        /// <summary>
+        /// Typical American address 
+        /// as &apos;1600 Pennsylvania Ave NW, Washington, DC 20500&apos;
+        /// this is the &apos;Washington&apos; (a.k.a. the City name).
+        /// </summary>
         public string Locality
         {
             get
@@ -44,10 +54,32 @@ namespace NoFuture.Rand.Geo
             }
             set => _locality = value;
         }
+        /// <summary>
+        /// Typical American address 
+        /// as &apos;1600 Pennsylvania Ave NW, Washington, DC 20500&apos;
+        /// this is the &apos;DC&apos; (a.k.a. the State name).
+        /// </summary>
+        /// <remarks>
+        /// xref ISO 3166-2
+        /// Also-known-as:
+        /// districts, regions, &apos;Lander&apos;, 
+        /// municipalities, provinces, states, departments, 
+        /// prefectures, commune, cantons, territories, 
+        /// parishes, dependencies, sectors, governorates, 
+        /// quarters, zones, outlying areas, rayons, and more.
+        /// </remarks>
         public string RegionAbbrev { get; set; }
+
+        /// <summary>
+        /// The full name of <see cref="RegionAbbrev"/>
+        /// </summary>
         public string RegionName { get; set; }
         public string PostalCode { get; set; }
         public string SortingCode { get; set; }
+
+        /// <summary>
+        /// The name of the country (e.g. US, Mexico, GB, Japan, etc.)
+        /// </summary>
         public string NationState { get; set; }
 
         public decimal Lng { get; set; }
@@ -67,7 +99,6 @@ namespace NoFuture.Rand.Geo
                 string.Equals(ad.ThoroughfareType, ThoroughfareType, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.SecondaryUnitDesignator, SecondaryUnitDesignator, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.SecondaryUnitId, SecondaryUnitId, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.MajorMetro, MajorMetro, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.Locality, Locality, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.RegionAbbrev, RegionAbbrev, StringComparison.OrdinalIgnoreCase),
                 string.Equals(ad.RegionName, RegionName, StringComparison.OrdinalIgnoreCase),
@@ -89,7 +120,6 @@ namespace NoFuture.Rand.Geo
                    (ThoroughfareType?.ToLower().GetHashCode() ?? 0) +
                    (SecondaryUnitDesignator?.ToLower().GetHashCode() ?? 0) +
                    (SecondaryUnitId?.ToLower().GetHashCode() ?? 0) +
-                   (MajorMetro?.ToLower().GetHashCode() ?? 0) +
                    (Locality?.ToLower().GetHashCode() ?? 0) +
                    (RegionAbbrev?.ToLower().GetHashCode() ?? 0) +
                    (RegionName?.ToLower().GetHashCode() ?? 0) +
