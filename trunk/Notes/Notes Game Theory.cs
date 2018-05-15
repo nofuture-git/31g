@@ -157,7 +157,7 @@ namespace GameTheory
        of organization (e.g. drug-cartel shoots those who choose Rat)
 
      - The Game of Chicken 
-      - the fix is called "Tying your hands" where the ability of one 
+      - a fix is called "Tying your hands" where the ability of one 
         of the players to choose is eliminated (e.g. Chuck removes the 
          steering wheel and therefore cannot even choose to Swerve)
       - this makes Ren's payoff as either -100, or -2 only
@@ -238,65 +238,152 @@ namespace GameTheory
             {1,5,2,4,0}};
 
         [Test]
-        public void TestPayoffMatrixToString()
-        {
-            var testSubject = new PayoffMatrix(playerA, playerB);
-            var testResult = testSubject.ToString();
-            Assert.IsNotNull(testResult);
-            Console.WriteLine(testResult);
-        }
-
-        [Test]
-        public void TestGetPlayerChoices()
-        {
-            var testSubject = new PayoffMatrix(playerA, playerB);
-            var testResult = testSubject.GetPlayerChoices(true);
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Count);
-            foreach(var i in testResult)
-                Console.WriteLine(i.ToString(true));
-        }
-
-        [Test]
-        public void TestGetDominantChoices()
-        {
-            var testSubject = new PayoffMatrix(playerA, playerB);
-            var testInput = testSubject.GetPlayerChoices(true);
-            var testResult = testSubject.GetDominantChoices(testInput, true);
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Count);
-
-            testSubject.SetItems(testResult);
-
-            testInput = testSubject.GetPlayerChoices(false);
-            testResult = testSubject.GetDominantChoices(testInput, false);
-
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Count);
-
-            testSubject.SetItems(testResult);
-            Console.WriteLine(testSubject.ToString());
-        }
-
-        [Test]
         public void TestGetIteratedDominantStrategy()
         {
             var testSubject = new PayoffMatrix(playerA, playerB);
             var testControl = testSubject.Items;
             Assert.IsNotNull(testControl);
             Assert.AreNotEqual(0, testControl.Count);
-            testSubject.GetIteratedDominantStrategy();
+            testSubject.GetIteratedDominantStrategy(true);
 
             var testResult = testSubject.Items;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
             Assert.AreNotEqual(testControl.Count, testResult.Count);
-            Console.WriteLine(testSubject.ToString());
-
+        }
+    }
+    
+   /*
+    ----
+    Focal Points
+     - asserting that, despite having multiple Nash equilibria, one is 
+       much more "reasonable"
+                                   Marge
+            |               | Skating Rink  | Football Game
+            | Skating Rink  | (3, 5)        | (85, 93)     
+    Haley   | Football Game | (8, 9)        | (6, 7)       
+    
+        {
+          'as-player': 'Haley',
+          'when-they-choose': 'Skating Rink',
+          'i-will-choose': 'Football Game',
+          'score': 8
+        }
+        {
+          'as-player': 'Haley',
+          'when-they-choose': 'Football Game',
+          'i-will-choose': 'Skating Rink',
+          'score': 85
+        }
+        {
+          'as-player': 'Marge',
+          'when-they-choose': 'Skating Rink',
+          'i-will-choose': 'Football Game',
+          'score': 93
+        }
+        {
+          'as-player': 'Marge',
+          'when-they-choose': 'Football Game',
+          'i-will-choose': 'Skating Rink',
+          'score': 9
         }
 
-    }
+    - both (8,9) & (85,93) are Nash equilibria; however, (85,93) is 
+      the Focal Point since its payoff is so much higher
+    ----
+   */    
+    [TestFixture]
+    public class TestFocalPoints
+    {
+        double[,] playerA = {
+            {3,85},
+            {8,6}};
 
+        double[,] playerB = {
+            {5,93},
+            {9,7}};
+
+        [Test]
+        public void TestIt()
+        {
+            var testSubject = new PayoffMatrix(
+                playerA, new[] {"Skating Rink", "Football Game"}, "Haley", 
+                playerB, new[] {"Skating Rink", "Football Game"}, "Marge");
+
+            Console.WriteLine(testSubject);
+            var playerAChooses = testSubject.GetPlayerChoices(true);
+
+            Assert.IsNotNull(playerAChooses);
+            foreach(var pac in playerAChooses)
+                Console.WriteLine(pac.ToString(true));
+            
+            var playerBChooses = testSubject.GetPlayerChoices(false);
+            Assert.IsNotNull(playerBChooses);
+            foreach (var pab in playerBChooses)
+            {
+                Console.WriteLine(pab.ToString(false));
+            }
+        }
+    }
+    
+  /*
+    ----
+    Trembling Hands
+     - similar to a Focal Point only its concerned with the loss 
+     - in the example both (2,2) & (3,3) are Nash equilibria
+     - this time the "reasonable" choice would be (2,2) because
+       of the very low score of (-1000,-2).
+     - (3,3) would be the Focal point, it seems, and the most reasonable
+       choice. But if something went wrong and Author choose A instead of B
+       the Reader would stand to loose a lot and would default to (2,2) to
+       min. the risk
+       
+                        Author
+             |   | A           | B          
+             | A | (2, 2)      | (1, 1)     
+    Reader   | B | (-1000, -2) | (3, 3)
+    
+    {'as-player': 'Reader', 'when-they-choose': 'A', 'i-will-choose': 'A', 'score': 2}
+    {'as-player': 'Reader', 'when-they-choose': 'B', 'i-will-choose': 'B', 'score': 3}
+    {'as-player': 'Author', 'when-they-choose': 'A', 'i-will-choose': 'A', 'score': 2}
+    {'as-player': 'Author', 'when-they-choose': 'B', 'i-will-choose': 'B', 'score': 3}
+   ----
+  */
+    [TestFixture]
+    public class TestTremblingHands
+    {
+        double[,] playerA = {
+            {2,1},
+            {-1000,3}};
+
+        double[,] playerB = {
+            {2,1},
+            {-2,3}};
+
+        [Test]
+        public void TestDangerousGame()
+        {
+            var testSubject = new PayoffMatrix(
+                playerA, new[] { "A", "B" }, "Reader",
+                playerB, new[] { "A", "B" }, "Author");
+
+            Console.WriteLine(testSubject);
+            var playerAChooses = testSubject.GetPlayerChoices(true);
+
+            Assert.IsNotNull(playerAChooses);
+            foreach (var pac in playerAChooses)
+                Console.WriteLine(pac.ToString(true));
+
+            var playerBChooses = testSubject.GetPlayerChoices(false);
+            Assert.IsNotNull(playerBChooses);
+            foreach (var pab in playerBChooses)
+            {
+                Console.WriteLine(pab.ToString(false));
+            }
+        }
+    }    
+    
+    
     public class PayoffMatrixItem
     {
         public PayoffMatrixItem()
@@ -310,6 +397,17 @@ namespace GameTheory
             Labels = labels;
             Scores = scores;
         }
+
+        public PayoffMatrixItem(Tuple<string, string> labels,
+            Tuple<double, double> scores, Tuple<string, string> playerNames)
+        {
+            PlayerNames = playerNames;
+            Labels = labels;
+            Scores = scores;
+        }
+
+        public Tuple<string, string> PlayerNames { get; } =
+            new Tuple<string, string>(PayoffMatrix.PLAYER_A_NAME, PayoffMatrix.PLAYER_B_NAME);
 
         public Tuple<string, string> Labels { get; }
         public Tuple<double,double> Scores { get; }
@@ -333,8 +431,8 @@ namespace GameTheory
 
         public override string ToString()
         {
-            var str = "{'player-A': {'choice': '" + Labels.Item1 + "', 'score': " + Scores.Item1 + "}, " +
-                      "'player-B': {'choice': '" + Labels.Item2 + "', 'score': " + Scores.Item2 + "}}";
+            var str = "{'" + PlayerNames.Item1 + "': {'choice': '" + Labels.Item1 + "', 'score': " + Scores.Item1 + "}, " +
+                      "'" + PlayerNames.Item2 + "': {'choice': '" + Labels.Item2 + "', 'score': " + Scores.Item2 + "}}";
             return str;
         }
 
@@ -351,8 +449,8 @@ namespace GameTheory
             var score = isPlayerA ? Scores.Item1 : Scores.Item2;
             var wouldChoose = isPlayerA ? Labels.Item1 : Labels.Item2;
             var whenTheyChoose = isPlayerA ? Labels.Item2 : Labels.Item1;
-            
-            var str = "{'when-they-choose': '" + whenTheyChoose + "', 'i-will-choose': '" + wouldChoose + "', 'score': " + score + "}";
+            var myName = isPlayerA ? PlayerNames.Item1 : PlayerNames.Item2;
+            var str = "{'as-player': '" + myName + "', 'when-they-choose': '" + whenTheyChoose + "', 'i-will-choose': '" + wouldChoose + "', 'score': " + score + "}";
             return str;
         }
     }
@@ -362,10 +460,26 @@ namespace GameTheory
     {
         private List<PayoffMatrixItem> _items = new List<PayoffMatrixItem>();
 
+        internal const string PLAYER_A_NAME = "player-A";
+        internal const string PLAYER_B_NAME = "player-B";
+
         #region ctor
-        public PayoffMatrix(Tuple<double[,], string[]> playerA, Tuple<double[,], string[]> playerB)
+        public PayoffMatrix(double[,] playerAScores, string[] playerAChoices, string playerAName, double[,] playerBScores,
+            string[] playerBChoices, string playerBName)
         {
-            Init(playerA, playerB);
+            playerAName = playerAName ?? PLAYER_A_NAME;
+            playerBName = playerBName ?? PLAYER_B_NAME;
+
+            Init(new Tuple<double[,], string[], string>(playerAScores, playerAChoices, playerAName),
+                new Tuple<double[,], string[], string>(playerBScores, playerBChoices, playerBName));
+
+        }
+
+        public PayoffMatrix(double[,] playerAScores, string[] playerAChoices, double[,] playerBScores,
+            string[] playerBChoices)
+        {
+            Init(new Tuple<double[,], string[], string>(playerAScores, playerAChoices, PLAYER_A_NAME),
+                new Tuple<double[,], string[], string>(playerBScores, playerBChoices, PLAYER_B_NAME));
         }
 
         public PayoffMatrix(double[,] playerA, double[,] playerB)
@@ -382,12 +496,12 @@ namespace GameTheory
                 playerBChoicesLabels.Add(Convert.ToChar(i).ToString());
             }
 
-            var playerATuple = new Tuple<double[,], string[]>(playerA, playerAChoicesLabels.ToArray());
-            var playerBTuple = new Tuple<double[,], string[]>(playerB, playerBChoicesLabels.ToArray());
+            var playerATuple = new Tuple<double[,], string[], string>(playerA, playerAChoicesLabels.ToArray(), PLAYER_A_NAME);
+            var playerBTuple = new Tuple<double[,], string[], string>(playerB, playerBChoicesLabels.ToArray(), PLAYER_B_NAME);
             Init(playerATuple, playerBTuple);
         }
 
-        private void Init(Tuple<double[,], string[]> playerA, Tuple<double[,], string[]> playerB)
+        private void Init(Tuple<double[,], string[], string> playerA, Tuple<double[,], string[], string> playerB)
         {
             var pAlst = ConvertToList(playerA.Item1);
             var pBlst = ConvertToList(playerB.Item1);
@@ -400,6 +514,7 @@ namespace GameTheory
 
             PlayerAChoices = playerALabels;
             PlayerBChoices = playerBLabels;
+            var names = new Tuple<string, string>(playerA.Item3, playerB.Item3);
 
             for (var i = 0; i < payoffScores.Count; i++)
             {
@@ -409,7 +524,7 @@ namespace GameTheory
                     var label = new Tuple<string, string>(playerALabels[i], playerBLabels[j]);
                     var score = row[j];
 
-                    var item = new PayoffMatrixItem(label, score);
+                    var item = new PayoffMatrixItem(label, score, names);
                     _items.Add(item);
                 }
             }
@@ -423,6 +538,7 @@ namespace GameTheory
         internal string[] PlayerBChoices { get; private set; }
 
         public List<PayoffMatrixItem> Items => _items;
+
         #endregion
 
         internal List<double[]> ConvertToList(double[,] matrix)
@@ -449,16 +565,45 @@ namespace GameTheory
             var lines = new List<string>();
             var columnLabels = new List<string> {" "};
             columnLabels.AddRange(PlayerBChoices);
-            lines.Add(string.Join(" | ", columnLabels));
+            var items = _items ?? new List<PayoffMatrixItem>();
+            var playerBMaxLenChoice = columnLabels.Select(b => b.Length).Max();
+            var playerAMaxLenChoice = columnLabels.Select(a => a.Length).Max();
+
+            var scoresMaxLen = items.Select(i => i.Scores.ToString().Length).Max();
+            playerBMaxLenChoice = playerBMaxLenChoice < scoresMaxLen ? scoresMaxLen : playerBMaxLenChoice;
+
+            var playerAChoicesMid = (int)Math.Round(PlayerAChoices.Length / 2D);
+            var playerAName = items.First()?.PlayerNames.Item1 ?? PLAYER_A_NAME;
+            var playerANameLen = playerAName.Length + 2;
+
+            var playerBPrint = new List<string>
+            {
+                string.Format("{0,-" + playerANameLen + "}", " "),
+                string.Format("{0,-" + playerAMaxLenChoice + "}", " ")
+            };
+            playerBPrint.AddRange(PlayerBChoices.Select(b => string.Format("{0,-" + playerBMaxLenChoice + "}", b)));
+
+            var columnLine = string.Join(" | ", playerBPrint);
+            var playerBName = items.First()?.PlayerNames.Item2 ?? PLAYER_B_NAME;
+            var columnLineMid = (int) Math.Round(columnLine.Length / 3D) * 2;
+
+            lines.Add(string.Format("{0," + (columnLineMid) + "}", playerBName));
             
+            lines.Add(columnLine);
+
+            var rowCounter = 0;
             foreach (var playerAChoice in PlayerAChoices)
             {
-                var rowLine = new List<string> {playerAChoice};
+                var rowLine = new List<string>
+                {
+                    string.Format("{0,-" + playerANameLen + "}", rowCounter == playerAChoicesMid ? playerAName : " "),
+                    string.Format("{0,-" + playerAMaxLenChoice + "}", playerAChoice)
+                };
                 var rowItems = new List<Tuple<double, double>>();
                 foreach (var playerBChoice in PlayerBChoices)
                 {
 
-                    var match = _items.FirstOrDefault(i =>
+                    var match = items.FirstOrDefault(i =>
                         i.Equals(new Tuple<string, string>(playerAChoice, playerBChoice)));
                     if (match == null)
                         continue;
@@ -466,14 +611,15 @@ namespace GameTheory
                     rowItems.Add(match.Scores);
                 }
 
-                rowLine.AddRange(rowItems.Select(i => i.ToString()));
+                rowLine.AddRange(rowItems.Select(i => string.Format("{0,-" + playerBMaxLenChoice + "}", i.ToString())));
                 lines.Add(string.Join(" | ", rowLine));
+                rowCounter += 1;
             }
 
             return string.Join(Environment.NewLine, lines);
         }
 
-        public List<PayoffMatrixItem> GetPlayerChoices(bool isPlayerA)
+        public IEnumerable<PayoffMatrixItem> GetPlayerChoices(bool isPlayerA)
         {
             var myChoices = isPlayerA ? PlayerAChoices : PlayerBChoices;
             var yourChoices = isPlayerA ? PlayerBChoices : PlayerAChoices;
@@ -482,28 +628,48 @@ namespace GameTheory
 
             foreach (var yourChoice in yourChoices)
             {
-                PayoffMatrixItem iChoose = new PayoffMatrixItem();
-                foreach (var myChoice in myChoices)
-                {
-                    var playerAChoice = isPlayerA ? myChoice : yourChoice;
-                    var playerBChoice = isPlayerA ? yourChoice : myChoice;
-                    var match = _items.FirstOrDefault(i =>
-                        i.Equals(new Tuple<string, string>(playerAChoice, playerBChoice)));
-                    if(match == null)
-                        continue;
-                    var thisScore = isPlayerA ? match.Scores.Item1 : match.Scores.Item2;
-                    var myScore = isPlayerA ? iChoose.Scores.Item1 : iChoose.Scores.Item2;
-                    if (thisScore > myScore)
-                        iChoose = match;
-                }
+                var iChoose = GetMyChoice(isPlayerA, myChoices, yourChoice);
 
-                items.Add(iChoose);
+                var range = isPlayerA
+                    ? _items.Where(i => i.Scores.Item1 == iChoose.Scores.Item1)
+                    : _items.Where(i => i.Scores.Item2 == iChoose.Scores.Item2);
+                items.AddRange(range);
             }
 
             return items;
         }
 
-        internal List<PayoffMatrixItem> GetDominantChoices(List<PayoffMatrixItem> playerChoices, bool isPlayerA)
+        internal PayoffMatrixItem GetMyChoice(bool isPlayerA, string[] myChoices, string yourChoice)
+        {
+            var iChoose = new PayoffMatrixItem();
+
+            foreach (var myChoice in myChoices)
+            {
+                var playerAChoice = isPlayerA ? myChoice : yourChoice;
+                var playerBChoice = isPlayerA ? yourChoice : myChoice;
+                var match = _items.FirstOrDefault(i =>
+                    i.Equals(new Tuple<string, string>(playerAChoice, playerBChoice)));
+                if (match == null)
+                    continue;
+                var thisScore = isPlayerA ? match.Scores.Item1 : match.Scores.Item2;
+                var myScore = isPlayerA ? iChoose.Scores.Item1 : iChoose.Scores.Item2;
+                if (thisScore > myScore)
+                {
+                    iChoose = match;
+                }
+            }
+
+            return iChoose;
+        }
+
+        internal List<PayoffMatrixItem> GetMyItemsByScore(bool isPlayerA, double myScore)
+        {
+
+
+            throw new NotImplementedException();
+        }
+
+        internal List<PayoffMatrixItem> GetDominantChoices(IEnumerable<PayoffMatrixItem> playerChoices, bool isPlayerA)
         {
             var uqChoiceLabels = playerChoices.Select(c => c.GetValue(isPlayerA).Item1).Distinct();
             var remainder = new List<PayoffMatrixItem>();
@@ -525,13 +691,21 @@ namespace GameTheory
             PlayerBChoices = _items.Select(i => i.Labels.Item2).Distinct().ToArray();
         }
 
-        public void GetIteratedDominantStrategy()
+        public void GetIteratedDominantStrategy(bool printEachIteration = false)
         {
             var i = 0;
             if (_items == null || !_items.Any())
                 return;
+
             while (true)
             {
+                if (printEachIteration)
+                {
+                    Console.WriteLine($" ========== {i} ========== ");
+                    Console.WriteLine(ToString());
+                    Console.WriteLine(string.Empty);
+                }
+
                 var isPlayerA = i % 2 == 0;
                 var choices = GetPlayerChoices(isPlayerA);
                 var dominant = GetDominantChoices(choices, isPlayerA);
