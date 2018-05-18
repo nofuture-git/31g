@@ -35,6 +35,9 @@ namespace GameTheory
      - simultaneous game, means the players make choices at the same
         time or in-so-far as one player is not aware of the other 
         players choice.
+     - sequential game, where players make choices by trun
+       - adds dimension of first-move or second-move advantage
+        - it can be either, depends on the game
      - dominant strategy, when a particular choice is always better 
         than all others
      - Nash equilibrium, when neither player would want to change their
@@ -42,6 +45,17 @@ namespace GameTheory
        - a payoff matrix is the simplist form of input 
        - a payoff matrix may have zero-to-many Nash equilibrium
      - the theory is a mathematical so everything still concerns numbers
+     - Game Theorist's Number One Rule: Anticipate the other player's reaction
+        in order to make your best choice.
+     - Adverse selection, idea that an offering is only taken up 
+        by those who benifit (e.g. insurance where buyer knows their 
+          expenses will exceed the yearly premium)
+         - the way its overcome is to change the offering based 
+           on known info about those who wish to take it
+         - the goal isn't to just reduce risk but to have a clear
+           idea of how-much-risk
+      - Moral hazard, the risk of those who take up an offer 
+         changing (making them an adverse selection after the fact)      
     ----
     */
 
@@ -626,6 +640,9 @@ namespace GameTheory
 
             var items = new List<PayoffMatrixItem>();
 
+            if (GetIsConstantSumGame())
+                return items;
+            
             foreach (var yourChoice in yourChoices)
             {
                 var iChoose = GetMyChoice(isPlayerA, myChoices, yourChoice);
@@ -662,11 +679,22 @@ namespace GameTheory
             return iChoose;
         }
 
-        internal List<PayoffMatrixItem> GetMyItemsByScore(bool isPlayerA, double myScore)
+        /// <summary>
+        /// Any game where all payoffs sum to the same number
+        /// </summary>
+        /// <returns></returns>
+        internal bool GetIsConstantSumGame()
         {
-
-
-            throw new NotImplementedException();
+            if (_items == null || !_items.Any())
+                return false;
+            var sum = _items[0].Scores.Item1 + _items[0].Scores.Item2;
+            for (var i = 1; i < _items.Count; i++)
+            {
+                var sumI = _items[i].Scores.Item1 + _items[i].Scores.Item2;
+                if (sumI != sum)
+                    return false;
+            }
+            return true;
         }
 
         internal List<PayoffMatrixItem> GetDominantChoices(IEnumerable<PayoffMatrixItem> playerChoices, bool isPlayerA)

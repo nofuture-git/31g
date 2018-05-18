@@ -336,7 +336,13 @@ Points & Vectors
    "tensors of unity order", the nature of indexing 
    a vector with a single index
    - scalars may be viewed as zero-order tensors
-   - matrices are second-order tnesors
+   - matrices are second-order tensors
+   
+ - Hyperplane: a kind of cross-section of some
+    set of dimensions, being one-less dimension than
+    its container.
+   - like the classic three dim graph from econ where
+     we hold one dimension constant
 ----
 
 ----

@@ -33,6 +33,15 @@ Pages in Print Edition: 414
 ----
 
 ----
+Deep Learning
+By: Josh Patterson; Adam Gibson
+Publisher: O'Reilly Media, Inc.
+Pub. Date: August 9, 2017
+Print ISBN-13: 978-1-4919-1425-0
+Pages in Print Edition: 532
+----
+
+----
 AI is presented as a kind of API
  - in the broader use of the word its 
    a program plus some kind of ability 
@@ -454,6 +463,13 @@ Nodeterministic Search
    which is divided into two parts, one part is for 
    training the other is for testing. 
    
+ - framing the question
+  - what is the input data from which we want to 
+    extract information (model)?
+  - what kind of model is most appropriate for this data?
+  - what kind of answer would we like to elicit from new data 
+    based on this model?
+   
  - In supervised learning, each data item is tagged 
    with some kind of category which is the basis of 
    the learning. 
@@ -525,6 +541,27 @@ Nodeterministic Search
    (like price or temp.) and we want to group into 
    discrete labels of (e.g. those above the avg and those
    below).
+ - Text vectorization, 
+  - typical process of steps
+   - break the document into sentences,
+   - break the sentences into words
+   - deal with language where words have stems and 
+      inflection ("go", "going", "went")
+   - (maybe) removing "stop-words"
+   - turn the text into an array of floats or ints
+  - Term-Frequency, is just a count of how many times 
+     a word appears in the data (a.k.a. bag-of-words)
+  - TF-IDF, basically term-freq. across many documents
+     where TF is 'term-freq.' and IDF is 'inverse-doc-freq.'
+  - N-Gram, for getting numbers concerning words which appear
+     in a likely sequence, like "Wall Street", "Coca Cola"
+  - Word2Vec, attempts to get the semantics of word use by 
+     understanding the word's position across many sentences
+     and relating that position to meaning
+
+ - overfitting: is something that happens when it works
+    great on the sample data it was trained with but
+    does poorly when run against the population
 ----
 
 ----
@@ -548,6 +585,11 @@ Bayes' Theorem
 Laplace Smoothing: will add 1 to the P(A) & P(B)
  so as in the above example of P(A) = 250 / 5000
  would be solved as P(A) = (1 + 250) / (1 + 5000)
+ 
+Bayesian -vs- Frequentist: a frequentist has no expectation 
+ but expects the repeated test will reveal the probability
+ while bayesian starts with some expectation and only 
+ adjust that expectation when it proves false.
 ----
 
 ----
@@ -605,11 +647,22 @@ All Numbers
 
 ----
 Digression on Statistics 
- - List of general concepts
-  - Variance, how wide the obs are spead along an axis
-  - Clustering, divide obs into groups
-  - Correlation, measure strength and direction of two
-    obs 
+ - Variance, how wide the obs are spead along an axis
+ - Clustering, divide obs into groups
+ - Correlation, measure strength and direction of two
+   obs 
+ - Probability, P(E) = (Chances for E)/(Total Chances)
+   - probability of an Ace in a common deck of cards
+     P(Ace) = (4)/(52)
+ - Odds, (Chances for E)/(Chances Against E)
+   - odds of an Ace is 
+     Odds(Ace) = (4) /(52-4)
+ - normal distribution, the classic bell-curve
+   - also known as Gaussian distribution
+ - other distributions 
+   - Binomial
+   - Inverse Gaussian
+   - Log normal
 ----
 
 ----
@@ -705,64 +758,4 @@ Principal Component Analysis (PCA)
       to 0 but has a very definite relationship)
 ----   
 
-----
-A Critique on the name Artificial Intelligence.
-
-Artificial Intelligence is a misnomer – a more accurate name would be “predictive analysis” or 
-“data science”.  It’s a difficult phrase because if I simply copy your dance 
-moves motion-for-motion am I now a dancer?  In this case it would seem so 
-since being a dancer is being able to dance.  Now consider my ability to 
-read Hebrew – I am able to enunciate the word because it’s a phonetic 
-alphabet.  If I should read the book of Moses out loud with perfect 
-enunciation do I understand it?  Notice, intelligence and understanding imply some 
-kind of inner meaning.  The problem is that the word intelligence is deeply 
-rooting in our idea of human dignity.   
-
-So what does this mean?  Intelligence implies a dialogue where we can ask 
-of each other, “what do you see in this?”  Let’s do the reverse and ask, “do 
-insects possess intelligence?”, well kinda.  Now imagine bugs aren’t natural, 
-they are man-made.  Being man-made we could flash them with new firmware to make 
-them do something useful, or, on a darker note, install firmware to weaponize 
-them.   Notice how the question of intelligence falls off when we think of bugs 
-as man-made?  They are no longer acting on their own, but rather they are acting according to 
-the program.  Let’s take the bug analogy further and say we upgrade their hardware 
-so we can connect to any one of them remotely and issue them commands in 
-real-time.  This is cool right, we have butterflies to entertain our cats, hornets 
-to patrol our property – you could think of a lot of neat things you could do with 
-so many bugs!   Now imagine the server crashes and the bugs all start acting the way 
-we think of bugs acting, being a part of nature.  Would they then possess 
-intelligence?  Remember these man-made bugs are acting the same way as our real 
-bugs.  And didn’t we answer the question about our real bugs being intelligent 
-as, kinda.  The behavior is the same but the origin is different.  We would call 
-our man-made bugs as acting in some sort of critical-connection-failure-mode program, 
-while our natural bugs are, well, just bugs.  You may say, “well the original 
-programmers could predict how these man-made bugs will behave in such-and-such 
-situation.”  True, but bugs are pretty predictable either way and an entomologist 
-could probably make equally good predictions about our natural bugs.
-
-Ok, lets reverse this again to the more common theme of robots.  This idea has been 
-explored a lot so I’ll just jump ahead and note that the robots are more than machines 
-when they start acting like us, be it either in selfishness or self-sacrificing.  When 
-the robot takes a bullet for our hero character and some dialog ensues between them and 
-the robot contemplates mortality and fate, etc, we are very likely to call that robot 
-intelligent even human.  Now, say the scene plays out where some random robot jumps in 
-front of our character to take a bullet and immediately falls lifeless to the ground, 
-say it’s a really bad movie, and every time there is some gun fired some random robot 
-shows up to take the bullet.  We would likely just ask, “where the hell are all these 
-robots coming from?”  These robots are not human nor intelligent, in this plot they are 
-little more than armor.  
-
-Artificial Intelligence in actual practice tends to be an equal kind of bad-movie disappointment.  You tend 
-to start, thinking, as the name implies, you are doing something very human in a machine 
-environment.  It turns out that Artificial Intelligence is mostly just number crunching.  In fact, unlike 
-imperative programming, you don’t start with a general form, you start with data and 
-that’s typically what you end with too.  Which is fine, think how much more effective the scientific 
-method, constituted by observations (a.k.a. data), has been over philosophers sitting around 
-thinking about forms.  Granted Artificial Intelligence was originally geared toward mechanical 
-entities with various sensors hooked into a computer, but, anymore, its used for anything which 
-is data-driven.  When you actually talk with a data-scientist they will probably tell you that 
-getting the data is where most of the work is, afterwards it tends to follow a pretty standard 
-mathematical model.  A professional programmer shouldn’t neglect to learn the field just 
-because its misnamed – just don’t get the idea that the machine is now thinking because we 
-call it intelligent – that’s something only we humans can do.
 ----
