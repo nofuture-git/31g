@@ -138,7 +138,7 @@ namespace NoFuture.Util.Core.Math
             {
                 for (var j = 0; j < a.Columns(); j++)
                 {
-                    if (System.Math.Abs(a[i, j] - b[i, j]) > 0.000000D)
+                    if (System.Math.Abs(a[i, j] - b[i, j]) > 0.0000001D)
                         return false;
 
                 }

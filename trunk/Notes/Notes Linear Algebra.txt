@@ -126,6 +126,7 @@ R Builtins
  b <- c(2,8,9)
  bb <- seq(start,end[,step]) #gen' stepped sequences 
  cc <- c(1:10) gen' single sequence
+ dd <- b[!b %in% 9] #a kind of selector to get the vector less this item
  
  #assignment can work both ways
  c(1,3,2) -> a  
@@ -223,6 +224,9 @@ R Builtins
  
  #set the working directory
  setwd("C://Projects")
+ 
+ #namespace conflicts can be handled using full qualified 
+ sgd::sgd
  
  #user defined function (in-line)
  myNormalForm <- function(x1, x2) -2*x1 + 4*x2 - 4
@@ -1319,7 +1323,6 @@ General Affine maps
   x'= 2p - x
 ----
 
-
 ----
 Digression on Statistics 
  - Variance, how wide the obs are spead along an axis
@@ -1362,6 +1365,8 @@ Simple Linear Regression
  - solve for A
       A = X\Y
 
+ #the first arg is 'formula' - which has it own operators
+ #tilde '~' (x7E), right side is the 'response', left side is the 'model'
  LinearModel = lm(SomeData$FieldTwo ~ SomeData$FieldOne, data = SomeData)
  
  #get a summary about the linear regression
@@ -1424,4 +1429,111 @@ Multiple Linear Regression
   #calc the R-squared
   Rsqr = 1 - sum((y - YRegFit)^2)/sum((y - mean(y))^2)
   
+  #using builtin R model
   PetroData = read.csv("EscapingHydrocarbons.csv", header = TRUE, sep = ";")
+  
+  #has fields with long names
+  #plus-sign '+' (x2B), is to make the model a multiple linear regression
+  MLModel = lm(AmountEscapingHydrocarbons ~ TankTemperature + PetrolTemperature + InitialTankPressure + PetrolPressure, 
+               data = PetroData)
+----
+
+----
+Categorical variables
+ - are not from measurements
+ - are for classification
+ - Nominal Categorical variables: 
+  - have two or more categories
+  - have no intrinsic order or hierarchy
+ - Dichotomous Categorical variables:
+  - special case of nominal variables
+  - have only two possible values
+ - Ordinal Categorical variables,
+  - have two or more categories
+  - can be ordered and ranked
+  
+  library(readxl)
+  EmployeesSalary <- read_excel("employees.xlsx")
+  
+  #investigate if a character vector is a category
+  unique(EmployeesSalary$LevelOfEmployee)
+  
+  #character vector reassigned as a factor vector (like an enum)
+  EmployeesSalary$LevelOfEmployee <- as.factor(EmployeesSalary$LevelOfEmployee)
+  
+  #scatter plot by the factor variable
+  pch.list <- as.numeric(EmployeesSalary$)
+  
+  #star '*' (x2A), is to make the model by category
+  # formula is now a string literal - text offers no explaination
+  LMcat <- lm('Salary~YearsExperience*LevelOfEmployee', data = EmployeesSalary)
+----
+
+----
+Gradient Descent and Linear Regression
+ - pragmatic approach to get the regression 
+ - is a supplementary method to the B = (Xᵀ * X)^-1 * Xᵀ * Y
+  - the matrix algebra approach will overheat the machine for big data
+  - may also be that Xᵀ * X does not exist
+ - starts with a cost function that takes a,b and returns an error value
+  - error value represents how well the a,b actually fits the data
+  
+  CostFunction = 1/N * ((SUM(y[i] - (a*x[i] + b))^2)|i=1 to i=n)
+   - this is iterated, adjusting a,b each time
+   - in 3-D space the CostFunction forms a concave graph
+   - since there are two variables, we need a hyperplane along each a,b
+    - del is for the partial derivative backward 6 symbol thing
+   del/del a = 2/N * (SUM(-x[i] * (y[i] - (a*x[i] + b)))|i=1 to i=n)
+   del/del b = 2/N * (SUM(-(y[i] - (a * x[i] + B)))|i=1 to i=n)
+   
+   - next is the iterative part where
+   a[n+1] = a[n] - (eta) * (del/del a[n])
+   b[n+1] = b[n] - (eta) * (del/del b[n])
+    - eta is the step-size, 
+     - too big may over step the min, 
+     - too small may take too long
+----
+
+----  
+Stochastic Gradient Descent
+ - like the previous only it works by taking a sample of 
+   the data at random
+ - likewise imporves performance 
+ 
+  #import stochastic gradient descent lib
+  library(sgd, warn.conflicts = FALSE)
+  
+  #make a data set 
+  N <- 10000
+  d <- 10
+  
+  #set the seed for global R random genr'ator
+  set.seed(42)
+  
+  #create a random matrix as explanatory variables
+  X <- matrix(rnorm(N*d),ncol=d)
+  
+  #the estimator
+  theta <- rep(5,d+1)
+  
+  #some random error
+  eps <- rnorm(N)
+  
+  #the response variable
+  y <- cbind(1,X) %*% theta + eps
+  
+  #model with sgd
+  dat <- data.frame(y=y, x=X)
+  
+  #"y ~ ." is the formula where '.' means "and all the rest"
+  # 'model="lm"' is the kind of model, also has (glm, cox, gmm, m)
+  sgd.theta <- sgd::sgd(y ~ ., data=dat, model="lm")
+  
+  - Mean Square Error (MSE)
+  MSE = 1/n * (SUM((theta_tick - theta)^2)|i=1 to i=n)
+  
+  myMse <- mean((theta - as.numeric(sgd.theta$coefficients))^2)
+  
+  #a graph of the the MSE over the iterations
+  plot(sgd.theta, theta, type="mse-param")
+----
