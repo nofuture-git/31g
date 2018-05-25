@@ -42,6 +42,10 @@ Pages in Print Edition: 532
 ----
 
 ----
+http://mccormickml.com/2016/04/19/word2vec-tutorial-the-skip-gram-model/
+----
+
+----
 AI is presented as a kind of API
  - in the broader use of the word its 
    a program plus some kind of ability 
@@ -541,27 +545,60 @@ Nodeterministic Search
    (like price or temp.) and we want to group into 
    discrete labels of (e.g. those above the avg and those
    below).
- - Text vectorization, 
-  - typical process of steps
-   - break the document into sentences,
-   - break the sentences into words
-   - deal with language where words have stems and 
-      inflection ("go", "going", "went")
-   - (maybe) removing "stop-words"
-   - turn the text into an array of floats or ints
-  - Term-Frequency, is just a count of how many times 
-     a word appears in the data (a.k.a. bag-of-words)
-  - TF-IDF, basically term-freq. across many documents
-     where TF is 'term-freq.' and IDF is 'inverse-doc-freq.'
-  - N-Gram, for getting numbers concerning words which appear
-     in a likely sequence, like "Wall Street", "Coca Cola"
-  - Word2Vec, attempts to get the semantics of word use by 
-     understanding the word's position across many sentences
-     and relating that position to meaning
 
  - overfitting: is something that happens when it works
     great on the sample data it was trained with but
-    does poorly when run against the population
+    does poorly when run against the population   
+   
+----   
+Text vectorization, 
+ - can represent a word as a sorta bitwise OR where the total
+    length is for every possible word and the given word is an
+    equal length array with a one in the matching position.
+ - typical process of steps
+  - tokenization, documents, paragraphs, sentences, words, etc.
+  - morphological analysis, deal words having stems, 
+    infixes, inflection ("go", "going", "went") etc.
+  - syntatic analysis, understanding the structure of the sentence
+  - semantic interpretation, to gain some sense of the meaning
+    of sentences
+ - Vectorization, turning words into arrays of numbers
+  - a word's meaning is represented as a vector of real numbers
+  - its not really just words, but stems, phrases, and whole sentences
+    as a vector
+   - one-hot vector, a vector in which all positions are zero except 
+     for one of them
+ - Distributional Hypothesis, the idea of a correlation between 
+    distributional and semantic similarity.  Words can be understood
+    by what other words often appear near them.   
+ - Term-Frequency, is just a count of how many times 
+    a word appears in the data (a.k.a. bag-of-words)
+ - TF-IDF, basically term-freq. across many documents
+    where TF is 'term-freq.' and IDF is 'inverse-doc-freq.'
+ - N-Gram, for getting numbers concerning words which appear
+    in a likely sequence, like "Wall Street", "Coca Cola"
+----
+
+----
+Word2Vec
+ - attempts to get the semantics of word use by 
+    understanding the word's position across many sentences
+    and relating that position to meaning
+ - Skip-Gram, probability of every other word appearing near 
+     some center word.
+   - there is a "window" which limits how far to the right
+     and left you look 
+   - solves for the probability that for the word "foo"
+     the nearby (aka "window") word is "bar"
+----
+
+----
+Deep Learning
+ - where the machine is both finding mathematical optimization 
+   and finding the features of raw data. 
+  - the opposite would be Manual Designed Features, which 
+    often takes a long time to draft
+ - Neural Networks is a kind of deep learning
 ----
 
 ----
@@ -643,26 +680,6 @@ All Numbers
  - normalization: similar to meaning in DB's, means scaling
    all values to they are comparable
   (x_i - x_min) / (x_max - x_min)
-----
-
-----
-Digression on Statistics 
- - Variance, how wide the obs are spead along an axis
- - Clustering, divide obs into groups
- - Correlation, measure strength and direction of two
-   obs 
- - Probability, P(E) = (Chances for E)/(Total Chances)
-   - probability of an Ace in a common deck of cards
-     P(Ace) = (4)/(52)
- - Odds, (Chances for E)/(Chances Against E)
-   - odds of an Ace is 
-     Odds(Ace) = (4) /(52-4)
- - normal distribution, the classic bell-curve
-   - also known as Gaussian distribution
- - other distributions 
-   - Binomial
-   - Inverse Gaussian
-   - Log normal
 ----
 
 ----
@@ -758,4 +775,13 @@ Principal Component Analysis (PCA)
       to 0 but has a very definite relationship)
 ----   
 
+----
+Softmax Function
+ - for probability distribution over K different possible outcomes
+  - also known as Logistic regression
+  - example in C#
+  var z = new[] { 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0 };
+  var z_exp = z.Select(i => Math.Pow(Math.E, i)).ToArray();
+  var sum_z_exp = z_exp.Sum();
+  var softmax = z_exp.Select(i => Math.Round(i / sum_z_exp, 3)).ToArray();
 ----

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Text;
@@ -266,27 +267,48 @@ namespace NoFuture.Util.Core.Math
 
             //find the max len
             var maxLen = 0;
+            var anyNeg = false;
             for (var i = 0; i < a.Rows(); i++)
                 for (var j = 0; j < a.Columns(); j++)
+                {
                     if (a[i, j].ToString(CultureInfo.InvariantCulture).Length > maxLen)
                         maxLen = a[i, j].ToString(CultureInfo.InvariantCulture).Length;
+                    if (a[i, j] < 0)
+                        anyNeg = true;
+                }
 
             maxLen += 2;
 
+            for (var i = 0; i < a.Columns(); i++)
+            {
+                var headerStr = $"[,{i}]";
+                var padding = (maxLen-1);
+
+                if (i == 0)
+                {
+                    str.Append(new String(' ', a.Rows().ToString().Length + 4));
+                }
+
+                str.AppendFormat("{0," + padding + "}", headerStr);
+            }
+
+            str.AppendLine();
             for (var i = 0; i < a.Rows(); i++)
             {
+                str.Append($"[{i},] ");
                 for (var j = 0; j < a.Columns(); j++)
                 {
-                    str.AppendFormat(("{0,-" + maxLen + "}"), a[i, j]);
+                    var aij = a[i, j];
+                    var format = aij >= 0 && anyNeg ? " {0,-" + (maxLen - 1) + "}" : "{0,-" + maxLen + "}";
+                    str.AppendFormat(format, aij);
                 }
                 str.AppendLine();
             }
 
-
             return str.ToString();
         }//end Print
 
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         private static long[] GetApplicableCofactorIndices(long currentIndex, long originalLength)
         {
             if (originalLength == 0)
@@ -353,10 +375,10 @@ namespace NoFuture.Util.Core.Math
             //(a[0, 0] * a[1, 1]) - (a[0, 1] * a[1, 0])
             if (len == 2)
             {
-                var a00 = Expression.ArrayAccess(myArray, new Expression[] { zeroIdx, zeroIdx });
-                var a11 = Expression.ArrayAccess(myArray, new Expression[] { oneIdx, oneIdx });
-                var a01 = Expression.ArrayAccess(myArray, new Expression[] { zeroIdx, oneIdx });
-                var a10 = Expression.ArrayAccess(myArray, new Expression[] { oneIdx, zeroIdx });
+                var a00 = Expression.ArrayAccess(myArray, zeroIdx, zeroIdx);
+                var a11 = Expression.ArrayAccess(myArray, oneIdx, oneIdx);
+                var a01 = Expression.ArrayAccess(myArray, zeroIdx, oneIdx);
+                var a10 = Expression.ArrayAccess(myArray, oneIdx, zeroIdx);
 
                 var a00Xa11 = Expression.Multiply(Expression.Subtract(a00,myParam), Expression.Subtract(a11, myParam));
                 var a01Xa10 = Expression.Multiply(a01, a10);
@@ -390,7 +412,7 @@ namespace NoFuture.Util.Core.Math
                     var iExpr = d[i, j, 0];
                     var jExpr = d[i, j, 1];
 
-                    var aIjExpr = Expression.ArrayAccess(myArray, new Expression[] { iExpr, jExpr });
+                    var aIjExpr = Expression.ArrayAccess(myArray, iExpr, jExpr);
                     if (iExpr.Value.Equals(jExpr.Value))
                     {
                         productExpr = productExpr == null
@@ -434,7 +456,7 @@ namespace NoFuture.Util.Core.Math
                 {
                     var iExpr = d[i, j, 0];
                     var jExpr = d[i, j, 1];
-                    var aIjExpr = Expression.ArrayAccess(myArray, new Expression[] { iExpr, jExpr });
+                    var aIjExpr = Expression.ArrayAccess(myArray, iExpr, jExpr);
                     if (iExpr.Value.Equals(jExpr.Value))
                     {
                         productExpr = productExpr == null

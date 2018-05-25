@@ -57,7 +57,16 @@ Command line
    >>> sys.modules  #gets a dictionary of modules currently in scope
    >>> sys.path     #get list of where modules will be searched for at
    
-   
+ - install packages from web
+ python -m pip install some_package_name
+  - behind corporate firewall
+ python -m pip install --proxy DOMAIN\username:password@proxyserver:port some_package_name
+
+ - test for a module being avail for import (ver. 3.4+)
+ import importlib
+ some_spec = importlib.util.find_spec("some_spec")
+ is_found = some_spec is not Null
+ 
  - the result of the last evaluation may be accessed using a single underscore
  >>> 4 + 2
  6

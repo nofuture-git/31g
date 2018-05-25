@@ -300,6 +300,25 @@ namespace NoFuture.Tests.Util
         }
 
         [Test]
+        public void TestPrintMatrix()
+        {
+            var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
+            Console.WriteLine(testInput.Print());
+
+            testInput = new double[,]
+            {
+                {-0.14524321, -0.3209983, 0.9358763},
+                {0.8905313, 0.36975, 0.265},
+                {-0.431, 0.8719205, 0.2321555}
+            };
+
+            Console.WriteLine(testInput.Print());
+
+            testInput = new double[,] { { 1, 1, 0 }, { 1, 56, -2 }, { 101, 2, 3 } };
+            Console.WriteLine(testInput.Print());
+        }
+
+        [Test]
         public void TestRomanNumberConversion()
         {
             var testSubject = "XLIX";

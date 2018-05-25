@@ -36,6 +36,16 @@ May 2015 ISBN 9781617291388 608 pages printed in black & white
 ----
 
 ----
+Regression Analysis with R
+By: Giuseppe Ciaburro
+Publisher: Packt Publishing
+Pub. Date: January 31, 2018
+Print ISBN-13: 978-1-78862-730-6
+Web ISBN-13: 978-1-78862-270-7
+Pages in Print Edition: 422
+----
+
+----
 https://www.ncbi.nlm.nih.gov/books/NBK253312/
 ----
 
@@ -44,6 +54,22 @@ R Summary
  - is a GNU port of the "S" language where S was a stat lang
    developed at Bell Labs by John Chambers.
  - is open-source, dev'ed by Robert Gentlement and Ross Ihaka
+ 
+ -package management
+  - get more libs at https://cran.r-project.org/web/packages/available_packages_by_name.html
+  - take the zip (window) and unzip to R install dir named \library
+  - load using 
+  library(sna)
+ 
+ - test the version at runtime
+  R.Version()
+  
+ - package version
+  packageVersion("packageName")
+  
+ - package mangement
+  - worked within VS 2017 R Interactive
+  install.packages("packageName", lib="C:/Program Files/Microsoft/R Client/R_SERVER/library")
 ----
 
 ----
@@ -189,6 +215,14 @@ R Builtins
  myData <- read.table("C:/MyR/MyRData/MyData.tsv",header=TRUE)
  sink("C:/MyR/MyOutput/output.txt") #will route all output to file
  sink() #sets output back to console.
+ MyCsvData=read.csv ("C://SomeFolder//SomeFile.csv", header=TRUE, sep=";")
+ plot(MyCsvData$SomeColumn,MyCsvData$SomeOtherColumn)
+ 
+ #requires the package readxl
+ SomeMsExcelData <- read_excel("MyExcel.xlsx")
+ 
+ #set the working directory
+ setwd("C://Projects")
  
  #user defined function (in-line)
  myNormalForm <- function(x1, x2) -2*x1 + 4*x2 - 4
@@ -208,6 +242,7 @@ R Builtins
  #other usefull builtin
  ls()  # display all the variables defined so far in the console.
  rm(a) # gc a variable 
+ er<-runif(10,min=-1,max=1) #get 10 random values between -1 and1
 
  help("[[") #gets help on builtin symbols (displays in browser)
  
@@ -217,6 +252,11 @@ R Builtins
  trunc(x); round(x[, n]); signif(x[, n])
  cos(x); sin(x); tan(x); #use radians not degees
  log(x); log10(x); log2(x)
+     
+ #Stat builtins
+ cov(SomeData$FieldOne, SomeData$FieldTwo) #covariance
+ cor(SomeData$FieldOne, SomeData$FieldTwo) #correlation coefficient
+ sd(SomeData$FieldOne) #standard dev
  
  #dynamic types
  myDyn <- list(name="myType", someProp=11, anotherProp=c(1:10))
@@ -234,6 +274,9 @@ R Builtins
  #get runtime type info
  str(someDataFrame)
  
+ #object property reflection
+ names(SomeObjectInstance)
+ 
  #dataframe with property-style names
  prop00 <- 11.0
  prop01 <- TRUE
@@ -248,11 +291,6 @@ R Builtins
  myDf[,1:2]    #get first 2 columns, all rows
  myDf[1:2]     #same as the last
  myDf[1:5,1:2] #get first 5 rows first 2 columns
- 
- #get more libs at https://cran.r-project.org/web/packages/available_packages_by_name.html
- # take the zip (window) and unzip to R install dir named \library
- # load using 
- library(sna)
 ----
 
 ----
@@ -262,9 +300,10 @@ R Graphix
  plot(x,y) #basic, no labels
  plot(x,y, type="l", col="black", xlab="My X-axis label", 
            ylab="My Y-axis label", main="My Header label",
-		   font.main=2, font.lab=1,pch=19)
+           font.main=2, font.lab=1,pch=19)
+ par(mfrow=c(2,2)) #to show multiple graphs in the R Plot window
 ----
-		   
+
 ----
 Points & Vectors
  - most basic 2D a point is two coords
@@ -1279,4 +1318,110 @@ General Affine maps
   p = 1/2*x + 1/2*x'
   x'= 2p - x
 ----
+
+
+----
+Digression on Statistics 
+ - Variance, how wide the obs are spead along an axis
+ - Covariance, indicates the positive or negative relationship
+    amoung obs 
+ - Clustering, divide obs into groups
+ - Correlation, measure strength and direction of two
+   obs 
+ - Probability, P(E) = (Chances for E)/(Total Chances)
+   - probability of an Ace in a common deck of cards
+     P(Ace) = (4)/(52)
+ - Odds, (Chances for E)/(Chances Against E)
+   - odds of an Ace is 
+     Odds(Ace) = (4) /(52-4)
+ - normal distribution, the classic bell-curve
+   - also known as Gaussian distribution
+ - other distributions 
+   - Binomial
+   - Inverse Gaussian
+   - Log normal
+----
+
+----
+Simple Linear Regression
+ - linear positive slope is also called 
+    concordant association
+ - linear negative slope is also called
+    discordant association
  
+ - start with equation y = a * x + b
+ - data is a plot so its can be rep'ed as matrix
+    .-  -.   .-     -.   
+    | y1 |   | x1  1 |   .- -.
+    | y2 | = | x2  1 | * | a |
+    | .. |   | ..  . |   | b |
+    | yn |   | xn  1 |   '- -'
+    '-  -'   '-     -'
+ - assign each matrix to a symbol
+      Y = X * A
+ - solve for A
+      A = X\Y
+
+ LinearModel = lm(SomeData$FieldTwo ~ SomeData$FieldOne, data = SomeData)
+ 
+ #get a summary about the linear regression
+ summary(LinearModel)
+ 
+ #get just the coefficents
+ LinearModel$coefficients
+ 
+ #get R-squared value
+ summary(LinearModel)$r.squared
+ 
+ #plot 5 different esoteric graphs
+ plot(LinearModel)
+ plot(LinearModel, which=1)
+
+ - to get an idea of the "perfect version" of these esoteric graphs
+ #start with a full linear eq
+ x<-seq(1,100,0.1)
+ 
+ #f(x) = -2.7x + 6
+ y<-2.7*x+6
+ 
+ #add in a little variance
+ er<-runif(length(y), min = -1, max = 1)
+ y<-y+er
+ 
+ #and plot this hack
+ dataxy<-table(rep(x, y))
+ LModel<-lm(y~x, data = dataxy)
+ plot(LModel)
+----
+ 
+----
+Multiple Linear Regression
+ - start with equation y = b0 + b1*x1 + b2*x2 + ... + bn*xn
+ - data is a plot so its can be rep'ed as matrix
+    .-  -.   .-                   -.   .-  -.
+    | y1 |   | 1 x1,1 x1,2 ... x1,n|   | b0 |
+    | y2 | = | 1 x2,1 x2,2 ... x2,n| * | b0 |
+    | .. |   | ..                  |   | .. |
+    | yn |   | 1 xn,1 xn,2 ... xn,n|   | bn |
+    '-  -'   '-                   -'   '-  -'
+ - assign each matrix 
+      Y = X * B
+ - solve for B
+    B = (Xᵀ * X)^-1 * Xᵀ * Y
+    
+  CementData = read.csv("CementData.csv", header = TRUE, sep = ",")
+  
+  #data as a matrices
+  columnOfOnes = rep(1,13)
+  x <- as.matrix(columnOfOnes, CementData[,1:4]))
+  y <- CementData[,5]
+  Beta <- solve(t(x) %*% x) %*% t(x) %*% y
+  
+  #get the residual of predicted versus observed
+  YRegFit <- x %*% Beta[,1]
+  Residual= y-YRegFit
+  
+  #calc the R-squared
+  Rsqr = 1 - sum((y - YRegFit)^2)/sum((y - mean(y))^2)
+  
+  PetroData = read.csv("EscapingHydrocarbons.csv", header = TRUE, sep = ";")
