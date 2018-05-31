@@ -69,7 +69,7 @@ R Summary
   
  - package mangement
   - worked within VS 2017 R Interactive
-  install.packages("packageName", lib="C:/Program Files/Microsoft/R Client/R_SERVER/library")
+  install.packages("packageName", lib="C:/Program Files/Microsoft/R Client/R_SERVER/library", dependencies = TRUE)
 ----
 
 ----
@@ -111,7 +111,7 @@ R Ops
                    # 1 is for each row, 2 for each column
                    # cos is the builtin f(x) cosine
   lapply(x,cos) #apply cosine builtin to every element
-  
+ 
  - Casting
   as.data.frame(x)
   as.matrix(x)
@@ -212,6 +212,21 @@ R Builtins
  # - ev$vec for eigen vectors
  ev <- eigen(A)
  
+ #pivot data
+ # ColumnA  ColumnB  ColumnC
+ # labelA     0        11
+ # labelB     0        55
+ # labelA     0        15
+ # labelB     0        34
+ # ...
+ # --into--
+ # labelA  labelB
+ # 11      55
+ # 15      34
+ # ...
+ MyData <- matrix(c("labelA","labelB","labelA","labelB",0,0,0,0, 11,55,15,34), ncol = 3)
+ MyPivot <- matrix(MyData[,3], ncol=2, byrow=TRUE, dimnames=list(NULL, c("labelA", "labelB")))
+  
  #IO
  myData <- read.table("C:/MyR/MyRData/MyData.tsv",header=TRUE)
  sink("C:/MyR/MyOutput/output.txt") #will route all output to file
@@ -228,6 +243,9 @@ R Builtins
  #namespace conflicts can be handled using full qualified 
  sgd::sgd
  
+ #the R install will come with some canned data 
+ library(help="datasets")
+ 
  #user defined function (in-line)
  myNormalForm <- function(x1, x2) -2*x1 + 4*x2 - 4
  
@@ -243,12 +261,20 @@ R Builtins
  source("C:/MyR/UserFunctions/LinearAlgebra.r")
  vLen(c(5,4)) #6.403124
  
+ #apply and custom function
+ # the '3' indicates which attribute in 'someData'
+ odds.ratio = function(x){
+   (x[1,1]*x[2,2])/(x[1,2]*x[2,1])
+ }
+ MyOdds <- apply(someData, 3, odds.ratio)
+ 
  #other usefull builtin
  ls()  # display all the variables defined so far in the console.
  rm(a) # gc a variable 
  er<-runif(10,min=-1,max=1) #get 10 random values between -1 and1
 
  help("[[") #gets help on builtin symbols (displays in browser)
+ View(data) #dislplays it like a spread sheet
  
  # Numeric builtins
  length(a); mean(a); min(a); max(a); var(a)
@@ -277,9 +303,16 @@ R Builtins
  
  #get runtime type info
  str(someDataFrame)
+
+ #top 10 of a data frame
+ head(someDataFrame)
+
+ #get stat data per column
+ summary(someDataFrame)
  
  #object property reflection
  names(SomeObjectInstance)
+ 
  
  #dataframe with property-style names
  prop00 <- 11.0
@@ -295,6 +328,16 @@ R Builtins
  myDf[,1:2]    #get first 2 columns, all rows
  myDf[1:2]     #same as the last
  myDf[1:5,1:2] #get first 5 rows first 2 columns
+ 
+ #data -> table -> data-frame
+ myMatrix <- matrix(c(362,160,8,64), nrow=2)
+ colnames(myMatrix) <- c("ColumnA", "ColumnB")
+ rownames(myMatrix) <- c("Row1", "Row2")
+ myTable <- as.table (myMatrix)
+ myDataframe <- as.data.frame(myMatrix)
+ 
+ #list to vector - does not behave the same as as.vector
+ unlist(lapply(someDataFrame, function(x) which(is.na(x))))
 ----
 
 ----
@@ -306,6 +349,9 @@ R Graphix
            ylab="My Y-axis label", main="My Header label",
            font.main=2, font.lab=1,pch=19)
  par(mfrow=c(2,2)) #to show multiple graphs in the R Plot window
+ 
+ #show a matrix of scatter plots 
+ pairs(SomeData[1:7], cex.labels = 2, font.labels= 2)
 ----
 
 ----
@@ -1537,3 +1583,393 @@ Stochastic Gradient Descent
   #a graph of the the MSE over the iterations
   plot(sgd.theta, theta, type="mse-param")
 ----
+
+----
+Polynomial Regression
+ - kinda looks like equation for Multiple Linear Regression
+ - but now there are exponents 
+ y = b0 + b1*x + b2*x^2 + b3*x^3 + ... + bn*x^n
+ 
+ # given the data
+ Time=c(6,7,8,9,10,11,12,13,14,15,16,17,18,19)
+ Temp=c(4,6,7,9,10,11,11.5,12,12,11.5,11,10,9,8)
+
+ # meaning 
+ # Temp = b0 + b1*Time + b2*Time^2
+ 
+ #polynomial (long way) in R
+ Polyfit2 <- lm(Temp ~ Time + I(Time^2))
+ Polyfit3 <- lm(Temp ~ Time + I(Time^2) + I(Time^3))
+ 
+ #polynomial (short way) in R
+ Polyfit2b <- lm(Temp ~ poly(Time, 2, raw=TRUE))
+ Polyfit3b <- lm(Temp ~ poly(Time, 3, raw=TRUE))
+ 
+ #coefficients
+ Polyfit2b$coefficients
+ 
+ #no built-in to plot polynomials with R plot
+ # get the Time axis as a sequence
+ PredData = data.frame(Time = seq(min(Time), max(Time), length.out = 100))
+ 
+ #use it to get the y 
+ PredData$Temp = predict(Polyfit2b, newdata= PredData)
+ 
+ #plot the two - pretty
+ plot(Time, Temp)
+ with(PredData, lines(x = Time, y = Temp))
+----
+
+----
+Logistic Regression
+ - probability of having an attribute in relation to the 
+   number of possible variations of multiple explanatory 
+   variables
+ - each response variable is expected to be a kinda True\False
+  - this known as a Bernoulli variable
+ - if observations can only be (0,1) then the plot would 
+   look like a bunch of dot along the two axis
+   
+   1 -|    o   o         o o   o o
+      |
+      |
+      |
+   .5-|
+      |
+      |
+      |
+   0 -|o o   o   o o o o     o
+      +------------------------------
+           observation ordinal 
+
+   - a linear regression would peirce the 0 and 1 axis and 
+     continue on - this wouldn't be right cause its senseless
+   - we need the equation which goes from 0 to 1 and that's it
+   
+   - the linear form was, 
+    - P(x) is "probability of x"
+    - since this is just True\False
+   P(x) = a*x + b 
+   
+   - put it as an exponent of 'e' and you remove the problem of 
+     going to infinity on the negative side
+   P(x) = e^(a*x + b)
+   
+   - put it as a ratio like this and you lock in the range 
+   P(x) = e^(a*x + b)/(1 + e^(a*x + b))
+   
+   - solve for odds as
+   P(x)/1 - P(x) = e^(a*x + b)
+   log(P(x)/1 - P(x)) = a*x + b
+----
+
+----
+Generalized Linear Model (GLMs)
+ - where the reponse variable is discrete and the error terms do not 
+   follow a normal dist
+ - allow the mean to depned on explanatory variables through a 'link' function
+   and the response variable to be any member of a set of distributions called 
+   exponential family (i.e. Binomial, Gaussian, Poisson, etc.)
+  
+  - a simple example
+  #make our data
+  diabetes <- matrix(c(326,160,8,64), nrow=2) 
+  colnames(diabetes) <- c("DiabNO", "DiabYes") 
+  rownames(diabetes) <- c("StressNO", "StressYes")  
+  TableDiabetes <- as.table(diabetes)
+  DfBiabetes <- as.data.frame(TableDiabetes) 
+  
+  #get the logistic model
+  LogModel <- glm(Var2 ~ Var1, weights = Freq, data = DfBiabetes, family = binomial(logit))
+  
+  Beta = LogModel$coefficient[1]
+  Alpha = LogModel$coefficient[2]
+  
+  #P(x) = e^(a*x + b)/(1 + e^(a*x + b))
+  P0 <- exp(Alpha*0 + Beta)/(1 + exp(Alpha*0 + Beta))
+  P1 <- exp(Alpha*1 + Beta)/(1 + exp(Alpha*1 + Beta))
+  odds0 <- P0 / (1 - P0)
+  odds1 <- P1 / (1 - P1)
+  OR1 <- odds1 / odds0
+  # the odds that having this event will raise the chance of the other
+----
+
+----
+Multiple Logistic Regression
+ - like before, want to model on many variables
+ - P(x) = b0 + b1*x1 + b2*x2 + ... + bn*xn 
+  - with logistic transformation
+  - P(x) = e^(b0 + b1*x1 + b2*x2 + ... + bn*xn) / 1 + e^(b0 + b1*x1 + b2*x2 + ... + bn*xn)
+ 
+ #get data with multiple features
+ someData <- read.csv("MyData.csv", sep=",", header = TRUE)
+ 
+ #define the relation between explanatory (input) and response variables (output)
+ formula1=MyResponseVar ~ MyFeature00 + MyFeature01 + MyFeature02
+ LGModel1 <- glm(formula1, data = someData, family = binomial(logit))
+
+ #get the predictions based on the model
+ LGModel1Pred <- round(predict(LGModel1, data, type="response") 
+
+ #use this to id the classification errors
+ library(caret) 
+ LGModel1 <- caret::confusionMatrix(LGModel1Pred, data[, "MyFeature00"])
+----
+ 
+----
+Measure Predictive of Logistic Model
+ - "Null deviance:" the response predicted with nothing but an intercept
+    the lower the better
+ - "Residual deviance:" the response predicted by adding another independent variable
+     the lower the better
+ - "AIC:" is analogous to the R-sqr of linear regression, minimum value preferred.
+ - the relation between predicted and actual for a binary classification
+ - is also known as sensitivity, recall, and hit-rate 
+  - would be a count of the number of times 
+   - predicted TRUE, and it was indeed (TP)
+   - predicted FALSE, but it was TRUE (FP)
+   - predicted FALSE, and it was (FN)
+   - predicted TRUE , but it was FALSE (TN)
+ - True Positive Rate, TPR = TP / (TP + FN)
+ - True Negative Rate, TNR = TN / (TN + FP)
+ - Accuracy, ratio of correct predictions to total predictions
+   ACC = (TP + TN) / (TP + TN + FP + FN)
+
+ - Simpson's paradox, when a trend appears in different groups of 
+   data but disappears or reverses when the groups are combined
+  - indicates some hidden variable(s) are not being taken into consideration
+----
+
+----
+Multinomial logistic regression
+ - when categorical variables have more than two possible values
+ - uses module named 'mlogit'
+ 
+ #load lib
+ library(mlogit)
+ 
+ #load data canned with package
+ data("Heating")
+ 
+ #this makes a variable named Heating to be in scope
+ # multinomial is the "depvar" 
+ # there are 4 kinds of depvar (viz gc, gr, ec, er, hp)
+ # "ic" is installation cost - there is one for each kind of depvar
+ # "oc" is operating cost, likewise, one for each kind of depvar
+ View(Heating)
+ 
+ #mlogit requires its own custom data frames 
+ DataHeating <- mlogit.data(Heating, shape="wide", choice="depvar", varying = c(3:12))
+ 
+ #likewise, a special version of a formula needed
+ # the |0 indicates that the intercept should be omitted
+ form1 <- mFormula(depvar~ic+oc|0)
+ 
+ #get the multinomial logistic model
+ MLogitModel <- mlogit(form1, DataHeating)
+ 
+ #summary
+ summary(MLogitModel)
+----
+ 
+----
+Preliminary Data Cleaning
+ - data is considered "neat" when
+  - observations are in rows
+  - variables are in columns
+  - data is all in one dataset
+ - in R 'NA' means not avail. and its a kind of singleton
+  - it is a standin for missing values
+  
+ #import the data - na.strings converts all empty strings to NA
+ SampleData = read.csv("CleaningData.csv", header = TRUE, na.strings=c("","NA"), sep = ";")
+ 
+ #have a look at it 
+ View(SampleData) #or "head(SampleData)" for large sets
+ 
+ #have a look at the data frame's properties 
+ str(SampleData)
+ 
+ #for an integer incorrectly cast as a Factor
+ # use format of 'as.numeric(levels(f))[f]' where "f" is the property on the frame
+ # levels(SampleData$right) gets the original ints as strings
+ SampleData$right <- as.integer(as.numeric(levels(SampleData$right))[SampleData$right])
+ 
+ #to do likewise by column
+ SampleData$right[SampleData$right == -19] <- NA
+ 
+ #get the indices of NA in the data frame
+ which(is.na(SampleData), arr.ind = TRUE)
+ 
+ #gets the data frame without the NA's 
+ SampleDataMinor <- na.omit(SampleData)
+----
+
+----
+Detecting Outliers
+ - various methods for ordered series data
+ - example is Tukey's interquartile range (IQR)
+  - a measure of statistical dispersion being equal to the
+    difference between 75th and 25th percentiles
+ 
+ # to quickly apply this to R data frame
+ boxplot.stats(SampleDataMinor$age)
+----
+
+----
+Data scaling
+ - deals with problem where variables are expesses on 
+   different scales (1-10 -vs- 1-1000)
+ - typical two methods
+  - normalization
+  - standardization
+  
+ - Min-Max Normalization
+  x_scaled = (x - x_min) / (x_max - x_min)
+  
+ # builtin in R 'scale'
+ # x is a numeric matrix
+ # center = x_min
+ # scale = (x_max - x_min)
+ # scale(x, center, scale)
+ 
+ Airquality <- as.data.frame(airquality) #data part of R install
+ 
+ #remove NA's
+ Airquality<-na.omit(Airquality)
+ 
+ #get max and min for each variable (column)
+ max_data <- apply(Airquality, 2, max)
+ min_data <- apply(Airquality, 2, min)
+ 
+ #get Min-Max Normalization scaled verson of the data
+ data_scaled1 <- scale(Airquality, center = min_data, scale = max_data - min_data)
+ 
+ - Z Score Standardization
+  - will rescale so that the standard normal dist is mean =1, std_dev = 1
+ x_scaled = (x - mean) / std_dev
+ 
+ # is likewise invoked with 'scale'
+ mean_data <- apply(Airquality, 2, mean) 
+ sd_data <- apply(Airquality, 2, sd)
+ 
+ #get Z Score Standardization scaled version of the data
+ data_scaled2 <- scale(Airquality, center = mean_data, scale = sd_data)
+----
+
+----
+Data discretization
+ - in R, allows for some numeric property to be replaced by a discrete range
+  - e.g. break daily temp(C) into three blocks of 0-10, 11-20, 21-30
+ - typical two methods
+  - By Binning
+  - By Histogram Analysis
+  
+ # 'arules' package 'discretize(x, method="interval", categories = 3, labels = NULL,    
+ #                          ordered=FALSE, onlycuts=FALSE, ...)'
+ # x is a numeric vector
+ # method: 
+ #  "interval" (eq width), 
+ #  "frequency", 
+ #  "cluster" (k-means clustering) 
+ #  "fixed" (defer to categories)
+ # categories:
+ #  a number 
+ #  a vector with boundaries (any outside will be labeled NA)
+ # labels is names for categories
+ # ordered is to return factor with ordered levels
+ # onlycuts is to return computed interval boundaries
+ # ... is varadic for k-means clustering
+ 
+ #example By Binning
+ library(arules)
+ Nile<-as.data.frame(Nile)
+ NileDiscr<-arules::discretize(Nile$x, 
+                                 method = "interval", 
+                                 categories = 3, 
+                                 labels = c("Low", "Med", "High"), 
+                                 ordered = FALSE, 
+                                 onlycuts = FALSE)
+ summary(NileDiscr)
+ 
+ #example By Histogram
+ # R builtin 'hist'
+ # both displays on the R Plot and returns an object
+ HistNile<-hist(Nile$x, breaks = 3)
+---- 
+
+----
+Principal Component Analysis
+ - the known technique to reduce the number of variables
+    in a data set to only the principal ones
+ # use R builtin 'prcomp'
+ # example data at https://archive.ics.uci.edu/ml/datasets/seeds
+ SeedData <- read.csv("seeds_dataset.csv", header = TRUE, sep = "")
+ 
+ #change variable names
+ names(SeedData) = c('Area', 'Perimeter', 'Compactness', 'LengthK',
+                            'WidthK','AsymCoef','LengthKG','Seeds')
+ #get the PCA
+ PCAObj <- prcomp(SeedData[1:7)
+ 
+ #using another plot reveals the two principal components are AsymCoef & Area
+ # each variable is represented by a vector
+ biplot(PCAObj, scale=0, cex=1.3)
+----
+
+----
+Under and Overfitting
+ - when model is only able to predict with its training data
+ - most extreme case would be when there are more variables 
+   than there are observations
+ - underfitting is known as a bias problem
+ - overfitting is known as a variance problem
+ - detection happens by splitting the data between training and testing
+  - data-splitting, cleave the data in two typical split is 70/30
+  - k-fold, is another subdivider where data is divided into (k) random subsets
+    (named folds) of roughly equal size, one is use to validate the others used
+    to train, the whole process is repeated (k) times so each fold gets a chance
+    as the validation set
+  - Leave-one-out cross validation (LOOCV), taking everything except one 
+    as training and then the one-left-out to test doing this for every observation
+  
+ #use the canned data "mtcars"
+ data(mtcars)
+ 
+ #partition the data into two sets
+ library(caret)
+ DataSplit <- createDataPartition(y = mtcars$mpg, p = 0.7, list = FALSE)
+ 
+ #create two data sets
+ TrainData <- mtcars[DataSplit,] #random select of 24 items
+ TestData <- mtcars[-DataSplit,] #everything not in the 24
+ 
+ #train function is like the lm with extra for validation
+ LmFit1 <- train(mpg~., data = TrainData, method = "lm")
+ 
+ #apply the model to the test data
+ PredictedTest<-predict(LmFit1, TestData)
+ 
+ #bind the predicted data (model) to the response variable
+ ModelTest1 <- data.frame(obs = TestData$mpg, pred=PredictedTest)
+ 
+ #examine the results
+ defaultSummary(ModelTest1)
+ 
+ #again using builtins for k-folds where k=10, "cv" means "k-folds cross validation"
+ Control1 <- trainControl(method = "cv", number = 10) 
+ LmFit2 <- train(mpg ~ ., data = mtcars, method = "lm", trControl = Control1, metric = "Rsquared")
+ 
+ #again validate prediction
+ PredictedTest2 <- predict(LmFit2, mtcars)
+ ModelTest2 <- data.frame(obs = mtcars$mpg, pred=PredictedTest2)   
+ 
+ #or using the Leave-one-out cross validation, 
+ Control2<- trainControl(method="LOOCV")
+----
+    
+    
+    
+    
+    
+    
