@@ -1,0 +1,231 @@
+Notes Natural Language Processing
+----
+Python Natural Language Processing
+By: Jalaj Thanaki
+Publisher: Packt Publishing
+Pub. Date: July 31, 2017
+Web ISBN-13: 978-1-78728-552-1
+Print ISBN-13: 978-1-78712-142-3
+Pages in Print Edition: 486
+----
+
+----
+Basics
+ - is a branch of AI
+ - handles specific problems related to
+  - speech recognition
+  - Q/A 
+  - language translation
+  - text summarization
+  - sentiment analysis
+  - chatbots
+  - text classification
+  - topic segmentation
+  
+  - Natural Language Understanding (NLU)
+   - considered first component of NLP
+   - is the process of turning input into 
+     its computation representation
+   - requires analysis of
+    - morphological
+    - lexical
+    - syntatic
+    - semantic
+    - handle ambiguity
+    - discourse integration
+    - pragmatic
+  
+  - Natural Language Generation (NLG)
+   - considered second component of NLP
+   - the creation of natual language from the machine
+    - in machina exspriavit
+    
+  - Corpus, collection of written or spoken natural language material
+   - plural is Corpora
+   - available corpus
+    - Google Books Ngram corpus
+    - Brown corpus
+    - American National corpus
+  
+  - other data sources
+  https://github.com/caesar0301/awesome-public-datasets.
+  https://www.kaggle.com/datasets.
+  https://www.reddit.com/r/datasets/.
+  
+  - pre-packed web-scrappers with all major langs
+  
+  -install the package nltk
+  python -m pip install --proxy WINDOWSDOMAIN\user.name:somePassword@corpproxy.domain.com:9090 nltk
+  
+  - download the corpora directly from http://www.nltk.org/nltk_data/
+  - place corpus zip files into 
+  C:\nltk_data\corpora
+  - place "punkt" as unzipped content into
+  C:\nltk_data\tokenizers
+----
+
+----
+Data Attributes
+ - Categorical (Qualitative)
+  - Ordinal:
+     - like adverbs, best, good, bad, worst
+     - express a quality or circumstance     
+  - Nominal:
+     - categorical name or grouping
+ - Numeric (Quantitative)
+  - Continuous, 
+  - Discrete
+     - numerical values taken from a limited
+       set - like enums
+ - NLP deals mostly with Categorical
+----
+
+----
+Preprocessing
+ - get the data in the preferred format
+ - clean the data of missing values, encoding errors, etc
+ - sample the data to get a sense of its content
+ - transform the text data to numeric data
+----
+
+----
+Context-Free Grammer
+ - has four components
+  - a set of non-terminal symbols (N)
+  - a set of terminal symbols (T)
+  - a start symbol (S) which is a part of (N)
+  - a set of production rules (P) for sentence creation
+  
+ - is an attempt to generalize a sentence outside of any
+   language - an abstraction
+ - sounds like the kind of thing L.W. advised you can't really do
+----
+  
+----
+Morphological Analysis
+ - determine the kind of affixes which can be applied
+   to a stem and\or root
+ - Morphemes, an atomic unit of linguistics
+  - Free
+  - Bound
+   - Derivational, infixes to a root which change its semantic meaning
+       happy (adjective) -> happiness (noun)
+   - Inflectional, in the form of suffix, prefix and infix on nouns, pronouns,
+      adjectives and articles
+     - do not change the semantic meaning but express tense, mood, aspect, etc.
+ - Word, smallest meaningful unit of a sentence
+ - Stem, the part of a word which can be operated on with some kind of afix
+   - is a root plus derivational morphemes
+ - Root, a morpheme which can be a word (i.e. stand on its own)
+   - cannot be further divided
+  "unexpected"
+  - stem: expect
+  - afixes: 
+   - prefix: un-
+   - suffix: -ed
+  - morphemes: (3 total) un-, expect, -ed
+  - root: expect (because it can stand on its own)
+----  
+
+----
+Lexical Analysis
+ - a word level analysis
+ - also-known-as tokenization, or finding the word-boundaries
+ - Token, the meaningful elements created by lexical analysis
+ - part-of-speech tag, are labels for the kinds of words, 
+    nouns, verbs, adjectives, etc.
+ - lemmatization, identify the correct POS and meaning of words
+    in a sentence
+    - is contextually
+----
+
+----
+Syntactic Analysis
+ - concerned with the structure of words into sentences and phrases
+  - to convey logical order
+  - is defined by rules of grammar
+----
+
+----
+Semantic Analysis
+ - concerned with meaning between words and to what they refer
+ - can be applied at higher groupings like sentences, paragraphs,
+    chapters and sections or even whole documents
+ - hypernym and hyponyms
+  - is similar to the divide of common nouns into 
+     collective and abstract
+  - "color" is to hypernym what "red", "green", "blue" is to hyponym
+ - homonym, words that sound alike are are spelled alike but have 
+    totally different meanings
+   - "bear" the animal and "bear" the verb
+ - polyseme, one word with different but related meaning
+   - is a vague concept
+   - example is "to get" 
+     - as in "I'll get drinks" (procure), 
+     - "she gets scared" (become),
+     - "I get it" (understand)
+ - metonym, a figure of speech in which a thing or concept is referred to by 
+    the name of something closely associated with that thing or concept
+----
+
+----
+Ambiguity
+ - meaning is not clear
+ - can happen at any level
+  - lexical ambiguity
+   "Look at the stars" (verb) and "She gave him a warm look" (noun)
+  - syntactic ambiguity
+   "The man saw the girl with the telescope" who has the telescope?
+    - also known as prepositional phrase ambiguity
+    - has a known formula for solving
+     F(v, n, p) = log((p*(p/v) / (p*(p/n))))
+      - p is preposition, v is verb, n is noun
+      - p*(p/v) probability of seeing the preposition after the verb
+      - p*(p/n) probability of seeing the preposition after the noun
+  - semantic ambiguity
+   "Pope's baby steps on homosexuality"
+    - 'baby-steps' would have made this more clear
+  - pragmatic ambiguity
+   "Stand over there" where 'there' may only have sense from a previous
+     sentence or by someone actually pointing    
+----
+
+----
+Sentence Tokenization
+ - break a document into sentences
+ 
+ #get dependencies
+ import nltk
+ from nltk.corpus import gutenberg as cg
+ 
+ #read a text from the corpus
+ busterBrown = cg.raw("burgess-busterbrown.txt")
+ 
+ #get a sample of it
+ rawContent = busterBrown[0:1000]
+ 
+ #pass it to the sentence tokenizer
+ toSentences = nltk.tokenize.sent_tokenize(rawContent)
+ 
+ #deals with the line breaks and what not - real easy
+ print(toSentences[1])
+  
+ #challenging sentences
+ challengeExample00 = nltk.tokenize.sent_tokenize(
+ """He has completed his Ph.D. degree.  
+ He should be happier than this.""")
+ 
+ #tokenizer figures out sentence ends at 'degree.' and not after D in 'Ph.D.'
+ challengeExample00[0]
+----
+
+----
+Stemming raw text
+ - find the stem of a word 
+ 
+ from nltk.stem import PorterStemmer
+ port = PorterStemmer()
+ #prints 'love'
+ print(port.stem("loving"))
+----
+  

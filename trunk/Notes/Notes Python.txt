@@ -57,6 +57,13 @@ Command line
    >>> sys.modules  #gets a dictionary of modules currently in scope
    >>> sys.path     #get list of where modules will be searched for at
    
+ - discover installed packages
+   >>> import pip
+   >>> installed_packages = pip.get_installed_distributions()
+   >>> flat_installed_packages = [package.project_name for package in installed_packages]
+   >>> print(flat_installed_packages)
+   
+   
  - install packages from web
  python -m pip install some_package_name
   - behind corporate firewall
