@@ -10,6 +10,10 @@ Pages in Print Edition: 486
 ----
 
 ----
+https://nlp.stanford.edu/IR-book/html/htmledition/irbook.html
+----
+
+----
 Basics
  - is a branch of AI
  - handles specific problems related to
@@ -105,6 +109,8 @@ Context-Free Grammer
 Morphological Analysis
  - determine the kind of affixes which can be applied
    to a stem and\or root
+ - stemming and  lemmatization is to reduce the inflectional 
+   and derivational forms of words to a common base
  - Morphemes, an atomic unit of linguistics
   - Free
   - Bound
@@ -116,6 +122,7 @@ Morphological Analysis
  - Word, smallest meaningful unit of a sentence
  - Stem, the part of a word which can be operated on with some kind of afix
    - is a root plus derivational morphemes
+ - Lemma, the inflected form of the a word
  - Root, a morpheme which can be a word (i.e. stand on its own)
    - cannot be further divided
   "unexpected"
@@ -125,6 +132,14 @@ Morphological Analysis
    - suffix: -ed
   - morphemes: (3 total) un-, expect, -ed
   - root: expect (because it can stand on its own)
+  
+  "laudare" (Latin)
+   - lemma: laudare, laudo (I praise)
+   - stem(s): lauda (present), laudav (perfect), laudat (supine)
+   - root: laud
+  
+  - in Semitic langs (Hebrew) the root is the word without and
+     diacritics (vowels)
 ----  
 
 ----
@@ -217,15 +232,79 @@ Sentence Tokenization
  
  #tokenizer figures out sentence ends at 'degree.' and not after D in 'Ph.D.'
  challengeExample00[0]
+ 
+ #word tokenizer
+ from nltk.tokenize import word_tokenize
+ words2tokens = word_tokenize("""Word tokenization is defined 
+ as the process of chopping a stream of text up into words, 
+ phrases, and meaningful strings.""" )
+ [print(s) for s in words2tokens]
 ----
 
 ----
-Stemming raw text
- - find the stem of a word 
+Stemming & Lemmatization raw text
+ - Stemming: 
+  - does NOT consider the part-of-speech tag
+  - tends to be a cruder process of just chops off endings
+  - best algo, empirically, is Porter's algorithm
+ - Lemmatization:
+  - the proper way of taking context into account
+  - directly targets and removes inflectional endings
+  - gets the base, dictionary form of a word
+  - requires a lot more resources being full vocab and
+    morphological analysis
  
  from nltk.stem import PorterStemmer
  port = PorterStemmer()
  #prints 'love'
  print(port.stem("loving"))
+ 
+ from nltk.stem import WordNetLemmatizer
+ lemmatizer = WordNetLemmatizer();
+ #prints 'funny'
+ lemmatizer.lemmatize("funnier", pos='a')
+ #prints 'good'
+ lemmatizer.lemmatize("better", pos='a')
 ----
+
+----
+Stopwords
+ - common occuring words
+ 
+ from nltk.corpus import stopwords
+ stopwordList = stopwords.words('english')
+ [print(s) for s in stopwordList]
+----
+
+----
+NLP Parsers
+ - apply type labels to a sentence in a hiearchical form
+ - same kind of thing as done in any ANTLR grammar
+ sentence : nounPhrase verbPhrase PUNC;
+ nounPhrase: NAME
+           | ARTICLE NOUN ;
+ verbPhrase: VERB nounPhrase ;
+ PUNC : ('.', '?', '!') ;
+ NOUN : WORD ;
+ VERB : WORD ;
+ NAME : WORD ;
+ ARTICLE: ('a' | 'an' | 'the') ;
+ WORD : LETTER+ ;
+ fragment LETTER  : [a-zA-Z] ;
+ 
+ - Proability Context-Free Grammar
+  - like a static grammar above 
+  - differs regarding the choice pattern where
+    each possible choice is given a percent 
+    in which all the percents add up to 1 
+   - example
+   nounPhrase : nounPhrase nounPhrase // 0.1
+              | nounPhrase prepositionalPhrase //0.2
+              | NOUN //0.7
+              ;
+  - each possible combination will have a calc'able 
+    tree-probability
+ 
+  
+  
   
