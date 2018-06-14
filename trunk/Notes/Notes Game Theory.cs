@@ -746,4 +746,184 @@ namespace GameTheory
             }
         }
     }
+    
+    /// <summary>
+    /// The ELO rating system is a method for calculating the relative skill levels 
+    /// of players in Player-Versus-Player games. This rating system is used on 
+    /// chess and also in a number of games, videogames, etc.
+    /// </summary>
+    [TestFixture]
+    public class TestEloRatingPlayer
+    {
+        
+        [Test]
+        public void TestGetPlayerRating()
+        {
+            var testSubject = new EloRatingSystem();
+
+            var testResult = testSubject.GetPlayerRating(true, false, 1200, 1000, 20);
+            Assert.AreEqual(1205,testResult.Item1);
+            Assert.AreEqual(995,testResult.Item2);
+
+            testResult = testSubject.GetPlayerRating(false, true, 1200, 1000, 20);
+            Assert.AreEqual(1185, testResult.Item1);
+            Assert.AreEqual(1015, testResult.Item2);
+        }
+
+
+        /// <summary>
+        /// Example of it being used in apps like Tinder
+        /// </summary>
+        [Test]
+        public void BasicExample()
+        {
+            //an adjancency graph where [i,j], [j,i] would be the two choices
+            // [i,j] playerA likes playerB and [j,i] playerB likes playerA 
+            var games = new[,]
+            {
+                {0, 0, 0, 1, 1},
+                {1, 0, 1, 1, 1},
+                {1, 0, 0, 0, 0},
+                {0, 1, 0, 0, 0},
+                {1, 0, 1, 1, 0}
+            };
+
+            var players = new[]
+                {new EloPlayer("A"), new EloPlayer("B"), new EloPlayer("C"), new EloPlayer("D"), new EloPlayer("E")};
+
+            var testSubject = new EloRatingSystem();
+            testSubject.PlayGame(players, games);
+
+            Assert.AreEqual(908D, players[0].Rating);
+            Assert.AreEqual(1011D, players[1].Rating);
+            Assert.AreEqual(843D, players[2].Rating);
+            Assert.AreEqual(847D, players[3].Rating);
+            Assert.AreEqual(955D, players[4].Rating);
+
+            testSubject = new EloRatingSystem(true);
+            testSubject.PlayGame(players, games);
+
+            Assert.AreEqual(941D, players[0].Rating);
+            Assert.AreEqual(1005D, players[1].Rating);
+            Assert.AreEqual(843D, players[2].Rating);
+            Assert.AreEqual(874D, players[3].Rating);
+            Assert.AreEqual(965D, players[4].Rating);
+
+            Console.WriteLine(string.Join(",", players.Select(p => p.ToString())));
+        }
+
+    }
+
+    /// <summary>
+    /// https://gist.github.com/i000313/90b1f3c556b1b1ad8278
+    /// </summary>
+    public class EloRatingSystem
+    {
+        private readonly bool _allowDraws;
+        public EloRatingSystem(bool allowDraws = false)
+        {
+            _allowDraws = allowDraws;
+        }
+
+        public void PlayGame(IList<EloPlayer> players, int[,] games, bool allowDraws = false)
+        {
+            if (players == null || !players.Any())
+                return;
+            if (games == null || games.GetLength(0) == 0)
+                return;
+
+            if(games.GetLength(0) != games.GetLength(1) && games.GetLength(0) != players.Count())
+                throw new ArgumentException($"the number of {nameof(players)} must equal the dimensions of {nameof(games)}");
+            for (var i = 0; i < games.GetLength(0); i++)
+            {
+                var playerA = players[i];
+                for (var j = 0; j < games.GetLength(1); j++)
+                {
+                    if (i == j)
+                        continue;
+                    var playerB = players[j];
+                    var playerBWin = games[j, i];
+                    var playerAWin = games[i, j];
+
+                    GetPlayerRating(playerAWin > 0, playerBWin > 0, playerA, playerB);
+                }
+            }
+        }
+
+        public Tuple<double, double> GetPlayerRating(bool playerAWin, bool playerBWin, double playerARating, double playerBRating, int k = 32)
+        {
+            var ea = 1 / (1 + Math.Pow(10, (playerBRating - playerARating) / 400));
+            var eb = 1 / (1 + Math.Pow(10, (playerARating - playerBRating) / 400));
+
+            var newPlayerARating = _allowDraws
+                ? GetNewRating(playerARating, ea, new Tuple<bool, bool>(playerAWin, playerBWin), k)
+                : GetNewRating(playerARating, ea, playerAWin, k);
+            var newPlayerBRating = _allowDraws
+                ? GetNewRating(playerBRating, eb, new Tuple<bool, bool>(playerAWin, playerBWin), k)
+                : GetNewRating(playerBRating, eb, playerBWin, k);
+
+            return new Tuple<double, double>(newPlayerARating, newPlayerBRating);
+        }
+
+        public void GetPlayerRating(bool playerAWin, bool playerBWin, EloPlayer playerA, EloPlayer playerB,
+            int k = 32)
+        {
+            var newRating = GetPlayerRating(playerAWin, playerBWin, playerA.Rating, playerB.Rating, k);
+            playerA.Rating = newRating.Item1;
+            playerB.Rating = newRating.Item2;
+        }
+
+        internal static double GetNewRating(double currentRating, double expectedRating, bool isWin, int k = 32)
+        {
+            if (isWin)
+            {
+                return Math.Round(currentRating + k * (1 - expectedRating));
+            }
+
+            return Math.Round(currentRating + k * (0 - expectedRating));
+        }
+
+        /// <summary>
+        /// Same as the above only this allows for a draw (being XOR of <see cref="reciprocal"/>
+        /// </summary>
+        internal static double GetNewRating(double currentRating, double expectedRating, Tuple<bool, bool> reciprocal,
+            int k = 32)
+        {
+            if (reciprocal == null)
+                return currentRating;
+            var pA2B = reciprocal.Item1;
+            var pB2A = reciprocal.Item2;
+
+            var isDraw = pA2B ^ pB2A;
+            if (isDraw)
+            {
+                return Math.Round(currentRating + k * (0.5 - expectedRating));
+            }
+
+            return GetNewRating(currentRating, expectedRating, pA2B, k);
+        }
+    }
+
+    public class EloPlayer
+    {
+        /// <summary>
+        /// https://en.wikipedia.org/wiki/Elo_rating_system
+        /// "a beginner is around 800" which is Class F 
+        /// ((999-800) / 2) + 800 ~ 900
+        /// </summary>
+        private const double INIT_SCORE = 900D;
+
+        public EloPlayer(string name)
+        {
+            Name = name;
+            Rating = INIT_SCORE;
+        }
+        public double Rating { get; set; }
+        public string Name { get; }
+
+        public override string ToString()
+        {
+            return $"'{Name}': {Rating}";
+        }
+    }    
 }

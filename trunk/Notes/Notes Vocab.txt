@@ -483,7 +483,13 @@ ex cathedra - with full authority of office
 casus belli - an act or event that provokes or is used to justify war
 eponymous - (of a person) giving their name to something.
 apotropaic - supposedly having the power to avert evil influences or bad luck.
-affix - being any one of prefix, suffix or infix
+affix - being any one of 
+  prefix, suffix or infix, 
+  cirumfix (both sides), 
+  interfix (used to make compound words like the hypen in en or -s- in german)
+  duplifix, (the root or stem of a word is repeated)
+  transfix, (a complete structure is placed over a root, not as a combo of pre, in, and suffix)
+  simulfix, suprafix, disfix
 pulvis et umbra sumus - We are but dust and shadow (Horace)
 erudite - having or showing great knowledge or learning
 soiree - an evening party or gathering in a private house for conversation
@@ -617,3 +623,4 @@ primae impressionis: in case law, the first precedent
 arrears: money owed and shoul have been paid earlier
 remunerative: financially rewarding; lucrative
 sine qua non: latin for "without which nothing"
+Nikefication: a branding strategy without actual industrial processes behind it.

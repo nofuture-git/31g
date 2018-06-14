@@ -108,10 +108,6 @@ Context-Free Grammer
   
 ----
 Morphological Analysis
- - determine the kind of affixes which can be applied
-   to a stem and\or root
- - stemming and  lemmatization is to reduce the inflectional 
-   and derivational forms of words to a common base
  - Morphemes, an atomic unit of linguistics
   - Free
   - Bound
@@ -120,12 +116,27 @@ Morphological Analysis
    - Inflectional, in the form of suffix, prefix and infix on nouns, pronouns,
       adjectives and articles
      - do not change the semantic meaning but express tense, mood, aspect, etc.
+     - Conjugation: inflection of verbs
+     - Declension: inflection of everything else
+     - some kinds of inflection 
+      - Tense: as in the location in time (past, present, future)
+      - Aspect: fabric of time as in single block, continuous flow or repetitive
+      - Mood: for the speaker to express their attitude toward what they are saying
+         expressing things like necessity, ability, wishing
+      - Person: 1st, 2nd, 3rd
+      - Voice: relation between an action and its participants
+         being like "this did that" (active) or "that happened to this" (passive)
+      - Case: for indicating a grammatical function (in english I, me, my)
+         these may intermingle with Number like in Latin (1DSN, 3DPD, etc.)
+      - Gender: feminine, masculine
+      - Number: singular, dual, plural
  - Word, smallest meaningful unit of a sentence
  - Stem, the part of a word which can be operated on with some kind of afix
    - is a root plus derivational morphemes
  - Lemma, the inflected form of the a word
  - Root, a morpheme which can be a word (i.e. stand on its own)
    - cannot be further divided
+   - Radical, each letter of the root
   "unexpected"
   - stem: expect
   - afixes: 
@@ -139,8 +150,14 @@ Morphological Analysis
    - stem(s): lauda (present), laudav (perfect), laudat (supine)
    - root: laud
   
-  - in Semitic langs (Hebrew) the root is the word without and
-     diacritics (vowels)
+ - in Semitic langs (Hebrew, Arabic, Syraic) the root is typically
+   three constants and then its applied to known patterns 
+   (aka transfix, nonconcatenative, root-and-pattern)
+  - example: the pattern is _a_a_  so the root of k.t.b applied
+    would be katab
+   - certain patterns may have specific meanings like ma__a_ as the
+     pattern for "geographic location"
+ 
 ----  
 
 ----
@@ -192,6 +209,16 @@ Semantic Analysis
  - exophora, when the meaning cannot be understood from the linguistic context 
  - deictic, based on a distinction between semantic meaning and denotational meaning
     where denotational meaning is dependent on time-space.
+ - orthography, set of conventions for writing a language including spelling, 
+   punctuation, etc.
+ - diglossia, when a community has two languages for different conditions
+    biggest example is Arabic which is written in Modern Standard Arabic (MSA)
+    but not even one community actually speaks in it.
+ - clitic, a morpheme which depends phonologically on another word 
+ - gemination, a spoken consonant for an audibly longer period of 
+   time than that of a short consonant
+ - homograph, two or more words spelled the same but not necessarily pronounced the same
+   having different meanings and origins
 ----
 
 ----
@@ -379,7 +406,83 @@ NLP Parsers
   - allows for parser re-training using some domain-specific tagged corpus
 ----
   
- 
+----
+Tagging and POS Taggers
+ - words can change from nouns to verbs, etc.
+ - what part-of-speech tag they take depends on both the context and def.
+ - could be applied at a phrase or clause level
+ - parts of speech may be a mixture where what's tagged always per-word
+  - multiword expression is like a cliche or words which when joined by 
+    a hyphen would help clarify
+  - name entity recognition, where the tagger should recognize a group 
+    of words as a kind of proper noun (e.g. North Dakota)
+   - name entity recog. may classify names into abstract groups
+    - e.g. Location, Person, Org
+----
+
+----
+n-gram 
+ - is a continuous sequence of n items from the given sequence of text or speech data
+ - the items could be phonemes, syllables, letters, words, etc.
   
+ - unigram (n=1)
+  "this is a pen" : this, is, a, pen
+ - bigram (n=2)
+  "this is a pen" : 'this is', 'is a', 'a pen'
+ - trigram (n=3)
+  "this is a pen" : 'this is a', 'is a pen'
   
+ from nltk import ngrams
+ n = 4
+ rslts = ngrams('this is a pen', n)
+----
+
+----
+Bag-of-words
+ - basically all the unique words present in the corpus
+ - can be used to get frequency counts
+ - the word order is not important
+ - would technically be unigram when items are words
+----
+
+
   
+----   
+Text vectorization, 
+ - can represent a word as a sorta bitwise OR where the total
+    length is for every possible word and the given word is an
+    equal length array with a one in the matching position.
+ - typical process of steps
+  - tokenization, documents, paragraphs, sentences, words, etc.
+  - morphological analysis, deal words having stems, 
+    infixes, inflection ("go", "going", "went") etc.
+  - syntatic analysis, understanding the structure of the sentence
+  - semantic interpretation, to gain some sense of the meaning
+    of sentences
+ - Vectorization, turning words into arrays of numbers
+  - a word's meaning is represented as a vector of real numbers
+  - its not really just words, but stems, phrases, and whole sentences
+    as a vector
+   - one-hot vector, a vector in which all positions are zero except 
+     for one of them
+ - Distributional Hypothesis, the idea of a correlation between 
+    distributional and semantic similarity.  Words can be understood
+    by what other words often appear near them.   
+ - Term-Frequency, is just a count of how many times 
+    a word appears in the data (a.k.a. bag-of-words)
+ - TF-IDF, basically term-freq. across many documents
+    where TF is 'term-freq.' and IDF is 'inverse-doc-freq.'
+----
+
+----
+Word2Vec
+ - attempts to get the semantics of word use by 
+    understanding the word's position across many sentences
+    and relating that position to meaning
+ - Skip-Gram, probability of every other word appearing near 
+     some center word.
+   - there is a "window" which limits how far to the right
+     and left you look 
+   - solves for the probability that for the word "foo"
+     the nearby (aka "window") word is "bar"
+----
