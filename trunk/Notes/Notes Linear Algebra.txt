@@ -426,6 +426,8 @@ Points & Vectors
    a vector with a single index
    - scalars may be viewed as zero-order tensors
    - matrices are second-order tensors
+   - a "cube" would be a 'Order 3 Tensor'
+   - further dim's are just called 'Order N Tensor'
    
  - Hyperplane: a kind of cross-section of some
     set of dimensions, being one-less dimension than

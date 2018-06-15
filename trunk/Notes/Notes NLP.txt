@@ -445,44 +445,206 @@ Bag-of-words
  - would technically be unigram when items are words
 ----
 
-
+----
+Term Frequency - Inverse Document Frequency (tf-idf)
+ - uses linear algebra consine similarity and Euclidean distance to 
+   find words of similar semantic meaning.
+ TF(t) = (Number of times 't' appears in a document)/(Total number of terms in a document)
+ IDF(t)= log10(Total number of documents / Number of document with term 't' in it) 
+ 
+ TF(t)*IDF(t) is the final formula
   
-----   
-Text vectorization, 
- - can represent a word as a sorta bitwise OR where the total
+ #example of basics
+ def wordCound(sentence, word):
+     words = sentence.split()
+     return len([x for x in words if x == word])
+      
+ def docCount(sentences, word):
+     return sum(1 for sentence in sentences if wordCound(sentence, word) > 0)
+      
+ def tf(sentence, word):
+     den = len(sentence.split())
+     num = wordCound(sentence, word)
+     return num/den
+     
+ def idf(sentences, word):
+     x = docCount(sentences, word)
+     return math.log10(len(sentences) / (x if x else 1))
+
+----
+
+----
+Vectorization
+ - map every possible word to a specific integer.
+ - idea is the machines can't "understand" text
+ - words are turned into vectors, sentences to matrices
+  - can represent a word as a sorta bitwise OR where the total
     length is for every possible word and the given word is an
     equal length array with a one in the matching position.
- - typical process of steps
-  - tokenization, documents, paragraphs, sentences, words, etc.
-  - morphological analysis, deal words having stems, 
-    infixes, inflection ("go", "going", "went") etc.
-  - syntatic analysis, understanding the structure of the sentence
-  - semantic interpretation, to gain some sense of the meaning
-    of sentences
- - Vectorization, turning words into arrays of numbers
-  - a word's meaning is represented as a vector of real numbers
-  - its not really just words, but stems, phrases, and whole sentences
-    as a vector
-   - one-hot vector, a vector in which all positions are zero except 
-     for one of them
- - Distributional Hypothesis, the idea of a correlation between 
-    distributional and semantic similarity.  Words can be understood
-    by what other words often appear near them.   
- - Term-Frequency, is just a count of how many times 
-    a word appears in the data (a.k.a. bag-of-words)
- - TF-IDF, basically term-freq. across many documents
-    where TF is 'term-freq.' and IDF is 'inverse-doc-freq.'
+  - one-hot vector, a vector in which all positions are zero except 
+    for one of them
+  mySentence = 'here is my sentence'
+  myWords = mySentence.split()
+  myWordIndices  = [x + 1 for x in range(len(myWords))]
+  #[1, 2, 3, 4]
+  myVector4Word = [1,0,0,0] #the word 'here'
+----
+
+----
+Language Model
+ - to calc the probability of the next word by 
+   observing the previous word sequence
+ - Markov Assumption
+  - idea that only the last couple of words are needed
+    to predict the next word
+ - basic unigram calc
+  - given last known word w[i-1] and guess for next word 
+    as w[i]
+  - get a cound of how many times w[i-1] and w[i] appear 
+    together
+  - then get a count of how many time w[i-1] occurs in total
+  - divide the former by the later
+  
+  P(w[i] | w[i-1]) = count(w[i-1],w[i]) / count(w[i-1])
 ----
 
 ----
 Word2Vec
- - attempts to get the semantics of word use by 
-    understanding the word's position across many sentences
-    and relating that position to meaning
- - Skip-Gram, probability of every other word appearing near 
-     some center word.
-   - there is a "window" which limits how far to the right
-     and left you look 
-   - solves for the probability that for the word "foo"
-     the nearby (aka "window") word is "bar"
+ - deals with distributional semantics 
+  - other semantics are lexical, formal, compositional
+ - Distributional Hypothesis, the idea of a correlation between 
+    distributional and semantic similarity.  Words can be understood
+    by what other words often appear near them.
+ - its overall output is assigning each word some vector in 
+   a vector space
+   - length of a vector is called magnitude
+   - since a vector's components are the rise & run
+     the vector's length may be assigned as the 
+     hypotenuse of a right triangle
+ - aim to convert every word into a vector format, such
+   that they are good a predicting the words that appear
+   in their context
+
+ - arch. diagram
+ 
+  Corpus  ----------------> Vocabulary (algo Lossy Counting)
+  (input)                    Builder
+    |                          |
+    |                       Vocabulary (output)
+    |                          |
+    |  Sentence Windows        |
+    |     (input)              V
+    +---------------------> Context (algo Dynamic Context Window,
+                            Builder       Subsampling, Pruning) 
+                               |
+        (algo CBOW)            |       (algo Skip-gram)
+       +-----------------------+-----------------------+
+       |                                               |
+       |               [2-layer Neural Net.]           |
+       |       Input         Hidden        Output      |
+       |       Layer          Layer        Layer       |
+       |           +--------+                          |
+       V        x1 | \   /> |   h1   \   />  y1        V
+     Input----> x2 |  \ /   |   h2    \ /    y2 <----Output
+     Words      x3 |   x    |   ..     x     y3      Words
+                .. |  / \   |   hj    / \    .. 
+                xg | /   \> |   ..   /   \>  yi 
+                .. +--+-----+   hN       |   .. 
+                xV ^  |                  |   yV 
+                   |  |                  |
+                   |  +------------------|---------> Vectors
+                   |                     |           (output)
+                   +---------Parameter---+
+                              Learner  (algo Backpropagation, 
+                                             Hierarchical Softmax,
+                                             Negative Sampling)
+  Vocabulary Builder, gets a list of distinct words 
+    present in the corpus
+    - mapped to a unique id index
+    - and a count thereof 
+    - Lossy Counting is where a min threshold must be 
+      met to be part of the output
+    
+  Context Builder, sliding window of for words input
+   - given a context word and context window of 5 
+     would get 5 words to the left of context word and
+     5 to the right of the context word
+    - this is the context window
+   - output is word tuples of words
+    - iterate each word (the context word)
+    - gathering the words to the left and right (window size)
+    - tuple them up
+    - add the tuple to an output list
+    - go to next word, etc.
+   - Dynamic Context Window, weigh words by distance from center
+     where 5/5 is center word, 4/5 is direct left\right and so on
+   - Subsampling, arbitrary frequency threshold with probability
+     p = 1 - sqrt(t/tf) where t is arbitrary between 5 and 10
+   - Pruning, both removes less-frequent words and truncates the
+     total size.   
+  
+  2-layer Neural Net.
+   - Input Layer has as many neurons as there are words ("V")
+   - Hidden Layer kind of arbitray number for "dimensions" ("N")
+   - Output Layer has as many neurons as the input layer ("V" also)
+   - given three layers, there are two spaces between them
+    - the one between input and hidden is ("WI")
+     - WI would be of size V*N
+    - the one between hidden and output is ("WO")
+     - WO would be of size N*V
+   - this is really just matrix algebra
+    - rep the word as a one-hot [0,1,0,0,0,0,0,0] ("Xt")
+    - get a random WI (V,N) and random WO (N,V)
+    - solve for softmax((Xt*WI)*WO)
+    - use softmax((Xt*WI)*WO) do magic "learning" where 
+      WI\WO has values "adjusted" (backpropagation)
+     - by means of "degree of error in our prediction"
+     - goal is to minimize this over backpropagation
 ----
+
+----
+Basics of Neuron
+ - in practice, takes three inputs total 
+ - first two inputs are of equal len,
+  - both are ordered list
+  - one is values, the other is weights
+ - let u = sum(x[i] * w[i]) | i=0 to K
+ - third input is "activation function"
+  - activation function takes 'u' as its input
+  - typical activation functions are 
+   - Step Function
+    f(u) = u > 0 ? 1 : 0 
+   - Sigmoid Function
+    f(u) = 1 / (1 + e^(u*-1))
+    
+ - becomes multilayer when f(u) is 
+   passed to another neuron as, I assume,
+   scalar multiplication of this other 
+   neuron's weights 
+  - this is likewise summed
+  - and the sum is passed to this 
+    latter neuron's activation function
+----
+
+----
+Error Function
+ - also known as "Loss Function"
+ - are typically of two mathematical forms
+  L1 Least Absolute Deviation
+  L2 Least Square Error
+ - L2 is used here
+  E = 1/2*(t - y)^2
+   t: target vector
+   y: estimated vector
+  
+ - Gradient Descent
+  - taking the partial derivative of E with respect to y
+  dev(E)/dev(y) = y - t
+  - y is dependent on f(u) and f(u) is dependent on WI (weights)
+  - apply "partial derivative chain rule"
+  dev(E)/dev(u) = dev(E)/dev(y) * dev(y)/dev(u)
+                = (y - t) * y(1 - y)
+                
+  dev(E)/dev(WI) = dev(E)/dev(y) * dev(y)/dev(u) * dev(u)/dev(WI)
+                 = (y - t) * y(1 - y) * x[i]
+---- 
