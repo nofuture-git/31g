@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
@@ -297,6 +298,49 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(180D, testResult[2, 0]);
             Assert.AreEqual(0D, testResult[2, 1]);
             Assert.AreEqual(720D, testResult[2, 2]);
+        }
+
+        [Test]
+        public void TestGetSoftmax()
+        {
+            var testInput = new[,]
+            {
+                { 1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0 },
+                { 6.0, 2.0, 1.0, 4.0, 1.0, 3.0, 1.0 }
+            };
+            var testResult = testInput.GetSoftmax();
+
+            Console.WriteLine(testResult.Print());
+            var sumAt = Math.Round(testResult.SelectRow(0).Sum());
+            Assert.AreEqual(1.0D, sumAt);
+            sumAt = Math.Round(testResult.SelectRow(1).Sum());
+            Assert.AreEqual(1.0D, sumAt);
+
+        }
+
+        [Test]
+        public void TestSelectRow()
+        {
+            var testInput = new double[,] {{1, -1, 0}, {-1, 6, -2}, {0, -2, 3}};
+
+            var testResult = testInput.SelectRow(1);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(3, testResult.Length);
+            Assert.AreEqual(testInput[1, 0], testResult[0]);
+            Assert.AreEqual(testInput[1, 1], testResult[1]);
+            Assert.AreEqual(testInput[1, 2], testResult[2]);
+        }
+
+        [Test]
+        public void TestSelectColumn()
+        {
+            var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
+            var testResult = testInput.SelectColumn(1);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(3, testResult.Length);
+            Assert.AreEqual(testInput[0, 1], testResult[0]);
+            Assert.AreEqual(testInput[1, 1], testResult[1]);
+            Assert.AreEqual(testInput[2, 1], testResult[2]);
         }
 
         [Test]

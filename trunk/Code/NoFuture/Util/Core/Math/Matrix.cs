@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -282,11 +283,11 @@ namespace NoFuture.Util.Core.Math
             for (var i = 0; i < a.Columns(); i++)
             {
                 var headerStr = $"[,{i}]";
-                var padding = (maxLen-1);
+                var padding = (maxLen);
 
                 if (i == 0)
                 {
-                    str.Append(new String(' ', a.Rows().ToString().Length + 4));
+                    str.Append(new String(' ', a.Rows().ToString().Length + 2));
                 }
 
                 str.AppendFormat("{0," + padding + "}", headerStr);
@@ -307,6 +308,62 @@ namespace NoFuture.Util.Core.Math
 
             return str.ToString();
         }//end Print
+
+        public static double[,] GetSoftmax(this double[,] matrix)
+        {
+            var mout = new double[matrix.Rows(), matrix.Columns()];
+            for (var i = 0; i < matrix.GetLongLength(0); i++)
+            {
+                var z = new List<double>();
+                for (var j = 0; j < matrix.GetLongLength(1); j++)
+                {
+                    z.Add(matrix[i,j]);
+                }
+
+                var zExp = z.Select(m => System.Math.Pow(System.Math.E, m)).ToArray();
+                var sumZExp = zExp.Sum();
+                var softmaxAtI = zExp.Select(m => System.Math.Round(m / sumZExp, 5)).ToArray();
+
+                for (var j = 0; j < mout.GetLongLength(1); j++)
+                {
+                    mout[i, j] = softmaxAtI[j];
+                }
+            }
+
+            return mout;
+        }//GetSoftmax
+
+        public static double[] SelectRow(this double[,] matrix, int index)
+        {
+            var select = new List<double>();
+            if (index < 0)
+                return select.ToArray();
+
+            if (matrix.GetLongLength(0) <= index)
+                return select.ToArray();
+            for (var j = 0; j < matrix.GetLongLength(1); j++)
+            {
+                select.Add(matrix[index, j]);
+            }
+
+            return select.ToArray();
+
+        }//SelectRow
+
+        public static double[] SelectColumn(this double[,] matrix, int index)
+        {
+            var select = new List<double>();
+            if (index < 0)
+                return select.ToArray();
+
+            if (matrix.GetLongLength(1) <= index)
+                return select.ToArray();
+            for (var i = 0; i < matrix.GetLongLength(0); i++)
+            {
+                select.Add(matrix[i,index]);
+            }
+            return select.ToArray();
+        }//SelectColumn
 
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         private static long[] GetApplicableCofactorIndices(long currentIndex, long originalLength)
