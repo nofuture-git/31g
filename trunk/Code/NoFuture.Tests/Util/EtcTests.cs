@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
+using StringDist = NoFuture.Util.Core.Algo.StringDist;
 
 namespace NoFuture.Tests.Util
 {
@@ -367,61 +368,6 @@ namespace NoFuture.Tests.Util
             Assert.IsFalse(new DateTime(2009, 12, 30).IsBetween(new DateTime(2009, 12, 31), new DateTime(2010, 1, 2)));
 
             Assert.IsTrue(new DateTime(2010, 1, 1).IsBetween(new DateTime(2009, 1, 1), new DateTime(2010, 1, 2)));
-        }
-
-        [Test]
-        public void TestJaroWinklerDistance()
-        {
-            var testResult = Etc.JaroWinklerDistance("test", "test");
-            Assert.AreEqual(1D, Math.Round(testResult));
-
-            testResult = Etc.JaroWinklerDistance("kitty", "kitten");
-            Assert.IsTrue(testResult - 0.893 < 0.001);
-
-            testResult = Etc.JaroWinklerDistance("kitty", "kite");
-            Assert.IsTrue(testResult - 0.848 < 0.001);
-            Console.WriteLine(testResult);
-
-            testResult = Etc.JaroWinklerDistance(null, null);
-            Assert.AreEqual(1.0, testResult);
-        }
-
-        [Test]
-        public void TestLevenshteinDistance()
-        {
-            var testResult = Etc.LevenshteinDistance("kitten", "sitting");
-            Assert.AreEqual(3D,testResult);
-            testResult = Etc.LevenshteinDistance("Saturday", "Sunday");
-            Assert.AreEqual(3D, testResult);
-            testResult = Etc.LevenshteinDistance("Brian", "Brain");
-            Assert.AreEqual(2D, testResult);
-
-            Console.WriteLine(Etc.LevenshteinDistance("kitty", "kitten"));
-            Console.WriteLine(Etc.LevenshteinDistance("kitty", "kite"));
-
-            //testResult = Etc.LevenshteinDistance("sword", "swath", true);
-            //Console.WriteLine(testResult);
-        }
-
-        [Test]
-        public void TestShortestDistance()
-        {
-            var testIn = "kitty";
-            var testCompare = new[] {"kitten", "cat", "kite", "can", "kool"};
-
-            var testResult = Etc.ShortestDistance(testIn, testCompare);
-            Assert.IsNotNull(testResult);
-            Assert.AreEqual(2, testResult.Length);
-            Assert.IsTrue(testResult.Contains("kitten"));
-            Assert.IsTrue(testResult.Contains("kite"));
-
-            testIn = "LeRoy";
-            testCompare = new[] { "Lee", "Roy", "L.R." };
-            testResult = Etc.ShortestDistance(testIn, testCompare);
-            Assert.IsNotNull(testResult);
-            Assert.AreEqual(1,testResult.Length);
-            Assert.AreEqual("Roy",testResult[0]);
-            
         }
 
         [Test]

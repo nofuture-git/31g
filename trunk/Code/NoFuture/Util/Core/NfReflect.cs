@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core.Algo;
 
 namespace NoFuture.Util.Core
 {
@@ -803,12 +804,12 @@ namespace NoFuture.Util.Core
                     var fromPiReverseName = getMeasureableName(fromPi, namePrefix, true);
                     var cpiReverseName = getMeasureableName(toPi, namePrefix, true);
 
-                    var score = (int)Etc.LevenshteinDistance(fromPiName, cpiName);
+                    var score = (int)StringDist.LevenshteinDistance(fromPiName, cpiName);
 
                     //with short property names, prehaps a better score is when prefix is a suffix instead
                     if (fromPiName != fromPiReverseName || cpiName != cpiReverseName)
                     {
-                        var revScore = (int)Etc.LevenshteinDistance(fromPiReverseName, cpiReverseName);
+                        var revScore = (int)StringDist.LevenshteinDistance(fromPiReverseName, cpiReverseName);
                         if (revScore < score)
                             score = revScore;
                     }
