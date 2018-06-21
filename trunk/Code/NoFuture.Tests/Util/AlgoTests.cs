@@ -88,20 +88,19 @@ namespace NoFuture.Tests.Util
         [Test]
         public void TestBuildTree()
         {
-            var leafs = new List<HuffmanNode>
+           var leafs = new Dictionary<string, int>
             {
-                new HuffmanNode("A", 3),
-                new HuffmanNode("B", 3),
-                new HuffmanNode("C", 2),
-                new HuffmanNode("D", 1),
-                new HuffmanNode("E", 1),
-                new HuffmanNode("F", 1),
-                new HuffmanNode("G", 1),
-                new HuffmanNode("H", 1),
+                {"A", 3},
+                {"B", 3},
+                {"C", 2},
+                {"D", 1},
+                {"E", 1},
+                {"F", 1},
+                {"G", 1},
+                {"H", 1},
             };
-            var totalCount = leafs.Sum(l => l.Count);
+            var totalCount = leafs.Sum(l => l.Value);
             var testing = new HuffmanEncoding(leafs);
-            testing.BuildTree();
             Assert.IsNotNull(testing.RootNode);
             Assert.AreEqual(totalCount, testing.RootNode.Count);
             Assert.IsNotNull(testing.RootNode.Right);
@@ -114,43 +113,48 @@ namespace NoFuture.Tests.Util
         [Test]
         public void TestPushEncoding()
         {
-            var leafs = new List<HuffmanNode>
+            var leafs = new Dictionary<string, int>
             {
-                new HuffmanNode("A", 3),
-                new HuffmanNode("B", 3),
-                new HuffmanNode("C", 2),
-                new HuffmanNode("D", 1),
-                new HuffmanNode("E", 1),
-                new HuffmanNode("F", 1),
-                new HuffmanNode("G", 1),
-                new HuffmanNode("H", 1),
+                {"A", 3},
+                {"B", 3},
+                {"C", 2},
+                {"D", 1},
+                {"E", 1},
+                {"F", 1},
+                {"G", 1},
+                {"H", 1},
             };
             var testing = new HuffmanEncoding(leafs);
-            testing.BuildTree();
-            testing.PushEncoding();
             Assert.AreEqual("111", testing.RootNode.Right.Right.Right.GetEncodingString());
         }
 
         [Test]
         public void TestGetLeafs()
         {
-            var leafs = new List<HuffmanNode>
+            var t = new Dictionary<string, int>
             {
-                new HuffmanNode("A", 3),
-                new HuffmanNode("B", 3),
-                new HuffmanNode("C", 2),
-                new HuffmanNode("D", 1),
-                new HuffmanNode("E", 1),
-                new HuffmanNode("F", 1),
-                new HuffmanNode("G", 1),
-                new HuffmanNode("H", 1),
+                {"A", 3},
+                {"B", 3},
+                {"C", 2},
+                {"D", 1},
+                {"E", 1},
+                {"F", 1},
+                {"G", 1},
+                {"H", 1},
             };
-            var origLen = leafs.Count;
-            var testing = new HuffmanEncoding(leafs);
-            testing.BuildTree();
-            testing.PushEncoding();
-            leafs = testing.GetLeafs();
+            var origLen = t.Count;
+            var testing = new HuffmanEncoding(t);
+            var leafs = testing.GetLeafs();
             Assert.AreEqual(origLen, leafs.Count);
+            var counter = 0;
+            foreach (var k in t.Keys)
+            {
+                var node = leafs.FirstOrDefault(l => l.Word == k);
+                Assert.IsNotNull(node);
+                Assert.AreEqual(t[k], node.Count);
+                Assert.AreEqual(counter, node.Index);
+                counter += 1;
+            }
             foreach (var l in leafs)
                 Console.WriteLine(l.GetEncodingString());
         }

@@ -157,8 +157,8 @@ namespace NoFuture.Tests.Util
                 {8D, 9D}
             };
 
-            var numOfRows = aSqrMatrix.Rows();
-            var numOfColumns = aSqrMatrix.Columns();
+            var numOfRows = aSqrMatrix.CountOfRows();
+            var numOfColumns = aSqrMatrix.CountOfColumns();
 
             Assert.AreEqual(3,numOfRows);
             Assert.AreEqual(2, numOfColumns);
@@ -319,6 +319,32 @@ namespace NoFuture.Tests.Util
         }
 
         [Test]
+        public void TestAddAtRow()
+        {
+            var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
+            var toAdd = new double[] {4, 1, 2};
+
+            var testResult = testInput.AddAtRow(toAdd, 1);
+            Console.WriteLine(testResult.Print());
+            Assert.AreEqual(3D, testResult[1, 0]);
+            Assert.AreEqual(7D, testResult[1, 1]);
+            Assert.AreEqual(0D, testResult[1, 2]);
+        }
+
+        [Test]
+        public void TestAddAtColumn()
+        {
+            var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
+            var toAdd = new double[] { 4, 1, 2 };
+
+            var testResult = testInput.AddAtColumn(toAdd, 1);
+            Console.WriteLine(testResult.Print());
+            Assert.AreEqual(3D, testResult[0, 1]);
+            Assert.AreEqual(7D, testResult[1, 1]);
+            Assert.AreEqual(0D, testResult[2, 1]);
+        }
+
+        [Test]
         public void TestSelectRow()
         {
             var testInput = new double[,] {{1, -1, 0}, {-1, 6, -2}, {0, -2, 3}};
@@ -329,6 +355,18 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(testInput[1, 0], testResult[0]);
             Assert.AreEqual(testInput[1, 1], testResult[1]);
             Assert.AreEqual(testInput[1, 2], testResult[2]);
+        }
+
+        [Test]
+        public void TestFlatten()
+        {
+            var testInput = new double[,] { { 1, -1, 8 }, { -7, 6, -2 }, { 0, -4, 5 } };
+            var testResult = testInput.Flatten();
+            Assert.AreEqual(9,testResult.Length);
+            Console.WriteLine(string.Join(",", testResult));
+            Assert.AreEqual(testInput[0, 0], testResult[0]);
+            Assert.AreEqual(testInput[1, 0], testResult[3]);
+            Assert.AreEqual(testInput[2, 0], testResult[6]);
         }
 
         [Test]

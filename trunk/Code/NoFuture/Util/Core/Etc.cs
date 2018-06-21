@@ -870,6 +870,28 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
+        /// src [https://github.com/dav/word2vec/blob/master/src/word2vec.c]
+        /// </summary>
+        /// <param name="word"></param>
+        /// <param name="maxVocabSz"></param>
+        /// <returns></returns>
+        public static int GetWordHash(this string word, int maxVocabSz = 30000000)
+        {
+            const int VOCAB_HASH_SZ = 30000000;// Maximum 30 * 0.7 = 21M words in the vocabulary
+            if (maxVocabSz <= 0)
+                maxVocabSz = VOCAB_HASH_SZ;
+            if (string.IsNullOrWhiteSpace(word))
+                return 0;
+            var hash = 0;
+            foreach (var c in word.ToCharArray())
+            {
+                hash = hash * 257 + c;
+            }
+
+            return hash % maxVocabSz;
+        }
+
+        /// <summary>
         /// To insure that a CSV files headers are all unique and simple, propertyesque, names.
         /// </summary>
         /// <param name="someStrings"></param>

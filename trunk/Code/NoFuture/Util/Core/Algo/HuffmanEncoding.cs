@@ -13,21 +13,10 @@ namespace NoFuture.Util.Core.Algo
     {
         private static readonly NodeComparer _comparer = new NodeComparer();
         private List<HuffmanNode> _nodes;
-        private int _totalCount;
+        private int _totalSum;
         private HuffmanNode _rootNode;
-
+        private List<HuffmanNode> _myLeafs;
         public HuffmanNode RootNode => _rootNode;
-
-        public HuffmanEncoding(List<HuffmanNode> leafs)
-        {
-            if (leafs == null || !leafs.Any())
-            {
-                throw new ArgumentNullException(nameof(leafs));
-            }
-
-            _nodes = leafs;
-            _totalCount = _nodes.Sum(t => t.Count);
-        }
 
         public HuffmanEncoding(Dictionary<string, int> names2Counts)
         {
@@ -37,16 +26,20 @@ namespace NoFuture.Util.Core.Algo
             }
 
             var nodes = new List<HuffmanNode>();
+            var counter = 0;
             foreach (var d in names2Counts.Keys)
             {
-                nodes.Add(new HuffmanNode(d, names2Counts[d]));
+                nodes.Add(new HuffmanNode(d, names2Counts[d], counter));
+                counter += 1;
             }
 
             _nodes = nodes;
-            _totalCount = _nodes.Sum(t => t.Count);
+            _totalSum = _nodes.Sum(t => t.Count);
+            BuildTree();
+            PushEncoding();
         }
 
-        public void BuildTree()
+        internal void BuildTree()
         {
             HuffmanNode nextNode;
             do
@@ -56,19 +49,32 @@ namespace NoFuture.Util.Core.Algo
                 _nodes.Remove(nextNode.Right);
                 _nodes.Add(nextNode);
 
-            } while (nextNode.Count < _totalCount);
+            } while (nextNode.Count < _totalSum);
 
             _rootNode = nextNode;
         }
 
-        public void PushEncoding()
+        internal void PushEncoding()
         {
             RootNode.PushEncoding(null);
         }
 
+        public HuffmanNode GetLeafByWord(string word)
+        {
+            return GetLeafs().FirstOrDefault(l => l.Word == word);
+        }
+
         public List<HuffmanNode> GetLeafs()
         {
-            return GetLeafs(RootNode, new List<HuffmanNode>());
+            if (_myLeafs != null)
+                return _myLeafs;
+            _myLeafs = GetLeafs(RootNode, new List<HuffmanNode>());
+            return _myLeafs;
+        }
+
+        public int GetLengthLeafs()
+        {
+            return GetLeafs().Count;
         }
 
         internal static List<HuffmanNode> GetLeafs(HuffmanNode n, List<HuffmanNode> nodes)
@@ -123,12 +129,19 @@ namespace NoFuture.Util.Core.Algo
         {
             Word = word ?? "";
             Count = count;
+            Index = -1;
+        }
+
+        public HuffmanNode(string word, int count, int index) : this(word, count)
+        {
+            Index = index;
         }
 
         public HuffmanNode Left { get; set; }
         public HuffmanNode Right { get; set; }
         public string Word { get; }
         public int Count { get; }
+        public int Index { get; }
         public bool IsLeaf => Left == null && Right == null;
 
         public BitArray Encoding
@@ -150,6 +163,18 @@ namespace NoFuture.Util.Core.Algo
             }
 
             return str.ToString();
+        }
+
+        /// <summary>
+        /// The subsampling randomly discards frequent words while keeping the ranking same
+        /// </summary>
+        /// <param name="sample"></param>
+        /// <param name="trainWords"></param>
+        /// <returns></returns>
+        internal double GetSampleValue(double sample, int trainWords)
+        {
+            //see word2vec.c at lin 427
+            return (System.Math.Sqrt(Count / (sample * trainWords)) + 1) * (sample * trainWords) / Count;
         }
 
         public void PushEncoding(bool[] encoding)

@@ -186,52 +186,6 @@ namespace NoFuture.Rand.Core
         }
 
         /// <summary>
-        /// Returns a matrix of 1 X <see cref="length"/> where all
-        /// values are 0 expect for one of them, which is 1.
-        /// </summary>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        [RandomFactory]
-        public static double[,] RandomOneHotVector(int? length = null)
-        {
-            var len = length ?? RandomInteger(4, 16);
-
-            var m = new double[1, len];
-            var oneHotAt = RandomInteger(0, len - 1);
-
-            for (var j = 0; j < len; j++)
-            {
-                m[0, j] = j == oneHotAt ? 1 : 0;
-            }
-
-            return m;
-        }
-
-        /// <summary>
-        /// Returns a matrix of dimension size <see cref="numOfRows"/> by <see cref="numOfColumns"/>
-        /// having all random, less-than 1, double values.
-        /// </summary>
-        /// <param name="numOfRows"></param>
-        /// <param name="numOfColumns"></param>
-        /// <returns></returns>
-        [RandomFactory]
-        public static double[,] RandomMatrix(int numOfRows, int numOfColumns)
-        {
-            numOfRows = numOfRows <= 0 ? RandomInteger(4, 8) : numOfRows;
-            numOfColumns = numOfColumns <= 0 ? RandomInteger(4, 8) : numOfColumns;
-            var m = new double[numOfRows, numOfColumns];
-            for (var i = 0; i < numOfRows; i++)
-            {
-                for (var j = 0; j < numOfColumns; j++)
-                {
-                    m[i, j] = MyRand.NextDouble();
-                }
-            }
-
-            return m;
-        }
-
-        /// <summary>
         /// Picks a key at random from <see cref="tbl"/> where the 
         /// probablity of each is the value over the sum-of-values.
         /// </summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -36,7 +37,7 @@ namespace NoFuture.Util.Core.Math
             return Arithmetic(a, b, true);
         }//end Difference
 
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private static double[,] Arithmetic(double[,] a, double[,] b, bool asDiff)
         {
 
@@ -122,9 +123,9 @@ namespace NoFuture.Util.Core.Math
         public static double[,] GetAllOnesMatrix(long rows, long columns)
         {
             var s = new double[rows, columns];
-            for (var i = 0; i < s.Rows(); i++)
+            for (var i = 0; i < s.CountOfRows(); i++)
             {
-                for (var j = 0; j < s.Columns(); j++)
+                for (var j = 0; j < s.CountOfColumns(); j++)
                     s[i, j] = 1D;
             }
             return s;
@@ -132,12 +133,12 @@ namespace NoFuture.Util.Core.Math
 
         public static bool AreEqual(double[,] a, double[,] b)
         {
-            if(a.Rows() != b.Rows() || a.Columns()!=b.Columns())
+            if(a.CountOfRows() != b.CountOfRows() || a.CountOfColumns()!=b.CountOfColumns())
                 throw new NonConformable(
                     "The diminsions of a and b must be the same.");
-            for (var i = 0; i < a.Rows(); i++)
+            for (var i = 0; i < a.CountOfRows(); i++)
             {
-                for (var j = 0; j < a.Columns(); j++)
+                for (var j = 0; j < a.CountOfColumns(); j++)
                 {
                     if (System.Math.Abs(a[i, j] - b[i, j]) > 0.0000001D)
                         return false;
@@ -146,19 +147,124 @@ namespace NoFuture.Util.Core.Math
             }
             return true;
         }//end AreEqual
+
+        /// <summary>
+        /// Returns a matrix of 1 X <see cref="length"/> where all
+        /// values are 0 expect for one at <see cref="index"/>
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static double[,] OneHotVector(int index, int length)
+        {
+            if(index >= length)
+                throw new ArgumentException("index must be less than the length");
+            var m = new double[1, length];
+            for (var j = 0; j < length; j++)
+            {
+                m[0, j] = j == index ? 1 : 0;
+            }
+
+            return m;
+        }
+
+        /// <summary>
+        /// Returns a matrix of dimension size <see cref="numOfRows"/> by <see cref="numOfColumns"/>
+        /// having all random, less-than 1, double values.
+        /// </summary>
+        /// <param name="numOfRows"></param>
+        /// <param name="numOfColumns"></param>
+        /// <returns></returns>
+        public static double[,] RandomMatrix(int numOfRows, int numOfColumns)
+        {
+            var myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
+            numOfRows = numOfRows <= 0 ? myRand.Next(4, 8) : numOfRows;
+            numOfColumns = numOfColumns <= 0 ? myRand.Next(4, 8) : numOfColumns;
+            var m = new double[numOfRows, numOfColumns];
+            for (var i = 0; i < numOfRows; i++)
+            {
+                for (var j = 0; j < numOfColumns; j++)
+                {
+                    m[i, j] = myRand.NextDouble();
+                }
+            }
+
+            return m;
+        }
     }
 
     public static class MatrixExtensions
     {
-        public static long Rows(this double[,] a)
+        public static long CountOfRows(this double[,] a)
         {
             return a.GetLongLength(0);
-        }//end Rows
+        }
 
-        public static long Columns(this double[,] a)
+        public static long CountOfColumns(this double[,] a)
         {
             return a.GetLongLength(1);
-        }//end Columns
+        }
+
+        public static double[,] Add(this double[,] a, double[,] b)
+        {
+            return Matrix.Sum(a, b);
+        }
+
+        public static double[,] AddAtRow(this double[,] a, double[] b, int atRow)
+        {
+            if(atRow >= a.CountOfRows())
+                throw new NonConformable($"{atRow} exceeds the number of rows present in a");
+            for (var j = 0; j < a.CountOfColumns(); j++)
+            {
+                var v = b.Length <= j ? 0 : b[j];
+                a[atRow, j] += v;
+            }
+
+            return a;
+        }
+
+        public static double[,] AddAtColumn(this double[,] a, double[] b, int atColumn)
+        {
+            if (atColumn >= a.CountOfColumns())
+                throw new NonConformable($"{atColumn} exceeds the number of columns present in a");
+            for (var i = 0; i < a.CountOfColumns(); i++)
+            {
+                var v = b.Length <= i ? 0 : b[i];
+                a[i, atColumn] += v;
+            }
+
+            return a;
+        }
+
+        public static double[] Flatten(this double[,] a)
+        {
+            a = a ?? new double[,] { };
+            var r = a.CountOfRows();
+            var c = a.CountOfColumns();
+            var d = new double[r * c];
+            var counter = 0;
+            for (var i = 0; i < r; i++)
+            {
+                for (var j = 0; j < c; j++)
+                {
+                    var v = a[i, j];
+                    d[counter] = v;
+                    counter++;
+                }
+            }
+
+            return d;
+        }
+
+        public static double[,] Subtract(this double[,] a, double[,] b)
+        {
+            return Matrix.Difference(a, b);
+        }
+
+        public static double[,] Times(this double[,] a, double[,] b)
+        {
+            return Matrix.Product(a, b);
+        }
 
         public static double[,] Transpose(this double[,] a)
         {
@@ -172,9 +278,9 @@ namespace NoFuture.Util.Core.Math
 
         public static double[,] Deviation(this double[,] a)
         {
-            var l = Matrix.GetAllOnesMatrix(a.Rows(), 1L);
+            var l = Matrix.GetAllOnesMatrix(a.CountOfRows(), 1L);
             var lTick = l.Transpose();
-            var lOverRows = 1D/a.Rows();
+            var lOverRows = 1D/a.CountOfRows();
 
             var lxlTick = Matrix.Product(l, lTick);
             var lXa = Matrix.Product(lxlTick, a);
@@ -259,7 +365,7 @@ namespace NoFuture.Util.Core.Math
             var aDev = a.Deviation();
             var aDevXaDevTick = Matrix.Product(aDev.Transpose(), aDev);
 
-            return Matrix.Product(aDevXaDevTick, (1D/a.Rows()));
+            return Matrix.Product(aDevXaDevTick, (1D/a.CountOfRows()));
         }//end Covariance
 
         public static string Print(this double[,] a)
@@ -269,8 +375,8 @@ namespace NoFuture.Util.Core.Math
             //find the max len
             var maxLen = 0;
             var anyNeg = false;
-            for (var i = 0; i < a.Rows(); i++)
-                for (var j = 0; j < a.Columns(); j++)
+            for (var i = 0; i < a.CountOfRows(); i++)
+                for (var j = 0; j < a.CountOfColumns(); j++)
                 {
                     if (a[i, j].ToString(CultureInfo.InvariantCulture).Length > maxLen)
                         maxLen = a[i, j].ToString(CultureInfo.InvariantCulture).Length;
@@ -280,24 +386,24 @@ namespace NoFuture.Util.Core.Math
 
             maxLen += 2;
 
-            for (var i = 0; i < a.Columns(); i++)
+            for (var i = 0; i < a.CountOfColumns(); i++)
             {
                 var headerStr = $"[,{i}]";
                 var padding = (maxLen);
 
                 if (i == 0)
                 {
-                    str.Append(new String(' ', a.Rows().ToString().Length + 2));
+                    str.Append(new String(' ', a.CountOfRows().ToString().Length + 2));
                 }
 
                 str.AppendFormat("{0," + padding + "}", headerStr);
             }
 
             str.AppendLine();
-            for (var i = 0; i < a.Rows(); i++)
+            for (var i = 0; i < a.CountOfRows(); i++)
             {
                 str.Append($"[{i},] ");
-                for (var j = 0; j < a.Columns(); j++)
+                for (var j = 0; j < a.CountOfColumns(); j++)
                 {
                     var aij = a[i, j];
                     var format = aij >= 0 && anyNeg ? " {0,-" + (maxLen - 1) + "}" : "{0,-" + maxLen + "}";
@@ -311,7 +417,7 @@ namespace NoFuture.Util.Core.Math
 
         public static double[,] GetSoftmax(this double[,] matrix)
         {
-            var mout = new double[matrix.Rows(), matrix.Columns()];
+            var mout = new double[matrix.CountOfRows(), matrix.CountOfColumns()];
             for (var i = 0; i < matrix.GetLongLength(0); i++)
             {
                 var z = new List<double>();
