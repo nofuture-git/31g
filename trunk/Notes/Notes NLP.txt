@@ -589,17 +589,38 @@ Word2Vec
    - Output Layer has as many neurons as the input layer ("V" also)
    - given three layers, there are two spaces between them
     - the one between input and hidden is ("WI")
-     - WI would be of size V*N
+     - WI would be of size (V x N)
     - the one between hidden and output is ("WO")
-     - WO would be of size N*V
-   - this is really just matrix algebra
-    - rep the word as a one-hot [0,1,0,0,0,0,0,0] ("Xt")
-    - get a random WI (V,N) and random WO (N,V)
-    - solve for softmax((Xt*WI)*WO)
-    - use softmax((Xt*WI)*WO) do magic "learning" where 
-      WI\WO has values "adjusted" (backpropagation)
-     - by means of "degree of error in our prediction"
-     - goal is to minimize this over backpropagation
+     - WO would be of size (N x V)
+   - basic example
+    - define some "N" value, say '3'
+    - define a window of just '1', meaning context words
+      will only be one-to-the-left and one-to-the-right
+    - scrub the corpus (like to lowercase, no punc marks, etc.)
+    - split it on ' ' (0x20)
+    - get distinct list of words present, 
+      say its just '8' distinct words
+    - get counts for each word in the distinct list
+    - create two matrices WI (V x N) & WO (N x V) with all random
+      values (like 0.0 - 0.99)
+    - begin reading the corpus, one-word-at-a-time
+    - target word is the current one just read
+    - context words are those around it 
+     - would have three index values now 
+       the one-to-the-left, target and one-to-the-right
+     - this example pretend its 2,3,4 (0-indexed)
+     - at start and end of corpus you'd be missing on 
+       index value, of course
+    - get a one-hot vector for the target word,
+      since this example is 8 distinct words and
+      current target is 3 (0-indexed)
+      [0,0,0,1,0,0,0,0]
+    - iterate each context word as a one-hot vector
+      as well
+     - first would be 
+      
+     
+    
 ----
 
 ----

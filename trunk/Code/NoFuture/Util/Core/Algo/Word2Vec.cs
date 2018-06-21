@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Util.Core.Math;
+using static System.Diagnostics.Debug;
 
 namespace NoFuture.Util.Core.Algo
 {
@@ -14,11 +15,11 @@ namespace NoFuture.Util.Core.Algo
         private const int MAX_EXP = 6;
         private const int MAX_SENTENCE_LENGTH = 1000;
         private const int MAX_CODE_LENGTH = 40;
+        private const double ONLY_VALUE_IN_EXP_TABLE = 0.00247262315663477D;
 
-        
-        private HuffmanEncoding _encoding;
+
+        private HuffmanEncoding _vocab;
         private string[] _allText;
-        private int _currentAllTextPosition = 0;
         private List<Func<string, string>> _stringModifiers = new List<Func<string, string>>();
         private double[,] _expTable;
         private double[,] _wi;
@@ -37,17 +38,7 @@ namespace NoFuture.Util.Core.Algo
             MinCount = 5;
             DebugMode = 2;
             IsCbow = true;
-            _expTable = new double[1,EXP_TABLE_SIZE];
-            for (var j = 0; j < _expTable.GetLength(1); j++)
-            {
-                // Precompute the exp() table
-                var expAtJ = System.Math.Exp((j / EXP_TABLE_SIZE * 2 - 1) * MAX_EXP);
-
-                // Precompute f(x) = x / (x + 1)
-                _expTable[0, j] = expAtJ / (expAtJ + 1);
-            }
-            
-
+            Alpha = 0.05;
         }
 
         #region properties from word2vec.c
@@ -135,7 +126,9 @@ namespace NoFuture.Util.Core.Algo
 
         #endregion
 
-        public HuffmanEncoding Encoding => _encoding;
+        public HuffmanEncoding Vocab => _vocab;
+
+        public int CurrentCorpusPosition { get; protected internal set; } = 0;
 
         /// <summary>
         /// Allows caller to control how the corpus text is modified
@@ -151,8 +144,34 @@ namespace NoFuture.Util.Core.Algo
 
         public void BuildVocab(string corpus)
         {
+            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(Word2Vec)} Start BuildVocab");
+
+            AssignCorpus(corpus);
+
+            var vocab = _allText.Distinct().ToList();
+            var dict = new Dictionary<string, int>();
+            foreach (var v in vocab)
+            {
+                if(string.IsNullOrWhiteSpace(v))
+                    continue;
+                var cn = _allText.Count(a => a == v);
+                dict.Add(v, cn);
+            }
+            _vocab = new HuffmanEncoding(dict);
+            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(Word2Vec)} End BuildVocab");
+        }
+
+        public void AssignCorpus(string corpus)
+        {
             if (string.IsNullOrWhiteSpace(corpus))
                 throw new ArgumentNullException(nameof(corpus));
+
+            if (!_stringModifiers.Any())
+            {
+                _stringModifiers.Add(c => c.ToLower());
+                _stringModifiers.Add(c =>
+                    new string(c.ToCharArray().Where(v => char.IsLetterOrDigit(v) || v == 0x20).ToArray()));
+            }
 
             foreach (var mod in _stringModifiers)
             {
@@ -160,99 +179,151 @@ namespace NoFuture.Util.Core.Algo
             }
 
             _allText = corpus.Split(' ');
-            var vocab = _allText.Distinct().ToList();
-            var dict = new Dictionary<string, int>();
-            foreach (var v in vocab)
-            {
-                var cn = _allText.Count(a => a == v);
-                dict.Add(v, cn);
-            }
-            _encoding = new HuffmanEncoding(dict);
         }
 
         public void BuildVocab(Dictionary<string, int> vocab)
         {
-            _encoding = new HuffmanEncoding(vocab);
+            _vocab = new HuffmanEncoding(vocab);
+        }
+
+        /// <summary>
+        /// Reads next batch of words off the corpus where Item1 is the target and 
+        /// Item2 are the context words.
+        /// </summary>
+        /// <returns></returns>
+        public Tuple<HuffmanNode, List<HuffmanNode>> ReadNextWord()
+        {
+            var target = GetTargetNode();
+            if (target == null)
+                return null;
+            var contexts = GetContextNodes();
+
+            CurrentCorpusPosition += 1;
+            return new Tuple<HuffmanNode, List<HuffmanNode>>(target,contexts);
+        }
+
+        protected internal virtual string GetCorpusWordAt(int position)
+        {
+            if (position < 0 || _allText == null)
+                return null;
+            if (position >= _allText.Length)
+                return null;
+            return _allText[position];
         }
 
         internal int GetNumberOfTrainWords()
         {
             //TODO is this supposed to be all of them?
-            return Encoding.GetLengthLeafs();
+            return Vocab.GetLengthLeafs();
         }
 
-        internal string ReadNextWordFromCorpus()
+        /// <summary>
+        /// see word2vec.c @ ln 415
+        /// </summary>
+        /// <param name="fromCorpusPosition"></param>
+        /// <returns></returns>
+        internal double GetAdjustedAlpha(int? fromCorpusPosition = null)
         {
-            if (_allText.Length >= _currentAllTextPosition)
-                return null;
-            var nextWord = _allText[_currentAllTextPosition];
-            _currentAllTextPosition += 1;
-            return nextWord;
-        }
-
-        internal double GetAdjustedAlpha(int currentWordCount)
-        {
+            var pos = fromCorpusPosition ?? CurrentCorpusPosition;
             var iter = NumberOfTrainingIterations;
             var trainWords = GetNumberOfTrainWords();
             var startingAlpha = Alpha;
 
-            var alpha = startingAlpha * (1 - currentWordCount / (iter * trainWords + 1));
+            var alpha = startingAlpha * (1 - pos / (iter * trainWords + 1));
             if (alpha < startingAlpha * 0.0001)
                 alpha = startingAlpha * 0.0001;
             return alpha;
         }
 
-        internal void InitWiWo()
+        internal void InitWiWo(int v = 0)
         {
-            var v = Encoding.GetLengthLeafs();
+            v = v > 0 ? v : Vocab.GetLengthLeafs();
             var n = Size;
             _wi = Matrix.RandomMatrix(v, n);
             _wo = Matrix.RandomMatrix(n, v);
         }
 
-        internal List<HuffmanNode> GetSampleSentence()
+        internal HuffmanNode GetTargetNode(int? fromCorpusPosition = null)
         {
+            var pos = fromCorpusPosition ?? CurrentCorpusPosition;
+            var targetWord = GetCorpusWordAt(pos);
+            if (string.IsNullOrWhiteSpace(targetWord))
+                return null;
+            return Vocab.GetLeafByWord(targetWord);
+        }
+
+        internal List<HuffmanNode> GetContextNodes(int? fromCorpusPosition = null, Tuple<int, int> windowRange = null)
+        {
+            var pos = fromCorpusPosition ?? CurrentCorpusPosition;
+
             var lout = new List<HuffmanNode>();
-            while (lout.Count < MAX_SENTENCE_LENGTH)
+            var contextIndices = GetRandomIndicesAroundPosition(pos, windowRange);
+            foreach (var contextIndex in contextIndices)
             {
-                var w = ReadNextWordFromCorpus();
-                if (string.IsNullOrWhiteSpace(w))
-                    break;
-                var word = Encoding.GetLeafByWord(w);
-                if (word == null)
-                    break;
-                if (Sample > 0)
-                {
-                    var ran = word.GetSampleValue(Sample, GetNumberOfTrainWords());
-                    if(ran < _myRand.NextDouble())
-                        continue;
-                }
-                lout.Add(word);
+                var contextWord = GetCorpusWordAt(contextIndex);
+                if (string.IsNullOrWhiteSpace(contextWord))
+                    continue;
+                var contextNode = Vocab.GetLeafByWord(contextWord);
+                if(contextNode?.Index == pos)
+                    continue;
+                lout.Add(contextNode);
             }
 
             return lout;
         }
 
-        internal double[,] GetNeu1(int sentencePostion, List<HuffmanNode> sampleSentence)
+        /// <summary>
+        /// Gets random indices around the current <see cref="fromCorpusPosition"/>
+        /// </summary>
+        /// <param name="fromCorpusPosition"></param>
+        /// <param name="windowRange">
+        /// Optional, a tuple of values which go before and after <see cref="Window"/>
+        /// will be generated randomly by <see cref="GetRandomWindowStartEnd"/> if null.
+        /// </param>
+        /// <returns>
+        /// <![CDATA[
+        /// example, sentence position is 28, and a random window is choosen of 2,9
+        /// the return values would be 25,26,27,29,30,31
+        /// ]]>
+        /// </returns>
+        internal int[] GetRandomIndicesAroundPosition(int? fromCorpusPosition = null, Tuple<int, int> windowRange = null)
         {
-            var neu1 = new double[1, Size];
-            var b = _myRand.Next() % Window;
-            for (var a = b; a < Window * 2 + 1 - b; a++)
-            {
-                if(a == Window)
-                    continue;
-                var c = sentencePostion - Window + a;
-                if(c < 0 || c >= sampleSentence.Count)
-                    continue;
-                var lastWord = sampleSentence[c];
-                if(lastWord == null || lastWord.Index < 0)
-                    continue;
+            var pos = fromCorpusPosition ?? CurrentCorpusPosition;
+            windowRange = windowRange ?? GetRandomWindowStartEnd();
+            var b = windowRange.Item1;
+            var cIndices = new List<int>();
 
+            for (var a = b; a <= windowRange.Item2; a++)
+            {
+                //means we are at the index of the Sentence Position
+                if (a == Window)
+                {
+                    continue;
+                }
+
+                var c = pos - Window + a;
+                if (c < 0)
+                    continue;
+                if (c >= MAX_SENTENCE_LENGTH)
+                    continue;
+                cIndices.Add(c);
             }
 
-            throw new NotImplementedException();
+            return cIndices.ToArray();
         }
 
+        internal Tuple<int, int> GetRandomWindowStartEnd()
+        {
+            var start = _myRand.Next() % Window;
+            
+            var end = Window * 2 - start;
+            return new Tuple<int, int>(start,end);
+        }
 
+        internal double GetExpTableCalc(double f)
+        {
+            //maybe a casting thing in .NET but this is always the same value for all 1000 entries
+            return ONLY_VALUE_IN_EXP_TABLE;
+        }
     }
 }

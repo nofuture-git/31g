@@ -227,7 +227,7 @@ namespace NoFuture.Util.Core.Math
         {
             if (atColumn >= a.CountOfColumns())
                 throw new NonConformable($"{atColumn} exceeds the number of columns present in a");
-            for (var i = 0; i < a.CountOfColumns(); i++)
+            for (var i = 0; i < a.CountOfRows(); i++)
             {
                 var v = b.Length <= i ? 0 : b[i];
                 a[i, atColumn] += v;
@@ -264,6 +264,21 @@ namespace NoFuture.Util.Core.Math
         public static double[,] Times(this double[,] a, double[,] b)
         {
             return Matrix.Product(a, b);
+        }
+
+        public static double[,] Apply(this double[,] a, Func<double, double> expr)
+        {
+            if (expr == null)
+                return a;
+            for (var i = 0; i < a.CountOfRows(); i++)
+            {
+                for (var j = 0; j < a.CountOfColumns(); j++)
+                {
+                    a[i, j] = expr(a[i, j]);
+                }
+            }
+
+            return a;
         }
 
         public static double[,] Transpose(this double[,] a)
