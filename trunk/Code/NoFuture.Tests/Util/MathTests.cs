@@ -370,6 +370,43 @@ namespace NoFuture.Tests.Util
         }
 
         [Test]
+        public void TestToMatrix()
+        {
+            var testInput = new double[] {1, -1, 8, -7, 6, -2, 0, -4, 5};
+            var testResult = testInput.ToMatrix(3);
+
+            Assert.AreEqual(1, testResult[0,0]);
+            Assert.AreEqual(-1, testResult[0, 1]);
+            Assert.AreEqual(8, testResult[0, 2]);
+            Assert.AreEqual(-7, testResult[1, 0]);
+            Assert.AreEqual(6, testResult[1, 1]);
+            Assert.AreEqual(-2, testResult[1, 2]);
+            Assert.AreEqual(0, testResult[2, 0]);
+            Assert.AreEqual(-4, testResult[2, 1]);
+            Assert.AreEqual(5, testResult[2, 2]);
+
+            Console.WriteLine(testResult.Print());
+
+            testInput = new double[] { 1, -1, 8, -7, 6, -2, 0, -4, 5, 999 };
+            testResult = testInput.ToMatrix(3, true);
+            Assert.AreEqual(1, testResult[0, 0]);
+            Assert.AreEqual(-1, testResult[0, 1]);
+            Assert.AreEqual(8, testResult[0, 2]);
+            Assert.AreEqual(-7, testResult[1, 0]);
+            Assert.AreEqual(6, testResult[1, 1]);
+            Assert.AreEqual(-2, testResult[1, 2]);
+            Assert.AreEqual(0, testResult[2, 0]);
+            Assert.AreEqual(-4, testResult[2, 1]);
+            Assert.AreEqual(5, testResult[2, 2]);
+
+            testInput = new double[] { 1, -1, 8, -7, 6, -2, 0, -4, 5 };
+            testResult = testInput.ToMatrix(1);
+            Assert.AreEqual(1, testResult[0, 0]);
+            Assert.AreEqual(-7, testResult[0, 3]);
+            Assert.AreEqual(5, testResult[0, 8]);
+        }
+
+        [Test]
         public void TestSelectColumn()
         {
             var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };

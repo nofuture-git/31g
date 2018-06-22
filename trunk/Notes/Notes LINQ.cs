@@ -86,6 +86,9 @@ namespace Notes_LINQ_Common
             var myValues = new[]{0.22,0.56,0.15,0.07};
             var zipped = mynames.Zip(myValues, (n,v) => new Tuple<string,double>(n,v)).ToList();
             
+            //get sigma sum of matrix and vector (where k is some particular row in matrix)
+            Func<double[,], double[], int, double> sum = (matrix, vector, k) =>
+                Enumerable.Range(0, matrix.GetLength(0)).Sum(i => matrix[k, i] * vector[k]);
 		}
 	}
 }

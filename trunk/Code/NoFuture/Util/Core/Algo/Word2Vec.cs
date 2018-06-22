@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -152,7 +153,7 @@ namespace NoFuture.Util.Core.Algo
             var dict = new Dictionary<string, int>();
             foreach (var v in vocab)
             {
-                if(string.IsNullOrWhiteSpace(v))
+                if(String.IsNullOrWhiteSpace(v))
                     continue;
                 var cn = _allText.Count(a => a == v);
                 dict.Add(v, cn);
@@ -163,14 +164,14 @@ namespace NoFuture.Util.Core.Algo
 
         public void AssignCorpus(string corpus)
         {
-            if (string.IsNullOrWhiteSpace(corpus))
+            if (String.IsNullOrWhiteSpace(corpus))
                 throw new ArgumentNullException(nameof(corpus));
 
             if (!_stringModifiers.Any())
             {
                 _stringModifiers.Add(c => c.ToLower());
                 _stringModifiers.Add(c =>
-                    new string(c.ToCharArray().Where(v => char.IsLetterOrDigit(v) || v == 0x20).ToArray()));
+                    new string(c.ToCharArray().Where(v => Char.IsLetterOrDigit(v) || v == 0x20).ToArray()));
             }
 
             foreach (var mod in _stringModifiers)
@@ -247,7 +248,7 @@ namespace NoFuture.Util.Core.Algo
         {
             var pos = fromCorpusPosition ?? CurrentCorpusPosition;
             var targetWord = GetCorpusWordAt(pos);
-            if (string.IsNullOrWhiteSpace(targetWord))
+            if (String.IsNullOrWhiteSpace(targetWord))
                 return null;
             return Vocab.GetLeafByWord(targetWord);
         }
@@ -261,7 +262,7 @@ namespace NoFuture.Util.Core.Algo
             foreach (var contextIndex in contextIndices)
             {
                 var contextWord = GetCorpusWordAt(contextIndex);
-                if (string.IsNullOrWhiteSpace(contextWord))
+                if (String.IsNullOrWhiteSpace(contextWord))
                     continue;
                 var contextNode = Vocab.GetLeafByWord(contextWord);
                 if(contextNode?.Index == pos)
@@ -320,10 +321,143 @@ namespace NoFuture.Util.Core.Algo
             return new Tuple<int, int>(start,end);
         }
 
-        internal double GetExpTableCalc(double f)
+        public double[,] ToOneHot(HuffmanNode node)
         {
-            //maybe a casting thing in .NET but this is always the same value for all 1000 entries
-            return ONLY_VALUE_IN_EXP_TABLE;
+            if(node == null)
+                throw new ArgumentNullException(nameof(node));
+            return Matrix.OneHotVector(node.Index, Vocab.GetLengthLeafs());
         }
+
+        public Word2VecOutputCalc GetOutputs(double[,] oneHot)
+        {
+            var n = _wi.GetLength(1);
+            return Word2VecExtensions.Word2VecMultiLayerNeuralNetwork(_wi, _wo, oneHot.Flatten(), n);
+        }
+
+        /// <summary>
+        /// Fig 6.31
+        /// </summary>
+        /// <param name="outputs"></param>
+        /// <returns></returns>
+        public double[,] GetError(double[,] outputs)
+        {
+            var pr = outputs.GetSoftmax();
+            return pr.Apply(v => -1 * System.Math.Log(v));
+
+            //fig 6.31
+            // e[j] = y[j] - t[j]
+
+            //only clue about backpropagation is this...
+            //fig 6.32 
+            //wo[j] = wo[j] - mysteryEta * e[j] * h[j]
+            //fig 6.33
+            //wi[i] = wi[i] - mysteryEta * Sum(j => wo[i,j] * e[j])
+        }
+    }
+
+    public static class Word2VecExtensions
+    {
+        /// <summary>
+        /// Partial derivative chain rule result for L2 error function
+        /// </summary>
+        /// <param name="y">the estimate</param>
+        /// <param name="t">the actual</param>
+        /// <param name="x">input vector</param>
+        /// <param name="w">input weights</param>
+        public static double[] UpdateWeights(double y, double t, double[] x, double[] w)
+        {
+            for (var i = 0; i < w.Length; i++)
+            {
+                w[i] = (y - t) * y * (1 - y) * x[i];
+            }
+
+            return w;
+        }
+
+        public static double GetSigmaSum(double[,] x, double[,] w)
+        {
+            return GetSigmaSum(x.Flatten(), w.Flatten());
+        }
+
+        public static double GetSigmaSum(double[] x, double[] w)
+        {
+            var u = 0D;
+            for (var i = 0; i < x.Length; i++)
+            {
+                u += x[i] * w[i];
+            }
+            return u;
+        }
+
+        public static double SigmoidFunction(double u)
+        {
+            return 1 / (1 + System.Math.Pow(System.Math.E, u * -1));
+        }
+
+        public static double[,] CalcLossFunctionL2(double[,] t, double[,] y)
+        {
+            var e = t.Subtract(y);
+            e = e.Times(e);
+            e = e.Apply(d => 0.5D * d);
+            return e;
+        }
+
+        public static double[] CalcLossFunctionL2(double[] t, double[] y)
+        {
+            return CalcLossFunctionL2(t.ToMatrix(1), y.ToMatrix(1)).Flatten();
+        }
+
+        public static double CalcLossFunctionL2(double t, double y)
+        {
+            return 0.5 * System.Math.Pow(t - y, 2);
+        }
+
+        /// <summary>
+        /// Python Natural Language Processing by Jalaj Thanaki
+        /// fig. 6.26
+        /// </summary>
+        /// <param name="w"></param>
+        /// <param name="wTick"></param>
+        /// <param name="x"></param>
+        /// <param name="N">Number of nodes in hidden layer</param>
+        /// <returns></returns>
+        public static Word2VecOutputCalc Word2VecMultiLayerNeuralNetwork(double[,] w, double[,] wTick, double[] x, int N)
+        {
+            var K = x.Length;
+            var u = new double[w.GetLength(1)];
+            var h = new double[w.GetLength(1)];
+            var uTick = new double[wTick.GetLength(1)];
+            var y = new double[wTick.GetLength(1)];
+
+            for (var i = 0; i < w.GetLength(1); i++)
+            {
+                u[i] = Enumerable.Range(0, K).Sum(k => w[k, i] * x[k]);
+                h[i] = SigmoidFunction(u[i]);
+            }
+
+            for (var j = 0; j < wTick.GetLength(1); j++)
+            {
+                uTick[j] = Enumerable.Range(0, N).Sum(i => wTick[i, j] * h[i]);
+                y[j] = SigmoidFunction(uTick[j]);
+            }
+
+            var output = new Word2VecOutputCalc
+            {
+                U = u,
+                H = h,
+                Utick = uTick,
+                Y = y
+            };
+
+            return output;
+        }
+    }
+
+    public class Word2VecOutputCalc
+    {
+        public double[] U { get; set; }
+        public double[] H { get; set; }
+        public double[] Utick { get; set; }
+        public double[] Y { get; set; }
     }
 }

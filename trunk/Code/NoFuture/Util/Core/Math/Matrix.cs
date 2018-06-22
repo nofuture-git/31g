@@ -210,6 +210,16 @@ namespace NoFuture.Util.Core.Math
             return Matrix.Sum(a, b);
         }
 
+        public static double[,] Subtract(this double[,] a, double[,] b)
+        {
+            return Matrix.Difference(a, b);
+        }
+
+        public static double[,] Times(this double[,] a, double[,] b)
+        {
+            return Matrix.Product(a, b);
+        }
+
         public static double[,] AddAtRow(this double[,] a, double[] b, int atRow)
         {
             if(atRow >= a.CountOfRows())
@@ -256,14 +266,34 @@ namespace NoFuture.Util.Core.Math
             return d;
         }
 
-        public static double[,] Subtract(this double[,] a, double[,] b)
+        public static double[,] ToMatrix(this double[] a, int numOfColumns, bool truncEnding = false)
         {
-            return Matrix.Difference(a, b);
-        }
+            if (a == null || !a.Any() || numOfColumns <= 0)
+                return new double[,] { };
+            if (numOfColumns == 1)
+            {
+                var aw = new double[1, a.Length];
+                for (var i = 0; i < a.Length; i++)
+                    aw[0, i] = a[i];
+                return aw;
+            }
 
-        public static double[,] Times(this double[,] a, double[,] b)
-        {
-            return Matrix.Product(a, b);
+            if(!truncEnding && a.Length % numOfColumns != 0)
+                throw new NonConformable("the number of items in " +
+                                         $"the array {a.Length} will not fit evenly into a matrix");
+
+            var numOfRows = (int)System.Math.Round(a.Length / (double) numOfColumns);
+            var matrix = new double[numOfRows, numOfColumns];
+            for (var i = 0; i < numOfRows; i++)
+            {
+                for (var j = 0; j < numOfColumns; j++)
+                {
+                    var vIdx = (i * numOfColumns) + j;
+                    matrix[i, j] = a[vIdx];
+                }
+            }
+
+            return matrix;
         }
 
         public static double[,] Apply(this double[,] a, Func<double, double> expr)

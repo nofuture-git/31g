@@ -404,21 +404,30 @@ namespace NoFuture.Tests.Util
             var readWord = testing.ReadNextWord();
             while (readWord != null)
             {
-                var targetWordIndex = readWord.Item1.Index;
-                var targetOneHot = Matrix.OneHotVector(targetWordIndex, leafs.Count);
+                
+                var targetOneHot = testing.ToOneHot(readWord.Item1);
 
                 foreach (var contextWord in readWord.Item2)
                 {
-                    var contextOneHot = Matrix.OneHotVector(contextWord.Index, leafs.Count);
-                    var ht = contextOneHot.Times(wi);
-                    var htWo = ht.Times(wo);
-                    var pr = htWo.GetSoftmax();
-                    var errVector = pr.Subtract(targetOneHot);
+                    var contextOneHot = testing.ToOneHot(contextWord);
+
+                    var pr = testing.GetOutputs(contextOneHot);
+
+
+                    /*
+                     * This function takes input as a one-hot encoded word vector and this vector,
+                     * as well as a weighted sum is passed to a hidden layer.  By using the
+                     * activation function, which is the sigmoid function in this case, output
+                     * is generated from the hidden layer and this output is passed to the next layer,
+                     * which is the output layer.
+                     *
+                     */
+                    //L2
 
                     //backpropagation - this is where it gets unclear 
                     //where is the gradient applied?
-                    wi.AddAtRow(errVector.Flatten(), contextWord.Index);
-                    wo.AddAtColumn(errVector.Flatten(), contextWord.Index);
+                    //wi.AddAtRow(errVector.Flatten(), contextWord.Index);
+                    //wo.AddAtColumn(errVector.Flatten(), contextWord.Index);
                 }
 
                 Console.WriteLine($"WI after word {testing.CurrentCorpusPosition}");
@@ -429,6 +438,13 @@ namespace NoFuture.Tests.Util
 
                 readWord = testing.ReadNextWord();
             }
+        }
+
+        [Test]
+        public void TestWord2VecMath()
+        {
+
+
         }
     }
 }
