@@ -353,10 +353,103 @@ namespace NoFuture.Util.Core.Algo
             //fig 6.33
             //wi[i] = wi[i] - mysteryEta * Sum(j => wo[i,j] * e[j])
         }
+
+        /// <summary>
+        /// http://mccormickml.com/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_II_The_Continuous_Bag-of-Words_Model.pdf
+        /// </summary>
+        /// <param name="x">The context words as one-hot vectors collapsed top to bottom</param>
+        /// <param name="y">The result of the Softmax</param>
+        /// <param name="t">The one-hot encoded vector of the target word</param>
+        /// <param name="hx">The <see cref="x"/> time the original WI</param>
+        public void CbowBackpropagate(double[] x, double[] y, double[] t, double[] hx)
+        {
+            //this looks actually useful https://arxiv.org/pdf/1411.2738.pdf
+            //a js example https://ronxin.github.io/wevi/
+            var eta = Alpha; // this is the step-size (aka learning rate)
+            var C = Window;
+            for (var i = 0; i < _wo.CountOfRows(); i++)
+            {
+                for (var j = 0; j < _wo.CountOfColumns(); j++)
+                {
+                    _wo[i, j] = _wo[i, j] - eta * (y[j] - t[j]) * hx[i];
+                }
+            }
+
+            var eh = new double[_wo.CountOfRows()];
+            for (var i = 0; i < _wo.CountOfRows(); i++)
+            {
+                for (var j = 0; j < _wo.CountOfColumns(); j++)
+                {
+                    eh[i] += (y[j] - t[j]) * _wo[i, j];
+                }
+            }
+
+            for (var i = 0; i < _wi.CountOfRows(); i++)
+            {
+                for (var j = 0; j < _wi.CountOfColumns(); j++)
+                {
+                    _wi[i, j] = _wi[i, j] - eta * (1D / C) * eh[j] * x[j];
+                }
+            }
+        }
+
+        /// <summary>
+        /// http://mccormickml.com/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_I_The_Skip-Gram_Model.pdf
+        /// </summary>
+        /// <param name="x">The input word&apos;s one-hot</param>
+        /// <param name="y">The result of the softmax</param>
+        /// <param name="t">The context word&apos;s one-hot(s)</param>
+        /// <param name="hx">The input word&apos;s one-hot times the original WI</param>
+        public void SkipGramBackpropagate(double[] x, double[,] y, double[,] t, double[] hx)
+        {
+            var eta = Alpha; // this is the step-size (aka learning rate)
+            var C = Window;
+            
+            for (var i = 0; i < _wo.CountOfRows(); i++)
+            {
+                for (var j = 0; j < _wo.CountOfColumns(); j++)
+                {
+                    var sumDiff = 0D;
+                    for (var c = 0; c < C; c++)
+                    {
+                        sumDiff += (y[c, j] - t[c, j]);
+                    }
+
+                    var diff = eta * sumDiff * hx[i];
+                    _wo[i, j] = _wo[i, j] - diff;
+                }
+            }
+
+            for (var i = 0; i < _wi.CountOfRows(); i++)
+            {
+                var sumDiffJ = 0D;
+                for (var j = 0; j < _wi.CountOfColumns(); j++)
+                {
+                    var sumDiffC = 0D;
+                    for (var c = 0; c < C; c++)
+                    {
+                        sumDiffC += (y[c, j] - t[c, j]);
+                    }
+
+                    sumDiffJ += sumDiffC * _wo[j, i];
+                }
+
+                for (var j = 0; j < _wi.CountOfColumns(); j++)
+                {
+                    _wi[i, j] = _wi[i, j] - eta * sumDiffJ * x[j];
+                }
+            }
+        }
     }
 
     public static class Word2VecExtensions
     {
+        public static double[,] LossFunction(this double[,] o)
+        {
+            var pr = o.GetSoftmax();
+            return pr.Apply(v => -1 * System.Math.Log(v));
+        }
+
         /// <summary>
         /// Partial derivative chain rule result for L2 error function
         /// </summary>

@@ -319,12 +319,12 @@ namespace NoFuture.Tests.Util
         }
 
         [Test]
-        public void TestAddAtRow()
+        public void TestApplyAtRow()
         {
             var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
             var toAdd = new double[] {4, 1, 2};
 
-            var testResult = testInput.AddAtRow(toAdd, 1);
+            var testResult = testInput.ApplyAtRow(toAdd, 1, (d, d1) => d + d1);
             Console.WriteLine(testResult.Print());
             Assert.AreEqual(3D, testResult[1, 0]);
             Assert.AreEqual(7D, testResult[1, 1]);
@@ -332,12 +332,12 @@ namespace NoFuture.Tests.Util
         }
 
         [Test]
-        public void TestAddAtColumn()
+        public void TestApplyAtColumn()
         {
             var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
             var toAdd = new double[] { 4, 1, 2 };
 
-            var testResult = testInput.AddAtColumn(toAdd, 1);
+            var testResult = testInput.ApplyAtColumn(toAdd, 1, (d, d1) => d + d1);
             Console.WriteLine(testResult.Print());
             Assert.AreEqual(3D, testResult[0, 1]);
             Assert.AreEqual(7D, testResult[1, 1]);
@@ -416,6 +416,31 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(testInput[0, 1], testResult[0]);
             Assert.AreEqual(testInput[1, 1], testResult[1]);
             Assert.AreEqual(testInput[2, 1], testResult[2]);
+        }
+
+        [Test]
+        public void TestCollapseTop2Bottom()
+        {
+            var testInput = new double[,] {
+                {0, 0, 0, 0.5, 0, 0, 0, 0}, 
+                {0, 0, 0, 0, 0, 0.5, 0, 0}
+            };
+            var testResult = testInput.CollapseTop2Bottom(doubles => doubles.Sum());
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(testInput.GetLength(1), testResult.Length);
+            Assert.AreEqual(0.5, testResult[3]);
+            Console.WriteLine(testResult.ToMatrix(1).Print());
+        }
+
+        [Test]
+        public void TestCoaleseColumns()
+        {
+            var testInput = new double[,] {
+                {0, 0, 0, 0.5, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0.5, 0, 0}
+            };
+            var testResult = testInput.CollapseLeft2Right(doubles => doubles.Sum());
+            Console.WriteLine(testResult.ToMatrix(1).Print());
         }
 
         [Test]

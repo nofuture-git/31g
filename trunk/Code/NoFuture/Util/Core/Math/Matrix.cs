@@ -220,27 +220,31 @@ namespace NoFuture.Util.Core.Math
             return Matrix.Product(a, b);
         }
 
-        public static double[,] AddAtRow(this double[,] a, double[] b, int atRow)
+        public static double[,] ApplyAtRow(this double[,] a, double[] b, int atRow, Func<double, double, double> expr)
         {
             if(atRow >= a.CountOfRows())
                 throw new NonConformable($"{atRow} exceeds the number of rows present in a");
+            if (expr == null)
+                return a;
             for (var j = 0; j < a.CountOfColumns(); j++)
             {
                 var v = b.Length <= j ? 0 : b[j];
-                a[atRow, j] += v;
+                a[atRow, j] = expr(a[atRow, j], v);
             }
 
             return a;
         }
 
-        public static double[,] AddAtColumn(this double[,] a, double[] b, int atColumn)
+        public static double[,] ApplyAtColumn(this double[,] a, double[] b, int atColumn, Func<double, double, double> expr)
         {
             if (atColumn >= a.CountOfColumns())
                 throw new NonConformable($"{atColumn} exceeds the number of columns present in a");
+            if (expr == null)
+                return a;
             for (var i = 0; i < a.CountOfRows(); i++)
             {
                 var v = b.Length <= i ? 0 : b[i];
-                a[i, atColumn] += v;
+                a[i, atColumn] = expr(a[i, atColumn], v);
             }
 
             return a;
@@ -264,6 +268,44 @@ namespace NoFuture.Util.Core.Math
             }
 
             return d;
+        }
+
+        /// <summary>
+        /// Collapses the matrix by performing <see cref="expr"/> on each column
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="expr">The expression of how to coalese an array into a single value</param>
+        /// <returns></returns>
+        public static double[] CollapseTop2Bottom(this double[,] a, Func<double[], double> expr)
+        {
+            var dout = new double[a.CountOfColumns()];
+
+            for (var i = 0; i < dout.Length; i++)
+            {
+                var rowI = a.SelectColumn(i);
+                dout[i] = expr(rowI);
+            }
+
+            return dout;
+        }
+
+        /// <summary>
+        /// Collapses the matrix by performing <see cref="expr"/> on each row
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="expr">The expression of how to coalese an array into a single value</param>
+        /// <returns></returns>
+        public static double[] CollapseLeft2Right(this double[,] a, Func<double[], double> expr)
+        {
+            var dout = new double[a.CountOfRows()];
+
+            for (var i = 0; i < dout.Length; i++)
+            {
+                var rowI = a.SelectRow(i);
+                dout[i] = expr(rowI);
+            }
+
+            return dout;
         }
 
         public static double[,] ToMatrix(this double[] a, int numOfColumns, bool truncEnding = false)
