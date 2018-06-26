@@ -72,6 +72,14 @@ Overview & History
 ----
 
 ----
+node CLI
+ - get version 
+  node --version
+ - upgrade (MS)
+  - just download .msi and install atop the previous one
+----
+
+----
 Language Quirks
  - Number is double floating point
  (0.1 + 0.2) === 0.3 //this is false, its actually 0.30000000000000004
@@ -109,6 +117,7 @@ Language Quirks
  - prototyping inherit both the state and behavior of 
    the parent class meaning you could change objects
    with direct access to them.
+----
  
 ----
 RESTful Services Digression

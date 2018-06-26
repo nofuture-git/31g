@@ -190,7 +190,7 @@ namespace NoFuture.Tests.Util
             var lenTop = testResult.GetLongLength(0);
             var lenBottom = testResult.GetLongLength(1);
 
-            Console.WriteLine("{0}X{1}",lenTop, lenBottom);
+            Console.WriteLine("{0}X{1}", lenTop, lenBottom);
 
             Assert.AreEqual(1D, testResult[0, 0]);
             Assert.AreEqual(1D, testResult[0, 1]);
@@ -199,13 +199,13 @@ namespace NoFuture.Tests.Util
 
             var matrixOfOnes = new[,]
             {
-                {1D, 1D}, 
+                {1D, 1D},
                 {1D, 1D}
             };
 
             var typicalMatrix = new[,]
             {
-                {3D, 5D, 1D}, 
+                {3D, 5D, 1D},
                 {9D, 1D, 4D}
             };
 
@@ -217,6 +217,56 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(12D, testResult[1, 0]);
             Assert.AreEqual(6D, testResult[1, 1]);
             Assert.AreEqual(5D, testResult[1, 2]);
+        }
+
+        [Test]
+        public void TestDotProduct()
+        {
+            var myX = new double[,] { { 1, 3, 0 }, { 2, 5, 1 }, { 1, 3, 0 } };
+            var myY = new double[,] { { 4, 5, 6 }, { 7, 4, 1 }, { 9, 6, 3 } };
+
+            var testResult = myX.DotProduct(myY);
+            Console.WriteLine(testResult.Print());
+        }
+
+        [Test]
+        public void TestStdByColumn()
+        {
+            var myX = new double[,] { { 1, 3, 0 }, { 2, 5, 1 }, { 1, 3, 0 } };
+            var testREsult = myX.StdByColumn();
+            Console.WriteLine(testREsult.ToMatrix().Print());
+            Assert.IsNotNull(testREsult);
+            Assert.AreEqual(3, testREsult.Length);
+
+            Assert.IsTrue(Math.Abs(1.4142135623731D -testREsult[0]) < 0.0001);
+            Assert.IsTrue(Math.Abs(3.78593889720018D - testREsult[1]) < 0.0001);
+            Assert.IsTrue(Math.Abs(0.577350269189626D - testREsult[2]) < 0.0001);
+        }
+
+        [Test]
+        public void TestScale()
+        {
+            var myX = new double[,] { { 1, 3, 0 }, { 2, 5, 1 }, { 1, 3, 0 } };
+            var testResult = myX.Scale();
+            Assert.IsNotNull(testResult);
+            Console.WriteLine(testResult.Print());
+            var expected = new double[,]
+            {
+                {-0.7071067811865474, -0.7071067811865474, -0.7071067811865475},
+                {1.4142135623730951, 1.4142135623730951, 1.4142135623730951},
+                {-0.7071067811865474, -0.7071067811865474, -0.7071067811865475}
+            };
+
+            for (var i = 0; i < myX.CountOfRows(); i++)
+            {
+                for (var j = 0; j < myX.CountOfColumns(); j++)
+                {
+                    var y = testResult[i, j];
+                    var t = expected[i, j];
+                    Assert.IsTrue(Math.Abs(y - t) < 0.000001);
+
+                }
+            }
         }
 
         [Test]
@@ -433,13 +483,36 @@ namespace NoFuture.Tests.Util
         }
 
         [Test]
-        public void TestCoaleseColumns()
+        public void TestCollapseLeft2Right()
         {
             var testInput = new double[,] {
                 {0, 0, 0, 0.5, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0.5, 0, 0}
             };
             var testResult = testInput.CollapseLeft2Right(doubles => doubles.Sum());
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(testInput.GetLength(0), testResult.Length);
+            Console.WriteLine(testResult.ToMatrix(1).Print());
+        }
+
+        [Test]
+        public void TestMean()
+        {
+            var testInput = new double[,]
+            {
+                { 1, 3, 0 }, 
+                { 2, 5, 1 }, 
+                { 1, 3, 0 }
+            };
+
+            var testResult = testInput.MeanByColumn();
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(3, testResult.Length);
+
+            Assert.AreEqual(Math.Round(1.333D,3), Math.Round(testResult[0],3));
+            Assert.IsTrue(Math.Abs(3.665 - testResult[1]) < 0.01);
+            
+            Assert.AreEqual(Math.Round(0.333, 3), Math.Round(testResult[2], 3));
             Console.WriteLine(testResult.ToMatrix(1).Print());
         }
 

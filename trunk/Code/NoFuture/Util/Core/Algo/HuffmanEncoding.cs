@@ -163,6 +163,7 @@ namespace NoFuture.Util.Core.Algo
         public string Word { get; }
         public int Count { get; }
         public int Index { get; }
+        public double Value { get; set; }
         public bool IsLeaf => Left == null && Right == null;
 
         public BitArray Encoding

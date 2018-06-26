@@ -22,7 +22,6 @@ namespace NoFuture.Util.Core.Algo
         private HuffmanEncoding _vocab;
         private string[] _allText;
         private List<Func<string, string>> _stringModifiers = new List<Func<string, string>>();
-        private double[,] _expTable;
         private double[,] _wi;
         private double[,] _wo;
         private readonly Random _myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
@@ -328,12 +327,6 @@ namespace NoFuture.Util.Core.Algo
             return Matrix.OneHotVector(node.Index, Vocab.GetLengthLeafs());
         }
 
-        public Word2VecOutputCalc GetOutputs(double[,] oneHot)
-        {
-            var n = _wi.GetLength(1);
-            return Word2VecExtensions.Word2VecMultiLayerNeuralNetwork(_wi, _wo, oneHot.Flatten(), n);
-        }
-
         /// <summary>
         /// Fig 6.31
         /// </summary>
@@ -342,7 +335,7 @@ namespace NoFuture.Util.Core.Algo
         public double[,] GetError(double[,] outputs)
         {
             var pr = outputs.GetSoftmax();
-            return pr.Apply(v => -1 * System.Math.Log(v));
+            return pr.ApplyToEach(v => -1 * System.Math.Log(v));
 
             //fig 6.31
             // e[j] = y[j] - t[j]
@@ -447,7 +440,7 @@ namespace NoFuture.Util.Core.Algo
         public static double[,] LossFunction(this double[,] o)
         {
             var pr = o.GetSoftmax();
-            return pr.Apply(v => -1 * System.Math.Log(v));
+            return pr.ApplyToEach(v => -1 * System.Math.Log(v));
         }
 
         /// <summary>
@@ -490,8 +483,8 @@ namespace NoFuture.Util.Core.Algo
         public static double[,] CalcLossFunctionL2(double[,] t, double[,] y)
         {
             var e = t.Subtract(y);
-            e = e.Times(e);
-            e = e.Apply(d => 0.5D * d);
+            e = e.DotProduct(e);
+            e = e.ApplyToEach(d => 0.5D * d);
             return e;
         }
 

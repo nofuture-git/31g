@@ -411,7 +411,7 @@ namespace NoFuture.Tests.Util
                 {
                     var contextOneHot = testing.ToOneHot(contextWord);
 
-                    var pr = testing.GetOutputs(contextOneHot);
+                    //var pr = testing.GetOutputs(contextOneHot);
 
 
                     /*

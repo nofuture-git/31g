@@ -29,26 +29,25 @@ namespace NoFuture.Util.Core.Math
     {
         public static double[,] Sum(double[,] a, double[,] b)
         {
-            return Arithmetic(a, b, false);
+            return Arithmetic(a, b, (d1, d2) => d1 + d2);
         }//end Sum
 
         public static double[,] Difference(double[,] a, double[,] b)
         {
-            return Arithmetic(a, b, true);
+            return Arithmetic(a, b, (d1, d2) => d1 - d2);
         }//end Difference
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        private static double[,] Arithmetic(double[,] a, double[,] b, bool asDiff)
+        public static double[,] Arithmetic(double[,] a, double[,] b, Func<double, double, double> expr)
         {
-
+            expr = expr ?? ((d1, d2) => d1 + d2);
             if (a.GetLongLength(0) != b.GetLongLength(0)) //equal rows
                 throw new NonConformable(
                     $"The number of rows in matrix 'a' must match the number of rows in matrix 'b' " +
-                    $"to solve for the {(asDiff ? "difference" : "sum")}.");
+                    $"to solve for the {expr}.");
             if (a.GetLongLength(1) != b.GetLongLength(1)) //equal columns
                 throw new NonConformable(
                     $"The number of columns in matrix 'a' must match the number of columns in matrix 'b' " +
-                    $"to solve for the {(asDiff ? "difference" : "sum")}.");
+                    $"to solve for the {expr}.");
 
             var iLength = a.GetLongLength(0);
             var jLength = a.GetLongLength(1);
@@ -59,10 +58,7 @@ namespace NoFuture.Util.Core.Math
             {
                 for (var j = 0L; j < jLength; j++)
                 {
-                    if(asDiff)
-                        sum[i,j] = a[i,j] - b[i,j];
-                    else
-                        sum[i,j] = a[i,j] + b[i,j];
+                    sum[i, j] = expr(a[i, j], b[i, j]);
                 }
             }
             return sum;
@@ -215,7 +211,7 @@ namespace NoFuture.Util.Core.Math
             return Matrix.Difference(a, b);
         }
 
-        public static double[,] Times(this double[,] a, double[,] b)
+        public static double[,] DotProduct(this double[,] a, double[,] b)
         {
             return Matrix.Product(a, b);
         }
@@ -308,7 +304,7 @@ namespace NoFuture.Util.Core.Math
             return dout;
         }
 
-        public static double[,] ToMatrix(this double[] a, int numOfColumns, bool truncEnding = false)
+        public static double[,] ToMatrix(this double[] a, int numOfColumns = 1, bool truncEnding = false)
         {
             if (a == null || !a.Any() || numOfColumns <= 0)
                 return new double[,] { };
@@ -338,7 +334,7 @@ namespace NoFuture.Util.Core.Math
             return matrix;
         }
 
-        public static double[,] Apply(this double[,] a, Func<double, double> expr)
+        public static double[,] ApplyToEach(this double[,] a, Func<double, double> expr)
         {
             if (expr == null)
                 return a;
@@ -347,6 +343,58 @@ namespace NoFuture.Util.Core.Math
                 for (var j = 0; j < a.CountOfColumns(); j++)
                 {
                     a[i, j] = expr(a[i, j]);
+                }
+            }
+
+            return a;
+        }
+
+        /// <summary>
+        /// https://github.com/ronxin/wevi/blob/master/js/vector_math.js @ function mean(X)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static double[] MeanByColumn(this double[,] a)
+        {
+            return a.CollapseTop2Bottom(row => row.Sum() / a.CountOfColumns());
+        }
+
+        /// <summary>
+        /// https://github.com/ronxin/wevi/blob/master/js/vector_math.js @ function std(X)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static double[] StdByColumn(this double[,] a)
+        {
+            var m = a.MeanByColumn();
+            var mul = Matrix.Arithmetic(a, a, (d, d1) => d * d1);
+            return mul.MeanByColumn().Select(System.Math.Sqrt).ToArray();
+        }
+
+        /// <summary>
+        /// https://github.com/ronxin/wevi/blob/master/js/vector_math.js @ function scale(x, center, scale)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="toCenter"></param>
+        /// <param name="toScale"></param>
+        /// <returns></returns>
+        public static double[,] Scale(this double[,] a, bool toCenter = true, bool toScale = true)
+        {
+            if (toCenter)
+            {
+                var m = a.MeanByColumn();
+                for (var i = 0; i < a.CountOfRows(); i++)
+                {
+                    a.ApplyAtRow(m, i, (d, d1) => d - d1);
+                }
+            }
+
+            if (toScale)
+            {
+                var s = a.StdByColumn();
+                for (var i = 0; i < a.CountOfRows(); i++)
+                {
+                    a.ApplyAtRow(s, i, (d, d1) => d / (d1 == 0D ? 0.0000001D : d1));
                 }
             }
 
