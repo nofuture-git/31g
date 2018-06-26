@@ -8,7 +8,7 @@ using NoFuture.Util.Core.Math;
 namespace NoFuture.Tests.Util
 {
     [TestFixture]
-    public class MathTests
+    public class MatrixTests
     {
         [Test]
         public void TestAreEqual()
@@ -48,13 +48,8 @@ namespace NoFuture.Tests.Util
             }
 
             Assert.AreNotEqual(0, myEigenvalues.Count);
-            Assert.AreEqual(3,myEigenvalues[0]);
-            Assert.AreEqual(-2,myEigenvalues[1]);
-
-
-            
-
-
+            Assert.AreEqual(3, myEigenvalues[0]);
+            Assert.AreEqual(-2, myEigenvalues[1]);
         }
 
         [Test]
@@ -103,7 +98,7 @@ namespace NoFuture.Tests.Util
             //this is the property of eigenvectors that is being sought
             //https://www.khanacademy.org/math/linear-algebra/alternate_bases/eigen_everything/v/linear-algebra-introduction-to-eigenvalues-and-eigenvectors
             // " the line that they span will not change" its just extended in the same direction
-            var really = Matrix.Product(typicalMatrix, new double[,] {{0.6D}, {0.4D}});
+            var really = Matrix.Product(typicalMatrix, new double[,] { { 0.6D }, { 0.4D } });
             Console.WriteLine(really.Print());//yep, this really is the {{0.6D}, {0.4D}}
 
             typicalMatrix = new[,]
@@ -129,7 +124,7 @@ namespace NoFuture.Tests.Util
             var dbl2 = 5.67468923D;
 
             var equalityOpWithThreshold = System.Math.Abs(dbl1 - dbl2) < 0.01;
-            
+
             Assert.IsTrue(equalityOpWithThreshold);
         }
 
@@ -152,15 +147,15 @@ namespace NoFuture.Tests.Util
         {
             var aSqrMatrix = new[,]
             {
-                {0D, 1D}, 
-                {4D, 5D}, 
+                {0D, 1D},
+                {4D, 5D},
                 {8D, 9D}
             };
 
             var numOfRows = aSqrMatrix.CountOfRows();
             var numOfColumns = aSqrMatrix.CountOfColumns();
 
-            Assert.AreEqual(3,numOfRows);
+            Assert.AreEqual(3, numOfRows);
             Assert.AreEqual(2, numOfColumns);
 
         }
@@ -172,8 +167,8 @@ namespace NoFuture.Tests.Util
             var numOfRows = testResult.GetLongLength(0);
             var numOfColumns = testResult.GetLongLength(1);
 
-            Assert.AreEqual(2,numOfRows);
-            Assert.AreEqual(1,numOfColumns);
+            Assert.AreEqual(2, numOfRows);
+            Assert.AreEqual(1, numOfColumns);
 
             Assert.AreEqual(1D, testResult[0, 0]);
             Assert.AreEqual(1D, testResult[1, 0]);
@@ -183,8 +178,8 @@ namespace NoFuture.Tests.Util
         [Test]
         public void TestMatrixProduct()
         {
-            var col = new double[,] {{1}, {1}};
-            var row = new double[,] {{1, 1}};
+            var col = new double[,] { { 1 }, { 1 } };
+            var row = new double[,] { { 1, 1 } };
             var testResult = Matrix.Product(col, row);
 
             var lenTop = testResult.GetLongLength(0);
@@ -238,7 +233,7 @@ namespace NoFuture.Tests.Util
             Assert.IsNotNull(testREsult);
             Assert.AreEqual(3, testREsult.Length);
 
-            Assert.IsTrue(Math.Abs(1.4142135623731D -testREsult[0]) < 0.0001);
+            Assert.IsTrue(Math.Abs(1.4142135623731D - testREsult[0]) < 0.0001);
             Assert.IsTrue(Math.Abs(3.78593889720018D - testREsult[1]) < 0.0001);
             Assert.IsTrue(Math.Abs(0.577350269189626D - testREsult[2]) < 0.0001);
         }
@@ -270,11 +265,41 @@ namespace NoFuture.Tests.Util
         }
 
         [Test]
+        public void TestSingularValueDecomp()
+        {
+            var myX = new double[,] { { 1, 3, 0 }, { 2, 5, 1 }, { 1, 3, 0 } };
+            var testResult = myX.SingularValueDecomp();
+            Assert.IsNotNull(testResult);
+            var expectedU = new[,]
+            {
+                {-0.4462018207622415, 0.5485471129706733, -0.7071067811865476},
+                {-0.7757627667637326, -0.6310246664775307, -8.956860613409269e-17},
+                {-0.44620182076224163, 0.5485471129706733, 0.7071067811865472}
+            };
+            var expectedS = new[] { 7.039606403458741, 0.6662894899235996, 0D }.Diag();
+
+            var expectedV = new[,]
+            {
+                {-0.3471684402484749, -0.24757272853370346, -0.904534033733291},
+                {-0.9313055848081169, 0.20435463487799882, 0.30151134457776385},
+                {-0.11019973593730749, -0.9470728204791102, 0.3015113445777633}
+            };
+
+            Assert.IsTrue(Matrix.AreEqual(expectedU, testResult.U));
+            Assert.IsTrue(Matrix.AreEqual(expectedS, testResult.D.Diag()));
+            Assert.IsTrue(Matrix.AreEqual(expectedV, testResult.V));
+
+            Console.WriteLine(testResult.U.Print());
+            Console.WriteLine(testResult.D.ToMatrix().Print());
+            Console.WriteLine(testResult.V.Print());
+        }
+
+        [Test]
         public void TestMatrixTranspose()
         {
             var testInput = new[,]
             {
-                {1D}, 
+                {1D},
                 {1D}
             };
 
@@ -290,7 +315,7 @@ namespace NoFuture.Tests.Util
         {
             var typicalMatrix = new[,]
             {
-                {3D, 5D, 1D}, 
+                {3D, 5D, 1D},
                 {9D, 1D, 4D}
             };
 
@@ -304,7 +329,7 @@ namespace NoFuture.Tests.Util
             Assert.AreEqual(1.5D, testResult[1, 2]);
 
             Console.WriteLine(testResult.Print());
-           
+
         }
 
         [Test]
@@ -320,7 +345,7 @@ namespace NoFuture.Tests.Util
             };
 
             Console.WriteLine(testInput.Print());
-            
+
         }
 
         [Test]
@@ -372,7 +397,7 @@ namespace NoFuture.Tests.Util
         public void TestApplyAtRow()
         {
             var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
-            var toAdd = new double[] {4, 1, 2};
+            var toAdd = new double[] { 4, 1, 2 };
 
             var testResult = testInput.ApplyAtRow(toAdd, 1, (d, d1) => d + d1);
             Console.WriteLine(testResult.Print());
@@ -397,7 +422,7 @@ namespace NoFuture.Tests.Util
         [Test]
         public void TestSelectRow()
         {
-            var testInput = new double[,] {{1, -1, 0}, {-1, 6, -2}, {0, -2, 3}};
+            var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
 
             var testResult = testInput.SelectRow(1);
             Assert.IsNotNull(testResult);
@@ -412,7 +437,7 @@ namespace NoFuture.Tests.Util
         {
             var testInput = new double[,] { { 1, -1, 8 }, { -7, 6, -2 }, { 0, -4, 5 } };
             var testResult = testInput.Flatten();
-            Assert.AreEqual(9,testResult.Length);
+            Assert.AreEqual(9, testResult.Length);
             Console.WriteLine(string.Join(",", testResult));
             Assert.AreEqual(testInput[0, 0], testResult[0]);
             Assert.AreEqual(testInput[1, 0], testResult[3]);
@@ -422,10 +447,10 @@ namespace NoFuture.Tests.Util
         [Test]
         public void TestToMatrix()
         {
-            var testInput = new double[] {1, -1, 8, -7, 6, -2, 0, -4, 5};
+            var testInput = new double[] { 1, -1, 8, -7, 6, -2, 0, -4, 5 };
             var testResult = testInput.ToMatrix(3);
 
-            Assert.AreEqual(1, testResult[0,0]);
+            Assert.AreEqual(1, testResult[0, 0]);
             Assert.AreEqual(-1, testResult[0, 1]);
             Assert.AreEqual(8, testResult[0, 2]);
             Assert.AreEqual(-7, testResult[1, 0]);
@@ -472,7 +497,7 @@ namespace NoFuture.Tests.Util
         public void TestCollapseTop2Bottom()
         {
             var testInput = new double[,] {
-                {0, 0, 0, 0.5, 0, 0, 0, 0}, 
+                {0, 0, 0, 0.5, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0.5, 0, 0}
             };
             var testResult = testInput.CollapseTop2Bottom(doubles => doubles.Sum());
@@ -500,8 +525,8 @@ namespace NoFuture.Tests.Util
         {
             var testInput = new double[,]
             {
-                { 1, 3, 0 }, 
-                { 2, 5, 1 }, 
+                { 1, 3, 0 },
+                { 2, 5, 1 },
                 { 1, 3, 0 }
             };
 
@@ -509,9 +534,9 @@ namespace NoFuture.Tests.Util
             Assert.IsNotNull(testResult);
             Assert.AreEqual(3, testResult.Length);
 
-            Assert.AreEqual(Math.Round(1.333D,3), Math.Round(testResult[0],3));
+            Assert.AreEqual(Math.Round(1.333D, 3), Math.Round(testResult[0], 3));
             Assert.IsTrue(Math.Abs(3.665 - testResult[1]) < 0.01);
-            
+
             Assert.AreEqual(Math.Round(0.333, 3), Math.Round(testResult[2], 3));
             Console.WriteLine(testResult.ToMatrix(1).Print());
         }
@@ -534,7 +559,11 @@ namespace NoFuture.Tests.Util
             testInput = new double[,] { { 1, 1, 0 }, { 1, 56, -2 }, { 101, 2, 3 } };
             Console.WriteLine(testInput.Print());
         }
+    }
 
+    [TestFixture]
+    public class MathTests
+    {
         [Test]
         public void TestRomanNumberConversion()
         {
@@ -623,3 +652,4 @@ namespace NoFuture.Tests.Util
         }
     }
 }
+

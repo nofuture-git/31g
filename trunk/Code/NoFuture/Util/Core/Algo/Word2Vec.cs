@@ -191,7 +191,7 @@ namespace NoFuture.Util.Core.Algo
         /// Item2 are the context words.
         /// </summary>
         /// <returns></returns>
-        public Tuple<HuffmanNode, List<HuffmanNode>> ReadNextWord()
+        public virtual Tuple<HuffmanNode, List<HuffmanNode>> ReadNextWord()
         {
             var target = GetTargetNode();
             if (target == null)
@@ -243,7 +243,7 @@ namespace NoFuture.Util.Core.Algo
             _wo = Matrix.RandomMatrix(n, v);
         }
 
-        internal HuffmanNode GetTargetNode(int? fromCorpusPosition = null)
+        protected internal virtual HuffmanNode GetTargetNode(int? fromCorpusPosition = null)
         {
             var pos = fromCorpusPosition ?? CurrentCorpusPosition;
             var targetWord = GetCorpusWordAt(pos);
@@ -252,7 +252,7 @@ namespace NoFuture.Util.Core.Algo
             return Vocab.GetLeafByWord(targetWord);
         }
 
-        internal List<HuffmanNode> GetContextNodes(int? fromCorpusPosition = null, Tuple<int, int> windowRange = null)
+        protected internal virtual List<HuffmanNode> GetContextNodes(int? fromCorpusPosition = null, Tuple<int, int> windowRange = null)
         {
             var pos = fromCorpusPosition ?? CurrentCorpusPosition;
 
@@ -286,7 +286,7 @@ namespace NoFuture.Util.Core.Algo
         /// the return values would be 25,26,27,29,30,31
         /// ]]>
         /// </returns>
-        internal int[] GetRandomIndicesAroundPosition(int? fromCorpusPosition = null, Tuple<int, int> windowRange = null)
+        protected internal virtual int[] GetRandomIndicesAroundPosition(int? fromCorpusPosition = null, Tuple<int, int> windowRange = null)
         {
             var pos = fromCorpusPosition ?? CurrentCorpusPosition;
             windowRange = windowRange ?? GetRandomWindowStartEnd();
@@ -312,7 +312,7 @@ namespace NoFuture.Util.Core.Algo
             return cIndices.ToArray();
         }
 
-        internal Tuple<int, int> GetRandomWindowStartEnd()
+        protected internal virtual Tuple<int, int> GetRandomWindowStartEnd()
         {
             var start = _myRand.Next() % Window;
             

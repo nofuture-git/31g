@@ -127,7 +127,7 @@ namespace NoFuture.Util.Core.Math
             return s;
         }//end GetAllOnesMatrix
 
-        public static bool AreEqual(double[,] a, double[,] b)
+        public static bool AreEqual(double[,] a, double[,] b, double tolerance = 0.0000001D)
         {
             if(a.CountOfRows() != b.CountOfRows() || a.CountOfColumns()!=b.CountOfColumns())
                 throw new NonConformable(
@@ -136,7 +136,7 @@ namespace NoFuture.Util.Core.Math
             {
                 for (var j = 0; j < a.CountOfColumns(); j++)
                 {
-                    if (System.Math.Abs(a[i, j] - b[i, j]) > 0.0000001D)
+                    if (System.Math.Abs(a[i, j] - b[i, j]) > tolerance)
                         return false;
 
                 }
@@ -244,6 +244,25 @@ namespace NoFuture.Util.Core.Math
             }
 
             return a;
+        }
+
+        /// <summary>
+        /// Puts <see cref="a"/> into a matrix at the diagonals
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static double[,] Diag(this double[] a)
+        {
+            var o = new double[a.Length, a.Length];
+            for (var i = 0; i < o.CountOfRows(); i++)
+            {
+                for (var j = 0; j < o.CountOfColumns(); j++)
+                {
+                    o[i, j] = i == j ? a[i] : 0;
+                }
+            }
+
+            return o;
         }
 
         public static double[] Flatten(this double[,] a)
@@ -399,6 +418,335 @@ namespace NoFuture.Util.Core.Math
             }
 
             return a;
+        }
+
+        public struct SvdOutput
+        {
+            public double[,] U;
+            public double[] D;
+            public double[,] V;
+        }
+
+        /// <summary>
+        /// https://github.com/ronxin/wevi/blob/master/js/vector_math.js @ function svd(A)
+        /// which is a copy of
+        /// http://stitchpanorama.sourceforge.net/Python/svd.py
+        /// which is cited on 
+        /// Compute the thin SVD from G. H. Golub and C. Reinsch, Numer. Math. 14, 403-420 (1970)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static SvdOutput SingularValueDecomp(this double[,] a)
+        {
+            var temp = 0D;
+            var prec = System.Math.Pow(2, -52);
+            var tolerance = 1e-64 / prec;
+            var itmax = 50D;
+            var c = 0D;
+            var i = 0;
+            var j = 0;
+            var k = 0;
+            var l = 0;
+
+            var u = a.Copy();
+            var m = u.CountOfRows();
+            var n = u.CountOfColumns();
+
+            if (m >= n)
+            {
+                //throw new NonConformable("Need more rows than columns");
+            }
+
+            var e = new double[n];
+            var q = new double[n];
+            var v = new double[n, n];
+
+            Func<double, double, double> pythag = (v1, v2) =>
+            {
+                v1 = System.Math.Abs(v1);
+                v2 = System.Math.Abs(v2);
+                if (v1 > v2)
+                    return v1 * System.Math.Sqrt(1D + v2 * v2 / v1 / v1);
+                if (v2 == 0D)
+                    return v1;
+                return v2 * System.Math.Sqrt(1D + v1 * v1 / v2 / v2);
+            };
+
+            // Householder's reduction to bidiagonal form
+            var f = 0D;
+            var g = 0D;
+            var h = 0D;
+            var x = 0D;
+            var y = 0D;
+            var z = 0D;
+            var s = 0D;
+
+            for (i = 0; i < n; i++)
+            {
+                e[i] = g;
+                s = 0.0D;
+                l = i + 1;
+                for (j = i; j < m; j++)
+                    s += (u[j,i] * u[j,i]);
+                if (s <= tolerance)
+                    g = 0.0;
+                else
+                {
+                    f = u[i,i];
+                    g = System.Math.Sqrt(s);
+                    if (f >= 0.0) g = -g;
+                    h = f * g - s;
+                    u[i,i] = f - g;
+                    for (j = l; j < n; j++)
+                    {
+                        s = 0.0;
+                        for (k = i; k < m; k++)
+                            s += u[k, i] * u[k, j];
+                        f = s / h;
+                        for (k = i; k < m; k++)
+                            u[k, j] += f * u[k, i];
+                    }
+                }
+
+                q[i] = g;
+                s = 0.0;
+                for (j = l; j < n; j++)
+                    s = s + u[i, j] * u[i, j];
+                if (s <= tolerance)
+                    g = 0.0;
+                else
+                {
+                    f = u[i,i + 1];
+                    g = System.Math.Sqrt(s);
+                    if (f >= 0.0) g = -g;
+                    h = f * g - s;
+                    u[i,i + 1] = f - g;
+                    for (j = l; j < n; j++) e[j] = u[i,j] / h;
+                    for (j = l; j < m; j++)
+                    {
+                        s = 0.0;
+                        for (k = l; k < n; k++)
+                            s += (u[j, k] * u[i, k]);
+                        for (k = l; k < n; k++)
+                            u[j, k] += s * e[k];
+                    }
+                }
+
+                y = System.Math.Abs(q[i]) + System.Math.Abs(e[i]);
+                if (y > x)
+                    x = y;
+            }
+
+            // accumulation of right hand gtransformations
+            for (i = (int)n - 1; i != -1; i += -1)
+            {
+                if (g != 0.0D)
+                {
+                    h = g * u[i, i + 1];
+                    for (j = l; j < n; j++)
+                        v[j, i] = u[i, j] / h;
+                    for (j = l; j < n; j++)
+                    {
+                        s = 0.0;
+                        for (k = l; k < n; k++)
+                            s += u[i, k] * v[k, j];
+                        for (k = l; k < n; k++)
+                            v[k, j] += (s * v[k, i]);
+                    }
+                }
+                for (j = l; j < n; j++)
+                {
+                    v[i,j] = 0;
+                    v[j,i] = 0;
+                }
+                v[i,i] = 1;
+                g = e[i];
+                l = i;
+            }
+
+            // accumulation of left hand transformations
+            for (i = (int)n - 1; i != -1; i += -1)
+            {
+                l = i + 1;
+                g = q[i];
+                for (j = l; j < n; j++)
+                    u[i,j] = 0;
+                if (g != 0.0)
+                {
+                    h = u[i, i] * g;
+                    for (j = l; j < n; j++)
+                    {
+                        s = 0.0;
+                        for (k = l; k < m; k++) s += u[k,i] * u[k,j];
+                        f = s / h;
+                        for (k = i; k < m; k++) u[k,j] += f * u[k,i];
+                    }
+                    for (j = i; j < m; j++) u[j,i] = u[j,i] / g;
+                }
+                else
+                    for (j = i; j < m; j++) u[j,i] = 0;
+                u[i,i] += 1;
+            }
+
+            // diagonalization of the bidiagonal form
+            prec = prec * x;
+            for (k = (int) n - 1; k != -1; k += -1)
+            {
+                for (var iteration = 0; iteration < itmax; iteration++)
+                {
+                    // test f splitting
+                    var test_convergence = false;
+                    for (l = k; l != -1; l += -1)
+                    {
+                        if (System.Math.Abs(e[l]) <= prec)
+                        {
+                            test_convergence = true;
+                            break;
+                        }
+
+                        if (System.Math.Abs(q[l - 1]) <= prec)
+                            break;
+                    }
+
+                    if (!test_convergence)
+                    {
+                        // cancellation of e[l] if l>0
+                        c = 0.0;
+                        s = 1.0;
+                        var l1 = l - 1;
+                        for (i = l; i < k + 1; i++)
+                        {
+                            f = s * e[i];
+                            e[i] = c * e[i];
+                            if (System.Math.Abs(f) <= prec)
+                                break;
+                            g = q[i];
+                            h = pythag(f, g);
+                            q[i] = h;
+                            c = g / h;
+                            s = -f / h;
+                            for (j = 0; j < m; j++)
+                            {
+                                y = u[j, l1];
+                                z = u[j, i];
+                                u[j, l1] = y * c + (z * s);
+                                u[j, i] = -y * s + (z * c);
+                            }
+                        }
+                    }
+
+                    // test f convergence
+                    z = q[k];
+                    if (l == k)
+                    {
+                        //convergence
+                        if (z < 0.0)
+                        {
+                            //q[k] is made non-negative
+                            q[k] = -z;
+                            for (j = 0; j < n; j++)
+                                v[j, k] = -v[j, k];
+                        }
+
+                        break; //break out of iteration loop and move on to next k value
+                    }
+
+                    //console.assert(iteration < itmax - 1, 'Error: no convergence.');
+
+                    // shift from bottom 2x2 minor
+                    x = q[l];
+                    y = q[k - 1];
+                    g = e[k - 1];
+                    h = e[k];
+                    f = ((y - z) * (y + z) + (g - h) * (g + h)) / (2.0 * h * y);
+                    g = pythag(f, 1.0);
+                    if (f < 0.0)
+                        f = ((x - z) * (x + z) + h * (y / (f - g) - h)) / x;
+                    else
+                        f = ((x - z) * (x + z) + h * (y / (f + g) - h)) / x;
+                    // next QR transformation
+                    c = 1.0;
+                    s = 1.0;
+                    for (i = l + 1; i < k + 1; i++)
+                    {
+                        g = e[i];
+                        y = q[i];
+                        h = s * g;
+                        g = c * g;
+                        z = pythag(f, h);
+                        e[i - 1] = z;
+                        c = f / z;
+                        s = h / z;
+                        f = x * c + g * s;
+                        g = -x * s + g * c;
+                        h = y * s;
+                        y = y * c;
+                        for (j = 0; j < n; j++)
+                        {
+                            x = v[j, i - 1];
+                            z = v[j, i];
+                            v[j, i - 1] = x * c + z * s;
+                            v[j, i] = -x * s + z * c;
+                        }
+
+                        z = pythag(f, h);
+                        q[i - 1] = z;
+                        c = f / z;
+                        s = h / z;
+                        f = c * g + s * y;
+                        x = -s * g + c * y;
+                        for (j = 0; j < m; j++)
+                        {
+                            y = u[j, i - 1];
+                            z = u[j, i];
+                            u[j, i - 1] = y * c + z * s;
+                            u[j, i] = -y * s + z * c;
+                        }
+                    }
+
+                    e[l] = 0.0;
+                    e[k] = f;
+                    q[k] = x;
+                }
+            }
+
+            // vt = transpose(v)
+            // return (u,q,vt)
+            for (i = 0; i < q.Length; i++)
+                if (q[i] < prec)
+                    q[i] = 0;
+
+            // sort eigenvalues
+            for (i = 0; i < n; i++)
+            {
+                // writeln(q)
+                for (j = i - 1; j >= 0; j--)
+                {
+                    if (q[j] < q[i])
+                    {
+                        // writeln(i,'-',j)
+                        c = q[j];
+                        q[j] = q[i];
+                        q[i] = c;
+                        for (k = 0; k < u.GetLength(0); k++)
+                        {
+                            temp = u[k,i];
+                            u[k,i] = u[k,j];
+                            u[k,j] = temp;
+                        }
+                        for (k = 0; k < v.GetLength(0); k++)
+                        {
+                            temp = v[k,i];
+                            v[k,i] = v[k,j];
+                            v[k,j] = temp;
+                        }
+
+                        i = j;
+                    }
+                }
+            }
+
+            return new SvdOutput {U = u, D = q, V = v};
         }
 
         public static double[,] Transpose(this double[,] a)
@@ -605,6 +953,20 @@ namespace NoFuture.Util.Core.Math
             }
             return select.ToArray();
         }//SelectColumn
+
+        public static double[,] Copy(this double[,] source)
+        {
+            var dest = new double[source.CountOfRows(), source.CountOfColumns()];
+            for (var i = 0; i < dest.CountOfRows(); i++)
+            {
+                for (var j = 0; j < dest.CountOfColumns(); j++)
+                {
+                    dest[i, j] = source[i, j];
+                }
+            }
+
+            return dest;
+        }
 
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         private static long[] GetApplicableCofactorIndices(long currentIndex, long originalLength)

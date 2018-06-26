@@ -372,79 +372,127 @@ namespace NoFuture.Tests.Util
         }
 
         [Test]
-        public void TestMakeSenseOfWord2Vec()
+        public void TestGetTestData()
         {
-            var corpus = @"The dog saw a cat. The dog chased a cat. The cat climbed a tree";
-
-            var testing = new Word2Vec
+            var testInput = "drink^juice|apple,eat^apple|orange,drink^juice|rice,drink^milk|juice,drink^rice|milk,drink^milk|water,orange^apple|juice,apple^drink|juice,rice^drink|milk,milk^water|drink,water^juice|drink,juice^water|drink";
+            var testResult = Word2VecTestClass.GetTestData(testInput);
+            Assert.AreNotEqual(0, testResult.Count);
+            var expected = new List<string[]>
             {
-                Sample = 0,
-                Size = 3,
-                Window =  1
+                new [] {"apple", "drink", "juice"},
+                new [] {"orange", "eat", "apple"},
+                new [] {"rice", "drink", "juice"},
+                new [] {"juice", "drink", "milk"},
+                new [] {"milk", "drink", "rice"},
+                new [] {"water", "drink", "milk"},
+                new [] {"juice", "orange", "apple"},
+                new [] {"juice", "apple", "drink"},
+                new [] {"milk", "rice", "drink"},
+                new [] {"drink", "milk", "water"},
+                new [] {"drink", "water", "juice"},
+                new [] {"drink", "juice", "water"}
             };
-            testing.BuildVocab(corpus);
-
-            var vocab = testing.Vocab;
-            var leafs = vocab.GetLeafs();
-            Console.WriteLine($"{"Words",-12}Index");
-
-            foreach (var leaf in leafs)
+            for (var i = 0; i < testResult.Count; i++)
             {
-                Console.WriteLine($"{leaf.Word,-12}{leaf.Index}");
-            }
-
-            var wi = Matrix.RandomMatrix(8, 3);
-            Console.WriteLine("Initial WI");
-            Console.WriteLine(wi.Print());
-
-            var wo = Matrix.RandomMatrix(3, 8);
-            Console.WriteLine("Initial W0");
-            Console.WriteLine(wo.Print());
-
-            var readWord = testing.ReadNextWord();
-            while (readWord != null)
-            {
-                
-                var targetOneHot = testing.ToOneHot(readWord.Item1);
-
-                foreach (var contextWord in readWord.Item2)
-                {
-                    var contextOneHot = testing.ToOneHot(contextWord);
-
-                    //var pr = testing.GetOutputs(contextOneHot);
-
-
-                    /*
-                     * This function takes input as a one-hot encoded word vector and this vector,
-                     * as well as a weighted sum is passed to a hidden layer.  By using the
-                     * activation function, which is the sigmoid function in this case, output
-                     * is generated from the hidden layer and this output is passed to the next layer,
-                     * which is the output layer.
-                     *
-                     */
-                    //L2
-
-                    //backpropagation - this is where it gets unclear 
-                    //where is the gradient applied?
-                    //wi.AddAtRow(errVector.Flatten(), contextWord.Index);
-                    //wo.AddAtColumn(errVector.Flatten(), contextWord.Index);
-                }
-
-                Console.WriteLine($"WI after word {testing.CurrentCorpusPosition}");
-                Console.WriteLine(wi.Print());
-
-                Console.WriteLine($"W0 after word {testing.CurrentCorpusPosition}");
-                Console.WriteLine(wo.Print());
-
-                readWord = testing.ReadNextWord();
+                var ex = expected[i];
+                var tr = testResult[i];
+                Assert.AreEqual(ex[0],tr.Item1);
+                Assert.AreEqual(ex[1], tr.Item2);
+                Assert.AreEqual(ex[2], tr.Item3);
             }
         }
 
         [Test]
-        public void TestWord2VecMath()
+        public void TestGetTestDataVocab()
         {
+            var testInput = "drink^juice|apple,eat^apple|orange,drink^juice|rice,drink^milk|juice,drink^rice|milk,drink^milk|water,orange^apple|juice,apple^drink|juice,rice^drink|milk,milk^water|drink,water^juice|drink,juice^water|drink";
+            var testInter = Word2VecTestClass.GetTestData(testInput);
+            var testResult = Word2VecTestClass.GetTestDataVocab(testInter);
+            Assert.IsNotNull(testResult);
+            foreach (var t in testResult)
+            {
+                Console.WriteLine(String.Join(", ", t.Key,t.Value));
+            }
+        }
 
+        [Test]
+        public void TestInitTest()
+        {
+            var testInput = "drink^juice|apple,eat^apple|orange,drink^juice|rice,drink^milk|juice,drink^rice|milk,drink^milk|water,orange^apple|juice,apple^drink|juice,rice^drink|milk,milk^water|drink,water^juice|drink,juice^water|drink";
+            var testSubject = new Word2VecTestClass();
+            testSubject.InitTest(testInput);
+            //"apple", "drink", "juice"
+            var testResult = testSubject.ReadNextWord();
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Item1);
+            Assert.IsNotNull(testResult.Item2);
+            Assert.AreEqual(2, testResult.Item2.Count);
+            Assert.AreEqual("apple", testResult.Item1.Word);
+            Assert.IsTrue(testResult.Item2.Any(v => v.Word == "drink"));
+            Assert.IsTrue(testResult.Item2.Any(v => v.Word == "juice"));
+        }
+    }
 
+    public class Word2VecTestClass : Word2Vec
+    {
+        private List<Tuple<string, string, string>> _testCorpus;
+
+        public void InitTest(string testData)
+        {
+            _testCorpus = GetTestData(testData);
+            var dict = GetTestDataVocab(_testCorpus);
+            BuildVocab(dict);
+        }
+
+        public static List<Tuple<string, string, string>> GetTestData(string someData)
+        {
+            someData = someData ?? "";
+            var pairs = someData.Split(',');
+            var dataOut = new List<Tuple<string, string, string>>();
+            for (var i = 0; i < pairs.Length; i++)
+            {
+                var kj = pairs[i].Trim().Split('|');
+                var t = kj.First(c => !c.Contains("^"));
+                var vs = kj.First(c => c.Contains("^")).Split('^');
+                dataOut.Add(new Tuple<string, string, string>(t, vs[0],vs[1]));
+            }
+
+            return dataOut;
+        }
+
+        public static Dictionary<string, int> GetTestDataVocab(List<Tuple<string, string, string>> data)
+        {
+            var serial = new List<string>();
+            foreach (var w in data)
+            {
+                serial.Add(w.Item1);
+                serial.Add(w.Item2);
+                serial.Add(w.Item3);
+            }
+
+            var words = serial.Distinct();
+            var dict = new Dictionary<string, int>();
+            foreach (var w in words)
+            {
+                var c = serial.Count(v => string.Equals(w, v));
+                dict.Add(w,c);
+            }
+
+            return dict;
+        }
+
+        protected internal override HuffmanNode GetTargetNode(int? fromCorpusPosition = null)
+        {
+            var w = _testCorpus[CurrentCorpusPosition];
+            return Vocab.GetLeafByWord(w.Item1);
+        }
+
+        protected internal override List<HuffmanNode> GetContextNodes(int? fromCorpusPosition = null, Tuple<int, int> windowRange = null)
+        {
+            var w = _testCorpus[CurrentCorpusPosition];
+            var l1 = Vocab.GetLeafByWord(w.Item2);
+            var l2 = Vocab.GetLeafByWord(w.Item3);
+            return new List<HuffmanNode> {l1, l2};
         }
     }
 }
