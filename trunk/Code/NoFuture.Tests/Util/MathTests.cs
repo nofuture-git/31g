@@ -559,6 +559,58 @@ namespace NoFuture.Tests.Util
             testInput = new double[,] { { 1, 1, 0 }, { 1, 56, -2 }, { 101, 2, 3 } };
             Console.WriteLine(testInput.Print());
         }
+
+        [Test]
+        public void TestPrintJsStyle()
+        {
+            var testInput = new [,]
+            {
+                {-0.14524321, -0.3209983, 0.9358763},
+                {0.8905313, 0.36975, 0.265},
+                {-0.431, 0.8719205, 0.2321555}
+            };
+
+            Console.WriteLine(testInput.Print("js"));
+        }
+
+        [Test]
+        public void TestPrintCsStyle()
+        {
+            var testInput = new[,]
+            {
+                {-0.14524321, -0.3209983, 0.9358763},
+                {0.8905313, 0.36975, 0.265},
+                {-0.431, 0.8719205, 0.2321555}
+            };
+
+            Console.WriteLine(testInput.Print("cs"));
+        }
+
+        [Test]
+        public void TestPrintPsStyle()
+        {
+            var testInput = new[,]
+            {
+                {-0.14524321, -0.3209983, 0.9358763},
+                {0.8905313, 0.36975, 0.265},
+                {-0.431, 0.8719205, 0.2321555}
+            };
+
+            Console.WriteLine(testInput.Print("ps"));
+        }
+
+        [Test]
+        public void TestPrintRstyle()
+        {
+            var testInput = new[,]
+            {
+                {-0.14524321, -0.3209983, 0.9358763},
+                {0.8905313, 0.36975, 0.265},
+                {-0.431, 0.8719205, 0.2321555}
+            };
+
+            Console.WriteLine(testInput.Print("r"));
+        }
     }
 
     [TestFixture]

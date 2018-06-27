@@ -425,6 +425,8 @@ namespace NoFuture.Tests.Util
             };
 
             testSubject.InitTest(testInput);
+            Console.WriteLine(testSubject.WI.Print());
+            Console.WriteLine(testSubject.WO.Print());
             
         }
 

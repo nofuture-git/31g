@@ -851,7 +851,77 @@ namespace NoFuture.Util.Core.Math
             return Matrix.Product(aDevXaDevTick, (1D/a.CountOfRows()));
         }//end Covariance
 
-        public static string Print(this double[,] a)
+        public static string Print(this double[,] a, string style = null)
+        {
+            return style == null
+                ? PrintRstyle(a)
+                : PrintCodeStyle(a, style);
+        }//end Print
+
+        internal static string PrintCodeStyle(double[,] a, string style = "js")
+        {
+            var open = "[";
+            var close = "]";
+            var str = new StringBuilder();
+            var isRstyle = new[] {"r"}.Any(v => string.Equals(v, style, StringComparison.OrdinalIgnoreCase));
+            if (new[] { "cs", "c#" }.Any(v => string.Equals(style, v, StringComparison.OrdinalIgnoreCase)))
+            {
+                open = "{";
+                close = "}";
+                str.Append("new[,] ");
+            }
+
+            if (new[] {"ps", "powershell"}.Any(v => string.Equals(v, style, StringComparison.OrdinalIgnoreCase)))
+            {
+                open = "@(";
+                close = ")";
+            }
+
+            if (new[] {"java"}.Any(v => string.Equals(v, style, StringComparison.OrdinalIgnoreCase)))
+            {
+                open = "{";
+                close = "}";
+                str.Append("new Double[][] ");
+            }
+
+            if (isRstyle)
+            {
+                open = "";
+                close = "";
+                str.Append("matrix(c(");
+            }
+
+            str.AppendLine(open);
+            var lines = new List<string>();
+            for (var i = 0; i < a.CountOfRows(); i++)
+            {
+                var strLn = new StringBuilder();
+                strLn.Append(open);
+                var vals = new List<string>();
+                for (var j = 0; j < a.CountOfColumns(); j++)
+                {
+                    vals.Add(a[i,j].ToString(CultureInfo.InvariantCulture));
+                }
+
+                strLn.Append(string.Join(",", vals));
+                strLn.Append(close);
+                lines.Add(strLn.ToString());
+            }
+
+            str.Append(string.Join($",{Environment.NewLine}", lines));
+            str.AppendLine("");
+            if (!isRstyle)
+            {
+                str.Append(close);
+            }
+            else
+            {
+                str.Append($"), ncol={a.CountOfColumns()}, byrow=TRUE)");
+            }
+            return str.ToString();
+        }
+
+        internal static string PrintRstyle(double[,] a)
         {
             var str = new StringBuilder();
 
@@ -859,13 +929,13 @@ namespace NoFuture.Util.Core.Math
             var maxLen = 0;
             var anyNeg = false;
             for (var i = 0; i < a.CountOfRows(); i++)
-                for (var j = 0; j < a.CountOfColumns(); j++)
-                {
-                    if (a[i, j].ToString(CultureInfo.InvariantCulture).Length > maxLen)
-                        maxLen = a[i, j].ToString(CultureInfo.InvariantCulture).Length;
-                    if (a[i, j] < 0)
-                        anyNeg = true;
-                }
+            for (var j = 0; j < a.CountOfColumns(); j++)
+            {
+                if (a[i, j].ToString(CultureInfo.InvariantCulture).Length > maxLen)
+                    maxLen = a[i, j].ToString(CultureInfo.InvariantCulture).Length;
+                if (a[i, j] < 0)
+                    anyNeg = true;
+            }
 
             maxLen += 2;
 
@@ -896,7 +966,7 @@ namespace NoFuture.Util.Core.Math
             }
 
             return str.ToString();
-        }//end Print
+        }
 
         public static double[,] GetSoftmax(this double[,] matrix)
         {
