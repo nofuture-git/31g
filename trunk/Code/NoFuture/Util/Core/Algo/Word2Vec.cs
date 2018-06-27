@@ -22,8 +22,8 @@ namespace NoFuture.Util.Core.Algo
         private HuffmanEncoding _vocab;
         private string[] _allText;
         private List<Func<string, string>> _stringModifiers = new List<Func<string, string>>();
-        private double[,] _wi;
-        private double[,] _wo;
+        //private double[,] _wi;
+        //private double[,] _wo;
         private readonly Random _myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
 
         public Word2Vec()
@@ -130,6 +130,9 @@ namespace NoFuture.Util.Core.Algo
 
         public int CurrentCorpusPosition { get; protected internal set; } = 0;
 
+        public double[,] WI { get; protected internal set; }
+        public double[,] WO { get; protected internal set; }
+
         /// <summary>
         /// Allows caller to control how the corpus text is modified
         /// before the vocab is built.
@@ -191,7 +194,7 @@ namespace NoFuture.Util.Core.Algo
         /// Item2 are the context words.
         /// </summary>
         /// <returns></returns>
-        public virtual Tuple<HuffmanNode, List<HuffmanNode>> ReadNextWord()
+        public virtual Word2VecInputs ReadNextWord()
         {
             var target = GetTargetNode();
             if (target == null)
@@ -199,7 +202,7 @@ namespace NoFuture.Util.Core.Algo
             var contexts = GetContextNodes();
 
             CurrentCorpusPosition += 1;
-            return new Tuple<HuffmanNode, List<HuffmanNode>>(target,contexts);
+            return new Word2VecInputs {ContextWords = contexts, CurrentWord = target};
         }
 
         protected internal virtual string GetCorpusWordAt(int position)
@@ -235,12 +238,12 @@ namespace NoFuture.Util.Core.Algo
             return alpha;
         }
 
-        internal void InitWiWo(int v = 0)
+        protected internal virtual void InitWiWo(int v = 0)
         {
             v = v > 0 ? v : Vocab.GetLengthLeafs();
             var n = Size;
-            _wi = Matrix.RandomMatrix(v, n);
-            _wo = Matrix.RandomMatrix(n, v);
+            WI = Matrix.RandomMatrix(v, n);
+            WO = Matrix.RandomMatrix(n, v);
         }
 
         protected internal virtual HuffmanNode GetTargetNode(int? fromCorpusPosition = null)
@@ -320,32 +323,39 @@ namespace NoFuture.Util.Core.Algo
             return new Tuple<int, int>(start,end);
         }
 
-        public double[,] ToOneHot(HuffmanNode node)
+        public double[,] ToVector(HuffmanNode node)
         {
             if(node == null)
                 throw new ArgumentNullException(nameof(node));
             return Matrix.OneHotVector(node.Index, Vocab.GetLengthLeafs());
         }
 
-        /// <summary>
-        /// Fig 6.31
-        /// </summary>
-        /// <param name="outputs"></param>
-        /// <returns></returns>
-        public double[,] GetError(double[,] outputs)
+        public double[,] ToVector(List<HuffmanNode> nodes)
         {
-            var pr = outputs.GetSoftmax();
-            return pr.ApplyToEach(v => -1 * System.Math.Log(v));
+            if(nodes == null)
+                throw new ArgumentNullException(nameof(nodes));
 
-            //fig 6.31
-            // e[j] = y[j] - t[j]
+            var oneHot = new double[1,Vocab.GetLengthLeafs()];
+            foreach (var node in nodes)
+            {
+                var nodeOneHot = Matrix.OneHotVector(node.Index, Vocab.GetLengthLeafs());
+                for (var j = 0; j < nodeOneHot.CountOfColumns(); j++)
+                {
+                    oneHot[0, j] += nodeOneHot[0, j];
+                }
+            }
 
-            //only clue about backpropagation is this...
-            //fig 6.32 
-            //wo[j] = wo[j] - mysteryEta * e[j] * h[j]
-            //fig 6.33
-            //wi[i] = wi[i] - mysteryEta * Sum(j => wo[i,j] * e[j])
+            oneHot.ApplyToEach(v => v / nodes.Count);
+            return oneHot;
         }
+
+        public virtual double[,] FeedFoward(Word2VecInputs inputs)
+        {
+            var oneHot = IsCbow ? ToVector(inputs.ContextWords) : ToVector(inputs.CurrentWord);
+
+            return oneHot.DotProduct(WI).DotProduct(WO).GetSoftmax();
+        }
+        
 
         /// <summary>
         /// http://mccormickml.com/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_II_The_Continuous_Bag-of-Words_Model.pdf
@@ -360,28 +370,28 @@ namespace NoFuture.Util.Core.Algo
             //a js example https://ronxin.github.io/wevi/
             var eta = Alpha; // this is the step-size (aka learning rate)
             var C = Window;
-            for (var i = 0; i < _wo.CountOfRows(); i++)
+            for (var i = 0; i < WO.CountOfRows(); i++)
             {
-                for (var j = 0; j < _wo.CountOfColumns(); j++)
+                for (var j = 0; j < WO.CountOfColumns(); j++)
                 {
-                    _wo[i, j] = _wo[i, j] - eta * (y[j] - t[j]) * hx[i];
+                    WO[i, j] = WO[i, j] - eta * (y[j] - t[j]) * hx[i];
                 }
             }
 
-            var eh = new double[_wo.CountOfRows()];
-            for (var i = 0; i < _wo.CountOfRows(); i++)
+            var eh = new double[WO.CountOfRows()];
+            for (var i = 0; i < WO.CountOfRows(); i++)
             {
-                for (var j = 0; j < _wo.CountOfColumns(); j++)
+                for (var j = 0; j < WO.CountOfColumns(); j++)
                 {
-                    eh[i] += (y[j] - t[j]) * _wo[i, j];
+                    eh[i] += (y[j] - t[j]) * WO[i, j];
                 }
             }
 
-            for (var i = 0; i < _wi.CountOfRows(); i++)
+            for (var i = 0; i < WI.CountOfRows(); i++)
             {
-                for (var j = 0; j < _wi.CountOfColumns(); j++)
+                for (var j = 0; j < WI.CountOfColumns(); j++)
                 {
-                    _wi[i, j] = _wi[i, j] - eta * (1D / C) * eh[j] * x[j];
+                    WI[i, j] = WI[i, j] - eta * (1D / C) * eh[j] * x[j];
                 }
             }
         }
@@ -398,9 +408,9 @@ namespace NoFuture.Util.Core.Algo
             var eta = Alpha; // this is the step-size (aka learning rate)
             var C = Window;
             
-            for (var i = 0; i < _wo.CountOfRows(); i++)
+            for (var i = 0; i < WO.CountOfRows(); i++)
             {
-                for (var j = 0; j < _wo.CountOfColumns(); j++)
+                for (var j = 0; j < WO.CountOfColumns(); j++)
                 {
                     var sumDiff = 0D;
                     for (var c = 0; c < C; c++)
@@ -409,14 +419,14 @@ namespace NoFuture.Util.Core.Algo
                     }
 
                     var diff = eta * sumDiff * hx[i];
-                    _wo[i, j] = _wo[i, j] - diff;
+                    WO[i, j] = WO[i, j] - diff;
                 }
             }
 
-            for (var i = 0; i < _wi.CountOfRows(); i++)
+            for (var i = 0; i < WI.CountOfRows(); i++)
             {
                 var sumDiffJ = 0D;
-                for (var j = 0; j < _wi.CountOfColumns(); j++)
+                for (var j = 0; j < WI.CountOfColumns(); j++)
                 {
                     var sumDiffC = 0D;
                     for (var c = 0; c < C; c++)
@@ -424,12 +434,12 @@ namespace NoFuture.Util.Core.Algo
                         sumDiffC += (y[c, j] - t[c, j]);
                     }
 
-                    sumDiffJ += sumDiffC * _wo[j, i];
+                    sumDiffJ += sumDiffC * WO[j, i];
                 }
 
-                for (var j = 0; j < _wi.CountOfColumns(); j++)
+                for (var j = 0; j < WI.CountOfColumns(); j++)
                 {
-                    _wi[i, j] = _wi[i, j] - eta * sumDiffJ * x[j];
+                    WI[i, j] = WI[i, j] - eta * sumDiffJ * x[j];
                 }
             }
         }
@@ -537,6 +547,12 @@ namespace NoFuture.Util.Core.Algo
 
             return output;
         }
+    }
+
+    public class Word2VecInputs
+    {
+        public HuffmanNode CurrentWord { get; set; }
+        public List<HuffmanNode> ContextWords { get; set; }
     }
 
     public class Word2VecOutputCalc

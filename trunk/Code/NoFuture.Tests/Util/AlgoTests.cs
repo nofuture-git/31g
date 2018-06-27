@@ -360,15 +360,72 @@ namespace NoFuture.Tests.Util
             {
                 var b = testing.ReadNextWord();
                 Assert.IsNotNull(b);
-                Assert.IsNotNull(b.Item1);
-                Assert.IsNotNull(b.Item2);
-                Assert.AreNotEqual(0, b.Item2.Count);
+                Assert.IsNotNull(b.CurrentWord);
+                Assert.IsNotNull(b.ContextWords);
+                Assert.AreNotEqual(0, b.ContextWords.Count);
             }
 
             testing.CurrentCorpusPosition = 25;
             var testResultNull = testing.ReadNextWord();
             Assert.IsNull(testResultNull);
 
+        }
+
+        [Test]
+        public void TestToVector()
+        {
+            var corpus = @"The dog saw a cat. The dog chased a cat. The cat climbed a tree";
+
+            var testing = new Word2Vec
+            {
+                Sample = 0,
+                Size = 3,
+                Window = 1
+            };
+            testing.BuildVocab(corpus);
+            var word00 = testing.Vocab.GetLeafByWord("dog");
+            var word01 = testing.Vocab.GetLeafByWord("cat");
+
+            var testResult = testing.ToVector(word00);
+            for (var j = 0; j < testResult.CountOfColumns(); j++)
+            {
+                if (j == word00.Index)
+                {
+                    Assert.AreEqual(1D, testResult[0,j]);
+                }
+                else
+                {
+                    Assert.AreEqual(0D, testResult[0,j]);
+                }
+            }
+
+            testResult = testing.ToVector(new List<HuffmanNode> {word00, word01});
+            for (var j = 0; j < testResult.CountOfColumns(); j++)
+            {
+                if (j == word00.Index || j == word01.Index)
+                {
+                    Assert.IsTrue(System.Math.Abs(testResult[0,j] - 0.5) < 0.0001);
+                }
+                else
+                {
+                    Assert.AreEqual(0D, testResult[0, j]);
+                }
+            }
+        }
+
+        [Test]
+        public void TestFeedFoward()
+        {
+            var testInput = "drink^juice|apple,eat^apple|orange,drink^juice|rice,drink^milk|juice,drink^rice|milk,drink^milk|water,orange^apple|juice,apple^drink|juice,rice^drink|milk,milk^water|drink,water^juice|drink,juice^water|drink";
+            var testSubject = new Word2VecTestClass
+            {
+                Size = 5,
+                Sample = 0,
+                Alpha = 0.2D
+            };
+
+            testSubject.InitTest(testInput);
+            
         }
 
         [Test]
@@ -424,12 +481,12 @@ namespace NoFuture.Tests.Util
             //"apple", "drink", "juice"
             var testResult = testSubject.ReadNextWord();
             Assert.IsNotNull(testResult);
-            Assert.IsNotNull(testResult.Item1);
-            Assert.IsNotNull(testResult.Item2);
-            Assert.AreEqual(2, testResult.Item2.Count);
-            Assert.AreEqual("apple", testResult.Item1.Word);
-            Assert.IsTrue(testResult.Item2.Any(v => v.Word == "drink"));
-            Assert.IsTrue(testResult.Item2.Any(v => v.Word == "juice"));
+            Assert.IsNotNull(testResult.CurrentWord);
+            Assert.IsNotNull(testResult.ContextWords);
+            Assert.AreEqual(2, testResult.ContextWords.Count);
+            Assert.AreEqual("apple", testResult.CurrentWord.Word);
+            Assert.IsTrue(testResult.ContextWords.Any(v => v.Word == "drink"));
+            Assert.IsTrue(testResult.ContextWords.Any(v => v.Word == "juice"));
         }
     }
 
@@ -442,6 +499,7 @@ namespace NoFuture.Tests.Util
             _testCorpus = GetTestData(testData);
             var dict = GetTestDataVocab(_testCorpus);
             BuildVocab(dict);
+            InitWiWo();
         }
 
         public static List<Tuple<string, string, string>> GetTestData(string someData)
