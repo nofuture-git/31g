@@ -36,7 +36,7 @@ namespace NoFuture.Util.Core.Algo
             NumberOfThreads = 12;
             NumberOfTrainingIterations = 5;
             MinCount = 5;
-            DebugMode = 2;
+            IsDebugMode = false;
             IsCbow = true;
             Alpha = 0.05;
         }
@@ -100,9 +100,9 @@ namespace NoFuture.Util.Core.Algo
         public bool IsOutputClasses { get; set; }
 
         /// <summary>
-        /// Set the debug mode (default = 2 = more info during training)
+        /// Set the debug mode on \ off
         /// </summary>
-        public int DebugMode { get; set; }
+        public bool IsDebugMode { get; set; }
 
         /// <summary>
         /// Save the resulting vectors in binary moded; default is 0 (off)
@@ -132,6 +132,7 @@ namespace NoFuture.Util.Core.Algo
 
         public double[,] WI { get; protected internal set; }
         public double[,] WO { get; protected internal set; }
+        protected internal List<HuffmanNode> HiddenNeurons { get; } = new List<HuffmanNode>();
 
         /// <summary>
         /// Allows caller to control how the corpus text is modified
@@ -249,6 +250,11 @@ namespace NoFuture.Util.Core.Algo
             WI = Matrix.RandomMatrix(v, n, GetInitWeight);
             System.Threading.Thread.Sleep(500);
             WO = Matrix.RandomMatrix(n, v, GetInitWeight);
+            HiddenNeurons.Clear();
+            for (var i = 0; i < Size; i++)
+            {
+                HiddenNeurons.Add(new HuffmanNode("",0, i));
+            }
         }
 
         protected internal virtual HuffmanNode GetTargetNode(int? fromCorpusPosition = null)
@@ -257,7 +263,7 @@ namespace NoFuture.Util.Core.Algo
             var targetWord = GetCorpusWordAt(pos);
             if (String.IsNullOrWhiteSpace(targetWord))
                 return null;
-            return Vocab.GetLeafByWord(targetWord);
+            return Vocab.GetNodeByWord(targetWord);
         }
 
         protected internal virtual List<HuffmanNode> GetContextNodes(int? fromCorpusPosition = null, Tuple<int, int> windowRange = null)
@@ -271,7 +277,7 @@ namespace NoFuture.Util.Core.Algo
                 var contextWord = GetCorpusWordAt(contextIndex);
                 if (String.IsNullOrWhiteSpace(contextWord))
                     continue;
-                var contextNode = Vocab.GetLeafByWord(contextWord);
+                var contextNode = Vocab.GetNodeByWord(contextWord);
                 if(contextNode?.Index == pos)
                     continue;
                 lout.Add(contextNode);
@@ -356,11 +362,27 @@ namespace NoFuture.Util.Core.Algo
 
         public virtual double[,] FeedFoward(Word2VecInputs inputs, double[,] oneHot = null)
         {
+            if (WI == null)
+            {
+                InitWiWo();
+            }
             oneHot = oneHot ?? (IsCbow ? ToVector(inputs.ContextWords) : ToVector(inputs.CurrentWord));
 
-            return oneHot.DotProduct(WI).DotProduct(WO).GetSoftmax();
+            var output = oneHot.DotProduct(WI).DotProduct(WO).GetSoftmax();
+
+            return output;
         }
-        
+
+        public virtual void Backpropagate(double[,] oneHot, double[,] actualOutput, double[,] expectedOutput)
+        {
+            var errors = actualOutput.Minus(expectedOutput);
+            var hiddenValue = oneHot.DotProduct(WI);//this is equal to hidden neurons' value
+            var netInputGradient = WO.DotProduct(errors.Transpose()); //this is equal to hidden neurons' net_input_gradient
+            var inputValueGradient = netInputGradient.DotProduct(oneHot); //this is equal to the input vectors' gradient value
+            var outputValueGradient = errors.Transpose().DotProduct(hiddenValue); //this is equal to the output vectors' gradient value
+            WO = WO.Minus(outputValueGradient.DotScalar(Alpha).Transpose());
+            WI = WI.Minus(inputValueGradient.DotScalar(Alpha).Transpose());
+        }
 
         /// <summary>
         /// http://mccormickml.com/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_II_The_Continuous_Bag-of-Words_Model.pdf
@@ -497,7 +519,7 @@ namespace NoFuture.Util.Core.Algo
 
         public static double[,] CalcLossFunctionL2(double[,] t, double[,] y)
         {
-            var e = t.Subtract(y);
+            var e = t.Minus(y);
             e = e.DotProduct(e);
             e = e.ApplyToEach(d => 0.5D * d);
             return e;

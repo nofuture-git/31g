@@ -64,7 +64,7 @@ namespace NoFuture.Util.Core.Algo
             WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(HuffmanEncoding)} End PushEncoding");
         }
 
-        public HuffmanNode GetLeafByWord(string word)
+        public HuffmanNode GetNodeByWord(string word)
         {
             return GetLeafs().FirstOrDefault(l => l.Word == word);
         }
@@ -83,6 +83,11 @@ namespace NoFuture.Util.Core.Algo
             }
 
             return node;
+        }
+
+        public HuffmanNode GetNodeByIndex(int index)
+        {
+            return GetLeafs().FirstOrDefault(n => n.Index == index);
         }
 
         public List<HuffmanNode> GetLeafs()
@@ -146,6 +151,7 @@ namespace NoFuture.Util.Core.Algo
     public class HuffmanNode
     {
         private bool[] _encoding;
+        private readonly Dictionary<string, double> _values = new Dictionary<string, double>() ;
         public HuffmanNode(string word, int count)
         {
             Word = word ?? "";
@@ -163,8 +169,6 @@ namespace NoFuture.Util.Core.Algo
         public string Word { get; }
         public int Count { get; }
         public int Index { get; protected internal set; }
-        public double InputValue { get; set; }
-        public double OutputValue { get; set; }
         public bool IsLeaf => Left == null && Right == null;
 
         public BitArray Encoding
@@ -173,6 +177,25 @@ namespace NoFuture.Util.Core.Algo
             {
                 _encoding = _encoding ?? new bool[] {} ;
                 return new BitArray(_encoding);
+            }
+        }
+
+        public double GetValue(string name)
+        {
+            if (!_values.ContainsKey(name))
+                return 0D;
+            return _values[name];
+        }
+
+        public void SetValue(string name, double value)
+        {
+            if (_values.ContainsKey(name))
+            {
+                _values[name] = value;
+            }
+            else
+            {
+                _values.Add(name, value);
             }
         }
 

@@ -204,12 +204,12 @@ namespace NoFuture.Util.Core.Math
             return a.GetLongLength(1);
         }
 
-        public static double[,] Add(this double[,] a, double[,] b)
+        public static double[,] Plus(this double[,] a, double[,] b)
         {
             return Matrix.Sum(a, b);
         }
 
-        public static double[,] Subtract(this double[,] a, double[,] b)
+        public static double[,] Minus(this double[,] a, double[,] b)
         {
             return Matrix.Difference(a, b);
         }
@@ -217,6 +217,11 @@ namespace NoFuture.Util.Core.Math
         public static double[,] DotProduct(this double[,] a, double[,] b)
         {
             return Matrix.Product(a, b);
+        }
+
+        public static double[,] DotScalar(this double[,] a, double scalar)
+        {
+            return Matrix.Product(a, scalar);
         }
 
         public static double[,] ApplyAtRow(this double[,] a, double[] b, int atRow, Func<double, double, double> expr)
