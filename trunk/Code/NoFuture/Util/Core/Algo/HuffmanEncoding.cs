@@ -162,8 +162,9 @@ namespace NoFuture.Util.Core.Algo
         public HuffmanNode Right { get; set; }
         public string Word { get; }
         public int Count { get; }
-        public int Index { get; }
-        public double Value { get; set; }
+        public int Index { get; protected internal set; }
+        public double InputValue { get; set; }
+        public double OutputValue { get; set; }
         public bool IsLeaf => Left == null && Right == null;
 
         public BitArray Encoding

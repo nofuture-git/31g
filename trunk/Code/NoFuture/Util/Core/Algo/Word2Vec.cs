@@ -242,8 +242,13 @@ namespace NoFuture.Util.Core.Algo
         {
             v = v > 0 ? v : Vocab.GetLengthLeafs();
             var n = Size;
-            WI = Matrix.RandomMatrix(v, n);
-            WO = Matrix.RandomMatrix(n, v);
+            //https://github.com/ronxin/wevi/blob/master/js/vector_math.js @ function get_random_init_weight(hidden_size)
+            //values are always less than 0.1
+            double GetInitWeight(double d) => (d - 0.5D) / n;
+
+            WI = Matrix.RandomMatrix(v, n, GetInitWeight);
+            System.Threading.Thread.Sleep(500);
+            WO = Matrix.RandomMatrix(n, v, GetInitWeight);
         }
 
         protected internal virtual HuffmanNode GetTargetNode(int? fromCorpusPosition = null)
@@ -349,9 +354,9 @@ namespace NoFuture.Util.Core.Algo
             return oneHot;
         }
 
-        public virtual double[,] FeedFoward(Word2VecInputs inputs)
+        public virtual double[,] FeedFoward(Word2VecInputs inputs, double[,] oneHot = null)
         {
-            var oneHot = IsCbow ? ToVector(inputs.ContextWords) : ToVector(inputs.CurrentWord);
+            oneHot = oneHot ?? (IsCbow ? ToVector(inputs.ContextWords) : ToVector(inputs.CurrentWord));
 
             return oneHot.DotProduct(WI).DotProduct(WO).GetSoftmax();
         }

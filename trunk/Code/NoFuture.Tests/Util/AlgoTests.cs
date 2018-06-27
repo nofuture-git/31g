@@ -416,25 +416,110 @@ namespace NoFuture.Tests.Util
         [Test]
         public void TestFeedFoward()
         {
-            var testInput = "drink^juice|apple,eat^apple|orange,drink^juice|rice,drink^milk|juice,drink^rice|milk,drink^milk|water,orange^apple|juice,apple^drink|juice,rice^drink|milk,milk^water|drink,water^juice|drink,juice^water|drink";
+            var testInput = "eat|apple,eat|orange,eat|rice,drink|juice,drink|milk,drink|water,orange|juice,apple|juice,rice|milk,milk|drink,water|drink,juice|drink";
+
+                
             var testSubject = new Word2VecTestClass
             {
                 Size = 5,
                 Sample = 0,
-                Alpha = 0.2D
+                Alpha = 0.2D,
+                IsCbow = false
             };
 
             testSubject.InitTest(testInput);
-            Console.WriteLine(testSubject.WI.Print());
-            Console.WriteLine(testSubject.WO.Print());
-            
+
+            testSubject.WI = new[,] {
+                {0.0368690499741906,0.0135390551358178,-0.0377502766147956,0.0336466886725494,-0.0270974517460435},
+                {0.016440156808328,0.0169175251931499,0.0922190173492855,-0.031504701977365,-0.0114259869379112},
+                {-0.0127991043556477,0.0487416296958652,-0.0701314578625054,-0.0536020711779604,-0.0154984786713023},
+                {0.0657846277420338,0.00954156336818894,-0.0136355384782122,-0.0162582306732695,0.0366232909898382},
+                {0.0211230152850612,0.0597162170148065,0.057514813056921,-0.0456053966403033,0.0368811796125402},
+                {0.0958493649940236,-0.0770609196168654,-0.0213859166583912,-0.0380667455206005,-0.059526237547177},
+                {0.0255941354323151,-0.0347667583891967,0.0813340035180254,-0.0742663991517696,0.064415111748695},
+                {-0.09638258432801,0.0478759082722831,-0.00176863414317772,0.0383402774754634,-0.048905799700369}
+            };
+
+            testSubject.WO = new[,] {
+                {-0.0702967214259769,0.0859662250550306,-0.0469181300825058,0.0750174499931826,-0.0862165990221391,-0.025250033999444,0.0277256570419882,0.0687815535668198},
+                {-0.0643791042102404,-0.0336792340193313,-0.0982879727139547,0.011368115391288,0.0984938144676824,0.0220246880883466,-0.00235211108920729,0.021364244130144},
+                {-0.0938820250303866,0.0536523073695844,0.015810846870677,0.0204317684846147,0.0960061897505104,0.0433280812312514,0.0465293434199548,0.0599207696318258},
+                {0.0455908204175489,0.0266330542632533,0.0242098380458587,-0.0212760037375968,0.0244631621634882,0.0349988715420472,-0.0567920621283315,-0.0829100279057911},
+                {-0.0940704868147478,-0.0859107999996798,0.093844279644007,-0.0646651228725282,0.000752150221146719,-0.0685755731391607,-0.0400362076889892,-0.0787345594627478}
+            };
+
+            testSubject.Vocab.GetLeafByWord("apple").Index = 0;
+            testSubject.Vocab.GetLeafByWord("drink").Index = 1;
+            testSubject.Vocab.GetLeafByWord("eat").Index = 2;
+            testSubject.Vocab.GetLeafByWord("juice").Index = 3;
+            testSubject.Vocab.GetLeafByWord("milk").Index = 4;
+            testSubject.Vocab.GetLeafByWord("orange").Index = 5;
+            testSubject.Vocab.GetLeafByWord("rice").Index = 6;
+            testSubject.Vocab.GetLeafByWord("water").Index = 7;
+
+
+            var initVector = new double[1, testSubject.WI.CountOfRows()];
+            var testResult = testSubject.FeedFoward(null, initVector);
+
+            var nextWord = testSubject.ReadNextWord();
+            Console.WriteLine(nextWord.CurrentWord.Word);
+            foreach (var f in nextWord.ContextWords)
+            {
+                Console.WriteLine(f.Word);
+            }
+
+            testResult = testSubject.FeedFoward(nextWord);
+            Console.WriteLine(testResult.Print());
+            var expect = new[]
+            {
+                0.12564016936189557,
+                0.12439491130889098,
+                0.12421460746660097,
+                0.12525675156413787,
+                0.12494957008987123,
+                0.12491166410164599,
+                0.1252102034070606,
+                0.12542212269989678
+            };
+
+            for (var i = 0; i < expect.Length; i++)
+            {
+                var tr = testResult[0, i];
+                var ex = expect[i];
+                Assert.IsTrue(System.Math.Abs(tr - ex) < 0.000001);
+            }
+
+            /*
+
+var wi = [
+[0.0368690499741906,0.0135390551358178,-0.0377502766147956,0.0336466886725494,-0.0270974517460435],
+[0.016440156808328,0.0169175251931499,0.0922190173492855,-0.031504701977365,-0.0114259869379112],
+[-0.0127991043556477,0.0487416296958652,-0.0701314578625054,-0.0536020711779604,-0.0154984786713023],
+[0.0657846277420338,0.00954156336818894,-0.0136355384782122,-0.0162582306732695,0.0366232909898382],
+[0.0211230152850612,0.0597162170148065,0.057514813056921,-0.0456053966403033,0.0368811796125402],
+[0.0958493649940236,-0.0770609196168654,-0.0213859166583912,-0.0380667455206005,-0.059526237547177],
+[0.0255941354323151,-0.0347667583891967,0.0813340035180254,-0.0742663991517696,0.064415111748695],
+[-0.09638258432801,0.0478759082722831,-0.00176863414317772,0.0383402774754634,-0.048905799700369]
+];
+
+var wo =  [
+[-0.0702967214259769,0.0859662250550306,-0.0469181300825058,0.0750174499931826,-0.0862165990221391,-0.025250033999444,0.0277256570419882,0.0687815535668198],
+[-0.0643791042102404,-0.0336792340193313,-0.0982879727139547,0.011368115391288,0.0984938144676824,0.0220246880883466,-0.00235211108920729,0.021364244130144],
+[-0.0938820250303866,0.0536523073695844,0.015810846870677,0.0204317684846147,0.0960061897505104,0.0433280812312514,0.0465293434199548,0.0599207696318258],
+[0.0455908204175489,0.0266330542632533,0.0242098380458587,-0.0212760037375968,0.0244631621634882,0.0349988715420472,-0.0567920621283315,-0.0829100279057911],
+[-0.0940704868147478,-0.0859107999996798,0.093844279644007,-0.0646651228725282,0.000752150221146719,-0.0685755731391607,-0.0400362076889892,-0.0787345594627478]
+];
+ 
+             */
+
+
         }
 
         [Test]
         public void TestGetTestData()
         {
             var testInput = "drink^juice|apple,eat^apple|orange,drink^juice|rice,drink^milk|juice,drink^rice|milk,drink^milk|water,orange^apple|juice,apple^drink|juice,rice^drink|milk,milk^water|drink,water^juice|drink,juice^water|drink";
-            var testResult = Word2VecTestClass.GetTestData(testInput);
+            var testResult = Word2VecTestClass.GetTestDataTriple(testInput);
             Assert.AreNotEqual(0, testResult.Count);
             var expected = new List<string[]>
             {
@@ -465,8 +550,8 @@ namespace NoFuture.Tests.Util
         public void TestGetTestDataVocab()
         {
             var testInput = "drink^juice|apple,eat^apple|orange,drink^juice|rice,drink^milk|juice,drink^rice|milk,drink^milk|water,orange^apple|juice,apple^drink|juice,rice^drink|milk,milk^water|drink,water^juice|drink,juice^water|drink";
-            var testInter = Word2VecTestClass.GetTestData(testInput);
-            var testResult = Word2VecTestClass.GetTestDataVocab(testInter);
+            var testInter = Word2VecTestClass.GetTestDataTriple(testInput);
+            var testResult = Word2VecTestClass.GetTestDataVocabTriple(testInter);
             Assert.IsNotNull(testResult);
             foreach (var t in testResult)
             {
@@ -498,13 +583,27 @@ namespace NoFuture.Tests.Util
 
         public void InitTest(string testData)
         {
-            _testCorpus = GetTestData(testData);
-            var dict = GetTestDataVocab(_testCorpus);
+            _testCorpus = testData.Contains("^") ? GetTestDataTriple(testData) : GetTestDataDouble(testData);
+            var dict = GetTestDataVocabTriple(_testCorpus);
             BuildVocab(dict);
             InitWiWo();
         }
 
-        public static List<Tuple<string, string, string>> GetTestData(string someData)
+        public static List<Tuple<string, string, string>> GetTestDataDouble(string someData)
+        {
+            someData = someData ?? "";
+            var pairs = someData.Split(',');
+            var dataOut = new List<Tuple<string, string, string>>();
+            for (var i = 0; i < pairs.Length; i++)
+            {
+                var kj = pairs[i].Trim().Split('|');
+                dataOut.Add(new Tuple<string, string, string>(kj[0], kj[1], null));
+            }
+
+            return dataOut;
+        }
+
+        public static List<Tuple<string, string, string>> GetTestDataTriple(string someData)
         {
             someData = someData ?? "";
             var pairs = someData.Split(',');
@@ -520,14 +619,15 @@ namespace NoFuture.Tests.Util
             return dataOut;
         }
 
-        public static Dictionary<string, int> GetTestDataVocab(List<Tuple<string, string, string>> data)
+        public static Dictionary<string, int> GetTestDataVocabTriple(List<Tuple<string, string, string>> data)
         {
             var serial = new List<string>();
             foreach (var w in data)
             {
                 serial.Add(w.Item1);
                 serial.Add(w.Item2);
-                serial.Add(w.Item3);
+                if(w.Item3 != null)
+                    serial.Add(w.Item3);
             }
 
             var words = serial.Distinct();
@@ -551,6 +651,10 @@ namespace NoFuture.Tests.Util
         {
             var w = _testCorpus[CurrentCorpusPosition];
             var l1 = Vocab.GetLeafByWord(w.Item2);
+            if (w.Item3 == null)
+            {
+                return new List<HuffmanNode>{l1};
+            }
             var l2 = Vocab.GetLeafByWord(w.Item3);
             return new List<HuffmanNode> {l1, l2};
         }

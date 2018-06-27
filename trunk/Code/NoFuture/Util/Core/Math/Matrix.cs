@@ -170,8 +170,9 @@ namespace NoFuture.Util.Core.Math
         /// </summary>
         /// <param name="numOfRows"></param>
         /// <param name="numOfColumns"></param>
+        /// <param name="expr">Optional, apply some expression to each value</param>
         /// <returns></returns>
-        public static double[,] RandomMatrix(int numOfRows, int numOfColumns)
+        public static double[,] RandomMatrix(int numOfRows, int numOfColumns, Func<double, double> expr = null)
         {
             var myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
             numOfRows = numOfRows <= 0 ? myRand.Next(4, 8) : numOfRows;
@@ -182,6 +183,8 @@ namespace NoFuture.Util.Core.Math
                 for (var j = 0; j < numOfColumns; j++)
                 {
                     m[i, j] = myRand.NextDouble();
+                    if (expr != null)
+                        m[i, j] = expr(m[i, j]);
                 }
             }
 
@@ -981,7 +984,7 @@ namespace NoFuture.Util.Core.Math
 
                 var zExp = z.Select(m => System.Math.Pow(System.Math.E, m)).ToArray();
                 var sumZExp = zExp.Sum();
-                var softmaxAtI = zExp.Select(m => System.Math.Round(m / sumZExp, 5)).ToArray();
+                var softmaxAtI = zExp.Select(m => m / sumZExp).ToArray();
 
                 for (var j = 0; j < mout.GetLongLength(1); j++)
                 {
