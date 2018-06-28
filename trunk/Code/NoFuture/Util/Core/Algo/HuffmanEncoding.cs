@@ -180,6 +180,11 @@ namespace NoFuture.Util.Core.Algo
             }
         }
 
+        /// <summary>
+        /// Gets arbitrary value for the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public double GetValue(string name)
         {
             if (!_values.ContainsKey(name))
@@ -187,6 +192,11 @@ namespace NoFuture.Util.Core.Algo
             return _values[name];
         }
 
+        /// <summary>
+        /// Sets arbitrary value for the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
         public void SetValue(string name, double value)
         {
             if (_values.ContainsKey(name))

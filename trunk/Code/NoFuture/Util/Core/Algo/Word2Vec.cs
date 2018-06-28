@@ -9,6 +9,11 @@ using static System.Diagnostics.Debug;
 
 namespace NoFuture.Util.Core.Algo
 {
+    /// <summary>
+    /// only useful document, video, presentation, etc. that 
+    /// I ever found that actually explained it https://arxiv.org/pdf/1411.2738.pdf
+    /// js example https://ronxin.github.io/wevi/ - this is the basis of the unit tests
+    /// </summary>
     public class Word2Vec
     {
         private const int MAX_STRING = 100;
@@ -22,8 +27,6 @@ namespace NoFuture.Util.Core.Algo
         private HuffmanEncoding _vocab;
         private string[] _allText;
         private List<Func<string, string>> _stringModifiers = new List<Func<string, string>>();
-        //private double[,] _wi;
-        //private double[,] _wo;
         private readonly Random _myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
 
         public Word2Vec()
@@ -132,7 +135,6 @@ namespace NoFuture.Util.Core.Algo
 
         public double[,] WI { get; protected internal set; }
         public double[,] WO { get; protected internal set; }
-        protected internal List<HuffmanNode> HiddenNeurons { get; } = new List<HuffmanNode>();
 
         /// <summary>
         /// Allows caller to control how the corpus text is modified
@@ -248,13 +250,9 @@ namespace NoFuture.Util.Core.Algo
             double GetInitWeight(double d) => (d - 0.5D) / n;
 
             WI = Matrix.RandomMatrix(v, n, GetInitWeight);
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(50);
             WO = Matrix.RandomMatrix(n, v, GetInitWeight);
-            HiddenNeurons.Clear();
-            for (var i = 0; i < Size; i++)
-            {
-                HiddenNeurons.Add(new HuffmanNode("",0, i));
-            }
+
         }
 
         protected internal virtual HuffmanNode GetTargetNode(int? fromCorpusPosition = null)
@@ -376,10 +374,19 @@ namespace NoFuture.Util.Core.Algo
         public virtual void Backpropagate(double[,] oneHot, double[,] actualOutput, double[,] expectedOutput)
         {
             var errors = actualOutput.Minus(expectedOutput);
-            var hiddenValue = oneHot.DotProduct(WI);//this is equal to hidden neurons' value
-            var netInputGradient = WO.DotProduct(errors.Transpose()); //this is equal to hidden neurons' net_input_gradient
-            var inputValueGradient = netInputGradient.DotProduct(oneHot); //this is equal to the input vectors' gradient value
-            var outputValueGradient = errors.Transpose().DotProduct(hiddenValue); //this is equal to the output vectors' gradient value
+            
+            //this is equal to hidden neurons' value
+            var hiddenValue = oneHot.DotProduct(WI);
+
+            //this is equal to hidden neurons' net_input_gradient
+            var netInputGradient = WO.DotProduct(errors.Transpose());
+
+            //this is equal to the output vectors' gradient value
+            var outputValueGradient = errors.Transpose().DotProduct(hiddenValue);
+
+            //this is equal to the input vectors' gradient value
+            var inputValueGradient = netInputGradient.DotProduct(oneHot);
+
             WO = WO.Minus(outputValueGradient.DotScalar(Alpha).Transpose());
             WI = WI.Minus(inputValueGradient.DotScalar(Alpha).Transpose());
         }
@@ -393,8 +400,7 @@ namespace NoFuture.Util.Core.Algo
         /// <param name="hx">The <see cref="x"/> time the original WI</param>
         public void CbowBackpropagate(double[] x, double[] y, double[] t, double[] hx)
         {
-            //this looks actually useful https://arxiv.org/pdf/1411.2738.pdf
-            //a js example https://ronxin.github.io/wevi/
+
             var eta = Alpha; // this is the step-size (aka learning rate)
             var C = Window;
             for (var i = 0; i < WO.CountOfRows(); i++)

@@ -505,6 +505,19 @@ namespace NoFuture.Tests.Util
         }
 
         [Test]
+        public void TestFeedFowardCbow()
+        {
+            var testSubject = Word2VecTestClass.GetFruitAndJuiceCbow();
+            var nextWord = testSubject.ReadNextWord();
+            Console.WriteLine(nextWord.CurrentWord.Word);
+            foreach (var f in nextWord.ContextWords)
+            {
+                Console.WriteLine(f.Word);
+            }
+
+        }
+
+        [Test]
         public void TestGetTestData()
         {
             var testInput = "drink^juice|apple,eat^apple|orange,drink^juice|rice,drink^milk|juice,drink^rice|milk,drink^milk|water,orange^apple|juice,apple^drink|juice,rice^drink|milk,milk^water|drink,water^juice|drink,juice^water|drink";
@@ -648,6 +661,25 @@ namespace NoFuture.Tests.Util
             return new List<HuffmanNode> {l1, l2};
         }
 
+        public static Word2VecTestClass GetFruitAndJuiceCbow()
+        {
+            var testInput =
+                "drink^juice|apple,eat^apple|orange,drink^juice|rice,drink^milk|juice,drink^rice|milk,drink^milk|water,orange^apple|juice,apple^drink|juice,rice^drink|milk,milk^water|drink,water^juice|drink,juice^water|drink";
+            var testSubject = new Word2VecTestClass
+            {
+                Size = 5,
+                Sample = 0,
+                Alpha = 0.2D,
+                IsCbow = true,
+                IsDebugMode = true
+            };
+
+            testSubject.InitTest(testInput);
+
+            return InitTestClassVectors(testSubject);
+
+        }
+
         public static Word2VecTestClass GetFruitAndJuicePreset()
         {
             var testInput = "eat|apple,eat|orange,eat|rice,drink|juice,drink|milk,drink|water,orange|juice,apple|juice,rice|milk,milk|drink,water|drink,juice|drink";
@@ -664,6 +696,12 @@ namespace NoFuture.Tests.Util
 
             testSubject.InitTest(testInput);
 
+            return InitTestClassVectors(testSubject);
+
+        }
+
+        internal static Word2VecTestClass InitTestClassVectors(Word2VecTestClass testSubject)
+        {
             testSubject.WI = new[,] {
                 {0.0368690499741906,0.0135390551358178,-0.0377502766147956,0.0336466886725494,-0.0270974517460435},
                 {0.016440156808328,0.0169175251931499,0.0922190173492855,-0.031504701977365,-0.0114259869379112},
@@ -716,6 +754,8 @@ var wo =  [
  
              */
         }
+
+
     }
 }
 
