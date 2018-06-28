@@ -1,8 +1,8 @@
 ﻿using System;
-using NUnit.Framework;
 using NoFuture.Util.Core.Math;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Util
+namespace NoFuture.Util.Core.Tests
 {
     [TestFixture]
     public class EquationsTests
@@ -50,7 +50,7 @@ namespace NoFuture.Tests.Util
             var testResultX = testSubject.SolveForX(testResultY);
             Console.WriteLine(testResultX);
 
-            Assert.AreEqual(x, Math.Round(testResultX));//some kind of float-pt loss 
+            Assert.AreEqual(x, System.Math.Round(testResultX));//some kind of float-pt loss 
         }
     }
 }

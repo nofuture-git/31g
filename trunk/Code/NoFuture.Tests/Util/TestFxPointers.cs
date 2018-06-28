@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 

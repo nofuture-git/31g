@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection.Emit;
 using NUnit.Framework;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
 
 namespace NoFuture.Tests.Util
 {

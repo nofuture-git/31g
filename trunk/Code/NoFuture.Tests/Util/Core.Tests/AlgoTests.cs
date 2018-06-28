@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Util.Core.Algo;
 using NoFuture.Util.Core.Math;
 using NUnit.Framework;
 
-namespace NoFuture.Tests.Util
+namespace NoFuture.Util.Core.Tests
 {
     [TestFixture]
     public class TestStringDist
@@ -15,7 +14,7 @@ namespace NoFuture.Tests.Util
         public void TestJaroWinklerDistance()
         {
             var testResult = StringDist.JaroWinklerDistance("test", "test");
-            Assert.AreEqual(1D, Math.Round(testResult));
+            Assert.AreEqual(1D, System.Math.Round(testResult));
 
             testResult = StringDist.JaroWinklerDistance("kitty", "kitten");
             Assert.IsTrue(testResult - 0.893 < 0.001);
@@ -320,7 +319,7 @@ namespace NoFuture.Tests.Util
         [Test]
         public void TestGetSampleSentence()
         {
-            var dictPath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\HPBook3Dict.json";
+            var dictPath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Util\Core.Tests\HPBook3Dict.json";
             Assert.IsTrue(System.IO.File.Exists(dictPath));
             var dictText = System.IO.File.ReadAllText(dictPath);
             Assert.IsNotNull(dictText);
@@ -332,7 +331,7 @@ namespace NoFuture.Tests.Util
             testing.Sample = 0;
             testing.BuildVocab(dict);
             var corpus =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\HPBook3.txt");
+                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Util\Core.Tests\HPBook3.txt");
             testing.AssignCorpus(corpus);
             var testResult = testing.GetContextNodes(8);
             Assert.IsNotNull(testResult);
