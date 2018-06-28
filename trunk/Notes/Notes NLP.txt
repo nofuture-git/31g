@@ -12,6 +12,8 @@ Pages in Print Edition: 486
 ----
 https://nlp.stanford.edu/IR-book/html/htmledition/irbook.html
 https://www.cs.bgu.ac.il/~michaluz/seminar/CKY1.pdf
+https://arxiv.org/pdf/1411.2738.pdf
+https://ronxin.github.io/wevi/
 ----
 
 ----
@@ -558,14 +560,14 @@ Word2Vec
                               Learner  (algo Backpropagation, 
                                              Hierarchical Softmax,
                                              Negative Sampling)
-  Vocabulary Builder, gets a list of distinct words 
+ - Vocabulary Builder, gets a list of distinct words 
     present in the corpus
     - mapped to a unique id index
     - and a count thereof 
     - Lossy Counting is where a min threshold must be 
       met to be part of the output
     
-  Context Builder, sliding window of for words input
+ - Context Builder, sliding window of for words input
    - given a context word and context window of 5 
      would get 5 words to the left of context word and
      5 to the right of the context word
@@ -583,44 +585,37 @@ Word2Vec
    - Pruning, both removes less-frequent words and truncates the
      total size.   
   
-  2-layer Neural Net.
-   - Input Layer has as many neurons as there are words ("V")
-   - Hidden Layer kind of arbitray number for "dimensions" ("N")
-   - Output Layer has as many neurons as the input layer ("V" also)
-   - given three layers, there are two spaces between them
-    - the one between input and hidden is ("WI")
-     - WI would be of size (V x N)
-    - the one between hidden and output is ("WO")
-     - WO would be of size (N x V)
-   - basic example
-    - define some "N" value, say '3'
-    - define a window of just '1', meaning context words
-      will only be one-to-the-left and one-to-the-right
-    - scrub the corpus (like to lowercase, no punc marks, etc.)
-    - split it on ' ' (0x20)
-    - get distinct list of words present, 
-      say its just '8' distinct words
-    - get counts for each word in the distinct list
-    - create two matrices WI (V x N) & WO (N x V) with all random
-      values (like 0.0 - 0.99)
-    - begin reading the corpus, one-word-at-a-time
-    - target word is the current one just read
-    - context words are those around it 
-     - would have three index values now 
-       the one-to-the-left, target and one-to-the-right
-     - this example pretend its 2,3,4 (0-indexed)
-     - at start and end of corpus you'd be missing on 
-       index value, of course
-    - get a one-hot vector for the target word,
-      since this example is 8 distinct words and
-      current target is 3 (0-indexed)
-      [0,0,0,1,0,0,0,0]
-    - iterate each context word as a one-hot vector
-      as well
-     - first would be 
-      
-     
-    
+ - 2-layer Neural Net.
+  - basically just matrix algebra
+  - there are only two exogenous inputs
+   - Skip-Gram 
+    - input vector [0,1,0,0,0,0,0] (X)
+    - output vector [1,0,0,1,0,0,0] (Y_actual)
+    - input is one word, output is two context words
+   - CBOW
+    - input vector [0.5,0,0,0.5,0,0,0] (X)
+    - output vector [0,1,0,0,0,0,0] (Y_actual)
+    - just like Skip-Gram except input\output
+      gets swapped and input gets reduced to 
+      average so SUM is '1'
+  - there are two endogenous inputs
+   - WI is a V x N matrix which starts 
+     with all random values which are less than
+     0.1
+   - WO is the same expect its N x V
+  - has two general steps per word (foward & backpropagate)
+   - foward, this is the estimate
+    Y_estimate = softmax(X * WI * WO)
+   - backpropagate 
+    - t(blah) means Transpose
+    - eta is learning rate
+    E = Y_actual - Y_estimate
+    H = X * WI
+    NG = WO * t(E)
+    OG = t(E) * H
+    IG = NG * X
+    WO = WO - t(OG * eta)
+    WI = WI - t(IG * eta)
 ----
 
 ----

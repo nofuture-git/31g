@@ -16,17 +16,9 @@ namespace NoFuture.Util.Core.Algo
     /// </summary>
     public class Word2Vec
     {
-        private const int MAX_STRING = 100;
-        private const int EXP_TABLE_SIZE = 1000;
-        private const int MAX_EXP = 6;
         private const int MAX_SENTENCE_LENGTH = 1000;
-        private const int MAX_CODE_LENGTH = 40;
-        private const double ONLY_VALUE_IN_EXP_TABLE = 0.00247262315663477D;
-
-
-        private HuffmanEncoding _vocab;
         private string[] _allText;
-        private List<Func<string, string>> _stringModifiers = new List<Func<string, string>>();
+        private readonly List<Func<string, string>> _stringModifiers = new List<Func<string, string>>();
         private readonly Random _myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
 
         public Word2Vec()
@@ -36,20 +28,14 @@ namespace NoFuture.Util.Core.Algo
             Window = 5;
             Sample = 0.001;
             Negative = 5;
-            NumberOfThreads = 12;
             NumberOfTrainingIterations = 5;
             MinCount = 5;
             IsDebugMode = false;
             IsCbow = true;
-            Alpha = 0.05;
+            LearningRate = 0.05;
         }
 
         #region properties from word2vec.c
-
-        /// <summary>
-        /// Use this location to save the resulting word vectors / word clusters
-        /// </summary>
-        public string SaveOutputTo { get; set; }
 
         /// <summary>
         /// Set size of word vectors; default is 100
@@ -78,11 +64,6 @@ namespace NoFuture.Util.Core.Algo
         public int Negative { get; set; }
 
         /// <summary>
-        /// Use this many threads (default 12)
-        /// </summary>
-        public int NumberOfThreads { get; set; }
-
-        /// <summary>
         /// Run more training iterations (default 5)
         /// </summary>
         public int NumberOfTrainingIterations { get; set; }
@@ -95,32 +76,12 @@ namespace NoFuture.Util.Core.Algo
         /// <summary>
         /// Set the starting learning rate; default is 0.025 for skip-gram and 0.05 for CBOW
         /// </summary>
-        public double Alpha { get; set; }
-
-        /// <summary>
-        /// Output word classes rather than word vectors; default number of classes is 0 (vectors are written)
-        /// </summary>
-        public bool IsOutputClasses { get; set; }
+        public double LearningRate { get; set; }
 
         /// <summary>
         /// Set the debug mode on \ off
         /// </summary>
         public bool IsDebugMode { get; set; }
-
-        /// <summary>
-        /// Save the resulting vectors in binary moded; default is 0 (off)
-        /// </summary>
-        public string SaveResultVectorsTo { get; set; }
-
-        /// <summary>
-        /// The vocabulary will be saved to this location on the drive
-        /// </summary>
-        public string SaveVocabTo { get; set; }
-
-        /// <summary>
-        /// The vocabulary will be read from this location, not constructed from the training data
-        /// </summary>
-        public string ReadVocabFrom { get; set; }
 
         /// <summary>
         /// Use the continuous bag of words model; default is 1 (use 0 for skip-gram model)
@@ -129,8 +90,7 @@ namespace NoFuture.Util.Core.Algo
 
         #endregion
 
-        public HuffmanEncoding Vocab => _vocab;
-
+        public HuffmanEncoding Vocab { get; private set; }
         public int CurrentCorpusPosition { get; protected internal set; } = 0;
 
         public double[,] WI { get; protected internal set; }
@@ -163,7 +123,7 @@ namespace NoFuture.Util.Core.Algo
                 var cn = _allText.Count(a => a == v);
                 dict.Add(v, cn);
             }
-            _vocab = new HuffmanEncoding(dict);
+            Vocab = new HuffmanEncoding(dict);
             WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(Word2Vec)} End BuildVocab");
         }
 
@@ -189,7 +149,7 @@ namespace NoFuture.Util.Core.Algo
 
         public void BuildVocab(Dictionary<string, int> vocab)
         {
-            _vocab = new HuffmanEncoding(vocab);
+            Vocab = new HuffmanEncoding(vocab);
         }
 
         /// <summary>
@@ -233,7 +193,7 @@ namespace NoFuture.Util.Core.Algo
             var pos = fromCorpusPosition ?? CurrentCorpusPosition;
             var iter = NumberOfTrainingIterations;
             var trainWords = GetNumberOfTrainWords();
-            var startingAlpha = Alpha;
+            var startingAlpha = LearningRate;
 
             var alpha = startingAlpha * (1 - pos / (iter * trainWords + 1));
             if (alpha < startingAlpha * 0.0001)
@@ -354,7 +314,10 @@ namespace NoFuture.Util.Core.Algo
                 }
             }
 
-            oneHot.ApplyToEach(v => v / nodes.Count);
+            //skip-gram output is actually as many '1's as context words
+            if(IsCbow)
+                oneHot.ApplyToEach(v => v / nodes.Count);
+
             return oneHot;
         }
 
@@ -387,94 +350,8 @@ namespace NoFuture.Util.Core.Algo
             //this is equal to the input vectors' gradient value
             var inputValueGradient = netInputGradient.DotProduct(oneHot);
 
-            WO = WO.Minus(outputValueGradient.DotScalar(Alpha).Transpose());
-            WI = WI.Minus(inputValueGradient.DotScalar(Alpha).Transpose());
-        }
-
-        /// <summary>
-        /// http://mccormickml.com/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_II_The_Continuous_Bag-of-Words_Model.pdf
-        /// </summary>
-        /// <param name="x">The context words as one-hot vectors collapsed top to bottom</param>
-        /// <param name="y">The result of the Softmax</param>
-        /// <param name="t">The one-hot encoded vector of the target word</param>
-        /// <param name="hx">The <see cref="x"/> time the original WI</param>
-        public void CbowBackpropagate(double[] x, double[] y, double[] t, double[] hx)
-        {
-
-            var eta = Alpha; // this is the step-size (aka learning rate)
-            var C = Window;
-            for (var i = 0; i < WO.CountOfRows(); i++)
-            {
-                for (var j = 0; j < WO.CountOfColumns(); j++)
-                {
-                    WO[i, j] = WO[i, j] - eta * (y[j] - t[j]) * hx[i];
-                }
-            }
-
-            var eh = new double[WO.CountOfRows()];
-            for (var i = 0; i < WO.CountOfRows(); i++)
-            {
-                for (var j = 0; j < WO.CountOfColumns(); j++)
-                {
-                    eh[i] += (y[j] - t[j]) * WO[i, j];
-                }
-            }
-
-            for (var i = 0; i < WI.CountOfRows(); i++)
-            {
-                for (var j = 0; j < WI.CountOfColumns(); j++)
-                {
-                    WI[i, j] = WI[i, j] - eta * (1D / C) * eh[j] * x[j];
-                }
-            }
-        }
-
-        /// <summary>
-        /// http://mccormickml.com/assets/word2vec/Alex_Minnaar_Word2Vec_Tutorial_Part_I_The_Skip-Gram_Model.pdf
-        /// </summary>
-        /// <param name="x">The input word&apos;s one-hot</param>
-        /// <param name="y">The result of the softmax</param>
-        /// <param name="t">The context word&apos;s one-hot(s)</param>
-        /// <param name="hx">The input word&apos;s one-hot times the original WI</param>
-        public void SkipGramBackpropagate(double[] x, double[,] y, double[,] t, double[] hx)
-        {
-            var eta = Alpha; // this is the step-size (aka learning rate)
-            var C = Window;
-            
-            for (var i = 0; i < WO.CountOfRows(); i++)
-            {
-                for (var j = 0; j < WO.CountOfColumns(); j++)
-                {
-                    var sumDiff = 0D;
-                    for (var c = 0; c < C; c++)
-                    {
-                        sumDiff += (y[c, j] - t[c, j]);
-                    }
-
-                    var diff = eta * sumDiff * hx[i];
-                    WO[i, j] = WO[i, j] - diff;
-                }
-            }
-
-            for (var i = 0; i < WI.CountOfRows(); i++)
-            {
-                var sumDiffJ = 0D;
-                for (var j = 0; j < WI.CountOfColumns(); j++)
-                {
-                    var sumDiffC = 0D;
-                    for (var c = 0; c < C; c++)
-                    {
-                        sumDiffC += (y[c, j] - t[c, j]);
-                    }
-
-                    sumDiffJ += sumDiffC * WO[j, i];
-                }
-
-                for (var j = 0; j < WI.CountOfColumns(); j++)
-                {
-                    WI[i, j] = WI[i, j] - eta * sumDiffJ * x[j];
-                }
-            }
+            WO = WO.Minus(outputValueGradient.DotScalar(LearningRate).Transpose());
+            WI = WI.Minus(inputValueGradient.DotScalar(LearningRate).Transpose());
         }
     }
 

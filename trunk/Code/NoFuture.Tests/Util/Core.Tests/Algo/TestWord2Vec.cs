@@ -613,7 +613,7 @@ namespace NoFuture.Util.Core.Tests.Algo
             {
                 Size = 5,
                 Sample = 0,
-                Alpha = 0.2D,
+                LearningRate = 0.2D,
                 IsCbow = true,
                 IsDebugMode = true
             };
@@ -633,7 +633,7 @@ namespace NoFuture.Util.Core.Tests.Algo
             {
                 Size = 5,
                 Sample = 0,
-                Alpha = 0.2D,
+                LearningRate = 0.2D,
                 IsCbow = false,
                 IsDebugMode = true
             };

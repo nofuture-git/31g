@@ -7,9 +7,6 @@ namespace NoFuture.Util.Core.Tests
     [TestFixture]
     public class TestNfPath
     {
-        private static string UnitTestsRoot = @"C:\Projects\31g\trunk\Code\NoFuture.Tests";
-
-
         [Test]
         public void TestTryGetRelPath()
         {
