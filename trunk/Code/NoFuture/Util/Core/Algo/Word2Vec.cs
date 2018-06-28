@@ -205,7 +205,7 @@ namespace NoFuture.Util.Core.Algo
             var contexts = GetContextNodes();
 
             CurrentCorpusPosition += 1;
-            return new Word2VecInputs {ContextWords = contexts, CurrentWord = target};
+            return new Word2VecInputs {ContextWords = contexts, TargetWord = target};
         }
 
         protected internal virtual string GetCorpusWordAt(int position)
@@ -364,7 +364,7 @@ namespace NoFuture.Util.Core.Algo
             {
                 InitWiWo();
             }
-            oneHot = oneHot ?? (IsCbow ? ToVector(inputs.ContextWords) : ToVector(inputs.CurrentWord));
+            oneHot = oneHot ?? (IsCbow ? ToVector(inputs.ContextWords) : ToVector(inputs.TargetWord));
 
             var output = oneHot.DotProduct(WI).DotProduct(WO).GetSoftmax();
 
@@ -584,7 +584,7 @@ namespace NoFuture.Util.Core.Algo
 
     public class Word2VecInputs
     {
-        public HuffmanNode CurrentWord { get; set; }
+        public HuffmanNode TargetWord { get; set; }
         public List<HuffmanNode> ContextWords { get; set; }
     }
 
