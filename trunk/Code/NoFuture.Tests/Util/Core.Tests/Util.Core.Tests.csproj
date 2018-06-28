@@ -47,7 +47,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlgoTests.cs" />
+    <Compile Include="Algo\TestHuffmanCoding.cs" />
+    <Compile Include="Algo\TestStringDist.cs" />
+    <Compile Include="Algo\TestWord2Vec.cs" />
     <Compile Include="EquationsTests.cs" />
     <Compile Include="EtcTests.cs" />
     <Compile Include="MathTests.cs" />
