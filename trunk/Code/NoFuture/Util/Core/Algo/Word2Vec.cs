@@ -360,7 +360,8 @@ namespace NoFuture.Util.Core.Algo
         public static double[,] LossFunction(this double[,] o)
         {
             var pr = o.GetSoftmax();
-            return pr.ApplyToEach(v => -1 * System.Math.Log(v));
+            pr.ApplyToEach(v => -1 * System.Math.Log(v));
+            return pr;
         }
 
         /// <summary>
@@ -404,7 +405,7 @@ namespace NoFuture.Util.Core.Algo
         {
             var e = t.Minus(y);
             e = e.DotProduct(e);
-            e = e.ApplyToEach(d => 0.5D * d);
+            e.ApplyToEach(d => 0.5D * d);
             return e;
         }
 

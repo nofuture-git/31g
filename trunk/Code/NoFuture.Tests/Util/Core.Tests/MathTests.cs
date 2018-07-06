@@ -129,6 +129,41 @@ namespace NoFuture.Util.Core.Tests
         }
 
         [Test]
+        public void TestCofactor()
+        {
+            var testInput = new double[,]
+            {
+                {2, 1},
+                {1, 2}
+            };
+            var testResult = testInput.Cofactor();
+            var expect = new double[,]
+            {
+                {2, -1},
+                {-1, 2}
+            };
+
+            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+        }
+
+        [Test]
+        public void TestInverse()
+        {
+            var testInput = new double[,]
+            {
+                {2, 1},
+                {1, 2}
+            };
+            var testResult = testInput.Inverse();
+            var expect = new[,]
+            {
+                {0.666666666666667, -0.333333333333333},
+                {-0.333333333333333, 0.666666666666667}
+            };
+            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+        }
+
+        [Test]
         public void TestDeterminant()
         {
             var typicalMatrix = new[,]
@@ -140,6 +175,13 @@ namespace NoFuture.Util.Core.Tests
 
             var testResult = MatrixExtensions.Determinant(typicalMatrix);
             Assert.AreEqual(-2350, testResult);
+            testResult = MatrixExtensions.Determinant(new double[,]
+            {
+                {2, 1},
+                {1, 2}
+            });
+            Assert.AreEqual(3, testResult);
+
         }
 
         [Test]
@@ -241,10 +283,10 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestScale()
         {
-            var myX = new double[,] { { 1, 3, 0 }, { 2, 5, 1 }, { 1, 3, 0 } };
-            var testResult = myX.Scale();
-            Assert.IsNotNull(testResult);
-            Console.WriteLine(testResult.Print());
+            var testInput = new double[,] { { 1, 3, 0 }, { 2, 5, 1 }, { 1, 3, 0 } };
+            testInput.Scale();
+            Assert.IsNotNull(testInput);
+            Console.WriteLine(testInput.Print());
             var expected = new double[,]
             {
                 {-0.7071067811865474, -0.7071067811865474, -0.7071067811865475},
@@ -252,11 +294,11 @@ namespace NoFuture.Util.Core.Tests
                 {-0.7071067811865474, -0.7071067811865474, -0.7071067811865475}
             };
 
-            for (var i = 0; i < myX.CountOfRows(); i++)
+            for (var i = 0; i < testInput.CountOfRows(); i++)
             {
-                for (var j = 0; j < myX.CountOfColumns(); j++)
+                for (var j = 0; j < testInput.CountOfColumns(); j++)
                 {
-                    var y = testResult[i, j];
+                    var y = testInput[i, j];
                     var t = expected[i, j];
                     Assert.IsTrue(System.Math.Abs(y - t) < 0.000001);
 
@@ -394,16 +436,54 @@ namespace NoFuture.Util.Core.Tests
         }
 
         [Test]
+        public void TestSwapRow()
+        {
+            var testInput = Matrix.RandomMatrix(5, 5);
+            var testRowA = testInput.SelectRow(2);
+            var testRowB = testInput.SelectRow(4);
+
+            testInput.SwapRow(2,4);
+
+            var testResultA = testInput.SelectRow(2);
+            var testResultB = testInput.SelectRow(4);
+
+            for (var i = 0; i < testRowA.Length; i++)
+            {
+                Assert.AreEqual(testRowA[i], testResultB[i]);
+                Assert.AreEqual(testRowB[i], testResultA[i]);
+            }
+        }
+
+        [Test]
+        public void TestSwapColumn()
+        {
+            var testInput = Matrix.RandomMatrix(5, 5);
+            var testRowA = testInput.SelectColumn(2);
+            var testRowB = testInput.SelectColumn(4);
+
+            testInput.SwapColumn(2, 4);
+
+            var testResultA = testInput.SelectColumn(2);
+            var testResultB = testInput.SelectColumn(4);
+
+            for (var i = 0; i < testRowA.Length; i++)
+            {
+                Assert.AreEqual(testRowA[i], testResultB[i]);
+                Assert.AreEqual(testRowB[i], testResultA[i]);
+            }
+        }
+
+        [Test]
         public void TestApplyAtRow()
         {
             var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
             var toAdd = new double[] { 4, 1, 2 };
 
-            var testResult = testInput.ApplyAtRow(toAdd, 1, (d, d1) => d + d1);
-            Console.WriteLine(testResult.Print());
-            Assert.AreEqual(3D, testResult[1, 0]);
-            Assert.AreEqual(7D, testResult[1, 1]);
-            Assert.AreEqual(0D, testResult[1, 2]);
+            testInput.ApplyAtRow(toAdd, 1, (d, d1) => d + d1);
+            Console.WriteLine(testInput.Print());
+            Assert.AreEqual(3D, testInput[1, 0]);
+            Assert.AreEqual(7D, testInput[1, 1]);
+            Assert.AreEqual(0D, testInput[1, 2]);
         }
 
         [Test]
@@ -412,11 +492,11 @@ namespace NoFuture.Util.Core.Tests
             var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
             var toAdd = new double[] { 4, 1, 2 };
 
-            var testResult = testInput.ApplyAtColumn(toAdd, 1, (d, d1) => d + d1);
-            Console.WriteLine(testResult.Print());
-            Assert.AreEqual(3D, testResult[0, 1]);
-            Assert.AreEqual(7D, testResult[1, 1]);
-            Assert.AreEqual(0D, testResult[2, 1]);
+            testInput.ApplyAtColumn(toAdd, 1, (d, d1) => d + d1);
+            Console.WriteLine(testInput.Print());
+            Assert.AreEqual(3D, testInput[0, 1]);
+            Assert.AreEqual(7D, testInput[1, 1]);
+            Assert.AreEqual(0D, testInput[2, 1]);
         }
 
         [Test]
@@ -539,6 +619,140 @@ namespace NoFuture.Util.Core.Tests
 
             Assert.AreEqual(System.Math.Round(0.333, 3), System.Math.Round(testResult[2], 3));
             Console.WriteLine(testResult.ToMatrix(1).Print());
+        }
+
+        [Test]
+        public void TestSVD()
+        {
+            var testInput = Matrix.RandomMatrix(5, 3);
+            var USV = testInput.SingularValueDecomp();
+            var U = USV.U;
+            var S = USV.D.Diag();
+            var V = USV.V;
+
+            var pcXV = testInput.DotProduct(V);
+            var pcUdS = U.DotProduct(S);
+
+            Assert.IsTrue(Matrix.AreEqual(pcXV, pcUdS));
+
+        }
+
+        [Test]
+        public void TestGetTriangle()
+        {
+            var testInput = new[,]
+            {
+                {1D, 2D, 3D, 4D, 5D},
+                {2D, 4D, 6D, 8D, 10D},
+                {3D, 6D, 9D, 12D, 15D},
+                {4D, 8D, 12D, 16D, 20D},
+                {5D, 10D, 15D, 20D, 25D}
+            };
+
+            var testResult = testInput.GetTriangle();
+
+            var expected = new double[,]
+            {
+                {1, 2, 3, 4, 5},
+                {0, 4, 6, 8, 10},
+                {0, 0, 9, 12, 15},
+                {0, 0, 0, 16, 20},
+                {0, 0, 0, 0, 25}
+            };
+
+            Assert.IsTrue(Matrix.AreEqual(expected, testResult));
+
+            testInput = new double[,]
+            {
+                {3, 6, 9, 12, 15},
+                {4, 8, 12, 16, 20},
+                {5, 10, 15, 20, 25}
+            };
+            testResult = testInput.GetTriangle();
+            expected = new double[,]
+            {
+                {3, 6, 9, 12, 15},
+                {0, 8, 12, 16, 20},
+                {0, 0, 15, 20, 25}
+            };
+
+            Assert.IsTrue(Matrix.AreEqual(expected, testResult));
+
+            testInput = new double[,]
+            {
+                {1, 2, 3},
+                {2, 4, 6 },
+                {3, 6, 9},
+                {4, 8, 12},
+                {5, 10, 15}
+            };
+            testResult = testInput.GetTriangle();
+            expected = new double[,]
+            {
+                {1,2,3},
+                {0,4,6},
+                {0,0,9},
+                {0,0,0},
+                {0,0,0}
+            };
+            Assert.IsTrue(Matrix.AreEqual(expected, testResult));
+        }
+
+        [Test]
+        public void TestCockeKasamiYounger()
+        {
+            var testInput = new double[,]
+            {
+                { 1, 3, 3 },
+                { 2, 5, 1 },
+                { 1, 3, 4 }
+            };
+            //average
+            Func<double, double, double, double> myExpr = (left, below, cur) => (left + below + cur) / 3; 
+            var testResult = testInput.CockeKasamiYounger(myExpr);
+
+            var expected = new double[,]
+            {
+                {1, 3, 3.14814814814815},
+                {0, 5, 3.33333333333333},
+                {0, 0, 4}
+            };
+
+            Assert.IsTrue(Matrix.AreEqual(expected, testResult));
+        }
+
+        [Test]
+        public void TestCrossProduct()
+        {
+            var testInput = new double[,]
+            {
+                {1, 0},
+                {1, 1},
+                {0, 1}
+            };
+            var testResult = testInput.CrossProduct();
+
+            var expected = new double[,]
+            {
+                {2, 1},
+                {1, 2}
+            };
+            Assert.IsTrue(Matrix.AreEqual(expected,testResult));
+        }
+
+        [Test]
+        public void TestProjectionMatrix()
+        {
+            var A = new double[,] { { 1, 0 }, { 1, 1 }, { 0, 1 } };
+            var P = A.ProjectionMatrix();
+            var expect = new[,]
+            {
+                {0.666666666666667, 0.333333333333333, -0.333333333333333},
+                {0.333333333333333, 0.666666666666667, 0.333333333333333},
+                {-0.333333333333333, 0.333333333333333, 0.666666666666667}
+            };
+            Assert.IsTrue(Matrix.AreEqual(expect, P));
+
         }
 
         [Test]
@@ -704,4 +918,6 @@ namespace NoFuture.Util.Core.Tests
         }
     }
 }
+
+
 

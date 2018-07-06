@@ -21,10 +21,59 @@ namespace NoFuture.Util.Core.Math
         }
 
     }
+
     /// <summary>
     /// Chiang, Alpha C. "Fundamental Methods Of Mathematical Economics" New York: McGraw-Hill, Inc.
     ///     1984. Print
     /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// REFERENCE:
+    ///- not commutative multiplication
+    ///  AB != BA
+    ///
+    ///- associative multiplication
+    /// A*(B*C) = (A*B)*C
+    /// (a*b)*C = a*(b*C)
+    /// a*(B*C) = (a*B)*C = B*(a*C)
+    ///
+    ///- distributive law
+    /// A*(B + C) = A*B + A*C
+    /// (B + C)*A = B*A + C*A
+    /// A*v + B*v = (A + B)*v
+    /// [A + B]ᵀ = Aᵀ + Bᵀ
+    /// A*(u + v) = A*u + A*v
+    ///
+    ///- commutative addition
+    /// A + B = B + A
+    ///
+    ///- associative addition
+    /// A + (B + C) = (A + B) + C
+    ///
+    ///- symmetric matrix is 
+    ///  A = Aᵀ
+    ///- dyadic matrix
+    ///  A*Aᵀ
+    ///- idempotent matrix
+    ///  A = A*A
+    ///
+    ///- other multiplication rules
+    /// (A*B)ᵀ = Bᵀ*Aᵀ
+    /// det(A * B) = det(A) * det(B)
+    ///
+    ///- exponent rules
+    ///  A^(r+s) = A^r * A^s
+    ///  A^(r*s) = (A^r)^s
+    ///  A^0 = I
+    ///
+    ///- inversion rules
+    /// A^-1*A = I
+    /// A*A^-1 = I
+    /// I^-1 = I
+    /// (A^-1)^-1 = A
+    /// (A^-1)ᵀ = (Aᵀ)^-1
+    /// ]]>
+    /// </remarks>
     public class Matrix
     {
         public static double[,] Sum(double[,] a, double[,] b)
@@ -68,14 +117,15 @@ namespace NoFuture.Util.Core.Math
         {
             var iLength = a.GetLongLength(0);
             var jLength = a.GetLongLength(1);
+            var vout = new double[iLength, jLength];
             for (var i = 0L; i < iLength; i++)
             {
                 for(var j=0L;j<jLength;j++)
                 {
-                    a[i,j] = a[i,j] * scalar;
+                    vout[i,j] = a[i,j] * scalar;
                 }
             }
-            return a;
+            return vout;
 
         }//end Product
 
@@ -224,34 +274,72 @@ namespace NoFuture.Util.Core.Math
             return Matrix.Product(a, scalar);
         }
 
-        public static double[,] ApplyAtRow(this double[,] a, double[] b, int atRow, Func<double, double, double> expr)
+        public static void SwapRow(this double[,] a, int row1, int row2)
+        {
+            var len = a.CountOfRows();
+            if (row1 >= len || row2 >= len)
+                return;
+
+            for (var j = 0; j < a.CountOfColumns(); j++)
+            {
+                var row1J = a[row1, j];
+                var row2J = a[row2, j];
+                a[row1, j] = row2J;
+                a[row2, j] = row1J;
+            }
+        }
+
+        public static void SwapColumn(this double[,] a, int column1, int column2)
+        {
+            var len = a.CountOfColumns();
+            if (column1 >= len || column2 >= len)
+                return;
+
+            for (var i = 0; i < a.CountOfColumns(); i++)
+            {
+                var column1J = a[i, column1];
+                var column2J = a[i, column2];
+                a[i, column1] = column2J;
+                a[i, column2] = column1J;
+            }
+        }
+
+        public static void ApplyAtRow(this double[,] a, double b, int atRow, Func<double, double, double> expr)
+        {
+            var bArr = Enumerable.Repeat(b, (int) a.CountOfRows()).ToArray();
+            ApplyAtRow(a, bArr, atRow, expr);
+        }
+
+        public static void ApplyAtColumn(this double[,] a, double b, int atColumn, Func<double, double, double> expr)
+        {
+            var bArr = Enumerable.Repeat(b, (int) a.CountOfColumns()).ToArray();
+            ApplyAtColumn(a, bArr, atColumn, expr);
+        }
+
+        public static void ApplyAtRow(this double[,] a, double[] b, int atRow, Func<double, double, double> expr)
         {
             if(atRow >= a.CountOfRows())
                 throw new NonConformable($"{atRow} exceeds the number of rows present in a");
             if (expr == null)
-                return a;
+                return;
             for (var j = 0; j < a.CountOfColumns(); j++)
             {
                 var v = b.Length <= j ? 0 : b[j];
                 a[atRow, j] = expr(a[atRow, j], v);
             }
-
-            return a;
         }
 
-        public static double[,] ApplyAtColumn(this double[,] a, double[] b, int atColumn, Func<double, double, double> expr)
+        public static void ApplyAtColumn(this double[,] a, double[] b, int atColumn, Func<double, double, double> expr)
         {
             if (atColumn >= a.CountOfColumns())
                 throw new NonConformable($"{atColumn} exceeds the number of columns present in a");
             if (expr == null)
-                return a;
+                return;
             for (var i = 0; i < a.CountOfRows(); i++)
             {
                 var v = b.Length <= i ? 0 : b[i];
                 a[i, atColumn] = expr(a[i, atColumn], v);
             }
-
-            return a;
         }
 
         /// <summary>
@@ -331,6 +419,16 @@ namespace NoFuture.Util.Core.Math
             return dout;
         }
 
+        /// <summary>
+        /// Sections out <see cref="a"/> into blocks of equal size from left to right thereby
+        /// creating a matrix.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="numOfColumns"></param>
+        /// <param name="truncEnding">
+        /// If <see cref="a"/> cannot be evenly divided and this is false an exception will be thrown
+        /// </param>
+        /// <returns></returns>
         public static double[,] ToMatrix(this double[] a, int numOfColumns = 1, bool truncEnding = false)
         {
             if (a == null || !a.Any() || numOfColumns <= 0)
@@ -361,10 +459,10 @@ namespace NoFuture.Util.Core.Math
             return matrix;
         }
 
-        public static double[,] ApplyToEach(this double[,] a, Func<double, double> expr)
+        public static void ApplyToEach(this double[,] a, Func<double, double> expr)
         {
             if (expr == null)
-                return a;
+                return;
             for (var i = 0; i < a.CountOfRows(); i++)
             {
                 for (var j = 0; j < a.CountOfColumns(); j++)
@@ -372,8 +470,6 @@ namespace NoFuture.Util.Core.Math
                     a[i, j] = expr(a[i, j]);
                 }
             }
-
-            return a;
         }
 
         /// <summary>
@@ -393,7 +489,6 @@ namespace NoFuture.Util.Core.Math
         /// <returns></returns>
         public static double[] StdByColumn(this double[,] a)
         {
-            var m = a.MeanByColumn();
             var mul = Matrix.Arithmetic(a, a, (d, d1) => d * d1);
             return mul.MeanByColumn().Select(System.Math.Sqrt).ToArray();
         }
@@ -405,7 +500,7 @@ namespace NoFuture.Util.Core.Math
         /// <param name="toCenter"></param>
         /// <param name="toScale"></param>
         /// <returns></returns>
-        public static double[,] Scale(this double[,] a, bool toCenter = true, bool toScale = true)
+        public static void Scale(this double[,] a, bool toCenter = true, bool toScale = true)
         {
             if (toCenter)
             {
@@ -424,8 +519,6 @@ namespace NoFuture.Util.Core.Math
                     a.ApplyAtRow(s, i, (d, d1) => d / (d1 == 0D ? 0.0000001D : d1));
                 }
             }
-
-            return a;
         }
 
         public struct SvdOutput
@@ -459,11 +552,6 @@ namespace NoFuture.Util.Core.Math
             var u = a.Copy();
             var m = u.CountOfRows();
             var n = u.CountOfColumns();
-
-            if (m >= n)
-            {
-                //throw new NonConformable("Need more rows than columns");
-            }
 
             var e = new double[n];
             var q = new double[n];
@@ -757,6 +845,82 @@ namespace NoFuture.Util.Core.Math
             return new SvdOutput {U = u, D = q, V = v};
         }
 
+        /// <summary>
+        /// Gets the upper or lower triangle of the given matrix <see cref="a"/> 
+        /// where the split is along the diagonal.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="upperRight"></param>
+        /// <returns></returns>
+        public static double[,] GetTriangle(this double[,] a, bool upperRight = true)
+        {
+            var rowsLen = a.CountOfRows();
+            var colLen = a.CountOfColumns();
+            var vout = new double[rowsLen, colLen];
+            Func<long, long, bool> contExpr = (l, l1) => l > l1;
+
+            if (!upperRight)
+            {
+                contExpr = (l, l1) => l < l1;
+            }
+
+            for (var i = 0; i < rowsLen; i++)
+            {
+                for (var j = 0; j < colLen; j++)
+                {
+                    if (contExpr(i, j))
+                        continue;
+                    vout[i, j] = a[i, j];
+                }
+            }
+
+            return vout;
+        }
+
+        /// <summary>
+        /// Apply the Cocke-Kasami-Younger algo to the matrix.  This algo is a special way to &quot;walk&quot; a 
+        /// matrix&apos;s upper-right triangle.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="expr">
+        /// The first arg in <see cref="expr"/> is the one-to-the-left, second arg is the the one-below and the 
+        /// third arg is the current position.
+        /// </param>
+        public static double[,] CockeKasamiYounger(this double[,] a, Func<double, double, double, double> expr = null)
+        {
+            var rowsLen = a.CountOfRows();
+            var colLen = a.CountOfColumns();
+            var vout = a.GetTriangle();
+            if (expr == null)
+                return vout;
+            for (var j = 2; j < a.CountOfRows() + 1; j++)
+            {
+                for (var i = j - 2; i > -1; i--)
+                {
+                    for (var k = i + 1; k < j; k++)
+                    {
+                        if (i >= rowsLen)
+                            continue;
+                        if (k - 1 >= colLen)
+                            continue;
+                        if (k >= rowsLen)
+                            continue;
+                        if (j - 1 >= colLen)
+                            continue;
+
+                        var toTheLeft = vout[i, k - 1];
+                        var directBelow = vout[k, j - 1];
+                        var currentPos = vout[i, j - 1];
+                        var rslt = expr(toTheLeft, directBelow, currentPos);
+
+                        vout[i, j - 1] = rslt;
+                    }
+                }
+            }
+
+            return vout;
+        }
+
         public static double[,] Transpose(this double[,] a)
         {
             var transpose = new double[a.GetLongLength(1), a.GetLongLength(0)];
@@ -766,6 +930,11 @@ namespace NoFuture.Util.Core.Math
 
             return transpose;
         }//end Transpose
+
+        public static double[,] CrossProduct(this double[,] a)
+        {
+            return a.Transpose().DotProduct(a);
+        }
 
         public static double[,] Deviation(this double[,] a)
         {
@@ -787,13 +956,12 @@ namespace NoFuture.Util.Core.Math
             if (determinant.Equals(0D))
                 throw new NonConformable("The given matrix is linear dependent.");
 
-            var cofactor = Cofactor(a);
-            var adjCofactor = cofactor.Transpose();
+            var adjCofactor = Cofactor(a).Transpose();
 
             var inverse = new double[len, len];
             for (var i = 0L; i < len; i++)
                 for (var j = 0L; j < len; j++)
-                    inverse[i, j] = ((double)adjCofactor[i, j] / (double)determinant);
+                    inverse[i, j] = adjCofactor[i, j] / determinant;
 
             return inverse;
 
@@ -810,6 +978,8 @@ namespace NoFuture.Util.Core.Math
                 throw new NonConformable("A Determinant requires a square matrix (num-of-Rows = num-of-Columns).");
 
             var iLen = a.GetLength(0);
+            if (iLen == 1)
+                return a[0, 0];
 
             var eigenExpr = MatrixExpressions.EigenvalueExpression(iLen);
             var determinantFunc = eigenExpr.Compile();
@@ -847,6 +1017,7 @@ namespace NoFuture.Util.Core.Math
                         cofactor[i, j] = Determinant(ic);
                 }
             }
+
             return cofactor;
 
         }//end Cofactor
@@ -858,6 +1029,13 @@ namespace NoFuture.Util.Core.Math
 
             return Matrix.Product(aDevXaDevTick, (1D/a.CountOfRows()));
         }//end Covariance
+
+        public static double[,] ProjectionMatrix(this double[,] a)
+        {
+            var ata = a.CrossProduct();
+            var ataInverse = ata.Inverse();
+            return a.DotProduct(ataInverse).DotProduct(a.Transpose());
+        }
 
         public static string Print(this double[,] a, string style = null)
         {
@@ -1047,7 +1225,7 @@ namespace NoFuture.Util.Core.Math
         }
 
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        private static long[] GetApplicableCofactorIndices(long currentIndex, long originalLength)
+        internal static long[] GetApplicableCofactorIndices(long currentIndex, long originalLength)
         {
             if (originalLength == 0)
                 return null;
