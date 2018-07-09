@@ -756,6 +756,144 @@ namespace NoFuture.Util.Core.Tests
         }
 
         [Test]
+        public void TestGaussElimination()
+        {
+            var testInput = new double[,]
+            {
+                {1,2,3 },
+                { 4,5,6 },
+                { 1,0,1}
+            };
+            var x = new double[] {1,1,1};
+            var testResult = MatrixExtensions.GaussElimination(testInput, x);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(0, testResult[0]);
+            Assert.AreEqual(-1, testResult[1]);
+            Assert.AreEqual(1, testResult[2]);
+
+
+            testInput = new double[,]
+            {
+                {2,1,-1 },
+                { -3,-1,2 },
+                { -2,1,2}
+            };
+            x = new double[] {8, -11, -3};
+            testResult = MatrixExtensions.GaussElimination(testInput, x);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(2, testResult[0]);
+            Assert.AreEqual(3, System.Math.Round(testResult[1]));
+            Assert.AreEqual(-1, System.Math.Round(testResult[2]));
+
+            testInput = new double[,]
+            {
+                {0,3,-6,6,4},
+                {3,-7,8,-5,8},
+                {3,-9,12,-9,6}
+            };
+            x = new double[] { -5,9,15};
+            testResult = MatrixExtensions.GaussElimination(testInput, x);
+            Console.WriteLine(testResult.Print());
+
+        }
+
+        [Test]
+        public void TestReducedRowEchelonForm()
+        {
+            var testInput = new double[,]
+            {
+                {1, 2, -1, -4},
+                {2, 3, -1, -11},
+                {-2, 0, -3, 22}
+            };
+            var testResult = testInput.ReducedRowEchelonForm();
+            Assert.IsNotNull(testInput);
+
+            var expect = new double[,]
+            {
+                {1, 0, 0, -8},
+                {0, 1, 0, 1},
+                {0, 0, 1, -2}
+            };
+            Assert.IsTrue(Matrix.AreEqual(expect,testResult));
+
+            testInput = new double[,]
+            {
+                {0,3,-6,6,4,-5},
+                {3,-7,8,-5,8,9},
+                {3,-9,12,-9,6,15}
+            };
+            testResult = testInput.ReducedRowEchelonForm();
+            expect = new double[,]
+            {
+                {1, 0, -2, 3, 0, -24},
+                {0, 1, -2, 2, 0, -7},
+                {0, 0, 0, 0, 1, 4}
+            };
+            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+
+            testInput = new double[,]
+            {
+                {10, 8, 3, 1},
+                {8, 8, 2, 2}
+            };
+            testResult = testInput.ReducedRowEchelonForm();
+            expect = new double[,]
+            {
+                {1, 0, 0.5, -0.5},
+                {0, 1, -0.25, 0.75}
+            };
+            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+
+        }
+
+        [Test]
+        public void TestAppendColumn()
+        {
+            var testInput = new double[,]
+            {
+                {1,2,3 },
+                { 4,5,6 },
+                { 1,0,1}
+            };
+
+            var testInput2 = new double[,] {{-1, -2, -3}};
+            var testResult = testInput.AppendColumns(testInput2.Transpose());
+            
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(3, testResult.CountOfRows());
+            Assert.AreEqual(4, testResult.CountOfColumns());
+
+            Assert.AreEqual(-1, testResult[0,3]);
+            Assert.AreEqual(-2, testResult[1, 3]);
+            Assert.AreEqual(-3, testResult[2, 3]);
+
+            Console.WriteLine(testResult.Print());
+        }
+
+        [Test]
+        public void TestAppendRow()
+        {
+            var testInput = new double[,]
+            {
+                {1,2,3 },
+                { 4,5,6 },
+                { 1,0,1}
+            };
+            var testInput2 = new double[,] {{ -1, -2, -3 }};
+            var testResult = testInput.AppendRows(testInput2);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(4, testResult.CountOfRows());
+            Assert.AreEqual(3, testResult.CountOfColumns());
+
+            Assert.AreEqual(-1, testResult[3, 0]);
+            Assert.AreEqual(-2, testResult[3, 1]);
+            Assert.AreEqual(-3, testResult[3, 2]);
+            Console.WriteLine(testResult.Print());
+
+        }
+
+        [Test]
         public void TestPrintMatrix()
         {
             var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };

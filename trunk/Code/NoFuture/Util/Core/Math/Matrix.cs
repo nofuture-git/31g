@@ -353,6 +353,154 @@ namespace NoFuture.Util.Core.Math
             }
         }
 
+        public static double[,] AppendColumns(this double[,] a, double[,] b)
+        {
+            var leftColumnCount = a.CountOfColumns();
+            var rightColumnCount = b.CountOfColumns();
+
+            var rows = a.CountOfRows();
+            var cols = leftColumnCount + rightColumnCount;
+            var vout = new double[rows, cols];
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < a.CountOfColumns(); j++)
+                {
+                    vout[i, j] = a[i, j];
+                }
+
+                for (var j = 0; j < b.CountOfColumns(); j++)
+                {
+                    if(j >= cols || i >= b.CountOfRows())
+                        continue;
+                    vout[i, j + leftColumnCount] = b[i, j];
+                }
+            }
+
+            return vout;
+        }
+
+        public static double[,] AppendRows(this double[,] a, double[,] b)
+        {
+            var at = a.Transpose();
+            var vout = at.AppendColumns(b.Transpose());
+            return vout.Transpose();
+        }
+
+        /// <summary>
+        /// https://rosettacode.org/wiki/Reduced_row_echelon_form
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
+        public static double[,] ReducedRowEchelonForm(this double[,] matrix)
+        {
+            const double TOLERANCE = 0.00000001D;
+            var lead = 0;
+            var rowCount = matrix.CountOfRows();
+            var columnCount = matrix.CountOfColumns();
+            for (var r = 0; r < rowCount; r++)
+            {
+                if (columnCount <= lead) break;
+                var i = r;
+                while (System.Math.Abs(matrix[i, lead]) < TOLERANCE)
+                {
+                    i++;
+                    if (i == rowCount)
+                    {
+                        i = r;
+                        lead++;
+                        if (columnCount == lead)
+                        {
+                            lead--;
+                            break;
+                        }
+                    }
+                }
+                for (int j = 0; j < columnCount; j++)
+                {
+                    var temp = matrix[r, j];
+                    matrix[r, j] = matrix[i, j];
+                    matrix[i, j] = temp;
+                }
+                var div = matrix[r, lead];
+                if (System.Math.Abs(div) > TOLERANCE)
+                    for (int j = 0; j < columnCount; j++) matrix[r, j] /= div;
+                for (var j = 0; j < rowCount; j++)
+                {
+                    if (j != r)
+                    {
+                        var sub = matrix[j, lead];
+                        for (var k = 0; k < columnCount; k++) matrix[j, k] -= (sub * matrix[r, k]);
+                    }
+                }
+                lead++;
+            }
+            return matrix;
+        }
+
+        /// <summary>
+        /// https://martin-thoma.com/solving-linear-equations-with-gaussian-elimination/
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static double[] GaussElimination(this double[,] a, double[] v)
+        {
+            var n = a.CountOfRows();
+            var A = a.AppendColumns(v.ToMatrix().Transpose());
+            for (var i = 0; i < n; i++)
+            {
+                // Search for maximum in this column
+                var maxEl = System.Math.Abs(A[i, i]);
+                var maxRow = i;
+                for (var k = i + 1; k < n; k++)
+                {
+                    if (System.Math.Abs(A[k, i]) > maxEl)
+                    {
+                        maxEl = System.Math.Abs(A[k, i]);
+                        maxRow = k;
+                    }
+                }
+
+                // Swap maximum row with current row (column by column)
+                A.SwapRow(i,maxRow);
+                
+                // Make all rows below this one 0 in current column
+                for (var k = i + 1; k < n; k++)
+                {
+                    var c = -A[k, i] / A[i, i];
+                    if (c.Equals(double.NaN))
+                        c = 0;
+                    for (var j = i; j < n + 1; j++)
+                    {
+                        if (i == j)
+                        {
+                            A[k, j] = 0;
+                        }
+                        else
+                        {
+                            A[k, j] += c * A[i, j];
+                        }
+                    }
+                }
+            }
+
+            // Solve equation Ax=b for an upper triangular matrix A
+            var x = new double[n];
+            for (var i = n - 1; i >= 0; i--)
+            {
+                var c = A[i, n] / A[i, i];
+                if (c.Equals(double.NaN))
+                    c = 0;
+                x[i] = c;
+                for (var k = i - 1; k >= 0; k--)
+                {
+                    A[k, n] -= A[k, i] * x[i];
+                }
+            }
+
+            return x;
+        }
+
         /// <summary>
         /// Puts <see cref="a"/> into a matrix at the diagonals
         /// </summary>
@@ -1063,6 +1211,13 @@ namespace NoFuture.Util.Core.Math
             var ata = a.CrossProduct();
             var ataInverse = ata.Inverse();
             return a.DotProduct(ataInverse).DotProduct(a.Transpose());
+        }
+
+        public static string Print(this double[] v, string style = null)
+        {
+            if (v == null)
+                return "";
+            return style == null ? PrintRstyle(v.ToMatrix()) : PrintCodeStyle(v.ToMatrix(), style);
         }
 
         public static string Print(this double[,] a, string style = null)
