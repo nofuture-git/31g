@@ -205,7 +205,7 @@ namespace NoFuture.Util.Core.Math
         /// <param name="index"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static double[,] OneHotVector(int index, int length)
+        public static double[,] OneHotVector(long index, long length)
         {
             index = index < 0 ? 0 : index;
             if(index >= length)
@@ -227,7 +227,7 @@ namespace NoFuture.Util.Core.Math
         /// <param name="numOfColumns"></param>
         /// <param name="expr">Optional, apply some expression to each value</param>
         /// <returns></returns>
-        public static double[,] RandomMatrix(int numOfRows, int numOfColumns, Func<double, double> expr = null)
+        public static double[,] RandomMatrix(long numOfRows, long numOfColumns, Func<double, double> expr = null)
         {
             var myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
             numOfRows = numOfRows <= 0 ? myRand.Next(4, 8) : numOfRows;
@@ -279,7 +279,7 @@ namespace NoFuture.Util.Core.Math
             return Matrix.Product(a, scalar);
         }
 
-        public static void SwapRow(this double[,] a, int row1, int row2)
+        public static void SwapRow(this double[,] a, long row1, long row2)
         {
             a = a ?? new double[,] { };
             var len = a.CountOfRows();
@@ -295,7 +295,7 @@ namespace NoFuture.Util.Core.Math
             }
         }
 
-        public static void SwapColumn(this double[,] a, int column1, int column2)
+        public static void SwapColumn(this double[,] a, long column1, long column2)
         {
             a = a ?? new double[,] { };
             var len = a.CountOfColumns();
@@ -311,21 +311,21 @@ namespace NoFuture.Util.Core.Math
             }
         }
 
-        public static void ApplyAtRow(this double[,] a, double b, int atRow, Func<double, double, double> expr)
+        public static void ApplyAtRow(this double[,] a, double b, long atRow, Func<double, double, double> expr)
         {
             a = a ?? new double[,] { };
             var bArr = Enumerable.Repeat(b, (int) a.CountOfRows()).ToArray();
             ApplyAtRow(a, bArr, atRow, expr);
         }
 
-        public static void ApplyAtColumn(this double[,] a, double b, int atColumn, Func<double, double, double> expr)
+        public static void ApplyAtColumn(this double[,] a, double b, long atColumn, Func<double, double, double> expr)
         {
             a = a ?? new double[,] { };
             var bArr = Enumerable.Repeat(b, (int) a.CountOfColumns()).ToArray();
             ApplyAtColumn(a, bArr, atColumn, expr);
         }
 
-        public static void ApplyAtRow(this double[,] a, double[] b, int atRow, Func<double, double, double> expr)
+        public static void ApplyAtRow(this double[,] a, double[] b, long atRow, Func<double, double, double> expr)
         {
             a = a ?? new double[,] { };
             if (atRow >= a.CountOfRows())
@@ -339,7 +339,7 @@ namespace NoFuture.Util.Core.Math
             }
         }
 
-        public static void ApplyAtColumn(this double[,] a, double[] b, int atColumn, Func<double, double, double> expr)
+        public static void ApplyAtColumn(this double[,] a, double[] b, long atColumn, Func<double, double, double> expr)
         {
             a = a ?? new double[,] { };
             if (atColumn >= a.CountOfColumns())
@@ -415,7 +415,7 @@ namespace NoFuture.Util.Core.Math
                         }
                     }
                 }
-                for (int j = 0; j < columnCount; j++)
+                for (var j = 0; j < columnCount; j++)
                 {
                     var temp = matrix[r, j];
                     matrix[r, j] = matrix[i, j];
@@ -423,7 +423,7 @@ namespace NoFuture.Util.Core.Math
                 }
                 var div = matrix[r, lead];
                 if (System.Math.Abs(div) > TOLERANCE)
-                    for (int j = 0; j < columnCount; j++) matrix[r, j] /= div;
+                    for (var j = 0; j < columnCount; j++) matrix[r, j] /= div;
                 for (var j = 0; j < rowCount; j++)
                 {
                     if (j != r)
@@ -591,7 +591,7 @@ namespace NoFuture.Util.Core.Math
         /// If <see cref="a"/> cannot be evenly divided and this is false an exception will be thrown
         /// </param>
         /// <returns></returns>
-        public static double[,] ToMatrix(this double[] a, int numOfColumns = 1, bool truncEnding = false)
+        public static double[,] ToMatrix(this double[] a, long numOfColumns = 1, bool truncEnding = false)
         {
             a = a ?? new double[] { };
             if (!a.Any() || numOfColumns <= 0)
@@ -1154,13 +1154,20 @@ namespace NoFuture.Util.Core.Math
             if (iLen == 1)
                 return a[0, 0];
 
-            var eigenExpr = MatrixExpressions.EigenvalueExpression(iLen);
-            var determinantFunc = eigenExpr.Compile();
+            var val = 0D;
+            for (var j = 0L; j < a.CountOfColumns(); j++)
+            {
+                var minor = a.SelectMinor(0, j);
+                var v = IsSqrBy(3, minor) ? Ex(minor,0) : Determinant(minor);
+                v = a[0, j] * (j % 2 == 1 ? -1D : 1D) * v;
+                val += v;
+            }
 
-            return determinantFunc(a, 0);
+            return val;
+
         }//end Determinant
 
-        public static double[,] Cofactor(this double[,] a)
+        internal static double[,] Cofactor(this double[,] a)
         {
             a = a ?? new double[,] { };
             if (a.CountOfRows() != a.CountOfColumns())
@@ -1171,20 +1178,9 @@ namespace NoFuture.Util.Core.Math
 
             for (var i = 0L; i < len; i++)
             {
-                var iIndices = GetApplicableCofactorIndices(i, len);
                 for (var j = 0L; j < len; j++)
                 {
-                    var jIndices = GetApplicableCofactorIndices(j, len);
-
-                    var ic = new double[len - 1, len - 1];
-                    for (var k = 0L; k < iIndices.LongLength; k++)
-                    {
-                        for (var l = 0L; l < jIndices.LongLength; l++)
-                        {
-                            ic[k, l] = a[iIndices[k], jIndices[l]];
-                        }
-
-                    }
+                    var ic = a.SelectMinor(i, j);
                     if ((i + j) % 2 == 1)
                         cofactor[i, j] = Determinant(ic) * -1;
                     else
@@ -1211,6 +1207,20 @@ namespace NoFuture.Util.Core.Math
             var ata = a.CrossProduct();
             var ataInverse = ata.Inverse();
             return a.DotProduct(ataInverse).DotProduct(a.Transpose());
+        }
+
+        public static string Print(this long[] v, string style = null)
+        {
+            if (v == null)
+                return "";
+            return Print(v.Select(x => (double)x) .ToArray(), style);
+        }
+
+        public static string Print(this int[] v, string style = null)
+        {
+            if (v == null)
+                return "";
+            return Print(v.Select(x => (double)x).ToArray(), style);
         }
 
         public static string Print(this double[] v, string style = null)
@@ -1364,7 +1374,7 @@ namespace NoFuture.Util.Core.Math
             return mout;
         }//GetSoftmax
 
-        public static double[] SelectRow(this double[,] a, int index)
+        public static double[] SelectRow(this double[,] a, long index)
         {
             a = a ?? new double[,] { };
             var select = new List<double>();
@@ -1382,7 +1392,7 @@ namespace NoFuture.Util.Core.Math
 
         }//SelectRow
 
-        public static double[] SelectColumn(this double[,] a, int index)
+        public static double[] SelectColumn(this double[,] a, long index)
         {
             a = a ?? new double[,] { };
             var select = new List<double>();
@@ -1397,6 +1407,42 @@ namespace NoFuture.Util.Core.Math
             }
             return select.ToArray();
         }//SelectColumn
+
+        /// <summary>
+        /// Get the matrix less the row at <see cref="rowIndex"/> and less the column at <see cref="columnIndex"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="rowIndex"></param>
+        /// <param name="columnIndex"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Chiang, Alpha C. @ page 95
+        /// </remarks>
+        public static double[,] SelectMinor(this double[,] a, long rowIndex, long columnIndex)
+        {
+            a = a ?? new double[,] { };
+            var rows = a.CountOfRows();
+            var columns = a.CountOfColumns();
+            if (rowIndex > rows - 1 || columnIndex > columns - 1)
+                return a;
+
+            var vout = new double[rows - 1, columns - 1];
+            for (var i = 0; i < rows; i++)
+            {
+                if(i == rowIndex)
+                    continue;
+                var vi = i > rowIndex ? i - 1 : i;
+                for (var j = 0; j < columns; j++)
+                {
+                    if(j == columnIndex)
+                        continue;
+                    var vj = j > columnIndex ? j - 1 : j;
+                    vout[vi, vj] = a[i, j];
+
+                }
+            }
+            return vout;
+        }
 
         public static double[,] Copy(this double[,] a)
         {
@@ -1414,30 +1460,35 @@ namespace NoFuture.Util.Core.Math
         }
 
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        internal static long[] GetApplicableCofactorIndices(long currentIndex, long originalLength)
+        internal static bool IsSqrBy(long dim, double[,] a)
         {
-            if (originalLength == 0)
-                return null;
+            a = a ?? new double[,] { };
+            return a.CountOfRows() == a.CountOfColumns() && a.CountOfRows() == dim;
+        }
 
-            if (currentIndex >= originalLength)
-                return null;
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        private static Func<double[,], double, double> _ex;
 
-            var applicableIndices = new long[originalLength - 1];
-            var runningCount = 0;
-            for (var i = 0L; i < originalLength; i++)
+        /// <summary>
+        /// This runs alot faster on 3x3 matrix then on 2x2
+        /// </summary>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        internal static Func<double[,], double, double> Ex
+        {
+            get
             {
-                if (i == currentIndex)
-                    continue;
-
-                applicableIndices[runningCount] = i;
-                runningCount += 1;
+                if (_ex != null)
+                    return _ex;
+                var expr = MatrixExpressions.EigenvalueExpression(3);
+                _ex = expr.Compile();
+                return _ex;
             }
-            return applicableIndices;
-        }//end GetApplicableCofactorIndices
+        }
     }
 
     public class MatrixExpressions
     {
+
         /// <summary>
         /// This expression may be used to discover Eigenvalues.  Also it may be used as a Determinant 
         /// Expression by simply passing in '0' for the second parameter of the compiled expression.

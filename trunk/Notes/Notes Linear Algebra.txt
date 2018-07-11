@@ -853,7 +853,7 @@ Lines defined
   c <- -1 * a[1,1] * p[1,1] - a[1,2] * p[1,2]
   #c = -4
    
-  - implicit form is
+ - Implicit form is R(y, x1, ... xn) = 0
    implicitForm <- function(x1,x2) -2*x1 + 4*x2 - 4
   - this can be used to determine if a point is on a line
    implicitForm(2,2) #0
@@ -861,7 +861,7 @@ Lines defined
   #d = (a1*x1 + a2*x2 + c) / |a|
   isOnLine <- function(x1,x2) (normalForm(x1, x2)) / vLen(a)
   
- - Explicit equation of a line
+ - Explicit equation of a line y = f(x1, ... xn)
   x2 = ~a * x1 + ~b
   - where  ~a is -a/b and ~b = -c/b
   - this the classic form with intercept and slope
@@ -869,6 +869,14 @@ Lines defined
    - slope is formally defined as tan(θ)
    - problem with explicit form is flat lines
      have and infinite slope
+  - explicit to implicit always possible
+  - implicit to explicit maybe possible
+    x^2 + y^2 - 9 = 0 
+   - this is a 'relation' not a function 
+     because there is not a unique value of
+     y for each value of x (it plots to a circle)
+   - add in a restriction of y-is-always-positive and
+     it could be a function (plots as the upper half of a circle)
 ----
    
 ----
@@ -970,7 +978,7 @@ Parametric & Implicit Solve for intersect
   c <- -8
   
   myDenom <- sum(ab * v) #no eq zero
-  t <- (-1*c - sum(ab * p)) / myDemon
+  t <- (-1*c - sum(ab * p)) / myDenom
   
   #use t to solve line_1
   myIntersect <- p + t * v # [2,4]

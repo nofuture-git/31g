@@ -744,3 +744,54 @@ Softmax Function
   var sum_z_exp = z_exp.Sum();
   var softmax = z_exp.Select(i => Math.Round(i / sum_z_exp, 3)).ToArray();
 ----
+
+----
+Deep Networks basics
+ - core components
+  - parameters: these are the matrix weights which 
+     are gen'ed as small doubles
+  - layers: the matrices themselves
+  - activation functions: a function applied to the result 
+     of some matrix dot-product
+   - common hidden layer activation functions 
+    - Sigmoid
+    - Tanh
+    - Hard tanh
+    - ReLU (Rectified linear unit)
+   - common output layer activation functions
+    - single number, linear function
+    - true\false, sigmoid function
+    - classification, softmax
+  - loss functions: the means of knowing the agreement between
+      prediction and actual
+    - regression
+    - classification
+    - reconstruction
+  - optimization methods
+   - two groups
+    - First-order, uses Jacobian matrix (partial derivatives of 
+       the loss-function with respect to each parameter)
+    - Second-order, uses Hessian, which is the derivative of the Jacobian
+  - hyperparameters
+   - choices made before any calc
+    - includes 
+     - layer size
+     - learning rate
+     - regularization (way of not over-fitting)
+     - activation functions
+     - init weights 
+     - loss functions
+     - training batch size
+     - normalization (making everything a number)
+  
+ - concepts
+  - RBMs (Restricted Boltzmann Machines)
+  - Autoencoders, main task is to reproduce its own input
+     - useful to detect anomalies
+ - architectures
+  - UPNs
+  - CNNs (image modeling)
+  - Recurrent neural networks (sequence modeling)
+  - Recursive neural networks
+----
+  
