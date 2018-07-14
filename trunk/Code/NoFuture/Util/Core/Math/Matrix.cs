@@ -78,12 +78,12 @@ namespace NoFuture.Util.Core.Math
         public static double[,] Sum(double[,] a, double[,] b)
         {
             return Arithmetic(a, b, (d1, d2) => d1 + d2);
-        }//end Sum
+        }
 
         public static double[,] Difference(double[,] a, double[,] b)
         {
             return Arithmetic(a, b, (d1, d2) => d1 - d2);
-        }//end Difference
+        }
 
         public static double[,] Arithmetic(double[,] a, double[,] b, Func<double, double, double> expr)
         {
@@ -112,7 +112,7 @@ namespace NoFuture.Util.Core.Math
                 }
             }
             return sum;
-        }//end Arthmetic
+        }
 
         public static double[,] Product(double[,] a, double scalar)
         {
@@ -129,7 +129,7 @@ namespace NoFuture.Util.Core.Math
             }
             return vout;
 
-        }//end Product
+        }
 
         public static double[,] Product(double[,] a, double[,] b)
         {
@@ -154,7 +154,7 @@ namespace NoFuture.Util.Core.Math
 
             return product;
 
-        }//end Product
+        }
 
         public static double[,] GetIdentity(long sqrSize)
         {
@@ -164,7 +164,7 @@ namespace NoFuture.Util.Core.Math
                 identity[i, i] = 1L;
 
             return identity;
-        }//end GetIdentity
+        }
 
         public static double[,] GetAllOnesMatrix(long rows, long columns)
         {
@@ -177,15 +177,14 @@ namespace NoFuture.Util.Core.Math
                     s[i, j] = 1D;
             }
             return s;
-        }//end GetAllOnesMatrix
+        }
 
         public static bool AreEqual(double[,] a, double[,] b, double tolerance = 0.0000001D)
         {
             a = a ?? new double[,] { };
             b = b ?? new double[,] { };
             if (a.CountOfRows() != b.CountOfRows() || a.CountOfColumns()!=b.CountOfColumns())
-                throw new NonConformable(
-                    "The diminsions of a and b must be the same.");
+                return false;
             for (var i = 0; i < a.CountOfRows(); i++)
             {
                 for (var j = 0; j < a.CountOfColumns(); j++)
@@ -196,7 +195,7 @@ namespace NoFuture.Util.Core.Math
                 }
             }
             return true;
-        }//end AreEqual
+        }
 
         /// <summary>
         /// Returns a matrix of 1 X <see cref="length"/> where all
@@ -361,16 +360,17 @@ namespace NoFuture.Util.Core.Math
             var rows = a.CountOfRows();
             var cols = leftColumnCount + rightColumnCount;
             var vout = new double[rows, cols];
+            var rightRowCount = b.CountOfRows();
             for (var i = 0; i < rows; i++)
             {
-                for (var j = 0; j < a.CountOfColumns(); j++)
+                for (var j = 0; j < leftColumnCount; j++)
                 {
                     vout[i, j] = a[i, j];
                 }
 
-                for (var j = 0; j < b.CountOfColumns(); j++)
+                for (var j = 0; j < rightColumnCount; j++)
                 {
-                    if(j >= cols || i >= b.CountOfRows())
+                    if(j >= cols || i >= rightRowCount)
                         continue;
                     vout[i, j + leftColumnCount] = b[i, j];
                 }
@@ -1098,7 +1098,7 @@ namespace NoFuture.Util.Core.Math
                     transpose[j, i] = a[i, j];
 
             return transpose;
-        }//end Transpose
+        }
 
         public static double[,] CrossProduct(this double[,] a)
         {
@@ -1118,13 +1118,13 @@ namespace NoFuture.Util.Core.Math
             var aXr = Matrix.Product(lXa, lOverRows);
 
             return Matrix.Difference(a, aXr);
-        }//end Deviation
+        }
 
         public static double[,] Inverse(this double[,] a)
         {
             a = a ?? new double[,] { };
-            var determinant = Determinant(a);
             var len = a.CountOfRows();
+            var determinant = Determinant(a);
             if (determinant.Equals(0D))
                 throw new NonConformable("The given matrix is linear dependent.");
 
@@ -1137,43 +1137,50 @@ namespace NoFuture.Util.Core.Math
 
             return inverse;
 
-        }//end Inverse
+        }
 
         public static bool IsLinearDependent(this double[,] a)
         {
             return (Determinant(a).Equals(0D));
-        }//end IsLinearDependent
+        }
 
         public static double Determinant(this double[,] a)
         {
             a = a ?? new double[,] { };
-            if (a.CountOfRows() != a.CountOfColumns())
+            var rows = a.CountOfRows();
+            var cols = a.CountOfColumns();
+            if (rows != cols)
                 throw new NonConformable("A Determinant requires a square matrix (num-of-Rows = num-of-Columns).");
 
-            var iLen = a.GetLength(0);
-            if (iLen == 1)
+            if (rows == 1)
                 return a[0, 0];
 
             var val = 0D;
-            for (var j = 0L; j < a.CountOfColumns(); j++)
+            for (var j = 0L; j < cols; j++)
             {
+                var aOj = a[0, j];
+                if (aOj == 0D)
+                    continue;
                 var minor = a.SelectMinor(0, j);
-                var v = IsSqrBy(3, minor) ? Ex(minor,0) : Determinant(minor);
-                v = a[0, j] * (j % 2 == 1 ? -1D : 1D) * v;
+                var v = rows - 1 == 3 ? Determinant3X3(minor,0) : Determinant(minor);
+                v = aOj * v;
+                if (j % 2 == 1)
+                    v *= -1;
                 val += v;
             }
 
             return val;
 
-        }//end Determinant
+        }
 
-        internal static double[,] Cofactor(this double[,] a)
+        public static double[,] Cofactor(this double[,] a)
         {
             a = a ?? new double[,] { };
-            if (a.CountOfRows() != a.CountOfColumns())
+            var len = a.CountOfRows();
+            var cols = a.CountOfColumns();
+            if (len != cols)
                 throw new NonConformable("A Cofactor requires a square matrix (num-of-Rows = num-of-Columns).");
 
-            var len = a.CountOfRows();
             var cofactor = new double[len, len];
 
             for (var i = 0L; i < len; i++)
@@ -1181,16 +1188,16 @@ namespace NoFuture.Util.Core.Math
                 for (var j = 0L; j < len; j++)
                 {
                     var ic = a.SelectMinor(i, j);
+                    var det = Determinant(ic);
                     if ((i + j) % 2 == 1)
-                        cofactor[i, j] = Determinant(ic) * -1;
-                    else
-                        cofactor[i, j] = Determinant(ic);
+                        det *= -1;
+                    cofactor[i, j] = det;
                 }
             }
 
             return cofactor;
 
-        }//end Cofactor
+        }
 
         public static double[,] Covariance(this double[,] a)
         {
@@ -1199,7 +1206,7 @@ namespace NoFuture.Util.Core.Math
             var aDevXaDevTick = Matrix.Product(aDev.Transpose(), aDev);
 
             return Matrix.Product(aDevXaDevTick, (1D/a.CountOfRows()));
-        }//end Covariance
+        }
 
         public static double[,] ProjectionMatrix(this double[,] a)
         {
@@ -1209,11 +1216,18 @@ namespace NoFuture.Util.Core.Math
             return a.DotProduct(ataInverse).DotProduct(a.Transpose());
         }
 
+        public static string Print(this decimal[] v, string style = null)
+        {
+            if (v == null)
+                return "";
+            return Print(v.Select(x => (double)x).ToArray(), style);
+        }
+
         public static string Print(this long[] v, string style = null)
         {
             if (v == null)
                 return "";
-            return Print(v.Select(x => (double)x) .ToArray(), style);
+            return Print(v.Select(x => (double)x).ToArray(), style);
         }
 
         public static string Print(this int[] v, string style = null)
@@ -1237,7 +1251,7 @@ namespace NoFuture.Util.Core.Math
             return style == null
                 ? PrintRstyle(a)
                 : PrintCodeStyle(a, style);
-        }//end Print
+        }
 
         internal static string PrintCodeStyle(double[,] a, string style = "js")
         {
@@ -1372,7 +1386,7 @@ namespace NoFuture.Util.Core.Math
             }
 
             return mout;
-        }//GetSoftmax
+        }
 
         public static double[] SelectRow(this double[,] a, long index)
         {
@@ -1390,7 +1404,7 @@ namespace NoFuture.Util.Core.Math
 
             return select.ToArray();
 
-        }//SelectRow
+        }
 
         public static double[] SelectColumn(this double[,] a, long index)
         {
@@ -1406,7 +1420,7 @@ namespace NoFuture.Util.Core.Math
                 select.Add(a[i,index]);
             }
             return select.ToArray();
-        }//SelectColumn
+        }
 
         /// <summary>
         /// Get the matrix less the row at <see cref="rowIndex"/> and less the column at <see cref="columnIndex"/>
@@ -1470,10 +1484,10 @@ namespace NoFuture.Util.Core.Math
         private static Func<double[,], double, double> _ex;
 
         /// <summary>
-        /// This runs alot faster on 3x3 matrix then on 2x2
+        /// Determinant runs a little faster with this.
         /// </summary>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        internal static Func<double[,], double, double> Ex
+        internal static Func<double[,], double, double> Determinant3X3
         {
             get
             {
