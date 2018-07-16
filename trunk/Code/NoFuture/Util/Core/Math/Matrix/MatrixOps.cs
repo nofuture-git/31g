@@ -71,17 +71,17 @@ namespace NoFuture.Util.Core.Math.Matrix
             a = a ?? new double[,] { };
             b = b ?? new double[,] { };
             expr = expr ?? ((d1, d2) => d1 + d2);
-            if (a.CountOfRows() != b.CountOfRows()) //equal rows
+            var aRows = a.CountOfRows();
+            var aCols = a.CountOfColumns();
+            var bRows = b.CountOfRows();
+            var bCols = b.CountOfColumns();
+            if (aRows != bRows || aCols != bCols)
                 throw new NonConformableException(
-                    $"The number of rows in matrix 'a' must match the number of rows in matrix 'b' " +
-                    $"to solve for the {expr}.");
-            if (a.CountOfColumns() != b.CountOfColumns()) //equal columns
-                throw new NonConformableException(
-                    $"The number of columns in matrix 'a' must match the number of columns in matrix 'b' " +
-                    $"to solve for the {expr}.");
+                    $"The dimensions of '{nameof(a)}' as ({aRows}X{aCols}) " +
+                    $"and '{nameof(b)}' as ({bRows}X{bCols}) do not match");
 
-            var iLength = a.CountOfRows();
-            var jLength = a.CountOfColumns();
+            var iLength = aRows;
+            var jLength = aCols;
 
             var sum = new double[iLength,jLength];
 

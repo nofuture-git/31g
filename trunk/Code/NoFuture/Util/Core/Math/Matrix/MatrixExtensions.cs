@@ -38,12 +38,12 @@ namespace NoFuture.Util.Core.Math.Matrix
             return MatrixOps.Product(a, scalar);
         }
 
-        public static void SwapRow(this double[,] a, long row1, long row2)
+        public static double[,] SwapRow(this double[,] a, long row1, long row2)
         {
             a = a ?? new double[,] { };
             var len = a.CountOfRows();
             if (row1 >= len || row2 >= len)
-                return;
+                return a;
 
             for (var j = 0; j < a.CountOfColumns(); j++)
             {
@@ -52,14 +52,16 @@ namespace NoFuture.Util.Core.Math.Matrix
                 a[row1, j] = row2J;
                 a[row2, j] = row1J;
             }
+
+            return a;
         }
 
-        public static void SwapColumn(this double[,] a, long column1, long column2)
+        public static double[,] SwapColumn(this double[,] a, long column1, long column2)
         {
             a = a ?? new double[,] { };
             var len = a.CountOfColumns();
             if (column1 >= len || column2 >= len)
-                return;
+                return a;
 
             for (var i = 0; i < a.CountOfColumns(); i++)
             {
@@ -68,48 +70,54 @@ namespace NoFuture.Util.Core.Math.Matrix
                 a[i, column1] = column2J;
                 a[i, column2] = column1J;
             }
+
+            return a;
         }
 
-        public static void ApplyAtRow(this double[,] a, double b, long atRow, Func<double, double, double> expr)
+        public static double[,] ApplyAtRow(this double[,] a, double b, long atRow, Func<double, double, double> expr)
         {
             a = a ?? new double[,] { };
             var bArr = Enumerable.Repeat(b, (int) a.CountOfRows()).ToArray();
-            ApplyAtRow(a, bArr, atRow, expr);
+            return ApplyAtRow(a, bArr, atRow, expr);
         }
 
-        public static void ApplyAtColumn(this double[,] a, double b, long atColumn, Func<double, double, double> expr)
+        public static double[,] ApplyAtColumn(this double[,] a, double b, long atColumn, Func<double, double, double> expr)
         {
             a = a ?? new double[,] { };
             var bArr = Enumerable.Repeat(b, (int) a.CountOfColumns()).ToArray();
-            ApplyAtColumn(a, bArr, atColumn, expr);
+            return ApplyAtColumn(a, bArr, atColumn, expr);
         }
 
-        public static void ApplyAtRow(this double[,] a, double[] b, long atRow, Func<double, double, double> expr)
+        public static double[,] ApplyAtRow(this double[,] a, double[] b, long atRow, Func<double, double, double> expr)
         {
             a = a ?? new double[,] { };
             if (atRow >= a.CountOfRows())
                 throw new NonConformableException($"{atRow} exceeds the number of rows present in a");
             if (expr == null)
-                return;
+                return a;
             for (var j = 0; j < a.CountOfColumns(); j++)
             {
                 var v = b.Length <= j ? 0 : b[j];
                 a[atRow, j] = expr(a[atRow, j], v);
             }
+
+            return a;
         }
 
-        public static void ApplyAtColumn(this double[,] a, double[] b, long atColumn, Func<double, double, double> expr)
+        public static double[,] ApplyAtColumn(this double[,] a, double[] b, long atColumn, Func<double, double, double> expr)
         {
             a = a ?? new double[,] { };
             if (atColumn >= a.CountOfColumns())
                 throw new NonConformableException($"{atColumn} exceeds the number of columns present in a");
             if (expr == null)
-                return;
+                return a;
             for (var i = 0; i < a.CountOfRows(); i++)
             {
                 var v = b.Length <= i ? 0 : b[i];
                 a[i, atColumn] = expr(a[i, atColumn], v);
             }
+
+            return a;
         }
 
         public static double[,] AppendColumns(this double[,] a, double[,] b)
@@ -314,7 +322,7 @@ namespace NoFuture.Util.Core.Math.Matrix
 
             for (var i = 0; i < dout.Length; i++)
             {
-                var rowI = a.SelectColumn(i);
+                var rowI = a.GetColumn(i);
                 dout[i] = expr(rowI);
             }
 
@@ -334,7 +342,7 @@ namespace NoFuture.Util.Core.Math.Matrix
 
             for (var i = 0; i < dout.Length; i++)
             {
-                var rowI = a.SelectRow(i);
+                var rowI = a.GetRow(i);
                 dout[i] = expr(rowI);
             }
 
@@ -382,11 +390,11 @@ namespace NoFuture.Util.Core.Math.Matrix
             return matrix;
         }
 
-        public static void ApplyToEach(this double[,] a, Func<double, double> expr)
+        public static double[,] ApplyToEach(this double[,] a, Func<double, double> expr)
         {
             a = a ?? new double[,] { };
             if (expr == null)
-                return;
+                return a;
             for (var i = 0; i < a.CountOfRows(); i++)
             {
                 for (var j = 0; j < a.CountOfColumns(); j++)
@@ -394,6 +402,8 @@ namespace NoFuture.Util.Core.Math.Matrix
                     a[i, j] = expr(a[i, j]);
                 }
             }
+
+            return a;
         }
 
         /// <summary>
@@ -424,7 +434,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         /// <param name="toCenter"></param>
         /// <param name="toScale"></param>
         /// <returns></returns>
-        public static void Scale(this double[,] a, bool toCenter = true, bool toScale = true)
+        public static double[,] Scale(this double[,] a, bool toCenter = true, bool toScale = true)
         {
             a = a ?? new double[,] { };
             if (toCenter)
@@ -444,6 +454,8 @@ namespace NoFuture.Util.Core.Math.Matrix
                     a.ApplyAtRow(s, i, (d, d1) => d / (d1 == 0D ? 0.0000001D : d1));
                 }
             }
+
+            return a;
         }
 
         public struct SvdOutput
@@ -1087,14 +1099,22 @@ namespace NoFuture.Util.Core.Math.Matrix
             //find the max len
             var maxLen = 0;
             var anyNeg = false;
+            var anyBigFloats = false;
             for (var i = 0; i < a.CountOfRows(); i++)
             for (var j = 0; j < a.CountOfColumns(); j++)
             {
-                if (a[i, j].ToString(CultureInfo.InvariantCulture).Length > maxLen)
-                    maxLen = a[i, j].ToString(CultureInfo.InvariantCulture).Length;
-                if (a[i, j] < 0)
+                var aij = a[i, j];
+                var aijString = aij.ToString(CultureInfo.InvariantCulture);
+                if (aijString.Contains(".") && aijString.Split('.')[1].Length > 8)
+                    anyBigFloats = true;
+                if (aijString.Length > maxLen)
+                    maxLen = aijString.Length;
+                if (aij < 0)
                     anyNeg = true;
             }
+
+            if (anyBigFloats)
+                maxLen = 8;
 
             maxLen += 2;
 
@@ -1105,10 +1125,11 @@ namespace NoFuture.Util.Core.Math.Matrix
 
                 if (i == 0)
                 {
-                    str.Append(new String(' ', a.CountOfRows().ToString().Length + 2));
+                    var hdrFill = maxLen <= 2 ? 2 : 4;
+                    str.Append(new String(' ', a.CountOfRows().ToString().Length + hdrFill));
                 }
 
-                str.AppendFormat("{0," + padding + "}", headerStr);
+                str.AppendFormat("{0,-" + padding + "}", headerStr);
             }
 
             str.AppendLine();
@@ -1118,8 +1139,12 @@ namespace NoFuture.Util.Core.Math.Matrix
                 for (var j = 0; j < a.CountOfColumns(); j++)
                 {
                     var aij = a[i, j];
+                    var aijString = aij.ToString(CultureInfo.InvariantCulture);
+                    if (anyBigFloats && aijString.Length > 8)
+                        aijString = aijString.Substring(0, 8);
+
                     var format = aij >= 0 && anyNeg ? " {0,-" + (maxLen - 1) + "}" : "{0,-" + maxLen + "}";
-                    str.AppendFormat(format, aij);
+                    str.AppendFormat(format, aijString);
                 }
                 str.AppendLine();
             }
@@ -1152,7 +1177,7 @@ namespace NoFuture.Util.Core.Math.Matrix
             return mout;
         }
 
-        public static double[] SelectRow(this double[,] a, long index)
+        public static double[] GetRow(this double[,] a, long index)
         {
             a = a ?? new double[,] { };
             var select = new List<double>();
@@ -1170,7 +1195,7 @@ namespace NoFuture.Util.Core.Math.Matrix
 
         }
 
-        public static double[] SelectColumn(this double[,] a, long index)
+        public static double[] GetColumn(this double[,] a, long index)
         {
             a = a ?? new double[,] { };
             var select = new List<double>();
@@ -1184,6 +1209,34 @@ namespace NoFuture.Util.Core.Math.Matrix
                 select.Add(a[i,index]);
             }
             return select.ToArray();
+        }
+
+        public static double[,] SetRow(this double[,] a, long index, double[] row)
+        {
+            a = a ?? new double[,] { };
+            if (row == null || index >= a.CountOfRows())
+                return a;
+            for (var j = 0; j < a.CountOfColumns(); j++)
+            {
+                var v = j >= row.Length ? 0D : row[j];
+                a[index, j] = v;
+            }
+
+            return a;
+        }
+
+        public static double[,] SetColumn(this double[,] a, long index, double[] column)
+        {
+            a = a ?? new double[,] { };
+            if (column == null || index >= a.CountOfColumns())
+                return a;
+            for (var i = 0; i < a.CountOfRows(); i++)
+            {
+                var v = i >= column.Length ? 0D : column[i];
+                a[i, index] = v;
+            }
+
+            return a;
         }
 
         /// <summary>
@@ -1237,6 +1290,20 @@ namespace NoFuture.Util.Core.Math.Matrix
             return dest;
         }
 
+        public static double[,] ShuffleRows(this double[,] a)
+        {
+            var myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
+            for (var i = a.CountOfRows() -1; i > 1; i--)
+            {
+                var temp = a.GetRow(i);
+                var j = myRand.Next(0, (int)i + 1);
+                a.SetRow(i, a.GetRow(j));
+                a.SetRow(j, temp);
+            }
+
+            return a;
+        }
+
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         internal static bool IsSqrBy(long dim, double[,] a)
         {
@@ -1261,6 +1328,52 @@ namespace NoFuture.Util.Core.Math.Matrix
                 _ex = expr.Compile();
                 return _ex;
             }
+        }
+
+        /// <summary>
+        /// https://www.ocf.berkeley.edu/~janastas/stochastic-gradient-descent-in-r.html
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="eta"></param>
+        /// <param name="iters"></param>
+        /// <param name="epsilon"></param>
+        /// <returns></returns>
+        public static double[,] LinearGradientDescent(this double[,] x, double[] y, double eta = 0.25, long iters = 1000, double epsilon = 0.0001)
+        {
+            var yy = y.ToMatrix().Transpose();
+            var n = (double)x.CountOfRows();
+            var thetaInit = MatrixOps.RandomMatrix(1, x.CountOfColumns());
+            
+            var e = yy.Transpose().Minus(thetaInit.DotProduct(x.Transpose()));
+            var gradInit = e.DotScalar(-(2 / n)).DotProduct(x);
+            var theta = thetaInit.Minus(gradInit.DotScalar(eta * (1 / n)));
+
+            for (var i = 0; i < iters; i++)
+            {
+                e = yy.Transpose().Minus(theta.DotProduct(x.Transpose()));
+                var grad = e.DotScalar(-(2 / n)).DotProduct(x);
+                theta = theta.Minus(grad.DotScalar(eta * (2 / n)));
+                if (GetSqrSum(grad) <= epsilon)
+                    break;
+            }
+
+            return theta.Transpose();
+        }
+
+        internal static double GetSqrSum(double[,] grad)
+        {
+            var gradSqred = grad.ApplyToEach(v => System.Math.Pow(v, 2));
+            var gradSqrSum = gradSqred.Flatten().Sum();
+            var sqrtGradSqrSum = System.Math.Sqrt(gradSqrSum);
+            return sqrtGradSqrSum;
+        }
+
+        internal static double[,] StochasticGradientDescent(double[] vy, double[,] X, double eta, long iters,
+            double epsilon = 0.0001)
+        {
+
+            throw new NotImplementedException();
         }
     }
 }
