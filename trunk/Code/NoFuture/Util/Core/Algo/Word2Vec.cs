@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Util.Core.Math;
+using NoFuture.Util.Core.Math.Matrix;
 using static System.Diagnostics.Debug;
 
 namespace NoFuture.Util.Core.Algo
@@ -209,9 +210,9 @@ namespace NoFuture.Util.Core.Algo
             //values are always less than 0.1
             double GetInitWeight(double d) => (d - 0.5D) / n;
 
-            WI = Matrix.RandomMatrix(v, n, GetInitWeight);
+            WI = MatrixOps.RandomMatrix(v, n, GetInitWeight);
             System.Threading.Thread.Sleep(50);
-            WO = Matrix.RandomMatrix(n, v, GetInitWeight);
+            WO = MatrixOps.RandomMatrix(n, v, GetInitWeight);
 
         }
 
@@ -296,7 +297,7 @@ namespace NoFuture.Util.Core.Algo
         {
             if(node == null)
                 throw new ArgumentNullException(nameof(node));
-            return Matrix.OneHotVector(node.Index, Vocab.GetLengthLeafs());
+            return MatrixOps.OneHotVector(node.Index, Vocab.GetLengthLeafs());
         }
 
         public double[,] ToVector(List<HuffmanNode> nodes)
@@ -307,7 +308,7 @@ namespace NoFuture.Util.Core.Algo
             var oneHot = new double[1,Vocab.GetLengthLeafs()];
             foreach (var node in nodes)
             {
-                var nodeOneHot = Matrix.OneHotVector(node.Index, Vocab.GetLengthLeafs());
+                var nodeOneHot = MatrixOps.OneHotVector(node.Index, Vocab.GetLengthLeafs());
                 for (var j = 0; j < nodeOneHot.CountOfColumns(); j++)
                 {
                     oneHot[0, j] += nodeOneHot[0, j];

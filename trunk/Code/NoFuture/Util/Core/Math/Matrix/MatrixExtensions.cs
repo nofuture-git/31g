@@ -2,252 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace NoFuture.Util.Core.Math
+namespace NoFuture.Util.Core.Math.Matrix
 {
-    public class NonConformable : System.Exception
-    {
-        public NonConformable()
-        {
-
-        }
-        public NonConformable(string message)
-            : base(message)
-        {
-
-        }
-
-    }
-
-    /// <summary>
-    /// Chiang, Alpha C. "Fundamental Methods Of Mathematical Economics" New York: McGraw-Hill, Inc.
-    ///     1984. Print
-    /// </summary>
-    /// <remarks>
-    /// <![CDATA[
-    /// REFERENCE:
-    ///- not commutative multiplication
-    ///  AB != BA
-    ///
-    ///- associative multiplication
-    /// A*(B*C) = (A*B)*C
-    /// (a*b)*C = a*(b*C)
-    /// a*(B*C) = (a*B)*C = B*(a*C)
-    ///
-    ///- distributive law
-    /// A*(B + C) = A*B + A*C
-    /// (B + C)*A = B*A + C*A
-    /// A*v + B*v = (A + B)*v
-    /// [A + B]ᵀ = Aᵀ + Bᵀ
-    /// A*(u + v) = A*u + A*v
-    ///
-    ///- commutative addition
-    /// A + B = B + A
-    ///
-    ///- associative addition
-    /// A + (B + C) = (A + B) + C
-    ///
-    ///- symmetric matrix is 
-    ///  A = Aᵀ
-    ///- dyadic matrix
-    ///  A*Aᵀ
-    ///- idempotent matrix
-    ///  A = A*A
-    ///
-    ///- other multiplication rules
-    /// (A*B)ᵀ = Bᵀ*Aᵀ
-    /// det(A * B) = det(A) * det(B)
-    ///
-    ///- exponent rules
-    ///  A^(r+s) = A^r * A^s
-    ///  A^(r*s) = (A^r)^s
-    ///  A^0 = I
-    ///
-    ///- inversion rules
-    /// A^-1*A = I
-    /// A*A^-1 = I
-    /// I^-1 = I
-    /// (A^-1)^-1 = A
-    /// (A^-1)ᵀ = (Aᵀ)^-1
-    /// ]]>
-    /// </remarks>
-    public class Matrix
-    {
-        public static double[,] Sum(double[,] a, double[,] b)
-        {
-            return Arithmetic(a, b, (d1, d2) => d1 + d2);
-        }
-
-        public static double[,] Difference(double[,] a, double[,] b)
-        {
-            return Arithmetic(a, b, (d1, d2) => d1 - d2);
-        }
-
-        public static double[,] Arithmetic(double[,] a, double[,] b, Func<double, double, double> expr)
-        {
-            a = a ?? new double[,] { };
-            b = b ?? new double[,] { };
-            expr = expr ?? ((d1, d2) => d1 + d2);
-            if (a.CountOfRows() != b.CountOfRows()) //equal rows
-                throw new NonConformable(
-                    $"The number of rows in matrix 'a' must match the number of rows in matrix 'b' " +
-                    $"to solve for the {expr}.");
-            if (a.CountOfColumns() != b.CountOfColumns()) //equal columns
-                throw new NonConformable(
-                    $"The number of columns in matrix 'a' must match the number of columns in matrix 'b' " +
-                    $"to solve for the {expr}.");
-
-            var iLength = a.CountOfRows();
-            var jLength = a.CountOfColumns();
-
-            var sum = new double[iLength,jLength];
-
-            for (var i = 0L; i < iLength; i++)
-            {
-                for (var j = 0L; j < jLength; j++)
-                {
-                    sum[i, j] = expr(a[i, j], b[i, j]);
-                }
-            }
-            return sum;
-        }
-
-        public static double[,] Product(double[,] a, double scalar)
-        {
-            a = a ?? new double[,] { };
-            var iLength = a.CountOfRows();
-            var jLength = a.CountOfColumns();
-            var vout = new double[iLength, jLength];
-            for (var i = 0L; i < iLength; i++)
-            {
-                for(var j=0L;j<jLength;j++)
-                {
-                    vout[i,j] = a[i,j] * scalar;
-                }
-            }
-            return vout;
-
-        }
-
-        public static double[,] Product(double[,] a, double[,] b)
-        {
-            a = a ?? new double[,] { };
-            b = b ?? new double[,] { };
-            var dimensions = new[,] {{a.CountOfRows(), a.CountOfColumns()}, {b.CountOfRows(), b.CountOfColumns()}};
-            var m = dimensions[0, 0];
-            var n = dimensions[0, 1];
-            var p = dimensions[1, 0];
-            var q = dimensions[1, 1];
-
-            if (n != p) //equal rows
-                throw new NonConformable(
-                    "The number of columns in matrix 'a' must match the number of rows in matrix 'b' " +
-                    "in order to solve for the product of the two.");
-
-            var product = new double[m,q];
-            for (var productRows = 0L; productRows < m; productRows++)
-                for (var productColumns = 0L; productColumns < q; productColumns++)
-                    for (var i = 0L; i < n; i++)
-                        product[productRows, productColumns] += a[productRows, i] * b[i, productColumns];
-
-            return product;
-
-        }
-
-        public static double[,] GetIdentity(long sqrSize)
-        {
-            sqrSize = sqrSize < 0 ? 0 : sqrSize;
-            var identity = new double[sqrSize,sqrSize];
-            for (var i = 0L; i < sqrSize; i++)
-                identity[i, i] = 1L;
-
-            return identity;
-        }
-
-        public static double[,] GetAllOnesMatrix(long rows, long columns)
-        {
-            rows = rows < 0 ? 0 : rows;
-            columns = columns < 0 ? 0 : columns;
-            var s = new double[rows, columns];
-            for (var i = 0; i < s.CountOfRows(); i++)
-            {
-                for (var j = 0; j < s.CountOfColumns(); j++)
-                    s[i, j] = 1D;
-            }
-            return s;
-        }
-
-        public static bool AreEqual(double[,] a, double[,] b, double tolerance = 0.0000001D)
-        {
-            a = a ?? new double[,] { };
-            b = b ?? new double[,] { };
-            if (a.CountOfRows() != b.CountOfRows() || a.CountOfColumns()!=b.CountOfColumns())
-                return false;
-            for (var i = 0; i < a.CountOfRows(); i++)
-            {
-                for (var j = 0; j < a.CountOfColumns(); j++)
-                {
-                    if (System.Math.Abs(a[i, j] - b[i, j]) > tolerance)
-                        return false;
-
-                }
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Returns a matrix of 1 X <see cref="length"/> where all
-        /// values are 0 expect for one at <see cref="index"/>
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        public static double[,] OneHotVector(long index, long length)
-        {
-            index = index < 0 ? 0 : index;
-            if(index >= length)
-                throw new ArgumentException("index must be less than the length");
-            var m = new double[1, length];
-            for (var j = 0; j < length; j++)
-            {
-                m[0, j] = j == index ? 1 : 0;
-            }
-
-            return m;
-        }
-
-        /// <summary>
-        /// Returns a matrix of dimension size <see cref="numOfRows"/> by <see cref="numOfColumns"/>
-        /// having all random, less-than 1, double values.
-        /// </summary>
-        /// <param name="numOfRows"></param>
-        /// <param name="numOfColumns"></param>
-        /// <param name="expr">Optional, apply some expression to each value</param>
-        /// <returns></returns>
-        public static double[,] RandomMatrix(long numOfRows, long numOfColumns, Func<double, double> expr = null)
-        {
-            var myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
-            numOfRows = numOfRows <= 0 ? myRand.Next(4, 8) : numOfRows;
-            numOfColumns = numOfColumns <= 0 ? myRand.Next(4, 8) : numOfColumns;
-            var m = new double[numOfRows, numOfColumns];
-            for (var i = 0; i < numOfRows; i++)
-            {
-                for (var j = 0; j < numOfColumns; j++)
-                {
-                    m[i, j] = myRand.NextDouble();
-                    if (expr != null)
-                        m[i, j] = expr(m[i, j]);
-                }
-            }
-
-            return m;
-        }
-    }
-
     public static class MatrixExtensions
     {
         public static long CountOfRows(this double[,] a)
@@ -262,22 +20,22 @@ namespace NoFuture.Util.Core.Math
 
         public static double[,] Plus(this double[,] a, double[,] b)
         {
-            return Matrix.Sum(a, b);
+            return MatrixOps.Sum(a, b);
         }
 
         public static double[,] Minus(this double[,] a, double[,] b)
         {
-            return Matrix.Difference(a, b);
+            return MatrixOps.Difference(a, b);
         }
 
         public static double[,] DotProduct(this double[,] a, double[,] b)
         {
-            return Matrix.Product(a, b);
+            return MatrixOps.Product(a, b);
         }
 
         public static double[,] DotScalar(this double[,] a, double scalar)
         {
-            return Matrix.Product(a, scalar);
+            return MatrixOps.Product(a, scalar);
         }
 
         public static void SwapRow(this double[,] a, long row1, long row2)
@@ -330,7 +88,7 @@ namespace NoFuture.Util.Core.Math
         {
             a = a ?? new double[,] { };
             if (atRow >= a.CountOfRows())
-                throw new NonConformable($"{atRow} exceeds the number of rows present in a");
+                throw new NonConformableException($"{atRow} exceeds the number of rows present in a");
             if (expr == null)
                 return;
             for (var j = 0; j < a.CountOfColumns(); j++)
@@ -344,7 +102,7 @@ namespace NoFuture.Util.Core.Math
         {
             a = a ?? new double[,] { };
             if (atColumn >= a.CountOfColumns())
-                throw new NonConformable($"{atColumn} exceeds the number of columns present in a");
+                throw new NonConformableException($"{atColumn} exceeds the number of columns present in a");
             if (expr == null)
                 return;
             for (var i = 0; i < a.CountOfRows(); i++)
@@ -607,8 +365,8 @@ namespace NoFuture.Util.Core.Math
             }
 
             if(!truncEnding && a.Length % numOfColumns != 0)
-                throw new NonConformable("the number of items in " +
-                                         $"the array {a.Length} will not fit evenly into a matrix");
+                throw new NonConformableException("the number of items in " +
+                                                  $"the array {a.Length} will not fit evenly into a matrix");
 
             var numOfRows = (int)System.Math.Round(a.Length / (double) numOfColumns);
             var matrix = new double[numOfRows, numOfColumns];
@@ -655,7 +413,7 @@ namespace NoFuture.Util.Core.Math
         /// <returns></returns>
         public static double[] StdByColumn(this double[,] a)
         {
-            var mul = Matrix.Arithmetic(a, a, (d, d1) => d * d1);
+            var mul = MatrixOps.Arithmetic(a, a, (d, d1) => d * d1);
             return mul.MeanByColumn().Select(System.Math.Sqrt).ToArray();
         }
 
@@ -1096,8 +854,8 @@ namespace NoFuture.Util.Core.Math
             a = a ?? new double[,] { };
             var transpose = new double[a.CountOfColumns(), a.CountOfRows()];
             for (var i = 0L; i < a.CountOfRows(); i++)
-                for (var j = 0L; j < a.CountOfColumns(); j++)
-                    transpose[j, i] = a[i, j];
+            for (var j = 0L; j < a.CountOfColumns(); j++)
+                transpose[j, i] = a[i, j];
 
             return transpose;
         }
@@ -1111,15 +869,15 @@ namespace NoFuture.Util.Core.Math
         public static double[,] Deviation(this double[,] a)
         {
             a = a ?? new double[,] { };
-            var l = Matrix.GetAllOnesMatrix(a.CountOfRows(), 1L);
+            var l = MatrixOps.GetAllOnesMatrix(a.CountOfRows(), 1L);
             var lTick = l.Transpose();
             var lOverRows = 1D/a.CountOfRows();
 
-            var lxlTick = Matrix.Product(l, lTick);
-            var lXa = Matrix.Product(lxlTick, a);
-            var aXr = Matrix.Product(lXa, lOverRows);
+            var lxlTick = MatrixOps.Product(l, lTick);
+            var lXa = MatrixOps.Product(lxlTick, a);
+            var aXr = MatrixOps.Product(lXa, lOverRows);
 
-            return Matrix.Difference(a, aXr);
+            return MatrixOps.Difference(a, aXr);
         }
 
         public static double[,] Inverse(this double[,] a)
@@ -1128,14 +886,14 @@ namespace NoFuture.Util.Core.Math
             var len = a.CountOfRows();
             var determinant = Determinant(a);
             if (determinant.Equals(0D))
-                throw new NonConformable("The given matrix is linear dependent.");
+                throw new NonConformableException("The given matrix is linear dependent.");
 
             var adjCofactor = Cofactor(a).Transpose();
 
             var inverse = new double[len, len];
             for (var i = 0L; i < len; i++)
-                for (var j = 0L; j < len; j++)
-                    inverse[i, j] = adjCofactor[i, j] / determinant;
+            for (var j = 0L; j < len; j++)
+                inverse[i, j] = adjCofactor[i, j] / determinant;
 
             return inverse;
 
@@ -1152,7 +910,7 @@ namespace NoFuture.Util.Core.Math
             var rows = a.CountOfRows();
             var cols = a.CountOfColumns();
             if (rows != cols)
-                throw new NonConformable("A Determinant requires a square matrix (num-of-Rows = num-of-Columns).");
+                throw new NonConformableException("A Determinant requires a square matrix (num-of-Rows = num-of-Columns).");
 
             if (rows == 1)
                 return a[0, 0];
@@ -1181,8 +939,9 @@ namespace NoFuture.Util.Core.Math
             var len = a.CountOfRows();
             var cols = a.CountOfColumns();
             if (len != cols)
-                throw new NonConformable("A Cofactor requires a square matrix (num-of-Rows = num-of-Columns).");
+                throw new NonConformableException("A Cofactor requires a square matrix (num-of-Rows = num-of-Columns).");
 
+            //use multithread for non-trival size matrix
             if (len >= 8)
             {
                 return new CofactorSupervisor(a).CalcCofactor();
@@ -1208,9 +967,9 @@ namespace NoFuture.Util.Core.Math
         {
             a = a ?? new double[,] { };
             var aDev = a.Deviation();
-            var aDevXaDevTick = Matrix.Product(aDev.Transpose(), aDev);
+            var aDevXaDevTick = MatrixOps.Product(aDev.Transpose(), aDev);
 
-            return Matrix.Product(aDevXaDevTick, (1D/a.CountOfRows()));
+            return MatrixOps.Product(aDevXaDevTick, (1D/a.CountOfRows()));
         }
 
         public static double[,] ProjectionMatrix(this double[,] a)
@@ -1502,315 +1261,6 @@ namespace NoFuture.Util.Core.Math
                 _ex = expr.Compile();
                 return _ex;
             }
-        }
-    }
-
-    public delegate void StartWork();
-
-    public delegate void EndWork(WorkResult result);
-
-    public class CofactorWorker
-    {
-        public event EndWork Completed;
-        private readonly StartWork _workLoad;
-        private readonly double[,] _myMinor;
-
-        public long RowIndex { get; }
-        public long ColumnIndex { get; }
-        public Guid Id { get; }
-        public double Determinant { get; private set; }
-
-        public CofactorWorker(double[,] ic, long i, long j)
-        {
-            _myMinor = ic;
-            RowIndex = i;
-            ColumnIndex = j;
-            Id = Guid.NewGuid();
-            _workLoad = DoMyWork;
-            _workLoad.BeginInvoke(CallBack, Id);
-        }
-        public void DoMyWork()
-        {
-            Determinant = _myMinor.Determinant();
-            if ((RowIndex + ColumnIndex) % 2 == 1)
-                Determinant *= -1;
-        }
-
-        private void CallBack(IAsyncResult z)
-        {
-            _workLoad.EndInvoke(z);
-            Completed?.Invoke(new WorkResult(Id, Determinant, RowIndex, ColumnIndex));
-        }
-    }
-
-    public class WorkResult
-    {
-        public WorkResult(Guid workerId, double det, long rowIndex, long columnIndex)
-        {
-            Determinant = det;
-            Id = workerId;
-            RowIndex = rowIndex;
-            ColumnIndex = columnIndex;
-        }
-
-        public double Determinant { get; }
-        public Guid Id { get; }
-        public long RowIndex { get; }
-        public long ColumnIndex { get; }
-    }
-
-    public class CofactorSupervisor
-    {
-        private readonly double[,] _cofactor;
-        private readonly double[,] _input;
-        private readonly object _msgLock = new object();
-        private long _i;
-        private long _j;
-        private readonly long _rows;
-        private readonly long _columns;
-        private readonly long _maxWait;
-        private long _returnCounter = 0L;
-
-        public CofactorSupervisor(double[,] a)
-        {
-            _i = 0L;
-            _j = 0L;
-            _input = a;
-            _rows = _input.CountOfRows();
-            _columns = _input.CountOfColumns();
-            _cofactor = new double[_input.CountOfRows(),_input.CountOfColumns()];
-
-            _maxWait = 3300L * _rows;
-        }
-
-        public int WaitInterval { get; set; } = 100;
-
-        public double[,] CalcCofactor()
-        {
-            var waiting = 0L;
-            var processors = Convert.ToInt32(Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS") ?? "4");
-            for (var i = 0; i < processors; i++)
-            {
-                StartSingleWorker();
-            }
-
-            while (!IsComplete)
-            {
-                Thread.Sleep(WaitInterval);
-                waiting += WaitInterval;
-                if(waiting > _maxWait)
-                    throw new TimeoutException($"The {nameof(CofactorSupervisor)} is not responding.");
-            }
-
-            lock (_msgLock)
-            {
-                return _cofactor;
-            }
-        }
-
-        protected internal void ReceiveWorkComplete(WorkResult result)
-        {
-            var i = result.RowIndex;
-            var j = result.ColumnIndex;
-            lock (_msgLock)
-            {
-                _cofactor[i,j] = result.Determinant;
-                _returnCounter += 1;
-            }
-
-            StartSingleWorker();
-        }
-
-        protected internal void StartSingleWorker()
-        {
-            if (IsComplete)
-                return;
-            var next = NextIj();
-            var i = next.Item1;
-            var j = next.Item2;
-            if (i >= _rows || j >= _columns)
-                return;
-            var ic = _input.SelectMinor(i, j);
-            var worker = new CofactorWorker(ic, i, j);
-            worker.Completed += ReceiveWorkComplete;
-        }
-
-        protected internal bool IsComplete
-        {
-            get
-            {
-                lock (_msgLock)
-                {
-                    return _returnCounter >= _columns * _rows;
-                }
-            }
-        }
-
-        protected internal Tuple<long, long> NextIj()
-        {
-            var t = new Tuple<long,long>(_i, _j);
-            if (_j + 1 >= _columns)
-            {
-                _j = 0;
-                _i += 1;
-            }
-            else
-            {
-                _j += 1;
-            }
-            
-            return t;
-        }
-    }
-
-    public class MatrixExpressions
-    {
-
-        /// <summary>
-        /// This expression may be used to discover Eigenvalues.  Also it may be used as a Determinant 
-        /// Expression by simply passing in '0' for the second parameter of the compiled expression.
-        /// </summary>
-        /// <param name="len">Determinants and eigenvalues can only be calculated on square matrices.</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Is pronounced "I-G-in" vector - is one that simply gets "scaled up" by some value (the eigen value).
-        /// Dx = rx -> (D -rI)x = 0
-        /// 
-        /// λ is the eigen value, v` is the eigen vector
-        /// T(v`) = Av` = λv`
-        /// </remarks>
-        /// <example>
-        /// <![CDATA[
-        ///     var typicalMatrix = new[,]
-        ///     {
-        ///         {2D, 2D},
-        ///         {2D, -1D}
-        ///     };
-        ///     var eigenvalueExpression = MatrixExpressions.EigenvalueExpression(2);
-        ///     var eigenvalueFunc = eigenvalueExpression.Compile();
-        /// 
-        ///     //discover the eigenvalues by solving the f(x) = 0 
-        ///     var myEigenvalues = new List<double>();
-        ///     for (var i = 10; i >= -10; i--)
-        ///     {
-        ///          if (eigenvalueFunc(typicalMatrix, i).Equals(0D))
-        ///             myEigenvalues.Add(i); //will contain '3' & '-2'
-        ///     }
-        /// ]]>
-        /// </example>
-        public static Expression<Func<double[,], double, double>> EigenvalueExpression(int len)
-        {
-            var myArray = Expression.Parameter(typeof(double[,]), "a");
-            var myParam = Expression.Parameter(typeof (double), "r");
-            var zeroIdx = Expression.Constant(0);
-            var oneIdx = Expression.Constant(1);
-
-            //(a[0, 0] * a[1, 1]) - (a[0, 1] * a[1, 0])
-            if (len == 2)
-            {
-                var a00 = Expression.ArrayAccess(myArray, zeroIdx, zeroIdx);
-                var a11 = Expression.ArrayAccess(myArray, oneIdx, oneIdx);
-                var a01 = Expression.ArrayAccess(myArray, zeroIdx, oneIdx);
-                var a10 = Expression.ArrayAccess(myArray, oneIdx, zeroIdx);
-
-                var a00Xa11 = Expression.Multiply(Expression.Subtract(a00,myParam), Expression.Subtract(a11, myParam));
-                var a01Xa10 = Expression.Multiply(a01, a10);
-
-                var diff = Expression.Subtract(a00Xa11, a01Xa10);
-                return Expression.Lambda<Func<double[,], double, double>>(diff, myArray, myParam);
-            }
-
-            var d = new ConstantExpression[len, len, 2];
-
-            //get positive cross-diagonial indices
-            for (var i = 0; i < len; i++)
-            {
-                for (var j = 0; j < len; j++)
-                {
-                    var left = i;
-                    var right = (j + i) % len;
-                    d[i, j, 0] = Expression.Constant(left);
-                    d[i, j, 1] = Expression.Constant(right);
-                }
-            }
-
-            BinaryExpression addDeterminantExpr = null;
-
-            //get product of positive diagonials and add to sum
-            for (var j = 0; j < len; j++)
-            {
-                BinaryExpression productExpr = null;
-                for (var i = 0; i < len; i++)
-                {
-                    var iExpr = d[i, j, 0];
-                    var jExpr = d[i, j, 1];
-
-                    var aIjExpr = Expression.ArrayAccess(myArray, iExpr, jExpr);
-                    if (iExpr.Value.Equals(jExpr.Value))
-                    {
-                        productExpr = productExpr == null
-                            ? Expression.Multiply(Expression.Constant(1D), Expression.Subtract(aIjExpr, myParam))
-                            : Expression.Multiply(productExpr, Expression.Subtract(aIjExpr, myParam));
-                    }
-                    else
-                    {
-                        productExpr = productExpr == null
-                            ? Expression.Multiply(Expression.Constant(1D), aIjExpr)
-                            : Expression.Multiply(productExpr, aIjExpr);
-                    }
-                }
-
-                addDeterminantExpr = addDeterminantExpr == null
-                    ? productExpr
-                    : Expression.Add(addDeterminantExpr, productExpr);
-            }
-
-            //get negative cross-diagonial indices
-            for (var i = len; i > 0; i--)
-            {
-                for (var j = (len - i); j < (len + (len - i)); j++)
-                {
-                    var left = Expression.Constant(i - 1);
-                    var right = Expression.Constant(j % len);
-                    var diIndex = (len - i);
-                    var djIndex = System.Math.Abs(len - i - j);
-                    d[diIndex, djIndex, 0] = left;
-                    d[diIndex, djIndex, 1] = right;
-                }
-            }
-
-            BinaryExpression minusDeterminantExpr = null;
-
-            //get product of negative diagonials and subtract from sum
-            for (var j = 0; j < len; j++)
-            {
-                BinaryExpression productExpr = null;
-                for (var i = 0; i < len; i++)
-                {
-                    var iExpr = d[i, j, 0];
-                    var jExpr = d[i, j, 1];
-                    var aIjExpr = Expression.ArrayAccess(myArray, iExpr, jExpr);
-                    if (iExpr.Value.Equals(jExpr.Value))
-                    {
-                        productExpr = productExpr == null
-                            ? Expression.Multiply(Expression.Constant(1D), Expression.Subtract(aIjExpr, myParam))
-                            : Expression.Multiply(productExpr, Expression.Subtract(aIjExpr, myParam));
-                    }
-                    else
-                    {
-                        productExpr = productExpr == null
-                            ? Expression.Multiply(Expression.Constant(1D), aIjExpr)
-                            : Expression.Multiply(productExpr, aIjExpr);
-                    }
-                }
-                minusDeterminantExpr = minusDeterminantExpr == null
-                    ? productExpr
-                    : Expression.Add(minusDeterminantExpr, productExpr);
-            }
-
-            var newdiff = Expression.Subtract(addDeterminantExpr, minusDeterminantExpr);
-
-            return Expression.Lambda<Func<double[,], double, double>>(newdiff, myArray, myParam);
         }
     }
 }

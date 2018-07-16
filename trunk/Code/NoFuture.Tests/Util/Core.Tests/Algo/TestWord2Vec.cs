@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Util.Core.Algo;
 using NoFuture.Util.Core.Math;
+using NoFuture.Util.Core.Math.Matrix;
 using NUnit.Framework;
 
 namespace NoFuture.Util.Core.Tests.Algo
@@ -277,8 +278,8 @@ namespace NoFuture.Util.Core.Tests.Algo
                 {-0.0967807362519854,-0.0855252136237319,0.0942293071329041,-0.0642768650540175,0.00113945587055197,-0.0681883849867855,-0.0396480941556025,-0.078345789044033}
             };
 
-            Assert.IsTrue(Matrix.AreEqual(testSubject.WI, expectedWI));
-            Assert.IsTrue(Matrix.AreEqual(testSubject.WO, expectedWO));
+            Assert.IsTrue(MatrixOps.AreEqual(testSubject.WI, expectedWI));
+            Assert.IsTrue(MatrixOps.AreEqual(testSubject.WO, expectedWO));
 
         }
 
@@ -367,8 +368,8 @@ namespace NoFuture.Util.Core.Tests.Algo
                 {-0.0918624453763234,-0.0862266251374346,0.0935301812021623,-0.0649810277151043,0.000437120730813004,-0.0688900675252249,-0.0403521308844992,-0.0790513254070886}
             };
 
-            Assert.IsTrue(Matrix.AreEqual(testSubject.WI, expectedWI));
-            Assert.IsTrue(Matrix.AreEqual(testSubject.WO, expectedWO));
+            Assert.IsTrue(MatrixOps.AreEqual(testSubject.WI, expectedWI));
+            Assert.IsTrue(MatrixOps.AreEqual(testSubject.WO, expectedWO));
         }
 
         [Test]
@@ -456,8 +457,8 @@ namespace NoFuture.Util.Core.Tests.Algo
                 {-0.0933902528000395,-0.0906502274058155,0.0945180486855311,-0.0694050447580429,0.00142640389627994,-0.0678976454820252,-0.0393598777361693,-0.0780572148616271}
             };
 
-            Assert.IsTrue(Matrix.AreEqual(testSubject.WI, expectedWI));
-            Assert.IsTrue(Matrix.AreEqual(testSubject.WO, expectedWO));
+            Assert.IsTrue(MatrixOps.AreEqual(testSubject.WI, expectedWI));
+            Assert.IsTrue(MatrixOps.AreEqual(testSubject.WO, expectedWO));
 
         }
 

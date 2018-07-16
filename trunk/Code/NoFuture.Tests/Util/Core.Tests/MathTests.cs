@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
+using NoFuture.Util.Core.Math.Matrix;
 using NUnit.Framework;
 
 namespace NoFuture.Util.Core.Tests
@@ -20,7 +21,7 @@ namespace NoFuture.Util.Core.Tests
                 {2D, -1D}
             };
 
-            Assert.IsTrue(Matrix.AreEqual(typicalMatrix, typicalMatrix));
+            Assert.IsTrue(MatrixOps.AreEqual(typicalMatrix, typicalMatrix));
 
         }
 
@@ -99,7 +100,7 @@ namespace NoFuture.Util.Core.Tests
             //this is the property of eigenvectors that is being sought
             //https://www.khanacademy.org/math/linear-algebra/alternate_bases/eigen_everything/v/linear-algebra-introduction-to-eigenvalues-and-eigenvectors
             // " the line that they span will not change" its just extended in the same direction
-            var really = Matrix.Product(typicalMatrix, new double[,] { { 0.6D }, { 0.4D } });
+            var really = MatrixOps.Product(typicalMatrix, new double[,] { { 0.6D }, { 0.4D } });
             Console.WriteLine(really.Print());//yep, this really is the {{0.6D}, {0.4D}}
 
             typicalMatrix = new[,]
@@ -111,8 +112,8 @@ namespace NoFuture.Util.Core.Tests
             //eigenval01 = -2D;
 
             //so you get this matrix
-            var usedToGuessEigenVector = Matrix.Difference(typicalMatrix,
-                Matrix.Product(Matrix.GetIdentity(typicalMatrix.GetLongLength(0)), eigenval00));
+            var usedToGuessEigenVector = MatrixOps.Difference(typicalMatrix,
+                MatrixOps.Product(MatrixOps.GetIdentity(typicalMatrix.GetLongLength(0)), eigenval00));
 
             //then you simply have to try various 2x1 matricies which when taken time 'usedToGuessEigenVector' 
             //  result in a 2x1 matrix of zeros
@@ -143,7 +144,7 @@ namespace NoFuture.Util.Core.Tests
                 {2, -1},
                 {-1, 2}
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
             testInput = new double[,]
             {
@@ -160,7 +161,7 @@ namespace NoFuture.Util.Core.Tests
                 {13, -247, -91, 351},
                 {-27, 23, 7, -15}
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
         }
 
@@ -297,7 +298,7 @@ namespace NoFuture.Util.Core.Tests
                 {0.666666666666667, -0.333333333333333},
                 {-0.333333333333333, 0.666666666666667}
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
         }
 
         [Test]
@@ -364,7 +365,7 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestGetaAllOnesMatrix()
         {
-            var testResult = Matrix.GetAllOnesMatrix(2, 1);
+            var testResult = MatrixOps.GetAllOnesMatrix(2, 1);
             var numOfRows = testResult.GetLongLength(0);
             var numOfColumns = testResult.GetLongLength(1);
 
@@ -381,7 +382,7 @@ namespace NoFuture.Util.Core.Tests
         {
             var col = new double[,] { { 1 }, { 1 } };
             var row = new double[,] { { 1, 1 } };
-            var testResult = Matrix.Product(col, row);
+            var testResult = MatrixOps.Product(col, row);
 
             var lenTop = testResult.GetLongLength(0);
             var lenBottom = testResult.GetLongLength(1);
@@ -405,7 +406,7 @@ namespace NoFuture.Util.Core.Tests
                 {9D, 1D, 4D}
             };
 
-            testResult = Matrix.Product(matrixOfOnes, typicalMatrix);
+            testResult = MatrixOps.Product(matrixOfOnes, typicalMatrix);
             Assert.AreEqual(12D, testResult[0, 0]);
             Assert.AreEqual(6D, testResult[0, 1]);
             Assert.AreEqual(5D, testResult[0, 2]);
@@ -486,9 +487,9 @@ namespace NoFuture.Util.Core.Tests
                 {-0.11019973593730749, -0.9470728204791102, 0.3015113445777633}
             };
 
-            Assert.IsTrue(Matrix.AreEqual(expectedU, testResult.U));
-            Assert.IsTrue(Matrix.AreEqual(expectedS, testResult.D.Diag()));
-            Assert.IsTrue(Matrix.AreEqual(expectedV, testResult.V));
+            Assert.IsTrue(MatrixOps.AreEqual(expectedU, testResult.U));
+            Assert.IsTrue(MatrixOps.AreEqual(expectedS, testResult.D.Diag()));
+            Assert.IsTrue(MatrixOps.AreEqual(expectedV, testResult.V));
 
             Console.WriteLine(testResult.U.Print());
             Console.WriteLine(testResult.D.ToMatrix().Print());
@@ -597,7 +598,7 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestSwapRow()
         {
-            var testInput = Matrix.RandomMatrix(5, 5);
+            var testInput = MatrixOps.RandomMatrix(5, 5);
             var testRowA = testInput.SelectRow(2);
             var testRowB = testInput.SelectRow(4);
 
@@ -616,7 +617,7 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestSwapColumn()
         {
-            var testInput = Matrix.RandomMatrix(5, 5);
+            var testInput = MatrixOps.RandomMatrix(5, 5);
             var testRowA = testInput.SelectColumn(2);
             var testRowB = testInput.SelectColumn(4);
 
@@ -783,7 +784,7 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestSVD()
         {
-            var testInput = Matrix.RandomMatrix(5, 3);
+            var testInput = MatrixOps.RandomMatrix(5, 3);
             var USV = testInput.SingularValueDecomp();
             var U = USV.U;
             var S = USV.D.Diag();
@@ -792,7 +793,7 @@ namespace NoFuture.Util.Core.Tests
             var pcXV = testInput.DotProduct(V);
             var pcUdS = U.DotProduct(S);
 
-            Assert.IsTrue(Matrix.AreEqual(pcXV, pcUdS));
+            Assert.IsTrue(MatrixOps.AreEqual(pcXV, pcUdS));
 
         }
 
@@ -819,7 +820,7 @@ namespace NoFuture.Util.Core.Tests
                 {0, 0, 0, 0, 25}
             };
 
-            Assert.IsTrue(Matrix.AreEqual(expected, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expected, testResult));
 
             testInput = new double[,]
             {
@@ -835,7 +836,7 @@ namespace NoFuture.Util.Core.Tests
                 {0, 0, 15, 20, 25}
             };
 
-            Assert.IsTrue(Matrix.AreEqual(expected, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expected, testResult));
 
             testInput = new double[,]
             {
@@ -854,7 +855,7 @@ namespace NoFuture.Util.Core.Tests
                 {0,0,0},
                 {0,0,0}
             };
-            Assert.IsTrue(Matrix.AreEqual(expected, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expected, testResult));
         }
 
         [Test]
@@ -877,7 +878,7 @@ namespace NoFuture.Util.Core.Tests
                 {0, 0, 4}
             };
 
-            Assert.IsTrue(Matrix.AreEqual(expected, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expected, testResult));
         }
 
         [Test]
@@ -896,7 +897,7 @@ namespace NoFuture.Util.Core.Tests
                 {2, 1},
                 {1, 2}
             };
-            Assert.IsTrue(Matrix.AreEqual(expected,testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expected,testResult));
         }
 
         [Test]
@@ -910,7 +911,7 @@ namespace NoFuture.Util.Core.Tests
                 {0.333333333333333, 0.666666666666667, 0.333333333333333},
                 {-0.333333333333333, 0.333333333333333, 0.666666666666667}
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, P));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, P));
 
         }
 
@@ -974,7 +975,7 @@ namespace NoFuture.Util.Core.Tests
                 {0, 1, 0, 1},
                 {0, 0, 1, -2}
             };
-            Assert.IsTrue(Matrix.AreEqual(expect,testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect,testResult));
 
             testInput = new double[,]
             {
@@ -989,7 +990,7 @@ namespace NoFuture.Util.Core.Tests
                 {0, 1, -2, 2, 0, -7},
                 {0, 0, 0, 0, 1, 4}
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
             testInput = new double[,]
             {
@@ -1002,7 +1003,7 @@ namespace NoFuture.Util.Core.Tests
                 {1, 0, 0.5, -0.5},
                 {0, 1, -0.25, 0.75}
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
         }
 
@@ -1070,7 +1071,7 @@ namespace NoFuture.Util.Core.Tests
                 { 8, 3, 6},
             };
 
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
             testResult = testInput.SelectMinor(1, 1);
             expect = new double[,]
@@ -1080,7 +1081,7 @@ namespace NoFuture.Util.Core.Tests
                 {11, 3, 6},
             };
 
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
             testResult = testInput.SelectMinor(2, 2);
             expect = new double[,]
@@ -1089,7 +1090,7 @@ namespace NoFuture.Util.Core.Tests
                 {4, 5,  7},
                 {11, 8, 6},
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
             testResult = testInput.SelectMinor(3, 3);
             expect = new double[,]
@@ -1098,7 +1099,7 @@ namespace NoFuture.Util.Core.Tests
                 {4, 5, 14},
                 {7, 12, 9},
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
             testResult = testInput.SelectMinor(0, 1);
             expect = new double[,]
@@ -1107,7 +1108,7 @@ namespace NoFuture.Util.Core.Tests
                 {7,  9, 10},
                 {11, 3, 6},
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
             testResult = testInput.SelectMinor(0, 2);
             expect = new double[,]
@@ -1116,7 +1117,7 @@ namespace NoFuture.Util.Core.Tests
                 {7, 12,10},
                 {11, 8,6},
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
             testResult = testInput.SelectMinor(0, 3);
             expect = new double[,]
@@ -1125,7 +1126,7 @@ namespace NoFuture.Util.Core.Tests
                 {7, 12, 9},
                 {11, 8, 3},
             };
-            Assert.IsTrue(Matrix.AreEqual(expect, testResult));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, testResult));
 
         }
 
@@ -1686,7 +1687,7 @@ namespace NoFuture.Util.Core.Tests
                 },
             };
 
-            Assert.IsTrue(Matrix.AreEqual(expect, crossProduct, 0.000001));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, crossProduct, 0.000001));
 
             expect = new double[,]
             {
@@ -1733,7 +1734,7 @@ namespace NoFuture.Util.Core.Tests
             };
 
             var inverse = crossProduct.Inverse();
-            Assert.IsTrue(Matrix.AreEqual(expect, inverse));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, inverse));
 
             var coefficents = inverse.DotProduct(X.Transpose()).DotProduct(y.Transpose());
             Console.WriteLine(coefficents.Print());
@@ -1752,7 +1753,7 @@ namespace NoFuture.Util.Core.Tests
                 4.442644
             }.ToMatrix().Transpose();
 
-            Assert.IsTrue(Matrix.AreEqual(expect, coefficents, 0.000001));
+            Assert.IsTrue(MatrixOps.AreEqual(expect, coefficents, 0.000001));
         }
 
         [Test]
