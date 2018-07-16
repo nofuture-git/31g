@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NoFuture.Util.Core.Math
 {
@@ -1181,6 +1183,11 @@ namespace NoFuture.Util.Core.Math
             if (len != cols)
                 throw new NonConformable("A Cofactor requires a square matrix (num-of-Rows = num-of-Columns).");
 
+            if (len >= 8)
+            {
+                return new CofactorSupervisor(a).CalcCofactor();
+            }
+
             var cofactor = new double[len, len];
 
             for (var i = 0L; i < len; i++)
@@ -1194,9 +1201,7 @@ namespace NoFuture.Util.Core.Math
                     cofactor[i, j] = det;
                 }
             }
-
             return cofactor;
-
         }
 
         public static double[,] Covariance(this double[,] a)
@@ -1497,6 +1502,164 @@ namespace NoFuture.Util.Core.Math
                 _ex = expr.Compile();
                 return _ex;
             }
+        }
+    }
+
+    public delegate void StartWork();
+
+    public delegate void EndWork(WorkResult result);
+
+    public class CofactorWorker
+    {
+        public event EndWork Completed;
+        private readonly StartWork _workLoad;
+        private readonly double[,] _myMinor;
+
+        public long RowIndex { get; }
+        public long ColumnIndex { get; }
+        public Guid Id { get; }
+        public double Determinant { get; private set; }
+
+        public CofactorWorker(double[,] ic, long i, long j)
+        {
+            _myMinor = ic;
+            RowIndex = i;
+            ColumnIndex = j;
+            Id = Guid.NewGuid();
+            _workLoad = DoMyWork;
+            _workLoad.BeginInvoke(CallBack, Id);
+        }
+        public void DoMyWork()
+        {
+            Determinant = _myMinor.Determinant();
+            if ((RowIndex + ColumnIndex) % 2 == 1)
+                Determinant *= -1;
+        }
+
+        private void CallBack(IAsyncResult z)
+        {
+            _workLoad.EndInvoke(z);
+            Completed?.Invoke(new WorkResult(Id, Determinant, RowIndex, ColumnIndex));
+        }
+    }
+
+    public class WorkResult
+    {
+        public WorkResult(Guid workerId, double det, long rowIndex, long columnIndex)
+        {
+            Determinant = det;
+            Id = workerId;
+            RowIndex = rowIndex;
+            ColumnIndex = columnIndex;
+        }
+
+        public double Determinant { get; }
+        public Guid Id { get; }
+        public long RowIndex { get; }
+        public long ColumnIndex { get; }
+    }
+
+    public class CofactorSupervisor
+    {
+        private readonly double[,] _cofactor;
+        private readonly double[,] _input;
+        private readonly object _msgLock = new object();
+        private long _i;
+        private long _j;
+        private readonly long _rows;
+        private readonly long _columns;
+        private readonly long _maxWait;
+        private long _returnCounter = 0L;
+
+        public CofactorSupervisor(double[,] a)
+        {
+            _i = 0L;
+            _j = 0L;
+            _input = a;
+            _rows = _input.CountOfRows();
+            _columns = _input.CountOfColumns();
+            _cofactor = new double[_input.CountOfRows(),_input.CountOfColumns()];
+
+            _maxWait = 3300L * _rows;
+        }
+
+        public int WaitInterval { get; set; } = 100;
+
+        public double[,] CalcCofactor()
+        {
+            var waiting = 0L;
+            var processors = Convert.ToInt32(Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS") ?? "4");
+            for (var i = 0; i < processors; i++)
+            {
+                StartSingleWorker();
+            }
+
+            while (!IsComplete)
+            {
+                Thread.Sleep(WaitInterval);
+                waiting += WaitInterval;
+                if(waiting > _maxWait)
+                    throw new TimeoutException($"The {nameof(CofactorSupervisor)} is not responding.");
+            }
+
+            lock (_msgLock)
+            {
+                return _cofactor;
+            }
+        }
+
+        protected internal void ReceiveWorkComplete(WorkResult result)
+        {
+            var i = result.RowIndex;
+            var j = result.ColumnIndex;
+            lock (_msgLock)
+            {
+                _cofactor[i,j] = result.Determinant;
+                _returnCounter += 1;
+            }
+
+            StartSingleWorker();
+        }
+
+        protected internal void StartSingleWorker()
+        {
+            if (IsComplete)
+                return;
+            var next = NextIj();
+            var i = next.Item1;
+            var j = next.Item2;
+            if (i >= _rows || j >= _columns)
+                return;
+            var ic = _input.SelectMinor(i, j);
+            var worker = new CofactorWorker(ic, i, j);
+            worker.Completed += ReceiveWorkComplete;
+        }
+
+        protected internal bool IsComplete
+        {
+            get
+            {
+                lock (_msgLock)
+                {
+                    return _returnCounter >= _columns * _rows;
+                }
+            }
+        }
+
+        protected internal Tuple<long, long> NextIj()
+        {
+            var t = new Tuple<long,long>(_i, _j);
+            if (_j + 1 >= _columns)
+            {
+                _j = 0;
+                _i += 1;
+            }
+            else
+            {
+                _j += 1;
+            }
+            
+            return t;
         }
     }
 

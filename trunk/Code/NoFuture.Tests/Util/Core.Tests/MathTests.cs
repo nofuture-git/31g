@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
 using NUnit.Framework;
@@ -210,7 +211,26 @@ namespace NoFuture.Util.Core.Tests
                 }
             };
 
-            var testResult = testInput.Cofactor();
+            //var testResult = testInput.Cofactor();
+            var testAsync = new CofactorSupervisor(testInput);
+            var testResult = testAsync.CalcCofactor();
+
+            Console.WriteLine(testResult.Print());
+
+            //var testExpect = testInput.Cofactor();
+
+            //Assert.AreEqual(testExpect, testResult);
+
+            //for (var i = 0; i < testInput.CountOfRows(); i++)
+            //{
+            //    for (var j = 0; j < testInput.CountOfColumns(); j++)
+            //    {
+            //        var t = testAsync.NextIj();
+            //        Assert.AreEqual(i, t.Item1);
+            //        Assert.AreEqual(j, t.Item2);
+            //    }
+            //}
+
         }
 
         [Test]
