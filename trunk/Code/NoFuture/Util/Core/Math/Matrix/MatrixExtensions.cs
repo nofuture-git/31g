@@ -120,52 +120,6 @@ namespace NoFuture.Util.Core.Math.Matrix
             return a;
         }
 
-        public static double[,] ApplyAtRow(this double[,] a, double b, long atRow, Func<double, double, double> expr)
-        {
-            a = a ?? new double[,] { };
-            var bArr = Enumerable.Repeat(b, (int) a.CountOfRows()).ToArray();
-            return ApplyAtRow(a, bArr, atRow, expr);
-        }
-
-        public static double[,] ApplyAtColumn(this double[,] a, double b, long atColumn, Func<double, double, double> expr)
-        {
-            a = a ?? new double[,] { };
-            var bArr = Enumerable.Repeat(b, (int) a.CountOfColumns()).ToArray();
-            return ApplyAtColumn(a, bArr, atColumn, expr);
-        }
-
-        public static double[,] ApplyAtRow(this double[,] a, double[] b, long atRow, Func<double, double, double> expr)
-        {
-            a = a ?? new double[,] { };
-            if (atRow >= a.CountOfRows())
-                throw new NonConformableException($"{atRow} exceeds the number of rows present in a");
-            if (expr == null)
-                return a;
-            for (var j = 0; j < a.CountOfColumns(); j++)
-            {
-                var v = b.Length <= j ? 0 : b[j];
-                a[atRow, j] = expr(a[atRow, j], v);
-            }
-
-            return a;
-        }
-
-        public static double[,] ApplyAtColumn(this double[,] a, double[] b, long atColumn, Func<double, double, double> expr)
-        {
-            a = a ?? new double[,] { };
-            if (atColumn >= a.CountOfColumns())
-                throw new NonConformableException($"{atColumn} exceeds the number of columns present in a");
-            if (expr == null)
-                return a;
-            for (var i = 0; i < a.CountOfRows(); i++)
-            {
-                var v = b.Length <= i ? 0 : b[i];
-                a[i, atColumn] = expr(a[i, atColumn], v);
-            }
-
-            return a;
-        }
-
         public static double[,] AppendColumns(this double[,] a, double[,] b)
         {
             var leftColumnCount = a.CountOfColumns();
@@ -457,7 +411,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
-        public static double[] MeanByColumn(this double[,] a)
+        internal static double[] MeanByColumn(this double[,] a)
         {
             return a.CollapseTop2Bottom(row => row.Sum() / a.CountOfColumns());
         }
@@ -467,7 +421,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
-        public static double[] StdByColumn(this double[,] a)
+        internal static double[] StdByColumn(this double[,] a)
         {
             var mul = MatrixOps.Arithmetic(a, a, (d, d1) => d * d1);
             return mul.MeanByColumn().Select(System.Math.Sqrt).ToArray();
@@ -488,7 +442,10 @@ namespace NoFuture.Util.Core.Math.Matrix
                 var m = a.MeanByColumn();
                 for (var i = 0; i < a.CountOfRows(); i++)
                 {
-                    a.ApplyAtRow(m, i, (d, d1) => d - d1);
+                    for (var j = 0; j < a.CountOfColumns(); j++)
+                    {
+                        a[i, j] = a[i, j] - m[j];
+                    }
                 }
             }
 
@@ -497,7 +454,12 @@ namespace NoFuture.Util.Core.Math.Matrix
                 var s = a.StdByColumn();
                 for (var i = 0; i < a.CountOfRows(); i++)
                 {
-                    a.ApplyAtRow(s, i, (d, d1) => d / (d1 == 0D ? 0.0000001D : d1));
+
+                    for (var j = 0; j < a.CountOfColumns(); j++)
+                    {
+
+                        a[i, j] = a[i, j] / (s[j] == 0D ? 0.0000001D : s[j]);
+                    }
                 }
             }
 

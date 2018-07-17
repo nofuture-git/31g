@@ -382,6 +382,26 @@ namespace NoFuture.Util.Core.Algo
             return w;
         }
 
+        /// <summary>
+        /// AIMA 3 ed. formula (18.8) 
+        /// weight update for minimizing the loss of logistic function
+        /// </summary>
+        /// <param name="y"></param>
+        /// <param name="x"></param>
+        /// <param name="w"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static double[] UpdateWeights2(double y, double[] x, double[] w, double a)
+        {
+            for (var i = 0; i < w.Length; i++)
+            {
+                var hw = x[i] * w[i];
+                w[i] = w[i] + a * (y - hw) * hw * (1 - hw) * x[i];
+            }
+
+            return w;
+        }
+
         public static double GetSigmaSum(double[,] x, double[,] w)
         {
             return GetSigmaSum(x.Flatten(), w.Flatten());

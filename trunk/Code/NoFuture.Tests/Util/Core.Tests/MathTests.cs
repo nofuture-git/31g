@@ -445,9 +445,9 @@ namespace NoFuture.Util.Core.Tests
         public void TestScale()
         {
             var testInput = new double[,] { { 1, 3, 0 }, { 2, 5, 1 }, { 1, 3, 0 } };
-            testInput.Scale();
-            Assert.IsNotNull(testInput);
-            Console.WriteLine(testInput.Print());
+            var testResult = testInput.Scale();
+            Assert.IsNotNull(testResult);
+            Console.WriteLine(testResult.Print());
             var expected = new double[,]
             {
                 {-0.7071067811865474, -0.7071067811865474, -0.7071067811865475},
@@ -455,11 +455,11 @@ namespace NoFuture.Util.Core.Tests
                 {-0.7071067811865474, -0.7071067811865474, -0.7071067811865475}
             };
 
-            for (var i = 0; i < testInput.CountOfRows(); i++)
+            for (var i = 0; i < testResult.CountOfRows(); i++)
             {
-                for (var j = 0; j < testInput.CountOfColumns(); j++)
+                for (var j = 0; j < testResult.CountOfColumns(); j++)
                 {
-                    var y = testInput[i, j];
+                    var y = testResult[i, j];
                     var t = expected[i, j];
                     Assert.IsTrue(System.Math.Abs(y - t) < 0.000001);
 
@@ -632,32 +632,6 @@ namespace NoFuture.Util.Core.Tests
                 Assert.AreEqual(testRowA[i], testResultB[i]);
                 Assert.AreEqual(testRowB[i], testResultA[i]);
             }
-        }
-
-        [Test]
-        public void TestApplyAtRow()
-        {
-            var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
-            var toAdd = new double[] { 4, 1, 2 };
-
-            testInput.ApplyAtRow(toAdd, 1, (d, d1) => d + d1);
-            Console.WriteLine(testInput.Print());
-            Assert.AreEqual(3D, testInput[1, 0]);
-            Assert.AreEqual(7D, testInput[1, 1]);
-            Assert.AreEqual(0D, testInput[1, 2]);
-        }
-
-        [Test]
-        public void TestApplyAtColumn()
-        {
-            var testInput = new double[,] { { 1, -1, 0 }, { -1, 6, -2 }, { 0, -2, 3 } };
-            var toAdd = new double[] { 4, 1, 2 };
-
-            testInput.ApplyAtColumn(toAdd, 1, (d, d1) => d + d1);
-            Console.WriteLine(testInput.Print());
-            Assert.AreEqual(3D, testInput[0, 1]);
-            Assert.AreEqual(7D, testInput[1, 1]);
-            Assert.AreEqual(0D, testInput[2, 1]);
         }
 
         [Test]
@@ -2882,6 +2856,17 @@ namespace NoFuture.Util.Core.Tests
                 Assert.IsTrue(test);
             }
             Console.WriteLine(testResult.Print());
+        }
+
+        [Test]
+        public void TestMinkowskiDistance()
+        {
+            var x = new double[] {0, 3, 4, 5};
+            var y = new double[] {7, 6, 3, -1};
+            var testResult = MatrixOps.MinkowskiDistance(x, y, 3);
+            Assert.IsTrue(System.Math.Abs(8.373D - testResult) < 0.001);
+            Console.WriteLine(testResult);
+
         }
 
         [Test]

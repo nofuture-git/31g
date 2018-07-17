@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace NoFuture.Util.Core.Math.Matrix
 {
@@ -270,6 +271,22 @@ namespace NoFuture.Util.Core.Math.Matrix
             }
 
             return m;
+        }
+
+
+        /// <summary>
+        /// http://people.revoledu.com/kardi/tutorial/Similarity/MinkowskiDistance.html
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static double MinkowskiDistance(double[] x, double[] y, int p)
+        {
+            x = x ?? new double[] { };
+            y = y ?? new double[] { };
+            var xy = x.Zip(y, (d, d1) => System.Math.Pow(System.Math.Abs(d - d1), p)).ToArray();
+            return System.Math.Pow(xy.Sum(), 1D / p);
         }
     }
 }
