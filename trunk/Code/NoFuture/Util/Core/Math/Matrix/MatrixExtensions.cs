@@ -23,9 +23,40 @@ namespace NoFuture.Util.Core.Math.Matrix
             return MatrixOps.Sum(a, b);
         }
 
+        public static double[] Plus(this double[] a, double scalar)
+        {
+            a = a ?? new double[] { };
+            return MatrixOps.Arithmetic(a, scalar, (d1, d2) => d1 + d2);
+        }
+
+        public static double[] Plus(this double scalar, double[] a)
+        {
+            return a.Plus(scalar);
+        }
+
+        public static double[] Plus(this double[] a, double[] b)
+        {
+            return MatrixOps.Arithmetic(a, b, (d, d1) => d + d1);
+        }
+
         public static double[,] Minus(this double[,] a, double[,] b)
         {
             return MatrixOps.Difference(a, b);
+        }
+
+        public static double[] Minus(this double[] a, double scalar)
+        {
+            return MatrixOps.Arithmetic(a, scalar, (d1, d2) => d1 - d2);
+        }
+
+        public static double[] Minus(this double scalar, double[] a)
+        {
+            return a.Minus(scalar);
+        }
+
+        public static double[] Minus(this double[] a, double[] b)
+        {
+            return MatrixOps.Arithmetic(a, b, (d, d1) => d - d1);
         }
 
         public static double[,] DotProduct(this double[,] a, double[,] b)
@@ -33,9 +64,24 @@ namespace NoFuture.Util.Core.Math.Matrix
             return MatrixOps.Product(a, b);
         }
 
+        public static double[] DotProduct(this double[] a, double[] b)
+        {
+            return MatrixOps.Arithmetic(a, b, (d, d1) => d * d1);
+        }
+
         public static double[,] DotScalar(this double[,] a, double scalar)
         {
             return MatrixOps.Product(a, scalar);
+        }
+
+        public static double[] DotScalar(this double[] a, double scalar)
+        {
+            return MatrixOps.Arithmetic(a, scalar, (d1, d2) => d1 * d2);
+        }
+
+        public static double[] DotScalar(this double scalar, double[] a)
+        {
+            return a.DotScalar(scalar);
         }
 
         public static double[,] SwapRow(this double[,] a, long row1, long row2)
@@ -1099,22 +1145,16 @@ namespace NoFuture.Util.Core.Math.Matrix
             //find the max len
             var maxLen = 0;
             var anyNeg = false;
-            var anyBigFloats = false;
             for (var i = 0; i < a.CountOfRows(); i++)
             for (var j = 0; j < a.CountOfColumns(); j++)
             {
                 var aij = a[i, j];
                 var aijString = aij.ToString(CultureInfo.InvariantCulture);
-                if (aijString.Contains(".") && aijString.Split('.')[1].Length > 8)
-                    anyBigFloats = true;
                 if (aijString.Length > maxLen)
                     maxLen = aijString.Length;
                 if (aij < 0)
                     anyNeg = true;
             }
-
-            if (anyBigFloats)
-                maxLen = 8;
 
             maxLen += 2;
 
@@ -1140,8 +1180,6 @@ namespace NoFuture.Util.Core.Math.Matrix
                 {
                     var aij = a[i, j];
                     var aijString = aij.ToString(CultureInfo.InvariantCulture);
-                    if (anyBigFloats && aijString.Length > 8)
-                        aijString = aijString.Substring(0, 8);
 
                     var format = aij >= 0 && anyNeg ? " {0,-" + (maxLen - 1) + "}" : "{0,-" + maxLen + "}";
                     str.AppendFormat(format, aijString);
@@ -1290,7 +1328,28 @@ namespace NoFuture.Util.Core.Math.Matrix
             return dest;
         }
 
-        public static double[,] ShuffleRows(this double[,] a)
+        public static double[] Copy(this double[] a)
+        {
+            a = a ?? new double[] { };
+            var dest = new double[a.Length];
+            for (var i = 0; i < dest.Length; i++)
+            {
+                    dest[i] = a[i];
+            }
+
+            return dest;
+        }
+
+        /// <summary>
+        /// Shuffles the matrix at random using Fisher-Yates algo
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="syncWith">
+        /// Optional, some other matrix which should be shuffled in the same order
+        /// in tandem with <see cref="a"/>
+        /// </param>
+        /// <returns></returns>
+        public static double[,] ShuffleRows(this double[,] a, double[,] syncWith = null)
         {
             var myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
             for (var i = a.CountOfRows() -1; i > 1; i--)
@@ -1299,6 +1358,31 @@ namespace NoFuture.Util.Core.Math.Matrix
                 var j = myRand.Next(0, (int)i + 1);
                 a.SetRow(i, a.GetRow(j));
                 a.SetRow(j, temp);
+                if (syncWith != null)
+                {
+                    temp = syncWith.GetRow(i);
+                    syncWith.SetRow(i, syncWith.GetRow(j));
+                    syncWith.SetRow(j, temp);
+                }
+            }
+
+            return a;
+        }
+
+        public static double[,] ShuffleRows(this double[,] a, double[] syncWith)
+        {
+            if (syncWith == null)
+                return a.ShuffleRows();
+            var myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}"));
+            for (var i = a.CountOfRows() - 1; i > 1; i--)
+            {
+                var temp = a.GetRow(i);
+                var j = myRand.Next(0, (int)i + 1);
+                a.SetRow(i, a.GetRow(j));
+                a.SetRow(j, temp);
+                var tempSync = syncWith[i];
+                syncWith[i] = syncWith[j];
+                syncWith[j] = tempSync;
             }
 
             return a;
@@ -1335,11 +1419,12 @@ namespace NoFuture.Util.Core.Math.Matrix
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="eta"></param>
         /// <param name="iters"></param>
+        /// <param name="eta"></param>
         /// <param name="epsilon"></param>
         /// <returns></returns>
-        public static double[,] LinearGradientDescent(this double[,] x, double[] y, double eta = 0.25, long iters = 1000, double epsilon = 0.0001)
+        public static double[,] LinearGradientDescent(this double[,] x, double[] y, double eta = 0.25,
+            long iters = 1000, double epsilon = 0.0001)
         {
             var yy = y.ToMatrix().Transpose();
             var n = (double)x.CountOfRows();
@@ -1361,19 +1446,55 @@ namespace NoFuture.Util.Core.Math.Matrix
             return theta.Transpose();
         }
 
-        internal static double GetSqrSum(double[,] grad)
+        /// <summary>
+        /// https://am207.github.io/2017/wiki/gradientdescent.html
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="eta"></param>
+        /// <param name="iters"></param>
+        /// <param name="epsilon"></param>
+        /// <returns></returns>
+        public static double[,] StocasticLinearGradientDescent(this double[,] x, double[] y,
+            double eta = 0.1, long iters = 1000,
+            double epsilon = 0.001)
         {
-            var gradSqred = grad.ApplyToEach(v => System.Math.Pow(v, 2));
-            var gradSqrSum = gradSqred.Flatten().Sum();
+            var n = (double)x.CountOfRows();
+            var thetaInit = MatrixOps.RandomMatrix(1, x.CountOfColumns()).Flatten();
+            var rowJ = x.GetRow(0);
+            var pred = thetaInit.DotProduct(rowJ);
+            var e = pred.Minus(y[0]);
+            var grad = rowJ.DotProduct(e);
+            var theta = thetaInit.Minus(eta.DotScalar(grad));
+            var rows = x.CountOfRows();
+            for (var i = 0; i < iters; i++)
+            {
+                x = x.ShuffleRows(y);
+                for (var j = 0; j < rows; j++)
+                {
+                    rowJ = x.GetRow(j);
+                    pred = theta.DotProduct(rowJ);
+                    e = pred.Minus(y[j]);
+                    grad = rowJ.DotProduct(e);
+                    theta = theta.Minus(eta.DotScalar(grad));
+                    if (e.Select(v => System.Math.Pow(v, 2)).Sum() / n <= epsilon)
+                        break;
+                }
+            }
+            return theta.ToMatrix().Transpose();
+        }
+
+        internal static double GetSqrSum(double[] grad)
+        {
+            var gradSqred = grad.Select(v => System.Math.Pow(v, 2));
+            var gradSqrSum = gradSqred.Sum();
             var sqrtGradSqrSum = System.Math.Sqrt(gradSqrSum);
             return sqrtGradSqrSum;
         }
 
-        internal static double[,] StochasticGradientDescent(double[] vy, double[,] X, double eta, long iters,
-            double epsilon = 0.0001)
+        internal static double GetSqrSum(double[,] grad)
         {
-
-            throw new NotImplementedException();
+            return GetSqrSum(grad.Flatten());
         }
     }
 }

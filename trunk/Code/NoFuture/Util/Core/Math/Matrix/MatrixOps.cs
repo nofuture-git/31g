@@ -95,6 +95,35 @@ namespace NoFuture.Util.Core.Math.Matrix
             return sum;
         }
 
+        public static double[] Arithmetic(double[] a, double scalar, Func<double, double, double> expr)
+        {
+            expr = expr ?? ((d1, d2) => d1);
+            a = a ?? new double[] { };
+            var vout = new double[a.Length];
+            for (var i = 0; i < a.Length; i++)
+            {
+                vout[i] = expr(a[i], scalar);
+            }
+
+            return vout;
+        }
+
+        public static double[] Arithmetic(double[] a, double[] b, Func<double, double, double> expr)
+        {
+            expr = expr ?? ((d1, d2) => d1);
+            a = a ?? new double[] { };
+            b = b ?? new double[] { };
+
+            var vout = new double[a.Length];
+            for (var i = 0; i < a.Length; i++)
+            {
+                var v = b.Length <= i ? 0D : b[i];
+                vout[i] = expr(a[i], v);
+            }
+
+            return vout;
+        }
+
         public static double[,] Product(double[,] a, double scalar)
         {
             a = a ?? new double[,] { };
@@ -164,17 +193,34 @@ namespace NoFuture.Util.Core.Math.Matrix
         {
             a = a ?? new double[,] { };
             b = b ?? new double[,] { };
-            if (a.CountOfRows() != b.CountOfRows() || a.CountOfColumns()!=b.CountOfColumns())
+            var rows = a.CountOfRows();
+            var cols = a.CountOfColumns();
+            if (rows != b.CountOfRows() || cols != b.CountOfColumns())
                 return false;
-            for (var i = 0; i < a.CountOfRows(); i++)
+            for (var i = 0; i < rows; i++)
             {
-                for (var j = 0; j < a.CountOfColumns(); j++)
+                for (var j = 0; j < cols; j++)
                 {
                     if (System.Math.Abs(a[i, j] - b[i, j]) > tolerance)
                         return false;
 
                 }
             }
+            return true;
+        }
+
+        public static bool AreEqual(double[] a, double[] b, double tolerance = 0.0000001D)
+        {
+            a = a ?? new double[] { };
+            b = b ?? new double[] { };
+            if (a.Length != b.Length)
+                return false;
+            for (var i = 0; i < a.Length; i++)
+            {
+                if (System.Math.Abs(a[i] - b[i]) > tolerance)
+                    return false;
+            }
+
             return true;
         }
 
