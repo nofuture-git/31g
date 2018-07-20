@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using static System.Diagnostics.Debug;
 
-namespace NoFuture.Util.Core.Algo
+namespace NoFuture.Util.Core.Math.Matrix
 {
     /// <summary>
     /// See [https://www2.cs.duke.edu/csed/poop/huff/info/], this was coded from it.
@@ -42,7 +42,7 @@ namespace NoFuture.Util.Core.Algo
 
         internal void BuildTree()
         {
-            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(HuffmanEncoding)} Start BuildTree");
+            Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(HuffmanEncoding)} Start BuildTree");
             HuffmanNode nextNode;
             do
             {
@@ -54,14 +54,14 @@ namespace NoFuture.Util.Core.Algo
             } while (nextNode.Count < _totalSum);
 
             _rootNode = nextNode;
-            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(HuffmanEncoding)} End BuildTree");
+            Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(HuffmanEncoding)} End BuildTree");
         }
 
         internal void PushEncoding()
         {
-            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(HuffmanEncoding)} Start PushEncoding");
+            Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(HuffmanEncoding)} Start PushEncoding");
             RootNode.PushEncoding(null);
-            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(HuffmanEncoding)} End PushEncoding");
+            Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(HuffmanEncoding)} End PushEncoding");
         }
 
         public HuffmanNode GetNodeByWord(string word)

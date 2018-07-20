@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoFuture.Util.Core.Math;
-using NoFuture.Util.Core.Math.Matrix;
-using static System.Diagnostics.Debug;
 
-namespace NoFuture.Util.Core.Algo
+namespace NoFuture.Util.Core.Math.Matrix
 {
     /// <summary>
     /// only useful document, video, presentation, etc. that 
@@ -111,7 +106,7 @@ namespace NoFuture.Util.Core.Algo
 
         public void BuildVocab(string corpus)
         {
-            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(Word2Vec)} Start BuildVocab");
+            Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(Word2Vec)} Start BuildVocab");
 
             AssignCorpus(corpus);
 
@@ -125,7 +120,7 @@ namespace NoFuture.Util.Core.Algo
                 dict.Add(v, cn);
             }
             Vocab = new HuffmanEncoding(dict);
-            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(Word2Vec)} End BuildVocab");
+            Debug.WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss.fffff} {nameof(Word2Vec)} End BuildVocab");
         }
 
         public void AssignCorpus(string corpus)

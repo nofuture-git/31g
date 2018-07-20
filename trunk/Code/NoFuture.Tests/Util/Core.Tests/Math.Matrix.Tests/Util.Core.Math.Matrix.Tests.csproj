@@ -4,20 +4,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{349A1C91-CA14-4D04-946D-8B257A863CE0}</ProjectGuid>
+    <ProjectGuid>{8F84E19B-B2EB-43D2-9636-595CC6539D11}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Util.Core</RootNamespace>
-    <AssemblyName>NoFuture.Util.Core</AssemblyName>
+    <RootNamespace>NoFuture.Util.Core.Math.Matrix.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Util.Core.Math.Matrix.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,43 +31,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algo\StringDist.cs" />
-    <Compile Include="Etc.cs" />
-    <Compile Include="Math\Combination.cs" />
-    <Compile Include="Math\Econ.cs" />
-    <Compile Include="Math\ExponentialEquation.cs" />
-    <Compile Include="Math\Extensions.cs" />
-    <Compile Include="Math\IEquation.cs" />
-    <Compile Include="Math\LinearEquation.cs" />
-    <Compile Include="Math\NaturalLogEquation.cs" />
-    <Compile Include="Math\NormalDistEquation.cs" />
-    <Compile Include="Math\SecondDegreePolynomial.cs" />
-    <Compile Include="Math\SinusoidEquation.cs" />
-    <Compile Include="Math\ThirdDegreePolynomial.cs" />
-    <Compile Include="NfPath.cs" />
-    <Compile Include="NfReflect.cs" />
+    <Compile Include="MatrixTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestHuffmanCoding.cs" />
+    <Compile Include="TestWord2Vec.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\NoFuture\Util\Core\Math\Matrix\Util.Core.Math.Matrix.csproj">
+      <Project>{69b28c6c-378d-4e2f-a46e-c356ad416a22}</Project>
+      <Name>Util.Core.Math.Matrix</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\LoremIpsum.EightParagraphs.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Core\Shared.Core.csproj">
-      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
-      <Name>Shared.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

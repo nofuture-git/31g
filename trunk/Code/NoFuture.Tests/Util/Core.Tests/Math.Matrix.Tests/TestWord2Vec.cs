@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NoFuture.Util.Core.Algo;
 using NoFuture.Util.Core.Math;
 using NoFuture.Util.Core.Math.Matrix;
 using NUnit.Framework;
