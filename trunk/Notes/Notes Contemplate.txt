@@ -2,6 +2,9 @@
 Notes Contemplate
 The Gift of Fear Survival Signals that Protect Us from Violence
 Gavin de Becker 1997
+
+The Blue And Brown Books
+Lugwig Wittgenstein
 ----
 
 ----
@@ -48,4 +51,42 @@ Other names for intuition
  Fear
 ----
 
+----
+We are looking for the use of a sign, but we look for it as though it 
+were an object co-existing with the sign.
+
+The thing to do in such cases is always to look how the words 
+in question are actually used in our language.  We are in all such cases
+thinking of a use different from that which our ordinary language makes 
+of the words.  When something seems queer about the grammar of our words, 
+it is because we are alternately tempted to use a word in several different ways.
+And it is particularly difficult to discover that an assertion which the 
+metaphysician makes expresses discontentment with our grammar when the words 
+of this assertion can also be used to state a fact of experience. (pg 57-58)
+
+One can defend common sense against the attacks of philosophers only by 
+solving their puzzles, i.e., by curing them of the temptation to attack common 
+sense; not by restating the views of common sense.
+
+The meaning of a phrase for us is characterized by the use we make of it. The
+meaning is not a mental accompaniment to the expresson. (61)
+
+I want to play chess, and a man gives the white king a paper crown, leaving the 
+use of the piece unaltered, but telling me that the crown has a meaning to him
+in the game, which he can't express by rules.  I say: "as long as it doesn't 
+alter the use of the piece, it hasn't what I call a meaning".(61)
+
+Imagine a language in which, instead of "I found nobody in the room", one said
+"I found Mr. Nobody in the room".  Imagine the philosophical problems which 
+would arise out of such a convention.  Some philosophers brought up in this 
+language would probably feel they didn't like the similarity of the expressions
+"Mr. Nobody" and "Mr. Smith". (69)
+
+The use of a word in practice is its meaning. (69)
+
+"I never know what the other really means by 'brown' or what he really sees 
+when he (truthfully) says the the sees a brown object".  We could propose to 
+one who says this to use two different words instead of one word "brown"; 
+one word for his particular impression, the other word with that meaning which
+other people besides himself can understand as well. (72-73)
 ----
