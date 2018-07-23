@@ -564,6 +564,8 @@ logic quantifier: the kinds of predicates which are applicable to
  an open formula (e.g. All, Any)
 predicate logic: concerns the truth-value of logic quantifier on 
  an open formula.
+non-monotonic logic: idea of default-value, cars have four wheels - no 
+ reason to doubt without some obvious reason.
 stream: a way of modeling state as sequence in time (similar to how 
  a linear equation is one thing but is infinite when graphed)
 tableau: a stream of streams
@@ -600,6 +602,7 @@ duck typing -vs- normal typing:
  to a f(x).  duck-typing suitability is determined by presence
  of expected methods and properties. normal-typing suitability 
  is determined by the objects type.
+fluent (CS): from latin fluens (flowing) synonym for state-variable
 stare decisis: doctrine of precedent is abbrev. for full latin
   "stare decisis et non quieta mvere" to stand by decided matters
   and not to distrub settled matters.  Is only concerned with
@@ -624,3 +627,4 @@ arrears: money owed and shoul have been paid earlier
 remunerative: financially rewarding; lucrative
 sine qua non: latin for "without which nothing"
 Nikefication: a branding strategy without actual industrial processes behind it.
+reify: make something which is abstract  more concrete or real

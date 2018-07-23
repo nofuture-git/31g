@@ -578,6 +578,15 @@ Bayes' Theorem
      whole while P(B|A) is the prob. of these things 
      to each other
      
+ - other rules (|| is OR, && is AND)
+  - Inclusion-Exclusion Principle
+ P(A || B) = P(A) + P(B) - P(A && B)
+
+  - Product Rule
+ P(A && B) = P(A|B)*P(B)
+  - and
+ P(A && B) = P(B|A)*P(B)
+  
 Laplace Smoothing: will add 1 to the P(A) & P(B)
  so as in the above example of P(A) = 250 / 5000
  would be solved as P(A) = (1 + 250) / (1 + 5000)
