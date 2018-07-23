@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace NoFuture.Util.Core.Math.Matrix
 {
@@ -84,6 +86,13 @@ namespace NoFuture.Util.Core.Math.Matrix
             return a.DotScalar(scalar);
         }
 
+        /// <summary>
+        /// Swaps the row at <see cref="row1"/> with the row at <see cref="row2"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="row1"></param>
+        /// <param name="row2"></param>
+        /// <returns></returns>
         public static double[,] SwapRow(this double[,] a, long row1, long row2)
         {
             a = a ?? new double[,] { };
@@ -102,6 +111,13 @@ namespace NoFuture.Util.Core.Math.Matrix
             return a;
         }
 
+        /// <summary>
+        /// Swaps the column at <see cref="column1"/> with the column at <see cref="column2"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="column1"></param>
+        /// <param name="column2"></param>
+        /// <returns></returns>
         public static double[,] SwapColumn(this double[,] a, long column1, long column2)
         {
             a = a ?? new double[,] { };
@@ -120,6 +136,15 @@ namespace NoFuture.Util.Core.Math.Matrix
             return a;
         }
 
+        /// <summary>
+        /// Appends the columns of <see cref="b"/> the the right-side of <see cref="a"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b">
+        /// When <see cref="b"/> is too short then 
+        /// zeros are appended, when its too long its just truncated to fit
+        /// </param>
+        /// <returns></returns>
         public static double[,] AppendColumns(this double[,] a, double[,] b)
         {
             var leftColumnCount = a.CountOfColumns();
@@ -147,6 +172,15 @@ namespace NoFuture.Util.Core.Math.Matrix
             return vout;
         }
 
+        /// <summary>
+        /// Appends the rows of <see cref="b"/> to the bottom of <see cref="a"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b">
+        /// When <see cref="b"/> is too short then 
+        /// zeros are appended, when its too long its just truncated to fit
+        /// </param>
+        /// <returns></returns>
         public static double[,] AppendRows(this double[,] a, double[,] b)
         {
             var at = a.Transpose();
@@ -289,6 +323,11 @@ namespace NoFuture.Util.Core.Math.Matrix
             return o;
         }
 
+        /// <summary>
+        /// Flattens a matrix into a vector.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double[] Flatten(this double[,] a)
         {
             a = a ?? new double[,] { };
@@ -390,6 +429,12 @@ namespace NoFuture.Util.Core.Math.Matrix
             return matrix;
         }
 
+        /// <summary>
+        /// Utility method to apply some function to each element in the matrix.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="expr"></param>
+        /// <returns></returns>
         public static double[,] ApplyToEach(this double[,] a, Func<double, double> expr)
         {
             a = a ?? new double[,] { };
@@ -880,6 +925,11 @@ namespace NoFuture.Util.Core.Math.Matrix
             return transpose;
         }
 
+        /// <summary>
+        /// Gets the cross-product of matrix <see cref="a"/> which is Aᵀ*A
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
         public static double[,] CrossProduct(this double[,] a)
         {
             a = a ?? new double[,] { };
@@ -903,20 +953,8 @@ namespace NoFuture.Util.Core.Math.Matrix
         public static double[,] Inverse(this double[,] a)
         {
             a = a ?? new double[,] { };
-            var len = a.CountOfRows();
-            var determinant = Determinant(a);
-            if (determinant.Equals(0D))
-                throw new NonConformableException("The given matrix is linear dependent.");
-
-            var adjCofactor = Cofactor(a).Transpose();
-
-            var inverse = new double[len, len];
-            for (var i = 0L; i < len; i++)
-            for (var j = 0L; j < len; j++)
-                inverse[i, j] = adjCofactor[i, j] / determinant;
-
-            return inverse;
-
+            var mtA = DenseMatrix.OfArray(a);
+            return mtA.Inverse().ToArray();
         }
 
         public static bool IsLinearDependent(this double[,] a)
@@ -935,25 +973,11 @@ namespace NoFuture.Util.Core.Math.Matrix
             if (rows == 1)
                 return a[0, 0];
 
-            var val = 0D;
-            for (var j = 0L; j < cols; j++)
-            {
-                var aOj = a[0, j];
-                if (aOj == 0D)
-                    continue;
-                var minor = a.SelectMinor(0, j);
-                var v = rows - 1 == 3 ? Determinant3X3(minor,0) : Determinant(minor);
-                v = aOj * v;
-                if (j % 2 == 1)
-                    v *= -1;
-                val += v;
-            }
-
-            return val;
-
+            var mtA = DenseMatrix.OfArray(a);
+            return mtA.Determinant();
         }
 
-        public static double[,] Cofactor(this double[,] a)
+        internal static double[,] Cofactor(this double[,] a)
         {
             a = a ?? new double[,] { };
             var len = a.CountOfRows();
@@ -1177,6 +1201,12 @@ namespace NoFuture.Util.Core.Math.Matrix
             return mout;
         }
 
+        /// <summary>
+        /// Selects the row values from <see cref="a"/> at position <see cref="index"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static double[] GetRow(this double[,] a, long index)
         {
             a = a ?? new double[,] { };
@@ -1195,6 +1225,12 @@ namespace NoFuture.Util.Core.Math.Matrix
 
         }
 
+        /// <summary>
+        /// Selects column values from <see cref="a"/> at position <see cref="index"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public static double[] GetColumn(this double[,] a, long index)
         {
             a = a ?? new double[,] { };
@@ -1211,6 +1247,14 @@ namespace NoFuture.Util.Core.Math.Matrix
             return select.ToArray();
         }
 
+        /// <summary>
+        /// Directly assigns the values of the row at <see cref="index"/> to the values
+        /// in <see cref="row"/> overwritting whatever was already there
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="index"></param>
+        /// <param name="row"></param>
+        /// <returns></returns>
         public static double[,] SetRow(this double[,] a, long index, double[] row)
         {
             a = a ?? new double[,] { };
@@ -1225,6 +1269,14 @@ namespace NoFuture.Util.Core.Math.Matrix
             return a;
         }
 
+        /// <summary>
+        /// Directly assigns the values of the column at <see cref="index"/> to the values
+        /// in <see cref="column"/> overwritting whatever was already there.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="index"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
         public static double[,] SetColumn(this double[,] a, long index, double[] column)
         {
             a = a ?? new double[,] { };
@@ -1331,6 +1383,15 @@ namespace NoFuture.Util.Core.Math.Matrix
             return a;
         }
 
+        /// <summary>
+        /// Shuffles the matrix at random using Fisher-Yates algo
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="syncWith">
+        /// Optional, some vector which should be shuffled in the same order
+        /// in tandem with <see cref="a"/>
+        /// </param>
+        /// <returns></returns>
         public static double[,] ShuffleRows(this double[,] a, double[] syncWith)
         {
             if (syncWith == null)
@@ -1374,6 +1435,60 @@ namespace NoFuture.Util.Core.Math.Matrix
                 _ex = expr.Compile();
                 return _ex;
             }
+        }
+
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Obsolete("For notes only - will run very slow on anything bigger than 10x10")]
+        internal static double NfDeterminant(double[,] a)
+        {
+            a = a ?? new double[,] { };
+            var rows = a.CountOfRows();
+            var cols = a.CountOfColumns();
+            if (rows != cols)
+                throw new NonConformableException("A Determinant requires a square matrix (num-of-Rows = num-of-Columns).");
+
+            if (rows == 1)
+                return a[0, 0];
+
+            //this is real slow on anything past 10X10
+            var val = 0D;
+            for (var j = 0L; j < cols; j++)
+            {
+                var aOj = a[0, j];
+                if (aOj == 0D)
+                    continue;
+                //LaPlace expansion
+                var minor = a.SelectMinor(0, j);
+                var v = rows - 1 == 3 ? Determinant3X3(minor, 0) : Determinant(minor);
+                v = aOj * v;
+                if (j % 2 == 1)
+                    v *= -1;
+                val += v;
+            }
+
+            return val;
+        }
+
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Obsolete("For notes only - will run very slow on anything bigger than 10x10")]
+        internal static double[,] NfInverse(double[,] a)
+        {
+            a = a ?? new double[,] { };
+
+            //this is real slow on anything past 10X10
+            var len = a.CountOfRows();
+            var determinant = Determinant(a);
+            if (determinant.Equals(0D))
+                throw new NonConformableException("The given matrix is linear dependent.");
+
+            var adjCofactor = Cofactor(a).Transpose();
+
+            var inverse = new double[len, len];
+            for (var i = 0L; i < len; i++)
+            for (var j = 0L; j < len; j++)
+                inverse[i, j] = adjCofactor[i, j] / determinant;
+
+            return inverse;
         }
 
         /// <summary>
@@ -1446,6 +1561,7 @@ namespace NoFuture.Util.Core.Math.Matrix
             return theta.ToMatrix().Transpose();
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         internal static double GetSqrSum(double[] grad)
         {
             var gradSqred = grad.Select(v => System.Math.Pow(v, 2));
@@ -1454,6 +1570,7 @@ namespace NoFuture.Util.Core.Math.Matrix
             return sqrtGradSqrSum;
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         internal static double GetSqrSum(double[,] grad)
         {
             return GetSqrSum(grad.Flatten());

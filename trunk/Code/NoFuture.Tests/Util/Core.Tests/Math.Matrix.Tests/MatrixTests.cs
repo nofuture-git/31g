@@ -326,7 +326,7 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
             };
 
             testResult = MatrixExtensions.Determinant(testInput);
-            Assert.AreEqual(-182D, testResult);
+            Assert.IsTrue(System.Math.Abs(-182D - testResult) < 0.000001);
 
             testInput = new double[,]
             {
