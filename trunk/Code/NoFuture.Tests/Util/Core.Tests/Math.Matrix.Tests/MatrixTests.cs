@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Util.Core.Math.Matrix;
 using NUnit.Framework;
 
-namespace NoFuture.Util.Core.Tests
+namespace NoFuture.Util.Core.Math.Matrix.Tests
 {
     [TestFixture]
     public class MatrixTests

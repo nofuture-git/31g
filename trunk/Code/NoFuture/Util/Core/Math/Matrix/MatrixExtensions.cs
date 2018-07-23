@@ -1103,7 +1103,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         internal static string PrintRstyle(double[,] a)
         {
             var str = new StringBuilder();
-
+            const int ROUND_TO = 6;
             //find the max len
             var maxLen = 0;
             var anyNeg = false;
@@ -1111,7 +1111,7 @@ namespace NoFuture.Util.Core.Math.Matrix
             for (var j = 0; j < a.CountOfColumns(); j++)
             {
                 var aij = a[i, j];
-                var aijString = aij.ToString(CultureInfo.InvariantCulture);
+                var aijString = System.Math.Round(aij, ROUND_TO).ToString(CultureInfo.InvariantCulture);
                 if (aijString.Length > maxLen)
                     maxLen = aijString.Length;
                 if (aij < 0)
@@ -1141,7 +1141,7 @@ namespace NoFuture.Util.Core.Math.Matrix
                 for (var j = 0; j < a.CountOfColumns(); j++)
                 {
                     var aij = a[i, j];
-                    var aijString = aij.ToString(CultureInfo.InvariantCulture);
+                    var aijString = System.Math.Round(aij, ROUND_TO).ToString(CultureInfo.InvariantCulture);
 
                     var format = aij >= 0 && anyNeg ? " {0,-" + (maxLen - 1) + "}" : "{0,-" + maxLen + "}";
                     str.AppendFormat(format, aijString);
