@@ -1,0 +1,95 @@
+----
+Notes Data Linkage (formal)
+----
+
+----
+Data linkage (theory)
+ - links are est. on a record-by-record basis
+ - two accuracy errors 
+  - true non-match classified as match
+  - true match classified as non-match
+ - metrix of methods
+  - divide into four groups 
+    Classified-as | True 
+       Match      | Match
+   A     0            0
+   B     0            1
+   C     1            0
+   D	 1            1
+   - Sensitivity = A / (A + B); ability to classify matches
+   - Specificity = C / (C + D); likewise for non-matches
+   - Positive Predictive Value: A / (A + C); ratio of classified matches
+                                             to actual matches
+   - Negative Predictive Value: D / (B + D); likewise for non-matches
+   
+ - starts with comparable records
+  - data should be atomic broken down into smallest possiable parts
+  - columns with high covariance should have one of the two removed
+  
+ - methods 
+  - deterministic: the more straight-foward method
+   - takes itself two forms
+    - single-step: exact equality char-for-char by ordinal
+	- iterative: a set of rules taken in steps
+	 - SEER-Medicare linkage algo (each field may be a
+	    hashed value instead of the literal, still works):
+	  1.0 match on SSN AND
+	   1.1 match on Fname & Lname OR
+	   1.2 match on Lname, month-of-dob and gender OR
+	   1.3 match on Fname, month-of-dob and gender
+      2.0 match on Lname, Fname, month-of-dob, gender AND
+	   2.1 8 of 9 SSN digits match OR
+	   2.1 any two of 
+	    2.1.1 year-of-dob
+		2.1.2 day-of-dob
+		2.1.3 middle initial
+		2.1.4 dod (date of death)
+		
+  - probabilistic (aka stochastic, fuzzy): assumes certian 
+     fields\attributes\column\properties have more discriminatory
+	 power than others.
+	- based on Fellegi & Sunter  "A Theory For Record Linkage"
+	- links designated as match, possiable match, non-match
+	- comparison space: the cartesian product to the two
+	  record sets
+	 - each pair in the comparison space is either a 
+	   true match or true non-match
+	- blocking: idea that cartesian product is too big
+	   so reduce fields to most useful or those which
+       are not null (subset).
+	- m-probability: probability that true matches agree 
+	   on a field
+	 - calc'ed by having some informed data where the link
+	    is already est. (thing informed machine learning)
+		then get the prob. of each field actually being equal
+	- u-probability: probability that false matches randomly 
+	   agree on a field
+	 - partial agreement weights: calc'ed in similar manner 
+	    where you have est. the link already and for definite 
+		non-matches fields values are equal.
+    - agreement weight: a per-field weight calc'ed as
+        log2(m/u)
+	- disagreement weight: per-field weight calc'ed as
+        log2(1-m/1-u)
+	- each field is then determined as match\non-match 
+	  and the result is a sum of each fields 
+	  agreement\disagreement weight.
+	- determining if an individual field is a match 
+	   still remains but could be enhanced using the 
+	   Jaro-Winkler String Distance algo.
+	- some threshold is required still to say that 
+	  such-and-such weight means "IsMatch"
+	- calc threshold for "IsMatch" using
+	   E: (guess) the number of expected matches between datasets
+	   P: the desired probability that a record is a match
+	   A: number of records in first dataset
+	   B: number of records in second dataset
+	   thres <- log2(P/(1-P)) - log2(E/((A*B)-E))
+	  
+  - Naive Bayes: this typical AI method could be used
+    when there exist some training data - would probably
+	look like:
+	  S(f1) W(f1) S(f2) W(f2) S(f3) W(f3) ... S(fi) W(fi) IsMatch
+	where S(f1) is field 1 from the first dataset and W(f1) is 
+	field 1 from the second data set.
+----

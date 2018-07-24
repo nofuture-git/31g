@@ -552,24 +552,161 @@ Nodeterministic Search
 ----   
 
 ----
-Deep Learning
- - where the machine is both finding mathematical optimization 
-   and finding the features of raw data. 
-  - the opposite would be Manual Designed Features, which 
-    often takes a long time to draft
- - Neural Networks is a kind of deep learning
-----
-
-----
-Bayes' Theorem
-
- P(A|B) = (P(B|A) * P(A)) / P(B)
-  - bar reads as "given that"
-  "the probability of A given B will be 
-  equal to the ratio of the probability of 
-  B given A times the probability of A - over 
-  the probability of B"
+Digression on Probability
+ - Sample Space: the exhaustive set of all possible outcomes
+  - is mutually exclusive, only one case can be the outcome 
+    at-a-time
+  - every possible outcome is present in the sample space
+  - two 6-sided die has 36 discrete possible outcomes
+  - upper-case greek omega is used as a symbol to represent 
+    the sample space.
+ 
+ - World: a really overloaded term, this is another name for
+   'possible outcome' 
+ 
+ - Probability Model: associates some ratio between 0 and 1 
+   for each possible outcome in the sample space 
+  - all associated ratio's within the model will sum to 1
   
+ - Events: an overloaded term, here it means some grouping 
+    of possible outcomes from the sample set which are 
+    connected by some logical purpose 
+    (e.g. outcomes where 2 6d add-up to 11)
+   - the probability of an event is the sum of 
+     its grouping (a.k.a. set)
+   - e.g. 2 6d formally as
+   P(Total = 11) = P((5,6)) + P((6,5))
+                 = 1/36 + 1/36
+                 = 1/18
+                 
+ - Unconditional Probabilities (a.k.a Prior Probabilities) 
+   (a.k.a priors): is a kind of 'raw' probability of an event 
+   absent any other information
+    
+ - Evidence: an overloaded term, here it means some 
+   kind of information which has already been revealed
+  - e.g. first of 2 6d already rolled a 5
+ 
+ - Conditional Probability (a.k.a. Posterior Probability) 
+  (a.k.a Posterior): is the probability given the evidence
+  - this is where the '|' symbol starts being used, the term 
+    following it is the evidence, so any term written with 
+    it included is a conditional one.
+  - bar reads as "given that" or just "given"
+  - formally defined as: 
+  P(A|B) = P(A -and  B) / P(B)
+  
+ - Product Rule: another form for writing a conditional 
+   probability
+  P(A -and B) = P(A|B)*P(B)
+  P(A -and B) = P(B|A)*P(B)
+ 
+ - Factored Representation: a way of representing a possible 
+   outcome as a variable/value pairs
+ 
+ - Random Variables: are the variables part of a factored rep.
+  - these are often written as uppercase latin letters
+  - is any kind of name given to something probable
+  - e.g. P(Total = 11), 'Total' is the random variable
+  - text implies this is synomous with the 
+    overloaded 'Proposition'
+  - can be combined using boolean ops (-not, -and, -or)
+ 
+ - Domain: another overloaded term, here it means the possible
+   values a random variable may take on
+  - may be limited or infinite 
+   - e.g. 6d is discrete and limited
+   - rational numbers domain is infinite and continuous
+   - integer numbers domain is infinite and discrete, etc.
+  - represented typically in curly braces
+  - e.g. 2 6d has a domain named 'Total' which is all the 
+    various sums possible 2, 3, .. 12
+  - e.g. Die_1 domain is {1,2,3,4,5,6}
+  - boolean domain values are always written in lower-case 
+    whole words (e.g. {true,false})
+    
+ - Probability Distribution: a vectorization of the probabilities
+   of some random variable where ordinal is an assumed mapping
+  - e.g. a random variable named 'Weather' has the following 
+   P(Weather = sunny) = 0.6, P(Weather = rain) = 0.1, 
+   P(Weather = cloudy) = 0.29, P(Weather = snow) = 0.01
+   then its proability dist. is written as 
+   P(Weather) = <0.6,0.1,0.29,0.01> (the AIMA text never 
+    explains why its uses angle-brackets...)
+    
+ - Probability Density Function: 
+  - a random variable which is infinite and\or continous 
+    cannot have its probability dist. written as a vector
+  - have to parameterize the random variable with something
+    else to provide some kind of limit, typically its another
+    variable
+  - written by having the random variables given some value
+   P(X = x) will be written as just P(x)
+    
+ - Conditional Distribution: a name for a probability dist. 
+   which contains a 'given that' bar
+   P(X|Y) would mean P(X = x[i] | Y = y[j]) for each 
+   possible i,j pair
+    
+ - Joint Probability Distribution: a notation for dealing 
+   with probabilities of multiple random variables
+  - written using a comma delimiter (e.g. P(A,B)) which is
+    the same thing as using the -and boolean op 
+    (e.g. P(A,B) = P(A -and B))
+  - forms a matrix of the cartesian product of each
+    random variables probability dist.
+
+ - Full Joint Probability Distribution: the cartesian product
+   of all random variables in the the whole sample space
+ 
+ - Inclusion-Exclusion Principle
+  P(A -or B) = P(A) + P(B) - P(A -and B)
+ 
+ - Negation Principle
+  P(-not A) = 1 - P(A)
+ 
+ - Probabilistic Inference: the calc of a posterior 
+   probability given the full joint probability dist.
+   
+ - Bayesian(subjectivist) -vs- Frequentist (objectivist): 
+   a frequentist has no expectation but expects the repeated 
+   test will reveal the probability while bayesian starts 
+   with some expectation and only adjust that expectation 
+   when it proves false.
+
+ - Principle of Indifference: when you don't know then 
+   assign equal probability to each (Laplace 1816)
+   
+ - Marginal Probability: a row-sum of the full joint 
+   probability dist.
+  
+ - Marginalization (a.k.a. summing-out): calc of marginal
+   probability for each row.
+  P(Y) = SUM(P(Y,z)) |z = 1 to Z
+  - meaning the probability of Y is the sum of all possible
+    combinations of values of set variables Z
+ 
+ - Conditioning: another overloaded term, here it means 
+   calc of the combo of marginal prob. and conditional prob.
+  P(Y) = SUM(P(Y|z)*P(z)) |z = 1 to Z 
+ 
+ - Normalization: the act of turning two or more probabilities,
+   which stand in the correct relative portions to each other,
+   to sum up to 1
+  - is just the calc of each over the sum of all
+   
+ - Marginal Independece (a.k.a. absolute independence)
+   (a.k.a. just 'independence'): when one random variable
+   has absolutely nothing to do with another
+  - formally defined as P(X|Y) = P(X)
+  - useful in reducing the cartesian product of the full
+    joint dist.
+    
+ - Bayes' Theorem: the probability of A given B will be 
+   equal to the ratio of the probability of 
+   B given A times the probability of A - over 
+   the probability of B
+   P(A|B) = (P(B|A) * P(A)) / P(B)
   - P(A) & P(B) will be the count of A or B over the total 
     count in the dataset 
    - so if we have a dataset of 5000 and count 250 of A
@@ -577,24 +714,37 @@ Bayes' Theorem
    - P(A) and P(B) are the prob. of these things to the 
      whole while P(B|A) is the prob. of these things 
      to each other
-     
- - other rules (|| is OR, && is AND)
-  - Inclusion-Exclusion Principle
- P(A || B) = P(A) + P(B) - P(A && B)
-
-  - Product Rule
- P(A && B) = P(A|B)*P(B)
-  - and
- P(A && B) = P(B|A)*P(B)
-  
-Laplace Smoothing: will add 1 to the P(A) & P(B)
- so as in the above example of P(A) = 250 / 5000
- would be solved as P(A) = (1 + 250) / (1 + 5000)
+   - algebra being
+   P(A -or B) = P(A|B)*P(B)
+   P(A -or B) = P(B|A)*P(A)
+   P(B|A)*P(A) = P(A|B)*P(B)
+   P(B|A) = (P(A|B)*P(B))/P(A)
  
-Bayesian -vs- Frequentist: a frequentist has no expectation 
- but expects the repeated test will reveal the probability
- while bayesian starts with some expectation and only 
- adjust that expectation when it proves false.
+ - Laplace Smoothing: will add 1 to the P(A) & P(B)
+   so as in the above example of P(A) = 250 / 5000
+   would be solved as P(A) = (1 + 250) / (1 + 5000)
+
+ - Casual Direction -vs- Diagnostic Direction:
+   is the idea that given the three values needed to
+   solve Bayes theorem we consider P(B|A) as either
+   B being an effect of A (casual) or B being the 
+   cause of A (diagnostic)
+   
+ - Conditional Independence: springs from two or more 
+   random variables both being caused by some third 
+   random variable.  This makes the first two conditionally
+   independent of each other
+   
+ - Separation: overloaded term, while the term conditional
+   independence relates two variable, having the same cause,
+   to each other, the causing random variable is the very 
+   means of separating the conditional variables.
+   
+ - Naive Bayes Model: a way to simplify the full joint prob.
+   dist. by acting naive and assuming one variable is the 
+   cause of all the others.  This makes "all the others" 
+   to be conditionally independent.
+
 ----
 
 ----
@@ -752,6 +902,15 @@ Softmax Function
   var z_exp = z.Select(i => Math.Pow(Math.E, i)).ToArray();
   var sum_z_exp = z_exp.Sum();
   var softmax = z_exp.Select(i => Math.Round(i / sum_z_exp, 3)).ToArray();
+----
+
+----
+Deep Learning
+ - where the machine is both finding mathematical optimization 
+   and finding the features of raw data. 
+  - the opposite would be Manual Designed Features, which 
+    often takes a long time to draft
+ - Neural Networks is a kind of deep learning
 ----
 
 ----

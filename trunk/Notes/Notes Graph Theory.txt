@@ -1,0 +1,132 @@
+----
+Notes Graph Theory (formal)
+----
+
+----
+Graph Theory (Formal)
+ - beyond common use, is a formal abstract concept
+ - is composed of points (also called vertices)
+ - has lines (also called edges) which connect points
+ - represent structured data
+ 
+ Terms
+ - vertices (nodes): is the discrete data of the graph 
+ - edges (links): represent the relation amoung the vertices'
+ - join: formal name for what the edge is doing; namely, joining
+    two vertices.
+ - adjacent: the state between to vertices when there is one edge
+    between them.
+ - connected: when a indirect route connects one vertex to another
+ - distance: the number of edge traversals required to reach one
+    node from another
+ - geodesic: fancy name for shortest-distance
+ - loop: the state of an edge connecting a vertex back to itself
+ - multiple edge: when there is another edge which joins the same
+    pair of vertices
+ - simple graph: a graph with no loops or multiple edges
+ - degree: the number of edges being joined to a single vertex
+ - density: the number of edges over the number of possiable edges
+ - connectedness: fraction of all groups of two nodes where there is an 
+    edge between them
+ - betweenness: the number of times some node was passed-through 
+    for every possiable node-pair.
+ - subgraph: a subset of vertices and edges of another graph
+ - induced subgraph: a subgraph where only the vertices or only 
+    the edges are known.
+ - bijection: ("by Jove its a perfect match") one and 
+      only one girl for every boy and nobody is alone.
+ - surjective: ("sure we can share") one girl 
+      for every boy but some boys have to 
+      share the same girl, but at least 
+      no one is alone
+ - injective: ("intense feelings of loneness") one girl 
+      for every boy and no boy ever shares the same 
+      girl, but some girls are all alone
+ - non-surjective & non-injective: ("no! no!") state of 
+      some girls being all alone and some girls sharing boys
+ - isomorphic graph: when two graphs are drawn the same
+ - automorphic graph: when two graphs are drawn the same
+    and their underlying structured data is the same.
+ - label: by being labeled a vertex or edge becomes definititive 
+    like being an instance.
+ - directed graph (digraph): when the edges are an ordered pair
+ - edge head: the v1 in the ordered pair (v1,v2)
+ - edge tail: the v2 in the ordered pair (v1,v2)
+ - indegree: number of head-edges for a given vertex
+ - outdegree: number of tail-edges for a given vertex
+ - clique (egocentric): set of connected vertices where beginning at 
+    one vertex you may navigate to any other member of the
+	clique via one edge
+ - complete graph: every vertex is connected to every other 
+    vetex via an edge and is equal to n*(n-1)/2
+ - path: another name for a route, also called a walk
+ - simple path: if the route never visits the same vertex twice
+ - open path: when the first and last vertices are different
+ - closed path: when the first and last vertices are the same
+    also known as a cycle
+ - simple cycle: same as simple closed path except the origin 
+    vertex is the only one visited twice (being the terminus)
+ - tree graph: has an originating root vertex
+ - parent\child: same as used in XML
+ - leaf: a child vertex with not children of its own
+ - descendant: in tree graph, used the same as in a family tree
+ - ancestor: again, tree graph, like a family tree
+ - weighted graph: where the edge is the vertex pair and a weight
+ - hub: a vertex having a high outdegree
+ - authority: a vertex having a high indegree
+ - morphism: specific to directed graphs being another general name
+    for an edge but differs by having some edges labeled and then 
+    expressing others edges as label-of-labels or combinations of 
+    other edge labels 
+    (in DOT syntax where the '[label="blah"]' is how to label an edge)
+    X -> Y [label="f"]
+    Y -> Z [label="g"]
+    X -> Z [label="g & f"] //named in terms of the other two
+
+----
+
+----
+Representing a Graph
+ - adjacency list: represent each vertex as a key and the value 
+    as an array of adjacent vetices.
+ [1], [2,3,3]	would mean vertex 1 has one edge connecting it 
+                 to vertex 2 and two edges connecting it to vertex 
+ [2], [1,4]     vertex 2 has one edge connecting it to vertex 1 and 
+                 one edge connecting it to vertex 4
+ 
+ - adjacency matrix: an exhaustive list of propositions concerning 
+    is vertex v_i connected to vertex v_j 
+   - requires alot more memory to represent; namely n^2
+
+	.-         -.
+    | 0 1 1 0 0 |  would mean the same for the first two rows as 
+	| 1 0 0 1 0 |   above
+	| 1 0 0 1 0 |
+	| 0 1 1 0 1 |
+	| 0 0 0 1 1 |
+	`-         -'
+  - use the 'sna' R package for application of many graph terms
+    to actual instance of adjacency matrix
+  myAdjGraph <- rgraph(n,m=1,tprob=0.5,mode="(digraph|graph)" [...]) #sna adjancency graph
+   - n is number of vertices, matrix is always square
+   - tprop is the probability of a link
+   - mode is obvious, other default value args see 'help(package="sna")'
+  myIGraph <- graph.adjacency(myAdjGraph, mode="(undirected|directed") #type cast to igraph
+  - applied terms 
+   plot(graph)               #view it as a pic
+   degree(myIGraph)          #degree
+   gden(graph,mode="graph")  #density 
+   connectedness(graph_adj)  #connectedness
+   is.connected(graph)       #test if connectedness equal to 1
+   is.isolate(graph,[1-9]+)  #test if node, by index, has no edges
+   betweenness(graph)        #betweenness
+   geodist(graph_adj)        #shorted-dist, calc'ed on whole
+   ego.extract(graph_adj)    #get all the cliques
+ 
+ - import adjacency matrix example
+  library(sna)
+  library(igraph)
+  myData <- read.table("C:/Temp/MyData.tsv",header=FALSE)
+  myMatrix <- as.matrix(myData)
+  myAdj <- graph.adjacency(myMatrix, mode="directed")
+----
