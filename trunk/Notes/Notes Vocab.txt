@@ -546,9 +546,15 @@ authentication: assurance for the claimed identity
 claimant: a person, program or device whose identity is being verified
 principal: the actual owner of an identity
 authorization: establishes what the given identity is allowed to do
+sibyls: name for multiple identities controlled by one 
+existence uncertainty: real identities in underlying observed data is unknown
+identity uncertainty: which symbols refer to the same object
 runtime: the actual execution of a program over some span of time
   typically within some specific enviromental context
 process: an ostentive definition of a runtime
+stationary process: concerns change-in-time where the state changes
+ but those changes are governed by laws that do not change
+static process: concerns time where state does not change
 substitution model -vs- environment model:
  the substitution model is like classical mathematical notation
  the environment model is involved with time and thereby has 

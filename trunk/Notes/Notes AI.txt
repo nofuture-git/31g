@@ -674,8 +674,9 @@ Digression on Probability
    with some expectation and only adjust that expectation 
    when it proves false.
 
- - Principle of Indifference: when you don't know then 
-   assign equal probability to each (Laplace 1816)
+ - Principle of Indifference 
+  (a.k.a. Principle of Insufficient Reason): when you don't
+   know then assign equal probability to each
    
  - Marginal Probability: a row-sum of the full joint 
    probability dist.
@@ -745,6 +746,105 @@ Digression on Probability
    cause of all the others.  This makes "all the others" 
    to be conditionally independent.
 
+----
+
+----
+Bayesian Network
+ - a concise way to represent any full joint probability dist.
+ - is a combo of graph theory with prob. theory
+ - model as a directed-graph
+  - each node (a.k.a. points) (a.k.a. vertices) is a 
+    random variable (discrete or continuous)
+  - is acyclic so no loops or cycles
+  - each nodes proability is P(x[i]|Parents(x[i]))
+  - start by listing out all nodes
+   - prefer obvious causes to be above their effects
+  - iterate each node by drawing the edge(s) (a.k.a. links)
+   - the given node is considered the effect 
+     and are attempting to determine its cause (i.e. parents)
+   - this is working in a casual direction rather than 
+     a diagnostic one
+  - record a conditional prob. table at each node 
+  - if the graph is fully connected (a.k.a. complete) 
+    then its the same a the full joint prob. dist.
+  - continuous variables are often specified as a 
+    dist. function (i.e. (mean, stdev))
+ 
+ - Conditional Probability Table: the joint prob. dist.
+   of just the parent nodes.
+  - if its a kind of root node with no parent then its
+    just that node's prob. dist. (i.e. a vector)
+ 
+ - Conditional Case: one row in the conditional prob. table
+ 
+ - Chain Rule: the means of calc P(x[i]|Parents(x[i]))
+  - example of simple three random variables
+  P(A,B,C) = P(A -and B -and C)
+           = P(A | B -and C) * P(B -and C)
+           = P(A | B -and C) * P(B|C) * P(C)
+  - in abstract is 
+  P(x[1],x[2],...x[n]) 
+  = P(x[n] | x[n-1],...x[1])*P(x[n-1],...x[1]])
+  = P(x[n] | x[n-1],...x[1])*P(x[n-1] | x[n-2],...x[n])
+        ...P(x[2]|x[1])*P(x[1])
+  - then for any given node the prob. is
+  P(x[i]|x[i-1],...,x[1])
+  = P(x[i]|Parents(x[i]))
+ 
+ - Locally Structured (a.k.a. Sparse): the compactness 
+   of a Bayesian network
+  - typically is linear growth instead of exponential
+  
+ - Markov Blanket: term meaning a node is conditionally 
+   independent of all other nodes given its parents,
+   children and children's parents.
+  
+ - Deterministic Node: a kind of function node whose
+   value can be calculated given its parents
+ 
+ - Hybrid Bayesian Network: when both continuous and 
+   discrete random variables are present in such a way
+   that a discrete variable has a continuous parent or
+   vice versa
+  - the calc of such combos becomes each discrete variable
+    "shifts" the distribution of the continuous variable
+    around
+    
+ - Markov Chain: a formula related to getting the answer 
+   to something via random sampling instead of brute-force calc
+  - there is some kind of current state (x, x')
+  - there is some number of steps (t)
+   p[t](x) is the prob. of being in state x at time t
+   p[t+1](x') is likewise for state x' at time t+1
+   q(x->x') is probability of state going from x to x'
+  p[t+1](x') = SUM(p[t](x)*q(x->x')) | for all x'
+ 
+ - Stationary Distribution: a specific term related to 
+   the Markov chain where p[t] = p[t+1]
+  - this simplifies the above notation to just
+  p(x') = SUM(p(x)*q(x->x')) | for all x'
+  
+ - Detailed Balance: stationary dist. depends this
+  - its a kind of duplex calc where
+  p(x)*q(x->x') = p(x')*q(x'->x) | for all x,x'
+  
+ - Gibbs Sampling: a kind of sampling where each
+   variable is sampled conditionally on the current
+   values of all other variables.
+----
+
+----
+Fuzzy Logic
+ - turns true\false into a range of 0 to 1
+ - relates back to boolean ops using 
+  T(A -and B) = min(T(A),T(B))
+  T(A -or B) = max(T(A),T(B))
+  T(-not A) = 1 - T(A)
+ - gets werid quickly
+ T(A) = 0.6, T(B) = 0.4
+ T(A -and B) = 0.4
+ T(A -and (-not A)) = min(0.6, (1 - 0.6)) 
+ - which is also 0.4, what does that even mean
 ----
 
 ----

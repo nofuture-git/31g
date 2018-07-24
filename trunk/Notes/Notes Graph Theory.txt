@@ -5,75 +5,120 @@ Notes Graph Theory (formal)
 ----
 Graph Theory (Formal)
  - beyond common use, is a formal abstract concept
- - is composed of points (also called vertices)
- - has lines (also called edges) which connect points
+ - is composed of points (also called vertices or nodes)
+ - has lines (also called edges or links) which connect points
  - represent structured data
  
  Terms
  - vertices (nodes): is the discrete data of the graph 
+ 
  - edges (links): represent the relation amoung the vertices'
+ 
  - join: formal name for what the edge is doing; namely, joining
     two vertices.
+    
  - adjacent: the state between to vertices when there is one edge
     between them.
+    
  - connected: when a indirect route connects one vertex to another
+ 
  - distance: the number of edge traversals required to reach one
     node from another
+    
  - geodesic: fancy name for shortest-distance
+ 
  - loop: the state of an edge connecting a vertex back to itself
+ 
  - multiple edge: when there is another edge which joins the same
     pair of vertices
+    
  - simple graph: a graph with no loops or multiple edges
+ 
  - degree: the number of edges being joined to a single vertex
+ 
  - density: the number of edges over the number of possiable edges
+ 
  - connectedness: fraction of all groups of two nodes where there is an 
     edge between them
+    
  - betweenness: the number of times some node was passed-through 
     for every possiable node-pair.
+    
  - subgraph: a subset of vertices and edges of another graph
+ 
  - induced subgraph: a subgraph where only the vertices or only 
     the edges are known.
+    
  - bijection: ("by Jove its a perfect match") one and 
       only one girl for every boy and nobody is alone.
+      
  - surjective: ("sure we can share") one girl 
       for every boy but some boys have to 
       share the same girl, but at least 
       no one is alone
+      
  - injective: ("intense feelings of loneness") one girl 
       for every boy and no boy ever shares the same 
       girl, but some girls are all alone
+      
  - non-surjective & non-injective: ("no! no!") state of 
       some girls being all alone and some girls sharing boys
+      
  - isomorphic graph: when two graphs are drawn the same
+ 
  - automorphic graph: when two graphs are drawn the same
     and their underlying structured data is the same.
+    
  - label: by being labeled a vertex or edge becomes definititive 
     like being an instance.
+    
  - directed graph (digraph): when the edges are an ordered pair
+ 
+ - directed acyclic: a directed graph with no cycles
+ 
  - edge head: the v1 in the ordered pair (v1,v2)
+ 
  - edge tail: the v2 in the ordered pair (v1,v2)
+ 
  - indegree: number of head-edges for a given vertex
+ 
  - outdegree: number of tail-edges for a given vertex
+ 
  - clique (egocentric): set of connected vertices where beginning at 
     one vertex you may navigate to any other member of the
 	clique via one edge
+    
  - complete graph: every vertex is connected to every other 
     vetex via an edge and is equal to n*(n-1)/2
+    
  - path: another name for a route, also called a walk
+ 
  - simple path: if the route never visits the same vertex twice
+ 
  - open path: when the first and last vertices are different
+ 
  - closed path: when the first and last vertices are the same
     also known as a cycle
+    
  - simple cycle: same as simple closed path except the origin 
     vertex is the only one visited twice (being the terminus)
+    
  - tree graph: has an originating root vertex
+ 
  - parent\child: same as used in XML
+ 
  - leaf: a child vertex with not children of its own
+ 
  - descendant: in tree graph, used the same as in a family tree
+ 
  - ancestor: again, tree graph, like a family tree
+ 
  - weighted graph: where the edge is the vertex pair and a weight
+ 
  - hub: a vertex having a high outdegree
+ 
  - authority: a vertex having a high indegree
+ 
  - morphism: specific to directed graphs being another general name
     for an edge but differs by having some edges labeled and then 
     expressing others edges as label-of-labels or combinations of 
