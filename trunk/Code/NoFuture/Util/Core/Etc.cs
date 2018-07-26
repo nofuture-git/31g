@@ -174,7 +174,6 @@ namespace NoFuture.Util.Core
             }
         }
 
-
         /// <summary>
         /// Calls in tandem <see cref="DistillCrLf"/>, <see cref="DistillTabs"/>
         /// and <see cref="DistillSpaces"/>
@@ -850,7 +849,6 @@ namespace NoFuture.Util.Core
             return valout > 100 ? 100 : valout;
         }
 
-
         /// <summary>
         /// Reuseable method to get the diffence, in years, between
         /// <see cref="dob"/> and <see cref="atTime"/>
@@ -1002,7 +1000,6 @@ namespace NoFuture.Util.Core
             return afterOrOnFromDt && beforeOrOnToDt;
         }
 
-
         /// <summary>
         /// Uses <see cref="name"/> allowing for only '.', '_', numbers and letters where the 
         /// first char must be '_' or a letter.
@@ -1098,7 +1095,6 @@ namespace NoFuture.Util.Core
             var randchars = Path.GetRandomFileName().Replace(".", "_");
             return $"{DefaultNamePrefix}_{randchars}";
         }
-
 
         /// <summary>
         /// Gets the five reserved chars of XML

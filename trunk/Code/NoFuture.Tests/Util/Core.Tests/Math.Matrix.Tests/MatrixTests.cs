@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using NUnit.Framework;
 
 namespace NoFuture.Util.Core.Math.Matrix.Tests
@@ -942,13 +943,40 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
             var testResult = MatrixExpressions.GaussEliminationExpression(testInput);
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult.ToString());
-            var humm = testResult.Compile();
-            var compiledTestResult = humm(x);
+            var guassFx = testResult.Compile();
+            var compiledTestResult = guassFx(x);
             Assert.AreEqual(0, compiledTestResult[0]);
             Assert.AreEqual(-1, compiledTestResult[1]);
             Assert.AreEqual(1, compiledTestResult[2]);
 
+            testResult = MatrixExpressions.GaussEliminationExpression(testInput, false);
+            Console.WriteLine(testResult.ToString());
+            guassFx = testResult.Compile();
+            compiledTestResult = guassFx(x);
+            Assert.AreEqual(0, compiledTestResult[0]);
+            Assert.AreEqual(-1, compiledTestResult[1]);
+            Assert.AreEqual(1, compiledTestResult[2]);
         }
+
+        [Test]
+        public void TestGetMultipleExpression()
+        {
+            var e1 = Expression.Add(Expression.Constant(4D), Expression.Parameter(typeof(double), "b"));
+            var e2 = Expression.Constant(0.5D);
+            var testResult = MatrixExpressions.GetMultipleExpression(e2, e1);
+            Console.WriteLine(testResult.ToString());
+            Assert.AreEqual("(2 + (0.5 * b))", testResult.ToString());
+
+            var paramV = Expression.Parameter(typeof(double[]), "v");
+            var v2Idx = Expression.ArrayAccess(paramV, Expression.Constant(2));
+            var bigDbl = Expression.Constant(-0.571428571428571D);
+            var zero2 = Expression.Constant(0.2D);
+            var mult1 = Expression.Multiply(bigDbl, v2Idx);
+            var mult3 = MatrixExpressions.GetMultipleExpression(zero2, mult1);
+            Console.WriteLine(mult3);
+            Assert.AreEqual("(-0.114285714285714 * v[2])", mult3.ToString());
+        }
+
 
         [Test]
         public void TestReducedRowEchelonForm()
