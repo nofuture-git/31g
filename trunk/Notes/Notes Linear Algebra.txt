@@ -16,6 +16,16 @@ Pages in Print Edition: 514
 ----
 
 ----
+Linear Algebra: Theory and Applications, 2nd Edition
+By: Cheney
+Publisher: Jones & Bartlett Learning
+Pub. Date: December 29, 2010
+Web ISBN-13: 978-1-4496-1353-2
+Print ISBN-13: 978-1-4496-1352-5
+Pages in Print Edition: 624
+----
+
+----
 Practical Graph Mining with R:
 By: Nagiza Samatova; William Hendrix; John Jenkins; Kanchana Padmanabhan; Arpan Chakraborty
 Publisher: Chapman and Hall/CRC
@@ -312,8 +322,7 @@ R Builtins
  
  #object property reflection
  names(SomeObjectInstance)
- 
- 
+  
  #dataframe with property-style names
  prop00 <- 11.0
  prop01 <- TRUE
@@ -366,6 +375,19 @@ Points & Vectors
  [q1,q2] = [p1,p2] + [v1,v2] = [p1 + v1, p2 + v2]
  v = q - p
  [v1,v2] = [q1,q2] - [p1,p2] = [q1 - p1, q2 - p2]
+ 
+ - Two-Point form of a line 
+  - given two points (x[0],x[1]) & (y[0],y[1])
+  - general form 
+  y = (y[1]-y[0]/x[1]-x[0])*(x - x[0]) + y[0]
+  
+  pt1 <- c(-7,0)
+  pt2 <- c(0,3)
+  m <- (pt2[2]-pt2[1])/(pt1[2]-pt1[1])
+  myline = function(x) m*(x - pt1[1]) + pt2[1]
+  xSeq = seq(-20,20)
+  ySeq = lapply(xSeq, myline)
+  plot(xSeq,ySeq)
  
  - Vector Space: consists of a set of vectors 
    and the operations of scaling and addition.

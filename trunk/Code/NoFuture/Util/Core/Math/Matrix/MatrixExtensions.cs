@@ -936,6 +936,17 @@ namespace NoFuture.Util.Core.Math.Matrix
             return a.Transpose().DotProduct(a);
         }
 
+        /// <summary>
+        /// Getst the inner-product of matrix a which is A*Aᵀ
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static double[,] InnerProduct(this double[,] a)
+        {
+            a = a ?? new double[,] { };
+            return a.DotProduct(a.Transpose());
+        }
+
         public static double[,] Deviation(this double[,] a)
         {
             a = a ?? new double[,] { };
@@ -1489,6 +1500,17 @@ namespace NoFuture.Util.Core.Math.Matrix
                 inverse[i, j] = adjCofactor[i, j] / determinant;
 
             return inverse;
+        }
+
+        /// <summary>
+        /// The normal linear regression of θ=((Xᵀ*X)^-1)*Xᵀ*Y
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static double[] NormalLinearRegression(this double[,] x, double[] y)
+        {
+            return x.CrossProduct().Inverse().DotProduct(x.Transpose().DotProduct(y.ToMatrix().Transpose())).Flatten();
         }
 
         /// <summary>

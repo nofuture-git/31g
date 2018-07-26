@@ -888,7 +888,7 @@ All Numbers
  min cost(θ)=(1/N)*[Y-θ*Xͭ]*[Y-θ*Xͭ] 
   - the little (ͭ) means a matrix's transpose
   - is solved by
- θ=((Xͭ*X)^-1)*Xͭ*Y
+ θ=((Xᵀ*X)^-1)*Xᵀ*Y
  
  - colinearity: when any term can be expressed as a linear
    combination of the other features
@@ -1063,3 +1063,31 @@ Deep Networks basics
   - Recursive neural networks
 ----
   
+----
+Support Vector Machines
+ - an "off-the-self" kind of supervised learning
+ - did very well head-to-head with more complex 
+   specialized neural net (AIMA 18.11.1)
+ 
+ - Maximum Margin Separator: a decision boundary with the largest 
+   possible distance to example points.
+  - loss is based on a separator that is farthest away from the 
+    example seen so far.
+  - is the mathematically complex form of  non-linear programming
+    called, here, quadratic programming
+ 
+ - Kernel Trick: data which cannont be divided nicely on a line
+   can be divided if move up the dimensionality
+  - AIMA Fig 18.31 explains this graphically
+  - given some 2d scatter plot of white and black dots 
+   - the black dots could clearly be circumscribed with a circle
+   - circle is non-linear 
+   - by imagining the 2d plot in 3d it would form a cone
+   - the color of the cone would have the black dots up towards 
+     its tip with the white dots forming its base
+   - in 3d there is an obvious place where you could slice
+     the cone separating the black from with dots (tip from base)
+   - this slicing action is itself linear
+----
+ 
+ 
