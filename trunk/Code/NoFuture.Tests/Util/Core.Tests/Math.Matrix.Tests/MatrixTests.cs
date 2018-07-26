@@ -45,7 +45,7 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
                 {2D, 2D},
                 {2D, -1D}
             };
-            var eigenvalueExpression = MatrixExpressions.EigenvalueExpression(2);
+            var eigenvalueExpression = MatrixExpressions.DeterminantExpression(false);
 
             var eigenvalueFunc = eigenvalueExpression.Compile();
             Console.WriteLine(eigenvalueExpression.ToString());
@@ -69,7 +69,7 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
         [Test]
         public void TestEigenVector3X3()
         {
-            var eigenvalueExpression = MatrixExpressions.EigenvalueExpression(3);
+            var eigenvalueExpression = MatrixExpressions.DeterminantExpression();
 
             var eigenvalueFunc = eigenvalueExpression.Compile();
             Console.WriteLine(eigenvalueExpression.ToString());
@@ -929,6 +929,28 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
         }
 
         [Test]
+        public void TestGaussEliminationExpr()
+        {
+            var testInput = new double[,]
+            {
+                {1,2,3 },
+                { 4,5,6 },
+                { 1,0,1}
+            };
+            var x = new double[] { 1, 1, 1 };
+            
+            var testResult = MatrixExpressions.GaussEliminationExpression(testInput);
+            Assert.IsNotNull(testResult);
+            Console.WriteLine(testResult.ToString());
+            var humm = testResult.Compile();
+            var compiledTestResult = humm(x);
+            Assert.AreEqual(0, compiledTestResult[0]);
+            Assert.AreEqual(-1, compiledTestResult[1]);
+            Assert.AreEqual(1, compiledTestResult[2]);
+
+        }
+
+        [Test]
         public void TestReducedRowEchelonForm()
         {
             var testInput = new double[,]
@@ -979,7 +1001,7 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
         }
 
         [Test]
-        public void TestAppendColumn()
+        public void TestAppendColumns()
         {
             var testInput = new double[,]
             {
@@ -1003,7 +1025,29 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
         }
 
         [Test]
-        public void TestAppendRow()
+        public void TestAppendColumn()
+        {
+            var testInput = new double[,]
+            {
+                {1,2,3 },
+                { 4,5,6 },
+                { 1,0,1}
+            };
+
+            var testInput2 = new double[] {  -1, -2, -3  };
+            var testResult = testInput.AppendColumn(testInput2);
+
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(3, testResult.CountOfRows());
+            Assert.AreEqual(4, testResult.CountOfColumns());
+
+            Assert.AreEqual(-1, testResult[0, 3]);
+            Assert.AreEqual(-2, testResult[1, 3]);
+            Assert.AreEqual(-3, testResult[2, 3]);
+        }
+
+        [Test]
+        public void TestAppendRows()
         {
             var testInput = new double[,]
             {
@@ -1022,6 +1066,27 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
             Assert.AreEqual(-3, testResult[3, 2]);
             Console.WriteLine(testResult.Print());
 
+        }
+
+        [Test]
+        public void TestAppendRow()
+        {
+            var testInput = new double[,]
+            {
+                {1,2,3 },
+                { 4,5,6 },
+                { 1,0,1}
+            };
+            var testInput2 = new double[] {  -1, -2, -3  };
+            var testResult = testInput.AppendRow(testInput2);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(4, testResult.CountOfRows());
+            Assert.AreEqual(3, testResult.CountOfColumns());
+
+            Assert.AreEqual(-1, testResult[3, 0]);
+            Assert.AreEqual(-2, testResult[3, 1]);
+            Assert.AreEqual(-3, testResult[3, 2]);
+            Console.WriteLine(testResult.Print());
         }
 
         [Test]

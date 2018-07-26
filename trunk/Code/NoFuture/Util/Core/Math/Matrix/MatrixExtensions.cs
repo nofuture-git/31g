@@ -173,6 +173,32 @@ namespace NoFuture.Util.Core.Math.Matrix
         }
 
         /// <summary>
+        /// Appends the vector <see cref="b"/> as a column to the right-side of <see cref="a"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static double[,] AppendColumn(this double[,] a, double[] b)
+        {
+            var leftColumnCount = a.CountOfColumns();
+
+            var rows = a.CountOfRows();
+            var cols = leftColumnCount + 1;
+            var vout = new double[rows, cols];
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < leftColumnCount; j++)
+                {
+                    vout[i, j] = a[i, j];
+                }
+
+                vout[i, leftColumnCount] = i >= b.LongLength ? 0D : b[i];
+            }
+
+            return vout;
+        }
+
+        /// <summary>
         /// Appends the rows of <see cref="b"/> to the bottom of <see cref="a"/>
         /// </summary>
         /// <param name="a"></param>
@@ -185,6 +211,19 @@ namespace NoFuture.Util.Core.Math.Matrix
         {
             var at = a.Transpose();
             var vout = at.AppendColumns(b.Transpose());
+            return vout.Transpose();
+        }
+
+        /// <summary>
+        /// Appends the vector <see cref="b"/> as a row to the bottom of <see cref="a"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static double[,] AppendRow(this double[,] a, double[] b)
+        {
+            var at = a.Transpose();
+            var vout = at.AppendColumn(b);
             return vout.Transpose();
         }
 
@@ -248,7 +287,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         public static double[] GaussElimination(this double[,] a, double[] v)
         {
             var n = a.CountOfRows();
-            var A = a.AppendColumns(v.ToMatrix().Transpose());
+            var A = a.AppendColumn(v);
             for (var i = 0; i < n; i++)
             {
                 // Search for maximum in this column
@@ -1442,7 +1481,7 @@ namespace NoFuture.Util.Core.Math.Matrix
             {
                 if (_ex != null)
                     return _ex;
-                var expr = MatrixExpressions.EigenvalueExpression(3);
+                var expr = MatrixExpressions.DeterminantExpression();
                 _ex = expr.Compile();
                 return _ex;
             }

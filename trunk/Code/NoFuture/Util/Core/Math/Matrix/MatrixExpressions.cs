@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace NoFuture.Util.Core.Math.Matrix
 {
@@ -7,13 +9,17 @@ namespace NoFuture.Util.Core.Math.Matrix
     {
 
         /// <summary>
-        /// This expression may be used to discover Eigenvalues.  Also it may be used as a Determinant 
-        /// Expression by simply passing in '0' for the second parameter of the compiled expression.
+        /// This expression is used calculate a Determinant by simply passing 
+        /// in '0' for the second parameter of the compiled expression.
+        /// It can also be used to test for eigen values based on this same second parameter 
+        /// being anything other than '0'.
         /// </summary>
-        /// <param name="len">Determinants and eigenvalues can only be calculated on square matrices.</param>
+        /// <param name="is3x3">
+        /// Only works for 3X3 and 2X2 since anything greater than 3X3 needs Laplace expansion.
+        /// </param>
         /// <returns></returns>
         /// <remarks>
-        /// Is pronounced "I-G-in" vector - is one that simply gets "scaled up" by some value (the eigen value).
+        /// Is one that simply gets "scaled up" by some value (the eigen value).
         /// Dx = rx -> (D -rI)x = 0
         /// 
         /// λ is the eigen value, v` is the eigen vector
@@ -38,13 +44,13 @@ namespace NoFuture.Util.Core.Math.Matrix
         ///     }
         /// ]]>
         /// </example>
-        public static Expression<Func<double[,], double, double>> EigenvalueExpression(int len)
+        public static Expression<Func<double[,], double, double>> DeterminantExpression(bool is3x3 = true)
         {
             var myArray = Expression.Parameter(typeof(double[,]), "a");
             var myParam = Expression.Parameter(typeof (double), "r");
             var zeroIdx = Expression.Constant(0);
             var oneIdx = Expression.Constant(1);
-
+            var len = is3x3 ? 3 : 2;
             //(a[0, 0] * a[1, 1]) - (a[0, 1] * a[1, 0])
             if (len == 2)
             {
@@ -151,6 +157,116 @@ namespace NoFuture.Util.Core.Math.Matrix
             var newdiff = Expression.Subtract(addDeterminantExpr, minusDeterminantExpr);
 
             return Expression.Lambda<Func<double[,], double, double>>(newdiff, myArray, myParam);
+        }
+
+        /// <summary>
+        /// The expression is used to calculate Gauss Elimination. The resulting expression
+        /// allows for the results to be considered in a kind-of algebraic form.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        /// <example>
+        /// <![CDATA[
+        /// var input = new double[,]
+        /// {
+        ///     { 1,2,3 },
+        ///     { 4,5,6 },
+        ///     { 1,0,1 }
+        /// };
+        ///
+        /// var gaussExpr = MatrixExpressions.GaussEliminationExpression(input);
+        /// //to see the actual algebra
+        /// Console.WriteLine(gaussExpr.ToString())
+        /// 
+        /// var gaussFx = gaussExpr.Compile();
+        /// var results = gaussFx(new double[] { 1, 1, 1 });
+        /// ]]>
+        /// </example>
+        public static Expression<Func<double[], double[]>> GaussEliminationExpression(double[,] a)
+        {
+            var n = a.GetLongLength(0);
+            var cols = a.GetLongLength(1);
+
+            var AExpr = new Expression[n, cols + 1];
+            var vExpr = Expression.Parameter(typeof(double[]), "v");
+
+            for (var i = 0; i < n; i++)
+            {
+                for (var j = 0; j < a.GetLongLength(1); j++)
+                {
+                    AExpr[i, j] = Expression.Constant(a[i, j], typeof(double));
+                }
+
+                AExpr[i,cols] = Expression.ArrayAccess(vExpr, Expression.Constant(i));
+            }
+
+            for (var i = 0; i < n; i++)
+            {
+                // Search for maximum in this column
+                var maxEl = a[i, i] < 0 ? -1 * a[i, i] : a[i, i];
+
+                var maxRow = i;
+                for (var k = i + 1; k < n; k++)
+                {
+                    var aikAbs = a[k, i] < 0 ? -1 * a[k, i] : a[k, i];
+                    if (aikAbs > maxEl)
+                    {
+                        maxEl = aikAbs;
+                        maxRow = k;
+                    }
+                }
+
+                // Swap maximum row with current row (column by column)
+                for (var j = 0; j < a.GetLongLength(1)+1; j++)
+                {
+                    var row1JExpr = AExpr[i, j];
+                    var row2JExpr = AExpr[maxRow, j];
+                    AExpr[i, j] = row2JExpr;
+                    AExpr[maxRow, j] = row1JExpr;
+                }
+
+
+                // Make all rows below this one 0 in current column
+                for (var k = i + 1; k < n; k++)
+                {
+                    var negAki = Expression.Multiply(Expression.Constant(-1D), AExpr[k, i]);
+                    var cExprDiv = Expression.Divide(negAki, AExpr[i, i]);
+                    for (var j = i; j < n + 1; j++)
+                    {
+                        if (i == j)
+                        {
+                            AExpr[k, j] = Expression.Constant(0D);
+                        }
+                        else
+                        {
+                            var akj = AExpr[k, j];
+                            var aij = AExpr[i, j];
+                            var cTimesAij = Expression.Multiply(cExprDiv, aij);
+                            var plusAik = Expression.Add(akj, cTimesAij);
+                            AExpr[k, j] = plusAik;
+                        }
+                    }
+                }
+            }
+
+            // Solve equation Ax=b for an upper triangular matrix A
+            var xExpr = new Expression[n];
+            for (var i = n - 1; i >= 0; i--)
+            {
+                var cExprDiv = Expression.Divide(AExpr[i, n], AExpr[i, i]);
+                xExpr[i] = cExprDiv;
+                for (var k = i - 1; k >= 0; k--)
+                {
+                    var akn = AExpr[k, n];
+                    var aki = AExpr[k, i];
+                    var cTimesAki = Expression.Multiply(aki, cExprDiv);
+                    var aknMinusCtimesAki = Expression.Subtract(akn, cTimesAki);
+                    AExpr[k, n] = aknMinusCtimesAki;
+                }
+            }
+
+            var xExprExpr = Expression.NewArrayInit(typeof(double), xExpr);
+            return Expression.Lambda<Func<double[], double[]>>(xExprExpr, vExpr);
         }
     }
 }
