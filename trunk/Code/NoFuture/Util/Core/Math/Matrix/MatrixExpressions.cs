@@ -237,20 +237,7 @@ namespace NoFuture.Util.Core.Math.Matrix
                 {
                     var aki = AExpr[k, i];
                     var aii = AExpr[i, i];
-                    Expression cExprDiv;
-                    if (TryGetDblConstValue(aki, out var akiVal) 
-                        && TryGetDblConstValue(aii, out var aiiVal))
-                    {
-                        var negAkiValDivAiiVal = -akiVal / aiiVal;
-                        if (negAkiValDivAiiVal.Equals(double.NaN))
-                            negAkiValDivAiiVal = 0D;
-                        cExprDiv = Expression.Constant(negAkiValDivAiiVal);
-                    }
-                    else
-                    {
-                        var negAki = Expression.Negate(aki);
-                        cExprDiv = GetBinaryExpression(ExpressionType.Divide, negAki, aii, allowStringCompare);
-                    }
+                    var cExprDiv = GetDivideExpression(Expression.Negate(aki), aii, allowStringCompare);
 
                     for (var j = i; j < cols + 1; j++)
                     {
@@ -294,21 +281,7 @@ namespace NoFuture.Util.Core.Math.Matrix
                 var ain = AExpr[i, lastIdx];
                 var aii = AExpr[i, i];
 
-                var isAinConst = TryGetDblConstValue(ain, out var ainVal);
-                var isAiiConst = TryGetDblConstValue(aii, out var aiiVal);
-
-                Expression cExprDiv;
-                if (isAinConst && isAiiConst)
-                {
-                    var ainValDivAiiVal = ainVal / aiiVal;
-                    if (ainValDivAiiVal.Equals(double.NaN))
-                        ainValDivAiiVal = 0D;
-                    cExprDiv = Expression.Constant(ainValDivAiiVal);
-                }
-                else
-                {
-                    cExprDiv = GetBinaryExpression(ExpressionType.Divide, ain, aii, allowStringCompare);
-                }
+                var cExprDiv = GetDivideExpression(ain, aii, allowStringCompare);
 
                 xExpr[i] = cExprDiv;
                 for (var k = i - 1; k >= 0; k--)
@@ -351,7 +324,6 @@ namespace NoFuture.Util.Core.Math.Matrix
             return guassExpr;
         }
 
-
         internal static Expression GetMultipleExpression(Expression left, Expression right, bool allowStringCompare = true)
         {
             left = left ?? Expression.Constant(0D);
@@ -388,8 +360,7 @@ namespace NoFuture.Util.Core.Math.Matrix
                 if(left is BinaryExpression leftBin)
                     return GetMultipleExpression(rightVal, leftBin, allowStringCompare);
             }
-
-            return Expression.Multiply(left, right);
+            return GetBinaryExpression(ExpressionType.Multiply, left, right, allowStringCompare);
         }
 
         internal static Expression GetMultipleExpression(double value, BinaryExpression exprBin, bool allowStringCompare = true)
@@ -410,14 +381,62 @@ namespace NoFuture.Util.Core.Math.Matrix
                     return Expression.Constant(0D);
                 if (distVal == 1D)
                     return innerExpr;
-                return Expression.Multiply(Expression.Constant(distVal), innerExpr);
+                return GetBinaryExpression(ExpressionType.Multiply,Expression.Constant(distVal), innerExpr, allowStringCompare);
             }
 
             if (value == 0D)
                 return Expression.Constant(0D);
             if (value == 1D)
                 return exprBin;
-            return Expression.Multiply(Expression.Constant(value), exprBin);
+            return GetBinaryExpression(ExpressionType.Multiply,Expression.Constant(value), exprBin, allowStringCompare);
+        }
+
+        internal static Expression GetDivideExpression(Expression left, Expression right,
+            bool allowStringCompare = true)
+        {
+            left = left ?? Expression.Constant(0D);
+            right = right ?? Expression.Constant(0D);
+
+            var isLeftConst = TryGetDblConstValue(left, out var leftVal);
+            var isRightConst = TryGetDblConstValue(right, out var rightVal);
+
+            if (isLeftConst && isRightConst)
+            {
+                var div = leftVal / rightVal;
+                if (div.Equals(double.NaN))
+                    div = 0D;
+                return Expression.Constant(div);
+            }
+            
+            if (isLeftConst)
+            {
+                if (leftVal == 0D)
+                    return Expression.Constant(0D);
+                if (right is BinaryExpression rightBin)
+                    return GetDivideExpression(leftVal, rightBin, false, allowStringCompare);
+            }
+
+            if (isRightConst)
+            {
+                if(rightVal == 0D)
+                    return Expression.Constant(0D);
+                if (rightVal == 1D)
+                    return left;
+                if (left is BinaryExpression leftBin)
+                    return GetDivideExpression(rightVal, leftBin, true, allowStringCompare);
+            }
+
+            return GetBinaryExpression(ExpressionType.Divide, left, right, allowStringCompare);
+        }
+
+        internal static Expression GetDivideExpression(double value, BinaryExpression exprBin, bool isValueDenominator, bool allowStringCompare = true)
+        {
+            //TODO apply dist algebra rules
+
+            var expr = isValueDenominator
+                ? GetBinaryExpression(ExpressionType.Divide, exprBin, Expression.Constant(value), allowStringCompare)
+                : GetBinaryExpression(ExpressionType.Divide, Expression.Constant(value), exprBin, allowStringCompare);
+            return expr;
         }
 
         internal static bool TryGetDblConstValue(Expression expr, out double value)
@@ -425,6 +444,12 @@ namespace NoFuture.Util.Core.Math.Matrix
             value = 0D;
             if (expr == null)
                 return false;
+
+            if (expr is UnaryExpression uniExpr && TryGetDblConstValue(uniExpr.Operand, out value))
+            {
+                value = -1D * value;
+                return true;
+            }
             if (!(expr is ConstantExpression conExpr))
                 return false;
 
@@ -457,7 +482,7 @@ namespace NoFuture.Util.Core.Math.Matrix
                 && string.Equals(expr1IndexExpr.ToString(), expr2IndexExpr.ToString()))
             {
                 var coeff = expr1InnerVal + expr2InnerVal;
-                return Expression.Multiply(Expression.Constant(coeff), expr1InnerExpr);
+                return GetBinaryExpression(ExpressionType.Multiply,Expression.Constant(coeff), expr1InnerExpr);
             }
 
             return GetBinaryExpression(nodeType, expr1, expr2, allowStringCompare);
