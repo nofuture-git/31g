@@ -389,25 +389,12 @@ Points & Vectors
   ySeq = lapply(xSeq, myline)
   plot(xSeq,ySeq)
  
- - Vector Space: consists of a set of vectors 
-   and the operations of scaling and addition.
-   - scaling op is multplicative with operands
-     as a scalar and a vector.
-	- the product is then a scaled vector and
-	  a likewise member of the same vector space
-    - each component (i.e. item) in the vector
-	  is scaled by some multiple
-   - addition op is performed over two operand
-     vectors 
- 
  - vector is a difference of two points
    which describes a direction and distance
   - the components of v is v1 and v2 which indicate
     a rise & run from point p
-  - two vectors are equal if they have the same
-    component values just as two points are equal
-	if they have the same coords
-  - a vectors components are called a 'tail' and 'head'
+  - given just one vector the other one is presumed the 
+    origin (0,0)
   
  - points and vectors are different geometric entities
   - distinguishing them it to achieve geometric constructs
@@ -421,11 +408,6 @@ Points & Vectors
   - subtracting to points yields a vector
   - adding or subtracting two vectors yields another
     vector
-  - multiplying by a scalar is called scaling.
-    The result s*v adjusts the length by the scaling
-	factor
-	- the direction is unchanged if s is greater-than 0
-	- the direction is reversed if s is less-than 0
   - adding a vector to a point yields another point
 
   - a 'well-defined' operation is one which is coordinate 
@@ -434,11 +416,6 @@ Points & Vectors
   - scaling a vector (s*v) is well-defined
   - adding two points (p+q) is not well-defined since
     it is dependent on the coordinate origin
-  - a vector-field is one where each point is 
-    assigned to a vector 
-  - moving a continuous field into a vector-field
-    is called discretizing - taking some sample of
-	points and assigning each a vector
 	
  - a Matrix is a map of vectors to vectors
  
@@ -497,6 +474,91 @@ Vector Length
   q-p  = [-1-1, 2-0] = [-2,2]
  |q-p| = sqrt(-2^2 + 2^2)
  |q-p| = 2.828427125
+----
+
+----
+Vector Space
+ - start with idea of n-tuple
+  - tuple is defined as an immutable sequences 
+    of object references accessed by offset
+  - its not a set because order matters
+ - an n-tuple can represent a point in n-space
+  - e.g. (1,5) is a point in 2D space
+         (6,4,5) is a point in 3D space
+ - n-space: this consist of all n-tuples
+  - this is given a glyph of a kind of embossed 
+    capital R with a superscript for the n
+  - the R^n is therefore a set,
+   - set is defined as a mutable unordered collection 
+     of unique and immutable objects
+   - implies that, therefore, each n-tuple in R^n 
+     is unique
+   - since each is unique if two are found with 
+     the same value then they are the same thing
+ - the n-tuple is a vector
+ - the symbol which points-to the whole n-tuple 
+   is usually written in caps or bold
+  - sometimes a small arrow pointing to the right 
+    above a symbol also means its a vector
+ - an individual item therein, with an index subscript
+   is called a component
+  - a component is writtin in lowercase or italics
+ - two operations are applicable to R^n 
+  - componentwise addition 
+   - e.g. X=Y, x1+y1, x2+y2, ... , xn+yn
+  - scalar multiplication
+    -e.g. X * a, x1 * a, x2 * a, ... , xn*a
+ - vector space: the name for the concepts of R^n, 
+    n-tuples and two operations
+----
+
+----
+Linear Combination
+ - two vectors are parallel they are called
+    linearly dependent
+ - not being the case is called
+    linearly independent
+ 
+ - linear combination is taking two 
+   linearly independent vectors to make 
+   a new vector using one of the 
+   two ops applicable to R^n 
+   - componentwise addition 
+   - scalar multiplication
+  - in R^2 (i.e. 2D classic graph)
+   - scalar multiplication do something in the 
+     same direction, extend, shrink, reverse, etc.
+   - componentwise addition will find 
+     the vector which bisects the space 
+     between the two 
+----
+
+----
+Spans and Planes
+ - Span: all possible linear combinations
+   for a given set of vectors.
+  - Column Space: given a matrix, think of its columns 
+    as individual vectors, then the span 
+    of the matrix is named its column space
+ - Plane: is a span in R^3 given two vectors 
+   - can be visualized as two points in 3D space
+   - use the origin as the third point (0,0,0) and
+     you have a triangle in 3D space
+   - extend each side of the triangle in all directions
+     and you bisect the 3D space with a plane
+
+   #example,detect if vector y is on plane defined by vector u,v     
+   library(pracma)
+   u <- c(0,2,6)
+   v <- c(3,9,0)
+   y <- c(1,4,3)
+   A <- matrix(c(u,v,y),ncol=3)
+   Areduced <- rref(A)
+   myAlpha <- Areduced[1,3]
+   myBeta <- Areduced[2,3]
+   
+   #equals the original y of (1,4,3) so this is on the plane
+   myAlpha*u + myBeta*v
 ----
 
 ----
@@ -595,29 +657,6 @@ Other vector rules
 ----
 
 ----
-Linear Combination
- - two vectors are parallel they are called
-    linearly dependent
- - not being the case is called
-    linearly independent
- 
- - linear combination is taking two 
-   linearly independent vectors to make 
-   a new vector
- u = r*v + s*w
- 
- a1 <- c(2,1)
- a2 <- c(-2,4)
- v <- c(0.5,1)
-  
- myLinearCombo <- v[1] * a1 + v[2] * a2
- 
- - this is easier in using a matrix
- A <- matrix(c(2,1,-2,4), ncol = 2)
- myLinearCombo <- A %*% v
-----
-
-----
 Lines defined
  - different ways to specify a line geometrically
   - two points on a single line
@@ -630,11 +669,10 @@ Lines defined
   - explicit
   
  - Parametric equation of a line
-  - where p ϵ E² and v ϵ R² (whatever that means)
-  l(t) = p + tv  
-   v = q - p (barycentric coords)
-  l(t) = (1 - t)p + tq  (this form is aka linear interpolation)
-  - can be used to find points on a line given two points
+  l(t) = (1 - t)p + tq 
+  - this form is a.k.a. linear interpolation
+  - can be used to find points on a line 
+    given two points (q and p)
   
  - Implicit equation of a line
   a*x1 + b*x2 + c = 0
@@ -1778,7 +1816,17 @@ Under and Overfitting
  #or using the Leave-one-out cross validation, 
  Control2<- trainControl(method="LOOCV")
 ----
-    
+
+----
+Eigen Systems
+ - sometimes the multiplication of a vector by a matrix 
+   produces the same thing as a scalar by a vector
+ - so A is a matrix, x is a vector, then A*x = l*x
+   and l is scalar (number)
+ - in the above 'l' is the eigenvalue
+ - 'x' is the eigen vector
+ - det(A*x - l*I) = 0 can be used to solve for 'l'
+  
     
     
     

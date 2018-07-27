@@ -20,7 +20,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         /// </param>
         /// <returns></returns>
         /// <remarks>
-        /// Is one that simply gets "scaled up" by some value (the eigen value).
+        /// Here 'r' is the eigen value we want.
         /// Dx = rx -> (D -rI)x = 0
         /// 
         /// λ is the eigen value, v` is the eigen vector
@@ -431,7 +431,37 @@ namespace NoFuture.Util.Core.Math.Matrix
 
         internal static Expression GetDivideExpression(double value, BinaryExpression exprBin, bool isValueDenominator, bool allowStringCompare = true)
         {
-            //TODO apply dist algebra rules
+
+            if (new[] { ExpressionType.Add, ExpressionType.Subtract }.Contains(exprBin.NodeType))
+            {
+                //(a + c) / b = (a/b) + (c/b)
+                var recurLeft = isValueDenominator
+                    ? GetDivideExpression(exprBin.Left, Expression.Constant(value), allowStringCompare)
+                    : GetDivideExpression(Expression.Constant(value), exprBin.Left, allowStringCompare);
+
+                var recurRight = isValueDenominator
+                    ? GetDivideExpression(exprBin.Right, Expression.Constant(value), allowStringCompare)
+                    : GetDivideExpression(Expression.Constant(value), exprBin.Right, allowStringCompare);
+
+                return GetBinaryExpression(exprBin.NodeType, recurLeft, recurRight, allowStringCompare);
+            }
+
+            if (exprBin.NodeType == ExpressionType.Multiply &&
+                TryIsBinaryExpressWithOneConst(exprBin, out var innerVal, out var innerExpr))
+            {
+                var distVal = isValueDenominator ? innerVal / value : value / innerVal;
+                if (distVal.Equals(double.NaN))
+                    distVal = 0D;
+                if (distVal == 0D)
+                    return Expression.Constant(0D);
+                if (distVal == 1D)
+                    return innerExpr;
+                return isValueDenominator
+                    ? GetBinaryExpression(ExpressionType.Multiply, innerExpr, Expression.Constant(distVal),
+                        allowStringCompare)
+                    : GetBinaryExpression(ExpressionType.Multiply, Expression.Constant(distVal), innerExpr,
+                        allowStringCompare);
+            }
 
             var expr = isValueDenominator
                 ? GetBinaryExpression(ExpressionType.Divide, exprBin, Expression.Constant(value), allowStringCompare)
@@ -476,16 +506,27 @@ namespace NoFuture.Util.Core.Math.Matrix
             if (!isExpr1BinWithConst || !isExpr2BinWithConst)
                 return GetBinaryExpression(nodeType, expr1, expr2, allowStringCompare);
 
-            if (expr1InnerExpr is IndexExpression expr1IndexExpr
-                && expr2InnerExpr is IndexExpression expr2IndexExpr
+            if (IsAlgebraVariableEsque(expr1InnerExpr)
+                && IsAlgebraVariableEsque(expr2InnerExpr)
                 && allowStringCompare
-                && string.Equals(expr1IndexExpr.ToString(), expr2IndexExpr.ToString()))
+                && string.Equals(expr1InnerExpr.ToString(), expr2InnerExpr.ToString()))
             {
                 var coeff = expr1InnerVal + expr2InnerVal;
                 return GetBinaryExpression(ExpressionType.Multiply,Expression.Constant(coeff), expr1InnerExpr);
             }
 
             return GetBinaryExpression(nodeType, expr1, expr2, allowStringCompare);
+        }
+
+        private static bool IsAlgebraVariableEsque(Expression expr)
+        {
+            if (expr == null)
+                return false;
+            if (expr is IndexExpression)
+                return true;
+            if (expr is ParameterExpression)
+                return true;
+            return false;
         }
 
         private static bool TryIsBinaryExpressWithOneConst(Expression expr, out double val, out Expression otherSide)

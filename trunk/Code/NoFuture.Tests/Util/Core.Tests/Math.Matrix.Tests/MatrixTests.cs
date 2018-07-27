@@ -942,7 +942,6 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
             
             var testResult = MatrixExpressions.GaussEliminationExpression(testInput);
             Assert.IsNotNull(testResult);
-            Console.WriteLine(testResult.ToString());
             var guassFx = testResult.Compile();
             var compiledTestResult = guassFx(x);
             Assert.AreEqual(0, compiledTestResult[0]);
@@ -950,12 +949,17 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
             Assert.AreEqual(1, compiledTestResult[2]);
 
             testResult = MatrixExpressions.GaussEliminationExpression(testInput, false);
-            Console.WriteLine(testResult.ToString());
             guassFx = testResult.Compile();
             compiledTestResult = guassFx(x);
             Assert.AreEqual(0, compiledTestResult[0]);
             Assert.AreEqual(-1, compiledTestResult[1]);
             Assert.AreEqual(1, compiledTestResult[2]);
+
+            testInput = new double[,] {{4, 3}, {2, 1}, {7, 4}};
+            testResult = MatrixExpressions.GaussEliminationExpression(testInput, false);
+            Console.WriteLine(testResult.ToString());
+            testResult = MatrixExpressions.GaussEliminationExpression(testInput);
+            Console.WriteLine(testResult.ToString());
         }
 
         [Test]
