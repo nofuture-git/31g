@@ -1816,19 +1816,3 @@ Under and Overfitting
  #or using the Leave-one-out cross validation, 
  Control2<- trainControl(method="LOOCV")
 ----
-
-----
-Eigen Systems
- - sometimes the multiplication of a vector by a matrix 
-   produces the same thing as a scalar by a vector
- - so A is a matrix, x is a vector, then A*x = l*x
-   and l is scalar (number)
- - in the above 'l' is the eigenvalue
- - 'x' is the eigen vector
- - det(A*x - l*I) = 0 can be used to solve for 'l'
-  
-    
-    
-    
-    
-    
