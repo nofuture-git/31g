@@ -85,9 +85,10 @@ R Summary
 ----
 R Ops
  - Assignment
-  <- assignment and scoped globally
-  =  assignment with local socpe
+  <- assignment at environment 
+  =  only for the "top-level" (i.e. command prompt)
   -> assignment in reverse where variable is right operand
+  <<- assignment is global
  
  - Logical 
   TRUE 
@@ -266,6 +267,8 @@ R Builtins
  #  - path-separator is unix-style /
  
  vLen <- function(a) {
+    #check for null args
+    if(missing(a)) a = 1
     sqrt(sum(a*a))
  }
  source("C:/MyR/UserFunctions/LinearAlgebra.r")
@@ -361,6 +364,97 @@ R Graphix
  
  #show a matrix of scatter plots 
  pairs(SomeData[1:7], cex.labels = 2, font.labels= 2)
+ 
+ - anything beyond basic graphs uses external package ggplot2
+  - line types 
+  0 = blank, 1 = solid, 2 = dashed, 3 = dotted, 
+  4 = dotdash, 5 = longdash, 6 = twodash
+ 
+ 
+ - bar graph
+  - uses geom_bar as graph type
+ # basic 
+ mygroup <- c("grp1","grp2","grp3")
+ myvals <- c(5.441,3.22,5.65)
+ mydataframe <- data.frame(mygroup, myvals)
+ ggplot(mydataframe, aes(x=mygroup, y=myvals)) + 
+    geom_bar(stat="identity", fill="lightblue", colour="black")
+ 
+ # with sub groupings
+ mygroup <- c("a","a","a","b","b","b")
+ mysubgroups <- c("x","y","z","x","y","z")
+ myval <- c(3.18,2.8,2.74,2.26,3.11,1.47)
+ mydataframe <- data.frame(mygroup, mysubgroups, myval)
+ ggplot(mydataframe, aes(x = mysubgroups, y = myval, fill=mygroup)) + 
+     geom_bar(position = "dodge", stat = "identity")
+     
+ - line graph
+  - uses geom_line as graph type
+ # basic
+ myX <- c(1:10)
+ myY <- rnorm(10)
+ mydataframe <- data.frame(myX, myY)
+ #this gets the x-axis to have a line per unit
+ mydataframe$myX <- factor(mydataframe$myX)
+ # the "group=1" tells the graph to use create a vertical line per unit
+ ggplot(mydataframe, aes(x = myX, y = myY, group=1)) + geom_line()
+ 
+ # two lines, dataframe is like a denormalized table join
+ mygroup <- c(rep("A", 10), rep("B", 10))
+ mysubgroups <- c(seq(1, 10), seq(1:10))
+ myval <- rnorm(20)
+ mydataframe <- data.frame(mygroup, mysubgroups, myval) 
+ ggplot(mydataframe, aes(x = mysubgroups, y = myval, colour=mygroup)) + 
+     geom_line()
+     
+ - scatter plot
+  - uses geom_point as graph type
+ myX <- rnorm(100,33,8.75)
+ myY <- rnorm(100, 70, 9.96)
+ mydataframe <- data.frame(myX, myY)
+ #default is solid, shape=16, 21 is hollow
+ ggplot(mydataframe, aes(x = myX, y = myY)) + geom_point(shape=21)
+  
+ - drawing classic empty graph
+ getMy.CoordGraph = function(min, max){
+     myX <- seq(min,max)
+     myY <- seq(min,max)
+     mydataframe <- data.frame(myX, myY)
+     
+     #setting shape makes it a blank coord-plane (will print a warning msg, just ignore)
+     myplot <- ggplot(mydataframe, aes(x = myX, y = myY)) + geom_point(shape=NA)
+     
+     #add the "0" to the lower-left 
+     myplot <- myplot + annotate("text", x=-0.20, y=-0.5, label="0")
+     
+     #draw the x and y axis 
+     myplot <- myplot + geom_vline(xintercept = 0)
+     myplot <- myplot + geom_hline(yintercept = 0)
+     return(myplot)
+ }
+ 
+ getMy.DrawVector = function(coordPlot, myVector, lnColor = "black", vectorLabel = "") {
+     xCoord <- myVector[1]
+     yCoord <- myVector[2]
+     d <- data.frame(x1 = 0, y1 = 0, x2 = xCoord, y2 = yCoord, lnColor = lnColor)
+     myStdArrow <- arrow(length = unit(0.03, "npc"))
+     coordPlot <- coordPlot + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), 
+         data = d, arrow = myStdArrow, size = 1, colour=lnColor)
+     if(vectorLabel == "") vectorLabel = sprintf("(%s,%s)",xCoord, yCoord)
+     coordPlot <- coordPlot + annotate("text", x=xCoord-0.43, y=yCoord-0.43, label=vectorLabel)
+     return(coordPlot)
+ }
+ 
+ mycoord <- getMy.CoordGraph(-2,10)
+ #draw the vector
+ getMy.DrawVector(mycoord, c(1,4))
+ 
+ #draw the dotted lines in which the vector encloses a triangle
+ mycoord <- mycoord + geom_segment(aes(x = 0, y = 0, xend = 1, yend = 0), size = 1, linetype="dashed")
+ mycoord <- mycoord + geom_segment(aes(x = 1, y = 0, xend = 1, yend = 4), size = 1, linetype="dashed")
+ #enclose the vector triangle with a color
+ d <- data.frame(x=c(0,1,1), y=c(0,0,4), t=c("a","a","a"))
+ mycoord <- mycoord + geom_polygon(data = d, mapping = aes(x = x, y = y, group = t), fill = "lightblue")
 ----
 
 ----
@@ -504,7 +598,7 @@ Vector Space
    is called a component
   - a component is writtin in lowercase or italics
  - two operations are applicable to R^n 
-  - componentwise addition 
+  - componentwise addition (subtraction is just the same except minus)
    - e.g. X=Y, x1+y1, x2+y2, ... , xn+yn
   - scalar multiplication
     -e.g. X * a, x1 * a, x2 * a, ... , xn*a
@@ -523,14 +617,63 @@ Linear Combination
    linearly independent vectors to make 
    a new vector using one of the 
    two ops applicable to R^n 
-   - componentwise addition 
+   - componentwise addition\subtraction
    - scalar multiplication
   - in R^2 (i.e. 2D classic graph)
    - scalar multiplication do something in the 
      same direction, extend, shrink, reverse, etc.
+    #see functions defined above in "R Graphix"
+    myvector <- c(1,4)   
+    mycoord <- getMy.CoordGraph(-5, 8)
+    mycoord <- getMy.DrawVector(mycoord, myvector*2, lnColor = "red", vectorLabel = "x*2")
+    mycoord <- getMy.DrawVector(mycoord, myvector, lnColor = "black", vectorLabel = "x")
+    mycoord <- getMy.DrawVector(mycoord, myvector*-1, lnColor = "lightblue", vectorLabel = "x*-1")
+    #times 2 just moves it out, twice as long, time -1 reverses it the other way
+    mycoord
+  
    - componentwise addition will find 
      the vector which bisects the space 
      between the two 
+    #see functions defined above in "R Graphix"
+    myvectorY <- c(0.5,3)
+    myvectorX <- c(3.2,1)
+    mycoord <- getMy.CoordGraph(-2, 8)
+    mycoord <- getMy.DrawVector(mycoord, myvectorY, lnColor = "black", vectorLabel = "y")
+    mycoord <- getMy.DrawVector(mycoord, myvectorX, lnColor = "black", vectorLabel = "x")
+    #unlike subtraction the order here doesn't matter
+    myVectorSum <- myvectorY + myvectorX
+    mycoord <- getMy.DrawVector(mycoord, myVectorSum, lnColor = "lightblue", vectorLabel = "y + x")
+    #blue line lies between the left and right
+    mycoord
+    
+    #the parallelogram is myvectorX starting at the tip of myvectorY
+    # and likewise for myvectorY starting at the tip of myvectorX
+    mycoord <- mycoord + geom_segment(aes(x = myvectorY[1], y = myvectorY[2], 
+              xend = myVectorSum[1], yend = myVectorSum[2]), size = 1, linetype="dashed")
+    mycoord <- mycoord + geom_segment(aes(x = myvectorX[1], y = myvectorX[2], 
+              xend = myVectorSum[1], yend = myVectorSum[2]), size = 1, linetype="dashed")
+           
+   - componentwise subtraction is drawing a line from the 
+     tip of one vector to the other then projecting that
+     as its own vector from the origin
+    myvectorY <- c(0.5,3)
+    myvectorX <- c(3.2,1)
+    myXminusY = myvectorX - myvectorY
+    myYminusX = myvectorY - myvectorX
+    mycoord <- getMy.CoordGraph(-5, 5)
+    mycoord <- getMy.DrawVector(mycoord, myvectorY, lnColor = "black", vectorLabel = "y")
+    mycoord <- getMy.DrawVector(mycoord, myvectorX, lnColor = "black", vectorLabel = "x")
+    mycoord <- getMy.DrawVector(mycoord, myYminusX, lnColor = "lightblue", vectorLabel = "y-x")
+    mycoord <- getMy.DrawVector(mycoord, myXminusY, lnColor = "lightgreen", vectorLabel = "x-y")
+    
+    #the line from tip of y to x is the same as the green vector
+    mycoord <- mycoord + geom_segment(aes(x = myvectorY[1], y = myvectorY[2], 
+              xend = myvectorX[1], yend = myvectorX[2]), size = 1, linetype="dashed", colour="plum")
+    
+    #the line from tip x to (x-y) is the same as y itself
+    mycoord <- mycoord + geom_segment(aes(x = myvectorX[1], y = myvectorX[2], 
+              xend = myXminusY[1], yend = myXminusY[2]), size = 1, linetype="dashed", colour="plum")              
+    
 ----
 
 ----
