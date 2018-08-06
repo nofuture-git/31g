@@ -642,20 +642,26 @@ Linear Combination
     mycoord <- getMy.DrawVector(mycoord, myvectorX, lnColor = "black", vectorLabel = "x")
     #unlike subtraction the order here doesn't matter
     myVectorSum <- myvectorY + myvectorX
-    mycoord <- getMy.DrawVector(mycoord, myVectorSum, lnColor = "lightblue", vectorLabel = "y + x")
     #blue line lies between the left and right
-    mycoord
+    mycoord <- getMy.DrawVector(mycoord, myVectorSum, lnColor = "lightblue", vectorLabel = "y + x")
     
     #the parallelogram is myvectorX starting at the tip of myvectorY
     # and likewise for myvectorY starting at the tip of myvectorX
     mycoord <- mycoord + geom_segment(aes(x = myvectorY[1], y = myvectorY[2], 
-              xend = myVectorSum[1], yend = myVectorSum[2]), size = 1, linetype="dashed")
+              xend = myVectorSum[1], yend = myVectorSum[2]), size = 1, linetype="dashed", colour="plum")
     mycoord <- mycoord + geom_segment(aes(x = myvectorX[1], y = myvectorX[2], 
-              xend = myVectorSum[1], yend = myVectorSum[2]), size = 1, linetype="dashed")
+              xend = myVectorSum[1], yend = myVectorSum[2]), size = 1, linetype="dashed", colour="plum")
+    
+    
+    #to have the bisect vector end right on the parallelogram line, take the sum times 1/2
+    mycoord <- mycoord + geom_segment(aes(x = myvectorY[1], y = myvectorY[2], 
+              xend = myvectorX[1], yend = myvectorX[2]), size = 1, linetype="dashed", colour="plum")
+    mycoord <- getMy.DrawVector(mycoord, myVectorSum * 0.5, lnColor = "coral", vectorLabel = "1/2*(x+y)")
            
    - componentwise subtraction is drawing a line from the 
      tip of one vector to the other then projecting that
      as its own vector from the origin
+    #see functions defined above in "R Graphix"
     myvectorY <- c(0.5,3)
     myvectorX <- c(3.2,1)
     myXminusY = myvectorX - myvectorY
@@ -673,6 +679,7 @@ Linear Combination
     #the line from tip x to (x-y) is the same as y itself
     mycoord <- mycoord + geom_segment(aes(x = myvectorX[1], y = myvectorX[2], 
               xend = myXminusY[1], yend = myXminusY[2]), size = 1, linetype="dashed", colour="plum")              
+    
     
 ----
 
