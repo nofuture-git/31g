@@ -60,6 +60,14 @@ https://www.ncbi.nlm.nih.gov/books/NBK253312/
 ----
 
 ----
+Linear Algebra A Geometric Approach 2nd ed.
+Theodore Shifrin, Malcom R. Adams
+ISBN-13: 978-1-4292-1521-3
+ISBN-10: 1-4292-1521-6
+2011, 2002 by W. H. Freeman and Company
+----
+
+----
 R Summary
  - is a GNU port of the "S" language where S was a stat lang
    developed at Bell Labs by John Chambers.
@@ -365,12 +373,11 @@ R Graphix
  #show a matrix of scatter plots 
  pairs(SomeData[1:7], cex.labels = 2, font.labels= 2)
  
- - anything beyond basic graphs uses external package ggplot2
+ - anything beyond basic graphs uses external package ggplot2 for 2D
   - line types 
   0 = blank, 1 = solid, 2 = dashed, 3 = dotted, 
   4 = dotdash, 5 = longdash, 6 = twodash
- 
- 
+  
  - bar graph
   - uses geom_bar as graph type
  # basic 
@@ -416,7 +423,7 @@ R Graphix
  ggplot(mydataframe, aes(x = myX, y = myY)) + geom_point(shape=21)
   
  - drawing classic empty graph
- getMy.CoordGraph = function(min, max){
+ getMy.CoordGraph <- function(min, max){
      myX <- seq(min,max)
      myY <- seq(min,max)
      mydataframe <- data.frame(myX, myY)
@@ -433,7 +440,7 @@ R Graphix
      return(myplot)
  }
  
- getMy.DrawVector = function(coordPlot, myVector, lnColor = "black", vectorLabel = "") {
+ getMy.DrawVector <- function(coordPlot, myVector, lnColor = "black", vectorLabel = "") {
      xCoord <- myVector[1]
      yCoord <- myVector[2]
      d <- data.frame(x1 = 0, y1 = 0, x2 = xCoord, y2 = yCoord, lnColor = lnColor)
@@ -445,16 +452,64 @@ R Graphix
      return(coordPlot)
  }
  
+ getMy.DrawSegment <- function(coordPlot, startVector, endVector, lnColor="plum"){
+    xStart = startVector[1]
+    yStart = startVector[2]
+    xEnd = endVector[1]
+    yEnd = endVector[2]
+    d <- data.frame(x1 = xStart, y1 = yStart, x2 = xEnd, y2 = yEnd, lnColor = lnColor)
+    coordPlot <- coordPlot + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), 
+         data = d, size = 1, colour=lnColor, linetype="dashed")
+    return(coordPlot)
+ }
+ 
+ getMy.DrawLine <- function(coordPlot, xPoints, yPoints, lnColor="black"){
+    d <- data.frame(x = xPoints, y = yPoints)
+    coordPlot <- coordPlot + geom_path(mapping = aes(x, y), data = d, 
+       colour=lnColor, arrow = arrow(ends="both"))
+    return(coordPlot)
+ }
+ 
  mycoord <- getMy.CoordGraph(-2,10)
  #draw the vector
- getMy.DrawVector(mycoord, c(1,4))
+ mycoord <- getMy.DrawVector(mycoord, c(1,4))
  
  #draw the dotted lines in which the vector encloses a triangle
- mycoord <- mycoord + geom_segment(aes(x = 0, y = 0, xend = 1, yend = 0), size = 1, linetype="dashed")
- mycoord <- mycoord + geom_segment(aes(x = 1, y = 0, xend = 1, yend = 4), size = 1, linetype="dashed")
+ mycoord <- getMy.DrawSegment(mycoord, startVector = c(0,0), endVector = c(1,0))
+ mycoord <- getMy.DrawSegment(mycoord, startVector = c(1,0), endVector = c(1,4))
  #enclose the vector triangle with a color
  d <- data.frame(x=c(0,1,1), y=c(0,0,4), t=c("a","a","a"))
  mycoord <- mycoord + geom_polygon(data = d, mapping = aes(x = x, y = y, group = t), fill = "lightblue")
+ 
+ - use rgl for 3D
+ library(rgl)
+ #makes is so that further commands are applied to the existing open window
+ open3d()
+ #create a blank 3D plot 
+ x = seq(-5,5)
+ y = seq(-5,5)
+ z = seq(-5,5)
+ plot3d(x, y, z, type="n") 
+ #add a vector'esque arrow
+ arrow3d(c(0, 0, 0), c(3, 4, 3), type = "lines", col = "green")
+ #add plot lines inside the box
+ abclines3d(0, 0, 0, a = diag(3), col = "gray")
+ #add some floating text
+ text3d(3,3,3,"(3,3,3)")
+ #add a plane
+ planes3d(1,0,0,0, alpha=0.5)
+----
+
+----
+Convert degrees to radians
+ - R only works in radians, not degrees
+ - Circumference = 2*pi*r 
+    where r is radius
+ - want to work as r = 1
+   C = 2 *pi, which is 360 degrees
+ - so 180 degrees is just pi
+ - degrees to radians (a / 1) * (pi / 180)
+ - radians to degress a * 180/pi
 ----
 
 ----
@@ -464,24 +519,6 @@ Points & Vectors
    they all lie on a single line
  - two points are collinear since it takes 
    two points to form a line.
- p = [p1,p2]
- q = p + v
- [q1,q2] = [p1,p2] + [v1,v2] = [p1 + v1, p2 + v2]
- v = q - p
- [v1,v2] = [q1,q2] - [p1,p2] = [q1 - p1, q2 - p2]
- 
- - Two-Point form of a line 
-  - given two points (x[0],x[1]) & (y[0],y[1])
-  - general form 
-  y = (y[1]-y[0]/x[1]-x[0])*(x - x[0]) + y[0]
-  
-  pt1 <- c(-7,0)
-  pt2 <- c(0,3)
-  m <- (pt2[2]-pt2[1])/(pt1[2]-pt1[1])
-  myline = function(x) m*(x - pt1[1]) + pt2[1]
-  xSeq = seq(-20,20)
-  ySeq = lapply(xSeq, myline)
-  plot(xSeq,ySeq)
  
  - vector is a difference of two points
    which describes a direction and distance
@@ -536,38 +573,33 @@ Vector Length
  - since a vector's components are the rise & run
    the vector's length may be assigned as the 
    hypotenuse of a right triangle
- - this is named the Euclidean norm  
-   |V|^2 = v1^2 + v2^2
-   |V| = sqrt(v1^2 + v2^2)
+ - this is named the Euclidean norm 
+ - in algebra, has the symbol like abs value |v| or ||v||
+  getMy.EuclideanNorm <- function(v){
+    sqrt(v[1]^2 + v[2]^2)
+  }
+  getMy.EuclideanNorm(c(8,12))
  - a normalized vector has a unit length of one
-   |W| = 1
   - normalized vectors are also known as unit vectors
   - not every vector is a normalized one
  - to normalize a vector is divide each component by 
-   Euclidean norm
-   W = v/|V|
+   Euclidean norm (W = v/|V|)
+  getMy.NormalizedVector <- function(v){
+    v / getMy.EuclideanNorm(v)
+  }
    
    - example, not a normalized vector
-   v = [3,7]
-  |V| = sqrt(3^2 + 7^2)
-  |V| = 7.615773106
-   W = [3/7.615773106, 7/7.615773106]
-   W = [0.3939192986, 0.91914503]
+  getMy.NormalizedVector(c(3,7)) #[1] 0.3939193 0.9191450
    
   - example, a normalized vector
-   v = [5,0]
-  |V| = sqrt(5^2,0^2)
-  |V| = 5
-   W = [5/5, 0/5]
-   W = [1, 0]
+  getMy.NormalizedVector(c(5, 0)) #[1] 1 0
    
  - the distance between two points is the
    Euclidean norm of the vector of the two points 
-   q = [-1,2]
-   p = [1,0]
-  q-p  = [-1-1, 2-0] = [-2,2]
- |q-p| = sqrt(-2^2 + 2^2)
- |q-p| = 2.828427125
+  getMy.TwoPointsDist <- function(q,p){
+    getMy.EuclideanNorm(q-p)
+  }
+  getMy.TwoPointsDist(c(-1,2),c(1,0)) #[1] 2.828427
 ----
 
 ----
@@ -647,17 +679,13 @@ Linear Combination
     
     #the parallelogram is myvectorX starting at the tip of myvectorY
     # and likewise for myvectorY starting at the tip of myvectorX
-    mycoord <- mycoord + geom_segment(aes(x = myvectorY[1], y = myvectorY[2], 
-              xend = myVectorSum[1], yend = myVectorSum[2]), size = 1, linetype="dashed", colour="plum")
-    mycoord <- mycoord + geom_segment(aes(x = myvectorX[1], y = myvectorX[2], 
-              xend = myVectorSum[1], yend = myVectorSum[2]), size = 1, linetype="dashed", colour="plum")
-    
+    mycoord <- getMy.DrawSegment(mycoord, myvectorY, myVectorSum)
+    mycoord <- getMy.DrawSegment(mycoord, myvectorX, myVectorSum)
     
     #to have the bisect vector end right on the parallelogram line, take the sum times 1/2
-    mycoord <- mycoord + geom_segment(aes(x = myvectorY[1], y = myvectorY[2], 
-              xend = myvectorX[1], yend = myvectorX[2]), size = 1, linetype="dashed", colour="plum")
+    mycoord <- getMy.DrawSegment(mycoord, myvectorY, myvectorX)
     mycoord <- getMy.DrawVector(mycoord, myVectorSum * 0.5, lnColor = "coral", vectorLabel = "1/2*(x+y)")
-           
+
    - componentwise subtraction is drawing a line from the 
      tip of one vector to the other then projecting that
      as its own vector from the origin
@@ -673,13 +701,10 @@ Linear Combination
     mycoord <- getMy.DrawVector(mycoord, myXminusY, lnColor = "lightgreen", vectorLabel = "x-y")
     
     #the line from tip of y to x is the same as the green vector
-    mycoord <- mycoord + geom_segment(aes(x = myvectorY[1], y = myvectorY[2], 
-              xend = myvectorX[1], yend = myvectorX[2]), size = 1, linetype="dashed", colour="plum")
-    
+    mycoord <- getMy.DrawSegment(mycoord, myvectorY, myvectorX)
+
     #the line from tip x to (x-y) is the same as y itself
-    mycoord <- mycoord + geom_segment(aes(x = myvectorX[1], y = myvectorX[2], 
-              xend = myXminusY[1], yend = myXminusY[2]), size = 1, linetype="dashed", colour="plum")              
-    
+    mycoord <- getMy.DrawSegment(mycoord, myvectorX, myXminusY)
     
 ----
 
@@ -724,31 +749,18 @@ Combining Points
       t = |r-p| / (|r-p| + |q-r|) 
   (1-t) = |q-r| / (|r-p| + |q-r|)
   
+ getMy.CombineTwoPoints <- function(p, q, r){
+    myDen <- getMy.TwoPointsDist(r,p) + getMy.TwoPointsDist(q,r)
+    t <- getMy.TwoPointsDist(r,p) / myDen
+    oneMinusT <- getMy.TwoPointsDist(q,r) / myDen
+    return(data.frame(t=t, oneMinusT = oneMinusT))
+ }
+  
  - example
-  p = [2,4], r = [6.5,7] q = [8,8]
-  r = (1-t)*p + tq
-  [6.5,7] = (1-t)*[2,4] + t*[8,8]
-  
-  |r-p| = |[6.5 - 2, 7 - 4]|
-  |r-p| = |[4.5, 3]|
-  |r-p| = sqrt(4.5^2 + 3^2)
-  |r-p| = 5.408326913
-  
-  |q-r| = |[8 - 6.5, 8 - 7]|
-  |q-r| = |[1.5, 1]|
-  |q-r| = sqrt(1.5^2 + 1^2)
-  |q-r| = 1.802775638
-  
-  |r-p| + |q-r| = 5.408326913 + 1.802775638
-  |r-p| + |q-r| = 7.211102551
-  
-  t = |r-p| / (|r-p| + |q-r|) 
-  t = 5.408326913 / 7.211102551
-  t = 0.75
-  
- (1-t) = |q-r| / (|r-p| + |q-r|) 
- (1-t) = 1.802775638 / 7.211102551
- (1-t) = 0.25
+ p <- c(2,4)
+ r <- c(6.5,7)
+ q <-c(8,8)
+ getMy.CombineTwoPoints(p,q,r) # t = 0.75, (1-t) = 0.25
 ----
 
 ----
@@ -757,15 +769,10 @@ Dot Product
   - are they the same vector
   - are they perpendicular 
   - what angle to they form
- 
- |v - w|^2 = |v|^2 + |w|^2
- (v1 - w1)^2 + (v2 - w2)^2 = (v1^2 + v2^2) + (w1^2 + w2^2)
-  -binomial expansion
- (v1^2 - 2*v1*w1 + w1^2)+(v2^2 - 2*v2*w2 +w2^2) = (v1^2 + v2^2) + (w1^2 + w2^2)
- (v1^2 - 2*v1*w1 + w1^2)+(v2^2 - 2*v2*w2 +w2^2) - (v1^2 + v2^2) - (w1^2 + w2^2) = 0
-  v1^2 - 2*v1*w1 + w1^2 + v2^2 - 2*v2*w2 +w2^2  + -v1^2 +  -v2^2 + -w1^2 + -w2^2 = 0
-   (v1*w1) + (v2*w2) = 0
-      v * w = 0
+ - in R there is already an op for this (%*%)
+ u <- c(2,2)
+ v <- c(0,3)
+ uDotV <- u %*% v # uDotV[1,1] = 6
  
  - is then used to define the cosine of two vectors
         w   
@@ -776,34 +783,37 @@ Dot Product
    /   .
   /    .
  /)____.___> v
- -solve for the angle by
-  cosθ = v*w / |v|*|w|
+ -solve for the angle (cosθ = v*w / |v|*|w|)
+ getMy.CosTwoVectors <- function(a,b){
+    (a %*% b) / (getMy.EuclideanNorm(a) %*% getMy.EuclideanNorm(b))
+ }
+ u <- c(-1,2)
+ v <- c(1,3)
+ myCosTheta <- getMy.CosTwoVectors(u,v) # 0.7071068
+ myAcosRadians <- acos(myCosTheta)
+ #R is in radians
+ myDegrees <- myAcosRadians * (180 / pi)
+ #eyeball it graphed, should look about right
+ mycoord <- mycoord <- getMy.CoordGraph(-2, 4)
+ mycoord <- getMy.DrawVector(mycoord, u, lnColor = "black", vectorLabel = "u")
+ mycoord <- getMy.DrawVector(mycoord, v, lnColor = "black", vectorLabel = "v")
 ----
 
 ----
 Orthogonal projection
- - the orthogonal project of w onto v is defined as
- 
-  u = ((v * w)/|v|^2) * v
- - using this the vector w can be decomposed into 
-   two perpendicular vectors
-  
-  u┴ = w - ((v * w)/|v|^2) * v
-----
-
-----
-Other vector rules
- - Cauchy-Schwartz inequality
- - used for the study of more genearl vector spaces
- (v * w)^2 <= |v|^2 * |w|^2
- 
- - triangle inequality
- |v + w| <= |v| + |w|
- 
- - barycentric coordinates 
-  - interpreting vector v as the diff 
-    between points q and p 
- v = q - p	
+ - the orthogonal project of w onto v is defined as (u = ((v * w)/|v|^2) * v)
+ getMy.OrthoProj <- function(v,w){
+    ((v %*% w)/getMy.EuclideanNorm(v)^2) * v
+ }
+ v <- c(-1,1)
+ w <- c(3,2)
+ u <- getMy.OrthoProj(v,w)
+ uUpsideDownT <- w - u
+ mycoord <- getMy.CoordGraph(-5,5)
+ mycoord <- getMy.DrawVector(mycoord, v, lnColor="black", vectorLabel="v")
+ mycoord <- getMy.DrawVector(mycoord, w, lnColor="black", vectorLabel="w")
+ mycoord <- getMy.DrawVector(mycoord, u, lnColor="lightblue", vectorLabel="u")
+ mycoord <- getMy.DrawVector(mycoord, uUpsideDownT, lnColor = "lightblue", vectorLabel = "u┴")
 ----
 
 ----
@@ -819,10 +829,31 @@ Lines defined
   - explicit
   
  - Parametric equation of a line
-  l(t) = (1 - t)p + tq 
+  l(t) = p + tq
+  l(t) = (p1, p2) + t(q1,q2)
   - this form is a.k.a. linear interpolation
   - can be used to find points on a line 
     given two points (q and p)
+  #see functions defined above in "R Graphix"    
+  mycoord <- getMy.CoordGraph(-2, 5)
+  myP <- c(-1,1)
+  myQ <- c(2,3)
+  sumPandQ <- myP + myQ
+  mycoord <- getMy.DrawVector(mycoord, myP, lnColor = "black", vectorLabel = "p")
+  mycoord <- getMy.DrawVector(mycoord, myQ, lnColor = "black", vectorLabel = "q")
+  mycoord <- getMy.DrawVector(mycoord, sumPandQ, lnColor = "lightblue", vectorLabel = "p + q")
+  #this is the line as just a segment, its parallel to q
+  mycoord <- getMy.DrawSegment(mycoord, myP, sumPandQ)
+  
+  #so q is the rise/run (slope)
+  mySlope <- myQ[2]/myQ[1]
+
+  #can see that from p[2] + slope is where dashed line would cross y axis
+  myIntercept = myP[2] + mySlope
+  myLine <- function(x) mySlope*x + myIntercept
+  myX <- seq(-2,5)
+  myY <- sapply(myX, myLine)
+  mycoord <- getMy.DrawLine(mycoord, myX, myY)
   
  - Implicit equation of a line
   a*x1 + b*x2 + c = 0
@@ -854,6 +885,7 @@ Lines defined
   x2 = ~a * x1 + ~b
   - where  ~a is -a/b and ~b = -c/b
   - this the classic form with intercept and slope
+  - also known as Cartesian Equation
   - ~a is the slope (rise/run) 
    - slope is formally defined as tan(θ)
    - problem with explicit form is flat lines
@@ -871,19 +903,26 @@ Lines defined
 ----
 Line Equation conversion
  - Parametric to Implicit
- l: l(t) = p + tv        parametric
- l: a*x1 + bx2 + c = 0   implicit
-   a = [-v2, v1]
+  l(t) = p + tq        parametric
+  a*x1 + bx2 + c = 0   implicit
+   a = [-q2, q1]
    c = -(a1*p1 + a2*p2)
    
  - Implicit to Parametric 
- l: a*x1 + bx2 + c = 0   implicit
- l: l(t) = p + tv        parametric
-   v = [b, -a]
+  a*x1 + bx2 + c = 0   implicit
+  l(t) = p + tq        parametric
+   q = [b, -a]
    p = [-c/a,0] -or- [0,-c/b]
       choose by whichever is greatest
 	   abs(a) > abs(b), choose [-c/a,0]
 	   abs(a) < abs(b), choose [0,-c/b]
+ 
+ - Explicit to Parametric
+  x2 = a*x1 + b
+  x = (x1, x2)
+    = (x1, a*x1 + b)
+    = (0,b)+(x1,a*x1)
+    = (0,b)+ x1*(1,a)
 ----
 
 ----
@@ -1010,20 +1049,6 @@ Both Implicit Solve for intersect
   #the text gives no explaination for 
   # how we arrive at these values
   - intersect x = [2,4]
-----
-
-----
-Convert degrees to radians
- - R only works in radians, not degrees
- - Circumference = 2*pi*r 
-    where r is radius
- - want to work as r = 1
-   C = 2 *pi, which is 360 degrees
- - so 180 degrees is just pi
- - conversion is thus where (a)
-   is degrees
-   
-   (a / 1) * (pi / 180)
 ----
 
 ----
