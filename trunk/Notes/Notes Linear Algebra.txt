@@ -365,6 +365,10 @@ My R Functions
  library(ggplot2)
  # used throughtout these notes
  # placed together here to allow for cut\paste in CLI
+ 
+ getMy.Convert.Radians2Degrees <- function(a) a * 180/pi
+ getMy.Convert.Degrees2Radians <- function(a) (a / 1) * (pi / 180)
+ 
  getMy.Draw.CoordGraph <- function(min, max){
      myX <- seq(min,max)
      myY <- seq(min,max)
@@ -428,6 +432,12 @@ My R Functions
      coordPlot <- coordPlot + geom_path(mapping = aes(x, y), data = d, 
         colour=lnColor, arrow = arrow(ends="both"))
      return(coordPlot)
+ }
+ 
+ getMy.Draw.Triangle <- function(mycoord, a1, a2, a3, fillColor = "lightblue"){
+   d <- data.frame(x=c(a1[1],a2[1],a3[1]), y=c(a1[2],a2[2],a3[2]), t=c("a","a","a"))
+   mycoord <- mycoord + geom_polygon(data = d, mapping = aes(x = x, y = y, group = t), fill = fillColor)
+   return(mycoord)
  }
  
  getMy.Vector.EuclideanNorm <- function(v){
@@ -535,7 +545,7 @@ My R Functions
      return(d)
  }
  
- getMy.Line.Closest.Point.FromVectors <- function(p, v , r){
+ getMy.Line.Closest.Point.FromVectors <- function(p, v, r){
      #want to express as explicit fx 
      myCoeffs = getMy.Line.Explicit.Coeffs.FromVectors(p,v)
     
@@ -549,21 +559,88 @@ My R Functions
  #https://www.youtube.com/watch?v=YbHOzJIHS1k
  getMy.Line.Closest.Point.FromExplict <- function(slope, intercept, r){
      recipCoeffs <- getMy.Line.Reciprocal.Explicit.Coeffs.FromExplicit(slope, intercept, r)
-    
      recipSlope <- recipCoeffs$slope
      recipIntercept <- recipCoeffs$intercept
-    
+     intersectPt <- getMy.Line.Intersects.FromExplicit(slope, intercept, recipSlope, recipIntercept)
+     return(intersectPt)
+ }
+ 
+ getMy.Line.Intersects.FromVectors <- function(p,v, pTick, vTick){
+    oneCoeffs = getMy.Line.Explicit.Coeffs.FromVectors(p,v)
+    twoCoeffs = getMy.Line.Explicit.Coeffs.FromVectors(pTick,vTick)
+    slope = oneCoeffs$slope
+    intercept = oneCoeffs$intercept
+    slopeTick = twoCoeffs$slope
+    interceptTick = twoCoeffs$intercept
+    intersectPt <- getMy.Line.Intersects.FromExplicit(slope, intercept, slopeTick, interceptTick)
+    return(intersectPt)
+ }
+
+ getMy.Line.Intersects.FromExplicit <- function(slope, intercept, slopeTick, interceptTick){
      #solve for the point where they cross
      #mx + b = m`x + b`
      #mx = m`x + b`- b
      #mx - m`x = b`- b
      #x(m - m`) = b`- b
      #x = (b`- b)/(m - m`)
-     interceptX <- (recipIntercept - intercept)/(slope - recipSlope)
+     interceptX <- (interceptTick - intercept)/(slope - slopeTick)
     
      #plug that point back into either
      interceptY <- slope*interceptX + intercept
-     return(c(interceptX,interceptY))
+     return(c(interceptX, interceptY))
+ }
+ 
+ getMy.Convert.Degrees2Rotation <- function(a){
+     aRad <- getMy.Convert.Degrees2Radians(a)
+     myRotation <- matrix(c(cos(aRad),sin(aRad),-1*sin(aRad),cos(aRad)),ncol=2)
+     return(myRotation)
+ }
+ 
+ getMy.Vector.Rotation <- function(v, angle){
+     myR <- getMy.Convert.Degrees2Rotation(angle)
+     vTick <- myR %*% v 
+     return(vTick)
+ }
+ 
+ getMy.Vector.Shear <- function(v){
+     vMatrix <- matrix(c(1,(-1*v[2]/v[1]),0,1), ncol=2)
+     vTick = vMatrix %*% v
+     return(vTick)
+ }
+ 
+ getMy.Vector.Projection.FromDegrees <- function(v,angle){
+     ui <- getMy.Convert.Degrees2Radians(angle)
+     u <- matrix(c(ui, ui),ncol=1)
+     #defines projection matrix
+     A <- u %*% t(u)
+     vTick <- A %*% v
+     return(vTick)
+ }
+ 
+ getMy.Vector.LinearArea <- function(a1, a2){
+   T1 = 1/2*a1[1]*a2[1]
+   T2 = 1/2*(a1[1] - a1[2])*(a2[2]-a2[1])
+   T3 = 1/2*a1[2]*a2[2]
+   
+   T0 = a1[1] * a2[2] - T1 - T2 - T3 
+   myMap <- data.frame(T1= abs(T1), T2= abs(T2), T3= abs(T3), T0 = abs(T0))
+   return(myMap)
+ }
+ 
+ getMy.Vector.LinearAreaBox<- function(u,v, origin = c(0,0)){
+   topRight <- c(max(c(u[1],v[1],origin[1])), max(c(u[2],v[2],origin[2])))
+   bottomLeft <- c(min(c(u[1],v[1],origin[1])), min(c(u[2],v[2],origin[2])))
+   topLeft <- c(bottomLeft[1],topRight[2])
+   bottomRight <- c(topRight[1], bottomLeft[2])
+   
+   d <- data.frame(bottomLeft,bottomRight,topLeft,topRight)
+   return(d)
+ }
+ 
+ #Sketch 6.1, Practical Linear Algebra, 3rd Edition
+ getMy.Vector.AffineMap <- function(x,a1,a2,p = c(0,0),origin = c(0,0)){
+    A <- matrix(c(a1,a2),ncol=2)
+    xTick <- p + A %*% (x - origin)
  }
  
 ---- 
@@ -840,6 +917,7 @@ Linear Combination
     #to have the bisect vector end right on the parallelogram line, take the sum times 1/2
     mycoord <- getMy.Draw.Segment(mycoord, myvectorY, myvectorX)
     mycoord <- getMy.Draw.Vector(mycoord, myVectorSum * 0.5, lnColor = "coral", vectorLabel = "1/2*(x+y)")
+    mycoord
 
    - componentwise subtraction is drawing a line from the 
      tip of one vector to the other then projecting that
@@ -951,8 +1029,11 @@ Dot Product
 
 ----
 Orthogonal projection
- - the orthogonal project of w onto v is defined as (u = ((v * w)/|v|^2) * v)
-
+ - "orthogonal": of or involving right angles
+ - the orthogonal projection of w onto v is defined as (u = ((v * w)/|v|^2) * v)
+ - this is used alot graphically to project 3D images onto 2D
+  - its alot like High School art classes "vanishing point", only mathematical
+  
  v <- c(-1,1)
  w <- c(3,2)
  u <- getMy.Vector.OrthoProj(v,w)
@@ -962,6 +1043,8 @@ Orthogonal projection
  mycoord <- getMy.Draw.Vector(mycoord, w, lnColor="black", vectorLabel="w")
  mycoord <- getMy.Draw.Vector(mycoord, u, lnColor="lightblue", vectorLabel="u")
  mycoord <- getMy.Draw.Vector(mycoord, uUpsideDownT, lnColor = "lightblue", vectorLabel = "u┴")
+ # the u┴ is at 90 degrees from v
+ getMy.Vector.Angle(v,uUpsideDownT)
 ----
 
 ----
@@ -991,10 +1074,8 @@ Lines defined
   mycoord <- getMy.Draw.Vector(mycoord, sumPandQ, lnColor = "lightblue", vectorLabel = "p + q")
   #this is the line as just a segment, its parallel to q
   mycoord <- getMy.Draw.Segment(mycoord, myP, sumPandQ)
-  
   #so q is the rise/run (slope)
   mySlope <- myQ[2]/myQ[1]
-
   #can see that from p[2] + slope is where dashed line would cross y axis
   myIntercept = myP[2] + mySlope
   myLine <- function(x) mySlope*x + myIntercept
@@ -1117,14 +1198,11 @@ Foot of a given point
   mycoord <- getMy.Draw.Line(mycoord, middleRiseRecipXvals, middleRiseRecipYvals, "#63FF6B")
   crossPt <- getMy.Line.Closest.Point.FromVectors(middleRiseP,middleRiseQ,middleRiseR)
   mycoord <- getMy.Draw.Point(mycoord,crossPt,"#FF1418")
-----
-
-----
-Line intersect points
- - calc form for:
-  - parametric & implicit
-  - both implicit
-  - both parametric
+  
+  implicitCoeffs <- getMy.Line.Implicit.Coeffs.FromVectors(middleRiseP, middleRiseQ)
+  #these will equal
+  calcDist <- getMy.Vector.EuclideanNorm(crossPt - middleRiseR)
+  actualDist <- getMy.Line.Distance.Point.FromImplicit(implicitCoeffs$a,implicitCoeffs$b,implicitCoeffs$c,middleRiseR)
 ----
 
 ----
@@ -1134,6 +1212,8 @@ Parametric & Implicit Solve for intersect
  
  - find the parameter (t) with respect 
    to line_1
+ - vLen is short-hand for getMy.Vector.EuclideanNorm
+  vLen <- function(x) getMy.Vector.EuclideanNorm(x)
  - plug-in line1 into line2
   a * [p1 + t * v1] + b * [p2 + t * v2] + c = 0
  - solve for t
@@ -1164,45 +1244,6 @@ Parametric & Implicit Solve for intersect
   
   #use t to solve line_1
   myIntersect <- p + t * v # [2,4]
-----
-
-----
-Both Parametric Solve for intersect 
- line_1: l1(t) = p + t * v
- line_2: l2(t) = q + s * w
- 
- - need to solve so that
-  p + t * v = q + s * w
-  - rewritten as
-   t*v - s*w = q - p
-  
- - example:
-  line_1: l1(t) = [0,3] + t * [-2,-1]
-  line_2: l2(t) = [4,0] + s * [-1, 2]
-  
-  p <- c(0,3)
-  v <- c(-2,-1)
-  q <- c(4,0)
-  w <- c(-1,2)
- 
-  #the text gives no explaination for 
-  # how we arrive at these values
-  t <- -1
-  s <- 2
-----
-
-----
-Both Implicit Solve for intersect 
- line_1: a0*x1 + b0*x2 + c0 = 0
- line_2: a1*x1 + b1*x2 + c1 = 0
- 
- - example
- line_1: 1 * x1 - 2 * x2 + 6 = 0
- line_2: 2 * x1 + 1 * x2 - 8 = 0
- 
-  #the text gives no explaination for 
-  # how we arrive at these values
-  - intersect x = [2,4]
 ----
 
 ----
@@ -1257,38 +1298,55 @@ Matrix Laws & Names
 Reflection 
  - is like flipping & rotating on an axis
   -example
+   # flipped along x-axis 
    myR <- matrix(c(1,0,0,-1), ncol=2)
    v <- c(2,4)
-   myR %*% v # [2,-4], flipped along x-axis 
-           # when c(2,4) is thought of as 
-	       # x = 2, y = 4
-   myR <- matrix(c(0,1,1,0), ncol=2)
-   myR %*% v # [4,2], x & y swapped places
+   vTick <- myR %*% v 
+   mycoord <- getMy.Draw.CoordGraph(-5, 5)
+   mycoord <- getMy.Draw.Vector(mycoord, v, "red")
+   mycoord <- getMy.Draw.Vector(mycoord, vTick, "blue", "flipped at x-axis")
    
+   myR <- matrix(c(0,1,1,0), ncol=2)
+   vTick <- myR %*% v # [4,2], x & y swapped places
+   mycoord <- getMy.Draw.CoordGraph(-5, 5)
+   mycoord <- getMy.Draw.Vector(mycoord, v, "red")
+   mycoord <- getMy.Draw.Vector(mycoord, vTick, "blue", "swapped")
+   
+   #opposite direction
    myR <- matrix(c(-1,0,0,-1), ncol=2)
-   myR %*% v # [-2,-4] 180 rotation
+   vTick <- myR %*% v 
+   mycoord <- getMy.Draw.CoordGraph(-5, 5)
+   mycoord <- getMy.Draw.Vector(mycoord, v, "red")
+   mycoord <- getMy.Draw.Vector(mycoord, vTick, "blue", "did a 180, knarly!")
    
  - rotation matrix is given as where (a)
    is the desired angle of rotation
-  
-  R = [ [cos(a), -sin(a)],
-        [sin(a), cos(a) ] ]
-  
-  a <- degrees2Radians(45)
-  myR <- matrix(c(cos(a),sin(a),-1*sin(a),cos(a)),ncol=2)
+      .-             -.   .- -.
+  R = | cos(a) -sin(a)| * |v1 |
+      | sin(a)  cos(a)|   |v2 |
+      `-             -'   `- -'
+   mycoord <- getMy.Draw.CoordGraph(-5, 5)
+   mycoord <- getMy.Draw.Vector(mycoord, v, "red")
+   for(i in seq(47,180,15)){
+      vTick <- getMy.Vector.Rotation(v,i)
+      myAngle <- sprintf("(%s°)",i)
+      mycoord <- getMy.Draw.Vector(mycoord, vTick, "blue", myAngle)
+   }
 ----
 
 ----
 Shears
  - tilt like how italic fonts look to regular
- 
- v' = [ [   1,   0],  * [v1,  = [v1,
-        [-v2/v1, 1] ]    v2]     0]
-		
+     .-       -.   .- -.
+ v'= |     1  0| * |v1 |
+     |-v2/v1  1|   |v2 |
+	 `-       -'   `- -'
  - example
  v <- c(2,5)
- vMatrix <- matrix(c(1,(-1*v[2]/v[1]),0,1), ncol=2)
- vTick = vMatrix %*% v # 2,0
+ mycoord <- getMy.Draw.CoordGraph(-5, 5)
+ mycoord <- getMy.Draw.Vector(mycoord, v, "red")
+ vTick = getMy.Vector.Shear(v)
+ mycoord <- getMy.Draw.Vector(mycoord, vTick, "blue")
 ----
 
 ----
@@ -1301,23 +1359,21 @@ Projections
  - otherwise known as an oblique projection
  
  - example
-  # a 45 degree rotation
-  ui <- 1/sqrt(2)
-  u <- matrix(c(ui, ui),ncol=1)
-  #defines projection matrix
-  A <- u %*% t(u)
-  
   #projection of v by 45 degrees
   v <- c(1,2)
-  vTick <- A %*% v #1.5, 1.5
+  vTick <- getMy.Vector.Projection.FromDegrees(v,45)
+  mycoord <- getMy.Draw.CoordGraph(-1, 5)
+  mycoord <- getMy.Draw.Vector(mycoord, v, "red")
+  mycoord <- getMy.Draw.Vector(mycoord, vTick, "blue")
 ----
 
 ----
 Linear Maps and Area
  - getting the area given two vectors
-  a1 = [2,4]
-  a2 = [6,3]
-  
+      .-   -.
+  a = | 2 4 |
+      | 6 3 |
+      `-   -' 
    |____________(a1)_________________________
  4-|             7_______            T2      |
    |            /        ---______           |
@@ -1340,10 +1396,27 @@ Linear Maps and Area
    T1 = 1/2*a[1,1]*a[2,1]
    T2 = 1/2*(a[1,1] - a[1,2])*(a[2,2]-a[2,1])
    T3 = 1/2*a[1,2]*a[2,2]
-   
    T = a[1,1] *a[2,2] - T1 - T2 - T3
   
   - determinant is given a 2*T
+  
+  a1 <- c(2,4) 
+  a2 <- c(6,3)
+  myArea <- getMy.Vector.LinearArea(a1,a2)
+  mapPoints <- getMy.Vector.LinearAreaPoints(a1,a2)
+  mycoord <- getMy.Draw.CoordGraph(-1, 7)
+  mycoord <- getMy.Draw.Vector(mycoord, a1)
+  mycoord <- getMy.Draw.Vector(mycoord, a2)
+  mycoord <- getMy.Draw.Segment(mycoord, a1,a2)
+  mycoord <- getMy.Draw.Segment(mycoord, mapPoints$bottomLeft, mapPoints$bottomRight, "red")
+  mycoord <- getMy.Draw.Segment(mycoord, mapPoints$bottomRight, mapPoints$topRight, "red")
+  mycoord <- getMy.Draw.Segment(mycoord, mapPoints$bottomLeft, mapPoints$topLeft, "red")
+  mycoord <- getMy.Draw.Segment(mycoord, mapPoints$topLeft, mapPoints$topRight, "red")
+  mycoord <- mycoord + annotate("text", x=2.5, y=0.5, label=sprintf("T1=%s",myArea$T1))
+  mycoord <- mycoord + annotate("text", x=0.5, y=3, label=sprintf("T3=%s",myArea$T3))
+  mycoord <- mycoord + annotate("text", x=4.5, y=3.67, label=sprintf("T2=%s",myArea$T2))
+  mycoord <- mycoord + annotate("text", x=2.5, y=2.25, label=sprintf("T0=%s",myArea$T0))
+  mycoord
 ----
 
 ----
@@ -1358,8 +1431,10 @@ Linear System (2X2)
   2*u1 + 4*u2 = 4
     u1 + 6*u2 = 4
 	-as-
-  [ 2 4   [u1    [4
-    1,6 ]* u2] =  4]
+  .-   -.   .- -.   .--.
+  | 2 4 |   |u1 |   |4 |
+  | 1,6 | * |u2 | = |4 |
+  '-   -'   `- -'   `--'
  
   - the possiable solutions is named
     solution space
@@ -1403,9 +1478,10 @@ Gauss Elimination
  
  - get a[2,1] to zero can be done using a Shear, defined as
   - re-write into column form so Algebraically looks like
-               [a[1,1]        [a[1,2]             [b[1,1]
-   shearA*(u1 * a[2,1]] + u2 * a[2,2]] ) = shearA* b[2,1]]
-   
+                .-    -.        .-    -.              .-    -.
+                |a[1,1]|        |a[1,2]|              |b[1,1]|
+   shearA*(u1 * |a[2,1]| + u2 * |a[2,2]| ) = shearA * |b[2,1]|
+                `-    -'        `-    -'              `-    -'
    a <- matrix(c(2,1,4,6),ncol=2)
    
    #break matrix a into two columns
@@ -1433,8 +1509,10 @@ Gauss Elimination
 Pivoting
  - idea or rearranging the linear solution so a shear may 
    be calc'ed and thereby back sub.
- [0 1    [u1    [1
-  1 0] *  u2] =  1]
+ .-   -.   .-  -.   .- -.
+ | 0 1 |   | u1 |   | 1 |
+ | 1 0 | * | u2 | = | 1 |
+ `-   -'   `-  -'   `- -'
   - a[1,1] is zero and we can't divide by zero
   - as eq's they would look like
   0*u1 + 1*u2 = 1
@@ -1443,22 +1521,27 @@ Pivoting
   1*u1 + 0*u2 = 1
   0*u1 + 1*u2 = 1
   - and convert back to linear system
- [1 0    [u1    [1
-  0 1] *  u2] =  1]
-  
+ .-   -.   .-  -.   .- -.
+ | 1 0 |   | u1 |   | 1 |
+ | 0 1 | * | u2 | = | 1 |
+ `-   -'   `-  -'   `- -'  
  - there is likewise ability to perform 
    column pivoting
- [0 1/2    [u1    [0
-  0  0 ] *  u2] =  0]
-  -to-
+ .-     -.   .-  -.   .- -.
+ | 0 1/2 |   | u1 |   | 0 |
+ | 0   0 | * | u2 | = | 0 |
+ `-     -'   `-  -'   `- -'
+  - to
   0*u1 + 1/2*u2 = 0
-  0*u1 +  0*u2  = 0
-  -flipped as
+  0*u1 +   0*u2  = 0
+  - flipped as
  1/2*u2 + 0*u1 = 0
-  0*u2  + 0*u1 = 0
+   0*u2  + 0*u1 = 0
   -back to linear system
- [1/2 0    [u2    [0
-   0  0] *  u1] =  0]
+ .-     -.   .-  -.   .- -.
+ | 1/2 0 |   | u2 |   | 0 |
+ | 0   0 | * | u1 | = | 0 |
+ `-     -'   `-  -'   `- -'
 ----
    
 ----
@@ -1522,7 +1605,8 @@ Affine maps
   x' = p + A*(x - o)
   
  - Translation, as a affine map is written 
-   as  x' = p + I*x
+   as  
+  x' = p + I*x
 ----
 
 ----
@@ -1532,7 +1616,7 @@ General Affine maps
   x' = A*(x - r) + r
   
   -example
-  A <- getRotationMatrix(90)
+  A <- getMy.Convert.Degrees2Rotation(90)
   r <- c(2,1)
   x <- c(3,0)
   
