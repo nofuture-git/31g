@@ -361,6 +361,214 @@ R Builtins
 ----
 
 ----
+My R Functions
+ library(ggplot2)
+ # used throughtout these notes
+ # placed together here to allow for cut\paste in CLI
+ getMy.Draw.CoordGraph <- function(min, max){
+     myX <- seq(min,max)
+     myY <- seq(min,max)
+     mydataframe <- data.frame(myX, myY)
+     
+     #setting shape makes it a blank coord-plane (will print a warning msg, just ignore)
+     myplot <- ggplot(mydataframe, aes(x = myX, y = myY)) + geom_point(shape=NA)
+     
+     #add the "0" to the lower-left 
+     myplot <- myplot + annotate("text", x=-0.20, y=-0.5, label="0")
+     
+     #draw the x and y axis 
+     myplot <- myplot + geom_vline(xintercept = 0)
+     myplot <- myplot + geom_hline(yintercept = 0)
+     return(myplot)
+ }
+ 
+ getMy.Draw.Point <- function(coordPlot, p, ptColor = "black", pointLabel = ""){
+    xCoord <- p[1]
+    yCoord <- p[2]
+    
+    d <- data.frame(x = xCoord, y = yCoord, ptColor = ptColor)
+    coordPlot <- coordPlot + geom_point(aes(x,y), data = d, colour=ptColor)
+    if(pointLabel == "") pointLabel = sprintf("(%s,%s)",xCoord, yCoord)
+    coordPlot <- coordPlot + annotate("text", x=xCoord-0.43, y=yCoord-0.43, label=pointLabel)
+    return(coordPlot)
+ }
+ 
+ getMy.Draw.Vector.NonOrigin <- function(coordPlot, myOrign, myVector, lnColor = "black", vectorLabel = "") {
+     xCoord <- myVector[1]
+     yCoord <- myVector[2]
+     xOrigin <- myOrign[1]
+     yOrigin <- myOrign[2]
+     d <- data.frame(x1 = xOrigin, y1 = yOrigin, x2 = xCoord, y2 = yCoord, lnColor = lnColor)
+     myStdArrow <- arrow(length = unit(0.03, "npc"))
+     coordPlot <- coordPlot + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), 
+         data = d, arrow = myStdArrow, size = 1, colour=lnColor)
+     if(vectorLabel == "") vectorLabel = sprintf("(%s,%s)",xCoord, yCoord)
+     coordPlot <- coordPlot + annotate("text", x=xCoord-0.43, y=yCoord-0.43, label=vectorLabel)
+     return(coordPlot)
+ }
+ 
+ getMy.Draw.Vector <- function(coordPlot, myVector, lnColor = "black", vectorLabel = "") {
+     coordPlot <- getMy.Draw.Vector.NonOrigin(coordPlot, c(0,0), myVector, lnColor, vectorLabel)
+     return(coordPlot)
+ }
+ 
+ getMy.Draw.Segment <- function(coordPlot, startVector, endVector, lnColor="plum"){
+     xStart = startVector[1]
+     yStart = startVector[2]
+     xEnd = endVector[1]
+     yEnd = endVector[2]
+     d <- data.frame(x1 = xStart, y1 = yStart, x2 = xEnd, y2 = yEnd, lnColor = lnColor)
+     coordPlot <- coordPlot + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), 
+         data = d, size = 1, colour=lnColor, linetype="dashed")
+     return(coordPlot)
+ }
+ 
+ getMy.Draw.Line <- function(coordPlot, xPoints, yPoints, lnColor="black"){
+     d <- data.frame(x = xPoints, y = yPoints)
+     coordPlot <- coordPlot + geom_path(mapping = aes(x, y), data = d, 
+        colour=lnColor, arrow = arrow(ends="both"))
+     return(coordPlot)
+ }
+ 
+ getMy.Vector.EuclideanNorm <- function(v){
+     sqrt(v[1]^2 + v[2]^2)
+ }
+  
+ getMy.Vector.Normalized <- function(v){
+     v / getMy.Vector.EuclideanNorm(v)
+ }
+ getMy.Vector.Distance <- function(q,p){
+     getMy.Vector.EuclideanNorm(q-p)
+ }
+ 
+ getMy.Vector.CosTheta <- function(a,b){
+     (a %*% b) / (getMy.Vector.EuclideanNorm(a) %*% getMy.Vector.EuclideanNorm(b))
+ }
+ 
+ getMy.Vector.Angle <- function(u, v){
+     myCosTheta <- getMy.Vector.CosTheta(u,v)
+     myAcosRadians <- acos(myCosTheta)
+     #R is in radians
+     myDegrees <- myAcosRadians * (180 / pi)
+     return(myDegrees)
+ }
+ 
+ getMy.Vector.OrthoProj <- function(v,w){
+     ((v %*% w)/getMy.Vector.EuclideanNorm(v)^2) * v
+ }
+ 
+ getMy.Line.Implicit.Coeffs.FromVectors <- function(p,q){
+     v <- q - p
+     ab <- t(c(-1*v[2], v[1]))
+     a <- ab[1,1]
+     b <- ab[1,2]
+     c <- -1 * a * p[1] - b * p[2]
+     return(data.frame(a,b,c))
+ }
+  
+ getMy.Line.Explicit.Coeffs.FromVectors <- function(p,q){
+     myImpVars <- getMy.Line.Implicit.Coeffs.FromVectors(p,q)
+     a <- myImpVars$a
+     b <- myImpVars$b
+     c <- myImpVars$c
+     myCoeffs <- getMy.Line.Explicit.Coeffs.FromImplicit(a,b,c)
+     return(myCoeffs)
+ }
+  
+ getMy.Line.Explicit.Coeffs.FromImplicit <- function(a,b,c){
+     aTilde <- (-1 * a)/b
+     bTilde <- (-1 * c)/b
+     return(data.frame(slope=aTilde, intercept=bTilde))
+ }
+  
+ getMy.Line.Reciprocal.Explicit.Coeffs.FromImplicit <- function(a,b,c,r){
+     myCoeffs = getMy.Line.Explicit.Coeffs.FromImplicit(a,b,c)
+     slope <- myCoeffs$slope
+     intercept <-myCoeffs$intercept
+     recipCoeffs <- getMy.Line.Reciprocal.Explicit.Coeffs.FromExplicit(slope, intercept,r)
+     return(recipCoeffs) 
+ }
+ 
+ getMy.Line.Reciprocal.Explicit.Coeffs.FromVectors <- function(p,q,r){
+     myCoeffs = getMy.Line.Explicit.Coeffs.FromVectors(p,q)
+     slope <- myCoeffs$slope
+     intercept <-myCoeffs$intercept
+    
+     #get the perpendicular line 
+     recipCoeffs <- getMy.Line.Reciprocal.Explicit.Coeffs.FromExplicit(slope, intercept, r)
+     return(recipCoeffs)
+ } 
+ 
+ getMy.Line.Reciprocal.Explicit.Coeffs.FromExplicit <- function(slope, intercept, r){
+     recipSlope <- -1*(1/slope)
+     recipIntercept <- r[2]-recipSlope*r[1]
+     return(data.frame(slope=recipSlope, intercept=recipIntercept))
+ }
+  
+ getMy.Line.Explicit.Fx.FromImplicit <- function(a,b,c){
+     myCoeffs <- getMy.Line.Explicit.Coeffs.FromImplicit(a,b,c)
+     myExpLn <- function(x) myCoeffs$slope*x + myCoeffs$intercept
+     return(myExpLn)
+ }
+  
+ getMy.Line.Explicit.Fx.FromVectors <- function(p,q){
+     myImpVars <- getMy.Line.Implicit.Coeffs.FromVectors(p,q)
+     a <- myImpVars$a
+     b <- myImpVars$b
+     c <- myImpVars$c
+     myExpLn <- getMy.Line.Explicit.Fx.FromImplicit(a,b,c)
+     return(myExpLn)
+ }
+
+ getMy.Line.Distance.Point.FromVectors <- function(p,q,r){
+     #get implicit vars
+     myImpVars <- getMy.Line.Implicit.Coeffs.FromVectors(p, q)
+     a <- myImpVars$a
+     b <- myImpVars$b
+     c <- myImpVars$c
+     d <- getMy.Line.Distance.Point.FromImplicit(a,b,c,r)
+     return(d)
+ }
+ 
+ getMy.Line.Distance.Point.FromImplicit <- function(a,b,c,r){
+     d <- abs(a*r[1] + b*r[2] + c) / sqrt(a^2 + b^2)
+     return(d)
+ }
+ 
+ getMy.Line.Closest.Point.FromVectors <- function(p, v , r){
+     #want to express as explicit fx 
+     myCoeffs = getMy.Line.Explicit.Coeffs.FromVectors(p,v)
+    
+     #get the line coeffs
+     slope <- myCoeffs$slope
+     intercept <-myCoeffs$intercept
+     closetPt <- getMy.Line.Closest.Point.FromExplict(slope, intercept, r)
+     return(closetPt)
+ }
+
+ #https://www.youtube.com/watch?v=YbHOzJIHS1k
+ getMy.Line.Closest.Point.FromExplict <- function(slope, intercept, r){
+     recipCoeffs <- getMy.Line.Reciprocal.Explicit.Coeffs.FromExplicit(slope, intercept, r)
+    
+     recipSlope <- recipCoeffs$slope
+     recipIntercept <- recipCoeffs$intercept
+    
+     #solve for the point where they cross
+     #mx + b = m`x + b`
+     #mx = m`x + b`- b
+     #mx - m`x = b`- b
+     #x(m - m`) = b`- b
+     #x = (b`- b)/(m - m`)
+     interceptX <- (recipIntercept - intercept)/(slope - recipSlope)
+    
+     #plug that point back into either
+     interceptY <- slope*interceptX + intercept
+     return(c(interceptX,interceptY))
+ }
+ 
+---- 
+
+----
 R Graphix
  x <- c(1,3,4,5,8)
  y <- c(2,4,7,3,9)
@@ -423,60 +631,13 @@ R Graphix
  ggplot(mydataframe, aes(x = myX, y = myY)) + geom_point(shape=21)
   
  - drawing classic empty graph
- getMy.CoordGraph <- function(min, max){
-     myX <- seq(min,max)
-     myY <- seq(min,max)
-     mydataframe <- data.frame(myX, myY)
-     
-     #setting shape makes it a blank coord-plane (will print a warning msg, just ignore)
-     myplot <- ggplot(mydataframe, aes(x = myX, y = myY)) + geom_point(shape=NA)
-     
-     #add the "0" to the lower-left 
-     myplot <- myplot + annotate("text", x=-0.20, y=-0.5, label="0")
-     
-     #draw the x and y axis 
-     myplot <- myplot + geom_vline(xintercept = 0)
-     myplot <- myplot + geom_hline(yintercept = 0)
-     return(myplot)
- }
- 
- getMy.DrawVector <- function(coordPlot, myVector, lnColor = "black", vectorLabel = "") {
-     xCoord <- myVector[1]
-     yCoord <- myVector[2]
-     d <- data.frame(x1 = 0, y1 = 0, x2 = xCoord, y2 = yCoord, lnColor = lnColor)
-     myStdArrow <- arrow(length = unit(0.03, "npc"))
-     coordPlot <- coordPlot + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), 
-         data = d, arrow = myStdArrow, size = 1, colour=lnColor)
-     if(vectorLabel == "") vectorLabel = sprintf("(%s,%s)",xCoord, yCoord)
-     coordPlot <- coordPlot + annotate("text", x=xCoord-0.43, y=yCoord-0.43, label=vectorLabel)
-     return(coordPlot)
- }
- 
- getMy.DrawSegment <- function(coordPlot, startVector, endVector, lnColor="plum"){
-    xStart = startVector[1]
-    yStart = startVector[2]
-    xEnd = endVector[1]
-    yEnd = endVector[2]
-    d <- data.frame(x1 = xStart, y1 = yStart, x2 = xEnd, y2 = yEnd, lnColor = lnColor)
-    coordPlot <- coordPlot + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), 
-         data = d, size = 1, colour=lnColor, linetype="dashed")
-    return(coordPlot)
- }
- 
- getMy.DrawLine <- function(coordPlot, xPoints, yPoints, lnColor="black"){
-    d <- data.frame(x = xPoints, y = yPoints)
-    coordPlot <- coordPlot + geom_path(mapping = aes(x, y), data = d, 
-       colour=lnColor, arrow = arrow(ends="both"))
-    return(coordPlot)
- }
- 
- mycoord <- getMy.CoordGraph(-2,10)
+ mycoord <- getMy.Draw.CoordGraph(-2,10)
  #draw the vector
- mycoord <- getMy.DrawVector(mycoord, c(1,4))
+ mycoord <- getMy.Draw.Vector(mycoord, c(1,4))
  
  #draw the dotted lines in which the vector encloses a triangle
- mycoord <- getMy.DrawSegment(mycoord, startVector = c(0,0), endVector = c(1,0))
- mycoord <- getMy.DrawSegment(mycoord, startVector = c(1,0), endVector = c(1,4))
+ mycoord <- getMy.Draw.Segment(mycoord, startVector = c(0,0), endVector = c(1,0))
+ mycoord <- getMy.Draw.Segment(mycoord, startVector = c(1,0), endVector = c(1,4))
  #enclose the vector triangle with a color
  d <- data.frame(x=c(0,1,1), y=c(0,0,4), t=c("a","a","a"))
  mycoord <- mycoord + geom_polygon(data = d, mapping = aes(x = x, y = y, group = t), fill = "lightblue")
@@ -564,6 +725,9 @@ Points & Vectors
     its container.
    - like the classic three dim graph from econ where
      we hold one dimension constant
+ - Set: mutable unordered collection of unique and immutable objects
+ - Relation: another name for a set of ordered pairs
+   - can create graphs of relations which are not functions
 ----
 
 ----
@@ -575,31 +739,24 @@ Vector Length
    hypotenuse of a right triangle
  - this is named the Euclidean norm 
  - in algebra, has the symbol like abs value |v| or ||v||
-  getMy.EuclideanNorm <- function(v){
-    sqrt(v[1]^2 + v[2]^2)
-  }
-  getMy.EuclideanNorm(c(8,12))
+
+  getMy.Vector.EuclideanNorm(c(8,12))
  - a normalized vector has a unit length of one
   - normalized vectors are also known as unit vectors
   - not every vector is a normalized one
  - to normalize a vector is divide each component by 
    Euclidean norm (W = v/|V|)
-  getMy.NormalizedVector <- function(v){
-    v / getMy.EuclideanNorm(v)
-  }
    
    - example, not a normalized vector
-  getMy.NormalizedVector(c(3,7)) #[1] 0.3939193 0.9191450
+  getMy.Vector.Normalized(c(3,7)) #[1] 0.3939193 0.9191450
    
   - example, a normalized vector
-  getMy.NormalizedVector(c(5, 0)) #[1] 1 0
+  getMy.Vector.Normalized(c(5, 0)) #[1] 1 0
    
  - the distance between two points is the
    Euclidean norm of the vector of the two points 
-  getMy.TwoPointsDist <- function(q,p){
-    getMy.EuclideanNorm(q-p)
-  }
-  getMy.TwoPointsDist(c(-1,2),c(1,0)) #[1] 2.828427
+
+  getMy.Vector.Distance(c(-1,2),c(1,0)) #[1] 2.828427
 ----
 
 ----
@@ -654,57 +811,54 @@ Linear Combination
   - in R^2 (i.e. 2D classic graph)
    - scalar multiplication do something in the 
      same direction, extend, shrink, reverse, etc.
-    #see functions defined above in "R Graphix"
     myvector <- c(1,4)   
-    mycoord <- getMy.CoordGraph(-5, 8)
-    mycoord <- getMy.DrawVector(mycoord, myvector*2, lnColor = "red", vectorLabel = "x*2")
-    mycoord <- getMy.DrawVector(mycoord, myvector, lnColor = "black", vectorLabel = "x")
-    mycoord <- getMy.DrawVector(mycoord, myvector*-1, lnColor = "lightblue", vectorLabel = "x*-1")
+    mycoord <- getMy.Draw.CoordGraph(-5, 8)
+    mycoord <- getMy.Draw.Vector(mycoord, myvector*2, lnColor = "red", vectorLabel = "x*2")
+    mycoord <- getMy.Draw.Vector(mycoord, myvector, lnColor = "black", vectorLabel = "x")
+    mycoord <- getMy.Draw.Vector(mycoord, myvector*-1, lnColor = "lightblue", vectorLabel = "x*-1")
     #times 2 just moves it out, twice as long, time -1 reverses it the other way
     mycoord
   
    - componentwise addition will find 
      the vector which bisects the space 
      between the two 
-    #see functions defined above in "R Graphix"
     myvectorY <- c(0.5,3)
     myvectorX <- c(3.2,1)
-    mycoord <- getMy.CoordGraph(-2, 8)
-    mycoord <- getMy.DrawVector(mycoord, myvectorY, lnColor = "black", vectorLabel = "y")
-    mycoord <- getMy.DrawVector(mycoord, myvectorX, lnColor = "black", vectorLabel = "x")
+    mycoord <- getMy.Draw.CoordGraph(-2, 8)
+    mycoord <- getMy.Draw.Vector(mycoord, myvectorY, lnColor = "black", vectorLabel = "y")
+    mycoord <- getMy.Draw.Vector(mycoord, myvectorX, lnColor = "black", vectorLabel = "x")
     #unlike subtraction the order here doesn't matter
     myVectorSum <- myvectorY + myvectorX
     #blue line lies between the left and right
-    mycoord <- getMy.DrawVector(mycoord, myVectorSum, lnColor = "lightblue", vectorLabel = "y + x")
+    mycoord <- getMy.Draw.Vector(mycoord, myVectorSum, lnColor = "lightblue", vectorLabel = "y + x")
     
     #the parallelogram is myvectorX starting at the tip of myvectorY
     # and likewise for myvectorY starting at the tip of myvectorX
-    mycoord <- getMy.DrawSegment(mycoord, myvectorY, myVectorSum)
-    mycoord <- getMy.DrawSegment(mycoord, myvectorX, myVectorSum)
+    mycoord <- getMy.Draw.Segment(mycoord, myvectorY, myVectorSum)
+    mycoord <- getMy.Draw.Segment(mycoord, myvectorX, myVectorSum)
     
     #to have the bisect vector end right on the parallelogram line, take the sum times 1/2
-    mycoord <- getMy.DrawSegment(mycoord, myvectorY, myvectorX)
-    mycoord <- getMy.DrawVector(mycoord, myVectorSum * 0.5, lnColor = "coral", vectorLabel = "1/2*(x+y)")
+    mycoord <- getMy.Draw.Segment(mycoord, myvectorY, myvectorX)
+    mycoord <- getMy.Draw.Vector(mycoord, myVectorSum * 0.5, lnColor = "coral", vectorLabel = "1/2*(x+y)")
 
    - componentwise subtraction is drawing a line from the 
      tip of one vector to the other then projecting that
      as its own vector from the origin
-    #see functions defined above in "R Graphix"
     myvectorY <- c(0.5,3)
     myvectorX <- c(3.2,1)
     myXminusY = myvectorX - myvectorY
     myYminusX = myvectorY - myvectorX
-    mycoord <- getMy.CoordGraph(-5, 5)
-    mycoord <- getMy.DrawVector(mycoord, myvectorY, lnColor = "black", vectorLabel = "y")
-    mycoord <- getMy.DrawVector(mycoord, myvectorX, lnColor = "black", vectorLabel = "x")
-    mycoord <- getMy.DrawVector(mycoord, myYminusX, lnColor = "lightblue", vectorLabel = "y-x")
-    mycoord <- getMy.DrawVector(mycoord, myXminusY, lnColor = "lightgreen", vectorLabel = "x-y")
+    mycoord <- getMy.Draw.CoordGraph(-5, 5)
+    mycoord <- getMy.Draw.Vector(mycoord, myvectorY, lnColor = "black", vectorLabel = "y")
+    mycoord <- getMy.Draw.Vector(mycoord, myvectorX, lnColor = "black", vectorLabel = "x")
+    mycoord <- getMy.Draw.Vector(mycoord, myYminusX, lnColor = "lightblue", vectorLabel = "y-x")
+    mycoord <- getMy.Draw.Vector(mycoord, myXminusY, lnColor = "lightgreen", vectorLabel = "x-y")
     
     #the line from tip of y to x is the same as the green vector
-    mycoord <- getMy.DrawSegment(mycoord, myvectorY, myvectorX)
+    mycoord <- getMy.Draw.Segment(mycoord, myvectorY, myvectorX)
 
     #the line from tip x to (x-y) is the same as y itself
-    mycoord <- getMy.DrawSegment(mycoord, myvectorX, myXminusY)
+    mycoord <- getMy.Draw.Segment(mycoord, myvectorX, myXminusY)
     
 ----
 
@@ -750,9 +904,9 @@ Combining Points
   (1-t) = |q-r| / (|r-p| + |q-r|)
   
  getMy.CombineTwoPoints <- function(p, q, r){
-    myDen <- getMy.TwoPointsDist(r,p) + getMy.TwoPointsDist(q,r)
-    t <- getMy.TwoPointsDist(r,p) / myDen
-    oneMinusT <- getMy.TwoPointsDist(q,r) / myDen
+    myDen <- getMy.Vector.Distance(r,p) + getMy.Vector.Distance(q,r)
+    t <- getMy.Vector.Distance(r,p) / myDen
+    oneMinusT <- getMy.Vector.Distance(q,r) / myDen
     return(data.frame(t=t, oneMinusT = oneMinusT))
  }
   
@@ -784,36 +938,30 @@ Dot Product
   /    .
  /)____.___> v
  -solve for the angle (cosθ = v*w / |v|*|w|)
- getMy.CosTwoVectors <- function(a,b){
-    (a %*% b) / (getMy.EuclideanNorm(a) %*% getMy.EuclideanNorm(b))
- }
+ 
  u <- c(-1,2)
  v <- c(1,3)
- myCosTheta <- getMy.CosTwoVectors(u,v) # 0.7071068
- myAcosRadians <- acos(myCosTheta)
- #R is in radians
- myDegrees <- myAcosRadians * (180 / pi)
+ getMy.Vector.Angle(u,v)
+
  #eyeball it graphed, should look about right
- mycoord <- mycoord <- getMy.CoordGraph(-2, 4)
- mycoord <- getMy.DrawVector(mycoord, u, lnColor = "black", vectorLabel = "u")
- mycoord <- getMy.DrawVector(mycoord, v, lnColor = "black", vectorLabel = "v")
+ mycoord <- mycoord <- getMy.Draw.CoordGraph(-2, 4)
+ mycoord <- getMy.Draw.Vector(mycoord, u, lnColor = "black", vectorLabel = "u")
+ mycoord <- getMy.Draw.Vector(mycoord, v, lnColor = "black", vectorLabel = "v")
 ----
 
 ----
 Orthogonal projection
  - the orthogonal project of w onto v is defined as (u = ((v * w)/|v|^2) * v)
- getMy.OrthoProj <- function(v,w){
-    ((v %*% w)/getMy.EuclideanNorm(v)^2) * v
- }
+
  v <- c(-1,1)
  w <- c(3,2)
- u <- getMy.OrthoProj(v,w)
+ u <- getMy.Vector.OrthoProj(v,w)
  uUpsideDownT <- w - u
- mycoord <- getMy.CoordGraph(-5,5)
- mycoord <- getMy.DrawVector(mycoord, v, lnColor="black", vectorLabel="v")
- mycoord <- getMy.DrawVector(mycoord, w, lnColor="black", vectorLabel="w")
- mycoord <- getMy.DrawVector(mycoord, u, lnColor="lightblue", vectorLabel="u")
- mycoord <- getMy.DrawVector(mycoord, uUpsideDownT, lnColor = "lightblue", vectorLabel = "u┴")
+ mycoord <- getMy.Draw.CoordGraph(-5,5)
+ mycoord <- getMy.Draw.Vector(mycoord, v, lnColor="black", vectorLabel="v")
+ mycoord <- getMy.Draw.Vector(mycoord, w, lnColor="black", vectorLabel="w")
+ mycoord <- getMy.Draw.Vector(mycoord, u, lnColor="lightblue", vectorLabel="u")
+ mycoord <- getMy.Draw.Vector(mycoord, uUpsideDownT, lnColor = "lightblue", vectorLabel = "u┴")
 ----
 
 ----
@@ -834,16 +982,15 @@ Lines defined
   - this form is a.k.a. linear interpolation
   - can be used to find points on a line 
     given two points (q and p)
-  #see functions defined above in "R Graphix"    
-  mycoord <- getMy.CoordGraph(-2, 5)
+  mycoord <- getMy.Draw.CoordGraph(-2, 5)
   myP <- c(-1,1)
   myQ <- c(2,3)
   sumPandQ <- myP + myQ
-  mycoord <- getMy.DrawVector(mycoord, myP, lnColor = "black", vectorLabel = "p")
-  mycoord <- getMy.DrawVector(mycoord, myQ, lnColor = "black", vectorLabel = "q")
-  mycoord <- getMy.DrawVector(mycoord, sumPandQ, lnColor = "lightblue", vectorLabel = "p + q")
+  mycoord <- getMy.Draw.Vector(mycoord, myP, lnColor = "black", vectorLabel = "p")
+  mycoord <- getMy.Draw.Vector(mycoord, myQ, lnColor = "black", vectorLabel = "q")
+  mycoord <- getMy.Draw.Vector(mycoord, sumPandQ, lnColor = "lightblue", vectorLabel = "p + q")
   #this is the line as just a segment, its parallel to q
-  mycoord <- getMy.DrawSegment(mycoord, myP, sumPandQ)
+  mycoord <- getMy.Draw.Segment(mycoord, myP, sumPandQ)
   
   #so q is the rise/run (slope)
   mySlope <- myQ[2]/myQ[1]
@@ -853,38 +1000,44 @@ Lines defined
   myLine <- function(x) mySlope*x + myIntercept
   myX <- seq(-2,5)
   myY <- sapply(myX, myLine)
-  mycoord <- getMy.DrawLine(mycoord, myX, myY)
+  mycoord <- getMy.Draw.Line(mycoord, myX, myY)
   
  - Implicit equation of a line
   a*x1 + b*x2 + c = 0
    a = a1
    b = a2
    c = a1*p1 - a2*p2
-   
-  - solve for a
-  p <- t(c(2,2)); q <- t(c(6,4))
-  v <- q - p
-  # a = [-v2, v1]
-  
-  a <- t(c(-1*v[1,2], v[1,1]))
-  #a = [-2,4]
-   
-  - solve for c
-  c <- -1 * a[1,1] * p[1,1] - a[1,2] * p[1,2]
-  #c = -4
-   
- - Implicit form is R(y, x1, ... xn) = 0
-   implicitForm <- function(x1,x2) -2*x1 + 4*x2 - 4
-  - this can be used to determine if a point is on a line
-   implicitForm(2,2) #0
-  - to test equality this should because of floating point errors
-  #d = (a1*x1 + a2*x2 + c) / |a|
-  isOnLine <- function(x1,x2) (normalForm(x1, x2)) / vLen(a)
+
+  p <- c(2,2)
+  q <- c(6,4)
+  myImpVars <- getMy.Line.Implicit.Coeffs.FromVectors(p,q) #a=-2, b=4, c=-4
+  myImplicitEq <- function(x) myImpVars$a*x[1] + myImpVars$b*x[2] + myImpVars$c
+  # you can't use this like an explicit one and graph something
+  # but you can test if a vector is on the line
+  myImplicitEq(c(2,2)) #0, this is on the line
+  myImplicitEq(c(-5,-5)) #-14, not on the line
+  # to avoid floating point errors, divide by Eucl norm
+  # d = (a*x[1] + b*x[2] + c) / |a|
   
  - Explicit equation of a line y = f(x1, ... xn)
   x2 = ~a * x1 + ~b
-  - where  ~a is -a/b and ~b = -c/b
+  - where, using implicit variables, ~a is -a/b and ~b = -c/b
+  
+  p <- c(2,2)
+  q <- c(6,4)
+  myExpLine <- getMy.Line.Explicit.Fx.FromVectors(p,q)
+  x <- seq(-10,10)
+  y <- sapply(x, myExpLine)
+  #draw the line
+  mycoord <- getMy.Draw.CoordGraph(-10,10)
+  mycoord <- getMy.Draw.Line(mycoord, x, y, "red")
+  #add the points to confirm it worked
+  mycoord <- mycoord + geom_point(aes(x = p[1], y = p[2]))
+  mycoord <- mycoord + geom_point(aes(x = q[1], y = q[2]))
+  
   - this the classic form with intercept and slope
+  - has a left side for dependent variable and a right side
+    for independent variable(s)
   - also known as Cartesian Equation
   - ~a is the slope (rise/run) 
    - slope is formally defined as tan(θ)
@@ -929,18 +1082,12 @@ Line Equation conversion
 Distance of a Point to a Line
  - given any point (r) and line (l)
    how far is r from l
-   
- d = (a * (r - p)) / |a|
+ d = |a*x1 + b*x2 + c| /sqrt(a^2 + b^2)
  
- - implicit eq form
-  l: 4 * x1 + 2 * x2 - 8
-  r: [5,3]
-  
-  l <- c(4,2)
-  c <- -8
-  r <- c(5,3)
-  
-  d = (sum(l * r) + c) / vLen(l)
+ #l: -2x + 3y + 4 = 0
+ #r: (5,6)
+ r <- c(5,6)
+ d = getMy.Line.Distance.Point.FromImplicit(-2,3,4,r) #3.328201
 ----
 
 ----
@@ -948,21 +1095,28 @@ Foot of a given point
  - given some line (l) and some point (r)
    which point on (l) is closest to (r) 
    known as (q)
-
-  t = (v * (r - p)) / (vLen(v))^2
-  q = p + t * v
-  
-  - parameteric eq form
-   l(t) = p + t * v
-    l: = [0,1] + t * [0,2]
-    r: [3,4]
-   
-  p <- c(0,1)
-  v <- c(0,2)
-  r <- c(3,4)
-  
-  t <- (v * (r -p)) / vLen(v)^2
-  q <- p + t * v
+ - when drawing a line from r to l, the optimal
+   solution is one that closest to 90 degrees to (l)
+   passing through (r)
+  exampleRange = c(-10,10)
+  mycoord <- getMy.Draw.CoordGraph(exampleRange[1],exampleRange[2])
+  middleRiseP <- c(-1,3)
+  middleRiseQ <- c(2,-1)
+  middleRiseR <- c(5,5)
+  mycoord <- getMy.Draw.Point(mycoord,middleRiseP,"#FF51F3")
+  mycoord <- getMy.Draw.Point(mycoord,middleRiseQ,"#FF51F3")
+  mycoord <- getMy.Draw.Point(mycoord,middleRiseR,"#FFFF60")
+  middleRiseFx <- getMy.Line.Explicit.Fx.FromVectors(middleRiseP, middleRiseQ)
+  middleRiseXvals <- seq(exampleRange[1], exampleRange[2])
+  middleRiseYvals <- sapply(middleRiseXvals, middleRiseFx)
+  mycoord <- getMy.Draw.Line(mycoord, middleRiseXvals, middleRiseYvals, "#FBAFFF")
+  middleRiseRecipCoeffs <- getMy.Line.Reciprocal.Explicit.Coeffs.FromVectors(middleRiseP,middleRiseQ,middleRiseR)
+  middleRiseRecipFx <- function(x) middleRiseRecipCoeffs$slope * x + middleRiseRecipCoeffs$intercept
+  middleRiseRecipXvals <- seq(exampleRange[1], exampleRange[2])
+  middleRiseRecipYvals <- sapply(middleRiseRecipXvals, middleRiseRecipFx)
+  mycoord <- getMy.Draw.Line(mycoord, middleRiseRecipXvals, middleRiseRecipYvals, "#63FF6B")
+  crossPt <- getMy.Line.Closest.Point.FromVectors(middleRiseP,middleRiseQ,middleRiseR)
+  mycoord <- getMy.Draw.Point(mycoord,crossPt,"#FF1418")
 ----
 
 ----
