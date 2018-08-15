@@ -427,6 +427,22 @@ My R Functions
      return(coordPlot)
  }
  
+ getMy.Draw.Angle <- function(coordPlot, a1, a2, lnColor="#3A75FF"){
+     a1Percent <- a1 * 0.2
+     a2Percent <- a2 * 0.2
+     x1 <- a1Percent[1]
+     y1 <- a1Percent[2]
+     x2 <- a2Percent[1]
+     y2 <- a2Percent[2]
+     d <- data.frame(x1, y1, x2, y2, lnColor = lnColor)
+     coordPlot <- coordPlot + geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), 
+         data = d, colour=lnColor)
+     a1PlusA2 = ((a1+a2) * 0.5) * 0.25
+     angle = getMy.Vector.Angle(a1,a2)
+     coordPlot <- coordPlot + annotate("text", x=a1PlusA2[1], y=a1PlusA2[2], label=sprintf("%s°",round(angle,1)))
+     return(coordPlot)
+ }
+ 
  getMy.Draw.Line <- function(coordPlot, xPoints, yPoints, lnColor="black"){
      d <- data.frame(x = xPoints, y = yPoints)
      coordPlot <- coordPlot + geom_path(mapping = aes(x, y), data = d, 
@@ -1001,10 +1017,15 @@ Dot Product
   - are they the same vector
   - are they perpendicular 
   - what angle to they form
+ u*v = |u|*|v|*cos(theta)
+ 
  - in R there is already an op for this (%*%)
  u <- c(2,2)
  v <- c(0,3)
  uDotV <- u %*% v # uDotV[1,1] = 6
+  
+ #this will equal uDotV
+ getMy.Vector.EuclideanNorm(u)*getMy.Vector.EuclideanNorm(v)*getMy.Vector.CosTheta(u,v)
  
  - is then used to define the cosine of two vectors
         w   
