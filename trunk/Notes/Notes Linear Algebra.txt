@@ -1720,6 +1720,33 @@ Newton's Optimization Method
 ----
 
 ----
+Newton-like methods
+ - similar to the original except we aren't looking
+   for where the function itself is 0, rather where
+   its first-derivative is zero (i.e. where the slope
+   goes to zero)
+  
+  myFx <- function(x) exp(-0.05 * x) * (x - 4)^2
+  #this doesn't actually cross the x-axis, but 
+  # the slope goes to zero around x=4
+  curve(example2_5Fx, from = 0, to = 5)
+  
+  #we need the first and second derivatives
+  #print it and copy\paste
+  D(expression(exp(-0.05 * x) * (x - 4)^2, "x"),"x")
+  D(expression(exp(-0.05 * x) * (2 * (x - 4)) - exp(-0.05 * x) * 0.05 * (x - 4)^2, "x"), "x")
+  myFxTick <- function(x) exp(-0.05 * x) * (2 * (x - 4)) - exp(-0.05 * x) * 0.05 * (x - 4)^2
+  myFxTickTick <- function(x) exp(-0.05 * x) * 2 - exp(-0.05 * x) * 0.05 * (2 * (x - 4)) - (exp(-0.05 * x) * 0.05 * (2 * (x - 4)) - exp(-0.05 * x) * 0.05 * 0.05 * (x - 4)^2)
+  myDelta <- function(x) -1 * myFxTick(x)/myFxTickTick(x)
+  x0 <- 1
+  x1 <- x0 + myDelta(x0)
+  x2 <- x1 + myDelta(x1)
+  x3 <- x2 + myDelta(x2)
+  #here we arrive at '4'
+  x4 <- x3 + myDelta(x3)
+----
+
+----
 Digression on Statistics 
  - Variance, how wide the obs are spead along an axis
  - Covariance, indicates the positive or negative relationship
