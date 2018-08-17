@@ -1017,6 +1017,8 @@ Dot Product
   - are they the same vector
   - are they perpendicular 
   - what angle to they form
+  - if the two vectors are perpendicular then the 
+    dot-product is 0
  u*v = |u|*|v|*cos(theta)
  
  - in R there is already an op for this (%*%)
@@ -1051,6 +1053,7 @@ Dot Product
 ----
 Orthogonal projection
  - "orthogonal": of or involving right angles
+  - the word orthogonal and perpendicular are synonyms
  - the orthogonal projection of w onto v is defined as (u = ((v * w)/|v|^2) * v)
  - this is used alot graphically to project 3D images onto 2D
   - its alot like High School art classes "vanishing point", only mathematical
@@ -1650,6 +1653,70 @@ General Affine maps
 	of the reflection
   p = 1/2*x + 1/2*x'
   x'= 2p - x
+----
+
+----
+Newton's Optimization Method
+ - want to find the where f(x) = 0
+  - starts with
+   - some object function f(x)
+   - some initial guess x[0]
+   - and the derivative of the objective function f'(x)
+  - each iteration is solved as
+   x[i+1] = x[i] - (f(x[i]) / f'(x[i]))
+ - rate of convergence doubles each iteration
+ 
+ #a curvy function
+ myFx <- function(x) 0.0012*x^3 - 0.0347*x^2 + 0.7401*x - 3.5533
+ #an R builtin to get the derivitive of an expression 
+ myFxExpr <- expression(0.0012*x^3 - 0.0347*x^2 + 0.7401*x - 3.5533, "x")
+ #will write the solution as 0.0012 * (3 * x^2) - 0.0347 * (2 * x) + 0.7401
+ D(myFxExpr, "x") 
+ #the derivative of my function
+ myFtickX <- function(x) 0.0012 * (3 * x^2) - 0.0347 * (2 * x) + 0.7401
+ #initial guess
+ x0 <- 40
+ 
+ mycoord <- getMy.Draw.CoordGraph(-11,11)
+ xvals <- seq(-25,50)
+ yvals <- sapply(xvals, myFx)
+ mycoord <- getMy.Draw.Line(mycoord, xvals, yvals)
+ 
+ #draw my first guess
+ mycoord <- getMy.Draw.Point(mycoord, c(x0,0), "blue", "x0")
+ mycoord <- getMy.Draw.Point(mycoord, c(x0, myFx(x0)), "#FF6BA1", "`")
+ mycoord <- getMy.Draw.Segment(mycoord, c(x0, 0), c(x0, myFx(x0)))
+
+ getMy.Draw.NewtonMethod <- function(coordPlot, x0, x1, label){
+    coordPlot <- getMy.Draw.Point(coordPlot, c(x1, 0), "blue", label)
+    coordPlot <- getMy.Draw.Point(coordPlot, c(x1, myFx(x1)), "#FF6BA1", "`")
+    coordPlot <- getMy.Draw.Segment(coordPlot, c(x1, 0), c(x1, myFx(x1)))
+    myTangent <- getMy.Line.Explicit.Fx.FromVectors(c(x1, 0), c(x0, myFx(x0)))
+    myTangentX1 <- round(x1)-1
+    myTangentX0 <- round(x0)+5
+    myTangentStart <- c(myTangentX1, myTangent(myTangentX1))
+    myTangentEnd <- c(myTangentX0, myTangent(myTangentX0))
+    coordPlot <- getMy.Draw.Segment(coordPlot, myTangentStart, myTangentEnd, "#4F7BFF")
+    return(coordPlot)
+ }
+ 
+ #x1 is actually the point where the tangent at point x0 crosses
+ x1 <- x0 - (myFx(x0) / myFtickX(x0))
+ mycoord <- getMy.Draw.NewtonMethod(mycoord, x0, x1, "x1")
+ 
+ #now we repeat it at x2
+ x2 <- x1 - (myFx(x1) / myFtickX(x1))
+ mycoord <- getMy.Draw.NewtonMethod(mycoord, x1, x2, "x2")
+ 
+ #and again
+ x3 <- x2 - (myFx(x2) / myFtickX(x2))
+ mycoord <- getMy.Draw.NewtonMethod(mycoord, x2, x3, "x3")
+ x4 <- x3 - (myFx(x3) / myFtickX(x3))
+ mycoord <- getMy.Draw.NewtonMethod(mycoord, x3, x4, "x4")
+ 
+ #by x4 we are pretty close to zero
+ mycoord
+ myFx(x4)
 ----
 
 ----
