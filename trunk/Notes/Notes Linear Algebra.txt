@@ -1844,6 +1844,36 @@ Quadratic Approximation
    Qf(X) = f(X0) + ∆f(X0)*(X*X0) + 1/2*t(X-X0)*Hf*X0*(X-X0)
    - this expression can be used for any number of variables
 ----
+
+----
+Chain Rule in calculus
+ - for calc of derivative from two or more functions
+ - pointwise product 
+  - idea of iter'ing each value of x for g(x) then using
+    that result as the input for f(x)
+  - the solid-dot symbol is used to lessen the number
+    of nested paraenths in the expression
+  (f • g)(x) = f(g(x))
+ - the derivative of the pointwise product is
+  (f • g)'(x) = (f' • g)(x)*g'(x)
+  - or written without solid-dot symbol
+           = f'(g(x))*g'(x)
+ - for 3 functions 
+  (f • g • h)'(x) = f'((g • h)(x)) * (g • h)'(x)
+                  = f'((g • h)(x)) * g'(h(x)) * h'(x)
+                  = f'(g(h(x))) * g'(h(x)) * h'(x)
+  - in general, which is where the dot-notation helps
+  (f • g • h)'(x) = (f' • g • h)(x) * (g' • h)(x) * h'(x)
+           
+ myGt <- function(t) 4000-4.9*t^2
+ myFh <- function(h) 101325*exp(-0.0001 * h)
+ #calc the derivatives
+ D(expression(4000-4.9*t^2, "t"),"t")
+ D(expression(101325*exp(-0.0001 * h), "h"),"h")
+ myGtTick <- function(t) -(4.9 * (2 * t))
+ myFhTick <- function(h) -(101325 * (exp(-1e-04 * h) * 1e-04))
+ myChainRule <- function(t) myFhTick(myGt(t)) * myGtTick(t)
+----
    
 ----
 Gauss-Newton methods
@@ -1864,7 +1894,7 @@ Gauss-Newton methods
    g = J'r 
   - where J[i,j] = ∂r[i]/∂x[j]
  - the Hessian is sort-of the second derivative part of the Newton method
-   H[j,k] = J' * J[j,k] + ∑r[i] * (∂²r[i]/∂x[j]∂x[k]) | i = 1 to count
+   H[j,k] = J' * J[j,k] + (∑r[i] * (∂²r[i]/∂x[j]∂x[k]) | i = 1 to count)
 ----
    
 ----
@@ -2011,31 +2041,6 @@ Categorical variables
   #star '*' (x2A), is to make the model by category
   # formula is now a string literal - text offers no explaination
   LMcat <- lm('Salary~YearsExperience*LevelOfEmployee', data = EmployeesSalary)
-----
-
-----
-Gradient Descent and Linear Regression
- - pragmatic approach to get the regression 
- - is a supplementary method to the B = (Xᵀ * X)^-1 * Xᵀ * Y
-  - the matrix algebra approach will overheat the machine for big data
-  - may also be that Xᵀ * X does not exist
- - starts with a cost function that takes a,b and returns an error value
-  - error value represents how well the a,b actually fits the data
-  
-  CostFunction = 1/N * ((SUM(y[i] - (a*x[i] + b))^2)|i=1 to i=n)
-   - this is iterated, adjusting a,b each time
-   - in 3-D space the CostFunction forms a concave graph
-   - since there are two variables, we need a hyperplane along each a,b
-    - del is for the partial derivative backward 6 symbol thing
-   del/del a = 2/N * (SUM(-x[i] * (y[i] - (a*x[i] + b)))|i=1 to i=n)
-   del/del b = 2/N * (SUM(-(y[i] - (a * x[i] + B)))|i=1 to i=n)
-   
-   - next is the iterative part where
-   a[n+1] = a[n] - (eta) * (del/del a[n])
-   b[n+1] = b[n] - (eta) * (del/del b[n])
-    - eta is the step-size, 
-     - too big may over step the min, 
-     - too small may take too long
 ----
 
 ----  
