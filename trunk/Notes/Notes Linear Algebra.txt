@@ -1747,6 +1747,127 @@ Newton-like methods
 ----
 
 ----
+Linear to Nonlinear
+ - a linear function won't have any quadratic terms
+  - quadratic meaning variables times themselves or 
+    other variables
+   a*x + b*y + c*z 
+   - is still linear since x,y and z are taken times constants
+   - has the convenience of being expressable in vector format
+     because a,b,c is one vector and x,y,z is another
+     .- -.   .- -.
+     | a |   | x |
+     | b | * | y |
+     | c |   | z |
+     `- -'   `- -'
+    - expressed as just V*X
+     
+   a*x^2 + 2*b*x*y + c*y^2
+   - is non-linear since variables are being taken times each other
+   - when every part of a function is a quadratic expression it is 
+     labelled as Quadratic Form
+   - want to express this in vector form
+             .-    -.   .- -.
+   .-   -.   | a  b |   | x |
+   | x y | * | b  c | * | y |
+   `-   -'   `-    -'   `- -'
+   - will solve back down to the original formula
+   - expressed as t(X)*M*X
+----
+
+----
+Hessian Matrix
+ - a matrix of second partial derivatives of each variable
+   with respect to each other
+ - will be a n x n matrix where n is the number of variables
+ - simple two variable example
+    f(x,y) = exp(x/2) * sin(y)
+       .-                  -.  
+       | ∂²f/∂x²   ∂²f/∂x∂y |
+   H = |                    |
+       | ∂²f/∂y∂x  ∂²f/∂²y² |
+       `-                  -'
+   
+   myExpr <- expression(exp(x/2)*sin(y), "x", "y")
+   D(myExpr, "x") # exp(x/2) * (1/2) * sin(y)
+   D(myExpr, "y") # exp(x/2) * cos(y)
+   myXPartialDev <- expression(exp(x/2) * (1/2) * sin(y), "x", "y")
+   myYPartialDev <- expression(exp(x/2) * cos(y), "x", "y")
+   D(myXPartialDev, "x") #H[1,1]
+   D(myXPartialDev, "y") #H[2,1]
+   D(myYPartialDev, "x") #H[1,2]
+   D(myYPartialDev, "y") #H[2,2]
+   
+   myHessian = function(x,y) {
+    H11 <- exp(x/2) * (1/2) * (1/2) * sin(y)
+    H21 <- exp(x/2) * (1/2) * cos(y)
+    H12 <- exp(x/2) * (1/2) * cos(y)
+    H22 <- -(exp(x/2) * sin(y))
+    H <- matrix(c(H11,H21,H12,H22), ncol=2)
+    return(H)
+   }
+----
+
+----
+Quadratic Approximation
+ - given some function f(x,y)
+   and an intial guess of (x0,y0)
+ - f is function, fx is first derivative, fxx is second deriv.
+ - the full quadratic expression is
+ Q(x,y) =   f(x0,y0)
+          + fx(x0,y0)*(x-x0) + fy(x0,y0)*(y-y0)
+          + 1/2*fxx(x0,y0)(x-x0)^2 + fxy(x0,y0)*(x-x0)*(y-y0) + 1/2*fyy(x0,y0)*(y-y0)^2
+  - breaks down into 
+   - first line is constant term
+   - second line is linear term
+   - third line is quadratic term
+  - converting to vector notation 
+      .- -.      .-  -.
+      | x |      | x0 |
+  X = | y | X0 = | y0 |
+      `- -'      `-  -'
+  - constant term is f(X0)
+    .-     -.   .-      -.
+    | fx(X0)|   | x - x0 | 
+    | fx(X0)| * | y - y0 |
+    `-     -'   `-      -'
+  - linear term is the gradient, expressed as ∆f(X0)*(X*X0)
+                    .-                -.   .-    -.
+    .-         -.   | 1/2*fxx  1/2*fxy |   | x-x0 |
+    | x-x0 y-y0 | * | 1/2*fxy  1/2*fyy | * | y-y0 |
+    `-         -'   `-                -'   `-    -'
+  - the middle matrix is 1/2*Hessian
+  - quadratic term expressed as 1/2*t(X-X0)*Hf*X0*(X-X0)
+   - Hf is Hessian for function f(x,y)
+ 
+  - then the expression is written as
+   Qf(X) = f(X0) + ∆f(X0)*(X*X0) + 1/2*t(X-X0)*Hf*X0*(X-X0)
+   - this expression can be used for any number of variables
+----
+   
+----
+Gauss-Newton methods
+ - method for solving non-linear least squares
+ - attempts to approximate the Hessian (second-derivative part)
+ - objective function is considered the residuals
+  - the diff between the model's est. and the actual y value
+  r = m(x, data) - y
+  - where r is residuals
+  - m is the model, x is the parameter and y is what we are 
+    trying to model
+  - can be equally expressed as 
+  y = m(x, data) - r
+ 
+ - expand this into a vector for x 
+ - there are two variables so the derivitive is multi-variant
+ - the gradient of the objective function is 
+   g = J'r 
+  - where J[i,j] = ∂r[i]/∂x[j]
+ - the Hessian is sort-of the second derivative part of the Newton method
+   H[j,k] = J' * J[j,k] + ∑r[i] * (∂²r[i]/∂x[j]∂x[k]) | i = 1 to count
+----
+   
+----
 Digression on Statistics 
  - Variance, how wide the obs are spead along an axis
  - Covariance, indicates the positive or negative relationship
