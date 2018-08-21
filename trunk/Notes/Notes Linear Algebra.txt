@@ -2164,6 +2164,24 @@ Logistic Regression
    - solve for odds as
    P(x)/1 - P(x) = e^(a*x + b)
    log(P(x)/1 - P(x)) = a*x + b
+   
+   -logistic function
+    - a.k.a. sigmoid function
+  σ(u) = 1 / (1 + e^-u)
+    - has two unique properties
+     - σ(-u) = 1 - σ(u)
+     - dσ(u)/du = σ(u)*σ(-u)
+  mySigmoid <- function(u) 1 / (1 + exp(-u))
+  #first derivative
+  mySigmoidTick <- function(u) exp(-u) / (1 + exp(-u)) ^ 2
+  
+  #these result in the same value of 0.4719046
+  mySigmoid(-0.1125) 
+  1 - mySigmoid(0.1125)
+  
+  #these result in the same value of 0.2492106
+  mySigmoid(0.1125) * mySigmoid(-0.1125)
+  mySigmoidTick(0.1125)
 ----
 
 ----
