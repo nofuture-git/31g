@@ -2185,6 +2185,61 @@ Logistic Regression
 ----
 
 ----
+Back-propagation of Multi-Layer Network
+ # https://arxiv.org/pdf/1411.2738.pdf
+ N <- 100
+ d <- 10
+ myLearningRate <- 0.05
+ 
+ #set the seed for global R random genr'ator
+ set.seed(42)
+ 
+ #create a random matrix as explanatory variables
+ WI <- matrix(rnorm(N*d), ncol=d)
+ WO <- matrix(rnorm(N*d), ncol=N)
+ 
+ #get a one-hot input vector
+ i <- sample(1:N,1)
+ x <- rep(0,N)
+ x[i] <- 1
+ 
+ #imagine this is what it actually is
+ t <- rep(0,N)
+ t[sample(1:N,1)] <- 1
+ 
+ #go foward
+ mySigmoid <- function(u) 1 / (1 + exp(-u))
+ h <- sapply(x %*% WI, mySigmoid)
+ y <- sapply(hi %*% WO, mySigmoid)
+ 
+ # sum-sqr loss function
+ #E = 1/2 *(t-y)^2
+ #E' = -(1/2 * (2 * (t-y)))
+ #   = -(1 * (t - y))
+ #   = -1*(t - y) 
+ #   = (y - t)
+ 
+ #sigmoid function (see prev. section)
+ # y = 1 / (1 + exp(-u))
+ # y' = y(u)*y(-u)
+ 
+ # basic vector product
+ # u = w * x
+ # u' = x
+ 
+ #Chain rule
+ # (E • y • u)' = (E' • y • u) * (y' • u) * u'
+ #              = (y - t) * y(u) * y(-u) * u'
+ #              = (y - t) * y * -y * x
+ #              = (y - t) * y * (1 - y) * x
+  
+ EItick <- (y - t) * y * (1 - y)
+ WO <- WO - myLearningRate * EItick * h
+ EI <- sum(EItick * WO) * h * (1 - h)
+ WI <- WI - myLearningRate * EI * x
+----
+
+----
 Generalized Linear Model (GLMs)
  - where the reponse variable is discrete and the error terms do not 
    follow a normal dist
