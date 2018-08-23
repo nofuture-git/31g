@@ -659,6 +659,44 @@ My R Functions
     xTick <- p + A %*% (x - origin)
  }
  
+ #https://medium.com/@14prakash/back-propagation-is-very-simple-who-made-it-complicated-97b794c97e5c
+ getMy.relu <- function(x) max(c(0,x))
+ getMy.sigmoid <- function(x) 1 / (1 + exp(-1*x))
+ getMy.softmax <- function(e) 
+ {
+    xExp <- sapply(e, exp)
+    smDeno <- sum(xExp)
+    mout <- sapply(xExp, `/`, smDeno)
+    return(mout)
+ }
+ getMy.crossentropy <- function(yActual,yCalc){
+    fd001 <- function(y, o) y * log10(o) + ((1 - y) * log10(1 - o))
+    ff <- 0
+    for(i in c(1:n))
+    {
+        ff <- ff + fd001(yActual[i], yCalc[i])
+    }
+    mout <- -1 * ff
+    return(mout)
+ }
+ getMy.sigmoidTick <- function(x) sigmoid(x)* (1-sigmoid(x))
+ getMy.reluTick <- function(x) if(x > 0) 1 else 0
+ getMy.softmaxTick <- function(e) {
+    xExp <- sapply(e, exp)
+    fd002 <- function(ii) 
+    {
+        skj <- 0
+        for(j in c(1:length(e)))
+        {
+            jv <- if(ii == j) 0 else exp(e[j])
+            skj <- skj + jv
+        }
+        (e[ii] * skj)/xExp
+    }
+    
+    mout <- sapply(e, fd002)
+    return(mout)
+ }
 ---- 
 
 ----
@@ -2187,56 +2225,56 @@ Logistic Regression
 ----
 Back-propagation of Multi-Layer Network
  # https://arxiv.org/pdf/1411.2738.pdf
- N <- 100
- d <- 10
- myLearningRate <- 0.05
- 
- #set the seed for global R random genr'ator
- set.seed(42)
- 
- #create a random matrix as explanatory variables
- WI <- matrix(rnorm(N*d), ncol=d)
- WO <- matrix(rnorm(N*d), ncol=N)
- 
- #get a one-hot input vector
- i <- sample(1:N,1)
- x <- rep(0,N)
- x[i] <- 1
- 
- #imagine this is what it actually is
- t <- rep(0,N)
- t[sample(1:N,1)] <- 1
- 
- #go foward
- mySigmoid <- function(u) 1 / (1 + exp(-u))
- h <- sapply(x %*% WI, mySigmoid)
- y <- sapply(hi %*% WO, mySigmoid)
- 
- # sum-sqr loss function
- #E = 1/2 *(t-y)^2
- #E' = -(1/2 * (2 * (t-y)))
- #   = -(1 * (t - y))
- #   = -1*(t - y) 
- #   = (y - t)
- 
- #sigmoid function (see prev. section)
- # y = 1 / (1 + exp(-u))
- # y' = y(u)*y(-u)
- 
- # basic vector product
- # u = w * x
- # u' = x
- 
- #Chain rule
- # (E • y • u)' = (E' • y • u) * (y' • u) * u'
- #              = (y - t) * y(u) * y(-u) * u'
- #              = (y - t) * y * -y * x
- #              = (y - t) * y * (1 - y) * x
-  
- EItick <- (y - t) * y * (1 - y)
- WO <- WO - myLearningRate * EItick * h
- EI <- sum(EItick * WO) * h * (1 - h)
- WI <- WI - myLearningRate * EI * x
+ #http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
+ #shuffled with Fisher-Yates random shuffle, 70-30 split
+ trainingData <- read.csv("C://Tmp//iris.data.vector.training.txt", header = TRUE, sep = ",")
+
+ getVectorInput <- function(i) c(i$sepal_length_in_cm, i$sepal_width_in_cm, i$petal_length_in_cm, i$petal_width_in_cm)
+ getVectorOutput <- function(i) {
+     iClass <- i$class
+     oVector <- c(0,0,0)
+     if(iClass == "Iris-setosa") oVector <- c(1,0,0)
+     if(iClass == "Iris-versicolor") oVector <- c(0,1,0)
+     if(iClass == "Iris-virginica") oVector <- c(0,0,1)
+     return(oVector)
+ }
+ sigmoid <- function(u) 1 / (1 + exp(-u))
+ myLearningRate <- 0.5
+ N <- 4 #four obs per line
+ d <- 3 #three possible classes
+
+ #rule, make WI the number of obs squared
+ WI <- matrix(rnorm(N * N, 0, 0.25), ncol = N)
+ #rule, make WO have number of columns eq to actual output
+ WO <- matrix(rnorm(N * d, 0, 0.25), ncol = d)
+
+ #run this 'bout 5 or 6 times
+ for( i in seq(1,length(trainingData[,1]))){
+    trainingItem <- trainingData[i,]
+    x <- getVectorInput(trainingItem)
+    t <- getVectorOutput(trainingItem)
+    h <- sapply(x %*% WI, sigmoid)
+    y <- sapply(h %*% WO, sigmoid)
+
+    EItick <- (y - t) * y * (1 - y)
+    WO <- WO - myLearningRate * t(as.matrix(EItick) %*% t(h))
+    EI <- sum(EItick * WO) * h * (1 - h)
+    WI <- WI - myLearningRate * t(as.matrix(EI) %*% t(x))
+ }
+
+ testData <- read.csv("C://Tmp//iris.data.vector.test.txt", header = TRUE, sep = ",")
+ for( i in seq(1,length(testData[,1]))){
+    testItem <- testData[i,]
+    x <- getVectorInput(testItem)
+    t <- getVectorOutput(testItem)
+    h <- sapply(x %*% WI, sigmoid)
+    y <- sapply(h %*% WO, sigmoid)
+
+    e <- 1/2 *(t-y)^2
+    
+    print(t)
+    print(e)
+ }
 ----
 
 ----
