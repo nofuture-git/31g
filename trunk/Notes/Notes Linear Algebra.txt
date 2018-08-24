@@ -207,7 +207,7 @@ R Builtins
  b <- c(5,8)
  A %*% a
  
- #matrix multiplication
+ #dot-product
  #A as r X c and B as c X t, AB is r X t matrix
  A <- matrix(c(1,3,2,2,8,9), ncol=2)
  B <- matrix(c(5,8,4,2), ncol = 2)
@@ -777,11 +777,12 @@ R Graphix
  library(rgl)
  #makes is so that further commands are applied to the existing open window
  open3d()
- #create a blank 3D plot 
- x = seq(-5,5)
- y = seq(-5,5)
- z = seq(-5,5)
- plot3d(x, y, z, type="n") 
+ #create a blank 3D plot
+ decibels <- function(p1, p2) ifelse(p1 == 0.0 || p2 == 0.0, 0, 10 * log10(p2/p1))
+ xvals <- seq(10,40)
+ yvals <- seq(40,70)
+ zvals <- sapply(xvals,decibels, yvals)
+ plot3d(xvals, yvals, zvals) 
  #add a vector'esque arrow
  arrow3d(c(0, 0, 0), c(3, 4, 3), type = "lines", col = "green")
  #add plot lines inside the box
@@ -826,6 +827,7 @@ Points & Vectors
     applied to geometric objects that produce the same 
     result regardless of the location of the coordinate 
     origin.
+  - points specify a position, vectors specify a displacement
   
  - in practice:
   - subtracting to points yields a vector
@@ -911,9 +913,13 @@ Vector Space
      the same value then they are the same thing
  - the n-tuple is a vector
  - the symbol which points-to the whole n-tuple 
-   is usually written in caps or bold
+   is usually written in bold font
   - sometimes a small arrow pointing to the right 
-    above a symbol also means its a vector
+    above a symbol also means its a vector, this 
+    convention was developed for hand-written 
+  - typically scalar's are just latin or greek letters
+  - vectors are bold lower-case latin letters
+  - matrices are upper case latin letters
  - an individual item therein, with an index subscript
    is called a component
   - a component is writtin in lowercase or italics
@@ -1063,7 +1069,24 @@ Dot Product
  u <- c(2,2)
  v <- c(0,3)
  uDotV <- u %*% v # uDotV[1,1] = 6
-  
+ 
+ - scalar multiplication is associative
+ a <- c(-1,2,9)
+ b <- c(4,1,3)
+ k <- 4
+ a %*% (k * b) == k * (a %*% b)
+ 
+ - dot product is associative
+ a <- c(-1,2,9)
+ b <- c(4,1,3)
+ b %*% a == a %*% b
+ 
+ - dot product is distributive
+ a <- c(-1,2,9)
+ b <- c(4,1,3)
+ c <- c(-2,1,4)
+ a %*% (b + c) == a %*% b + a %*% c
+ 
  #this will equal uDotV
  getMy.Vector.EuclideanNorm(u)*getMy.Vector.EuclideanNorm(v)*getMy.Vector.CosTheta(u,v)
  
@@ -1086,6 +1109,40 @@ Dot Product
  mycoord <- mycoord <- getMy.Draw.CoordGraph(-2, 4)
  mycoord <- getMy.Draw.Vector(mycoord, u, lnColor = "black", vectorLabel = "u")
  mycoord <- getMy.Draw.Vector(mycoord, v, lnColor = "black", vectorLabel = "v")
+----
+
+----
+Cross Product
+ - another kind of vector product
+ - requires that the vectors be at least 3 in length (R^3)
+ - if two vectors are parallel then cross-product is 0
+ - order-of-op, cross product goes before dot product
+ - when combined with dot product it is sometimes called "triple product"
+ - is often represented in text as the classic 'x' operator
+ - has no R operator nor built-in, pracma has one
+ library(pracma)
+ a <- c(1,3,4)
+ b <- c(2,-5,8)
+ cross(a,b) == c(a[2]*b[3] - a[3]*b[2], a[3]*b[1] - a[1]*b[3], a[1]*b[2] - a[2]*b[1])
+ 
+ - has peculiar other rules
+ # cross product of same vector is 0 ('a' is always parallel to itself)
+ cross(a,a) # 0,0,0
+ 
+ #is is anticommutative 
+ cross(a,b) == -(cross(b, a)) 
+ 
+ #negative sign is distributive
+ cross(a,b) == cross(-a,-b)
+ 
+ #is assoc. for scalar multiplication
+ k <- 2.1
+ k * cross(a,b) == cross(a*k, b)
+ cross(a*k, b) == cross(a, b*k)
+ 
+ #is distributive on vector addition\subtraction
+ c <- c(-2,1,4)
+ cross(a, b+c) == cross(a,b) + cross(a,c)
 ----
 
 ----
@@ -1934,28 +1991,6 @@ Gauss-Newton methods
  - the Hessian is sort-of the second derivative part of the Newton method
    H[j,k] = J' * J[j,k] + (∑r[i] * (∂²r[i]/∂x[j]∂x[k]) | i = 1 to count)
 ----
-   
-----
-Digression on Statistics 
- - Variance, how wide the obs are spead along an axis
- - Covariance, indicates the positive or negative relationship
-    amoung obs 
- - Clustering, divide obs into groups
- - Correlation, measure strength and direction of two
-   obs 
- - Probability, P(E) = (Chances for E)/(Total Chances)
-   - probability of an Ace in a common deck of cards
-     P(Ace) = (4)/(52)
- - Odds, (Chances for E)/(Chances Against E)
-   - odds of an Ace is 
-     Odds(Ace) = (4) /(52-4)
- - normal distribution, the classic bell-curve
-   - also known as Gaussian distribution
- - other distributions 
-   - Binomial
-   - Inverse Gaussian
-   - Log normal
-----
 
 ----
 Simple Linear Regression
@@ -2586,4 +2621,103 @@ Under and Overfitting
  
  #or using the Leave-one-out cross validation, 
  Control2<- trainControl(method="LOOCV")
+----
+
+----
+Digression on Algebra rules
+ - various rules for moving left\right 
+ y = sqrt(x),    y^2 = x
+ y = ln(x),      e^y = x
+ y = log10(x),  10^y = x
+ 
+ - various reduction rules
+ y = x^-3.411,      y = 1/(x^3.411)
+ y = x^3/x^2,       y = x^(3-2)
+ y = x^3*x^2,       y = x^(3+2)
+ y = (x^2)^3,       y = x^(2*3)
+ y = (2 * x)^3,     y = 2^3 * x^3
+ y = (4/x)/(-3/x),  y = -(4/3)
+ y = (3-x)/1.2,     y = (3*1/1.2)-1/1.2*x
+ y = (4/x) + (3/x), y = 7/x
+----
+
+----
+Digression on Statistics 
+ - Variance, how wide the obs are spead along an axis
+ - Covariance, indicates the positive or negative relationship
+    amoung obs 
+ - Clustering, divide obs into groups
+ - Correlation, measure strength and direction of two
+   obs 
+ - Probability, P(E) = (Chances for E)/(Total Chances)
+   - probability of an Ace in a common deck of cards
+     P(Ace) = (4)/(52)
+ - Odds, (Chances for E)/(Chances Against E)
+   - odds of an Ace is 
+     Odds(Ace) = (4) /(52-4)
+ - normal distribution, the classic bell-curve
+   - also known as Gaussian distribution
+ - other distributions 
+   - Binomial
+   - Inverse Gaussian
+   - Log normal
+----
+
+----
+Digression on Trig
+ cos θ = x
+ sin θ = y
+ sec θ = 1 / cos θ'
+ tan θ = sin θ / cos θ'
+ csc θ = 1 / sin θ'
+ cot θ = 1 / tan θ = cos θ / sin θ
+ 
+ - with typical right angle 
+   there are common names for each part
+   .
+   |\
+   | \
+opp|  \ hyp
+   |   \
+   |θ___\
+     adj
+  - each is given a length
+   - hyp is abbrev. for hypothenuse
+   - adj for adjacent leg
+   - opp for opposite leg    
+   
+ cos θ = adj / hyp
+ sin θ = opp / hyp
+ tan θ = opp / adj
+ sec θ = hyp / adj
+ csc θ = hyp / opp
+ cot θ = adj / opp
+ 
+  - trig identities
+  sin(-θ) = - sin θ
+  cos(-θ) =   cos θ
+  tan(-θ) = - tan θ
+  sin((π/2) - θ) = cos θ
+  cos((π/2) - θ) = sin θ
+  tan((π/2) - θ) = cot θ
+  
+  - pythagorean identities
+  a² + b² = c²
+  sin²θ + cos²θ = 1
+  1 + tan²θ = sec²θ
+  1 + cot²θ = csc²θ
+  
+  - sum & diff identities
+  sin(a + b) = sin a*cos b + cos a*sin b
+  sin(a - b) = sin a*cos b - cos a*sin b
+  cos(a + b) = cos a*cos b - sin a*sin b
+  cos(a - b) = cos a*cos b + sin a*sin b
+  tan(a + b) = (tan a + tan b)/(1 - tan a * tan b)
+  tan(a - b) = (tan a - tan b)/(1 + tan a * tan b)
+  
+  - law of sines
+   - capital letters are assoc. angles
+  a² = b² + c² - 2*b*c*cos A
+  b² = a² + c² - 2*a*cos B
+  c² = a² + b² - 2*a*b*cos C
 ----
