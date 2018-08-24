@@ -2524,7 +2524,13 @@ Principal Component Analysis
  names(SeedData) = c('Area', 'Perimeter', 'Compactness', 'LengthK',
                             'WidthK','AsymCoef','LengthKG','Seeds')
  #get the PCA
- PCAObj <- prcomp(SeedData[1:7)
+ PCAObj <- prcomp(SeedData[1:7])
+ 
+ #determine which how much of variance is being controlled by each field
+ summary(PCAObj)
+ 
+ #this is also handy for quick percent explained variance
+ round(PCAObj$sdev^2/sum(PCAObj$sdev^2)*100)
  
  #using another plot reveals the two principal components are AsymCoef & Area
  # each variable is represented by a vector

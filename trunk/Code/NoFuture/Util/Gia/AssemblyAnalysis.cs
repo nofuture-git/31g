@@ -129,6 +129,8 @@ namespace NoFuture.Util.Gia
         ///  $myTokensIds = $myAsmAly.GetTokenIds(0, "NoFuture.*")
         ///  $myFlatTokens = $myTokensIds.FlattenToDistinct()
         ///  $myTokenNames = $myAsmAly.GetTokenNames($myFlatTokens)
+        ///  $myTokenNames.ApplyFullName($myAsmAly.AsmIndicies)
+        ///  $appliedTokenNames = $myTokenNames.ApplyMapping($myTokensIds.Tokens)
         /// ]]>
         /// </example>
         public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
