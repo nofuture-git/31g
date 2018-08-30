@@ -1,0 +1,331 @@
+----
+Notes Blender Graphics
+----
+
+----
+The Complete Guide to Blender Graphics, 4th Edition
+By: John M. Blain
+Publisher: A K Peters/CRC Press
+Pub. Date: September 27, 2017
+Web ISBN-10: 1-315-11270-1
+Part Number: KE43292
+Print ISBN-13: 978-1-138-08191-8
+Print ISBN-10: 1-138-08193-0
+Web ISBN-13: 978-1-315-11270-1
+Print ISBN-10: 1-138-08191-4
+Print ISBN-13: 978-1-138-08193-2
+Web ISBN-13: 978-1-351-62282-0
+Pages in Print Edition: 552
+----
+
+----
+https://docs.blender.org/manual/en/dev/index.html
+----
+
+----
+Game Character Creation with Blender and Unity
+By: Chris Totten
+Publisher: Sybex
+Pub. Date: July 10, 2012
+Print ISBN: 978-1-118-17272-8
+Web ISBN: 1-118-17272-8
+Pages in Print Edition: 320
+https://www.wiley.com/WileyCDA/WileyTitle/productCd-1118172728,miniSiteCd-SYBEX.html
+http://waldobronchart.github.io/ShortcutMapper/
+----
+
+----
+Overview
+ - an open-source 3D computer graphics software platform
+ - uses range from film animation, visual effects, 3D printing
+   and video games
+ - the abbrev. "UV" is simply to represent its not "XYZ"
+ - is designed to be interfaced with one-hand-on-keyboard\one-hand-on-mouse
+  - abbrev. for mouse button is LMB (left mouse button) 
+    a RMB (right) and (MMB) for middle (MMB is sub'ed with ALT+LMB)
+  - RMB is used for selecting items within scene
+  - LMB is used for clicking interface options (i.e. context-menu)
+  
+ - 3D Cursor: a kind of central point for control and placement of objects
+ 
+ - GUI typically windows
+  - 3D View: main window, like the code editor in an IDE
+  - Outliner: the project view
+   - use the numpad (+) and (-) keys to fold\unfold nodes
+  - Properties: the properties of whole project
+  - Info: the py commands of the various actions 
+  
+ - Split screen is controlled from top-right corner of 
+   3D View (appearing as 3 diagonal lines)  
+  - LMB click and drag this to have the same 3D view in two 
+    side-by-side windows
+  - on one side have the Toolshelf displayed by 
+    hovering within the window and hitting 'T'
+  - on the other side display the Properties window 
+    likewise, hover, and press 'N'
+ 
+ - Navigating Viewport of 3D View
+  - consist of three main operations: orbiting, zooming and panning
+  - Orbiting is to move around the object viewing it from 
+    different angles from (0,0,0)
+  - Zooming moves in an out as you'd expect
+  - Panning is to move the viewport position in relation to the 3D 
+    axis, do this while holding down Shift and pressing MMB
+----
+
+----
+Hotkeys
+ RMB: select object
+ Shift+RMB: multi-select objects
+ LMB: place 3D cursor
+ MMB: orbit
+ Shift+MMB: pan
+ Scroll-wheel: zoom
+ Ctrl+Scroll-wheel: move left\right
+ Alt+RMB: select edge loop
+ 
+ Tab: enter edit mode
+ 
+ A: toggle select all
+ Z: toggle wire-frame\shade mode
+
+ B: box select
+ C: circle select
+ Ctrl+LMB: lasso select
+
+ S: resize
+ G: move
+ R: rotate
+
+ W: specials context menu
+ 
+ T: tool shelf
+ N: properties
+
+ X: delete object
+ 
+ L: select linked
+
+ Numpad 5: switch between perspective and orthographic view
+ Numpad 1: Front orthographic view
+ Numpad 3: Right orthographic view
+ Numpad 7: Top orthographic view
+ Ctrl+Numpad 7: Bottom orthographic view
+ Ctrl+Numpad 1: Rear orthographic view
+ Ctrl+Numpad 3: Left orthographic view
+ Numpad 2: step-wise rotate about X-axis
+ Numpad 8: step-wise rotate about Y-axis
+ 
+ F: make edge/face  
+ E: extrude
+
+ V: rip
+ P: separate
+ Ctrl+R: loop cut (spilt on single loop-line)
+ Alt+M: merge vertices
+ 
+ K+LMB: knife
+ Alt+S: shrink
+ Ctrl+E: edge menu
+ 
+ Shift+S, "Cursor to center"
+ Shift+A, add new shape
+----
+
+----
+Basic shape actions
+ - to change the shape in some uniform way with relation to the axis 
+ - move to the orthogonal view (numpad1 or numpad3)
+ - switch to wireframe view (Z)
+ - switch to orthographic view (numpad5)
+ - use box select (B) to grab some logical grouping
+ - use (G) to stretch it
+----
+
+----
+Set object to Mirror Mode
+ - new file
+ - Tab, into edit mode, press W and select Subdivide
+ - A to deselect vertices, press 1 to move to front view and 5 to turn gridlines on
+ - Z to switch to wireframe view to select vertices in the back
+ - B to box-select all vertices on left, X to delete left side
+ - Z again to go back to shaded mode, Tab back to Object Mode
+ - in Properties window's top-icons, select the wrentch for Add Modifier and 
+   select Mirror
+ - check Clipping to keep vertices from crossing over the mirror
+----
+
+----
+Set image as background
+ - go to front orthogonal view (numpad1)
+ - switch to out of Prespective view to orthogonal (numpad5)
+ - open the 3D View by hovering mouse within it and pressing (N)
+ - in properties, scroll down to bottom, check "Background Images"
+ - click the right-arrow for dropdown context menu
+ - click Add Image - another dropdown context menu appears
+ - select image in file browser 
+ - it will only appear in orthogonal view from which it was added
+ - while in that view, unchecking the "Background Images" will toggle it
+   on and off
+----
+
+----
+Terms
+ - Viewport: the manner of viewing a 3D object on a 2D computer screen
+ - Data-Block: base unit of any blender project
+   - primary blend-file content
+   - has discrete list of types (e.g. Lattice, Object, Scene, etc.)
+   - are linkable in various arrangements (e.g. parent\child) with modifiers
+   - has a unique name within file's context
+   - may posses their own animation data
+   - have custom properties with various uses
+    - has a name and is assigned a numerical value (bool is 1\0)
+    - can specify min\max
+    - will be accessed programatically 
+  - Action: containing animation F-Curves
+  - Armature: used for skeleton mesh deformations
+  - Curve: camera, font and surface data
+  - Mesh, which contains an objects vertices, edges & faces
+  - Object: scene entity with location, scale & rotation
+  - Scene: primary and top-level store of all objects and animation
+   - will have min. of Model, Materials and Lights
+  - Screen: coupled to each window
+  - Text: for py scripts
+  - Texture: applied to object's surface for smooth, rough, bumpy, cracked, etc.
+  - Material: applied to object's surface for color, reflectiveness, transparency, etc.
+  - Lattice: grid-based, invisible area which surrounds the object
+ - Color Map: (aka diffuse maps) a kind of texture which gives color and definition 
+ - Bump Map: a texture which is used to make a flat surface appear bumpy
+ - Normal Maps: also a texture, a more powerful version of a bump map 
+   which can be applied onto a 3D model
+ - Alpha Maps: a useful texture to create a sense of transparency
+ - Specularity Maps: a texture to control the shininess of a model's surface
+ - Reflection Maps: a texture for a mirror like surface
+ - Illumination Maps: a texture for a light-source and fade
+----
+
+----
+Mesh
+ - the process of taking a mesh primitive and editing it 
+   to form more complex shape
+ - specific the the aggregate of polygons formed by connected 
+   edges and vertices.
+ 
+ - Mesh Primitive: a base, simple shape to begin a mesh from
+  - Plane, basic 2D primitive 
+  - Cube, the extension of a plane into three dim
+  - Icosphere, a sphere made by connecting many triangles
+  - UV Sphere, a globe like sphere with poles at top and bottom
+  - Torus, a doughnut-shaped primitive
+
+ - Object Mode, moving, resizing, rotating, etc the whole object
+ - Edit Mode, dealing with individual vertices, edges and faces of an object
+
+ - Vertices, same meaning as found in Graph Theory (aka nodes, points)
+ - Edge, likewise from Graph Theory (aka links, lines)
+ - Face, the polygon area enclosed within three or more edges
+
+ - Poles, a vetex connected by three, five or more edges
+ - Non-Poles, a vetex connected by one, two or four edges
+
+ - Loops, a range of faces or edges which are connected
+ - Cyclic Loops: loops which to not terminate along poles and
+   are, therefore, continous.
+ - Edge Loop: the loop concept concerning just edges
+ - Face Loop: and extension of edge loops to that of faces
+
+ - Selection Mode: the manner of selecting while in Edit Mode
+  - a multiple selection is allowed (i.e. edge and face )
+  - also mouse-based movements for selecting some range of the mesh
+  - advanced selection for edge and face loops is supported
+
+ - Mirroring: by picking one of the three axis the vertices
+   are duplicated on the other side 
+----
+
+----
+Material
+ - Surface: concerns the properties of a 3D objects faces
+  - Diffuse: the overall color of the surface
+   - Intensity: the intensity of the color at the given light-level
+     where 0.0 is no light, and 1.0 is max light
+   - Ramp: a manner for blending colors as a gradient
+  - Specular: the color of the reflection of light off the surface
+   - Hardness: a range to spread the specular color across the surface
+     where high values focus the reflection to small area while low 
+     values spread it wider
+  - Transparency: control over how light passes through a surface
+  - Mirror: control over the reflectiveness 
+ 
+ - Halo: concerns the properties of the vertices of a 3D object
+    displayed as points of light 
+----
+
+----
+Texture
+ - World Textures: for overall scene background
+ - Material Texture: for the surface of 3D objects
+ - Particle Texture: for use in Blender Particle System
+ - Data Texture: used to affect Vertex Paint and Sculpt tools
+ - F12 or UV\Image editor window will display an object with Texture applied
+----
+ 
+----
+Armatures
+ - the application of stiff, skeletal, segments to a mesh or other
+ 
+ - Bones: the base element of an armature
+  - entities names should have a L\R prefix or suffix with some kind
+    of obvious separator (e.g. underscore, dot, dash)
+   - this naming convention enables for mirroring bones along an axis
+  - Deforming Bones: when transformed, will have assoc. vertices also
+    transformed
+  - Control Bones: a kind of envelope bone which directes other bones based
+    on its state.
+  
+ - Bone Structure: 
+  - consist of Root, Body and Tip
+  - root is the starting joint, 
+  - body is the segment itself
+  - tip is the end joint
+ 
+ - since one bone is, typically, connected to another selecting one's head 
+   is another's tip and vice versa
+ - Rest Position: the default state of the armature upon which all further
+   poses are based
+----
+
+----
+Character Modeling
+ - Model Sheet: for game characters where a front and side perspective
+    are literal artworks which are imported into the digital form
+    - T-Pose: a model sheet with character arms extended outward perpendicular
+      to the floor while the side view has the arms missing
+      
+ - A Rendering: a name for the final result of an artist converting the 
+    original artwork into a useable digital entity.  Sort of like how
+    a program is compiled.
+    
+ - Polygon Count: the total  count of the faces in the mesh
+   - lower means less work for hardware
+   - a smoothing modifiers will increase this polygon count
+   - polygon count is a function of importance, distance and interactivity
+   - the limits of the polygon count are derived from the expected underlying
+     hardware on which the game is played
+
+ - Model Topology: the arrangement of polygons on 3D models
+   - general rules for character-model topology
+    - have polygons as rectangles (aka "quads", quadratic)
+     - 3D animation programs will distort these properly
+    - have three loops for joints on extremities
+    - layout facial geometry with loops around openings (e.g. the mouth would
+      be circumscribed by a series of three ovals)
+ 
+ - Normals: describe the way that a polygon's visible surface is facing
+  - a face in blender is only visable from one side
+  - normals may be facing inward or outward
+  
+ - Smoothing Modifier: an algo applied to a mesh to reduce the 
+    appearance of the polygon faces.
+   - Blender has builtin called Subdivision Surface modifier
+----
