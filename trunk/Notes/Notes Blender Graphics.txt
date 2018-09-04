@@ -85,6 +85,7 @@ Hotkeys
  Alt+RMB: select edge loop
  
  Tab: enter edit mode
+ Ctrl+Tab: toggle vertex, edge, face select mode
  
  A: toggle select all
  Z: toggle wire-frame\shade mode
@@ -170,6 +171,17 @@ Set image as background
 ----
 
 ----
+Mark Seams for Map
+ - switch to Edge Select mode (Ctrl+Tab)
+ - select the edges
+ - open Toolbar (T), select Shading/UVs tab
+  - also is Ctrl+E
+ - click Mark Seam
+ - upon all seems, select all (A)
+ - unwrap: (U) select Unwrap
+----
+
+----
 Terms
  - Viewport: the manner of viewing a 3D object on a 2D computer screen
  - Data-Block: base unit of any blender project
@@ -200,8 +212,12 @@ Terms
    which can be applied onto a 3D model
  - Alpha Maps: a useful texture to create a sense of transparency
  - Specularity Maps: a texture to control the shininess of a model's surface
- - Reflection Maps: a texture for a mirror like surface
+ - Reflection Maps: a texture for a mirror like surfacea
  - Illumination Maps: a texture for a light-source and fade
+ - Unwrap: the concept that if one were to take any 3D image and cut it along
+    particular lines (aka Seams) one could unwrap the 3D image into one or more
+    2D images- this is the same as in clothing where sheets of flat material 
+    are sown together to form a 3D piece of clothing...
 ----
 
 ----
@@ -297,35 +313,95 @@ Armatures
 
 ----
 Character Modeling
+ - general steps being 
+  - Modeling
+  - Mapping
+  - Rigging
+  - Animating
+
  - Model Sheet: for game characters where a front and side perspective
     are literal artworks which are imported into the digital form
     - T-Pose: a model sheet with character arms extended outward perpendicular
       to the floor while the side view has the arms missing
-      
- - A Rendering: a name for the final result of an artist converting the 
-    original artwork into a useable digital entity.  Sort of like how
-    a program is compiled.
-    
- - Polygon Count: the total  count of the faces in the mesh
-   - lower means less work for hardware
-   - a smoothing modifiers will increase this polygon count
-   - polygon count is a function of importance, distance and interactivity
-   - the limits of the polygon count are derived from the expected underlying
-     hardware on which the game is played
-
- - Model Topology: the arrangement of polygons on 3D models
-   - general rules for character-model topology
-    - have polygons as rectangles (aka "quads", quadratic)
-     - 3D animation programs will distort these properly
-    - have three loops for joints on extremities
-    - layout facial geometry with loops around openings (e.g. the mouth would
-      be circumscribed by a series of three ovals)
  
- - Normals: describe the way that a polygon's visible surface is facing
-  - a face in blender is only visable from one side
-  - normals may be facing inward or outward
+ - Modeling: 
+  - begins with two side-by-side viewports, one in orthographic x-axis and the
+    other in orthographic y-axis.
+  - the model sheet is split in two separate files having the front 
+    and side view in the same pixel-by-pixel dim's 
+  - front view is imported into viewport for ortho-x-axis and side view
+    is likewise for ortho-y-axis
+  - a Mirror modifier is often applied so the work only relates to one side
+    of x-axis
+  - modeling takes two general approaches 
+   - extruding: given some shape, vertices are extruded in some direction
+   - poly-by-poly: drawing by adding polygons to each edge one-at-a-time
+  - modeling follows along main body part categories
+   - head\neck: typically drawn with poly-by-poly to handle facial features
+   - torso\waist: the base extrusion form the original basic shape
+   - upper\lower legs: face-delete, followed by extrusion
+   - upper\fore arms: likewise as legs
+   - hands\feet: duplicate edge loops, making independent geometry, 
+      then extrude to form detail
+   - eyes: created as independent spheres layered inside the face mesh
+       just like eyes in biology
+   - mouth: like eyes, being created from a smooth\subdivided cube and 
+       layered within the face
+  - clothing articles are created by separating parts of the mesh
+    and pulling\pushing, folding and extruding as needed
   
- - Smoothing Modifier: an algo applied to a mesh to reduce the 
-    appearance of the polygon faces.
-   - Blender has builtin called Subdivision Surface modifier
+  - Mapping:
+   - typically involves steps of defining seams and, thereby, 
+     2D images (UV Map) followed by the application of sculpted 
+     features (Normal Map) and last is the application of 
+     color (Color Map)
+   - UV Mapping:
+    - the effort of grouping polygons of the character's mesh into
+     flat 2D parts along particular seams
+   - Normal Mapping:
+    - for adding high-res detail to low-polygon models
+    - used by game engine to display as-though it were a high-polygon model
+    - the effort results in a sense of the poloygons surface having
+      been sculpted with rich detail (less any color)
+    - the file will itself be an image file (i.e. tif, jpeg, png etc.)
+   - Color Mapping:
+    - uses raster graphics, which are pixel-by-pixel 
+     - don't scale as well as vector graphics
+     - do provide greater gradient control to color
+    - is typically created in a graphics editor (GIMP, Photoshop)
+      
+  - Rigging:
+   - involves linking "bones" to the vertices of a mesh by weight
+   - is technical in nature rather than artistic 
+   - allows for the application of constraints and interconnected
+     association amoung the various bones
+    - associations are in the form of parent\child relations
+      where movement of a parent cause movement of its children
+    - constraints are in the form of allowable range of pivot-points
+    - inverse kinematics (IK) allows for a control-point in which
+      the bone at the end of a chain will control all above it
+    - links can be formed without having bones tail-head directly 
+      connected
+    - each bone's head is associated to an x-y-z orientation which can be
+      rotated
+   - linking amoung various programs (e.g. Unity) is formed by 
+     a bone naming convention 
+    - the convention has a "root" bone which is often situated with
+      its head at the navel
+    - appendenges will have a L\R or Left\Right suffix
+   - bones may be representative, serving the purpose of control over
+     whole parts of the armature 
+    - these may be situated outside the model
+ 
+  - Animating
+   - recorded sequences of discrete armature movements over a time frame
+   - requires the rigging is complete and fully painted to the model's mesh
+   - typical minimum animations are idle, walk and run
+   - forms the interface upon which game engine gains programatic control
+     over the character
+   - is an artform all on its own
+   - the animation is itself one continous sequence so noting the 
+     start-stop of each, in terms of particular time-frame value, is 
+     required before dropping into Unity
 ----
+
