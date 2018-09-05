@@ -183,6 +183,8 @@ Mark Seams for Map
 
 ----
 Terms
+ - Perturbation: deviation from normal state caused by outside influence
+ - Tesselation: tiling of a plane using one or more geometric shapes
  - Viewport: the manner of viewing a 3D object on a 2D computer screen
  - Data-Block: base unit of any blender project
    - primary blend-file content
@@ -206,18 +208,36 @@ Terms
   - Texture: applied to object's surface for smooth, rough, bumpy, cracked, etc.
   - Material: applied to object's surface for color, reflectiveness, transparency, etc.
   - Lattice: grid-based, invisible area which surrounds the object
- - Color Map: (aka diffuse maps) a kind of texture which gives color and definition 
- - Bump Map: a texture which is used to make a flat surface appear bumpy
- - Normal Maps: also a texture, a more powerful version of a bump map 
-   which can be applied onto a 3D model
- - Alpha Maps: a useful texture to create a sense of transparency
- - Specularity Maps: a texture to control the shininess of a model's surface
- - Reflection Maps: a texture for a mirror like surfacea
- - Illumination Maps: a texture for a light-source and fade
- - Unwrap: the concept that if one were to take any 3D image and cut it along
-    particular lines (aka Seams) one could unwrap the 3D image into one or more
-    2D images- this is the same as in clothing where sheets of flat material 
-    are sown together to form a 3D piece of clothing...
+----
+
+----
+Normal Maps:
+ - a surface texture to allow low-polygon models to have a 
+   rich, sculpted looking surface.
+ - regards how light reflects off the surface of the model, the normal
+   map causes light to reflect as-if the surface has the sculpted depth 
+   rather than flat plane of a polygon.
+  - this is something game engines are very fast at
+ - allows for softening of model edges
+ - appear in RGB, which correspond to X, Y, Z of coordinates
+  - X: -1 to 1, Red: 0 to 255
+  - Y: -1 to 1, Green: 0 to 255
+  - Z: 0 to -1, Blue: 128 to 255
+  - carmera view is orthogonal to surface at (0,0,-1) 
+    which is the light blue color which dominates most normal 
+    maps
+  - since orthogonal is (0,0,-1), the default is a recessed surface 
+    from original plane of polygon
+  - red controls right-to-left
+   - reflect directly right would be lots of red, neutral green and 
+     neutral blue (255,128,128)
+   - reflect directly left would be no red, neutral green and 
+     neutral blue (0,128,128)
+  - green controls top-to-bottom
+   - reflect directly up would be neutral red, lots of green and
+     neutral blue (128,255,128)
+   - reflect directly down would be neutral red, no green and 
+     neutral blue (128,0,128)
 ----
 
 ----
@@ -261,6 +281,10 @@ Mesh
 
 ----
 Material
+ - Unwrap: the concept that if one were to take any 3D image and cut it along
+   particular lines (aka Seams) one could unwrap the 3D image into one or more
+   2D images- this is the same as in clothing where sheets of flat material 
+   are sown together to form a 3D piece of clothing...
  - Surface: concerns the properties of a 3D objects faces
   - Diffuse: the overall color of the surface
    - Intensity: the intensity of the color at the given light-level
@@ -272,9 +296,8 @@ Material
      values spread it wider
   - Transparency: control over how light passes through a surface
   - Mirror: control over the reflectiveness 
- 
  - Halo: concerns the properties of the vertices of a 3D object
-    displayed as points of light 
+   displayed as points of light 
 ----
 
 ----
