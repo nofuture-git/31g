@@ -6,6 +6,7 @@ using NoFuture.Gen;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.DotNetMeta;
 
 namespace NoFuture.Tests.Gen
 {

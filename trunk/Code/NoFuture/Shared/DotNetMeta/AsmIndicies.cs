@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace NoFuture.Shared
+namespace NoFuture.Shared.DotNetMeta
 {
     /// <summary>
     /// Bundler type for <see cref="MetadataTokenAsm"/>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Shared
+namespace NoFuture.Shared.DotNetMeta
 {
     /// <summary>
     /// A dictionary for assembly names.

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace NoFuture.Shared
+namespace NoFuture.Shared.DotNetMeta
 {
     /// <summary>
     /// Bundler type for <see cref="MetadataTokenName"/>
@@ -15,22 +15,6 @@ namespace NoFuture.Shared
         public string Msg;
         public MetadataTokenStatus St;
         public MetadataTokenName[] Names;
-
-        /// <summary>
-        /// Final analysis to merge the token Ids to thier names in a hierarchy.
-        /// </summary>
-        /// <param name="tokenIds"></param>
-        /// <returns></returns>
-        public TokenNames GetFullCallStackTree(MetadataTokenId[] tokenIds)
-        {
-            if (St == MetadataTokenStatus.Error || Names == null || Names.Length <= 0)
-                return null;
-            
-            var nameMapping = new List<MetadataTokenName>();
-            foreach(var tokenId in tokenIds)
-                nameMapping.Add(GetNameMapping(tokenId));
-            return new TokenNames {Names = nameMapping.ToArray()};
-        }
 
         /// <summary>
         /// Given the <see cref="asmIndicies"/> each <see cref="MetadataTokenName.Name"/>
@@ -67,6 +51,23 @@ namespace NoFuture.Shared
             //use the existing logic for flattening based on token Ids, not token names
             var distTokens = Names.Select(d => d.Convert2MetadataTokenId()).ToArray();
             return new TokenIds {St = MetadataTokenStatus.Ok, Tokens = distTokens};
+        }
+
+        /// <summary>
+        /// Final analysis to merge the token Ids to thier names in a hierarchy.
+        /// </summary>
+        /// <param name="tokenIds"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal TokenNames GetFullCallStackTree(MetadataTokenId[] tokenIds)
+        {
+            if (St == MetadataTokenStatus.Error || Names == null || Names.Length <= 0)
+                return null;
+
+            var nameMapping = new List<MetadataTokenName>();
+            foreach (var tokenId in tokenIds)
+                nameMapping.Add(GetNameMapping(tokenId));
+            return new TokenNames { Names = nameMapping.ToArray() };
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

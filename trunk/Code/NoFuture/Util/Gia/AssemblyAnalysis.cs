@@ -7,6 +7,7 @@ using System.Reflection;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.DotNetMeta;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 using NoFuture.Util.Gia.InvokeCmds;
@@ -134,17 +135,11 @@ namespace NoFuture.Util.Gia
         ///  # this will represent the call-stack-tree in terms of just metadata token ids
         ///  $myTokensIds = $myAsmAly.GetTokenIds(0, "NoFuture.*")
         /// 
-        ///  # utility method to reduce the tree to a set
-        ///  $myFlatTokens = $myTokensIds.FlattenToDistinct()
-        /// 
         ///  # translates the metadata token into a name (assembly, type, method, etc.)
-        ///  $myTokenNames = $myAsmAly.GetTokenNames($myFlatTokens)
+        ///  $myTokenNames = $myAsmAly.GetTokenNames($myTokensIds.FlattenToDistinct())
         ///  
-        ///  # utility method to resolve the assembly index into its name
-        ///  $myTokenNames.ApplyFullName($myAsmAly.AsmIndicies)
-        /// 
         ///  # converts the call-stack-tree metadata tokens into their names 
-        ///  $appliedTokenNames = $myTokenNames.GetFullCallStackTree($myTokensIds.Tokens)
+        ///  $appliedTokenNames = New-Object NoFuture.Shared.DotNetMeta.TokenNamesTree($myTokenName, $myTokensIds, $myAsmIndices)
         /// ]]>
         /// </example>
         public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)

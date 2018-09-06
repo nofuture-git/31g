@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared;
+using NoFuture.Shared.DotNetMeta;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds

@@ -5,6 +5,7 @@ using System.Text;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
+using NoFuture.Shared.DotNetMeta;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.Gia;

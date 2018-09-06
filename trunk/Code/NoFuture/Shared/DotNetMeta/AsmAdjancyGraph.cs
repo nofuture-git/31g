@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NoFuture.Shared
+namespace NoFuture.Shared.DotNetMeta
 {
     [Serializable]
     public class AsmAdjancyGraph

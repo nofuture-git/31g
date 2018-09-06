@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Shared.DotNetMeta;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeCmds

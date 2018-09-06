@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Shared
+namespace NoFuture.Shared.DotNetMeta
 {
     /// <summary>
     /// The resolved name of a single metadata token

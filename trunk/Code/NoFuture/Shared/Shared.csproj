@@ -64,11 +64,11 @@
     <Compile Include="DotNetMeta\MetadataTokenNameComparer.cs" />
     <Compile Include="DotNetMeta\MetadataTokenSerialize.cs" />
     <Compile Include="DotNetMeta\MetadataTokenStatus.cs" />
+    <Compile Include="DotNetMeta\TokenNamesTree.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DotNetMeta\RankedMetadataTokenAsm.cs" />
     <Compile Include="DotNetMeta\RankedMetadataTokenAsmComparer.cs" />
-    <Compile Include="DotNetMeta\TokenFactory.cs" />
     <Compile Include="DotNetMeta\TokenIds.cs" />
     <Compile Include="DotNetMeta\TokenNames.cs" />
     <Compile Include="DotNetMeta\TokenPageRanks.cs" />
