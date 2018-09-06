@@ -11,7 +11,6 @@ using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 using NoFuture.Util.Gia.InvokeCmds;
 using NoFuture.Util.NfConsole;
-using NoFuture.Util.NfType;
 
 namespace NoFuture.Util.Gia
 {
@@ -27,6 +26,7 @@ namespace NoFuture.Util.Gia
         public const string GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH = "nfGetTokenPageRank";
         public const string RESOLVE_GAC_ASM_SWITCH = "nfResolveGacAsm";
         public static int DefaultPort = NfConfig.NfDefaultPorts.AssemblyAnalysis;
+        internal const string UNKNOWN_NAME_SUB = "T";
         #endregion
 
         #region fields
@@ -125,12 +125,26 @@ namespace NoFuture.Util.Gia
         /// </remarks>
         /// <example>
         /// <![CDATA[
+        ///  # will launch a console
         ///  $myAsmAly = New-Object NoFuture.Util.Gia.AssemblyAnalysis($AssemblyPath,$false)
+        ///  
+        ///  # this is assembly-name-to-index used to reduce the size of socket payloads
+        ///  $myAsmIndices = $myAsmAly.AsmIndicies
+        ///  
+        ///  # this will represent the call-stack-tree in terms of just metadata token ids
         ///  $myTokensIds = $myAsmAly.GetTokenIds(0, "NoFuture.*")
+        /// 
+        ///  # utility method to reduce the tree to a set
         ///  $myFlatTokens = $myTokensIds.FlattenToDistinct()
+        /// 
+        ///  # translates the metadata token into a name (assembly, type, method, etc.)
         ///  $myTokenNames = $myAsmAly.GetTokenNames($myFlatTokens)
+        ///  
+        ///  # utility method to resolve the assembly index into its name
         ///  $myTokenNames.ApplyFullName($myAsmAly.AsmIndicies)
-        ///  $appliedTokenNames = $myTokenNames.ApplyMapping($myTokensIds.Tokens)
+        /// 
+        ///  # converts the call-stack-tree metadata tokens into their names 
+        ///  $appliedTokenNames = $myTokenNames.GetFullCallStackTree($myTokensIds.Tokens)
         /// ]]>
         /// </example>
         public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
@@ -273,7 +287,7 @@ namespace NoFuture.Util.Gia
 
                 asmName = type.Assembly.GetName().Name;
                 expandedName = !string.IsNullOrEmpty(asmName)
-                    ? type.FullName.Replace($"{asmName}", string.Empty)
+                    ? (type.FullName ?? UNKNOWN_NAME_SUB).Replace($"{asmName}", string.Empty)
                     : type.FullName;
                 if (!string.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
                     tokenName.Name = expandedName;
@@ -298,7 +312,7 @@ namespace NoFuture.Util.Gia
 
             asmName = mi.DeclaringType.Assembly.GetName().Name;
             expandedName = !string.IsNullOrEmpty(asmName)
-                ? mi.DeclaringType.FullName.Replace($"{asmName}", string.Empty)
+                ? (mi.DeclaringType.FullName ?? UNKNOWN_NAME_SUB).Replace($"{asmName}", string.Empty)
                 : mi.DeclaringType.FullName;
             if (!string.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
                 tokenName.Name = $"{expandedName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{tokenName.Name}";
@@ -320,7 +334,8 @@ namespace NoFuture.Util.Gia
 
             foreach (var param in mtiParams)
             {
-                var workingName = param.ParameterType.FullName;
+                var workingName = param.ParameterType.FullName ?? UNKNOWN_NAME_SUB;
+                
                 if (!param.ParameterType.IsGenericType)
                 {
                     paramNames.Add(workingName);

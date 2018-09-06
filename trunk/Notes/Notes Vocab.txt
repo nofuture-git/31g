@@ -634,3 +634,5 @@ remunerative: financially rewarding; lucrative
 sine qua non: latin for "without which nothing"
 Nikefication: a branding strategy without actual industrial processes behind it.
 reify: make something which is abstract  more concrete or real
+contrapasso: suffer the opposite, from Dante's Inferno, a punishment which resembles 
+             or contrast with the freely choosen sin itself
