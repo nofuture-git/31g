@@ -43,6 +43,24 @@ namespace NoFuture.Shared.DotNetMeta
         [NonSerialized]
         public MetadataTokenName[] Items;
 
+        public void ApplyFullName(AsmIndicies asmIndicies)
+        {
+            if (!IsPartialName())
+                return;
+            var asm = asmIndicies.Asms.FirstOrDefault(x => x.IndexId == OwnAsmIdx);
+            if (asm == null)
+                return;
+            var asmName = new AssemblyName(asm.AssemblyName);
+            Name = asmName.Name + Name;
+            if (Items == null || !Items.Any())
+                return;
+            //recurse down the tree
+            foreach (var myItems in Items)
+            {
+                myItems.ApplyFullName(asmIndicies);
+            }
+        }
+
         public MetadataTokenId Convert2MetadataTokenId()
         {
             return new MetadataTokenId
@@ -63,6 +81,13 @@ namespace NoFuture.Shared.DotNetMeta
                    && Name.Contains(Constants.TYPE_METHOD_NAME_SPLIT_ON) 
                    && Name.Contains("(") 
                    && Name.Contains(")");
+        }
+
+        public bool IsTypeName()
+        {
+            return !string.IsNullOrWhiteSpace(Name)
+                   && !string.IsNullOrWhiteSpace(Label)
+                   && string.Equals("RuntimeType", Label);
         }
 
         /// <summary>

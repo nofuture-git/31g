@@ -30,12 +30,19 @@ namespace NoFuture.Shared.DotNetMeta
         /// </summary>
         public TokenNames TreeTokenNames { get; }
 
+        /// <summary>
+        /// Ctor of final assembly analysis 
+        /// </summary>
+        /// <param name="flatNames">The result names in a flat set</param>
+        /// <param name="treeIds">The token ids in hierarchy form</param>
+        /// <param name="asms">The assembly-to-index</param>
         public TokenNamesTree(TokenNames flatNames, TokenIds treeIds, AsmIndicies asms)
         {
             FlatTokenNames = flatNames ?? throw new ArgumentNullException(nameof(flatNames));
             TokenIds = treeIds ?? throw new ArgumentNullException(nameof(treeIds));
             AssemblyIndices = asms ?? throw new ArgumentNullException(nameof(treeIds));
             TreeTokenNames = FlatTokenNames.GetFullCallStackTree(TokenIds.Tokens);
+            TreeTokenNames.ApplyFullName(AssemblyIndices);
         }
 
         public TokenNames GetInternallyCalledTokenNames()
@@ -48,7 +55,6 @@ namespace NoFuture.Shared.DotNetMeta
 
             if (typeTokens.All(x => x.Items == null || x.Items.Length <= 0))
                 return new TokenNames { Names = new List<MetadataTokenName>().ToArray() };
-
 
             var memberTokens = typeTokens.SelectMany(x => x.Items).ToList();
 

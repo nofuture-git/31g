@@ -33,13 +33,7 @@ namespace NoFuture.Shared.DotNetMeta
                 return;
             foreach (var t in Names)
             {
-                if (!t.IsPartialName())
-                    continue;
-                var asm = asmIndicies.Asms.FirstOrDefault(x => x.IndexId == t.OwnAsmIdx);
-                if (asm == null)
-                    continue;
-                var asmName = new AssemblyName(asm.AssemblyName);
-                t.Name = asmName.Name + t.Name;
+                t.ApplyFullName(asmIndicies);
             }
         }
 

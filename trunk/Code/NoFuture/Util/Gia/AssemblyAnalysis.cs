@@ -139,7 +139,7 @@ namespace NoFuture.Util.Gia
         ///  $myTokenNames = $myAsmAly.GetTokenNames($myTokensIds.FlattenToDistinct())
         ///  
         ///  # converts the call-stack-tree metadata tokens into their names 
-        ///  $appliedTokenNames = New-Object NoFuture.Shared.DotNetMeta.TokenNamesTree($myTokenName, $myTokensIds, $myAsmIndices)
+        ///  $appliedTokenNames = New-Object NoFuture.Shared.DotNetMeta.TokenNamesTree($myTokenNames, $myTokensIds, $myAsmIndices)
         /// ]]>
         /// </example>
         public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
