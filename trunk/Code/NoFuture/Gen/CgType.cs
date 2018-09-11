@@ -195,7 +195,7 @@ namespace NoFuture.Gen
             if (string.IsNullOrWhiteSpace(methodName))
                 return null;
             string isPropName;
-            if (NfReflect.IsClrMethodForProperty(tokenName.Name, out isPropName))
+            if (NfReflect.IsClrMethodForProperty(methodName, out isPropName))
             {
                 methodName = isPropName;
                 var propMatches = Properties.Where(p => string.Equals(p.Name, methodName)).ToArray();
