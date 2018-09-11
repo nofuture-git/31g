@@ -47,6 +47,108 @@ namespace NoFuture.Shared.DotNetMeta
             return new TokenIds {St = MetadataTokenStatus.Ok, Tokens = distTokens};
         }
 
+        public TokenNames FlattenToDistinct()
+        {
+            var innerItems = new List<MetadataTokenName>();
+            if (Names == null || !Names.Any())
+                return new TokenNames {Names = innerItems.ToArray()};
+
+            foreach (var name in Names)
+            {
+                innerItems.AddRange(name.FlattenToDistinct());
+            }
+
+            return new TokenNames { Names = innerItems.Distinct(new MetadataTokenNameComparer()).ToArray()};
+        }
+
+        /// <summary>
+        /// Gets the names which are exclusive to <see cref="otherNames"/>
+        /// </summary>
+        /// <param name="otherNames"></param>
+        /// <param name="rightListTopLvlOnly"></param>
+        /// <returns></returns>
+        public TokenNames GetRightSetDiff(TokenNames otherNames, bool rightListTopLvlOnly = false)
+        {
+            if (otherNames == null)
+                return this;
+            var leftList = this;
+            var rightList = otherNames;
+            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
+
+            if (rightList.Names == null || rightList.Names.Length <= 0)
+                return this;
+            if (leftList.Names == null || leftList.Names.Length <= 0)
+                return rightList;
+
+            var setOp = rightList.Names.Select(hashCode).Except(leftList.Names.Select(hashCode));
+
+            var listOut = new List<MetadataTokenName>();
+            foreach (var j in setOp)
+            {
+                var k = rightList.Names.FirstOrDefault(x => hashCode(x) == j);
+                if (k == null || rightListTopLvlOnly && k.OwnAsmIdx != 0)
+                    continue;
+                listOut.Add(k);
+            }
+
+            return new TokenNames { Names = listOut.ToArray() };
+        }
+
+        /// <summary>
+        /// Joins the distinct names of this instance to the names of <see cref="otherNames"/>
+        /// </summary>
+        /// <param name="otherNames"></param>
+        /// <returns></returns>
+        public TokenNames GetUnion(TokenNames otherNames)
+        {
+            if (otherNames == null)
+                return this;
+            var leftList = this;
+            var rightList = otherNames;
+            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
+
+            var d = rightList.Names.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
+            var e = leftList.Names.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
+
+            foreach (var key in e.Keys.Where(k => !d.ContainsKey(k)))
+                d.Add(key, e[key]);
+
+            return new TokenNames { Names = d.Values.ToArray() };
+        }
+
+        /// <summary>
+        /// Gets the names which are shared between this instance and <see cref="otherNames"/>
+        /// </summary>
+        /// <param name="otherNames"></param>
+        /// <returns></returns>
+        public TokenNames GetIntersect(TokenNames otherNames)
+        {
+            if (otherNames == null)
+                return this;
+            var leftList = this;
+            var rightList = otherNames;
+            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
+
+            if (rightList.Names == null || rightList.Names.Length <= 0)
+                return this;
+            if (leftList.Names == null || leftList.Names.Length <= 0)
+                return rightList;
+
+            var setOp = rightList.Names.Select(hashCode).Intersect(leftList.Names.Select(hashCode));
+
+            var listOut = new List<MetadataTokenName>();
+            foreach (var j in setOp)
+            {
+                //should be in either list
+                var k = leftList.Names.FirstOrDefault(x => hashCode(x) == j);
+                if (k == null)
+                    continue;
+                listOut.Add(k);
+            }
+
+            return new TokenNames { Names = listOut.ToArray() };
+        }
+
         /// <summary>
         /// Final analysis to merge the token Ids to thier names in a hierarchy.
         /// </summary>

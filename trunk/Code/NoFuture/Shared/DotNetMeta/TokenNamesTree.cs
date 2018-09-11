@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Shared.DotNetMeta
 {
@@ -41,20 +42,53 @@ namespace NoFuture.Shared.DotNetMeta
             FlatTokenNames = flatNames ?? throw new ArgumentNullException(nameof(flatNames));
             TokenIds = treeIds ?? throw new ArgumentNullException(nameof(treeIds));
             AssemblyIndices = asms ?? throw new ArgumentNullException(nameof(treeIds));
+            FlatTokenNames.ApplyFullName(AssemblyIndices);
             TreeTokenNames = FlatTokenNames.GetFullCallStackTree(TokenIds.Tokens);
             TreeTokenNames.ApplyFullName(AssemblyIndices);
+        }
+
+        /// <summary>
+        /// Selectively gets the flatten call stack for the given type-method pair
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
+        public TokenNames FlattenToDistinct(string typeName, string methodName)
+        {
+            var df = new TokenNames { Names = new MetadataTokenName[] { } };
+            if (string.IsNullOrWhiteSpace(typeName) || string.IsNullOrWhiteSpace(methodName))
+                return df;
+            if (methodName.Contains("("))
+                methodName = methodName.Substring(0, methodName.IndexOf('('));
+
+            var typeNameTree = TreeTokenNames.Names.FirstOrDefault(tn => tn.IsTypeName() && tn.Name.EndsWith(typeName));
+            if(typeNameTree?.Items == null || !typeNameTree.Items.Any())
+                return df;
+
+            //match on overloads
+            var targetMethods = typeNameTree.Items.Where(item =>
+                item.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("));
+
+            var innerItems = new List<MetadataTokenName>();
+            foreach (var targetMethod in targetMethods)
+            {
+                innerItems.AddRange(targetMethod.FlattenToDistinct());
+            }
+
+            return new TokenNames { Names = innerItems.Distinct(new MetadataTokenNameComparer()).ToArray() };
+            
         }
 
         public TokenNames GetInternallyCalledTokenNames()
         {
             if (FlatTokenNames?.Names == null || FlatTokenNames.Names.Length <= 0)
-                return new TokenNames { Names = new List<MetadataTokenName>().ToArray() };
+                return new TokenNames { Names = new MetadataTokenName[]{} };
             if (TokenIds?.Tokens == null || TokenIds.Tokens.Length <= 0)
-                return new TokenNames { Names = new List<MetadataTokenName>().ToArray() };
+                return new TokenNames { Names = new MetadataTokenName[] { } };
             var typeTokens = TokenIds.Tokens;
 
             if (typeTokens.All(x => x.Items == null || x.Items.Length <= 0))
-                return new TokenNames { Names = new List<MetadataTokenName>().ToArray() };
+                return new TokenNames { Names = new MetadataTokenName[] { } };
 
             var memberTokens = typeTokens.SelectMany(x => x.Items).ToList();
 
@@ -72,63 +106,6 @@ namespace NoFuture.Shared.DotNetMeta
 
             var namesArray = FlatTokenNames.Names.Where(x => callsInMembers.Any(y => y == x.Id)).ToArray();
             return new TokenNames { Names = namesArray };
-        }
-
-        public TokenNames GetRightSetDiff(TokenNamesTree tokenNamesTree, bool rightListTopLvlOnly = false)
-        {
-            if (tokenNamesTree == null)
-                return TreeTokenNames;
-            var leftList = new Tuple<AsmIndicies, TokenNames>(AssemblyIndices, TreeTokenNames);
-            var rightList = new Tuple<AsmIndicies, TokenNames>(tokenNamesTree.AssemblyIndices, tokenNamesTree.TreeTokenNames);
-            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
-
-            if (rightList.Item2?.Names == null || rightList.Item2.Names.Length <= 0)
-                return new TokenNames { Names = new List<MetadataTokenName>().ToArray() };
-            if (leftList.Item2?.Names == null || leftList.Item2.Names.Length <= 0)
-                return new TokenNames { Names = rightList.Item2.Names.ToArray() };
-
-            //expand to full names
-            leftList.Item2.ApplyFullName(leftList.Item1);
-            rightList.Item2.ApplyFullName(rightList.Item1);
-
-            var setOp = rightList.Item2.Names.Select(hashCode).Except(leftList.Item2.Names.Select(hashCode));
-
-            var listOut = new List<MetadataTokenName>();
-            foreach (var j in setOp)
-            {
-                var k = rightList.Item2.Names.FirstOrDefault(x => hashCode(x) == j);
-                if (k == null || (rightListTopLvlOnly && k.OwnAsmIdx != 0) || !k.IsMethodName())
-                    continue;
-                listOut.Add(k);
-            }
-
-            return new TokenNames { Names = listOut.ToArray() };
-        }
-
-        public TokenNames GetUnion(TokenNamesTree tokenNamesTree)
-        {
-            if (tokenNamesTree == null)
-                return TreeTokenNames;
-            var leftList = new Tuple<AsmIndicies, TokenNames>(AssemblyIndices, TreeTokenNames);
-            var rightList = new Tuple<AsmIndicies, TokenNames>(tokenNamesTree.AssemblyIndices, tokenNamesTree.TreeTokenNames);
-            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
-
-            if (rightList.Item2 == null)
-                return new TokenNames { Names = leftList.Item2.Names };
-            if (leftList.Item2 == null)
-                return new TokenNames { Names = rightList.Item2.Names };
-
-            //expand to full names
-            leftList.Item2.ApplyFullName(leftList.Item1);
-            rightList.Item2.ApplyFullName(rightList.Item1);
-
-            var d = rightList.Item2.Names.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
-            var e = leftList.Item2.Names.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
-
-            foreach (var key in e.Keys.Where(k => !d.ContainsKey(k)))
-                d.Add(key, e[key]);
-
-            return new TokenNames { Names = d.Values.Where(x => x.IsMethodName()).ToArray() };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -42,6 +43,19 @@ namespace NoFuture.Shared.DotNetMeta
         /// </summary>
         [NonSerialized]
         public MetadataTokenName[] Items;
+
+        public MetadataTokenName[] FlattenToDistinct()
+        {
+            var innerItems = new List<MetadataTokenName> {this};
+            if (Items == null || !Items.Any())
+                return innerItems.ToArray();
+            foreach (var item in Items)
+            {
+                innerItems.AddRange(item.FlattenToDistinct());
+            }
+
+            return innerItems.Distinct(new MetadataTokenNameComparer()).ToArray();
+        }
 
         public void ApplyFullName(AsmIndicies asmIndicies)
         {
@@ -88,6 +102,21 @@ namespace NoFuture.Shared.DotNetMeta
             return !string.IsNullOrWhiteSpace(Name)
                    && !string.IsNullOrWhiteSpace(Label)
                    && string.Equals("RuntimeType", Label);
+        }
+
+        public string GetMemberName()
+        {
+            const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
+            return IsMethodName() ? Name.Substring(Name.IndexOf(SPLT) + SPLT.Length) : string.Empty;
+        }
+
+        public string GetTypeName()
+        {
+            const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
+            var idxOut = Name.IndexOf(SPLT);
+            if (idxOut <= 0)
+                return string.Empty;
+            return Name.Substring(0, Name.IndexOf(SPLT));
         }
 
         /// <summary>

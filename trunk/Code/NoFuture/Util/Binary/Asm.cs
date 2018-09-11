@@ -603,8 +603,15 @@ namespace NoFuture.Util.Binary
             var emptyArray = new byte[0];
             if (mb == null)
                 return emptyArray;
-            var body = mb.GetMethodBody();
-            return body == null ? emptyArray : body.GetILAsByteArray();
+            try
+            {
+                var body = mb.GetMethodBody();
+                return body == null ? emptyArray : body.GetILAsByteArray();
+            }
+            catch
+            {
+                return emptyArray;
+            }
         }
 
         /// <summary>

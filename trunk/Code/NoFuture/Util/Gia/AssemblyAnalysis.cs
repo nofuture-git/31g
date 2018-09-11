@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
@@ -431,6 +432,29 @@ namespace NoFuture.Util.Gia
             return methodName;
         }
 
+        public static TokenNames ReadTokenNamesFromFile(string fullFileName)
+        {
+            if(string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
+                return new TokenNames();
+            var jsonContent = File.ReadAllText(fullFileName);
+            return JsonConvert.DeserializeObject<TokenNames>(jsonContent);
+        }
+
+        public static TokenIds ReadTokenIdsFromFile(string fullFileName)
+        {
+            if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
+                return new TokenIds();
+            var jsonContent = File.ReadAllText(fullFileName);
+            return JsonConvert.DeserializeObject<TokenIds>(jsonContent);
+        }
+
+        public static AsmIndicies ReadAsmIndiciesFromFile(string fullFileName)
+        {
+            if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
+                return new AsmIndicies();
+            var jsonContent = File.ReadAllText(fullFileName);
+            return JsonConvert.DeserializeObject<AsmIndicies>(jsonContent);
+        }
         #endregion
 
         #region static analysis

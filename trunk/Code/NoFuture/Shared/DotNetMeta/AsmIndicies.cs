@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -26,6 +27,29 @@ namespace NoFuture.Shared.DotNetMeta
                             string.Equals(x.GetName().FullName, owningAsmName.AssemblyName,
                                 StringComparison.OrdinalIgnoreCase));
             return owningAsm;
+        }
+
+        public string GetAssemblyPathFromRoot(string folderPath, int idx)
+        {
+            if (string.IsNullOrWhiteSpace(folderPath) || !Directory.Exists(folderPath))
+                return null;
+
+            var owningAsmName = Asms.FirstOrDefault(x => x.IndexId == idx);
+            if (string.IsNullOrWhiteSpace(owningAsmName?.AssemblyName))
+                return null;
+
+            var di = new DirectoryInfo(folderPath);
+            foreach (var d in di.EnumerateFileSystemInfos())
+            {
+                if (!new[] {".dll", ".exe"}.Contains(d.Extension))
+                    continue;
+                var dAsmName = AssemblyName.GetAssemblyName(d.FullName);
+                var eAsmName = new AssemblyName(owningAsmName.AssemblyName);
+                if (AssemblyName.ReferenceMatchesDefinition(dAsmName, eAsmName))
+                    return d.FullName;
+            }
+
+            return null;
         }
     }
 }

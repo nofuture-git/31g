@@ -10,6 +10,7 @@ namespace NoFuture.Shared.DotNetMeta
     {
         public string AssemblyName;
         public int IndexId;
+
         public override bool Equals(object obj)
         {
             var mta = obj as MetadataTokenAsm;
