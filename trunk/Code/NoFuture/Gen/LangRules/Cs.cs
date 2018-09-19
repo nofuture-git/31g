@@ -45,7 +45,7 @@ namespace NoFuture.Gen.LangRules
 
         public string GetDecoratorRegex()
         {
-            return @"\[.*\]";
+            return @"\x5B[^\x5D]*\x5D";
         }
 
         public string ToDecl(CgMember cgMem, bool includesAccessModifier = false)

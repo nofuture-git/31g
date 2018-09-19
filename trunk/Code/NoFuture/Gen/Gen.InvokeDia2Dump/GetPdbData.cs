@@ -301,7 +301,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
             var dia2Dump = NfConfig.CustomTools.Dia2Dump;
 
             if(string.IsNullOrWhiteSpace(dia2Dump))
-                throw new RahRowRagee("The constants value at 'NoFuture.CustomTools.Dia2Dump' is not assigned.");
+                throw new RahRowRagee("The constants value at 'NoFuture.Shared.Cfg.NfConfig.CustomTools.Dia2Dump' is not assigned.");
             if(!File.Exists(dia2Dump))
                 throw new ItsDeadJim(string.Format("The binary 'Dia2Dump.exe' is not at '{0}'.",dia2Dump));
 

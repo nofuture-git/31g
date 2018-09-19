@@ -684,5 +684,108 @@ namespace NoFuture.Tests.Gen
             Console.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
         }
 
+        [Test]
+        public void TestRemoveOrphanedDecorators()
+        {
+            var testFileContent = new[]
+            {
+                "using System;",
+                "using System.Collections.Generic;",
+                "using System.Runtime.Serialization;",
+                "using Dnno.Common.VissTypes;",
+                "using Dnno.Dto;",
+                "using Dnno.Dto.Base;",
+                "using Dnno.Dto.Brand;",
+                "using Dnno.Dto.UtilForm;",
+                "using Dnno.Dto.Vide;",
+                "using Dnno.Dto.Dooming;",
+                "",
+                "namespace Dnno.Biden.HossService.Eepo.Dto",
+                "{",
+                "	[DataEepo(IsReference = true)]",
+                "	public class GetAutmnDetailsBase : MessageResponseBase",
+                "	{",
+                "		/// <summary>",
+                "		/// gets or sets the AutmnId",
+                "		/// </summary>",
+                "		[DataMember]",
+                "		public int AutmnId { get; set; }",
+/*21*/          "",
+                "		/// <summary>",
+                "		/// gets or sets the VissId for this Autmn",
+                "		/// </summary>",
+                "		[DataMember]",
+                "		public int VissId { get; set; }",
+                "",
+                "        /// <summary>",
+                "        /// gets or sets the ClostizationVissId for this Autmn",
+                "        /// </summary>",
+                "        [DataMember]",
+                "        public int ClostizationVissId { get; set; }",
+                "",
+                "        /// <summary>",
+                "        /// gets or sets the ClostizationRankId for this Autmn",
+                "        /// </summary>",
+                "        [DataMember]",
+                "	    public int ClostizationRankId { get; set; }",
+/*39*/          "",
+                "	    /// <summary>",
+                "		/// gets or sets the VissId for this Hun",
+                "		/// </summary>",
+                "		[DataMember]",
+                "		public int BeanId { get; set; }",
+                "",
+                "		/// <summary>",
+                "		/// gets or sets identifier of the Direct logo",
+                "		/// </summary>",
+                "		[DataMember]",
+                "		public long DirectLogoId { get; set; }",
+                "",
+                "		/// <summary>",
+                "		/// gets or sets the Name for this Hun",
+                "		/// </summary>",
+                "		[DataMember]",
+                "		public string HunName { get; set; }",
+/*57*/          "",
+                "        /// <summary>",
+                "        /// gets or sets the Email for this Hun",
+                "        /// </summary>",
+                "        [DataMember]",
+                "        public string HunEmail { get; set; }",
+                "",
+                "		/// <summary>",
+                "		/// gets or sets the Urn Information for this Hun",
+                "		/// </summary>",
+                "		[DataMember]",
+                "		public UrnMinModel Urn { get; set; }",
+                "",
+                "        /// <summary>",
+                "        /// gets or sets the Urn Information for this Hun",
+                "        /// </summary>",
+                "        [DataMember]",
+                "        public UrnMinModel IiozationUrn { get; set; }",
+/*75*/          "",
+                "		/// <summary>",
+                "		/// gets or sets the Feature Task for this Hun",
+                "		/// </summary>",
+                "		[DataMember]",
+                "		[System.Web.Services.Protocols.SoapDocumentMethodAttribute(\"http://tempuri.org/1stMethod\")]",
+                "		[return: System.Xml.Serialization.XmlElementAttribute(string.Format(\"1stMethodResult {0}\",vla))]",
+                "		public HunFeatureTask FeatureTask { get; set; }",
+                "",
+                "    }",
+                "}",
+                ""
+            };
+
+            var testResult = NoFuture.Gen.RefactorExtensions.RemoveOrphanedDecorators(testFileContent, new[] {20,82}).ToArray();
+            Assert.IsTrue(string.IsNullOrWhiteSpace(testResult[19]));
+            Assert.IsTrue(string.IsNullOrWhiteSpace(testResult[79]));
+            Assert.IsTrue(string.IsNullOrWhiteSpace(testResult[80]));
+            Assert.IsTrue(string.IsNullOrWhiteSpace(testResult[81]));
+
+            //System.IO.File.WriteAllLines(@"C:\Temp\testResult.txt", testResult);
+            
+        }
     }
 }

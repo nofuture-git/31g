@@ -356,7 +356,9 @@ namespace NoFuture.Gen
                 var sl = myToken.End - charCount;
 
                 _myEndEnclosure = new Tuple<int, int>(k, sl);
-                return _myEndEnclosure;
+                
+                //we should not have an end line before the start line
+                return k < myStartEnclosure.Item1 ? GetDefaultEndEnclosure(srcFile) : _myEndEnclosure;
             }
 
             return GetDefaultEndEnclosure(srcFile);
@@ -373,6 +375,7 @@ namespace NoFuture.Gen
                     continue;
                 var idx = srcFile[i].LastIndexOf(closeToken, StringComparison.Ordinal);
                 _myEndEnclosure = new Tuple<int, int>(i, idx + closeToken.Length);
+                break;
             }
             return _myEndEnclosure;
         }

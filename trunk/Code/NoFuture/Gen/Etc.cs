@@ -281,13 +281,18 @@ namespace NoFuture.Gen
         public static CgType GetIsolatedCgOfType(string assemblyPath, string typeFullName, 
             bool resolveDependencies = false, int maxWaitInSeconds = 60)
         {
+            var tempDebug = NfConfig.TempDirectories.Debug;
+            if(string.IsNullOrWhiteSpace(tempDebug) || !Directory.Exists(tempDebug))
+                throw new RahRowRagee("The constant value at " +
+                                      "'NoFuture.Shared.Cfg.NfConfig.TempDirectories.Debug' is not assigned.");
+
             var invokeGetCgTypePath = NfConfig.CustomTools.InvokeGetCgType;
 
             if(string.IsNullOrWhiteSpace(typeFullName))
                 throw new ArgumentNullException(nameof(typeFullName));
             if(string.IsNullOrWhiteSpace(invokeGetCgTypePath))
                 throw new RahRowRagee("The constants value at " +
-                                      "'NoFuture.CustomTools.InvokeGetCgType' is not assigned.");
+                                      "'NoFuture.Shared.Cfg.NfConfig.CustomTools.InvokeGetCgType' is not assigned.");
             if(!File.Exists(invokeGetCgTypePath))
                 throw new ItsDeadJim(
                     $"The binary 'NoFuture.Gen.InvokeGetCgOfType.exe' is not at '{invokeGetCgTypePath}'.");
@@ -327,7 +332,7 @@ namespace NoFuture.Gen
                 throw new ItsDeadJim("The invocation to 'NoFuture.Gen.InvokeGetCgOfType.exe' didn't " +
                                      "return anything on its standard output.");
 
-            File.WriteAllBytes(Path.Combine(NfConfig.TempDirectories.Debug, "GetIsolatedCgType.json"),
+            File.WriteAllBytes(Path.Combine(tempDebug, "GetIsolatedCgType.json"),
                 Encoding.UTF8.GetBytes(buffer));
 
             var dcs = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(CgType));

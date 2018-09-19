@@ -4,13 +4,9 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using NoFuture.Shared;
-using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
-using NoFuture.Util;
 using NoFuture.Util.Core;
-using NoFuture.Util.NfType;
 
 namespace NoFuture.Gen
 {
@@ -121,8 +117,7 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Replaces the implementation of each <see cref="CgMember"/>, including signature 
-        /// but not attributes.
+        /// Replaces the implementation of each <see cref="CgMember"/>, including signature.
         /// The implementation is resolved on the <see cref="CgMember.PdbModuleSymbols"/>
         /// </summary>
         /// <param name="blankOutCgMems"></param>
@@ -352,7 +347,49 @@ namespace NoFuture.Gen
 
             return true;
         }
+
         #region internal api
+        internal static IEnumerable<string> RemoveOrphanedDecorators(IEnumerable<string> lines, IEnumerable<int> atLines)
+        {
+            var srcLines = lines?.ToArray();
+            if (srcLines == null || srcLines.Length <= 0)
+                return srcLines;
+
+            var decoratorRegexPattern = Settings.LangStyle.GetDecoratorRegex();
+            var openEncl = Settings.LangStyle.GetEnclosureOpenToken(null);
+            var closeEncl = Settings.LangStyle.GetEnclosureCloseToken(null);
+            if (string.IsNullOrWhiteSpace(decoratorRegexPattern))
+                return srcLines;
+
+            decoratorRegexPattern = "(" + decoratorRegexPattern + ")";
+            var totalLen = srcLines.Length;
+            var lineNums = atLines.OrderBy(v => v).ToArray();
+            for (var i = 0; i < lineNums.Length; i++)
+            {
+                var startLnIdx = lineNums[i];
+                var prevLnIdx = i == 0 ? -1 : lineNums[i - 1];
+
+                //need to remove all decorators from here where abs min is previous target
+                for (var sLnNum = startLnIdx; sLnNum > prevLnIdx; sLnNum--)
+                {
+                    var sLn = sLnNum < 0 || sLnNum >= totalLen ? string.Empty : srcLines[sLnNum];
+
+                    //break out on any line having an open or close enclosure token
+                    bool myRef = false;
+                    var sLnTrim = Settings.LangStyle.EscStringLiterals(sLn.Trim(), EscapeStringType.BLANK, ref myRef);
+                    if (sLnNum != startLnIdx && (sLnTrim.Contains(openEncl) || sLnTrim.Contains(closeEncl)))
+                        break;
+                    
+                    if (RegexCatalog.IsRegexMatch(sLn, decoratorRegexPattern, out var decorator))
+                    {
+                        srcLines[sLnNum] = sLn.Replace(decorator, new string(' ', decorator.Length));
+                    }
+                }
+            }
+
+            return srcLines;
+        }
+
         //presumes all the Members are defined within the contents of srcLines
         internal static void BlankOutMembers(string[] srcLines, List<CgMember> blankOutCgMems, string outputFileName)
         {
@@ -369,7 +406,7 @@ namespace NoFuture.Gen
             const char BLANK_CHAR = ' ';
 
             if (string.IsNullOrWhiteSpace(outputFileName))
-                outputFileName = Path.Combine(Shared.Core.NfSettings.AppData, Util.Core.Etc.GetNfRandomName());
+                outputFileName = Path.Combine(NfSettings.AppData, Util.Core.Etc.GetNfRandomName());
 
             var d = new SortedList<int, List<int>>();
             foreach (var cgMem in blankOutCgMems.Where(x => x != null))
@@ -422,6 +459,18 @@ namespace NoFuture.Gen
                 }
                 srcLinesOut.Add(lineOn ? originalSrc[i] : new string(BLANK_CHAR, originalSrc[i].Length));
             }
+
+            var lineNums = new List<int>();
+            foreach (var cgMem in blankOutCgMems)
+            {
+                var lnTuple = cgMem?.GetMyStartEnclosure(srcLines, true);
+                if (lnTuple == null)
+                    continue;
+                lineNums.Add(lnTuple.Item1);
+            }
+
+            srcLinesOut = RemoveOrphanedDecorators(srcLinesOut, lineNums).ToList();
+
             File.WriteAllLines(outputFileName, srcLinesOut, Encoding.UTF8);
         }
 
