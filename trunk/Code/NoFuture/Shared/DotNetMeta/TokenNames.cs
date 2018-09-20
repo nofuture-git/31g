@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace NoFuture.Shared.DotNetMeta
         public string Msg;
         public MetadataTokenStatus St;
         public MetadataTokenName[] Names;
+
+        public int Count => Names.Length;
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Given the <see cref="asmIndicies"/> each <see cref="MetadataTokenName.Name"/>
@@ -149,6 +153,36 @@ namespace NoFuture.Shared.DotNetMeta
             return new TokenNames { Names = listOut.ToArray() };
         }
 
+        public TokenNames FilterOnTypeNames(params string[] typenames)
+        {
+            var names = new List<MetadataTokenName>();
+            foreach (var name in Names)
+            {
+                var tname = name.GetTypeName();
+                if (typenames.Contains(tname))
+                    continue;
+                names.Add(name);
+            }
+
+            return new TokenNames {Names = names.ToArray()};
+        }
+
+        public TokenNames FilterOnNamespaceNames(params string[] namespaceNames)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Removes items from <see cref="Names"/> which do not have 
+        /// both &apos;get_[...]&apos; and &apos;set_[...]&apos; method for the 
+        /// same property (by name)
+        /// </summary>
+        /// <returns></returns>
+        public TokenNames RemovePropertiesWithoutBothGetAndSet()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Final analysis to merge the token Ids to thier names in a hierarchy.
         /// </summary>
@@ -196,5 +230,5 @@ namespace NoFuture.Shared.DotNetMeta
 
             return nm;
         }
-    }
+   }
 }
