@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using NoFuture.Shared;
-using NoFuture.Shared.DotNetMeta;
+using NoFuture.Util.DotNetMeta;
 using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Util

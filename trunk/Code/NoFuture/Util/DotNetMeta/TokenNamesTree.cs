@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Shared.DotNetMeta
+namespace NoFuture.Util.DotNetMeta
 {
     /// <summary>
     /// A resultant type of a fully recursive assembly analysis 

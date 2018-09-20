@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Shared.DotNetMeta
+namespace NoFuture.Util.DotNetMeta
 {
     [Serializable]
     public enum MetadataTokenSerialize

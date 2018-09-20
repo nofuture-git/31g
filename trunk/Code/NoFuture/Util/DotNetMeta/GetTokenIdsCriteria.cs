@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace NoFuture.Shared.DotNetMeta
+namespace NoFuture.Util.DotNetMeta
 {
     /// <summary>
     /// A criteria type to send across the wire to a listening socket.

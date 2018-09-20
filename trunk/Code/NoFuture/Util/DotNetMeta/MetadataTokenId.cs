@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace NoFuture.Shared.DotNetMeta
+namespace NoFuture.Util.DotNetMeta
 {
     /// <summary>
     /// Defines the identity of a single metadata token.

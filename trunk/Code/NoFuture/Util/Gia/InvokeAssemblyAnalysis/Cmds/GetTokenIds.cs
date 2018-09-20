@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Shared.DotNetMeta;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
+using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
