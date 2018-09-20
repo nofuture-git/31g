@@ -52,26 +52,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aero.cs" />
-    <Compile Include="DotNetMeta\AsmAdjancyGraph.cs" />
-    <Compile Include="DotNetMeta\AsmIndicies.cs" />
     <Compile Include="DiaSdk\JsonData\Types.cs" />
     <Compile Include="DiaSdk\PdbData.cs" />
     <Compile Include="CipherText.cs" />
-    <Compile Include="DotNetMeta\GetTokenIdsCriteria.cs" />
-    <Compile Include="DotNetMeta\MetadataTokenAsm.cs" />
-    <Compile Include="DotNetMeta\MetadataTokenId.cs" />
-    <Compile Include="DotNetMeta\MetadataTokenName.cs" />
-    <Compile Include="DotNetMeta\MetadataTokenNameComparer.cs" />
-    <Compile Include="DotNetMeta\MetadataTokenSerialize.cs" />
-    <Compile Include="DotNetMeta\MetadataTokenStatus.cs" />
-    <Compile Include="DotNetMeta\TokenNamesTree.cs" />
     <Compile Include="Misc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DotNetMeta\RankedMetadataTokenAsm.cs" />
-    <Compile Include="DotNetMeta\RankedMetadataTokenAsmComparer.cs" />
-    <Compile Include="DotNetMeta\TokenIds.cs" />
-    <Compile Include="DotNetMeta\TokenNames.cs" />
-    <Compile Include="DotNetMeta\TokenPageRanks.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Cfg\Shared.Cfg.csproj">
