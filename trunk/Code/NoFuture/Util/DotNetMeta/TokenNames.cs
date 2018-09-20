@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Util.DotNetMeta
 {
@@ -151,7 +152,38 @@ namespace NoFuture.Util.DotNetMeta
             return new TokenNames { Names = listOut.ToArray() };
         }
 
-        public TokenNames FilterOnTypeNames(params string[] typenames)
+        public string[] GetUniqueTypeNames()
+        {
+            return Names.Select(n => n.GetTypeName()).Distinct().ToArray();
+        }
+
+        public TokenNames ContainsTypeNames(params string[] typenames)
+        {
+            var names = new List<MetadataTokenName>();
+            foreach (var name in Names)
+            {
+                var tname = name.GetTypeName();
+                if (typenames.Contains(tname))
+                    names.Add(name);
+            }
+
+            return new TokenNames { Names = names.ToArray() };
+        }
+
+        public TokenNames ContainsNamespaceNames(params string[] namespaceNames)
+        {
+            var names = new List<MetadataTokenName>();
+            foreach (var name in Names)
+            {
+                var tname = NfReflect.GetNamespaceWithoutTypeName(name.GetTypeName());
+                if (namespaceNames.Contains(tname))
+                    names.Add(name);
+            }
+
+            return new TokenNames { Names = names.ToArray() };
+        }
+
+        public TokenNames NotContainsTypeNames(params string[] typenames)
         {
             var names = new List<MetadataTokenName>();
             foreach (var name in Names)
@@ -165,9 +197,18 @@ namespace NoFuture.Util.DotNetMeta
             return new TokenNames {Names = names.ToArray()};
         }
 
-        public TokenNames FilterOnNamespaceNames(params string[] namespaceNames)
+        public TokenNames NotContainsNamespaceNames(params string[] namespaceNames)
         {
-            throw new NotImplementedException();
+            var names = new List<MetadataTokenName>();
+            foreach (var name in Names)
+            {
+                var tname = NfReflect.GetNamespaceWithoutTypeName(name.GetTypeName());
+                if (namespaceNames.Contains(tname))
+                    continue;
+                names.Add(name);
+            }
+
+            return new TokenNames { Names = names.ToArray() };
         }
 
         /// <summary>
@@ -176,9 +217,38 @@ namespace NoFuture.Util.DotNetMeta
         /// same property (by name)
         /// </summary>
         /// <returns></returns>
-        public TokenNames RemovePropertiesWithoutBothGetAndSet()
+        public void RemovePropertiesWithoutBothGetAndSet()
         {
-            throw new NotImplementedException();
+            var names = new List<MetadataTokenName>();
+            foreach (var name in Names)
+            {
+                if (!NfReflect.IsClrMethodForProperty(name.GetMemberName(), out var propName))
+                {
+                    names.Add(name);
+                    continue;
+                }
+
+                var countOfProp = Names.Count(n => n.GetMemberName().Contains($"get_{propName}(")
+                                                   || n.GetMemberName().Contains($"set_{propName}("));
+                if (countOfProp < 2)
+                    continue;
+                names.Add(name);
+            }
+
+            Names = names.ToArray();
+        }
+
+        public void RemoveClrGeneratedNames()
+        {
+            var names = new List<MetadataTokenName>();
+            foreach (var name in Names)
+            {
+                if(NfReflect.IsClrGeneratedType(name.Name))
+                    continue;
+                names.Add(name);
+            }
+
+            Names = names.ToArray();
         }
 
         /// <summary>
