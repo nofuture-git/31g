@@ -61,7 +61,11 @@ namespace NoFuture.Util.DotNetMeta
             if (methodName.Contains("("))
                 methodName = methodName.Substring(0, methodName.IndexOf('('));
 
-            var typeNameTree = TreeTokenNames.Names.FirstOrDefault(tn => tn.IsTypeName() && tn.Name.EndsWith(typeName));
+            //want to avoid an interface type 
+            var typeNameTree = TreeTokenNames.Names.FirstOrDefault(i =>
+                i.IsTypeName() && i.Name.EndsWith(typeName) &&
+                i.Items.Any(ii => ii.Items != null && ii.Items.Length > 0));
+
             if(typeNameTree?.Items == null || !typeNameTree.Items.Any())
                 return df;
 

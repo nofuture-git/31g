@@ -175,7 +175,7 @@ namespace NoFuture.Util.DotNetMeta
             var names = new List<MetadataTokenName>();
             foreach (var name in Names)
             {
-                var tname = NfReflect.GetNamespaceWithoutTypeName(name.GetTypeName());
+                var tname = name.GetNamespaceName();
                 if (namespaceNames.Contains(tname))
                     names.Add(name);
             }
@@ -202,7 +202,7 @@ namespace NoFuture.Util.DotNetMeta
             var names = new List<MetadataTokenName>();
             foreach (var name in Names)
             {
-                var tname = NfReflect.GetNamespaceWithoutTypeName(name.GetTypeName());
+                var tname = name.GetNamespaceName();
                 if (namespaceNames.Contains(tname))
                     continue;
                 names.Add(name);

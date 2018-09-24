@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Util.DotNetMeta
 {
@@ -113,10 +114,17 @@ namespace NoFuture.Util.DotNetMeta
         public string GetTypeName()
         {
             const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
+            if (string.IsNullOrWhiteSpace(Name))
+                return string.Empty;
             var idxOut = Name.IndexOf(SPLT);
             if (idxOut <= 0)
                 return string.Empty;
             return Name.Substring(0, Name.IndexOf(SPLT));
+        }
+
+        public string GetNamespaceName()
+        {
+            return NfReflect.GetNamespaceWithoutTypeName(GetTypeName()) ?? string.Empty;
         }
 
         /// <summary>
