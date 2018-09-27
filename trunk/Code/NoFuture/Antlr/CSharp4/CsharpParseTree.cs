@@ -10,7 +10,7 @@ namespace NoFuture.Antlr.CSharp4
     public class CsharpParseTree : CSharp4BaseListener
     {
         public CsharpParseResults Results { get; } = new CsharpParseResults();
-        private ParseTreeProperty<string> _parseTreeProperty = new ParseTreeProperty<string>();
+
         public override void EnterMethod_member_name(CSharp4Parser.Method_member_nameContext context)
         {
             Results.MethodNames.Add(context.GetText());

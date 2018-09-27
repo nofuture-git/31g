@@ -197,6 +197,38 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
+        /// Swaps for white-space all characters 
+        /// between the start and stop in the given file.
+        /// </summary>
+        /// <param name="somePath"></param>
+        /// <param name="start">
+        /// The line-number, line-column-index pair at which to start
+        /// </param>
+        /// <param name="stop">
+        /// The line-number, line-column-index pair on which to stop
+        /// </param>
+        /// <param name="encoder"></param>
+        public static void BlankOutLines(string somePath, Tuple<int, int> start, Tuple<int, int> stop, Encoding encoder = null)
+        {
+            if (string.IsNullOrWhiteSpace(somePath))
+                return;
+            if (!File.Exists(somePath))
+                return;
+            if (start == null || stop == null)
+                return;
+
+            encoder = encoder ?? Encoding.UTF8;
+
+            var fileContent = File.ReadAllLines(somePath);
+            fileContent = Etc.BlankOutLines(fileContent,
+                new List<Tuple<Tuple<int, int>, Tuple<int, int>>>
+                {
+                    new Tuple<Tuple<int, int>, Tuple<int, int>>(start, stop)
+                });
+            File.WriteAllLines(somePath, fileContent, encoder);
+        }
+
+        /// <summary>
         /// This will break one file into many on the <see cref="tupleMarker"/> having either <see cref="maxLength"/> or less.
         /// </summary>
         /// <param name="path"></param>

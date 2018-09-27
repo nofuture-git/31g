@@ -318,6 +318,75 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
+        /// Blanks out all characters in the source by the given start-stop pairs in <see cref="line2ColStartEnds"/>
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="line2ColStartEnds">
+        /// A list of start and stop pairs where each item is the line-number, line-column-index 
+        /// (e.g. (87,2), (138,2) would mean starting on the 87th line at character 2 blank out everything
+        ///  until reaching line 138 at character 2).
+        /// </param>
+        /// <returns></returns>
+        public static string[] BlankOutLines(string[] src, List<Tuple<Tuple<int, int>, Tuple<int, int>>> line2ColStartEnds)
+        {
+            const char BLANK_CHAR = ' ';
+
+            var d = new SortedList<int, List<int>>();
+            foreach (var ln in line2ColStartEnds.Where(x => x != null))
+            {
+                var startLnIdx = ln.Item1;
+                var endLnIdx = ln.Item2;
+
+                //only add them if there  is a pair
+                if (startLnIdx == null || endLnIdx == null)
+                    continue;
+
+                if (!d.ContainsKey(startLnIdx.Item1))
+                {
+                    d.Add(startLnIdx.Item1, new List<int> { startLnIdx.Item2 });
+                }
+                else
+                {
+                    d[startLnIdx.Item1].Add(startLnIdx.Item2);
+                }
+
+                if (!d.ContainsKey(endLnIdx.Item1))
+                {
+                    d.Add(endLnIdx.Item1, new List<int> { endLnIdx.Item2 - 1 });
+                }
+                else
+                {
+                    d[endLnIdx.Item1].Add(endLnIdx.Item2 - 1);
+                }
+            }
+
+            var lineOn = true;
+            var srcLinesOut = new List<string>();
+            for (var i = 0; i < src.Length; i++)
+            {
+                if (d.ContainsKey(i))
+                {
+                    var dil = d[i].OrderBy(x => x).Distinct().ToList();
+                    var srcLn = src[i];
+                    var newLn = new StringBuilder();
+                    for (var k = 0; k < src[i].Length; k++)
+                    {
+                        newLn.Append(lineOn ? srcLn[k] : BLANK_CHAR);
+                        if (dil.Contains(k))
+                        {
+                            lineOn = !lineOn;
+                        }
+                    }
+                    srcLinesOut.Add(newLn.ToString());
+                    continue;
+                }
+                srcLinesOut.Add(lineOn ? src[i] : new string(BLANK_CHAR, src[i].Length));
+            }
+
+            return srcLinesOut.ToArray();
+        }
+
+        /// <summary>
         /// Splits <see cref="value"/> into an array on any readable
         /// separator - being both camel-case words or special chars.
         /// </summary>

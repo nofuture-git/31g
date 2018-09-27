@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Shared.Core;
 using NUnit.Framework;
 
@@ -464,6 +465,29 @@ namespace NoFuture.Util.Core.Tests
             Console.WriteLine(testResult);
 
             Assert.AreEqual("_u00c2_u00a9_u0020The_u0020End_u0020_u00c2_u00a9", testResult);
+        }
+
+        [Test]
+        public void TestBlankOutLines()
+        {
+            var testContent = new[]
+            {
+                "The following training has been completed:",
+                "",
+                "Training Title: Compliance General Data Protection Regulation (GDPR)",
+                "Training Provider:Vinnie (the fists) Brooker ",
+                "Description: This training is an introduction to the new European Union (EU) General Data Protection Regulation (GDPR)",
+                "If you have any questions, please reach out to your supervisor or contact the Vinnie at 855-555-8888."
+            };
+            var lns = new List<Tuple<Tuple<int, int>, Tuple<int, int>>>
+            {
+                new Tuple<Tuple<int, int>, Tuple<int, int>>(new Tuple<int, int>(2, 15), new Tuple<int, int>(3, 8))
+            };
+            var testResult = NoFuture.Util.Core.Etc.BlankOutLines(testContent, lns);
+            Console.WriteLine(string.Join(Environment.NewLine, testResult));
+
+            Assert.AreEqual("Training Title:                                                     ", testResult[2]);
+            Assert.AreEqual("         Provider:Vinnie (the fists) Brooker ", testResult[3]);
         }
     }
 }

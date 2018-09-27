@@ -403,12 +403,10 @@ namespace NoFuture.Gen
 
             srcLines = CleanSrcFile(srcLines);
 
-            const char BLANK_CHAR = ' ';
-
             if (string.IsNullOrWhiteSpace(outputFileName))
                 outputFileName = Path.Combine(NfSettings.AppData, Util.Core.Etc.GetNfRandomName());
 
-            var d = new SortedList<int, List<int>>();
+            var line2ColStartEnds = new List<Tuple<Tuple<int, int>, Tuple<int, int>>>();
             foreach (var cgMem in blankOutCgMems.Where(x => x != null))
             {
                 var startLnIdx = cgMem.GetMyStartEnclosure(srcLines, true);
@@ -417,48 +415,10 @@ namespace NoFuture.Gen
                 //only add them if there  is a pair
                 if (startLnIdx == null || endLnIdx == null)
                     continue;
-
-                if (!d.ContainsKey(startLnIdx.Item1))
-                {
-                    d.Add(startLnIdx.Item1, new List<int> { startLnIdx.Item2 });
-                }
-                else
-                {
-                    d[startLnIdx.Item1].Add(startLnIdx.Item2);
-                }
-
-                if (!d.ContainsKey(endLnIdx.Item1))
-                {
-                    d.Add(endLnIdx.Item1, new List<int> { endLnIdx.Item2 - 1 });
-                }
-                else
-                {
-                    d[endLnIdx.Item1].Add(endLnIdx.Item2 - 1);
-                }
+                line2ColStartEnds.Add(new Tuple<Tuple<int, int>, Tuple<int, int>>(startLnIdx,endLnIdx));
             }
 
-            var lineOn = true;
-            var srcLinesOut = new List<string>();
-            for (var i = 0; i < originalSrc.Length; i++)
-            {
-                if (d.ContainsKey(i))
-                {
-                    var dil = d[i].OrderBy(x => x).Distinct().ToList();
-                    var srcLn = originalSrc[i];
-                    var newLn = new StringBuilder();
-                    for (var k = 0; k < originalSrc[i].Length; k++)
-                    {
-                        newLn.Append(lineOn && dil.Contains(k) ? srcLn[k] : BLANK_CHAR);
-                        if (dil.Contains(k))
-                        {
-                            lineOn = !lineOn;
-                        }
-                    }
-                    srcLinesOut.Add(newLn.ToString());
-                    continue;
-                }
-                srcLinesOut.Add(lineOn ? originalSrc[i] : new string(BLANK_CHAR, originalSrc[i].Length));
-            }
+            var srcLinesOut = Util.Core.Etc.BlankOutLines(originalSrc, line2ColStartEnds).ToList();
 
             var lineNums = new List<int>();
             foreach (var cgMem in blankOutCgMems)
