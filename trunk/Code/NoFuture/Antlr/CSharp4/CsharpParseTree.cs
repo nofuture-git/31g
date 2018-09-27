@@ -6,9 +6,27 @@ namespace NoFuture.Antlr.CSharp4
 {
     public class CsharpParseTree : CSharp4BaseListener
     {
-        private readonly CsharpParseResults _parseResults = new CsharpParseResults();
+        public CsharpParseResults Results { get; } = new CsharpParseResults();
+        private ParseTreeProperty<string> _parseTreeProperty = new ParseTreeProperty<string>();
+        public override void EnterMethod_member_name(CSharp4Parser.Method_member_nameContext context)
+        {
+            Results.MethodNames.Add(context.GetText());
+        }
 
-        public CsharpParseResults Results => _parseResults;
+        public override void EnterNamespace_name(CSharp4Parser.Namespace_nameContext context)
+        {
+            Results.NamespaceNames.Add(context.GetText());
+        }
+
+        public override void EnterClass_declaration(CSharp4Parser.Class_declarationContext context)
+        {
+            Results.ClassNames.Add(context.identifier().GetText());
+        }
+
+        public override void EnterClass_definition(CSharp4Parser.Class_definitionContext context)
+        {
+            Results.ClassNames.Add(context.identifier().GetText());
+        }
 
         public override void ExitSpecific_catch_clause(CSharp4Parser.Specific_catch_clauseContext context)
         {

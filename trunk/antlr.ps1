@@ -246,7 +246,11 @@ function Invoke-Grun
     )
     Process
     {
-        Invoke-Expression -Command ('CMD.EXE /C java -cp .`;{0} org.antlr.v4.gui.TestRig {1}' -f $env:CLASSPATH, $Arg)
+        $javaSrc = [NoFuture.Shared.Cfg.NfConfig+TempDirectories]::JavaSrc 
+        $javaRoot = (Split-Path $javaSrc -Parent)
+        $grunCmd = ('CMD.EXE /C java -cp .`;{0} org.antlr.v4.gui.TestRig {1}' -f $env:CLASSPATH, $Arg)
+        $grunCmd >> (Join-Path $javaRoot "cmd.log")
+        Invoke-Expression -Command $grunCmd
     }
 }#end Invoke-Grun
 
