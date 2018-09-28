@@ -125,9 +125,6 @@ namespace NoFuture.Util.NfType
 
             _ctorString = name;
 
-            if(_myProcess == null || !_myProcess.IsMyProcessRunning)
-                _myProcess = new NfTypeNameProcess(null);
-            
             var parseItem = TypeNameParseTree.ParseIl(name);
             if (parseItem == null)
                 return;

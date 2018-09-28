@@ -66,7 +66,8 @@ namespace NoFuture.Tests.Gen
                 TypeName = "void"
             };
 
-            var myCgType = new CgType() { Methods = new List<CgMember>() { deadLast, middle, less, most } };
+            var myCgType = new CgType();
+            myCgType.Methods.AddRange(new List<CgMember>() { deadLast, middle, less, most });
 
             foreach (var obj in myCgType.SortedMethods)
             {
@@ -83,7 +84,7 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestCgMemberCompareMany()
         {
-            var myCgType = new CgType() { Methods = new List<CgMember>() };
+            var myCgType = new CgType();
             myCgType.Methods.Add(new CgMember
             {
                 Args =

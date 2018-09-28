@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NoFuture.Antlr.CSharp4;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Gen
@@ -32,17 +33,39 @@ namespace NoFuture.Gen
             AssemblyPath = assemblyPath;
             if (!File.Exists(AssemblyPath))
             {
-                throw new ItsDeadJim($"No such file '{AssemblyPath}'.");
+                throw new FileNotFoundException("Cannot find the compiled assembly.", assemblyPath);
             }
 
+            //this is how we line up a source code file to a reflected runtime type
             var invokeDia2Dump = new InvokeDia2Dump.GetPdbData(assemblyPath);
             var pdbLines = invokeDia2Dump.SingleTypeNamed(typeFullName);
             if(pdbLines == null)
                 throw new ItsDeadJim($"Dia2Dump.exe did not return anything for the type named '{typeFullName}'");
             
+            //but we don't want the type in our appDomain, so we shell it out as a code-gen type
             _cgType = Etc.GetIsolatedCgOfType(assemblyPath, typeFullName, true);
 
             _cgType.AssignPdbSymbols(pdbLines.moduleSymbols);
+        }
+
+        public CgTypeCsSrcCode(string assemblyPath, string typeFullName, params string[] sourceCodeFiles)
+        {
+            if (string.IsNullOrWhiteSpace(assemblyPath))
+                throw new ArgumentNullException(nameof(assemblyPath));
+            AssemblyPath = assemblyPath;
+            if (!File.Exists(AssemblyPath))
+            {
+                throw new FileNotFoundException("Cannot find the compiled assembly.", assemblyPath);
+            }
+            _cgType = Etc.GetIsolatedCgOfType(assemblyPath, typeFullName, true);
+            if (sourceCodeFiles == null || !sourceCodeFiles.Any())
+                return;
+
+            foreach (var src in sourceCodeFiles)
+            {
+                var antlrParseRslts = CsharpParseTree.InvokeParse(src);
+                _cgType.AssignAntlrParseItems(antlrParseRslts);
+            }
         }
 
         #endregion

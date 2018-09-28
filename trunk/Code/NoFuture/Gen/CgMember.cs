@@ -192,7 +192,8 @@ namespace NoFuture.Gen
         /// </remarks>
         public Tuple<int, int> GetMyStartEnclosure(string[] srcFile, bool isClean = false)
         {
-            if (_myStartEnclosure != null) return _myStartEnclosure;
+            if (_myStartEnclosure != null)
+                return _myStartEnclosure;
 
             if (srcFile == null || srcFile.Length <= 0)
                 return null;
@@ -288,7 +289,8 @@ namespace NoFuture.Gen
         public Tuple<int, int> GetMyEndEnclosure(string[] srcFile, bool isClean = false)
         {
             //only do this once-per-instance
-            if (_myEndEnclosure != null) return _myEndEnclosure;
+            if (_myEndEnclosure != null)
+                return _myEndEnclosure;
 
             //validate we have everything needed to go foward
             if (srcFile == null || srcFile.Length <= 0)

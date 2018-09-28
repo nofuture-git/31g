@@ -28,8 +28,30 @@ namespace NoFuture.Tests.Gen
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.Production.Product";
             var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
+            Assert.IsTrue(File.Exists(testAsm));
 
             var testResult = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName);
+        }
+
+        [Test]
+        public void TestCtor2()
+        {
+            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            var testtypeName = "AdventureWorks.Production.Product";
+            var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
+            var testFile = TestAssembly.UnitTestsRoot +
+                           @"\ExampleDlls\AdventureWorks2012\AdventureWorks2012\Production\Production.Product.cs";
+            Assert.IsTrue(File.Exists(testAsm));
+            Assert.IsTrue(File.Exists(testFile));
+
+            var testResult = new NoFuture.Gen.CgTypeCsSrcCode(testAsm, testtypeName, testFile);
+            Assert.IsNotNull(testResult.CgType);
+            Assert.IsTrue(testResult.CgType.Properties.Any(p => p.GetMyStartEnclosure(null) != null));
+
+            var testResultMem = testResult.CgType.FindCgMember("Equals", new[] {"other"});
+            Assert.IsNotNull(testResultMem);
+            Console.WriteLine(testResultMem.Name);
+
         }
 
         [Test]
@@ -113,7 +135,7 @@ namespace NoFuture.Tests.Gen
         }
 
         [Test]
-        public void TestBlankOutMethods()
+        public void TestRemoveMethods()
         {
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
@@ -133,7 +155,7 @@ namespace NoFuture.Tests.Gen
             var testProp00 = testSubject.CgType.Properties.FirstOrDefault(x => x.Name == testMethodNames[0]);
             Assert.IsNotNull(testProp00);
 
-            NoFuture.Gen.RefactorExtensions.BlankOutMembers(testSrcFile,
+            NoFuture.Gen.RefactorExtensions.RemoveMembers(testSrcFile,
                 new List<CgMember> {testProp00, testMethod00, testMethod01},
                 TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012\AdventureWorks2012\VeryBadCode\TestBlankOutMethods.cs");
 

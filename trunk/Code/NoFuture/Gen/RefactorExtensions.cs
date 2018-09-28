@@ -117,18 +117,18 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Replaces the implementation of each <see cref="CgMember"/>, including signature.
+        /// Replaces the implementation of each <see cref="CgMember"/>, including signature, with whitespace.
         /// The implementation is resolved on the <see cref="CgMember.PdbModuleSymbols"/>
         /// </summary>
-        /// <param name="blankOutCgMems"></param>
+        /// <param name="rmCgMems"></param>
         /// <param name="removeEmptyLines">Optional, set to true to not have the results as blank char-for-char</param>
-        public static void BlankOutMembers(List<CgMember> blankOutCgMems, bool removeEmptyLines = false)
+        public static void RemoveMembers(List<CgMember> rmCgMems, bool removeEmptyLines = false)
         {
-            if (blankOutCgMems == null || blankOutCgMems.Count <= 0)
+            if (rmCgMems == null || rmCgMems.Count <= 0)
                 return;
 
             var byFile =
-                blankOutCgMems.Where(
+                rmCgMems.Where(
                     x =>
                         !string.IsNullOrWhiteSpace(x?.PdbModuleSymbols?.file) && File.Exists(x.PdbModuleSymbols.file))
                     .ToList();
@@ -141,12 +141,40 @@ namespace NoFuture.Gen
                 var cgMems =
                     byFile.Where(x => string.Equals(x.PdbModuleSymbols.file, fl, StringComparison.OrdinalIgnoreCase))
                         .ToList();
-                BlankOutMembers(srcLines, cgMems, fl);
+                RemoveMembers(srcLines, cgMems, fl);
                 if (removeEmptyLines)
                 {
                     System.Threading.Thread.Sleep(50);
                     NfPath.ToDoubleSpaced(fl);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Replaces the implementation of each <see cref="CgMember"/>, including signature, with whitespace.
+        /// </summary>
+        /// <param name="rmCgMems"></param>
+        /// <param name="sourceCodeFilePath">
+        /// The full path to the source code file on disk
+        /// </param>
+        /// <param name="removeEmptyLines">Optional, set to true to not have the results as blank char-for-char</param>
+        public static void RemoveMembers(List<CgMember> rmCgMems, string sourceCodeFilePath, bool removeEmptyLines = false)
+        {
+            if (rmCgMems == null || rmCgMems.Count <= 0)
+                return;
+
+            if (string.IsNullOrWhiteSpace(sourceCodeFilePath))
+                return;
+            if (!File.Exists(sourceCodeFilePath))
+                return;
+
+            var srcLines = File.ReadAllLines(sourceCodeFilePath);
+
+            RemoveMembers(srcLines, rmCgMems, sourceCodeFilePath);
+            if (removeEmptyLines)
+            {
+                System.Threading.Thread.Sleep(50);
+                NfPath.ToDoubleSpaced(sourceCodeFilePath);
             }
         }
 
@@ -391,9 +419,9 @@ namespace NoFuture.Gen
         }
 
         //presumes all the Members are defined within the contents of srcLines
-        internal static void BlankOutMembers(string[] srcLines, List<CgMember> blankOutCgMems, string outputFileName)
+        internal static void RemoveMembers(string[] srcLines, List<CgMember> rmCgMems, string outputFileName)
         {
-            if (blankOutCgMems == null || blankOutCgMems.Count <= 0)
+            if (rmCgMems == null || rmCgMems.Count <= 0)
                 return;
 
             if (srcLines == null || srcLines.Length <= 0)
@@ -407,7 +435,7 @@ namespace NoFuture.Gen
                 outputFileName = Path.Combine(NfSettings.AppData, Util.Core.Etc.GetNfRandomName());
 
             var line2ColStartEnds = new List<Tuple<Tuple<int, int>, Tuple<int, int>>>();
-            foreach (var cgMem in blankOutCgMems.Where(x => x != null))
+            foreach (var cgMem in rmCgMems.Where(x => x != null))
             {
                 var startLnIdx = cgMem.GetMyStartEnclosure(srcLines, true);
                 var endLnIdx = cgMem.GetMyEndEnclosure(srcLines, true);
@@ -420,8 +448,15 @@ namespace NoFuture.Gen
 
             var srcLinesOut = Util.Core.Etc.BlankOutLines(originalSrc, line2ColStartEnds).ToList();
 
+            //expecting that antlr results include the attributes as the start-maker
+            if (rmCgMems.Any(cgm => cgm.PdbModuleSymbols == null))
+            {
+                File.WriteAllLines(outputFileName, srcLinesOut, Encoding.UTF8);
+                return;
+            }
+
             var lineNums = new List<int>();
-            foreach (var cgMem in blankOutCgMems)
+            foreach (var cgMem in rmCgMems)
             {
                 var lnTuple = cgMem?.GetMyStartEnclosure(srcLines, true);
                 if (lnTuple == null)

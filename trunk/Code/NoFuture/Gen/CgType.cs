@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NoFuture.Shared;
+using NoFuture.Antlr.CSharp4;
 using NoFuture.Shared.Core;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Util;
@@ -69,10 +69,10 @@ namespace NoFuture.Gen
             }
         }
 
-        public List<CgMember> Properties { get; set; }
-        public List<CgMember> Fields { get; set; }
-        public List<CgMember> Events { get; set; }
-        public List<CgMember> Methods { get; set; }
+        public List<CgMember> Properties { get; } = new List<CgMember>();
+        public List<CgMember> Fields { get; } = new List<CgMember>();
+        public List<CgMember> Events { get; } = new List<CgMember>();
+        public List<CgMember> Methods { get; } = new List<CgMember>();
 
         /// <summary>
         /// Returns the <see cref="Methods"/> as a sorted set using the 
@@ -113,10 +113,6 @@ namespace NoFuture.Gen
         #region ctors
         internal CgType()//only avail ctor through Etc.GetCg~
         {
-            Properties = new List<CgMember>();
-            Fields = new List<CgMember>();
-            Events = new List<CgMember>();
-            Methods = new List<CgMember>();
         }
         #endregion
 
@@ -166,16 +162,47 @@ namespace NoFuture.Gen
 
         public void AssignPdbSymbols(ModuleSymbols[] pdbData)
         {
-            foreach (var property in Properties)
-                property.MyCgType = this;
-            foreach (var fld in Fields)
-                fld.MyCgType = this;
-            foreach (var m in Methods)
-                m.MyCgType = this;
+            PropagateSelfToLists();
             var propsAndMethods = Properties.ToList();
             propsAndMethods.AddRange(Methods);
             foreach (var pm in propsAndMethods)
                 pm.TryAssignPdbSymbols(pdbData);
+        }
+
+        public void AssignAntlrParseItems(CsharpParseResults parseResults)
+        {
+            PropagateSelfToLists();
+            if (parseResults == null)
+                return;
+            if (!parseResults.ClassMemberBodies.Any())
+                return;
+            foreach (var pi in parseResults.ClassMemberBodies)
+            {
+                var memberName = pi.Name;
+                var memberArgs = new List<string>();
+                //when type is coupled with name, get just the name
+                if (pi.Parameters.Any())
+                {
+                    foreach (var piParam in pi.Parameters)
+                    {
+                        if (string.IsNullOrWhiteSpace(piParam))
+                            continue;
+                        var piParamArgName = piParam.Contains(" ") 
+                                             ? piParam.Split(' ').LastOrDefault() 
+                                             : piParam;
+                        memberArgs.Add(piParamArgName);
+                    }
+                }
+
+                var cgMem = FindCgMember(memberName, memberArgs.ToArray());
+                if (cgMem != null)
+                {
+                    var adjStart = new Tuple<int, int>(pi.Start.Item1 - 1, pi.Start.Item2 - 1);
+                    var adjEnd = new Tuple<int, int>(pi.End.Item1 - 1, pi.End.Item2 + 1);
+                    cgMem.SetMyStartEnclosure(adjStart);
+                    cgMem.SetMyEndEnclosure(adjEnd);
+                }
+            }
         }
 
         /// <summary>
@@ -183,17 +210,15 @@ namespace NoFuture.Gen
         /// </summary>
         /// <param name="tokenName"></param>
         /// <returns></returns>
-        public CgMember FindCgMethodByTokenName(MetadataTokenName tokenName)
+        public CgMember FindCgMemberByTokenName(MetadataTokenName tokenName)
         {
-            if (tokenName == null)
-                return null;
-            if (string.IsNullOrWhiteSpace(tokenName.Name))
+            if (string.IsNullOrWhiteSpace(tokenName?.Name))
                 return null;
             if (!tokenName.IsMethodName())
                 return null;
             var methodName = AssemblyAnalysis.ParseMethodNameFromTokenName(tokenName.Name);
             var argNames = AssemblyAnalysis.ParseArgsFromTokenName(tokenName.Name);
-            return FindCgMethod(methodName, argNames);
+            return FindCgMember(methodName, argNames);
         }
 
         /// <summary>
@@ -202,7 +227,7 @@ namespace NoFuture.Gen
         /// <param name="methodName"></param>
         /// <param name="argNames"></param>
         /// <returns></returns>
-        public CgMember FindCgMethod(string methodName, string[] argNames)
+        public CgMember FindCgMember(string methodName, string[] argNames)
         {
             if (string.IsNullOrWhiteSpace(methodName))
                 return null;
@@ -210,10 +235,15 @@ namespace NoFuture.Gen
             if (NfReflect.IsClrMethodForProperty(methodName, out isPropName))
             {
                 methodName = isPropName;
-                var propMatches = Properties.Where(p => string.Equals(p.Name, methodName)).ToArray();
-                if (propMatches.Length >= 1)
-                    return propMatches.First();
             }
+
+            var fldMatch = Fields.FirstOrDefault(f => string.Equals(f.Name, methodName));
+            if (fldMatch != null)
+                return fldMatch;
+
+            var propMatch = Properties.FirstOrDefault(p => string.Equals(p.Name, methodName));
+            if (propMatch != null)
+                return propMatch;
 
             var matches = Methods.Where(x => string.Equals(x.Name, methodName)).ToArray();
             if (matches.Length <= 0)
@@ -224,7 +254,7 @@ namespace NoFuture.Gen
             //attempt to match on arg count first
             var argCount = argNames == null ? 0 : argNames.Length;
 
-            matches = Methods.Where(x => x.Args.Count == argCount).ToArray();
+            matches = matches.Where(x => x.Args.Count == argCount).ToArray();
             if (matches.Length <= 0)
                 return null;
             if (matches.Length == 1)
@@ -237,10 +267,22 @@ namespace NoFuture.Gen
 
             foreach (var match in matches)
             {
-                if (match.Args.All(nfArg => argNamesLikeThese.Any(token => string.Equals(nfArg.ArgType, token))))
+                if (match.Args.All(nfArg => argNamesLikeThese.Any(token => string.Equals(nfArg.ArgName, token))))
                     return match;
             }
             return null;
+        }
+
+        private void PropagateSelfToLists()
+        {
+            foreach (var property in Properties)
+                property.MyCgType = this;
+            foreach (var fld in Fields)
+                fld.MyCgType = this;
+            foreach (var m in Methods)
+                m.MyCgType = this;
+            foreach (var e in Events)
+                e.MyCgType = this;
         }
 
         #endregion
