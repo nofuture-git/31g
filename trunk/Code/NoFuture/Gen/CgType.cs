@@ -178,7 +178,8 @@ namespace NoFuture.Gen
                 return;
             foreach (var pi in parseResults.ClassMemberBodies)
             {
-                var memberName = pi.Name;
+                //expecting that a missing name means its a constructor
+                var memberName = pi.Name ?? ".ctor";
                 var memberArgs = new List<string>();
                 //when type is coupled with name, get just the name
                 if (pi.Parameters.Any())
