@@ -87,7 +87,11 @@ namespace NoFuture.Gen
         /// </summary>
         public string MethodBodyIL { get; set; }
 
-        internal CgType MyCgType { get { return _myCgType; } set { _myCgType = value; } }
+        internal CgType MyCgType
+        {
+            get => _myCgType;
+            set => _myCgType = value;
+        }
 
         #endregion
 
@@ -162,6 +166,15 @@ namespace NoFuture.Gen
             bodyOut.Add(content[end.Item1].Substring(0,end.Item2));
 
             return bodyOut.ToArray();
+        }
+
+        /// <summary>
+        /// To set the start-marker when it is already known.
+        /// </summary>
+        /// <param name="start"></param>
+        public void SetMyStartEnclosure(Tuple<int, int> start)
+        {
+            _myStartEnclosure = start;
         }
 
         /// <summary>
@@ -251,6 +264,15 @@ namespace NoFuture.Gen
 
             _myStartEnclosure = new Tuple<int, int>(fileSig.Item1, idx);
             return _myStartEnclosure;
+        }
+
+        /// <summary>
+        /// To directly set the end-marker when its already known
+        /// </summary>
+        /// <param name="end"></param>
+        public void SetMyEndEnclosure(Tuple<int, int> end)
+        {
+            _myEndEnclosure = end;
         }
 
         /// <summary>

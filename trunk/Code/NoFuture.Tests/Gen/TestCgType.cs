@@ -88,6 +88,8 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestFindCgMethodByTokenName()
         {
+            NoFuture.Shared.Cfg.NfConfig.CustomTools.InvokeNfTypeName =
+                @"C:\Projects\31g\trunk\bin\NoFuture.Tokens.InvokeNfTypeName.exe";
             NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
             NfConfig.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
@@ -115,7 +117,6 @@ namespace NoFuture.Tests.Gen
                         TestAssembly.UnitTestsRoot + @"\ExampleDlls\ThirdDll.dll"));
 
             const string testTypeName = "AdventureWorks.VeryBadCode.BasicGenerics";
-
             var testType = testAsm.GetType(testTypeName);
             Assert.IsNotNull(testType);
 

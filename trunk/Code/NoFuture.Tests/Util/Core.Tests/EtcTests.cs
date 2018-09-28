@@ -489,5 +489,30 @@ namespace NoFuture.Util.Core.Tests
             Assert.AreEqual("Training Title:                                                     ", testResult[2]);
             Assert.AreEqual("         Provider:Vinnie (the fists) Brooker ", testResult[3]);
         }
+
+        [Test]
+        public void TestBlankOutLine2()
+        {
+            var testContent = new[]
+            {
+                "The following training has been completed:",
+                "",
+                "Training Title: Compliance General Data Protection Regulation (GDPR)",
+                "Training Provider:Vinnie (the fists) Brooker ",
+                "Description: This training is an introduction to the new European Union (EU) General Data Protection Regulation (GDPR)",
+                "If you have any questions, please reach out to your supervisor or contact the Vinnie at 855-555-8888."
+            };
+
+            var testResult = Etc.BlankOutLines(testContent, 2, 15, 3, 8);
+            Assert.AreEqual("Training Title:                                                     ", testResult[2]);
+            Assert.AreEqual("         Provider:Vinnie (the fists) Brooker ", testResult[3]);
+
+            //mismatch - has no effect
+            testResult = Etc.BlankOutLines(testContent, 2, 15, 3);
+            Assert.AreEqual("Training Title: Compliance General Data Protection Regulation (GDPR)", testResult[2]);
+            Assert.AreEqual("Training Provider:Vinnie (the fists) Brooker ", testResult[3]);
+
+
+        }
     }
 }

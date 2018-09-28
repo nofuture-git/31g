@@ -31,31 +31,14 @@ namespace NoFuture.Antlr.CSharp4
             Results.ClassNames.Add(context.identifier().GetText());
         }
 
-        public override void EnterMethod_declaration(CSharp4Parser.Method_declarationContext context)
-        {
-            
-            var nmContext = context.children.FirstOrDefault(x => x is CSharp4Parser.Method_member_nameContext);
-            if (string.IsNullOrWhiteSpace(nmContext?.GetText()))
-                return;
-        }
-
-        public override void EnterMethod_declaration2(CSharp4Parser.Method_declaration2Context context)
-        {
-            var nmContext = context.children.FirstOrDefault(x => x is CSharp4Parser.Method_member_nameContext);
-            if (string.IsNullOrWhiteSpace(nmContext?.GetText()))
-                return;
-        }
-
         public override void EnterClass_member_declaration(CSharp4Parser.Class_member_declarationContext context)
         {
-
             var cmdecl = context.common_member_declaration();
 
             if (cmdecl == null)
                 return;
             var nm = GetMemberName(cmdecl);
-            if (string.IsNullOrWhiteSpace(nm))
-                return;
+
             var methodBody = new CsharpParseItem {Name = nm};
 
             var acMods = context.all_member_modifiers();
@@ -85,9 +68,19 @@ namespace NoFuture.Antlr.CSharp4
         {
             if (context == null)
                 return null;
+            if (context is CSharp4Parser.Member_nameContext)
+            {
+                return context.GetText();
+            }
+
             if (context is CSharp4Parser.Method_member_nameContext)
             {
                 return context.GetText();
+            }
+
+            if (context is CSharp4Parser.Field_declaration2Context flCtx && flCtx.variable_declarators() != null)
+            {
+                return flCtx.variable_declarators().GetText();
             }
 
             if (context.ChildCount <= 0)
@@ -107,14 +100,27 @@ namespace NoFuture.Antlr.CSharp4
         {
             if (context == null)
                 return null;
-            var plCtx = context as CSharp4Parser.Formal_parameter_listContext;
-            if (plCtx!= null)
+            if (context is CSharp4Parser.Formal_parameter_listContext plCtx)
             {
                 var sl = new List<string>();
+
+                if (plCtx.ChildCount == 1 && plCtx.GetChild(0) is CSharp4Parser.Fixed_parametersContext)
+                {
+                    for (var j = 0; j < plCtx.GetChild(0).ChildCount; j++)
+                    {
+                        var plChild = plCtx.GetChild(0).GetChild(j) as ParserRuleContext;
+                        if (plChild == null)
+                            continue;
+                        sl.Add($"{plChild.Start.Text} {plChild.Stop.Text}");
+                    }
+
+                    if (sl.Any())
+                        return sl.ToArray();
+                }
+
                 for (var i = 0; i < plCtx.ChildCount; i++)
                 {
-                    var plChild = plCtx.GetChild(i) as ParserRuleContext;
-                    if(plChild == null)
+                    if(!(plCtx.GetChild(i) is ParserRuleContext plChild))
                         continue;
                     sl.Add($"{plChild.Start.Text} {plChild.Stop.Text}");
                 }

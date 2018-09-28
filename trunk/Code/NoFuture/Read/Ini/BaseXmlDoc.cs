@@ -139,6 +139,31 @@ namespace NoFuture.Read
             return counter;
         }
 
+        /// <summary>
+        /// Like its counterpart <see cref="DropNodesNamed"/> only more selective
+        /// in use of an xpath.
+        /// </summary>
+        /// <param name="xpath"></param>
+        /// <returns></returns>
+        public virtual int DropNodesAtXpath(string xpath)
+        {
+            if (string.IsNullOrWhiteSpace(xpath))
+                return 0;
+            var nodesByName = _xmlDocument.SelectNodes(xpath);
+            if (nodesByName == null || nodesByName.Count <= 0)
+                return 0;
+            var counter = 0;
+            for (var i = nodesByName.Count - 1; i >= 0; i--)
+            {
+                var tNode = nodesByName.Item(i);
+                if (tNode?.ParentNode?.RemoveChild(tNode) != null)
+                {
+                    counter += 1;
+                }
+            }
+            return counter;
+        }
+
         protected virtual XmlAttribute GetAttribute(string xpath, string attrName)
         {
             if (string.IsNullOrWhiteSpace(xpath) || string.IsNullOrWhiteSpace(attrName))

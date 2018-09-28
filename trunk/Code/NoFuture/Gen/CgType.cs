@@ -192,6 +192,18 @@ namespace NoFuture.Gen
             if (!tokenName.IsMethodName())
                 return null;
             var methodName = AssemblyAnalysis.ParseMethodNameFromTokenName(tokenName.Name);
+            var argNames = AssemblyAnalysis.ParseArgsFromTokenName(tokenName.Name);
+            return FindCgMethod(methodName, argNames);
+        }
+
+        /// <summary>
+        /// Locates the <see cref="CgMember"/> in <see cref="Methods"/> who matches the given name and args
+        /// </summary>
+        /// <param name="methodName"></param>
+        /// <param name="argNames"></param>
+        /// <returns></returns>
+        public CgMember FindCgMethod(string methodName, string[] argNames)
+        {
             if (string.IsNullOrWhiteSpace(methodName))
                 return null;
             string isPropName;
@@ -210,7 +222,6 @@ namespace NoFuture.Gen
                 return matches.First();
 
             //attempt to match on arg count first
-            var argNames = AssemblyAnalysis.ParseArgsFromTokenName(tokenName.Name);
             var argCount = argNames == null ? 0 : argNames.Length;
 
             matches = Methods.Where(x => x.Args.Count == argCount).ToArray();

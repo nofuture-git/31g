@@ -317,6 +317,28 @@ namespace NoFuture.Util.Core
             }
         }
 
+        public static string[] BlankOutLines(string[] src, params int[] line2ColStartEnds)
+        {
+            if (src == null || !src.Any())
+                return src;
+            if (line2ColStartEnds == null || !line2ColStartEnds.Any())
+                return src;
+
+            var l2c = new List<Tuple<Tuple<int, int>, Tuple<int, int>>>();
+
+            for (var i = 0; i < line2ColStartEnds.Length; i+=4)
+            {
+                if(i + 3 >= line2ColStartEnds.Length)
+                    continue;
+                var s = Tuple.Create(line2ColStartEnds[i], line2ColStartEnds[i + 1]);
+                var e = Tuple.Create(line2ColStartEnds[i + 2], line2ColStartEnds[i + 3]);
+                var se = Tuple.Create(s, e);
+                l2c.Add(se);
+            }
+
+            return BlankOutLines(src, l2c);
+        }
+
         /// <summary>
         /// Blanks out all characters in the source by the given start-stop pairs in <see cref="line2ColStartEnds"/>
         /// </summary>
@@ -330,7 +352,10 @@ namespace NoFuture.Util.Core
         public static string[] BlankOutLines(string[] src, List<Tuple<Tuple<int, int>, Tuple<int, int>>> line2ColStartEnds)
         {
             const char BLANK_CHAR = ' ';
-
+            if (src == null || !src.Any())
+                return src;
+            if (line2ColStartEnds == null || !line2ColStartEnds.Any())
+                return src;
             var d = new SortedList<int, List<int>>();
             foreach (var ln in line2ColStartEnds.Where(x => x != null))
             {

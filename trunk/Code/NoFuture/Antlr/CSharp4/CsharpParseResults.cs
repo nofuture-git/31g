@@ -10,6 +10,7 @@ namespace NoFuture.Antlr.CSharp4
         public List<string> NamespaceNames { get; } = new List<string>();
         public List<string> ClassNames { get; } = new List<string>();
         public List<CsharpParseItem> ClassMemberBodies { get; } = new List<CsharpParseItem>();
+        public List<CsharpParseItem> CtorMemberBodies { get; } = new List<CsharpParseItem>();
     }
 
     public class CsharpParseItem
