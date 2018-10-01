@@ -29,8 +29,6 @@ namespace NoFuture.Antlr.CSharp4
             _namespaceNameCurrent = context.qualified_identifier().GetText();
 
             var nmspSt = GetBodyStart(context);
-            if (nmspSt == null)
-                return;
             _namespaceBodyStartCurrent = nmspSt;
             _namespaceStartCurrent = new Tuple<int, int>(context.Start.Line, context.Start.Column);
             _namespaceEndCurrent = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
@@ -68,8 +66,6 @@ namespace NoFuture.Antlr.CSharp4
             _typeNameCurrent = nm;
 
             var typeNameStart = GetBodyStart(context);
-            if (typeNameStart == null)
-                return;
             _typeBodyStartCurrent = typeNameStart;
             _typeStartCurrent = new Tuple<int, int>(context.Start.Line, context.Start.Column);
             _typeEndCurrent = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
@@ -83,24 +79,42 @@ namespace NoFuture.Antlr.CSharp4
             _typeEndCurrent = null;
         }
 
-        //public override void EnterClass_definition(CSharp4Parser.Class_definitionContext context)
-        //{
-        //    var nm = context.identifier().GetText();
-        //    Results.TypeNames.Add(nm);
-        //    _typeNameCurrent = nm;
+        public override void EnterInterface_member_declaration(CSharp4Parser.Interface_member_declarationContext context)
+        {
+            var nm = context.identifier().GetText();
+            var parseItem = new CsharpParseItem { Name = nm };
+            AssignAttributes(parseItem, context.attributes());
+            AssignParameterType2Names(parseItem, context.formal_parameter_list());
+            AssignStartAndStop(parseItem, context);
+            AssignNsAndTypeValues(parseItem);
+            Results.TypeMemberBodies.Add(parseItem);
+        }
 
-        //    var typeNameStart = GetBodyStart(context);
-        //    if (typeNameStart == null)
-        //        return;
-        //    _typeBodyStartCurrent = typeNameStart;
-        //    _typeEndCurrent = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
-        //}
-        //public override void ExitClass_definition(CSharp4Parser.Class_definitionContext context)
-        //{
-        //    _typeNameCurrent = null;
-        //    _typeBodyStartCurrent = null;
-        //    _typeEndCurrent = null;
-        //}
+        public override void EnterStruct_member_declaration(CSharp4Parser.Struct_member_declarationContext context)
+        {
+            var cmdecl = context.common_member_declaration();
+
+            if (cmdecl == null)
+                return;
+            var nm = GetContextName(cmdecl);
+
+            var parseItem = new CsharpParseItem { Name = nm };
+            AssignAccessMods(parseItem, context.all_member_modifiers());
+            AssignAttributes(parseItem, context.attributes());
+            AssignParameterType2Names(parseItem, cmdecl); ;
+            AssignStartAndStop(parseItem, context);
+            AssignNsAndTypeValues(parseItem);
+        }
+
+        public override void EnterEnum_member_declaration(CSharp4Parser.Enum_member_declarationContext context)
+        {
+            var nm = context.identifier().GetText();
+            var parseItem = new CsharpParseItem { Name = nm };
+            AssignAttributes(parseItem, context.attributes());
+            AssignStartAndStop(parseItem, context);
+            AssignNsAndTypeValues(parseItem);
+            Results.TypeMemberBodies.Add(parseItem);
+        }
 
         public override void EnterClass_member_declaration(CSharp4Parser.Class_member_declarationContext context)
         {
@@ -111,28 +125,59 @@ namespace NoFuture.Antlr.CSharp4
             var nm = GetContextName(cmdecl);
             
             var parseItem = new CsharpParseItem {Name = nm};
+            AssignAccessMods(parseItem, context.all_member_modifiers());
+            AssignAttributes(parseItem, context.attributes());
+            AssignParameterType2Names(parseItem, cmdecl);;
+            AssignStartAndStop(parseItem, context);
+            AssignNsAndTypeValues(parseItem);
+            Results.TypeMemberBodies.Add(parseItem);
+        }
 
-            var acMods = context.all_member_modifiers();
-            if (acMods != null)
-            {
-                foreach(var m in acMods.children)
-                    parseItem.AccessModifiers.Add(m.GetText());
-            }
+        protected internal void AssignParameterType2Names(CsharpParseItem parseItem, IParseTree context)
+        {
+            if (parseItem == null)
+                return;
 
-            var attrs = context.attributes();
-            if (attrs != null)
-            {
-                foreach(var a in attrs.children)
-                    parseItem.Attributes.Add(a.GetText());
-            }
-
-            var paramNames = GetParameterType2Names(cmdecl);
-            if(paramNames != null && paramNames.Any())
+            var paramNames = GetParameterType2Names(context);
+            if (paramNames != null && paramNames.Any())
                 parseItem.Parameters.AddRange(paramNames);
+        }
 
+        protected internal void AssignAccessMods(CsharpParseItem parseItem,
+            CSharp4Parser.All_member_modifiersContext acMods)
+        {
+            if (parseItem == null)
+                return;
+
+            if (acMods == null)
+                return;
+            foreach (var m in acMods.children)
+                parseItem.AccessModifiers.Add(m.GetText());
+        }
+
+        protected internal void AssignAttributes(CsharpParseItem parseItem, CSharp4Parser.AttributesContext attrs)
+        {
+            if (parseItem == null)
+                return;
+            if (attrs == null)
+                return;
+            foreach (var a in attrs.children)
+                parseItem.Attributes.Add(a.GetText());
+        }
+
+        protected internal void AssignStartAndStop(CsharpParseItem parseItem, ParserRuleContext context)
+        {
+            if (parseItem == null)
+                return;
             parseItem.BodyStart = GetBodyStart(context);
-            parseItem.Start = new Tuple<int,int>(context.Start.Line, context.Start.Column);
+            parseItem.Start = new Tuple<int, int>(context.Start.Line, context.Start.Column);
             parseItem.End = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
+        }
+
+        protected internal void AssignNsAndTypeValues(CsharpParseItem parseItem)
+        {
+            if (parseItem == null)
+                return;
             parseItem.DeclTypeName = _typeNameCurrent;
             parseItem.Namespace = _namespaceNameCurrent;
             parseItem.DeclBodyStart = _typeBodyStartCurrent;
@@ -141,7 +186,6 @@ namespace NoFuture.Antlr.CSharp4
             parseItem.NamespaceEnd = _namespaceEndCurrent;
             parseItem.DeclStart = _typeStartCurrent;
             parseItem.NamespaceStart = _namespaceStartCurrent;
-            Results.TypeMemberBodies.Add(parseItem);
         }
 
         public string GetContextName(IParseTree context)
@@ -199,7 +243,10 @@ namespace NoFuture.Antlr.CSharp4
             if (context is CSharp4Parser.BodyContext
                 || context is CSharp4Parser.Method_bodyContext
                 || context is CSharp4Parser.Namespace_bodyContext
-                || context is CSharp4Parser.Class_bodyContext)
+                || context is CSharp4Parser.Class_bodyContext
+                || context is CSharp4Parser.Interface_bodyContext
+                || context is CSharp4Parser.Enum_bodyContext
+                || context is CSharp4Parser.Struct_bodyContext)
             {
                 var plCtx = (ParserRuleContext) context;
                 return new Tuple<int, int>(plCtx.Start.Line, plCtx.Start.Column);
