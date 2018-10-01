@@ -21,7 +21,8 @@
             rome.AddEntry(107, 191, "Nervan-Antonian Dyn.", PrintLocation.Left);
             rome.AddEntry(224, "(Parthian -> Sassanid Empire (224))");
             rome.AddEntry(193, 235, "Serveran Dyn.", PrintLocation.Left);
-            rome.AddEntry(238, "Year of the Five Emperors(238)");
+            rome.AddEntry(193, "Year of the Five Emperors(193)", PrintLocation.Right);
+            rome.AddEntry(238, "Year of the Six Emperors(238)");
             rome.AddEntry(new LeaderEntry("Aurelian", new int?[,] { { 270, 275 } }));
             rome.AddEntry(240, 282, "'Crisis of the 3rd Century'**", PrintLocation.Left);
             rome.AddEntry(257, 260, "Valerian persecutions(257-260)");
@@ -58,7 +59,7 @@
             west.AddEntry(new PhilosopherEntry("Cyprian of Carthage", 200, 258) { StartValue = 225});
             west.AddEntry(new PhilosopherEntry("Tertullian", 160, 225) { StartValue = 210 });
             west.AddEntry(new LiteraryWorkEntry("Apologeticus", "Tertullian") { StartValue = 193 });
-            west.AddEntry(new HeresyEntry("Valentinians", "Aeons") { StartValue = 173 });
+            west.AddEntry(new HeresyEntry("Valentinians", "Aeons") { StartValue = 173, Location = PrintLocation.Right});
             west.AddEntry(new HeresyEntry("Adoptionism", "christ divine after baptism") { StartValue = 195 });
             west.AddEntry(new HeresyEntry("Sabellianism", "no trinity") { StartValue = 200 });
             west.AddEntry(new HeresyEntry("Manichaeism", "duality, east import") { StartValue = 312 });
