@@ -14,7 +14,7 @@ namespace NoFuture.Gen
     /// For code generation based on .NET <see cref="MemberInfo"/>
     /// </summary>
     [Serializable]
-    public class CgMember
+    public class CgMember : LangRules.ISrcCode
     {
         #region fields
         protected internal readonly List<int> opCodeCallsAndCallvirtsMetadatTokens;

@@ -46,6 +46,14 @@ namespace NoFuture.Gen
             _cgType = Etc.GetIsolatedCgOfType(assemblyPath, typeFullName, true);
 
             _cgType.AssignPdbSymbols(pdbLines.moduleSymbols);
+
+            var sourceCodeFiles = pdbLines.moduleSymbols.Select(ms => ms.file);
+
+            foreach (var src in sourceCodeFiles)
+            {
+                var antlrParseRslts = CsharpParseTree.InvokeParse(src);
+                _cgType.AssignAntlrParseItems(GetAntlrParseItems(antlrParseRslts));
+            }
         }
 
         public CgTypeCsSrcCode(string assemblyPath, string typeFullName, params string[] sourceCodeFiles)
@@ -64,7 +72,7 @@ namespace NoFuture.Gen
             foreach (var src in sourceCodeFiles)
             {
                 var antlrParseRslts = CsharpParseTree.InvokeParse(src);
-                _cgType.AssignAntlrParseItems(antlrParseRslts);
+                _cgType.AssignAntlrParseItems(GetAntlrParseItems(antlrParseRslts));
             }
         }
 
@@ -76,6 +84,44 @@ namespace NoFuture.Gen
         {
             return lineNumbers.Where(ln => affirmList.Any(x => ln >= x.Item1 && ln <= x.Item2)).ToArray();
         }
+
+        /// <summary>
+        /// Factory method to convert the same type to one defined in this assembly, 
+        /// </summary>
+        /// <param name="parseResults"></param>
+        /// <returns></returns>
+        internal List<LangRules.AntlrParseItem> GetAntlrParseItems(CsharpParseResults parseResults)
+        {
+            var pItems = new List<LangRules.AntlrParseItem>();
+            if (parseResults == null || !parseResults.TypeMemberBodies.Any())
+                return pItems;
+            foreach (var csItem in parseResults.TypeMemberBodies)
+            {
+                var pItem = new LangRules.AntlrParseItem
+                {
+                    Name = csItem.Name,
+                    Start = csItem.Start,
+                    End = csItem.End,
+                    BodyStart = csItem.BodyStart,
+                    DeclTypeName = csItem.DeclTypeName,
+                    Namespace = csItem.Namespace,
+                    DeclBodyStart = csItem.DeclBodyStart,
+                    DeclEnd = csItem.DeclEnd,
+                    NamespaceBodyStart = csItem.NamespaceBodyStart,
+                    NamespaceEnd = csItem.NamespaceEnd,
+                    NamespaceStart = csItem.NamespaceStart,
+                    DeclStart = csItem.DeclStart,
+                };
+
+                pItem.Attributes.AddRange(csItem.Attributes);
+                pItem.AccessModifiers.AddRange(csItem.AccessModifiers);
+                pItem.Parameters.AddRange(csItem.Parameters);
+                pItems.Add(pItem);
+            }
+
+            return pItems;
+        }
+
         #endregion
     }
 }

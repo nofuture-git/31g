@@ -10,10 +10,38 @@ namespace NoFuture.Antlr.CSharp4
     public class CsharpParseTree : CSharp4BaseListener
     {
         public CsharpParseResults Results { get; } = new CsharpParseResults();
+        private string _typeNameCurrent;
+        private string _namespaceNameCurrent;
+        private Tuple<int, int> _typeStartCurrent;
+        private Tuple<int, int> _typeBodyStartCurrent;
+        private Tuple<int, int> _namespaceStartCurrent;
+        private Tuple<int, int> _namespaceBodyStartCurrent;
+        private Tuple<int, int> _typeEndCurrent;
+        private Tuple<int, int> _namespaceEndCurrent;
 
         public override void EnterMethod_member_name(CSharp4Parser.Method_member_nameContext context)
         {
             Results.MethodNames.Add(context.GetText());
+        }
+
+        public override void EnterNamespace_declaration(CSharp4Parser.Namespace_declarationContext context)
+        {
+            _namespaceNameCurrent = context.qualified_identifier().GetText();
+
+            var nmspSt = GetBodyStart(context);
+            if (nmspSt == null)
+                return;
+            _namespaceBodyStartCurrent = nmspSt;
+            _namespaceStartCurrent = new Tuple<int, int>(context.Start.Line, context.Start.Column);
+            _namespaceEndCurrent = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
+        }
+
+        public override void ExitNamespace_declaration(CSharp4Parser.Namespace_declarationContext context)
+        {
+            _namespaceNameCurrent = null;
+            _namespaceStartCurrent = null;
+            _namespaceBodyStartCurrent = null;
+            _namespaceEndCurrent = null;
         }
 
         public override void EnterNamespace_name(CSharp4Parser.Namespace_nameContext context)
@@ -21,15 +49,58 @@ namespace NoFuture.Antlr.CSharp4
             Results.NamespaceNames.Add(context.GetText());
         }
 
-        public override void EnterClass_declaration(CSharp4Parser.Class_declarationContext context)
+        public override void EnterType_declaration(CSharp4Parser.Type_declarationContext context)
         {
-            Results.ClassNames.Add(context.identifier().GetText());
+            string nm = null;
+            foreach (var td in new ParserRuleContext[]
+            {
+                context.class_definition(), context.interface_definition(), context.delegate_definition(),
+                context.enum_definition(), context.struct_definition()
+            })
+            {
+                if (td == null)
+                    continue;
+                nm = GetContextName(td);
+                if (!string.IsNullOrWhiteSpace(nm))
+                    break;
+            }
+            Results.TypeNames.Add(nm);
+            _typeNameCurrent = nm;
+
+            var typeNameStart = GetBodyStart(context);
+            if (typeNameStart == null)
+                return;
+            _typeBodyStartCurrent = typeNameStart;
+            _typeStartCurrent = new Tuple<int, int>(context.Start.Line, context.Start.Column);
+            _typeEndCurrent = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
         }
 
-        public override void EnterClass_definition(CSharp4Parser.Class_definitionContext context)
+        public override void ExitType_declaration(CSharp4Parser.Type_declarationContext context)
         {
-            Results.ClassNames.Add(context.identifier().GetText());
+            _typeNameCurrent = null;
+            _typeStartCurrent = null;
+            _typeBodyStartCurrent = null;
+            _typeEndCurrent = null;
         }
+
+        //public override void EnterClass_definition(CSharp4Parser.Class_definitionContext context)
+        //{
+        //    var nm = context.identifier().GetText();
+        //    Results.TypeNames.Add(nm);
+        //    _typeNameCurrent = nm;
+
+        //    var typeNameStart = GetBodyStart(context);
+        //    if (typeNameStart == null)
+        //        return;
+        //    _typeBodyStartCurrent = typeNameStart;
+        //    _typeEndCurrent = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
+        //}
+        //public override void ExitClass_definition(CSharp4Parser.Class_definitionContext context)
+        //{
+        //    _typeNameCurrent = null;
+        //    _typeBodyStartCurrent = null;
+        //    _typeEndCurrent = null;
+        //}
 
         public override void EnterClass_member_declaration(CSharp4Parser.Class_member_declarationContext context)
         {
@@ -37,34 +108,43 @@ namespace NoFuture.Antlr.CSharp4
 
             if (cmdecl == null)
                 return;
-            var nm = GetMemberName(cmdecl);
-
-            var methodBody = new CsharpParseItem {Name = nm};
+            var nm = GetContextName(cmdecl);
+            
+            var parseItem = new CsharpParseItem {Name = nm};
 
             var acMods = context.all_member_modifiers();
             if (acMods != null)
             {
                 foreach(var m in acMods.children)
-                    methodBody.AccessModifiers.Add(m.GetText());
+                    parseItem.AccessModifiers.Add(m.GetText());
             }
 
             var attrs = context.attributes();
             if (attrs != null)
             {
                 foreach(var a in attrs.children)
-                    methodBody.Attributes.Add(a.GetText());
+                    parseItem.Attributes.Add(a.GetText());
             }
 
             var paramNames = GetParameterType2Names(cmdecl);
             if(paramNames != null && paramNames.Any())
-                methodBody.Parameters.AddRange(paramNames);
+                parseItem.Parameters.AddRange(paramNames);
 
-            methodBody.Start = new Tuple<int,int>(context.Start.Line, context.Start.Column);
-            methodBody.End = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
-            Results.ClassMemberBodies.Add(methodBody);
+            parseItem.BodyStart = GetBodyStart(context);
+            parseItem.Start = new Tuple<int,int>(context.Start.Line, context.Start.Column);
+            parseItem.End = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
+            parseItem.DeclTypeName = _typeNameCurrent;
+            parseItem.Namespace = _namespaceNameCurrent;
+            parseItem.DeclBodyStart = _typeBodyStartCurrent;
+            parseItem.DeclEnd = _typeEndCurrent;
+            parseItem.NamespaceBodyStart = _namespaceBodyStartCurrent;
+            parseItem.NamespaceEnd = _namespaceEndCurrent;
+            parseItem.DeclStart = _typeStartCurrent;
+            parseItem.NamespaceStart = _namespaceStartCurrent;
+            Results.TypeMemberBodies.Add(parseItem);
         }
 
-        public string GetMemberName(IParseTree context)
+        public string GetContextName(IParseTree context)
         {
             if (context == null)
                 return null;
@@ -72,15 +152,33 @@ namespace NoFuture.Antlr.CSharp4
             {
                 return context.GetText();
             }
-
             if (context is CSharp4Parser.Method_member_nameContext)
             {
                 return context.GetText();
             }
-
             if (context is CSharp4Parser.Field_declaration2Context flCtx && flCtx.variable_declarators() != null)
             {
                 return flCtx.variable_declarators().GetText();
+            }
+            if (context is CSharp4Parser.Class_definitionContext)
+            {
+                return ((CSharp4Parser.Class_definitionContext) context).identifier().GetText();
+            }
+            if (context is CSharp4Parser.Delegate_definitionContext)
+            {
+                return ((CSharp4Parser.Delegate_definitionContext)context).identifier().GetText();
+            }
+            if (context is CSharp4Parser.Enum_definitionContext)
+            {
+                return ((CSharp4Parser.Enum_definitionContext)context).identifier().GetText();
+            }
+            if (context is CSharp4Parser.Interface_definitionContext)
+            {
+                return ((CSharp4Parser.Interface_definitionContext)context).identifier().GetText();
+            }
+            if (context is CSharp4Parser.Struct_definitionContext)
+            {
+                return ((CSharp4Parser.Struct_definitionContext)context).identifier().GetText();
             }
 
             if (context.ChildCount <= 0)
@@ -88,9 +186,33 @@ namespace NoFuture.Antlr.CSharp4
 
             for (var i = 0; i < context.ChildCount; i++)
             {
-                var nm = GetMemberName(context.GetChild(i));
+                var nm = GetContextName(context.GetChild(i));
                 if (!string.IsNullOrWhiteSpace(nm))
                     return nm;
+            }
+
+            return null;
+        }
+
+        public Tuple<int, int> GetBodyStart(IParseTree context)
+        {
+            if (context is CSharp4Parser.BodyContext
+                || context is CSharp4Parser.Method_bodyContext
+                || context is CSharp4Parser.Namespace_bodyContext
+                || context is CSharp4Parser.Class_bodyContext)
+            {
+                var plCtx = (ParserRuleContext) context;
+                return new Tuple<int, int>(plCtx.Start.Line, plCtx.Start.Column);
+            }
+
+            if (context.ChildCount <= 0)
+                return null;
+
+            for (var i = 0; i < context.ChildCount; i++)
+            {
+                var bodyStart = GetBodyStart(context.GetChild(i));
+                if (bodyStart != null)
+                    return bodyStart;
             }
 
             return null;
@@ -212,7 +334,7 @@ namespace NoFuture.Antlr.CSharp4
             var results = loader.Results;
 
             tr.Close();
-
+            results.SourceFile = fileName;
             return results;
         }
     }

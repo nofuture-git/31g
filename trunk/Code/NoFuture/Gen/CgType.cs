@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NoFuture.Antlr.CSharp4;
 using NoFuture.Shared.Core;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
-using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.Gia;
-using NoFuture.Util.NfType;
 
 namespace NoFuture.Gen
 {
@@ -17,10 +14,12 @@ namespace NoFuture.Gen
     /// For code generation based on .NET <see cref="Type"/>
     /// </summary>
     [Serializable]
-    public class CgType
+    public class CgType : LangRules.ISrcCode
     {
         #region fields
         internal readonly Dictionary<string, string[]> EnumValueDictionary = new Dictionary<string, string[]>();
+        private Tuple<int, int> _myStartEnclosure;
+        private Tuple<int, int> _myEndEnclosure;
         #endregion
 
         #region properties
@@ -117,6 +116,35 @@ namespace NoFuture.Gen
         #endregion
 
         #region methods
+
+        public Tuple<int, int> GetMyStartEnclosure(string[] srcFile, bool isClean = false)
+        {
+            return _myStartEnclosure;
+        }
+
+        public Tuple<int, int> GetMyEndEnclosure(string[] srcFile, bool isClean = false)
+        {
+            return _myEndEnclosure;
+        }
+
+        /// <summary>
+        /// To set the start-marker when it is already known.
+        /// </summary>
+        /// <param name="start"></param>
+        public void SetMyStartEnclosure(Tuple<int, int> start)
+        {
+            _myStartEnclosure = start;
+        }
+
+        /// <summary>
+        /// To directly set the end-marker when its already known
+        /// </summary>
+        /// <param name="end"></param>
+        public void SetMyEndEnclosure(Tuple<int, int> end)
+        {
+            _myEndEnclosure = end;
+        }
+
         /// <summary>
         /// Returns the field's names of the <see cref="enumTypeName"/>
         /// being that such an enum was encountered while reflecting the type.
@@ -169,15 +197,26 @@ namespace NoFuture.Gen
                 pm.TryAssignPdbSymbols(pdbData);
         }
 
-        public void AssignAntlrParseItems(CsharpParseResults parseResults)
+        public void AssignAntlrParseItems(List<LangRules.AntlrParseItem> parseResults)
         {
             PropagateSelfToLists();
             if (parseResults == null)
                 return;
-            if (!parseResults.ClassMemberBodies.Any())
+            if (!parseResults.Any())
                 return;
-            foreach (var pi in parseResults.ClassMemberBodies)
+            foreach (var pi in parseResults)
             {
+                if(pi == null)
+                    continue;
+                if (_myStartEnclosure == null && pi.DeclTypeName == Name)
+                {
+                    SetMyStartEnclosure(pi.DeclStart);
+                }
+                if (_myEndEnclosure == null && pi.DeclTypeName == Name)
+                {
+                    SetMyEndEnclosure(pi.DeclEnd);
+                }
+
                 //expecting that a missing name means its a constructor
                 var memberName = pi.Name ?? ".ctor";
                 var memberArgs = new List<string>();
