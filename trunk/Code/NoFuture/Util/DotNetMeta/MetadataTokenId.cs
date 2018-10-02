@@ -21,6 +21,7 @@ namespace NoFuture.Util.DotNetMeta
         public int RslvAsmIdx;
         public int Id;
         public MetadataTokenId[] Items;
+        public int IsByRef;
 
         public override bool Equals(object obj)
         {

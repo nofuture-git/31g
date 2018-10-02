@@ -281,6 +281,7 @@ namespace NoFuture.Util.DotNetMeta
             nm.OwnAsmIdx = frmNm.OwnAsmIdx;
             nm.Label = frmNm.Label;
             nm.Name = frmNm.Name;
+            nm.IsByRef = tokenId.IsByRef > 0;
 
             if (tokenId.Items == null || tokenId.Items.Length <= 0)
                 return nm;

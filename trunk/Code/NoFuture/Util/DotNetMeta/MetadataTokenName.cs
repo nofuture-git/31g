@@ -45,6 +45,9 @@ namespace NoFuture.Util.DotNetMeta
         [NonSerialized]
         public MetadataTokenName[] Items;
 
+        [NonSerialized]
+        public bool IsByRef;
+
         public MetadataTokenName[] FlattenToDistinct()
         {
             var innerItems = new List<MetadataTokenName> {this};

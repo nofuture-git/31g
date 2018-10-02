@@ -227,6 +227,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             if (stackTrc.Any(x => x.Equals(r)))
             {
                 depth -= 1;
+                token.IsByRef = 1;
                 if (msgOut != null)
                     msgOut.AppendLine(string.Format(", Message:'name resolved token id {0}.{1} found in stack trace'",
                         r.RslvAsmIdx, r.Id.ToString("X4")));
