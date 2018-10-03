@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace NoFuture.Util.DotNetMeta
 {
@@ -46,6 +47,13 @@ namespace NoFuture.Util.DotNetMeta
             var depth = 0;
             return Print(token, ref depth);
         }
+
+        public override string ToString()
+        {
+            var copy = new MetadataTokenId {Id = Id, IsByRef = IsByRef, RslvAsmIdx = RslvAsmIdx};
+            return JsonConvert.SerializeObject(copy);
+        }
+
 
         /// <summary>
         /// Returns a list of distinct <see cref="MetadataTokenId"/> having only thier

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
@@ -48,17 +49,44 @@ namespace NoFuture.Util.DotNetMeta
         [NonSerialized]
         public bool IsByRef;
 
-        public MetadataTokenName[] FlattenToDistinct()
+        [NonSerialized]
+        private int? _fullMaxDepth;
+
+        [NonSerialized] private MetadataTokenName[] _selectAll;
+        [NonSerialized] private MetadataTokenName[] _selectDistinct;
+
+        public MetadataTokenName[] SelectDistinct()
         {
-            var innerItems = new List<MetadataTokenName> {this};
+            if (_selectDistinct != null)
+                return _selectDistinct;
+
+            var comparer = new MetadataTokenNameComparer();
+            var innerItems = new List<MetadataTokenName> { this };
             if (Items == null || !Items.Any())
                 return innerItems.ToArray();
             foreach (var item in Items)
             {
-                innerItems.AddRange(item.FlattenToDistinct());
+                innerItems.AddRange(item.SelectDistinct());
             }
 
-            return innerItems.Distinct(new MetadataTokenNameComparer()).ToArray();
+            _selectDistinct = innerItems.Distinct(comparer).ToArray();
+            return _selectDistinct;
+        }
+
+        public MetadataTokenName[] SelectAll()
+        {
+            if (_selectAll != null)
+                return _selectAll;
+            var innerItems = new List<MetadataTokenName> { this };
+            if (Items == null || !Items.Any())
+                return innerItems.ToArray();
+            foreach (var item in Items)
+            {
+                innerItems.AddRange(item.SelectAll());
+            }
+
+            _selectAll = innerItems.ToArray();
+            return _selectAll;
         }
 
         public void ApplyFullName(AsmIndicies asmIndicies)
@@ -77,6 +105,11 @@ namespace NoFuture.Util.DotNetMeta
             {
                 myItems.ApplyFullName(asmIndicies);
             }
+        }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
         }
 
         public MetadataTokenId Convert2MetadataTokenId()
@@ -106,6 +139,37 @@ namespace NoFuture.Util.DotNetMeta
             return !string.IsNullOrWhiteSpace(Name)
                    && !string.IsNullOrWhiteSpace(Label)
                    && string.Equals("RuntimeType", Label);
+        }
+
+        public bool IsAnyByRef()
+        {
+            if (IsByRef)
+                return true;
+            if (Items == null || !Items.Any())
+                return false;
+            foreach (var i in Items)
+            {
+                if (i.IsByRef)
+                    return true;
+                if (i.IsAnyByRef())
+                    return true;
+            }
+
+            return false;
+        }
+
+        public int GetFullDepthCount()
+        {
+            if (_fullMaxDepth != null)
+                return _fullMaxDepth.Value;
+            var c = 1;
+            if (Items == null || !Items.Any())
+                return c;
+            foreach (var i in Items)
+                c += i.GetFullDepthCount();
+
+            _fullMaxDepth = c;
+            return c;
         }
 
         public string GetMemberName()

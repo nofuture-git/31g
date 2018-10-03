@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Util.DotNetMeta
@@ -11,7 +12,7 @@ namespace NoFuture.Util.DotNetMeta
     /// Bundler type for <see cref="MetadataTokenName"/>
     /// </summary>
     [Serializable]
-    public class TokenNames : IEnumerable<MetadataTokenName>
+    public class TokenNames
     {
         public string Msg;
         public MetadataTokenStatus St;
@@ -19,6 +20,14 @@ namespace NoFuture.Util.DotNetMeta
 
         public int Count => Names.Length;
         public bool IsReadOnly => false;
+
+        public static TokenNames ReadFromFile(string fullFileName)
+        {
+            if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
+                return new TokenNames();
+            var jsonContent = File.ReadAllText(fullFileName);
+            return JsonConvert.DeserializeObject<TokenNames>(jsonContent);
+        }
 
         /// <summary>
         /// Given the <see cref="asmIndicies"/> each <see cref="MetadataTokenName.Name"/>
@@ -41,28 +50,41 @@ namespace NoFuture.Util.DotNetMeta
             }
         }
 
-        public TokenIds Convert2TokenIds()
+        public TokenNames SelectAll()
         {
-            if(Names == null || !Names.Any())
-                return new TokenIds();
-
-            //use the existing logic for flattening based on token Ids, not token names
-            var distTokens = Names.Select(d => d.Convert2MetadataTokenId()).ToArray();
-            return new TokenIds {St = MetadataTokenStatus.Ok, Tokens = distTokens};
-        }
-
-        public TokenNames FlattenToDistinct()
-        {
-            var innerItems = new List<MetadataTokenName>();
-            if (Names == null || !Names.Any())
-                return new TokenNames {Names = innerItems.ToArray()};
-
-            foreach (var name in Names)
+            var allNames = new List<MetadataTokenName>();
+            foreach (var n in Names)
             {
-                innerItems.AddRange(name.FlattenToDistinct());
+                allNames.AddRange(n.SelectAll());
             }
 
-            return new TokenNames { Names = innerItems.Distinct(new MetadataTokenNameComparer()).ToArray()};
+            return new TokenNames {Names = allNames.ToArray()};
+        }
+
+        public TokenNames SelectMaxDepth(TokenNames allNames = null)
+        {
+            var maxItems = new List<MetadataTokenName>();
+            allNames = allNames ?? SelectAll();
+            if (allNames == null || allNames.Count <= 0)
+                return new TokenNames {Names = maxItems.ToArray()};
+            var allItems = allNames.Names;
+            var comparer = new MetadataTokenNameComparer();
+            for (var i = 0; i < allItems.Length; i++)
+            {
+                var matItem = allItems[i];
+                for (var j = 0; j < allItems.Length; j++)
+                {
+                    if(i == j)
+                        continue;
+                    if (comparer.Equals(allItems[i], allItems[j]) && comparer.Compare(allItems[i], allItems[j]) > 0)
+                    {
+                        matItem = allItems[j];
+                    }
+                }
+                maxItems.Add(matItem);
+            }
+
+            return new TokenNames {Names = maxItems.ToArray()};
         }
 
         /// <summary>
@@ -264,7 +286,7 @@ namespace NoFuture.Util.DotNetMeta
                 return null;
 
             var nameMapping = new List<MetadataTokenName>();
-            foreach (var tokenId in tokenIds)
+            foreach (var tokenId in tokenIds.Tokens)
                 nameMapping.Add(GetNameMapping(tokenId));
             return new TokenNames { Names = nameMapping.ToArray() };
         }
@@ -301,14 +323,5 @@ namespace NoFuture.Util.DotNetMeta
             return nm;
         }
 
-        public IEnumerator<MetadataTokenName> GetEnumerator()
-        {
-            return Names.ToList().GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace NoFuture.Util.DotNetMeta
 {
@@ -11,11 +10,19 @@ namespace NoFuture.Util.DotNetMeta
     /// Bundler type for <see cref="MetadataTokenAsm"/>
     /// </summary>
     [Serializable]
-    public class AsmIndicies : IEnumerable<MetadataTokenAsm>
+    public class AsmIndicies
     {
         public string Msg;
         public MetadataTokenAsm[] Asms;
         public MetadataTokenStatus St;
+
+        public static AsmIndicies ReadFromFile(string fullFileName)
+        {
+            if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
+                return new AsmIndicies();
+            var jsonContent = File.ReadAllText(fullFileName);
+            return JsonConvert.DeserializeObject<AsmIndicies>(jsonContent);
+        }
 
         public Assembly GetAssemblyByIndex(int idx)
         {
@@ -52,16 +59,6 @@ namespace NoFuture.Util.DotNetMeta
             }
 
             return null;
-        }
-
-        public IEnumerator<MetadataTokenAsm> GetEnumerator()
-        {
-            return Asms.ToList().GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public int Count()

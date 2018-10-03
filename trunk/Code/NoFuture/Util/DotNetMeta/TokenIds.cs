@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace NoFuture.Util.DotNetMeta
 {
@@ -9,11 +10,19 @@ namespace NoFuture.Util.DotNetMeta
     /// Bundler type for <see cref="MetadataTokenId"/>
     /// </summary>
     [Serializable]
-    public class TokenIds : IEnumerable<MetadataTokenId>
+    public class TokenIds
     {
         public string Msg;
         public MetadataTokenId[] Tokens;
         public MetadataTokenStatus St;
+
+        public static TokenIds ReadFromFile(string fullFileName)
+        {
+            if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
+                return new TokenIds();
+            var jsonContent = File.ReadAllText(fullFileName);
+            return JsonConvert.DeserializeObject<TokenIds>(jsonContent);
+        }
 
         /// <summary>
         /// Helper method to get all distinct token ids from the current instance.
@@ -85,16 +94,6 @@ namespace NoFuture.Util.DotNetMeta
                 }
             }
             return GetAdjancencyMatrix(uqTokens, false);
-        }
-
-        public IEnumerator<MetadataTokenId> GetEnumerator()
-        {
-            return Tokens.ToList().GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public int Count()

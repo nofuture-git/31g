@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace NoFuture.Util.DotNetMeta
 {
@@ -10,7 +11,10 @@ namespace NoFuture.Util.DotNetMeta
     {
         public string AssemblyName;
         public int IndexId;
-
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
         public override bool Equals(object obj)
         {
             var mta = obj as MetadataTokenAsm;

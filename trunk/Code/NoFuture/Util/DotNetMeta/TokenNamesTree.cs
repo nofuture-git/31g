@@ -53,7 +53,7 @@ namespace NoFuture.Util.DotNetMeta
         /// <param name="typeName"></param>
         /// <param name="methodName"></param>
         /// <returns></returns>
-        public TokenNames FlattenToDistinct(string typeName, string methodName)
+        public TokenNames SelectDistinct(string typeName, string methodName)
         {
             var df = new TokenNames { Names = new MetadataTokenName[] { } };
             if (string.IsNullOrWhiteSpace(typeName) || string.IsNullOrWhiteSpace(methodName))
@@ -72,14 +72,7 @@ namespace NoFuture.Util.DotNetMeta
             //match on overloads
             var targetMethods = typeNameTree.Items.Where(item =>
                 item.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("));
-
-            var innerItems = new List<MetadataTokenName>();
-            foreach (var targetMethod in targetMethods)
-            {
-                innerItems.AddRange(targetMethod.FlattenToDistinct());
-            }
-
-            return new TokenNames { Names = innerItems.Distinct(new MetadataTokenNameComparer()).ToArray() };
+            throw new NotImplementedException();
             
         }
 
