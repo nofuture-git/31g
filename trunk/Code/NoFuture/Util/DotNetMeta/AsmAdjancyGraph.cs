@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace NoFuture.Util.DotNetMeta
 {
     [Serializable]
-    public class AsmAdjancyGraph
+    public class AsmAdjancyGraph : IEnumerable<RankedMetadataTokenAsm>
     {
         public string Msg;
         public MetadataTokenStatus St;
@@ -22,6 +23,21 @@ namespace NoFuture.Util.DotNetMeta
                 ss.Add(a);
 
             return ss;
+        }
+
+        public IEnumerator<RankedMetadataTokenAsm> GetEnumerator()
+        {
+            return Asms.ToList().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public int Count()
+        {
+            return Asms.Length;
         }
     }
 }

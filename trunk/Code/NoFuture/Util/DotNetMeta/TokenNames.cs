@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace NoFuture.Util.DotNetMeta
     /// Bundler type for <see cref="MetadataTokenName"/>
     /// </summary>
     [Serializable]
-    public class TokenNames
+    public class TokenNames : IEnumerable<MetadataTokenName>
     {
         public string Msg;
         public MetadataTokenStatus St;
@@ -257,7 +258,7 @@ namespace NoFuture.Util.DotNetMeta
         /// <param name="tokenIds"></param>
         /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal TokenNames GetFullCallStackTree(MetadataTokenId[] tokenIds)
+        internal TokenNames GetFullCallStackTree(TokenIds tokenIds)
         {
             if (St == MetadataTokenStatus.Error || Names == null || Names.Length <= 0)
                 return null;
@@ -299,5 +300,15 @@ namespace NoFuture.Util.DotNetMeta
 
             return nm;
         }
-   }
+
+        public IEnumerator<MetadataTokenName> GetEnumerator()
+        {
+            return Names.ToList().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
 }

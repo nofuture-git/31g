@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +9,7 @@ namespace NoFuture.Util.DotNetMeta
     /// Bundler type for <see cref="MetadataTokenId"/>
     /// </summary>
     [Serializable]
-    public class TokenIds
+    public class TokenIds : IEnumerable<MetadataTokenId>
     {
         public string Msg;
         public MetadataTokenId[] Tokens;
@@ -84,6 +85,21 @@ namespace NoFuture.Util.DotNetMeta
                 }
             }
             return GetAdjancencyMatrix(uqTokens, false);
+        }
+
+        public IEnumerator<MetadataTokenId> GetEnumerator()
+        {
+            return Tokens.ToList().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public int Count()
+        {
+            return Tokens.Length;
         }
     }
 }

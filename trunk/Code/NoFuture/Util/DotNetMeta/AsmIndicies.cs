@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +11,7 @@ namespace NoFuture.Util.DotNetMeta
     /// Bundler type for <see cref="MetadataTokenAsm"/>
     /// </summary>
     [Serializable]
-    public class AsmIndicies
+    public class AsmIndicies : IEnumerable<MetadataTokenAsm>
     {
         public string Msg;
         public MetadataTokenAsm[] Asms;
@@ -50,6 +52,21 @@ namespace NoFuture.Util.DotNetMeta
             }
 
             return null;
+        }
+
+        public IEnumerator<MetadataTokenAsm> GetEnumerator()
+        {
+            return Asms.ToList().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public int Count()
+        {
+            return Asms.Length;
         }
     }
 }
