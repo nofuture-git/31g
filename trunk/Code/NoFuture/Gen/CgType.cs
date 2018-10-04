@@ -247,19 +247,47 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Locates the <see cref="CgMember"/> in <see cref="Methods"/> who matches <see cref="tokenName"/>.
+        /// Locates the <see cref="CgMember"/> who matches <see cref="tokenName"/>.
         /// </summary>
         /// <param name="tokenName"></param>
         /// <returns></returns>
         public CgMember FindCgMemberByTokenName(MetadataTokenName tokenName)
         {
-            if (string.IsNullOrWhiteSpace(tokenName?.Name))
+            if (tokenName == null)
                 return null;
-            if (!tokenName.IsMethodName())
+
+            var byToken = FindCgMember(tokenName.Id);
+            if (byToken != null)
+                return byToken;
+
+            if (string.IsNullOrWhiteSpace(tokenName.Name))
                 return null;
+
             var methodName = AssemblyAnalysis.ParseMethodNameFromTokenName(tokenName.Name);
             var argNames = AssemblyAnalysis.ParseArgsFromTokenName(tokenName.Name);
             return FindCgMember(methodName, argNames);
+        }
+
+        /// <summary>
+        /// Locates the <see cref="CgMember"/> with matching <see cref="tokenId"/>
+        /// </summary>
+        /// <param name="tokenId"></param>
+        /// <returns></returns>
+        public CgMember FindCgMember(int tokenId)
+        {
+            if (tokenId <= 0)
+                return null;
+
+            var fldMatch = Fields.FirstOrDefault(f => f.MetadataToken == tokenId);
+            if (fldMatch != null)
+                return fldMatch;
+
+            var propMatch = Properties.FirstOrDefault(p => p.MetadataToken == tokenId);
+            if (propMatch != null)
+                return propMatch;
+
+            var mthdMatch = Methods.FirstOrDefault(x => x.MetadataToken == tokenId);
+            return mthdMatch;
         }
 
         /// <summary>
