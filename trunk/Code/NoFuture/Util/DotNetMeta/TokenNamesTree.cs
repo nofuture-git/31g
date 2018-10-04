@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Shared.Core;
+using NoFuture.Util.DotNetMeta.Auxx;
 using NoFuture.Util.DotNetMeta.Grp;
 using NoFuture.Util.DotNetMeta.Xfer;
 
@@ -47,6 +48,7 @@ namespace NoFuture.Util.DotNetMeta
             FlatTokenNames.ApplyFullName(AssemblyIndices);
             TreeTokenNames = FlatTokenNames.GetNames(TokenIds);
             TreeTokenNames.ApplyFullName(AssemblyIndices);
+            TreeTokenNames.ReassignAllByRefs();
         }
 
         /// <summary>
@@ -74,37 +76,16 @@ namespace NoFuture.Util.DotNetMeta
             //match on overloads
             var targetMethods = typeNameTree.Items.Where(item =>
                 item.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("));
-            throw new NotImplementedException();
+            var names = new List<MetadataTokenName>();
+            foreach (var t in targetMethods)
+            {
+                names.AddRange(t.SelectDistinct());
+            }
+
+            names = names.Distinct(new MetadataTokenNameComparer()).ToList();
+            df.Names = names.ToArray();
+            return df;
             
-        }
-
-        public TokenNames GetInternallyCalledTokenNames()
-        {
-            if (FlatTokenNames?.Names == null || FlatTokenNames.Names.Length <= 0)
-                return new TokenNames { Names = new MetadataTokenName[]{} };
-            if (TokenIds?.Tokens == null || TokenIds.Tokens.Length <= 0)
-                return new TokenNames { Names = new MetadataTokenName[] { } };
-            var typeTokens = TokenIds.Tokens;
-
-            if (typeTokens.All(x => x.Items == null || x.Items.Length <= 0))
-                return new TokenNames { Names = new MetadataTokenName[] { } };
-
-            var memberTokens = typeTokens.SelectMany(x => x.Items).ToList();
-
-            //these are all the token Ids one could call on this assembly
-            var memberTokenIds = memberTokens.Select(x => x.Id).ToList();
-
-            //get all the tokenIds, defined in this assembly and being called from this assembly
-            var callsInMembers =
-                memberTokens.SelectMany(x => x.Items)
-                    .Select(x => x.Id)
-                    .Where(x => memberTokenIds.Any(y => x == y))
-                    .ToList();
-
-            FlatTokenNames.ApplyFullName(AssemblyIndices);
-
-            var namesArray = FlatTokenNames.Names.Where(x => callsInMembers.Any(y => y == x.Id)).ToArray();
-            return new TokenNames { Names = namesArray };
         }
     }
 }

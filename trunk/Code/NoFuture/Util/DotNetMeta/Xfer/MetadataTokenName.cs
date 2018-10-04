@@ -242,6 +242,8 @@ namespace NoFuture.Util.DotNetMeta.Xfer
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
             if(IsByRef && tokenNames.All(tn => !_comparer.Equals(tn, this)))
                 tokenNames.Add(this);
+            if (Items == null || !Items.Any())
+                return;
             foreach (var nm in Items)
             {
                 nm.GetAllByRefNames(tokenNames);

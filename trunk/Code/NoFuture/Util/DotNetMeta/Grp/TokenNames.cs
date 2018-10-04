@@ -171,7 +171,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
             return new TokenNames { Names = names.ToArray() };
         }
 
-        public TokenNames SelectByNotTypeNames(params string[] typenames)
+        public TokenNames RemoveByTypeNames(params string[] typenames)
         {
             var names = new List<MetadataTokenName>();
             foreach (var name in Names)
@@ -185,7 +185,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
             return new TokenNames {Names = names.ToArray()};
         }
 
-        public TokenNames SelectByNotNamespaceNames(params string[] namespaceNames)
+        public TokenNames RemoveByNamespaceNames(params string[] namespaceNames)
         {
             var names = new List<MetadataTokenName>();
             foreach (var name in Names)
@@ -197,6 +197,47 @@ namespace NoFuture.Util.DotNetMeta.Grp
             }
 
             return new TokenNames { Names = names.ToArray() };
+        }
+
+        public void ReassignAllByRefs()
+        {
+            //find all the byRefs throughout
+            var byRefs = new List<MetadataTokenName>();
+            foreach(var nm in Names)
+                nm.GetAllByRefNames(byRefs);
+
+            if (!byRefs.Any())
+                return;
+
+            //for each byref, find it byVal counterpart
+            var byVals = new List<MetadataTokenName>();
+            foreach (var byRef in byRefs)
+            {
+                MetadataTokenName byVal = null;
+                foreach (var nm in Names)
+                {
+                    byVal = nm.FirstByVal(byRef);
+                    if (byVal == null)
+                        continue;
+                    byVals.Add(byVal);
+                    break;
+                }
+            }
+
+            if (!byVals.Any())
+            {
+                Console.WriteLine($"There are {byRefs.Count} ByRef names but no ByVal counterparts.");
+                return;
+            }
+
+            //reassign each byRef's over to byVal
+            foreach (var byVal in byVals)
+            {
+                foreach (var nm in Names)
+                {
+                    nm.ReassignAnyItemsByName(byVal);
+                }
+            }
         }
 
         /// <summary>
