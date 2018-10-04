@@ -115,7 +115,7 @@
     <Compile Include="DotNetMeta\Adj\RankedMetadataTokenAsmComparer.cs" />
     <Compile Include="DotNetMeta\Grp\TokenIds.cs" />
     <Compile Include="DotNetMeta\Grp\TokenNames.cs" />
-    <Compile Include="DotNetMeta\Grp\TokenNamesTree.cs" />
+    <Compile Include="DotNetMeta\TokenNamesTree.cs" />
     <Compile Include="DotNetMeta\Adj\TokenPageRanks.cs" />
     <Compile Include="Gia\FlattenAssembly.cs" />
     <Compile Include="Gia\GraphViz\AsmDiagram.cs" />

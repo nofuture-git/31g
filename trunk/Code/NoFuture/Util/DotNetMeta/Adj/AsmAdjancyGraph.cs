@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Util.DotNetMeta.Auxx;
 
-namespace NoFuture.Util.DotNetMeta
+namespace NoFuture.Util.DotNetMeta.Adj
 {
     [Serializable]
     public class AsmAdjancyGraph : IEnumerable<RankedMetadataTokenAsm>

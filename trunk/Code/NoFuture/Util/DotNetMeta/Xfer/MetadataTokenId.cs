@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace NoFuture.Util.DotNetMeta
+namespace NoFuture.Util.DotNetMeta.Xfer
 {
     /// <summary>
     /// Defines the identity of a single metadata token.

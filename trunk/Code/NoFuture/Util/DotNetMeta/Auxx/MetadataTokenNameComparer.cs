@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Util.DotNetMeta.Xfer;
 
-namespace NoFuture.Util.DotNetMeta
+namespace NoFuture.Util.DotNetMeta.Auxx
 {
     [Serializable]
     public class MetadataTokenNameComparer : IEqualityComparer<MetadataTokenName>,

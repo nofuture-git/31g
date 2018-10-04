@@ -4,6 +4,8 @@ using System.Linq;
 using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Util.DotNetMeta;
+using NoFuture.Util.DotNetMeta.Adj;
+using NoFuture.Util.DotNetMeta.Auxx;
 using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Tests.Util

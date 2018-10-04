@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Util.DotNetMeta
+namespace NoFuture.Util.DotNetMeta.Auxx
 {
     /// <summary>
     /// Bundler type's status
