@@ -4,13 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Newtonsoft.Json;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.Adj;
 using NoFuture.Util.DotNetMeta.Grp;
 using NoFuture.Util.DotNetMeta.Xfer;
@@ -434,12 +431,6 @@ namespace NoFuture.Util.Gia
             methodName = methodName.Substring(0, methodName.IndexOf('(')).Trim();
             return methodName;
         }
-
-
-
-
-
-
         #endregion
 
         #region static analysis

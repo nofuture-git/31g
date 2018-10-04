@@ -155,7 +155,7 @@ namespace NoFuture.Util.DotNetMeta.Xfer
                 return string.Empty;
             var idxOut = Name.IndexOf(SPLT);
             if (idxOut <= 0)
-                return string.Empty;
+                return Name;
             return Name.Substring(0, Name.IndexOf(SPLT));
         }
 
@@ -359,64 +359,40 @@ namespace NoFuture.Util.DotNetMeta.Xfer
 
         public MetadataTokenName SelectByTypeNames(params string[] typenames)
         {
-            var names = new List<MetadataTokenName>();
-            if (Items == null || !Items.Any())
-                return new MetadataTokenName { Items = names.ToArray() };
-            foreach (var name in Items)
-            {
-                var tname = name.GetTypeName();
-                if (typenames.Contains(tname))
-                    names.Add(name);
-            }
-
-            return new MetadataTokenName { Items = names.ToArray() };
+            return SelectByFunc(n => n.GetTypeName(), (s, f) => s.Any(f.EndsWith), typenames);
         }
 
         public MetadataTokenName SelectByNamespaceNames(params string[] namespaceNames)
         {
-            var names = new List<MetadataTokenName>();
-            if (Items == null || !Items.Any())
-                return new MetadataTokenName { Items = names.ToArray() };
-            foreach (var name in Items)
-            {
-                var tname = name.GetNamespaceName();
-                if (namespaceNames.Contains(tname))
-                    names.Add(name);
-            }
-
-            return new MetadataTokenName { Items = names.ToArray() };
+            return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.Any(f.StartsWith), namespaceNames);
         }
 
         public MetadataTokenName RemoveByTypeNames(params string[] typenames)
         {
-            var names = new List<MetadataTokenName>();
-            if (Items == null || !Items.Any())
-                return new MetadataTokenName { Items = names.ToArray() };
-            foreach (var name in Items)
-            {
-                var tname = name.GetTypeName();
-                if (typenames.Contains(tname))
-                    continue;
-                names.Add(name);
-            }
-
-            return new MetadataTokenName { Items = names.ToArray() };
+            return SelectByFunc(n => n.GetTypeName(), (s, f) => s.All(v => !f.EndsWith(v)), typenames);
         }
 
         public MetadataTokenName RemoveByNamespaceNames(params string[] namespaceNames)
         {
+            return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.All(v => !f.StartsWith(v)), namespaceNames);
+        }
+
+        protected internal MetadataTokenName SelectByFunc(Func<MetadataTokenName, string> getNameFunc,
+            Func<string[], string, bool> selector, params string[] searchNames)
+        {
             var names = new List<MetadataTokenName>();
+            if (selector(searchNames, getNameFunc(this)))
+                names.Add(this);
+
             if (Items == null || !Items.Any())
                 return new MetadataTokenName { Items = names.ToArray() };
             foreach (var name in Items)
             {
-                var tname = name.GetNamespaceName();
-                if (namespaceNames.Contains(tname))
-                    continue;
-                names.Add(name);
+                var nameMatch = name.SelectByFunc(getNameFunc, selector, searchNames);
+                if (nameMatch.Items.Any())
+                    names.AddRange(nameMatch.Items);
             }
-
-            return new MetadataTokenName { Items = names.ToArray() };
+            return new MetadataTokenName { Items = names.Distinct(_comparer).ToArray() };
         }
 
         public void ReassignAllByRefs()
