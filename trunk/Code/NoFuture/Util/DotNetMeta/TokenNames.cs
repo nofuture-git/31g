@@ -50,41 +50,15 @@ namespace NoFuture.Util.DotNetMeta
             }
         }
 
-        public TokenNames SelectAll()
+        public TokenNames SelectAll(bool? byValOnly = null)
         {
             var allNames = new List<MetadataTokenName>();
             foreach (var n in Names)
             {
-                allNames.AddRange(n.SelectAll());
+                allNames.AddRange(n.SelectAll(byValOnly));
             }
 
             return new TokenNames {Names = allNames.ToArray()};
-        }
-
-        public TokenNames SelectMaxDepth(TokenNames allNames = null)
-        {
-            var maxItems = new List<MetadataTokenName>();
-            allNames = allNames ?? SelectAll();
-            if (allNames == null || allNames.Count <= 0)
-                return new TokenNames {Names = maxItems.ToArray()};
-            var allItems = allNames.Names;
-            var comparer = new MetadataTokenNameComparer();
-            for (var i = 0; i < allItems.Length; i++)
-            {
-                var matItem = allItems[i];
-                for (var j = 0; j < allItems.Length; j++)
-                {
-                    if(i == j)
-                        continue;
-                    if (comparer.Equals(allItems[i], allItems[j]) && comparer.Compare(allItems[i], allItems[j]) > 0)
-                    {
-                        matItem = allItems[j];
-                    }
-                }
-                maxItems.Add(matItem);
-            }
-
-            return new TokenNames {Names = maxItems.ToArray()};
         }
 
         /// <summary>

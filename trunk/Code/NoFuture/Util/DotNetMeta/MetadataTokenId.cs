@@ -62,19 +62,19 @@ namespace NoFuture.Util.DotNetMeta
         /// <param name="token"></param>
         /// <param name="perserveDirectChildItems">Retains the the direct children Items</param>
         /// <returns></returns>
-        public static MetadataTokenId[] FlattenToDistinct(MetadataTokenId token, bool perserveDirectChildItems = false)
+        public static MetadataTokenId[] SelectDistinct(MetadataTokenId token, bool perserveDirectChildItems = false)
         {
             var list = new HashSet<MetadataTokenId>();
 
             if (token == null)
                 return list.ToArray();
 
-            FlattenToDistinct(token, list, perserveDirectChildItems);
+            SelectDistinct(token, list, perserveDirectChildItems);
             return list.ToArray();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static void FlattenToDistinct(MetadataTokenId token, HashSet<MetadataTokenId> list,
+        internal static void SelectDistinct(MetadataTokenId token, HashSet<MetadataTokenId> list,
             bool perserveDirectChildItems = false)
         {
             if (token == null)
@@ -113,7 +113,7 @@ namespace NoFuture.Util.DotNetMeta
 
             foreach (var jToken in token.Items)
             {
-                FlattenToDistinct(jToken, list, perserveDirectChildItems);
+                SelectDistinct(jToken, list, perserveDirectChildItems);
             }
         }
 

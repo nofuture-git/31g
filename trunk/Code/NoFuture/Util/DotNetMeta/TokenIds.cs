@@ -28,14 +28,14 @@ namespace NoFuture.Util.DotNetMeta
         /// Helper method to get all distinct token ids from the current instance.
         /// </summary>
         /// <returns></returns>
-        public MetadataTokenId[] FlattenToDistinct(bool perserveDirectChildItems = false)
+        public MetadataTokenId[] SelectDistinct(bool perserveDirectChildItems = false)
         {
             if (St == MetadataTokenStatus.Error || Tokens == null ||  Tokens.Length <= 0)
                 return null;
             var tokenHashset = new HashSet<MetadataTokenId>();
             foreach (var t in Tokens)
             {
-                MetadataTokenId.FlattenToDistinct(t, tokenHashset, perserveDirectChildItems);
+                MetadataTokenId.SelectDistinct(t, tokenHashset, perserveDirectChildItems);
             }
             return tokenHashset.ToArray();
         }
@@ -46,7 +46,7 @@ namespace NoFuture.Util.DotNetMeta
         /// <returns></returns>
         public Tuple<Dictionary<int, MetadataTokenId>,  int[,]> GetAdjancencyMatrix(bool rmIsolatedNodes = false)
         {
-            return GetAdjancencyMatrix(FlattenToDistinct(true).ToList(), rmIsolatedNodes);
+            return GetAdjancencyMatrix(SelectDistinct(true).ToList(), rmIsolatedNodes);
         }
 
         internal static Tuple<Dictionary<int, MetadataTokenId>, int[,]> GetAdjancencyMatrix(List<MetadataTokenId> uqTokens,

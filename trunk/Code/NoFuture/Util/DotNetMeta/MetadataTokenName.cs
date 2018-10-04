@@ -61,7 +61,7 @@ namespace NoFuture.Util.DotNetMeta
                 return _selectDistinct;
 
             var comparer = new MetadataTokenNameComparer();
-            var innerItems = new List<MetadataTokenName> { this };
+            var innerItems = new List<MetadataTokenName> {this};
             if (Items == null || !Items.Any())
                 return innerItems.ToArray();
             foreach (var item in Items)
@@ -73,11 +73,21 @@ namespace NoFuture.Util.DotNetMeta
             return _selectDistinct;
         }
 
-        public MetadataTokenName[] SelectAll()
+        public MetadataTokenName[] SelectAll(bool? byValOnly = null)
         {
             if (_selectAll != null)
                 return _selectAll;
-            var innerItems = new List<MetadataTokenName> { this };
+            var bvo = byValOnly ?? false;
+            var innerItems = new List<MetadataTokenName>();
+            if (bvo && !IsByRef)
+            {
+                innerItems.Add(this);
+            }
+            else
+            {
+                innerItems.Add(this);
+            }
+
             if (Items == null || !Items.Any())
                 return innerItems.ToArray();
             foreach (var item in Items)
