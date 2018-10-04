@@ -60,7 +60,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
         /// <returns></returns>
         public TokenNames GetRightSetDiff(TokenNames otherNames, bool rightListTopLvlOnly = false)
         {
-            if (otherNames == null)
+            if (otherNames?.Names == null)
                 return this;
             var leftList = this;
             var rightList = otherNames;
@@ -92,7 +92,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
         /// <returns></returns>
         public TokenNames GetUnion(TokenNames otherNames)
         {
-            if (otherNames == null)
+            if (otherNames?.Names == null)
                 return this;
             var leftList = this;
             var rightList = otherNames;
@@ -114,7 +114,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
         /// <returns></returns>
         public TokenNames GetIntersect(TokenNames otherNames)
         {
-            if (otherNames == null)
+            if (otherNames?.Names == null)
                 return this;
             var leftList = this;
             var rightList = otherNames;
@@ -148,6 +148,8 @@ namespace NoFuture.Util.DotNetMeta.Grp
         public TokenNames SelectByTypeNames(params string[] typenames)
         {
             var names = new List<MetadataTokenName>();
+            if (Names == null || !Names.Any())
+                return new TokenNames {Names = names.ToArray()};
             foreach (var name in Names)
             {
                 var tname = name.GetTypeName();
@@ -161,6 +163,8 @@ namespace NoFuture.Util.DotNetMeta.Grp
         public TokenNames SelectByNamespaceNames(params string[] namespaceNames)
         {
             var names = new List<MetadataTokenName>();
+            if (Names == null || !Names.Any())
+                return new TokenNames { Names = names.ToArray() };
             foreach (var name in Names)
             {
                 var tname = name.GetNamespaceName();
@@ -174,6 +178,8 @@ namespace NoFuture.Util.DotNetMeta.Grp
         public TokenNames RemoveByTypeNames(params string[] typenames)
         {
             var names = new List<MetadataTokenName>();
+            if (Names == null || !Names.Any())
+                return new TokenNames { Names = names.ToArray() };
             foreach (var name in Names)
             {
                 var tname = name.GetTypeName();
@@ -188,6 +194,8 @@ namespace NoFuture.Util.DotNetMeta.Grp
         public TokenNames RemoveByNamespaceNames(params string[] namespaceNames)
         {
             var names = new List<MetadataTokenName>();
+            if (Names == null || !Names.Any())
+                return new TokenNames { Names = names.ToArray() };
             foreach (var name in Names)
             {
                 var tname = name.GetNamespaceName();

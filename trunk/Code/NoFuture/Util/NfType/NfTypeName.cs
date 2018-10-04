@@ -23,7 +23,6 @@ namespace NoFuture.Util.NfType
         private readonly string _className;
         private readonly AssemblyName _asmName;
         private readonly List<NfTypeName> _genericArgs = new List<NfTypeName>();
-        private static NfTypeNameProcess _myProcess;
         #endregion
 
         #region ReadOnly Properties

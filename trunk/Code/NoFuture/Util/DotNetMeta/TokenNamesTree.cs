@@ -14,6 +14,8 @@ namespace NoFuture.Util.DotNetMeta
     [Serializable]
     public class TokenNamesTree
     {
+        private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
+
         /// <summary>
         /// The flat list of token names from ctor-time
         /// </summary>
@@ -60,30 +62,36 @@ namespace NoFuture.Util.DotNetMeta
         public TokenNames SelectDistinct(string typeName, string methodName)
         {
             var df = new TokenNames { Names = new MetadataTokenName[] { } };
-            if (string.IsNullOrWhiteSpace(typeName) || string.IsNullOrWhiteSpace(methodName))
+            if (string.IsNullOrWhiteSpace(typeName))
                 return df;
+            methodName = methodName ?? "";
             if (methodName.Contains("("))
                 methodName = methodName.Substring(0, methodName.IndexOf('('));
 
             //want to avoid an interface type 
-            var typeNameTree = TreeTokenNames.Names.FirstOrDefault(i =>
-                i.IsTypeName() && i.Name.EndsWith(typeName) &&
-                i.Items.Any(ii => ii.Items != null && ii.Items.Length > 0));
+            var tokenName = TreeTokenNames.SelectByTypeNames(typeName);
+            var typeNameTree = tokenName.Names.FirstOrDefault(t => t.IsTypeName());
 
-            if(typeNameTree?.Items == null || !typeNameTree.Items.Any())
+            if(typeNameTree == null)
+                return tokenName;
+            
+            var names = new List<MetadataTokenName>();
+            if (string.IsNullOrWhiteSpace(methodName) || !typeNameTree.Items.Any())
+            {
+                names.AddRange(typeNameTree.SelectDistinct());
+                df.Names = names.Distinct(_comparer).ToArray();
                 return df;
+            }
 
             //match on overloads
             var targetMethods = typeNameTree.Items.Where(item =>
                 item.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("));
-            var names = new List<MetadataTokenName>();
             foreach (var t in targetMethods)
             {
                 names.AddRange(t.SelectDistinct());
             }
 
-            names = names.Distinct(new MetadataTokenNameComparer()).ToList();
-            df.Names = names.ToArray();
+            df.Names = names.Distinct(_comparer).ToArray();
             return df;
             
         }
