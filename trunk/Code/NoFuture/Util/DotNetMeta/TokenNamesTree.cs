@@ -19,12 +19,12 @@ namespace NoFuture.Util.DotNetMeta
         /// <summary>
         /// The flat list of token names from ctor-time
         /// </summary>
-        public TokenNames FlatTokenNames { get; }
+        public MetadataTokenName FlatTokenNames { get; }
 
         /// <summary>
         /// The token ids in hierarchy from ctor-time
         /// </summary>
-        public TokenIds TokenIds { get; }
+        public MetadataTokenId TokenIds { get; }
 
         /// <summary>
         /// The assembly name -to- index 
@@ -34,7 +34,7 @@ namespace NoFuture.Util.DotNetMeta
         /// <summary>
         /// The resultant token names in call-stack tree form
         /// </summary>
-        public TokenNames TreeTokenNames { get; }
+        public MetadataTokenName TokenNameRoot { get; }
 
         /// <summary>
         /// Ctor of final assembly analysis 
@@ -44,13 +44,16 @@ namespace NoFuture.Util.DotNetMeta
         /// <param name="asms">The assembly-to-index</param>
         public TokenNamesTree(TokenNames flatNames, TokenIds treeIds, AsmIndicies asms)
         {
-            FlatTokenNames = flatNames ?? throw new ArgumentNullException(nameof(flatNames));
-            TokenIds = treeIds ?? throw new ArgumentNullException(nameof(treeIds));
+            var tokenNameRspn = flatNames ?? throw new ArgumentNullException(nameof(flatNames));
+            var tokenIdRspn = treeIds ?? throw new ArgumentNullException(nameof(treeIds));
             AssemblyIndices = asms ?? throw new ArgumentNullException(nameof(treeIds));
-            FlatTokenNames.ApplyFullName(AssemblyIndices);
-            TreeTokenNames = FlatTokenNames.GetNames(TokenIds);
-            TreeTokenNames.ApplyFullName(AssemblyIndices);
-            TreeTokenNames.ReassignAllByRefs();
+            tokenNameRspn.ApplyFullName(AssemblyIndices);
+
+            TokenIds = tokenIdRspn.GetAsRoot();
+            FlatTokenNames = tokenNameRspn.GetNamesAsSingle();
+            TokenNameRoot = tokenNameRspn.BindTree2Names(tokenIdRspn);
+            TokenNameRoot.ApplyFullName(AssemblyIndices);
+            TokenNameRoot.ReassignAllByRefs();
         }
 
         /// <summary>
@@ -59,9 +62,9 @@ namespace NoFuture.Util.DotNetMeta
         /// <param name="typeName"></param>
         /// <param name="methodName"></param>
         /// <returns></returns>
-        public TokenNames SelectDistinct(string typeName, string methodName)
+        public MetadataTokenName SelectDistinct(string typeName, string methodName)
         {
-            var df = new TokenNames { Names = new MetadataTokenName[] { } };
+            var df = new MetadataTokenName { Items = new MetadataTokenName[] { } };
             if (string.IsNullOrWhiteSpace(typeName))
                 return df;
             methodName = methodName ?? "";
@@ -69,8 +72,8 @@ namespace NoFuture.Util.DotNetMeta
                 methodName = methodName.Substring(0, methodName.IndexOf('('));
 
             //want to avoid an interface type 
-            var tokenName = TreeTokenNames.SelectByTypeNames(typeName);
-            var typeNameTree = tokenName.Names.FirstOrDefault(t => t.IsTypeName());
+            var tokenName = TokenNameRoot.SelectByTypeNames(typeName);
+            var typeNameTree = tokenName.Items.FirstOrDefault(t => t.IsTypeName());
 
             if(typeNameTree == null)
                 return tokenName;
@@ -79,7 +82,7 @@ namespace NoFuture.Util.DotNetMeta
             if (string.IsNullOrWhiteSpace(methodName) || !typeNameTree.Items.Any())
             {
                 names.AddRange(typeNameTree.SelectDistinct());
-                df.Names = names.Distinct(_comparer).ToArray();
+                df.Items = names.Distinct(_comparer).ToArray();
                 return df;
             }
 
@@ -91,7 +94,7 @@ namespace NoFuture.Util.DotNetMeta
                 names.AddRange(t.SelectDistinct());
             }
 
-            df.Names = names.Distinct(_comparer).ToArray();
+            df.Items = names.Distinct(_comparer).ToArray();
             return df;
             
         }

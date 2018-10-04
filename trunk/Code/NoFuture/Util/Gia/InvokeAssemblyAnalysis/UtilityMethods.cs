@@ -403,7 +403,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         {
             if (tokens == null)
                 return null;
-            var adjGraph = tokens.GetAdjancencyMatrix(true);
+            var adjGraph = tokens.GetAsRoot().GetAdjancencyMatrix(true);
             Re.Efx.RTempDir = _myProgram.LogDirectory;
             var pageRank = Re.Efx.GetPageRank(adjGraph.Item2);
             var idx = adjGraph.Item1;

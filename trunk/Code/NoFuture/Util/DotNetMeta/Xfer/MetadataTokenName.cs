@@ -52,20 +52,10 @@ namespace NoFuture.Util.DotNetMeta.Xfer
         public bool IsByRef;
 
         [NonSerialized]
-        private int? _fullMaxDepth;
-
-        [NonSerialized]
         private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
-
-        [NonSerialized]
-        private MetadataTokenName[] _selectDistinct;
 
         public MetadataTokenName[] SelectDistinct()
         {
-            if (_selectDistinct != null)
-                return _selectDistinct;
-
-            
             var innerItems = new List<MetadataTokenName> {this};
             if (Items == null || !Items.Any())
                 return innerItems.ToArray();
@@ -74,8 +64,7 @@ namespace NoFuture.Util.DotNetMeta.Xfer
                 innerItems.AddRange(item.SelectDistinct());
             }
 
-            _selectDistinct = innerItems.Distinct(_comparer).ToArray();
-            return _selectDistinct;
+            return innerItems.Distinct(_comparer).ToArray();
         }
 
         public void ApplyFullName(AsmIndicies asmIndicies)
@@ -144,15 +133,12 @@ namespace NoFuture.Util.DotNetMeta.Xfer
 
         public int GetFullDepthCount()
         {
-            if (_fullMaxDepth != null)
-                return _fullMaxDepth.Value;
             var c = 1;
             if (Items == null || !Items.Any())
                 return c;
             foreach (var i in Items)
                 c += i.GetFullDepthCount();
 
-            _fullMaxDepth = c;
             return c;
         }
 
@@ -276,6 +262,242 @@ namespace NoFuture.Util.DotNetMeta.Xfer
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
+        }
+
+        /// <summary>
+        /// Gets the names which are exclusive to <see cref="otherNames"/>
+        /// </summary>
+        /// <param name="otherNames"></param>
+        /// <param name="rightListTopLvlOnly"></param>
+        /// <returns></returns>
+        public MetadataTokenName GetRightSetDiff(MetadataTokenName otherNames, bool rightListTopLvlOnly = false)
+        {
+            if (otherNames?.Items == null)
+                return this;
+            var leftList = this;
+            var rightList = otherNames;
+            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
+
+            if (rightList.Items == null || rightList.Items.Length <= 0)
+                return this;
+            if (leftList.Items == null || leftList.Items.Length <= 0)
+                return rightList;
+
+            var setOp = rightList.Items.Select(hashCode).Except(leftList.Items.Select(hashCode));
+
+            var listOut = new List<MetadataTokenName>();
+            foreach (var j in setOp)
+            {
+                var k = rightList.Items.FirstOrDefault(x => hashCode(x) == j);
+                if (k == null || rightListTopLvlOnly && k.OwnAsmIdx != 0)
+                    continue;
+                listOut.Add(k);
+            }
+
+            return new MetadataTokenName { Items = listOut.ToArray() };
+        }
+
+        /// <summary>
+        /// Joins the distinct names of this instance to the names of <see cref="otherNames"/>
+        /// </summary>
+        /// <param name="otherNames"></param>
+        /// <returns></returns>
+        public MetadataTokenName GetUnion(MetadataTokenName otherNames)
+        {
+            if (otherNames?.Items == null)
+                return this;
+            var leftList = this;
+            var rightList = otherNames;
+            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
+
+            var d = rightList.Items.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
+            var e = leftList.Items.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
+
+            foreach (var key in e.Keys.Where(k => !d.ContainsKey(k)))
+                d.Add(key, e[key]);
+
+            return new MetadataTokenName { Items = d.Values.ToArray() };
+        }
+
+        /// <summary>
+        /// Gets the names which are shared between this instance and <see cref="otherNames"/>
+        /// </summary>
+        /// <param name="otherNames"></param>
+        /// <returns></returns>
+        public MetadataTokenName GetIntersect(MetadataTokenName otherNames)
+        {
+            if (otherNames?.Items == null)
+                return this;
+            var leftList = this;
+            var rightList = otherNames;
+            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
+
+            if (rightList.Items == null || rightList.Items.Length <= 0)
+                return this;
+            if (leftList.Items == null || leftList.Items.Length <= 0)
+                return rightList;
+
+            var setOp = rightList.Items.Select(hashCode).Intersect(leftList.Items.Select(hashCode));
+
+            var listOut = new List<MetadataTokenName>();
+            foreach (var j in setOp)
+            {
+                //should be in either list
+                var k = leftList.Items.FirstOrDefault(x => hashCode(x) == j);
+                if (k == null)
+                    continue;
+                listOut.Add(k);
+            }
+
+            return new MetadataTokenName { Items = listOut.ToArray() };
+        }
+
+        public string[] GetUniqueTypeNames()
+        {
+            return Items.Select(n => n.GetTypeName()).Distinct().ToArray();
+        }
+
+        public MetadataTokenName SelectByTypeNames(params string[] typenames)
+        {
+            var names = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return new MetadataTokenName { Items = names.ToArray() };
+            foreach (var name in Items)
+            {
+                var tname = name.GetTypeName();
+                if (typenames.Contains(tname))
+                    names.Add(name);
+            }
+
+            return new MetadataTokenName { Items = names.ToArray() };
+        }
+
+        public MetadataTokenName SelectByNamespaceNames(params string[] namespaceNames)
+        {
+            var names = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return new MetadataTokenName { Items = names.ToArray() };
+            foreach (var name in Items)
+            {
+                var tname = name.GetNamespaceName();
+                if (namespaceNames.Contains(tname))
+                    names.Add(name);
+            }
+
+            return new MetadataTokenName { Items = names.ToArray() };
+        }
+
+        public MetadataTokenName RemoveByTypeNames(params string[] typenames)
+        {
+            var names = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return new MetadataTokenName { Items = names.ToArray() };
+            foreach (var name in Items)
+            {
+                var tname = name.GetTypeName();
+                if (typenames.Contains(tname))
+                    continue;
+                names.Add(name);
+            }
+
+            return new MetadataTokenName { Items = names.ToArray() };
+        }
+
+        public MetadataTokenName RemoveByNamespaceNames(params string[] namespaceNames)
+        {
+            var names = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return new MetadataTokenName { Items = names.ToArray() };
+            foreach (var name in Items)
+            {
+                var tname = name.GetNamespaceName();
+                if (namespaceNames.Contains(tname))
+                    continue;
+                names.Add(name);
+            }
+
+            return new MetadataTokenName { Items = names.ToArray() };
+        }
+
+        public void ReassignAllByRefs()
+        {
+            //find all the byRefs throughout
+            var byRefs = new List<MetadataTokenName>();
+            foreach (var nm in Items)
+                nm.GetAllByRefNames(byRefs);
+
+            if (!byRefs.Any())
+                return;
+
+            //for each byref, find it byVal counterpart
+            var byVals = new List<MetadataTokenName>();
+            foreach (var byRef in byRefs)
+            {
+                MetadataTokenName byVal = null;
+                foreach (var nm in Items)
+                {
+                    byVal = nm.FirstByVal(byRef);
+                    if (byVal == null)
+                        continue;
+                    byVals.Add(byVal);
+                    break;
+                }
+            }
+
+            if (!byVals.Any())
+            {
+                Console.WriteLine($"There are {byRefs.Count} ByRef names but no ByVal counterparts.");
+                return;
+            }
+
+            //reassign each byRef's over to byVal
+            foreach (var byVal in byVals)
+            {
+                foreach (var nm in Items)
+                {
+                    nm.ReassignAnyItemsByName(byVal);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes items from <see cref="Items"/> which do not have 
+        /// both &apos;get_[...]&apos; and &apos;set_[...]&apos; method for the 
+        /// same property (by name)
+        /// </summary>
+        /// <returns></returns>
+        public void RemovePropertiesWithoutBothGetAndSet()
+        {
+            var names = new List<MetadataTokenName>();
+            foreach (var name in Items)
+            {
+                if (!NfReflect.IsClrMethodForProperty(name.GetMemberName(), out var propName))
+                {
+                    names.Add(name);
+                    continue;
+                }
+
+                var countOfProp = Items.Count(n => n.GetMemberName().Contains($"get_{propName}(")
+                                                   || n.GetMemberName().Contains($"set_{propName}("));
+                if (countOfProp < 2)
+                    continue;
+                names.Add(name);
+            }
+
+            Items = names.ToArray();
+        }
+
+        public void RemoveClrGeneratedNames()
+        {
+            var names = new List<MetadataTokenName>();
+            foreach (var name in Items)
+            {
+                if (NfReflect.IsClrGeneratedType(name.Name))
+                    continue;
+                names.Add(name);
+            }
+
+            Items = names.ToArray();
         }
     }
 }

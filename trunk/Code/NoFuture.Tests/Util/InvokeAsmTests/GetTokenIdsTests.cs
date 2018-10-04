@@ -150,18 +150,18 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
                     }
                 }
             };
-            var testSubject = new TokenIds {Tokens = new[] {t0, t1}};
+            var testSubject = new MetadataTokenId() {Items = new[] {t0, t1}};
             var testResult = testSubject.SelectDistinct();
             Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Length);
-            Assert.AreEqual(11, testResult.Length);
+            Assert.AreNotEqual(0, testResult.Items.Length);
+            Assert.AreEqual(11, testResult.Items.Length);
 
             testResult = testSubject.SelectDistinct(true);
             Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Length);
-            Assert.AreEqual(11,testResult.Length);
+            Assert.AreNotEqual(0, testResult.Items.Length);
+            Assert.AreEqual(11,testResult.Items.Length);
 
-            var t1x0 = testResult.FirstOrDefault(x => x.Id == 1 && x.RslvAsmIdx == 0);
+            var t1x0 = testResult.Items.FirstOrDefault(x => x.Id == 1 && x.RslvAsmIdx == 0);
             Assert.IsNotNull(t1x0);
             Assert.IsNotNull(t1x0.Items);
             Assert.AreNotEqual(0,t1x0.Items.Length);
@@ -179,7 +179,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             var testInput = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenIds>(testJson);
             Assert.IsNotNull(testInput);
 
-            var testResult = testInput.GetAdjancencyMatrix(true);
+            var testResult = testInput.GetAsRoot().GetAdjancencyMatrix(true);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Item1);
             Assert.IsNotNull(testResult.Item2);
