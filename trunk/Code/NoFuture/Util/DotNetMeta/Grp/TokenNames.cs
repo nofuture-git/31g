@@ -52,17 +52,6 @@ namespace NoFuture.Util.DotNetMeta.Grp
             }
         }
 
-        public TokenNames SelectAll(bool? byValOnly = null)
-        {
-            var allNames = new List<MetadataTokenName>();
-            foreach (var n in Names)
-            {
-                allNames.AddRange(n.SelectAll(byValOnly));
-            }
-
-            return new TokenNames {Names = allNames.ToArray()};
-        }
-
         /// <summary>
         /// Gets the names which are exclusive to <see cref="otherNames"/>
         /// </summary>
@@ -256,19 +245,19 @@ namespace NoFuture.Util.DotNetMeta.Grp
         /// <param name="tokenIds"></param>
         /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal TokenNames GetFullCallStackTree(TokenIds tokenIds)
+        internal TokenNames GetNames(TokenIds tokenIds)
         {
             if (St == MetadataTokenStatus.Error || Names == null || Names.Length <= 0)
                 return null;
 
             var nameMapping = new List<MetadataTokenName>();
             foreach (var tokenId in tokenIds.Tokens)
-                nameMapping.Add(GetNameMapping(tokenId));
+                nameMapping.Add(GetNames(tokenId));
             return new TokenNames { Names = nameMapping.ToArray() };
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal MetadataTokenName GetNameMapping(MetadataTokenId tokenId)
+        internal MetadataTokenName GetNames(MetadataTokenId tokenId)
         {
             if (tokenId == null || Names == null)
                 return null;
@@ -288,7 +277,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
             var hs = new List<MetadataTokenName>();
             foreach (var tToken in tokenId.Items)
             {
-                var nmTokens = GetNameMapping(tToken);
+                var nmTokens = GetNames(tToken);
                 if (nmTokens == null)
                     continue;
                 hs.Add(nmTokens);

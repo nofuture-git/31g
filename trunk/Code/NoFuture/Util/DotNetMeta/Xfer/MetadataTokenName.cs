@@ -75,32 +75,6 @@ namespace NoFuture.Util.DotNetMeta.Xfer
             return _selectDistinct;
         }
 
-        public MetadataTokenName[] SelectAll(bool? byValOnly = null)
-        {
-            if (_selectAll != null)
-                return _selectAll;
-            var bvo = byValOnly ?? false;
-            var innerItems = new List<MetadataTokenName>();
-            if (bvo && !IsByRef)
-            {
-                innerItems.Add(this);
-            }
-            else
-            {
-                innerItems.Add(this);
-            }
-
-            if (Items == null || !Items.Any())
-                return innerItems.ToArray();
-            foreach (var item in Items)
-            {
-                innerItems.AddRange(item.SelectAll());
-            }
-
-            _selectAll = innerItems.ToArray();
-            return _selectAll;
-        }
-
         public void ApplyFullName(AsmIndicies asmIndicies)
         {
             if (!IsPartialName())

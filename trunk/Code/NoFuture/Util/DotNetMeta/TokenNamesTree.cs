@@ -45,7 +45,7 @@ namespace NoFuture.Util.DotNetMeta
             TokenIds = treeIds ?? throw new ArgumentNullException(nameof(treeIds));
             AssemblyIndices = asms ?? throw new ArgumentNullException(nameof(treeIds));
             FlatTokenNames.ApplyFullName(AssemblyIndices);
-            TreeTokenNames = FlatTokenNames.GetFullCallStackTree(TokenIds);
+            TreeTokenNames = FlatTokenNames.GetNames(TokenIds);
             TreeTokenNames.ApplyFullName(AssemblyIndices);
         }
 
