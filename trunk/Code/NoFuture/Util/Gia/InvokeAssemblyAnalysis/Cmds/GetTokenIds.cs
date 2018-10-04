@@ -18,7 +18,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
-    public class GetTokenIds : CmdBase<TokenIds>, ICmd
+    public class GetTokenIds : CmdBase<TokenIdResponse>, ICmd
     {
         public GetTokenIds(Program myProgram)
             : base(myProgram)
@@ -57,7 +57,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 if (string.IsNullOrWhiteSpace(((IaaProgram)MyProgram).AssemblyNameRegexPattern))
                 {
                     return JsonEncodedResponse(
-                        new TokenIds
+                        new TokenIdResponse
                         {
                             Tokens = tokens.ToArray()
                         });
@@ -83,7 +83,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 }
                 Console.Write('\n');
                 return JsonEncodedResponse(
-                    new TokenIds
+                    new TokenIdResponse
                     {
                         Tokens = tokens.ToArray()
                     });
@@ -93,7 +93,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 Console.Write('\n');
                 MyProgram.PrintToConsole(ex);
                 return JsonEncodedResponse(
-                    new TokenIds
+                    new TokenIdResponse
                     {
                         Msg = ex.Message,
                         St = MetadataTokenStatus.Error

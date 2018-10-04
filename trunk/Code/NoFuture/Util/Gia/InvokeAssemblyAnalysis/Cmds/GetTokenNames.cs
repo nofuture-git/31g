@@ -10,7 +10,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
-    public class GetTokenNames : CmdBase<TokenNames>, ICmd
+    public class GetTokenNames : CmdBase<TokenNameResponse>, ICmd
     {
         public GetTokenNames(Program myProgram) : base(myProgram)
         {
@@ -26,7 +26,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 {
                     MyProgram.PrintToConsole("no assemblies are loaded - call GetAsmIndices");
                     return JsonEncodedResponse(
-                            new TokenNames
+                            new TokenNameResponse
                             {
                                 Msg = "no assemblies are loaded - call GetAsmIndices",
                                 St = MetadataTokenStatus.Error
@@ -38,7 +38,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
     
                 if (tokens == null || tokens.Length <= 0)
                 {
-                    return JsonEncodedResponse(new TokenNames
+                    return JsonEncodedResponse(new TokenNameResponse
                     {
                         Msg = "parse failed",
                         St = MetadataTokenStatus.Error
@@ -48,12 +48,12 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 var names = ((IaaProgram)MyProgram).UtilityMethods.ResolveAllTokenNames(tokens);
                 Console.Write('\n');
 
-                return JsonEncodedResponse(new TokenNames {Names = names.ToArray()});
+                return JsonEncodedResponse(new TokenNameResponse {Names = names.ToArray()});
             }
             catch (Exception ex)
             {
                 MyProgram.PrintToConsole(ex);
-                return JsonEncodedResponse(new TokenNames
+                return JsonEncodedResponse(new TokenNameResponse
                 {
                     Msg = string.Format(ex.Message),
                     St = MetadataTokenStatus.Error

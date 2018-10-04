@@ -42,7 +42,7 @@ namespace NoFuture.Util.DotNetMeta
         /// <param name="flatNames">The result names in a flat set</param>
         /// <param name="treeIds">The token ids in hierarchy form</param>
         /// <param name="asms">The assembly-to-index</param>
-        public TokenNamesTree(TokenNames flatNames, TokenIds treeIds, AsmIndicies asms)
+        public TokenNamesTree(TokenNameResponse flatNames, TokenIdResponse treeIds, AsmIndicies asms)
         {
             var tokenNameRspn = flatNames ?? throw new ArgumentNullException(nameof(flatNames));
             var tokenIdRspn = treeIds ?? throw new ArgumentNullException(nameof(treeIds));

@@ -216,7 +216,7 @@ namespace NoFuture.Util.Gia
         /// <remarks>
         /// Use the <see cref="AsmIndicies"/> property to get the index.
         /// </remarks>
-        public TokenIds GetTokenIds(int asmIdx, string recurseAnyAsmNamedLike = null)
+        public TokenIdResponse GetTokenIds(int asmIdx, string recurseAnyAsmNamedLike = null)
         {
             _getTokenIdsCmd.RecurseAnyAsmNamedLike = recurseAnyAsmNamedLike;
             return _getTokenIdsCmd.Receive(asmIdx);
@@ -227,14 +227,14 @@ namespace NoFuture.Util.Gia
         /// </summary>
         /// <param name="metadataTokenIds"></param>
         /// <returns></returns>
-        public TokenNames GetTokenNames(MetadataTokenId[] metadataTokenIds)
+        public TokenNameResponse GetTokenNames(MetadataTokenId[] metadataTokenIds)
         {
             return _getTokenNamesCmd.Receive(metadataTokenIds);
         }
 
-        public TokenPageRanks GetTokenPageRank(TokenIds tokenIds)
+        public TokenPageRanks GetTokenPageRank(TokenIdResponse tokenIdResponse)
         {
-            return _getTokenPageRankCmd.Receive(tokenIds);
+            return _getTokenPageRankCmd.Receive(tokenIdResponse);
         }
         #endregion
 

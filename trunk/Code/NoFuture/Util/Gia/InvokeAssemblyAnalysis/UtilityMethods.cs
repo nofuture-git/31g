@@ -399,7 +399,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             return names;
         }
 
-        internal Tuple<int,int,double>[] ResolveTokenPageRanks(TokenIds tokens)
+        internal Tuple<int,int,double>[] ResolveTokenPageRanks(TokenIdResponse tokens)
         {
             if (tokens == null)
                 return null;

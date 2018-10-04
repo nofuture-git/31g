@@ -176,7 +176,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             var testJson =
                 System.IO.File.ReadAllText(testDataFile);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testJson));
-            var testInput = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenIds>(testJson);
+            var testInput = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenIdResponse>(testJson);
             Assert.IsNotNull(testInput);
 
             var testResult = testInput.GetAsRoot().GetAdjancencyMatrix(true);

@@ -11,7 +11,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeCmds
 {
-    public class InvokeGetTokenIds : InvokeGetCmdBase<TokenIds>
+    public class InvokeGetTokenIds : InvokeGetCmdBase<TokenIdResponse>
     {
         private readonly AsmIndicies _asmIndices;
 
@@ -23,7 +23,7 @@ namespace NoFuture.Util.Gia.InvokeCmds
         }
 
         public string RecurseAnyAsmNamedLike { get; set; }
-        public override TokenIds Receive(object anything)
+        public override TokenIdResponse Receive(object anything)
         {
             int asmIdx;
             if(anything == null)
@@ -57,7 +57,7 @@ namespace NoFuture.Util.Gia.InvokeCmds
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
 
-            return JsonConvert.DeserializeObject<TokenIds>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            return JsonConvert.DeserializeObject<TokenIdResponse>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
         }
     }
 }

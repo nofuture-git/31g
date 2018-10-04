@@ -22,10 +22,10 @@ namespace NoFuture.Util.Gia.InvokeCmds
             if (!Net.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
 
-            var pageRank = anything as TokenIds;
+            var pageRank = anything as TokenIdResponse;
             if (pageRank == null)
                 throw new InvalidCastException("Was expecting the 'anything' arg to be castable " +
-                                               "to " + typeof(TokenIds).Name);
+                                               "to " + typeof(TokenIdResponse).Name);
 
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(pageRank));
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);

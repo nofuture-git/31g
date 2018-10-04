@@ -10,9 +10,9 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeCmds
 {
-    public class InvokeGetTokenNames : InvokeGetCmdBase<TokenNames>
+    public class InvokeGetTokenNames : InvokeGetCmdBase<TokenNameResponse>
     {
-        public override TokenNames Receive(object anything)
+        public override TokenNameResponse Receive(object anything)
         {
             if(anything == null)
                 throw new ArgumentNullException(nameof(anything));
@@ -36,7 +36,7 @@ namespace NoFuture.Util.Gia.InvokeCmds
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
 
-            return JsonConvert.DeserializeObject<TokenNames>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            return JsonConvert.DeserializeObject<TokenNameResponse>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
         }
     }
 }
