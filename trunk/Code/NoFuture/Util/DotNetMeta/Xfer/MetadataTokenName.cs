@@ -54,15 +54,18 @@ namespace NoFuture.Util.DotNetMeta.Xfer
         [NonSerialized]
         private int? _fullMaxDepth;
 
-        [NonSerialized] private MetadataTokenName[] _selectAll;
-        [NonSerialized] private MetadataTokenName[] _selectDistinct;
+        [NonSerialized]
+        private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
+
+        [NonSerialized]
+        private MetadataTokenName[] _selectDistinct;
 
         public MetadataTokenName[] SelectDistinct()
         {
             if (_selectDistinct != null)
                 return _selectDistinct;
 
-            var comparer = new MetadataTokenNameComparer();
+            
             var innerItems = new List<MetadataTokenName> {this};
             if (Items == null || !Items.Any())
                 return innerItems.ToArray();
@@ -71,7 +74,7 @@ namespace NoFuture.Util.DotNetMeta.Xfer
                 innerItems.AddRange(item.SelectDistinct());
             }
 
-            _selectDistinct = innerItems.Distinct(comparer).ToArray();
+            _selectDistinct = innerItems.Distinct(_comparer).ToArray();
             return _selectDistinct;
         }
 
@@ -91,11 +94,6 @@ namespace NoFuture.Util.DotNetMeta.Xfer
             {
                 myItems.ApplyFullName(asmIndicies);
             }
-        }
-
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
         }
 
         public MetadataTokenId Convert2MetadataTokenId()
@@ -191,6 +189,65 @@ namespace NoFuture.Util.DotNetMeta.Xfer
                    Name.StartsWith(NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture));
         }
 
+        /// <summary>
+        /// Finds the first matching token name which is <see cref="IsByRef"/> false.
+        /// </summary>
+        /// <param name="tokenName"></param>
+        /// <returns></returns>
+        public MetadataTokenName FirstByVal(MetadataTokenName tokenName)
+        {
+            if (tokenName == null)
+                return null;
+            if (_comparer.Equals(tokenName, this) && !IsByRef)
+                return this;
+            if (Items == null || !Items.Any())
+                return null;
+
+            foreach (var nm in Items)
+            {
+                var matched = nm.FirstByVal(tokenName);
+                if (matched != null)
+                    return matched;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Reassigns any member in <see cref="Items"/> to the <see cref="tokenName"/>
+        /// if they having matching names.
+        /// </summary>
+        /// <param name="tokenName"></param>
+        public void ReassignAnyItemsByName(MetadataTokenName tokenName)
+        {
+            if (tokenName == null)
+                return;
+
+            if (Items == null || !Items.Any())
+                return;
+
+            for (var i = 0; i < Items.Length; i++)
+            {
+                if (_comparer.Equals(Items[i], tokenName))
+                {
+                    Items[i] = tokenName;
+                    continue;
+                }
+                Items[i].ReassignAnyItemsByName(tokenName);
+            }
+        }
+
+        public void GetAllByRefNames(List<MetadataTokenName> tokenNames)
+        {
+            tokenNames = tokenNames ?? new List<MetadataTokenName>();
+            if(IsByRef && tokenNames.All(tn => !_comparer.Equals(tn, this)))
+                tokenNames.Add(this);
+            foreach (var nm in Items)
+            {
+                nm.GetAllByRefNames(tokenNames);
+            }
+        }
+
         public override bool Equals(object obj)
         {
             var mtnObj = obj as MetadataTokenName;
@@ -212,6 +269,11 @@ namespace NoFuture.Util.DotNetMeta.Xfer
         public int GetNameHashCode()
         {
             return Name?.GetHashCode() ?? 0;
+        }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

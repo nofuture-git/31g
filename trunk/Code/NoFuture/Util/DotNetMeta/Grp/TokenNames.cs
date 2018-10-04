@@ -145,7 +145,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
             return Names.Select(n => n.GetTypeName()).Distinct().ToArray();
         }
 
-        public TokenNames ContainsTypeNames(params string[] typenames)
+        public TokenNames SelectByTypeNames(params string[] typenames)
         {
             var names = new List<MetadataTokenName>();
             foreach (var name in Names)
@@ -158,7 +158,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
             return new TokenNames { Names = names.ToArray() };
         }
 
-        public TokenNames ContainsNamespaceNames(params string[] namespaceNames)
+        public TokenNames SelectByNamespaceNames(params string[] namespaceNames)
         {
             var names = new List<MetadataTokenName>();
             foreach (var name in Names)
@@ -171,7 +171,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
             return new TokenNames { Names = names.ToArray() };
         }
 
-        public TokenNames NotContainsTypeNames(params string[] typenames)
+        public TokenNames SelectByNotTypeNames(params string[] typenames)
         {
             var names = new List<MetadataTokenName>();
             foreach (var name in Names)
@@ -185,7 +185,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
             return new TokenNames {Names = names.ToArray()};
         }
 
-        public TokenNames NotContainsNamespaceNames(params string[] namespaceNames)
+        public TokenNames SelectByNotNamespaceNames(params string[] namespaceNames)
         {
             var names = new List<MetadataTokenName>();
             foreach (var name in Names)

@@ -7,6 +7,8 @@ using System.IO;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta;
+using NoFuture.Util.DotNetMeta.Grp;
+using NoFuture.Util.DotNetMeta.Xfer;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 
@@ -83,7 +85,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             var tokenPrint = MetadataTokenId.Print(testTokenRslt);
             Console.WriteLine(tokenPrint);
 
-            var testFlattenedRslt = MetadataTokenId.FlattenToDistinct(testTokenRslt);
+            var testFlattenedRslt = MetadataTokenId.SelectDistinct(testTokenRslt);
             Assert.IsTrue(tokenPrint.Split('\n').Length >= testFlattenedRslt.Length);
 
             var testTokenNames =
@@ -152,12 +154,12 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
                 }
             };
             var testSubject = new TokenIds {Tokens = new[] {t0, t1}};
-            var testResult = testSubject.FlattenToDistinct();
+            var testResult = testSubject.SelectDistinct();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Assert.AreEqual(11, testResult.Length);
 
-            testResult = testSubject.FlattenToDistinct(true);
+            testResult = testSubject.SelectDistinct(true);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Assert.AreEqual(11,testResult.Length);
@@ -207,6 +209,48 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             }
 
             Assert.AreNotEqual(0, sumOfMatrix);
+        }
+
+        [Test]
+        public void TestDoNotCommit()
+        {
+            var p =
+                @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds";
+            var asmTokenNames = TokenNames.ReadFromFile($@"{p}.GetTokenNames.json");
+            var asmTokenIds = TokenIds.ReadFromFile($@"{p}.GetTokenIds.json");
+            var asmIndices = AsmIndicies.ReadFromFile($@"{p}.GetAsmIndices.json");
+
+            var testSubject = new NoFuture.Util.DotNetMeta.TokenNamesTree(asmTokenNames, asmTokenIds, asmIndices);
+
+            var ctrlName = "PspaSignInController";
+            var methodName = "GetFedAuthToken";
+
+
+            //var typeNameTree =
+            //    testSubject.TreeTokenNames.Names.FirstOrDefault(v => v.IsTypeName() && v.Name.EndsWith(ctrlName));
+            //Assert.IsNotNull(typeNameTree);
+
+            //var rIsByRef = typeNameTree.IsAnyByRef();
+            //Assert.IsTrue(rIsByRef);
+
+            //var dCount = typeNameTree.GetFullDepthCount();
+
+
+            //var targetMethod00 = typeNameTree.Items.FirstOrDefault(v => v.Id == 100664998);
+            //Assert.IsNotNull(targetMethod00);
+            //var targetMethod01 = typeNameTree.Items.FirstOrDefault(v => v.Id == 100665002);
+            //Assert.IsNotNull(targetMethod01);
+            //var targetMethod02 = targetMethod00.Items.FirstOrDefault(v => v.Id == 100665002);
+            //Assert.IsNotNull(targetMethod02);
+
+            //Assert.IsFalse(targetMethod01.IsByRef);
+            //Assert.IsTrue(targetMethod02.IsByRef);
+
+
+            //Assert.IsFalse(targetMethod01.IsByRef);
+            //Assert.IsFalse(targetMethod02.IsByRef);
+
+
         }
     }
 }
