@@ -8,6 +8,7 @@ using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Util.DotNetMeta.TokenType;
 
 namespace NoFuture.Util.DotNetMeta.TokenName
 {
@@ -206,11 +207,14 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// if they having matching names.
         /// </summary>
         /// <param name="tokenName"></param>
-        public void ReassignAnyItemsByName(MetadataTokenName tokenName)
+        /// <param name="newName">
+        /// Optional, what the matching name is reassigned to, defaults to the <see cref="tokenName"/> if null.
+        /// </param>
+        public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null)
         {
             if (tokenName == null)
                 return;
-
+            newName = newName ?? tokenName;
             if (Items == null || !Items.Any())
                 return;
 
@@ -218,10 +222,10 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             {
                 if (_comparer.Equals(Items[i], tokenName))
                 {
-                    Items[i] = tokenName;
+                    Items[i] = newName;
                     continue;
                 }
-                Items[i].ReassignAnyItemsByName(tokenName);
+                Items[i].ReassignAnyItemsByName(tokenName, newName);
             }
         }
 
@@ -235,6 +239,23 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             foreach (var nm in Items)
             {
                 nm.GetAllByRefNames(tokenNames);
+            }
+        }
+
+        public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames)
+        {
+            tokenNames = tokenNames ?? new List<MetadataTokenName>();
+            if (tokenType == null)
+                return;
+            if (tokenNames.Any(n => _comparer.Equals(n, this)))
+                return;
+            if(TypeNameOrDeclEquals(tokenType, this))
+                tokenNames.Add(this);
+            if (Items == null || !Items.Any())
+                return;
+            foreach (var nm in Items)
+            {
+                nm.GetAllDeclNames(tokenType, tokenNames);
             }
         }
 
@@ -401,6 +422,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             //find all the byRefs throughout
             var byRefs = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return;
+
             foreach (var nm in Items)
                 nm.GetAllByRefNames(byRefs);
 
@@ -436,6 +460,95 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     nm.ReassignAnyItemsByName(byVal);
                 }
             }
+        }
+
+        public Dictionary<MetadataTokenName, MetadataTokenName> GetImplentorDictionary(MetadataTokenType interfaceType,
+            MetadataTokenType concreteType)
+        {
+            var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
+            var interfaceNames = new List<MetadataTokenName>();
+            var concreteNames = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return n2n;
+            foreach (var nm in Items)
+            {
+                nm.GetAllDeclNames(interfaceType, interfaceNames);
+                nm.GetAllDeclNames(concreteType, concreteNames);
+            }
+
+            if (!interfaceNames.Any() || !concreteNames.Any())
+                return n2n;
+
+            //get a mapping of concrete to interface
+            foreach (var concreteName in concreteNames)
+            {
+                if (!concreteName.IsMethodName())
+                    continue;
+
+                if (n2n.Keys.Any(v => string.Equals(v.Name, concreteName.Name)))
+                    continue;
+
+                foreach (var interfaceName in interfaceNames)
+                {
+                    if (MemberNameAndArgsEqual(interfaceName, concreteName))
+                    {
+                        n2n.Add(concreteName, interfaceName);
+                        break;
+                    }
+                }
+            }
+
+            return n2n;
+        }
+
+        public void ReassignAllInterfaceTokens(Dictionary<MetadataTokenName, MetadataTokenName> n2n)
+        {
+            if (Items == null || !Items.Any())
+                return;
+
+            if (n2n == null)
+                return;
+
+            if (!n2n.Any())
+                return;
+
+            //reassign the interface token to concrete implementation token
+            foreach (var concreteName in n2n.Keys)
+            {
+                var interfaceName = n2n[concreteName];
+                if (interfaceName == null)
+                    continue;
+                foreach (var nm in Items)
+                {
+                    nm.ReassignAnyItemsByName(interfaceName, concreteName);
+                }
+            }
+        }
+
+        internal static bool MemberNameAndArgsEqual(MetadataTokenName a1, MetadataTokenName a2)
+        {
+            if (a1 == null || a2 == null)
+                return false;
+            var a1MemberName = a1.GetMemberName();
+            var a2MemberName = a2.GetMemberName();
+            if (!string.Equals(a1MemberName, a2MemberName))
+                return false;
+            var a1Args = string.Join(",",ParseArgsFromTokenName(a1.Name) ?? new[] {""});
+            var a2Args = string.Join(",", ParseArgsFromTokenName(a2.Name) ?? new[] {""});
+
+            var someVal =  string.Equals(a1Args, a2Args);
+            return someVal;
+        }
+
+        internal static bool TypeNameOrDeclEquals(MetadataTokenType tokenType, MetadataTokenName tokenName)
+        {
+            if (tokenName == null || tokenType == null)
+                return false;
+            if (string.Equals(tokenType.Name, tokenName.GetTypeName()))
+                return true;
+            if (tokenName.DeclTypeId == tokenType.Id)
+                return true;
+            return false;
         }
 
         /// <summary>
