@@ -153,15 +153,15 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
             var testSubject = new MetadataTokenId() {Items = new[] {t0, t1}};
             var testResult = testSubject.SelectDistinct();
             Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Items.Length);
-            Assert.AreEqual(11, testResult.Items.Length);
+            Assert.AreNotEqual(0, testResult.Length);
+            Assert.AreEqual(11, testResult.Length);
 
             testResult = testSubject.SelectDistinct(true);
             Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Items.Length);
-            Assert.AreEqual(11,testResult.Items.Length);
+            Assert.AreNotEqual(0, testResult.Length);
+            Assert.AreEqual(11,testResult.Length);
 
-            var t1x0 = testResult.Items.FirstOrDefault(x => x.Id == 1 && x.RslvAsmIdx == 0);
+            var t1x0 = testResult.FirstOrDefault(x => x.Id == 1 && x.RslvAsmIdx == 0);
             Assert.IsNotNull(t1x0);
             Assert.IsNotNull(t1x0.Items);
             Assert.AreNotEqual(0,t1x0.Items.Length);

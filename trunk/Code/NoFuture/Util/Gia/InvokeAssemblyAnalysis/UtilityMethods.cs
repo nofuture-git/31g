@@ -175,6 +175,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
             tokenName.Id = tokenId.Id;
             tokenName.RslvAsmIdx = tokenId.RslvAsmIdx;
+            tokenName.DeclTypeId = mi.DeclaringType?.MetadataToken ?? 0;
             return true;            
         }
 
@@ -241,7 +242,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
 
             var assemblyName = owningAsm.GetName().Name;
-            var typeName = AssemblyAnalysis.ParseTypeNameFromTokenName(tokenName, assemblyName);
+            var typeName = MetadataTokenName.CtorTypeNameFromTokenName(tokenName, assemblyName);
 
             if (String.IsNullOrWhiteSpace(typeName))
             {
@@ -269,7 +270,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 return false;
             }
 
-            var methodName = AssemblyAnalysis.ParseMethodNameFromTokenName(tokenName);
+            var methodName = MetadataTokenName.ParseMethodNameFromTokenName(tokenName);
             if (String.IsNullOrWhiteSpace(methodName))
             {
                 if (msgOut != null)
@@ -289,7 +290,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             //try it the formal way
             if (methodInfo == null)
             {
-                var args = AssemblyAnalysis.ParseArgsFromTokenName(tokenName).ToArray();
+                var args = MetadataTokenName.ParseArgsFromTokenName(tokenName).ToArray();
                 var argTypes = args.Length <= 0
                     ? Type.EmptyTypes
                     : args.Select(Type.GetType).Where(x => x != null).ToArray();

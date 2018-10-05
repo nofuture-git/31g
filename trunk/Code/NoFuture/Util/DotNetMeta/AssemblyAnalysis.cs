@@ -7,7 +7,6 @@ using System.Reflection;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
-using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
@@ -355,82 +354,6 @@ namespace NoFuture.Util.DotNetMeta
             return tokenName;
         }
 
-        /// <summary>
-        /// Gets the method parameter type-names from the token name.
-        /// </summary>
-        /// <param name="tokenName"></param>
-        /// <returns></returns>
-        public static string[] ParseArgsFromTokenName(string tokenName)
-        {
-            if (String.IsNullOrWhiteSpace(tokenName))
-                return null;
-
-            if (!tokenName.Contains("(") || !tokenName.Contains(")"))
-                return null;
-
-            tokenName = tokenName.Trim();
-            var idxSplt = tokenName.IndexOf('(');
-            if (idxSplt < 0)
-                return null;
-
-            var argNames = tokenName.Substring(tokenName.IndexOf('('));
-            argNames = argNames.Replace(")", string.Empty);
-
-            return argNames.Length <= 0 
-                ? null 
-                : argNames.Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
-        }
-
-        /// <summary>
-        /// Gets the full name (namespace plus type-name) part of the <see cref="MetadataTokenName.Name"/>
-        /// </summary>
-        /// <param name="tokenName"></param>
-        /// <param name="owningAsmName"></param>
-        /// <returns></returns>
-        public static string ParseTypeNameFromTokenName(string tokenName, string owningAsmName)
-        {
-            if (string.IsNullOrWhiteSpace(tokenName))
-                return null;
-
-            var sep = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
-
-            //assembly name and namespace being equal will have equal portion removed, add it back
-            if (!string.IsNullOrWhiteSpace(owningAsmName) && tokenName.StartsWith(sep))
-            {
-                tokenName = $"{owningAsmName}{tokenName}";
-            }
-
-            var ns = NfReflect.GetNamespaceWithoutTypeName(tokenName);
-            var tn = NfReflect.GetTypeNameWithoutNamespace(tokenName);
-
-            return $"{ns}{sep}{tn}";
-        }
-
-        /// <summary>
-        /// Gets just the method name of the <see cref="MetadataTokenName.Name"/>
-        /// </summary>
-        /// <param name="tokenName"></param>
-        /// <returns></returns>
-        public static string ParseMethodNameFromTokenName(string tokenName)
-        {
-            if (string.IsNullOrWhiteSpace(tokenName))
-                return null;
-
-            var idxSplt = tokenName.IndexOf(Constants.TYPE_METHOD_NAME_SPLIT_ON, StringComparison.Ordinal);
-
-            idxSplt = idxSplt + (Constants.TYPE_METHOD_NAME_SPLIT_ON).Length;
-            if (idxSplt > tokenName.Length || idxSplt < 0)
-                return null;
-
-            var methodName = tokenName.Substring(idxSplt, tokenName.Length - idxSplt);
-
-            idxSplt = methodName.IndexOf('(');
-            if (idxSplt < 0)
-                return methodName;
-
-            methodName = methodName.Substring(0, methodName.IndexOf('(')).Trim();
-            return methodName;
-        }
         #endregion
 
         #region static analysis
@@ -477,6 +400,7 @@ namespace NoFuture.Util.DotNetMeta
             {
                 Id = mi.MetadataToken, RslvAsmIdx = asmIdx, Items = new MetadataTokenId[0]
             };
+
             var mti = mi as MethodBase;
             if (mti == null)
                 return token;

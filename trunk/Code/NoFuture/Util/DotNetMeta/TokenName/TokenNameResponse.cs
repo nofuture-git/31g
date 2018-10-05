@@ -85,6 +85,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             nm.Label = frmNm.Label;
             nm.Name = frmNm.Name;
             nm.IsByRef = tokenId.IsByRef > 0;
+            nm.DeclTypeId = frmNm.DeclTypeId;
 
             if (tokenId.Items == null || tokenId.Items.Length <= 0)
                 return nm;

@@ -263,8 +263,8 @@ namespace NoFuture.Gen
             if (string.IsNullOrWhiteSpace(tokenName.Name))
                 return null;
 
-            var methodName = AssemblyAnalysis.ParseMethodNameFromTokenName(tokenName.Name);
-            var argNames = AssemblyAnalysis.ParseArgsFromTokenName(tokenName.Name);
+            var methodName = MetadataTokenName.ParseMethodNameFromTokenName(tokenName.Name);
+            var argNames = MetadataTokenName.ParseArgsFromTokenName(tokenName.Name);
             return FindCgMember(methodName, argNames);
         }
 
