@@ -5,6 +5,7 @@ using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Util.DotNetMeta;
 
 namespace NoFuture.Tests.Util.Gia
 {
@@ -67,7 +68,7 @@ namespace NoFuture.Tests.Util.Gia
             var testMethod = testType.GetMember("TakesGenericArg").FirstOrDefault();
             Assert.IsNotNull(testMethod);
 
-            var testResult = NoFuture.Util.Gia.AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
+            var testResult = AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Name);
             Console.WriteLine(testResult.Name);
@@ -75,10 +76,26 @@ namespace NoFuture.Tests.Util.Gia
 
             testMethod = testType.GetMember("TakesThisAsmGenericArg").FirstOrDefault();
             Assert.IsNotNull(testMethod);
-            testResult = NoFuture.Util.Gia.AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
+            testResult = AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
             Console.WriteLine(testResult.Name);
             Assert.AreEqual("AdventureWorks.VeryBadCode.BasicGenerics::TakesThisAsmGenericArg(System.Collections.Generic.List`1[AdventureWorks.VeryBadCode.Order])", testResult.Name);
 
+        }
+
+        [Test]
+        public void TestDoNotCommit()
+        {
+            var d = @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds";
+            var m = NoFuture.Util.DotNetMeta.Grp.TokenNameResponse.ReadFromFile(d + ".GetTokenNames.json");
+            var n = NoFuture.Util.DotNetMeta.Grp.TokenIdResponse.ReadFromFile(d + ".GetTokenIds.json");
+            var o = NoFuture.Util.DotNetMeta.Grp.AsmIndicies.ReadFromFile(d + ".GetAsmIndices.json");
+            var testSubject = new NoFuture.Util.DotNetMeta.TokenNamesTree(m,n,o);
+
+            var testResult = testSubject.SelectDistinct("OptumController", "Index");
+            foreach (var i in testResult.Items)
+            {
+                Console.WriteLine($"{i.Id}, {i.Name}");
+            }
         }
     }
 }

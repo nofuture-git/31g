@@ -2,6 +2,7 @@
 using System.Reflection.Emit;
 using NUnit.Framework;
 using NoFuture.Shared.Cfg;
+using NoFuture.Util.DotNetMeta;
 
 namespace NoFuture.Tests.Util
 {
@@ -53,7 +54,7 @@ namespace NoFuture.Tests.Util
                     System.IO.File.ReadAllBytes(
                         TestAssembly.UnitTestsRoot + @"\ExampleDlls\ThirdDll.dll"));
             var myTestType = myAsm.GetType("AdventureWorks.VeryBadCode.Program");
-            var testResult = NoFuture.Util.Gia.AssemblyAnalysis.GetMetadataToken(myTestType);
+            var testResult = AssemblyAnalysis.GetMetadataToken(myTestType);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Items);
             Assert.AreNotEqual(0, testResult.Items.Length);

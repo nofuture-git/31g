@@ -137,7 +137,7 @@ namespace NoFuture.Tests.Gen
                         }
                     }
             };
-            var testTokenName = NoFuture.Util.Gia.AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, testAsmIndicies, null);
+            var testTokenName = AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, testAsmIndicies, null);
             Assert.IsNotNull(testTokenName);
 
             var testCgType = NoFuture.Gen.Etc.GetCgOfType(testAsm, testTypeName, false);

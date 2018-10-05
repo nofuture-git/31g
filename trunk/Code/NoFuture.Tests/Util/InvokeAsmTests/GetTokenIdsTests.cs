@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using System.IO;
 using NoFuture.Shared.Cfg;
+using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.Grp;
 using NoFuture.Util.DotNetMeta.Xfer;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis;
@@ -52,7 +53,7 @@ namespace NoFuture.Tests.Util.InvokeAsmTests
 
             var testAsmTypes = testAsm.GetTypes();
 
-            var testTokens = testAsmTypes.Select(x =>  NoFuture.Util.Gia.AssemblyAnalysis.GetMetadataToken(x)).ToArray();
+            var testTokens = testAsmTypes.Select(x =>  AssemblyAnalysis.GetMetadataToken(x)).ToArray();
 
             var dee = testTokens.FirstOrDefault();
             Assert.IsNotNull(dee);

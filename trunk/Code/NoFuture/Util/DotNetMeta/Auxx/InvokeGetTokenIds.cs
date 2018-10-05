@@ -2,14 +2,11 @@
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta;
-using NoFuture.Util.DotNetMeta.Auxx;
 using NoFuture.Util.DotNetMeta.Grp;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeCmds
+namespace NoFuture.Util.DotNetMeta.Auxx
 {
     public class InvokeGetTokenIds : InvokeGetCmdBase<TokenIdResponse>
     {

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Text;
 using Newtonsoft.Json;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta;
-using NoFuture.Util.DotNetMeta.Adj;
 using NoFuture.Util.DotNetMeta.Grp;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeCmds
+namespace NoFuture.Util.DotNetMeta.Adj
 {
     public class InvokeGetTokenPageRank : InvokeGetCmdBase<TokenPageRanks>
     {
