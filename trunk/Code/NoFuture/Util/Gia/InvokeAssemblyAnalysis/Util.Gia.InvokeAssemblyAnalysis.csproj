@@ -61,6 +61,7 @@
     <Compile Include="Cmds\GetTokenIds.cs" />
     <Compile Include="Cmds\GetTokenNames.cs" />
     <Compile Include="Cmds\GetTokenPageRank.cs" />
+    <Compile Include="Cmds\GetTokenTypes.cs" />
     <Compile Include="UtilityMethods.cs" />
     <Compile Include="IaaProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Text;
+using NoFuture.Util.DotNetMeta.TokenId;
 
-namespace NoFuture.Util.DotNetMeta.TokenId
+namespace NoFuture.Util.DotNetMeta.TokenType
 {
-    /// <summary>
-    /// A criteria type to send across the wire to a listening socket.
-    /// </summary>
     [Serializable]
-    public class GetTokenIdsCriteria
+    public class TokenTypeRequest
     {
         private string _ranlB64;//persist this as a base64 since regex can be difficult to encode\decode
-        public string AsmName;
 
         /// <summary>
         /// A regex pattern on which <see cref="MetadataTokenId"/> should be resolved. 

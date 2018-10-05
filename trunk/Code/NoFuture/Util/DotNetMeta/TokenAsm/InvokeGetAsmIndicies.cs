@@ -23,7 +23,8 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
             if (!Net.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
 
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(anything));
+            var rqst = new AsmIndexRequest {AssemblyFilePath = anything.ToString()};
+            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rqst));
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)

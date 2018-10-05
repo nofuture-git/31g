@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
@@ -37,6 +34,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         private int? _getTokenIdsCmdPort;
         private int? _getasmIndicesCmdPort;
         private int? _getTokenPageRankCmdPort;
+        private int? _getTokenTypesCmdPort;
         private bool? _resolveGacAsms;
         private TaskFactory _taskFactory;
         private int _maxRecursionDepth;
@@ -67,10 +65,11 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 p.ParseProgramArgs();
 
                 //print settings
-                p.PrintToConsole($"GetAsmIndicesCmdPort listening on port [{p.GetAsmIndicesCmdPort}]");
-                p.PrintToConsole($"GetTokenIdsCmdPort listening on port [{p.GetTokenIdsCmdPort}]");
-                p.PrintToConsole($"GetTokenNamesCmdPort listening on port [{p.GetTokenNamesCmdPort}]");
-                p.PrintToConsole($"GetTokenPageRankCmdPort listening on port [{p.GetTokenPageRankCmdPort}]");
+                p.PrintToConsole($"{nameof(GetAsmIndicesCmdPort)} listening on port [{p.GetAsmIndicesCmdPort}]");
+                p.PrintToConsole($"{nameof(GetTokenIdsCmdPort)} listening on port [{p.GetTokenIdsCmdPort}]");
+                p.PrintToConsole($"{nameof(GetTokenNamesCmdPort)} listening on port [{p.GetTokenNamesCmdPort}]");
+                p.PrintToConsole($"{nameof(GetTokenTypesCmdPort)} listening on port [{p.GetTokenTypesCmdPort}]");
+                p.PrintToConsole($"{nameof(GetTokenPageRankCmdPort)} listening on port [{p.GetTokenPageRankCmdPort}]");
                 p.PrintToConsole($"Resolve GAC Assembly names is [{p.AreGacAssembliesResolved}]");
                 p.PrintToConsole("type 'exit' to quit", false);
 
@@ -209,6 +208,21 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
         }
         /// <summary>
+        /// Resolves the socket port used for <see cref="Cmds.GetTokenTypes"/>
+        /// </summary>
+        protected internal int? GetTokenTypesCmdPort
+        {
+            get
+            {
+                if (Net.IsValidPortNumber(_getTokenTypesCmdPort))
+                    return _getTokenTypesCmdPort;
+
+                _getTokenTypesCmdPort = ResolvePort("GetTokenTypesCmdPort");
+                return _getTokenTypesCmdPort;
+            }
+        }
+
+        /// <summary>
         /// Assignable from the config file, a value to keep <see cref="Cmds.GetTokenIds.ResolveCallOfCall"/>
         /// from blowing out the stack.
         /// </summary>
@@ -294,6 +308,10 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             if (argHash.ContainsKey(AssemblyAnalysis.GET_ASM_INDICES_PORT_CMD_SWITCH))
             {
                 _getasmIndicesCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_ASM_INDICES_PORT_CMD_SWITCH].ToString());
+            }
+            if (argHash.ContainsKey(AssemblyAnalysis.GET_TOKEN_TYPES_PORT_CMD_SWITCH))
+            {
+                _getTokenTypesCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_TYPES_PORT_CMD_SWITCH].ToString());
             }
             if (argHash.ContainsKey(AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH))
             {
@@ -393,19 +411,24 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 
         protected override void LaunchListeners()
         {
-            if (!Net.IsValidPortNumber(GetTokenIdsCmdPort) || !Net.IsValidPortNumber(GetTokenNamesCmdPort) ||
-                !Net.IsValidPortNumber(GetAsmIndicesCmdPort) || !Net.IsValidPortNumber(GetTokenPageRankCmdPort))
+            if (!Net.IsValidPortNumber(GetTokenIdsCmdPort) 
+                || !Net.IsValidPortNumber(GetTokenNamesCmdPort) 
+                || !Net.IsValidPortNumber(GetAsmIndicesCmdPort) 
+                || !Net.IsValidPortNumber(GetTokenPageRankCmdPort)
+                || !Net.IsValidPortNumber(GetTokenTypesCmdPort))
                 throw new RahRowRagee("the command's ports are either null or invalid " +
-                                      $" GetAsmIndicesCmdPort is port [{GetAsmIndicesCmdPort}]" +
-                                      $" GetTokenIdsCmdPort is port [{GetTokenIdsCmdPort}]" +
-                                      $" GetTokenNamesCmdPort is port [{GetTokenNamesCmdPort}]" +
-                                      $" GetTokenPageRankCmdPort is port [{GetTokenPageRankCmdPort}]");
+                                      $" {nameof(GetAsmIndicesCmdPort)} is port [{GetAsmIndicesCmdPort}]" +
+                                      $" {nameof(GetTokenIdsCmdPort)} is port [{GetTokenIdsCmdPort}]" +
+                                      $" {nameof(GetTokenNamesCmdPort)} is port [{GetTokenNamesCmdPort}]" +
+                                      $" {nameof(GetTokenPageRankCmdPort)} is port [{GetTokenPageRankCmdPort}]" +
+                                      $" {nameof(GetTokenTypesCmdPort)} is port [{GetTokenPageRankCmdPort}]");
 
             _taskFactory = new TaskFactory();
             _taskFactory.StartNew(() => HostCmd(new GetAsmIndices(this), GetAsmIndicesCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenIds(this), GetTokenIdsCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenNames(this), GetTokenNamesCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenPageRank(this), GetTokenPageRankCmdPort.Value));
+            _taskFactory.StartNew(() => HostCmd(new GetTokenTypes(this), GetTokenTypesCmdPort.Value));
 
         }
 
@@ -440,6 +463,11 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
                 NfConfig.CmdLineArgSwitch, AssemblyAnalysis.GET_TOKEN_NAMES_PORT_CMD_SWITCH,
                 NfConfig.CmdLineArgAssign));
             help.AppendLine("                                 the GetTokenNames, defaults to app.config.");
+            help.AppendLine("");
+            help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
+                NfConfig.CmdLineArgSwitch, AssemblyAnalysis.GET_TOKEN_TYPES_PORT_CMD_SWITCH,
+                NfConfig.CmdLineArgAssign));
+            help.AppendLine("                                 the GetTokenTypes, defaults to app.config.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
                 NfConfig.CmdLineArgSwitch, AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH,

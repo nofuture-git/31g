@@ -44,9 +44,9 @@ namespace NoFuture.Util.DotNetMeta.TokenId
 
             var asmName = _asmIndices.Asms.First(x => x.IndexId == asmIdx).AssemblyName;
 
-            var crit = new GetTokenIdsCriteria { AsmName = asmName, ResolveAllNamedLike = RecurseAnyAsmNamedLike };
+            var rqst = new TokenIdRequest { AsmName = asmName, ResolveAllNamedLike = RecurseAnyAsmNamedLike };
 
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(crit));
+            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rqst));
 
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
 

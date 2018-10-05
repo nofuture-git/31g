@@ -583,7 +583,7 @@ namespace NoFuture.Shared.Cfg
             public static int NsLookupPort { get; set; } = 799;
             public static int DomainEngine { get; set; } = 1138;
             public static int HostProc { get; set; } = 780;
-            public static int AssemblyAnalysis { get; set; } = 5059;//will add to this two times
+            public static int AssemblyAnalysis { get; set; } = 5057;//will add to this five times
             public static int FlattenAssembly { get; set; } = 5062;
             public static int PartOfSpeechPaserHost { get; set; } = 5063;
             public static int SjclToPlainText { get; set; } = 5064;

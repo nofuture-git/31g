@@ -24,8 +24,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if(metadataTokenIds == null)
                 throw new InvalidCastException("Was expecting the 'anything' arg to be castable " +
                                                "to an array of " + typeof(MetadataTokenId).FullName);
-
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(metadataTokenIds));
+            var rqst = new TokenNameRequest {Tokens = metadataTokenIds};
+            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rqst));
 
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
 

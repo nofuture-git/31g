@@ -277,7 +277,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
             else
             {
-                var crit = JsonConvert.DeserializeObject<GetTokenIdsCriteria>(Encoding.UTF8.GetString(arg));
+                var crit = JsonConvert.DeserializeObject<TokenIdRequest>(Encoding.UTF8.GetString(arg));
 
                 var asmName = crit.AsmName;
                 ((IaaProgram)MyProgram).AssemblyNameRegexPattern = crit.ResolveAllNamedLike;

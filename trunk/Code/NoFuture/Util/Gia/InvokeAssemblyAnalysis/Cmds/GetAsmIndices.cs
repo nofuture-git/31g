@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
@@ -34,7 +35,9 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                             St = MetadataTokenStatus.Error
                         });
                 }
-                var asmPath = Encoding.UTF8.GetString(arg).Replace("\"",string.Empty);
+
+                var rqst = JsonConvert.DeserializeObject<AsmIndexRequest>(Encoding.UTF8.GetString(arg));
+                var asmPath = rqst.AssemblyFilePath.Replace("\"",string.Empty);
                 if (asmPath.Contains(WAK_WAK) && !asmPath.StartsWith(WAK_WAK))
                 {
                     asmPath = asmPath.Replace(WAK_WAK, new string(new[] { (char)0x5C }));

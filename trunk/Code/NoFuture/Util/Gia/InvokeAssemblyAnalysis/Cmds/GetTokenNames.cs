@@ -33,7 +33,8 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
                 }
 
-                var tokens = JsonConvert.DeserializeObject<MetadataTokenId[]>(Encoding.UTF8.GetString(arg));
+                var rqst = JsonConvert.DeserializeObject<TokenNameRequest>(Encoding.UTF8.GetString(arg));
+                var tokens = rqst.Tokens;
     
                 if (tokens == null || tokens.Length <= 0)
                 {

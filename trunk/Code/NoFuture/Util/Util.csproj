@@ -102,9 +102,11 @@
     <Compile Include="Binary\Calc.cs" />
     <Compile Include="Binary\Compression.cs" />
     <Compile Include="Binary\Dpx.cs" />
+    <Compile Include="DotNetMeta\TokenAsm\AsmIndexRequest.cs" />
+    <Compile Include="DotNetMeta\TokenName\TokenNameRequest.cs" />
     <Compile Include="DotNetMeta\TokenRank\AsmAdjancyGraph.cs" />
     <Compile Include="DotNetMeta\TokenAsm\AsmIndexResponse.cs" />
-    <Compile Include="DotNetMeta\TokenId\GetTokenIdsCriteria.cs" />
+    <Compile Include="DotNetMeta\TokenId\TokenIdRequest.cs" />
     <Compile Include="DotNetMeta\TokenAsm\MetadataTokenAsm.cs" />
     <Compile Include="DotNetMeta\TokenId\MetadataTokenId.cs" />
     <Compile Include="DotNetMeta\TokenName\MetadataTokenName.cs" />
@@ -117,6 +119,10 @@
     <Compile Include="DotNetMeta\TokenName\TokenNameResponse.cs" />
     <Compile Include="DotNetMeta\TokenNamesTree.cs" />
     <Compile Include="DotNetMeta\TokenRank\TokenPageRankResponse.cs" />
+    <Compile Include="DotNetMeta\TokenType\InvokeGetTokenTypes.cs" />
+    <Compile Include="DotNetMeta\TokenType\MetadataTokenType.cs" />
+    <Compile Include="DotNetMeta\TokenType\TokenTypeRequest.cs" />
+    <Compile Include="DotNetMeta\TokenType\TokenTypeResponse.cs" />
     <Compile Include="Gia\FlattenAssembly.cs" />
     <Compile Include="Gia\GraphViz\AsmDiagram.cs" />
     <Compile Include="DotNetMeta\TokenAsm\InvokeGetAsmIndicies.cs" />
