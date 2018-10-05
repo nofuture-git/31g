@@ -119,12 +119,12 @@
     <Compile Include="DotNetMeta\Adj\TokenPageRanks.cs" />
     <Compile Include="Gia\FlattenAssembly.cs" />
     <Compile Include="Gia\GraphViz\AsmDiagram.cs" />
-    <Compile Include="Gia\InvokeCmds\InvokeGetAsmIndicies.cs" />
+    <Compile Include="DotNetMeta\Auxx\InvokeGetAsmIndicies.cs" />
     <Compile Include="NfConsole\InvokeGetCmdBase.cs" />
     <Compile Include="Gia\InvokeCmds\InvokeGetFlattenAssembly.cs" />
-    <Compile Include="Gia\InvokeCmds\InvokeGetTokenIds.cs" />
-    <Compile Include="Gia\InvokeCmds\InvokeGetTokenNames.cs" />
-    <Compile Include="Gia\InvokeCmds\InvokeGetTokenPageRank.cs" />
+    <Compile Include="DotNetMeta\Auxx\InvokeGetTokenIds.cs" />
+    <Compile Include="DotNetMeta\Auxx\InvokeGetTokenNames.cs" />
+    <Compile Include="DotNetMeta\Adj\InvokeGetTokenPageRank.cs" />
     <Compile Include="NfConsole\CmdBase.cs" />
     <Compile Include="NfConsole\ConsoleCmd.cs" />
     <Compile Include="Etymological\Biz\Nomenclature.cs" />
@@ -132,7 +132,7 @@
     <Compile Include="Etymological\INomenclature.cs" />
     <Compile Include="Etymological\Psy\Nomenclature.cs" />
     <Compile Include="FxPointers.cs" />
-    <Compile Include="Gia\AssemblyAnalysis.cs" />
+    <Compile Include="DotNetMeta\AssemblyAnalysis.cs" />
     <Compile Include="Gia\Args.cs" />
     <Compile Include="Gia\Flatten.cs" />
     <Compile Include="Gia\FlattenedItem.cs" />
