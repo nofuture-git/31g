@@ -17,14 +17,26 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// </summary>
         public int OwnAsmIdx;
 
+        public string Name;
+
         /// <summary>
         /// The metadata token id of the type this type directly extends
         /// </summary>
-        public int ExtendsId;
+        public MetadataTokenType Extds;
 
         /// <summary>
         /// The metadata token ids of all interfaces this type impelments
         /// </summary>
-        public int[] ImplementsIds;
+        public MetadataTokenType[] Implmts;
+
+        /// <summary>
+        /// Indicates if the original type IsInterface was true when -gt one
+        /// </summary>
+        public int IsIntfc;
+
+        /// <summary>
+        /// Indicates if the original type IsAbstract was true when -gt one
+        /// </summary>
+        public int IsAbsct;
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Configuration;
 using System.Text;
+using System.Text.RegularExpressions;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
@@ -12,6 +13,7 @@ using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
+using NoFuture.Util.DotNetMeta.TokenType;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
 {

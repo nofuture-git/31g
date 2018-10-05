@@ -277,10 +277,10 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             }
             else
             {
-                var crit = JsonConvert.DeserializeObject<TokenIdRequest>(Encoding.UTF8.GetString(arg));
+                var rqst = JsonConvert.DeserializeObject<TokenIdRequest>(Encoding.UTF8.GetString(arg));
 
-                var asmName = crit.AsmName;
-                ((IaaProgram)MyProgram).AssemblyNameRegexPattern = crit.ResolveAllNamedLike;
+                var asmName = rqst.AsmName;
+                ((IaaProgram)MyProgram).AssemblyNameRegexPattern = rqst.ResolveAllNamedLike;
 
                 if (string.IsNullOrWhiteSpace(asmName))
                 {

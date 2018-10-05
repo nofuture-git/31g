@@ -39,6 +39,19 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
             return owningAsm;
         }
 
+        public int? GetAssemblyIndexByName(string assemblyName)
+        {
+            if (Asms == null || !Asms.Any())
+                return null;
+            foreach (var asm in Asms)
+            {
+                if (string.Equals(asm.AssemblyName, assemblyName))
+                    return asm.IndexId;
+            }
+
+            return null;
+        }
+
         public string GetAssemblyPathFromRoot(string folderPath, int idx)
         {
             if (string.IsNullOrWhiteSpace(folderPath) || !Directory.Exists(folderPath))
