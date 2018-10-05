@@ -84,21 +84,5 @@ namespace NoFuture.Tests.Util.Gia
             Assert.AreEqual("AdventureWorks.VeryBadCode.BasicGenerics::TakesThisAsmGenericArg(System.Collections.Generic.List`1[AdventureWorks.VeryBadCode.Order])", testResult.Name);
 
         }
-
-        [Test]
-        public void TestDoNotCommit()
-        {
-            var d = @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds";
-            var m = TokenNameResponse.ReadFromFile(d + ".GetTokenNames.json");
-            var n = TokenIdResponse.ReadFromFile(d + ".GetTokenIds.json");
-            var o = AsmIndexResponse.ReadFromFile(d + ".GetAsmIndices.json");
-            var testSubject = new NoFuture.Util.DotNetMeta.TokenNamesTree(m,n,o);
-
-            var testResult = testSubject.SelectDistinct("OptumController", "Index");
-            foreach (var i in testResult.Items)
-            {
-                Console.WriteLine($"{i.Id}, {i.Name}");
-            }
-        }
     }
 }

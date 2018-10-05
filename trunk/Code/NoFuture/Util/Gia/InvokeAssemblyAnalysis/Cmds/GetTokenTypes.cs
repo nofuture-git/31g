@@ -137,15 +137,15 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 IsIntfc = cType.IsInterface ? 1 : 0,
                 IsAbsct = cType.IsAbstract ? 1 : 0
             };
+            var ttInfcs = new List<MetadataTokenType>();
             var bType = cType.BaseType;
             if (bType != null)
             {
                 var ttB = GetMetadataTokenType(bType);
                 if (ttB != null)
-                    tt.Extds = ttB;
+                    ttInfcs.Add(ttB);
             }
 
-            var ttInfcs = new List<MetadataTokenType>();
             foreach (var ifc in cType.GetInterfaces())
             {
                 var ttInfc = GetMetadataTokenType(ifc);
@@ -153,7 +153,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                     ttInfcs.Add(ttInfc);
             }
 
-            tt.Implmts = ttInfcs.ToArray();
+            tt.Items = ttInfcs.ToArray();
             return tt;
         }
 

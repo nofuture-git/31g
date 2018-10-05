@@ -5,6 +5,7 @@ using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
+using NoFuture.Util.DotNetMeta.TokenType;
 
 namespace NoFuture.Util.DotNetMeta
 {
@@ -32,6 +33,11 @@ namespace NoFuture.Util.DotNetMeta
         public AsmIndexResponse AssemblyIndices { get; }
 
         /// <summary>
+        /// The types in which all the various names and ids are scoped.
+        /// </summary>
+        public MetadataTokenType TokenTypes { get; }
+
+        /// <summary>
         /// The resultant token names in call-stack tree form
         /// </summary>
         public MetadataTokenName TokenNameRoot { get; }
@@ -42,11 +48,15 @@ namespace NoFuture.Util.DotNetMeta
         /// <param name="flatNames">The result names in a flat set</param>
         /// <param name="treeIds">The token ids in hierarchy form</param>
         /// <param name="asms">The assembly-to-index</param>
-        public TokenNamesTree(TokenNameResponse flatNames, TokenIdResponse treeIds, AsmIndexResponse asms)
+        /// <param name="tTypes">The full list of all types in scope of the analysis</param>
+        public TokenNamesTree(TokenNameResponse flatNames, TokenIdResponse treeIds, AsmIndexResponse asms, TokenTypeResponse tTypes)
         {
             var tokenNameRspn = flatNames ?? throw new ArgumentNullException(nameof(flatNames));
             var tokenIdRspn = treeIds ?? throw new ArgumentNullException(nameof(treeIds));
+            var tokenTypes = tTypes ?? throw new ArgumentNullException(nameof(tTypes));
             AssemblyIndices = asms ?? throw new ArgumentNullException(nameof(treeIds));
+            TokenTypes = tokenTypes.GetTypesAsSingle();
+
             tokenNameRspn.ApplyFullName(AssemblyIndices);
 
             TokenIds = tokenIdRspn.GetAsRoot();

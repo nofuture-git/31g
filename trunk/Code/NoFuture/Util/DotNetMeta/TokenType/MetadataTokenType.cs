@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace NoFuture.Util.DotNetMeta.TokenType
@@ -20,14 +21,9 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         public string Name;
 
         /// <summary>
-        /// The metadata token id of the type this type directly extends
-        /// </summary>
-        public MetadataTokenType Extds;
-
-        /// <summary>
         /// The metadata token ids of all interfaces this type impelments
         /// </summary>
-        public MetadataTokenType[] Implmts;
+        public MetadataTokenType[] Items;
 
         /// <summary>
         /// Indicates if the original type IsInterface was true when -gt one
@@ -38,5 +34,19 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// Indicates if the original type IsAbstract was true when -gt one
         /// </summary>
         public int IsAbsct;
+
+        public MetadataTokenType GetBaseType()
+        {
+            if (Items == null || !Items.Any())
+                return null;
+            return Items.FirstOrDefault(i => i.IsIntfc < 1);
+        }
+
+        public MetadataTokenType[] GetInterfaceTypes()
+        {
+            if (Items == null || !Items.Any())
+                return null;
+            return Items.Where(i => i.IsIntfc > 0).ToArray();
+        }
     }
 }
