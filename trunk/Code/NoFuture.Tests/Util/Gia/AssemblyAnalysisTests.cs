@@ -88,7 +88,7 @@ namespace NoFuture.Tests.Util.Gia
             var d = @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds";
             var m = NoFuture.Util.DotNetMeta.Grp.TokenNameResponse.ReadFromFile(d + ".GetTokenNames.json");
             var n = NoFuture.Util.DotNetMeta.Grp.TokenIdResponse.ReadFromFile(d + ".GetTokenIds.json");
-            var o = NoFuture.Util.DotNetMeta.Grp.AsmIndicies.ReadFromFile(d + ".GetAsmIndices.json");
+            var o = NoFuture.Util.DotNetMeta.Grp.AsmIndexResponse.ReadFromFile(d + ".GetAsmIndices.json");
             var testSubject = new NoFuture.Util.DotNetMeta.TokenNamesTree(m,n,o);
 
             var testResult = testSubject.SelectDistinct("OptumController", "Index");

@@ -4,7 +4,7 @@ using NoFuture.Util.DotNetMeta.Auxx;
 namespace NoFuture.Util.DotNetMeta.Adj
 {
     [Serializable]
-    public class TokenPageRanks
+    public class TokenPageRankResponse
     {
         public string Msg;
         public MetadataTokenStatus St;

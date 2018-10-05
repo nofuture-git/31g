@@ -11,7 +11,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
-    public class GetAsmIndices : CmdBase<AsmIndicies>, ICmd
+    public class GetAsmIndices : CmdBase<AsmIndexResponse>, ICmd
     {
         internal static string WAK_WAK = new string(new[] { (char)0x5C, (char)0x5C });
         public GetAsmIndices(Program myProgram)
@@ -28,7 +28,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 {
                     MyProgram.PrintToConsole("the arg for GetAsmIndices is null or empty");
                     return JsonEncodedResponse(
-                        new AsmIndicies
+                        new AsmIndexResponse
                         {
                             Msg = "the arg for GetAsmIndices is null or empty",
                             St = MetadataTokenStatus.Error
@@ -45,7 +45,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 
                     MyProgram.PrintToConsole(string.Format("invalid path [{0}]", asmPath));
                     return JsonEncodedResponse(
-                        new AsmIndicies
+                        new AsmIndexResponse
                         {
                             Msg = string.Format("invalid path [{0}]", asmPath),
                             St = MetadataTokenStatus.Error
@@ -62,7 +62,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 {
                     MyProgram.PrintToConsole("cannot load assembly");
                     return JsonEncodedResponse(
-                        new AsmIndicies
+                        new AsmIndexResponse
                         {
                             Msg = "cannot load assembly",
                             St = MetadataTokenStatus.Error
@@ -78,7 +78,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             {
                 MyProgram.PrintToConsole(ex);
                 return JsonEncodedResponse(
-                    new AsmIndicies
+                    new AsmIndexResponse
                     {
                         Msg = string.Format(ex.Message),
                         St = MetadataTokenStatus.Error

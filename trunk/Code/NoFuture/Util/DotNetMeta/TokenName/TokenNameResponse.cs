@@ -38,7 +38,7 @@ namespace NoFuture.Util.DotNetMeta.Grp
         /// </summary>
         /// <param name="asmIndicies"></param>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal void ApplyFullName(AsmIndicies asmIndicies)
+        internal void ApplyFullName(AsmIndexResponse asmIndicies)
         {
             if (Names == null || Names.Length <= 0)
                 return;

@@ -8,9 +8,9 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.DotNetMeta.Auxx
 {
-    public class InvokeGetAsmIndicies : InvokeGetCmdBase<AsmIndicies>
+    public class InvokeGetAsmIndicies : InvokeGetCmdBase<AsmIndexResponse>
     {
-        public override AsmIndicies Receive(object anything)
+        public override AsmIndexResponse Receive(object anything)
         {
             if(anything == null)
                 throw new ArgumentNullException(nameof(anything));
@@ -32,7 +32,7 @@ namespace NoFuture.Util.DotNetMeta.Auxx
                     String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
                         ProcessId, SocketPort));
 
-            return JsonConvert.DeserializeObject<AsmIndicies>(ConvertJsonFromBuffer(bufferOut),
+            return JsonConvert.DeserializeObject<AsmIndexResponse>(ConvertJsonFromBuffer(bufferOut),
                 JsonSerializerSettings);
         }
     }

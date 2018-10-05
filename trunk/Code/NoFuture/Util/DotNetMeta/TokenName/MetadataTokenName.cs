@@ -67,7 +67,7 @@ namespace NoFuture.Util.DotNetMeta.Xfer
             return innerItems.Distinct(_comparer).ToArray();
         }
 
-        public void ApplyFullName(AsmIndicies asmIndicies)
+        public void ApplyFullName(AsmIndexResponse asmIndicies)
         {
             if (!IsPartialName())
                 return;

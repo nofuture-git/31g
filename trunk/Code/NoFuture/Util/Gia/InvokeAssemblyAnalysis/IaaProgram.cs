@@ -147,7 +147,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         /// <summary>
         /// The dictionary of internal ids to assembly names
         /// </summary>
-        protected internal AsmIndicies AsmIndicies { get; } = new AsmIndicies();
+        protected internal AsmIndexResponse AsmIndicies { get; } = new AsmIndexResponse();
 
         /// <summary>
         /// Resolves the socket port used for <see cref="Cmds.GetTokenNames"/>

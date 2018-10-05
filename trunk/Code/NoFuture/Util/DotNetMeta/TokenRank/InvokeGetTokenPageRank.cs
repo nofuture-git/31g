@@ -7,9 +7,9 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.DotNetMeta.Adj
 {
-    public class InvokeGetTokenPageRank : InvokeGetCmdBase<TokenPageRanks>
+    public class InvokeGetTokenPageRank : InvokeGetCmdBase<TokenPageRankResponse>
     {
-        public override TokenPageRanks Receive(object anything)
+        public override TokenPageRankResponse Receive(object anything)
         {
             if(anything == null)
                 throw new ArgumentNullException(nameof(anything));
@@ -31,7 +31,7 @@ namespace NoFuture.Util.DotNetMeta.Adj
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
 
-            return JsonConvert.DeserializeObject<TokenPageRanks>(ConvertJsonFromBuffer(bufferOut),
+            return JsonConvert.DeserializeObject<TokenPageRankResponse>(ConvertJsonFromBuffer(bufferOut),
                 JsonSerializerSettings);
         }
     }

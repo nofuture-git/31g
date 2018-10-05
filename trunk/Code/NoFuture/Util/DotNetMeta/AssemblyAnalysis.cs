@@ -33,7 +33,7 @@ namespace NoFuture.Util.DotNetMeta
         #endregion
 
         #region fields
-        private readonly AsmIndicies _asmIndices;
+        private readonly AsmIndexResponse _asmIndices;
         private readonly InvokeGetTokenIds _getTokenIdsCmd;
         private readonly InvokeGetTokenNames _getTokenNamesCmd;
         private readonly InvokeGetTokenPageRank _getTokenPageRankCmd;
@@ -43,7 +43,7 @@ namespace NoFuture.Util.DotNetMeta
         /// <summary>
         /// A mapping of index ids to assembly names.
         /// </summary>
-        public AsmIndicies AsmIndicies => _asmIndices;
+        public AsmIndexResponse AsmIndicies => _asmIndices;
 
         #endregion
 
@@ -230,7 +230,7 @@ namespace NoFuture.Util.DotNetMeta
             return _getTokenNamesCmd.Receive(metadataTokenIds);
         }
 
-        public TokenPageRanks GetTokenPageRank(TokenIdResponse tokenIdResponse)
+        public TokenPageRankResponse GetTokenPageRank(TokenIdResponse tokenIdResponse)
         {
             return _getTokenPageRankCmd.Receive(tokenIdResponse);
         }
@@ -250,13 +250,13 @@ namespace NoFuture.Util.DotNetMeta
         /// </param>
         /// <param name="isIgnore">optional f(x) pointer for calling assembly to specify some additional rules by token name</param>
         /// <returns></returns>
-        public static MetadataTokenName ConvertToMetadataTokenName(MemberInfo mi, AsmIndicies indicies, Func<string, bool> isIgnore)
+        public static MetadataTokenName ConvertToMetadataTokenName(MemberInfo mi, AsmIndexResponse indicies, Func<string, bool> isIgnore)
         {
             if (mi == null)
                 return null;
 
             var localIsIgnore = isIgnore ?? (s => false);
-            var localIndicies = indicies ?? new AsmIndicies { Asms = new MetadataTokenAsm[0] };
+            var localIndicies = indicies ?? new AsmIndexResponse { Asms = new MetadataTokenAsm[0] };
 
             var tokenName = new MetadataTokenName { Name = mi.Name, Label = mi.GetType().Name };
 

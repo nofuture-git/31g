@@ -125,7 +125,7 @@ namespace NoFuture.Tests.Gen
             var testMethod = testType.GetMember("TakesGenericArg").FirstOrDefault();
             Assert.IsNotNull(testMethod);
 
-            var testAsmIndicies = new AsmIndicies()
+            var testAsmIndicies = new AsmIndexResponse()
             {
                 Asms =
                     new[]

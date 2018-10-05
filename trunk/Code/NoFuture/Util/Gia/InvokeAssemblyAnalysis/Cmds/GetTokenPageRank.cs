@@ -11,7 +11,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
 {
-    public class GetTokenPageRank : CmdBase<TokenPageRanks>, ICmd
+    public class GetTokenPageRank : CmdBase<TokenPageRankResponse>, ICmd
     {
         public GetTokenPageRank(Program myProgram) : base(myProgram) { }
         public override byte[] Execute(byte[] arg)
@@ -22,7 +22,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
             {
                 MyProgram.PrintToConsole("no tokens were passed up on the socket");
                 return JsonEncodedResponse(
-                        new TokenPageRanks
+                        new TokenPageRankResponse
                         {
                             Msg = "no tokens were passed up on the socket",
                             St = MetadataTokenStatus.Error
@@ -34,7 +34,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 var allTokens = JsonConvert.DeserializeObject<TokenIdResponse>(Encoding.UTF8.GetString(arg));
                 if (allTokens?.Tokens == null || !allTokens.Tokens.Any())
                 {
-                    return JsonEncodedResponse(new TokenPageRanks
+                    return JsonEncodedResponse(new TokenPageRankResponse
                     {
                         Msg = "parse from JSON failed",
                         St = MetadataTokenStatus.Error
@@ -44,13 +44,13 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
                 var pageRank = ((IaaProgram) MyProgram).UtilityMethods.ResolveTokenPageRanks(allTokens);
                 Console.Write('\n');
 
-                return JsonEncodedResponse(new TokenPageRanks {Ranks = pageRank});
+                return JsonEncodedResponse(new TokenPageRankResponse {Ranks = pageRank});
 
             }
             catch (Exception ex)
             {
                 MyProgram.PrintToConsole(ex);
-                return JsonEncodedResponse(new TokenPageRanks
+                return JsonEncodedResponse(new TokenPageRankResponse
                 {
                     Msg = string.Format(ex.Message),
                     St = MetadataTokenStatus.Error

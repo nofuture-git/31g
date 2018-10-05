@@ -10,11 +10,11 @@ namespace NoFuture.Util.DotNetMeta.Auxx
 {
     public class InvokeGetTokenIds : InvokeGetCmdBase<TokenIdResponse>
     {
-        private readonly AsmIndicies _asmIndices;
+        private readonly AsmIndexResponse _asmIndices;
 
         public InvokeGetTokenIds() { }
 
-        public InvokeGetTokenIds(AsmIndicies asmIndicies)
+        public InvokeGetTokenIds(AsmIndexResponse asmIndicies)
         {
             _asmIndices = asmIndicies;
         }

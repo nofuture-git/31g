@@ -12,18 +12,18 @@ namespace NoFuture.Util.DotNetMeta.Grp
     /// Bundler type for <see cref="MetadataTokenAsm"/>
     /// </summary>
     [Serializable]
-    public class AsmIndicies
+    public class AsmIndexResponse
     {
         public string Msg;
         public MetadataTokenAsm[] Asms;
         public MetadataTokenStatus St;
 
-        public static AsmIndicies ReadFromFile(string fullFileName)
+        public static AsmIndexResponse ReadFromFile(string fullFileName)
         {
             if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
-                return new AsmIndicies();
+                return new AsmIndexResponse();
             var jsonContent = File.ReadAllText(fullFileName);
-            return JsonConvert.DeserializeObject<AsmIndicies>(jsonContent);
+            return JsonConvert.DeserializeObject<AsmIndexResponse>(jsonContent);
         }
 
         public Assembly GetAssemblyByIndex(int idx)
