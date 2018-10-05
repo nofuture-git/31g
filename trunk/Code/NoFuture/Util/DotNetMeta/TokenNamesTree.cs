@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta.Auxx;
-using NoFuture.Util.DotNetMeta.Grp;
-using NoFuture.Util.DotNetMeta.Xfer;
+using NoFuture.Util.DotNetMeta.TokenAsm;
+using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Util.DotNetMeta.TokenName;
 
 namespace NoFuture.Util.DotNetMeta
 {

@@ -3,10 +3,9 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta.Grp;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.Auxx
+namespace NoFuture.Util.DotNetMeta.TokenAsm
 {
     public class InvokeGetAsmIndicies : InvokeGetCmdBase<AsmIndexResponse>
     {

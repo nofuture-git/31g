@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Text;
-using NoFuture.Util.DotNetMeta.Xfer;
 
-namespace NoFuture.Util.DotNetMeta.Auxx
+namespace NoFuture.Util.DotNetMeta.TokenId
 {
     /// <summary>
     /// A criteria type to send across the wire to a listening socket.

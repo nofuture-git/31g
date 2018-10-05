@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Util.DotNetMeta.Adj
+namespace NoFuture.Util.DotNetMeta.TokenRank
 {
     [Serializable]
     public class RankedMetadataTokenAsmComparer : IEqualityComparer<RankedMetadataTokenAsm>,

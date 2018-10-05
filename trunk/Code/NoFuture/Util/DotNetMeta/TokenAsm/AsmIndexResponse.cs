@@ -3,10 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using NoFuture.Util.DotNetMeta.Auxx;
-using NoFuture.Util.DotNetMeta.Xfer;
+using NoFuture.Util.DotNetMeta.TokenId;
 
-namespace NoFuture.Util.DotNetMeta.Grp
+namespace NoFuture.Util.DotNetMeta.TokenAsm
 {
     /// <summary>
     /// Bundler type for <see cref="MetadataTokenAsm"/>

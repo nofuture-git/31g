@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Util.DotNetMeta.Xfer;
+using NoFuture.Util.DotNetMeta.TokenAsm;
 
-namespace NoFuture.Util.DotNetMeta.Adj
+namespace NoFuture.Util.DotNetMeta.TokenRank
 {
     [Serializable]
     public class RankedMetadataTokenAsm : MetadataTokenAsm

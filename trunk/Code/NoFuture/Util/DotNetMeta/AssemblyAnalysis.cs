@@ -8,11 +8,10 @@ using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta.Adj;
-using NoFuture.Util.DotNetMeta.Auxx;
-using NoFuture.Util.DotNetMeta.Grp;
-using NoFuture.Util.DotNetMeta.Xfer;
-using NoFuture.Util.Gia.InvokeCmds;
+using NoFuture.Util.DotNetMeta.TokenAsm;
+using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Util.DotNetMeta.TokenName;
+using NoFuture.Util.DotNetMeta.TokenRank;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.DotNetMeta

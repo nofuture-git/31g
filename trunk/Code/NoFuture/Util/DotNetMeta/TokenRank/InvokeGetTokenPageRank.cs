@@ -2,10 +2,10 @@
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta.Grp;
+using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.Adj
+namespace NoFuture.Util.DotNetMeta.TokenRank
 {
     public class InvokeGetTokenPageRank : InvokeGetCmdBase<TokenPageRankResponse>
     {

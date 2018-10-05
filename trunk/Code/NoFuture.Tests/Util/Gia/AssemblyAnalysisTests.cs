@@ -6,6 +6,9 @@ using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta;
+using NoFuture.Util.DotNetMeta.TokenAsm;
+using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Util.DotNetMeta.TokenName;
 
 namespace NoFuture.Tests.Util.Gia
 {
@@ -86,9 +89,9 @@ namespace NoFuture.Tests.Util.Gia
         public void TestDoNotCommit()
         {
             var d = @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds";
-            var m = NoFuture.Util.DotNetMeta.Grp.TokenNameResponse.ReadFromFile(d + ".GetTokenNames.json");
-            var n = NoFuture.Util.DotNetMeta.Grp.TokenIdResponse.ReadFromFile(d + ".GetTokenIds.json");
-            var o = NoFuture.Util.DotNetMeta.Grp.AsmIndexResponse.ReadFromFile(d + ".GetAsmIndices.json");
+            var m = TokenNameResponse.ReadFromFile(d + ".GetTokenNames.json");
+            var n = TokenIdResponse.ReadFromFile(d + ".GetTokenIds.json");
+            var o = AsmIndexResponse.ReadFromFile(d + ".GetAsmIndices.json");
             var testSubject = new NoFuture.Util.DotNetMeta.TokenNamesTree(m,n,o);
 
             var testResult = testSubject.SelectDistinct("OptumController", "Index");

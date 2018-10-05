@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-using NoFuture.Util.DotNetMeta.Auxx;
-using NoFuture.Util.DotNetMeta.Xfer;
 
-namespace NoFuture.Util.DotNetMeta.Grp
+namespace NoFuture.Util.DotNetMeta.TokenId
 {
     /// <summary>
     /// Bundler type for <see cref="MetadataTokenId"/>

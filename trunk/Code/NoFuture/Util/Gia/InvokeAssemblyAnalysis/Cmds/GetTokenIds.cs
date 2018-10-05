@@ -11,9 +11,8 @@ using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta;
-using NoFuture.Util.DotNetMeta.Auxx;
-using NoFuture.Util.DotNetMeta.Grp;
-using NoFuture.Util.DotNetMeta.Xfer;
+using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Util.DotNetMeta.TokenName;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds

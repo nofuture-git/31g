@@ -2,11 +2,10 @@
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta.Grp;
-using NoFuture.Util.DotNetMeta.Xfer;
+using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.Auxx
+namespace NoFuture.Util.DotNetMeta.TokenName
 {
     public class InvokeGetTokenNames : InvokeGetCmdBase<TokenNameResponse>
     {

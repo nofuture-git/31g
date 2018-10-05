@@ -10,8 +10,8 @@ using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta;
-using NoFuture.Util.DotNetMeta.Adj;
-using NoFuture.Util.DotNetMeta.Auxx;
+using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Util.DotNetMeta.TokenRank;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Binary.InvokeDpx

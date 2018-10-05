@@ -6,10 +6,10 @@ using System.Reflection;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta.Auxx;
-using NoFuture.Util.DotNetMeta.Grp;
+using NoFuture.Util.DotNetMeta.TokenAsm;
+using NoFuture.Util.DotNetMeta.TokenId;
 
-namespace NoFuture.Util.DotNetMeta.Xfer
+namespace NoFuture.Util.DotNetMeta.TokenName
 {
     /// <summary>
     /// The resolved name of a single metadata token

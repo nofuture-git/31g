@@ -5,8 +5,8 @@ using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta;
-using NoFuture.Util.DotNetMeta.Auxx;
-using NoFuture.Util.DotNetMeta.Grp;
+using NoFuture.Util.DotNetMeta.TokenAsm;
+using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds

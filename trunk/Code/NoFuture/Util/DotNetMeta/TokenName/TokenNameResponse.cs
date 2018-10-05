@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using NoFuture.Util.DotNetMeta.Auxx;
-using NoFuture.Util.DotNetMeta.Xfer;
+using NoFuture.Util.DotNetMeta.TokenAsm;
+using NoFuture.Util.DotNetMeta.TokenId;
 
-namespace NoFuture.Util.DotNetMeta.Grp
+namespace NoFuture.Util.DotNetMeta.TokenName
 {
     /// <summary>
     /// Bundler type for <see cref="MetadataTokenName"/>

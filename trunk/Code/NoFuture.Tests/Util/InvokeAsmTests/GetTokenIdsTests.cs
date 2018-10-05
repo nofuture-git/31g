@@ -5,8 +5,7 @@ using NUnit.Framework;
 using System.IO;
 using NoFuture.Shared.Cfg;
 using NoFuture.Util.DotNetMeta;
-using NoFuture.Util.DotNetMeta.Grp;
-using NoFuture.Util.DotNetMeta.Xfer;
+using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis;
 using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 
