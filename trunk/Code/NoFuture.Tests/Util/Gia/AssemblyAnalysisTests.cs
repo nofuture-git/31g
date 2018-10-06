@@ -86,5 +86,58 @@ namespace NoFuture.Tests.Util.Gia
             Assert.AreEqual("AdventureWorks.VeryBadCode.BasicGenerics::TakesThisAsmGenericArg(System.Collections.Generic.List`1[AdventureWorks.VeryBadCode.Order])", testResult.Name);
 
         }
+
+        [Test]
+        public void TestDoNotCommit()
+        {
+            var d = @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds";
+            var m = TokenNameResponse.ReadFromFile(d + ".GetTokenNames.json");
+            var n = TokenIdResponse.ReadFromFile(d + ".GetTokenIds.json");
+            var o = AsmIndexResponse.ReadFromFile(d + ".GetAsmIndices.json");
+            var p = TokenTypeResponse.ReadFromFile(d + ".GetTokenTypes.json");
+            var testSubject = new NoFuture.Util.DotNetMeta.TokenNamesTree(m, n, o, p);
+
+            var testResult = testSubject.TokenTypes.GetAllInterfaceTypes();
+            Console.WriteLine(testResult.Length);
+            var t01 = testSubject.TokenTypes.GetAllInterfacesWithSingleImplementor();
+            Console.WriteLine(t01.Length);
+
+            var tt01 = testResult.Where(vv => t01.All(ttr => !ttr.Equals(vv)));
+            foreach (var metadataTokenType in tt01)
+            {
+                Console.WriteLine(metadataTokenType);
+            }
+
+            //var t0 = 0;
+            //testSubject.TokenTypes.CountOfImplentors("Bfw.Client.Participant.ISsoAuthorizeService", ref t0);
+            //Console.WriteLine(t0);
+
+            //var targetType =
+            //    testResult.FirstOrDefault(t => string.Equals(t.Name, "Bfw.Client.Participant.ISsoAuthorizeService"));
+            //Assert.IsNotNull(targetType);
+
+            //var t2 = testSubject.TokenTypes.FirstInterfaceImplementor(targetType);
+            //Console.WriteLine(t2);
+
+            //var t3 = new List<MetadataTokenName>();
+            //testSubject.TokenNameRoot.GetAllDeclNames(t2, t3);
+
+            //foreach(var t in t3)
+            //    Console.WriteLine(t);
+
+            //var t4 = testSubject.TokenNameRoot.GetImplentorDictionary(targetType, t2);
+            //foreach (var k in t4.Keys)
+            //{
+            //    Console.WriteLine($"{k.Name} --> {t4[k].Name}");
+            //}
+
+            //testSubject.TokenNameRoot.ReassignAllInterfaceTokens(t4);
+
+            //var testResult = testSubject.SelectDistinct("OptumController", "Index");
+            //foreach (var i in testResult.Items)
+            //{
+            //    Console.WriteLine($"{i.Id}, {i.Name}");
+            //}
+        }
     }
 }

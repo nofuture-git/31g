@@ -10,7 +10,8 @@ namespace NoFuture.Util.DotNetMeta.TokenType
     {
         [NonSerialized]
         private MetadataTokenType[] _interfaceTypes;
-
+        [NonSerialized]
+        private readonly MetadataTokenTypeComparer _comparer = new MetadataTokenTypeComparer();
         /// <summary>
         /// The original metadata token id
         /// </summary>
@@ -169,6 +170,105 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         public int GetNameHashCode()
         {
             return Name?.GetHashCode() ?? 0;
+        }
+
+        public int GetFullDepthCount()
+        {
+            var c = 1;
+            if (Items == null || !Items.Any())
+                return c;
+            foreach (var i in Items)
+                c += i.GetFullDepthCount();
+
+            return c;
+        }
+
+        /// <summary>
+        /// Gets the names which are exclusive to <see cref="otherNames"/>
+        /// </summary>
+        /// <param name="otherNames"></param>
+        /// <param name="rightListTopLvlOnly"></param>
+        /// <returns></returns>
+        public MetadataTokenType GetRightSetDiff(MetadataTokenType otherNames, bool rightListTopLvlOnly = false)
+        {
+            if (otherNames?.Items == null)
+                return this;
+            var leftList = this;
+            var rightList = otherNames;
+            Func<MetadataTokenType, int> hashCode = x => x.GetNameHashCode();
+
+            if (rightList.Items == null || rightList.Items.Length <= 0)
+                return this;
+            if (leftList.Items == null || leftList.Items.Length <= 0)
+                return rightList;
+
+            var setOp = rightList.Items.Select(hashCode).Except(leftList.Items.Select(hashCode));
+
+            var listOut = new List<MetadataTokenType>();
+            foreach (var j in setOp)
+            {
+                var k = rightList.Items.FirstOrDefault(x => hashCode(x) == j);
+                if (k == null || rightListTopLvlOnly && k.OwnAsmIdx != 0)
+                    continue;
+                listOut.Add(k);
+            }
+
+            return new MetadataTokenType { Items = listOut.ToArray() };
+        }
+
+        /// <summary>
+        /// Joins the distinct names of this instance to the names of <see cref="otherNames"/>
+        /// </summary>
+        /// <param name="otherNames"></param>
+        /// <returns></returns>
+        public MetadataTokenType GetUnion(MetadataTokenType otherNames)
+        {
+            if (otherNames?.Items == null)
+                return this;
+            var leftList = this;
+            var rightList = otherNames;
+            Func<MetadataTokenType, int> hashCode = x => x.GetNameHashCode();
+
+            var d = rightList.Items.Distinct(_comparer).ToDictionary(hashCode);
+            var e = leftList.Items.Distinct(_comparer).ToDictionary(hashCode);
+
+            foreach (var key in e.Keys.Where(k => !d.ContainsKey(k)))
+                d.Add(key, e[key]);
+
+            return new MetadataTokenType { Items = d.Values.ToArray() };
+        }
+
+        /// <summary>
+        /// Gets the names which are shared between this instance and <see cref="otherNames"/>
+        /// </summary>
+        /// <param name="otherNames"></param>
+        /// <returns></returns>
+        public MetadataTokenType GetIntersect(MetadataTokenType otherNames)
+        {
+            if (otherNames?.Items == null)
+                return this;
+            var leftList = this;
+            var rightList = otherNames;
+            Func<MetadataTokenType, int> hashCode = x => x.GetNameHashCode();
+
+            if (rightList.Items == null || rightList.Items.Length <= 0)
+                return this;
+            if (leftList.Items == null || leftList.Items.Length <= 0)
+                return rightList;
+
+            var setOp = rightList.Items.Select(hashCode).Intersect(leftList.Items.Select(hashCode));
+
+            var listOut = new List<MetadataTokenType>();
+            foreach (var j in setOp)
+            {
+                //should be in either list
+                var k = leftList.Items.FirstOrDefault(x => hashCode(x) == j);
+                if (k == null)
+                    continue;
+                listOut.Add(k);
+            }
+
+            return new MetadataTokenType { Items = listOut.ToArray() };
         }
     }
 }

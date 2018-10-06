@@ -103,6 +103,7 @@
     <Compile Include="Binary\Compression.cs" />
     <Compile Include="Binary\Dpx.cs" />
     <Compile Include="DotNetMeta\TokenAsm\AsmIndexRequest.cs" />
+    <Compile Include="DotNetMeta\TokenType\MetadataTokenTypeComparer.cs" />
     <Compile Include="DotNetMeta\TokenName\TokenNameRequest.cs" />
     <Compile Include="DotNetMeta\TokenRank\AsmAdjancyGraph.cs" />
     <Compile Include="DotNetMeta\TokenAsm\AsmIndexResponse.cs" />
