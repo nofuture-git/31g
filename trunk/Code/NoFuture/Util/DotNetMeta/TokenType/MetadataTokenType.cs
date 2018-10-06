@@ -38,39 +38,66 @@ namespace NoFuture.Util.DotNetMeta.TokenType
 
         [NonSerialized] private MetadataTokenType[] _interfaceTypes;
 
+        public bool IsInterfaceType()
+        {
+            return IsIntfc > 0;
+        }
+
         public MetadataTokenType GetBaseType()
         {
             if (Items == null || !Items.Any())
                 return null;
-            return Items.FirstOrDefault(i => i.IsIntfc < 1);
+            return Items.FirstOrDefault(i => i.IsInterfaceType());
         }
 
-        public MetadataTokenType[] GetInterfaceTypes()
+        public MetadataTokenType[] GetAllInterfaceTypes()
         {
             if (_interfaceTypes != null)
                 return _interfaceTypes;
 
             var infcs = new List<MetadataTokenType>();
-            if (IsIntfc > 0)
+            if (IsInterfaceType())
                 infcs.Add(this);
             if (Items == null || !Items.Any())
                 return infcs.ToArray();
             foreach (var infc in Items)
             {
-                infcs.AddRange(infc.GetInterfaceTypes());
+                infcs.AddRange(infc.GetAllInterfaceTypes());
             }
 
             _interfaceTypes = infcs.Distinct().ToArray();
             return _interfaceTypes;
         }
 
+        public MetadataTokenType[] GetAllInterfacesWithSingleImplementor()
+        {
+            var sInfcs = new List<MetadataTokenType>();
+            if (Items == null || !Items.Any())
+                return null;
+            var allInfcs = GetAllInterfaceTypes();
+            foreach (var ai in allInfcs)
+            {
+                var cnt = 0;
+                CountOfImplentors(ai, ref cnt);
+                if(cnt == 1)
+                    sInfcs.Add(ai);
+            }
+
+            return sInfcs.ToArray();
+        }
+
+        public MetadataTokenType[] GetImmediateInterfaceTypes()
+        {
+            return Items.Where(i => i.IsInterfaceType()).ToArray();
+        }
+
         public MetadataTokenType FirstInterfaceImplementor(MetadataTokenType interfaceType)
         {
             if (interfaceType == null)
                 return null;
-            if (IsIntfc > 0)
+            if (IsInterfaceType())
                 return null;
-            if (!string.IsNullOrWhiteSpace(Name) && GetInterfaceTypes().Any(vi => vi.Equals(interfaceType)))
+            if (!string.IsNullOrWhiteSpace(Name) && GetAllInterfaceTypes().Any(vi => vi.Equals(interfaceType)))
                 return this;
 
             if (Items == null || !Items.Any())
@@ -86,19 +113,33 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             return null;
         }
 
+        public void CountOfImplentors(string typeName, ref int countOf)
+        {
+            //find the interface by this name
+            var allInfcs = GetAllInterfaceTypes();
+            if (allInfcs == null || !allInfcs.Any())
+                return;
+            var mtTypeName = allInfcs.FirstOrDefault(t => string.Equals(t.Name, typeName));
+            if (mtTypeName == null || !mtTypeName.IsInterfaceType())
+                return;
+            CountOfImplentors(mtTypeName, ref countOf);
+
+        }
+
         public void CountOfImplentors(MetadataTokenType typeName, ref int countOf)
         {
             if (typeName == null)
                 return;
-
-            if (Equals(typeName))
-                countOf += 1;
+            var tnInfcs = GetImmediateInterfaceTypes();
+            if (tnInfcs == null || !tnInfcs.Any())
+                return;
+            countOf += tnInfcs.Count(v => v.Equals(typeName));
 
             if (Items == null || !Items.Any())
                 return;
 
             foreach(var nm in Items)
-                nm.CountOfImplentors(typeName, ref countOf);
+                nm.CountOfImplentors(nm, ref countOf);
         }
 
         public override bool Equals(object obj)
@@ -118,6 +159,15 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         public override string ToString()
         {
             return Name;
+        }
+
+        /// <summary>
+        /// Gets the hashcode of just the <see cref="Name"/>
+        /// </summary>
+        /// <returns></returns>
+        public int GetNameHashCode()
+        {
+            return Name?.GetHashCode() ?? 0;
         }
     }
 }

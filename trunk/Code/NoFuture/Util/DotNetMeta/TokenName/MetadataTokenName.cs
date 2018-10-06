@@ -333,8 +333,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var rightList = otherNames;
             Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
 
-            var d = rightList.Items.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
-            var e = leftList.Items.Distinct(new MetadataTokenNameComparer()).ToDictionary(hashCode);
+            var d = rightList.Items.Distinct(_comparer).ToDictionary(hashCode);
+            var e = leftList.Items.Distinct(_comparer).ToDictionary(hashCode);
 
             foreach (var key in e.Keys.Where(k => !d.ContainsKey(k)))
                 d.Add(key, e[key]);
