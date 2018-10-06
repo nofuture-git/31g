@@ -9,11 +9,18 @@ namespace NoFuture.Util.DotNetMeta.TokenRank
     [Serializable]
     public class AsmAdjancyGraph : IEnumerable<RankedMetadataTokenAsm>
     {
-        public string Msg;
-        public MetadataTokenStatus St;
-        public RankedMetadataTokenAsm[] Asms;
         [NonSerialized]
-        public int[,] Graph;
+        private int[,] _graph;
+
+        public string Msg { get; set; }
+        public MetadataTokenStatus St { get; set; }
+        public RankedMetadataTokenAsm[] Asms { get; set; }
+
+        public int[,] Graph
+        {
+            get => _graph;
+            set => _graph = value;
+        }
 
         public SortedSet<RankedMetadataTokenAsm> GetRankedAsms()
         {

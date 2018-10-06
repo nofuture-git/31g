@@ -15,9 +15,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
     [Serializable]
     public class TokenNameResponse
     {
-        public string Msg;
-        public MetadataTokenStatus St;
-        public MetadataTokenName[] Names;
+        public string Msg { get; set; }
+        public MetadataTokenStatus St { get; set; }
+        public MetadataTokenName[] Names { get; set; }
 
         public static TokenNameResponse ReadFromFile(string fullFileName)
         {

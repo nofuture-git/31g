@@ -19,10 +19,10 @@ namespace NoFuture.Util.DotNetMeta.TokenId
         /// whose <see cref="Assembly.ManifestModule"/>
         /// should be used to resolve the <see cref="Id"/>.
         /// </summary>
-        public int RslvAsmIdx;
-        public int Id;
-        public MetadataTokenId[] Items;
-        public int IsByRef;
+        public int RslvAsmIdx { get; set; }
+        public int Id { get; set; }
+        public MetadataTokenId[] Items { get; set; }
+        public int IsByRef { get; set; }
 
         public override bool Equals(object obj)
         {

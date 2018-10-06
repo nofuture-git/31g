@@ -18,44 +18,54 @@ namespace NoFuture.Util.DotNetMeta.TokenName
     [Serializable]
     public class MetadataTokenName
     {
+        [NonSerialized]
+        private MetadataTokenName[] _items;
+        [NonSerialized]
+        private bool _isByRef;
+        [NonSerialized]
+        private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
+
         /// <summary>
         /// The original metadata token id
         /// </summary>
-        public int Id;
+        public int Id { get; set; }
 
-        public string Name;
+        public string Name { get; set; }
 
         /// <summary>
         /// The index of the <see cref="Assembly"/> which contains 
         /// the type's definition.
         /// </summary>
-        public int OwnAsmIdx;
+        public int OwnAsmIdx { get; set; }
 
         /// <summary>
         /// The index of the <see cref="Assembly"/>  with 
         /// whose <see cref="Assembly.ManifestModule"/>
         /// the <see cref="Id"/> was resolved.
         /// </summary>
-        public int RslvAsmIdx;
+        public int RslvAsmIdx { get; set; }
 
         /// <summary>
         /// A grouping label.
         /// </summary>
-        public string Label;
+        public string Label { get; set; }
 
-        public int DeclTypeId;
+        public int DeclTypeId { get; set; }
 
         /// <summary>
         /// For the calling assembly to construct the full mapping.
         /// </summary>
-        [NonSerialized]
-        public MetadataTokenName[] Items;
+        public MetadataTokenName[] Items
+        {
+            get => _items;
+            set => _items = value;
+        }
 
-        [NonSerialized]
-        public bool IsByRef;
-
-        [NonSerialized]
-        private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
+        public bool IsByRef
+        {
+            get => _isByRef;
+            set => _isByRef = value;
+        }
 
         public MetadataTokenName[] SelectDistinct()
         {

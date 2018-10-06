@@ -10,9 +10,9 @@ namespace NoFuture.Util.DotNetMeta.TokenId
     [Serializable]
     public class TokenIdResponse
     {
-        public string Msg;
-        public MetadataTokenId[] Tokens;
-        public MetadataTokenStatus St;
+        public string Msg { get; set; }
+        public MetadataTokenId[] Tokens { get; set; }
+        public MetadataTokenStatus St { get; set; }
 
         public static TokenIdResponse ReadFromFile(string fullFileName)
         {

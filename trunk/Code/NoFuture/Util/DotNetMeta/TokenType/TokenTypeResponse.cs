@@ -8,9 +8,9 @@ namespace NoFuture.Util.DotNetMeta.TokenType
     [Serializable]
     public class TokenTypeResponse
     {
-        public string Msg;
-        public MetadataTokenStatus St;
-        public MetadataTokenType[] Types;
+        public string Msg { get; set; }
+        public MetadataTokenStatus St { get; set; }
+        public MetadataTokenType[] Types { get; set; }
 
         public static TokenTypeResponse ReadFromFile(string fullFileName)
         {

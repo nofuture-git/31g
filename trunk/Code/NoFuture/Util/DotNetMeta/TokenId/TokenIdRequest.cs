@@ -9,6 +9,6 @@ namespace NoFuture.Util.DotNetMeta.TokenId
     [Serializable]
     public class TokenIdRequest : TokenTypeRequest
     {
-        public string AsmName;
+        public string AsmName { get; set; }
     }
 }

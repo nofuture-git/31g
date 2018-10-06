@@ -13,9 +13,9 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
     [Serializable]
     public class AsmIndexResponse
     {
-        public string Msg;
-        public MetadataTokenAsm[] Asms;
-        public MetadataTokenStatus St;
+        public string Msg { get; set; }
+        public MetadataTokenAsm[] Asms { get; set; }
+        public MetadataTokenStatus St { get; set; }
 
         public static AsmIndexResponse ReadFromFile(string fullFileName)
         {

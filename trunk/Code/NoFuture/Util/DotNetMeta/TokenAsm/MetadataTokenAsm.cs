@@ -9,8 +9,8 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
     [Serializable]
     public class MetadataTokenAsm
     {
-        public string AssemblyName;
-        public int IndexId;
+        public string AssemblyName { get; set; }
+        public int IndexId { get; set; }
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

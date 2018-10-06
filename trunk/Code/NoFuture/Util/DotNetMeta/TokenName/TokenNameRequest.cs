@@ -6,6 +6,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
     [Serializable]
     public class TokenNameRequest
     {
-        public MetadataTokenId[] Tokens;
+        public MetadataTokenId[] Tokens { get; set; }
     }
 }
