@@ -68,6 +68,33 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             set => _isByRef = value;
         }
 
+
+        /// <summary>
+        /// Puts the results of an Assembly Analysis into a full tree of token names
+        /// </summary>
+        /// <param name="tokenNames"></param>
+        /// <param name="tokenIds"></param>
+        /// <param name="tokenTypes"></param>
+        /// <param name="asmIndices"></param>
+        /// <returns></returns>
+        public static MetadataTokenName BuildMetadataTokenName(MetadataTokenName tokenNames, MetadataTokenId tokenIds, MetadataTokenType tokenTypes, AsmIndexResponse asmIndices)
+        {
+            if (tokenNames == null)
+                throw new ArgumentNullException(nameof(tokenNames));
+            if (tokenIds == null)
+                throw new ArgumentNullException(nameof(tokenIds));
+            if (tokenTypes == null)
+                throw new ArgumentNullException(nameof(tokenTypes));
+            if (asmIndices == null)
+                throw new ArgumentNullException(nameof(asmIndices));
+
+            tokenNames.ApplyFullName(asmIndices);
+            tokenNames.RemoveClrAndEmptyNames();
+            var tokenNamesOut = tokenNames.BindTree2Names(tokenIds);
+            tokenNamesOut.ApplyFullName(asmIndices);
+            return tokenNamesOut;
+        }
+
         public MetadataTokenName[] SelectDistinct(Stack<MetadataTokenName> callStack = null)
         {
             callStack = callStack ?? new Stack<MetadataTokenName>();

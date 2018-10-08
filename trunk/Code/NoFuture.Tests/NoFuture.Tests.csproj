@@ -121,6 +121,7 @@
     <Compile Include="Tokens\TestErlangConfigParseTree.cs" />
     <Compile Include="Tokens\TestEtx.cs" />
     <Compile Include="Tokens\TestTypeNameParseTree.cs" />
+    <Compile Include="Util\DotNetMetaTests\TestMetadataTokenName.cs" />
     <Compile Include="Util\Gia\FlattenTests.cs" />
     <Compile Include="Util\Gia\AssemblyAnalysisTests.cs" />
     <Compile Include="Util\Gia\AsmDiagramTests.cs" />
