@@ -67,17 +67,36 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             set => _isByRef = value;
         }
 
-        public MetadataTokenName[] SelectDistinct()
+        public MetadataTokenName[] SelectDistinct(Stack<MetadataTokenName> callStack = null)
         {
+            callStack = callStack ?? new Stack<MetadataTokenName>();
             var innerItems = new List<MetadataTokenName> {this};
             if (Items == null || !Items.Any())
                 return innerItems.ToArray();
+            if (callStack.Any(v => _comparer.Equals(v, this)))
+                return innerItems.ToArray();
+            callStack.Push(this);
             foreach (var item in Items)
             {
-                innerItems.AddRange(item.SelectDistinct());
+                innerItems.AddRange(item.SelectDistinct(callStack));
             }
+            callStack.Pop();
 
-            return innerItems.Distinct(_comparer).ToArray();
+            return innerItems.Distinct(_comparer).Select(v => v.GetShallowCopy()).ToArray();
+        }
+
+        public MetadataTokenName GetShallowCopy()
+        {
+            return new MetadataTokenName
+            {
+                Name = Name,
+                DeclTypeId = DeclTypeId,
+                Id = Id,
+                IsByRef = IsByRef,
+                Label = Label,
+                OwnAsmIdx = OwnAsmIdx,
+                RslvAsmIdx = RslvAsmIdx
+            };
         }
 
         public void ApplyFullName(AsmIndexResponse asmIndicies)
@@ -220,23 +239,42 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="newName">
         /// Optional, what the matching name is reassigned to, defaults to the <see cref="tokenName"/> if null.
         /// </param>
-        public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null)
+        /// <param name="callStack">
+        /// Used internally to detect infinite loops
+        /// </param>
+        public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null, Stack<MetadataTokenName> callStack = null)
         {
             if (tokenName == null)
                 return;
+            callStack = callStack ?? new Stack<MetadataTokenName>();
             newName = newName ?? tokenName;
+            if (callStack.Count > 0 && callStack.Any(v => _comparer.Equals(v, this)))
+            {
+                return;
+            }
+
             if (Items == null || !Items.Any())
                 return;
 
+            callStack.Push(this);
+
             for (var i = 0; i < Items.Length; i++)
             {
+                if (_comparer.Equals(Items[i], this))
+                    continue;
+                if (callStack.Count > 0 && callStack.Any(v => _comparer.Equals(v, Items[i])))
+                    continue;
+
                 if (_comparer.Equals(Items[i], tokenName))
                 {
                     Items[i] = newName;
                     continue;
                 }
-                Items[i].ReassignAnyItemsByName(tokenName, newName);
+                
+                Items[i].ReassignAnyItemsByName(tokenName, newName, callStack);
             }
+
+            callStack.Pop();
         }
 
         public void GetAllByRefNames(List<MetadataTokenName> tokenNames)
@@ -252,8 +290,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
         }
 
-        public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames)
+        public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames, Stack<MetadataTokenName> callStack = null)
         {
+            callStack = callStack ?? new Stack<MetadataTokenName>();
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
             if (tokenType == null)
                 return;
@@ -263,10 +302,15 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 tokenNames.Add(this);
             if (Items == null || !Items.Any())
                 return;
+            if (callStack.Any(v => _comparer.Equals(v, this)))
+                return;
+            callStack.Push(this);
             foreach (var nm in Items)
             {
-                nm.GetAllDeclNames(tokenType, tokenNames);
+                nm.GetAllDeclNames(tokenType, tokenNames, callStack);
             }
+
+            callStack.Pop();
         }
 
         public override bool Equals(object obj)
@@ -570,6 +614,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         public void RemovePropertiesWithoutBothGetAndSet()
         {
             var names = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return;
             foreach (var name in Items)
             {
                 if (!NfReflect.IsClrMethodForProperty(name.GetMemberName(), out var propName))
@@ -591,10 +637,30 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         public void RemoveClrGeneratedNames()
         {
             var names = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return;
+
             foreach (var name in Items)
             {
                 if (NfReflect.IsClrGeneratedType(name.Name))
                     continue;
+                name.RemoveClrGeneratedNames();
+                names.Add(name);
+            }
+
+            Items = names.ToArray();
+        }
+
+        public void RemoveEmptyNames()
+        {
+            var names = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return;
+            foreach (var name in Items)
+            {
+                if (string.IsNullOrWhiteSpace(name.Name))
+                    continue;
+                name.RemoveEmptyNames();
                 names.Add(name);
             }
 
@@ -677,5 +743,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             methodName = methodName.Substring(0, methodName.IndexOf('(')).Trim();
             return methodName;
         }
+
     }
 }

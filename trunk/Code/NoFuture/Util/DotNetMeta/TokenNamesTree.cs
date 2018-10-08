@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
@@ -51,19 +52,44 @@ namespace NoFuture.Util.DotNetMeta
         /// <param name="tTypes">The full list of all types in scope of the analysis</param>
         public TokenNamesTree(TokenNameResponse flatNames, TokenIdResponse treeIds, AsmIndexResponse asms, TokenTypeResponse tTypes)
         {
-            var tokenNameRspn = flatNames ?? throw new ArgumentNullException(nameof(flatNames));
-            var tokenIdRspn = treeIds ?? throw new ArgumentNullException(nameof(treeIds));
-            var tokenTypes = tTypes ?? throw new ArgumentNullException(nameof(tTypes));
+            flatNames = flatNames ?? throw new ArgumentNullException(nameof(flatNames));
+            treeIds = treeIds ?? throw new ArgumentNullException(nameof(treeIds));
+            tTypes = tTypes ?? throw new ArgumentNullException(nameof(tTypes));
+
             AssemblyIndices = asms ?? throw new ArgumentNullException(nameof(treeIds));
-            TokenTypes = tokenTypes.GetTypesAsSingle();
-
-            tokenNameRspn.ApplyFullName(AssemblyIndices);
-
-            TokenIds = tokenIdRspn.GetAsRoot();
-            FlatTokenNames = tokenNameRspn.GetNamesAsSingle();
-            TokenNameRoot = tokenNameRspn.BindTree2Names(tokenIdRspn);
+            TokenTypes = tTypes.GetTypesAsSingle();
+            //concat ns\asm name to flat partial names
+            flatNames.ApplyFullName(AssemblyIndices);
+            //reduce the size 
+            flatNames.RemoveClrAndEmptyNames();
+            //assign the full call stack tree, by token ids only
+            TokenIds = treeIds.GetAsRoot();
+            //convert flat names to a root-style node
+            FlatTokenNames = flatNames.GetNamesAsSingle();
+            //get the full call stack tree as names 
+            TokenNameRoot = flatNames.BindTree2Names(treeIds);
+            //apply full names to call stack tree of names
             TokenNameRoot.ApplyFullName(AssemblyIndices);
+            //replace any byRef terminating nodes with their fully expander counterpart
             TokenNameRoot.ReassignAllByRefs();
+            //replace any interface token\names with implementation when its the only one
+            var reassignInterfaces = TokenTypes.GetAllInterfacesWithSingleImplementor();
+            if (reassignInterfaces == null || !reassignInterfaces.Any())
+                return;
+            foreach (var ri in reassignInterfaces)
+            {
+                var cri = TokenTypes.FirstInterfaceImplementor(ri);
+                if(cri == null)
+                    continue;
+
+                var n2n = TokenNameRoot.GetImplentorDictionary(ri, cri);
+                if(n2n == null || !n2n.Any())
+                    continue;
+                
+                TokenNameRoot.ReassignAllInterfaceTokens(n2n);
+            }
+            //reassign this to the modified version
+            FlatTokenNames = new MetadataTokenName {Items = TokenNameRoot.SelectDistinct()};
         }
 
         /// <summary>

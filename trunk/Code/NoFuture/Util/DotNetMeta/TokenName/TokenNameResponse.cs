@@ -27,9 +27,27 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return JsonConvert.DeserializeObject<TokenNameResponse>(jsonContent);
         }
 
+        public static void SaveToFile(string filePath, MetadataTokenName rootTokenName)
+        {
+            if (rootTokenName?.Items == null || !rootTokenName.Items.Any())
+                return;
+            var rspn = new TokenNameResponse {Names = rootTokenName.Items};
+            var json = JsonConvert.SerializeObject(rspn, Formatting.None,
+                new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
+            System.IO.File.WriteAllText(filePath, json);
+        }
+
         public MetadataTokenName GetNamesAsSingle()
         {
             return new MetadataTokenName { Items = Names };
+        }
+
+        internal void RemoveClrAndEmptyNames()
+        {
+            var sNames = GetNamesAsSingle();
+            sNames.RemoveClrGeneratedNames();
+            sNames.RemoveEmptyNames();
+            Names = sNames.Items;
         }
 
         /// <summary>
