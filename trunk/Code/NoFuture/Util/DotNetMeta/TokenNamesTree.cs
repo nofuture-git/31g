@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
-using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
@@ -16,8 +12,6 @@ namespace NoFuture.Util.DotNetMeta
     [Serializable]
     public class TokenNamesTree
     {
-        private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
-
         /// <summary>
         /// The flat list of token names from ctor-time
         /// </summary>
@@ -70,69 +64,7 @@ namespace NoFuture.Util.DotNetMeta
             TokenNameRoot = flatNames.BindTree2Names(treeIds);
             //apply full names to call stack tree of names
             TokenNameRoot.ApplyFullName(AssemblyIndices);
-            //replace any byRef terminating nodes with their fully expander counterpart
-            TokenNameRoot.ReassignAllByRefs();
-            //replace any interface token\names with implementation when its the only one
-            var reassignInterfaces = TokenTypes.GetAllInterfacesWithSingleImplementor();
-            if (reassignInterfaces == null || !reassignInterfaces.Any())
-                return;
-            foreach (var ri in reassignInterfaces)
-            {
-                var cri = TokenTypes.FirstInterfaceImplementor(ri);
-                if(cri == null)
-                    continue;
-
-                var n2n = TokenNameRoot.GetImplentorDictionary(ri, cri);
-                if(n2n == null || !n2n.Any())
-                    continue;
-                
-                TokenNameRoot.ReassignAllInterfaceTokens(n2n);
-            }
-            //reassign this to the modified version
-            FlatTokenNames = new MetadataTokenName {Items = TokenNameRoot.SelectDistinct()};
         }
 
-        /// <summary>
-        /// Selectively gets the flatten call stack for the given type-method pair
-        /// </summary>
-        /// <param name="typeName"></param>
-        /// <param name="methodName"></param>
-        /// <returns></returns>
-        public MetadataTokenName SelectDistinct(string typeName, string methodName)
-        {
-            var df = new MetadataTokenName { Items = new MetadataTokenName[] { } };
-            if (string.IsNullOrWhiteSpace(typeName))
-                return df;
-            methodName = methodName ?? "";
-            if (methodName.Contains("("))
-                methodName = methodName.Substring(0, methodName.IndexOf('('));
-
-            //want to avoid an interface type 
-            var tokenName = TokenNameRoot.SelectByTypeNames(typeName);
-            var typeNameTree = tokenName.Items.FirstOrDefault(t => t.IsTypeName());
-
-            if(typeNameTree == null)
-                return tokenName;
-            
-            var names = new List<MetadataTokenName>();
-            if (string.IsNullOrWhiteSpace(methodName) || !typeNameTree.Items.Any())
-            {
-                names.AddRange(typeNameTree.SelectDistinct());
-                df.Items = names.Distinct(_comparer).ToArray();
-                return df;
-            }
-
-            //match on overloads
-            var targetMethods = typeNameTree.Items.Where(item =>
-                item.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("));
-            foreach (var t in targetMethods)
-            {
-                names.AddRange(t.SelectDistinct());
-            }
-
-            df.Items = names.Distinct(_comparer).ToArray();
-            return df;
-            
-        }
     }
 }

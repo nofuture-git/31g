@@ -85,6 +85,71 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return innerItems.Distinct(_comparer).Select(v => v.GetShallowCopy()).ToArray();
         }
 
+        /// <summary>
+        /// Selectively gets the flatten call stack for the given type-method pair
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
+        public MetadataTokenName SelectDistinct(string typeName, string methodName)
+        {
+            var df = new MetadataTokenName { Items = new MetadataTokenName[] { } };
+            if (string.IsNullOrWhiteSpace(typeName))
+                return df;
+            methodName = methodName ?? "";
+            if (methodName.Contains("("))
+                methodName = methodName.Substring(0, methodName.IndexOf('('));
+
+            //want to avoid an interface type 
+            var tokenName = SelectByTypeNames(typeName);
+            var typeNameTree = tokenName.Items.FirstOrDefault(t => t.IsTypeName());
+
+            if (typeNameTree == null)
+                return tokenName;
+
+            var names = new List<MetadataTokenName>();
+            if (string.IsNullOrWhiteSpace(methodName) || !typeNameTree.Items.Any())
+            {
+                names.AddRange(typeNameTree.SelectDistinct());
+                df.Items = names.Distinct(_comparer).ToArray();
+                return df;
+            }
+
+            //match on overloads
+            var targetMethods = typeNameTree.Items.Where(item =>
+                item.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("));
+            foreach (var t in targetMethods)
+            {
+                names.AddRange(t.SelectDistinct());
+            }
+
+            df.Items = names.Distinct(_comparer).ToArray();
+            return df;
+        }
+
+        public MetadataTokenName SelectDistinct(MetadataTokenType tokenTypes)
+        {
+            //replace any byRef terminating nodes with their fully expander counterpart
+            ReassignAllByRefs();
+            //replace any interface token\names with implementation when its the only one
+            var reassignInterfaces = tokenTypes.GetAllInterfacesWithSingleImplementor();
+            if (reassignInterfaces == null || !reassignInterfaces.Any())
+                return this;
+            foreach (var ri in reassignInterfaces)
+            {
+                var cri = tokenTypes.FirstInterfaceImplementor(ri);
+                if (cri == null)
+                    continue;
+
+                var n2n = GetImplentorDictionary(ri, cri);
+                if (n2n == null || !n2n.Any())
+                    continue;
+
+                ReassignAllInterfaceTokens(n2n);
+            }
+            return new MetadataTokenName { Items = SelectDistinct() };
+        }
+
         public MetadataTokenName GetShallowCopy()
         {
             return new MetadataTokenName
@@ -290,6 +355,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
         }
 
+        /// <summary>
+        /// Get the method names attached to the given token type
+        /// </summary>
+        /// <param name="tokenType"></param>
+        /// <param name="tokenNames"></param>
+        /// <param name="callStack"></param>
         public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames, Stack<MetadataTokenName> callStack = null)
         {
             callStack = callStack ?? new Stack<MetadataTokenName>();
@@ -515,6 +586,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 }
             }
         }
+
 
         public Dictionary<MetadataTokenName, MetadataTokenName> GetImplentorDictionary(MetadataTokenType interfaceType,
             MetadataTokenType concreteType)
