@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -168,6 +169,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             if (!IsPartialName())
                 return;
+            if (asmIndicies?.Asms == null || !asmIndicies.Asms.Any())
+                return;
+
             var asm = asmIndicies.Asms.FirstOrDefault(x => x.IndexId == OwnAsmIdx);
             if (asm == null)
                 return;
@@ -180,6 +184,58 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             {
                 myItems.ApplyFullName(asmIndicies);
             }
+        }
+
+        /// <summary>
+        /// Final analysis to merge the token Ids to thier names in a hierarchy.
+        /// </summary>
+        /// <param name="tokenIds"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal MetadataTokenName BindTree2Names(MetadataTokenId tokenIds)
+        {
+            if (tokenIds?.Items == null || !tokenIds.Items.Any())
+                return this;
+            if (Items == null || Items.Length <= 0)
+                return this;
+
+            var nameMapping = new List<MetadataTokenName>();
+            foreach (var tokenId in tokenIds.Items)
+                nameMapping.Add(GetNames(tokenId));
+            return new MetadataTokenName { Items = nameMapping.ToArray() };
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal MetadataTokenName GetNames(MetadataTokenId tokenId)
+        {
+            if (tokenId == null || Items == null)
+                return null;
+            var nm = new MetadataTokenName { Id = tokenId.Id, RslvAsmIdx = tokenId.RslvAsmIdx };
+            var frmNm = Items.FirstOrDefault(x => x.Id == tokenId.Id && x.RslvAsmIdx == tokenId.RslvAsmIdx);
+            if (frmNm == null)
+                return nm;
+
+            nm.OwnAsmIdx = frmNm.OwnAsmIdx;
+            nm.Label = frmNm.Label;
+            nm.Name = frmNm.Name;
+            nm.IsByRef = tokenId.IsByRef > 0;
+            nm.DeclTypeId = frmNm.DeclTypeId;
+
+            if (tokenId.Items == null || tokenId.Items.Length <= 0)
+                return nm;
+
+            var hs = new List<MetadataTokenName>();
+            foreach (var tToken in tokenId.Items)
+            {
+                var nmTokens = GetNames(tToken);
+                if (nmTokens == null)
+                    continue;
+                hs.Add(nmTokens);
+            }
+
+            nm.Items = hs.ToArray();
+
+            return nm;
         }
 
         public MetadataTokenId Convert2MetadataTokenId()
@@ -737,6 +793,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             Items = names.ToArray();
+        }
+
+        internal void RemoveClrAndEmptyNames()
+        {
+            RemoveClrGeneratedNames();
+            RemoveEmptyNames();
         }
 
         /// <summary>

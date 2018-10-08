@@ -52,16 +52,16 @@ namespace NoFuture.Util.DotNetMeta
 
             AssemblyIndices = asms ?? throw new ArgumentNullException(nameof(treeIds));
             TokenTypes = tTypes.GetTypesAsSingle();
-            //concat ns\asm name to flat partial names
-            flatNames.ApplyFullName(AssemblyIndices);
+            FlatTokenNames = flatNames.GetNamesAsSingle();
+            FlatTokenNames.ApplyFullName(AssemblyIndices);
+
             //reduce the size 
-            flatNames.RemoveClrAndEmptyNames();
+            FlatTokenNames.RemoveClrAndEmptyNames();
             //assign the full call stack tree, by token ids only
             TokenIds = treeIds.GetAsRoot();
             //convert flat names to a root-style node
-            FlatTokenNames = flatNames.GetNamesAsSingle();
             //get the full call stack tree as names 
-            TokenNameRoot = flatNames.BindTree2Names(treeIds);
+            TokenNameRoot = FlatTokenNames.BindTree2Names(TokenIds);
             //apply full names to call stack tree of names
             TokenNameRoot.ApplyFullName(AssemblyIndices);
         }
