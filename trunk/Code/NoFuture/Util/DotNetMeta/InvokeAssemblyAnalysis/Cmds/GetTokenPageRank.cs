@@ -2,13 +2,11 @@
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using NoFuture.Shared;
-using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenRank;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
+namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public class GetTokenPageRank : CmdBase<TokenPageRankResponse>, ICmd
     {

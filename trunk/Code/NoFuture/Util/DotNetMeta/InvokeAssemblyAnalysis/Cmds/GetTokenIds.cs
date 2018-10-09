@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using System.Diagnostics;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
+namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public class GetTokenIds : CmdBase<TokenIdResponse>, ICmd
     {

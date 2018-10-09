@@ -2,15 +2,12 @@
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
+namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public class GetAsmIndices : CmdBase<AsmIndexResponse>, ICmd
     {

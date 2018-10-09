@@ -5,15 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta;
+using NoFuture.Util.Binary;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenRank;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Binary
+namespace NoFuture.Util.DotNetMeta
 {
     /// <summary>
     /// Wrapper class to invoke the <see cref="NfConfig.CustomTools.InvokeDpx"/> exe.

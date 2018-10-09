@@ -7,11 +7,10 @@ using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
 
-namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
+namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
 {
     /// <summary>
     /// Utility methods specific to this console app.

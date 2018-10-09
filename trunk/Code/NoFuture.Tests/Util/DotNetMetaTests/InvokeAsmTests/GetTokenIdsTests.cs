@@ -5,9 +5,9 @@ using NUnit.Framework;
 using System.IO;
 using NoFuture.Shared.Cfg;
 using NoFuture.Util.DotNetMeta;
+using NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis;
+using NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds;
 using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.Gia.InvokeAssemblyAnalysis;
-using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 
 namespace NoFuture.Tests.Util.InvokeAsmTests
 {

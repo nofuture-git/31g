@@ -7,14 +7,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta;
+using NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
-using NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
+namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
 {
     /// <summary>
     /// A console program to host assembly-token resolutions as a separate process.
@@ -149,7 +148,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         protected internal AsmIndexResponse AsmIndicies { get; } = new AsmIndexResponse();
 
         /// <summary>
-        /// Resolves the socket port used for <see cref="Cmds.GetTokenNames"/>
+        /// Resolves the socket port used for <see cref="GetTokenNames"/>
         /// </summary>
         protected internal int? GetTokenNamesCmdPort
         {
@@ -164,7 +163,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         }
 
         /// <summary>
-        /// Resolves the socket port used for <see cref="Cmds.GetTokenIds"/>
+        /// Resolves the socket port used for <see cref="GetTokenIds"/>
         /// </summary>
         protected internal int? GetTokenIdsCmdPort
         {
@@ -179,7 +178,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         }
 
         /// <summary>
-        /// Resolves the socket port used for <see cref="Cmds.GetAsmIndices"/>
+        /// Resolves the socket port used for <see cref="GetAsmIndices"/>
         /// </summary>
         protected internal int? GetAsmIndicesCmdPort
         {
@@ -194,7 +193,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         }
 
         /// <summary>
-        /// Resolves the socket port used for <see cref="Cmds.GetTokenPageRank"/>
+        /// Resolves the socket port used for <see cref="GetTokenPageRank"/>
         /// </summary>
         protected internal int? GetTokenPageRankCmdPort
         {
@@ -208,7 +207,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
             }
         }
         /// <summary>
-        /// Resolves the socket port used for <see cref="Cmds.GetTokenTypes"/>
+        /// Resolves the socket port used for <see cref="GetTokenTypes"/>
         /// </summary>
         protected internal int? GetTokenTypesCmdPort
         {
@@ -223,7 +222,7 @@ namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis
         }
 
         /// <summary>
-        /// Assignable from the config file, a value to keep <see cref="Cmds.GetTokenIds.ResolveCallOfCall"/>
+        /// Assignable from the config file, a value to keep <see cref="GetTokenIds.ResolveCallOfCall"/>
         /// from blowing out the stack.
         /// </summary>
         protected internal int MaxRecursionDepth

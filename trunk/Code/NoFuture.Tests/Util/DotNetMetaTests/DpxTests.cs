@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenRank;
 using NUnit.Framework;
@@ -41,7 +42,7 @@ namespace NoFuture.Util.DotNetMetaTests
                 testInput.Add(new Tuple<RankedMetadataTokenAsm, RankedMetadataTokenAsm[]>(tt, ttList.ToArray()));
             }
 
-            var testResult = NoFuture.Util.Binary.Dpx.GetDpxAdjGraph(testInput);
+            var testResult = Dpx.GetDpxAdjGraph(testInput);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(MetadataTokenStatus.Error, testResult.St);
             Assert.IsNotNull(testResult.Graph);

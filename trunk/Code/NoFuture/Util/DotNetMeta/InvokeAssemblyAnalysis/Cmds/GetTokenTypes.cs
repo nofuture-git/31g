@@ -13,7 +13,7 @@ using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenType;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds
+namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public class GetTokenTypes : CmdBase<TokenTypeResponse>, ICmd
     {
