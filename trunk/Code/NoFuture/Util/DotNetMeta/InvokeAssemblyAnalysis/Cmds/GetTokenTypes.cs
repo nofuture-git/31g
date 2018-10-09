@@ -68,6 +68,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                             St = MetadataTokenStatus.Error
                         });
                 }
+
+                MyProgram.PrintToConsole();
                 MyProgram.PrintToConsole($"There are {allTypes.Length} types in the all assemblies.");
                 var tokenTypes = new List<MetadataTokenType>();
                 var totalTypes = allTypes.Length;
@@ -80,7 +82,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                         Activity = $"{cType}",
                         ProcName = Process.GetCurrentProcess().ProcessName,
                         ProgressCounter = Etc.CalcProgressCounter(i, totalTypes),
-                        Status = "Resolving names"
+                        Status = "Resolving all type names"
                     });
 
                     var tt = GetMetadataTokenType(cType);
@@ -108,11 +110,17 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
             var allTypes = new List<Type>();
             if (_asmIndices == null)
                 return allTypes.ToArray();
-
-            foreach (var asmIdx in _asmIndices.Asms)
+            var totalAssemblies = _asmIndices.Asms.Length;
+            for (var i = 0; i < totalAssemblies; i++)
             {
-                if(asmIdx == null)
-                    continue;
+                var asmIdx = _asmIndices.Asms[i];
+                ((IaaProgram)MyProgram).ReportProgress(new ProgressMessage
+                {
+                    Activity = $"{asmIdx.AssemblyName}",
+                    ProcName = Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalAssemblies),
+                    Status = "Resolving types per assembly"
+                });
 
                 var asm = _asmIndices.GetAssemblyByIndex(asmIdx.IndexId) ??
                           GetAssemblyFromFile(asmIdx.AssemblyName);
@@ -121,7 +129,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                     continue;
                 }
                 var ts = asm.NfGetTypes(false, MyProgram.LogFile);
-                if(ts != null && ts.Any())
+                if (ts != null && ts.Any())
                     allTypes.AddRange(ts);
             }
 

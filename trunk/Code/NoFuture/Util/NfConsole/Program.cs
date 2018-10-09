@@ -158,6 +158,11 @@ namespace NoFuture.Util.NfConsole
             }
         }
 
+        public void PrintToConsole()
+        {
+            Console.WriteLine();
+        }
+
         /// <summary>
         /// Prints to console and writes to <see cref="LogFile"/>
         /// </summary>
@@ -167,6 +172,12 @@ namespace NoFuture.Util.NfConsole
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(someString))
+                {
+                    Console.WriteLine();
+                    return;
+                }
+
                 File.AppendAllText(LogFile, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}\n");
                 if (trunc && someString.Length >= 74)
                     someString = $"{someString.Substring(0, 68)}[...]";

@@ -52,7 +52,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                         });
                 } 
 
-                MyProgram.PrintToConsole($"Assembly Path: {asmPath}");
+                MyProgram.PrintToConsole($"Assembly: {Path.GetFileName(asmPath)}");
                 ((IaaProgram) MyProgram).RootAssemblyPath = asmPath;
 
                 NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
