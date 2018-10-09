@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.IO;
 using Newtonsoft.Json;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenRank;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Binary.InvokeDpx
+namespace NoFuture.Util.DotNetMeta.InvokeDpx
 {
     public class DpxProgram : Program
     {

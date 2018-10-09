@@ -36,7 +36,7 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>NoFuture.Util.Binary.InvokeDpx.DpxProgram</StartupObject>
+    <StartupObject>NoFuture.Util.DotNetMeta.InvokeDpx.DpxProgram</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pkg|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>

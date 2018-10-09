@@ -36,7 +36,7 @@ namespace NoFuture.Util.DotNetMeta
             if(string.IsNullOrWhiteSpace(binDir) || !Directory.Exists(binDir))
                 throw new ItsDeadJim($"The {binDir} directory was not found");
             if (string.IsNullOrWhiteSpace(NfConfig.CustomTools.InvokeDpx) || !File.Exists(NfConfig.CustomTools.InvokeDpx))
-                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Binary.InvokeDpx, assign " +
+                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.DotNetMeta.InvokeDpx, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeDpx.");
             var args = string.Join(" ", ConsoleCmd.ConstructCmdLineArgs(BIN_DIR, binDir));
             _si = new ProcessStartInfo

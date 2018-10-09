@@ -92,10 +92,10 @@ namespace NoFuture.Tests.Shared
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\Dia2Dump.exe", CustomTools.Dia2Dump);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Gen.InvokeGetCgOfType.exe", CustomTools.InvokeGetCgType);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Gen.InvokeGraphViz.exe", CustomTools.InvokeGraphViz);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe", CustomTools.InvokeAssemblyAnalysis);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.exe", CustomTools.InvokeAssemblyAnalysis);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.Gia.InvokeFlatten.exe", CustomTools.InvokeFlatten);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.Pos.Host.exe", CustomTools.UtilPosHost);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.Binary.InvokeDpx.exe", CustomTools.InvokeDpx);
+            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Util.DotNetMeta.InvokeDpx.exe", CustomTools.InvokeDpx);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\NoFuture.Tokens.InvokeNfTypeName.exe", CustomTools.InvokeNfTypeName);
 
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\ffmpeg.exe", BinTools.Ffmpeg);
@@ -350,10 +350,10 @@ namespace NoFuture.Tests.Shared
             <add id='customDia2DumpTool' value='$(binRootDir)\Dia2Dump.exe' />
             <add id='customInvokeGetCgTypeTool' value='$(binRootDir)\NoFuture.Gen.InvokeGetCgOfType.exe' />
             <add id='customInvokeGraphVizTool' value='$(binRootDir)\NoFuture.Gen.InvokeGraphViz.exe' />
-            <add id='customInvokeAssemblyAnalysisTool' value='$(binRootDir)\NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe' />
+            <add id='customInvokeAssemblyAnalysisTool' value='$(binRootDir)\NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.exe' />
             <add id='customInvokeFlattenTool' value='$(binRootDir)\NoFuture.Util.Gia.InvokeFlatten.exe' />
             <add id='customUtilPosHostTool' value='$(binRootDir)\NoFuture.Util.Pos.Host.exe' />
-            <add id='customInvokeDpxTool' value='$(binRootDir)\NoFuture.Util.Binary.InvokeDpx.exe' />
+            <add id='customInvokeDpxTool' value='$(binRootDir)\NoFuture.Util.DotNetMeta.InvokeDpx.exe' />
             <add id='customInvokeNfTypeNameTool' value='$(binRootDir)\NoFuture.Tokens.InvokeNfTypeName.exe' />
           </custom>
           <bin>
