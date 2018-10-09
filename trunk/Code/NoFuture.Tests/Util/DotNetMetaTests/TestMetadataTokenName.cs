@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
@@ -34,10 +35,10 @@ namespace NoFuture.Util.DotNetMeta.Tests
             var test02 = TokenNameResponse.ReadFromFile(_tokenNamePath);
             var test03 = TokenTypeResponse.ReadFromFile(_tokenTypesPath);
 
-            Assert.IsNotNull(test00);
-            Assert.IsNotNull(test01);
-            Assert.IsNotNull(test02);
-            Assert.IsNotNull(test03);
+            Assert.IsNotNull(test00?.Asms);
+            Assert.IsNotNull(test01?.Tokens);
+            Assert.IsNotNull(test02?.Names);
+            Assert.IsNotNull(test03?.Types);
         }
 
         public Tuple<AsmIndexResponse, TokenIdResponse, TokenNameResponse, TokenTypeResponse> GetTokenData()
@@ -56,7 +57,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
         {
             var tokenData = GetTokenData();
             var testResult = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
-                tokenData.Item2.GetAsRoot(), tokenData.Item4.GetTypesAsSingle(), tokenData.Item1);
+                tokenData.Item2.GetAsRoot(), tokenData.Item1);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Items);
             Assert.AreNotEqual(0 ,testResult.Items.Length);
@@ -65,7 +66,44 @@ namespace NoFuture.Util.DotNetMeta.Tests
         [Test]
         public void TestSelectDistinct()
         {
-            
+            var tokenData = GetTokenData();
+            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
+                tokenData.Item2.GetAsRoot(), tokenData.Item1);
+            Assert.IsNotNull(testSubject?.Items);
+
+            var testResult = testSubject.SelectDistinct();
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+            Console.WriteLine(testResult.Length);
+
+            foreach (var t in testResult.Take(30))
+                Console.WriteLine(t);
+        }
+
+        [Test]
+        public void TestSelectDistinct_WithTypes()
+        {
+            var tokenData = GetTokenData();
+            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
+                tokenData.Item2.GetAsRoot(), tokenData.Item1);
+
+            var testResult = testSubject.SelectDistinct(tokenData.Item4.GetTypesAsSingle());
+            Assert.IsNotNull(testResult?.Items);
+            Assert.AreNotEqual(0,testResult.Items.Length);
+            Console.WriteLine(testResult.Items.Length);
+
+        }
+
+        [Test]
+        public void TestSelectDistinct_ByMethod()
+        {
+            var tokenData = GetTokenData();
+            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
+                tokenData.Item2.GetAsRoot(), tokenData.Item1);
+            var testResult = testSubject.SelectDistinct("TestBegin", "Index");
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Items);
+            Assert.AreNotEqual(0, testResult.Items.Length);
         }
     }
 }

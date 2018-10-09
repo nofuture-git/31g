@@ -72,30 +72,36 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <summary>
         /// Puts the results of an Assembly Analysis into a full tree of token names
         /// </summary>
-        /// <param name="tokenNames"></param>
-        /// <param name="tokenIds"></param>
-        /// <param name="tokenTypes"></param>
-        /// <param name="asmIndices"></param>
-        /// <returns></returns>
-        public static MetadataTokenName BuildMetadataTokenName(MetadataTokenName tokenNames, MetadataTokenId tokenIds, MetadataTokenType tokenTypes, AsmIndexResponse asmIndices)
+        /// <param name="tokenNames">
+        /// This represents all possible names, but its a flat list, not a tree.
+        /// </param>
+        /// <param name="tokenIds">
+        /// This represents the call-token tree, but it has no names.
+        /// </param>
+        /// <param name="asmIndices">
+        /// This is needed since the names are all partial (to save space on the transfered json).
+        /// </param>
+        /// <returns>
+        /// A single root token name where the first layer of Items is the various types, followed by
+        /// those type&apos;s methods, followed by those methods call and so on.
+        /// </returns>
+        public static MetadataTokenName BuildMetadataTokenName(MetadataTokenName tokenNames, MetadataTokenId tokenIds, AsmIndexResponse asmIndices)
         {
             if (tokenNames == null)
                 throw new ArgumentNullException(nameof(tokenNames));
             if (tokenIds == null)
                 throw new ArgumentNullException(nameof(tokenIds));
-            if (tokenTypes == null)
-                throw new ArgumentNullException(nameof(tokenTypes));
             if (asmIndices == null)
                 throw new ArgumentNullException(nameof(asmIndices));
-
+            tokenNames.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             tokenNames.ApplyFullName(asmIndices);
-            tokenNames.RemoveClrAndEmptyNames();
             var tokenNamesOut = tokenNames.BindTree2Names(tokenIds);
+            tokenNamesOut.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             tokenNamesOut.ApplyFullName(asmIndices);
             return tokenNamesOut;
         }
 
-        public MetadataTokenName[] SelectDistinct(Stack<MetadataTokenName> callStack = null)
+        protected internal MetadataTokenName[] SelectDistinct(Stack<MetadataTokenName> callStack = null)
         {
             callStack = callStack ?? new Stack<MetadataTokenName>();
             var innerItems = new List<MetadataTokenName> {this};
@@ -118,10 +124,16 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="methodName"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// A single token name whose Items represent the full extent of its call stack. 
+        /// </returns>
         public MetadataTokenName SelectDistinct(string typeName, string methodName)
         {
-            var df = new MetadataTokenName { Items = new MetadataTokenName[] { } };
+            var df = new MetadataTokenName
+            {
+                Items = new MetadataTokenName[] { },
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
             if (string.IsNullOrWhiteSpace(typeName))
                 return df;
             methodName = methodName ?? "";
@@ -155,6 +167,13 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return df;
         }
 
+        /// <summary>
+        /// Another flavor of distinct where an interface with only one implementation
+        /// will have its tokens replace with its concrete counterpart.  Therefore,
+        /// the call-stack is fuller since is does not terminate on interface token ids.
+        /// </summary>
+        /// <param name="tokenTypes"></param>
+        /// <returns></returns>
         public MetadataTokenName SelectDistinct(MetadataTokenType tokenTypes)
         {
             //replace any byRef terminating nodes with their fully expander counterpart
@@ -175,7 +194,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
                 ReassignAllInterfaceTokens(n2n);
             }
-            return new MetadataTokenName { Items = SelectDistinct() };
+
+            return new MetadataTokenName
+            {
+                Items = SelectDistinct(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
 
         public MetadataTokenName GetShallowCopy()
@@ -203,7 +227,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (asm == null)
                 return;
             var asmName = new AssemblyName(asm.AssemblyName);
-            Name = asmName.Name + Name;
+
+            //when the name has been explicitly set as the root - leave it alone
+            if(!string.Equals(Name, NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture)))
+                Name = asmName.Name + Name;
+
             if (Items == null || !Items.Any())
                 return;
             //recurse down the tree
@@ -547,7 +575,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             foreach (var key in e.Keys.Where(k => !d.ContainsKey(k)))
                 d.Add(key, e[key]);
 
-            return new MetadataTokenName { Items = d.Values.ToArray() };
+            return new MetadataTokenName
+            {
+                Items = d.Values.ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
 
         /// <summary>
@@ -580,7 +612,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 listOut.Add(k);
             }
 
-            return new MetadataTokenName { Items = listOut.ToArray() };
+            return new MetadataTokenName
+            {
+                Items = listOut.ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
 
         public string[] GetUniqueTypeNames()
@@ -616,14 +652,23 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 names.Add(this);
 
             if (Items == null || !Items.Any())
-                return new MetadataTokenName { Items = names.ToArray() };
+                return new MetadataTokenName
+                {
+                    Items = names.ToArray(),
+                    Name = NfSettings.DefaultTypeSeparator.ToString()
+                };
             foreach (var name in Items)
             {
                 var nameMatch = name.SelectByFunc(getNameFunc, selector, searchNames);
                 if (nameMatch.Items.Any())
                     names.AddRange(nameMatch.Items);
             }
-            return new MetadataTokenName { Items = names.Distinct(_comparer).ToArray() };
+
+            return new MetadataTokenName
+            {
+                Items = names.Distinct(_comparer).ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
 
         public void ReassignAllByRefs()

@@ -75,6 +75,21 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
             return null;
         }
 
+        public string GetAssemblyPathFromRoot(string[] folders, int idx)
+        {
+            if (folders == null || !folders.Any())
+                return null;
+
+            foreach (var f in folders)
+            {
+                var m = GetAssemblyPathFromRoot(f, idx);
+                if (m != null)
+                    return m;
+            }
+
+            return null;
+        }
+
         public int Count()
         {
             return Asms.Length;

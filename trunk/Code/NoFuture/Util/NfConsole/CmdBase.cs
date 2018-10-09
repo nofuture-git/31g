@@ -31,7 +31,7 @@ namespace NoFuture.Util.NfConsole
         #endregion
 
         #region methods
-        public byte[] JsonEncodedResponse(T rspn)
+        public virtual byte[] JsonEncodedResponse(T rspn)
         {
             try
             {

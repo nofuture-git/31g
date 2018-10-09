@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta.TokenId;
 
 namespace NoFuture.Util.DotNetMeta.TokenName
@@ -36,7 +37,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
         public MetadataTokenName GetNamesAsSingle()
         {
-            return new MetadataTokenName { Items = Names };
+            return new MetadataTokenName
+            {
+                Items = Names,
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
 
     }
