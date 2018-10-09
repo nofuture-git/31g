@@ -19,7 +19,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
         [SetUp]
         public void AssignPaths()
         {
-            _jsonFolder = Path.Combine(TestAssembly.UnitTestsRoot, @"Util\DotNetMetaTests");
+            _jsonFolder = Path.Combine(TestAssembly.DotNetMetaTestRoot, @"TestJsonData");
             _asmIndicesPath = Path.Combine(_jsonFolder, "NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.json");
             _tokenIdsPath = Path.Combine(_jsonFolder, "NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.json");
             _tokenNamePath = Path.Combine(_jsonFolder, "NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenNames.json");

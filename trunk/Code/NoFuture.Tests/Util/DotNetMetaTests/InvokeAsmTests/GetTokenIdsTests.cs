@@ -16,31 +16,32 @@ namespace NoFuture.Util.DotNetMeta.Tests.InvokeAsmTests
         [Test]
         public void TestResolveCallOfCall()
         {
-            NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
+            var dllsPath = TestAssembly.UnitTestsRoot + @"\ExampleDlls";
+
+            var dependentDlls = new[]
+            {
+                @"\Iesi.Collections.dll", @"\NHibernate.dll", @"\NoFuture.Hbm.Sid.dll",
+                @"\SomeSecondDll.dll", @"\SomethingShared.dll", @"\ThirdDll.dll"
+            };
+            if (!File.Exists(dllsPath + @"\AdventureWorks2012.dll"))
+                Assert.Fail("The test binary files are not present, they can be created by " +
+                            "building the AdventureWorks solution which is part of the unit test files.");
+
+            NfConfig.AssemblySearchPaths.Add(dllsPath);
             NfConfig.UseReflectionOnlyLoad = false;
             NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+
             var testAsm =
                 System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll"));
-            System.Reflection.Assembly.Load(
+                        dllsPath + @"\AdventureWorks2012.dll"));
+            foreach (var dp in dependentDlls)
+            {
+                System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\Iesi.Collections.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NHibernate.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NoFuture.Hbm.Sid.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomeSecondDll.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomethingShared.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\ThirdDll.dll"));
+                        dllsPath + dp));
+            }
+
             var tp = new IaaProgram(new[] {"noop"})
             {
                 RootAssembly = testAsm,
@@ -56,7 +57,13 @@ namespace NoFuture.Util.DotNetMeta.Tests.InvokeAsmTests
             var dee = testTokens.FirstOrDefault();
             Assert.IsNotNull(dee);
 
-            var tProgram = new IaaProgram(null);
+            var tProgram = new IaaProgram(new[] { "noop" })
+            {
+                RootAssembly = testAsm,
+                AssemblyNameRegexPattern = "(Some|ThirdDll)"
+            };
+            tProgram.Init(testAsm);
+            tProgram.AssignAsmIndicies(testAsm);
             var tGetTokenIds = new GetTokenIds(tProgram);
 
             var testDepth = 0;
@@ -170,7 +177,7 @@ namespace NoFuture.Util.DotNetMeta.Tests.InvokeAsmTests
         [Test]
         public void TestToAdjancencyMatrix()
         {
-            var testDataFile = TestAssembly.UnitTestsRoot + @"\ExampleDlls\GetTokenIdsData.json";
+            var testDataFile = TestAssembly.DotNetMetaTestRoot + @"\TestJsonData\GetTokenIdsData.json";
             Assert.IsTrue(System.IO.File.Exists(testDataFile));
             var testJson =
                 System.IO.File.ReadAllText(testDataFile);

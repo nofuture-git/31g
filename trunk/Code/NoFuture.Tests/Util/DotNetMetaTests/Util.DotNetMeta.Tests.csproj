@@ -49,11 +49,12 @@
     <Compile Include="TestsInit.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.json" />
-    <None Include="NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.json" />
-    <None Include="NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenNames.json" />
-    <None Include="NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenTypes.json" />
     <None Include="packages.config" />
+    <None Include="TestJsonData\GetTokenIdsData.json" />
+    <None Include="TestJsonData\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.json" />
+    <None Include="TestJsonData\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.json" />
+    <None Include="TestJsonData\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenNames.json" />
+    <None Include="TestJsonData\NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenTypes.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\NoFuture\Shared\Cfg\Shared.Cfg.csproj">

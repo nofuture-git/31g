@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Cfg;
+using NoFuture.Util.DotNetMeta.TokenAsm;
 using NUnit.Framework;
 
 namespace NoFuture.Util.DotNetMeta.Tests
@@ -65,7 +66,13 @@ namespace NoFuture.Util.DotNetMeta.Tests
             var testMethod = testType.GetMember("TakesGenericArg").FirstOrDefault();
             Assert.IsNotNull(testMethod);
 
-            var testResult = AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
+            var asmRspn = new AsmIndexResponse
+            {
+                Asms = new []
+                    {new MetadataTokenAsm {AssemblyName = testAsm.GetName().FullName, IndexId = 0}}
+            };
+
+            var testResult = AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, asmRspn, null);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Name);
             Console.WriteLine(testResult.Name);
@@ -73,7 +80,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
 
             testMethod = testType.GetMember("TakesThisAsmGenericArg").FirstOrDefault();
             Assert.IsNotNull(testMethod);
-            testResult = AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, null, null);
+            testResult = AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, asmRspn, null);
             Console.WriteLine(testResult.Name);
             Assert.AreEqual("AdventureWorks.VeryBadCode.BasicGenerics::TakesThisAsmGenericArg(System.Collections.Generic.List`1[AdventureWorks.VeryBadCode.Order])", testResult.Name);
 

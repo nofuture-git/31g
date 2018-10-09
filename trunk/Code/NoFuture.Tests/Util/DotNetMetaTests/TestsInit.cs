@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace NoFuture.Util.DotNetMeta.Tests
@@ -8,7 +9,9 @@ namespace NoFuture.Util.DotNetMeta.Tests
     {
         private static string _testRoot;
         private static string _rootBin;
+        private static string _dotNetMetaTestRoot;
         public static string UnitTestsRoot => _testRoot;
+        public static string DotNetMetaTestRoot => _dotNetMetaTestRoot;
         public static string RootBin => _rootBin;
 
         [OneTimeSetUp]
@@ -22,6 +25,12 @@ namespace NoFuture.Util.DotNetMeta.Tests
             if(!System.IO.Directory.Exists(_rootBin))
                 throw new InvalidOperationException("The root directory, in which all NoFuture binaries are " +
                                                     "built to, was not found.");
+
+            _dotNetMetaTestRoot = Path.Combine(_testRoot, @"Util\DotNetMetaTests");
+            if (!System.IO.Directory.Exists(_dotNetMetaTestRoot))
+                throw new InvalidOperationException("The specific directory for DotNetMeta unit tests " +
+                                                    "was not found.");
+
 
         }
     }
