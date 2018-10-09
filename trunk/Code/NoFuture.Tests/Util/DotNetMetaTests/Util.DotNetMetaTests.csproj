@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{02E215D8-76E4-4AC7-BF1F-C3D12E39554B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Util.DotNetMetaTests</RootNamespace>
+    <AssemblyName>NoFuture.Util.DotNetMetaTests</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyAnalysisTests.cs" />
+    <Compile Include="DpxTests.cs" />
+    <Compile Include="InvokeAsmTests\GetTokenIdsTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestMetadataTokenName.cs" />
+    <Compile Include="TestsInit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.json" />
+    <None Include="NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.json" />
+    <None Include="NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenNames.json" />
+    <None Include="NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenTypes.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NoFuture\Shared\Cfg\Shared.Cfg.csproj">
+      <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
+      <Name>Shared.Cfg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Util\DotNetMeta\Util.DotNetMeta.csproj">
+      <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
+      <Name>Util.DotNetMeta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Util\Gia\InvokeAssemblyAnalysis\Util.Gia.InvokeAssemblyAnalysis.csproj">
+      <Project>{f2b8ca61-2257-44f4-b921-ff35b5f10146}</Project>
+      <Name>Util.Gia.InvokeAssemblyAnalysis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Util\Util.csproj">
+      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

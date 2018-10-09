@@ -3,9 +3,7 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using NoFuture.Gen;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 

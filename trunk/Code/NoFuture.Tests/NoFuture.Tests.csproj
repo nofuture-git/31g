@@ -121,11 +121,8 @@
     <Compile Include="Tokens\TestErlangConfigParseTree.cs" />
     <Compile Include="Tokens\TestEtx.cs" />
     <Compile Include="Tokens\TestTypeNameParseTree.cs" />
-    <Compile Include="Util\DotNetMetaTests\TestMetadataTokenName.cs" />
     <Compile Include="Util\Gia\FlattenTests.cs" />
-    <Compile Include="Util\Gia\AssemblyAnalysisTests.cs" />
     <Compile Include="Util\Gia\AsmDiagramTests.cs" />
-    <Compile Include="Util\InvokeAsmTests\GetTokenIdsTests.cs" />
     <Compile Include="Util\NfTypeTests\TypeNameProcessTests.cs" />
     <Compile Include="Util\Pos\PennTreebankTagsetTests.cs" />
     <Compile Include="Host.Encryption\ProgramTests.cs" />
@@ -216,6 +213,10 @@
     <ProjectReference Include="..\NoFuture\Util\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Util\DotNetMeta\Util.DotNetMeta.csproj">
+      <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
+      <Name>Util.DotNetMeta</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Util\Gia\InvokeAssemblyAnalysis\Util.Gia.InvokeAssemblyAnalysis.csproj">
       <Project>{f2b8ca61-2257-44f4-b921-ff35b5f10146}</Project>

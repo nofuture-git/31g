@@ -90,6 +90,10 @@
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DotNetMeta\Util.DotNetMeta.csproj">
+      <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
+      <Name>Util.DotNetMeta</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Util.csproj">
       <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
       <Name>Util</Name>
