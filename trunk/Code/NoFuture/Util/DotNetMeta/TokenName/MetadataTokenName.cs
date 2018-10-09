@@ -715,7 +715,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
         }
 
-
         public Dictionary<MetadataTokenName, MetadataTokenName> GetImplentorDictionary(MetadataTokenType interfaceType,
             MetadataTokenType concreteType)
         {

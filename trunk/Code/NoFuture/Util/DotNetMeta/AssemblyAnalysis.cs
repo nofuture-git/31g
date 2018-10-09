@@ -135,14 +135,17 @@ namespace NoFuture.Util.DotNetMeta
         ///  # this is assembly-name-to-index used to reduce the size of socket payloads
         ///  $myAsmIndices = $myAsmAly.AsmIndicies
         ///  
+        ///  # this is all the types in a similar form 
+        ///  $myTokenTypes = $myAsmAly.GetTokenTypes("NoFuture.*")
+        /// 
         ///  # this will represent the call-stack-tree in terms of just metadata token ids
         ///  $myTokensIds = $myAsmAly.GetTokenIds(0, "NoFuture.*")
         /// 
         ///  # translates the metadata token into a name (assembly, type, method, etc.)
-        ///  $myTokenNames = $myAsmAly.GetTokenNames($myTokensIds.FlattenToDistinct())
+        ///  $myTokenNames = $myAsmAly.GetTokenNames($myTokensIds.GetAsRoot().SelectDistinct())
         ///  
-        ///  # converts the call-stack-tree metadata tokens into their names 
-        ///  $appliedTokenNames = New-Object NoFuture.Shared.DotNetMeta.TokenNamesTree($myTokenNames, $myTokensIds, $myAsmIndices)
+        ///  # put all the results together
+        ///  $appliedTokenNames = New-Object NoFuture.Shared.DotNetMeta.TokenNamesTree($myTokenNames, $myTokensIds, $myAsmIndices, $myTokenTypes)
         /// ]]>
         /// </example>
         public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)

@@ -7,7 +7,7 @@ using NoFuture.Util.DotNetMeta.TokenType;
 namespace NoFuture.Util.DotNetMeta
 {
     /// <summary>
-    /// A resultant type of a fully recursive assembly analysis 
+    /// A container type to hold the various parts together
     /// </summary>
     [Serializable]
     public class TokenNamesTree
@@ -49,22 +49,15 @@ namespace NoFuture.Util.DotNetMeta
             flatNames = flatNames ?? throw new ArgumentNullException(nameof(flatNames));
             treeIds = treeIds ?? throw new ArgumentNullException(nameof(treeIds));
             tTypes = tTypes ?? throw new ArgumentNullException(nameof(tTypes));
-
             AssemblyIndices = asms ?? throw new ArgumentNullException(nameof(treeIds));
+
+            TokenIds = treeIds.GetAsRoot();
             TokenTypes = tTypes.GetTypesAsSingle();
+
             FlatTokenNames = flatNames.GetNamesAsSingle();
             FlatTokenNames.ApplyFullName(AssemblyIndices);
 
-            //reduce the size 
-            FlatTokenNames.RemoveClrAndEmptyNames();
-            //assign the full call stack tree, by token ids only
-            TokenIds = treeIds.GetAsRoot();
-            //convert flat names to a root-style node
-            //get the full call stack tree as names 
-            TokenNameRoot = FlatTokenNames.BindTree2Names(TokenIds);
-            //apply full names to call stack tree of names
-            TokenNameRoot.ApplyFullName(AssemblyIndices);
+            TokenNameRoot = MetadataTokenName.BuildMetadataTokenName(FlatTokenNames, TokenIds, AssemblyIndices);
         }
-
     }
 }
