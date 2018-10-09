@@ -144,7 +144,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Core.Math.Matrix.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.DotNetMeta", "NoFuture\Util\DotNetMeta\Util.DotNetMeta.csproj", "{88A7A90F-4836-40CE-99D8-65BFE7C4CAC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.DotNetMetaTests", "NoFuture.Tests\Util\DotNetMetaTests\Util.DotNetMetaTests.csproj", "{02E215D8-76E4-4AC7-BF1F-C3D12E39554B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.DotNetMeta.Tests", "NoFuture.Tests\Util\DotNetMetaTests\Util.DotNetMeta.Tests.csproj", "{02E215D8-76E4-4AC7-BF1F-C3D12E39554B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.DotNetMeta.InvokeAssemblyAnalysis", "NoFuture\Util\DotNetMeta\InvokeAssemblyAnalysis\Util.DotNetMeta.InvokeAssemblyAnalysis.csproj", "{F2B8CA61-2257-44F4-B921-FF35B5F10146}"
 EndProject

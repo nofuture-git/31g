@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace NoFuture.Tests
+namespace NoFuture.Util.DotNetMeta.Tests
 {
     [SetUpFixture]
     public sealed class TestAssembly

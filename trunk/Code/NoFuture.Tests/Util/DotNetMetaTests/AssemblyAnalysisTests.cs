@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NUnit.Framework;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
-using NoFuture.Util.DotNetMeta;
-using NoFuture.Util.DotNetMeta.TokenAsm;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenName;
-using NoFuture.Util.DotNetMeta.TokenType;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Util.Gia
+namespace NoFuture.Util.DotNetMeta.Tests
 {
     [TestFixture]
     public class AssemblyAnalysisTests

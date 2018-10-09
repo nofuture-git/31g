@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using NUnit.Framework;
 using System.IO;
+using System.Linq;
 using NoFuture.Shared.Cfg;
-using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis;
 using NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds;
 using NoFuture.Util.DotNetMeta.TokenId;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Util.InvokeAsmTests
+namespace NoFuture.Util.DotNetMeta.Tests.InvokeAsmTests
 {
     [TestFixture]
     public class GetTokenIdsTests

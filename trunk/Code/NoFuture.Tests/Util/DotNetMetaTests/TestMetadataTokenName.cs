@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
 using System.IO;
-using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
 using NoFuture.Util.DotNetMeta.TokenType;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Util.DotNetMetaTests
+namespace NoFuture.Util.DotNetMeta.Tests
 {
     public class TestMetadataTokenName
     {
