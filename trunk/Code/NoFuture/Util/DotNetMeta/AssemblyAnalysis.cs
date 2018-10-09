@@ -117,8 +117,8 @@ namespace NoFuture.Util.DotNetMeta
         ///  ||+------------------------+|+------------------------+|+------------------------+|+------------------------+|
         /// 
         /// (1) assume PowerShell
-        /// (2) new instance of NoFuture.Util.Gia.AssemblyAnalysis
-        /// (3) new process NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe
+        /// (2) new instance of NoFuture.Util.DotNetMeta.AssemblyAnalysis
+        /// (3) new process NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.exe
         /// (4) the assembly whose tokens we want
         /// 
         /// (a)  The top-level types already had all thier members resolved to tokens and every virtcall found within the body of those members.
@@ -130,7 +130,7 @@ namespace NoFuture.Util.DotNetMeta
         /// <example>
         /// <![CDATA[
         ///  # will launch a console
-        ///  $myAsmAly = New-Object NoFuture.Util.Gia.AssemblyAnalysis($AssemblyPath,$false)
+        ///  $myAsmAly = New-Object NoFuture.Util.DotNetMeta.AssemblyAnalysis($AssemblyPath,$false)
         ///  
         ///  # this is assembly-name-to-index used to reduce the size of socket payloads
         ///  $myAsmIndices = $myAsmAly.AsmIndicies
@@ -151,7 +151,7 @@ namespace NoFuture.Util.DotNetMeta
                 throw new ItsDeadJim("This isn't a valid assembly path");
 
             if (string.IsNullOrWhiteSpace(NfConfig.CustomTools.InvokeAssemblyAnalysis) || !File.Exists(NfConfig.CustomTools.InvokeAssemblyAnalysis))
-                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeAssemblyAnalysis, assign " +
+                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeAssemblyAnalysis.");
 
             var np = DefaultPort;
