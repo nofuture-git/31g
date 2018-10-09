@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
@@ -18,6 +21,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
     public class GetTokenTypes : CmdBase<TokenTypeResponse>, ICmd
     {
         private AsmIndexResponse _asmIndices;
+        private string _rootDir;
         public GetTokenTypes(Program myProgram) : base(myProgram)
         {
         }
@@ -43,6 +47,9 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 var rqst = JsonConvert.DeserializeObject<TokenTypeRequest>(Encoding.UTF8.GetString(arg));
                 if(!string.IsNullOrWhiteSpace(rqst.ResolveAllNamedLike))
                     ((IaaProgram)MyProgram).AssemblyNameRegexPattern = rqst.ResolveAllNamedLike;
+
+                if (!string.IsNullOrWhiteSpace(((IaaProgram) MyProgram).RootAssemblyPath))
+                    _rootDir = System.IO.Path.GetDirectoryName(((IaaProgram) MyProgram).RootAssemblyPath);
 
                 //get all the assemblies of this app domain
                 _asmIndices = ((IaaProgram) MyProgram).AsmIndicies;
@@ -107,7 +114,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 if(asmIdx == null)
                     continue;
 
-                var asm = _asmIndices.GetAssemblyByIndex(asmIdx.IndexId);
+                var asm = _asmIndices.GetAssemblyByIndex(asmIdx.IndexId) ??
+                          GetAssemblyFromFile(asmIdx.AssemblyName);
                 if (asm == null)
                 {
                     continue;
@@ -165,6 +173,30 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 
             return t?.FullName != null &&
                         Regex.IsMatch(t.FullName, regexPattern);
+        }
+
+        internal Assembly GetAssemblyFromFile(string asmName)
+        {
+            //try it again on the drive
+            if (string.IsNullOrWhiteSpace(_rootDir))
+                return null;
+            var di = new DirectoryInfo(_rootDir);
+            foreach (var d in di.EnumerateFileSystemInfos())
+            {
+                if (!new[] { ".dll", ".exe" }.Contains(d.Extension))
+                    continue;
+                var dAsmName = Asm.GetAssemblyName(d.FullName, false, MyProgram.LogFile);
+                var eAsmName = new AssemblyName(asmName);
+                if (!AssemblyName.ReferenceMatchesDefinition(dAsmName, eAsmName))
+                    continue;
+                var asm = NfConfig.UseReflectionOnlyLoad
+                    ? Asm.NfReflectionOnlyLoadFrom(d.FullName, false, MyProgram.LogFile)
+                    : Asm.NfLoadFrom(d.FullName, false, MyProgram.LogFile);
+                if (asm != null)
+                    return asm;
+            }
+
+            return null;
         }
     }
 }

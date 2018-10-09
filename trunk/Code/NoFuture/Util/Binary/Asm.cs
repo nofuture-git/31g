@@ -645,8 +645,12 @@ namespace NoFuture.Util.Binary
         /// loaded from <see cref="NfConfig.TempDirectories.Binary"/>.
         /// </summary>
         /// <param name="assemblyPath"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Assembly NfReflectionOnlyLoadFrom(string assemblyPath)
+        public static Assembly NfReflectionOnlyLoadFrom(string assemblyPath, bool rethrow = true, string logFile = "")
         {
             if(String.IsNullOrWhiteSpace(assemblyPath))
                 throw new ItsDeadJim($"There is no assembly at the path '{assemblyPath}'");
@@ -659,7 +663,29 @@ namespace NoFuture.Util.Binary
             if (asm != null)
                 return asm;
 
-            asm = Assembly.ReflectionOnlyLoadFrom(assemblyPath);
+            try
+            {
+                asm = Assembly.ReflectionOnlyLoadFrom(assemblyPath);
+            }
+            catch (ArgumentException argEx)
+            {
+                AddLoaderExceptionToLog(null, argEx, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (IOException ioEx)
+            {
+                AddLoaderExceptionToLog(null, ioEx, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException badEx)
+            {
+                AddLoaderExceptionToLog(null, badEx, logFile);
+                if (rethrow)
+                    throw;
+            }
+            
             if (asm != null &&
                 NfConfig.AssemblySearchPaths.Any(
                     x => !string.Equals(x, Path.GetDirectoryName(assemblyPath), StringComparison.OrdinalIgnoreCase)))
@@ -670,15 +696,18 @@ namespace NoFuture.Util.Binary
 
         /// <summary>
         /// Intended when an assembly is only recognizable by its location and therefore must 
-        /// be loaded as such.  The reflection only load-from assemblies are 
-        /// loaded from <see cref="NfConfig.TempDirectories.Binary"/>.
+        /// be loaded as such.
         /// </summary>
         /// <param name="assemblyPath"></param>
+        /// <param name="rethrow">
+        /// optional ability to suppress the exception form being rethrown - default is true.
+        /// </param>
+        /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
         /// <returns></returns>
-        public static Assembly NfLoadFrom(string assemblyPath)
+        public static Assembly NfLoadFrom(string assemblyPath, bool rethrow = true, string logFile = "")
         {
             if (String.IsNullOrWhiteSpace(assemblyPath))
-                throw new ItsDeadJim($"There is no assembly at the path '{assemblyPath}'");
+                throw new ArgumentNullException(nameof(assemblyPath));
 
             //check our domain for this assembly having been loaded once before
             var asm =
@@ -688,14 +717,35 @@ namespace NoFuture.Util.Binary
             if (asm != null)
                 return asm;
 
-            asm = Assembly.LoadFrom(assemblyPath);
+            try
+            {
+                asm = Assembly.LoadFrom(assemblyPath);
+            }
+            catch (ArgumentException argEx)
+            {
+                AddLoaderExceptionToLog(null, argEx, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (IOException ioEx)
+            {
+                AddLoaderExceptionToLog(null, ioEx, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException badEx)
+            {
+                AddLoaderExceptionToLog(null, badEx, logFile);
+                if (rethrow)
+                    throw;
+            }
+            
             if (asm != null &&
                 NfConfig.AssemblySearchPaths.Any(
                     x => !string.Equals(x, Path.GetDirectoryName(assemblyPath), StringComparison.OrdinalIgnoreCase)))
                 NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(assemblyPath));
 
             return asm;
-
         }
 
         /// <summary>
@@ -746,6 +796,41 @@ namespace NoFuture.Util.Binary
                 if (rethrow)
                     throw;
             }
+            return null;
+        }
+
+        /// <summary>
+        /// Wrapper around static GetAssemblyName with logging and rethrow options
+        /// </summary>
+        /// <param name="assemblyFile"></param>
+        /// <param name="rethrow"></param>
+        /// <param name="logFile"></param>
+        /// <returns></returns>
+        public static AssemblyName GetAssemblyName(string assemblyFile, bool rethrow = true, string logFile = "")
+        {
+            try
+            {
+                return AssemblyName.GetAssemblyName(assemblyFile);
+            }
+            catch (ArgumentException argEx)
+            {
+                AddLoaderExceptionToLog(null, argEx, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (IOException ioEx)
+            {
+                AddLoaderExceptionToLog(null, ioEx, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException badEx)
+            {
+                AddLoaderExceptionToLog(null, badEx, logFile);
+                if (rethrow)
+                    throw;
+            }
+
             return null;
         }
 

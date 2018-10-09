@@ -81,11 +81,16 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="asmIndices">
         /// This is needed since the names are all partial (to save space on the transfered json).
         /// </param>
+        /// <param name="tokenTypes">
+        /// Optional, passing this in will signal that all interfaces with only one implementation
+        /// should have their tokens swapped out for the concrete implementation counterpart.
+        /// </param>
         /// <returns>
         /// A single root token name where the first layer of Items is the various types, followed by
         /// those type&apos;s methods, followed by those methods call and so on.
         /// </returns>
-        public static MetadataTokenName BuildMetadataTokenName(MetadataTokenName tokenNames, MetadataTokenId tokenIds, AsmIndexResponse asmIndices)
+        public static MetadataTokenName BuildMetadataTokenName(MetadataTokenName tokenNames, MetadataTokenId tokenIds,
+            AsmIndexResponse asmIndices, MetadataTokenType tokenTypes = null)
         {
             if (tokenNames == null)
                 throw new ArgumentNullException(nameof(tokenNames));
@@ -98,6 +103,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var tokenNamesOut = tokenNames.BindTree2Names(tokenIds);
             tokenNamesOut.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             tokenNamesOut.ApplyFullName(asmIndices);
+            tokenNamesOut.ReassignAllByRefs();
+            if (tokenTypes != null)
+            {
+                tokenNamesOut.ReassignAllInterfaceTokens(tokenTypes);
+            }
+
             return tokenNamesOut;
         }
 
@@ -178,10 +189,21 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             //replace any byRef terminating nodes with their fully expander counterpart
             ReassignAllByRefs();
+            ReassignAllInterfaceTokens(tokenTypes);
+
+            return new MetadataTokenName
+            {
+                Items = SelectDistinct(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
+        }
+
+        public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes)
+        {
             //replace any interface token\names with implementation when its the only one
             var reassignInterfaces = tokenTypes.GetAllInterfacesWithSingleImplementor();
             if (reassignInterfaces == null || !reassignInterfaces.Any())
-                return this;
+                return;
             foreach (var ri in reassignInterfaces)
             {
                 var cri = tokenTypes.FirstInterfaceImplementor(ri);
@@ -192,14 +214,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 if (n2n == null || !n2n.Any())
                     continue;
 
-                ReassignAllInterfaceTokens(n2n);
+                ReassignInterfaceTokens(n2n);
             }
-
-            return new MetadataTokenName
-            {
-                Items = SelectDistinct(),
-                Name = NfSettings.DefaultTypeSeparator.ToString()
-            };
         }
 
         public MetadataTokenName GetShallowCopy()
@@ -754,7 +770,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return n2n;
         }
 
-        public void ReassignAllInterfaceTokens(Dictionary<MetadataTokenName, MetadataTokenName> n2n)
+        public void ReassignInterfaceTokens(Dictionary<MetadataTokenName, MetadataTokenName> n2n)
         {
             if (Items == null || !Items.Any())
                 return;

@@ -89,10 +89,5 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
 
             return null;
         }
-
-        public int Count()
-        {
-            return Asms.Length;
-        }
     }
 }

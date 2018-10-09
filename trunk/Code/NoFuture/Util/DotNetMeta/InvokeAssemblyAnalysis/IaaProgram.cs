@@ -125,6 +125,11 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         protected internal Assembly RootAssembly { get; set; }
 
         /// <summary>
+        /// The location of the original assembly
+        /// </summary>
+        protected internal string RootAssemblyPath { get; set; }
+
+        /// <summary>
         /// A memory store for the regex pattern passed into various <see cref="ICmd"/>
         /// </summary>
         protected internal string AssemblyNameRegexPattern { get; set; }

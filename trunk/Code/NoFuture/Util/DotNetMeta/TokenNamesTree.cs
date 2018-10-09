@@ -15,7 +15,7 @@ namespace NoFuture.Util.DotNetMeta
         /// <summary>
         /// The flat list of token names from ctor-time
         /// </summary>
-        public MetadataTokenName FlatTokenNames { get; }
+        public MetadataTokenName FlatTokenNames { get; set; }
 
         /// <summary>
         /// The token ids in hierarchy from ctor-time

@@ -51,7 +51,10 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                             St = MetadataTokenStatus.Error
                         });
                 } 
-                
+
+                MyProgram.PrintToConsole($"Assembly Path: {asmPath}");
+                ((IaaProgram) MyProgram).RootAssemblyPath = asmPath;
+
                 NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
 
                 var asm = NfConfig.UseReflectionOnlyLoad
