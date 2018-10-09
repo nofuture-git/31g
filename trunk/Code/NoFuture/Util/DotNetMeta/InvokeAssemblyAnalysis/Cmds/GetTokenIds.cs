@@ -36,7 +36,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 var tokens = new List<MetadataTokenId>();
                 var counter = 0;
                 var total = asmTypes.Length;
-                MyProgram.PrintToConsole(string.Format("There are {0} types in the assembly", total));
+                MyProgram.PrintToConsole(string.Format("There are {0} top-level types in this assembly", total));
                 foreach (var asmType in asmTypes)
                 {
                     counter += 1;

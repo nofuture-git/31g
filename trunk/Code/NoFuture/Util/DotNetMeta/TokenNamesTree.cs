@@ -57,7 +57,7 @@ namespace NoFuture.Util.DotNetMeta
             FlatTokenNames = flatNames.GetNamesAsSingle();
             FlatTokenNames.ApplyFullName(AssemblyIndices);
 
-            TokenNameRoot = MetadataTokenName.BuildMetadataTokenName(FlatTokenNames, TokenIds, AssemblyIndices);
+            TokenNameRoot = MetadataTokenName.BuildMetadataTokenName(FlatTokenNames, TokenIds, AssemblyIndices, TokenTypes);
         }
     }
 }

@@ -70,7 +70,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 }
 
                 MyProgram.PrintToConsole();
-                MyProgram.PrintToConsole($"There are {allTypes.Length} types in the all assemblies.");
+                MyProgram.PrintToConsole($"There are {allTypes.Length} types in all assemblies.");
                 var tokenTypes = new List<MetadataTokenType>();
                 var totalTypes = allTypes.Length;
                 for (var i = 0; i < totalTypes; i++)
