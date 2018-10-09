@@ -60,13 +60,13 @@
       <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
       <Name>Shared.Cfg</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Util\DotNetMeta\InvokeAssemblyAnalysis\Util.DotNetMeta.InvokeAssemblyAnalysis.csproj">
+      <Project>{f2b8ca61-2257-44f4-b921-ff35b5f10146}</Project>
+      <Name>Util.DotNetMeta.InvokeAssemblyAnalysis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Util\DotNetMeta\Util.DotNetMeta.csproj">
       <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
       <Name>Util.DotNetMeta</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NoFuture\Util\Gia\InvokeAssemblyAnalysis\Util.Gia.InvokeAssemblyAnalysis.csproj">
-      <Project>{f2b8ca61-2257-44f4-b921-ff35b5f10146}</Project>
-      <Name>Util.Gia.InvokeAssemblyAnalysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Util\Util.csproj">
       <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
