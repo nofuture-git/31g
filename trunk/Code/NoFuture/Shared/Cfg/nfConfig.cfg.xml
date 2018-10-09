@@ -113,7 +113,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='customInvokeAssemblyAnalysisTool' value='$(binRootDir)\NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.exe' />
             <add id='customInvokeFlattenTool' value='$(binRootDir)\NoFuture.Util.Gia.InvokeFlatten.exe' />
             <add id='customUtilPosHostTool' value='$(binRootDir)\NoFuture.Util.Pos.Host\NoFuture.Util.Pos.Host.exe' />
-            <add id='customInvokeDpxTool' value='$(binRootDir)\NoFuture.Util.Binary.InvokeDpx.exe' />
+            <add id='customInvokeDpxTool' value='$(binRootDir)\NoFuture.Util.DotNetMeta.InvokeDpx.exe' />
             <add id='customInvokeNfTypeNameTool' value='$(binRootDir)\NoFuture.Tokens.InvokeNfTypeName.exe' />
           </custom>
           <bin>
