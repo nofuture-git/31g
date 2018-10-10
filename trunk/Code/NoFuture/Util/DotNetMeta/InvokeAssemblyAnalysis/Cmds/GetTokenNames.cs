@@ -19,7 +19,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
             MyProgram.ProgressMessageState = null;
             try
             {
-                if (((IaaProgram)MyProgram).AsmInited != true)
+                var myIaaProgram = ((IaaProgram) MyProgram);
+                if (myIaaProgram.AsmInited != true)
                 {
                     MyProgram.PrintToConsole("no assemblies are loaded - call GetAsmIndices");
                     return JsonEncodedResponse(
@@ -43,10 +44,22 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                     });
                 }
 
-                var names = ((IaaProgram)MyProgram).UtilityMethods.ResolveAllTokenNames(tokens);
+                var names = myIaaProgram.UtilityMethods.ResolveAllTokenNames(tokens);
                 Console.Write('\n');
-
-                return JsonEncodedResponse(new TokenNameResponse {Names = names.ToArray()});
+                var tokenNameRspn = new TokenNameResponse {Names = names.ToArray()};
+                if (rqst.MapFullCallStack && myIaaProgram.TokenTypeResponse != null
+                    && myIaaProgram.TokenIdResponse != null)
+                {
+                    var nameRoot = tokenNameRspn.GetNamesAsSingle();
+                    var tokenRoot = myIaaProgram.TokenIdResponse.GetAsRoot();
+                    var typeRoot = myIaaProgram.TokenTypeResponse.GetTypesAsSingle();
+                    var asmRspn = myIaaProgram.AsmIndicies;
+                    var fullCallStack =
+                        MetadataTokenName.BuildMetadataTokenName(nameRoot, tokenRoot, asmRspn, typeRoot, MyProgram.PrintToConsole);
+                    if(fullCallStack?.Items != null)
+                        tokenNameRspn.Names = fullCallStack.Items;
+                }
+                return JsonEncodedResponse(tokenNameRspn);
             }
             catch (Exception ex)
             {

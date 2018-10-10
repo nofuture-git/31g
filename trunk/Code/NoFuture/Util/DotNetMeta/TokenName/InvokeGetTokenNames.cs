@@ -9,6 +9,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 {
     public class InvokeGetTokenNames : InvokeGetCmdBase<TokenNameResponse>
     {
+        public bool MapFullCallStack { get; set; }
         public override TokenNameResponse Receive(object anything)
         {
             if(anything == null)
@@ -24,7 +25,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if(metadataTokenIds == null)
                 throw new InvalidCastException("Was expecting the 'anything' arg to be castable " +
                                                "to an array of " + typeof(MetadataTokenId).FullName);
-            var rqst = new TokenNameRequest {Tokens = metadataTokenIds};
+            var rqst = new TokenNameRequest {Tokens = metadataTokenIds, MapFullCallStack = this.MapFullCallStack};
             var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rqst));
 
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);

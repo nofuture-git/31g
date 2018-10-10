@@ -89,7 +89,11 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                     if(tt != null)
                         tokenTypes.Add(tt);
                 }
-                return JsonEncodedResponse(new TokenTypeResponse {Types = tokenTypes.ToArray()});
+
+                var tokenTypeRspn = new TokenTypeResponse {Types = tokenTypes.ToArray()};
+                //keep a copy of this in memory like AsmIndices
+                ((IaaProgram) MyProgram).TokenTypeResponse = tokenTypeRspn;
+                return JsonEncodedResponse(tokenTypeRspn);
 
             }
             catch (Exception ex)

@@ -11,6 +11,7 @@ using NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
+using NoFuture.Util.DotNetMeta.TokenType;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
@@ -151,6 +152,16 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         /// The dictionary of internal ids to assembly names
         /// </summary>
         protected internal AsmIndexResponse AsmIndicies { get; } = new AsmIndexResponse();
+
+        /// <summary>
+        /// A process copy of the token type response just prior to being sent across the wire.
+        /// </summary>
+        protected internal TokenTypeResponse TokenTypeResponse { get; set; }
+
+        /// <summary>
+        /// A process copy of the token id response just prior to being sent across the wire.
+        /// </summary>
+        protected internal TokenIdResponse TokenIdResponse { get; set; }
 
         /// <summary>
         /// Resolves the socket port used for <see cref="GetTokenNames"/>

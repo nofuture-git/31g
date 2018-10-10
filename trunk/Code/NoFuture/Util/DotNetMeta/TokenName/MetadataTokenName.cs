@@ -23,10 +23,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         [NonSerialized] private bool _isByRef;
         [NonSerialized] private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
         [NonSerialized] private List<MetadataTokenName> _allByRefs;
+        [NonSerialized] private List<MetadataTokenName> _byVals;
         [NonSerialized] private List<MetadataTokenName> _allDeclNames;
         [NonSerialized] private MetadataTokenName _firstByVal;
         [NonSerialized] private int? _fullDepthCount;
         [NonSerialized] private bool? _anyByRef;
+        [NonSerialized] private Dictionary<MetadataTokenName, MetadataTokenName> _implentorDictionary;
 
         /// <summary>
         /// The original metadata token id
@@ -93,12 +95,15 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// Optional, passing this in will signal that all interfaces with only one implementation
         /// should have their tokens swapped out for the concrete implementation counterpart.
         /// </param>
+        /// <param name="reportProgress">
+        /// Optional, allows caller to get feedback on progress since this takes some time to run.
+        /// </param>
         /// <returns>
         /// A single root token name where the first layer of Items is the various types, followed by
         /// those type&apos;s methods, followed by those methods call and so on.
         /// </returns>
         public static MetadataTokenName BuildMetadataTokenName(MetadataTokenName tokenNames, MetadataTokenId tokenIds,
-            AsmIndexResponse asmIndices, MetadataTokenType tokenTypes = null)
+            AsmIndexResponse asmIndices, MetadataTokenType tokenTypes = null, Action<ProgressMessage> reportProgress = null)
         {
             if (tokenNames == null)
                 throw new ArgumentNullException(nameof(tokenNames));
@@ -111,10 +116,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var tokenNamesOut = tokenNames.BindTree2Names(tokenIds);
             tokenNamesOut.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             tokenNamesOut.ApplyFullName(asmIndices);
-            tokenNamesOut.ReassignAllByRefs();
+            //turn all pointer'esque tokens into their full-expanded counterparts
+            tokenNamesOut.ReassignAllByRefs(reportProgress);
             if (tokenTypes != null)
             {
-                tokenNamesOut.ReassignAllInterfaceTokens(tokenTypes);
+                tokenNamesOut.ReassignAllInterfaceTokens(tokenTypes, reportProgress);
             }
 
             return tokenNamesOut;
@@ -213,20 +219,32 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="tokenTypes">
         /// A root token type whose Items are all possible types in all assemblies.
         /// </param>
+        /// <param name="reportProgress">
+        /// Optional, allows caller to get feedback on progress since this takes some time to run.
+        /// </param>
         /// <remarks>
         /// The idea is that having a call-stack terminating on an interface token may
         /// not be the end since the given interface only has but one implementation.
         /// The call-stack can be further expanded by swapping the interface token with
         /// its concrete implementation.
         /// </remarks>
-        public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes)
+        public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes, Action<ProgressMessage> reportProgress = null)
         {
             //replace any interface token\names with implementation when its the only one
             var reassignInterfaces = tokenTypes.GetAllInterfacesWithSingleImplementor();
             if (reassignInterfaces == null || !reassignInterfaces.Any())
                 return;
-            foreach (var ri in reassignInterfaces)
+            var totalLen = reassignInterfaces.Length;
+            for (var i = 0; i < totalLen; i++)
             {
+                var ri = reassignInterfaces[i];
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{ri.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = "Reassigning all interfaces"
+                });
                 var cri = tokenTypes.FirstInterfaceImplementor(ri);
                 if (cri == null)
                     continue;
@@ -237,6 +255,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
                 ReassignTokens(n2n);
             }
+
         }
 
         /// <summary>
@@ -536,7 +555,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Items[i] = newName;
                     continue;
                 }
-                
+
                 Items[i].ReassignAnyItemsByName(tokenName, newName, callStack);
             }
 
@@ -823,7 +842,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// Locates any name, at whatever depth, which is ByRef and reassigns it
         /// to its full by-value counterpart which is also found at some depth herein.
         /// </summary>
-        public void ReassignAllByRefs()
+        public void ReassignAllByRefs(Action<ProgressMessage> reportProgress = null)
         {
             //find all the byRefs throughout
             var byRefs = new List<MetadataTokenName>();
@@ -838,17 +857,25 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             //for each byref, find it byVal counterpart
             var byVals = new List<MetadataTokenName>();
-            foreach (var byRef in byRefs)
+            if (_byVals != null)
             {
-                MetadataTokenName byVal = null;
-                foreach (var nm in Items)
+                byVals.AddRange(_byVals);
+            }
+            else
+            {
+                foreach (var byRef in byRefs)
                 {
-                    byVal = nm.FirstByVal(byRef);
-                    if (byVal == null)
-                        continue;
-                    byVals.Add(byVal);
-                    break;
+                    MetadataTokenName byVal = null;
+                    foreach (var nm in Items)
+                    {
+                        byVal = nm.FirstByVal(byRef);
+                        if (byVal == null)
+                            continue;
+                        byVals.Add(byVal);
+                        break;
+                    }
                 }
+                _byVals = byVals;
             }
 
             if (!byVals.Any())
@@ -858,12 +885,22 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             //reassign each byRef's over to byVal
-            foreach (var byVal in byVals)
+            var totalLen = byVals.Count;
+            for (var i = 0; i < totalLen; i++)
             {
+                var byVal = byVals[i];
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{byVal.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = "Reassigning all by ref names"
+                });
                 foreach (var nm in Items)
                 {
                     nm.ReassignAnyItemsByName(byVal);
                 }
+
             }
         }
 
@@ -882,6 +919,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var concreteNames = new List<MetadataTokenName>();
             if (Items == null || !Items.Any())
                 return n2n;
+
+            if (_implentorDictionary != null)
+                return _implentorDictionary;
             foreach (var nm in Items)
             {
                 nm.GetAllDeclNames(interfaceType, interfaceNames);
@@ -910,7 +950,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 }
             }
 
-            return n2n;
+            _implentorDictionary = n2n;
+            return _implentorDictionary;
         }
 
         /// <summary>

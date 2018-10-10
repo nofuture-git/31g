@@ -80,11 +80,13 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                     ResolveCallOfCall(iToken, ref countDepth, stackTrc, null);
                 }
                 Console.Write('\n');
-                return JsonEncodedResponse(
-                    new TokenIdResponse
-                    {
-                        Tokens = tokens.ToArray()
-                    });
+                var tokenIdRspn = new TokenIdResponse
+                {
+                    Tokens = tokens.ToArray()
+                };
+                ((IaaProgram) MyProgram).TokenIdResponse = tokenIdRspn;
+                return JsonEncodedResponse(tokenIdRspn);
+
             }
             catch (Exception ex)
             {

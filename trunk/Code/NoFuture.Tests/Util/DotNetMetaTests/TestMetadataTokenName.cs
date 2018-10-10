@@ -20,11 +20,13 @@ namespace NoFuture.Util.DotNetMeta.Tests
         [SetUp]
         public void AssignPaths()
         {
-            _jsonFolder = Path.Combine(TestAssembly.DotNetMetaTestRoot, @"TestJsonData");
-            _asmIndicesPath = Path.Combine(_jsonFolder, "NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.json");
-            _tokenIdsPath = Path.Combine(_jsonFolder, "NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenIds.json");
-            _tokenNamePath = Path.Combine(_jsonFolder, "NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenNames.json");
-            _tokenTypesPath = Path.Combine(_jsonFolder, "NoFuture.Util.Gia.InvokeAssemblyAnalysis.Cmds.GetTokenTypes.json");
+
+            //_jsonFolder = Path.Combine(TestAssembly.DotNetMetaTestRoot, @"TestJsonData");
+            _jsonFolder = @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant";
+            _asmIndicesPath = Path.Combine(_jsonFolder, "NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.json");
+            _tokenIdsPath = Path.Combine(_jsonFolder, "NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds.GetTokenIds.json");
+            _tokenNamePath = Path.Combine(_jsonFolder, "NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds.GetTokenNames.json");
+            _tokenTypesPath = Path.Combine(_jsonFolder, "NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds.GetTokenTypes.json");
         }
 
         [Test]
@@ -104,6 +106,17 @@ namespace NoFuture.Util.DotNetMeta.Tests
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Items);
             Assert.AreNotEqual(0, testResult.Items.Length);
+        }
+
+        [Test]
+        public void TestBuildWithTokenTypes()
+        {
+            var tokenData = GetTokenData();
+            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
+                tokenData.Item2.GetAsRoot(), tokenData.Item1, tokenData.Item4.GetTypesAsSingle());
+            Assert.IsNotNull(testSubject);
+
+            TokenNameResponse.SaveToFile(@"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant\bigol.json", testSubject);
         }
     }
 }

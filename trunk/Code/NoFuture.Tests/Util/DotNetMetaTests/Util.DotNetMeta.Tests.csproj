@@ -61,6 +61,10 @@
       <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
       <Name>Shared.Cfg</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Shared\Core\Shared.Core.csproj">
+      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
+      <Name>Shared.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Util\DotNetMeta\InvokeAssemblyAnalysis\Util.DotNetMeta.InvokeAssemblyAnalysis.csproj">
       <Project>{f2b8ca61-2257-44f4-b921-ff35b5f10146}</Project>
       <Name>Util.DotNetMeta.InvokeAssemblyAnalysis</Name>

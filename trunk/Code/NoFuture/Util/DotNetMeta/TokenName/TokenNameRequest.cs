@@ -7,5 +7,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
     public class TokenNameRequest
     {
         public MetadataTokenId[] Tokens { get; set; }
+        public bool MapFullCallStack { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         [NonSerialized] private readonly MetadataTokenTypeComparer _comparer = new MetadataTokenTypeComparer();
         [NonSerialized] private Tuple<bool, MetadataTokenType> _firstImplementor;
         [NonSerialized] private int? _fullDepth;
+        [NonSerialized] private MetadataTokenType[] _singleImplementors;
 
         /// <summary>
         /// The original metadata token id
@@ -98,6 +99,9 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             var sInfcs = new List<MetadataTokenType>();
             if (Items == null || !Items.Any())
                 return null;
+            if (_singleImplementors != null)
+                return _singleImplementors;
+
             var allInfcs = GetAllInterfaceTypes();
             foreach (var ai in allInfcs)
             {
@@ -107,7 +111,8 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                     sInfcs.Add(ai);
             }
 
-            return sInfcs.ToArray();
+            _singleImplementors = sInfcs.ToArray();
+            return _singleImplementors;
         }
 
         /// <summary>

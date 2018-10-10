@@ -236,9 +236,16 @@ namespace NoFuture.Util.DotNetMeta
         /// Resolves the given Metadata Token Ids to thier names & types.
         /// </summary>
         /// <param name="metadataTokenIds"></param>
+        /// <param name="mapFullCallStack">
+        /// Optional switch which directs the Assembly Analysis process to fully resolve all names as 
+        /// a call stack tree.
+        /// The remote proc will need to have the token id response and token type response in memory 
+        /// from previous calls thereof.
+        /// </param>
         /// <returns></returns>
-        public TokenNameResponse GetTokenNames(MetadataTokenId[] metadataTokenIds)
+        public TokenNameResponse GetTokenNames(MetadataTokenId[] metadataTokenIds, bool mapFullCallStack = false)
         {
+            _getTokenNamesCmd.MapFullCallStack = mapFullCallStack;
             return _getTokenNamesCmd.Receive(metadataTokenIds);
         }
 

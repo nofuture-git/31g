@@ -351,6 +351,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
             var counter = 0;
             var total = tokens.Length;
             var names = new List<MetadataTokenName>();
+            _myProgram.PrintToConsole(string.Format("There are {0} token names", total));
             for (var i = 0; i < tokens.Length; i++)
             {
                 counter += 1;
