@@ -683,5 +683,47 @@ namespace NoFuture.Util.Core
                     current.Replace(invalidChar.ToString(CultureInfo.InvariantCulture), String.Empty));
 
         }
+
+        /// <summary>
+        /// Creates copy of xml file as formatted text
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <returns></returns>
+        public static string FormatXml(string fileFullName)
+        {
+            return FormatFile(fileFullName, Etc.FormatXml);
+        }
+
+        /// <summary>
+        /// Creates copy of json file as formatted text
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <returns></returns>
+        public static string FormatJson(string fileFullName)
+        {
+            return FormatFile(fileFullName, (x) => Etc.FormatJson(x));
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static string FormatFile(string fileFullName, Func<string, string> formatter)
+        {
+            if (string.IsNullOrWhiteSpace(fileFullName))
+                return null;
+            if (!File.Exists(fileFullName))
+                return null;
+            if (formatter == null)
+                return null;
+            var content = File.ReadAllText(fileFullName);
+            var fContent = formatter(content);
+
+            var dir = Path.GetDirectoryName(fileFullName) ??
+                      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var fl = Path.GetFileNameWithoutExtension(fileFullName);
+            var ext = Path.GetExtension(fileFullName);
+            var fout = $"{fl}_Formatted{ext}";
+            fout = Path.Combine(dir, fout);
+            File.WriteAllText(fout, fContent);
+            return fout;
+        }
     }
 }

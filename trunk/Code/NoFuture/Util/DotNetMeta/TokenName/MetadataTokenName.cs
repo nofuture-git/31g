@@ -141,7 +141,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Gets a flat, distinct, shallow root-level token name whose Items represent the collection.
+        /// Gets a flat, distinct, shallow root-level token names whose Items represent the collection.
         /// </summary>
         /// <returns></returns>
         public MetadataTokenName SelectDistinct()
@@ -256,7 +256,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </remarks>
         public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes, Action<ProgressMessage> reportProgress = null)
         {
-            ReassignTokens(GetImplementorDictionary(tokenTypes, reportProgress));
+            ReassignTokens(GetImplementorDictionary(tokenTypes, reportProgress), reportProgress);
         }
 
         /// <summary>
@@ -918,6 +918,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="reportProgress">
         /// Optional, allows caller to get feedback on progress since this takes some time to run.
         /// </param>
+        /// <returns>
+        /// Dictionary where the keys are the concrete implementation, values are the interface token names
+        /// </returns>
         public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType tokenTypes,
             Action<ProgressMessage> reportProgress = null)
         {
@@ -940,7 +943,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{ri.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "Reassigning all interfaces"
+                    Status = "Getting interface-to-implementation"
                 });
                 var cri = tokenTypes.FirstInterfaceImplementor(ri);
                 if (cri == null)
@@ -951,12 +954,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 if (temp == null || !temp.Any())
                     continue;
 
-                foreach (var infrc in temp.Keys)
+                foreach (var key in temp.Keys)
                 {
-                    if (n2n.ContainsKey(infrc))
-                        n2n[infrc] = temp[infrc];
+                    if (n2n.ContainsKey(key))
+                        n2n[key] = temp[key];
                     else
-                        n2n.Add(infrc, temp[infrc]);
+                        n2n.Add(key, temp[key]);
                 }
             }
 
@@ -1016,7 +1019,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// any depth, to the dictionary value.
         /// </summary>
         /// <param name="n2n"></param>
-        public void ReassignTokens(Dictionary<MetadataTokenName, MetadataTokenName> n2n)
+        /// <param name="reportProgress">
+        /// Optional, allows caller to get feedback on progress since this takes some time to run.
+        /// </param>
+        public void ReassignTokens(Dictionary<MetadataTokenName, MetadataTokenName> n2n,
+            Action<ProgressMessage> reportProgress = null)
         {
             if (Items == null || !Items.Any())
                 return;
@@ -1028,9 +1035,19 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 return;
 
             //reassign the interface token to concrete implementation token
+            var total = n2n.Count;
+            var counter = 0;
             foreach (var concreteName in n2n.Keys)
             {
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{concreteName}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(counter, total),
+                    Status = "Reassigning interface tokens"
+                });
                 var interfaceName = n2n[concreteName];
+                counter += 1;
                 if (interfaceName == null)
                     continue;
                 foreach (var nm in Items)
