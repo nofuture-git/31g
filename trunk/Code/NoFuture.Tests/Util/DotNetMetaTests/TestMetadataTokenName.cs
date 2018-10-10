@@ -58,7 +58,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
         public void TestBuildMetadataTokenName()
         {
             var tokenData = GetTokenData();
-            var testResult = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
+            var testResult = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
                 tokenData.Item2.GetAsRoot(), tokenData.Item1);
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Items);
@@ -69,7 +69,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
         public void TestSelectDistinct()
         {
             var tokenData = GetTokenData();
-            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
+            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
                 tokenData.Item2.GetAsRoot(), tokenData.Item1);
             Assert.IsNotNull(testSubject?.Items);
 
@@ -86,10 +86,10 @@ namespace NoFuture.Util.DotNetMeta.Tests
         public void TestSelectDistinct_WithTypes()
         {
             var tokenData = GetTokenData();
-            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
+            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
                 tokenData.Item2.GetAsRoot(), tokenData.Item1);
 
-            var testResult = testSubject.SelectDistinct(tokenData.Item4.GetTypesAsSingle());
+            var testResult = testSubject.SelectDistinct(tokenData.Item4.GetAsRoot());
             Assert.IsNotNull(testResult?.Items);
             Assert.AreNotEqual(0,testResult.Items.Length);
             Console.WriteLine(testResult.Items.Length);
@@ -100,7 +100,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
         public void TestSelectDistinct_ByMethod()
         {
             var tokenData = GetTokenData();
-            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
+            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
                 tokenData.Item2.GetAsRoot(), tokenData.Item1);
             var testResult = testSubject.SelectDistinct("TestBegin", "Index");
             Assert.IsNotNull(testResult);
@@ -112,8 +112,8 @@ namespace NoFuture.Util.DotNetMeta.Tests
         public void TestBuildWithTokenTypes()
         {
             var tokenData = GetTokenData();
-            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetNamesAsSingle(),
-                tokenData.Item2.GetAsRoot(), tokenData.Item1, tokenData.Item4.GetTypesAsSingle());
+            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
+                tokenData.Item2.GetAsRoot(), tokenData.Item1, tokenData.Item4.GetAsRoot());
             Assert.IsNotNull(testSubject);
 
             TokenNameResponse.SaveToFile(@"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant\bigol.json", testSubject);

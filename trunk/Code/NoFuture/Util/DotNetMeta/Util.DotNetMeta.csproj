@@ -51,7 +51,6 @@
     <Compile Include="TokenId\MetadataTokenStatus.cs" />
     <Compile Include="TokenId\TokenIdRequest.cs" />
     <Compile Include="TokenId\TokenIdResponse.cs" />
-    <Compile Include="TokenNamesTree.cs" />
     <Compile Include="TokenName\InvokeGetTokenNames.cs" />
     <Compile Include="TokenName\MetadataTokenName.cs" />
     <Compile Include="TokenName\MetadataTokenNameComparer.cs" />

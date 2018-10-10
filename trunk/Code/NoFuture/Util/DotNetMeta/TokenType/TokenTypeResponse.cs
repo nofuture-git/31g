@@ -30,7 +30,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             File.WriteAllText(filePath, json);
         }
 
-        public MetadataTokenType GetTypesAsSingle()
+        public MetadataTokenType GetAsRoot()
         {
             return new MetadataTokenType {Items = Types};
         }

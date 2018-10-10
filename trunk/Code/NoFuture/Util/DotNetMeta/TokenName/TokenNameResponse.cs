@@ -34,7 +34,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             File.WriteAllText(filePath, json);
         }
 
-        public MetadataTokenName GetNamesAsSingle()
+        public MetadataTokenName GetAsRoot()
         {
             return new MetadataTokenName
             {

@@ -50,9 +50,9 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 if (rqst.MapFullCallStack && myIaaProgram.TokenTypeResponse != null
                     && myIaaProgram.TokenIdResponse != null)
                 {
-                    var nameRoot = tokenNameRspn.GetNamesAsSingle();
+                    var nameRoot = tokenNameRspn.GetAsRoot();
                     var tokenRoot = myIaaProgram.TokenIdResponse.GetAsRoot();
-                    var typeRoot = myIaaProgram.TokenTypeResponse.GetTypesAsSingle();
+                    var typeRoot = myIaaProgram.TokenTypeResponse.GetAsRoot();
                     var asmRspn = myIaaProgram.AsmIndicies;
                     var fullCallStack =
                         MetadataTokenName.BuildMetadataTokenName(nameRoot, tokenRoot, asmRspn, typeRoot, MyProgram.PrintToConsole);

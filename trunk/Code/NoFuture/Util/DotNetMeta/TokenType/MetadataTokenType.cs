@@ -46,6 +46,17 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         public int IsAbsct { get; set; }
 
         /// <summary>
+        /// Clears any in-memory cache copies from full tree recursions.
+        /// </summary>
+        public void ClearAllCacheData()
+        {
+            _interfaceTypes = null;
+            _firstImplementor = null;
+            _fullDepth = null;
+            _singleImplementors = null;
+        }
+
+        /// <summary>
         /// Helper method to avoid having to check the int value of <see cref="IsIntfc"/>
         /// </summary>
         /// <returns></returns>

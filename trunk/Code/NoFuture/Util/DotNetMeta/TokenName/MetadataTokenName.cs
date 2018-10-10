@@ -28,7 +28,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         [NonSerialized] private MetadataTokenName _firstByVal;
         [NonSerialized] private int? _fullDepthCount;
         [NonSerialized] private bool? _anyByRef;
-        [NonSerialized] private Dictionary<MetadataTokenName, MetadataTokenName> _implentorDictionary;
+        [NonSerialized] private Dictionary<MetadataTokenName, MetadataTokenName> _implementorDictionary;
 
         /// <summary>
         /// The original metadata token id
@@ -127,6 +127,20 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
+        /// Clears any in-memory cache copies from full tree recursions.
+        /// </summary>
+        public void ClearAllCacheData()
+        {
+            _allByRefs = null;
+            _byVals = null;
+            _allDeclNames = null;
+            _firstByVal = null;
+            _fullDepthCount = null;
+            _anyByRef = null;
+            _implementorDictionary = null;
+        }
+
+        /// <summary>
         /// Gets a flat, distinct, shallow root-level token name whose Items represent the collection.
         /// </summary>
         /// <returns></returns>
@@ -186,7 +200,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 return tokenName;
 
             var names = new List<MetadataTokenName>();
-            if (string.IsNullOrWhiteSpace(methodName) || !typeNameTree.Items.Any())
+            if (string.IsNullOrWhiteSpace(methodName) || typeNameTree.Items == null || !typeNameTree.Items.Any())
             {
                 names.AddRange(typeNameTree.SelectDistinctShallowArray());
                 df.Items = names.Distinct(_comparer).ToArray();
@@ -226,8 +240,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Locates all the interface types in <see cref="tokenTypes"/>, finds the belonging 
-        /// token names thereof, with likewise concrete counterpart and reassigns each.
+        /// Reassigns every interface token name with its concrete counterpart when applicable.
         /// </summary>
         /// <param name="tokenTypes">
         /// A root token type whose Items are all possible types in all assemblies.
@@ -243,32 +256,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </remarks>
         public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes, Action<ProgressMessage> reportProgress = null)
         {
-            //replace any interface token\names with implementation when its the only one
-            var reassignInterfaces = tokenTypes.GetAllInterfacesWithSingleImplementor();
-            if (reassignInterfaces == null || !reassignInterfaces.Any())
-                return;
-            var totalLen = reassignInterfaces.Length;
-            for (var i = 0; i < totalLen; i++)
-            {
-                var ri = reassignInterfaces[i];
-                reportProgress?.Invoke(new ProgressMessage
-                {
-                    Activity = $"{ri.Name}",
-                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
-                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "Reassigning all interfaces"
-                });
-                var cri = tokenTypes.FirstInterfaceImplementor(ri);
-                if (cri == null)
-                    continue;
-
-                var n2n = GetImplentorDictionary(ri, cri);
-                if (n2n == null || !n2n.Any())
-                    continue;
-
-                ReassignTokens(n2n);
-            }
-
+            ReassignTokens(GetImplementorDictionary(tokenTypes, reportProgress));
         }
 
         /// <summary>
@@ -540,7 +528,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="callStack">
         /// Used internally to detect infinite loops
         /// </param>
-        public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null, Stack<MetadataTokenName> callStack = null)
+        public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null,
+            Stack<MetadataTokenName> callStack = null)
         {
             if (tokenName == null)
                 return;
@@ -610,7 +599,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="tokenType"></param>
         /// <param name="tokenNames"></param>
         /// <param name="callStack"></param>
-        public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames, Stack<MetadataTokenName> callStack = null)
+        public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames,
+            Stack<MetadataTokenName> callStack = null)
         {
             callStack = callStack ?? new Stack<MetadataTokenName>();
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
@@ -620,7 +610,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 return;
             if (tokenNames.Any(n => _comparer.Equals(n, this)))
                 return;
-            if(TypeNameOrDeclEquals(tokenType, this))
+            if (TypeNameOrDeclEquals(tokenType, this))
                 tokenNames.Add(this);
             if (Items == null || !Items.Any())
                 return;
@@ -630,6 +620,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 tokenNames.AddRange(_allDeclNames);
                 return;
             }
+
             if (callStack.Any(v => _comparer.Equals(v, this)))
                 return;
             callStack.Push(this);
@@ -918,13 +909,69 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
+        /// Locates all the interface types in <see cref="tokenTypes"/>, finds the belonging 
+        /// token names thereof, with likewise concrete counterpart.
+        /// </summary>
+        /// <param name="tokenTypes">
+        /// A root token type whose Items are all possible types in all assemblies.
+        /// </param>
+        /// <param name="reportProgress">
+        /// Optional, allows caller to get feedback on progress since this takes some time to run.
+        /// </param>
+        public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType tokenTypes,
+            Action<ProgressMessage> reportProgress = null)
+        {
+            var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
+            if (tokenTypes?.Items == null)
+                return n2n;
+            var reassignInterfaces = tokenTypes.GetAllInterfacesWithSingleImplementor();
+            if (reassignInterfaces == null || !reassignInterfaces.Any())
+                return n2n;
+            var totalLen = reassignInterfaces.Length;
+
+            if (_implementorDictionary != null)
+                return _implementorDictionary;
+
+            for (var i = 0; i < totalLen; i++)
+            {
+                var ri = reassignInterfaces[i];
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{ri.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = "Reassigning all interfaces"
+                });
+                var cri = tokenTypes.FirstInterfaceImplementor(ri);
+                if (cri == null)
+                    continue;
+
+                var temp = GetImplementorDictionary(ri, cri);
+
+                if (temp == null || !temp.Any())
+                    continue;
+
+                foreach (var infrc in temp.Keys)
+                {
+                    if (n2n.ContainsKey(infrc))
+                        n2n[infrc] = temp[infrc];
+                    else
+                        n2n.Add(infrc, temp[infrc]);
+                }
+            }
+
+            _implementorDictionary = n2n;
+            return n2n;
+        }
+
+        /// <summary>
         /// Gets a dictionary of token names whose keys are the interface&apos;s token while
         /// the values are the concret implementation thereof.
         /// </summary>
         /// <param name="interfaceType"></param>
         /// <param name="concreteType"></param>
         /// <returns></returns>
-        public Dictionary<MetadataTokenName, MetadataTokenName> GetImplentorDictionary(MetadataTokenType interfaceType,
+        protected internal Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
             MetadataTokenType concreteType)
         {
             var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
@@ -933,8 +980,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (Items == null || !Items.Any())
                 return n2n;
 
-            if (_implentorDictionary != null)
-                return _implentorDictionary;
             foreach (var nm in Items)
             {
                 nm.GetAllDeclNames(interfaceType, interfaceNames);
@@ -963,8 +1008,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 }
             }
 
-            _implentorDictionary = n2n;
-            return _implentorDictionary;
+            return n2n;
         }
 
         /// <summary>
