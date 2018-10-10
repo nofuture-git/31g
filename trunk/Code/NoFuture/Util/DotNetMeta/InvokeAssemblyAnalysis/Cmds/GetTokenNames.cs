@@ -33,7 +33,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 }
 
                 var rqst = JsonConvert.DeserializeObject<TokenNameRequest>(Encoding.UTF8.GetString(arg));
-                var tokens = rqst.Tokens;
+                var tokens = rqst.Tokens ?? myIaaProgram.TokenIdResponse?.Tokens;
     
                 if (tokens == null || tokens.Length <= 0)
                 {
@@ -59,6 +59,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                     if(fullCallStack?.Items != null)
                         tokenNameRspn.Names = fullCallStack.Items;
                 }
+
+                myIaaProgram.TokenNameResponse = tokenNameRspn;
                 return JsonEncodedResponse(tokenNameRspn);
             }
             catch (Exception ex)

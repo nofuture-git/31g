@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using NoFuture.Shared.Core;
 using NoFuture.Util.DotNetMeta.TokenId;
 
 namespace NoFuture.Util.DotNetMeta.TokenType
@@ -32,7 +33,11 @@ namespace NoFuture.Util.DotNetMeta.TokenType
 
         public MetadataTokenType GetAsRoot()
         {
-            return new MetadataTokenType {Items = Types};
+            return new MetadataTokenType
+            {
+                Items = Types,
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
     }
 }

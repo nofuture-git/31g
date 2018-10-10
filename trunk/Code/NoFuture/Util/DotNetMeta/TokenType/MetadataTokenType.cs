@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Util.DotNetMeta.TokenType
 {
@@ -13,7 +14,6 @@ namespace NoFuture.Util.DotNetMeta.TokenType
     {
         [NonSerialized] private MetadataTokenType[] _interfaceTypes;
         [NonSerialized] private readonly MetadataTokenTypeComparer _comparer = new MetadataTokenTypeComparer();
-        [NonSerialized] private Tuple<bool, MetadataTokenType> _firstImplementor;
         [NonSerialized] private int? _fullDepth;
         [NonSerialized] private MetadataTokenType[] _singleImplementors;
 
@@ -51,9 +51,13 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         public void ClearAllCacheData()
         {
             _interfaceTypes = null;
-            _firstImplementor = null;
             _fullDepth = null;
             _singleImplementors = null;
+        }
+
+        protected internal bool IsRoot()
+        {
+            return string.Equals(Name, NfSettings.DefaultTypeSeparator.ToString());
         }
 
         /// <summary>
@@ -140,32 +144,36 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// not itself an interface
         /// </summary>
         /// <param name="interfaceType"></param>
+        /// <param name="immediateOnly">
+        /// Optional, indicates to only match on a type which directly implements the given interface
+        /// </param>
         /// <returns></returns>
-        public MetadataTokenType FirstInterfaceImplementor(MetadataTokenType interfaceType)
+        public MetadataTokenType FirstInterfaceImplementor(MetadataTokenType interfaceType, bool immediateOnly = false)
         {
             if (interfaceType == null)
                 return null;
             if (IsInterfaceType())
                 return null;
-            if (!string.IsNullOrWhiteSpace(Name) && GetAllInterfaceTypes().Any(vi => vi.Equals(interfaceType)))
-                return this;
+            if (!IsRoot())
+            {
+                var isImplementor = immediateOnly
+                    ? GetImmediateInterfaceTypes().Any(vi => _comparer.Equals(interfaceType, vi))
+                    : GetAllInterfaceTypes().Any(vi => _comparer.Equals(interfaceType, vi));
+                if (isImplementor)
+                    return this;
+            }
 
             if (Items == null || !Items.Any())
                 return null;
-            if (_firstImplementor?.Item1 ?? false)
-                return _firstImplementor.Item2;
 
             foreach (var nm in Items)
             {
-                var vnm = nm.FirstInterfaceImplementor(interfaceType);
+                var vnm = nm.FirstInterfaceImplementor(interfaceType, immediateOnly);
                 if (vnm != null)
                 {
-                    _firstImplementor = new Tuple<bool, MetadataTokenType>(true, vnm);
                     return vnm;
                 }
             }
-            //we searched, we found nothing, don't bother again
-            _firstImplementor = new Tuple<bool, MetadataTokenType>(true, null);
             return null;
         }
 
@@ -199,7 +207,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             var tnInfcs = GetImmediateInterfaceTypes();
             if (tnInfcs == null || !tnInfcs.Any())
                 return;
-            countOf += tnInfcs.Count(v => v.Equals(typeName));
+            countOf += tnInfcs.Count(v => _comparer.Equals(typeName, v));
 
             if (Items == null || !Items.Any())
                 return;
@@ -284,7 +292,11 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                 listOut.Add(k);
             }
 
-            return new MetadataTokenType { Items = listOut.ToArray() };
+            return new MetadataTokenType
+            {
+                Items = listOut.ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
 
         /// <summary>
@@ -306,7 +318,11 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             foreach (var key in e.Keys.Where(k => !d.ContainsKey(k)))
                 d.Add(key, e[key]);
 
-            return new MetadataTokenType { Items = d.Values.ToArray() };
+            return new MetadataTokenType
+            {
+                Items = d.Values.ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
 
         /// <summary>
@@ -339,7 +355,11 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                 listOut.Add(k);
             }
 
-            return new MetadataTokenType { Items = listOut.ToArray() };
+            return new MetadataTokenType
+            {
+                Items = listOut.ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
     }
 }

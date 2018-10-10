@@ -24,7 +24,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         [NonSerialized] private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
         [NonSerialized] private List<MetadataTokenName> _allByRefs;
         [NonSerialized] private List<MetadataTokenName> _byVals;
-        [NonSerialized] private List<MetadataTokenName> _allDeclNames;
         [NonSerialized] private MetadataTokenName _firstByVal;
         [NonSerialized] private int? _fullDepthCount;
         [NonSerialized] private bool? _anyByRef;
@@ -68,6 +67,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             get => _items;
             set => _items = value;
         }
+
+        protected internal Dictionary<MetadataTokenName, MetadataTokenName> ImplementorDictionary =>
+            _implementorDictionary;
 
         /// <summary>
         /// Indicates a short-hand version of some fuller copy of itself elsewhere 
@@ -126,6 +128,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return tokenNamesOut;
         }
 
+        protected internal bool IsRoot()
+        {
+            return string.Equals(Name, NfSettings.DefaultTypeSeparator.ToString());
+        }
+
         /// <summary>
         /// Clears any in-memory cache copies from full tree recursions.
         /// </summary>
@@ -133,7 +140,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             _allByRefs = null;
             _byVals = null;
-            _allDeclNames = null;
             _firstByVal = null;
             _fullDepthCount = null;
             _anyByRef = null;
@@ -156,7 +162,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         protected internal MetadataTokenName[] SelectDistinctShallowArray(Stack<MetadataTokenName> callStack = null)
         {
             callStack = callStack ?? new Stack<MetadataTokenName>();
-            var innerItems = new List<MetadataTokenName> {this};
+            var innerItems = new List<MetadataTokenName> {GetShallowCopy()};
             if (Items == null || !Items.Any())
                 return innerItems.ToArray();
             if (callStack.Any(v => _comparer.Equals(v, this)))
@@ -194,25 +200,24 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             //want to avoid an interface type 
             var tokenName = SelectTheseTypeNames(typeName);
-            var typeNameTree = tokenName.Items.FirstOrDefault(t => t.IsTypeName());
+            //var typeNameTree = tokenName.Items.FirstOrDefault(t => t.IsTypeName());
 
-            if (typeNameTree == null)
-                return tokenName;
+            if (tokenName == null)
+                return df;
 
             var names = new List<MetadataTokenName>();
-            if (string.IsNullOrWhiteSpace(methodName) || typeNameTree.Items == null || !typeNameTree.Items.Any())
+            if (string.IsNullOrWhiteSpace(methodName) || tokenName.Items == null || !tokenName.Items.Any())
             {
-                names.AddRange(typeNameTree.SelectDistinctShallowArray());
-                df.Items = names.Distinct(_comparer).ToArray();
+                names.Add(this);
+                df.Items = names.ToArray();
                 return df;
             }
-
-            //match on overloads
-            var targetMethods = typeNameTree.Items.Where(item =>
-                item.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("));
-            foreach (var t in targetMethods)
+            
+            foreach (var t in tokenName.Items)
             {
-                names.AddRange(t.SelectDistinctShallowArray());
+                //match on overloads
+                if (t.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("))
+                    names.Add(t);
             }
 
             df.Items = names.Distinct(_comparer).ToArray();
@@ -605,21 +610,14 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             callStack = callStack ?? new Stack<MetadataTokenName>();
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
 
-
             if (tokenType == null)
                 return;
             if (tokenNames.Any(n => _comparer.Equals(n, this)))
                 return;
-            if (TypeNameOrDeclEquals(tokenType, this))
+            if (TypeNameEquals(tokenType, this))
                 tokenNames.Add(this);
             if (Items == null || !Items.Any())
                 return;
-            //use prev. cache if avail
-            if (_allDeclNames != null)
-            {
-                tokenNames.AddRange(_allDeclNames);
-                return;
-            }
 
             if (callStack.Any(v => _comparer.Equals(v, this)))
                 return;
@@ -630,12 +628,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             callStack.Pop();
-            //cache instance level to improv. perf.
-            if (tokenNames.Any())
-            {
-                _allDeclNames = new List<MetadataTokenName>();
-                _allDeclNames.AddRange(tokenNames);
-            }
         }
 
         public override bool Equals(object obj)
@@ -820,7 +812,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             var names = new List<MetadataTokenName>();
             if (selector(searchNames, getNameFunc(this)))
-                names.Add(GetShallowCopy());
+                names.Add(this);
 
             if (Items == null || !Items.Any())
                 return new MetadataTokenName
@@ -832,7 +824,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             {
                 var nameMatch = name.SelectByFunc(getNameFunc, selector, searchNames);
                 if (nameMatch.Items.Any())
-                    names.AddRange(nameMatch.Items.Select(v => v.GetShallowCopy()));
+                    names.AddRange(nameMatch.Items);
             }
 
             return new MetadataTokenName
@@ -962,8 +954,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                         n2n.Add(key, temp[key]);
                 }
             }
-
-            _implementorDictionary = n2n;
+            if(n2n.Any())
+                _implementorDictionary = n2n;
             return n2n;
         }
 
@@ -974,7 +966,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="interfaceType"></param>
         /// <param name="concreteType"></param>
         /// <returns></returns>
-        protected internal Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
+        public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
             MetadataTokenType concreteType)
         {
             var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
@@ -998,16 +990,21 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 if (!concreteName.IsMethodName())
                     continue;
 
-                if (n2n.Keys.Any(v => string.Equals(v.Name, concreteName.Name)))
-                    continue;
-
                 foreach (var interfaceName in interfaceNames)
                 {
-                    if (MemberNameAndArgsEqual(interfaceName, concreteName))
+                    if (!MemberNameAndArgsEqual(interfaceName, concreteName))
+                        continue;
+
+                    if (n2n.ContainsKey(interfaceName))
                     {
-                        n2n.Add(concreteName, interfaceName);
-                        break;
+                        n2n[interfaceName] = concreteName;
                     }
+                    else
+                    {
+                        n2n.Add(interfaceName, concreteName);
+                    }
+                        
+                    break;
                 }
             }
 
@@ -1015,8 +1012,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Locates the each token name in the dictionary keys and reassigns it, at 
-        /// any depth, to the dictionary value.
+        /// Locates the each token name in the dictionary keys, at 
+        /// any depth, and reassigns it to the dictionary value.
         /// </summary>
         /// <param name="n2n"></param>
         /// <param name="reportProgress">
@@ -1037,22 +1034,28 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             //reassign the interface token to concrete implementation token
             var total = n2n.Count;
             var counter = 0;
-            foreach (var concreteName in n2n.Keys)
+            foreach (var interfaceName in n2n.Keys)
             {
+                if (interfaceName == null)
+                    continue;
                 reportProgress?.Invoke(new ProgressMessage
                 {
-                    Activity = $"{concreteName}",
+                    Activity = $"{interfaceName}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(counter, total),
                     Status = "Reassigning interface tokens"
                 });
-                var interfaceName = n2n[concreteName];
+                var concreteName = n2n[interfaceName];
                 counter += 1;
-                if (interfaceName == null)
+                if (concreteName == null)
                     continue;
+                //look it up if the items are missing
+                var concreteNameLi = concreteName.Items == null || !concreteName.Items.Any()
+                    ? (FirstByVal(concreteName) ?? concreteName)
+                    : concreteName;
                 foreach (var nm in Items)
                 {
-                    nm.ReassignAnyItemsByName(interfaceName, concreteName);
+                    nm.ReassignAnyItemsByName(interfaceName, concreteNameLi);
                 }
             }
         }
@@ -1072,13 +1075,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return someVal;
         }
 
-        internal static bool TypeNameOrDeclEquals(MetadataTokenType tokenType, MetadataTokenName tokenName)
+        internal static bool TypeNameEquals(MetadataTokenType tokenType, MetadataTokenName tokenName)
         {
             if (tokenName == null || tokenType == null)
                 return false;
             if (string.Equals(tokenType.Name, tokenName.GetTypeName()))
-                return true;
-            if (tokenName.DeclTypeId == tokenType.Id)
                 return true;
             return false;
         }

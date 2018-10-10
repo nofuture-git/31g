@@ -10,7 +10,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
     {
         public bool Equals(MetadataTokenName x, MetadataTokenName y)
         {
-            if (x == null || y == null)
+            if (x?.Name == null || y?.Name == null)
                 return false;
             return x.GetNameHashCode() == y.GetNameHashCode();
         }

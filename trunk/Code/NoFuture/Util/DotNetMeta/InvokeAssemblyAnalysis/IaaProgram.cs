@@ -164,6 +164,11 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         protected internal TokenIdResponse TokenIdResponse { get; set; }
 
         /// <summary>
+        /// A process copy of the token name response just prior to being sent across the wire.
+        /// </summary>
+        protected internal TokenNameResponse TokenNameResponse { get; set; }
+
+        /// <summary>
         /// Resolves the socket port used for <see cref="GetTokenNames"/>
         /// </summary>
         protected internal int? GetTokenNamesCmdPort
