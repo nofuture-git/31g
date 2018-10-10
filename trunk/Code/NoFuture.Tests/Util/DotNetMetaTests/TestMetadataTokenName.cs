@@ -73,7 +73,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
                 tokenData.Item2.GetAsRoot(), tokenData.Item1);
             Assert.IsNotNull(testSubject?.Items);
 
-            var testResult = testSubject.SelectDistinct();
+            var testResult = testSubject.SelectDistinctShallowArray();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
             Console.WriteLine(testResult.Length);

@@ -126,7 +126,20 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return tokenNamesOut;
         }
 
-        protected internal MetadataTokenName[] SelectDistinct(Stack<MetadataTokenName> callStack = null)
+        /// <summary>
+        /// Gets a flat, distinct, shallow root-level token name whose Items represent the collection.
+        /// </summary>
+        /// <returns></returns>
+        public MetadataTokenName SelectDistinct()
+        {
+            return new MetadataTokenName
+            {
+                Items = SelectDistinctShallowArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
+        }
+
+        protected internal MetadataTokenName[] SelectDistinctShallowArray(Stack<MetadataTokenName> callStack = null)
         {
             callStack = callStack ?? new Stack<MetadataTokenName>();
             var innerItems = new List<MetadataTokenName> {this};
@@ -137,7 +150,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             callStack.Push(this);
             foreach (var item in Items)
             {
-                innerItems.AddRange(item.SelectDistinct(callStack));
+                innerItems.AddRange(item.SelectDistinctShallowArray(callStack));
             }
             callStack.Pop();
 
@@ -175,7 +188,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var names = new List<MetadataTokenName>();
             if (string.IsNullOrWhiteSpace(methodName) || !typeNameTree.Items.Any())
             {
-                names.AddRange(typeNameTree.SelectDistinct());
+                names.AddRange(typeNameTree.SelectDistinctShallowArray());
                 df.Items = names.Distinct(_comparer).ToArray();
                 return df;
             }
@@ -185,7 +198,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 item.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("));
             foreach (var t in targetMethods)
             {
-                names.AddRange(t.SelectDistinct());
+                names.AddRange(t.SelectDistinctShallowArray());
             }
 
             df.Items = names.Distinct(_comparer).ToArray();
@@ -207,7 +220,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             return new MetadataTokenName
             {
-                Items = SelectDistinct(),
+                Items = SelectDistinctShallowArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
         }

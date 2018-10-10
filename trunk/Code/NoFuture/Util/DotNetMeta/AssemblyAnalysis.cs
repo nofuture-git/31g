@@ -142,10 +142,7 @@ namespace NoFuture.Util.DotNetMeta
         ///  $myTokensIds = $myAsmAly.GetTokenIds(0, "NoFuture.*")
         /// 
         ///  # translates the metadata token into a name (assembly, type, method, etc.)
-        ///  $myTokenNames = $myAsmAly.GetTokenNames($myTokensIds.GetAsRoot().SelectDistinct())
-        ///  
-        ///  # put all the results together
-        ///  $appliedTokenNames = New-Object NoFuture.Shared.DotNetMeta.TokenNamesTree($myTokenNames, $myTokensIds, $myAsmIndices, $myTokenTypes)
+        ///  $myTokenNames = $myAsmAly.GetTokenNames($myTokensIds.GetAsRoot().SelectDistinct(), $true)
         /// ]]>
         /// </example>
         public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)

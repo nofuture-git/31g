@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
 using System.Linq;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -75,7 +73,7 @@ namespace NoFuture.Util.NfConsole
                 if (!string.IsNullOrWhiteSpace(_logName))
                     return _logName;
                 _logName = Path.Combine(LogDirectory,
-                    $"Program{_startTime:yyyy-MM-dd_hhmmss}.log");
+                    $"{GetType().Name}{_startTime:yyyy-MM-dd_HHmmss}.log");
                 return _logName;
             }
         }

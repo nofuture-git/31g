@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
 
 namespace NoFuture.Util.NfConsole
 {
