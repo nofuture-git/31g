@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace NoFuture.Util.DotNetMeta.TokenId
@@ -20,6 +21,15 @@ namespace NoFuture.Util.DotNetMeta.TokenId
                 return new TokenIdResponse();
             var jsonContent = File.ReadAllText(fullFileName);
             return JsonConvert.DeserializeObject<TokenIdResponse>(jsonContent);
+        }
+
+        public static void SaveToFile(string filePath, MetadataTokenId rootTokenName)
+        {
+            if (rootTokenName?.Items == null || !rootTokenName.Items.Any())
+                return;
+            var json = JsonConvert.SerializeObject(rootTokenName, Formatting.None,
+                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            File.WriteAllText(filePath, json);
         }
 
         public MetadataTokenId GetAsRoot()

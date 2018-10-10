@@ -29,10 +29,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             if (rootTokenName?.Items == null || !rootTokenName.Items.Any())
                 return;
-            var rspn = new TokenNameResponse {Names = rootTokenName.Items};
-            var json = JsonConvert.SerializeObject(rspn, Formatting.None,
+            var json = JsonConvert.SerializeObject(rootTokenName, Formatting.None,
                 new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
-            System.IO.File.WriteAllText(filePath, json);
+            File.WriteAllText(filePath, json);
         }
 
         public MetadataTokenName GetNamesAsSingle()

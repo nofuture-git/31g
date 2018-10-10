@@ -5,13 +5,17 @@ using System.Reflection;
 
 namespace NoFuture.Util.DotNetMeta.TokenType
 {
+    /// <summary>
+    /// The specific resolved name of a single metadata token which refers to a type.
+    /// </summary>
     [Serializable]
     public class MetadataTokenType
     {
-        [NonSerialized]
-        private MetadataTokenType[] _interfaceTypes;
-        [NonSerialized]
-        private readonly MetadataTokenTypeComparer _comparer = new MetadataTokenTypeComparer();
+        [NonSerialized] private MetadataTokenType[] _interfaceTypes;
+        [NonSerialized] private readonly MetadataTokenTypeComparer _comparer = new MetadataTokenTypeComparer();
+        [NonSerialized] private Tuple<bool, MetadataTokenType> _firstImplementor;
+        [NonSerialized] private int? _fullDepth;
+
         /// <summary>
         /// The original metadata token id
         /// </summary>
@@ -40,11 +44,20 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// </summary>
         public int IsAbsct { get; set; }
 
+        /// <summary>
+        /// Helper method to avoid having to check the int value of <see cref="IsIntfc"/>
+        /// </summary>
+        /// <returns></returns>
         public bool IsInterfaceType()
         {
             return IsIntfc > 0;
         }
 
+        /// <summary>
+        /// Gets the first token type in <see cref="Items"/> which is not an interface.
+        /// Since its .NET, there should only be one.
+        /// </summary>
+        /// <returns></returns>
         public MetadataTokenType GetBaseType()
         {
             if (Items == null || !Items.Any())
@@ -52,6 +65,10 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             return Items.FirstOrDefault(i => i.IsInterfaceType());
         }
 
+        /// <summary>
+        /// Gets all token types with <see cref="IsInterfaceType"/> at all depths
+        /// </summary>
+        /// <returns></returns>
         public MetadataTokenType[] GetAllInterfaceTypes()
         {
             if (_interfaceTypes != null)
@@ -71,6 +88,11 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             return _interfaceTypes;
         }
 
+        /// <summary>
+        /// Gets all token interface types, at all depths, which have only
+        /// one concrete impelemntation
+        /// </summary>
+        /// <returns></returns>
         public MetadataTokenType[] GetAllInterfacesWithSingleImplementor()
         {
             var sInfcs = new List<MetadataTokenType>();
@@ -88,11 +110,21 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             return sInfcs.ToArray();
         }
 
+        /// <summary>
+        /// Gets the interface types which this token type directly extends
+        /// </summary>
+        /// <returns></returns>
         public MetadataTokenType[] GetImmediateInterfaceTypes()
         {
             return Items.Where(i => i.IsInterfaceType()).ToArray();
         }
 
+        /// <summary>
+        /// Finds the first token type which implements <see cref="interfaceType"/> and is 
+        /// not itself an interface
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <returns></returns>
         public MetadataTokenType FirstInterfaceImplementor(MetadataTokenType interfaceType)
         {
             if (interfaceType == null)
@@ -104,17 +136,28 @@ namespace NoFuture.Util.DotNetMeta.TokenType
 
             if (Items == null || !Items.Any())
                 return null;
+            if (_firstImplementor?.Item1 ?? false)
+                return _firstImplementor.Item2;
 
             foreach (var nm in Items)
             {
                 var vnm = nm.FirstInterfaceImplementor(interfaceType);
                 if (vnm != null)
+                {
+                    _firstImplementor = new Tuple<bool, MetadataTokenType>(true, vnm);
                     return vnm;
+                }
             }
-
+            //we searched, we found nothing, don't bother again
+            _firstImplementor = new Tuple<bool, MetadataTokenType>(true, null);
             return null;
         }
 
+        /// <summary>
+        /// Gets count of token types at all depths whose name exactly matches <see cref="typeName"/>
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="countOf"></param>
         public void CountOfImplentors(string typeName, ref int countOf)
         {
             //find the interface by this name
@@ -128,6 +171,11 @@ namespace NoFuture.Util.DotNetMeta.TokenType
 
         }
 
+        /// <summary>
+        /// Gets a count, at all depths, of any types which directly implement <see cref="typeName"/>
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="countOf"></param>
         public void CountOfImplentors(MetadataTokenType typeName, ref int countOf)
         {
             if (typeName == null)
@@ -172,14 +220,21 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             return Name?.GetHashCode() ?? 0;
         }
 
+        /// <summary>
+        /// Get the count of all nodes throughout at all depths
+        /// </summary>
+        /// <returns></returns>
         public int GetFullDepthCount()
         {
             var c = 1;
             if (Items == null || !Items.Any())
                 return c;
+            if (_fullDepth != null)
+                return _fullDepth.Value;
             foreach (var i in Items)
                 c += i.GetFullDepthCount();
 
+            _fullDepth = c;
             return c;
         }
 

@@ -19,12 +19,14 @@ namespace NoFuture.Util.DotNetMeta.TokenName
     [Serializable]
     public class MetadataTokenName
     {
-        [NonSerialized]
-        private MetadataTokenName[] _items;
-        [NonSerialized]
-        private bool _isByRef;
-        [NonSerialized]
-        private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
+        [NonSerialized] private MetadataTokenName[] _items;
+        [NonSerialized] private bool _isByRef;
+        [NonSerialized] private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
+        [NonSerialized] private List<MetadataTokenName> _allByRefs;
+        [NonSerialized] private List<MetadataTokenName> _allDeclNames;
+        [NonSerialized] private MetadataTokenName _firstByVal;
+        [NonSerialized] private int? _fullDepthCount;
+        [NonSerialized] private bool? _anyByRef;
 
         /// <summary>
         /// The original metadata token id
@@ -51,6 +53,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </summary>
         public string Label { get; set; }
 
+        /// <summary>
+        /// The id which matches back to the type in which this name was declared.
+        /// </summary>
         public int DeclTypeId { get; set; }
 
         /// <summary>
@@ -62,12 +67,15 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             set => _items = value;
         }
 
+        /// <summary>
+        /// Indicates a short-hand version of some fuller copy of itself elsewhere 
+        /// in the parent&apos;s items.
+        /// </summary>
         public bool IsByRef
         {
             get => _isByRef;
             set => _isByRef = value;
         }
-
 
         /// <summary>
         /// Puts the results of an Assembly Analysis into a full tree of token names
@@ -152,7 +160,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 methodName = methodName.Substring(0, methodName.IndexOf('('));
 
             //want to avoid an interface type 
-            var tokenName = SelectByTypeNames(typeName);
+            var tokenName = SelectTheseTypeNames(typeName);
             var typeNameTree = tokenName.Items.FirstOrDefault(t => t.IsTypeName());
 
             if (typeNameTree == null)
@@ -198,6 +206,19 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             };
         }
 
+        /// <summary>
+        /// Locates all the interface types in <see cref="tokenTypes"/>, finds the belonging 
+        /// token names thereof, with likewise concrete counterpart and reassigns each.
+        /// </summary>
+        /// <param name="tokenTypes">
+        /// A root token type whose Items are all possible types in all assemblies.
+        /// </param>
+        /// <remarks>
+        /// The idea is that having a call-stack terminating on an interface token may
+        /// not be the end since the given interface only has but one implementation.
+        /// The call-stack can be further expanded by swapping the interface token with
+        /// its concrete implementation.
+        /// </remarks>
         public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes)
         {
             //replace any interface token\names with implementation when its the only one
@@ -214,10 +235,14 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 if (n2n == null || !n2n.Any())
                     continue;
 
-                ReassignInterfaceTokens(n2n);
+                ReassignTokens(n2n);
             }
         }
 
+        /// <summary>
+        /// Gets an copy of this instance less its <see cref="Items"/>
+        /// </summary>
+        /// <returns></returns>
         public MetadataTokenName GetShallowCopy()
         {
             return new MetadataTokenName
@@ -232,6 +257,10 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             };
         }
 
+        /// <summary>
+        /// Fills in the rest of the <see cref="Name"/> with the part which is defined by its assembly
+        /// </summary>
+        /// <param name="asmIndicies"></param>
         public void ApplyFullName(AsmIndexResponse asmIndicies)
         {
             if (!IsPartialName())
@@ -338,40 +367,72 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                    && String.Equals("RuntimeType", Label);
         }
 
+        /// <summary>
+        /// Asserts if even one token name at any depth is by-ref
+        /// </summary>
+        /// <returns></returns>
         public bool IsAnyByRef()
         {
+
             if (IsByRef)
                 return true;
             if (Items == null || !Items.Any())
                 return false;
+            //use prev. cache if avail
+            if (_anyByRef != null)
+                return _anyByRef.Value;
             foreach (var i in Items)
             {
                 if (i.IsByRef)
+                {
+                    _anyByRef = true;
                     return true;
-                if (i.IsAnyByRef())
-                    return true;
-            }
+                }
 
+                if (i.IsAnyByRef())
+                {
+                    _anyByRef = true;
+                    return true;
+                }
+            }
+            _anyByRef = false;
             return false;
         }
 
+        /// <summary>
+        /// Gets the cound of leaf nodes at all depths
+        /// </summary>
+        /// <returns></returns>
         public int GetFullDepthCount()
         {
             var c = 1;
             if (Items == null || !Items.Any())
                 return c;
+            //use prev. cache if avail
+            if (_fullDepthCount != null)
+                return _fullDepthCount.Value;
             foreach (var i in Items)
                 c += i.GetFullDepthCount();
 
+            //cache instance level to improv. perf.
+            _fullDepthCount = c;
             return c;
         }
 
+        /// <summary>
+        /// Gets just the member name with its args
+        /// </summary>
+        /// <returns></returns>
         public string GetMemberName()
         {
             const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
             return IsMethodName() ? Name.Substring(Name.IndexOf(SPLT) + SPLT.Length) : String.Empty;
         }
 
+        /// <summary>
+        /// Gets the full namespace qual. type name
+        /// </summary>
+        /// <returns></returns>
         public string GetTypeName()
         {
             const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
@@ -383,6 +444,10 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return Name.Substring(0, Name.IndexOf(SPLT));
         }
 
+        /// <summary>
+        /// Gets just the namespace part of the type name
+        /// </summary>
+        /// <returns></returns>
         public string GetNamespaceName()
         {
             return NfReflect.GetNamespaceWithoutTypeName(GetTypeName()) ?? String.Empty;
@@ -408,16 +473,25 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             if (tokenName == null)
                 return null;
+
             if (_comparer.Equals(tokenName, this) && !IsByRef)
                 return this;
             if (Items == null || !Items.Any())
                 return null;
 
+            //use prev. cache if avail
+            if (_firstByVal != null)
+                return _firstByVal;
+
             foreach (var nm in Items)
             {
                 var matched = nm.FirstByVal(tokenName);
                 if (matched != null)
+                {
+                    //cache instance level to improv. perf.
+                    _firstByVal = matched;
                     return matched;
+                }
             }
 
             return null;
@@ -469,16 +543,32 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             callStack.Pop();
         }
 
+        /// <summary>
+        /// Gets all by-ref token names from all depths 
+        /// </summary>
+        /// <param name="tokenNames"></param>
         public void GetAllByRefNames(List<MetadataTokenName> tokenNames)
         {
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
-            if(IsByRef && tokenNames.All(tn => !_comparer.Equals(tn, this)))
+            if (IsByRef && tokenNames.All(tn => !_comparer.Equals(tn, this)))
                 tokenNames.Add(this);
             if (Items == null || !Items.Any())
                 return;
+            //use prev. cache if avail
+            if (_allByRefs != null)
+            {
+                tokenNames.AddRange(_allByRefs);
+                return;
+            }
             foreach (var nm in Items)
             {
                 nm.GetAllByRefNames(tokenNames);
+            }
+            //cache instance level to improv. perf.
+            if (tokenNames.Any())
+            {
+                _allByRefs = new List<MetadataTokenName>();
+                _allByRefs.AddRange(tokenNames);
             }
         }
 
@@ -492,6 +582,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             callStack = callStack ?? new Stack<MetadataTokenName>();
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
+
+
             if (tokenType == null)
                 return;
             if (tokenNames.Any(n => _comparer.Equals(n, this)))
@@ -500,6 +592,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 tokenNames.Add(this);
             if (Items == null || !Items.Any())
                 return;
+            //use prev. cache if avail
+            if (_allDeclNames != null)
+            {
+                tokenNames.AddRange(_allDeclNames);
+                return;
+            }
             if (callStack.Any(v => _comparer.Equals(v, this)))
                 return;
             callStack.Push(this);
@@ -509,6 +607,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             callStack.Pop();
+            //cache instance level to improv. perf.
+            if (tokenNames.Any())
+            {
+                _allDeclNames = new List<MetadataTokenName>();
+                _allDeclNames.AddRange(tokenNames);
+            }
         }
 
         public override bool Equals(object obj)
@@ -635,27 +739,55 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             };
         }
 
+        /// <summary>
+        /// Gets all unique type names from all depths
+        /// </summary>
+        /// <returns></returns>
         public string[] GetUniqueTypeNames()
         {
             return Items.Select(n => n.GetTypeName()).Distinct().ToArray();
         }
 
-        public MetadataTokenName SelectByTypeNames(params string[] typenames)
+        /// <summary>
+        /// Selects the all token names whose type is in <see cref="typenames"/> as a
+        /// shallow copy at all depths
+        /// </summary>
+        /// <param name="typenames"></param>
+        /// <returns></returns>
+        public MetadataTokenName SelectTheseTypeNames(params string[] typenames)
         {
             return SelectByFunc(n => n.GetTypeName(), (s, f) => s.Any(f.EndsWith), typenames);
         }
 
-        public MetadataTokenName SelectByNamespaceNames(params string[] namespaceNames)
+        /// <summary>
+        /// Selects the all token names whose namespace is in <see cref="namespaceNames"/> as a
+        /// shallow copy at all depths
+        /// </summary>
+        /// <param name="namespaceNames"></param>
+        /// <returns></returns>
+        public MetadataTokenName SelectTheseNamespaceNames(params string[] namespaceNames)
         {
             return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.Any(f.StartsWith), namespaceNames);
         }
 
-        public MetadataTokenName RemoveByTypeNames(params string[] typenames)
+        /// <summary>
+        /// Selects the all token names whose type is anything but one of the <see cref="typenames"/> as a
+        /// shallow copy at all depths.
+        /// </summary>
+        /// <param name="typenames"></param>
+        /// <returns></returns>
+        public MetadataTokenName SelectNotTheseTypeNames(params string[] typenames)
         {
             return SelectByFunc(n => n.GetTypeName(), (s, f) => s.All(v => !f.EndsWith(v)), typenames);
         }
 
-        public MetadataTokenName RemoveByNamespaceNames(params string[] namespaceNames)
+        /// <summary>
+        /// Selects the all token names whose namespace is anything but one of the <see cref="namespaceNames"/> as a
+        /// shallow copy at all depths.
+        /// </summary>
+        /// <param name="namespaceNames"></param>
+        /// <returns></returns>
+        public MetadataTokenName SelectNotTheseNamespaceNames(params string[] namespaceNames)
         {
             return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.All(v => !f.StartsWith(v)), namespaceNames);
         }
@@ -665,7 +797,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             var names = new List<MetadataTokenName>();
             if (selector(searchNames, getNameFunc(this)))
-                names.Add(this);
+                names.Add(GetShallowCopy());
 
             if (Items == null || !Items.Any())
                 return new MetadataTokenName
@@ -677,7 +809,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             {
                 var nameMatch = name.SelectByFunc(getNameFunc, selector, searchNames);
                 if (nameMatch.Items.Any())
-                    names.AddRange(nameMatch.Items);
+                    names.AddRange(nameMatch.Items.Select(v => v.GetShallowCopy()));
             }
 
             return new MetadataTokenName
@@ -687,6 +819,10 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             };
         }
 
+        /// <summary>
+        /// Locates any name, at whatever depth, which is ByRef and reassigns it
+        /// to its full by-value counterpart which is also found at some depth herein.
+        /// </summary>
         public void ReassignAllByRefs()
         {
             //find all the byRefs throughout
@@ -731,6 +867,13 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
         }
 
+        /// <summary>
+        /// Gets a dictionary of token names whose keys are the interface&apos;s token while
+        /// the values are the concret implementation thereof.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="concreteType"></param>
+        /// <returns></returns>
         public Dictionary<MetadataTokenName, MetadataTokenName> GetImplentorDictionary(MetadataTokenType interfaceType,
             MetadataTokenType concreteType)
         {
@@ -770,7 +913,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return n2n;
         }
 
-        public void ReassignInterfaceTokens(Dictionary<MetadataTokenName, MetadataTokenName> n2n)
+        /// <summary>
+        /// Locates the each token name in the dictionary keys and reassigns it, at 
+        /// any depth, to the dictionary value.
+        /// </summary>
+        /// <param name="n2n"></param>
+        public void ReassignTokens(Dictionary<MetadataTokenName, MetadataTokenName> n2n)
         {
             if (Items == null || !Items.Any())
                 return;
@@ -849,6 +997,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             Items = names.ToArray();
         }
 
+        /// <summary>
+        /// Removes any names from <see cref="Items"/> which were obviously created via the .NET compiler
+        /// </summary>
         public void RemoveClrGeneratedNames()
         {
             var names = new List<MetadataTokenName>();
@@ -866,6 +1017,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             Items = names.ToArray();
         }
 
+        /// <summary>
+        /// Removes any <see cref="Items"/> which have no name.
+        /// </summary>
         public void RemoveEmptyNames()
         {
             var names = new List<MetadataTokenName>();

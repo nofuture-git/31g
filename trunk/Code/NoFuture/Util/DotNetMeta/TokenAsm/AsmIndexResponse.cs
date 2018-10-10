@@ -25,6 +25,15 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
             return JsonConvert.DeserializeObject<AsmIndexResponse>(jsonContent);
         }
 
+        public static void SaveToFile(string filePath, AsmIndexResponse rootTokenName)
+        {
+            if (rootTokenName?.Asms == null || !rootTokenName.Asms.Any())
+                return;
+            var json = JsonConvert.SerializeObject(rootTokenName, Formatting.None,
+                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            File.WriteAllText(filePath, json);
+        }
+
         public Assembly GetAssemblyByIndex(int idx)
         {
             var owningAsmName = Asms.FirstOrDefault(x => x.IndexId == idx);
