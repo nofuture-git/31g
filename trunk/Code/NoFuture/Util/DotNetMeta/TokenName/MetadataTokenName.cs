@@ -221,7 +221,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             df.Items = names.Distinct(_comparer).ToArray();
-            return df;
+            return df.SelectDistinct();
         }
 
         /// <summary>
