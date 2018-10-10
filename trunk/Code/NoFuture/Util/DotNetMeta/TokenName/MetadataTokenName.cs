@@ -115,7 +115,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 throw new ArgumentNullException(nameof(asmIndices));
             tokenNames.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             tokenNames.ApplyFullName(asmIndices);
-            var tokenNamesOut = tokenNames.BindTree2Names(tokenIds);
+            var tokenNamesOut = tokenNames.BindTree2Names(tokenIds, reportProgress);
             tokenNamesOut.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             tokenNamesOut.ApplyFullName(asmIndices);
             //turn all pointer'esque tokens into their full-expanded counterparts
@@ -200,7 +200,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             //want to avoid an interface type 
             var tokenName = SelectTheseTypeNames(typeName);
-            //var typeNameTree = tokenName.Items.FirstOrDefault(t => t.IsTypeName());
 
             if (tokenName == null)
                 return df;
@@ -315,9 +314,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// Final analysis to merge the token Ids to thier names in a hierarchy.
         /// </summary>
         /// <param name="tokenIds"></param>
+        /// <param name="reportProgress">
+        /// Optional, allows caller to get feedback on progress since this takes some time to run.
+        /// </param>
         /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal MetadataTokenName BindTree2Names(MetadataTokenId tokenIds)
+        internal MetadataTokenName BindTree2Names(MetadataTokenId tokenIds, Action<ProgressMessage> reportProgress = null)
         {
             if (tokenIds?.Items == null || !tokenIds.Items.Any())
                 return this;
@@ -325,8 +327,20 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 return this;
 
             var nameMapping = new List<MetadataTokenName>();
+            var total = tokenIds.Items.Length;
+            var counter = 0;
             foreach (var tokenId in tokenIds.Items)
+            {
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{tokenId.Id}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(counter, total),
+                    Status = "Applying token name to token ids"
+                });
+                counter += 1;
                 nameMapping.Add(GetNames(tokenId));
+            }
             return new MetadataTokenName { Items = nameMapping.ToArray() };
         }
 
@@ -966,7 +980,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="interfaceType"></param>
         /// <param name="concreteType"></param>
         /// <returns></returns>
-        public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
+        protected internal Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
             MetadataTokenType concreteType)
         {
             var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
