@@ -77,7 +77,10 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                         Status = "Getting call-of-calls"
                     });
                     var stackTrc = new Stack<MetadataTokenId>();
-                    ResolveCallOfCall(iToken, ref countDepth, stackTrc, null);
+                    var msg = new StringBuilder();
+                    ResolveCallOfCall(iToken, ref countDepth, stackTrc, msg);
+                    if(msg.Length > 0)
+                        MyProgram.PrintToLog(msg.ToString());
                 }
                 Console.Write('\n');
                 var tokenIdRspn = new TokenIdResponse

@@ -252,15 +252,16 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="reportProgress">
         /// Optional, allows caller to get feedback on progress since this takes some time to run.
         /// </param>
+        /// <param name="foreignAssembly">See annotations on GetImplementorDictionary</param>
         /// <remarks>
         /// The idea is that having a call-stack terminating on an interface token may
         /// not be the end since the given interface only has but one implementation.
         /// The call-stack can be further expanded by swapping the interface token with
         /// its concrete implementation.
         /// </remarks>
-        public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes, Action<ProgressMessage> reportProgress = null)
+        public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes, Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
         {
-            ReassignTokens(GetImplementorDictionary(tokenTypes, reportProgress), reportProgress);
+            ReassignTokens(GetImplementorDictionary(tokenTypes, reportProgress, foreignAssembly), reportProgress);
         }
 
         /// <summary>
@@ -918,11 +919,12 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="reportProgress">
         /// Optional, allows caller to get feedback on progress since this takes some time to run.
         /// </param>
+        /// <param name="foreignAssembly">See annotation on this methods overload</param>
         /// <returns>
         /// Dictionary where the keys are the concrete implementation, values are the interface token names
         /// </returns>
         public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType tokenTypes,
-            Action<ProgressMessage> reportProgress = null)
+            Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
         {
             var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
             if (tokenTypes?.Items == null)
@@ -949,7 +951,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 if (cri == null)
                     continue;
 
-                var temp = GetImplementorDictionary(ri, cri);
+                var temp = GetImplementorDictionary(ri, cri, foreignAssembly);
 
                 if (temp == null || !temp.Any())
                     continue;
@@ -973,9 +975,16 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </summary>
         /// <param name="interfaceType"></param>
         /// <param name="concreteType"></param>
+        /// <param name="foreignAssembly">
+        /// The typical use is that the interface and its implementation are both defined 
+        /// within the scope of the analysis.  However, it may be the case that this assembly
+        /// only knows the concrete type and the use of the interface is found in some foreign 
+        /// assembly (or vice versa). Therefore, in order to resolve the dictionary, in this case,
+        /// the caller must pass in the token name analysis of the foreign assembly.
+        /// </param>
         /// <returns></returns>
-        protected internal Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
-            MetadataTokenType concreteType)
+        public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
+            MetadataTokenType concreteType, MetadataTokenName foreignAssembly = null)
         {
             var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
             var interfaceNames = new List<MetadataTokenName>();
@@ -987,6 +996,22 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             {
                 nm.GetAllDeclNames(interfaceType, interfaceNames);
                 nm.GetAllDeclNames(concreteType, concreteNames);
+            }
+
+            if (!interfaceNames.Any() && foreignAssembly?.Items != null)
+            {
+                foreach (var nm in foreignAssembly.Items)
+                {
+                    nm.GetAllDeclNames(interfaceType, interfaceNames);
+                }
+            }
+
+            if (!concreteNames.Any() && foreignAssembly?.Items != null)
+            {
+                foreach (var nm in foreignAssembly.Items)
+                {
+                    nm.GetAllDeclNames(concreteType, concreteNames);
+                }
             }
 
             if (!interfaceNames.Any() || !concreteNames.Any())
