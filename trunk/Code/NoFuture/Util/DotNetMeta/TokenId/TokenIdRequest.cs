@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenType;
 
 namespace NoFuture.Util.DotNetMeta.TokenId
@@ -10,5 +11,6 @@ namespace NoFuture.Util.DotNetMeta.TokenId
     public class TokenIdRequest : TokenTypeRequest
     {
         public string AsmName { get; set; }
+        public AsmIndexResponse AsmIndices { get; set; }
     }
 }

@@ -35,6 +35,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         private int? _getasmIndicesCmdPort;
         private int? _getTokenPageRankCmdPort;
         private int? _getTokenTypesCmdPort;
+        private int? _reassignTokenNamesCmdPort;
         private bool? _resolveGacAsms;
         private TaskFactory _taskFactory;
         private int _maxRecursionDepth;
@@ -70,6 +71,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
                 p.PrintToConsole($"{nameof(GetTokenNamesCmdPort)} listening on port [{p.GetTokenNamesCmdPort}]");
                 p.PrintToConsole($"{nameof(GetTokenTypesCmdPort)} listening on port [{p.GetTokenTypesCmdPort}]");
                 p.PrintToConsole($"{nameof(GetTokenPageRankCmdPort)} listening on port [{p.GetTokenPageRankCmdPort}]");
+                p.PrintToConsole($"{nameof(ReassignTokenNamesCmdPort)} listening on port [{p.ReassignTokenNamesCmdPort}]");
                 p.PrintToConsole($"Resolve GAC Assembly names is [{p.AreGacAssembliesResolved}]");
                 p.PrintToConsole("type 'exit' to quit", false);
 
@@ -243,6 +245,20 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         }
 
         /// <summary>
+        /// Resolves the socket port used for <see cref="ReassignTokenNames"/>
+        /// </summary>
+        protected internal int? ReassignTokenNamesCmdPort
+        {
+            get
+            {
+                if (Net.IsValidPortNumber(_reassignTokenNamesCmdPort))
+                    return _reassignTokenNamesCmdPort;
+
+                _reassignTokenNamesCmdPort = ResolvePort("ReassignTokensPort");
+                return _reassignTokenNamesCmdPort;
+            }
+        }
+        /// <summary>
         /// Assignable from the config file, a value to keep <see cref="GetTokenIds.ResolveCallOfCall"/>
         /// from blowing out the stack.
         /// </summary>
@@ -336,6 +352,10 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
             if (argHash.ContainsKey(AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH))
             {
                 _getTokenPageRankCmdPort = ResolveInt(argHash[AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH].ToString());
+            }
+            if (argHash.ContainsKey(AssemblyAnalysis.REASSIGN_TOKEN_NAMES_PORT_CMD_SWITCH))
+            {
+                _reassignTokenNamesCmdPort = ResolveInt(argHash[AssemblyAnalysis.REASSIGN_TOKEN_NAMES_PORT_CMD_SWITCH].ToString());
             }
             if (argHash.ContainsKey(AssemblyAnalysis.RESOLVE_GAC_ASM_SWITCH))
             {
@@ -435,13 +455,15 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
                 || !Net.IsValidPortNumber(GetTokenNamesCmdPort) 
                 || !Net.IsValidPortNumber(GetAsmIndicesCmdPort) 
                 || !Net.IsValidPortNumber(GetTokenPageRankCmdPort)
-                || !Net.IsValidPortNumber(GetTokenTypesCmdPort))
+                || !Net.IsValidPortNumber(GetTokenTypesCmdPort)
+                || !Net.IsValidPortNumber(ReassignTokenNamesCmdPort))
                 throw new RahRowRagee("the command's ports are either null or invalid " +
                                       $" {nameof(GetAsmIndicesCmdPort)} is port [{GetAsmIndicesCmdPort}]" +
                                       $" {nameof(GetTokenIdsCmdPort)} is port [{GetTokenIdsCmdPort}]" +
                                       $" {nameof(GetTokenNamesCmdPort)} is port [{GetTokenNamesCmdPort}]" +
                                       $" {nameof(GetTokenPageRankCmdPort)} is port [{GetTokenPageRankCmdPort}]" +
-                                      $" {nameof(GetTokenTypesCmdPort)} is port [{GetTokenPageRankCmdPort}]");
+                                      $" {nameof(GetTokenTypesCmdPort)} is port [{GetTokenPageRankCmdPort}]" +
+                                      $" {nameof(ReassignTokenNamesCmdPort)} is port [{ReassignTokenNamesCmdPort}]");
 
             _taskFactory = new TaskFactory();
             _taskFactory.StartNew(() => HostCmd(new GetAsmIndices(this), GetAsmIndicesCmdPort.Value));
@@ -449,6 +471,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
             _taskFactory.StartNew(() => HostCmd(new GetTokenNames(this), GetTokenNamesCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenPageRank(this), GetTokenPageRankCmdPort.Value));
             _taskFactory.StartNew(() => HostCmd(new GetTokenTypes(this), GetTokenTypesCmdPort.Value));
+            _taskFactory.StartNew(() => HostCmd(new ReassignTokenNames(this), ReassignTokenNamesCmdPort.Value));
 
         }
 
@@ -488,6 +511,11 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
                 NfConfig.CmdLineArgSwitch, AssemblyAnalysis.GET_TOKEN_TYPES_PORT_CMD_SWITCH,
                 NfConfig.CmdLineArgAssign));
             help.AppendLine("                                 the GetTokenTypes, defaults to app.config.");
+            help.AppendLine("");
+            help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
+                NfConfig.CmdLineArgSwitch, AssemblyAnalysis.REASSIGN_TOKEN_NAMES_PORT_CMD_SWITCH,
+                NfConfig.CmdLineArgAssign));
+            help.AppendLine($"                                 the {nameof(ReassignTokenNames)}, defaults to app.config.");
             help.AppendLine("");
             help.AppendLine(String.Format(" {0}{1}{2}[INT]      Optional, cmd line port for the ",
                 NfConfig.CmdLineArgSwitch, AssemblyAnalysis.GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH,

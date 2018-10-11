@@ -10,14 +10,7 @@ namespace NoFuture.Util.DotNetMeta.TokenId
 {
     public class InvokeGetTokenIds : InvokeGetCmdBase<TokenIdResponse>
     {
-        private readonly AsmIndexResponse _asmIndices;
-
-        public InvokeGetTokenIds() { }
-
-        public InvokeGetTokenIds(AsmIndexResponse asmIndicies)
-        {
-            _asmIndices = asmIndicies;
-        }
+        public AsmIndexResponse AsmIndices { get; set; }
 
         public string RecurseAnyAsmNamedLike { get; set; }
         public override TokenIdResponse Receive(object anything)
@@ -35,14 +28,14 @@ namespace NoFuture.Util.DotNetMeta.TokenId
             if(!int.TryParse(anything.ToString(), out asmIdx))
                 throw new ArgumentException("Was expected an Assembly index Id");
 
-            if(_asmIndices == null)
+            if(AsmIndices == null)
                 throw new RahRowRagee("In a chain of responsiability - this type requires " +
                                       "an instance of AsmIndices.");
 
-            if (_asmIndices.Asms.All(x => x.IndexId != asmIdx))
+            if (AsmIndices.Asms.All(x => x.IndexId != asmIdx))
                 throw new RahRowRagee($"No matching index found for {asmIdx}");
 
-            var asmName = _asmIndices.Asms.First(x => x.IndexId == asmIdx).AssemblyName;
+            var asmName = AsmIndices.Asms.First(x => x.IndexId == asmIdx).AssemblyName;
 
             var rqst = new TokenIdRequest { AsmName = asmName, ResolveAllNamedLike = RecurseAnyAsmNamedLike };
 

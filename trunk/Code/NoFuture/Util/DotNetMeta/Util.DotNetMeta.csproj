@@ -53,10 +53,13 @@
     <Compile Include="TokenId\TokenIdRequest.cs" />
     <Compile Include="TokenId\TokenIdResponse.cs" />
     <Compile Include="TokenName\InvokeGetTokenNames.cs" />
+    <Compile Include="TokenName\InvokeReassignTokenNames.cs" />
     <Compile Include="TokenName\MetadataTokenName.cs" />
     <Compile Include="TokenName\MetadataTokenNameComparer.cs" />
     <Compile Include="TokenName\TokenNameRequest.cs" />
     <Compile Include="TokenName\TokenNameResponse.cs" />
+    <Compile Include="TokenName\TokenReassignRequest.cs" />
+    <Compile Include="TokenName\TokenReassignResponse.cs" />
     <Compile Include="TokenRank\AsmAdjancyGraph.cs" />
     <Compile Include="TokenRank\InvokeGetTokenPageRank.cs" />
     <Compile Include="TokenRank\RankedMetadataTokenAsm.cs" />

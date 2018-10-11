@@ -27,17 +27,21 @@ namespace NoFuture.Util.DotNetMeta
         public const string GET_ASM_INDICES_PORT_CMD_SWITCH = "nfGetAsmIndicies";
         public const string GET_TOKEN_PAGE_RANK_PORT_CMD_SWITCH = "nfGetTokenPageRank";
         public const string GET_TOKEN_TYPES_PORT_CMD_SWITCH = "nfGetTokenTypePort";
+        public const string REASSIGN_TOKEN_NAMES_PORT_CMD_SWITCH = "nfReassignTokensPort";
         public const string RESOLVE_GAC_ASM_SWITCH = "nfResolveGacAsm";
         public static int DefaultPort = NfConfig.NfDefaultPorts.AssemblyAnalysis;
         internal const string UNKNOWN_NAME_SUB = "T";
         #endregion
 
         #region fields
-        private readonly AsmIndexResponse _asmIndices;
+        private AsmIndexResponse _asmIndices;
+        private readonly InvokeGetAsmIndicies _getAsmIndiciesCmd;
         private readonly InvokeGetTokenIds _getTokenIdsCmd;
         private readonly InvokeGetTokenNames _getTokenNamesCmd;
         private readonly InvokeGetTokenPageRank _getTokenPageRankCmd;
         private readonly InvokeGetTokenTypes _getTokenTypesCmd;
+        private readonly InvokeReassignTokenNames _reassignTokenNamesCmd;
+
         #endregion
 
         #region properties
@@ -53,12 +57,14 @@ namespace NoFuture.Util.DotNetMeta
         /// Launches the NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe and calls 
         /// GetAsmIndicies command.
         /// </summary>
-        /// <param name="assemblyPath"></param>
-        /// <param name="ports"></param>
         /// <param name="resolveGacAsmNames"></param>
+        /// <param name="ports">
+        /// Optional, allows caller to specify the ports used - will use defaults 
+        /// otherwise.
+        /// </param>
         /// <returns></returns>
         /// <remarks>
-        /// The ports used are defaulted to <see cref="DefaultPort"/>.
+        /// The ports used are <see cref="DefaultPort"/> to <see cref="DefaultPort"/> + 5.
         /// </remarks>
         /// <remarks>
         /// <![CDATA[
@@ -130,10 +136,10 @@ namespace NoFuture.Util.DotNetMeta
         /// <example>
         /// <![CDATA[
         ///  # will launch a console
-        ///  $myAsmAly = New-Object NoFuture.Util.DotNetMeta.AssemblyAnalysis($AssemblyPath,$false)
+        ///  $myAsmAly = New-Object NoFuture.Util.DotNetMeta.AssemblyAnalysis($false)
         ///  
         ///  # this is assembly-name-to-index used to reduce the size of socket payloads
-        ///  $myAsmIndices = $myAsmAly.AsmIndicies
+        ///  $myAsmIndices = $myAsmAly.GetAsmIndices($AssemblyPath)
         ///  
         ///  # this is all the types in a similar form 
         ///  $myTokenTypes = $myAsmAly.GetTokenTypes("NoFuture.*")
@@ -145,17 +151,14 @@ namespace NoFuture.Util.DotNetMeta
         ///  $myTokenNames = $myAsmAly.GetTokenNames($myTokensIds.GetAsRoot().SelectDistinct(), $true)
         /// ]]>
         /// </example>
-        public AssemblyAnalysis(string assemblyPath, bool resolveGacAsmNames, params int[] ports)
+        public AssemblyAnalysis(bool resolveGacAsmNames, params int[] ports)
         {
-            if (string.IsNullOrWhiteSpace(assemblyPath) || !File.Exists(assemblyPath))
-                throw new ItsDeadJim("This isn't a valid assembly path");
-
             if (string.IsNullOrWhiteSpace(NfConfig.CustomTools.InvokeAssemblyAnalysis) || !File.Exists(NfConfig.CustomTools.InvokeAssemblyAnalysis))
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeAssemblyAnalysis.");
 
             var np = DefaultPort;
-            var usePorts = new int[5];
+            var usePorts = new int[6];
             for (var i = 0; i < usePorts.Length; i++)
             {
                 usePorts[i] = ports != null && ports.Length >= i + 1 ? ports[i] : np + i;
@@ -171,25 +174,25 @@ namespace NoFuture.Util.DotNetMeta
                     usePorts[3].ToString(CultureInfo.InvariantCulture)),
                 ConsoleCmd.ConstructCmdLineArgs(GET_TOKEN_TYPES_PORT_CMD_SWITCH,
                     usePorts[4].ToString(CultureInfo.InvariantCulture)),
+                ConsoleCmd.ConstructCmdLineArgs(REASSIGN_TOKEN_NAMES_PORT_CMD_SWITCH,
+                    usePorts[5].ToString(CultureInfo.InvariantCulture)),
                 ConsoleCmd.ConstructCmdLineArgs(RESOLVE_GAC_ASM_SWITCH, resolveGacAsmNames.ToString()));
 
             MyProcess = StartRemoteProcess(NfConfig.CustomTools.InvokeAssemblyAnalysis, args);
 
-            var getAsmIndicesCmd = new InvokeGetAsmIndicies()
+            _getAsmIndiciesCmd = new InvokeGetAsmIndicies
             {
                 ProcessId = MyProcess.Id,
                 SocketPort = usePorts[0]
             };
 
-            _asmIndices = getAsmIndicesCmd.Receive(assemblyPath);
-
-            _getTokenIdsCmd = new InvokeGetTokenIds(_asmIndices)
+            _getTokenIdsCmd = new InvokeGetTokenIds
             {
                 ProcessId = MyProcess.Id,
                 SocketPort = usePorts[1]
             };
 
-            _getTokenNamesCmd = new InvokeGetTokenNames()
+            _getTokenNamesCmd = new InvokeGetTokenNames
             {
                 ProcessId = MyProcess.Id,
                 SocketPort = usePorts[2]
@@ -206,10 +209,30 @@ namespace NoFuture.Util.DotNetMeta
                 ProcessId = MyProcess.Id,
                 SocketPort = usePorts[4]
             };
+            _reassignTokenNamesCmd = new InvokeReassignTokenNames
+            {
+                ProcessId = MyProcess.Id,
+                SocketPort = usePorts[5]
+            };
         }
         #endregion
 
         #region instance methods
+
+        /// <summary>
+        /// Gets the fully qualified assembly names to an index 
+        /// </summary>
+        /// <param name="assemblyPath"></param>
+        /// <returns></returns>
+        public AsmIndexResponse GetAsmIndices(string assemblyPath)
+        {
+            if (string.IsNullOrWhiteSpace(assemblyPath) || !File.Exists(assemblyPath))
+                throw new ItsDeadJim("This isn't a valid assembly path");
+
+            _asmIndices = _getAsmIndiciesCmd.Receive(assemblyPath);
+            return _asmIndices;
+        }
+
         /// <summary>
         /// Gets the manifold of Metadata Token Ids for the assembly at <see cref="asmIdx"/>
         /// </summary>
@@ -226,6 +249,7 @@ namespace NoFuture.Util.DotNetMeta
         public TokenIdResponse GetTokenIds(int asmIdx, string recurseAnyAsmNamedLike = null)
         {
             _getTokenIdsCmd.RecurseAnyAsmNamedLike = recurseAnyAsmNamedLike;
+            _getTokenIdsCmd.AsmIndices = _asmIndices;
             return _getTokenIdsCmd.Receive(asmIdx);
         }
 
@@ -255,6 +279,27 @@ namespace NoFuture.Util.DotNetMeta
         {
             _getTokenTypesCmd.RecurseAnyAsmNamedLike = recurseAnyAsmNamedLike;
             return _getTokenTypesCmd.Receive(null);
+        }
+
+        /// <summary>
+        /// An optional invocation, the caller could just invoke the ReassignAllInterfaceTokens
+        /// on the <see cref="subjectNames"/>; however, for some assemblies this takes a long time.
+        /// This option does the same thing only on a remote process with a progress indicator.
+        /// </summary>
+        /// <param name="subjectNames"></param>
+        /// <param name="foreignNames"></param>
+        /// <param name="foreignTokenTypes"></param>
+        /// <returns></returns>
+        public TokenReassignResponse ReassignTokenNames(MetadataTokenName subjectNames, MetadataTokenName foreignNames,
+            MetadataTokenType foreignTokenTypes)
+        {
+            _reassignTokenNamesCmd.Request = new TokenReassignRequest
+            {
+                SubjectTokenNames = subjectNames,
+                ForeignTokenNames = foreignNames,
+                ForeignTokenTypes = foreignTokenTypes
+            };
+            return _reassignTokenNamesCmd.Receive(null);
         }
         #endregion
 

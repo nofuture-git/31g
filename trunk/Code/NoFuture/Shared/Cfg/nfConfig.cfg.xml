@@ -31,7 +31,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
         <add id='portDomainEngine' value='1138' />
         <add id='portHostProc' value='780' />
         <!--will add to this five times-->
-        <add id='portAssemblyAnalysis' value='5057' />
+        <add id='portAssemblyAnalysis' value='5056' />
         <add id='portFlattenAssembly' value='5062' />
         <add id='portPartOfSpeechPaserHost' value='5063' />
         <add id='portSjclToPlainText' value='5064' />
