@@ -19,6 +19,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 
         public override byte[] Execute(byte[] arg)
         {
+            MyProgram.PrintToConsole();
             MyProgram.PrintToConsole($"{nameof(GetAsmIndices)} invoked");
             try
             {

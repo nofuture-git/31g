@@ -13,6 +13,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
         public GetTokenPageRank(Program myProgram) : base(myProgram) { }
         public override byte[] Execute(byte[] arg)
         {
+            MyProgram.PrintToConsole();
             MyProgram.PrintToConsole($"{nameof(GetTokenPageRank)} invoked");
             MyProgram.ProgressMessageState = null;
             if (arg == null || !arg.Any())

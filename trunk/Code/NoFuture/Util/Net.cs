@@ -194,7 +194,7 @@ namespace NoFuture.Util
                     buffer.AddRange(data.Where(b => b != (byte)'\0'));
 
                     if (server.Available == 0)
-                        Thread.Sleep(2000);//give it a couple seconds
+                        Thread.Sleep(NfConfig.ThreadSleepTime);//give it a moment
                 }
                 server.Close();
             }

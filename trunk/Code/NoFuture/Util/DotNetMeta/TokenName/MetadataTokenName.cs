@@ -259,9 +259,23 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// The call-stack can be further expanded by swapping the interface token with
         /// its concrete implementation.
         /// </remarks>
-        public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes, Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
+        public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes,
+            Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
         {
-            ReassignTokens(GetImplementorDictionary(tokenTypes, reportProgress, foreignAssembly), reportProgress);
+            var dict = GetImplementorDictionary(tokenTypes, reportProgress, foreignAssembly);
+            if (foreignAssembly != null && (dict == null || !dict.Any()))
+            {
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = "secondAttempt",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(0, 100),
+                    Status = "Making second attempt in reverse order"
+                });
+                dict = foreignAssembly.GetImplementorDictionary(tokenTypes, reportProgress, this);
+            }
+
+            ReassignTokens(dict, reportProgress);
         }
 
         /// <summary>
@@ -983,7 +997,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// the caller must pass in the token name analysis of the foreign assembly.
         /// </param>
         /// <returns></returns>
-        public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
+        protected internal Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
             MetadataTokenType concreteType, MetadataTokenName foreignAssembly = null)
         {
             var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();

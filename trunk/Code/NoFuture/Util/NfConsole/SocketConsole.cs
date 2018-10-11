@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using NoFuture.Shared.Cfg;
 
 namespace NoFuture.Util.NfConsole
@@ -55,9 +56,9 @@ namespace NoFuture.Util.NfConsole
 
                         var client = socket.Accept();
                         var data = new byte[NfConfig.DefaultBlockSize];
-
                         //park for first data received
                         client.Receive(data, 0, data.Length, SocketFlags.None);
+                        
                         buffer.AddRange(data.Where(b => b != (byte)'\0'));
                         while (client.Available > 0)
                         {
@@ -72,6 +73,8 @@ namespace NoFuture.Util.NfConsole
                                 client.Receive(data, 0, (int)NfConfig.DefaultBlockSize, SocketFlags.None);
                             }
                             buffer.AddRange(data.Where(b => b != (byte)'\0'));
+                            if(client.Available <= 0)
+                                Thread.Sleep(NfConfig.ThreadSleepTime);//give it a moment
                         }
 
                         var output = cmd.Execute(buffer.ToArray());
