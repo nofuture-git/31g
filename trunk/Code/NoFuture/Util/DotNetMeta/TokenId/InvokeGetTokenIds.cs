@@ -38,16 +38,16 @@ namespace NoFuture.Util.DotNetMeta.TokenId
             var asmName = AsmIndices.Asms.First(x => x.IndexId == asmIdx).AssemblyName;
 
             var rqst = new TokenIdRequest { AsmName = asmName, ResolveAllNamedLike = RecurseAnyAsmNamedLike };
-
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rqst));
+            var json = JsonConvert.SerializeObject(rqst);
+            var bufferIn = Encoding.UTF8.GetBytes(json);
 
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
-
-            return JsonConvert.DeserializeObject<TokenIdResponse>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            json = ConvertJsonFromBuffer(bufferOut);
+            return JsonConvert.DeserializeObject<TokenIdResponse>(json, JsonSerializerSettings);
         }
     }
 }

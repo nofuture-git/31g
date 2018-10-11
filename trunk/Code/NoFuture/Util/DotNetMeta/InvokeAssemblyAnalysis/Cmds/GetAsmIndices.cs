@@ -33,7 +33,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                         });
                 }
 
-                var rqst = JsonConvert.DeserializeObject<AsmIndexRequest>(Encoding.UTF8.GetString(arg));
+                var json = Encoding.UTF8.GetString(arg);
+                var rqst = JsonConvert.DeserializeObject<AsmIndexRequest>(json);
                 var asmPath = rqst.AssemblyFilePath.Replace("\"",string.Empty);
                 if (asmPath.Contains(WAK_WAK) && !asmPath.StartsWith(WAK_WAK))
                 {

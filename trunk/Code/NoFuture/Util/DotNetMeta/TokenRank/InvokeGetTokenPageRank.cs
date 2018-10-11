@@ -23,16 +23,15 @@ namespace NoFuture.Util.DotNetMeta.TokenRank
             if (pageRank == null)
                 throw new InvalidCastException("Was expecting the 'anything' arg to be castable " +
                                                "to " + typeof(TokenIdResponse).Name);
-
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(pageRank));
+            var json = JsonConvert.SerializeObject(pageRank);
+            var bufferIn = Encoding.UTF8.GetBytes(json);
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
-
-            return JsonConvert.DeserializeObject<TokenPageRankResponse>(ConvertJsonFromBuffer(bufferOut),
-                JsonSerializerSettings);
+            json = ConvertJsonFromBuffer(bufferOut);
+            return JsonConvert.DeserializeObject<TokenPageRankResponse>(json, JsonSerializerSettings);
         }
     }
 }

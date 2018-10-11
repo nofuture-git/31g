@@ -44,7 +44,9 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                         });
 
                 }
-                var rqst = JsonConvert.DeserializeObject<TokenTypeRequest>(Encoding.UTF8.GetString(arg));
+
+                var json = Encoding.UTF8.GetString(arg);
+                var rqst = JsonConvert.DeserializeObject<TokenTypeRequest>(json);
                 if(!string.IsNullOrWhiteSpace(rqst.ResolveAllNamedLike))
                     ((IaaProgram)MyProgram).AssemblyNameRegexPattern = rqst.ResolveAllNamedLike;
 

@@ -26,15 +26,16 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 throw new InvalidCastException("Was expecting the 'anything' arg to be castable " +
                                                "to an array of " + typeof(MetadataTokenId).FullName);
             var rqst = new TokenNameRequest {Tokens = metadataTokenIds, MapFullCallStack = this.MapFullCallStack};
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rqst));
+            var json = JsonConvert.SerializeObject(rqst);
+            var bufferIn = Encoding.UTF8.GetBytes(json);
 
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
-
-            return JsonConvert.DeserializeObject<TokenNameResponse>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            json = ConvertJsonFromBuffer(bufferOut);
+            return JsonConvert.DeserializeObject<TokenNameResponse>(json, JsonSerializerSettings);
         }
     }
 }

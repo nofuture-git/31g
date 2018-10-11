@@ -28,7 +28,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 
             try
             {
-                var allTokens = JsonConvert.DeserializeObject<TokenIdResponse>(Encoding.UTF8.GetString(arg));
+                var json = Encoding.UTF8.GetString(arg);
+                var allTokens = JsonConvert.DeserializeObject<TokenIdResponse>(json);
                 if (allTokens?.Tokens == null || !allTokens.Tokens.Any())
                 {
                     return JsonEncodedResponse(new TokenPageRankResponse

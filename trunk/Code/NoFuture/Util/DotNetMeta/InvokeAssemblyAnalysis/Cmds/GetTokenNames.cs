@@ -32,7 +32,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 
                 }
 
-                var rqst = JsonConvert.DeserializeObject<TokenNameRequest>(Encoding.UTF8.GetString(arg));
+                var json = Encoding.UTF8.GetString(arg);
+                var rqst = JsonConvert.DeserializeObject<TokenNameRequest>(json);
                 var tokens = rqst.Tokens ?? myIaaProgram.TokenIdResponse?.Tokens;
     
                 if (tokens == null || tokens.Length <= 0)

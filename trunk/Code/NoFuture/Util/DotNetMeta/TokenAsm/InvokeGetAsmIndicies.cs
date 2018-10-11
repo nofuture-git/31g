@@ -24,16 +24,15 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
 
             var rqst = new AsmIndexRequest {AssemblyFilePath = anything.ToString()};
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rqst));
+            var json = JsonConvert.SerializeObject(rqst);
+            var bufferIn = Encoding.UTF8.GetBytes(json);
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
-                    String.Format("The remote process by id [{0}] did not return anything on port [{1}]",
-                        ProcessId, SocketPort));
-
-            return JsonConvert.DeserializeObject<AsmIndexResponse>(ConvertJsonFromBuffer(bufferOut),
-                JsonSerializerSettings);
+                    $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
+            json = ConvertJsonFromBuffer(bufferOut);
+            return JsonConvert.DeserializeObject<AsmIndexResponse>(json, JsonSerializerSettings);
         }
     }
 }

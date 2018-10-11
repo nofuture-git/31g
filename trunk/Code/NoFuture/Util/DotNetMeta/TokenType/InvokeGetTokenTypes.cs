@@ -19,8 +19,8 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
 
             var rqst = new TokenTypeRequest {ResolveAllNamedLike = RecurseAnyAsmNamedLike};
-
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rqst));
+            var json = JsonConvert.SerializeObject(rqst);
+            var bufferIn = Encoding.UTF8.GetBytes(json);
 
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
 
@@ -28,8 +28,8 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
 
-            return JsonConvert.DeserializeObject<TokenTypeResponse>(ConvertJsonFromBuffer(bufferOut),
-                JsonSerializerSettings);
+            json = ConvertJsonFromBuffer(bufferOut);
+            return JsonConvert.DeserializeObject<TokenTypeResponse>(json, JsonSerializerSettings);
         }
     }
 }

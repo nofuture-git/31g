@@ -20,15 +20,16 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var rqst = Request ?? anything as TokenReassignRequest;
             if(rqst == null)
                 throw new ItsDeadJim("The request object is not assigned.");
-            var bufferIn = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(rqst));
+            var json = JsonConvert.SerializeObject(rqst);
+            var bufferIn = Encoding.UTF8.GetBytes(json);
 
             var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(
                     $"The remote process by id [{ProcessId}] did not return anything on port [{SocketPort}]");
-
-            return JsonConvert.DeserializeObject<TokenReassignResponse>(ConvertJsonFromBuffer(bufferOut), JsonSerializerSettings);
+            json = ConvertJsonFromBuffer(bufferOut);
+            return JsonConvert.DeserializeObject<TokenReassignResponse>(json, JsonSerializerSettings);
         }
     }
 }

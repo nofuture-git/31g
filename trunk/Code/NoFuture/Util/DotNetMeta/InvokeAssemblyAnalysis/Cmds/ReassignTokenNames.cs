@@ -19,12 +19,12 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
             MyProgram.ProgressMessageState = null;
             try
             {
-                var rqst = JsonConvert.DeserializeObject<TokenReassignRequest>(Encoding.UTF8.GetString(arg));
+                var json = Encoding.UTF8.GetString(arg);
+                var rqst = JsonConvert.DeserializeObject<TokenReassignRequest>(json);
                 var subj = rqst.SubjectTokenNames;
                 var frgn = rqst.ForeignTokenNames;
                 var typs = rqst.ForeignTokenTypes;
 
-                //MyProgram.PrintToConsole
                 subj.ReassignAllInterfaceTokens(typs, MyProgram.PrintToConsole, frgn);
                 var rspn = new TokenReassignResponse {Names = subj.Items};
                 return JsonEncodedResponse(rspn);
