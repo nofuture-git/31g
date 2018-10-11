@@ -16,7 +16,7 @@ namespace NoFuture.Util.DotNetMeta.Tests.InvokeAsmTests
         [Test]
         public void TestResolveCallOfCall()
         {
-            var dllsPath = TestAssembly.UnitTestsRoot + @"\ExampleDlls";
+            var dllsPath = TestInit.UnitTestsRoot + @"\ExampleDlls";
 
             var dependentDlls = new[]
             {
@@ -177,7 +177,7 @@ namespace NoFuture.Util.DotNetMeta.Tests.InvokeAsmTests
         [Test]
         public void TestToAdjancencyMatrix()
         {
-            var testDataFile = TestAssembly.DotNetMetaTestRoot + @"\TestJsonData\GetTokenIdsData.json";
+            var testDataFile = TestInit.DotNetMetaTestRoot + @"\TestJsonData\GetTokenIdsData.json";
             Assert.IsTrue(System.IO.File.Exists(testDataFile));
             var testJson =
                 System.IO.File.ReadAllText(testDataFile);

@@ -10,7 +10,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
     /// The specific resolved name of a single metadata token which refers to a type.
     /// </summary>
     [Serializable]
-    public class MetadataTokenType
+    public class MetadataTokenType : INfToken
     {
         [NonSerialized] private MetadataTokenType[] _interfaceTypes;
         [NonSerialized] private readonly MetadataTokenTypeComparer _comparer = new MetadataTokenTypeComparer();
@@ -310,7 +310,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                 return this;
             var leftList = this;
             var rightList = otherNames;
-            Func<MetadataTokenType, int> hashCode = x => x.GetNameHashCode();
+            Func<INfToken, int> hashCode = x => x.GetNameHashCode();
 
             var d = rightList.Items.Distinct(_comparer).ToDictionary(hashCode);
             var e = leftList.Items.Distinct(_comparer).ToDictionary(hashCode);
@@ -320,7 +320,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
 
             return new MetadataTokenType
             {
-                Items = d.Values.ToArray(),
+                Items = d.Values.Cast<MetadataTokenType>().ToArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
         }

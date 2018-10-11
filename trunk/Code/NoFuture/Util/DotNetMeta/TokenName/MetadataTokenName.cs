@@ -17,7 +17,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
     /// The resolved name of a single metadata token
     /// </summary>
     [Serializable]
-    public class MetadataTokenName
+    public class MetadataTokenName : INfToken
     {
         [NonSerialized] private MetadataTokenName[] _items;
         [NonSerialized] private bool _isByRef;
@@ -174,7 +174,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
             callStack.Pop();
 
-            return innerItems.Distinct(_comparer).Select(v => v.GetShallowCopy()).ToArray();
+            return innerItems.Distinct(_comparer).Cast<MetadataTokenName>().Select(v => v.GetShallowCopy()).ToArray();
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     names.Add(t);
             }
 
-            df.Items = names.Distinct(_comparer).ToArray();
+            df.Items = names.Distinct(_comparer).Cast<MetadataTokenName>().ToArray();
             return df.SelectDistinct();
         }
 
@@ -716,7 +716,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 return this;
             var leftList = this;
             var rightList = otherNames;
-            Func<MetadataTokenName, int> hashCode = x => x.GetNameHashCode();
+            Func<INfToken, int> hashCode = x => x.GetNameHashCode();
 
             var d = rightList.Items.Distinct(_comparer).ToDictionary(hashCode);
             var e = leftList.Items.Distinct(_comparer).ToDictionary(hashCode);
@@ -726,7 +726,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             return new MetadataTokenName
             {
-                Items = d.Values.ToArray(),
+                Items = d.Values.Cast<MetadataTokenName>().ToArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
         }
@@ -843,7 +843,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             return new MetadataTokenName
             {
-                Items = names.Distinct(_comparer).ToArray(),
+                Items = names.Distinct(_comparer).Cast<MetadataTokenName>().ToArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
         }

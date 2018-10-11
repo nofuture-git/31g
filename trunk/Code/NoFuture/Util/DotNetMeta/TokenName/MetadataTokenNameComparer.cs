@@ -1,45 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Util.DotNetMeta.TokenType;
 
 namespace NoFuture.Util.DotNetMeta.TokenName
 {
     [Serializable]
-    public class MetadataTokenNameComparer : IEqualityComparer<MetadataTokenName>,
-        IComparer<MetadataTokenName>
+    public class MetadataTokenNameComparer : MetadataTokenTypeComparer
     {
-        public bool Equals(MetadataTokenName x, MetadataTokenName y)
-        {
-            if (x?.Name == null || y?.Name == null)
-                return false;
-            return x.GetNameHashCode() == y.GetNameHashCode();
-        }
-
-        public int GetHashCode(MetadataTokenName obj)
-        {
-            return obj.GetNameHashCode();
-        }
-
-        public int Compare(MetadataTokenName x, MetadataTokenName y)
-        {
-            if (x == null && y == null)
-                return 0;
-            if (x == null)
-                return -1;
-            if (y == null)
-                return 1;
-
-            var xDepth = x.GetFullDepthCount();
-            var yDepth = y.GetFullDepthCount();
-
-            if (xDepth == yDepth)
-            {
-                return 0;
-            }
-
-            return xDepth > yDepth ? -1 : 1;
-        }
-
         public MetadataTokenName ChooseOne(IEnumerable<MetadataTokenName> choices)
         {
             if (choices == null || !choices.Any())

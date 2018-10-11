@@ -11,53 +11,11 @@ namespace NoFuture.Util.DotNetMeta.Tests
 {
     public class TestMetadataTokenName
     {
-        private string _jsonFolder = "";
-        private string _asmIndicesPath = "";
-        private string _tokenNamePath = "";
-        private string _tokenIdsPath = "";
-        private string _tokenTypesPath = "";
-
-        [SetUp]
-        public void AssignPaths()
-        {
-
-            //_jsonFolder = Path.Combine(TestAssembly.DotNetMetaTestRoot, @"TestJsonData");
-            _jsonFolder = @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant";
-            _asmIndicesPath = Path.Combine(_jsonFolder, "NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds.GetAsmIndices.json");
-            _tokenIdsPath = Path.Combine(_jsonFolder, "NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds.GetTokenIds.json");
-            _tokenNamePath = Path.Combine(_jsonFolder, "NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds.GetTokenNames.json");
-            _tokenTypesPath = Path.Combine(_jsonFolder, "NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds.GetTokenTypes.json");
-        }
-
-        [Test]
-        public void TestReadFiles()
-        {
-            var test00 = AsmIndexResponse.ReadFromFile(_asmIndicesPath);
-            var test01 = TokenIdResponse.ReadFromFile(_tokenIdsPath);
-            var test02 = TokenNameResponse.ReadFromFile(_tokenNamePath);
-            var test03 = TokenTypeResponse.ReadFromFile(_tokenTypesPath);
-
-            Assert.IsNotNull(test00?.Asms);
-            Assert.IsNotNull(test01?.Tokens);
-            Assert.IsNotNull(test02?.Names);
-            Assert.IsNotNull(test03?.Types);
-        }
-
-        public Tuple<AsmIndexResponse, TokenIdResponse, TokenNameResponse, TokenTypeResponse> GetTokenData()
-        {
-            var test00 = AsmIndexResponse.ReadFromFile(_asmIndicesPath);
-            var test01 = TokenIdResponse.ReadFromFile(_tokenIdsPath);
-            var test02 = TokenNameResponse.ReadFromFile(_tokenNamePath);
-            var test03 = TokenTypeResponse.ReadFromFile(_tokenTypesPath);
-
-            return new Tuple<AsmIndexResponse, TokenIdResponse, TokenNameResponse, TokenTypeResponse>(test00, test01, test02, test03);
-
-        }
 
         [Test]
         public void TestBuildMetadataTokenName()
         {
-            var tokenData = GetTokenData();
+            var tokenData = TestInit.GetTokenData();
             var testResult = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
                 tokenData.Item2.GetAsRoot(), tokenData.Item1);
             Assert.IsNotNull(testResult);
@@ -68,7 +26,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
         [Test]
         public void TestSelectDistinct()
         {
-            var tokenData = GetTokenData();
+            var tokenData = TestInit.GetTokenData();
             var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
                 tokenData.Item2.GetAsRoot(), tokenData.Item1);
             Assert.IsNotNull(testSubject?.Items);
@@ -85,7 +43,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
         [Test]
         public void TestSelectDistinct_WithTypes()
         {
-            var tokenData = GetTokenData();
+            var tokenData = TestInit.GetTokenData();
             var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
                 tokenData.Item2.GetAsRoot(), tokenData.Item1);
 
@@ -99,7 +57,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
         [Test]
         public void TestSelectDistinct_ByMethod()
         {
-            var tokenData = GetTokenData();
+            var tokenData = TestInit.GetTokenData();
             var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
                 tokenData.Item2.GetAsRoot(), tokenData.Item1);
             var testResult = testSubject.SelectDistinct("TestBegin", "Index");
@@ -111,12 +69,11 @@ namespace NoFuture.Util.DotNetMeta.Tests
         [Test]
         public void TestBuildWithTokenTypes()
         {
-            var tokenData = GetTokenData();
+            var tokenData = TestInit.GetTokenData();
             var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
                 tokenData.Item2.GetAsRoot(), tokenData.Item1, tokenData.Item4.GetAsRoot());
             Assert.IsNotNull(testSubject);
-
-            TokenNameResponse.SaveToFile(@"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant\bigol.json", testSubject);
         }
+
     }
 }

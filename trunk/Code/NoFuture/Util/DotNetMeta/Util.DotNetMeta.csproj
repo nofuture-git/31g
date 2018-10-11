@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="AssemblyAnalysis.cs" />
     <Compile Include="Dpx.cs" />
+    <Compile Include="INfToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenAsm\AsmIndexRequest.cs" />
     <Compile Include="TokenAsm\AsmIndexResponse.cs" />

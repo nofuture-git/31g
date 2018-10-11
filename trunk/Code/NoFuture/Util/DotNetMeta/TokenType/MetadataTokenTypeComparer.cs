@@ -4,22 +4,24 @@ using System.Collections.Generic;
 namespace NoFuture.Util.DotNetMeta.TokenType
 {
     [Serializable]
-    public class MetadataTokenTypeComparer : IEqualityComparer<MetadataTokenType>,
-        IComparer<MetadataTokenType>
+    public class MetadataTokenTypeComparer : IEqualityComparer<INfToken>,
+        IComparer<INfToken>
     {
-        public bool Equals(MetadataTokenType x, MetadataTokenType y)
+        public bool Equals(INfToken x, INfToken y)
         {
-            if (x == null || y == null)
+            if (object.Equals(x, y))
+                return true;
+            if (string.IsNullOrWhiteSpace(x?.Name) || string.IsNullOrWhiteSpace(y?.Name))
                 return false;
             return x.GetNameHashCode() == y.GetNameHashCode();
         }
 
-        public int GetHashCode(MetadataTokenType obj)
+        public int GetHashCode(INfToken obj)
         {
             return obj.GetNameHashCode();
         }
 
-        public int Compare(MetadataTokenType x, MetadataTokenType y)
+        public int Compare(INfToken x, INfToken y)
         {
             if (x == null && y == null)
                 return 0;
