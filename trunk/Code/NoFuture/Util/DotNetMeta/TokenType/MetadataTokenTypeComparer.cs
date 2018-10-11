@@ -9,11 +9,11 @@ namespace NoFuture.Util.DotNetMeta.TokenType
     {
         public bool Equals(INfToken x, INfToken y)
         {
-            if (object.Equals(x, y))
-                return true;
-            if (string.IsNullOrWhiteSpace(x?.Name) || string.IsNullOrWhiteSpace(y?.Name))
-                return false;
-            return x.GetNameHashCode() == y.GetNameHashCode();
+            //if (object.Equals(x, y))
+            //    return true;
+            //if (string.IsNullOrWhiteSpace(x?.Name) || string.IsNullOrWhiteSpace(y?.Name))
+            //    return x?.Id == y?.Id;
+            return string.Equals(x?.GetNameHashCode(), y?.GetNameHashCode());
         }
 
         public int GetHashCode(INfToken obj)

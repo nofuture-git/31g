@@ -24,7 +24,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         [NonSerialized] private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
         [NonSerialized] private List<MetadataTokenName> _allByRefs;
         [NonSerialized] private List<MetadataTokenName> _byVals;
-        [NonSerialized] private MetadataTokenName _firstByVal;
         [NonSerialized] private int? _fullDepthCount;
         [NonSerialized] private bool? _anyByRef;
         [NonSerialized] private Dictionary<MetadataTokenName, MetadataTokenName> _implementorDictionary;
@@ -140,7 +139,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             _allByRefs = null;
             _byVals = null;
-            _firstByVal = null;
             _fullDepthCount = null;
             _anyByRef = null;
             _implementorDictionary = null;
@@ -165,11 +163,13 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var innerItems = new List<MetadataTokenName> {GetShallowCopy()};
             if (Items == null || !Items.Any())
                 return innerItems.ToArray();
-            if (callStack.Any(v => _comparer.Equals(v, this)))
+            if (callStack.Any(v => !v.IsRoot() &&  _comparer.Equals(v, this)))
                 return innerItems.ToArray();
             callStack.Push(this);
             foreach (var item in Items)
             {
+                if(item.IsRoot())
+                    continue;
                 innerItems.AddRange(item.SelectDistinctShallowArray(callStack));
             }
             callStack.Pop();
@@ -518,17 +518,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (Items == null || !Items.Any())
                 return null;
 
-            //use prev. cache if avail
-            if (_firstByVal != null)
-                return _firstByVal;
-
             foreach (var nm in Items)
             {
                 var matched = nm.FirstByVal(tokenName);
                 if (matched != null)
                 {
-                    //cache instance level to improv. perf.
-                    _firstByVal = matched;
                     return matched;
                 }
             }
@@ -664,7 +658,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <returns></returns>
         public int GetNameHashCode()
         {
-            return Name?.GetHashCode() ?? 0;
+            return Name?.GetHashCode() ?? (Id.GetHashCode() + OwnAsmIdx.GetHashCode());
         }
 
         public override string ToString()

@@ -75,5 +75,33 @@ namespace NoFuture.Util.DotNetMeta.Tests
             Assert.IsNotNull(testSubject);
         }
 
+        [Test]
+        public void TestGetUnion()
+        {
+            var tokenData = TestInit.GetTokenData();
+            var testSubject = tokenData.Item3.GetAsRoot();
+            var testInput = testSubject.SelectDistinct("OptumController", "Index");
+            var testInput2 = testSubject.SelectDistinct("OptumController", "GetInitSsoToken");
+
+            var trIds = testInput.Items.Select(t => t.Id).ToList();
+            var tr2Ids = testInput2.Items.Select(t => t.Id).ToList();
+
+            var trNames = testInput.Items.Select(t => t.Name).ToList();
+            var tr2Names = testInput2.Items.Select(t => t.Name).ToList();
+
+            Console.WriteLine($"Total id count {trIds.Count + tr2Ids.Count}" );
+            trIds.AddRange(tr2Ids);
+            var distinctIds = trIds.Distinct().ToList();
+            Console.WriteLine($"Distinct id count {distinctIds.Count}" );
+
+            Console.WriteLine($"Total name count {trNames.Count  + tr2Names.Count}");
+            trNames.AddRange(tr2Names);
+            var distinctNames = trNames.Distinct().ToList();
+            Console.WriteLine($"Distinct name count {distinctNames.Count}");
+
+            var testResult = testInput.GetUnion(testInput2);
+            Assert.AreNotEqual(0 , testResult.Items.Length);
+        }
+
     }
 }
