@@ -65,7 +65,8 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
         {
             if (string.IsNullOrWhiteSpace(folderPath) || !Directory.Exists(folderPath))
                 return null;
-
+            if (Asms == null || !Asms.Any())
+                return null;
             var owningAsmName = Asms.FirstOrDefault(x => x.IndexId == idx);
             if (string.IsNullOrWhiteSpace(owningAsmName?.AssemblyName))
                 return null;

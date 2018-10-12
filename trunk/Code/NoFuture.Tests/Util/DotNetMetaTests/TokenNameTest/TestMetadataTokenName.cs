@@ -103,5 +103,18 @@ namespace NoFuture.Util.DotNetMeta.Tests
             Assert.AreNotEqual(0 , testResult.Items.Length);
         }
 
+        [Test]
+        public void TestSelectByRegex()
+        {
+            var tokenData = TestInit.GetTokenData();
+            var testSubject = tokenData.Item3.GetAsRoot();
+            var testResult = testSubject.SelectByRegex(@"\.OptumController");
+            Assert.IsNotNull(testResult?.Items);
+            Assert.AreNotEqual(0, testResult.Items.Length);
+            foreach(var t in testResult.Items)
+                Console.WriteLine(t.Name);
+
+        }
+
     }
 }

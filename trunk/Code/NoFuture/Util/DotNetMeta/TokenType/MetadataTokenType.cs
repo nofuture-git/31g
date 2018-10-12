@@ -46,6 +46,29 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         public int IsAbsct { get; set; }
 
         /// <summary>
+        /// Convenience method to get Items count
+        /// </summary>
+        public int Count => Items?.Length ?? 0;
+
+        /// <summary>
+        /// Indicates if this instance is a list or tree data structure
+        /// </summary>
+        /// <returns></returns>
+        public bool IsFlattened()
+        {
+            if (Items == null || !Items.Any())
+                return false;
+
+            foreach (var i in Items)
+            {
+                if ((i?.Count ?? 0) > 0)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Clears any in-memory cache copies from full tree recursions.
         /// </summary>
         public void ClearAllCacheData()

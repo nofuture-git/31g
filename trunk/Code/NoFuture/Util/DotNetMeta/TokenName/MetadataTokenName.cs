@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -65,6 +66,29 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             get => _items;
             set => _items = value;
+        }
+
+        /// <summary>
+        /// Convenience method to get Items count
+        /// </summary>
+        public int Count => Items?.Length ?? 0;
+
+        /// <summary>
+        /// Indicates if this instance is a list or tree data structure
+        /// </summary>
+        /// <returns></returns>
+        public bool IsFlattened()
+        {
+            if (Items == null || !Items.Any())
+                return false;
+
+            foreach (var i in Items)
+            {
+                if ((i?.Count ?? 0) > 0)
+                    return false;
+            }
+
+            return true;
         }
 
         protected internal Dictionary<MetadataTokenName, MetadataTokenName> ImplementorDictionary =>
@@ -241,6 +265,17 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 Items = SelectDistinctShallowArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
+        }
+
+        /// <summary>
+        /// Helper method to get just the distinct, flatten array of names in the whole of 
+        /// the tree.
+        /// </summary>
+        /// <returns></returns>
+        public string[] SelectNames()
+        {
+            var t = this.SelectDistinct();
+            return t.Count <= 0 ? new string[0] : t.Items.Select(v => v.Name).ToArray();
         }
 
         /// <summary>
@@ -830,6 +865,19 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.All(v => !f.StartsWith(v)), namespaceNames);
         }
 
+        /// <summary>
+        /// Select all token names which match the regex pattern
+        /// </summary>
+        /// <param name="regexPattern"></param>
+        /// <returns></returns>
+        public MetadataTokenName SelectByRegex(string regexPattern)
+        {
+            return SelectByFunc(n => n.Name, 
+                               (s, f) => s.Any(v => !string.IsNullOrWhiteSpace(v) 
+                                                    && !string.IsNullOrWhiteSpace(f)
+                                                    && Regex.IsMatch(f, v)), regexPattern);
+        }
+
         protected internal MetadataTokenName SelectByFunc(Func<MetadataTokenName, string> getNameFunc,
             Func<string[], string, bool> selector, params string[] searchNames)
         {
@@ -1281,6 +1329,5 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             methodName = methodName.Substring(0, methodName.IndexOf('(')).Trim();
             return methodName;
         }
-
     }
 }
