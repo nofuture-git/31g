@@ -5,7 +5,6 @@ namespace NoFuture.Shared.Core
     public class Arg : Exception
     {
         public Arg(string msg) : base(msg) { }
-
         public Arg(string msg, Exception innerException) : base(msg, innerException) { }
     }
 
@@ -25,5 +24,11 @@ namespace NoFuture.Shared.Core
     {
         public RahRowRagee(string msg) : base(msg) { }
         public RahRowRagee(string msg, Exception innerException) : base(msg, innerException) { }
+    }
+
+    public class Safuas : ItsDeadJim
+    {
+        public Safuas(string msg) : base(msg) { }
+        public Safuas(string msg, Exception innerException) : base(msg, innerException) { }
     }
 }

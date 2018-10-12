@@ -236,7 +236,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 depth -= 1;
                 token.IsByRef = 1;
                 if (msgOut != null)
-                    msgOut.AppendLine(string.Format(", Message:'name resolved token id {0}.{1} found in stack trace'",
+                    msgOut.AppendLine(string.Format(", Message:'name resolved token id {0},{1} found in stack trace'",
                         r.RslvAsmIdx, r.Id.ToString("X4")));
                 return;
             }
@@ -249,7 +249,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
             {
                 depth -= 1;
                 if (msgOut != null)
-                    msgOut.AppendLine(string.Format(", Message:'name resolved token id {0}.{1} is a terminal node'",
+                    msgOut.AppendLine(string.Format(", Message:'name resolved token id {0},{1} is a terminal node'",
                         r.RslvAsmIdx, r.Id.ToString("X4")));
 
                 return;

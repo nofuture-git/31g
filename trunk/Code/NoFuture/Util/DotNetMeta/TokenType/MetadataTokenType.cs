@@ -12,11 +12,14 @@ namespace NoFuture.Util.DotNetMeta.TokenType
     [Serializable]
     public class MetadataTokenType : INfToken
     {
+        #region fields
         [NonSerialized] private MetadataTokenType[] _interfaceTypes;
         [NonSerialized] private readonly MetadataTokenTypeComparer _comparer = new MetadataTokenTypeComparer();
         [NonSerialized] private int? _fullDepth;
         [NonSerialized] private MetadataTokenType[] _singleImplementors;
+        #endregion
 
+        #region properties
         /// <summary>
         /// The original metadata token id
         /// </summary>
@@ -49,6 +52,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// Convenience method to get Items count
         /// </summary>
         public int Count => Items?.Length ?? 0;
+        #endregion
 
         /// <summary>
         /// Indicates if this instance is a list or tree data structure
@@ -68,16 +72,6 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             return true;
         }
 
-        /// <summary>
-        /// Clears any in-memory cache copies from full tree recursions.
-        /// </summary>
-        public void ClearAllCacheData()
-        {
-            _interfaceTypes = null;
-            _fullDepth = null;
-            _singleImplementors = null;
-        }
-
         protected internal bool IsRoot()
         {
             return string.Equals(Name, NfSettings.DefaultTypeSeparator.ToString());
@@ -90,6 +84,16 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         public bool IsInterfaceType()
         {
             return IsIntfc > 0;
+        }
+
+        /// <summary>
+        /// Clears any in-memory cache copies from full tree recursions.
+        /// </summary>
+        public void ClearAllCacheData()
+        {
+            _interfaceTypes = null;
+            _fullDepth = null;
+            _singleImplementors = null;
         }
 
         /// <summary>
@@ -144,7 +148,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             foreach (var ai in allInfcs)
             {
                 var cnt = 0;
-                CountOfImplentors(ai, ref cnt);
+                GetCountOfImplentors(ai, ref cnt);
                 if(cnt == 1)
                     sInfcs.Add(ai);
             }
@@ -171,7 +175,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// Optional, indicates to only match on a type which directly implements the given interface
         /// </param>
         /// <returns></returns>
-        public MetadataTokenType FirstInterfaceImplementor(MetadataTokenType interfaceType, bool immediateOnly = false)
+        public MetadataTokenType GetFirstInterfaceImplementor(MetadataTokenType interfaceType, bool immediateOnly = false)
         {
             if (interfaceType == null)
                 return null;
@@ -191,80 +195,13 @@ namespace NoFuture.Util.DotNetMeta.TokenType
 
             foreach (var nm in Items)
             {
-                var vnm = nm.FirstInterfaceImplementor(interfaceType, immediateOnly);
+                var vnm = nm.GetFirstInterfaceImplementor(interfaceType, immediateOnly);
                 if (vnm != null)
                 {
                     return vnm;
                 }
             }
             return null;
-        }
-
-        /// <summary>
-        /// Gets count of token types at all depths whose name exactly matches <see cref="typeName"/>
-        /// </summary>
-        /// <param name="typeName"></param>
-        /// <param name="countOf"></param>
-        public void CountOfImplentors(string typeName, ref int countOf)
-        {
-            //find the interface by this name
-            var allInfcs = GetAllInterfaceTypes();
-            if (allInfcs == null || !allInfcs.Any())
-                return;
-            var mtTypeName = allInfcs.FirstOrDefault(t => string.Equals(t.Name, typeName));
-            if (mtTypeName == null || !mtTypeName.IsInterfaceType())
-                return;
-            CountOfImplentors(mtTypeName, ref countOf);
-
-        }
-
-        /// <summary>
-        /// Gets a count, at all depths, of any types which directly implement <see cref="typeName"/>
-        /// </summary>
-        /// <param name="typeName"></param>
-        /// <param name="countOf"></param>
-        public void CountOfImplentors(MetadataTokenType typeName, ref int countOf)
-        {
-            if (typeName == null)
-                return;
-            var tnInfcs = GetImmediateInterfaceTypes();
-            if (tnInfcs == null || !tnInfcs.Any())
-                return;
-            countOf += tnInfcs.Count(v => _comparer.Equals(typeName, v));
-
-            if (Items == null || !Items.Any())
-                return;
-
-            foreach(var nm in Items)
-                nm.CountOfImplentors(nm, ref countOf);
-        }
-
-        public override bool Equals(object obj)
-        {
-            var tn = obj as MetadataTokenType;
-            if (tn == null)
-                return false;
-
-            return string.Equals(tn.Name, Name);
-        }
-
-        public override int GetHashCode()
-        {
-            return Name?.GetHashCode() ?? 1;
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        /// <summary>
-        /// Gets the hashcode of just the <see cref="Name"/>
-        /// </summary>
-        /// <returns></returns>
-        public int GetNameHashCode()
-        {
-            return Name?.GetHashCode() ?? 0;
         }
 
         /// <summary>
@@ -383,6 +320,73 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                 Items = listOut.ToArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
+        }
+
+        /// <summary>
+        /// Gets count of token types at all depths whose name exactly matches <see cref="typeName"/>
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="countOf"></param>
+        public void GetCountOfImplentors(string typeName, ref int countOf)
+        {
+            //find the interface by this name
+            var allInfcs = GetAllInterfaceTypes();
+            if (allInfcs == null || !allInfcs.Any())
+                return;
+            var mtTypeName = allInfcs.FirstOrDefault(t => string.Equals(t.Name, typeName));
+            if (mtTypeName == null || !mtTypeName.IsInterfaceType())
+                return;
+            GetCountOfImplentors(mtTypeName, ref countOf);
+
+        }
+
+        /// <summary>
+        /// Gets a count, at all depths, of any types which directly implement <see cref="typeName"/>
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="countOf"></param>
+        public void GetCountOfImplentors(MetadataTokenType typeName, ref int countOf)
+        {
+            if (typeName == null)
+                return;
+            var tnInfcs = GetImmediateInterfaceTypes();
+            if (tnInfcs == null || !tnInfcs.Any())
+                return;
+            countOf += tnInfcs.Count(v => _comparer.Equals(typeName, v));
+
+            if (Items == null || !Items.Any())
+                return;
+
+            foreach (var nm in Items)
+                nm.GetCountOfImplentors(nm, ref countOf);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name?.GetHashCode() ?? 1;
+        }
+
+        /// <summary>
+        /// Gets the hashcode of just the <see cref="Name"/>
+        /// </summary>
+        /// <returns></returns>
+        public int GetNameHashCode()
+        {
+            return Name?.GetHashCode() ?? 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var tn = obj as MetadataTokenType;
+            if (tn == null)
+                return false;
+
+            return string.Equals(tn.Name, Name);
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

@@ -20,6 +20,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
     [Serializable]
     public class MetadataTokenName : INfToken
     {
+        #region fields
         [NonSerialized] private MetadataTokenName[] _items;
         [NonSerialized] private bool _isByRef;
         [NonSerialized] private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
@@ -28,7 +29,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         [NonSerialized] private int? _fullDepthCount;
         [NonSerialized] private bool? _anyByRef;
         [NonSerialized] private Dictionary<MetadataTokenName, MetadataTokenName> _implementorDictionary;
+        #endregion
 
+        #region properties
         /// <summary>
         /// The original metadata token id
         /// </summary>
@@ -73,6 +76,10 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </summary>
         public int Count => Items?.Length ?? 0;
 
+        protected internal Dictionary<MetadataTokenName, MetadataTokenName> ImplementorDictionary =>
+            _implementorDictionary;
+        #endregion
+
         /// <summary>
         /// Indicates if this instance is a list or tree data structure
         /// </summary>
@@ -91,9 +98,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return true;
         }
 
-        protected internal Dictionary<MetadataTokenName, MetadataTokenName> ImplementorDictionary =>
-            _implementorDictionary;
-
         /// <summary>
         /// Indicates a short-hand version of some fuller copy of itself elsewhere 
         /// in the parent&apos;s items.
@@ -102,6 +106,78 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             get => _isByRef;
             set => _isByRef = value;
+        }
+
+        protected internal bool IsRoot()
+        {
+            return string.Equals(Name, NfSettings.DefaultTypeSeparator.ToString());
+        }
+
+        /// <summary>
+        /// Determines, by naming pattern, if the current name was derived from <see cref="MethodInfo"/>
+        /// </summary>
+        /// <returns></returns>
+        public bool IsMethodName()
+        {
+            return !String.IsNullOrWhiteSpace(Name)
+                   && Name.Contains(Constants.TYPE_METHOD_NAME_SPLIT_ON)
+                   && Name.Contains("(")
+                   && Name.Contains(")");
+        }
+
+        /// <summary>
+        /// Asserts if the token is derived from a type rather than
+        /// a member token.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsTypeName()
+        {
+            return !String.IsNullOrWhiteSpace(Name)
+                   && !String.IsNullOrWhiteSpace(Label)
+                   && String.Equals("RuntimeType", Label);
+        }
+
+        /// <summary>
+        /// Asserts if even one token name at any depth is by-ref
+        /// </summary>
+        /// <returns></returns>
+        public bool IsAnyByRef()
+        {
+
+            if (IsByRef)
+                return true;
+            if (Items == null || !Items.Any())
+                return false;
+            //use prev. cache if avail
+            if (_anyByRef != null)
+                return _anyByRef.Value;
+            foreach (var i in Items)
+            {
+                if (i.IsByRef)
+                {
+                    _anyByRef = true;
+                    return true;
+                }
+
+                if (i.IsAnyByRef())
+                {
+                    _anyByRef = true;
+                    return true;
+                }
+            }
+            _anyByRef = false;
+            return false;
+        }
+
+        /// <summary>
+        /// Asserts that the part of the token name which
+        /// matches the assembly name is omitted.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsPartialName()
+        {
+            return !string.IsNullOrWhiteSpace(Name) &&
+                   Name.StartsWith(NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -138,7 +214,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 throw new ArgumentNullException(nameof(asmIndices));
             tokenNames.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             tokenNames.ApplyFullName(asmIndices);
-            var tokenNamesOut = tokenNames.BindTree2Names(tokenIds, reportProgress);
+            var tokenNamesOut = tokenNames.BindTokens2Names(tokenIds, reportProgress);
             tokenNamesOut.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             tokenNamesOut.ApplyFullName(asmIndices);
             //turn all pointer'esque tokens into their full-expanded counterparts
@@ -151,11 +227,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return tokenNamesOut;
         }
 
-        protected internal bool IsRoot()
-        {
-            return string.Equals(Name, NfSettings.DefaultTypeSeparator.ToString());
-        }
-
         /// <summary>
         /// Clears any in-memory cache copies from full tree recursions.
         /// </summary>
@@ -166,169 +237,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             _fullDepthCount = null;
             _anyByRef = null;
             _implementorDictionary = null;
-        }
-
-        /// <summary>
-        /// Gets a flat, distinct, shallow root-level token names whose Items represent the collection.
-        /// </summary>
-        /// <returns></returns>
-        public MetadataTokenName SelectDistinct()
-        {
-            return new MetadataTokenName
-            {
-                Items = SelectDistinctShallowArray(),
-                Name = NfSettings.DefaultTypeSeparator.ToString()
-            };
-        }
-
-        protected internal MetadataTokenName[] SelectDistinctShallowArray(Stack<MetadataTokenName> callStack = null)
-        {
-            callStack = callStack ?? new Stack<MetadataTokenName>();
-            var innerItems = new List<MetadataTokenName> {GetShallowCopy()};
-            if (Items == null || !Items.Any())
-                return innerItems.ToArray();
-            if (callStack.Any(v => !v.IsRoot() &&  _comparer.Equals(v, this)))
-                return innerItems.ToArray();
-            callStack.Push(this);
-            foreach (var item in Items)
-            {
-                if(item.IsRoot())
-                    continue;
-                innerItems.AddRange(item.SelectDistinctShallowArray(callStack));
-            }
-            callStack.Pop();
-
-            return innerItems.Distinct(_comparer).Cast<MetadataTokenName>().Select(v => v.GetShallowCopy()).ToArray();
-        }
-
-        /// <summary>
-        /// Selectively gets the flatten call stack for the given type-method pair
-        /// </summary>
-        /// <param name="typeName"></param>
-        /// <param name="methodName"></param>
-        /// <returns>
-        /// A single token name whose Items represent the full extent of its call stack. 
-        /// </returns>
-        public MetadataTokenName SelectDistinct(string typeName, string methodName)
-        {
-            var df = new MetadataTokenName
-            {
-                Items = new MetadataTokenName[] { },
-                Name = NfSettings.DefaultTypeSeparator.ToString()
-            };
-            if (string.IsNullOrWhiteSpace(typeName))
-                return df;
-            methodName = methodName ?? "";
-            if (methodName.Contains("("))
-                methodName = methodName.Substring(0, methodName.IndexOf('('));
-
-            //want to avoid an interface type 
-            var tokenName = SelectTheseTypeNames(typeName);
-
-            if (tokenName == null)
-                return df;
-
-            var names = new List<MetadataTokenName>();
-            if (string.IsNullOrWhiteSpace(methodName) || tokenName.Items == null || !tokenName.Items.Any())
-            {
-                names.Add(this);
-                df.Items = names.ToArray();
-                return df;
-            }
-            
-            foreach (var t in tokenName.Items)
-            {
-                //match on overloads
-                if (t.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("))
-                    names.Add(t);
-            }
-
-            df.Items = names.Distinct(_comparer).Cast<MetadataTokenName>().ToArray();
-            return df.SelectDistinct();
-        }
-
-        /// <summary>
-        /// Another flavor of distinct where an interface with only one implementation
-        /// will have its tokens replace with its concrete counterpart.  Therefore,
-        /// the call-stack is fuller since is does not terminate on interface token ids.
-        /// </summary>
-        /// <param name="tokenTypes"></param>
-        /// <returns></returns>
-        public MetadataTokenName SelectDistinct(MetadataTokenType tokenTypes)
-        {
-            //replace any byRef terminating nodes with their fully expander counterpart
-            ReassignAllByRefs();
-            ReassignAllInterfaceTokens(tokenTypes);
-
-            return new MetadataTokenName
-            {
-                Items = SelectDistinctShallowArray(),
-                Name = NfSettings.DefaultTypeSeparator.ToString()
-            };
-        }
-
-        /// <summary>
-        /// Helper method to get just the distinct, flatten array of names in the whole of 
-        /// the tree.
-        /// </summary>
-        /// <returns></returns>
-        public string[] SelectNames()
-        {
-            var t = this.SelectDistinct();
-            return t.Count <= 0 ? new string[0] : t.Items.Select(v => v.Name).ToArray();
-        }
-
-        /// <summary>
-        /// Reassigns every interface token name with its concrete counterpart when applicable.
-        /// </summary>
-        /// <param name="tokenTypes">
-        /// A root token type whose Items are all possible types in all assemblies.
-        /// </param>
-        /// <param name="reportProgress">
-        /// Optional, allows caller to get feedback on progress since this takes some time to run.
-        /// </param>
-        /// <param name="foreignAssembly">See annotations on GetImplementorDictionary</param>
-        /// <remarks>
-        /// The idea is that having a call-stack terminating on an interface token may
-        /// not be the end since the given interface only has but one implementation.
-        /// The call-stack can be further expanded by swapping the interface token with
-        /// its concrete implementation.
-        /// </remarks>
-        public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes,
-            Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
-        {
-            var dict = GetImplementorDictionary(tokenTypes, reportProgress, foreignAssembly);
-            if (foreignAssembly != null && (dict == null || !dict.Any()))
-            {
-                reportProgress?.Invoke(new ProgressMessage
-                {
-                    Activity = "secondAttempt",
-                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
-                    ProgressCounter = Etc.CalcProgressCounter(0, 100),
-                    Status = "Making second attempt in reverse order"
-                });
-                dict = foreignAssembly.GetImplementorDictionary(tokenTypes, reportProgress, this);
-            }
-
-            ReassignTokens(dict, reportProgress);
-        }
-
-        /// <summary>
-        /// Gets an copy of this instance less its <see cref="Items"/>
-        /// </summary>
-        /// <returns></returns>
-        public MetadataTokenName GetShallowCopy()
-        {
-            return new MetadataTokenName
-            {
-                Name = Name,
-                DeclTypeId = DeclTypeId,
-                Id = Id,
-                IsByRef = IsByRef,
-                Label = Label,
-                OwnAsmIdx = OwnAsmIdx,
-                RslvAsmIdx = RslvAsmIdx
-            };
         }
 
         /// <summary>
@@ -369,7 +277,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </param>
         /// <returns></returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal MetadataTokenName BindTree2Names(MetadataTokenId tokenIds, Action<ProgressMessage> reportProgress = null)
+        internal MetadataTokenName BindTokens2Names(MetadataTokenId tokenIds, Action<ProgressMessage> reportProgress = null)
         {
             if (tokenIds?.Items == null || !tokenIds.Items.Any())
                 return this;
@@ -386,16 +294,16 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{tokenId.Id}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(counter, total),
-                    Status = "Applying token name to token ids"
+                    Status = "\nApplying token name to token ids"
                 });
                 counter += 1;
-                nameMapping.Add(GetNames(tokenId));
+                nameMapping.Add(BindToken2Name(tokenId));
             }
             return new MetadataTokenName { Items = nameMapping.ToArray() };
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal MetadataTokenName GetNames(MetadataTokenId tokenId)
+        internal MetadataTokenName BindToken2Name(MetadataTokenId tokenId)
         {
             if (tokenId == null || Items == null)
                 return null;
@@ -416,7 +324,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var hs = new List<MetadataTokenName>();
             foreach (var tToken in tokenId.Items)
             {
-                var nmTokens = GetNames(tToken);
+                var nmTokens = BindToken2Name(tToken);
                 if (nmTokens == null)
                     continue;
                 hs.Add(nmTokens);
@@ -427,6 +335,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return nm;
         }
 
+        /// <summary>
+        /// Converts a token names, in a tree data structure, into its
+        /// token id equiv.
+        /// </summary>
+        /// <returns></returns>
         public MetadataTokenId Convert2MetadataTokenId()
         {
             return new MetadataTokenId
@@ -438,54 +351,21 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Determines, by naming pattern, if the current name was derived from <see cref="MethodInfo"/>
+        /// Gets an copy of this instance less its <see cref="Items"/>
         /// </summary>
         /// <returns></returns>
-        public bool IsMethodName()
+        public MetadataTokenName GetShallowCopy()
         {
-            return !String.IsNullOrWhiteSpace(Name) 
-                   && Name.Contains(Constants.TYPE_METHOD_NAME_SPLIT_ON) 
-                   && Name.Contains("(") 
-                   && Name.Contains(")");
-        }
-
-        public bool IsTypeName()
-        {
-            return !String.IsNullOrWhiteSpace(Name)
-                   && !String.IsNullOrWhiteSpace(Label)
-                   && String.Equals("RuntimeType", Label);
-        }
-
-        /// <summary>
-        /// Asserts if even one token name at any depth is by-ref
-        /// </summary>
-        /// <returns></returns>
-        public bool IsAnyByRef()
-        {
-
-            if (IsByRef)
-                return true;
-            if (Items == null || !Items.Any())
-                return false;
-            //use prev. cache if avail
-            if (_anyByRef != null)
-                return _anyByRef.Value;
-            foreach (var i in Items)
+            return new MetadataTokenName
             {
-                if (i.IsByRef)
-                {
-                    _anyByRef = true;
-                    return true;
-                }
-
-                if (i.IsAnyByRef())
-                {
-                    _anyByRef = true;
-                    return true;
-                }
-            }
-            _anyByRef = false;
-            return false;
+                Name = Name,
+                DeclTypeId = DeclTypeId,
+                Id = Id,
+                IsByRef = IsByRef,
+                Label = Label,
+                OwnAsmIdx = OwnAsmIdx,
+                RslvAsmIdx = RslvAsmIdx
+            };
         }
 
         /// <summary>
@@ -543,88 +423,36 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Asserts that the part of the token name which
-        /// matches the assembly name is omitted.
-        /// </summary>
-        /// <returns></returns>
-        public bool IsPartialName()
-        {
-            return !String.IsNullOrWhiteSpace(Name) &&
-                   Name.StartsWith(NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture));
-        }
-
-        /// <summary>
         /// Finds the first matching token name which is <see cref="IsByRef"/> false.
         /// </summary>
         /// <param name="tokenName"></param>
+        /// <param name="callStack"></param>
         /// <returns></returns>
-        public MetadataTokenName FirstByVal(MetadataTokenName tokenName)
+        public MetadataTokenName GetFirstByVal(MetadataTokenName tokenName, Stack<MetadataTokenName> callStack = null)
         {
             if (tokenName == null)
                 return null;
-
+            callStack = callStack ?? new Stack<MetadataTokenName>();
             if (_comparer.Equals(tokenName, this) && !IsByRef)
                 return this;
             if (Items == null || !Items.Any())
                 return null;
+            if (callStack.Count > 0 && callStack.Any(v => _comparer.Equals(v, this)))
+                return null;
 
+            ThrowOnMaxDepth(callStack);
+            callStack.Push(this);
             foreach (var nm in Items)
             {
-                var matched = nm.FirstByVal(tokenName);
+                var matched = nm.GetFirstByVal(tokenName, callStack);
                 if (matched != null)
                 {
                     return matched;
                 }
             }
 
-            return null;
-        }
-
-        /// <summary>
-        /// Reassigns any member in <see cref="Items"/> to the <see cref="tokenName"/>
-        /// if they having matching names.
-        /// </summary>
-        /// <param name="tokenName"></param>
-        /// <param name="newName">
-        /// Optional, what the matching name is reassigned to, defaults to the <see cref="tokenName"/> if null.
-        /// </param>
-        /// <param name="callStack">
-        /// Used internally to detect infinite loops
-        /// </param>
-        public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null,
-            Stack<MetadataTokenName> callStack = null)
-        {
-            if (tokenName == null)
-                return;
-            callStack = callStack ?? new Stack<MetadataTokenName>();
-            newName = newName ?? tokenName;
-            if (callStack.Count > 0 && callStack.Any(v => _comparer.Equals(v, this)))
-            {
-                return;
-            }
-
-            if (Items == null || !Items.Any())
-                return;
-
-            callStack.Push(this);
-
-            for (var i = 0; i < Items.Length; i++)
-            {
-                if (_comparer.Equals(Items[i], this))
-                    continue;
-                if (callStack.Count > 0 && callStack.Any(v => _comparer.Equals(v, Items[i])))
-                    continue;
-
-                if (_comparer.Equals(Items[i], tokenName))
-                {
-                    Items[i] = newName;
-                    continue;
-                }
-
-                Items[i].ReassignAnyItemsByName(tokenName, newName, callStack);
-            }
-
             callStack.Pop();
+            return null;
         }
 
         /// <summary>
@@ -677,43 +505,17 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (Items == null || !Items.Any())
                 return;
 
-            if (callStack.Any(v => _comparer.Equals(v, this)))
+            if (callStack.Count > 0 && callStack.Any(v => _comparer.Equals(v, this)))
                 return;
+
+            ThrowOnMaxDepth(callStack);
             callStack.Push(this);
             foreach (var nm in Items)
             {
                 nm.GetAllDeclNames(tokenType, tokenNames, callStack);
             }
-
             callStack.Pop();
-        }
 
-        public override bool Equals(object obj)
-        {
-            var mtnObj = obj as MetadataTokenName;
-            if (mtnObj == null)
-                return false;
-
-            return GetHashCode() == mtnObj.GetHashCode();
-        }
-
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode() + GetNameHashCode() + OwnAsmIdx.GetHashCode();
-        }
-
-        /// <summary>
-        /// Gets the hashcode of just the <see cref="Name"/>
-        /// </summary>
-        /// <returns></returns>
-        public int GetNameHashCode()
-        {
-            return Name?.GetHashCode() ?? (Id.GetHashCode() + OwnAsmIdx.GetHashCode());
-        }
-
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
         }
 
         /// <summary>
@@ -819,6 +621,252 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         public string[] GetUniqueTypeNames()
         {
             return Items.Select(n => n.GetTypeName()).Distinct().ToArray();
+        }
+
+        /// <summary>
+        /// Locates all the interface types in <see cref="tokenTypes"/>, finds the belonging 
+        /// token names thereof, with likewise concrete counterpart.
+        /// </summary>
+        /// <param name="tokenTypes">
+        /// A root token type whose Items are all possible types in all assemblies.
+        /// </param>
+        /// <param name="reportProgress">
+        /// Optional, allows caller to get feedback on progress since this takes some time to run.
+        /// </param>
+        /// <param name="foreignAssembly">See annotation on this methods overload</param>
+        /// <returns>
+        /// Dictionary where the keys are the concrete implementation, values are the interface token names
+        /// </returns>
+        public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType tokenTypes,
+            Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
+        {
+            var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
+            if (tokenTypes?.Items == null)
+                return n2n;
+            var reassignInterfaces = tokenTypes.GetAllInterfacesWithSingleImplementor();
+            if (reassignInterfaces == null || !reassignInterfaces.Any())
+                return n2n;
+            var totalLen = reassignInterfaces.Length;
+
+            if (_implementorDictionary != null)
+                return _implementorDictionary;
+
+            for (var i = 0; i < totalLen; i++)
+            {
+                var ri = reassignInterfaces[i];
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{ri.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = "\nGetting interface-to-implementation"
+                });
+                var cri = tokenTypes.GetFirstInterfaceImplementor(ri);
+                if (cri == null)
+                    continue;
+
+                var temp = GetImplementorDictionary(ri, cri, foreignAssembly);
+
+                if (temp == null || !temp.Any())
+                    continue;
+
+                foreach (var key in temp.Keys)
+                {
+                    if (n2n.ContainsKey(key))
+                        n2n[key] = temp[key];
+                    else
+                        n2n.Add(key, temp[key]);
+                }
+            }
+            if (n2n.Any())
+                _implementorDictionary = n2n;
+            return n2n;
+        }
+
+        /// <summary>
+        /// Gets a dictionary of token names whose keys are the interface&apos;s token while
+        /// the values are the concret implementation thereof.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="concreteType"></param>
+        /// <param name="foreignAssembly">
+        /// The typical use is that the interface and its implementation are both defined 
+        /// within the scope of the analysis.  However, it may be the case that this assembly
+        /// only knows the concrete type and the use of the interface is found in some foreign 
+        /// assembly (or vice versa). Therefore, in order to resolve the dictionary, in this case,
+        /// the caller must pass in the token name analysis of the foreign assembly.
+        /// </param>
+        /// <returns></returns>
+        protected internal Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
+            MetadataTokenType concreteType, MetadataTokenName foreignAssembly = null)
+        {
+            var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
+            var interfaceNames = new List<MetadataTokenName>();
+            var concreteNames = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return n2n;
+
+            foreach (var nm in Items)
+            {
+                nm.GetAllDeclNames(interfaceType, interfaceNames);
+                nm.GetAllDeclNames(concreteType, concreteNames);
+            }
+
+            if (!interfaceNames.Any() && foreignAssembly?.Items != null)
+            {
+                foreach (var nm in foreignAssembly.Items)
+                {
+                    nm.GetAllDeclNames(interfaceType, interfaceNames);
+                }
+            }
+
+            if (!concreteNames.Any() && foreignAssembly?.Items != null)
+            {
+                foreach (var nm in foreignAssembly.Items)
+                {
+                    nm.GetAllDeclNames(concreteType, concreteNames);
+                }
+            }
+
+            if (!interfaceNames.Any() || !concreteNames.Any())
+                return n2n;
+
+            //get a mapping of concrete to interface
+            foreach (var concreteName in concreteNames)
+            {
+                if (!concreteName.IsMethodName())
+                    continue;
+
+                foreach (var interfaceName in interfaceNames)
+                {
+                    if (!MemberNameAndArgsEqual(interfaceName, concreteName))
+                        continue;
+
+                    if (n2n.ContainsKey(interfaceName))
+                    {
+                        n2n[interfaceName] = concreteName;
+                    }
+                    else
+                    {
+                        n2n.Add(interfaceName, concreteName);
+                    }
+
+                    break;
+                }
+            }
+
+            return n2n;
+        }
+
+        /// <summary>
+        /// Gets a flat, distinct, shallow root-level token names whose Items represent the collection.
+        /// </summary>
+        /// <returns></returns>
+        public MetadataTokenName SelectDistinct()
+        {
+            return new MetadataTokenName
+            {
+                Items = SelectDistinctShallowArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
+        }
+
+        protected internal MetadataTokenName[] SelectDistinctShallowArray(Stack<MetadataTokenName> callStack = null)
+        {
+            callStack = callStack ?? new Stack<MetadataTokenName>();
+            var innerItems = new List<MetadataTokenName> { GetShallowCopy() };
+            if (Items == null || !Items.Any())
+                return innerItems.ToArray();
+            if (callStack.Count > 0 && callStack.Any(v => !v.IsRoot() && _comparer.Equals(v, this)))
+                return innerItems.ToArray();
+            ThrowOnMaxDepth(callStack);
+            callStack.Push(this);
+            foreach (var item in Items)
+            {
+                if (item.IsRoot())
+                    continue;
+                innerItems.AddRange(item.SelectDistinctShallowArray(callStack));
+            }
+            callStack.Pop();
+
+            return innerItems.Distinct(_comparer).Cast<MetadataTokenName>().Select(v => v.GetShallowCopy()).ToArray();
+        }
+
+        /// <summary>
+        /// Selectively gets the flatten call stack for the given type-method pair
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="methodName"></param>
+        /// <returns>
+        /// A single token name whose Items represent the full extent of its call stack. 
+        /// </returns>
+        public MetadataTokenName SelectDistinct(string typeName, string methodName)
+        {
+            var df = new MetadataTokenName
+            {
+                Items = new MetadataTokenName[] { },
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
+            if (string.IsNullOrWhiteSpace(typeName))
+                return df;
+            methodName = methodName ?? "";
+            if (methodName.Contains("("))
+                methodName = methodName.Substring(0, methodName.IndexOf('('));
+
+            //want to avoid an interface type 
+            var tokenName = SelectTheseTypeNames(typeName);
+
+            if (tokenName == null)
+                return df;
+
+            var names = new List<MetadataTokenName>();
+            if (string.IsNullOrWhiteSpace(methodName) || tokenName.Items == null || !tokenName.Items.Any())
+            {
+                names.Add(this);
+                df.Items = names.ToArray();
+                return df;
+            }
+
+            foreach (var t in tokenName.Items)
+            {
+                //match on overloads
+                if (t.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("))
+                    names.Add(t);
+            }
+
+            df.Items = names.Distinct(_comparer).Cast<MetadataTokenName>().ToArray();
+            return df.SelectDistinct();
+        }
+
+        /// <summary>
+        /// Another flavor of distinct where an interface with only one implementation
+        /// will have its tokens replace with its concrete counterpart.  Therefore,
+        /// the call-stack is fuller since is does not terminate on interface token ids.
+        /// </summary>
+        /// <param name="tokenTypes"></param>
+        /// <returns></returns>
+        public MetadataTokenName SelectDistinct(MetadataTokenType tokenTypes)
+        {
+            //replace any byRef terminating nodes with their fully expander counterpart
+            ReassignAllByRefs();
+            ReassignAllInterfaceTokens(tokenTypes);
+
+            return new MetadataTokenName
+            {
+                Items = SelectDistinctShallowArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
+        }
+
+        /// <summary>
+        /// Helper method to get just the distinct, flatten array of names in the whole of 
+        /// the tree.
+        /// </summary>
+        /// <returns></returns>
+        public string[] SelectNames()
+        {
+            var t = this.SelectDistinct();
+            return t.Count <= 0 ? new string[0] : t.Items.Select(v => v.Name).ToArray();
         }
 
         /// <summary>
@@ -935,7 +983,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     MetadataTokenName byVal = null;
                     foreach (var nm in Items)
                     {
-                        byVal = nm.FirstByVal(byRef);
+                        byVal = nm.GetFirstByVal(byRef);
                         if (byVal == null)
                             continue;
                         byVals.Add(byVal);
@@ -961,7 +1009,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{byVal.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "Reassigning all by ref names"
+                    Status = "\nReassigning all by ref names"
                 });
                 foreach (var nm in Items)
                 {
@@ -969,141 +1017,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 }
 
             }
-        }
-
-        /// <summary>
-        /// Locates all the interface types in <see cref="tokenTypes"/>, finds the belonging 
-        /// token names thereof, with likewise concrete counterpart.
-        /// </summary>
-        /// <param name="tokenTypes">
-        /// A root token type whose Items are all possible types in all assemblies.
-        /// </param>
-        /// <param name="reportProgress">
-        /// Optional, allows caller to get feedback on progress since this takes some time to run.
-        /// </param>
-        /// <param name="foreignAssembly">See annotation on this methods overload</param>
-        /// <returns>
-        /// Dictionary where the keys are the concrete implementation, values are the interface token names
-        /// </returns>
-        public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType tokenTypes,
-            Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
-        {
-            var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
-            if (tokenTypes?.Items == null)
-                return n2n;
-            var reassignInterfaces = tokenTypes.GetAllInterfacesWithSingleImplementor();
-            if (reassignInterfaces == null || !reassignInterfaces.Any())
-                return n2n;
-            var totalLen = reassignInterfaces.Length;
-
-            if (_implementorDictionary != null)
-                return _implementorDictionary;
-
-            for (var i = 0; i < totalLen; i++)
-            {
-                var ri = reassignInterfaces[i];
-                reportProgress?.Invoke(new ProgressMessage
-                {
-                    Activity = $"{ri.Name}",
-                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
-                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "Getting interface-to-implementation"
-                });
-                var cri = tokenTypes.FirstInterfaceImplementor(ri);
-                if (cri == null)
-                    continue;
-
-                var temp = GetImplementorDictionary(ri, cri, foreignAssembly);
-
-                if (temp == null || !temp.Any())
-                    continue;
-
-                foreach (var key in temp.Keys)
-                {
-                    if (n2n.ContainsKey(key))
-                        n2n[key] = temp[key];
-                    else
-                        n2n.Add(key, temp[key]);
-                }
-            }
-            if(n2n.Any())
-                _implementorDictionary = n2n;
-            return n2n;
-        }
-
-        /// <summary>
-        /// Gets a dictionary of token names whose keys are the interface&apos;s token while
-        /// the values are the concret implementation thereof.
-        /// </summary>
-        /// <param name="interfaceType"></param>
-        /// <param name="concreteType"></param>
-        /// <param name="foreignAssembly">
-        /// The typical use is that the interface and its implementation are both defined 
-        /// within the scope of the analysis.  However, it may be the case that this assembly
-        /// only knows the concrete type and the use of the interface is found in some foreign 
-        /// assembly (or vice versa). Therefore, in order to resolve the dictionary, in this case,
-        /// the caller must pass in the token name analysis of the foreign assembly.
-        /// </param>
-        /// <returns></returns>
-        protected internal Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType interfaceType,
-            MetadataTokenType concreteType, MetadataTokenName foreignAssembly = null)
-        {
-            var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
-            var interfaceNames = new List<MetadataTokenName>();
-            var concreteNames = new List<MetadataTokenName>();
-            if (Items == null || !Items.Any())
-                return n2n;
-
-            foreach (var nm in Items)
-            {
-                nm.GetAllDeclNames(interfaceType, interfaceNames);
-                nm.GetAllDeclNames(concreteType, concreteNames);
-            }
-
-            if (!interfaceNames.Any() && foreignAssembly?.Items != null)
-            {
-                foreach (var nm in foreignAssembly.Items)
-                {
-                    nm.GetAllDeclNames(interfaceType, interfaceNames);
-                }
-            }
-
-            if (!concreteNames.Any() && foreignAssembly?.Items != null)
-            {
-                foreach (var nm in foreignAssembly.Items)
-                {
-                    nm.GetAllDeclNames(concreteType, concreteNames);
-                }
-            }
-
-            if (!interfaceNames.Any() || !concreteNames.Any())
-                return n2n;
-
-            //get a mapping of concrete to interface
-            foreach (var concreteName in concreteNames)
-            {
-                if (!concreteName.IsMethodName())
-                    continue;
-
-                foreach (var interfaceName in interfaceNames)
-                {
-                    if (!MemberNameAndArgsEqual(interfaceName, concreteName))
-                        continue;
-
-                    if (n2n.ContainsKey(interfaceName))
-                    {
-                        n2n[interfaceName] = concreteName;
-                    }
-                    else
-                    {
-                        n2n.Add(interfaceName, concreteName);
-                    }
-                        
-                    break;
-                }
-            }
-
-            return n2n;
         }
 
         /// <summary>
@@ -1138,7 +1051,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{interfaceName}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(counter, total),
-                    Status = "Reassigning interface tokens"
+                    Status = "\nReassigning interface tokens"
                 });
                 var concreteName = n2n[interfaceName];
                 counter += 1;
@@ -1146,7 +1059,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     continue;
                 //look it up if the items are missing
                 var concreteNameLi = concreteName.Items == null || !concreteName.Items.Any()
-                    ? (FirstByVal(concreteName) ?? concreteName)
+                    ? (GetFirstByVal(concreteName) ?? concreteName)
                     : concreteName;
                 foreach (var nm in Items)
                 {
@@ -1155,28 +1068,90 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
         }
 
-        internal static bool MemberNameAndArgsEqual(MetadataTokenName a1, MetadataTokenName a2)
+        /// <summary>
+        /// Reassigns any member in <see cref="Items"/> to the <see cref="tokenName"/>
+        /// if they having matching names.
+        /// </summary>
+        /// <param name="tokenName"></param>
+        /// <param name="newName">
+        /// Optional, what the matching name is reassigned to, defaults to the <see cref="tokenName"/> if null.
+        /// </param>
+        /// <param name="callStack">
+        /// Used internally to detect infinite loops
+        /// </param>
+        public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null,
+            Stack<MetadataTokenName> callStack = null)
         {
-            if (a1 == null || a2 == null)
-                return false;
-            var a1MemberName = a1.GetMemberName();
-            var a2MemberName = a2.GetMemberName();
-            if (!string.Equals(a1MemberName, a2MemberName))
-                return false;
-            var a1Args = string.Join(",",ParseArgsFromTokenName(a1.Name) ?? new[] {""});
-            var a2Args = string.Join(",", ParseArgsFromTokenName(a2.Name) ?? new[] {""});
+            if (tokenName == null)
+                return;
+            Func<MetadataTokenName, MetadataTokenName, bool> nameOrRefEq = (v, t) =>
+                ReferenceEquals(v, t) || _comparer.Equals(v, t);
 
-            var someVal =  string.Equals(a1Args, a2Args);
-            return someVal;
+            callStack = callStack ?? new Stack<MetadataTokenName>();
+            newName = newName ?? tokenName;
+            if (callStack.Count > 0 && callStack.Any(v => nameOrRefEq(v,this)))
+            {
+                return;
+            }
+
+            if (Items == null || !Items.Any())
+                return;
+
+            ThrowOnMaxDepth(callStack);
+            callStack.Push(this);
+
+            for (var i = 0; i < Items.Length; i++)
+            {
+                if (nameOrRefEq(Items[i], this))
+                    continue;
+                if (callStack.Count > 0 && callStack.Any(v => nameOrRefEq(Items[i], v)))
+                    continue;
+
+                if (_comparer.Equals(Items[i], tokenName))
+                {
+                    Items[i] = newName;
+                    continue;
+                }
+
+                Items[i].ReassignAnyItemsByName(tokenName, newName, callStack);
+            }
+
+            callStack.Pop();
         }
 
-        internal static bool TypeNameEquals(MetadataTokenType tokenType, MetadataTokenName tokenName)
+        /// <summary>
+        /// Reassigns every interface token name with its concrete counterpart when applicable.
+        /// </summary>
+        /// <param name="tokenTypes">
+        /// A root token type whose Items are all possible types in all assemblies.
+        /// </param>
+        /// <param name="reportProgress">
+        /// Optional, allows caller to get feedback on progress since this takes some time to run.
+        /// </param>
+        /// <param name="foreignAssembly">See annotations on GetImplementorDictionary</param>
+        /// <remarks>
+        /// The idea is that having a call-stack terminating on an interface token may
+        /// not be the end since the given interface only has but one implementation.
+        /// The call-stack can be further expanded by swapping the interface token with
+        /// its concrete implementation.
+        /// </remarks>
+        public void ReassignAllInterfaceTokens(MetadataTokenType tokenTypes,
+            Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
         {
-            if (tokenName == null || tokenType == null)
-                return false;
-            if (string.Equals(tokenType.Name, tokenName.GetTypeName()))
-                return true;
-            return false;
+            var dict = GetImplementorDictionary(tokenTypes, reportProgress, foreignAssembly);
+            if (foreignAssembly != null && (dict == null || !dict.Any()))
+            {
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = "secondAttempt",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(0, 100),
+                    Status = "\nMaking second attempt in reverse order"
+                });
+                dict = foreignAssembly.GetImplementorDictionary(tokenTypes, reportProgress, this);
+            }
+
+            ReassignTokens(dict, reportProgress);
         }
 
         /// <summary>
@@ -1247,10 +1222,56 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             Items = names.ToArray();
         }
 
-        internal void RemoveClrAndEmptyNames()
+        public override bool Equals(object obj)
         {
-            RemoveClrGeneratedNames();
-            RemoveEmptyNames();
+            var mtnObj = obj as MetadataTokenName;
+            if (mtnObj == null)
+                return false;
+
+            return GetHashCode() == mtnObj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode() + GetNameHashCode() + OwnAsmIdx.GetHashCode();
+        }
+
+        /// <summary>
+        /// Gets the hashcode of just the <see cref="Name"/>
+        /// </summary>
+        /// <returns></returns>
+        public int GetNameHashCode()
+        {
+            return Name?.GetHashCode() ?? (Id.GetHashCode() + OwnAsmIdx.GetHashCode());
+        }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
+        internal static bool MemberNameAndArgsEqual(MetadataTokenName a1, MetadataTokenName a2)
+        {
+            if (a1 == null || a2 == null)
+                return false;
+            var a1MemberName = a1.GetMemberName();
+            var a2MemberName = a2.GetMemberName();
+            if (!string.Equals(a1MemberName, a2MemberName))
+                return false;
+            var a1Args = string.Join(",", ParseArgsFromTokenName(a1.Name) ?? new[] { "" });
+            var a2Args = string.Join(",", ParseArgsFromTokenName(a2.Name) ?? new[] { "" });
+
+            var someVal = string.Equals(a1Args, a2Args);
+            return someVal;
+        }
+
+        internal static bool TypeNameEquals(MetadataTokenType tokenType, MetadataTokenName tokenName)
+        {
+            if (tokenName == null || tokenType == null)
+                return false;
+            if (string.Equals(tokenType.Name, tokenName.GetTypeName()))
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -1328,6 +1349,36 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             methodName = methodName.Substring(0, methodName.IndexOf('(')).Trim();
             return methodName;
+        }
+
+        /// <summary>
+        /// An attempt to keep the process from crashing with a stack overflow by detecting 
+        /// such conditions before it goes.
+        /// </summary>
+        /// <param name="callStack"></param>
+        /// <param name="maxDepth"></param>
+        internal static void ThrowOnMaxDepth(Stack<MetadataTokenName> callStack, int maxDepth = 967)
+        {
+            var depth = callStack?.Count ?? 0;
+            maxDepth = maxDepth < 0 ? 967 : maxDepth;
+            if (depth + 1 < maxDepth)
+                return;
+
+            var msg = new System.Text.StringBuilder();
+            msg.AppendLine("The current depth is one away from blowing out the stack.");
+            if (callStack != null && callStack.Any())
+            {
+                msg.AppendLine("Here are the names of the previous 32 tokens " +
+                               "pushed on the stack, starting at the top:");
+                for (var i = 0; i < 32; i++)
+                {
+                    var nxt = callStack.Pop();
+                    var name = nxt?.Name ?? "null";
+                    msg.AppendLine($"[{i + 1}] {name}");
+                }
+            }
+
+            throw new Safuas(msg.ToString());
         }
     }
 }

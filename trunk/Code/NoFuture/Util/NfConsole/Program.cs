@@ -130,16 +130,9 @@ namespace NoFuture.Util.NfConsole
                     return;
                 var currentState = new Tuple<int, string>(pMsg.ProgressCounter, pMsg.Status);
 
-                if (ProgressMessageState == null)
+                if (ProgressMessageState == null || currentState.Item2 != ProgressMessageState.Item2)
                 {
-                    Console.WriteLine(currentState.Item2);
-                    ProgressMessageState = currentState;
-                    return;
-                }
-                if (currentState.Item2 != ProgressMessageState.Item2)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine(currentState.Item2);
+                    PrintToConsole(currentState.Item2);
                     ProgressMessageState = currentState;
                     return;
                 }
@@ -192,7 +185,11 @@ namespace NoFuture.Util.NfConsole
 
         public void PrintToLog(string someString)
         {
-            File.AppendAllText(LogFile, $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}\n");
+            var v = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}";
+            if (!v.EndsWith("\n"))
+                v += "\n";
+
+            File.AppendAllText(LogFile, v);
         }
 
         /// <summary>
@@ -206,23 +203,21 @@ namespace NoFuture.Util.NfConsole
                 try
                 {
                     Console.WriteLine();
-                    var msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.GetType().FullName}";
-                    File.AppendAllText(LogFile, $"{msg}\n");
+                    PrintToLog(ex.GetType().FullName);
 
                     if (_isVisable)
-                        Console.WriteLine(msg);
+                        Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.GetType().FullName}");
 
                     Console.WriteLine();
-                    msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.Message}";
-                    File.AppendAllText(LogFile, $"{msg}\n");
+                    PrintToLog(ex.Message);
 
                     if (_isVisable)
-                        Console.WriteLine(msg);
+                        Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.Message}");
 
-                    msg = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.StackTrace}";
-                    File.AppendAllText(LogFile, $"{msg}\n");
+                    Console.WriteLine();
+                    PrintToLog(ex.StackTrace);
                     if (_isVisable)
-                        Console.WriteLine(msg);
+                        Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {ex.StackTrace}");
 
                     if (ex.InnerException != null)
                         PrintToConsole(ex.InnerException);
