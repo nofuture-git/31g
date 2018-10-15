@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -85,6 +86,37 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
             return null;
         }
 
+        public static Tuple<string,int> GetAssemblyPathFromRoot(string folderPath, string typeName)
+        {
+            if (string.IsNullOrWhiteSpace(folderPath) || !Directory.Exists(folderPath))
+                return null;
+
+            var di = new DirectoryInfo(folderPath);
+            var name2Score = new Dictionary<string, int>();
+            foreach (var d in di.EnumerateFileSystemInfos())
+            {
+                if (!new[] { ".dll", ".exe" }.Contains(d.Extension))
+                    continue;
+                var dAsmName = AssemblyName.GetAssemblyName(d.FullName);
+                //length of the name less this assembly as a namespace
+                var dSimpleAsmName = dAsmName.Name;
+                var lenLessAsmName = typeName.Replace(dSimpleAsmName, "").Length;
+                if (name2Score.ContainsKey(d.FullName))
+                {
+                    if(name2Score[d.FullName] < lenLessAsmName)
+                        name2Score[d.FullName] = lenLessAsmName;
+                }
+                else
+                {
+                    name2Score.Add(d .FullName, lenLessAsmName);
+                }
+            }
+
+            var minLen = name2Score.Select(kv => kv.Value).Min();
+            var path = name2Score.FirstOrDefault(kv => kv.Value == minLen).Key;
+            return new Tuple<string, int>(path, minLen);
+        }
+
         public string GetAssemblyPathFromRoot(string[] folders, int idx)
         {
             if (folders == null || !folders.Any())
@@ -98,6 +130,33 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
             }
 
             return null;
+        }
+
+        public static string GetAssemblyPathFromRoot(string[] folders, string typeName)
+        {
+            if (folders == null || !folders.Any())
+                return null;
+
+            var name2Score = new Dictionary<string, int>();
+            foreach (var f in folders)
+            {
+                var m = GetAssemblyPathFromRoot(f, typeName);
+                if (m != null)
+                {
+                    if (name2Score.ContainsKey(m.Item1))
+                    {
+                        if (name2Score[m.Item1] < m.Item2)
+                            name2Score[m.Item1] = m.Item2;
+                    }
+                    else
+                    {
+                        name2Score.Add(m.Item1, m.Item2);
+                    }
+                }
+            }
+
+            var minLen = name2Score.Select(kv => kv.Value).Min();
+            return name2Score.FirstOrDefault(kv => kv.Value == minLen).Key;
         }
     }
 }

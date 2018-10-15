@@ -122,10 +122,10 @@ namespace NoFuture.Gen
         /// </summary>
         /// <param name="rmCgMems"></param>
         /// <param name="removeEmptyLines">Optional, set to true to not have the results as blank char-for-char</param>
-        public static void RemoveMembers(List<CgMember> rmCgMems, bool removeEmptyLines = false)
+        public static string[] RemoveMembers(List<CgMember> rmCgMems, bool removeEmptyLines = false)
         {
             if (rmCgMems == null || rmCgMems.Count <= 0)
-                return;
+                return new string[0];
 
             var byFile =
                 rmCgMems.Where(
@@ -133,8 +133,8 @@ namespace NoFuture.Gen
                         !string.IsNullOrWhiteSpace(x?.PdbModuleSymbols?.file) && File.Exists(x.PdbModuleSymbols.file))
                     .ToList();
             if (byFile.Count <= 0)
-                return;
-
+                return new string[0];
+            var modifiedFiles = new List<string>();
             foreach (var fl in byFile.Select(x => x.PdbModuleSymbols.file.ToLower()).Distinct())
             {
                 var srcLines = File.ReadAllLines(fl);
@@ -142,12 +142,15 @@ namespace NoFuture.Gen
                     byFile.Where(x => string.Equals(x.PdbModuleSymbols.file, fl, StringComparison.OrdinalIgnoreCase))
                         .ToList();
                 RemoveMembers(srcLines, cgMems, fl);
+                modifiedFiles.Add(fl);
                 if (removeEmptyLines)
                 {
                     System.Threading.Thread.Sleep(50);
                     NfPath.ToDoubleSpaced(fl);
                 }
             }
+
+            return modifiedFiles.ToArray();
         }
 
         /// <summary>
