@@ -712,24 +712,20 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 nm.GetAllDeclNames(concreteType, concreteNames);
             }
 
-            if (!interfaceNames.Any() && foreignAssembly?.Items != null)
+            if (foreignAssembly?.Items != null)
             {
                 foreach (var nm in foreignAssembly.Items)
                 {
                     nm.GetAllDeclNames(interfaceType, interfaceNames);
-                }
-            }
-
-            if (!concreteNames.Any() && foreignAssembly?.Items != null)
-            {
-                foreach (var nm in foreignAssembly.Items)
-                {
                     nm.GetAllDeclNames(concreteType, concreteNames);
                 }
             }
 
             if (!interfaceNames.Any() || !concreteNames.Any())
                 return n2n;
+
+            concreteNames = concreteNames.Distinct(_comparer).Cast<MetadataTokenName>().ToList();
+            interfaceNames = interfaceNames.Distinct(_comparer).Cast<MetadataTokenName>().ToList();
 
             //get a mapping of concrete to interface
             foreach (var concreteName in concreteNames)
@@ -764,12 +760,16 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// matches the pattern.
         /// </summary>
         /// <param name="regexPattern"></param>
+        /// <param name="keepMatchChildItems">
+        /// Will perserve the the child Items array of the token name which matches 
+        /// the pattern
+        /// </param>
         /// <returns></returns>
-        public MetadataTokenName GetTrace(string regexPattern)
+        public MetadataTokenName GetTrace(string regexPattern, bool keepMatchChildItems = false)
         {
             var callQueue = new Queue<MetadataTokenName>();
             
-            var result = GetTrace(regexPattern, callQueue);
+            var result = GetTrace(regexPattern, callQueue, keepMatchChildItems);
 
             if(!result)
                 return new MetadataTokenName();
@@ -789,14 +789,14 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return trace;
         }
 
-        protected internal bool GetTrace(string regexPattern, Queue<MetadataTokenName> callQueue)
+        protected internal bool GetTrace(string regexPattern, Queue<MetadataTokenName> callQueue, bool keepMatchChildItems = false)
         {
             callQueue = callQueue ?? new Queue<MetadataTokenName>();
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(regexPattern))
                 return false;
             if (Regex.IsMatch(Name, regexPattern))
             {
-                callQueue.Enqueue(this.GetShallowCopy());
+                callQueue.Enqueue(keepMatchChildItems ? this : GetShallowCopy());
                 return true;
             }
 
@@ -808,7 +808,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 if (string.IsNullOrWhiteSpace(ni?.Name))
                     continue;
 
-                if (ni.GetTrace(regexPattern, callQueue))
+                if (ni.GetTrace(regexPattern, callQueue, keepMatchChildItems))
                 {
                     callQueue.Enqueue(this);
                     return true;
