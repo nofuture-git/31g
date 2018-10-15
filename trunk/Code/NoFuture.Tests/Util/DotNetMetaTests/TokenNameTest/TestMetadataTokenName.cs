@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
@@ -116,5 +117,16 @@ namespace NoFuture.Util.DotNetMeta.Tests
 
         }
 
+        [Test]
+        public void TestGetTrace()
+        {
+            var tokenData = TestInit.GetTokenData();
+            var testSubject = tokenData.Item3.GetAsRoot();
+            var testResult = testSubject.GetTrace(@"\:\:RegisterParticipant");
+            Assert.IsNotNull(testResult);
+            var asJson = JsonConvert.SerializeObject(testResult, Formatting.Indented);
+            Console.WriteLine(asJson);
+
+        }
     }
 }

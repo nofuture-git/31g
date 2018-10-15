@@ -759,6 +759,66 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
+        /// Helper method to get a sense of a &apos;path&apos; from this 
+        /// token name to some child token (at whatever depth) whose name
+        /// matches the pattern.
+        /// </summary>
+        /// <param name="regexPattern"></param>
+        /// <returns></returns>
+        public MetadataTokenName GetTrace(string regexPattern)
+        {
+            var callQueue = new Queue<MetadataTokenName>();
+            
+            var result = GetTrace(regexPattern, callQueue);
+
+            if(!result)
+                return new MetadataTokenName();
+            var trace = callQueue.Dequeue();
+
+            while(callQueue.Count > 0)
+            {
+                var childItem = trace;
+                trace = callQueue.Dequeue();
+                if (trace == null)
+                    continue;
+                var temp = trace.GetShallowCopy();
+                temp.Items = new[] {childItem};
+                trace = temp;
+            }
+
+            return trace;
+        }
+
+        protected internal bool GetTrace(string regexPattern, Queue<MetadataTokenName> callQueue)
+        {
+            callQueue = callQueue ?? new Queue<MetadataTokenName>();
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(regexPattern))
+                return false;
+            if (Regex.IsMatch(Name, regexPattern))
+            {
+                callQueue.Enqueue(this.GetShallowCopy());
+                return true;
+            }
+
+            if (Items == null || !Items.Any())
+                return false;
+
+            foreach (var ni in Items)
+            {
+                if (string.IsNullOrWhiteSpace(ni?.Name))
+                    continue;
+
+                if (ni.GetTrace(regexPattern, callQueue))
+                {
+                    callQueue.Enqueue(this);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Gets a flat, distinct, shallow root-level token names whose Items represent the collection.
         /// </summary>
         /// <returns></returns>
@@ -1248,6 +1308,15 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
+        }
+
+        /// <summary>
+        /// Same as ToString, only printing the JSON with formatting.
+        /// </summary>
+        /// <returns></returns>
+        public string ToFormattedString()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
         internal static bool MemberNameAndArgsEqual(MetadataTokenName a1, MetadataTokenName a2)

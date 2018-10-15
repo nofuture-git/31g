@@ -40,10 +40,10 @@ namespace NoFuture.Util.DotNetMeta.Tests
                 throw new InvalidOperationException("The specific directory for DotNetMeta unit tests " +
                                                     "was not found.");
             //_jsonFolder = Path.Combine(TestAssembly.DotNetMetaTestRoot, @"TestJsonData");
-            _jsonFolder = @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.Client.Participant";
+            _jsonFolder = @"C:\Projects\We_Nf_Mobile\Refactor\Bfw.BusinessLogic.Service";
             _asmIndicesPath = Path.Combine(_jsonFolder, "GetAsmIndices.json");
             _tokenIdsPath = Path.Combine(_jsonFolder, "GetTokenIds.json");
-            _tokenNamePath = Path.Combine(_jsonFolder, "GetTokenNames.json");
+            _tokenNamePath = Path.Combine(_jsonFolder, "ReassignTokenNames.json");
             _tokenTypesPath = Path.Combine(_jsonFolder, "GetTokenTypes.json");
         }
 
