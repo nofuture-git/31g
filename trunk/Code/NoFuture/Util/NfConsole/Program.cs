@@ -47,7 +47,7 @@ namespace NoFuture.Util.NfConsole
         /// <summary>
         /// Directory location where logs are saved to the file system.
         /// </summary>
-        public string LogDirectory
+        public virtual string LogDirectory
         {
             get
             {
@@ -66,7 +66,7 @@ namespace NoFuture.Util.NfConsole
         /// <summary>
         /// The full name of the processes log file
         /// </summary>
-        public string LogFile
+        public virtual string LogFile
         {
             get
             {
@@ -122,7 +122,7 @@ namespace NoFuture.Util.NfConsole
         /// Does NOT write to <see cref="LogFile"/>.
         /// </summary>
         /// <param name="pMsg"></param>
-        public void PrintToConsole(ProgressMessage pMsg)
+        public virtual void PrintToConsole(ProgressMessage pMsg)
         {
             try
             {
@@ -149,7 +149,7 @@ namespace NoFuture.Util.NfConsole
             }
         }
 
-        public void PrintToConsole()
+        public virtual void PrintToConsole()
         {
             Console.WriteLine();
         }
@@ -159,7 +159,7 @@ namespace NoFuture.Util.NfConsole
         /// </summary>
         /// <param name="someString"></param>
         /// <param name="trunc"></param>
-        public void PrintToConsole(string someString, bool trunc = true)
+        public virtual void PrintToConsole(string someString, bool trunc = true)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace NoFuture.Util.NfConsole
             }
         }
 
-        public void PrintToLog(string someString)
+        public virtual void PrintToLog(string someString)
         {
             var v = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} {someString}";
             if (!v.EndsWith("\n"))
@@ -196,7 +196,7 @@ namespace NoFuture.Util.NfConsole
         /// Prints to console and writes to <see cref="LogFile"/>
         /// </summary>
         /// <param name="ex"></param>
-        public void PrintToConsole(Exception ex)
+        public virtual void PrintToConsole(Exception ex)
         {
             lock (_printLock)
             {
