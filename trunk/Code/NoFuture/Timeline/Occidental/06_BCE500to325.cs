@@ -23,7 +23,7 @@
             judea.AddEntry(445, 435, "Nehemiah governor(445-)");
             judea.AddEntry(331, "Alexander takes Jerusalem(331)");
 
-            var persia = new Block {Ruler = rule, Title = "Persian Empire", Width = 22};
+            var persia = new Block {Ruler = rule, Title = "Persian Empire", Width = 22, EndValue = 330};
             persia.AddEntry(new LeaderEntry("Darius I", new int?[,] {{422, 486}}) {StartValue = 507});
             persia.AddEntry(new LeaderEntry("Xerxes", new int?[,] {{486, 465}}));
             persia.AddEntry(new LeaderEntry("Artaxerxes I", new int?[,] {{465, 424}}));
@@ -109,7 +109,7 @@
             var plate = new Plate {Ruler = rule, Name = "Classical Age of Greece"};
             plate.AddArrow(new Arrow(persia, greece) {StartValue = 490});
             plate.AddArrow(new Arrow(persia, greece) {StartValue = 483});
-            plate.AddArrow(new Arrow(greece, persia) {StartValue = 330, Text = "fall of Persepolis"});
+            plate.AddArrow(new Arrow(greece, persia) {StartValue = 330, Text = "fall of Persepolis (330)"});
             plate.AddBlock(egypt);
             plate.AddBlock(judea);
             plate.AddBlock(persia);

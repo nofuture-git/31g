@@ -25,6 +25,14 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 var subj = rqst.SubjectTokenNames;
                 var frgn = rqst.ForeignTokenNames;
                 var typs = rqst.ForeignTokenTypes;
+                if (subj == null || typs == null)
+                {
+                    return JsonEncodedResponse(new TokenReassignResponse
+                    {
+                        Msg = "Both the SubjectTokenNames and ForeignTokenTypes are required.",
+                        St = MetadataTokenStatus.Error
+                    });
+                }
 
                 subj.ReassignAllInterfaceTokens(typs, MyProgram.PrintToConsole, frgn);
                 var rspn = new TokenReassignResponse {Names = subj.Items};

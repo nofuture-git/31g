@@ -29,7 +29,7 @@
             euro.AddEntry(new LeaderEntry("Pope Gregory", new int?[,] { { 590, 604 } }) {StartValue = 600 });
             euro.AddEntry(new LeaderEntry("Pope Zachary", new int?[,] { { 741, 752 } }));
             euro.AddEntry(new LeaderEntry("Pepin the Short", new int?[,] { { 751, 768 } }));
-            euro.AddEntry(new LeaderEntry("Pope Stephen II", new int?[,] { { 752, 757 } }));
+            euro.AddEntry(new LeaderEntry("Pope Stephen II", new int?[,] {{752, 757}}) {Location = PrintLocation.Right});
             euro.AddEntry(new LeaderEntry("Charlemagne-Holy Roman Emperor", 800));
             euro.AddEntry(new LeaderEntry("Halfdan (the Black) first king of Norway", 800) { StartValue = 805 });
             euro.AddEntry(new LiteraryWorkEntry("Beowulf", "") { StartValue = 675 });
