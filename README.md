@@ -49,9 +49,9 @@ This is my tool box for various SQL queries (currently only MSSQL).
 This is a pair of assemblies which allow for hosting an ASP.NET web app without using IIS.
 
 ##### NoFuture.Gen
-This is a set of assemblies geared for code generation and removal.  This has a dependency on _Dia2Dump_ mentioned above.
+This is a set of assemblies geared for code generation and removal.  This has a dependencies on _Dia2Dump_ and _NoFuture.Antlr_ mentioned above.
 
-##### NoFuture.Hbm
+##### NoFuture.Gen.Hbm
 This is a whole set of tools for generating ORM entities.
 
 ##### NoFuture.Host
