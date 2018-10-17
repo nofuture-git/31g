@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Core;
+using NoFuture.Util.DotNetMeta.TokenName;
 
 namespace NoFuture.Util.DotNetMeta.TokenType
 {
@@ -39,6 +40,11 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         public MetadataTokenType[] Items { get; set; }
 
         /// <summary>
+        /// The member names defined by this type
+        /// </summary>
+        public MetadataTokenName[] AbstractMemberNames { get; set; }
+
+        /// <summary>
         /// Indicates if the original type IsInterface was true when -gt one
         /// </summary>
         public int IsIntfc { get; set; }
@@ -48,11 +54,15 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// </summary>
         public int IsAbsct { get; set; }
 
+        #endregion
+
         /// <summary>
         /// Convenience method to get Items count
         /// </summary>
-        public int Count => Items?.Length ?? 0;
-        #endregion
+        public int Count()
+        {
+            return Items?.Length ?? 0;
+        }
 
         /// <summary>
         /// Indicates if this instance is a list or tree data structure
@@ -65,7 +75,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
 
             foreach (var i in Items)
             {
-                if ((i?.Count ?? 0) > 0)
+                if ((i?.Count() ?? 0) > 0)
                     return false;
             }
 

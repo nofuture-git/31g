@@ -48,7 +48,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                         ProgressCounter = Etc.CalcProgressCounter(counter, total),
                         Status = "Getting top-level types"
                     });
-                    tokens.Add(AssemblyAnalysis.GetMetadataToken(asmType,0));
+                    tokens.Add(AssemblyAnalysis.GetMetadataToken(asmType,0, MyProgram.LogFile));
 
                 }
 

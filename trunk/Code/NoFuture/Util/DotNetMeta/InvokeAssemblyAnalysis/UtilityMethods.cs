@@ -161,7 +161,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
                 return false;
             }
 
-            tokenName = AssemblyAnalysis.ConvertToMetadataTokenName(mi, _myProgram.AsmIndicies, IsIgnore);
+            tokenName = AssemblyAnalysis.ConvertToMetadataTokenName(mi, _myProgram.AsmIndicies, IsIgnore, _myProgram.LogFile);
 
             if (tokenName == null)
             {
@@ -314,7 +314,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
                 }
                 foreach (var info in methodInfos)
                 {
-                    var asTokenName = AssemblyAnalysis.ConvertToMetadataTokenName(info, _myProgram.AsmIndicies, IsIgnore);
+                    var asTokenName = AssemblyAnalysis.ConvertToMetadataTokenName(info, _myProgram.AsmIndicies, IsIgnore, _myProgram.LogFile);
                     if (asTokenName == null || string.IsNullOrWhiteSpace(asTokenName.Name))
                         continue;
                     if (string.Equals(asTokenName.Name, tokenName))

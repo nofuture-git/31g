@@ -316,8 +316,14 @@ namespace NoFuture.Util.DotNetMeta
         /// by both assembly and namespace.
         /// </param>
         /// <param name="isIgnore">optional f(x) pointer for calling assembly to specify some additional rules by token name</param>
+        /// <param name="logFile">
+        /// optional, the path to a log file where any assembly, type, member, method, etc. loader exceptions will be written.
+        /// </param>
+        /// <param name="truncateAsmPartOfName">
+        /// Optional switch to reduce the member name to only what is original.  The prefixed portion can be restored based on the Owning Assembly&apos;s name.
+        /// </param>
         /// <returns></returns>
-        public static MetadataTokenName ConvertToMetadataTokenName(MemberInfo mi, AsmIndexResponse indicies, Func<string, bool> isIgnore)
+        public static MetadataTokenName ConvertToMetadataTokenName(MemberInfo mi, AsmIndexResponse indicies, Func<string, bool> isIgnore, string logFile = null, bool truncateAsmPartOfName = true)
         {
             if (mi == null)
                 return null;
@@ -325,7 +331,7 @@ namespace NoFuture.Util.DotNetMeta
             var localIsIgnore = isIgnore ?? (s => false);
             var localIndicies = indicies ?? new AsmIndexResponse { Asms = new MetadataTokenAsm[0] };
 
-            var tokenName = new MetadataTokenName { Name = mi.Name, Label = mi.GetType().Name };
+            var tokenName = new MetadataTokenName { Name = mi.Name, Label = mi.GetType().Name, DeclTypeId = mi.DeclaringType?.MetadataToken ?? 0, Id = mi.MetadataToken };
 
             string asmQualName;
             string asmName;
@@ -359,7 +365,8 @@ namespace NoFuture.Util.DotNetMeta
                 tokenName.OwnAsmIdx = t.IndexId;
                 return tokenName;
             }
-            if (mi.DeclaringType == null) return tokenName;
+            if (mi.DeclaringType == null)
+                return tokenName;
 
             asmQualName = mi.DeclaringType.Assembly.GetName().FullName;
             //do not send back GAC asm's unless asked
@@ -375,7 +382,7 @@ namespace NoFuture.Util.DotNetMeta
                 return null;
 
             asmName = mi.DeclaringType.Assembly.GetName().Name;
-            expandedName = !string.IsNullOrEmpty(asmName)
+            expandedName = !string.IsNullOrEmpty(asmName) && truncateAsmPartOfName
                 ? (mi.DeclaringType.FullName ?? UNKNOWN_NAME_SUB).Replace($"{asmName}", string.Empty)
                 : mi.DeclaringType.FullName;
             if (!string.Equals(expandedName, tokenName.Name, StringComparison.OrdinalIgnoreCase))
@@ -387,7 +394,7 @@ namespace NoFuture.Util.DotNetMeta
             if (mti == null)
                 return tokenName;
 
-            var mtiParams = mti.GetParameters();
+            var mtiParams = mti.NfGetParameters(false, logFile);
             if (mtiParams.Length <= 0)
             {
                 tokenName.Name = $"{tokenName.Name}()";
@@ -406,7 +413,7 @@ namespace NoFuture.Util.DotNetMeta
                     continue;
                 }
 
-                var paramsGen = param.ParameterType.GetGenericArguments();
+                var paramsGen = param.ParameterType.NfGetGenericArguments(false, logFile);
                 foreach (var genParam in paramsGen)
                 {
                     var asmGenParamName = genParam.AssemblyQualifiedName;
@@ -433,8 +440,11 @@ namespace NoFuture.Util.DotNetMeta
         /// </summary>
         /// <param name="asmType"></param>
         /// <param name="asmIdx"></param>
+        /// <param name="logFile">
+        /// optional, the path to a log file where any assembly, type, member, method, etc. loader exceptions will be written.
+        /// </param>
         /// <returns></returns>
-        public static MetadataTokenId GetMetadataToken(Type asmType, int asmIdx = 0)
+        public static MetadataTokenId GetMetadataToken(Type asmType, int asmIdx = 0, string logFile = null)
         {
             if (asmType == null)
                 return new MetadataTokenId { Items = new MetadataTokenId[0] };
@@ -444,7 +454,7 @@ namespace NoFuture.Util.DotNetMeta
                 Id = asmType.MetadataToken,
                 RslvAsmIdx = asmIdx,
                 Items =
-                    asmType.GetMembers(NfSettings.DefaultFlags)
+                    asmType.NfGetMembers(NfSettings.DefaultFlags, false, logFile)
                         .Select(x => GetMetadataToken(x, true, asmIdx))
                         .Distinct()
                         .ToArray()

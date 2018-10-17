@@ -161,7 +161,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 IsAbsct = cType.IsAbstract ? 1 : 0
             };
             var ttInfcs = new List<MetadataTokenType>();
-            var bType = cType.BaseType;
+            var bType = cType.NfBaseType(false, MyProgram.LogFile);
             if (bType != null)
             {
                 var ttB = GetMetadataTokenType(bType);
@@ -177,6 +177,17 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
             }
 
             tt.Items = ttInfcs.ToArray();
+
+            if (!cType.IsInterface && !cType.IsAbstract)
+                return tt;
+
+            var abstractMethods = cType.NfGetMembers(NfSettings.DefaultFlags, false, MyProgram.LogFile)
+                .Where(mi => (mi as MethodInfo)?.IsAbstract ?? false);
+            if (abstractMethods.Any())
+                tt.AbstractMemberNames = abstractMethods.Select(mi =>
+                        AssemblyAnalysis.ConvertToMetadataTokenName(mi, _asmIndices, null, MyProgram.LogFile, false))
+                    .ToArray();
+
             return tt;
         }
 

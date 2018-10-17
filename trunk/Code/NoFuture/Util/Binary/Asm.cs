@@ -1635,7 +1635,6 @@ namespace NoFuture.Util.Binary
             return null;
         }
 
-
         /// <summary>
         /// Wraps the call to <see cref="Type.GetFields()"/> adding logging 
         /// of typical loader exceptions.
@@ -1687,6 +1686,167 @@ namespace NoFuture.Util.Binary
             return null;
 
         }
+
+        /// <summary>
+        /// Wraps the call to <see cref="MethodInfo.GetParameters()"/> adding logging 
+        /// of typical loader exceptions.
+        /// </summary>
+        /// <param name="mi"></param>
+        /// <param name="rethrow"></param>
+        /// <param name="logFile"></param>
+        /// <returns></returns>
+        public static ParameterInfo[] NfGetParameters(this MethodInfo mi, bool rethrow = true, string logFile = "")
+        {
+            if (mi == null)
+                return new ParameterInfo[]{};
+
+            try
+            {
+                return mi.GetParameters();
+            }
+            catch (ReflectionTypeLoadException rtle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), rtle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), fnfe, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (TypeLoadException tle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), tle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileLoadException fle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), fle);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException bife)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), bife, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (NullReferenceException nre)
+            {
+                //this seems to have something to do with a call to System.Signature.GetSignature
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), nre, logFile);
+                if (rethrow)
+                    throw;
+            }
+
+            return new ParameterInfo[] { };
+        }
+
+        /// <summary>
+        /// Wraps a call to <see cref="Type.GetGenericArguments()"/> adding logging 
+        /// of typical loader exceptions.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="rethrow"></param>
+        /// <param name="logFile"></param>
+        /// <returns></returns>
+        public static Type[] NfGetGenericArguments(this Type t, bool rethrow = true, string logFile = "")
+        {
+            if (t == null)
+                return new Type[]{};
+
+            try
+            {
+                return t.GetGenericArguments();
+            }
+            catch (ReflectionTypeLoadException rtle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (TypeLoadException tle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileLoadException fle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fle);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException bife)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife, logFile);
+                if (rethrow)
+                    throw;
+            }
+
+            return new Type[]{};
+        }
+
+        /// <summary>
+        /// Wraps call to <see cref="Type.GetMembers(BindingFlags)"/> adding logging 
+        /// of typical loader exceptions.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="bindingAttr"></param>
+        /// <param name="rethrow"></param>
+        /// <param name="logFile"></param>
+        /// <returns></returns>
+        public static MemberInfo[] NfGetMembers(this Type t, BindingFlags bindingAttr, bool rethrow = true,
+            string logFile = "")
+        {
+            if(t == null)
+                return new MemberInfo[]{};
+            try
+            {
+                return t.GetMembers(bindingAttr);
+            }
+            catch (ReflectionTypeLoadException rtle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), rtle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fnfe, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (TypeLoadException tle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), tle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileLoadException fle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), fle);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException bife)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(t, null), bife, logFile);
+                if (rethrow)
+                    throw;
+            }
+            return new MemberInfo[] { };
+        }
+
         #endregion
 
         #region internal api

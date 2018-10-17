@@ -71,14 +71,17 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             set => _items = value;
         }
 
-        /// <summary>
-        /// Convenience method to get Items count
-        /// </summary>
-        public int Count => Items?.Length ?? 0;
-
         protected internal Dictionary<MetadataTokenName, MetadataTokenName> ImplementorDictionary =>
             _implementorDictionary;
         #endregion
+
+        /// <summary>
+        /// Convenience method to get Items count
+        /// </summary>
+        public int Count()
+        {
+            return Items?.Length ?? 0;
+        }
 
         /// <summary>
         /// Indicates if this instance is a list or tree data structure
@@ -91,7 +94,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             foreach (var i in Items)
             {
-                if ((i?.Count ?? 0) > 0)
+                if ((i?.Count() ?? 0) > 0)
                     return false;
             }
 
@@ -926,7 +929,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         public string[] SelectNames()
         {
             var t = this.SelectDistinct();
-            return t.Count <= 0 ? new string[0] : t.Items.Select(v => v.Name).ToArray();
+            return t.Count() <= 0 ? new string[0] : t.Items.Select(v => v.Name).ToArray();
         }
 
         /// <summary>

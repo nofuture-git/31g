@@ -102,8 +102,7 @@ namespace NoFuture.Util
             var rqstAsmName = args.Name;
 
             //no obvious way to resolve the dependency so first check around the assembly making the request
-            var asmInNeedOfDependency = args.RequestingAssembly;
-            var locationOfAsmInNeed = asmInNeedOfDependency.Location;
+            var locationOfAsmInNeed = args.RequestingAssembly?.Location;
             lock (AppDomainSearchLock)
             {
                 return Asm.SearchAppDomainForAssembly(rqstAsmName, locationOfAsmInNeed);
@@ -127,8 +126,7 @@ namespace NoFuture.Util
             var rqstAsmName = args.Name;
 
             //no obvious way to resolve the dependency so first check around the assembly making the request
-            var asmInNeedOfDependency = args.RequestingAssembly;
-            var locationOfAsmInNeed = asmInNeedOfDependency.Location;
+            var locationOfAsmInNeed = args.RequestingAssembly?.Location;
             lock (AppDomainSearchLock)
             {
                 return Asm.SearchAppDomainForAssembly(rqstAsmName, locationOfAsmInNeed, false);
