@@ -1222,13 +1222,22 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var callStack = new Stack<MetadataTokenName>();
             //start at top
             var ivItem = this;
-            while (ivItem != null) 
+            while (ivItem != null)
             {
                 var nextItem = ivItem.NextItem();
                 if (nextItem != null)
                 {
-                    callStack.Push(ivItem);
+                    //detect if some parent item is also a child item
+                    if (callStack.Any(v => object.ReferenceEquals(v, nextItem)))
+                    {
+                        nextItem = null;
+                    }
+                    else
+                    {
+                        callStack.Push(ivItem);
+                    }
                 }
+
                 ivItem = nextItem;
 
                 if (ivItem == null)

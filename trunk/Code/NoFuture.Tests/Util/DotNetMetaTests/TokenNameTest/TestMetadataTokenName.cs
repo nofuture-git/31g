@@ -290,6 +290,41 @@ namespace NoFuture.Util.DotNetMeta.Tests.TokenNameTest
             }
         }
 
+        [Test]
+        public void TestIterateTree_BreakFromSelfRefLoop()
+        {
+            var testInput = GetTestMetadataTokenNameTree();
+
+            //what if (G)'s parent's parent was present in its child items
+            var pGpParentParent = testInput.Items[1].Items[2];
+            Assert.IsTrue(pGpParentParent.Name == "[1,2]");
+
+            var pGp = testInput.Items[1].Items[2].Items[2].Items[0];
+            Assert.IsTrue(pGp.Name.StartsWith("(G)"));
+
+            //(G)'s grandparent is also its child - nasty!
+            pGp.Items = new[]
+            {
+                pGpParentParent
+            };
+
+            Func<MetadataTokenName, bool> testSearch = (v) =>
+            {
+                if (v == null)
+                    return false;
+                var rslt = !string.IsNullOrWhiteSpace(v.Name) && v.Name.StartsWith("(");
+                Console.WriteLine(v.Name);
+                return rslt;
+            };
+
+            _accum.Clear();
+
+            testInput.IterateTree(testSearch, AccumulateItems);
+            Assert.IsNotNull(_accum);
+            Assert.AreEqual(13, _accum.Count);
+
+        }
+
         private static Stack<MetadataTokenName> _accum = new Stack<MetadataTokenName>();
         private static MetadataTokenName AccumulateItems(MetadataTokenName something)
         {
