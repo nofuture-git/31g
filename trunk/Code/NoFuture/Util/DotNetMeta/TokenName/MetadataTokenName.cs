@@ -430,33 +430,17 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// Finds the first matching token name which is <see cref="IsByRef"/> false.
         /// </summary>
         /// <param name="tokenName"></param>
-        /// <param name="callStack"></param>
         /// <returns></returns>
-        public MetadataTokenName GetFirstByVal(MetadataTokenName tokenName, Stack<MetadataTokenName> callStack = null)
+        public MetadataTokenName GetFirstByVal(MetadataTokenName tokenName)
         {
             if (tokenName == null)
                 return null;
-            callStack = callStack ?? new Stack<MetadataTokenName>();
-            if (_comparer.Equals(tokenName, this) && !IsByRef)
-                return this;
-            if (Items == null || !Items.Any())
-                return null;
-            if (callStack.Count > 0 && callStack.Any(v => _comparer.Equals(v, this)))
-                return null;
+            Func<MetadataTokenName, bool> searchFor = (v) => _comparer.Equals(tokenName, v) && !v.IsByRef;
+            MetadataTokenName locatedName = new MetadataTokenName();
+            Func<MetadataTokenName, MetadataTokenName> getIt = (v) => locatedName = v;
 
-            ThrowOnMaxDepth(callStack);
-            callStack.Push(this);
-            foreach (var nm in Items)
-            {
-                var matched = nm.GetFirstByVal(tokenName, callStack);
-                if (matched != null)
-                {
-                    return matched;
-                }
-            }
-
-            callStack.Pop();
-            return null;
+            IterateTree(searchFor, getIt);
+            return locatedName;
         }
 
         /// <summary>
@@ -465,27 +449,18 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="tokenNames"></param>
         public void GetAllByRefNames(List<MetadataTokenName> tokenNames)
         {
+            Func<MetadataTokenName, bool> searchFor = (v) => v.IsByRef;
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
-            if (IsByRef && tokenNames.All(tn => !_comparer.Equals(tn, this)))
-                tokenNames.Add(this);
-            if (Items == null || !Items.Any())
-                return;
-            //use prev. cache if avail
-            if (_allByRefs != null)
+
+            Func<MetadataTokenName, MetadataTokenName> addIt = (v) =>
             {
-                tokenNames.AddRange(_allByRefs);
-                return;
-            }
-            foreach (var nm in Items)
-            {
-                nm.GetAllByRefNames(tokenNames);
-            }
-            //cache instance level to improv. perf.
-            if (tokenNames.Any())
-            {
-                _allByRefs = new List<MetadataTokenName>();
-                _allByRefs.AddRange(tokenNames);
-            }
+                if (v == null)
+                    return null;
+                tokenNames.Add(v);
+                return v;
+            };
+
+            IterateTree(searchFor, addIt);
         }
 
         /// <summary>
@@ -493,33 +468,21 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </summary>
         /// <param name="tokenType"></param>
         /// <param name="tokenNames"></param>
-        /// <param name="callStack"></param>
-        public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames,
-            Stack<MetadataTokenName> callStack = null)
+        public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames)
         {
-            callStack = callStack ?? new Stack<MetadataTokenName>();
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
-
             if (tokenType == null)
                 return;
-            if (tokenNames.Any(n => _comparer.Equals(n, this)))
-                return;
-            if (TypeNameEquals(tokenType, this))
-                tokenNames.Add(this);
-            if (Items == null || !Items.Any())
-                return;
-
-            if (callStack.Count > 0 && callStack.Any(v => _comparer.Equals(v, this)))
-                return;
-
-            ThrowOnMaxDepth(callStack);
-            callStack.Push(this);
-            foreach (var nm in Items)
+            Func<MetadataTokenName, bool> searchFor = (v) => TypeNameEquals(tokenType, v);
+            Func<MetadataTokenName, MetadataTokenName> addIt = (v) =>
             {
-                nm.GetAllDeclNames(tokenType, tokenNames, callStack);
-            }
-            callStack.Pop();
+                if (v == null)
+                    return null;
+                tokenNames.Add(v);
+                return v;
+            };
 
+            IterateTree(searchFor, addIt);
         }
 
         /// <summary>
@@ -993,27 +956,23 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             Func<string[], string, bool> selector, params string[] searchNames)
         {
             var names = new List<MetadataTokenName>();
-            if (selector(searchNames, getNameFunc(this)))
-                names.Add(this);
-
-            if (Items == null || !Items.Any())
-                return new MetadataTokenName
-                {
-                    Items = names.ToArray(),
-                    Name = NfSettings.DefaultTypeSeparator.ToString()
-                };
-            foreach (var name in Items)
+            Func<MetadataTokenName, bool> partialResolvedSelector = (v) => selector(searchNames, getNameFunc(v));
+            Func<MetadataTokenName, MetadataTokenName> addIt = (v) =>
             {
-                var nameMatch = name.SelectByFunc(getNameFunc, selector, searchNames);
-                if (nameMatch.Items.Any())
-                    names.AddRange(nameMatch.Items);
-            }
+                if (v == null)
+                    return null;
+                names.Add(v);
+                return v;
+            };
+
+            IterateTree(partialResolvedSelector, addIt);
 
             return new MetadataTokenName
             {
                 Items = names.Distinct(_comparer).Cast<MetadataTokenName>().ToArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
+
         }
 
         /// <summary>
@@ -1074,11 +1033,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
                     Status = "\nReassigning all by ref names"
                 });
-                foreach (var nm in Items)
-                {
-                    nm.ReassignAnyItemsByName(byVal);
-                }
 
+                ReassignAnyItemsByName(byVal);
             }
         }
 
@@ -1139,47 +1095,14 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <param name="newName">
         /// Optional, what the matching name is reassigned to, defaults to the <see cref="tokenName"/> if null.
         /// </param>
-        /// <param name="callStack">
-        /// Used internally to detect infinite loops
-        /// </param>
-        public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null,
-            Stack<MetadataTokenName> callStack = null)
+        public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null)
         {
-            if (tokenName == null)
-                return;
-            Func<MetadataTokenName, MetadataTokenName, bool> nameOrRefEq = (v, t) =>
-                ReferenceEquals(v, t) || _comparer.Equals(v, t);
-
-            callStack = callStack ?? new Stack<MetadataTokenName>();
+            Func<MetadataTokenName, bool> nameOrRefEq = (v) =>
+                ReferenceEquals(v, tokenName) || _comparer.Equals(v, tokenName);
             newName = newName ?? tokenName;
-            if (callStack.Count > 0 && callStack.Any(v => nameOrRefEq(v,this)))
-            {
-                return;
-            }
+            Func<MetadataTokenName, MetadataTokenName> reassignIt = (v) => newName;
+            IterateTree(nameOrRefEq, reassignIt);
 
-            if (Items == null || !Items.Any())
-                return;
-
-            ThrowOnMaxDepth(callStack);
-            callStack.Push(this);
-
-            for (var i = 0; i < Items.Length; i++)
-            {
-                if (nameOrRefEq(Items[i], this))
-                    continue;
-                if (callStack.Count > 0 && callStack.Any(v => nameOrRefEq(Items[i], v)))
-                    continue;
-
-                if (_comparer.Equals(Items[i], tokenName))
-                {
-                    Items[i] = newName;
-                    continue;
-                }
-
-                Items[i].ReassignAnyItemsByName(tokenName, newName, callStack);
-            }
-
-            callStack.Pop();
         }
 
         /// <summary>
@@ -1285,6 +1208,15 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             Items = names.ToArray();
         }
 
+        /// <summary>
+        /// Performs a seek and replace operation recursively where the caller must decide what they are looking 
+        /// for and what to do when they find it.
+        /// </summary>
+        /// <param name="searchFunc"> A search function </param>
+        /// <param name="doSomething">
+        /// A reassignment function which is executed whenever the <see cref="searchFunc"/> returns true
+        /// </param>
+        /// <remarks> Actual method is iterative and not recursive. </remarks>
         public void IterateTree(Func<MetadataTokenName, bool> searchFunc, Func<MetadataTokenName, MetadataTokenName> doSomething)
         {
             var callStack = new Stack<MetadataTokenName>();
@@ -1307,19 +1239,34 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     continue;
                 }
                 //search for whatever by such-and-such
-                if (searchFunc(ivItem))
+                if (!searchFunc(ivItem))
+                    continue;
+
+                //having a match then do such-and-such
+                var parent = callStack.Peek();
+                var ivItemIdx = (parent?.GetCurrentIdx() ?? 0) - 1;
+                if (parent == null || ivItemIdx < 0 || ivItemIdx >= parent.Count())
                 {
-                    //having a match then do such-and-such
                     ivItem = doSomething(ivItem);
+                    continue;
                 }
+                parent.Items[ivItemIdx] = doSomething(ivItem);
             } 
         }
 
+        /// <summary>
+        /// Gets the current counter index from the cumulative calls to <see cref="NextItem"/> and <see cref="PrevItem"/>
+        /// </summary>
+        /// <returns></returns>
         public virtual int GetCurrentIdx()
         {
             return _idx;
         }
 
+        /// <summary>
+        /// An iterative method to get the next item from <see cref="Items"/>
+        /// </summary>
+        /// <returns></returns>
         public virtual MetadataTokenName NextItem()
         {
             if (_idx < Count())
@@ -1332,12 +1279,16 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             return null;
         }
 
+        /// <summary>
+        /// An iterative method to get the previous item from <see cref="Items"/>
+        /// </summary>
+        /// <returns></returns>
         public virtual MetadataTokenName PrevItem()
         {
+            _idx -= 1;
             if (_idx >= 0)
             {
                 var v = _items[_idx];
-                _idx -= 1;
                 return v;
             }
             _idx = 0;

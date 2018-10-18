@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using NoFuture.Util.DotNetMeta.TokenAsm;
-using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
 using NoFuture.Util.DotNetMeta.TokenType;
 using NUnit.Framework;
 
-namespace NoFuture.Util.DotNetMeta.Tests
+namespace NoFuture.Util.DotNetMeta.Tests.TokenNameTest
 {
     public class TestMetadataTokenName
     {
@@ -130,26 +127,25 @@ namespace NoFuture.Util.DotNetMeta.Tests
 
         }
 
-        [Test]
-        public void TestIterateTree()
+        public static MetadataTokenName GetTestMetadataTokenNameTree()
         {
             /*
-             *                                 root 
-             *                                  o 
-             *                                  |
-             *                    o-----------o-+----------o
-             *                   (A)          |            |
-             *                                |            |
-             *          o-----------o-------o-+----o    o--+------o
-             *          |          (C)      |     (H)  (I)        |
-             *          |                   |                     |
-             *          o          o------o-+----o          o-----+------o
-             *          |          |     (F)     |          |           (M)
-             *          |          |             |          |
-             *          o       o--+---o         o       o--+-o----o
-             *         (B)     (D)    (E)        (G)    (J)  (K)  (L)
-             *
-             */
+ *                                 root 
+ *                                  o 
+ *                                  |
+ *                    o-----------o-+----------o
+ *                   (A)          |            |
+ *                                |            |
+ *          o-----------o-------o-+----o    o--+------o
+ *          |          (C)      |     (H)  (I)        |
+ *          |                   |                     |
+ *          o          o------o-+----o          o-----+------o
+ *          |          |     (F)     |          |           (M)
+ *          |          |             |          |
+ *          o       o--+---o         o       o--+-o----o
+ *         (B)     (D)    (E)        (G)    (J)  (K)  (L)
+ *
+ */
 
             var testInput = new MetadataTokenName
             {
@@ -249,6 +245,13 @@ namespace NoFuture.Util.DotNetMeta.Tests
                     }
                 }
             };
+            return testInput;
+        }
+
+        [Test]
+        public void TestIterateTree()
+        {
+
 
             Func<MetadataTokenName, bool> testSearch = (v) =>
             {
@@ -259,6 +262,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
                 return rslt;
             };
 
+            var testInput = GetTestMetadataTokenNameTree();
             testInput.IterateTree(testSearch, AccumulateItems);
 
             for (var i = 0; i < _accum.Count; i++)
@@ -293,6 +297,164 @@ namespace NoFuture.Util.DotNetMeta.Tests
                 return null;
             _accum.Push(something);
             return something;
+        }
+
+
+        [Test]
+        public void TestReassignAnyItemsByName()
+        {
+            var testInput = GetTestMetadataTokenNameTree();
+            var testSearchFor = new MetadataTokenName {Name = "(I) [2,0]" };
+
+            var testReplacement = new MetadataTokenName
+            {
+                Name = "*new* (I) [2,0]",
+                Items = new[]
+                {
+                    new MetadataTokenName
+                    {
+                        Name = "*added* [2,0,0]"
+                    },
+                    new MetadataTokenName
+                    {
+                        Name = "*added* [2,0,1]",
+                        Items =  new []
+                        {
+                            new MetadataTokenName
+                            {
+                                Name = "*added* [2,0,1,0]"
+                            }
+                        }
+                    }
+                }
+            };
+
+            testInput.ReassignAnyItemsByName(testSearchFor, testReplacement);
+            var testResultItem = new MetadataTokenName();
+            Func<MetadataTokenName, bool> searchFor = (v) => string.Equals(v?.Name, testReplacement.Name);
+            Func<MetadataTokenName, MetadataTokenName> getMatch = (v) => testResultItem = v;
+
+            testInput.IterateTree(searchFor, getMatch);
+
+            Assert.IsNotNull(testResultItem);
+            Assert.AreEqual("*new* (I) [2,0]", testResultItem.Name);
+            Assert.IsNotNull(testResultItem.Items);
+            Assert.AreEqual("*added* [2,0,0]", testResultItem.Items[0].Name);
+            Assert.AreEqual("*added* [2,0,1]", testResultItem.Items[1].Name);
+            Assert.IsNotNull(testResultItem.Items[1].Items);
+            Assert.AreEqual("*added* [2,0,1,0]", testResultItem.Items[1].Items[0].Name);
+        }
+
+        [Test]
+        public void TestGetFirstByVal()
+        {
+            //get the test tree
+            var testInput = GetTestMetadataTokenNameTree();
+
+            //target (M)
+            var lookingFor = testInput.Items[2].Items[1].Items[1];
+            Assert.IsNotNull(lookingFor);
+            Assert.AreEqual("(M) [2,1,1]", lookingFor.Name);
+
+            //get a copy of (M)
+            var newCopy = lookingFor.GetShallowCopy();
+
+            //set the original (M) to be ByRef
+            testInput.Items[2].Items[1].Items[1].IsByRef = true;
+
+            //have the new copy look like a real ByVal in that its got child items while the former does not
+            newCopy.Items = new[]
+            {
+                new MetadataTokenName
+                {
+                    Name = "(inner M) [2,1,2,0]"
+                }
+            };
+
+            //get a collection with all siblings of (M)
+            var testInputItems2_1 = new List<MetadataTokenName>();
+            testInputItems2_1.AddRange(testInput.Items[2].Items[1].Items);
+
+            //add the new (M) copy with child items
+            testInputItems2_1.Add(newCopy);
+
+            //reassign the original collection with this one
+            testInput.Items[2].Items[1].Items = testInputItems2_1.ToArray();
+
+            var testResult = testInput.GetFirstByVal(new MetadataTokenName {Name = "(M) [2,1,1]"});
+
+            Assert.IsNotNull(testResult);
+            //assert its not ByRef
+            Assert.IsFalse(testResult.IsByRef);
+
+            //assert its the new one we just added because its got child items
+            Assert.IsNotNull(testResult.Items);
+            Assert.AreNotEqual(0, testResult.Items.Length);
+        }
+
+        [Test]
+        public void TestGetAllByRefNames()
+        {
+            var testInput = GetTestMetadataTokenNameTree();
+
+            //(A)
+            Assert.IsTrue(testInput.Items[0].Name.StartsWith("(A)"));
+            testInput.Items[0].IsByRef = true; 
+            //(D)
+            Assert.IsTrue(testInput.Items[1].Items[2].Items[0].Items[0].Name.StartsWith("(D)"));
+            testInput.Items[1].Items[2].Items[0].Items[0].IsByRef = true;
+            //(I)
+            Assert.IsTrue(testInput.Items[2].Items[0].Name.StartsWith("(I)"));
+            testInput.Items[2].Items[0].IsByRef = true;
+
+            var testResults = new List<MetadataTokenName>();
+            testInput.GetAllByRefNames(testResults);
+
+            Assert.IsNotNull(testResults);
+            Assert.AreEqual(3, testResults.Count);
+
+            Assert.IsTrue(testResults.Any(v => v.Name.StartsWith("(A)")));
+            Assert.IsTrue(testResults.Any(v => v.Name.StartsWith("(D)")));
+            Assert.IsTrue(testResults.Any(v => v.Name.StartsWith("(I)")));
+        }
+
+        [Test]
+        public void TestGetAllDeclNames()
+        {
+            var testInput = GetTestMetadataTokenNameTree();
+            var testTypeName = "MyNamespace.MoreNs.SomeTypeName";
+            var testType = new MetadataTokenType {Name = testTypeName };
+
+            //(F)
+            Assert.IsTrue(testInput.Items[1].Items[2].Items[1].Name.StartsWith("(F)"));
+            testInput.Items[1].Items[2].Items[1].Name = $"{testTypeName}::Method00()";
+
+            //(K)
+            Assert.IsTrue(testInput.Items[2].Items[1].Items[0].Items[0].Name.StartsWith("(J)"));
+            testInput.Items[2].Items[1].Items[0].Items[0].Name = $"{testTypeName}::SomeOtherMethod(System.String)";
+
+            var testResults = new List<MetadataTokenName>();
+            testInput.GetAllDeclNames(testType, testResults);
+
+            Assert.IsNotNull(testResults);
+            Assert.AreEqual(2, testResults.Count);
+            Assert.IsTrue(testResults.Any(v => v.Name.EndsWith("Method00()")));
+            Assert.IsTrue(testResults.Any(v => v.Name.EndsWith("SomeOtherMethod(System.String)")));
+        }
+
+        [Test]
+        public void TestSelectByRegexRefactor()
+        {
+            var testInput = GetTestMetadataTokenNameTree();
+            var testResult = testInput.SelectByRegex("\x28[A-Z]\x29");
+            Assert.IsNotNull(testResult?.Items);
+            Assert.AreEqual(13, testResult.Items.Length);
+
+            for (var i = 0x41; i < 0x4E; i++)
+            {
+                var letter = Convert.ToChar(i).ToString();
+                Assert.IsTrue(testResult.Items.Any(v => v.Name.StartsWith($"({letter})")));
+            }
         }
     }
 }
