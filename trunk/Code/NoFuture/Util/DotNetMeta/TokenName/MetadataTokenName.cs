@@ -29,6 +29,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         [NonSerialized] private int? _fullDepthCount;
         [NonSerialized] private bool? _anyByRef;
         [NonSerialized] private Dictionary<MetadataTokenName, MetadataTokenName> _implementorDictionary;
+        [NonSerialized] private int _idx = 0;
         #endregion
 
         #region properties
@@ -1282,6 +1283,65 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             Items = names.ToArray();
+        }
+
+        public void IterateTree(Func<MetadataTokenName, bool> searchFunc, Func<MetadataTokenName, MetadataTokenName> doSomething)
+        {
+            var callStack = new Stack<MetadataTokenName>();
+            //start at top
+            var ivItem = this;
+            while (ivItem != null) 
+            {
+                var nextItem = ivItem.NextItem();
+                if (nextItem != null)
+                {
+                    callStack.Push(ivItem);
+                }
+                ivItem = nextItem;
+
+                if (ivItem == null)
+                {
+                    if (callStack.Count <= 0)
+                        break;
+                    ivItem = callStack.Pop();
+                    continue;
+                }
+                //search for whatever by such-and-such
+                if (searchFunc(ivItem))
+                {
+                    //having a match then do such-and-such
+                    ivItem = doSomething(ivItem);
+                }
+            } 
+        }
+
+        public virtual int GetCurrentIdx()
+        {
+            return _idx;
+        }
+
+        public virtual MetadataTokenName NextItem()
+        {
+            if (_idx < Count())
+            {
+                var v = _items[_idx];
+                _idx += 1;
+                return v;
+            }
+            _idx = 0;
+            return null;
+        }
+
+        public virtual MetadataTokenName PrevItem()
+        {
+            if (_idx >= 0)
+            {
+                var v = _items[_idx];
+                _idx -= 1;
+                return v;
+            }
+            _idx = 0;
+            return null;
         }
 
         public override bool Equals(object obj)

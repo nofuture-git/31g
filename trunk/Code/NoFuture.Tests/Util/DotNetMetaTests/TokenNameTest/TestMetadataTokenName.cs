@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -127,6 +128,171 @@ namespace NoFuture.Util.DotNetMeta.Tests
             var asJson = JsonConvert.SerializeObject(testResult, Formatting.Indented);
             Console.WriteLine(asJson);
 
+        }
+
+        [Test]
+        public void TestIterateTree()
+        {
+            /*
+             *                                 root 
+             *                                  o 
+             *                                  |
+             *                    o-----------o-+----------o
+             *                   (A)          |            |
+             *                                |            |
+             *          o-----------o-------o-+----o    o--+------o
+             *          |          (C)      |     (H)  (I)        |
+             *          |                   |                     |
+             *          o          o------o-+----o          o-----+------o
+             *          |          |     (F)     |          |           (M)
+             *          |          |             |          |
+             *          o       o--+---o         o       o--+-o----o
+             *         (B)     (D)    (E)        (G)    (J)  (K)  (L)
+             *
+             */
+
+            var testInput = new MetadataTokenName
+            {
+                Name = "root",
+                Items = new[]
+                {
+                    new MetadataTokenName{Name = "(A) [0]"},
+                    new MetadataTokenName
+                    {
+                        Name = "[1]",
+                        Items =  new []
+                        {
+                            new MetadataTokenName
+                            {
+                                Name = "[1,0]",
+                                Items = new []
+                                {
+                                    new MetadataTokenName
+                                    {
+                                        Name = "[1,0,0]",
+                                        Items = new []
+                                        {
+                                            new MetadataTokenName{Name = "(B) [1,0,0,0]"}
+                                        }
+                                    }
+                                }
+                            },
+                            new MetadataTokenName
+                            {
+                                Name = "(C) [1,1]"
+                            },
+                            new MetadataTokenName
+                            {
+                                Name = "[1,2]",
+                                Items = new []
+                                {
+                                    new MetadataTokenName
+                                    {
+                                        Name = "[1,2,0]",
+                                        Items = new []
+                                        {
+                                            new MetadataTokenName{Name = "(D) [1,2,0,0]"},
+                                            new MetadataTokenName {Name = "(E) [1,2,0,1]"}
+                                        }
+                                    },
+                                    new MetadataTokenName
+                                    {
+                                        Name = "(F) [1,2,1]"
+                                    },
+                                    new MetadataTokenName
+                                    {
+                                        Name = "[1,2,2]",
+                                        Items = new []
+                                        {
+                                            new MetadataTokenName{Name = "(G) [1,2,2,0]"}
+                                        }
+                                    }
+                                }
+                            },
+                            new MetadataTokenName
+                            {
+                                Name = "(H) [1,3]"
+                            }
+                        }
+                    },
+                    new MetadataTokenName
+                    {
+                        Name = "[2]",
+                        Items = new []
+                        {
+                            new MetadataTokenName
+                            {
+                                Name = "(I) [2,0]"
+                            },
+                            new MetadataTokenName
+                            {
+                                Name = "[2,1]",
+                                Items = new []
+                                {
+                                    new MetadataTokenName
+                                    {
+                                        Name = "[2,1,0]",
+                                        Items = new []
+                                        {
+                                            new MetadataTokenName{Name = "(J) [2,1,0,0]"},
+                                            new MetadataTokenName{Name = "(K) [2,1,0,1]"},
+                                            new MetadataTokenName{Name = "(L) [2,1,0,2]"},
+                                        }
+                                    },
+                                    new MetadataTokenName
+                                    {
+                                        Name = "(M) [2,1,1]"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            Func<MetadataTokenName, bool> testSearch = (v) =>
+            {
+                if (v == null)
+                    return false;
+                var rslt = !string.IsNullOrWhiteSpace(v.Name) && v.Name.StartsWith("(");
+                Console.WriteLine(v.Name);
+                return rslt;
+            };
+
+            testInput.IterateTree(testSearch, AccumulateItems);
+
+            for (var i = 0; i < _accum.Count; i++)
+            {
+                var popAtI = _accum.Pop();
+
+                switch (i)
+                {
+                    case 0:
+                        Assert.AreEqual("(M) [2,1,1]", popAtI.Name);
+                        break;
+                    case 1:
+                        Assert.AreEqual("(L) [2,1,0,2]", popAtI.Name);
+                        break;
+                    case 2:
+                        Assert.AreEqual("(K) [2,1,0,1]", popAtI.Name);
+                        break;
+                    case 3:
+                        Assert.AreEqual("(J) [2,1,0,0]", popAtI.Name);
+                        break;
+                    case 4:
+                        Assert.AreEqual("(I) [2,0]", popAtI.Name);
+                        break;
+                }
+            }
+        }
+
+        private static Stack<MetadataTokenName> _accum = new Stack<MetadataTokenName>();
+        private static MetadataTokenName AccumulateItems(MetadataTokenName something)
+        {
+            if (something == null)
+                return null;
+            _accum.Push(something);
+            return something;
         }
     }
 }
