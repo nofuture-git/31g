@@ -323,6 +323,23 @@ namespace NoFuture.Util.DotNetMeta.Tests.TokenNameTest
             Assert.IsNotNull(_accum);
             Assert.AreEqual(13, _accum.Count);
 
+            testInput = GetTestMetadataTokenNameTree();
+
+            //what if (G) is its own child
+            pGp = testInput.Items[1].Items[2].Items[2].Items[0];
+            Assert.IsTrue(pGp.Name.StartsWith("(G)"));
+
+            //(G)'s grandparent is also its child - nasty!
+            pGp.Items = new[]
+            {
+                pGp
+            };
+
+            _accum.Clear();
+            testInput.IterateTree(testSearch, AccumulateItems);
+            Assert.IsNotNull(_accum);
+            Assert.AreEqual(13, _accum.Count);
+
         }
 
         private static Stack<MetadataTokenName> _accum = new Stack<MetadataTokenName>();

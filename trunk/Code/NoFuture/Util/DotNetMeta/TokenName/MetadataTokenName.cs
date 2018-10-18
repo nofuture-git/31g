@@ -1080,10 +1080,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 var concreteNameLi = concreteName.Items == null || !concreteName.Items.Any()
                     ? (GetFirstByVal(concreteName) ?? concreteName)
                     : concreteName;
-                foreach (var nm in Items)
-                {
-                    nm.ReassignAnyItemsByName(interfaceName, concreteNameLi);
-                }
+                ReassignAnyItemsByName(interfaceName, concreteNameLi);
             }
         }
 
@@ -1228,7 +1225,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 if (nextItem != null)
                 {
                     //detect if some parent item is also a child item
-                    if (callStack.Any(v => object.ReferenceEquals(v, nextItem)))
+                    if (ReferenceEquals(nextItem, ivItem) || callStack.Any(v => object.ReferenceEquals(v, nextItem)))
                     {
                         nextItem = null;
                     }
