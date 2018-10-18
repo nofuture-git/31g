@@ -704,14 +704,15 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             MetadataTokenType concreteType, MetadataTokenName foreignAssembly = null)
         {
             var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
-            var interfaceNames = new List<MetadataTokenName>();
-            var concreteNames = new List<MetadataTokenName>();
+            if (interfaceType == null || concreteType == null)
+                return n2n;
             if (Items == null || !Items.Any())
                 return n2n;
+            var interfaceNames = interfaceType.AbstractMemberNames?.ToList() ?? new List<MetadataTokenName>();
+            var concreteNames = new List<MetadataTokenName>();
 
             foreach (var nm in Items)
             {
-                nm.GetAllDeclNames(interfaceType, interfaceNames);
                 nm.GetAllDeclNames(concreteType, concreteNames);
             }
 
@@ -719,7 +720,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             {
                 foreach (var nm in foreignAssembly.Items)
                 {
-                    nm.GetAllDeclNames(interfaceType, interfaceNames);
                     nm.GetAllDeclNames(concreteType, concreteNames);
                 }
             }
@@ -728,7 +728,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 return n2n;
 
             concreteNames = concreteNames.Distinct(_comparer).Cast<MetadataTokenName>().ToList();
-            interfaceNames = interfaceNames.Distinct(_comparer).Cast<MetadataTokenName>().ToList();
 
             //get a mapping of concrete to interface
             foreach (var concreteName in concreteNames)
