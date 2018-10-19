@@ -19,7 +19,14 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
                 return new TokenTypeResponse();
             var jsonContent = File.ReadAllText(fullFileName);
-            return JsonConvert.DeserializeObject<TokenTypeResponse>(jsonContent);
+            var rspn = JsonConvert.DeserializeObject<TokenTypeResponse>(jsonContent);
+            if (rspn.Types == null || !rspn.Types.Any())
+            {
+                var mdtts = JsonConvert.DeserializeObject<MetadataTokenType>(jsonContent);
+                rspn.Types = mdtts.Items;
+            }
+
+            return rspn;
         }
 
         public static void SaveToFile(string filePath, MetadataTokenType rootTokenName)

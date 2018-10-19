@@ -24,8 +24,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         [NonSerialized] private MetadataTokenName[] _items;
         [NonSerialized] private bool _isByRef;
         [NonSerialized] private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
-        [NonSerialized] private List<MetadataTokenName> _allByRefs;
-        [NonSerialized] private List<MetadataTokenName> _byVals;
         [NonSerialized] private int? _fullDepthCount;
         [NonSerialized] private bool? _anyByRef;
         [NonSerialized] private Dictionary<MetadataTokenName, MetadataTokenName> _implementorDictionary;
@@ -220,7 +218,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             tokenNames.ApplyFullName(asmIndices);
             var tokenNamesOut = tokenNames.BindTokens2Names(tokenIds, reportProgress);
             tokenNamesOut.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
-            tokenNamesOut.ApplyFullName(asmIndices);
             //turn all pointer'esque tokens into their full-expanded counterparts
             tokenNamesOut.ReassignAllByRefs(reportProgress);
             if (tokenTypes != null)
@@ -236,8 +233,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </summary>
         public void ClearAllCacheData()
         {
-            _allByRefs = null;
-            _byVals = null;
             _fullDepthCount = null;
             _anyByRef = null;
             _implementorDictionary = null;
@@ -280,8 +275,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// Optional, allows caller to get feedback on progress since this takes some time to run.
         /// </param>
         /// <returns></returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal MetadataTokenName BindTokens2Names(MetadataTokenId tokenIds, Action<ProgressMessage> reportProgress = null)
+        public MetadataTokenName BindTokens2Names(MetadataTokenId tokenIds, Action<ProgressMessage> reportProgress = null)
         {
             if (tokenIds?.Items == null || !tokenIds.Items.Any())
                 return this;
@@ -986,33 +980,28 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (Items == null || !Items.Any())
                 return;
 
-            foreach (var nm in Items)
-                nm.GetAllByRefNames(byRefs);
+            GetAllByRefNames(byRefs);
 
             if (!byRefs.Any())
                 return;
 
             //for each byref, find it byVal counterpart
             var byVals = new List<MetadataTokenName>();
-            if (_byVals != null)
+            var totalLen = byRefs.Count;
+            for (var i = 0; i < totalLen; i++)
             {
-                byVals.AddRange(_byVals);
-            }
-            else
-            {
-                foreach (var byRef in byRefs)
+                var byRef = byRefs[i];
+                reportProgress?.Invoke(new ProgressMessage
                 {
-                    MetadataTokenName byVal = null;
-                    foreach (var nm in Items)
-                    {
-                        byVal = nm.GetFirstByVal(byRef);
-                        if (byVal == null)
-                            continue;
-                        byVals.Add(byVal);
-                        break;
-                    }
-                }
-                _byVals = byVals;
+                    Activity = $"{byRef.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = "\nFinding the expanded counterpart of all ByRef tokens"
+                });
+                var byVal = GetFirstByVal(byRef);
+                if (byVal == null)
+                    continue;
+                byVals.Add(byVal);
             }
 
             if (!byVals.Any())
@@ -1022,7 +1011,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             //reassign each byRef's over to byVal
-            var totalLen = byVals.Count;
+            totalLen = byVals.Count;
             for (var i = 0; i < totalLen; i++)
             {
                 var byVal = byVals[i];
@@ -1095,11 +1084,10 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         public void ReassignAnyItemsByName(MetadataTokenName tokenName, MetadataTokenName newName = null)
         {
             Func<MetadataTokenName, bool> nameOrRefEq = (v) =>
-                ReferenceEquals(v, tokenName) || _comparer.Equals(v, tokenName);
+                (ReferenceEquals(v, tokenName) || _comparer.Equals(v, tokenName));
             newName = newName ?? tokenName;
             Func<MetadataTokenName, MetadataTokenName> reassignIt = (v) => newName;
             IterateTree(nameOrRefEq, reassignIt);
-
         }
 
         /// <summary>
@@ -1185,6 +1173,23 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     continue;
                 name.RemoveClrGeneratedNames();
                 names.Add(name);
+            }
+
+            Items = names.ToArray();
+        }
+
+        /// <summary>
+        /// Removes all items whose <see cref="IsMethodName"/> returns false.
+        /// </summary>
+        public void RemoveAllNonMethodNames()
+        {
+            var names = new List<MetadataTokenName>();
+            if (Items == null || !Items.Any())
+                return;
+            foreach (var name in Items)
+            {
+                if(name != null && name.IsMethodName())
+                    names.Add(name);
             }
 
             Items = names.ToArray();

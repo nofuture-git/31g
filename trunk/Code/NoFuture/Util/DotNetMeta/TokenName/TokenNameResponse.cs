@@ -22,7 +22,14 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
                 return new TokenNameResponse();
             var jsonContent = File.ReadAllText(fullFileName);
-            return JsonConvert.DeserializeObject<TokenNameResponse>(jsonContent);
+            var rspn =  JsonConvert.DeserializeObject<TokenNameResponse>(jsonContent);
+
+            if (rspn.Names == null || !rspn.Names.Any())
+            {
+                var mdtn = JsonConvert.DeserializeObject<MetadataTokenName>(jsonContent);
+                rspn = new TokenNameResponse {Names = mdtn.Items};
+            }
+            return rspn;
         }
 
         public static void SaveToFile(string filePath, MetadataTokenName rootTokenName)

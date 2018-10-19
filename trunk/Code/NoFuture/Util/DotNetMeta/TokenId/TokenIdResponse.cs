@@ -20,7 +20,14 @@ namespace NoFuture.Util.DotNetMeta.TokenId
             if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
                 return new TokenIdResponse();
             var jsonContent = File.ReadAllText(fullFileName);
-            return JsonConvert.DeserializeObject<TokenIdResponse>(jsonContent);
+            var rspn = JsonConvert.DeserializeObject<TokenIdResponse>(jsonContent);
+            if (rspn.Tokens == null || !rspn.Tokens.Any())
+            {
+                var mdtids = JsonConvert.DeserializeObject<MetadataTokenId>(jsonContent);
+                rspn.Tokens = mdtids.Items;
+            }
+
+            return rspn;
         }
 
         public static void SaveToFile(string filePath, MetadataTokenId rootTokenName)
