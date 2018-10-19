@@ -1155,9 +1155,13 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     names.Add(name);
                     continue;
                 }
-
-                var countOfProp = Items.Count(n => n.GetMemberName().Contains($"get_{propName}(")
-                                                   || n.GetMemberName().Contains($"set_{propName}("));
+                const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
+                var typeName = name.GetTypeName();
+                //need to escape these incase they are generics of some kind
+                var escGetName = $@"{typeName}{SPLT}get_{propName}(".EscapeString();
+                var escSetName = $@"{typeName}{SPLT}set_{propName}(".EscapeString();
+                var countOfProp = Items.Count(n => Regex.IsMatch(n.Name, escGetName)
+                                                   || Regex.IsMatch(n.Name, escSetName));
                 if (countOfProp < 2)
                     continue;
                 names.Add(name);

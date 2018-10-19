@@ -147,15 +147,81 @@ namespace NoFuture.Util.DotNetMeta
         ///  # this will represent the call-stack-tree in terms of just metadata token ids
         ///  $myTokensIds = $myAsmAly.GetTokenIds(0, "NoFuture.*")
         /// 
-        ///  # translates the metadata token into a name (assembly, type, method, etc.)
+        ///  # translates the metadata token ids into a token name (e.g. type, method, field, etc.)
         ///  $myTokenNames = $myAsmAly.GetTokenNames($myTokensIds.GetAsRoot().SelectDistinct(), $true)
+        /// ]]>
+        /// </example>
+        /// <example>
+        /// <![CDATA[
+        ///  # example using analysis results
+        ///  # say, some app with three layers: web, logic and data
+        ///  $myAsmAly = New-Object NoFuture.Util.DotNetMeta.AssemblyAnalysis($false)
+        /// 
+        ///  # web layer uses types from logic layer as interfaces
+        ///  $myWebTokens = ([NoFuture.Util.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($webTokensFile)).GetAsRoot()
+        ///  
+        ///  #logic layer uses types from data layer, likewise, as interfaces
+        ///  $myLogicTokens = ([NoFuture.Util.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($logicTokensFile)).GetAsRoot()
+        ///  $myLogicTypes = ([NoFuture.Util.DotNetMeta.TokenType.TokenTypeResponse]::ReadFromFile($logicTypesFile)).GetAsRoot()
+        /// 
+        ///  #data layer is as far down as we want to go
+        ///  $myDataTokens = ([NoFuture.Util.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($dataTokensFile)).GetAsRoot()
+        ///  $myDataTypes = ([NoFuture.Util.DotNetMeta.TokenType.TokenTypeResponse]::ReadFromFile($dataTypesFile)).GetAsRoot()
+        /// 
+        ///  #expand logic layer with data layer's concrete types
+        ///  $myLogicTokens = $myAsmAly.ReassignTokenNames($myLogicTokens, $myDataTokens, $myDataTypes).GetAsRoot()
+        /// 
+        ///  #expand web layer with expanded logic layer's concrete types
+        ///  $myWebTokens = $myAsmAly.ReassignTokenNames($myWebTokens, $myLogicTokens, $myLogicTypes).GetAsRoot()
+        /// 
+        ///  #get all token names in logic layer as set instead of a data-tree
+        ///  $myFlatLogicTokens = $myLogicTokens.SelectDistinct()
+        /// 
+        ///  #do likewise for the web layer - get tokens as a set
+        ///  $myFlatWebTokens = $myWebTokens.SelectDistinct()
+        /// 
+        ///  #now normal set-operations can be applied
+        ///  #say, want to find orphaned methods in logic layer no longer used by web layer
+        ///  $myOrphanedLogicTokens = $myFlatWebTokens.GetRightSetDiff($myFlatLogicTokens)
+        /// 
+        ///  #this would tell us all the types with at least one orphaned member
+        ///  $orphanedTypes = $myOrphanedLogicTokens.GetUniqueTypeNames() | Sort-Object
+        /// 
+        ///  #using NoFuture.Gen, we could remove these systematically if we know where to find the assemblies with .pdb's
+        ///  $searchDirs = @(
+        ///      "C:\Projects\MyProj\Web\bin", 
+        ///      "C:\Projects\MyProj\Logic\debug\bin", 
+        ///      "C:\Projects\MyProj\Data\debug\bin")
+        /// 
+        ///  #(in actual practice, you would want to perform null-checks, skipped here for brevity)
+        ///  $orphanedTypes | % {
+        ///     $typeName = $_
+        ///     
+        ///     #given this typename and these search paths find the full-path to the assembly that defined it
+        ///     $asmPath = [NoFuture.Util.DotNetMeta.TokenAsm.AsmIndexResponse]::GetAssemblyPathFromRoot(([string[]]$searchDirs), $typeName)
+        /// 
+        ///     #now get this as a NoFuture.Gen code-gen type (assuming .NET code file was C#)
+        ///     $nfCgType = New-Object NoFuture.Gen.CgTypeCsSrcCode($asmPath,$typeName)
+        /// 
+        ///     #collect up all the orphaned members now as NoFuture.Gen.CgMember's
+        ///     $nfCgMems = New-Object "System.Collections.Generic.List[NoFuture.Gen.CgMember]"
+        ///     $orphanedMembersByType = $myOrphanedLogicTokens.SelectTheseTypeNames(([string[]]@($typeName)))
+        ///     $orphanedMembersByType | % {
+        /// 
+        ///         #NoFuture.Gen directly transforms a MetadataTokenName into a CgMember
+        ///         $nfCgMems.Add($nfCgType.CgType.FindCgMemberByTokenName($_))
+        ///     }
+        ///     
+        ///     #blow away the orphaned members from the original source code file(s)
+        ///     [NoFuture.Gen.RefactorExtensions]::RemoveMembers($nfCgMems, $true)
+        ///  }
         /// ]]>
         /// </example>
         public AssemblyAnalysis(bool resolveGacAsmNames, params int[] ports)
         {
             if (string.IsNullOrWhiteSpace(NfConfig.CustomTools.InvokeAssemblyAnalysis) || !File.Exists(NfConfig.CustomTools.InvokeAssemblyAnalysis))
                 throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis, assign " +
-                                     "the global variable at NoFuture.CustomTools.InvokeAssemblyAnalysis.");
+                                     "the global variable at NoFuture.Shared.Cfg.NfConfig.CustomTools.InvokeAssemblyAnalysis.");
 
             var np = DefaultPort;
             var usePorts = new int[6];

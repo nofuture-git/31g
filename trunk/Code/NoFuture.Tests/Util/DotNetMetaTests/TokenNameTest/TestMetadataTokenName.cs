@@ -329,7 +329,6 @@ namespace NoFuture.Util.DotNetMeta.Tests.TokenNameTest
             pGp = testInput.Items[1].Items[2].Items[2].Items[0];
             Assert.IsTrue(pGp.Name.StartsWith("(G)"));
 
-            //(G)'s grandparent is also its child - nasty!
             pGp.Items = new[]
             {
                 pGp
