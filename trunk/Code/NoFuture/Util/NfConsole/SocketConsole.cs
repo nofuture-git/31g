@@ -33,6 +33,8 @@ namespace NoFuture.Util.NfConsole
             return ResolveInt(cval);
         }
 
+        public virtual IPAddress IpAddress { get; set; } = IPAddress.Loopback;
+
         /// <summary>
         /// The residence of the listening-socket thread, one for each of the <see cref="ICmd"/>
         /// </summary>
@@ -43,7 +45,7 @@ namespace NoFuture.Util.NfConsole
             using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
                 //this should NOT be reachable from any other machine
-                var endPt = new IPEndPoint(IPAddress.Loopback, cmdPort);
+                var endPt = new IPEndPoint(IpAddress, cmdPort);
                 PrintToConsole($"Listening on port {cmdPort}");
                 socket.Bind(endPt);
                 socket.Listen(SOCKET_LISTEN_NUM);
@@ -62,16 +64,11 @@ namespace NoFuture.Util.NfConsole
                         buffer.AddRange(data.Where(b => b != (byte)'\0'));
                         while (client.Available > 0)
                         {
-                            if (client.Available < NfConfig.DefaultBlockSize)
-                            {
-                                data = new byte[client.Available];
-                                client.Receive(data, 0, client.Available, SocketFlags.None);
-                            }
-                            else
-                            {
-                                data = new byte[NfConfig.DefaultBlockSize];
-                                client.Receive(data, 0, (int)NfConfig.DefaultBlockSize, SocketFlags.None);
-                            }
+                            var avail = client.Available;
+                            data = avail < NfConfig.DefaultBlockSize
+                                ? new byte[avail]
+                                : new byte[NfConfig.DefaultBlockSize];
+                            client.Receive(data, 0, data.Length, SocketFlags.None);
                             buffer.AddRange(data.Where(b => b != (byte)'\0'));
                             if(client.Available <= 0)
                                 Thread.Sleep(NfConfig.ThreadSleepTime);//give it a moment

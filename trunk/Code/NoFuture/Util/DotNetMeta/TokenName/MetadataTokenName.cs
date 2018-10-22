@@ -27,6 +27,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         [NonSerialized] private int? _fullDepthCount;
         [NonSerialized] private bool? _anyByRef;
         [NonSerialized] private int _idx = 0;
+        [NonSerialized] private bool? _isAbstract;
+        [NonSerialized] private bool? _isAmbiguous;
         #endregion
 
         #region properties
@@ -69,6 +71,24 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             set => _items = value;
         }
 
+        /// <summary>
+        /// A flag to indicate that this is an implementation of some other method
+        /// </summary>
+        public bool IsAbstract
+        {
+            get => _isAbstract ?? false;
+            set => _isAbstract = value;
+        }
+
+        /// <summary>
+        /// A flag to indicate this is one of many concrete implementations
+        /// of some abstract member defined elsewhere
+        /// </summary>
+        public bool IsAmbiguous
+        {
+            get => _isAmbiguous ?? false;
+            set => _isAmbiguous = value;
+        }
         #endregion
 
         /// <summary>
@@ -220,6 +240,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (tokenTypes != null)
             {
                 tokenNamesOut.ReassignAllInterfaceTokens(tokenTypes, reportProgress);
+                tokenNamesOut.SetAllIsAbstractFlags(tokenTypes, reportProgress);
             }
 
             return tokenNamesOut;
@@ -358,7 +379,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 IsByRef = IsByRef,
                 Label = Label,
                 OwnAsmIdx = OwnAsmIdx,
-                RslvAsmIdx = RslvAsmIdx
+                RslvAsmIdx = RslvAsmIdx,
+                IsAmbiguous =  IsAmbiguous,
+                IsAbstract = IsAbstract
             };
         }
 
@@ -649,17 +672,10 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var interfaceNames = interfaceType.AbstractMemberNames?.ToList() ?? new List<MetadataTokenName>();
             var concreteNames = new List<MetadataTokenName>();
 
-            foreach (var nm in Items)
-            {
-                nm.GetAllDeclNames(concreteType, concreteNames);
-            }
-
+            GetAllDeclNames(concreteType, concreteNames);
             if (foreignAssembly?.Items != null)
             {
-                foreach (var nm in foreignAssembly.Items)
-                {
-                    nm.GetAllDeclNames(concreteType, concreteNames);
-                }
+                foreignAssembly.GetAllDeclNames(concreteType, concreteNames);
             }
 
             if (!interfaceNames.Any() || !concreteNames.Any())
@@ -692,6 +708,105 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             return n2n;
+        }
+
+        /// <summary>
+        /// Sets all token name&apos;s <see cref="IsAbstract"/> flag.
+        /// </summary>
+        /// <param name="tokenTypes"></param>
+        /// <param name="reportProgress"></param>
+        public void SetAllIsAbstractFlags(MetadataTokenType tokenTypes, Action<ProgressMessage> reportProgress = null)
+        {
+            if (tokenTypes?.Items == null)
+                return;
+            var allInterfaces = tokenTypes.GetAllInterfaceTypes();
+            if (allInterfaces == null || !allInterfaces.Any())
+                return;
+            var allAbstractMembers = new List<MetadataTokenName>();
+
+            var totalLen = allInterfaces.Length;
+            for (var i = 0; i < totalLen; i++)
+            {
+                var interfaceType = allInterfaces[i];
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{interfaceType?.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = $"\nAssigning {nameof(IsAbstract)} flags"
+                });
+
+                if (interfaceType?.AbstractMemberNames == null || !interfaceType.AbstractMemberNames.Any())
+                    continue;
+                allAbstractMembers.AddRange(interfaceType.AbstractMemberNames);
+            }
+
+            if (!allAbstractMembers.Any())
+                return;
+
+            allAbstractMembers = allAbstractMembers.Distinct(_comparer).Cast<MetadataTokenName>().ToList();
+            Func<MetadataTokenName, bool> selectOn = (v) => allAbstractMembers.Any(m => _comparer.Equals(m, v));
+            Func<MetadataTokenName, MetadataTokenName> assignFlag = (v) =>
+            {
+                if (v == null)
+                    return null;
+                v.IsAbstract = true;
+                return v;
+            };
+            IterateTree(selectOn, assignFlag);
+        }
+
+        /// <summary>
+        /// Sets all token name&apos;s <see cref="IsAmbiguous"/> flag.
+        /// </summary>
+        /// <param name="tokenTypes"></param>
+        /// <param name="reportProgress"></param>
+        /// <param name="foreignAssembly"></param>
+        public void SetAllIsAmbiguousFlags(MetadataTokenType tokenTypes,
+            Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
+        {
+            if (tokenTypes?.Items == null)
+                return;
+            var ambiguousTypes = tokenTypes.GetAmbiguousTypes();
+            if (ambiguousTypes == null || !ambiguousTypes.Any())
+                return;
+
+            var allAmbiguousMembers = new List<MetadataTokenName>();
+            var totalLen = ambiguousTypes.Length;
+
+            for (var i = 0; i < totalLen; i++)
+            {
+                var ambiguousType = ambiguousTypes[i];
+
+                if (ambiguousType == null)
+                    continue;
+
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{ambiguousType.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = $"\nAssigning {nameof(IsAmbiguous)} flags"
+                });
+
+                GetAllDeclNames(ambiguousType,allAmbiguousMembers);
+                foreignAssembly?.GetAllDeclNames(ambiguousType, allAmbiguousMembers);
+            }
+
+            if (!allAmbiguousMembers.Any())
+                return;
+
+            allAmbiguousMembers = allAmbiguousMembers.Distinct(_comparer).Cast<MetadataTokenName>().ToList();
+            Func<MetadataTokenName, bool> selectOn = (v) => allAmbiguousMembers.Any(m => _comparer.Equals(m, v));
+            Func<MetadataTokenName, MetadataTokenName> assignFlag = (v) =>
+            {
+                if (v == null)
+                    return null;
+                v.IsAmbiguous = true;
+                return v;
+            };
+            IterateTree(selectOn, assignFlag);
+
         }
 
         /// <summary>
@@ -1103,6 +1218,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             ReassignTokens(dict, reportProgress);
+            SetAllIsAbstractFlags(tokenTypes, reportProgress);
+            SetAllIsAmbiguousFlags(tokenTypes, reportProgress, foreignAssembly);
         }
 
         /// <summary>

@@ -215,6 +215,30 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         }
 
         /// <summary>
+        /// Get concrete types which share an implementation with others
+        /// </summary>
+        /// <returns></returns>
+        public MetadataTokenType[] GetAmbiguousTypes()
+        {
+            if (!IsRoot())
+                return null;
+
+            if (Items == null || !Items.Any())
+                return null;
+
+            var impls = new List<MetadataTokenType>();
+            foreach (var i in GetAllInterfaceTypes())
+            {
+                var count = 0;
+                GetCountOfImplentors(i, ref count);
+                if(count > 1)
+                    impls.Add(i);
+            }
+
+            return impls.ToArray();
+        }
+
+        /// <summary>
         /// Get the count of all nodes throughout at all depths
         /// </summary>
         /// <returns></returns>

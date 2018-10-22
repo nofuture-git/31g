@@ -167,11 +167,16 @@ namespace NoFuture.Util
 
         public static byte[] SendToLocalhostSocket(byte[] mdt, int port)
         {
+            return SendOnSocket(IPAddress.Loopback, mdt, port);
+        }
+
+        public static byte[] SendOnSocket(IPAddress ip, byte[] mdt, int port)
+        {
             var buffer = new List<byte>();
             using (var server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP))
             {
-
-                server.Connect(new IPEndPoint(IPAddress.Loopback, port));
+                ip = ip ?? IPAddress.Loopback;
+                server.Connect(new IPEndPoint(ip, port));
                 server.Send(mdt);
                 var data = new byte[NfConfig.DefaultBlockSize];
 
@@ -180,17 +185,11 @@ namespace NoFuture.Util
                 buffer.AddRange(data.Where(b => b != (byte)'\0'));
                 while (server.Available > 0)
                 {
-                    if (server.Available < NfConfig.DefaultBlockSize)
-                    {
-                        data = new byte[server.Available];
-                        server.Receive(data, 0, server.Available, SocketFlags.None);
-                    }
-                    else
-                    {
-                        data = new byte[NfConfig.DefaultBlockSize];
-                        server.Receive(data, 0, data.Length, SocketFlags.None);
-                    }
-
+                    var avail = server.Available;
+                    data = avail < NfConfig.DefaultBlockSize
+                        ? new byte[avail]
+                        : new byte[NfConfig.DefaultBlockSize];
+                    server.Receive(data, 0, data.Length, SocketFlags.None);
                     buffer.AddRange(data.Where(b => b != (byte)'\0'));
 
                     if (server.Available == 0)
