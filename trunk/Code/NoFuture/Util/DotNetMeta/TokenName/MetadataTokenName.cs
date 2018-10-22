@@ -26,7 +26,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         [NonSerialized] private readonly MetadataTokenNameComparer _comparer = new MetadataTokenNameComparer();
         [NonSerialized] private int? _fullDepthCount;
         [NonSerialized] private bool? _anyByRef;
-        [NonSerialized] private Dictionary<MetadataTokenName, MetadataTokenName> _implementorDictionary;
         [NonSerialized] private int _idx = 0;
         #endregion
 
@@ -235,7 +234,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         {
             _fullDepthCount = null;
             _anyByRef = null;
-            _implementorDictionary = null;
         }
 
         /// <summary>
@@ -609,9 +607,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 return n2n;
             var totalLen = reassignInterfaces.Length;
 
-            if (_implementorDictionary != null)
-                return _implementorDictionary;
-
             for (var i = 0; i < totalLen; i++)
             {
                 var ri = reassignInterfaces[i];
@@ -639,8 +634,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                         n2n.Add(key, temp[key]);
                 }
             }
-            if (n2n.Any())
-                _implementorDictionary = n2n;
             return n2n;
         }
 
