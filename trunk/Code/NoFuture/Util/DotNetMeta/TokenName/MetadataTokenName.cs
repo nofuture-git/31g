@@ -69,8 +69,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             set => _items = value;
         }
 
-        protected internal Dictionary<MetadataTokenName, MetadataTokenName> ImplementorDictionary =>
-            _implementorDictionary;
         #endregion
 
         /// <summary>
