@@ -383,16 +383,15 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         {
             if (typeName == null)
                 return;
-            var tnInfcs = GetImmediateInterfaceTypes();
-            if (tnInfcs == null || !tnInfcs.Any())
-                return;
-            countOf += tnInfcs.Count(v => _comparer.Equals(typeName, v));
-
-            if (Items == null || !Items.Any())
+            if (!IsRoot())
                 return;
 
-            foreach (var nm in Items)
-                nm.GetCountOfImplentors(nm, ref countOf);
+            foreach (var item in Items)
+            {
+                if (item.Items == null || !item.Items.Any())
+                    continue;
+                countOf += item.Items.Count(v => _comparer.Equals(v, typeName));
+            }
         }
 
         public override int GetHashCode()

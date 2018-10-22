@@ -642,7 +642,17 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 if (cri == null)
                     continue;
 
-                n2n = GetImplementorDictionary(ri, cri, foreignAssembly);
+                var temp = GetImplementorDictionary(ri, cri, foreignAssembly);
+
+                if (temp == null || temp.Count <= 0)
+                    continue;
+                foreach (var k in temp.Keys)
+                {
+                    if (n2n.ContainsKey(k))
+                        n2n[k] = temp[k];
+                    else
+                        n2n.Add(k, temp[k]);
+                }
             }
             return n2n;
         }
