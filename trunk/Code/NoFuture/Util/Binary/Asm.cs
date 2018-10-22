@@ -1847,6 +1847,48 @@ namespace NoFuture.Util.Binary
             return new MemberInfo[] { };
         }
 
+        public static MethodInfo NfGetBaseDefinition(this MethodInfo mi, bool rethrow = true,
+            string logFile = "")
+        {
+            if (mi == null)
+                return null;
+            try
+            {
+                return mi.GetBaseDefinition();
+            }
+            catch (ReflectionTypeLoadException rtle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), rtle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), fnfe, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (TypeLoadException tle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), tle, logFile);
+                if (rethrow)
+                    throw;
+            }
+            catch (FileLoadException fle)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), fle);
+                if (rethrow)
+                    throw;
+            }
+            catch (BadImageFormatException bife)
+            {
+                AddLoaderExceptionToLog(new Tuple<Type, MemberInfo>(null, mi), bife, logFile);
+                if (rethrow)
+                    throw;
+            }
+            return null;
+        }
+
         #endregion
 
         #region internal api

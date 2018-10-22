@@ -460,6 +460,9 @@ namespace NoFuture.Util.DotNetMeta
             if (mti == null)
                 return tokenName;
 
+            tokenName.IsAbstract = mti.IsAbstract;
+            tokenName.IsAmbiguous = mti.NfGetBaseDefinition(false, logFile)?.ReflectedType?.IsInterface ?? false;
+
             var mtiParams = mti.NfGetParameters(false, logFile);
             if (mtiParams.Length <= 0)
             {

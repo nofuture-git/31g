@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta.TokenName;
 
 namespace NoFuture.Util.DotNetMeta.TokenType
@@ -18,6 +19,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         [NonSerialized] private readonly MetadataTokenTypeComparer _comparer = new MetadataTokenTypeComparer();
         [NonSerialized] private int? _fullDepth;
         [NonSerialized] private MetadataTokenType[] _singleImplementors;
+        [NonSerialized] private int _idx = 0;
         #endregion
 
         #region properties
@@ -126,18 +128,20 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         {
             if (_interfaceTypes != null)
                 return _interfaceTypes;
-
-            var infcs = new List<MetadataTokenType>();
-            if (IsInterfaceType())
-                infcs.Add(this);
-            if (Items == null || !Items.Any())
-                return infcs.ToArray();
-            foreach (var infc in Items)
+            
+            Func<MetadataTokenType, bool> selector = (v) => v.IsInterfaceType();
+            var interfaceTypes = new List<MetadataTokenType>();
+            Func<MetadataTokenType, MetadataTokenType> addIt = (v) =>
             {
-                infcs.AddRange(infc.GetAllInterfaceTypes());
-            }
+                if (v == null)
+                    return null;
+                interfaceTypes.Add(v);
+                return v;
+            };
 
-            _interfaceTypes = infcs.Distinct().ToArray();
+            IterateTree(selector, addIt);
+
+            _interfaceTypes = interfaceTypes.Distinct(_comparer).Cast<MetadataTokenType>().ToArray();
             return _interfaceTypes;
         }
 
@@ -218,7 +222,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// Get concrete types which share an implementation with others
         /// </summary>
         /// <returns></returns>
-        public MetadataTokenType[] GetAmbiguousTypes()
+        public MetadataTokenType[] GetAmbiguousTypes(Action<ProgressMessage> reportProgress = null)
         {
             if (!IsRoot())
                 return null;
@@ -227,12 +231,23 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                 return null;
 
             var impls = new List<MetadataTokenType>();
-            foreach (var i in GetAllInterfaceTypes())
+            var allInterfaces = GetAllInterfaceTypes();
+            var totalLen = allInterfaces.Length;
+
+            for (var i = 0; i < totalLen; i++)
             {
+                var ifc = allInterfaces[i];
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{ifc?.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = $"\nGetting all ambiguous types"
+                });
                 var count = 0;
-                GetCountOfImplentors(i, ref count);
-                if(count > 1)
-                    impls.Add(i);
+                GetCountOfImplentors(ifc, ref count);
+                if (count > 1)
+                    impls.Add(ifc);
             }
 
             return impls.ToArray();
@@ -383,15 +398,117 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         {
             if (typeName == null)
                 return;
-            if (!IsRoot())
-                return;
 
-            foreach (var item in Items)
+            Func<MetadataTokenType, bool> selector = (v) =>
+                v != null && v.Items != null && v.Items.Any(vi => _comparer.Equals(vi, typeName));
+            var counter = 0;
+            Func<MetadataTokenType, MetadataTokenType> sumCount = (v) =>
             {
-                if (item.Items == null || !item.Items.Any())
+                if (v == null)
+                    return null;
+                counter += 1;
+                return v;
+            };
+
+            IterateTree(selector, sumCount);
+
+            countOf = counter;
+        }
+
+        /// <summary>
+        /// Performs a seek and replace operation recursively where the caller must decide what they are looking 
+        /// for and what to do when they find it.
+        /// </summary>
+        /// <param name="searchFunc"> A search function </param>
+        /// <param name="doSomething">
+        /// A reassignment function which is executed whenever the <see cref="searchFunc"/> returns true
+        /// </param>
+        /// <remarks> Actual method is iterative and not recursive. </remarks>
+        public void IterateTree(Func<MetadataTokenType, bool> searchFunc, Func<MetadataTokenType, MetadataTokenType> doSomething)
+        {
+            var callStack = new Stack<MetadataTokenType>();
+            //start at top
+            var ivItem = this;
+            while (ivItem != null)
+            {
+                var nextItem = ivItem.NextItem();
+                if (nextItem != null)
+                {
+                    //detect if some parent item is also a child item
+                    if (ReferenceEquals(nextItem, ivItem) || callStack.Any(v => object.ReferenceEquals(v, nextItem)))
+                    {
+                        nextItem = null;
+                    }
+                    else
+                    {
+                        callStack.Push(ivItem);
+                    }
+                }
+
+                ivItem = nextItem;
+
+                if (ivItem == null)
+                {
+                    if (callStack.Count <= 0)
+                        break;
+                    ivItem = callStack.Pop();
                     continue;
-                countOf += item.Items.Count(v => _comparer.Equals(v, typeName));
+                }
+                //search for whatever by such-and-such
+                if (!searchFunc(ivItem))
+                    continue;
+
+                //having a match then do such-and-such
+                var parent = callStack.Peek();
+                var ivItemIdx = (parent?.GetCurrentIdx() ?? 0) - 1;
+                if (parent == null || ivItemIdx < 0 || ivItemIdx >= parent.Count())
+                {
+                    ivItem = doSomething(ivItem);
+                    continue;
+                }
+                parent.Items[ivItemIdx] = doSomething(ivItem);
             }
+        }
+
+        /// <summary>
+        /// Gets the current counter index from the cumulative calls to <see cref="NextItem"/> and <see cref="PrevItem"/>
+        /// </summary>
+        /// <returns></returns>
+        public virtual int GetCurrentIdx()
+        {
+            return _idx;
+        }
+
+        /// <summary>
+        /// An iterative method to get the next item from <see cref="Items"/>
+        /// </summary>
+        /// <returns></returns>
+        public virtual MetadataTokenType NextItem()
+        {
+            if (_idx < Count())
+            {
+                var v = Items[_idx];
+                _idx += 1;
+                return v;
+            }
+            _idx = 0;
+            return null;
+        }
+
+        /// <summary>
+        /// An iterative method to get the previous item from <see cref="Items"/>
+        /// </summary>
+        /// <returns></returns>
+        public virtual MetadataTokenType PrevItem()
+        {
+            _idx -= 1;
+            if (_idx >= 0)
+            {
+                var v = Items[_idx];
+                return v;
+            }
+            _idx = 0;
+            return null;
         }
 
         public override int GetHashCode()
