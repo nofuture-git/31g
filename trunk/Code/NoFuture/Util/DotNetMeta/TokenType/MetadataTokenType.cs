@@ -150,7 +150,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// one concrete impelemntation
         /// </summary>
         /// <returns></returns>
-        public MetadataTokenType[] GetAllInterfacesWithSingleImplementor()
+        public MetadataTokenType[] GetAllInterfacesWithSingleImplementor(Action<ProgressMessage> reportProgress = null)
         {
             var sInfcs = new List<MetadataTokenType>();
             if (Items == null || !Items.Any())
@@ -159,12 +159,29 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                 return _singleImplementors;
 
             var allInfcs = GetAllInterfaceTypes();
-            foreach (var ai in allInfcs)
+            if (allInfcs == null || !allInfcs.Any())
+                return null;
+            var totalLen = allInfcs.Length;
+            for (var i = 0; i < totalLen; i++)
             {
+                var ai = allInfcs[i];
+                if (ai == null)
+                    continue;
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{ai?.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = "Getting all interfaces with only one implementation"
+                });
+
                 var cnt = 0;
                 GetCountOfImplementors(ai, ref cnt);
-                if(cnt == 1)
+                if (cnt == 1)
                     sInfcs.Add(ai);
+            }
+            foreach (var ai in allInfcs)
+            {
             }
 
             _singleImplementors = sInfcs.ToArray();

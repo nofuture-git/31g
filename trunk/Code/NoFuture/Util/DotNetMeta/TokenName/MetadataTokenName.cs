@@ -71,7 +71,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
         /// <summary>
         /// A flag to indicate this is one of many concrete implementations
-        /// of some abstract member defined elsewhere
+        /// of some abstract member defined elsewhere or it 
+        /// is itself abstract (i.e. an inteface token)
         /// </summary>
         public bool IsAmbiguous { get; set; }
         #endregion
@@ -619,7 +620,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var n2n = new Dictionary<MetadataTokenName, MetadataTokenName>();
             if (tokenTypes?.Items == null)
                 return n2n;
-            var reassignInterfaces = tokenTypes.GetAllInterfacesWithSingleImplementor();
+            var reassignInterfaces = tokenTypes.GetAllInterfacesWithSingleImplementor(reportProgress);
             if (reassignInterfaces == null || !reassignInterfaces.Any())
                 return n2n;
             var totalLen = reassignInterfaces.Length;
@@ -655,7 +656,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
         /// <summary>
         /// Gets a dictionary of token names whose keys are the interface&apos;s token while
-        /// the values are the concret implementation thereof.
+        /// the values are the concrete implementation thereof.
         /// </summary>
         /// <param name="interfaceType"></param>
         /// <param name="concreteType"></param>
@@ -733,7 +734,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 return;
 
             var totalLen = ambiguousTypes.Length;
-
+            var allAmbiguousMembers = new List<MetadataTokenName>();
             for (var i = 0; i < totalLen; i++)
             {
                 var ambiguousType = ambiguousTypes[i];
@@ -746,15 +747,35 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{ambiguousType.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = "Getting all ambiguous members"
+                });
+                var ambiguousMembers = new List<MetadataTokenName>();
+                
+                GetAllDeclNames(ambiguousType,ambiguousMembers);
+                foreignAssembly?.GetAllDeclNames(ambiguousType, ambiguousMembers);
+                if (!ambiguousMembers.Any())
+                    continue;
+                allAmbiguousMembers.AddRange(ambiguousMembers);
+            }
+
+            allAmbiguousMembers = allAmbiguousMembers.Distinct(_comparer).Cast<MetadataTokenName>().ToList();
+
+            totalLen = allAmbiguousMembers.Count;
+            for (var i = 0; i < totalLen; i++)
+            {
+                var ambiguousMember = allAmbiguousMembers[i];
+                if (ambiguousMember == null)
+                    continue;
+
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{ambiguousMember.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
                     Status = $"Assigning {nameof(IsAmbiguous)} flags"
                 });
-                var allAmbiguousMembers = new List<MetadataTokenName>();
-                
-                GetAllDeclNames(ambiguousType,allAmbiguousMembers);
-                foreignAssembly?.GetAllDeclNames(ambiguousType, allAmbiguousMembers);
-                if (!allAmbiguousMembers.Any())
-                    continue;
-                Func<MetadataTokenName, bool> selectOn = (v) => allAmbiguousMembers.Any(m => _comparer.Equals(m, v));
+
+                Func<MetadataTokenName, bool> selectOn = (v) => _comparer.Equals(ambiguousMember, v);
                 Func<MetadataTokenName, MetadataTokenName> assignFlag = (v) =>
                 {
                     if (v == null)
@@ -862,7 +883,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <returns>
         /// A single token name whose Items represent the full extent of its call stack. 
         /// </returns>
-        public MetadataTokenName SelectDistinct(string typeName, string methodName)
+        public MetadataTokenName SelectDistinct(string typeName, string methodName, bool getDistinct = true)
         {
             var df = new MetadataTokenName
             {
@@ -919,7 +940,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <returns></returns>
         public MetadataTokenName SelectTheseTypeNames(params string[] typenames)
         {
-            return SelectByFunc(n => n.GetTypeName(), (s, f) => s.Any(f.EndsWith), typenames);
+            return SelectByFunc(n => n.GetTypeName(), (s, f) => s.Any(f.EndsWith), true, typenames);
         }
 
         /// <summary>
@@ -930,7 +951,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <returns></returns>
         public MetadataTokenName SelectTheseNamespaceNames(params string[] namespaceNames)
         {
-            return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.Any(f.StartsWith), namespaceNames);
+            return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.Any(f.StartsWith), true, namespaceNames);
         }
 
         /// <summary>
@@ -941,7 +962,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <returns></returns>
         public MetadataTokenName SelectNotTheseTypeNames(params string[] typenames)
         {
-            return SelectByFunc(n => n.GetTypeName(), (s, f) => s.All(v => !f.EndsWith(v)), typenames);
+            return SelectByFunc(n => n.GetTypeName(), (s, f) => s.All(v => !f.EndsWith(v)), true, typenames);
         }
 
         /// <summary>
@@ -952,24 +973,25 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <returns></returns>
         public MetadataTokenName SelectNotTheseNamespaceNames(params string[] namespaceNames)
         {
-            return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.All(v => !f.StartsWith(v)), namespaceNames);
+            return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.All(v => !f.StartsWith(v)), true, namespaceNames);
         }
 
         /// <summary>
         /// Select all token names which match the regex pattern
         /// </summary>
         /// <param name="regexPattern"></param>
+        /// <param name="getDistinct"></param>
         /// <returns></returns>
-        public MetadataTokenName SelectByRegex(string regexPattern)
+        public MetadataTokenName SelectByRegex(string regexPattern, bool getDistinct = true)
         {
             return SelectByFunc(n => n.Name, 
                                (s, f) => s.Any(v => !string.IsNullOrWhiteSpace(v) 
                                                     && !string.IsNullOrWhiteSpace(f)
-                                                    && Regex.IsMatch(f, v)), regexPattern);
+                                                    && Regex.IsMatch(f, v)), getDistinct, regexPattern);
         }
 
         protected internal MetadataTokenName SelectByFunc(Func<MetadataTokenName, string> getNameFunc,
-            Func<string[], string, bool> selector, params string[] searchNames)
+            Func<string[], string, bool> selector, bool getDistinct, params string[] searchNames)
         {
             var names = new List<MetadataTokenName>();
             Func<MetadataTokenName, bool> partialResolvedSelector = (v) => selector(searchNames, getNameFunc(v));
@@ -985,7 +1007,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             return new MetadataTokenName
             {
-                Items = names.Distinct(_comparer).Cast<MetadataTokenName>().ToArray(),
+                Items = getDistinct
+                    ? names.Distinct(_comparer).Cast<MetadataTokenName>().ToArray()
+                    : names.ToArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
 
@@ -1042,7 +1066,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{byVal.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "Reassigning all ByRef names"
+                    Status = "Reassigning ByRef tokens"
                 });
                 byVal.IsAmbiguous = false;
                 ReassignAnyItemsByName(byVal);
