@@ -612,7 +612,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </param>
         /// <param name="foreignAssembly">See annotation on this methods overload</param>
         /// <returns>
-        /// Dictionary where the keys are the concrete implementation, values are the interface token names
+        /// Dictionary where the keys are the interface token names, values are the concrete implementation
         /// </returns>
         public Dictionary<MetadataTokenName, MetadataTokenName> GetImplementorDictionary(MetadataTokenType tokenTypes,
             Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
@@ -718,8 +718,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Sets all token name&apos;s <see cref="IsAmbiguous"/> flag for all methods defined by 
-        /// the <see cref="MetadataTokenType.GetAmbiguousTypes"/>. 
+        /// Sets all token name&apos;s <see cref="IsAmbiguous"/> flag for 
+        /// all members attached to types defined 
+        /// by the <see cref="MetadataTokenType.GetAmbiguousTypes"/>. 
         /// </summary>
         /// <param name="tokenTypes"></param>
         /// <param name="reportProgress"></param>
@@ -852,7 +853,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Gets a flat, distinct, shallow root-level token names whose Items represent the collection.
+        /// Gets a flat, distinct, shallow root-level token names as a Set.
         /// </summary>
         /// <returns></returns>
         public MetadataTokenName SelectDistinct()
@@ -876,7 +877,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Selectively gets the flatten call stack for the given type-method pair
+        /// Selectively gets the flatten call stack for the given type-method pair as a Set
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="methodName"></param>
