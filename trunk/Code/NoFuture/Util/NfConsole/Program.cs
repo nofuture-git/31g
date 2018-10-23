@@ -130,12 +130,21 @@ namespace NoFuture.Util.NfConsole
                     return;
                 var currentState = new Tuple<int, string>(pMsg.ProgressCounter, pMsg.Status);
 
-                if (ProgressMessageState == null || currentState.Item2 != ProgressMessageState.Item2)
+                if (ProgressMessageState == null)
                 {
                     PrintToConsole(currentState.Item2);
                     ProgressMessageState = currentState;
                     return;
                 }
+
+                if (currentState.Item2 != ProgressMessageState.Item2)
+                {
+                    PrintToConsole();
+                    PrintToConsole(currentState.Item2);
+                    ProgressMessageState = currentState;
+                    return;
+                }
+
                 if (currentState.Item1 > ProgressMessageState.Item1)
                 {
                     Console.Write('.');

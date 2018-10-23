@@ -298,7 +298,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{tokenId.Id}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(counter, total),
-                    Status = "\nApplying token name to token ids"
+                    Status = "Applying token name to token ids"
                 });
                 counter += 1;
                 nameMapping.Add(BindToken2Name(tokenId));
@@ -635,7 +635,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{ri.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "\nGetting interface-to-implementation"
+                    Status = "Getting interface-to-implementation"
                 });
                 var cri = tokenTypes.GetFirstInterfaceImplementor(ri);
                 if (cri == null)
@@ -742,7 +742,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{interfaceType?.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = $"\nAssigning {nameof(IsAbstract)} flags"
+                    Status = $"Assigning {nameof(IsAbstract)} flags"
                 });
 
                 if (interfaceType?.AbstractMemberNames == null || !interfaceType.AbstractMemberNames.Any())
@@ -791,7 +791,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{ambiguousType.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = $"\nAssigning {nameof(IsAmbiguous)} flags"
+                    Status = $"Assigning {nameof(IsAmbiguous)} flags"
                 });
                 var allAmbiguousMembers = new List<MetadataTokenName>();
 
@@ -1093,7 +1093,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{byRef.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "\nFinding the expanded counterpart of all ByRef tokens"
+                    Status = "Finding the expanded counterpart of all ByRef tokens"
                 });
                 var byVal = GetFirstByVal(byRef);
                 if (byVal == null)
@@ -1117,7 +1117,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{byVal.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "\nReassigning all by ref names"
+                    Status = "Reassigning all by ref names"
                 });
                 byVal.IsAmbiguous = false;
                 ReassignAnyItemsByName(byVal);
@@ -1156,7 +1156,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{interfaceName}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(counter, total),
-                    Status = "\nReassigning interface tokens"
+                    Status = "Reassigning interface tokens"
                 });
                 var concreteName = n2n[interfaceName];
                 counter += 1;
@@ -1215,7 +1215,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = "secondAttempt",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(0, 100),
-                    Status = "\nMaking second attempt in reverse order"
+                    Status = "Making second attempt in reverse order"
                 });
                 dict = foreignAssembly.GetImplementorDictionary(tokenTypes, reportProgress, this);
             }

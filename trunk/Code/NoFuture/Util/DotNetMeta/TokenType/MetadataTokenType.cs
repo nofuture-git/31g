@@ -242,7 +242,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                     Activity = $"{ifc?.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = $"\nGetting all ambiguous types"
+                    Status = "Getting all ambiguous types"
                 });
                 var count = 0;
                 GetCountOfImplentors(ifc, ref count);
