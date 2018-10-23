@@ -23,37 +23,6 @@ namespace NoFuture.Util.DotNetMeta.Tests.TokenNameTest
         }
 
         [Test]
-        public void TestSelectDistinct()
-        {
-            var tokenData = TestInit.GetTokenData();
-            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
-                tokenData.Item2.GetAsRoot(), tokenData.Item1);
-            Assert.IsNotNull(testSubject?.Items);
-
-            var testResult = testSubject.SelectDistinctShallowArray();
-            Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(0, testResult.Length);
-            Console.WriteLine(testResult.Length);
-
-            foreach (var t in testResult.Take(30))
-                Console.WriteLine(t);
-        }
-
-        [Test]
-        public void TestSelectDistinct_WithTypes()
-        {
-            var tokenData = TestInit.GetTokenData();
-            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
-                tokenData.Item2.GetAsRoot(), tokenData.Item1);
-
-            var testResult = testSubject.SelectDistinct(tokenData.Item4.GetAsRoot());
-            Assert.IsNotNull(testResult?.Items);
-            Assert.AreNotEqual(0,testResult.Items.Length);
-            Console.WriteLine(testResult.Items.Length);
-
-        }
-
-        [Test]
         public void TestSelectDistinct_ByMethod()
         {
             var tokenData = TestInit.GetTokenData();

@@ -70,11 +70,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// A flag to indicate that this is an implementation of some other method
-        /// </summary>
-        public bool IsAbstract { get; set; }
-
-        /// <summary>
         /// A flag to indicate this is one of many concrete implementations
         /// of some abstract member defined elsewhere
         /// </summary>
@@ -111,6 +106,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// Indicates a short-hand version of some fuller copy of itself elsewhere 
         /// in the parent&apos;s items.
         /// </summary>
+        /// <remarks>
+        /// While crawling the call-of-call tokens, when the algo comes across some
+        /// token its already expanded, it will mark this flag and move on in order 
+        /// to avoid having to expand it again.
+        /// </remarks>
         public bool IsByRef
         {
             get => _isByRef;
@@ -229,7 +229,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (tokenTypes != null)
             {
                 tokenNamesOut.ReassignAllInterfaceTokens(tokenTypes, reportProgress);
-                //tokenNamesOut.SetAllIsAbstractFlags(tokenTypes, reportProgress);
             }
 
             return tokenNamesOut;
@@ -326,7 +325,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             nm.IsByRef = tokenId.IsByRef > 0;
             nm.DeclTypeId = frmNm.DeclTypeId;
             nm.IsAmbiguous = frmNm.IsAmbiguous;
-            nm.IsAbstract = frmNm.IsAbstract;
 
             if (tokenId.Items == null || tokenId.Items.Length <= 0)
                 return nm;
@@ -376,7 +374,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 OwnAsmIdx = OwnAsmIdx,
                 RslvAsmIdx = RslvAsmIdx,
                 IsAmbiguous =  IsAmbiguous,
-                IsAbstract = IsAbstract
             };
         }
 
@@ -720,50 +717,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Sets all token name&apos;s <see cref="IsAbstract"/> flag.
-        /// </summary>
-        /// <param name="tokenTypes"></param>
-        /// <param name="reportProgress"></param>
-        public void SetAllIsAbstractFlags(MetadataTokenType tokenTypes, Action<ProgressMessage> reportProgress = null)
-        {
-            if (tokenTypes?.Items == null)
-                return;
-            var allInterfaces = tokenTypes.GetAllInterfaceTypes();
-            if (allInterfaces == null || !allInterfaces.Any())
-                return;
-
-            var totalLen = allInterfaces.Length;
-            for (var i = 0; i < totalLen; i++)
-            {
-                
-                var interfaceType = allInterfaces[i];
-                reportProgress?.Invoke(new ProgressMessage
-                {
-                    Activity = $"{interfaceType?.Name}",
-                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
-                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = $"Assigning {nameof(IsAbstract)} flags"
-                });
-
-                if (interfaceType?.AbstractMemberNames == null || !interfaceType.AbstractMemberNames.Any())
-                    continue;
-                var allAbstractMembers = interfaceType.AbstractMemberNames;
-
-                Func<MetadataTokenName, bool> selectOn = (v) => allAbstractMembers.Any(m => _comparer.Equals(m, v));
-                Func<MetadataTokenName, MetadataTokenName> assignFlag = (v) =>
-                {
-                    if (v == null)
-                        return null;
-                    v.IsAbstract = true;
-                    return v;
-                };
-                IterateTree(selectOn, assignFlag);
-
-            }
-        }
-
-        /// <summary>
-        /// Sets all token name&apos;s <see cref="IsAmbiguous"/> flag.
+        /// Sets all token name&apos;s <see cref="IsAmbiguous"/> flag for all methods defined by 
+        /// the <see cref="MetadataTokenType.GetAmbiguousTypes"/>. 
         /// </summary>
         /// <param name="tokenTypes"></param>
         /// <param name="reportProgress"></param>
@@ -794,7 +749,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Status = $"Assigning {nameof(IsAmbiguous)} flags"
                 });
                 var allAmbiguousMembers = new List<MetadataTokenName>();
-
+                
                 GetAllDeclNames(ambiguousType,allAmbiguousMembers);
                 foreignAssembly?.GetAllDeclNames(ambiguousType, allAmbiguousMembers);
                 if (!allAmbiguousMembers.Any())
@@ -881,32 +836,22 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <returns></returns>
         public MetadataTokenName SelectDistinct()
         {
+            var allItems = new List<MetadataTokenName>();
+            Func<MetadataTokenName, bool> selector = (v) => true;
+            Func<MetadataTokenName, MetadataTokenName> addIt = (v) =>
+            {
+                if (v == null)
+                    return null;
+                allItems.Add(v.GetShallowCopy());
+                return v;
+            };
+
+            IterateTree(selector, addIt);
             return new MetadataTokenName
             {
-                Items = SelectDistinctShallowArray(),
+                Items = allItems.Distinct(_comparer).Cast<MetadataTokenName>().ToArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
-        }
-
-        protected internal MetadataTokenName[] SelectDistinctShallowArray(Stack<MetadataTokenName> callStack = null)
-        {
-            callStack = callStack ?? new Stack<MetadataTokenName>();
-            var innerItems = new List<MetadataTokenName> { GetShallowCopy() };
-            if (Items == null || !Items.Any())
-                return innerItems.ToArray();
-            if (callStack.Count > 0 && callStack.Any(v => !v.IsRoot() && _comparer.Equals(v, this)))
-                return innerItems.ToArray();
-            ThrowOnMaxDepth(callStack);
-            callStack.Push(this);
-            foreach (var item in Items)
-            {
-                if (item.IsRoot())
-                    continue;
-                innerItems.AddRange(item.SelectDistinctShallowArray(callStack));
-            }
-            callStack.Pop();
-
-            return innerItems.Distinct(_comparer).Cast<MetadataTokenName>().Select(v => v.GetShallowCopy()).ToArray();
         }
 
         /// <summary>
@@ -953,26 +898,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             df.Items = names.Distinct(_comparer).Cast<MetadataTokenName>().ToArray();
             return df.SelectDistinct();
-        }
-
-        /// <summary>
-        /// Another flavor of distinct where an interface with only one implementation
-        /// will have its tokens replace with its concrete counterpart.  Therefore,
-        /// the call-stack is fuller since is does not terminate on interface token ids.
-        /// </summary>
-        /// <param name="tokenTypes"></param>
-        /// <returns></returns>
-        public MetadataTokenName SelectDistinct(MetadataTokenType tokenTypes)
-        {
-            //replace any byRef terminating nodes with their fully expander counterpart
-            ReassignAllByRefs();
-            ReassignAllInterfaceTokens(tokenTypes);
-
-            return new MetadataTokenName
-            {
-                Items = SelectDistinctShallowArray(),
-                Name = NfSettings.DefaultTypeSeparator.ToString()
-            };
         }
 
         /// <summary>
@@ -1117,7 +1042,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{byVal.Name}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "Reassigning all by ref names"
+                    Status = "Reassigning all ByRef names"
                 });
                 byVal.IsAmbiguous = false;
                 ReassignAnyItemsByName(byVal);
@@ -1156,7 +1081,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Activity = $"{interfaceName}",
                     ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
                     ProgressCounter = Etc.CalcProgressCounter(counter, total),
-                    Status = "Reassigning interface tokens"
+                    Status = "Reassigning tokens"
                 });
                 var concreteName = n2n[interfaceName];
                 counter += 1;
@@ -1221,8 +1146,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             }
 
             ReassignTokens(dict, reportProgress);
-            //SetAllIsAbstractFlags(tokenTypes, reportProgress);
-            //SetAllIsAmbiguousFlags(tokenTypes, reportProgress, foreignAssembly);
+            SetAllIsAmbiguousFlags(tokenTypes, reportProgress, foreignAssembly);
         }
 
         /// <summary>
@@ -1566,36 +1490,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
 
             methodName = methodName.Substring(0, methodName.IndexOf('(')).Trim();
             return methodName;
-        }
-
-        /// <summary>
-        /// An attempt to keep the process from crashing with a stack overflow by detecting 
-        /// such conditions before it goes.
-        /// </summary>
-        /// <param name="callStack"></param>
-        /// <param name="maxDepth"></param>
-        internal static void ThrowOnMaxDepth(Stack<MetadataTokenName> callStack, int maxDepth = 967)
-        {
-            var depth = callStack?.Count ?? 0;
-            maxDepth = maxDepth < 0 ? 967 : maxDepth;
-            if (depth + 1 < maxDepth)
-                return;
-
-            var msg = new System.Text.StringBuilder();
-            msg.AppendLine("The current depth is one away from blowing out the stack.");
-            if (callStack != null && callStack.Any())
-            {
-                msg.AppendLine("Here are the names of the previous 32 tokens " +
-                               "pushed on the stack, starting at the top:");
-                for (var i = 0; i < 32; i++)
-                {
-                    var nxt = callStack.Pop();
-                    var name = nxt?.Name ?? "null";
-                    msg.AppendLine($"[{i + 1}] {name}");
-                }
-            }
-
-            throw new Safuas(msg.ToString());
         }
     }
 }

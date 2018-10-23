@@ -118,8 +118,7 @@ namespace NoFuture.Util.NfConsole
         }
 
         /// <summary>
-        /// Prints a header then a kind of console progress bar.
-        /// Does NOT write to <see cref="LogFile"/>.
+        /// Prints to the console
         /// </summary>
         /// <param name="pMsg"></param>
         public virtual void PrintToConsole(ProgressMessage pMsg)
@@ -164,7 +163,7 @@ namespace NoFuture.Util.NfConsole
         }
 
         /// <summary>
-        /// Prints to console and writes to <see cref="LogFile"/>
+        /// Prints to the console
         /// </summary>
         /// <param name="someString"></param>
         /// <param name="trunc"></param>

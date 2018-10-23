@@ -174,13 +174,13 @@ namespace NoFuture.Util.DotNetMeta
         ///  #expand web layer with expanded logic layer's concrete types
         ///  $myWebTokens = $myAsmAly.ReassignTokenNames($myWebTokens, $myLogicTokens, $myLogicTypes).GetAsRoot()
         /// 
-        ///  #get all token names in logic layer as set instead of a data-tree
+        ///  #get all token names in logic layer as a Set instead of a Data-Tree
         ///  $myFlatLogicTokens = $myLogicTokens.SelectDistinct()
         /// 
-        ///  #do likewise for the web layer - get tokens as a set
+        ///  #do likewise for the web layer - get tokens as a Set
         ///  $myFlatWebTokens = $myWebTokens.SelectDistinct()
         /// 
-        ///  #now normal set-operations can be applied
+        ///  #now normal Set-Operations can be applied
         ///  #say, want to find orphaned methods in logic layer no longer used by web layer
         ///  $myOrphanedLogicTokens = $myFlatWebTokens.GetRightSetDiff($myFlatLogicTokens)
         /// 
@@ -341,6 +341,18 @@ namespace NoFuture.Util.DotNetMeta
             return _getTokenPageRankCmd.Receive(tokenIdResponse);
         }
 
+        /// <summary>
+        /// Gets all the types from all scoped assemblies in a tree-like data structure.
+        /// </summary>
+        /// <param name="recurseAnyAsmNamedLike">
+        /// A regex pattern on which to match type names.  The pattern used in <see cref="GetTokenIds"/>
+        /// will be used if its available and the caller doesn't specifiy a value.
+        /// </param>
+        /// <returns></returns>
+        /// <remarks>
+        /// The type information is needed to scope and target token names
+        /// which are from an interface (and by def. terminating nodes).
+        /// </remarks>
         public TokenTypeResponse GetTokenTypes(string recurseAnyAsmNamedLike = null)
         {
             _getTokenTypesCmd.RecurseAnyAsmNamedLike = recurseAnyAsmNamedLike;
@@ -435,6 +447,7 @@ namespace NoFuture.Util.DotNetMeta
                     tokenName.Name = expandedName;
 
                 tokenName.OwnAsmIdx = t.IndexId;
+                tokenName.IsAmbiguous = type.IsInterface || type.IsAbstract;
                 return tokenName;
             }
             if (mi.DeclaringType == null)
@@ -466,8 +479,7 @@ namespace NoFuture.Util.DotNetMeta
             if (mti == null)
                 return tokenName;
 
-            tokenName.IsAbstract = mti.IsAbstract;
-            tokenName.IsAmbiguous = mti.NfGetBaseDefinition(false, logFile)?.ReflectedType?.IsInterface ?? false;
+            tokenName.IsAmbiguous = mti.IsAbstract;
 
             var mtiParams = mti.NfGetParameters(false, logFile);
             if (mtiParams.Length <= 0)

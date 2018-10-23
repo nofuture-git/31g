@@ -162,7 +162,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             foreach (var ai in allInfcs)
             {
                 var cnt = 0;
-                GetCountOfImplentors(ai, ref cnt);
+                GetCountOfImplementors(ai, ref cnt);
                 if(cnt == 1)
                     sInfcs.Add(ai);
             }
@@ -244,13 +244,12 @@ namespace NoFuture.Util.DotNetMeta.TokenType
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
                     Status = "Getting all ambiguous types"
                 });
-                var count = 0;
-                GetCountOfImplentors(ifc, ref count);
-                if (count > 1)
-                    impls.Add(ifc);
+                var temp = GetImplementorsOf(ifc);
+                if (temp.Length > 1)
+                    impls.AddRange(temp);
             }
 
-            return impls.ToArray();
+            return impls.Distinct(_comparer).Cast<MetadataTokenType>().ToArray().ToArray();
         }
 
         /// <summary>
@@ -376,7 +375,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="countOf"></param>
-        public void GetCountOfImplentors(string typeName, ref int countOf)
+        public void GetCountOfImplementors(string typeName, ref int countOf)
         {
             //find the interface by this name
             var allInfcs = GetAllInterfaceTypes();
@@ -385,7 +384,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
             var mtTypeName = allInfcs.FirstOrDefault(t => string.Equals(t.Name, typeName));
             if (mtTypeName == null || !mtTypeName.IsInterfaceType())
                 return;
-            GetCountOfImplentors(mtTypeName, ref countOf);
+            GetCountOfImplementors(mtTypeName, ref countOf);
 
         }
 
@@ -394,25 +393,39 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="countOf"></param>
-        public void GetCountOfImplentors(MetadataTokenType typeName, ref int countOf)
+        public void GetCountOfImplementors(MetadataTokenType typeName, ref int countOf)
         {
             if (typeName == null)
                 return;
 
+            var impls = GetImplementorsOf(typeName);
+
+            countOf = impls.Length;
+        }
+
+        /// <summary>
+        /// Gets a list of the token types which implement <see cref="typeName"/>
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        public MetadataTokenType[] GetImplementorsOf(MetadataTokenType typeName)
+        {
+            var impls = new List<MetadataTokenType>();
+            if (typeName == null)
+                return impls.ToArray();
+
             Func<MetadataTokenType, bool> selector = (v) =>
-                v != null && v.Items != null && v.Items.Any(vi => _comparer.Equals(vi, typeName));
-            var counter = 0;
-            Func<MetadataTokenType, MetadataTokenType> sumCount = (v) =>
+                v?.Items != null && v.Items.Any(vi => _comparer.Equals(vi, typeName));
+            Func<MetadataTokenType, MetadataTokenType> addIt = (v) =>
             {
                 if (v == null)
                     return null;
-                counter += 1;
+                impls.Add(v);
                 return v;
             };
 
-            IterateTree(selector, sumCount);
-
-            countOf = counter;
+            IterateTree(selector, addIt);
+            return impls.ToArray();
         }
 
         /// <summary>
