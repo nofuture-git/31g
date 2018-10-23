@@ -224,7 +224,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             tokenNames.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             tokenNames.ApplyFullName(asmIndices);
             var tokenNamesOut = tokenNames.BindTokens2Names(tokenIds, reportProgress);
-            tokenNamesOut.Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture);
             //turn all pointer'esque tokens into their full-expanded counterparts
             tokenNamesOut.ReassignAllByRefs(reportProgress);
             if (tokenTypes != null)
@@ -304,7 +303,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 counter += 1;
                 nameMapping.Add(BindToken2Name(tokenId));
             }
-            return new MetadataTokenName { Items = nameMapping.ToArray() };
+            return new MetadataTokenName
+            {
+                Items = nameMapping.ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture)
+            };
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -322,6 +325,8 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             nm.Name = frmNm.Name;
             nm.IsByRef = tokenId.IsByRef > 0;
             nm.DeclTypeId = frmNm.DeclTypeId;
+            nm.IsAmbiguous = frmNm.IsAmbiguous;
+            nm.IsAbstract = frmNm.IsAbstract;
 
             if (tokenId.Items == null || tokenId.Items.Length <= 0)
                 return nm;
@@ -518,7 +523,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 listOut.Add(k);
             }
 
-            return new MetadataTokenName { Items = listOut.ToArray() };
+            return new MetadataTokenName
+            {
+                Items = listOut.ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
 
         /// <summary>

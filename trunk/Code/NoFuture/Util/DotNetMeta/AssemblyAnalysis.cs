@@ -397,7 +397,13 @@ namespace NoFuture.Util.DotNetMeta
             var localIsIgnore = isIgnore ?? (s => false);
             var localIndicies = indicies ?? new AsmIndexResponse { Asms = new MetadataTokenAsm[0] };
 
-            var tokenName = new MetadataTokenName { Name = mi.Name, Label = mi.GetType().Name, DeclTypeId = mi.DeclaringType?.MetadataToken ?? 0, Id = mi.MetadataToken };
+            var tokenName = new MetadataTokenName
+            {
+                Name = mi.Name,
+                Label = mi.GetType().Name,
+                DeclTypeId = mi.DeclaringType?.MetadataToken ?? 0,
+                Id = mi.MetadataToken
+            };
 
             string asmQualName;
             string asmName;
