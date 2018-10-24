@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Sp
         public ITransaction FirstTransaction => Transactions.FirstOrDefault();
         public ITransaction LastTransaction => Transactions.LastOrDefault();
         public int TransactionCount => Transactions.Count;
-
+        public double DaysPerYear { get; set; } = Shared.Core.Constants.DBL_TROPICAL_YEAR;
         #endregion
 
         public Guid AddTransaction(DateTime dt, Pecuniam amnt, IVoca note = null, Pecuniam fee = null)

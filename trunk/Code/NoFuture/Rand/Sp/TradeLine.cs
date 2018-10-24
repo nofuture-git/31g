@@ -53,6 +53,12 @@ namespace NoFuture.Rand.Sp
 
         public ClosedCondition? Closure { get; set; }
 
+        public double DaysPerYear
+        {
+            get => _balance.DaysPerYear;
+            set => _balance.DaysPerYear = value;
+        }
+
         #endregion
 
         #region methods

@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Sp
                 _rate = Convert.ToSingle(Math.Round(_rate / 100, 4));
 
             //calc the monthly payment
-            var fv = totalCost.Amount.PerDiemInterest(rate, Constants.TropicalYear.TotalDays * termInYears);
+            var fv = totalCost.Amount.PerDiemInterest(rate, DaysPerYear * termInYears, DaysPerYear);
             _monthlyPayment = new Pecuniam(Math.Round(fv / (termInYears * 12), 2));
             _minPaymentRate = fv == 0
                 ? CreditCardAccount.DF_MIN_PMT_RATE
@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Sp
         /// <returns></returns>
         protected internal virtual decimal GetFutureValue(double numOfDays)
         {
-            var fv = GetValueAt(Inception).Amount.PerDiemInterest(_rate, numOfDays);
+            var fv = GetValueAt(Inception).Amount.PerDiemInterest(_rate, numOfDays, DaysPerYear);
             return fv;
         }
 
@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         protected internal void CalcFromRate()
         {
-            var fv = GetFutureValue(Constants.TropicalYear.TotalDays * _termInYears);
+            var fv = GetFutureValue(DaysPerYear * _termInYears);
             _monthlyPayment = new Pecuniam(Math.Round(fv / (_termInYears * 12), 2));
             _minPaymentRate = fv == 0
                 ? CreditCardAccount.DF_MIN_PMT_RATE

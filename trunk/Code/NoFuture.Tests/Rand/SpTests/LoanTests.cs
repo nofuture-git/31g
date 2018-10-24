@@ -3,7 +3,6 @@ using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 using NoFuture.Util.Core.Math;
 using NUnit.Framework;
-using Dbg = System.Diagnostics.Debug;
 
 namespace NoFuture.Rand.Tests.SpTests
 {
@@ -22,7 +21,7 @@ namespace NoFuture.Rand.Tests.SpTests
 
             Assert.AreEqual(-52.79M, testResult.Amount);
 
-            System.Diagnostics.Debug.WriteLine(testResult.Amount);
+            Console.WriteLine(testResult.Amount);
         }
 
         [Test]
@@ -31,16 +30,16 @@ namespace NoFuture.Rand.Tests.SpTests
             var testSubject = new FixedRateLoan(DateTime.Today, 0.0885F, new Pecuniam(150000)) {Rate = 0.05F};
             var testResult = testSubject.GetValueAt(DateTime.Today.AddYears(30));
 
-            Dbg.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             var fv = Econ.PerDiemInterest(150000M, 0.03F,
                 (DateTime.Today.AddYears(30) - DateTime.Today).TotalDays);
 
-            System.Diagnostics.Debug.WriteLine(fv);
+            Console.WriteLine(fv);
 
             var v = fv/30;
             v = v/12;
-            System.Diagnostics.Debug.WriteLine(v);
+            Console.WriteLine(v);
         }
 
         [Test]

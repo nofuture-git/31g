@@ -3,6 +3,11 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc cref="ILoan"/>
+    /// <inheritdoc cref="Pondus"/>
+    /// <summary>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Serializable]
     public abstract class LoanBase<T> : Pondus, ILoan
     {
@@ -19,9 +24,6 @@ namespace NoFuture.Rand.Sp
             _minPaymentRate = minPaymentRate;
         }
 
-        /// <summary>
-        /// The rate at which the minimum payment is calculated
-        /// </summary>
         public virtual float MinPaymentRate
         {
             get => _minPaymentRate;

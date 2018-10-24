@@ -92,7 +92,7 @@ namespace NoFuture.Rand.Sp
             var numDays = (qDt - pDt).TotalDays;
 
             var marketValue =
-                PurchasePrice.GetAbs().Amount.PerDiemInterest(ExpectedAppreciationRate,numDays);
+                PurchasePrice.GetAbs().Amount.PerDiemInterest(ExpectedAppreciationRate,numDays, DaysPerYear);
 
             return marketValue.ToPecuniam();
         }

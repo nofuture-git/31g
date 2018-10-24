@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Sp
                 }
                 //the interest from prev to next
                 var days = (tAtTime - prev.AtTime).TotalDays;
-                bal = bal.PerDiemInterest(rate, days);
+                bal = bal.PerDiemInterest(rate, days, DaysPerYear);
 
                 //the current transaction is after the dt so we just want the interest
                 if (tAtTime == dt)
@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Sp
             {
                 //calc the interest for that number of days
                 var days = (dt - LastTransaction.AtTime).TotalDays;
-                bal = bal.PerDiemInterest(rate, days);
+                bal = bal.PerDiemInterest(rate, days, DaysPerYear);
             }
 
             return new Pecuniam(bal);
@@ -128,7 +128,7 @@ namespace NoFuture.Rand.Sp
                 bal = betwixtTs.Aggregate(bal, (current, bts) => current + bts.Cash);
 
                 //get the balance plus iterest for the number of days this rate was in effect
-                bal = new Pecuniam(bal.Amount.PerDiemInterest(variableRate[vdt], daysAtRate));
+                bal = new Pecuniam(bal.Amount.PerDiemInterest(variableRate[vdt], daysAtRate, DaysPerYear));
 
                 //save where we ended this time for next iteration
                 prevVdt = currVdt;

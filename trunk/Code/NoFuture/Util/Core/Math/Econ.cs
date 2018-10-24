@@ -11,11 +11,12 @@ namespace NoFuture.Util.Core.Math
         /// <param name="balance"></param>
         /// <param name="annualInterestRate"></param>
         /// <param name="numberOfDays"></param>
+        /// <param name="daysPerYear"></param>
         /// <returns></returns>
-        public static decimal PerDiemInterest(this decimal balance, double annualInterestRate, double numberOfDays)
+        public static decimal PerDiemInterest(this decimal balance, double annualInterestRate, double numberOfDays, double daysPerYear = Constants.DBL_TROPICAL_YEAR)
         {
             var pa = Convert.ToDouble(balance);
-            return Convert.ToDecimal(PerDiemInterest(pa, annualInterestRate, numberOfDays));
+            return Convert.ToDecimal(PerDiemInterest(pa, annualInterestRate, numberOfDays, daysPerYear));
         }
 
         /// <summary>
@@ -24,13 +25,13 @@ namespace NoFuture.Util.Core.Math
         /// <param name="balance"></param>
         /// <param name="annualInterestRate"></param>
         /// <param name="numberOfDays"></param>
+        /// <param name="daysPerYear"></param>
         /// <returns></returns>
-        public static double PerDiemInterest(this double balance, double annualInterestRate, double numberOfDays)
+        public static double PerDiemInterest(this double balance, double annualInterestRate, double numberOfDays, double daysPerYear = Constants.DBL_TROPICAL_YEAR)
         {
             var pa = balance;
-            var freq = Constants.TropicalYear;
             var calc = System.Math.Round(pa *
-                                         System.Math.Pow(1 + annualInterestRate / freq.TotalDays, numberOfDays), 2);
+                                         System.Math.Pow(1 + annualInterestRate / daysPerYear, numberOfDays), 2);
             return calc;
         }
     }

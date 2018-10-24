@@ -30,5 +30,10 @@ namespace NoFuture.Rand.Sp
         /// The condition on which the tradeline was closed, if any.
         /// </summary>
         ClosedCondition? Closure { get; set; }
+
+        /// <summary>
+        /// The number of days in a year used to calc per-diem interest
+        /// </summary>
+        double DaysPerYear { get; set; }
     }
 }

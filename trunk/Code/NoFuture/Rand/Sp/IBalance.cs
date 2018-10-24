@@ -76,5 +76,10 @@ namespace NoFuture.Rand.Sp
         /// <param name="dt"></param>
         /// <returns></returns>
         Pecuniam GetFees(DateTime dt);
+
+        /// <summary>
+        /// The number of days in a year used to calc per-diem interest
+        /// </summary>
+        double DaysPerYear { get; set; }
     }
 }
