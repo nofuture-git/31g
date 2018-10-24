@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Domus.US
             if (p?.BirthCert == null)
                 return null;
 
-            var deathDate = AmericanDeathCert.RandomDeathDate(p.BirthCert.DateOfBirth, p.MyGender.ToString());
+            var deathDate = AmericanDeathCert.RandomDeathDate(p.BirthCert.DateOfBirth, p.Gender.ToString());
 
             if (nullOnFutureDate && deathDate > DateTime.Now)
                 return null;

@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Domus
         {
             if (Est == null)
                 return string.Empty;
-            var title = Est.MyGender == Gender.Male ? "Son" : "Daughter";
+            var title = Est.Gender == Gender.Male ? "Son" : "Daughter";
             return string.Join(" ", $"({title})", Est.FirstName, Est.LastName, Est.Age);
         }
 

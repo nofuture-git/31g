@@ -98,7 +98,7 @@ namespace NoFuture.Rand.Domus
             {
                 if (Est == null)
                     return "Spouse";
-                return Est.MyGender == Gender.Female ? "Wife" : "Husband";
+                return Est.Gender == Gender.Female ? "Wife" : "Husband";
             }
         }
 

@@ -342,12 +342,12 @@ namespace NoFuture.Rand.Edu.US
             return string.Join(" ", HighSchool, College);
         }
 
-        protected internal void AddHighSchool(AmericanHighSchool hs, DateTime? gradDt)
+        public void AddHighSchool(AmericanHighSchool hs, DateTime? gradDt)
         {
             _highSchools.Add(new AmericanHighSchoolStudent(hs) { Graduation = gradDt });
         }
 
-        protected internal void AddUniversity(AmericanUniversity univ, DateTime? gradDt)
+        public void AddUniversity(AmericanUniversity univ, DateTime? gradDt)
         {
             _universities.Add(new AmericanCollegeStudent(univ) { Graduation = gradDt });
         }

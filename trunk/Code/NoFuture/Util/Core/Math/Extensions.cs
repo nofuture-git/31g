@@ -66,7 +66,62 @@ namespace NoFuture.Util.Core.Math
                 }
             }
             return arabic;
+        }
 
+        /// <summary>
+        /// Helper method to get the mean of some list of values
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static double Mean(this IEnumerable<double> data)
+        {
+            if (data == null || !data.Any())
+                return 0D;
+            return data.Sum() / data.Count();
+        }
+
+        public static double Mean(this IEnumerable<int> data)
+        {
+            return (data ?? new List<int>()).Cast<double>().Mean();
+        }
+
+        public static double Mean(this IEnumerable<decimal> data)
+        {
+            return (data ?? new List<decimal>()).Cast<double>().Mean();
+        }
+
+        public static double Mean(this IEnumerable<float> data)
+        {
+            return (data ?? new List<float>()).Cast<double>().Mean();
+        }
+
+        /// <summary>
+        /// Helper method to get the standard deviation
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static double StdDev(this IEnumerable<double> data)
+        {
+            var mean = data.Mean();
+            var numSum = data.Sum(v => System.Math.Pow(v - mean, 2));
+            var denom = data.Count() - 1;
+
+            return System.Math.Sqrt(numSum / denom);
+        }
+
+        public static double StdDev(this IEnumerable<int> data)
+        {
+            return (data ?? new List<int>()).Cast<double>().StdDev();
+        }
+
+        public static double StdDev(this IEnumerable<decimal> data)
+        {
+            return (data ?? new List<decimal>()).Cast<double>().StdDev();
+        }
+
+        public static double StdDev(this IEnumerable<float> data)
+        {
+            return (data ?? new List<float>()).Cast<double>().StdDev();
         }
     }
 }

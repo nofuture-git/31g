@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Domus
         DeathCert DeathCert { get; set; }
         string FirstName { get; set; }
         string LastName { get; set; }
-        Gender MyGender { get; set; }
+        Gender Gender { get; set; }
         IEnumerable<Uri> NetUri { get; }
         Personality Personality { get; set; }
         IEducation Education { get; set; }
@@ -62,11 +62,14 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Gets the <see cref="Domus.Spouse"/> at 
-        /// <see cref="dt"/>, or 308 days befor or after <see cref="dt"/>
+        /// <see cref="dt"/>, or <see cref="days"/> befor or after <see cref="dt"/>
         /// </summary>
         /// <param name="dt">Null for the current time</param>
+        /// <param name="days">
+        /// The number of days, in both directions, which is considered &quot;near&quot;
+        /// </param>
         /// <returns></returns>
-        Spouse GetSpouseNear(DateTime? dt);
+        Spouse GetSpouseNear(DateTime? dt, int days = Person.PREG_DAYS + Person.MS_DAYS);
 
         /// <summary>
         /// Resolve the edu of this instance at time <see cref="dt"/>

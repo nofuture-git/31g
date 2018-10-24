@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             var testDob = new DateTime(1974,5,6);
             var testResult = American.RandomAmerican(testDob, Gender.Female);
             Assert.IsNotNull(testResult);
-            Assert.AreNotEqual(Gender.Unknown, testResult.MyGender);
+            Assert.AreNotEqual(Gender.Unknown, testResult.Gender);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.LastName));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.FirstName));
             Assert.IsNotNull(testResult.BirthCert);
@@ -413,7 +413,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             var testSubject = new American
             {
                 BirthCert = new AmericanBirthCert(dob),
-                MyGender = gender,
+                Gender = gender,
                 FirstName = firstName,
                 LastName = lastName,
                 MiddleName = middleName

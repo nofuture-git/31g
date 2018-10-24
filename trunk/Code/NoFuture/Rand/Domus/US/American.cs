@@ -238,7 +238,7 @@ namespace NoFuture.Rand.Domus.US
                 if (namerChild == null)
                     continue;
 
-                var livesWith = MyGender == Gender.Male &&
+                var livesWith = Gender == Gender.Male &&
                                 Etx.RandomRollAboveOrAt(AmericanData.PERCENT_DIVORCED_CHILDREN_LIVE_WITH_MOTHER+1,
                                     Etx.Dice.OneHundred)
                     ? namerChild.GetBiologicalFather()
@@ -279,7 +279,7 @@ namespace NoFuture.Rand.Domus.US
             _dl.Dob = BirthCert.DateOfBirth;
             _dl.FullLegalName = String.Join(" ", FirstName.ToUpper(), MiddleName.ToUpper(),
                 LastName.ToUpper());
-            _dl.Gender = MyGender.ToString();
+            _dl.Gender = Gender.ToString();
             _dl.PrincipalResidence = Address.ToString();
             return _dl;
         }
@@ -321,7 +321,7 @@ namespace NoFuture.Rand.Domus.US
                 ResolveParents();
 
             //resolve spouse to each other
-            ResolveSpouse(AmericanUtil.RandomMaritialStatus(BirthCert.DateOfBirth, MyGender));
+            ResolveSpouse(AmericanUtil.RandomMaritialStatus(BirthCert.DateOfBirth, Gender));
             //to solve for childern when gender -eq Male
             ResolveChildren();
             AlignCohabitantsHomeDataAt(dt, GetAddressAt(null));
@@ -392,7 +392,7 @@ namespace NoFuture.Rand.Domus.US
 
         /// <summary>
         /// Will create a current and, possiably, past spouses for this instance.
-        /// Calc will be based on DOB and <see cref="IPerson.MyGender"/>.
+        /// Calc will be based on DOB and <see cref="IPerson.Gender"/>.
         /// </summary>
         /// <param name="myMaritialStatus"></param>
         /// <param name="atDate">Optional, defaults to now</param>
@@ -407,7 +407,7 @@ namespace NoFuture.Rand.Domus.US
 
             var equationDt = AmericanEquations.ProtectAgainstDistantTimes(BirthCert.DateOfBirth);
 
-            var avgAgeMarriage = MyGender == Gender.Female
+            var avgAgeMarriage = Gender == Gender.Female
                 ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(equationDt.ToDouble())
                 : AmericanEquations.MaleAge2FirstMarriage.SolveForY(equationDt.ToDouble());
             var currentAge = Etc.CalcAge(BirthCert.DateOfBirth, dt);
@@ -417,7 +417,7 @@ namespace NoFuture.Rand.Domus.US
 
             var marriedOn = Etx.RandomDate(-1*yearsMarried, dt).Date.AddHours(12);
 
-            var spouse = (American)AmericanUtil.RandomSpouse(BirthCert.DateOfBirth, MyGender);
+            var spouse = (American)AmericanUtil.RandomSpouse(BirthCert.DateOfBirth, Gender);
 
             //set death date if widowed
             if (myMaritialStatus == MaritialStatus.Widowed || spouse.DeathCert != null)
@@ -451,11 +451,11 @@ namespace NoFuture.Rand.Domus.US
                     return;
 
                 var ageSpread = 6;
-                if (MyGender == Gender.Male)
+                if (Gender == Gender.Male)
                     ageSpread = 10;
 
                 //get a second spouse
-                var secondSpouse = (American)AmericanUtil.RandomSpouse(BirthCert.DateOfBirth, MyGender, ageSpread);
+                var secondSpouse = (American)AmericanUtil.RandomSpouse(BirthCert.DateOfBirth, Gender, ageSpread);
 
                 //random second marriage date
                 var remarriedOn = Etx.RandomDate(Convert.ToInt32(Math.Round(AmericanData.YEARS_BEFORE_NEXT_MARRIAGE)),
@@ -473,9 +473,9 @@ namespace NoFuture.Rand.Domus.US
         protected internal void ResolveChildren()
         {
             //equations data is by women only.
-            if (MyGender == Gender.Male)
+            if (Gender == Gender.Male)
             {
-                foreach (var s in GetSpouses().Where(x => x.Est != null && x.Est.MyGender == Gender.Female))
+                foreach (var s in GetSpouses().Where(x => x.Est != null && x.Est.Gender == Gender.Female))
                 {
                     var nAmerSpouse = s.Est as American;
                     nAmerSpouse?.ResolveChildren();
@@ -533,7 +533,7 @@ namespace NoFuture.Rand.Domus.US
         /// </param>
         protected internal void AddChild(DateTime myChildDob)
         {
-            if (MyGender == Gender.Male)
+            if (Gender == Gender.Male)
                 return;
             
             //check is alive
@@ -562,7 +562,7 @@ namespace NoFuture.Rand.Domus.US
             var spouseAtChildDob = GetSpouseNear(myChildDob);
 
             var childLastName = String.IsNullOrWhiteSpace(spouseAtChildDob?.Est?.LastName) ||
-                                spouseAtChildDob.Est?.MyGender == Gender.Female
+                                spouseAtChildDob.Est?.Gender == Gender.Female
                                 ? GetName(KindsOfNames.Maiden) ?? LastName
                                 : spouseAtChildDob.Est?.LastName;
 
@@ -575,11 +575,11 @@ namespace NoFuture.Rand.Domus.US
             while (Children.Any(x => x.Est.FirstName == nAmerChild.FirstName))
             {
                 nAmerChild.UpsertName(KindsOfNames.First,
-                    AmericanUtil.RandomAmericanFirstName(nAmerChild.MyGender, myChildDob));
+                    AmericanUtil.RandomAmericanFirstName(nAmerChild.Gender, myChildDob));
             }
 
             //child has ref to father, father needs ref to child
-            if (spouseAtChildDob?.Est is American nAmerFather && nAmerFather.MyGender == Gender.Male
+            if (spouseAtChildDob?.Est is American nAmerFather && nAmerFather.Gender == Gender.Male
                                                               && nAmerFather.Children.All(
                                                                   x => !nAmerChild.Equals(x.Est)))
             {
@@ -594,7 +594,7 @@ namespace NoFuture.Rand.Domus.US
             }
 
             AddChild(nAmerChild);
-            if (MyGender == Gender.Female)
+            if (Gender == Gender.Female)
                 nAmerChild.AddParent(this, KindsOfNames.Mother | KindsOfNames.Biological);
         }
 
@@ -672,18 +672,18 @@ namespace NoFuture.Rand.Domus.US
 
             //almost always returns null
             amer.DeathCert = AmericanUtil.GetRandomDeathCert(amer);
-            amer.MyGender = cGender;
+            amer.Gender = cGender;
 
-            amer.FirstName = amer.MyGender != Gender.Unknown
-                ? AmericanUtil.RandomAmericanFirstName(amer.MyGender, amer.BirthCert.DateOfBirth)
+            amer.FirstName = amer.Gender != Gender.Unknown
+                ? AmericanUtil.RandomAmericanFirstName(amer.Gender, amer.BirthCert.DateOfBirth)
                 : "Pat";
 
             amer.LastName = AmericanUtil.RandomAmericanLastName();
 
-            amer.MiddleName = AmericanUtil.RandomAmericanFirstName(amer.MyGender, amer.BirthCert.DateOfBirth);
+            amer.MiddleName = AmericanUtil.RandomAmericanFirstName(amer.Gender, amer.BirthCert.DateOfBirth);
             while (String.Equals(amer.FirstName, amer.MiddleName, StringComparison.OrdinalIgnoreCase))
             {
-                amer.MiddleName = AmericanUtil.RandomAmericanFirstName(amer.MyGender, amer.BirthCert.DateOfBirth);
+                amer.MiddleName = AmericanUtil.RandomAmericanFirstName(amer.Gender, amer.BirthCert.DateOfBirth);
             }
 
             amer.BirthCert.PersonFullName = amer.FullName;

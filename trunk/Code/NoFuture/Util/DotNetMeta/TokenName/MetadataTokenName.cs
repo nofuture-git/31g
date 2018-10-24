@@ -227,8 +227,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var tokenNamesOut = tokenNames.BindTokens2Names(tokenIds, reportProgress);
             //turn all pointer'esque tokens into their full-expanded counterparts
             tokenNamesOut.ReassignAllByRefs(reportProgress);
-            if (tokenTypes != null)
+            if (tokenTypes != null && tokenTypes.Count() > 0)
             {
+                //reassign terminating interface tokens to the concrete counterparts
                 tokenNamesOut.ReassignAllInterfaceTokens(tokenTypes, reportProgress);
             }
 
@@ -734,34 +735,9 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (ambiguousTypes == null || !ambiguousTypes.Any())
                 return;
 
-            var totalLen = ambiguousTypes.Length;
-            var allAmbiguousMembers = new List<MetadataTokenName>();
-            for (var i = 0; i < totalLen; i++)
-            {
-                var ambiguousType = ambiguousTypes[i];
+            var allAmbiguousMembers = GetAllTypesMembers(ambiguousTypes, reportProgress, foreignAssembly);
 
-                if (ambiguousType == null)
-                    continue;
-
-                reportProgress?.Invoke(new ProgressMessage
-                {
-                    Activity = $"{ambiguousType.Name}",
-                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
-                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
-                    Status = "Getting all ambiguous members"
-                });
-                var ambiguousMembers = new List<MetadataTokenName>();
-                
-                GetAllDeclNames(ambiguousType,ambiguousMembers);
-                foreignAssembly?.GetAllDeclNames(ambiguousType, ambiguousMembers);
-                if (!ambiguousMembers.Any())
-                    continue;
-                allAmbiguousMembers.AddRange(ambiguousMembers);
-            }
-
-            allAmbiguousMembers = allAmbiguousMembers.Distinct(_comparer).Cast<MetadataTokenName>().ToList();
-
-            totalLen = allAmbiguousMembers.Count;
+            var totalLen = allAmbiguousMembers.Length;
             for (var i = 0; i < totalLen; i++)
             {
                 var ambiguousMember = allAmbiguousMembers[i];
@@ -776,16 +752,64 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     Status = $"Assigning {nameof(IsAmbiguous)} flags"
                 });
 
-                Func<MetadataTokenName, bool> selectOn = (v) => _comparer.Equals(ambiguousMember, v);
-                Func<MetadataTokenName, MetadataTokenName> assignFlag = (v) =>
-                {
-                    if (v == null)
-                        return null;
-                    v.IsAmbiguous = true;
-                    return v;
-                };
-                IterateTree(selectOn, assignFlag);
+                AssignIsAmbiguousFlag(ambiguousMember);
             }
+        }
+
+        /// <summary>
+        /// Sets any token name matching <see cref="tokenName"/>&apos;s <see cref="IsAmbiguous"/> flag as true
+        /// </summary>
+        /// <param name="tokenName"></param>
+        /// <param name="toValue"></param>
+        public void AssignIsAmbiguousFlag(MetadataTokenName tokenName, bool toValue = true)
+        {
+            Func<MetadataTokenName, bool> selectOn = (v) => _comparer.Equals(tokenName, v);
+            Func<MetadataTokenName, MetadataTokenName> assignFlag = (v) =>
+            {
+                if (v == null)
+                    return null;
+                v.IsAmbiguous = toValue;
+                return v;
+            };
+            IterateTree(selectOn, assignFlag);
+        }
+
+        /// <summary>
+        /// Gets all the token names whose type matches any name in <see cref="tokenTypes"/>
+        /// </summary>
+        /// <param name="tokenTypes"></param>
+        /// <param name="reportProgress"></param>
+        /// <param name="foreignAssembly"></param>
+        /// <returns></returns>
+        public MetadataTokenName[] GetAllTypesMembers(MetadataTokenType[] tokenTypes,
+            Action<ProgressMessage> reportProgress = null, MetadataTokenName foreignAssembly = null)
+        {
+            var totalLen = tokenTypes.Length;
+            var allAmbiguousMembers = new List<MetadataTokenName>();
+            for (var i = 0; i < totalLen; i++)
+            {
+                var ambiguousType = tokenTypes[i];
+
+                if (ambiguousType == null)
+                    continue;
+
+                reportProgress?.Invoke(new ProgressMessage
+                {
+                    Activity = $"{ambiguousType.Name}",
+                    ProcName = System.Diagnostics.Process.GetCurrentProcess().ProcessName,
+                    ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
+                    Status = "Getting all ambiguous members"
+                });
+                var ambiguousMembers = new List<MetadataTokenName>();
+
+                GetAllDeclNames(ambiguousType, ambiguousMembers);
+                foreignAssembly?.GetAllDeclNames(ambiguousType, ambiguousMembers);
+                if (!ambiguousMembers.Any())
+                    continue;
+                allAmbiguousMembers.AddRange(ambiguousMembers);
+            }
+
+            return allAmbiguousMembers.Distinct(_comparer).Cast<MetadataTokenName>().ToArray();
         }
 
         /// <summary>
@@ -1069,7 +1093,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                     ProgressCounter = Etc.CalcProgressCounter(i, totalLen),
                     Status = "Reassigning ByRef tokens"
                 });
-                byVal.IsAmbiguous = false;
                 ReassignAnyItemsByName(byVal);
             }
         }
@@ -1116,7 +1139,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 var concreteNameLi = concreteName.Items == null || !concreteName.Items.Any()
                     ? (GetFirstByVal(concreteName) ?? concreteName)
                     : concreteName;
-                concreteNameLi.IsAmbiguous = false;
                 ReassignAnyItemsByName(interfaceName, concreteNameLi);
             }
         }

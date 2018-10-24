@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region properties
-        public Gender MyGender
+        public Gender Gender
         {
             get => _myGender;
             set => _myGender = value;
@@ -149,7 +149,7 @@ namespace NoFuture.Rand.Domus
         {
             if (child?.BirthCert == null || child.BirthCert.DateOfBirth == DateTime.MinValue || child.Age <= 0)
                 return;
-            var title = myParentalTitle ?? (MyGender == Gender.Female ? KindsOfNames.Mother : KindsOfNames.Father) |
+            var title = myParentalTitle ?? (Gender == Gender.Female ? KindsOfNames.Mother : KindsOfNames.Father) |
                         KindsOfNames.Biological;
 
             if (!IsValidDobOfChild(child.BirthCert.DateOfBirth, title))
@@ -174,7 +174,7 @@ namespace NoFuture.Rand.Domus
             if (separatedOn == null)
             {
                 //when this is the bride
-                if (MyGender == Gender.Female && DateTime.Now >= marriedOn)
+                if (Gender == Gender.Female && DateTime.Now >= marriedOn)
                 {
                     if (LastName != null && !AnyOfKind(KindsOfNames.Maiden))
                         UpsertName(KindsOfNames.Maiden, BirthCert.GetFatherSurname() ?? LastName);
@@ -182,7 +182,7 @@ namespace NoFuture.Rand.Domus
                     LastName = spouse.LastName;
                 }
             }
-            else if (MyGender == Gender.Female && DateTime.Now >= separatedOn.Value)
+            else if (Gender == Gender.Female && DateTime.Now >= separatedOn.Value)
             {
                 //add ex-husband last name to list
                 UpsertName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);
@@ -228,13 +228,13 @@ namespace NoFuture.Rand.Domus
             return _spouses;
         }
 
-        public virtual Spouse GetSpouseNear(DateTime? dt)
+        public virtual Spouse GetSpouseNear(DateTime? dt, int days = PREG_DAYS + MS_DAYS)
         {
             var ddt = (dt ?? DateTime.Now).Date;
-
+            days = Math.Abs(days);
             return GetSpouseAt(ddt) ??
-                   GetSpouseAt(ddt.AddDays(-1 * (PREG_DAYS + MS_DAYS))) ??
-                   GetSpouseAt(ddt.AddDays(PREG_DAYS + MS_DAYS));
+                   GetSpouseAt(ddt.AddDays(-1 * days)) ??
+                   GetSpouseAt(ddt.AddDays(days));
         }
 
         protected internal abstract bool IsLegalAdult(DateTime? dt);
@@ -304,13 +304,13 @@ namespace NoFuture.Rand.Domus
         /// of siblings.
         /// </returns>
         /// <remarks>
-        /// Is coded with implicit presumption of <see cref="IPerson.MyGender"/> 
-        /// being <see cref="Gender.Female"/>, but does not test as such.
+        /// Is coded with implicit presumption of <see cref="IPerson.Gender"/> 
+        /// being <see cref="Gov.Gender.Female"/>, but does not test as such.
         /// </remarks>
         protected internal bool IsValidDobOfChild(DateTime childDob, KindsOfNames? myParentalTitle = null)
         {
             ThrowOnBirthDateNull(this);
-            var title = myParentalTitle ?? (MyGender == Gender.Female ? KindsOfNames.Mother : KindsOfNames.Father) |
+            var title = myParentalTitle ?? (Gender == Gender.Female ? KindsOfNames.Mother : KindsOfNames.Father) |
                         KindsOfNames.Biological;
             var p2C = IsValidDobOfChild2Parent(childDob);
             if (!p2C)
@@ -365,7 +365,7 @@ namespace NoFuture.Rand.Domus
         protected internal bool IsValidDobOfChild2Parent(DateTime childDob)
         {
             //check the childs dob against the parent
-            var maxDate = MyGender == Gender.Female
+            var maxDate = Gender == Gender.Female
                 ? BirthCert.DateOfBirth.AddYears(55)
                 : BirthCert.DateOfBirth.AddYears(80);
             var minDate = BirthCert.DateOfBirth.AddYears(AmericanUtil.MIN_AGE_TO_BE_PARENT);
