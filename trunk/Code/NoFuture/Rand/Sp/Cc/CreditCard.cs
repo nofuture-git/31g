@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 
@@ -13,6 +15,8 @@ namespace NoFuture.Rand.Sp.Cc
     public abstract class CreditCard : ICreditCard
     {
         #region ctor
+        protected CreditCard():this(null, null, null){ }
+
         protected CreditCard(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
         {
             CardHolderSince = openedDate.GetValueOrDefault(DateTime.Now);
@@ -38,6 +42,27 @@ namespace NoFuture.Rand.Sp.Cc
             Cvv = $"{Etx.RandomInteger(7, 999),3:D3}";
             Number = GetRandomCardNumber();
         }
+
+        protected CreditCard(string cardNumber, IVoca cardholder, DateTime? openedDate, DateTime? expiryDate) : this(
+            cardholder, openedDate, expiryDate)
+        {
+            var ccNum = GetRandomCardNumber();
+            if (string.IsNullOrWhiteSpace(cardNumber))
+                return;
+            if (!ccNum.Validate(cardNumber))
+                throw new ArgumentException($"The card number {cardNumber} is not valid.");
+            ccNum.Value = cardNumber;
+        }
+
+        protected CreditCard(string cardNumber, string cvv, IVoca cardholder, DateTime? openedDate,
+            DateTime? expiryDate) : this(cardNumber, cardholder, openedDate, expiryDate)
+        {
+            if (cvv == null)
+                return;
+            if (!Regex.IsMatch(cvv, "[0-9]{3}"))
+                throw new ArgumentException($"The CVV value {cvv} is not valid.");
+            Cvv = cvv;
+        }
         #endregion
 
         #region properties
@@ -48,24 +73,18 @@ namespace NoFuture.Rand.Sp.Cc
         public DateTime CardHolderSince { get; }
 
         protected internal abstract int CardNumLen { get; }
-        protected internal abstract int CardNumPrefix { get; }
+        protected internal abstract Rchar[] CardNumPrefix { get; }
         public abstract string CcName { get; }
         #endregion
 
         #region methods
         protected internal CreditCardNumber GetRandomCardNumber()
         {
-            var prefixVal = CardNumPrefix;
-            var prefixValLen = prefixVal.ToString().Length;
-            var prefixRChars = new List<Rchar>();
-            for (var i = 0; i < prefixValLen; i++)
-            {
-                prefixRChars.Add(new RcharLimited(i, prefixVal.ToString().ToCharArray()[i]));
-            }
+            var prefixValLen = CardNumPrefix.Length;
+            var prefixRChars = CardNumPrefix.ToList();
             prefixRChars.AddRange(Etx.RandomRChars(true, CardNumLen - 1 - prefixValLen, prefixValLen));
             return new CreditCardNumber(prefixRChars.ToArray(), CcName);
         }
-
 
         /// <summary>
         /// Returns the credit card in a format
@@ -74,9 +93,8 @@ namespace NoFuture.Rand.Sp.Cc
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Join(" ", Number.ValueLastFour(), CardHolderName);
+            return string.Join(" ", Number.ValueLastFour(), CardHolderName);
         }
-
 
         /// <summary>
         /// Returs a new, randomly gen&apos;ed, concrete instance of <see cref="ICreditCard"/>
@@ -112,11 +130,37 @@ namespace NoFuture.Rand.Sp.Cc
         [RandomFactory]
         public static ICreditCard RandomCreditCard(string cardholder = null, DateTime? opennedDate = null)
         {
-            var voca = new VocaBase();
-            voca.UpsertName(KindsOfNames.Legal, cardholder ?? "");
-            return RandomCreditCard(voca, opennedDate);
+            return RandomCreditCard(new VocaBase(cardholder ?? ""), opennedDate);
         }
 
+        /// <summary>
+        /// Gets the kind of <see cref="ICreditCard"/> whose pattern matches <see cref="cardNumber"/>
+        /// </summary>
+        /// <param name="cardNumber"></param>
+        /// <param name="cardHolder"></param>
+        /// <param name="cvv"></param>
+        /// <param name="opennedDate"></param>
+        /// <param name="expiryDate"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Throws <see cref="ArgumentException"/> if <see cref="cardNumber"/> does not match any defined pattern
+        /// </remarks>
+        [RandomFactory]
+        public static ICreditCard RandomCreditCard(string cardNumber, string cardHolder, string cvv = null,
+            DateTime? opennedDate = null, DateTime? expiryDate = null)
+        {
+            if (MasterCardCc.IsValidNumber(cardNumber))
+                return new MasterCardCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), opennedDate, expiryDate );
+            if(VisaCc.IsValidNumber(cardNumber))
+                return new VisaCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), opennedDate, expiryDate);
+            if(AmexCc.IsValidNumber(cardNumber))
+                return new AmexCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), opennedDate, expiryDate);
+            if(DiscoverCc.IsValidNumber(cardNumber))
+                return new DiscoverCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), opennedDate, expiryDate);
+
+            throw new ArgumentException($"The card number {cardNumber} does not match any of the defined credit cards.");
+
+        }
         #endregion
     }
 }

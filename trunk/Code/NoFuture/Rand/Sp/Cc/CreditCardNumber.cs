@@ -15,13 +15,14 @@ namespace NoFuture.Rand.Sp.Cc
     public class CreditCardNumber : RIdentifierWithChkDigit
     {
         private readonly string _abbrev;
+
         public CreditCardNumber(Rchar[] format, string abbrev = null)
         {
             CheckDigitFunc = Etc.CalcLuhnCheckDigit;
             this.format = format;
-            _abbrev = abbrev ?? "CC Num";
+            _abbrev = abbrev;
         }
-        public override string Abbrev => _abbrev;
+        public override string Abbrev => _abbrev ?? "CC Num";
 
     }
 }
