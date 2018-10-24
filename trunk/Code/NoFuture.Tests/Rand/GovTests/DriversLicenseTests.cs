@@ -12,8 +12,22 @@ namespace NoFuture.Rand.Tests.GovTests
         {
             var testResult = DriversLicense.RandomDriversLicense();
             Assert.IsNotNull(testResult);
-            Assert.IsTrue(testResult.Contains(" "));
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
+
+            testResult = DriversLicense.RandomDriversLicense("NY");
+            Assert.IsNotNull(testResult);
+            Console.WriteLine(testResult);
+
+        }
+
+        [Test]
+        public void TestDriversLicenseCtor()
+        {
+            var testResult = new DriversLicense("A635011103018289", "NY");
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.IssuingState);
+            Assert.IsNotNull(testResult.Value);
+            Assert.AreEqual("A635011103018289", testResult.Value);
         }
     }
 }

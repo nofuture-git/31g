@@ -8,14 +8,26 @@ namespace NoFuture.Rand.Gov.US
     [Serializable]
     public class DriversLicense : StateIssuedId
     {
-        
-        public DriversLicense(Rchar[] format)
+        public DriversLicense(string dlnumber, string state)
+        {
+            var usState = UsState.GetState(state);
+            if(usState == null)
+                throw new ArgumentException($"No state found by name '{state}'");
+            if(!usState.ValidDriversLicense(dlnumber))
+                throw new ArgumentException($"For the state of {usState.StateName}, " +
+                                            $"the drivers license value of '{dlnumber}' is invalid.");
+            format = usState.GetDriversLicenseFormats().FirstOrDefault()?.format;
+            IssuingState = usState;
+            Value = dlnumber;
+        }
+
+        protected internal DriversLicense(Rchar[] format)
         {
             this.format = format;
             IssuedDate = Etx.RandomDate(-5, DateTime.Today);
         }
 
-        public DriversLicense(Rchar[] format, UsState issuingState):this(format)
+        protected internal DriversLicense(Rchar[] format, UsState issuingState):this(format)
         {
             IssuingState = issuingState;
             IssuedDate = Etx.RandomDate(-5, DateTime.Today);
@@ -44,10 +56,7 @@ namespace NoFuture.Rand.Gov.US
             var usState = UsState.GetState(state);
             usState = usState ?? UsState.RandomUsState();
 
-            var formats = usState.GetDriversLicenseFormats();
-            var format = formats.Length == 1 ? formats.First() : formats[Etx.RandomInteger(0, formats.Length - 1)];
-
-            return format.ToString();
+            return usState.GetRandomDriversLicense();
         }
 
         public override string ToString()
