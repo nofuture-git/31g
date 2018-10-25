@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
@@ -74,7 +73,7 @@ namespace NoFuture.Rand.Com
         }
 
         /// <summary>
-        /// Attempts to assign the <see cref="Description"/> to the 
+        /// Attempts to assign the <see cref="Firm.Description"/> to the 
         /// the &apos;DESCRIPTION OF BUSINESS&apos; found in the 10-K report
         /// </summary>
         /// <returns></returns>
