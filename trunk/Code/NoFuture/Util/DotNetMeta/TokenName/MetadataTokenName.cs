@@ -761,9 +761,35 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </summary>
         /// <param name="tokenName"></param>
         /// <param name="toValue"></param>
-        public void AssignIsAmbiguousFlag(MetadataTokenName tokenName, bool toValue = true)
+        /// <param name="recursive">
+        /// Once a method is ambiguous, all the methods it calls are considered likewise
+        /// </param>
+        public void AssignIsAmbiguousFlag(MetadataTokenName tokenName, bool toValue = true, bool recursive = true)
         {
             Func<MetadataTokenName, bool> selectOn = (v) => _comparer.Equals(tokenName, v);
+            Func<MetadataTokenName, MetadataTokenName> assignFlag = (v) =>
+            {
+                if (v == null)
+                    return null;
+                if(recursive)
+                    v.AssignIsAmbiguousFlag(toValue);
+                else
+                    v.IsAmbiguous = true;
+                return v;
+            };
+            IterateTree(selectOn, assignFlag);
+        }
+
+        /// <summary>
+        /// Set this and all child items at all depths to have a <see cref="IsAmbiguous"/> value of <see cref="toValue"/>
+        /// </summary>
+        /// <param name="toValue"></param>
+        public void AssignIsAmbiguousFlag(bool toValue = true)
+        {
+            IsAmbiguous = toValue;
+            if (Items == null || !Items.Any())
+                return;
+            Func<MetadataTokenName, bool> selectOn = (v) => true;
             Func<MetadataTokenName, MetadataTokenName> assignFlag = (v) =>
             {
                 if (v == null)
@@ -771,6 +797,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 v.IsAmbiguous = toValue;
                 return v;
             };
+
             IterateTree(selectOn, assignFlag);
         }
 

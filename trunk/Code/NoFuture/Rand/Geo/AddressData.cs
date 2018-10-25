@@ -89,21 +89,21 @@ namespace NoFuture.Rand.Geo
         {
             if (!(obj is AddressData ad))
                 return false;
-
+            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             var p = new[]
             {
-                string.Equals(ad.NationState, NationState, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.ThoroughfareNumber, ThoroughfareNumber, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.ThoroughfareDirectional, ThoroughfareDirectional, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.ThoroughfareName, ThoroughfareName, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.ThoroughfareType, ThoroughfareType, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.SecondaryUnitDesignator, SecondaryUnitDesignator, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.SecondaryUnitId, SecondaryUnitId, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.Locality, Locality, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.RegionAbbrev, RegionAbbrev, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.RegionName, RegionName, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.PostalCode, PostalCode, StringComparison.OrdinalIgnoreCase),
-                string.Equals(ad.SortingCode, SortingCode, StringComparison.OrdinalIgnoreCase),
+                string.Equals(ad.NationState, NationState, OPT),
+                string.Equals(ad.ThoroughfareNumber, ThoroughfareNumber, OPT),
+                string.Equals(ad.ThoroughfareDirectional, ThoroughfareDirectional, OPT),
+                string.Equals(ad.ThoroughfareName, ThoroughfareName, OPT),
+                string.Equals(ad.ThoroughfareType, ThoroughfareType, OPT),
+                string.Equals(ad.SecondaryUnitDesignator, SecondaryUnitDesignator, OPT),
+                string.Equals(ad.SecondaryUnitId, SecondaryUnitId, OPT),
+                string.Equals(ad.Locality, Locality, OPT),
+                string.Equals(ad.RegionAbbrev, RegionAbbrev, OPT),
+                string.Equals(ad.RegionName, RegionName, OPT),
+                string.Equals(ad.PostalCode, PostalCode, OPT),
+                string.Equals(ad.SortingCode, SortingCode, OPT),
                 ad.Lat == Lat, ad.Lng == Lng
             };
 

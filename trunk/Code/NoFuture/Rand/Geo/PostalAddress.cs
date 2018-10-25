@@ -12,7 +12,6 @@ namespace NoFuture.Rand.Geo
     {
         public StreetPo Street { get; set; }
         public CityArea CityArea { get; set; }
-        public bool IsLeased { get; set; }
 
         public override string Abbrev => "Addr";
 

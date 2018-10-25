@@ -1029,8 +1029,15 @@ namespace NoFuture.Util.Core
             newInstance = null;
             if (pi?.PropertyType == null)
                 return false;
-
-            newInstance = Activator.CreateInstance(pi.PropertyType);
+            try
+            {
+                //TODO, actually search the various ctor's of the PropertyType 
+                newInstance = Activator.CreateInstance(pi.PropertyType);
+            }
+            catch
+            {
+                return false;
+            }
             return true;
         }
 
