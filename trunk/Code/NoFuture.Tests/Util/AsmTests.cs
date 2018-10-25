@@ -16,7 +16,7 @@ namespace NoFuture.Tests.Util
 
             var testInput = System.IO.File.ReadAllBytes(testInputFile);
 
-            var testResult = NoFuture.Util.Binary.Asm.GetOpCodesArgs(testInput, new[] { OpCodes.Callvirt, OpCodes.Call });
+            var testResult = NoFuture.Util.Binary.Asm.GetOpCodesArgs(testInput, new[] { OpCodes.Callvirt, OpCodes.Call, OpCodes.Ldftn });
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
