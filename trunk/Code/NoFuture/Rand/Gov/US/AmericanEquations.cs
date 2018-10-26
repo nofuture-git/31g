@@ -245,8 +245,16 @@ namespace NoFuture.Rand.Gov.US
         /// Returns the equation to solve for monthly child support payments using monthly income.
         /// </returns>
         /// <remarks>
-        /// Dollar amounts are ~2015 dollars
+        /// Dollar amounts are ~2015 dollars.
+        /// Produces nonsense results for large monthly values.
         /// </remarks>
+        /// <example>
+        /// <![CDATA[
+        /// var yearlyIncome = 65000D;
+        /// var numberOfChildren = 2;
+        /// var rslt = AmericanEquations.GetChildSupportMonthlyCostEquation(numberOfChildren).SolveForY(yearlyIncome/12)
+        /// ]]>
+        /// </example>
         public static SecondDegreePolynomial GetChildSupportMonthlyCostEquation(int numberOfChildren)
         {
             switch (numberOfChildren)
