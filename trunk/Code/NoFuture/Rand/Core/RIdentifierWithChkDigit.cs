@@ -23,8 +23,9 @@ namespace NoFuture.Rand.Core
             return rVal;
         }
 
-        public override bool Validate(string value)
+        public override bool Validate(string value = null)
         {
+            value = value ?? _value;
             if (value == null)
                 return false;
             var lastChar = value.ToCharArray().Last(char.IsDigit);

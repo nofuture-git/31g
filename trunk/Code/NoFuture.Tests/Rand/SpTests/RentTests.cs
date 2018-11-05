@@ -154,7 +154,7 @@ namespace NoFuture.Rand.Tests.SpTests
             var testResult = Rent.RandomRent();
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.MonthlyPmt);
-            Assert.AreNotEqual(Pecuniam.Zero, testResult.MonthlyPmt);
+            Assert.AreNotEqual(Pecuniam.Zero.Amount, testResult.MonthlyPmt.Amount);
             Assert.AreNotEqual(DateTime.MinValue, testResult.SigningDate);
             System.Diagnostics.Debug.WriteLine(testResult);
         }

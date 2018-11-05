@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Gov.US
                                             $"the drivers license value of '{dlnumber}' is invalid.");
             format = usState.GetDriversLicenseFormats().FirstOrDefault()?.format;
             IssuingState = usState;
-            Value = dlnumber;
+            _value = dlnumber;
         }
 
         protected internal DriversLicense(Rchar[] format)

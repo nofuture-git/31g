@@ -64,8 +64,9 @@ namespace NoFuture.Rand.Gov.US
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public override bool Validate(string value)
+        public override bool Validate(string value = null)
         {
+            value = value ?? _value;
             return !string.IsNullOrWhiteSpace(value) &&
                    System.Text.RegularExpressions.Regex.IsMatch(value, _regexPattern);
         }

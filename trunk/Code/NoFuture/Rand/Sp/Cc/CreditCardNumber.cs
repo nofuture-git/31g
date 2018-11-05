@@ -16,6 +16,14 @@ namespace NoFuture.Rand.Sp.Cc
     {
         private readonly string _abbrev;
 
+        public CreditCardNumber(string id, string abbrev = null)
+        {
+            CheckDigitFunc = Etc.CalcLuhnCheckDigit;
+            format = DeriveFromValue(id);
+            _value = id;
+            _abbrev = abbrev;
+        }
+
         public CreditCardNumber(Rchar[] format, string abbrev = null)
         {
             CheckDigitFunc = Etc.CalcLuhnCheckDigit;

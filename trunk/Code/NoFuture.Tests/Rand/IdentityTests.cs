@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using NoFuture.Rand.Core;
+using NoFuture.Rand.Sp;
+using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests
 {
@@ -26,6 +28,21 @@ namespace NoFuture.Rand.Tests
         {
             var testSubject = new TestIdentifier { Value = "my value" };
             Assert.AreEqual("my value", testSubject.ToString());
+        }
+
+        [Test]
+        public void TestDeriveFromValue()
+        {
+            var someId = "A-00151244-$fe9006b";
+            var testResult = new AccountId(someId);
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(someId, testResult.Value);
+            Assert.IsTrue(testResult.Validate());
+
+            var anotherValue = testResult.GetRandom();
+            System.Console.WriteLine(anotherValue);
+            Assert.IsTrue(testResult.Validate(anotherValue));
+
         }
     }
 

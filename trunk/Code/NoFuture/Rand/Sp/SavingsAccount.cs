@@ -7,7 +7,13 @@ namespace NoFuture.Rand.Sp
     public class SavingsAccount : DepositAccount
     {
         #region ctor
-        public SavingsAccount(RIdentifier acctId, DateTime dateOpenned) : base(dateOpenned)
+        public SavingsAccount(DateTime dateOpenned) : base(dateOpenned){ }
+
+        public SavingsAccount(string acctId, DateTime dateOpenned) : this(dateOpenned)
+        {
+            Id = new AccountId(acctId);
+        }
+        public SavingsAccount(Identifier acctId, DateTime dateOpenned) : this(dateOpenned)
         {
             Id = acctId;
         }

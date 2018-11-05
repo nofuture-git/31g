@@ -24,7 +24,8 @@ namespace NoFuture.Rand.Sp
         #region properties
 
         public bool IsJointAcct { get; set; }
-        public virtual Identifier Id { get; set; }
+        public Identifier Id { get; set; }
+        public virtual Identifier RoutingNumber { get; set; }
 
         #endregion
 

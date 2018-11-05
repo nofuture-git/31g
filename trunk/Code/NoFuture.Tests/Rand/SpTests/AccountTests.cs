@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestIsPin()
         {
-            var testSubject = new CheckingAccount(null, DateTime.Today.AddDays(-65),
+            var testSubject = new CheckingAccount("ABC", DateTime.Today.AddDays(-65),
                 new Tuple<ICreditCard, string>(
                     CreditCard.RandomCreditCard(American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female)),
                     "8745"));

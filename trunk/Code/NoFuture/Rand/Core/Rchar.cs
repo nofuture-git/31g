@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NoFuture.Rand.Core
 {
@@ -22,6 +23,27 @@ namespace NoFuture.Rand.Core
         protected Rchar(int indexValue)
         {
             idx = indexValue;
+        }
+
+        public static Rchar DeriveFromValue(int i, char c)
+        {
+            if (char.IsUpper(c))
+            {
+                return new RcharUAlpha(i);
+            }
+
+            if (char.IsLower(c))
+            {
+                return new RcharLAlpha(i);
+            }
+
+            if (char.IsDigit(c))
+            {
+                return new RcharNumeric(i);
+            }
+
+            return new RcharLimited(i, c);
+
         }
     }
 }
