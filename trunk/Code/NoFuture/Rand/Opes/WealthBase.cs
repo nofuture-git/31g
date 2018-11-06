@@ -228,7 +228,7 @@ namespace NoFuture.Rand.Opes
         /// <remarks>
         /// compiled data from BEA
         /// </remarks>
-        protected internal virtual LinearEquation GetAvgEarningPerYear(OpesOptions options)
+        protected internal virtual IEquation GetAvgEarningPerYear(OpesOptions options)
         {
             var ca = options?.HomeLocation as UsCityStateZip;
             if (ca == null)

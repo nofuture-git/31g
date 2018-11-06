@@ -259,7 +259,7 @@ namespace NoFuture.Rand.Domus.US
         /// <returns></returns>
         [RandomFactory]
         public static DateTime RandomParentBirthDate(DateTime? childDob = null, Gender? parentGender = null,
-            LinearEquation age2FirstMarriageEq = null)
+            IEquation age2FirstMarriageEq = null)
         {
             parentGender = parentGender ?? (Etx.RandomCoinToss() ? Gender.Female : Gender.Male);
 
@@ -376,8 +376,6 @@ namespace NoFuture.Rand.Domus.US
                 eduAdditive = 0.04;
             if (educationLevel == (OccidentalEdu.HighSchool | OccidentalEdu.Grad))
                 eduAdditive = 0.02;
-
-            dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
 
             var probChildless = Math.Round(AmericanEquations.FemaleYob2ProbChildless.SolveForY(dob.Value.Year), 2);
 

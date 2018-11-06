@@ -607,7 +607,7 @@ duck typing -vs- normal typing:
  both regard idea of suitability of a runtime obj passed
  to a f(x).  duck-typing suitability is determined by presence
  of expected methods and properties. normal-typing suitability 
- is determined by the objects type.
+ is determined by the object's type.
 fluent (CS): from latin fluens (flowing) synonym for state-variable
 stare decisis: doctrine of precedent is abbrev. for full latin
   "stare decisis et non quieta mvere" to stand by decided matters
@@ -629,7 +629,7 @@ statutory law: case law applied to legislative statutes
 regulatory law: case law applied to executive regulations under 
   the delegation of a legislature
 primae impressionis: in case law, the first precedent
-arrears: money owed and shoul have been paid earlier
+arrears: money owed and should have been paid earlier
 remunerative: financially rewarding; lucrative
 sine qua non: latin for "without which nothing"
 Nikefication: a branding strategy without actual industrial processes behind it.

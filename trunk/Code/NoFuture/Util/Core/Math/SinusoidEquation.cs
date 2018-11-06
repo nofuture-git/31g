@@ -20,10 +20,13 @@
 
         public double Frequency { get; set; }
         public double Phase { get; set; }
-
+        /// <summary>
+        /// Optional addition to have the wave orbit around this value
+        /// </summary>
+        public double CenterAxis { get; set; }
         public double SolveForY(double x)
         {
-            return Amplitude * System.Math.Sin(2*System.Math.PI*Frequency + Phase);
+            return Amplitude * System.Math.Sin(2*System.Math.PI*Frequency*x + Phase) + CenterAxis;
         }
 
         public override string ToString()

@@ -43,5 +43,21 @@ namespace NoFuture.Rand.Tests.GovTests
 
             }
         }
+
+        [Test]
+        public void TestGetChildSupportMonthlyCostEquation()
+        {
+            for (var i = 1; i <= 5; i++)
+            {
+                var prev = 0.0D;
+                for (var j = 2000; j < 55000; j += 500)
+                {
+                    var t = AmericanEquations.GetChildSupportMonthlyCostEquation(i);
+                    var current = t.SolveForY(j);
+                    //assert it never goes down as income goes up
+                    Assert.IsTrue(current >= prev);
+                }
+            }
+        }
     }
 }
