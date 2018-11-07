@@ -53,12 +53,23 @@ namespace NoFuture.Rand.Gov.US
         /// <summary>
         /// SolveForY using partial year value (e.g. 6/15/1979 is 1979.45449250094)
         /// </summary>
-        public static IEquation FemaleAge2FirstMarriage = new RLinearEquation
+        public static IEquation FemaleAge2FirstMarriage
         {
-            Intercept = -209.41,
-            Slope = 0.1187,
-            StdDev = Etx.RandomDouble(0, 1)
-        };
+            get
+            {
+                Func<double, double> rLinear = (x) =>
+                {
+                    var v = new RLinearEquation
+                    {
+                        Intercept = -209.41,
+                        Slope = 0.1187,
+                        StdDev = Etx.RandomDouble(0, 1)
+                    };
+                    return v.SolveForY(x);
+                };
+                return new CustomEquation(rLinear);
+            }
+        }
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)

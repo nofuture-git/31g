@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Util.Core.Math
+﻿using System;
+
+namespace NoFuture.Util.Core.Math
 {
     public class LinearEquation : IEquation
     {
@@ -23,6 +25,24 @@
             if(System.Math.Abs(Slope) < 0.0000001D)
                 return 0.0D;
             return (1/Slope)*y - (Intercept/Slope);
+        }
+
+        public virtual LinearEquation GetOrtroProj(double at)
+        {
+            var y = SolveForY(at);
+            var recipSlope = -1 * (1 / Slope);
+            var recipIntercept = y - recipSlope * at;
+            return new LinearEquation(recipIntercept, recipSlope);
+        }
+
+        public virtual double EuclideanNorm
+        {
+            get
+            {
+                var myX = 1D;
+                var myY = SolveForY(myX);
+                return System.Math.Sqrt(System.Math.Pow(myX, 2) + System.Math.Pow(myY, 2));
+            }
         }
 
         public override string ToString()
