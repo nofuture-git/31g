@@ -34,9 +34,9 @@ namespace NoFuture.Util.Core.Math
                 switch (index)
                 {
                     case 0:
-                        return Intercept;
-                    case 1:
                         return Slope;
+                    case 1:
+                        return Intercept;
                     default:
                         return 0D;
                 }
@@ -60,9 +60,7 @@ namespace NoFuture.Util.Core.Math
         {
             get
             {
-                var myX = 1D;
-                var myY = SolveForY(myX);
-                return System.Math.Sqrt(System.Math.Pow(myX, 2) + System.Math.Pow(myY, 2));
+                return System.Math.Sqrt(System.Math.Pow(Slope, 2) + System.Math.Pow(Intercept, 2));
             }
         }
 

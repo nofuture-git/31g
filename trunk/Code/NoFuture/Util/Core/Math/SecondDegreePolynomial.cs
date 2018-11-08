@@ -28,10 +28,10 @@ namespace NoFuture.Util.Core.Math
                 switch (index)
                 {
                     case 0:
-                    case 1:
-                        return base[index];
-                    case 2:
                         return SecondCoefficient;
+                    case 1:
+                    case 2:
+                        return base[index];
                     default:
                         return 0D;
                 }

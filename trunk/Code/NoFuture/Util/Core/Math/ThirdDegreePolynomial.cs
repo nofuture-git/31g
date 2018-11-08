@@ -23,11 +23,11 @@
                 switch (index)
                 {
                     case 0:
+                        return ThirdCoefficient;
                     case 1:
                     case 2:
-                        return base[index];
                     case 3:
-                        return ThirdCoefficient;
+                        return base[index];
                     default:
                         return 0D;
                 }

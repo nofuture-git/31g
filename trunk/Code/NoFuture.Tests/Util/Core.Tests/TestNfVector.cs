@@ -34,6 +34,8 @@ namespace NoFuture.Util.Core.Tests
             var testSubject = new NfVector(2.25, 5.375);
             var testResult = testSubject.EuclideanNorm;
             Assert.IsTrue(System.Math.Abs(5.826931 - testResult) < 0.0000001);
+
+            
         }
 
         [Test]
