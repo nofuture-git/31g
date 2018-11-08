@@ -66,6 +66,11 @@ namespace NoFuture.Util.Core.Math
             return q * (q.GetDotProduct(p) / System.Math.Pow(q.EuclideanNorm, 2));
         }
 
+        public NfVector GetTranspose()
+        {
+            return new NfVector(this[1], this[0]);
+        }
+
         public double this[int index]
         {
             get

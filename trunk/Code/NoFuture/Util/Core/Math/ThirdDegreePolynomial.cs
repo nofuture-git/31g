@@ -2,7 +2,12 @@
 {
     public class ThirdDegreePolynomial : SecondDegreePolynomial
     {
-        public double ThirdCoefficient { get; set; }
+        public ThirdDegreePolynomial(double a, double b, double c, double d) : base(b, c, d)
+        {
+            ThirdCoefficient = a;
+        }
+
+        public double ThirdCoefficient { get;}
 
         public override double SolveForY(double x)
         {

@@ -10,7 +10,7 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestLinearEquation()
         {
-            var testSubject = new LinearEquation {Intercept = 4, Slope = 2};
+            var testSubject = new LinearEquation(2, 4);
 
             var x = 8;
             var testResultY = testSubject.SolveForY(x);

@@ -4,7 +4,11 @@ namespace NoFuture.Util.Core.Math
 {
     public class SecondDegreePolynomial : LinearEquation
     {
-        public double SecondCoefficient { get; set; }
+        public SecondDegreePolynomial(double a, double b, double c) : base(b, c)
+        {
+            SecondCoefficient = a;
+        }
+        public double SecondCoefficient { get; }
 
         public override double SolveForY(double x)
         {

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
 using NUnit.Framework;
@@ -60,7 +57,7 @@ namespace NoFuture.Util.Core.Tests
         public void TestLinearEquation()
         {
             //y = 0.1056x - 181.45
-            var myEq = new LinearEquation {Intercept = -181.45, Slope = 0.1056};
+            var myEq = new LinearEquation (0.1056, -181.45);
             var dob = 1974.477451;
             var x = myEq.SolveForY(dob);
             Console.WriteLine(x);

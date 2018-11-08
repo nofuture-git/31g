@@ -4,16 +4,16 @@ namespace NoFuture.Util.Core.Math
 {
     public class LinearEquation : IEquation
     {
-        public LinearEquation() { }
+        //public LinearEquation() { }
 
-        public LinearEquation(double intercept, double slope)
+        public LinearEquation(double slope, double intercept)
         {
             Intercept = intercept;
             Slope = slope;
         }
 
-        public double Intercept { get; set; }
-        public double Slope { get; set; }
+        public double Intercept { get;}
+        public double Slope { get;}
 
         public virtual double SolveForY(double x)
         {
@@ -32,7 +32,7 @@ namespace NoFuture.Util.Core.Math
             var y = SolveForY(at);
             var recipSlope = -1 * (1 / Slope);
             var recipIntercept = y - recipSlope * at;
-            return new LinearEquation(recipIntercept, recipSlope);
+            return new LinearEquation(recipSlope, recipIntercept);
         }
 
         public virtual double EuclideanNorm
@@ -70,9 +70,21 @@ namespace NoFuture.Util.Core.Math
             double slope;
             if (double.TryParse(interceptStr, out intercept) && double.TryParse(slopeStr, out slope))
             {
-                lq = new LinearEquation { Intercept = intercept, Slope = slope };
+                lq = new LinearEquation (slope, intercept);
             }
             return lq != null;
+        }
+
+        public static LinearEquation GetLineFromVectors(NfVector p, NfVector q)
+        {
+            var v = q - p;
+            var ab = new NfVector(-1* v[1], v[0]).GetTranspose();
+            var a = ab[0];
+            var b = ab[1];
+            var c = -1 * a * p[0] - b * p[1];
+            var slope = (-1 * a) / b;
+            var intercept = (-1 * c) / b;
+            return new LinearEquation(slope, intercept);
         }
     }
 }
