@@ -1,12 +1,21 @@
 ﻿using System;
+using System.Globalization;
 
 namespace NoFuture.Util.Core.Math
 {
     public class LinearEquation : IEquation
     {
-        //public LinearEquation() { }
 
-        public static double CloseEnough { get; } = 0.0000001;
+        public static double CloseEnough { get; set; } = 0.000001;
+
+        public static int RoundTo
+        {
+            get
+            {
+                var s = CloseEnough.ToString(CultureInfo.InvariantCulture);
+                return s.Split('.').Length;
+            }
+        }
 
         public LinearEquation(double slope, double intercept)
         {
@@ -50,15 +59,101 @@ namespace NoFuture.Util.Core.Math
             return new LinearEquation(Slope, Intercept);
         }
 
-        public virtual LinearEquation GetOrtroProj(double at)
+        public virtual double EuclideanNorm => System.Math.Sqrt(System.Math.Pow(Slope, 2) + System.Math.Pow(Intercept, 2));
+
+        public virtual LinearEquation Normalized
         {
-            var y = SolveForY(at);
+            get
+            {
+                var eul = EuclideanNorm;
+                return new LinearEquation(Slope / eul, Intercept / eul);
+            }
+        }
+
+        public double GetDistance(LinearEquation p)
+        {
+            p = p ?? new LinearEquation(0, 0);
+            return (this - p).EuclideanNorm;
+        }
+
+        public double GetDotProduct(LinearEquation p)
+        {
+            p = p ?? new LinearEquation(0, 0);
+            var q = this;
+            var qdotp = q * p;
+            return qdotp[0] + qdotp[1];
+        }
+
+        public double GetCosTheta(LinearEquation p)
+        {
+            p = p ?? new LinearEquation(0, 0);
+            var q = this;
+
+            return q.GetDotProduct(p) / (q.EuclideanNorm * p.EuclideanNorm);
+        }
+
+        public double GetAngle(LinearEquation p)
+        {
+            p = p ?? new LinearEquation(0, 0);
+            var q = this;
+            var cosTheta = q.GetCosTheta(p);
+            var acosRadians = System.Math.Acos(cosTheta);
+            return System.Math.Round(acosRadians * (180 / System.Math.PI), RoundTo);
+        }
+
+        public virtual LinearEquation GetOrthoProj(LinearEquation p)
+        {
+            p = p ?? new LinearEquation(0, 0);
+            var q = this;
+
+            return q * (q.GetDotProduct(p) / System.Math.Pow(q.EuclideanNorm, 2));
+        }
+
+        public LinearEquation GetTranspose()
+        {
+            return new LinearEquation(this[1], this[0]);
+        }
+
+        public LinearEquation GetReciprocal(LinearEquation r)
+        {
+            r = r ?? new LinearEquation(0, 0);
             var recipSlope = -1 * (1 / Slope);
-            var recipIntercept = y - recipSlope * at;
+            var recipIntercept = r.Intercept - recipSlope * r.Slope;
             return new LinearEquation(recipSlope, recipIntercept);
         }
 
-        public virtual double EuclideanNorm => System.Math.Sqrt(System.Math.Pow(Slope, 2) + System.Math.Pow(Intercept, 2));
+        public static Tuple<double, double, double> GetImplicitCoeffs(LinearEquation p, LinearEquation q)
+        {
+            var v = q - p;
+            var ab = new LinearEquation(v[0], -1 * v[1]).GetTranspose();
+            var a = ab[0];
+            var b = ab[1];
+            var c = -1 * a * p[0] - b * p[1];
+            return new Tuple<double, double, double>(a,b,c);
+        }
+
+        public static LinearEquation GetLineFromVectors(LinearEquation p, LinearEquation q)
+        {
+            var abc = GetImplicitCoeffs(p, q);
+            var a = abc.Item1;
+            var b = abc.Item2;
+            var c = abc.Item3;
+            var slope = (-1 * a) / b;
+            var intercept = (-1 * c) / b;
+            return new LinearEquation(slope, intercept);
+        }
+
+        public LinearEquation GetIntersect(LinearEquation p)
+        {
+            p = p ?? new LinearEquation(0, 0);
+            var interceptTick = p.Intercept;
+            var slopeTick = p.Slope;
+
+            var interceptX = (interceptTick - Intercept) / (Slope - slopeTick);
+            //plug it back into either
+            var inteceptY = SolveForY(interceptX);
+            return new LinearEquation(interceptX, inteceptY);
+        }
 
         public override string ToString()
         {
@@ -81,25 +176,75 @@ namespace NoFuture.Util.Core.Math
             var interceptStr = csv.Split(',')[0];
             var slopeStr = csv.Split(',')[1];
 
-            double intercept;
-            double slope;
-            if (double.TryParse(interceptStr, out intercept) && double.TryParse(slopeStr, out slope))
+            if (double.TryParse(interceptStr, out var intercept) && double.TryParse(slopeStr, out var slope))
             {
-                lq = new LinearEquation (slope, intercept);
+                lq = new LinearEquation(slope, intercept);
             }
             return lq != null;
         }
 
-        public static LinearEquation GetLineFromVectors(NfVector p, NfVector q)
+        public static bool operator ==(LinearEquation v1, LinearEquation v2)
         {
-            var v = q - p;
-            var ab = new NfVector(-1* v[1], v[0]).GetTranspose();
-            var a = ab[0];
-            var b = ab[1];
-            var c = -1 * a * p[0] - b * p[1];
-            var slope = (-1 * a) / b;
-            var intercept = (-1 * c) / b;
-            return new LinearEquation(slope, intercept);
+            v1 = v1 ?? new LinearEquation(0, 0);
+            v2 = v2 ?? new LinearEquation(0, 0);
+            return v1.Equals(v2);
+        }
+
+        public static bool operator !=(LinearEquation v1, LinearEquation v2)
+        {
+            return !(v1 == v2);
+        }
+
+        public static LinearEquation operator +(LinearEquation v1, double s)
+        {
+            v1 = v1 ?? new LinearEquation(0, 0);
+            return new LinearEquation(v1[0] + s, v1[1] + s);
+        }
+
+        public static LinearEquation operator -(LinearEquation v1, double s)
+        {
+            v1 = v1 ?? new LinearEquation(0, 0);
+            return new LinearEquation(v1[0] - s, v1[1] - s);
+        }
+
+        public static LinearEquation operator *(LinearEquation v1, double s)
+        {
+            v1 = v1 ?? new LinearEquation(0, 0);
+            return new LinearEquation(v1[0] * s, v1[1] * s);
+        }
+
+        public static LinearEquation operator /(LinearEquation v1, double s)
+        {
+            v1 = v1 ?? new LinearEquation(0, 0);
+            return new LinearEquation(v1[0] / s, v1[1] / s);
+        }
+
+        public static LinearEquation operator +(LinearEquation v1, LinearEquation v2)
+        {
+            v1 = v1 ?? new LinearEquation(0, 0);
+            v2 = v2 ?? new LinearEquation(0, 0);
+            return new LinearEquation(v1[0] + v2[0], v1[1] + v2[1]);
+        }
+
+        public static LinearEquation operator -(LinearEquation v1, LinearEquation v2)
+        {
+            v1 = v1 ?? new LinearEquation(0, 0);
+            v2 = v2 ?? new LinearEquation(0, 0);
+            return new LinearEquation(v1[0] - v2[0], v1[1] - v2[1]);
+        }
+
+        public static LinearEquation operator *(LinearEquation v1, LinearEquation v2)
+        {
+            v1 = v1 ?? new LinearEquation(0, 0);
+            v2 = v2 ?? new LinearEquation(0, 0);
+            return new LinearEquation(v1[0] * v2[0], v1[1] * v2[1]);
+        }
+
+        public static LinearEquation operator /(LinearEquation v1, LinearEquation v2)
+        {
+            v1 = v1 ?? new LinearEquation(0, 0);
+            v2 = v2 ?? new LinearEquation(0, 0);
+            return new LinearEquation(v1[0] / v2[0], v1[1] / v2[1]);
         }
 
         public override int GetHashCode()

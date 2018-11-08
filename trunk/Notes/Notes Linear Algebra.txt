@@ -1298,7 +1298,7 @@ Foot of a given point
  - when drawing a line from r to l, the optimal
    solution is one that closest to 90 degrees to (l)
    passing through (r)
-  exampleRange = c(-10,10)
+  exampleRange <- c(-10,10)
   mycoord <- getMy.Draw.CoordGraph(exampleRange[1],exampleRange[2])
   middleRiseP <- c(-1,3)
   middleRiseQ <- c(2,-1)
