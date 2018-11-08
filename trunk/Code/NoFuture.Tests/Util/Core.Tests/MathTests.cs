@@ -134,6 +134,8 @@ namespace NoFuture.Util.Core.Tests
             testResult = testSubject.GetZScoreFor(1);
             Assert.IsTrue(testResult >= 0.34134);
         }
+
+
     }
 }
 

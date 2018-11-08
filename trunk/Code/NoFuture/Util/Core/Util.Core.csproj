@@ -51,6 +51,7 @@
     <Compile Include="Math\IEquation.cs" />
     <Compile Include="Math\LinearEquation.cs" />
     <Compile Include="Math\NaturalLogEquation.cs" />
+    <Compile Include="Math\NfVector.cs" />
     <Compile Include="Math\NormalDistEquation.cs" />
     <Compile Include="Math\SecondDegreePolynomial.cs" />
     <Compile Include="Math\SinusoidEquation.cs" />

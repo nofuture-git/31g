@@ -54,6 +54,7 @@
     <Compile Include="NfReflectTests.cs" />
     <Compile Include="TestNfPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestNfVector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
