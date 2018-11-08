@@ -35,7 +35,9 @@ namespace NoFuture.Util.Core.Tests
             var testResult = testSubject.EuclideanNorm;
             Assert.IsTrue(System.Math.Abs(5.826931 - testResult) < 0.0000001);
 
-            
+            var oTestSubject = new LinearEquation(2.25, 5.375);
+            testResult = oTestSubject.EuclideanNorm;
+            Assert.IsTrue(System.Math.Abs(5.826931 - testResult) < 0.0000001);
         }
 
         [Test]

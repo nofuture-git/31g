@@ -43,5 +43,24 @@
         {
             return $"f(x) ={ThirdCoefficient}x³ + {SecondCoefficient}x² + {Slope}x + {Intercept}";
         }
+
+        public override int GetHashCode()
+        {
+            return ThirdCoefficient.GetHashCode() + base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ThirdDegreePolynomial))
+                return false;
+
+            var nfv = (ThirdDegreePolynomial)obj;
+
+            var v0Eq = nfv.ThirdCoefficient - ThirdCoefficient < CloseEnough;
+            var v1Eq = nfv.SecondCoefficient - SecondCoefficient < CloseEnough;
+            var v2Eq = nfv.Slope - Slope < CloseEnough;
+            var v3Eq = nfv.Intercept - Intercept < CloseEnough;
+            return v0Eq && v1Eq && v2Eq && v3Eq;
+        }
     }
 }

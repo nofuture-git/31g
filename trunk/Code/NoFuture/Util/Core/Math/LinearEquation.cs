@@ -6,6 +6,8 @@ namespace NoFuture.Util.Core.Math
     {
         //public LinearEquation() { }
 
+        public static double CloseEnough { get; } = 0.0000001;
+
         public LinearEquation(double slope, double intercept)
         {
             Intercept = intercept;
@@ -22,7 +24,7 @@ namespace NoFuture.Util.Core.Math
 
         public virtual double SolveForX(double y)
         {
-            if(System.Math.Abs(Slope) < 0.0000001D)
+            if(System.Math.Abs(Slope) < CloseEnough)
                 return 0.0D;
             return (1/Slope)*y - (Intercept/Slope);
         }
@@ -56,13 +58,7 @@ namespace NoFuture.Util.Core.Math
             return new LinearEquation(recipSlope, recipIntercept);
         }
 
-        public virtual double EuclideanNorm
-        {
-            get
-            {
-                return System.Math.Sqrt(System.Math.Pow(Slope, 2) + System.Math.Pow(Intercept, 2));
-            }
-        }
+        public virtual double EuclideanNorm => System.Math.Sqrt(System.Math.Pow(Slope, 2) + System.Math.Pow(Intercept, 2));
 
         public override string ToString()
         {
@@ -104,6 +100,23 @@ namespace NoFuture.Util.Core.Math
             var slope = (-1 * a) / b;
             var intercept = (-1 * c) / b;
             return new LinearEquation(slope, intercept);
+        }
+
+        public override int GetHashCode()
+        {
+            return Slope.GetHashCode() + Intercept.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is LinearEquation))
+                return false;
+
+            var nfv = (LinearEquation)obj;
+
+            var v0Eq = nfv.Slope - Slope < CloseEnough;
+            var v1Eq = nfv.Intercept - Intercept < CloseEnough;
+            return v1Eq && v0Eq;
         }
     }
 }

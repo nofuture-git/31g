@@ -47,5 +47,23 @@ namespace NoFuture.Util.Core.Math
         {
             return $"f(x) = {SecondCoefficient}x² + {Slope}x + {Intercept}";
         }
+
+        public override int GetHashCode()
+        {
+            return SecondCoefficient.GetHashCode() + base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is SecondDegreePolynomial))
+                return false;
+
+            var nfv = (SecondDegreePolynomial)obj;
+
+            var v0Eq = nfv.SecondCoefficient - SecondCoefficient < CloseEnough;
+            var v1Eq = nfv.Slope - Slope < CloseEnough;
+            var v2Eq = nfv.Intercept - Intercept < CloseEnough;
+            return v0Eq && v1Eq && v2Eq;
+        }
     }
 }
