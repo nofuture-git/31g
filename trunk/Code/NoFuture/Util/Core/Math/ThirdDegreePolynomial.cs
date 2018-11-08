@@ -16,6 +16,29 @@
                 Intercept, 5);
         }
 
+        public override double this[int index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                        return base[index];
+                    case 3:
+                        return ThirdCoefficient;
+                    default:
+                        return 0D;
+                }
+            }
+        }
+
+        public override IEquation Clone()
+        {
+            return new ThirdDegreePolynomial(ThirdCoefficient, SecondCoefficient, Slope, Intercept);
+        }
+
         public override string ToString()
         {
             return $"f(x) ={ThirdCoefficient}x³ + {SecondCoefficient}x² + {Slope}x + {Intercept}";

@@ -27,6 +27,27 @@ namespace NoFuture.Util.Core.Math
             return (1/Slope)*y - (Intercept/Slope);
         }
 
+        public virtual double this[int index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case 0:
+                        return Intercept;
+                    case 1:
+                        return Slope;
+                    default:
+                        return 0D;
+                }
+            }
+        }
+
+        public virtual IEquation Clone()
+        {
+            return new LinearEquation(Slope, Intercept);
+        }
+
         public virtual LinearEquation GetOrtroProj(double at)
         {
             var y = SolveForY(at);

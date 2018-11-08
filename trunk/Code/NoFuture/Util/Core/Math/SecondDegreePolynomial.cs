@@ -21,6 +21,28 @@ namespace NoFuture.Util.Core.Math
             throw new NotImplementedException();
         }
 
+        public override double this[int index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case 0:
+                    case 1:
+                        return base[index];
+                    case 2:
+                        return SecondCoefficient;
+                    default:
+                        return 0D;
+                }
+            }
+        }
+
+        public override IEquation Clone()
+        {
+            return new SecondDegreePolynomial(SecondCoefficient, Slope, Intercept);
+        }
+
         public override string ToString()
         {
             return $"f(x) = {SecondCoefficient}x² + {Slope}x + {Intercept}";
