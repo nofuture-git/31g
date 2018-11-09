@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 
 namespace NoFuture.Util.Core.Math
@@ -114,7 +115,14 @@ namespace NoFuture.Util.Core.Math
             return new LinearEquation(this[1], this[0]);
         }
 
-        public LinearEquation GetReciprocal(LinearEquation r)
+        public LinearEquation GetReciprocal(Tuple<double, double> r)
+        {
+            r = r ?? new Tuple<double, double>(0, 0);
+            return GetReciprocal(new LinearEquation(r.Item1, r.Item2));
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal LinearEquation GetReciprocal(LinearEquation r)
         {
             r = r ?? new LinearEquation(0, 0);
             var recipSlope = -1 * (1 / Slope);
@@ -122,7 +130,13 @@ namespace NoFuture.Util.Core.Math
             return new LinearEquation(recipSlope, recipIntercept);
         }
 
-        public static Tuple<double, double, double> GetImplicitCoeffs(LinearEquation p, LinearEquation q)
+        public static Tuple<double, double, double> GetImplicitCoeffs(Tuple<double, double> p, Tuple<double, double> q)
+        {
+            return GetImplicitCoeffs(new LinearEquation(p.Item1, p.Item2), new LinearEquation(q.Item1, q.Item2));
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static Tuple<double, double, double> GetImplicitCoeffs(LinearEquation p, LinearEquation q)
         {
             var v = q - p;
             var ab = new LinearEquation(v[0], -1 * v[1]).GetTranspose();
@@ -132,7 +146,13 @@ namespace NoFuture.Util.Core.Math
             return new Tuple<double, double, double>(a,b,c);
         }
 
-        public static LinearEquation GetLineFromVectors(LinearEquation p, LinearEquation q)
+        public static LinearEquation GetLineFromVectors(Tuple<double, double> p, Tuple<double, double> q)
+        {
+            return GetLineFromVectors(new LinearEquation(p.Item1, p.Item2), new LinearEquation(q.Item1, q.Item2));
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static LinearEquation GetLineFromVectors(LinearEquation p, LinearEquation q)
         {
             var abc = GetImplicitCoeffs(p, q);
             var a = abc.Item1;
@@ -153,6 +173,27 @@ namespace NoFuture.Util.Core.Math
             //plug it back into either
             var inteceptY = SolveForY(interceptX);
             return new LinearEquation(interceptX, inteceptY);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static double[,] GetRotationMatrix(double degrees)
+        {
+            var rad = Extensions.GetDegrees2Radians(degrees);
+            return new[,]
+            {
+                {System.Math.Cos(rad), -1 * System.Math.Sin(rad)},
+                {System.Math.Sin(rad), System.Math.Cos(rad)}
+            };
+        }
+
+        public LinearEquation GetRotation(double degrees)
+        {
+            var rotationMatrix = GetRotationMatrix(degrees);
+
+            var rSlope = rotationMatrix[0,0] * Slope + rotationMatrix[0,1] * Intercept;
+            var rIntercept = rotationMatrix[1, 0] * Slope + rotationMatrix[1, 1] * Intercept;
+
+            return new LinearEquation(rSlope, rIntercept);
         }
 
         public override string ToString()

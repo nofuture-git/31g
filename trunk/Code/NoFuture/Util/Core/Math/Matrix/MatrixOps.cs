@@ -146,11 +146,10 @@ namespace NoFuture.Util.Core.Math.Matrix
         {
             a = a ?? new double[,] { };
             b = b ?? new double[,] { };
-            var dimensions = new[,] {{a.CountOfRows(), a.CountOfColumns()}, {b.CountOfRows(), b.CountOfColumns()}};
-            var m = dimensions[0, 0];
-            var n = dimensions[0, 1];
-            var p = dimensions[1, 0];
-            var q = dimensions[1, 1];
+            var m = a.CountOfRows();
+            var n = a.CountOfColumns();
+            var p = b.CountOfRows();
+            var q = b.CountOfColumns();
 
             if (n != p) //equal rows
                 throw new NonConformableException(

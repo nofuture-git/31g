@@ -123,5 +123,15 @@ namespace NoFuture.Util.Core.Math
         {
             return (data ?? new List<float>()).Cast<double>().StdDev();
         }
+
+        public static double GetDegrees2Radians(double degrees)
+        {
+            return (degrees / 1D) * (System.Math.PI / 180);
+        }
+
+        public static double GetRadians2Degrees(double radians)
+        {
+            return radians * (180 / System.Math.PI);
+        }
     }
 }

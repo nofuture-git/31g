@@ -422,6 +422,13 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
 
             var testResult = myX.DotProduct(myY);
             Console.WriteLine(testResult.Print());
+
+            var rotation = new double[,] {{0.4648420, -0.8853936}, {0.8853936, 0.4648420}};
+            var v = new double[,] {{2}, {4}};
+
+            testResult = rotation.DotProduct(v);
+            Console.WriteLine(testResult.Print());
+
         }
 
         [Test]

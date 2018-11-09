@@ -101,6 +101,16 @@ namespace NoFuture.Util.Core.Tests
         }
 
         [Test]
+        public void TestGetImplicitCoeffs()
+        {
+            var p = new LinearEquation(2, 2);
+            var q = new LinearEquation(6, 4);
+            var testResult = LinearEquation.GetImplicitCoeffs(p, q);
+            Console.WriteLine(testResult);
+            Assert.AreEqual(new Tuple<double, double, double>(-2, 4, -4), testResult);
+        }
+
+        [Test]
         public void TestGetLineFromVectors()
         {
             //treating these like points 
@@ -109,6 +119,16 @@ namespace NoFuture.Util.Core.Tests
             var testResult = LinearEquation.GetLineFromVectors(p, q);
             Console.WriteLine(testResult);
             Assert.IsTrue(new LinearEquation(0.5, 1).Equals(testResult));
+        }
+
+        [Test]
+        public void TestGetLineFromVectors_Points()
+        {
+            var p = new Tuple<double, double>(-1, 3);
+            var q = new Tuple<double, double>(2, -1);
+            var testResult = LinearEquation.GetLineFromVectors(p, q);
+            Console.WriteLine(testResult);
+            Assert.IsTrue(new LinearEquation(-1.333333, 1.666667).Equals(testResult));
         }
 
         [Test]
@@ -139,6 +159,27 @@ namespace NoFuture.Util.Core.Tests
             Console.WriteLine(intesect);
 
             Assert.IsTrue(new LinearEquation(0.2, 1.4).Equals(intesect));
+        }
+
+        [Test]
+        public void TestGetRotationMatrix()
+        {
+            var testResult = LinearEquation.GetRotationMatrix(62.3);
+
+            Assert.IsTrue(System.Math.Abs(testResult[0, 0] - 0.4648420) < 0.00001);
+            Assert.IsTrue(System.Math.Abs(testResult[0, 1] - -0.8853936) < 0.00001);
+            Assert.IsTrue(System.Math.Abs(testResult[1, 0] - 0.8853936) < 0.00001);
+            Assert.IsTrue(System.Math.Abs(testResult[1, 1] - 0.4648420) < 0.00001);
+        }
+
+        [Test]
+        public void TestGetRotation()
+        {
+            var testSubject = new LinearEquation(2, 4);
+            var testResult = testSubject.GetRotation(62.3);
+            Console.WriteLine(testResult);
+
+            Assert.IsTrue(new LinearEquation(-2.611890, 3.630155).Equals(testResult));
         }
 
     }
