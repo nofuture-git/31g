@@ -6,7 +6,6 @@ namespace NoFuture.Util.Core.Math
 {
     public class LinearEquation : IEquation
     {
-
         public static double CloseEnough { get; set; } = 0.000001;
 
         public static int RoundTo
@@ -85,6 +84,14 @@ namespace NoFuture.Util.Core.Math
             return qdotp[0] + qdotp[1];
         }
 
+        internal LinearEquation GetDotProduct(double[,] matrix)
+        {
+            var rSlope = matrix[0, 0] * Slope + matrix[0, 1] * Intercept;
+            var rIntercept = matrix[1, 0] * Slope + matrix[1, 1] * Intercept;
+
+            return new LinearEquation(rSlope, rIntercept);
+        }
+
         public double GetCosTheta(LinearEquation p)
         {
             p = p ?? new LinearEquation(0, 0);
@@ -108,6 +115,13 @@ namespace NoFuture.Util.Core.Math
             var q = this;
 
             return q * (q.GetDotProduct(p) / System.Math.Pow(q.EuclideanNorm, 2));
+        }
+
+        public virtual LinearEquation GetProjection(double degrees)
+        {
+            var ui = Extensions.ConvertDegrees2Radians(degrees);
+            var uiSqrd = System.Math.Pow(ui, 2);
+            return GetDotProduct(new[,] {{uiSqrd, uiSqrd}, {uiSqrd, uiSqrd}});
         }
 
         public LinearEquation GetTranspose()
@@ -178,7 +192,7 @@ namespace NoFuture.Util.Core.Math
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static double[,] GetRotationMatrix(double degrees)
         {
-            var rad = Extensions.GetDegrees2Radians(degrees);
+            var rad = Extensions.ConvertDegrees2Radians(degrees);
             return new[,]
             {
                 {System.Math.Cos(rad), -1 * System.Math.Sin(rad)},
@@ -188,12 +202,13 @@ namespace NoFuture.Util.Core.Math
 
         public LinearEquation GetRotation(double degrees)
         {
-            var rotationMatrix = GetRotationMatrix(degrees);
+            return GetDotProduct(GetRotationMatrix(degrees));
+        }
 
-            var rSlope = rotationMatrix[0,0] * Slope + rotationMatrix[0,1] * Intercept;
-            var rIntercept = rotationMatrix[1, 0] * Slope + rotationMatrix[1, 1] * Intercept;
-
-            return new LinearEquation(rSlope, rIntercept);
+        public LinearEquation GetShear()
+        {
+            var shear = new[,] {{1, 0}, {-1 * this[1] / this[0], 1}};
+            return GetDotProduct(shear);
         }
 
         public override string ToString()

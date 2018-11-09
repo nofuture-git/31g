@@ -182,5 +182,22 @@ namespace NoFuture.Util.Core.Tests
             Assert.IsTrue(new LinearEquation(-2.611890, 3.630155).Equals(testResult));
         }
 
+        [Test]
+        public void TestGetShear()
+        {
+            var testSubject = new LinearEquation(2,5);
+            var testResult = testSubject.GetShear();
+            Console.WriteLine(testResult);
+            Assert.IsTrue(new LinearEquation(2,0).Equals(testResult));
+        }
+
+        [Test]
+        public void TestGetProjection()
+        {
+            var testSubject = new LinearEquation(2, 5);
+            var testResult = testSubject.GetProjection(45);
+            Console.WriteLine(testResult);
+            Assert.IsTrue(new LinearEquation(4.317952, 4.317952).Equals(testResult));
+        }
     }
 }
