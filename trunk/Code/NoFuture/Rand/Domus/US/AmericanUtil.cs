@@ -136,8 +136,6 @@ namespace NoFuture.Rand.Domus.US
             //default atTime to now
             var dt = atTime ?? DateTime.Now;
 
-            motherDob = AmericanEquations.ProtectAgainstDistantTimes(motherDob);
-
             var motherAge = Etc.CalcAge(motherDob, dt);
 
             var meanAge = AmericanEquations.FemaleAge2FirstChild.SolveForY(motherDob.Year);
@@ -181,8 +179,6 @@ namespace NoFuture.Rand.Domus.US
             if (Etx.MyRand.NextDouble() <= AmericanData.PERCENT_UNMARRIED_WHOLE_LIFE)
                 return MaritialStatus.Single;
             dob = dob ?? Etx.RandomAdultBirthDate();
-
-            dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
 
             var avgAgeMarriage = gender == Gender.Female
                 ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())
@@ -275,8 +271,6 @@ namespace NoFuture.Rand.Domus.US
             //move to a date 1 - 6 years prior the Person's dob
             var dtPm = childDob.Value.AddYears(-1 * Etx.RandomInteger(1, 6)).AddDays(Etx.RandomInteger(1, 360));
 
-            dtPm = AmericanEquations.ProtectAgainstDistantTimes(dtPm);
-
             //calc the age of marriable person at this time
             var avgAgeCouldMarry =
                 age2FirstMarriageEq.SolveForY(dtPm.ToDouble());
@@ -330,7 +324,6 @@ namespace NoFuture.Rand.Domus.US
             if (atDateTime != null)
                 vt = atDateTime.Value;
             dob = dob ?? Etx.RandomAdultBirthDate();
-            dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
             var age = Etc.CalcAge(dob.Value, vt);
             var randV = Etx.RandomInteger(1, 100);
 
@@ -395,7 +388,6 @@ namespace NoFuture.Rand.Domus.US
         public static DateTime? RandomMarriageDate(DateTime? dob, Gender myGender)
         {
             dob = dob ?? Etx.RandomAdultBirthDate();
-            dob = AmericanEquations.ProtectAgainstDistantTimes(dob.Value);
             var dt = DateTime.Now;
             var avgAgeMarriage = myGender == Gender.Female
                 ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())

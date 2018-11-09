@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -20,87 +21,109 @@ namespace NoFuture.Rand.Gov.US
     /// </remarks>
     public static class AmericanEquations
     {
-
         internal const int MIN_DOB_YEAR = 1914;
         internal const int MAX_DOB_YEAR = 2055;
 
-        /// <summary>
-        /// The linear regressions are for the second half of 20th century and cannot 
-        /// be applied to date ranges beyond <see cref="MIN_DOB_YEAR"/> and <see cref="MAX_DOB_YEAR"/>
-        /// </summary>
-        /// <param name="dob"></param>
-        /// <returns></returns>
-        public static DateTime ProtectAgainstDistantTimes(DateTime dob)
+        public static double StdDevRandLinearEquation { get; set; } = 2.5;
+
+        private static IEquation GetLinearEquation(string key)
         {
-            if (dob.Year < MIN_DOB_YEAR)
-                return new DateTime(MIN_DOB_YEAR, dob.Month, dob.Day);
-            if (dob.Year > MAX_DOB_YEAR)
-                return new DateTime(MAX_DOB_YEAR, dob.Month, dob.Day);
-            return dob;
+            var data = new Dictionary<string, Tuple<double, double>>
+            {
+                {nameof(MaleAge2FirstMarriage), new Tuple<double, double>(0.1056, -181.45)},
+                {nameof(FemaleAge2FirstMarriage), new Tuple<double, double>(0.1187, -209.41)},
+                {nameof(FemaleAge2FirstChild), new Tuple<double, double>(0.1026, -176.32)},
+                {nameof(FemaleAge2SecondChild), new Tuple<double, double>(0.1017, -171.88)},
+                {nameof(FemaleAge2ThirdChild), new Tuple<double, double>(0.0792, -125.45)},
+                {nameof(FemaleAge2ForthChild), new Tuple<double, double>(0.0545, -74.855)},
+            };
+
+            if(!data.ContainsKey(key))
+                throw new ItsDeadJim($"No equation found by the name '{key}'");
+            var slope = data[key].Item1;
+            var intercept = data[key].Item2;
+            Func<double, double> rLinear = (x) =>
+            {
+                //keep x within reasonable range on which the regression was calc'ed
+                x = x > MAX_DOB_YEAR ? MAX_DOB_YEAR : (x < MIN_DOB_YEAR ? MIN_DOB_YEAR : x);
+                var v = new RLinearEquation(slope, intercept)
+                {
+                    StdDev = Etx.RandomDouble(0, StdDevRandLinearEquation)
+                };
+                return v.SolveForY(x);
+            };
+            return new CustomEquation(rLinear);
         }
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 12/14/1979 is 1979.952791508)
         /// </summary>
-        public static IEquation MaleAge2FirstMarriage = new RLinearEquation(0.1056, -181.45)
-        {
-            StdDev = Etx.RandomDouble(0, 1)
-        };
+        /// <example>
+        /// <![CDATA[
+        /// AmericanEquations.MaleAge2FirstMarriage.SolveForY(DateTime.Today.AddYears(-39).ToDouble());
+        /// ]]>
+        /// </example>
+        public static IEquation MaleAge2FirstMarriage => GetLinearEquation(nameof(MaleAge2FirstMarriage));
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 6/15/1979 is 1979.45449250094)
         /// </summary>
-        public static IEquation FemaleAge2FirstMarriage
-        {
-            get
-            {
-                Func<double, double> rLinear = (x) =>
-                {
-                    var v = new RLinearEquation(0.1187, -209.41)
-                    {
-                        StdDev = Etx.RandomDouble(0, 1)
-                    };
-                    return v.SolveForY(x);
-                };
-                return new CustomEquation(rLinear);
-            }
-        }
+        /// <example>
+        /// <![CDATA[
+        /// AmericanEquations.FemaleAge2FirstMarriage.SolveForY(DateTime.Today.AddYears(-39).ToDouble());
+        /// ]]>
+        /// </example>
+        public static IEquation FemaleAge2FirstMarriage => GetLinearEquation(nameof(FemaleAge2FirstMarriage));
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
         /// </summary>
-        public static IEquation FemaleAge2FirstChild = new RLinearEquation(0.1026, -176.32)
-        {
-            StdDev = Etx.RandomDouble(0, 1)
-        };
+        /// <example>
+        /// <![CDATA[
+        /// AmericanEquations.FemaleAge2FirstChild.SolveForY(DateTime.Today.AddYears(-39).ToDouble());
+        /// ]]>
+        /// </example>
+        public static IEquation FemaleAge2FirstChild => GetLinearEquation(nameof(FemaleAge2FirstChild));
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
         /// </summary>
-        public static IEquation FemaleAge2SecondChild = new RLinearEquation(0.1017, -171.88)
-        {
-            StdDev = Etx.RandomDouble(0, 1)
-        };
+        /// <example>
+        /// <![CDATA[
+        /// AmericanEquations.FemaleAge2SecondChild.SolveForY(DateTime.Today.AddYears(-39).ToDouble());
+        /// ]]>
+        /// </example>
+        public static IEquation FemaleAge2SecondChild => GetLinearEquation(nameof(FemaleAge2SecondChild));
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
         /// </summary>
-        public static IEquation FemaleAge2ThirdChild = new RLinearEquation(0.0792, -125.45)
-        {
-            StdDev = Etx.RandomDouble(0, 1)
-        };
+        /// <example>
+        /// <![CDATA[
+        /// AmericanEquations.FemaleAge2ThirdChild.SolveForY(DateTime.Today.AddYears(-39).ToDouble());
+        /// ]]>
+        /// </example>
+        public static IEquation FemaleAge2ThirdChild => GetLinearEquation(nameof(FemaleAge2ThirdChild));
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
         /// </summary>
-        public static IEquation FemaleAge2ForthChild = new RLinearEquation(0.0545, -74.855)
-        {
-            StdDev = Etx.RandomDouble(0, 1)
-        };
+        /// <example>
+        /// <![CDATA[
+        /// AmericanEquations.FemaleAge2ForthChild.SolveForY(DateTime.Today.AddYears(-39).ToDouble());
+        /// ]]>
+        /// </example>
+        public static IEquation FemaleAge2ForthChild => GetLinearEquation(nameof(FemaleAge2ForthChild));
 
         /// <summary>
         /// Has no stat validity - just a guess
         /// </summary>
+        /// <example>
+        /// <![CDATA[
+        /// //prob. widowed at age 69
+        /// AmericanEquations.Age2ProbWidowed.SolveForY(69);
+        /// ]]>
+        /// </example>
         public static IEquation Age2ProbWidowed = new ExponentialEquation
         {
             ConstantValue = Math.Pow(10, -13),
@@ -109,7 +132,13 @@ namespace NoFuture.Rand.Gov.US
 
         /// <summary>
         /// Loosely based on https://en.wikipedia.org/wiki/Childfree#Statistics_and_research
+        /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
         /// </summary>
+        /// <example>
+        /// <![CDATA[
+        /// AmericanEquations.FemaleYob2ProbChildless.SolveForY(DateTime.Today.AddYears(-39).ToDouble());
+        /// ]]>
+        /// </example>
         public static IEquation FemaleYob2ProbChildless = new SinusoidEquation
             {
                 Amplitude = 0.115D,

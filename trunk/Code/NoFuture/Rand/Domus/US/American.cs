@@ -405,7 +405,7 @@ namespace NoFuture.Rand.Domus.US
 
             ThrowOnBirthDateNull(this);
 
-            var equationDt = AmericanEquations.ProtectAgainstDistantTimes(BirthCert.DateOfBirth);
+            var equationDt = BirthCert.DateOfBirth;
 
             var avgAgeMarriage = Gender == Gender.Female
                 ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(equationDt.ToDouble())
