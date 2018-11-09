@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Opes.US
                 AddItem(item);
         }
 
-        public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
+        protected internal override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
 
@@ -291,7 +291,7 @@ namespace NoFuture.Rand.Opes.US
             }
 
             p.Expectation.Name = item;
-            p.Expectation.UpsertName(KindsOfNames.Group, grp);
+            p.Expectation.AddName(KindsOfNames.Group, grp);
             return p;
         }
 

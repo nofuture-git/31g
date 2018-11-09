@@ -43,8 +43,8 @@ namespace NoFuture.Rand.Exo.NfText
             const string LETTER_Y = "Y";
             var unfoldedName = Bank.GetBankFullName(li.BankName);
 
-            bank.UpsertName(KindsOfNames.Legal, unfoldedName);
-            bank.UpsertName(KindsOfNames.Abbrev, li.BankName);
+            bank.AddName(KindsOfNames.Legal, unfoldedName);
+            bank.AddName(KindsOfNames.Abbrev, li.BankName);
             bank.Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
             if (UsCityStateZip.TryParse(li.Location, out UsCityStateZip cityOut, false))
                 bank.BusinessAddress = new PostalAddress {CityArea = cityOut};

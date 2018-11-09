@@ -15,14 +15,14 @@ namespace NoFuture.Rand.Tests.CoreTests
             var testSubject = new VocaBase();
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            testSubject.UpsertName(KindsOfNames.Legal, "OtherName");
+            testSubject.AddName(KindsOfNames.Legal, "OtherName");
             var testResult = testSubject.Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Legal);
 
             Assert.IsNotNull(testResult);
             Assert.AreEqual("OtherName", testResult.Item2);
 
             //add a bitwise kind of name
-            testSubject.UpsertName(KindsOfNames.Legal | KindsOfNames.Technical, "TechnicalName");
+            testSubject.AddName(KindsOfNames.Legal | KindsOfNames.Technical, "TechnicalName");
 
             //assert the original is not effected
             testResult = testSubject.Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Legal);
@@ -186,9 +186,14 @@ namespace NoFuture.Rand.Tests.CoreTests
             Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Abbrev));
             Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Group));
             Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Colloquial));
+        }
 
+        [Test]
+        public void TestToData()
+        {
 
-
+            var testSubject = new VocaBase();
+            
         }
     }
 }

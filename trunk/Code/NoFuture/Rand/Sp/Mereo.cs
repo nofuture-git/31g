@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -12,7 +13,7 @@ namespace NoFuture.Rand.Sp
     /// Base implementation a name of any kind of money entry
     /// </summary>
     [Serializable]
-    public class Mereo : VocaBase, IMereo
+    public class Mereo : VocaBase, IMereo, IObviate
     {
         #region fields
         private static Dictionary<Interval, int> _interval2Multiplier;
@@ -51,7 +52,7 @@ namespace NoFuture.Rand.Sp
 
         #region properties
         public Interval Interval { get; set; }
-        public Classification Classification { get; set; }
+        public Classification? Classification { get; set; }
 
         public string Abbrev => Name;
         public string Src { get; set; }
@@ -92,6 +93,15 @@ namespace NoFuture.Rand.Sp
             return new Tuple<string, string, Pecuniam, Interval>(Name, GetName(KindsOfNames.Group), Value,
                 Interval).ToString();
         }
+
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// A general table to align an interval to some annual multiplier
         /// (e.g. Hourly means 52 weeks * 40 hours per week = 2080)
@@ -121,5 +131,45 @@ namespace NoFuture.Rand.Sp
             }
         }
 
+        /// <summary>
+        /// Helper method to convert a .NET <see cref="TimeSpan"/>
+        /// into a Nf Interval
+        /// </summary>
+        /// <param name="df"></param>
+        /// <returns></returns>
+        public static Interval ConvertTimespan(TimeSpan df)
+        {
+            var days = df.Days;
+
+            switch (days)
+            {
+                case 0:
+                    return Interval.Hourly;
+                case 1:
+                    return Interval.Daily;
+                case 7:
+                    return Interval.Weekly;
+                case 14:
+                    return Interval.BiWeekly;
+                case 15:
+                    return Interval.SemiMonthly;
+                case 30:
+                    return Interval.Monthly;
+                case 45:
+                    return Interval.SemiQuarterly;
+                case 90:
+                case 91:
+                    return Interval.Quarterly;
+                case 180:
+                case 182:
+                    return Interval.SemiAnnually;
+                case 360:
+                case 365:
+                    return Interval.Annually;
+                default:
+                    return Interval.Varied;
+
+            }
+        }
     }
 }

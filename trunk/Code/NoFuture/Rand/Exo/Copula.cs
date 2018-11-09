@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Exo
             if (string.IsNullOrWhiteSpace(firmOut.Rssd?.ToString()))
                 firmOut.Rssd = new ResearchStatisticsSupervisionDiscount { Value = pd.Rssd };
 
-            firmOut.UpsertName(KindsOfNames.Legal, pd.BankName);
+            firmOut.AddName(KindsOfNames.Legal, pd.BankName);
             if (string.IsNullOrWhiteSpace(firmOut.FdicNumber?.ToString()))
                 firmOut.FdicNumber = new FdicNum { Value = pd.FdicCert, Src = myDynData.SourceUri.ToString() };
 
@@ -206,7 +206,7 @@ namespace NoFuture.Rand.Exo
             }
 
             var legalName = xbrlDyn.Name;
-            pc.UpsertName(KindsOfNames.Legal, legalName);
+            pc.AddName(KindsOfNames.Legal, legalName);
 
             rptTenK.NumOfShares = xbrlDyn.NumOfShares;
             if (xbrlDyn.EndOfYear > 0)
@@ -352,7 +352,7 @@ namespace NoFuture.Rand.Exo
                         x => String.Equals(x.Name, corpName, StringComparison.OrdinalIgnoreCase))
                     : new PublicCompany();
 
-                corp.UpsertName(KindsOfNames.Legal, corpName);
+                corp.AddName(KindsOfNames.Legal, corpName);
 
                 //annual report
                 var secForm = nameData?.Item1 ?? new Form10K { Src = myDynData.SourceUri.ToString() };
@@ -410,7 +410,7 @@ namespace NoFuture.Rand.Exo
                 publicCompany = new PublicCompany();
 
             if (!String.IsNullOrWhiteSpace(pr.Name))
-                publicCompany.UpsertName(KindsOfNames.Legal, pr.Name);
+                publicCompany.AddName(KindsOfNames.Legal, pr.Name);
             publicCompany.CIK = String.IsNullOrWhiteSpace(pr.Cik)
                 ? publicCompany.CIK
                 : new CentralIndexKey { Value = pr.Cik, Src = myDynData.SourceUri.ToString() };
@@ -489,7 +489,7 @@ namespace NoFuture.Rand.Exo
                     var strFnDt = fn.FormerDate ?? String.Empty;
                     var strFnVal = fn.FormerName ?? String.Empty;
 
-                    publicCompany.UpsertName(KindsOfNames.Former, $"{strFnVal}[{strFnDt}]");
+                    publicCompany.AddName(KindsOfNames.Former, $"{strFnVal}[{strFnDt}]");
                 }
             }
 

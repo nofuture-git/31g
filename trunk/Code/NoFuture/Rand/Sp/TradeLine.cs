@@ -63,6 +63,14 @@ namespace NoFuture.Rand.Sp
 
         #region methods
 
+        public virtual Interval GetDueFreqAsInterval()
+        {
+            if (DueFrequency == null || DueFrequency == TimeSpan.MinValue)
+                return Interval.OnceOnly;
+
+            return Mereo.ConvertTimespan(DueFrequency.Value);
+        }
+
         public virtual bool IsInRange(DateTime dt)
         {
             var afterOrOnFromDt = Inception <= dt;

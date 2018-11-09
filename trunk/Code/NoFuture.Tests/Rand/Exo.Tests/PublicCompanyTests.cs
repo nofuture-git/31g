@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Exo.Tests
             {
                 CIK = new CentralIndexKey {Value = "0000768899"}
             };
-            testSubject.UpsertName(KindsOfNames.Legal, "TrueBlue, Inc.");
+            testSubject.AddName(KindsOfNames.Legal, "TrueBlue, Inc.");
             testSubject.AddSecReport(new Form10K {XmlLink = testUri});
             var testContent =
                 System.IO.File.ReadAllText(TestAssembly.TestDataDir + @"\ExampleSecXbrl.xml");

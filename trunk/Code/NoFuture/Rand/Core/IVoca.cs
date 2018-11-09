@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Core
         /// </summary>
         /// <param name="k"></param>
         /// <param name="name"></param>
-        void UpsertName(KindsOfNames k, string name);
+        void AddName(KindsOfNames k, string name);
 
         /// <summary>
         /// Gets the value for the given <see cref="KindsOfNames"/>

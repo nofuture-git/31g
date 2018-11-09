@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp;
 using NUnit.Framework;
@@ -48,7 +49,7 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestCopyFrom()
         {
             var testSubject = new Pondus("TestCorporation");
-            testSubject.Expectation.UpsertName(KindsOfNames.Group, "Company");
+            testSubject.Expectation.AddName(KindsOfNames.Group, "Company");
 
             var testSubject2 = new Pondus(testSubject.Expectation);
             Assert.AreEqual(testSubject.Expectation.Name, testSubject2.Expectation.Name);
@@ -56,6 +57,26 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.IsNotNull(groupName);
 
             Assert.AreEqual("Company", groupName);
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var dt = DateTime.Today;
+            var testSubject = new Pondus("test Name");
+            testSubject.Expectation.AddName(KindsOfNames.Group, "Company");
+            var cusip = new Cusip().Value;
+            testSubject.AddPositiveValue(dt.AddDays(-360), new Security(cusip, 5000));
+            testSubject.AddPositiveValue(dt.AddDays(-360), new Pecuniam(500000.0M));
+            testSubject.Inception = dt.AddDays(-365);
+            testSubject.Expectation.Value = new Pecuniam(800000M);
+            
+
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+
+            var asJson = JsonConvert.SerializeObject(testResult, Formatting.Indented);
+            Console.WriteLine(asJson);
+
         }
     }
 }

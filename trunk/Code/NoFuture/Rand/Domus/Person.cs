@@ -65,12 +65,12 @@ namespace NoFuture.Rand.Domus
         public virtual string FirstName
         {
             get => GetName(KindsOfNames.First);
-            set => UpsertName(KindsOfNames.First, value);
+            set => AddName(KindsOfNames.First, value);
         }
         public virtual string LastName
         {
             get => GetName(KindsOfNames.Surname);
-            set => UpsertName(KindsOfNames.Surname, value);
+            set => AddName(KindsOfNames.Surname, value);
         }
         public virtual IEnumerable<Uri> NetUri => _netUris;
         public Personality Personality { get; set; }
@@ -177,7 +177,7 @@ namespace NoFuture.Rand.Domus
                 if (Gender == Gender.Female && DateTime.Now >= marriedOn)
                 {
                     if (LastName != null && !AnyOfKind(KindsOfNames.Maiden))
-                        UpsertName(KindsOfNames.Maiden, BirthCert.GetFatherSurname() ?? LastName);
+                        AddName(KindsOfNames.Maiden, BirthCert.GetFatherSurname() ?? LastName);
 
                     LastName = spouse.LastName;
                 }
@@ -185,7 +185,7 @@ namespace NoFuture.Rand.Domus
             else if (Gender == Gender.Female && DateTime.Now >= separatedOn.Value)
             {
                 //add ex-husband last name to list
-                UpsertName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);
+                AddName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);
 
                 //set back to maiden name
                 var maidenName = GetName(KindsOfNames.Maiden);

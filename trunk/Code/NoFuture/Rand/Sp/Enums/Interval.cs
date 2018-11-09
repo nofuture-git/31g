@@ -12,8 +12,10 @@ namespace NoFuture.Rand.Sp.Enums
         BiWeekly,
         SemiMonthly,
         Monthly,
+        SemiQuarterly,
         Quarterly,
         SemiAnnually,
-        Annually
+        Annually,
+        Varied,
     }
 }

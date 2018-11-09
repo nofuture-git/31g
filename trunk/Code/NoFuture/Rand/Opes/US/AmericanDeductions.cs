@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        public override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
+        protected internal override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
             //deductions act differently than other items since they are calculated from income

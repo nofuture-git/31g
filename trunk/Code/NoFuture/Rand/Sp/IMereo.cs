@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Sp
         /// <summary>
         /// Contractual classification of the money item
         /// </summary>
-        Classification Classification { get; set; }
+        Classification? Classification { get; set; }
 
         /// <summary>
         /// Other names or common examples of this money entry item 

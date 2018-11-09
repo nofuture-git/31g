@@ -199,8 +199,8 @@ namespace NoFuture.Rand.Opes
             var name = new VocaBase();
             lastName = lastName ?? Etx.RandomWord();
             firstName = firstName ?? Etx.RandomWord();
-            name.UpsertName(KindsOfNames.First, firstName);
-            name.UpsertName(KindsOfNames.Surname, lastName);
+            name.AddName(KindsOfNames.First, firstName);
+            name.AddName(KindsOfNames.Surname, lastName);
 
             var opt = new OpesOptions
             {

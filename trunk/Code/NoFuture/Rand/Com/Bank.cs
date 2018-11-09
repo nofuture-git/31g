@@ -141,8 +141,8 @@ namespace NoFuture.Rand.Com
             };
             bank.Rssd = new ResearchStatisticsSupervisionDiscount {Value = rssd};
             bank.RoutingNumber = RoutingTransitNumber.RandomRoutingNumber();
-            bank.UpsertName(KindsOfNames.Legal, name);
-            bank.UpsertName(KindsOfNames.Abbrev, abbrev);
+            bank.AddName(KindsOfNames.Legal, name);
+            bank.AddName(KindsOfNames.Abbrev, abbrev);
 
             bank.LoadXrefXmlData();
             return bank;

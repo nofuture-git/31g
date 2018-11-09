@@ -35,5 +35,11 @@ namespace NoFuture.Rand.Sp
         /// The number of days in a year used to calc per-diem interest
         /// </summary>
         double DaysPerYear { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="DueFrequency"/>, if given, as a <see cref="Interval"/>
+        /// </summary>
+        /// <returns></returns>
+        Interval GetDueFreqAsInterval();
     }
 }

@@ -70,7 +70,7 @@ namespace NoFuture.Rand.Domus.US
         public string MiddleName
         {
             get => GetName(KindsOfNames.Middle);
-            set => UpsertName(KindsOfNames.Middle, value);
+            set => AddName(KindsOfNames.Middle, value);
         }
 
         public override DeathCert DeathCert
@@ -343,7 +343,7 @@ namespace NoFuture.Rand.Domus.US
             var mother = GetBiologicalMother() ??
                       AmericanUtil.RandomParent(BirthCert.DateOfBirth, Gender.Female);
             //line mothers last name with child
-            UpsertName(KindsOfNames.Surname, mother.LastName);
+            AddName(KindsOfNames.Surname, mother.LastName);
 
             var myMother = (American)mother;
             myMother.Race = Race;
@@ -385,7 +385,7 @@ namespace NoFuture.Rand.Domus.US
             //mother will receive last name of spouse
             myFather.Race = Race;
             BirthCert.FatherName = myFather.FullName;
-            UpsertName(KindsOfNames.Surname, myFather.LastName);
+            AddName(KindsOfNames.Surname, myFather.LastName);
             myFather.AddChild(this);
             AddParent(myFather, KindsOfNames.Biological | KindsOfNames.Father);
         }
@@ -574,7 +574,7 @@ namespace NoFuture.Rand.Domus.US
             //check that child does not share the same first name as a sibling
             while (Children.Any(x => x.Est.FirstName == nAmerChild.FirstName))
             {
-                nAmerChild.UpsertName(KindsOfNames.First,
+                nAmerChild.AddName(KindsOfNames.First,
                     AmericanUtil.RandomAmericanFirstName(nAmerChild.Gender, myChildDob));
             }
 

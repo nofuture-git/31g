@@ -17,8 +17,8 @@ namespace NoFuture.Rand.Tests.CoreTests
         {
 
             var testTarget = new Bank();
-            testTarget.UpsertName(KindsOfNames.Legal, "JPMorgan Chase Bank, N.A.");
-            testTarget.UpsertName(KindsOfNames.Abbrev, "JPMORGAN CHASE BK NA");
+            testTarget.AddName(KindsOfNames.Legal, "JPMorgan Chase Bank, N.A.");
+            testTarget.AddName(KindsOfNames.Abbrev, "JPMORGAN CHASE BK NA");
             testTarget.Rssd = new ResearchStatisticsSupervisionDiscount {Value = "852218" };
 
 
@@ -40,8 +40,8 @@ namespace NoFuture.Rand.Tests.CoreTests
 
             //test nothing found - no problems and no change
             testTarget = new Bank();
-            testTarget.UpsertName(KindsOfNames.Legal, "Pacific Western Bank");
-            testTarget.UpsertName(KindsOfNames.Abbrev, "PACIFIC WESTERN BK");
+            testTarget.AddName(KindsOfNames.Legal, "Pacific Western Bank");
+            testTarget.AddName(KindsOfNames.Abbrev, "PACIFIC WESTERN BK");
             testTarget.Rssd = new ResearchStatisticsSupervisionDiscount { Value = "494261" };
 
             Assert.IsNotNull(testTarget);

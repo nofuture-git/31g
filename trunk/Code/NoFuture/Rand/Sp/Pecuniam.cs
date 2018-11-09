@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Sp
         #endregion
 
         #region properties
-        public virtual Decimal Amount => _amount;
+        public virtual decimal Amount => _amount;
         public virtual Identifier Id => _currency;
         public static Pecuniam Zero => new Pecuniam(0.0M);
         #endregion

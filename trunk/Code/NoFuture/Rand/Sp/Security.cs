@@ -10,13 +10,15 @@ namespace NoFuture.Rand.Sp
     public class Security : Pecuniam
     {
         #region ctor
-        public Security(string cusip, decimal qty) :base(qty)
+        public Security(string cusip, decimal qty) :base(0.0M)
         {
+            Quantity = (double) qty;
             Id = new Cusip { Value = cusip };
         }
 
-        public Security(Cusip id, decimal qty) : base(qty)
+        public Security(Cusip id, decimal qty) : base(0.0M)
         {
+            Quantity = (double)qty;
             Id = id;
         }
         #endregion
@@ -26,6 +28,7 @@ namespace NoFuture.Rand.Sp
         /// Gets the <see cref="Cusip"/> id of this security.
         /// </summary>
         public override Identifier Id { get; }
+        public double Quantity { get; }
         #endregion
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Core
 {
@@ -10,7 +11,7 @@ namespace NoFuture.Rand.Core
     /// Base implemenation of <see cref="T:NoFuture.Rand.Core.IVoca" />
     /// </summary>
     [Serializable]
-    public class VocaBase : IVoca
+    public class VocaBase : IVoca, IObviate
     {
         protected internal List<Tuple<KindsOfNames, string>> Names { get; } = new List<Tuple<KindsOfNames, string>>();
 
@@ -33,7 +34,7 @@ namespace NoFuture.Rand.Core
         public virtual string Name
         {
             get => GetName(KindsOfNames.Legal);
-            set => UpsertName(KindsOfNames.Legal, value);
+            set => AddName(KindsOfNames.Legal, value);
         }
 
         public int GetCountOfNames()
@@ -41,7 +42,7 @@ namespace NoFuture.Rand.Core
             return Names.Count;
         }
 
-        public virtual void UpsertName(KindsOfNames k, string name)
+        public virtual void AddName(KindsOfNames k, string name)
         {
             var cname = Names.FirstOrDefault(x => x.Item1 == k);
 
@@ -138,6 +139,25 @@ namespace NoFuture.Rand.Core
             return Names.GetHashCode();
         }
 
+        public virtual IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+
+            foreach (var nameTuple in Names)
+            {
+                if(nameTuple == null)
+                    continue;
+                var grp = nameTuple.Item1;
+                var nm = nameTuple.Item2;
+                if (string.IsNullOrWhiteSpace(nm))
+                    continue;
+                itemData.Add(textFormat(grp.ToString()), nm);
+            }
+
+            return itemData;
+        }
+
         public KindsOfNames[] GetAllKindsOfNames()
         {
             return Names.Select(n => n.Item1).ToArray();
@@ -149,7 +169,7 @@ namespace NoFuture.Rand.Core
                 return;
 
             foreach(var k in voca.GetAllKindsOfNames())
-                UpsertName(k, voca.GetName(k));
+                AddName(k, voca.GetName(k));
         }
 
         /// <summary>
@@ -169,6 +189,23 @@ namespace NoFuture.Rand.Core
             }
             
             return dKon.Distinct().ToArray();
+        }
+
+        public static string TransformText(string x, KindsOfTextCase txtCase)
+        {
+            switch (txtCase)
+            {
+                case KindsOfTextCase.Camel:
+                    return Etc.ToCamelCase(x);
+                case KindsOfTextCase.Pascel:
+                    return Etc.ToPascelCase(x);
+                case KindsOfTextCase.Kabab:
+                    return Etc.TransformCaseToSeparator(x, '-')?.ToLower();
+                case KindsOfTextCase.Snake:
+                    return Etc.TransformCaseToSeparator(x, '_')?.ToLower();
+            }
+
+            return x;
         }
     }
 }

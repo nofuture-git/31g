@@ -392,7 +392,7 @@ namespace NoFuture.Rand.Opes
         /// <returns>
         /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
         /// </returns>
-        public virtual List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
+        protected internal virtual List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
 
@@ -410,7 +410,7 @@ namespace NoFuture.Rand.Opes
         /// <returns>
         /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
         /// </returns>
-        public virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName, OpesOptions options)
+        protected internal virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName, OpesOptions options)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
 
@@ -477,7 +477,7 @@ namespace NoFuture.Rand.Opes
         /// A: It leaves one to receive the excess - in effect forcing the dice role to be false for at least 
         ///    one of the PossiablyZeroOuts in this case no matter the odds.
         /// </remarks>
-        public static List<Tuple<string, double>> GetNames2Portions(OpesPortions options, string[] itemOrGroupNames)
+        internal static List<Tuple<string, double>> GetNames2Portions(OpesPortions options, string[] itemOrGroupNames)
         {
             const StringComparison STR_OPT = StringComparison.OrdinalIgnoreCase;
 
@@ -627,7 +627,7 @@ namespace NoFuture.Rand.Opes
         /// <param name="xmlNode"></param>
         /// <param name="mereo"></param>
         /// <returns></returns>
-        public static bool TryParseUsDomusOpesXml(XmlNode xmlNode, out IMereo mereo)
+        internal static bool TryParseUsDomusOpesXml(XmlNode xmlNode, out IMereo mereo)
         {
             mereo = null;
 
@@ -661,9 +661,9 @@ namespace NoFuture.Rand.Opes
 
             mereo = new Mereo(itemName);
             if (!String.IsNullOrWhiteSpace(abbrev))
-                mereo.UpsertName(KindsOfNames.Abbrev, abbrev);
+                mereo.AddName(KindsOfNames.Abbrev, abbrev);
             if (!String.IsNullOrWhiteSpace(groupName))
-                mereo.UpsertName(KindsOfNames.Group, groupName);
+                mereo.AddName(KindsOfNames.Group, groupName);
             if (egs.Any())
             {
                 foreach (var eg in egs)
@@ -977,7 +977,7 @@ namespace NoFuture.Rand.Opes
                 Inception = options.Inception,
                 Terminus = options.Terminus,
             };
-            p.Expectation.UpsertName(KindsOfNames.Group, grpName);
+            p.Expectation.AddName(KindsOfNames.Group, grpName);
             return p;
         }
 
