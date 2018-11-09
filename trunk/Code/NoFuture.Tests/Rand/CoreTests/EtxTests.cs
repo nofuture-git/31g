@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Tele;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.CoreTests
 {
     [TestFixture]
     public class EtxTests
@@ -16,7 +15,7 @@ namespace NoFuture.Rand.Tests
             var testResult = Etx.RandomWord();
             Assert.AreNotEqual(string.Empty, testResult);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
         [Test]
@@ -35,7 +34,7 @@ namespace NoFuture.Rand.Tests
             {
                 var testResult = Etx.RandomInteger(-90, -1);
                 Assert.IsTrue(testResult < 0);
-                System.Diagnostics.Debug.WriteLine(testResult);
+                Console.WriteLine(testResult);
             }
         }
 
@@ -68,7 +67,7 @@ namespace NoFuture.Rand.Tests
                 var trCat = trCounts.Keys.FirstOrDefault(x => x.Item1 <= testResult && testResult < x.Item2);
 
                 if(trCat == null)
-                    System.Diagnostics.Debug.WriteLine(testResult);
+                    Console.WriteLine(testResult);
 
                 Assert.IsNotNull(trCat);
                 trCounts[trCat] += 1;
@@ -76,7 +75,7 @@ namespace NoFuture.Rand.Tests
 
             foreach (var tr in trCounts.Keys)
             {
-                System.Diagnostics.Debug.WriteLine($"{tr} {trCounts[tr]}");
+                Console.WriteLine($"{tr} {trCounts[tr]}");
             }
         }
 
@@ -86,7 +85,7 @@ namespace NoFuture.Rand.Tests
             for (var i = 0; i < 256; i++)
             {
                 var smallDblRng = Etx.RandomValueInNormalDist(0.7889, 0.025);
-                System.Diagnostics.Debug.WriteLine(smallDblRng);
+                Console.WriteLine(smallDblRng);
                 Assert.IsTrue(smallDblRng < 0.87);
             }
         }
@@ -104,7 +103,7 @@ namespace NoFuture.Rand.Tests
             foreach (var r in testResult)
                 example.Append(r.Rand);
 
-            System.Diagnostics.Debug.WriteLine(example);
+            Console.WriteLine(example);
 
             testResult = Etx.RandomRChars(true);
             Assert.IsNotNull(testResult);
@@ -118,7 +117,7 @@ namespace NoFuture.Rand.Tests
 
             Assert.IsTrue(example.ToString().ToCharArray().All(char.IsNumber));
 
-            System.Diagnostics.Debug.WriteLine(example);
+            Console.WriteLine(example);
             
         }
 
@@ -128,7 +127,7 @@ namespace NoFuture.Rand.Tests
             var testResult = Etx.RandomDouble(0, 3);
             Assert.IsTrue(testResult >= 0);
             Assert.IsTrue(testResult < 4);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
         [Test]
@@ -140,7 +139,7 @@ namespace NoFuture.Rand.Tests
 
             //handles negative numbers
             testResult = Etx.RandomDouble(-0.99, -0.01);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult < 0);
         }
 
@@ -168,7 +167,7 @@ namespace NoFuture.Rand.Tests
             }
 
             var aggTestResult = testRsltCount/100.0D;
-            System.Diagnostics.Debug.WriteLine(aggTestResult);
+            Console.WriteLine(aggTestResult);
             Assert.IsTrue(0.89 <= aggTestResult);
 
             testInput = new Dictionary<string, double>()
@@ -220,7 +219,7 @@ namespace NoFuture.Rand.Tests
             testResults = Etx.RandomDiminishingPortions(12, -10.0);
 
             foreach (var t in testResults)
-                System.Diagnostics.Debug.WriteLine(t);
+                Console.WriteLine(t);
         }
 
         [Test]
@@ -233,7 +232,7 @@ namespace NoFuture.Rand.Tests
             Assert.AreEqual(testInput.Length, testResult.Length);
             for (var i = 0; i < testInput.Length - 1; i++)
             {
-                System.Diagnostics.Debug.WriteLine($"{testInput[i]} {testResult[i]}" );
+                Console.WriteLine($"{testInput[i]} {testResult[i]}" );
             }
         }
 
@@ -249,7 +248,7 @@ namespace NoFuture.Rand.Tests
             }
 
             var totalTestRslt = runningCount.Sum();
-            System.Diagnostics.Debug.WriteLine(totalTestRslt);
+            Console.WriteLine(totalTestRslt);
             Assert.IsTrue(totalTestRslt < 15);
         }
 
@@ -265,7 +264,7 @@ namespace NoFuture.Rand.Tests
             }
 
             var totalTestRslt = runningCount.Sum();
-            System.Diagnostics.Debug.WriteLine(totalTestRslt);
+            Console.WriteLine(totalTestRslt);
             Assert.IsTrue(totalTestRslt > 90);
         }
 
@@ -290,7 +289,7 @@ namespace NoFuture.Rand.Tests
             Assert.AreNotEqual(0, testResult.Count);
 
             foreach(var t in testResult)
-                System.Diagnostics.Debug.WriteLine(t.Name);
+                Console.WriteLine(t.Name);
         }
     }
 }

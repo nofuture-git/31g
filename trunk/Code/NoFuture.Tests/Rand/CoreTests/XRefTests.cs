@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
 using NoFuture.Rand.Com;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.US.Fed;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.CoreTests
 {
     [TestFixture]
     public class XRefTests

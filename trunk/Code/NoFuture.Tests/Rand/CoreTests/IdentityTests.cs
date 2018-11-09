@@ -1,8 +1,7 @@
-﻿using NoFuture.Rand.Core;
-using NoFuture.Rand.Sp;
+﻿using NoFuture.Rand.Sp;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.CoreTests
 {
     [TestFixture]
     public class IdentityTests

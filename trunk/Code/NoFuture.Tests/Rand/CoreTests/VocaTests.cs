@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests
+namespace NoFuture.Rand.Tests.CoreTests
 {
     [TestFixture]
     public class VocaTests

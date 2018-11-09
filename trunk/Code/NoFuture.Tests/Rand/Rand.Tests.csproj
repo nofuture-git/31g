@@ -73,7 +73,7 @@
     <Compile Include="EduTests\AmericanHighSchoolTests.cs" />
     <Compile Include="EduTests\AmericanUniversityTests.cs" />
     <Compile Include="EduTests\AmericanEducationTests.cs" />
-    <Compile Include="EtxTests.cs" />
+    <Compile Include="CoreTests\EtxTests.cs" />
     <Compile Include="GeoTests\CityAreaTests.cs" />
     <Compile Include="GeoTests\StreetPoTests.cs" />
     <Compile Include="GeoTests\UsCityStateZipTests.cs" />
@@ -83,7 +83,7 @@
     <Compile Include="GovTests\AmericanEquationsTests.cs" />
     <Compile Include="GovTests\SocialSecurityNumberTests.cs" />
     <Compile Include="GovTests\DriversLicenseTests.cs" />
-    <Compile Include="IdentityTests.cs" />
+    <Compile Include="CoreTests\IdentityTests.cs" />
     <Compile Include="GovTests\NhtsaTests.cs" />
     <Compile Include="OpesTests\WealthBaseTests.cs" />
     <Compile Include="SpTests\PecuniamTests.cs" />
@@ -99,8 +99,8 @@
     <Compile Include="GovTests\UsStateTests.cs" />
     <Compile Include="TeleTests\NetTests.cs" />
     <Compile Include="TeleTests\EmailTests.cs" />
-    <Compile Include="VocaTests.cs" />
-    <Compile Include="XRefTests.cs" />
+    <Compile Include="CoreTests\VocaTests.cs" />
+    <Compile Include="CoreTests\XRefTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
