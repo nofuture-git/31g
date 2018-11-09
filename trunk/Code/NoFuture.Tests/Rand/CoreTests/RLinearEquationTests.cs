@@ -25,14 +25,13 @@ namespace NoFuture.Rand.Tests.CoreTests
                 var testAvg = testCtrl.SolveForY(x);
                 var testResult = testSubject.SolveForY(DateTime.Today.AddYears(-1 * i).ToDouble());
 
-                var expectedFarLeft = (testAvg - testStdDev * 3);
-                var expectedFarRight = (testAvg + testStdDev * 3);
+                var expectedFarLeft = (testAvg - testStdDev * 3.25);
+                var expectedFarRight = (testAvg + testStdDev * 3.25);
 
-                var isInLeftRange = testResult >= expectedFarLeft;
-                var isInRightRange = testResult <= expectedFarRight;
-
-                Console.WriteLine($"{expectedFarLeft} <= {testAvg} <= {expectedFarRight}" );
-                Assert.IsTrue(isInLeftRange && isInRightRange);
+                var tr = expectedFarLeft <= testResult && testResult <= expectedFarRight;
+                if(!tr)
+                    Console.WriteLine($"{expectedFarLeft} <= {testResult} <= {expectedFarRight}" );
+                Assert.IsTrue(tr);
 
             }
         }

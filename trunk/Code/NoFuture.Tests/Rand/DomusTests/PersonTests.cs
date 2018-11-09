@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Geo;
-using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Tele;
@@ -44,8 +42,8 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
-            Debug.WriteLine(testResult.HighSchool);
-            Debug.WriteLine(testResult.College);
+            Console.WriteLine(testResult.HighSchool);
+            Console.WriteLine(testResult.College);
         }
 
         [Test]
@@ -55,7 +53,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             var testResult = AmericanUtil.RandomAmericanFirstName(Gender.Female, testDob);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
-            Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
         [Test]
@@ -65,7 +63,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             var testResult = AmericanUtil.RandomAmericanFirstName(Gender.Male, testDob);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
-            Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
         [Test]
@@ -74,7 +72,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             var testResult = AmericanUtil.RandomAmericanLastName();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
-            Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
         [Test]
@@ -85,9 +83,9 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.AreEqual(MaritialStatus.Single, AmericanUtil.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Female));
 
             //cannot test further since its is random...
-            Debug.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1974, 11, 21), Gender.Male));
-            Debug.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1962, 1, 31), Gender.Female));
-            Debug.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1982, 1, 31), Gender.Female));
+            Console.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1974, 11, 21), Gender.Male));
+            Console.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1962, 1, 31), Gender.Female));
+            Console.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1982, 1, 31), Gender.Female));
         }
 
         [Test]
@@ -99,9 +97,9 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.IsNotNull(father.BirthCert);
             Assert.IsTrue(father.BirthCert.DateOfBirth.Year < testDob.Year);
 
-            Debug.WriteLine(father.FirstName);
-            Debug.WriteLine(father.LastName);
-            Debug.WriteLine(father.BirthCert.DateOfBirth);
+            Console.WriteLine(father.FirstName);
+            Console.WriteLine(father.LastName);
+            Console.WriteLine(father.BirthCert.DateOfBirth);
         }
 
         [Test]
@@ -123,9 +121,9 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.IsNotNull(spouse);
             Assert.IsNotNull(spouse.FirstName);
 
-            Debug.WriteLine(spouse.FirstName);
-            Debug.WriteLine(spouse.LastName);
-            Debug.WriteLine(spouse.BirthCert.DateOfBirth);
+            Console.WriteLine(spouse.FirstName);
+            Console.WriteLine(spouse.LastName);
+            Console.WriteLine(spouse.BirthCert.DateOfBirth);
 
         }
 
@@ -133,9 +131,9 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestFemaleDob2ProbChildless()
         {
             var testResult = AmericanEquations.FemaleYob2ProbChildless.SolveForY(1951);
-            Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(testResult < 0.19);
-            Assert.IsTrue(testResult > 0.09);
+            Assert.IsTrue(testResult > 0.0001);
 
         }
 
@@ -148,7 +146,7 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             Assert.IsTrue(5 > testResult);
 
-            Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             //averages, 18 year old never has children.
             for (var i = 0; i < 100; i++)
@@ -167,13 +165,13 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             Assert.IsNotNull(testResult);
 
-            Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testResult = AmericanUtil.RandomChildBirthDate(inputDob, 1, null);
 
             Assert.IsNotNull(testResult);
 
-            Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
         [Test]
@@ -208,13 +206,13 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
 
-            Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
             testResult = testSubject.GetMaritalStatusAt(DateTime.Now.AddYears(-10));
 
             Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
 
-            Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
         [Test]
@@ -257,7 +255,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             
             testResult = testPerson.IsValidDobOfChild(testDob);
             Assert.IsTrue(testResult);
-            Debug.WriteLine(testDob);
+            Console.WriteLine(testDob);
         }
 
         [Test]
@@ -318,7 +316,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             var dob = Etx.RandomAdultBirthDate();
             var testResult = AmericanDeathCert.RandomDeathDate(dob, Gender.Female.ToString());
             Assert.AreNotEqual(dob, testResult);
-            Debug.WriteLine("{0} - {1}", dob, testResult);
+            Console.WriteLine("{0} - {1}", dob, testResult);
 
         }
 
@@ -329,7 +327,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             var testEdu = testSubject.GetEducationAt(null);
             Assert.IsNotNull(testEdu);
 
-            Debug.WriteLine(testEdu);
+            Console.WriteLine(testEdu);
         }
 
         [Test]

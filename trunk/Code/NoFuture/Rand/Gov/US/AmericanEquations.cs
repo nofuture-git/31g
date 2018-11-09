@@ -7,7 +7,6 @@ using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Gov.US
 {
-
     /// <summary>
     /// Marriage Source [https://www.census.gov/population/socdemo/hh-fam/ms2.xls] (1947-2011)
     /// Age of Birth Sources (1970-2014)
@@ -120,7 +119,7 @@ namespace NoFuture.Rand.Gov.US
         /// AmericanEquations.Age2ProbWidowed.SolveForY(69);
         /// ]]>
         /// </example>
-        public static IEquation Age2ProbWidowed = new ExponentialEquation
+        public static IEquation Age2ProbWidowed => new ExponentialEquation
         {
             ConstantValue = Math.Pow(10, -13),
             Power = 6.547
@@ -135,7 +134,7 @@ namespace NoFuture.Rand.Gov.US
         /// AmericanEquations.FemaleYob2ProbChildless.SolveForY(DateTime.Today.AddYears(-39).ToDouble());
         /// ]]>
         /// </example>
-        public static IEquation FemaleYob2ProbChildless = new SinusoidEquation
+        public static IEquation FemaleYob2ProbChildless => new SinusoidEquation
             {
                 Amplitude = 0.115D,
                 CenterAxis = 0.092,
@@ -147,12 +146,12 @@ namespace NoFuture.Rand.Gov.US
         /// Calculated as (&apos;National Health Expenditures (Amount in Billions)&apos; * 1000) / &apos;U.S. Population (Millions)) per year
         /// https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/NationalHealthExpendData/Downloads/NHEGDP15.zip
         /// </summary>
-        public static IEquation HealthInsuranceCostPerPerson = new SecondDegreePolynomial(3.8555, -15145.0D, 14873062.18D);
+        public static IEquation HealthInsuranceCostPerPerson => new SecondDegreePolynomial(3.8555, -15145.0D, 14873062.18D);
 
         /// <summary>
         /// https://www.irs.com/articles/2016-federal-tax-rates-personal-exemptions-and-standard-deductions
         /// </summary>
-        public static IEquation FederalIncomeTaxRate = new SecondDegreePolynomial(-0.000000000004D, 0.0000021, 0.0813D);
+        public static IEquation FederalIncomeTaxRate => new SecondDegreePolynomial(-0.000000000004D, 0.0000021, 0.0813D);
 
         /// <summary>
         /// [http://www.hhs.gov/ash/oah/adolescent-health-topics/reproductive-health/teen-pregnancy/trends.html]
@@ -179,7 +178,7 @@ namespace NoFuture.Rand.Gov.US
         /// <returns></returns>
         public static NormalDistEquation LifeExpectancy(string mf)
         {
-            return string.Equals(mf, "Male", StringComparison.OrdinalIgnoreCase)
+            return (mf ?? "").ToUpper().StartsWith("M")
                 ? new NormalDistEquation { Mean = AmericanData.AVG_MAX_AGE_MALE, StdDev = AmericanData.STD_DEV_MALE_LIFE_EXPECTANCY }
                 : new NormalDistEquation { Mean = AmericanData.AVG_MAX_AGE_FEMALE, StdDev = AmericanData.STD_DEV_FEMALE_LIFE_EXPECTANCY };
         }
@@ -228,7 +227,7 @@ namespace NoFuture.Rand.Gov.US
         /// Its asymetric where age 44 is 0.0, age 21 is 0.14 but 
         /// age 67 (being likewise 23 years difference from 44) is 0.36 - reaches 1.0 at 80
         /// </summary>
-        public static IEquation ClassicHook = new ThirdDegreePolynomial(0.0000081, -0.0005986, 0.005986, 0.205625);
+        public static IEquation ClassicHook => new ThirdDegreePolynomial(0.0000081, -0.0005986, 0.005986, 0.205625);
 
         /// <summary>
         /// Based on averages from four different states (viz. FL, NY, WA, KS)
@@ -259,7 +258,7 @@ namespace NoFuture.Rand.Gov.US
                     Func<double, double> v1 = (x) =>
                     {
                         var parabolic = new SecondDegreePolynomial(-0.0000036, 0.1804442, 49.7609758);
-                        var linear = new LinearEquation(49.7609758, 0.090222203778836843);
+                        var linear = new LinearEquation(0.090222203778836843, 49.7609758);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 25061.68 ? linear.SolveForY(x) : parabolic.SolveForY(x);
                     };
@@ -268,7 +267,7 @@ namespace NoFuture.Rand.Gov.US
                     Func<double, double> v2 = (x) =>
                     {
                         var parabolic = new SecondDegreePolynomial(-0.0000051, 0.2193660, 30.5587561);
-                        var linear = new LinearEquation(30.5587561, 0.10968300301723154);
+                        var linear = new LinearEquation(0.10968300301723154, 30.5587561);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 21506.47 ? linear.SolveForY(x) : parabolic.SolveForY(x);
                     };
@@ -277,7 +276,7 @@ namespace NoFuture.Rand.Gov.US
                     Func<double, double> v3 = (x) =>
                     {
                         var para = new SecondDegreePolynomial(-0.0000063, 0.2483648, 14.8337182);
-                        var linear = new LinearEquation(14.8337182, 0.12418241298856655);
+                        var linear = new LinearEquation(0.12418241298856655, 14.8337182);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 19711.49 ? linear.SolveForY(x) : para.SolveForY(x);
                     };
@@ -286,7 +285,7 @@ namespace NoFuture.Rand.Gov.US
                     Func<double, double> v4 = (x) =>
                     {
                         var para = new SecondDegreePolynomial(-0.0000069, 0.2637436, 1.7419081);
-                        var linear = new LinearEquation(1.7419081, 0.13187176611276977);
+                        var linear = new LinearEquation(0.13187176611276977, 1.7419081);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 19111.86 ? linear.SolveForY(x) : para.SolveForY(x);
                     };
@@ -295,7 +294,7 @@ namespace NoFuture.Rand.Gov.US
                     Func<double, double> v5 = (x) =>
                     {
                         var para = new SecondDegreePolynomial(-0.0000077, 0.2848716, -13.7394084);
-                        var linear = new LinearEquation(-13.7394084, 0.14243576811963998);
+                        var linear = new LinearEquation(0.14243576811963998, -13.7394084);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 18498.16 ? linear.SolveForY(x) : para.SolveForY(x);
                     };

@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Tests.GovTests
             var testSubject = AmericanEquations.HealthInsuranceCostPerPerson;
             var testResult = testSubject.SolveForY(2015);
             Assert.AreEqual(10084.6675, testResult);
-            System.Diagnostics.Debug.WriteLine(testSubject);
+            Console.WriteLine(testSubject);
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Tests.GovTests
             var testSubject = AmericanEquations.FederalIncomeTaxRate;
             var testResult = testSubject.SolveForY(115725D);
             Assert.AreEqual(0.27075D, testResult);
-            System.Diagnostics.Debug.WriteLine(testSubject);
+            Console.WriteLine(testSubject);
 
         }
         [Test]
@@ -55,7 +55,10 @@ namespace NoFuture.Rand.Tests.GovTests
                     var t = AmericanEquations.GetChildSupportMonthlyCostEquation(i);
                     var current = t.SolveForY(j);
                     //assert it never goes down as income goes up
+                    if(current < prev)
+                        Console.WriteLine($"i {i}, j {j}, current {current}, prev {prev}");
                     Assert.IsTrue(current >= prev);
+                    prev = current;
                 }
             }
         }
