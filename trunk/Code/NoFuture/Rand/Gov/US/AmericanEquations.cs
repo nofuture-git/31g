@@ -42,17 +42,13 @@ namespace NoFuture.Rand.Gov.US
                 throw new ItsDeadJim($"No equation found by the name '{key}'");
             var slope = data[key].Item1;
             var intercept = data[key].Item2;
-            Func<double, double> rLinear = (x) =>
+
+            return new RLinearEquation(slope, intercept)
             {
-                //keep x within reasonable range on which the regression was calc'ed
-                x = x > MAX_DOB_YEAR ? MAX_DOB_YEAR : (x < MIN_DOB_YEAR ? MIN_DOB_YEAR : x);
-                var v = new RLinearEquation(slope, intercept)
-                {
-                    StdDev = Etx.RandomDouble(0, StdDevRandLinearEquation)
-                };
-                return v.SolveForY(x);
+                StdDev = StdDevRandLinearEquation,
+                MaxX = MAX_DOB_YEAR,
+                MinX = MIN_DOB_YEAR
             };
-            return new CustomEquation(rLinear);
         }
 
         /// <summary>

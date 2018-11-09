@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComTests\FirmTests.cs" />
+    <Compile Include="CoreTests\RLinearEquationTests.cs" />
     <Compile Include="SpTests\BalanceTests.cs" />
     <Compile Include="SpTests\PersonalCreditScoreTests.cs" />
     <Compile Include="SpTests\DepositAccountTests.cs" />

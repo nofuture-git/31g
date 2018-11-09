@@ -38,29 +38,44 @@ namespace NoFuture.Rand.Tests.CoreTests
             }
         }
 
-
         [Test]
         public void TestRandomValueInNormalDist()
         {
             var mean = 500;
             var stdDev = 100;
 
+            var sigmaOneLeft = new Tuple<double, double>(mean - stdDev * 1, mean - stdDev * 0);
+            var sigmaTwoLeft = new Tuple<double, double>(mean - stdDev * 2, mean - stdDev * 1);
+            var sigmaThreeLeft = new Tuple<double, double>(mean - stdDev * 3, mean - stdDev * 2);
+            var sigmaFourLeft = new Tuple<double, double>(mean - stdDev * 4, mean - stdDev * 3);
+            var sigmaFiveLeft = new Tuple<double, double>(mean - stdDev * 5, mean - stdDev * 4);
+            var sigmaSixLeft = new Tuple<double, double>(mean - stdDev * 6, mean - stdDev * 5);
+
+            var sigmaOneRight = new Tuple<double, double>(mean + stdDev * 0, mean + stdDev * 1);
+            var sigmaTwoRight = new Tuple<double, double>(mean + stdDev * 1, mean + stdDev * 2);
+            var sigmaThreeRight = new Tuple<double, double>(mean + stdDev * 2, mean + stdDev * 3);
+            var sigmaFourRight = new Tuple<double, double>(mean + stdDev * 3, mean + stdDev * 4);
+            var sigmaFiveRight = new Tuple<double, double>(mean + stdDev * 5, mean + stdDev * 4);
+            var sigmaSixRight = new Tuple<double, double>(mean + stdDev * 6, mean + stdDev * 5);
+
+            //use this to create a discrete normal dist by many tests
             var trCounts = new Dictionary<Tuple<double, double>, int>
             {
-                {new Tuple<double, double>(0, 100), 0},
-                {new Tuple<double, double>(100, 200), 0},
-                {new Tuple<double, double>(200, 300), 0},
-                {new Tuple<double, double>(300, 400), 0},
-                {new Tuple<double, double>(400, 500), 0},
-                {new Tuple<double, double>(500, 600), 0},
-                {new Tuple<double, double>(600, 700), 0},
-                {new Tuple<double, double>(700, 800), 0},
-                {new Tuple<double, double>(800, 900), 0},
-                {new Tuple<double, double>(900, 1000), 0}
+                {sigmaSixLeft, 0},
+                {sigmaFiveLeft, 0},
+                {sigmaFourLeft, 0},
+                {sigmaThreeLeft, 0},
+                {sigmaTwoLeft, 0},
+                {sigmaOneLeft, 0},
+                {sigmaOneRight, 0},
+                {sigmaTwoRight, 0},
+                {sigmaThreeRight, 0},
+                {sigmaFourRight, 0},
+                {sigmaFiveRight, 0},
+                {sigmaSixRight, 0}
             };
 
-
-            for (var i = 0; i < 256; i++)
+            for (var i = 0; i < 1012; i++)
             {
                 var testResult = Etx.RandomValueInNormalDist(mean, stdDev);
 
@@ -72,6 +87,12 @@ namespace NoFuture.Rand.Tests.CoreTests
                 Assert.IsNotNull(trCat);
                 trCounts[trCat] += 1;
             }
+
+            Assert.IsTrue(trCounts[sigmaOneLeft] > trCounts[sigmaTwoLeft]);
+            Assert.IsTrue(trCounts[sigmaTwoLeft] > trCounts[sigmaThreeLeft]);
+
+            Assert.IsTrue(trCounts[sigmaOneRight] > trCounts[sigmaTwoRight]);
+            Assert.IsTrue(trCounts[sigmaTwoRight] > trCounts[sigmaThreeRight]);
 
             foreach (var tr in trCounts.Keys)
             {
