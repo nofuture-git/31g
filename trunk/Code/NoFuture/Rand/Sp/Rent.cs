@@ -234,11 +234,11 @@ namespace NoFuture.Rand.Sp
         /// <returns></returns>
         public static Pecuniam GetAvgAmericanRentByYear(DateTime? dt)
         {
-            var eq = new LinearEquation {Intercept = -13340, Slope = 7.1091};
+            var eq = new LinearEquation(7.1091, -13340);
 
             var year = dt.GetValueOrDefault(DateTime.Today).ToDouble();
 
-            return new Pecuniam( (decimal)eq.SolveForY(year));
+            return new Pecuniam((decimal)eq.SolveForY(year));
         }
         #endregion
     }

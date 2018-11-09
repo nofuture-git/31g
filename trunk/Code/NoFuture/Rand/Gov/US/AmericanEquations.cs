@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
@@ -43,10 +42,8 @@ namespace NoFuture.Rand.Gov.US
         /// <summary>
         /// SolveForY using partial year value (e.g. 12/14/1979 is 1979.952791508)
         /// </summary>
-        public static IEquation MaleAge2FirstMarriage = new RLinearEquation
+        public static IEquation MaleAge2FirstMarriage = new RLinearEquation(0.1056, -181.45)
         {
-            Intercept = -181.45,
-            Slope = 0.1056,
             StdDev = Etx.RandomDouble(0, 1)
         };
 
@@ -59,10 +56,8 @@ namespace NoFuture.Rand.Gov.US
             {
                 Func<double, double> rLinear = (x) =>
                 {
-                    var v = new RLinearEquation
+                    var v = new RLinearEquation(0.1187, -209.41)
                     {
-                        Intercept = -209.41,
-                        Slope = 0.1187,
                         StdDev = Etx.RandomDouble(0, 1)
                     };
                     return v.SolveForY(x);
@@ -74,40 +69,32 @@ namespace NoFuture.Rand.Gov.US
         /// <summary>
         /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
         /// </summary>
-        public static IEquation FemaleAge2FirstChild = new RLinearEquation
+        public static IEquation FemaleAge2FirstChild = new RLinearEquation(0.1026, -176.32)
         {
-            Intercept = -176.32,//-180.32
-            Slope = 0.1026,
             StdDev = Etx.RandomDouble(0, 1)
         };
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
         /// </summary>
-        public static IEquation FemaleAge2SecondChild = new RLinearEquation
+        public static IEquation FemaleAge2SecondChild = new RLinearEquation(0.1017, -171.88)
         {
-            Intercept = -171.88,//-175.88
-            Slope = 0.1017,
             StdDev = Etx.RandomDouble(0, 1)
         };
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
         /// </summary>
-        public static IEquation FemaleAge2ThirdChild = new RLinearEquation
+        public static IEquation FemaleAge2ThirdChild = new RLinearEquation(0.0792, -125.45)
         {
-            Intercept = -125.45,//-129.45
-            Slope = 0.0792,
             StdDev = Etx.RandomDouble(0, 1)
         };
 
         /// <summary>
         /// SolveForY using partial year value (e.g. 11/14/1989 is 1989.87065430903)
         /// </summary>
-        public static IEquation FemaleAge2ForthChild = new RLinearEquation
+        public static IEquation FemaleAge2ForthChild = new RLinearEquation(0.0545, -74.855)
         {
-            Intercept = -74.855,//-78.855
-            Slope = 0.0545,
             StdDev = Etx.RandomDouble(0, 1)
         };
 
@@ -135,22 +122,12 @@ namespace NoFuture.Rand.Gov.US
         /// Calculated as (&apos;National Health Expenditures (Amount in Billions)&apos; * 1000) / &apos;U.S. Population (Millions)) per year
         /// https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/NationalHealthExpendData/Downloads/NHEGDP15.zip
         /// </summary>
-        public static IEquation HealthInsuranceCostPerPerson = new SecondDegreePolynomial
-        {
-            SecondCoefficient = 3.8555,
-            Slope = -15145.0D,
-            Intercept = 14873062.18D
-        };
+        public static IEquation HealthInsuranceCostPerPerson = new SecondDegreePolynomial(3.8555, -15145.0D, 14873062.18D);
 
         /// <summary>
         /// https://www.irs.com/articles/2016-federal-tax-rates-personal-exemptions-and-standard-deductions
         /// </summary>
-        public static IEquation FederalIncomeTaxRate = new SecondDegreePolynomial
-        {
-            SecondCoefficient = -0.000000000004D,
-            Slope = 0.0000021,
-            Intercept = 0.0813D
-        };
+        public static IEquation FederalIncomeTaxRate = new SecondDegreePolynomial(-0.000000000004D, 0.0000021, 0.0813D);
 
         /// <summary>
         /// [http://www.hhs.gov/ash/oah/adolescent-health-topics/reproductive-health/teen-pregnancy/trends.html]
@@ -162,23 +139,11 @@ namespace NoFuture.Rand.Gov.US
             switch (race)
             {
                 case NorthAmericanRace.Black:
-                    return new RLinearEquation
-                    {
-                        Intercept = 6.8045,
-                        Slope = -0.0034,
-                    };
+                    return new RLinearEquation(-0.0034, 6.8045);
                 case NorthAmericanRace.Hispanic:
-                    return new RLinearEquation
-                    {
-                        Intercept = 5.1231,
-                        Slope = -0.0025,
-                    };
+                    return new RLinearEquation(-0.0025, 5.1231);
             }
-            return new RLinearEquation
-            {
-                Intercept = 2.1241,
-                Slope = -0.001,
-            };
+            return new RLinearEquation(-0.001, 2.1241);
         }
 
         /// <summary>
@@ -210,8 +175,7 @@ namespace NoFuture.Rand.Gov.US
         {
             var dt = atDate.GetValueOrDefault(DateTime.Today);
             var estSlope =
-                new SecondDegreePolynomial { Intercept = 3532449.338, Slope = -3610.7, SecondCoefficient = 0.9229 }
-                .SolveForY(dt.ToDouble());
+                new SecondDegreePolynomial(0.9229, -3610.7, 3532449.338).SolveForY(dt.ToDouble());
 
             return new LinearEquation(7880, estSlope);
         }
@@ -239,13 +203,7 @@ namespace NoFuture.Rand.Gov.US
         /// Its asymetric where age 44 is 0.0, age 21 is 0.14 but 
         /// age 67 (being likewise 23 years difference from 44) is 0.36 - reaches 1.0 at 80
         /// </summary>
-        public static IEquation ClassicHook = new ThirdDegreePolynomial
-        {
-            Intercept = 0.205625,
-            Slope = 0.005986,
-            SecondCoefficient = -0.0005986,
-            ThirdCoefficient = 0.0000081
-        };
+        public static IEquation ClassicHook = new ThirdDegreePolynomial(0.0000081, -0.0005986, 0.005986, 0.205625);
 
         /// <summary>
         /// Based on averages from four different states (viz. FL, NY, WA, KS)
@@ -275,12 +233,7 @@ namespace NoFuture.Rand.Gov.US
                 case 1:
                     Func<double, double> v1 = (x) =>
                     {
-                        var parabolic = new SecondDegreePolynomial
-                        {
-                            SecondCoefficient = -0.0000036,
-                            Slope = 0.1804442,
-                            Intercept = 49.7609758
-                        };
+                        var parabolic = new SecondDegreePolynomial(-0.0000036, 0.1804442, 49.7609758);
                         var linear = new LinearEquation(49.7609758, 0.090222203778836843);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 25061.68 ? linear.SolveForY(x) : parabolic.SolveForY(x);
@@ -289,12 +242,7 @@ namespace NoFuture.Rand.Gov.US
                 case 2:
                     Func<double, double> v2 = (x) =>
                     {
-                        var parabolic = new SecondDegreePolynomial
-                        {
-                            SecondCoefficient = -0.0000051,
-                            Slope = 0.2193660,
-                            Intercept = 30.5587561
-                        };
+                        var parabolic = new SecondDegreePolynomial(-0.0000051, 0.2193660, 30.5587561);
                         var linear = new LinearEquation(30.5587561, 0.10968300301723154);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 21506.47 ? linear.SolveForY(x) : parabolic.SolveForY(x);
@@ -303,12 +251,7 @@ namespace NoFuture.Rand.Gov.US
                 case 3:
                     Func<double, double> v3 = (x) =>
                     {
-                        var para = new SecondDegreePolynomial
-                        {
-                            SecondCoefficient = -0.0000063,
-                            Slope = 0.2483648,
-                            Intercept = 14.8337182,
-                        };
+                        var para = new SecondDegreePolynomial(-0.0000063, 0.2483648, 14.8337182);
                         var linear = new LinearEquation(14.8337182, 0.12418241298856655);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 19711.49 ? linear.SolveForY(x) : para.SolveForY(x);
@@ -317,12 +260,7 @@ namespace NoFuture.Rand.Gov.US
                 case 4:
                     Func<double, double> v4 = (x) =>
                     {
-                        var para = new SecondDegreePolynomial
-                        {
-                            SecondCoefficient = -0.0000069,
-                            Slope = 0.2637436,
-                            Intercept = 1.7419081
-                        };
+                        var para = new SecondDegreePolynomial(-0.0000069, 0.2637436, 1.7419081);
                         var linear = new LinearEquation(1.7419081, 0.13187176611276977);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 19111.86 ? linear.SolveForY(x) : para.SolveForY(x);
@@ -331,12 +269,7 @@ namespace NoFuture.Rand.Gov.US
                 default:
                     Func<double, double> v5 = (x) =>
                     {
-                        var para = new SecondDegreePolynomial
-                        {
-                            SecondCoefficient = -0.0000077,
-                            Slope = 0.2848716,
-                            Intercept = -13.7394084
-                        };
+                        var para = new SecondDegreePolynomial(-0.0000077, 0.2848716, -13.7394084);
                         var linear = new LinearEquation(-13.7394084, 0.14243576811963998);
                         //once the parabolic's derivative slope goes to 0, switch over to a linear equation
                         return x >= 18498.16 ? linear.SolveForY(x) : para.SolveForY(x);

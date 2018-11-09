@@ -6,6 +6,8 @@ namespace NoFuture.Rand.Core
     [Serializable]
     public class RLinearEquation : LinearEquation
     {
+        public RLinearEquation(double slope, double intercept) : base(slope, intercept){ }
+
         public double StdDev { get; set; }
 
         /// <summary>
