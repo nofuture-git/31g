@@ -15,6 +15,7 @@ using NoFuture.Util.Core;
 namespace NoFuture.Rand.Domus
 {
     /// <inheritdoc cref="IPerson" />
+    /// <inheritdoc cref="VocaBase" />
     [Serializable]
     public abstract class Person : VocaBase, IPerson
     {

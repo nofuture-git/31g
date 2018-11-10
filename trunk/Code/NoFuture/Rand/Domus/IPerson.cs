@@ -10,6 +10,7 @@ using NoFuture.Rand.Tele;
 
 namespace NoFuture.Rand.Domus
 {
+    /// <inheritdoc cref="IVoca"/>
     /// <summary>
     /// A general representation of a person
     /// </summary>

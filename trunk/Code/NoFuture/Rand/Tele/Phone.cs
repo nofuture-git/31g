@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Tele
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="Identifier" />
+    /// <inheritdoc cref="IObviate" />
     /// <summary>
     /// Base type to represent a telephone number
     /// </summary>
     [Serializable]
-    public abstract class Phone : Identifier
+    public abstract class Phone : Identifier, IObviate
     {
         public const string UriSchemaTelephone = "tel";
 
@@ -32,5 +34,18 @@ namespace NoFuture.Rand.Tele
         internal static XmlDocument UsAreaCodeXml;
         internal static XmlDocument CaAreaCodeXml;
 
+        public virtual IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+
+            var unForm = Unformatted;
+            if (string.IsNullOrWhiteSpace(unForm))
+                return itemData;
+
+            var label = Descriptor?.ToString();
+            itemData.Add(textFormat(label + nameof(Phone)), unForm);
+            return itemData;
+        }
     }
 }
