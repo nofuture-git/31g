@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Newtonsoft.Json;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NUnit.Framework;
@@ -193,7 +194,16 @@ namespace NoFuture.Rand.Tests.CoreTests
         {
 
             var testSubject = new VocaBase();
-            
+            testSubject.AddName(KindsOfNames.Maiden, "Butler");
+            testSubject.AddName(KindsOfNames.First, "Judith");
+            testSubject.AddName(KindsOfNames.Surname, "Williamson");
+            testSubject.AddName(KindsOfNames.Colloquial | KindsOfNames.First, "Judy");
+            testSubject.AddName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, "Cricket");
+
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+
+            var asJson = JsonConvert.SerializeObject(testResult, Formatting.Indented);
+            Console.WriteLine(asJson);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Core
     /// Base implemenation of <see cref="T:NoFuture.Rand.Core.IVoca" />
     /// </summary>
     [Serializable]
-    public class VocaBase : IVoca, IObviate
+    public class VocaBase : IVoca
     {
         protected internal List<Tuple<KindsOfNames, string>> Names { get; } = new List<Tuple<KindsOfNames, string>>();
 
@@ -152,7 +152,7 @@ namespace NoFuture.Rand.Core
                 var nm = nameTuple.Item2;
                 if (string.IsNullOrWhiteSpace(nm))
                     continue;
-                itemData.Add(textFormat(grp.ToString()), nm);
+                itemData.Add(textFormat(grp + "Name"), nm);
             }
 
             return itemData;

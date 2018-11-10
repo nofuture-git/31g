@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using NoFuture.Rand.Core.Enums;
+﻿using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Core
 {
+    /// <inheritdoc cref="IObviate" />
     /// <summary>
     /// Any type which could be given a name.
     /// </summary>
     /// <remarks>
     /// Latin for 'be called'
     /// </remarks>
-    public interface IVoca
+    public interface IVoca : IObviate
     {
         /// <summary>
         /// Convenience method to get or set the Legal name

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
@@ -94,6 +96,25 @@ namespace NoFuture.Rand.Sp
         public override int GetHashCode()
         {
             return _uniqueId.GetHashCode();
+        }
+
+        public virtual IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+            if(Inception != DateTime.MinValue)
+                itemData.Add(textFormat(nameof(Inception)), Inception.ToString("s"));
+            if(Terminus != null && Terminus != DateTime.MinValue)
+                itemData.Add(nameof(Terminus), Terminus.Value.ToString("s"));
+            if(FormOfCredit != null)
+                itemData.Add(nameof(FormOfCredit), FormOfCredit.Value.ToString());
+            var interval = GetDueFreqAsInterval();
+            if(interval != Interval.OnceOnly)
+                itemData.Add(textFormat("Interval"), interval);
+            if(Closure != null)
+                itemData.Add(nameof(ClosedCondition), Closure);
+
+            return itemData;
         }
 
         /// <summary>

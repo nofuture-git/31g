@@ -6,10 +6,11 @@ namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="ITransactionable" />
     /// <inheritdoc cref="ITempore" />
+    /// <inheritdoc cref="IObviate" />
     /// <summary>
     /// Represents the item reported to a Credit Bureau
     /// </summary>
-    public interface ITradeLine : ITempore, ITransactionable
+    public interface ITradeLine : ITempore, ITransactionable, IObviate
     {
         /// <summary>
         /// The kind of credit associated to this tradeline, if any.

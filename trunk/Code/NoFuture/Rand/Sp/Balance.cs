@@ -5,6 +5,10 @@ using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc cref="IBalance" />
+    /// <inheritdoc cref="TransactionHistory" />
+    /// <summary>
+    /// </summary>
     [Serializable]
     public class Balance : TransactionHistory, IBalance
     {

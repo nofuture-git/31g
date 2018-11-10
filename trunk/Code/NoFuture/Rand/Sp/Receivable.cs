@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
@@ -115,6 +118,30 @@ namespace NoFuture.Rand.Sp
         public virtual Pecuniam GetMinPayment(DateTime dt)
         {
             return Pecuniam.Zero;
+        }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+            var baseData = base.ToData(txtCase);
+            foreach (var i in baseData)
+                itemData.Add(i.Key, i.Value);
+
+            var expcData = Expectation.ToData(txtCase);
+            foreach (var e in expcData)
+                itemData.Add(e.Key, e.Value);
+
+            var v = Value;
+            if(v != Pecuniam.Zero)
+                itemData.Add(textFormat("ActualValue"), v.ToString());
+            var status = CurrentStatus;
+            if(status != null)
+                itemData.Add(textFormat("Status"), status.ToString());
+            var delq = CurrentDelinquency;
+            if(delq != null)
+                itemData.Add(textFormat(nameof(PastDue)), delq.ToString());
+            return itemData;
         }
 
         #endregion  

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
-using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -13,7 +12,7 @@ namespace NoFuture.Rand.Sp
     /// Base implementation a name of any kind of money entry
     /// </summary>
     [Serializable]
-    public class Mereo : VocaBase, IMereo, IObviate
+    public class Mereo : VocaBase, IMereo
     {
         #region fields
         private static Dictionary<Interval, int> _interval2Multiplier;
@@ -94,12 +93,27 @@ namespace NoFuture.Rand.Sp
                 Interval).ToString();
         }
 
-        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
             Func<string, string> textFormat = (x) => TransformText(x, txtCase);
             var itemData = new Dictionary<string, object>();
 
-            throw new NotImplementedException();
+            foreach (var i in base.ToData(txtCase))
+            {
+                itemData.Add(i.Key, i.Value);
+            }
+            if(Interval != Interval.OnceOnly)
+                itemData.Add(textFormat(nameof(Interval)), Interval.ToString());
+            if(Classification != null)
+                itemData.Add(textFormat(nameof(Classification)), Classification.ToString());
+            if(!string.IsNullOrWhiteSpace(Abbrev))
+                itemData.Add(textFormat("Abbreviation"), Abbrev);
+            if(!string.IsNullOrWhiteSpace(Src))
+                itemData.Add(textFormat("Source"), Src);
+            if(Value != Pecuniam.Zero)
+                itemData.Add(textFormat("ExpectedValue"), Value.ToString());
+
+            return itemData;
         }
 
         /// <summary>

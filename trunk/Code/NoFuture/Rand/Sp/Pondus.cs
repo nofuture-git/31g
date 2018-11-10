@@ -4,7 +4,6 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
-using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -15,7 +14,7 @@ namespace NoFuture.Rand.Sp
     /// Is Latin for weight.
     /// </summary>
     [Serializable]
-    public class Pondus : Receivable, IObviate
+    public class Pondus : Receivable
     {
         #region ctor
         public Pondus(string name)
@@ -115,54 +114,11 @@ namespace NoFuture.Rand.Sp
             return Inception.GetHashCode() + Terminus?.GetHashCode() ?? 1 + Expectation?.GetHashCode() ?? 1;
         }
 
-        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
-        {
-            //partially resolved
-            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
-            var itemData = new Dictionary<string, object>();
-
-            if (Expectation != null)
-            {
-                itemData.Add(textFormat("Name"), Expectation.Name);
-                itemData.Add(textFormat("GroupName"), Expectation.GetName(KindsOfNames.Group));
-                if(Expectation.Value > Pecuniam.Zero)
-                    itemData.Add(textFormat("ExpectedValue"), Expectation.Value);
-                if(Expectation.Interval != Interval.OnceOnly)
-                    itemData.Add(textFormat("ExpectedInterval"), Expectation?.Interval.ToString());
-                if(!string.IsNullOrWhiteSpace(Expectation?.Abbrev))
-                    itemData.Add(textFormat("Abbreviation"), Expectation.Abbrev);
-
-            }
-
-            if(Value > Pecuniam.Zero)
-                itemData.Add(textFormat("ActualValue"), Value.ToString());
-            var actualFreq = GetDueFreqAsInterval();
-            if(actualFreq != Interval.OnceOnly)
-                itemData.Add(textFormat("ActualInterval"), actualFreq.ToString());
-            if(Inception != DateTime.MinValue)
-                itemData.Add(textFormat(nameof(Inception)), Inception.ToString("s"));
-            if(Terminus != null && Terminus.Value != DateTime.MinValue)
-                itemData.Add(textFormat(nameof(Terminus)), Terminus?.ToString("s"));
-            var pastDue = CurrentDelinquency;
-            if (pastDue != null)
-                itemData.Add(textFormat("PastDue"), pastDue);
-            var spStatus = CurrentStatus;
-            if (spStatus != null)
-                itemData.Add(textFormat("Status"), spStatus);
-            var closure = Closure;
-            if (closure != null)
-                itemData.Add(textFormat(nameof(Closure)), closure);
-
-            return itemData;
-        }
-
         public override string ToString()
         {
             var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Expectation?.Value.ToString(), Expectation?.Name,
                 Expectation?.GetName(KindsOfNames.Group), Expectation?.Interval.ToString(), Inception, Terminus);
             return d.ToString();
         }
-
-
     }
 }
