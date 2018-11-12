@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Domus
         string FirstName { get; set; }
         string LastName { get; set; }
         Gender Gender { get; set; }
-        IEnumerable<NetUri> NetUri { get; }
+        IEnumerable<NetUri> NetUris { get; }
         Personality Personality { get; set; }
         IEducation Education { get; set; }
         IRelation Spouse { get; }

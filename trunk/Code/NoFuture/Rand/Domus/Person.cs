@@ -73,7 +73,7 @@ namespace NoFuture.Rand.Domus
             get => GetName(KindsOfNames.Surname);
             set => AddName(KindsOfNames.Surname, value);
         }
-        public virtual IEnumerable<NetUri> NetUri => _netUris;
+        public virtual IEnumerable<NetUri> NetUris => _netUris;
         public Personality Personality { get; set; }
         public abstract IEducation Education { get; set; }
         public PostalAddress Address => GetAddressAt(null);
@@ -436,14 +436,42 @@ namespace NoFuture.Rand.Domus
         {
             Func<string, string> textFormat = (x) => TransformText(x, txtCase);
             var itemData = new Dictionary<string, object>();
+
             if (BirthCert != null)
                 AddOrReplace(itemData, BirthCert.ToData(txtCase));
 
             if (DeathCert != null)
                 AddOrReplace(itemData, DeathCert.ToData(txtCase));
 
+            if(!string.IsNullOrWhiteSpace(FirstName))
+                itemData.Add(textFormat(nameof(FirstName)), FirstName);
 
-            return base.ToData(txtCase);
+            if(!string.IsNullOrWhiteSpace(LastName))
+                itemData.Add(textFormat(nameof(LastName)), LastName);
+
+            itemData.Add(textFormat(nameof(Gender)), Gender);
+            itemData.Add(textFormat(nameof(MaritialStatus)), MaritialStatus.ToString());
+            itemData.Add(textFormat(nameof(Age)), Age);
+
+            foreach (var ph in PhoneNumbers)
+                AddOrReplace(itemData, ph.ToData(txtCase));
+
+            foreach (var nuri in NetUris)
+                AddOrReplace(itemData, nuri.ToData(txtCase));
+
+            var addr = Address;
+            if(addr != null)
+                AddOrReplace(itemData, addr.ToData(txtCase));
+
+            var personality = Personality;
+            if(personality != null)
+                AddOrReplace(itemData, personality.ToData(txtCase));
+
+            var edu = Education;
+            if(edu != null)
+                AddOrReplace(itemData, edu.ToData(txtCase));
+
+            return itemData;
         }
 
         #endregion

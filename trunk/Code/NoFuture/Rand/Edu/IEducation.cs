@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 
 namespace NoFuture.Rand.Edu
@@ -7,7 +8,7 @@ namespace NoFuture.Rand.Edu
     /// A simple form of a personal education whose properties 
     /// are the schools which issued the degree.
     /// </summary>
-    public interface IEducation
+    public interface IEducation : IObviate
     {
         OccidentalEdu EduFlag { get; }
         Tuple<IHighSchool, DateTime?> HighSchool { get; }

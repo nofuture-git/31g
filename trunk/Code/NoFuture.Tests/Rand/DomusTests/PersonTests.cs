@@ -442,9 +442,20 @@ namespace NoFuture.Rand.Tests.DomusTests
             var testEmail = "Gauis.Ceaser@romanempire.net";
             testSubject.AddUri(testEmail);
 
-            var testResultEmail = testSubject.NetUri.FirstOrDefault(u => u.Scheme == Uri.UriSchemeMailto);
+            var testResultEmail = testSubject.NetUris.FirstOrDefault(u => u.Scheme == Uri.UriSchemeMailto);
             Assert.IsNotNull(testResultEmail);
             Assert.IsTrue(testResultEmail.ToString().EndsWith(testEmail));
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = American.RandomAmerican(DateTime.Now.AddYears(-36), Gender.Female, true);
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach(var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
         }
     }
 }

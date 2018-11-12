@@ -604,7 +604,7 @@ namespace NoFuture.Rand.Domus.US
         }
 
         /// <summary>
-        /// Adds a full URI encoded email address to the <see cref="Person.NetUri"/> list
+        /// Adds a full URI encoded email address to the <see cref="Person.NetUris"/> list
         /// when current age appropriate.
         /// </summary>
         protected internal void AddEmailAddress()
@@ -784,6 +784,29 @@ namespace NoFuture.Rand.Domus.US
             americanBirthCert.State = birthPlace.StateAbbrev;
             amer.Race = nAmerMother.Race;
             return amer;
+        }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => TransformText(x, txtCase);
+            var itemData = base.ToData(txtCase) ?? new Dictionary<string, object>();
+
+            var ssn = Ssn;
+            if(ssn != null)
+                AddOrReplace(itemData, ssn.ToData(txtCase));
+            itemData.Add(textFormat(nameof(Race)),Race.ToString());
+
+            var dl = DriversLicense;
+            if (dl != null)
+            {
+                itemData.Add(textFormat(nameof(DriversLicense) + "Id"), dl.Value);
+                itemData.Add(textFormat(nameof(DriversLicense) + "State"), dl.StateAbbrev);
+            }
+
+            if(!string.IsNullOrWhiteSpace(MiddleName))
+                itemData.Add(textFormat(nameof(MiddleName)), MiddleName);
+
+            return itemData;
         }
 
         #endregion

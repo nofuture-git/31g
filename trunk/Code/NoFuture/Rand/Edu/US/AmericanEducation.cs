@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Edu.US
     /// Represents the composite of personal education over time.
     /// </summary>
     [Serializable]
-    public class AmericanEducation : IEducation, IObviate
+    public class AmericanEducation : IEducation
     {
         #region fields
         private string _eduLevel;
