@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Pneuma
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IPersonality" />
     /// <summary>
     /// </summary>
     /// <remarks>
@@ -18,7 +20,7 @@ namespace NoFuture.Rand.Pneuma
     /// ]]>
     /// </remarks>
     [Serializable]
-    public class Personality : IPersonality
+    public class Personality : IPersonality, IObviate
     {
         public Openness Openness { get; } = new Openness();
         public Conscientiousness Conscientiousness { get; } = new Conscientiousness();
@@ -38,9 +40,9 @@ namespace NoFuture.Rand.Pneuma
 
         public override string ToString()
         {
-            return "{" +
+            return "(" +
                    string.Join(",", Openness.ToString(), Conscientiousness.ToString(), Extraversion.ToString(),
-                       Agreeableness.ToString(), Neuroticism.ToString()) + "}";
+                       Agreeableness.ToString(), Neuroticism.ToString()) + ")";
         }
 
         public bool GetRandomActsIrresponsible()
@@ -82,6 +84,21 @@ namespace NoFuture.Rand.Pneuma
             h += Agreeableness?.GetHashCode() ?? 1;
             h += Neuroticism?.GetHashCode() ?? 1;
             return h;
+        }
+
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>
+            {
+                {textFormat(nameof(Openness)), Openness.Value.Zscore},
+                {textFormat(nameof(Conscientiousness)), Conscientiousness.Value.Zscore},
+                {textFormat(nameof(Extraversion)), Extraversion.Value.Zscore},
+                {textFormat(nameof(Agreeableness)), Agreeableness.Value.Zscore},
+                {textFormat(nameof(Neuroticism)), Neuroticism.Value.Zscore}
+            };
+
+            return itemData;
         }
     }
 }

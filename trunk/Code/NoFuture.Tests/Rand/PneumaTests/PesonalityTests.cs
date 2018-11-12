@@ -1,4 +1,6 @@
-﻿using NoFuture.Rand.Pneuma;
+﻿using System;
+using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Pneuma;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.PneumaTests
@@ -51,6 +53,17 @@ namespace NoFuture.Rand.Tests.PneumaTests
             testSubject01.Openness.Value = testSubject00.Openness.Value;
 
             Assert.IsTrue(testSubject00.Equals(testSubject01));
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = Personality.RandomPersonality();
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach (var k in testResult.Keys)
+                Console.WriteLine($"{k}: {testResult[k]}");
         }
     }
 }

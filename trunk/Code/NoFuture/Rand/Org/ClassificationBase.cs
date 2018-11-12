@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Org
 {
-    /// <inheritdoc />
     /// <summary>
     /// An intermediate base type to keep from having alot of redundant code for the TryThisParseXml
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public abstract class ClassificationBase<T> : XmlDocXrefIdentifier where T:XmlDocXrefIdentifier, new()
+    public abstract class ClassificationBase<T> : XmlDocXrefIdentifier, IObviate where T:XmlDocXrefIdentifier, new()
     {
         protected readonly List<T> divisions = new List<T>();
 
@@ -55,6 +55,19 @@ namespace NoFuture.Rand.Org
         {
             //Value Description
             return string.Join("-", Value, Description);
+        }
+
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>
+            {
+                {textFormat(GetType().Name + "Id"), Value},
+                {textFormat(GetType().Name + nameof(Description)), Description}
+            };
+
+
+            return itemData;
         }
 
         protected internal virtual T GetRandomClassification(Predicate<T> filterBy = null)

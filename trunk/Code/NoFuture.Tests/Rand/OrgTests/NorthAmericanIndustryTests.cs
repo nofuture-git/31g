@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
+using NUnit.Framework;
 using NoFuture.Rand.Org;
 
 namespace NoFuture.Rand.Tests.OrgTests
@@ -55,5 +58,24 @@ namespace NoFuture.Rand.Tests.OrgTests
             System.Diagnostics.Debug.WriteLine(testResult.Description);
         }
 
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = new IObviate[]
+            {
+                NaicsSector.RandomNaicsSector(), NaicsPrimarySector.RandomNaicsPrimarySector(),
+                NaicsSuperSector.RandomNaicsSuperSector(), NaicsMarket.RandomNaicsMarket()
+            };
+
+            foreach (var ts in testSubject)
+            {
+                Console.WriteLine();
+                var testResult = ts.ToData(KindsOfTextCase.Kabab);
+                Assert.IsNotNull(testResult);
+                Assert.AreNotEqual(0, testResult.Count);
+                foreach (var k in testResult.Keys)
+                    Console.WriteLine($"{k}: {testResult[k]}");
+            }
+        }
     }
 }
