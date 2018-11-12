@@ -120,5 +120,29 @@ namespace NoFuture.Rand.Tests.GeoTests
 
         }
 
+        [Test]
+        public void TestUsPostalStreetKindFullNames()
+        {
+            var testResult = UsStreetPo.UsPostalStreetKindFullNames;
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+        }
+
+        [Test]
+        public void TestUsPostalStreetKindAbbrev()
+        {
+            var testResult = UsStreetPo.UsPostalStreeKindAbbrev;
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+        }
+
+        [Test]
+        public void TestUsPostalSecondaryUnits()
+        {
+            var testResult = UsStreetPo.UsPostalSecondaryUnits;
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+        }
+
     }
 }

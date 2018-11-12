@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -25,11 +26,6 @@ namespace NoFuture.Rand.Geo.US
     {
         #region constants
 
-        public const string STATE_CODE_REGEX = @"[\x20|\x2C](AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|" +
-                                               "IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|" +
-                                               "MT|NC|ND|NE|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|" +
-                                               @"SC|SD|TN|TX|UT|VA|VI|VT|WA|WI|WV|WY)([^A-Za-z]|$)";
-
         public const string ZIP_CODE_REGEX = @"\x20([0-9]{5})(\x2d[0-9]{4})?";
 
         public const string DF_ZIPCODE_PREFIX = "100";//new york, new york
@@ -41,6 +37,7 @@ namespace NoFuture.Rand.Geo.US
         #region fields
 
         private static Dictionary<string, double> _zipCodePrefix2Pop = new Dictionary<string, double>();
+        private static string[] _usPostalStateAbbrev;
         #endregion
 
         #region ctor
@@ -59,6 +56,20 @@ namespace NoFuture.Rand.Geo.US
         #endregion
 
         #region properties
+
+        internal static string[] UsPostalStateAbbrev
+        {
+            get
+            {
+                if (_usPostalStateAbbrev != null && _usPostalStateAbbrev.Any())
+                    return _usPostalStateAbbrev;
+
+                _usPostalStateAbbrev = ReadTextFileData("US_Postal_State_Abbrev.txt");
+                return _usPostalStateAbbrev;
+            }
+        }
+
+        public static string RegexUsPostalStateAbbrev => @"[\x20|\x2C](" + string.Join("|", UsPostalStateAbbrev) + @")([^A-Za-z]|$)";
 
         public string StateName => GetData().RegionName ?? UsState.GetState(GetData().RegionAbbrev)?.ToString();
         public string StateAbbrev => GetData().RegionAbbrev ?? UsState.GetState(GetData().RegionName)?.StateAbbrev;
@@ -200,7 +211,7 @@ namespace NoFuture.Rand.Geo.US
 
         internal static void GetState(string lastLine, AddressData addrData)
         {
-            var regex = new Regex(STATE_CODE_REGEX, RegexOptions.IgnoreCase);
+            var regex = new Regex(RegexUsPostalStateAbbrev, RegexOptions.IgnoreCase);
             if (!regex.IsMatch(lastLine))
                 return;
             var matches = regex.Match(lastLine);
@@ -592,7 +603,23 @@ namespace NoFuture.Rand.Geo.US
                 return;
             GetData().Locality = suburbName;
         }
-        #endregion
+
+        private static string[] ReadTextFileData(string name)
+        {
+            var asm = Assembly.GetExecutingAssembly();
+
+            var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.Data.{name}");
+            if (data == null)
+                return null;
+
+            var strmRdr = new StreamReader(data);
+            var webmailData = strmRdr.ReadToEnd();
+            if (string.IsNullOrWhiteSpace(webmailData))
+                return null;
+
+            var txtData = webmailData.Split(Constants.LF).ToArray();
+            return txtData;
+        }
 
         public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
@@ -607,5 +634,8 @@ namespace NoFuture.Rand.Geo.US
                 itemData.Add(textFormat(nameof(ZipCode)), ZipCode);
             return itemData;
         }
+
+        #endregion
+
     }
 }

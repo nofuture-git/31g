@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
@@ -12,56 +13,15 @@ namespace NoFuture.Rand.Geo.US
     [Serializable]
     public class UsStreetPo : StreetPo
     {
-        #region Regex Patterns
+        #region fields
         public const string STD_ADDR_LINE_REGEX = @"^([0-9\x5c\x2f\x2d]*)\x20*([\x21-\x7e]*)(\x20*([\x21-\x7e][\x20-\x7e]*))?";
 
-        /// <summary>
-        /// These are limited to the abbreviations used for street types (e.g. STREET -> ST) only.
-        /// </summary>
-        /// <remarks>
-        /// see [http://pe.usps.gov/text/pub28/28apc_002.htm]
-        /// </remarks>
-        public const string US_POSTAL_STREET_KIND_REGEX =
-            @"\x20(ST|PL|AVE|BLVD|CIR|DR|LN|PKWY|ALY|ANX|ARC|" +
-            "BCH|BG|BGS|BLF|BLFS|BND|BR|BRG|BRK|BRKS|BTM|BYP|BYU|CIRS|CLB|CLF|" +
-            "CLFS|CMN|COR|CORS|CP|CPE|CRES|CRK|CRSE|CRST|CSWY|CT|CTR|CTRS|CTS|CURV|CV|" +
-            "CVS|CYN|DL|DM|DRS|DV|EST|ESTS|EXPY|EXT|EXTS|FALL|FLD|FLDS|FLS|FLT|FLTS|" +
-            "FRD|FRDS|FRG|FRGS|FRK|FRKS|FRST|FRY|FT|FWY|GDN|GDNS|GLN|GLNS|GRN|GRNS|GRV|" +
-            "GRVS|GTWY|HBR|HBRS|HL|HLS|HOLW|HTS|HVN|HWY|INLT|IS|ISLE|ISS|JCT|JCTS|KNL|KNLS|" +
-            "KY|KYS|LAND|LCK|LCKS|LDG|LF|LGT|LGTS|LK|LKS|LNDG|MDW|MDWS|MEWS|" +
-            "ML|MLS|MNR|MNRS|MSN|MT|MTN|MTNS|MTWY|NCK|OPAS|ORCH|OVAL|PASS|PATH|PIKE|" +
-            "PLN|PLNS|PLZ|PNE|PNES|PR|PRT|PRTS|PSGE|PT|PTS|RADL|RAMP|RD|RDG|RDGS|" +
-            "RDS|RIV|RNCH|ROW|RPD|RPDS|RST|RTE|RUE|RUN|SHL|SHLS|SHR|SHRS|SKWY|SMT|SPG|SPGS|" +
-            "SPUR|SQ|SQS|STA|STRA|STRM|STS|TER|TPKE|TRAK|TRCE|TRFY|TRL|TRWY|TUNL|UN|UNS|" +
-            @"UPAS|VIA|VIS|VL|VLG|VLGS|VLY|VLYS|VW|VWS|WALK|WALL|WAY|WAYS|WL|WLS|XING|XRD)(\x2e|\x20|$)";
-
-        public const string US_POSTAL_SECONDARY_UNIT_REGEX =
-            "\x20(APT|BSMT|BLDG|DEPT|FL|FRNT|HNGR|LBBY|LOT|LOWR|OFC|PH|PIER|REAR|RM|" + 
-            "SIDE|SLIP|SPC|STOP|STE|TRLR|UNIT|UPPR|APARTMENT|BASEMENT|BUILDING|" +
-            "FLOOR|FRONT|HANGAR|LOBBY|LOT|LOWER|OFFICE|PENTHOUSE|PIER|" +
-            @"REAR|ROOM|SUITE|TRAILER|UNIT|UPPER)\x20([\x21-\x7a]*)?";
-
-        public const string US_POSTAL_STREET_KIND_FULLNAME_REGEX = 
-            @"\x20(ALLEY|ANEX|ARCADE|AVENUE|BAYOU|BEACH|BEND|BLUFF|BOTTOM|" + 
-            "BOULEVARD|BRANCH|BRIDGE|BROOK|BYPASS|CAMP|CANYON|CAPE|" +
-            "CAUSEWAY|CENTER|CIRCLE|CLIFF|CLIFFS|CLUB|CORNER|CORNERS|" +
-            "COURSE|COURT|COURTS|COVE|CREEK|CRESCENT|CROSSING|DALE|DAM|" +
-            "DIVIDE|DRIVE|ESTATE|ESTATES|EXPRESSWAY|EXTENSION|FALLS|" +
-            "FERRY|FIELD|FIELDS|FLAT|FLATS|FORD|FOREST|FORGE|FORK|FORKS|" +
-            "FORT|FREEWAY|GARDEN|GARDENS|GATEWAY|GLEN|GREEN|GROVE|" +
-            "HARBOR|HAVEN|HEIGHTS|HIGHWAY|HILL|HILLS|HOLLOW|ISLAND|" +
-            "ISLANDS|ISLE|JUNCTION|JUNCTIONS|KEY|KEYS|KNOLL|KNOLLS|" +
-            "LAKE|LAKES|LANDING|LANE|LIGHT|LOAF|LOCK|LOCKS|LODGE|LOOP|" +
-            "MANOR|MANORS|MEADOWS|MISSION|MOUNT|MOUNTAIN|MOUNTAINS|" +
-            "NECK|ORCHARD|OVAL|PARK|PARKWAY|PARKWAYS|PATH|PIKE|PINES|" +
-            "PLAIN|PLAINS|PLAZA|POINT|POINTS|PORT|PORTS|PRAIRIE|RADIAL|" +
-            "RANCH|RAPID|RAPIDS|REST|RIDGE|RIDGES|RIVER|ROAD|ROADS|" +
-            "SHOAL|SHOALS|SHORE|SHORES|SPRING|SPRINGS|SQUARE|SQUARES|" +
-            "STATION|STRAVENUE|STREAM|STREET|SUMMIT|TERRACE|TRACE|TRACK|" +
-            "TRAIL|TRAILER|TUNNEL|TURNPIKE|UNION|VALLEY|VALLEYS|VIADUCT|" +
-            @"VIEW|VIEWS|VILLAGE|VILLAGES|VILLE|VISTA|WAY|WELLS)(\x2e|\x20|$)";
-
         public const string POUND_UNIT_ID = @"\x20\x23\x20?([0-9]+)";
+
+        private static string[] _usPostalStreetKindFullName;
+        private static string[] _usPostalStreeKindAbbrev;
+        private static string[] _usPostalSecondaryUnits;
+
         #endregion
 
         public UsStreetPo(AddressData d) : base(d)
@@ -74,6 +34,56 @@ namespace NoFuture.Rand.Geo.US
         public string StreetName => GetData().ThoroughfareName;
         public string StreetKind => GetData().ThoroughfareType;
         public string SecondaryUnit => $"{GetData().SecondaryUnitDesignator} {GetData().SecondaryUnitId}".Trim();
+
+        internal static string[] UsPostalStreetKindFullNames
+        {
+            get
+            {
+                if (_usPostalStreetKindFullName != null && _usPostalStreetKindFullName.Any())
+                    return _usPostalStreetKindFullName;
+
+                _usPostalStreetKindFullName = ReadTextFileData("US_PostalStreet_Kind_Fullname.txt");
+                return _usPostalStreetKindFullName;
+            }
+        }
+
+        internal static string[] UsPostalStreeKindAbbrev
+        {
+            get
+            {
+                if (_usPostalStreeKindAbbrev != null && _usPostalStreeKindAbbrev.Any())
+                    return _usPostalStreeKindAbbrev;
+                _usPostalStreeKindAbbrev = ReadTextFileData("US_PostalStreet_Kind_Abbrev.txt");
+                return _usPostalStreeKindAbbrev;
+            }
+        }
+
+        internal static string[] UsPostalSecondaryUnits
+        {
+            get
+            {
+                if (_usPostalSecondaryUnits != null && _usPostalSecondaryUnits.Any())
+                    return _usPostalSecondaryUnits;
+                _usPostalSecondaryUnits = ReadTextFileData("US_Postal_Secondary_Units.txt");
+                return _usPostalSecondaryUnits;
+            }
+        }
+
+        public static string RegexUsPostalStreetKindFullName =>
+            @"\x20(" + string.Join("|", UsPostalStreetKindFullNames) + @")(\x2e|\x20|$)";
+
+        /// <summary>
+        /// These are limited to the abbreviations used for street types (e.g. STREET -> ST) only.
+        /// </summary>
+        /// <remarks>
+        /// see [http://pe.usps.gov/text/pub28/28apc_002.htm]
+        /// </remarks>
+        public static string RegexUsPostalStreeKindAbbrev =>
+            @"\x20(" + string.Join("|", UsPostalStreeKindAbbrev) + @")(\x2e|\x20|$)";
+
+        public static string RegexUsPostalSecondaryUnits =>
+            @"\x20(" + string.Join("|", UsPostalSecondaryUnits) + @")\x20([\x21-\x7a]*)?";
+
         #endregion
 
         /// <summary>
@@ -132,14 +142,14 @@ namespace NoFuture.Rand.Geo.US
             };
 
             //find a match to the street kind
-            regex = new Regex(US_POSTAL_STREET_KIND_REGEX, RegexOptions.IgnoreCase);
+            regex = new Regex(RegexUsPostalStreeKindAbbrev, RegexOptions.IgnoreCase);
             if (regex.IsMatch(addressLine))
             {
                 addrData.ThoroughfareType = getStreetKind(regex, addressLine);
             }
             else
             {
-                regex = new Regex(US_POSTAL_STREET_KIND_FULLNAME_REGEX, RegexOptions.IgnoreCase);
+                regex = new Regex(RegexUsPostalStreetKindFullName, RegexOptions.IgnoreCase);
                 if (regex.IsMatch(addressLine))
                 {
                     addrData.ThoroughfareType = getStreetKind(regex, addressLine);
@@ -147,7 +157,7 @@ namespace NoFuture.Rand.Geo.US
             }
 
             //look for a secondary unit designator
-            regex = new Regex(US_POSTAL_SECONDARY_UNIT_REGEX, RegexOptions.IgnoreCase);//postal standard
+            regex = new Regex(RegexUsPostalSecondaryUnits, RegexOptions.IgnoreCase);//postal standard
             if (regex.IsMatch(addressLine))
             {
                 matches = regex.Match(addressLine);
