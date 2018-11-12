@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Gov.US.Census;
@@ -592,5 +593,19 @@ namespace NoFuture.Rand.Geo.US
             GetData().Locality = suburbName;
         }
         #endregion
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+
+            if(!string.IsNullOrWhiteSpace(City))
+                itemData.Add(textFormat(nameof(City)), City);
+            if(!string.IsNullOrWhiteSpace(StateAbbrev))
+                itemData.Add(textFormat("State"), StateAbbrev);
+            if(!string.IsNullOrWhiteSpace(ZipCode))
+                itemData.Add(textFormat(nameof(ZipCode)), ZipCode);
+            return itemData;
+        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo.CA;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov.US;
@@ -13,7 +15,7 @@ namespace NoFuture.Rand.Geo
     /// Base type representing the second half of a typical Postal Address
     /// </summary>
     [Serializable]
-    public abstract class CityArea : GeoBase, ICited
+    public abstract class CityArea : GeoBase, ICited, IObviate
     {
         #region constants
 
@@ -78,6 +80,9 @@ namespace NoFuture.Rand.Geo
         {
             return GetData().GetHashCode();
         }
+
+        public abstract IDictionary<string, object> ToData(KindsOfTextCase txtCase);
+
 
         /// <summary>
         /// Fetches, at random, a <see cref="UsCityStateZip"/> by zip code prefix

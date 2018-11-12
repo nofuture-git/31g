@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NUnit.Framework;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
@@ -227,6 +229,24 @@ namespace NoFuture.Rand.Tests.GeoTests
             testOutput = UsCityStateZip.FinesseCityName("MC LEAN");
             Assert.AreEqual("McLean", testOutput);
             Console.WriteLine(testOutput);
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            IObviate testSubject = CityArea.RandomAmericanCity();
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach(var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
+
+            testSubject = CityArea.RandomCanadianCity();
+            testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach (var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
         }
     }
 }

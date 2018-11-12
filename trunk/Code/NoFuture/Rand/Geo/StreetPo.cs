@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Util.Core;
 
@@ -10,7 +12,7 @@ namespace NoFuture.Rand.Geo
     /// Base type representing the first half of a typical Postal Address
     /// </summary>
     [Serializable]
-    public abstract class StreetPo : GeoBase, ICited
+    public abstract class StreetPo : GeoBase, ICited, IObviate
     {
         protected StreetPo(AddressData d) : base(d)
         {
@@ -40,6 +42,9 @@ namespace NoFuture.Rand.Geo
         {
             return GetData().GetHashCode();
         }
+
+        public abstract IDictionary<string, object> ToData(KindsOfTextCase txtCase);
+
 
         /// <summary>
         /// Generates at random a street address in the typical American form

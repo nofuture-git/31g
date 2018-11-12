@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Geo.US
 {
@@ -194,6 +197,17 @@ namespace NoFuture.Rand.Geo.US
             //consider whatever remains as the street's name
             streetPo = new UsStreetPo(addrData) {Src = addressLine};
             return true;
+        }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+            var line1 = ToString();
+            if(!string.IsNullOrWhiteSpace(line1))
+                itemData.Add(textFormat("AddressLine1"), ToString());
+
+            return itemData;
         }
     }
 }

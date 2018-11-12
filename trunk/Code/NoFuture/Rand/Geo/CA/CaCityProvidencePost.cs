@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Geo.CA
 {
@@ -19,6 +22,20 @@ namespace NoFuture.Rand.Geo.CA
         public override string ToString()
         {
             return $"{City} {ProvidenceAbbrv}, {PostalCode}";
+        }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+
+            if (!string.IsNullOrWhiteSpace(City))
+                itemData.Add(textFormat(nameof(City)), City);
+            if (!string.IsNullOrWhiteSpace(ProvidenceAbbrv))
+                itemData.Add(textFormat(nameof(Providence)), ProvidenceAbbrv);
+            if (!string.IsNullOrWhiteSpace(PostalCode))
+                itemData.Add(textFormat(nameof(PostalCode)), PostalCode);
+            return itemData;
         }
     }
 }

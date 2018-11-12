@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo.US;
 
 namespace NoFuture.Rand.Geo
@@ -8,7 +11,7 @@ namespace NoFuture.Rand.Geo
     /// A composition type to contain a postal address.
     /// </summary>
     [Serializable]
-    public class PostalAddress : DiachronIdentifier
+    public class PostalAddress : DiachronIdentifier, IObviate
     {
         public StreetPo Street { get; set; }
         public CityArea CityArea { get; set; }
@@ -26,6 +29,16 @@ namespace NoFuture.Rand.Geo
         public override string ToString()
         {
             return string.Join("  ", Street, CityArea);
+        }
+
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            var itemData = Street?.ToData(txtCase) ?? new Dictionary<string, object>();
+            var moreData = CityArea?.ToData(txtCase) ?? new Dictionary<string, object>();
+            if(moreData.Any())
+                foreach(var k in moreData.Keys)
+                    itemData.Add(k,moreData[k]);
+            return itemData;
         }
 
         /// <summary>
