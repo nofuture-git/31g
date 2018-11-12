@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Com
@@ -10,7 +11,7 @@ namespace NoFuture.Rand.Com
     /// Another kind of security identifier used is stock exchanges around the world.
     /// </summary>
     [Serializable]
-    public class TickerSymbol : Identifier
+    public class TickerSymbol : Identifier, IObviate
     {
         private string _symbol;
         private static List<NasdaqIntegratedSymbology> _symbolXref = new List<NasdaqIntegratedSymbology>();
@@ -90,6 +91,13 @@ namespace NoFuture.Rand.Com
         public override int GetHashCode()
         {
             return (Symbol?.GetHashCode() ?? 0) + (Exchange?.GetHashCode() ?? 0);
+        }
+
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object> {{textFormat(Exchange.ToLower() + Abbrev), Symbol}};
+            return itemData;
         }
 
         public bool Equals(TickerSymbol obj)

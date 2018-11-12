@@ -27,13 +27,13 @@ namespace NoFuture.Rand.Com
         private NaicsSector _sector;
         private NaicsMarket _market;
         private int _fiscalYearEndDay = 1;
-        private readonly HashSet<NetUri> _netUris = new HashSet<NetUri>();
+        private readonly HashSet<NetUri> _netUrises = new HashSet<NetUri>();
         private readonly List<NorthAmericanPhone> _phoneNumbers = new List<NorthAmericanPhone>();
         #endregion
 
         #region properties
 
-        public IEnumerable<NetUri> NetUri => _netUris;
+        public IEnumerable<NetUri> NetUris => _netUrises;
         public virtual string Description { get; set; }
         public PostalAddress MailingAddress { get; set; }
         public PostalAddress BusinessAddress { get; set; }
@@ -666,7 +666,7 @@ namespace NoFuture.Rand.Com
         {
             //don't allow callers to add telephone Uri's since there is another storage place for those
             if (uri != null && uri.Scheme != Tele.Phone.URI_SCHEMA_TELEPHONE)
-                _netUris.Add(uri);
+                _netUrises.Add(uri);
         }
 
         public virtual void AddUri(string uri, KindsOfLabels? descriptor = KindsOfLabels.Business)
@@ -681,6 +681,37 @@ namespace NoFuture.Rand.Com
                 return;
             var netUri = new NetUri {Descriptor = descriptor, Value = oUri.ToString()};
             AddUri(netUri);
+        }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => TransformText(x, txtCase);
+            var itemData = base.ToData(txtCase) ?? new Dictionary<string, object>();
+
+            if(!string.IsNullOrWhiteSpace(Description))
+                itemData.Add(textFormat(nameof(Description)), Description);
+
+            foreach (var netUri in NetUris)
+            {
+                AddOrReplace(itemData, netUri.ToData(txtCase));
+            }
+            if(MailingAddress != null)
+                AddOrReplace(itemData, MailingAddress.ToData(txtCase));
+            if(BusinessAddress != null)
+                AddOrReplace(itemData, BusinessAddress.ToData(txtCase));
+            foreach(var ph in PhoneNumbers)
+                AddOrReplace(itemData, ph.ToData(txtCase));
+
+            if(SIC != null)
+                AddOrReplace(itemData, SIC.ToData(txtCase));
+            if(Sector != null)
+                AddOrReplace(itemData, Sector.ToData(txtCase));
+            if(Market != null)
+                AddOrReplace(itemData, Market.ToData(txtCase));
+            if(PrimarySector != null)
+                AddOrReplace(itemData, PrimarySector.ToData(txtCase));
+
+            return itemData;
         }
 
         #endregion

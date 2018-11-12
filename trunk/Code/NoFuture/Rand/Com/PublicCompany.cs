@@ -112,5 +112,20 @@ namespace NoFuture.Rand.Com
 
             return UNKNOWN;
         }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = base.ToData(txtCase) ?? new Dictionary<string, object>();
+            if(EIN != null)
+                itemData.Add(textFormat(nameof(EmployerIdentificationNumber)), EIN.Value);
+            if(CIK != null)
+                itemData.Add(textFormat(nameof(CentralIndexKey)), CIK.Value);
+
+            foreach(var ticker in TickerSymbols)
+                AddOrReplace(itemData, ticker.ToData(txtCase));
+
+            return itemData;
+        }
     }
 }

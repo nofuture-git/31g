@@ -212,6 +212,24 @@ namespace NoFuture.Rand.Com
             }
             return bankXmlElem;
         }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = base.ToData(txtCase) ?? new Dictionary<string, object>();
+
+            if(Rssd != null)
+                itemData.Add(textFormat(nameof(Rssd)), Rssd.Value);
+            if(RoutingNumber != null)
+                itemData.Add(textFormat(nameof(RoutingNumber)),RoutingNumber.Value);
+            if(FdicNumber != null)
+                itemData.Add(textFormat(nameof(FdicNumber)), FdicNumber.Value);
+            itemData.Add(textFormat(nameof(TypeOfBank)), BankType.ToString());
+            itemData.Add(textFormat(nameof(IsInternational)), IsInternational);
+
+            return itemData;
+        }
+
         #endregion
     }
 }

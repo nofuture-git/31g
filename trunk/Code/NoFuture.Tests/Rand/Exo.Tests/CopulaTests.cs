@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Exo.Tests
             Assert.IsNotNull(ticker);
             Assert.AreEqual("AAPL", ticker.Symbol);
             Assert.IsTrue(ticker.Exchange.Contains("Nasdaq"));
-            var uri = corp.NetUri.FirstOrDefault();
+            var uri = corp.NetUris.FirstOrDefault();
             Assert.IsNotNull(uri);
             Assert.AreEqual("http://www.apple.com/", uri.ToString());
             Assert.IsFalse(string.IsNullOrWhiteSpace(corp.Description));
@@ -51,9 +51,9 @@ namespace NoFuture.Rand.Exo.Tests
             var testResult = Copula.TryParseIexKeyStatsJson(testContent, IexKeyStats.GetUri("AAPL"), ref corp);
             Assert.IsTrue(testResult);
 
-            Assert.IsTrue(corp.NetUri.Any());
+            Assert.IsTrue(corp.NetUris.Any());
 
-            foreach(var uri in corp.NetUri)
+            foreach(var uri in corp.NetUris)
                 Console.WriteLine(uri.ToString());
         }
     }

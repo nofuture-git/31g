@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo;
@@ -15,7 +14,7 @@ namespace NoFuture.Rand.Com
     public interface IFirm : IVoca
     {
         string Description { get; set; }
-        IEnumerable<NetUri> NetUri { get; }
+        IEnumerable<NetUri> NetUris { get; }
         PostalAddress MailingAddress { get; set; }
         PostalAddress BusinessAddress { get; set; }
         IEnumerable<Phone> PhoneNumbers { get; }

@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NoFuture.Rand.Com;
+using NoFuture.Rand.Core.Enums;
+using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.ComTests
 {
@@ -34,6 +37,18 @@ namespace NoFuture.Rand.Tests.ComTests
             var testResult = Com.Firm.GetNameFull("BRAND BKG CO");
             Assert.AreEqual("Brand Banking Company", testResult);
 
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = Bank.RandomBank();
+            testSubject.AddTickerSymbol(new TickerSymbol(){Exchange = "NYSE", Value = "BBK"});
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach(var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
         }
     }
 }
