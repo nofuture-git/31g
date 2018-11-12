@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Domus
         string FirstName { get; set; }
         string LastName { get; set; }
         Gender Gender { get; set; }
-        IEnumerable<Uri> NetUri { get; }
+        IEnumerable<NetUri> NetUri { get; }
         Personality Personality { get; set; }
         IEducation Education { get; set; }
         IRelation Spouse { get; }
@@ -148,13 +148,14 @@ namespace NoFuture.Rand.Domus
         /// Adds the given <see cref="uri"/> to this person
         /// </summary>
         /// <param name="uri"></param>
-        void AddUri(Uri uri);
+        void AddUri(NetUri uri);
 
         /// <summary>
         /// Parses and, when valid, adds the <see cref="uri"/> to this person
         /// </summary>
         /// <param name="uri"></param>
-        void AddUri(string uri);
+        /// <param name="descriptor"></param>
+        void AddUri(string uri, KindsOfLabels? descriptor = null);
 
         #endregion
     }

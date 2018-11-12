@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Core.Enums;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Tele
 {
-    /// <inheritdoc cref="Identifier" />
-    /// <inheritdoc cref="IObviate" />
+    /// <inheritdoc cref="NetUri" />
     /// <summary>
     /// NoFuture Rand container for the general use Email entity
     /// </summary>
     [Serializable]
-    public class Email : Identifier, IObviate
+    public class Email : NetUri
     {
         public override string Abbrev => "Email";
-
-        public KindsOfLabels? Descriptor { get; set; }
 
         public Uri ToUri()
         {
@@ -60,22 +56,9 @@ namespace NoFuture.Rand.Tele
         [RandomFactory]
         public static Email RandomEmail(string username, bool usCommonOnly = false)
         {
-            var host = Net.RandomUriHost(false, usCommonOnly);
-            username = username ?? Net.RandomUsername();
+            var host = NetUri.RandomUriHost(false, usCommonOnly);
+            username = username ?? NetUri.RandomUsername();
             return new Email { Value = String.Join("@", username, host) };
-        }
-
-        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
-        {
-            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
-            var itemData = new Dictionary<string, object>();
-
-            if (string.IsNullOrWhiteSpace(Value))
-                return itemData;
-
-            var label = Descriptor?.ToString();
-            itemData.Add(textFormat(label + Abbrev), Value);
-            return itemData;
         }
     }
 }

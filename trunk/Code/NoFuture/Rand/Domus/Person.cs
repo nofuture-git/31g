@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region fields
-        private readonly HashSet<Uri> _netUris = new HashSet<Uri>();
+        private readonly HashSet<NetUri> _netUris = new HashSet<NetUri>();
         private readonly HashSet<Child> _children = new HashSet<Child>();
         private BirthCert _myBirthCert;
         private DeathCert _myDeathCert;
@@ -73,7 +73,7 @@ namespace NoFuture.Rand.Domus
             get => GetName(KindsOfNames.Surname);
             set => AddName(KindsOfNames.Surname, value);
         }
-        public virtual IEnumerable<Uri> NetUri => _netUris;
+        public virtual IEnumerable<NetUri> NetUri => _netUris;
         public Personality Personality { get; set; }
         public abstract IEducation Education { get; set; }
         public PostalAddress Address => GetAddressAt(null);
@@ -203,14 +203,14 @@ namespace NoFuture.Rand.Domus
 
         public abstract void AddPhone(string phoneNumber, KindsOfLabels? descriptor = null);
 
-        public void AddUri(Uri uri)
+        public void AddUri(NetUri uri)
         {
             //don't allow callers to add telephone Uri's since there is another storage place for those
-            if(uri != null && uri.Scheme != Phone.UriSchemaTelephone)
+            if(uri != null && uri.UriValue?.Scheme != Phone.UriSchemaTelephone)
                 _netUris.Add(uri);
         }
 
-        public virtual void AddUri(string uri)
+        public virtual void AddUri(string uri, KindsOfLabels? descriptor = null)
         {
             if (string.IsNullOrWhiteSpace(uri))
                 return;
@@ -221,7 +221,7 @@ namespace NoFuture.Rand.Domus
             if (!Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out var oUri))
                 return;
 
-            AddUri(oUri);
+            AddUri(new NetUri(oUri) {Descriptor = descriptor});
         }
 
         protected internal HashSet<Spouse> GetSpouses()

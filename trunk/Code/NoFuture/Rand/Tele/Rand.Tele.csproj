@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Email.cs" />
-    <Compile Include="Net.cs" />
+    <Compile Include="NetUri.cs" />
     <Compile Include="NorthAmericanPhone.cs" />
     <Compile Include="Phone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

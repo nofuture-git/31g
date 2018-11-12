@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         [Test]
         public void WebmailDomainsTest()
         {
-            var testResult = Tele.Net.WebmailDomains;
+            var testResult = Tele.NetUri.WebmailDomains;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
         }
@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         [Test]
         public void TestRandomUriHost()
         {
-            var testResult = Tele.Net.RandomUriHost(false);
+            var testResult = Tele.NetUri.RandomUriHost(false);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             Assert.IsTrue(testResult.Contains("."));
@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Tests.TeleTests
 
             Console.WriteLine(topDomain);
 
-            testResult = Tele.Net.RandomUriHost();
+            testResult = Tele.NetUri.RandomUriHost();
             Assert.IsNotNull(testResult);
 
         }
@@ -36,14 +36,14 @@ namespace NoFuture.Rand.Tests.TeleTests
         [Test]
         public void TestRandomHttpUri()
         {
-            var testResult = Tele.Net.RandomHttpUri();
+            var testResult = Tele.NetUri.RandomHttpUri();
             Assert.IsNotNull(testResult);
             var uriTestResult = new Uri(testResult);
             Assert.IsNotNull(uriTestResult);
             Assert.AreEqual("http", uriTestResult.Scheme);
             Assert.IsNotNull(uriTestResult.LocalPath);
 
-            testResult = Tele.Net.RandomHttpUri(true, true);
+            testResult = Tele.NetUri.RandomHttpUri(true, true);
             Assert.IsNotNull(testResult);
             uriTestResult = new Uri(testResult);
             Assert.IsNotNull(uriTestResult);
@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         {
             for (var i = 0; i < 10; i++)
             {
-                var testResult = Tele.Net.RandomHttpUri();
+                var testResult = Tele.NetUri.RandomHttpUri();
                 Assert.IsNotNull(testResult);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
                 Console.WriteLine(testResult);
@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Tests.TeleTests
 
             for (var i = 0; i < 10; i++)
             {
-                var testResult = Tele.Net.RandomHttpUri(false, true);
+                var testResult = Tele.NetUri.RandomHttpUri(false, true);
                 Assert.IsNotNull(testResult);
                 Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
                 Console.WriteLine(testResult);
@@ -77,11 +77,11 @@ namespace NoFuture.Rand.Tests.TeleTests
         [Test]
         public void TestRandomUsername()
         {
-            var testResult = Tele.Net.RandomUsername();
+            var testResult = Tele.NetUri.RandomUsername();
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
 
-            testResult = Tele.Net.RandomUsername("Julius", "Ceaser");
+            testResult = Tele.NetUri.RandomUsername("Julius", "Ceaser");
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.ToLower().Contains("ceaser"));
             Console.WriteLine(testResult);

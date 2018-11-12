@@ -9,13 +9,46 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Tele
 {
+    /// <inheritdoc cref="LabelledIdentifier" />
+    /// <summary>
+    /// A wrapper type around the .NET Uri type
+    /// </summary>
     [Serializable]
-    public class Net
+    public class NetUri : LabelledIdentifier
     {
         #region fields
         internal const string WEB_MAIL_DOMAINS = "webmailDomains.txt";
         private static string[] _webMaildomains;
+        private Uri _uriValue;
         #endregion
+
+        public NetUri() { }
+
+        public NetUri(string uri)
+        {
+            Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out _uriValue);
+        }
+
+        public NetUri(Uri uri)
+        {
+            _uriValue = uri;
+        }
+
+        public string Scheme => _uriValue?.Scheme;
+
+        public override string Abbrev => "Uri";
+
+        public override string Value
+        {
+            get => base.Value;
+            set
+            {
+                if(Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out _uriValue))
+                base.Value = value;
+            }
+        }
+
+        public Uri UriValue => _uriValue;
 
         /// <summary>
         /// Src [https://bitquark.co.uk/blog/2016/02/29/the_most_popular_subdomains_on_the_internet]

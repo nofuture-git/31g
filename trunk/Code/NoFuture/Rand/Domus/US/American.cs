@@ -614,14 +614,18 @@ namespace NoFuture.Rand.Domus.US
                 return;
             if (age < GetMyHomeStatesAgeOfMajority())
             {
-                AddUri(Email.RandomChildishEmail().ToUri());
+                var cEmail = Email.RandomChildishEmail();
+                cEmail.Descriptor = KindsOfLabels.Home;
+                AddUri(cEmail);
                 return;
             }
 
             var fname = GetName(KindsOfNames.First);
             var lname = GetName(KindsOfNames.Surname);
-            var username = Net.RandomUsername(fname, lname);
-            AddUri(Email.RandomEmail(username, true).ToUri());
+            var username = Tele.NetUri.RandomUsername(fname, lname);
+            var emailAsRandNet = Email.RandomEmail(username, true);
+            emailAsRandNet.Descriptor = KindsOfLabels.Home;
+            AddUri(emailAsRandNet);
         }
 
         //min. age a person could be married at

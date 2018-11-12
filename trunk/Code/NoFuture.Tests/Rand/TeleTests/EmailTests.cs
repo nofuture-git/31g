@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Tests.TeleTests
             Assert.IsNotNull(testResult);
             var testResultParts = testResult.Value.Split('@');
             Assert.AreEqual(2, testResultParts.Length);
-            Assert.IsTrue(Net.UsWebmailDomains.Contains(testResultParts[1]));
+            Assert.IsTrue(NetUri.UsWebmailDomains.Contains(testResultParts[1]));
             Assert.AreEqual("booty", testResultParts[0]);
             Console.WriteLine(testResult);
         }
@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Tests.TeleTests
         [Test]
         public void TestRandomEmailUriPersonal()
         {
-            var testResult = Email.RandomEmail(Net.RandomUsername("Robert", "Lee"));
+            var testResult = Email.RandomEmail(NetUri.RandomUsername("Robert", "Lee"));
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Value.ToLower().Contains("lee"));
             Console.WriteLine(testResult);
