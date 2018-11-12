@@ -41,6 +41,6 @@ namespace NoFuture.Rand.Sp
         /// Gets the <see cref="DueFrequency"/>, if given, as a <see cref="Interval"/>
         /// </summary>
         /// <returns></returns>
-        Interval GetDueFreqAsInterval();
+        Interval? GetDueFreqAsInterval();
     }
 }

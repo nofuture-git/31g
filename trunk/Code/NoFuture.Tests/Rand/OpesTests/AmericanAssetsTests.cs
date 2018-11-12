@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Opes;
 using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Sp;
@@ -184,6 +185,17 @@ namespace NoFuture.Rand.Tests.OpesTests
             testResult = testSubject.TotalCurrentExpectedValue;
             Assert.AreEqual((120000.0D + 25000).ToPecuniam(), testResult);
 
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = AmericanAssets.RandomAssets();
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach(var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
         }
     }
 }

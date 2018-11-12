@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Opes
     /// A base type on which Income, Expense, Assets, etc. is built.
     /// </summary>
     [Serializable]
-    public abstract class WealthBase
+    public abstract class WealthBase : IObviate
     {
         #region constants
         public const double DF_STD_DEV_PERCENT = 0.0885D;
@@ -138,6 +138,21 @@ namespace NoFuture.Rand.Opes
         #endregion
 
         #region methods
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+
+            foreach (var p in MyItems)
+            {
+                if (p.Value == Pecuniam.Zero)
+                    continue;
+                AddOrReplace(itemData, p.ToData(txtCase));
+            }
+
+            return itemData;
+        }
+
         /// <summary>
         /// Adds the <see cref="item"/> to <see cref="MyItems"/>
         /// </summary>
@@ -981,6 +996,20 @@ namespace NoFuture.Rand.Opes
             return p;
         }
 
+        protected static void AddOrReplace(IDictionary<string, object> a, IDictionary<string, object> b)
+        {
+            a = a ?? new Dictionary<string, object>();
+            b = b ?? new Dictionary<string, object>();
+
+            foreach (var k in b.Keys)
+            {
+                if (a.ContainsKey(k))
+                    a[k] = b[k];
+                else
+                    a.Add(k, b[k]);
+            }
+        }
         #endregion
+
     }
 }

@@ -123,14 +123,10 @@ namespace NoFuture.Rand.Sp
         public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
-            var itemData = new Dictionary<string, object>();
-            var baseData = base.ToData(txtCase);
-            foreach (var i in baseData)
-                itemData.Add(i.Key, i.Value);
+            var itemData = base.ToData(txtCase) ?? new Dictionary<string, object>();
 
-            var expcData = Expectation.ToData(txtCase);
-            foreach (var e in expcData)
-                itemData.Add(e.Key, e.Value);
+            if(Expectation != null && Expectation.Value != Pecuniam.Zero)
+                itemData.Add(textFormat("ExpectValue"), Expectation.Value.ToString());
 
             var v = Value;
             if(v != Pecuniam.Zero)

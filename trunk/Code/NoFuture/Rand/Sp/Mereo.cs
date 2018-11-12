@@ -106,12 +106,10 @@ namespace NoFuture.Rand.Sp
                 itemData.Add(textFormat(nameof(Interval)), Interval.ToString());
             if(Classification != null)
                 itemData.Add(textFormat(nameof(Classification)), Classification.ToString());
-            if(!string.IsNullOrWhiteSpace(Abbrev))
-                itemData.Add(textFormat("Abbreviation"), Abbrev);
             if(!string.IsNullOrWhiteSpace(Src))
                 itemData.Add(textFormat("Source"), Src);
             if(Value != Pecuniam.Zero)
-                itemData.Add(textFormat("ExpectedValue"), Value.ToString());
+                itemData.Add(textFormat("ExpectValue"), Value.ToString());
 
             return itemData;
         }
@@ -151,14 +149,14 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <param name="df"></param>
         /// <returns></returns>
-        public static Interval ConvertTimespan(TimeSpan df)
+        public static Interval? ConvertTimespan(TimeSpan df)
         {
             var days = df.Days;
 
             switch (days)
             {
                 case 0:
-                    return Interval.Hourly;
+                    return null;
                 case 1:
                     return Interval.Daily;
                 case 7:
@@ -181,7 +179,7 @@ namespace NoFuture.Rand.Sp
                 case 365:
                     return Interval.Annually;
                 default:
-                    return Interval.Varied;
+                    return null;
 
             }
         }

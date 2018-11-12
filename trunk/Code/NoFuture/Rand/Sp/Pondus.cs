@@ -120,5 +120,22 @@ namespace NoFuture.Rand.Sp
                 Expectation?.GetName(KindsOfNames.Group), Expectation?.Interval.ToString(), Inception, Terminus);
             return d.ToString();
         }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var recvData = base.ToData(KindsOfTextCase.Pascel) ?? new Dictionary<string, object>();
+            var itemData = new Dictionary<string, object>();
+            var itemName = textFormat(Name.Replace(",", "").Replace(" ",""));
+            foreach (var rData in recvData.Keys)
+            {
+                var itemDataName = textFormat(itemName + rData);
+                if(itemData.ContainsKey(itemDataName))
+                    continue;
+                itemData.Add(itemDataName, recvData[rData]);
+            }
+
+            return itemData;
+        }
     }
 }

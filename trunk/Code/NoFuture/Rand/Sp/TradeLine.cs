@@ -65,10 +65,10 @@ namespace NoFuture.Rand.Sp
 
         #region methods
 
-        public virtual Interval GetDueFreqAsInterval()
+        public virtual Interval? GetDueFreqAsInterval()
         {
             if (DueFrequency == null || DueFrequency == TimeSpan.MinValue)
-                return Interval.OnceOnly;
+                return null;
 
             return Mereo.ConvertTimespan(DueFrequency.Value);
         }
@@ -105,11 +105,11 @@ namespace NoFuture.Rand.Sp
             if(Inception != DateTime.MinValue)
                 itemData.Add(textFormat(nameof(Inception)), Inception.ToString("s"));
             if(Terminus != null && Terminus != DateTime.MinValue)
-                itemData.Add(nameof(Terminus), Terminus.Value.ToString("s"));
+                itemData.Add(textFormat(nameof(Terminus)), Terminus.Value.ToString("s"));
             if(FormOfCredit != null)
-                itemData.Add(nameof(FormOfCredit), FormOfCredit.Value.ToString());
+                itemData.Add(textFormat(nameof(FormOfCredit)), FormOfCredit.Value.ToString());
             var interval = GetDueFreqAsInterval();
-            if(interval != Interval.OnceOnly)
+            if(interval != null)
                 itemData.Add(textFormat("Interval"), interval);
             if(Closure != null)
                 itemData.Add(nameof(ClosedCondition), Closure);
