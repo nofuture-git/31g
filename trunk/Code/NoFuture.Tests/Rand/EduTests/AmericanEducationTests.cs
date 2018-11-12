@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
 using NUnit.Framework;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Edu.US;
@@ -62,6 +63,35 @@ namespace NoFuture.Rand.Tests.EduTests
                 new Tuple<IHighSchool, DateTime?>(hs, hsGradDate));
 
             Assert.AreEqual("College Grad", testSubject.EduLevel);
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var hs = AmericanHighSchool.RandomHighSchool();
+            var univ = AmericanUniversity.RandomUniversity();
+
+            var eightYearsAgo = DateTime.Today.AddYears(-8).Year;
+            var fourYearsAgo = DateTime.Today.AddYears(-4).Year;
+
+            var hsGradDate = new DateTime(eightYearsAgo, 5, 25);
+            var univGradDate = new DateTime(fourYearsAgo, 5, 15);
+
+            var testSubject = new AmericanEducation(new Tuple<IUniversity, DateTime?>(univ, univGradDate),
+                new Tuple<IHighSchool, DateTime?>(hs, hsGradDate));
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach(var t in testResult.Keys)
+                Console.WriteLine($"{t}, {testResult[t]}");
+            
+            Console.WriteLine();
+            testSubject.AddHighSchool(AmericanHighSchool.RandomHighSchool(), null);
+            testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach (var t in testResult.Keys)
+                Console.WriteLine($"{t}, {testResult[t]}");
         }
     }
 }

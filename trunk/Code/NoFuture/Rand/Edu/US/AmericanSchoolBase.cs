@@ -4,13 +4,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Xml;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Edu.US
 {
     [Serializable]
-    public abstract class AmericanSchoolBase
+    public abstract class AmericanSchoolBase : IObviate
     {
         public string StateName { get; set; }
         public string StateAbbrev { get; set; }
@@ -159,6 +160,29 @@ namespace NoFuture.Rand.Edu.US
                 return "NY";
             var pickone = Etx.RandomInteger(0, stateAbbrev.Length - 1);
             return stateAbbrev[pickone];
+        }
+
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+
+            var prefix = "";
+            if (this is IUniversity)
+            {
+                var univ = this as IUniversity;
+                prefix = "University";
+                if(!string.IsNullOrWhiteSpace(univ.CampusName))
+                    itemData.Add(textFormat(prefix + "Campus"), univ?.CampusName);
+            }
+            else if (this is IHighSchool)
+            {
+                prefix = "HighSchool";
+                itemData.Add(textFormat(prefix + "State"), StateAbbrev);
+
+            }
+            itemData.Add(textFormat(prefix + nameof(Name)), Name);
+            return itemData;
         }
     }
 }

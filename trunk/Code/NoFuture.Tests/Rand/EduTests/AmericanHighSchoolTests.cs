@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using NoFuture.Rand.Core.Enums;
 using NUnit.Framework;
 using NoFuture.Rand.Edu.US;
 
@@ -68,6 +70,17 @@ namespace NoFuture.Rand.Tests.EduTests
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Name));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StateName));
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = new AmericanHighSchool {Name = "H. Hoover High School", StateAbbrev = "WI"};
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach (var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
         }
     }
 }

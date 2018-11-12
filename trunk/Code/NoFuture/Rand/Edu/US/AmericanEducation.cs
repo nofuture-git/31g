@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Shared.Core;
@@ -10,12 +11,12 @@ using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Edu.US
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IEducation" />
     /// <summary>
     /// Represents the composite of personal education over time.
     /// </summary>
     [Serializable]
-    public class AmericanEducation : IEducation
+    public class AmericanEducation : IEducation, IObviate
     {
         #region fields
         private string _eduLevel;
@@ -58,7 +59,7 @@ namespace NoFuture.Rand.Edu.US
         public OccidentalEdu EduFlag => _eduFlag;
 
         /// <summary>
-        /// Set to a readable string for JSON serialization.
+        /// A readable string for serialization.
         /// </summary>
         public string EduLevel => _eduLevel;
 
@@ -340,6 +341,51 @@ namespace NoFuture.Rand.Edu.US
         public override string ToString()
         {
             return string.Join(" ", HighSchool, College);
+        }
+
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = ToData(txtCase, HighSchools.Cast<IObviate>().ToList());
+            var moreData = ToData(txtCase, Universities.Cast<IObviate>().ToList());
+
+            foreach (var k in moreData.Keys)
+            {
+                if (itemData.ContainsKey(k))
+                    itemData[k] = moreData[k];
+                else
+                    itemData.Add(k, moreData[k]);
+            }
+
+            itemData.Add(textFormat(nameof(EduFlag)), EduFlag);
+            var lvl = EduLevel;
+            if(!string.IsNullOrWhiteSpace(lvl))
+                itemData.Add(textFormat(nameof(EduLevel)), lvl);
+
+            return itemData;
+        }
+
+        protected internal  virtual IDictionary<string, object> ToData(KindsOfTextCase txtCase, List<IObviate> students)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+            if (students.Count == 1)
+            {
+                var hsData = students[0]?.ToData(KindsOfTextCase.Pascel) ?? new Dictionary<string, object>();
+                foreach (var hsd in hsData.Keys)
+                    itemData.Add(textFormat(hsd), hsData[hsd]);
+            }
+            else
+            {
+                for (var i = 0; i < students.Count; i++)
+                {
+                    var hsData = students[i]?.ToData(KindsOfTextCase.Pascel) ?? new Dictionary<string, object>();
+                    foreach (var hsd in hsData.Keys)
+                        itemData.Add(textFormat(hsd + i.ToString("00")), hsData[hsd]);
+                }
+            }
+
+            return itemData;
         }
 
         public void AddHighSchool(AmericanHighSchool hs, DateTime? gradDt)

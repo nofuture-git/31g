@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Edu.US
 {
     [Serializable]
-    public abstract class AmericanStudentBase<T> : DiachronIdentifier, IStudent<T>
+    public abstract class AmericanStudentBase<T> : DiachronIdentifier, IStudent<T>, IObviate where T:IObviate
     {
         public T School { get; }
         public DateTime? Graduation { get; set; }
+        public double? GradePointsAverage { get; set; }
 
         protected AmericanStudentBase(T school)
         {
@@ -37,6 +40,29 @@ namespace NoFuture.Rand.Edu.US
                    School?.GetHashCode() ?? 1 +
                    Graduation?.GetHashCode() ?? 1;
 
+        }
+
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = School.ToData(txtCase) ?? new Dictionary<string, object>();
+
+            var prefix = "";
+            if (School is IUniversity)
+            {
+                prefix = "University";
+            }
+            else if (School is IHighSchool)
+            {
+                prefix = "HighSchool";
+            }
+
+            if(Graduation != null)
+                itemData.Add(textFormat(prefix + nameof(Graduation)), Graduation.Value.ToString("s"));
+
+            if(GradePointsAverage != null)
+                itemData.Add(textFormat(prefix + nameof(GradePointsAverage)), GradePointsAverage);
+            return itemData;
         }
     }
 }

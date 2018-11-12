@@ -10,5 +10,6 @@ namespace NoFuture.Rand.Edu
     {
         T School { get; }
         DateTime? Graduation { get; set; }
+        double? GradePointsAverage { get; set; }
     }
 }

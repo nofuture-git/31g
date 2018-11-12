@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
 using NUnit.Framework;
 using NoFuture.Rand.Edu;
 using NoFuture.Rand.Edu.US;
@@ -57,6 +58,24 @@ namespace NoFuture.Rand.Tests.EduTests
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.StateAbbrev));
             Assert.IsNotNull(testResult.PercentOfStateStudents);
             Assert.IsFalse(testResult.PercentOfStateStudents == 0.0f);
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = new AmericanUniversity
+            {
+                Name = "University of California",
+                CampusName = "Irvine",
+                StateAbbrev = "CA",
+                StateName = "California"
+            };
+
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach(var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
         }
     }
 }
