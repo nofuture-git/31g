@@ -432,6 +432,20 @@ namespace NoFuture.Rand.Domus
                                                     $"date of {_myBirthCert.DateOfBirth} which is impossiable.");
         }
 
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object>();
+            if (BirthCert != null)
+                AddOrReplace(itemData, BirthCert.ToData(txtCase));
+
+            if (DeathCert != null)
+                AddOrReplace(itemData, DeathCert.ToData(txtCase));
+
+
+            return base.ToData(txtCase);
+        }
+
         #endregion
 
     }

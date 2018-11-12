@@ -83,7 +83,12 @@ namespace NoFuture.Rand.Tests.TeleTests
         [Test]
         public void TestToData()
         {
-            var testSubject = new NetUri() {Value = "http://localhost:8840/somewhere", Descriptor = KindsOfLabels.Business | KindsOfLabels.Work };
+            var testSubject = new NetUri
+            {
+                Value = "http://localhost:8840/somewhere",
+                Descriptor = KindsOfLabels.Business | KindsOfLabels.Work,
+                Name = "SocalMedia"
+            };
             var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);

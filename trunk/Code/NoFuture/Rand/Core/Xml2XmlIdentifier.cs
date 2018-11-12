@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Core
         
         public string NodeName => _nodeName;
         public override string Abbrev => string.Empty;
+        public override string LocalName => X_DATA_REFERENCE;
 
         #endregion
 
@@ -90,7 +91,7 @@ namespace NoFuture.Rand.Core
                 ReferenceDictionary.Add(nameAttr.Value, valueAttr.Value);
             }
 
-            XrefIds = new NamedIdentifier[tempIdList.Count];
+            XrefIds = new XmlDocIdentifier[tempIdList.Count];
             Array.Copy(tempIdList.ToArray(), XrefIds, XrefIds.Length);
 
             return XrefIds.Length > 0;

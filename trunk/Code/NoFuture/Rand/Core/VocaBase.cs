@@ -207,5 +207,19 @@ namespace NoFuture.Rand.Core
 
             return x;
         }
+
+        protected static void AddOrReplace(IDictionary<string, object> a, IDictionary<string, object> b)
+        {
+            a = a ?? new Dictionary<string, object>();
+            b = b ?? new Dictionary<string, object>();
+
+            foreach (var k in b.Keys)
+            {
+                if (a.ContainsKey(k))
+                    a[k] = b[k];
+                else
+                    a.Add(k, b[k]);
+            }
+        }
     }
 }

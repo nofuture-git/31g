@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Core
         /// <returns></returns>
         /// <remarks>
         /// The <see cref="XmlElement.LocalName"/> must match 
-        /// this instances <see cref="NamedIdentifier.LocalName"/>
+        /// this instances <see cref="XmlDocIdentifier.LocalName"/>
         /// </remarks>
         public virtual bool TryThisParseXml(XmlElement elem)
         {
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Core
         }
 
         /// <summary>
-        /// Returns the same value as <see cref="NamedIdentifier.LocalName"/>
+        /// Returns the same value as <see cref="XmlDocIdentifier.LocalName"/>
         /// </summary>
         public override string Abbrev => LocalName;
 

@@ -6,10 +6,10 @@ namespace NoFuture.Rand.Core
     /// Base type to couple a local name with an identity
     /// </summary>
     [Serializable]
-    public abstract class NamedIdentifier : Identifier
+    public abstract class XmlDocIdentifier : Identifier
     {
-        protected NamedIdentifier() { }
-        protected NamedIdentifier(string localName)
+        protected XmlDocIdentifier() { }
+        protected XmlDocIdentifier(string localName)
         {
             _localName = localName;
         }

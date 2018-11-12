@@ -52,7 +52,7 @@
     <Compile Include="INumera.cs" />
     <Compile Include="ITempore.cs" />
     <Compile Include="IVoca.cs" />
-    <Compile Include="NamedIdentifier.cs" />
+    <Compile Include="XmlDocIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rchar.cs" />
     <Compile Include="RcharAlphaNumeric.cs" />
