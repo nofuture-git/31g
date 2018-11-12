@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Util.Core;
@@ -44,6 +45,17 @@ namespace NoFuture.Rand.Gov.US
         public override string ToString()
         {
             return string.Join(" ", base.ToString(), City, State);
+        }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = base.ToData(txtCase) ?? new Dictionary<string, object>();
+            if(!string.IsNullOrWhiteSpace(State))
+                itemData.Add(textFormat("BirthState"), State);
+            if(!string.IsNullOrWhiteSpace(City))
+                itemData.Add(textFormat("BirthCity"), City);
+            return itemData;
         }
     }
 }

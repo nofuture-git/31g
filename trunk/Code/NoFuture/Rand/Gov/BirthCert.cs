@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Gov
 {
@@ -8,7 +10,7 @@ namespace NoFuture.Rand.Gov
     /// A general form of a government Birth Certificate
     /// </summary>
     [Serializable]
-    public class BirthCert : VitalRecord
+    public class BirthCert : VitalRecord, IObviate
     {
         public BirthCert(string personFullName)
             : base(personFullName)
@@ -41,6 +43,14 @@ namespace NoFuture.Rand.Gov
         public override string ToString()
         {
             return DateOfBirth.ToString("yyyy-M-dd");
+        }
+
+        public virtual IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object> {{textFormat(nameof(DateOfBirth)), DateOfBirth.ToString("s")}};
+
+            return itemData;
         }
     }
 }

@@ -276,7 +276,7 @@ namespace NoFuture.Rand.Domus.US
             if (dlFormats == null || !dlFormats.Any())
                 return null;
             _dl = dlFormats[0].IssueNewLicense(dt);
-            _dl.Dob = BirthCert.DateOfBirth;
+            _dl.DateOfBirth = BirthCert.DateOfBirth;
             _dl.FullLegalName = String.Join(" ", FirstName.ToUpper(), MiddleName.ToUpper(),
                 LastName.ToUpper());
             _dl.Gender = Gender.ToString();

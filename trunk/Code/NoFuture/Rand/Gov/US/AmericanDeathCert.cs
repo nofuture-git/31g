@@ -58,6 +58,14 @@ namespace NoFuture.Rand.Gov.US
         {
         }
 
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = base.ToData(txtCase) ?? new Dictionary<string, object>();
+            itemData.Add(textFormat(nameof(MannerOfDeath)), Category);
+            return itemData;
+        }
+
         /// <summary>
         /// 32. PART I. Enter the chain of events--diseases, injuries, or 
         /// complications--that directly caused the death. 

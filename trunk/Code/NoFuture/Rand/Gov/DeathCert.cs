@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Gov
 {
@@ -7,7 +9,7 @@ namespace NoFuture.Rand.Gov
     /// A general form of a government Death Certificate
     /// </summary>
     [Serializable]
-    public class DeathCert : VitalRecord
+    public class DeathCert : VitalRecord, IObviate
     {
         public DeathCert(string personFullName) : base(personFullName)
         {
@@ -34,5 +36,12 @@ namespace NoFuture.Rand.Gov
             return DateOfDeath.ToString("yyyy-M-dd");
         }
 
+        public virtual IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
+            var itemData = new Dictionary<string, object> { { textFormat(nameof(DateOfDeath)), DateOfDeath.ToString("s") } };
+
+            return itemData;
+        }
     }
 }

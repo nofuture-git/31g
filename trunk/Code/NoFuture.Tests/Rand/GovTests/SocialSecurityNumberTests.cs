@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NoFuture.Rand.Core.Enums;
+using NUnit.Framework;
 using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Tests.GovTests
@@ -15,7 +17,7 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.IsNotNull(testResult.AreaNumber);
             Assert.IsNotNull(testResult.GroupNumber);
             Assert.IsNotNull(testResult.SerialNumber);
-            System.Diagnostics.Debug.Write(testResult);
+            Console.Write(testResult);
         }
 
         [Test]
@@ -47,7 +49,18 @@ namespace NoFuture.Rand.Tests.GovTests
             Assert.IsTrue(testResult);
 
             testResult = testSubject.Validate("361091010");
-            System.Diagnostics.Debug.Write(testResult);
+            Console.Write(testResult);
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = new SocialSecurityNumber {Value = "555-44-6666"};
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach (var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
         }
     }
 }
