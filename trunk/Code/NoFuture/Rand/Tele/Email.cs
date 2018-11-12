@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Tele
     {
         public override string Abbrev => "Email";
 
-        public Uri ToUri()
+        public override Uri ToUri()
         {
             return string.IsNullOrWhiteSpace(Value) ? null : new Uri($"emailto:{Value}");
         }

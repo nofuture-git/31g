@@ -11,60 +11,42 @@ namespace NoFuture.Rand.Tele
 {
     /// <inheritdoc cref="LabelledIdentifier" />
     /// <summary>
-    /// A wrapper type around the .NET Uri type
+    /// NoFuture Rand container for the general-use URI entity
     /// </summary>
     [Serializable]
     public class NetUri : LabelledIdentifier
     {
         #region fields
         internal const string WEB_MAIL_DOMAINS = "webmailDomains.txt";
+        internal const string SUBDOMAINS = "subdomains.txt";
+        internal const string US_WEBMAIL_DOMAINS = "usWebmailDomains.txt";
         private static string[] _webMaildomains;
-        private Uri _uriValue;
+        private static string[] _subDomains;
+        private static string[] _usWebmailDomains;
         #endregion
 
-        public NetUri() { }
-
-        public NetUri(string uri)
-        {
-            Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out _uriValue);
-        }
-
-        public NetUri(Uri uri)
-        {
-            _uriValue = uri;
-        }
-
-        public string Scheme => _uriValue?.Scheme;
+        public string Scheme => ToUri()?.Scheme;
 
         public override string Abbrev => "Uri";
 
-        public override string Value
+        public virtual Uri ToUri()
         {
-            get => base.Value;
-            set
-            {
-                if(Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out _uriValue))
-                base.Value = value;
-            }
+            return string.IsNullOrWhiteSpace(Value) ? null : new Uri(Value);
         }
-
-        public Uri UriValue => _uriValue;
 
         /// <summary>
         /// Src [https://bitquark.co.uk/blog/2016/02/29/the_most_popular_subdomains_on_the_internet]
         /// </summary>
-        public static string[] Subdomains { get; } = {
-            "www", "mail", "remote", "blog",
-            "webmail", "server", "ns1", "ns2",
-            "smtp", "secure", "vpn", "m", "shop",
-            "ftp", "mail2", "test", "portal", "ns",
-            "ww1", "host", "support", "dev", "web",
-            "bbs", "ww42", "mx", "email", "cloud", "1",
-            "mail1", "2", "forum", "owa", "www2", "gw",
-            "admin","store", "mx1", "cdn", "api",
-            "exchange","app", "gov", "2tty", "vps",
-            "news"
-        };
+        public static string[] Subdomains
+        {
+            get
+            {
+                if (_subDomains != null && _subDomains.Length > 0)
+                    return _subDomains;
+                _subDomains = ReadTextFileData(SUBDOMAINS);
+                return _subDomains;
+            }
+        }
 
         /// <summary>
         /// Loads web mail domains into an array.
@@ -76,21 +58,8 @@ namespace NoFuture.Rand.Tele
             {
                 if (_webMaildomains != null && _webMaildomains.Length > 0)
                     return _webMaildomains;
-
-                var asm = Assembly.GetExecutingAssembly();
-
-                var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.Data.{WEB_MAIL_DOMAINS}");
-                if (data == null)
-                    return null;
-
-                var strmRdr = new StreamReader(data);
-                var webmailData = strmRdr.ReadToEnd();
-                if (String.IsNullOrWhiteSpace(webmailData))
-                    return null;
-
-                _webMaildomains = webmailData.Split(Constants.LF).ToArray();
+                _webMaildomains = ReadTextFileData(WEB_MAIL_DOMAINS);
                 return _webMaildomains;
-
             }
         }
 
@@ -98,13 +67,33 @@ namespace NoFuture.Rand.Tele
         /// Loads only the common web mail domains in the US
         /// Src [https://github.com/mailcheck/mailcheck/wiki/List-of-Popular-Domains]
         /// </summary>
-        public static string[] UsWebmailDomains { get; } = {
-            "aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com",
-            "gmx.com", "googlemail.com","google.com", "hotmail.com", "mac.com",
-            "me.com", "mail.com", "msn.com","live.com", "sbcglobal.net",
-            "verizon.net", "yahoo.com","bellsouth.net", "charter.net", "cox.net",
-            "earthlink.net", "juno.com"
-        };
+        public static string[] UsWebmailDomains
+        {
+            get
+            {
+                if (_usWebmailDomains != null && _usWebmailDomains.Length > 0)
+                    return _usWebmailDomains;
+                _usWebmailDomains = ReadTextFileData(US_WEBMAIL_DOMAINS);
+                return _usWebmailDomains;
+            }
+        }
+
+        private static string[] ReadTextFileData(string name)
+        {
+            var asm = Assembly.GetExecutingAssembly();
+
+            var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.Data.{name}");
+            if (data == null)
+                return null;
+
+            var strmRdr = new StreamReader(data);
+            var webmailData = strmRdr.ReadToEnd();
+            if (string.IsNullOrWhiteSpace(webmailData))
+                return null;
+
+            var txtData = webmailData.Split(Constants.LF).ToArray();
+            return txtData;
+        }
 
         /// <summary>
         /// Gets a random Uri host.

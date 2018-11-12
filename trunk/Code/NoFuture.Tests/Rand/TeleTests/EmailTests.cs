@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
 using NUnit.Framework;
 using NoFuture.Rand.Tele;
 
@@ -49,6 +50,26 @@ namespace NoFuture.Rand.Tests.TeleTests
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Value));
             Console.WriteLine(testResult.ToString());
 
+        }
+
+        [Test]
+        public void TestToUri()
+        {
+            var testSubject = new Email {Value = "testUser@someDomain.net"};
+            Assert.IsNotNull(testSubject.Value);
+            var testResult = testSubject.ToUri();
+            Assert.IsNotNull(testResult);
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = new Email { Value = "testUser@someDomain.net", Descriptor = KindsOfLabels.Home};
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach(var k in testResult.Keys)
+                Console.WriteLine($"{k}: {testResult[k]}");
         }
     }
 }

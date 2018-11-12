@@ -665,7 +665,7 @@ namespace NoFuture.Rand.Com
         public void AddUri(NetUri uri)
         {
             //don't allow callers to add telephone Uri's since there is another storage place for those
-            if (uri != null && uri.Scheme != Tele.Phone.UriSchemaTelephone)
+            if (uri != null && uri.Scheme != Tele.Phone.URI_SCHEMA_TELEPHONE)
                 _netUris.Add(uri);
         }
 
@@ -679,7 +679,7 @@ namespace NoFuture.Rand.Com
                 uri = $"{Uri.UriSchemeMailto}:{uri}";
             if (!Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out var oUri))
                 return;
-            var netUri = new NetUri(oUri) {Descriptor = descriptor};
+            var netUri = new NetUri {Descriptor = descriptor, Value = oUri.ToString()};
             AddUri(netUri);
         }
 

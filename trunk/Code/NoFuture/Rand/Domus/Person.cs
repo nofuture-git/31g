@@ -206,7 +206,7 @@ namespace NoFuture.Rand.Domus
         public void AddUri(NetUri uri)
         {
             //don't allow callers to add telephone Uri's since there is another storage place for those
-            if(uri != null && uri.UriValue?.Scheme != Phone.UriSchemaTelephone)
+            if(uri != null && uri.ToUri()?.Scheme != Phone.URI_SCHEMA_TELEPHONE)
                 _netUris.Add(uri);
         }
 
@@ -221,7 +221,7 @@ namespace NoFuture.Rand.Domus
             if (!Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out var oUri))
                 return;
 
-            AddUri(new NetUri(oUri) {Descriptor = descriptor});
+            AddUri(new NetUri() {Descriptor = descriptor, Value = oUri.ToString()});
         }
 
         protected internal HashSet<Spouse> GetSpouses()

@@ -91,15 +91,15 @@ namespace NoFuture.Rand.Exo
 
             if (string.IsNullOrWhiteSpace(corp.Name))
                 corp.Name = pd.companyName;
-            corp.AddUri(new NetUri($"iex://keystats/{symbol}/year5ChangePercent?value={pd.year5ChangePercent}&dt={dt}"));
-            corp.AddUri(new NetUri($"iex://keystats/{symbol}/year2ChangePercent?value={pd.year2ChangePercent}&dt={dt}"));
-            corp.AddUri(new NetUri($"iex://keystats/{symbol}/year1ChangePercent?value={pd.year1ChangePercent}&dt={dt}"));
-            corp.AddUri(new NetUri($"iex://keystats/{symbol}/day200MovingAvg?value={pd.day200MovingAvg}&dt={dt}"));
-            corp.AddUri(new NetUri($"iex://keystats/{symbol}/day50MovingAvg?value={pd.day50MovingAvg}&dt={dt}"));
-            corp.AddUri(new NetUri($"iex://keystats/{symbol}/beta?value={pd.beta}&dt={dt}"));
-            corp.AddUri(new NetUri($"iex://keystats/{symbol}/week52high?value={pd.week52high}&dt={dt}"));
-            corp.AddUri(new NetUri($"iex://keystats/{symbol}/week52low?value={pd.week52low}&dt={dt}"));
-            corp.AddUri(new NetUri($"iex://keystats/{symbol}/week52change?value={pd.week52change}&dt={dt}"));
+            corp.AddUri(new NetUri {Value = $"iex://keystats/{symbol}/year5ChangePercent?value={pd.year5ChangePercent}&dt={dt}"});
+            corp.AddUri(new NetUri {Value = $"iex://keystats/{symbol}/year2ChangePercent?value={pd.year2ChangePercent}&dt={dt}"});
+            corp.AddUri(new NetUri {Value = $"iex://keystats/{symbol}/year1ChangePercent?value={pd.year1ChangePercent}&dt={dt}"});
+            corp.AddUri(new NetUri {Value = $"iex://keystats/{symbol}/day200MovingAvg?value={pd.day200MovingAvg}&dt={dt}"});
+            corp.AddUri(new NetUri {Value = $"iex://keystats/{symbol}/day50MovingAvg?value={pd.day50MovingAvg}&dt={dt}"});
+            corp.AddUri(new NetUri {Value = $"iex://keystats/{symbol}/beta?value={pd.beta}&dt={dt}"});
+            corp.AddUri(new NetUri {Value = $"iex://keystats/{symbol}/week52high?value={pd.week52high}&dt={dt}"});
+            corp.AddUri(new NetUri {Value = $"iex://keystats/{symbol}/week52low?value={pd.week52low}&dt={dt}"});
+            corp.AddUri(new NetUri {Value = $"iex://keystats/{symbol}/week52change?value={pd.week52change}&dt={dt}"});
 
             return true;
         }

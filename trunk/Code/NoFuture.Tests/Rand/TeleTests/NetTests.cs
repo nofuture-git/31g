@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Tele;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.TeleTests
@@ -13,6 +15,31 @@ namespace NoFuture.Rand.Tests.TeleTests
             var testResult = Tele.NetUri.WebmailDomains;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
+        }
+
+        [Test]
+        public void TestSubdomains()
+        {
+            var testResult = Tele.NetUri.Subdomains;
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+        }
+
+        [Test]
+        public void TestUsWebmailDomains()
+        {
+            var testResult = Tele.NetUri.UsWebmailDomains;
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+        }
+
+        [Test]
+        public void TestToUri()
+        {
+            var testSubject = new NetUri {Value = "http://localhost:8993/Somewhere/", Descriptor = KindsOfLabels.Home};
+            var testResult = testSubject.ToUri();
+            Assert.IsNotNull(testResult);
+
         }
 
         [Test]
@@ -53,6 +80,17 @@ namespace NoFuture.Rand.Tests.TeleTests
 
         }
 
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = new NetUri() {Value = "http://localhost:8840/somewhere", Descriptor = KindsOfLabels.Business | KindsOfLabels.Work };
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach (var k in testResult.Keys)
+                Console.WriteLine($"{k}: {testResult[k]}");
+
+        }
 
         [Test]
         public void TestRandomHttpUri_00()

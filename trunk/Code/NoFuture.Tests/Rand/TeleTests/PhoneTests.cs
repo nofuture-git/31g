@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Tests.TeleTests
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.Formatted));
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult.ToString()));
 
-            Assert.IsTrue(testResult.ToString().Contains("-"));
+            Assert.IsTrue(!testResult.ToString().Contains("-"));
 
             Console.WriteLine(testResult.AreaCode);
             Console.WriteLine(testResult.CentralOfficeCode);
@@ -147,6 +147,21 @@ namespace NoFuture.Rand.Tests.TeleTests
             Assert.AreEqual("7078554512", testOutput.Unformatted);
             Assert.AreEqual(KindsOfLabels.Mobile, testOutput.Descriptor);
 
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = new NorthAmericanPhone
+            {
+                Value = "707-855-4512",
+                Descriptor = KindsOfLabels.Mobile
+            };
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach (var k in testResult.Keys)
+                Console.WriteLine($"{k}: {testResult[k]}");
         }
     }
 }

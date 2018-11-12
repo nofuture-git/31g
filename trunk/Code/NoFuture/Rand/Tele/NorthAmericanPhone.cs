@@ -22,8 +22,6 @@ namespace NoFuture.Rand.Tele
     [Serializable]
     public class NorthAmericanPhone : Phone
     {
-        private const string PHONE_CONTEXT = "phone-context";
-
         #region fields
         private string _areaCode;
         private string _centralOfficeCode;
@@ -76,7 +74,7 @@ namespace NoFuture.Rand.Tele
 
         public override string Value
         {
-            get => Formatted;
+            get => Unformatted;
             set
             {
                 if(!TryParse(value, out var phout))
@@ -105,21 +103,6 @@ namespace NoFuture.Rand.Tele
         #endregion
 
         #region methods
-        public override Uri ToUri()
-        {
-            if(Descriptor == null)
-                return new Uri($"{UriSchemaTelephone}:{Unformatted}");
-
-            var domainname = Descriptor.Value.ToString();
-
-            var d = typeof(KindsOfLabels).FullName?.Split('.').Reverse();
-            if (d != null && d.Any())
-            {
-                domainname = $"{domainname}.{string.Join(".", d)}";
-            }
-            
-            return new Uri($"{UriSchemaTelephone}:{Unformatted};{PHONE_CONTEXT}={domainname}");
-        }
 
         public override bool Equals(object obj)
         {
@@ -203,7 +186,7 @@ namespace NoFuture.Rand.Tele
         public static bool TryParse(Uri phUri, out NorthAmericanPhone phone)
         {
             phone = null;
-            if (phUri == null || phUri.Scheme != UriSchemaTelephone)
+            if (phUri == null || phUri.Scheme != URI_SCHEMA_TELEPHONE)
                 return false;
 
             var absPath = phUri.AbsolutePath;

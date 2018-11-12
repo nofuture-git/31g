@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Core
             if (string.IsNullOrWhiteSpace(value))
                 return itemData;
 
-            var label = Descriptor?.ToString();
+            var label = Descriptor?.ToString().Replace(", ", "");
             itemData.Add(textFormat(label + GetType().Name), value);
             return itemData;
         }
