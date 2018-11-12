@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Com
     public interface IFirm : IVoca
     {
         string Description { get; set; }
-        IEnumerable<Uri> NetUri { get; }
+        IEnumerable<NetUri> NetUri { get; }
         PostalAddress MailingAddress { get; set; }
         PostalAddress BusinessAddress { get; set; }
         IEnumerable<Phone> PhoneNumbers { get; }
@@ -31,16 +31,17 @@ namespace NoFuture.Rand.Com
         void LoadXrefXmlData();
 
         /// <summary>
-        /// Adds the given <see cref="uri"/> to this company
+        /// Adds the given <see cref="uri"/> to this Firm
         /// </summary>
         /// <param name="uri"></param>
-        void AddUri(Uri uri);
+        void AddUri(NetUri uri);
 
         /// <summary>
         /// Parses and, when valid, adds the <see cref="uri"/> to this company
         /// </summary>
         /// <param name="uri"></param>
-        void AddUri(string uri);
+        /// <param name="descriptor"></param>
+        void AddUri(string uri, KindsOfLabels? descriptor = KindsOfLabels.Business);
 
         /// <summary>
         /// Add the given phone number to this person

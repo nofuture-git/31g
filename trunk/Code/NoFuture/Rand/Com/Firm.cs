@@ -27,13 +27,13 @@ namespace NoFuture.Rand.Com
         private NaicsSector _sector;
         private NaicsMarket _market;
         private int _fiscalYearEndDay = 1;
-        private readonly HashSet<Uri> _netUris = new HashSet<Uri>();
+        private readonly HashSet<NetUri> _netUris = new HashSet<NetUri>();
         private readonly List<NorthAmericanPhone> _phoneNumbers = new List<NorthAmericanPhone>();
         #endregion
 
         #region properties
 
-        public IEnumerable<Uri> NetUri => _netUris;
+        public IEnumerable<NetUri> NetUri => _netUris;
         public virtual string Description { get; set; }
         public PostalAddress MailingAddress { get; set; }
         public PostalAddress BusinessAddress { get; set; }
@@ -662,14 +662,14 @@ namespace NoFuture.Rand.Com
         }
 
 
-        public void AddUri(Uri uri)
+        public void AddUri(NetUri uri)
         {
             //don't allow callers to add telephone Uri's since there is another storage place for those
             if (uri != null && uri.Scheme != Tele.Phone.UriSchemaTelephone)
                 _netUris.Add(uri);
         }
 
-        public virtual void AddUri(string uri)
+        public virtual void AddUri(string uri, KindsOfLabels? descriptor = KindsOfLabels.Business)
         {
             if (string.IsNullOrWhiteSpace(uri))
                 return;
@@ -679,8 +679,8 @@ namespace NoFuture.Rand.Com
                 uri = $"{Uri.UriSchemeMailto}:{uri}";
             if (!Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out var oUri))
                 return;
-
-            AddUri(oUri);
+            var netUri = new NetUri(oUri) {Descriptor = descriptor};
+            AddUri(netUri);
         }
 
         #endregion

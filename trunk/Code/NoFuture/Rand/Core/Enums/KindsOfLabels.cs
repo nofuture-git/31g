@@ -10,5 +10,6 @@ namespace NoFuture.Rand.Core.Enums
         Home = 1,
         Work = 2,
         Mobile = 4,
+        Business = 8,
     }
 }
