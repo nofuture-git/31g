@@ -272,7 +272,7 @@ namespace NoFuture.Rand.Opes.US
                 {
                     p.Expectation.Value = homeEquityAmt.ToPecuniam();
                     HousePayment =
-                        new Mereo(item, grp) {Value = loan.MonthlyPayment, DueFrequency = new TimeSpan(30,0,0,0)};
+                        new Mereo(item, grp) {Value = loan.MonthlyPayment, DueFrequency = new TimeSpan(30, 0, 0, 0)};
                 }
                 else
                 {

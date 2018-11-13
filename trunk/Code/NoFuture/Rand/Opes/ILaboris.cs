@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Opes
     /// Expresses a single form of personal employment in time.
     /// Is Latin for work.
     /// </summary>
-    public interface ILaboris : ITempore, IDeinde
+    public interface ILaboris : ITempore, IDeinde, IObviate
     {
         /// <summary>
         /// A flag to designate a person as the legal owner of the employing company.

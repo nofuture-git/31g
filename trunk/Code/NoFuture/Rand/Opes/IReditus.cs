@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Opes
@@ -7,7 +8,7 @@ namespace NoFuture.Rand.Opes
     /// Expresses a personal income in time.
     /// Is Latin for revenue.
     /// </summary>
-    public interface IReditus : IDeinde
+    public interface IReditus : IDeinde, IObviate
     {
         /// <summary>
         /// Returns the <see cref="ILaboris"/> right Now

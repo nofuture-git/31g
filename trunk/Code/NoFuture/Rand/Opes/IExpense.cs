@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Opes
@@ -6,7 +7,7 @@ namespace NoFuture.Rand.Opes
     /// <summary>
     /// Expresses a personal expense in time
     /// </summary>
-    public interface IExpense : IDeinde
+    public interface IExpense : IDeinde, IObviate
     {
 
         /// <summary>

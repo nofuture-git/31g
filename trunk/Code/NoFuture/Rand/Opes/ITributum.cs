@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Opes
@@ -7,7 +8,7 @@ namespace NoFuture.Rand.Opes
     /// Expresses a single form of deductions associated to an employment in time.
     /// Is Latin for tax.
     /// </summary>
-    public interface ITributum : IDeinde
+    public interface ITributum : IDeinde, IObviate
     {
         /// <summary>
         /// List of the current deductions on this employment

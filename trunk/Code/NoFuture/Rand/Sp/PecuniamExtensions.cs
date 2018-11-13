@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Sp
             {new[] {7}, Interval.Weekly},
             {new[] {14}, Interval.BiWeekly},
             {new[] {15}, Interval.SemiMonthly},
-            {new[] {28,29,30}, Interval.Monthly},
+            {new[] {30,28,29}, Interval.Monthly},
             {new[] {45}, Interval.SemiQuarterly},
             {new[] {90,91}, Interval.Quarterly},
             {new[] {180,182}, Interval.SemiAnnually},

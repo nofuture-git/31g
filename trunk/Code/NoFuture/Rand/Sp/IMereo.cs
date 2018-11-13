@@ -42,6 +42,11 @@ namespace NoFuture.Rand.Sp
         /// <returns></returns>
         Pecuniam GetValueInTimespanDenominator(TimeSpan? nextFreq);
 
+        /// <summary>
+        /// Same as its overloaded counterpart
+        /// </summary>
+        /// <param name="totalDays"></param>
+        /// <returns></returns>
         Pecuniam GetValueInTimespanDenominator(double totalDays);
 
     }

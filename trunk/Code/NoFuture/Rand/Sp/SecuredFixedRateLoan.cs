@@ -2,7 +2,6 @@
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp.Cc;
 using NoFuture.Rand.Sp.Enums;
-using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Sp

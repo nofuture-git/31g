@@ -138,7 +138,7 @@ namespace NoFuture.Rand.Opes
         #endregion
 
         #region methods
-        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        public virtual IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
             var itemData = new Dictionary<string, object>();
