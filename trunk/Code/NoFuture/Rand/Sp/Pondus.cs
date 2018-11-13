@@ -4,6 +4,7 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -83,11 +84,10 @@ namespace NoFuture.Rand.Sp
             var sum = 0M;
             foreach (var item in items)
             {
-                //don't include if expectation is missing or its on some internal we've never heard of
-                if (item?.Expectation?.Value == null ||
-                    !Mereo.Interval2AnnualPayMultiplier.ContainsKey(item.Expectation.Interval))
+                //don't include if expectation is missing
+                if (item?.Expectation?.Value == null)
                     continue;
-                sum += item.Expectation.Value.Amount * Mereo.Interval2AnnualPayMultiplier[item.Expectation.Interval];
+                sum += item.Expectation.GetValueInTimespanDenominator(item.DaysPerYear).Amount;
             }
             return new Pecuniam(sum);
         }

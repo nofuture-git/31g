@@ -13,10 +13,15 @@ namespace NoFuture.Rand.Sp
     public interface IMereo : IVoca, IIdentifier<Pecuniam>
     {
         /// <summary>
-        /// The time frame associated to this money entry
+        /// Readable version of <see cref="DueFrequency"/>
+        /// Default is always Annual 
         /// </summary>
         Interval Interval { get; }
 
+        /// <summary>
+        /// The numerical equiv. of <see cref="Interval"/> which calling assembly 
+        /// must specify.
+        /// </summary>
         TimeSpan? DueFrequency { get; set; }
 
         /// <summary>
@@ -31,9 +36,13 @@ namespace NoFuture.Rand.Sp
         List<string> GetExempliGratia();
 
         /// <summary>
-        /// Both assigns <see cref="Interval"/> to Annually and increases the
-        /// Value to match.
+        /// Helper function to get Value in some other TimeSpan denomination 
         /// </summary>
-        void AdjustToAnnualInterval();
+        /// <param name="nextFreq"></param>
+        /// <returns></returns>
+        Pecuniam GetValueInTimespanDenominator(TimeSpan? nextFreq);
+
+        Pecuniam GetValueInTimespanDenominator(double totalDays);
+
     }
 }

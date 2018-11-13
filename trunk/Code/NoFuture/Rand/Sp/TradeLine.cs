@@ -65,14 +65,6 @@ namespace NoFuture.Rand.Sp
 
         #region methods
 
-        public virtual Interval? GetDueFreqAsInterval()
-        {
-            if (DueFrequency == null || DueFrequency == TimeSpan.MinValue)
-                return null;
-
-            return DueFrequency.ToInterval();
-        }
-
         public virtual bool IsInRange(DateTime dt)
         {
             var afterOrOnFromDt = Inception <= dt;
@@ -102,17 +94,22 @@ namespace NoFuture.Rand.Sp
         {
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
             var itemData = new Dictionary<string, object>();
+
             if(Inception != DateTime.MinValue)
                 itemData.Add(textFormat(nameof(Inception)), Inception.ToString("s"));
+
             if(Terminus != null && Terminus != DateTime.MinValue)
                 itemData.Add(textFormat(nameof(Terminus)), Terminus.Value.ToString("s"));
+
             if(FormOfCredit != null)
                 itemData.Add(textFormat(nameof(FormOfCredit)), FormOfCredit.Value.ToString());
-            var interval = GetDueFreqAsInterval();
+
+            var interval = DueFrequency.ToInterval();
             if(interval != null)
                 itemData.Add(textFormat("Interval"), interval);
+
             if(Closure != null)
-                itemData.Add(nameof(ClosedCondition), Closure);
+                itemData.Add(textFormat(nameof(ClosedCondition)), Closure);
 
             return itemData;
         }

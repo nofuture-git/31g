@@ -16,9 +16,9 @@ namespace NoFuture.Rand.Sp
     public class Mereo : VocaBase, IMereo
     {
         #region fields
-        private static Dictionary<Interval, int> _interval2Multiplier;
         private Pecuniam _expectedValue = Pecuniam.Zero;
         private readonly List<string> _exempliGratia = new List<string>();
+        private TimeSpan? _freq;
 
         #endregion
 
@@ -52,7 +52,18 @@ namespace NoFuture.Rand.Sp
 
         #region properties
         public Interval Interval => DueFrequency.ToInterval() ?? Interval.Annually;
-        public TimeSpan? DueFrequency { get; set; }
+        public TimeSpan? DueFrequency
+        {
+            get => _freq;
+            set
+            {
+                var nextFreq = value;
+                //the current value is denominated in some timespan, so adjust to match
+                Value = GetValueInTimespanDenominator(nextFreq);
+                _freq = nextFreq;
+            }
+        }
+
         public Classification? Classification { get; set; }
 
         public string Abbrev => Name;
@@ -63,28 +74,27 @@ namespace NoFuture.Rand.Sp
             get => _expectedValue ?? (_expectedValue = Pecuniam.Zero);
             set => _expectedValue = value;
         }
-        #endregion 
+
+        #endregion
+
+        public Pecuniam GetValueInTimespanDenominator(TimeSpan? nextFreq)
+        {
+            if (_freq == null || nextFreq == null || _freq == nextFreq || Value == Pecuniam.Zero)
+                return Value;
+            return GetValueInTimespanDenominator(nextFreq.Value.TotalDays);
+        }
+
+        public Pecuniam GetValueInTimespanDenominator(double totalDays)
+        {
+            if (_freq == null || Math.Abs(totalDays) < 0.0000001 || Value == Pecuniam.Zero)
+                return Value;
+            var vPerDay = Convert.ToDouble(Value.Amount) / _freq.Value.TotalDays;
+            return new Pecuniam(Convert.ToDecimal(totalDays * vPerDay));
+        }
 
         public List<string> GetExempliGratia()
         {
             return _exempliGratia;
-        }
-
-        public void AdjustToAnnualInterval()
-        {
-            if (Interval == Interval.Annually)
-                return;
-
-            var hasExpectedValue = Value != null && Value != Pecuniam.Zero;
-            var hasMultiplier = Interval2AnnualPayMultiplier.ContainsKey(Interval);
-            DueFrequency = Constants.TropicalYear;
-            if (!hasExpectedValue || !hasMultiplier)
-            {
-                return;
-            }
-
-            var multiplier = Interval2AnnualPayMultiplier[Interval];
-            Value = (Value.ToDouble() * multiplier).ToPecuniam();
         }
 
         public override string ToString()
@@ -114,33 +124,5 @@ namespace NoFuture.Rand.Sp
             return itemData;
         }
 
-        /// <summary>
-        /// A general table to align an interval to some annual multiplier
-        /// (e.g. Hourly means 52 weeks * 40 hours per week = 2080)
-        /// </summary>
-        public static Dictionary<Interval, int> Interval2AnnualPayMultiplier
-        {
-            get
-            {
-                if (_interval2Multiplier != null)
-                    return _interval2Multiplier;
-
-                _interval2Multiplier = new Dictionary<Interval, int>
-                {
-                    {Interval.OnceOnly, 1},
-                    {Interval.Hourly, 2080},
-                    {Interval.Daily, 260},
-                    {Interval.Weekly, 52},
-                    {Interval.BiWeekly, 26},
-                    {Interval.SemiMonthly, 24},
-                    {Interval.Monthly, 12},
-                    {Interval.Quarterly, 4},
-                    {Interval.SemiAnnually, 2},
-                    {Interval.Annually, 1},
-                };
-
-                return _interval2Multiplier;
-            }
-        }
     }
 }

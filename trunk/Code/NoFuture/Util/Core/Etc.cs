@@ -25,6 +25,7 @@ namespace NoFuture.Util.Core
         private static Tuple<int, string>[] _htmlEscStrings;
         public const string DEFAULT_NAME_PREFIX = "_u0000";
         public static string DefaultNamePrefix { get; set; } = DEFAULT_NAME_PREFIX;
+        private const string LOREM_IPSUM_RSC = "NoFuture.Util.Core.Properties.LoremIpsum.EightParagraphs.txt";
 
         /// <summary>
         /// http://stackoverflow.com/questions/1508572/converting-xdocument-to-xmldocument-and-vice-versa
@@ -145,7 +146,7 @@ namespace NoFuture.Util.Core
 
         /// <summary>
         /// Returns a date as a rational number (e.g. 2016.684476658052) 
-        /// where day of year is divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>
+        /// where day-of-year is divided by <see cref="Constants.DBL_TROPICAL_YEAR"/>
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
@@ -153,8 +154,6 @@ namespace NoFuture.Util.Core
         {
             return (d.Year + (d.DayOfYear / Constants.DBL_TROPICAL_YEAR));
         }
-
-        private const string LOREM_IPSUM_RSC = "NoFuture.Util.Core.Properties.LoremIpsum.EightParagraphs.txt";
 
         /// <summary>
         /// Utility function to get eight paragraphs of classic filler text.

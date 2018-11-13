@@ -131,12 +131,15 @@ namespace NoFuture.Rand.Sp
             var v = Value;
             if(v != Pecuniam.Zero)
                 itemData.Add(textFormat("ActualValue"), v.ToString());
+
             var status = CurrentStatus;
             if(status != null)
                 itemData.Add(textFormat("Status"), status.ToString());
+
             var delq = CurrentDelinquency;
             if(delq != null)
                 itemData.Add(textFormat(nameof(PastDue)), delq.ToString());
+
             return itemData;
         }
 

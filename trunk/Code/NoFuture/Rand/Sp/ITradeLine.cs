@@ -37,10 +37,5 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         double DaysPerYear { get; set; }
 
-        /// <summary>
-        /// Gets the <see cref="DueFrequency"/>, if given, as a <see cref="Interval"/>
-        /// </summary>
-        /// <returns></returns>
-        Interval? GetDueFreqAsInterval();
     }
 }

@@ -63,7 +63,7 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestToData()
         {
             var dt = DateTime.Today;
-            var testSubject = new Pondus("test Name");
+            var testSubject = new Pondus("Test Name");
             testSubject.Expectation.AddName(KindsOfNames.Group, "Company");
             var cusip = new Cusip().Value;
             testSubject.AddPositiveValue(dt.AddDays(-360), new Security(cusip, 5000));
