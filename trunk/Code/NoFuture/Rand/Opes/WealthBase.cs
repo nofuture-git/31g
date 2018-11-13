@@ -969,7 +969,7 @@ namespace NoFuture.Rand.Opes
                 var p = GetPondusForItemAndGroup(item, grpName, options);
                 if (p.Expectation.Value == null || p.Expectation.Value == Pecuniam.Zero)
                     p.Expectation.Value = CalcValue(options.SumTotal, grpRates[item] * grpRate);
-                p.Expectation.DueFrequency = options.Interval.ConvertInterval();
+                p.Expectation.DueFrequency = options.Interval.ToTimeSpan();
                 itemsout.Add(p);
             }
 

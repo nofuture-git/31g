@@ -70,7 +70,7 @@ namespace NoFuture.Rand.Sp
             if (DueFrequency == null || DueFrequency == TimeSpan.MinValue)
                 return null;
 
-            return DueFrequency.ConvertTimespan();
+            return DueFrequency.ToInterval();
         }
 
         public virtual bool IsInRange(DateTime dt)

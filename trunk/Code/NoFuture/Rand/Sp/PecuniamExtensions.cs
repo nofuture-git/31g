@@ -10,6 +10,19 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public static class PecuniamExtensions
     {
+        internal static Dictionary<int[], Interval> Days2Interval => new Dictionary<int[], Interval>
+        {
+            {new[] {1}, Interval.Daily},
+            {new[] {7}, Interval.Weekly},
+            {new[] {14}, Interval.BiWeekly},
+            {new[] {15}, Interval.SemiMonthly},
+            {new[] {28,29,30}, Interval.Monthly},
+            {new[] {45}, Interval.SemiQuarterly},
+            {new[] {90,91}, Interval.Quarterly},
+            {new[] {180,182}, Interval.SemiAnnually},
+            {new[] {360,365}, Interval.Annually},
+        };
+
         public static Pecuniam ToPecuniam(this double x)
         {
             return new Pecuniam((decimal)Math.Round(x,2));
@@ -29,9 +42,23 @@ namespace NoFuture.Rand.Sp
             return x == null ? Pecuniam.Zero : x.Aggregate(Pecuniam.Zero, (current, i) => current + i);
         }
 
-        public static TimeSpan? ConvertInterval(this Interval df)
+        /// <summary>
+        /// Helper method to convert a Nf Interval into .NET <see cref="TimeSpan"/>
+        /// </summary>
+        /// <param name="df"></param>
+        /// <returns></returns>
+        public static TimeSpan? ToTimeSpan(this Interval df)
         {
-            throw new NotImplementedException();
+            foreach (var d2i in Days2Interval)
+            {
+                if (d2i.Value == df)
+                {
+                    var days = d2i.Key.First();
+                    return new TimeSpan(days, 0,0,0);
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -40,43 +67,19 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <param name="df"></param>
         /// <returns></returns>
-        public static Interval? ConvertTimespan(this TimeSpan? df)
+        public static Interval? ToInterval(this TimeSpan? df)
         {
             if (df == null)
                 return null;
             var days = df.Value.Days;
 
-            switch (days)
+            foreach (var d2i in Days2Interval)
             {
-                case 0:
-                    return null;
-                case 1:
-                    return Interval.Daily;
-                case 7:
-                    return Interval.Weekly;
-                case 14:
-                    return Interval.BiWeekly;
-                case 15:
-                    return Interval.SemiMonthly;
-                case 28:
-                case 29:
-                case 30:
-                    return Interval.Monthly;
-                case 45:
-                    return Interval.SemiQuarterly;
-                case 90:
-                case 91:
-                    return Interval.Quarterly;
-                case 180:
-                case 182:
-                    return Interval.SemiAnnually;
-                case 360:
-                case 365:
-                    return Interval.Annually;
-                default:
-                    return null;
-
+                if (d2i.Key.Contains(days))
+                    return d2i.Value;
             }
+
+            return null;
         }
     }
 }

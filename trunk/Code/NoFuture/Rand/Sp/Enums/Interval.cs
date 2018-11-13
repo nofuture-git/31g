@@ -5,6 +5,7 @@ namespace NoFuture.Rand.Sp.Enums
     [Serializable]
     public enum Interval
     {
+        None,
         OnceOnly,
         Hourly,
         Daily,

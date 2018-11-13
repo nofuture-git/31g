@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Sp
         #endregion
 
         #region properties
-        public Interval Interval => DueFrequency.ConvertTimespan() ?? Interval.Annually;
+        public Interval Interval => DueFrequency.ToInterval() ?? Interval.Annually;
         public TimeSpan? DueFrequency { get; set; }
         public Classification? Classification { get; set; }
 
