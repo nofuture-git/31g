@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -42,7 +43,7 @@ namespace NoFuture.Rand.Sp
         public Mereo(IMereo mereo) : this((IVoca)mereo)
         {
             Value = mereo.Value;
-            Interval = mereo.Interval;
+            DueFrequency = mereo.DueFrequency;
             Classification = mereo.Classification;
             foreach(var eg in mereo.GetExempliGratia())
                 GetExempliGratia().Add(eg);
@@ -50,7 +51,8 @@ namespace NoFuture.Rand.Sp
         #endregion
 
         #region properties
-        public Interval Interval { get; set; }
+        public Interval Interval => DueFrequency.ConvertTimespan() ?? Interval.Annually;
+        public TimeSpan? DueFrequency { get; set; }
         public Classification? Classification { get; set; }
 
         public string Abbrev => Name;
@@ -75,16 +77,14 @@ namespace NoFuture.Rand.Sp
 
             var hasExpectedValue = Value != null && Value != Pecuniam.Zero;
             var hasMultiplier = Interval2AnnualPayMultiplier.ContainsKey(Interval);
-
+            DueFrequency = Constants.TropicalYear;
             if (!hasExpectedValue || !hasMultiplier)
             {
-                Interval = Interval.Annually;
                 return;
             }
 
             var multiplier = Interval2AnnualPayMultiplier[Interval];
             Value = (Value.ToDouble() * multiplier).ToPecuniam();
-            Interval = Interval.Annually;
         }
 
         public override string ToString()
@@ -140,47 +140,6 @@ namespace NoFuture.Rand.Sp
                 };
 
                 return _interval2Multiplier;
-            }
-        }
-
-        /// <summary>
-        /// Helper method to convert a .NET <see cref="TimeSpan"/>
-        /// into a Nf Interval
-        /// </summary>
-        /// <param name="df"></param>
-        /// <returns></returns>
-        public static Interval? ConvertTimespan(TimeSpan df)
-        {
-            var days = df.Days;
-
-            switch (days)
-            {
-                case 0:
-                    return null;
-                case 1:
-                    return Interval.Daily;
-                case 7:
-                    return Interval.Weekly;
-                case 14:
-                    return Interval.BiWeekly;
-                case 15:
-                    return Interval.SemiMonthly;
-                case 30:
-                    return Interval.Monthly;
-                case 45:
-                    return Interval.SemiQuarterly;
-                case 90:
-                case 91:
-                    return Interval.Quarterly;
-                case 180:
-                case 182:
-                    return Interval.SemiAnnually;
-                case 360:
-                case 365:
-                    return Interval.Annually;
-                default:
-                    return null;
-
             }
         }
     }

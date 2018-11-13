@@ -272,13 +272,13 @@ namespace NoFuture.Rand.Opes.US
                 {
                     p.Expectation.Value = homeEquityAmt.ToPecuniam();
                     HousePayment =
-                        new Mereo(item, grp) {Value = loan.MonthlyPayment, Interval = Interval.Monthly};
+                        new Mereo(item, grp) {Value = loan.MonthlyPayment, DueFrequency = new TimeSpan(30,0,0,0)};
                 }
                 else
                 {
                     p.Expectation.Value = carEquityAmt.ToPecuniam();
                     CarPayment =
-                        new Mereo(item, grp) {Value = loan.MonthlyPayment, Interval = Interval.Monthly};
+                        new Mereo(item, grp) {Value = loan.MonthlyPayment, DueFrequency = new TimeSpan(30, 0, 0, 0) };
                 }
             }
             else

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
@@ -14,7 +15,9 @@ namespace NoFuture.Rand.Sp
         /// <summary>
         /// The time frame associated to this money entry
         /// </summary>
-        Interval Interval { get; set; }
+        Interval Interval { get; }
+
+        TimeSpan? DueFrequency { get; set; }
 
         /// <summary>
         /// Contractual classification of the money item

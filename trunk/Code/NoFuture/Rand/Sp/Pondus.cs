@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Sp
         public Pondus(string name, Interval interval)
         {
             Expectation.Name = name;
-            Expectation.Interval = interval;
+            Expectation.DueFrequency = interval.ConvertInterval();
         }
 
         public Pondus(IVoca names)
@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Sp
         public Pondus(IVoca names, Interval interval)
         {
             Expectation.CopyFrom(names);
-            Expectation.Interval = interval;
+            Expectation.DueFrequency = interval.ConvertInterval();
         }
 
         public Pondus(DateTime startDate) : base(startDate)
@@ -83,6 +83,7 @@ namespace NoFuture.Rand.Sp
             var sum = 0M;
             foreach (var item in items)
             {
+                //don't include if expectation is missing or its on some internal we've never heard of
                 if (item?.Expectation?.Value == null ||
                     !Mereo.Interval2AnnualPayMultiplier.ContainsKey(item.Expectation.Interval))
                     continue;
