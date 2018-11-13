@@ -12,6 +12,10 @@ namespace NoFuture.Rand.Sp
     {
         bool IsEmpty { get; }
 
+        ITransaction FirstTransaction { get; }
+
+        ITransaction LastTransaction { get; }
+
         /// <summary>
         /// Adds the new transaction to the balance
         /// </summary>

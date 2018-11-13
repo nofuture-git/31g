@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
@@ -60,6 +61,20 @@ namespace NoFuture.Rand.Opes.US
             if (expense.Expectation?.Value != null)
                 expense.Expectation.Value = expense.Expectation.Value.GetNeg();
             _expenses.Add(expense);
+        }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            var itemData = new Dictionary<string, object>();
+
+            foreach (var p in CurrentExpectedExpenses)
+            {
+                if (p.Value == Pecuniam.Zero)
+                    continue;
+                AddOrReplace(itemData, p.ToData(txtCase));
+            }
+
+            return itemData;
         }
 
         protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()

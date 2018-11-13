@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Tests.SpTests
 
             Assert.IsTrue(testResult > Pecuniam.Zero);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Tests.SpTests
             var testResult = testSubject.GetEquityAt(null);
             Assert.IsTrue(testResult > Pecuniam.Zero);
 
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
 
         }
 

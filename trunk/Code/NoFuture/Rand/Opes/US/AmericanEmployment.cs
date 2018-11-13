@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
@@ -118,6 +119,20 @@ namespace NoFuture.Rand.Opes.US
         {
             //TODO - use[https://www.bls.gov/news.release/tenure.nr0.htm]
             return new TimeSpan(Etx.RandomInteger(745, 1855), 0, 0, 0);
+        }
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            var itemData = new Dictionary<string, object>();
+
+            foreach (var p in CurrentPay)
+            {
+                if (p.Value == Pecuniam.Zero)
+                    continue;
+                AddOrReplace(itemData, p.ToData(txtCase));
+            }
+
+            return itemData;
         }
 
         public virtual bool IsInRange(DateTime dt)

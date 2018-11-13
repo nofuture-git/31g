@@ -12,6 +12,11 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class SecuredFixedRateLoan : FixedRateLoan
     {
+        /// <summary>
+        /// Src https://data.worldbank.org/indicator/NY.GDP.MKTP.KD 1960-2016
+        /// </summary>
+        public const float AVG_GDP_GROWTH_RATE = 0.031046655f;
+
         private Pecuniam _monthlyPayment;
         private float _rate;
         private readonly int _termInYears;
@@ -79,6 +84,15 @@ namespace NoFuture.Rand.Sp
                     CalcFromRate();
             }
         }
+
+        /// <summary>
+        /// The average estimated rate at which the 
+        /// value of the underlying asset is 
+        /// expected to grow\shrink if it where sold on the open market
+        /// (default is <see cref="AVG_GDP_GROWTH_RATE"/>).
+        /// </summary>
+        public float ExpectedMarketValueRate { get; set; } = AVG_GDP_GROWTH_RATE;
+
         #endregion
 
         #region methods
@@ -91,6 +105,36 @@ namespace NoFuture.Rand.Sp
         {
             var fv = GetValueAt(Inception).Amount.PerDiemInterest(_rate, numOfDays, DaysPerYear);
             return fv;
+        }
+
+        /// <summary>
+        /// Calculates an estimated market value as the purchase price grown at 
+        /// the <see cref="rate"/> at time <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt">
+        /// The date of query
+        /// </param>
+        /// <param name="rate">
+        /// Optional, will use <see cref="ExpectedMarketValueRate"/> if null.
+        /// The rate at which the value increases\decreases over time.
+        /// </param>
+        /// <returns></returns>
+        public virtual Pecuniam GetEstimatedMarketValueAt(DateTime? dt, float? rate = null)
+        {
+            var qDt = dt ?? DateTime.Today;
+            var pDt = Inception;
+
+            var atRate = rate ?? ExpectedMarketValueRate;
+
+            if (qDt < pDt)
+                return OriginalBorrowAmount;
+
+            var numDays = (qDt - pDt).TotalDays;
+
+            var marketValue =
+                OriginalBorrowAmount.GetAbs().Amount.PerDiemInterest(atRate, numDays, DaysPerYear);
+
+            return marketValue.ToPecuniam();
         }
 
         /// <summary>
@@ -219,5 +263,6 @@ namespace NoFuture.Rand.Sp
         }
 
         #endregion
+
     }
 }

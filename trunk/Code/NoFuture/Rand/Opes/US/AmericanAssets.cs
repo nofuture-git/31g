@@ -99,6 +99,26 @@ namespace NoFuture.Rand.Opes.US
             _assets.Add(item);
         }
 
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            var itemData = new Dictionary<string, object>();
+
+            foreach (var p in CurrentAssets)
+            {
+                if (p.Value == Pecuniam.Zero)
+                    continue;
+                var mortgage = p as Mortgage;
+                if (mortgage != null)
+                {
+
+                }
+
+                AddOrReplace(itemData, p.ToData(txtCase));
+            }
+
+            return itemData;
+        }
+
         protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
             return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>

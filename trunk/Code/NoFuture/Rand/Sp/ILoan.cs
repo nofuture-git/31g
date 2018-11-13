@@ -10,5 +10,10 @@ namespace NoFuture.Rand.Sp
         /// The rate used to calc the minimum payment.
         /// </summary>
         float MinPaymentRate { get; set; }
+
+        /// <summary>
+        /// Gets the amount of the first transaction
+        /// </summary>
+        Pecuniam OriginalBorrowAmount { get; }
     }
 }

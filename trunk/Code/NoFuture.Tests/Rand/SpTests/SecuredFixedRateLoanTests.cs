@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 using NUnit.Framework;
@@ -21,14 +20,15 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.IsNotNull(testResult.CurrentStatus);
             Assert.AreNotEqual(SpStatus.NoHistory, testResult.CurrentStatus);
             Assert.AreNotEqual(Pecuniam.Zero, testResult.Value);
-            Debug.WriteLine("MinPaymentRate     : {0}", testResult.MinPaymentRate);
-            Debug.WriteLine("Rate               : {0}", testResult.Rate);
-            Debug.WriteLine("CurrentStatus      : {0}", testResult.CurrentStatus);
-            Debug.WriteLine("CurrentValue       : {0}", testResult.Value);
+            Console.WriteLine("Loan Amount        : {0}", testResult.OriginalBorrowAmount);
+            Console.WriteLine("MinPaymentRate     : {0}", testResult.MinPaymentRate);
+            Console.WriteLine("Rate               : {0}", testResult.Rate);
+            Console.WriteLine("CurrentStatus      : {0}", testResult.CurrentStatus);
+            Console.WriteLine("CurrentValue       : {0}", testResult.Value);
 
             foreach (var t in testResult.Balance.GetTransactionsBetween(null, null, true))
             {
-                Debug.WriteLine(string.Join(" ", t.AtTime, t.Cash, t.Fee, t.Description));
+                Console.WriteLine(string.Join(" ", t.AtTime, t.Cash, t.Fee, t.Description));
             }
         }
 
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.AreNotEqual(SpStatus.NoHistory, testResult.CurrentStatus);
             Assert.AreNotEqual(Pecuniam.Zero, testResult.Value);
             var calcMinPayment = testResult.GetMinPayment(testResult.Inception.AddDays(30));
-            System.Diagnostics.Debug.WriteLine(calcMinPayment);
+            Console.WriteLine(calcMinPayment);
         }
 
 
@@ -113,7 +113,7 @@ namespace NoFuture.Rand.Tests.SpTests
             testLoan.AddNegativeValue(new DateTime(2017, 9, 21), payoff, new Mereo("payoff"), Pecuniam.Zero);
             payoff = testLoan.GetValueAt(new DateTime(2017, 9, 22));
 
-            Debug.WriteLine(payoff);
+            Console.WriteLine(payoff);
             Assert.AreEqual(Pecuniam.Zero, payoff);
         }
 
@@ -138,7 +138,7 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.AreEqual(Pecuniam.Zero, testLoan.Value);
 
             var fv = testLoan.GetValueAt(new DateTime(2028, 12, 15));
-            Debug.WriteLine(fv);
+            Console.WriteLine(fv);
         }
     }
 }

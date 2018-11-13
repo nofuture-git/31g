@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Sp
 {
@@ -34,6 +36,8 @@ namespace NoFuture.Rand.Sp
         /// The borrowing rate for the loan.
         /// </summary>
         public virtual T Rate { get; set; }
+
+        public virtual Pecuniam OriginalBorrowAmount => Balance.FirstTransaction.Cash;
 
         /// <summary>
         /// Gets the minimum payment based on the value at time <see cref="dt"/>

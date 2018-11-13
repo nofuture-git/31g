@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Opes;
 using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Sp;
@@ -46,7 +47,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreNotEqual(0, testResult.Count);
 
             foreach(var tr in testResult)
-                System.Diagnostics.Debug.WriteLine(tr);
+                Console.WriteLine(tr);
 
             var testResultSum = testResult.Select(kv => kv.Value).Sum();
             Assert.AreEqual(1D, Math.Round(testResultSum));
@@ -54,7 +55,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testOptions.SumTotal);
             Assert.AreNotEqual(Pecuniam.Zero, testOptions.SumTotal);
 
-            System.Diagnostics.Debug.WriteLine(testOptions.SumTotal);
+            Console.WriteLine(testOptions.SumTotal);
 
         }
 
@@ -72,7 +73,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreNotEqual(0, testResult.Count);
 
             foreach (var tr in testResult)
-                System.Diagnostics.Debug.WriteLine(tr);
+                Console.WriteLine(tr);
 
             var testResultSum = testResult.Select(kv => kv.Value).Sum();
             Assert.AreEqual(1D, Math.Round(testResultSum));
@@ -80,7 +81,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testOptions.SumTotal);
             Assert.AreNotEqual(Pecuniam.Zero, testOptions.SumTotal);
 
-            System.Diagnostics.Debug.WriteLine(testOptions.SumTotal);
+            Console.WriteLine(testOptions.SumTotal);
         }
 
         [Test]
@@ -96,7 +97,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreNotEqual(0, testResult.Count);
 
             foreach (var tr in testResult)
-                System.Diagnostics.Debug.WriteLine(tr);
+                Console.WriteLine(tr);
 
             var testResultSum = testResult.Select(kv => kv.Value).Sum();
             Assert.AreEqual(1D, Math.Round(testResultSum));
@@ -104,7 +105,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testOptions.SumTotal);
             Assert.AreNotEqual(Pecuniam.Zero, testOptions.SumTotal);
 
-            System.Diagnostics.Debug.WriteLine(testOptions.SumTotal);
+            Console.WriteLine(testOptions.SumTotal);
         }
 
         [Test]
@@ -121,7 +122,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreNotEqual(0, testResult.Count);
 
             foreach (var tr in testResult)
-                System.Diagnostics.Debug.WriteLine(tr);
+                Console.WriteLine(tr);
 
             var testResultSum = testResult.Select(kv => kv.Value).Sum();
             Assert.AreEqual(1D, Math.Round(testResultSum));
@@ -137,7 +138,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             foreach (var tn in testNames)
             {
                 Assert.IsTrue(expectations.Any(e => string.Equals(e, tn, StringComparison.OrdinalIgnoreCase)));
-                System.Diagnostics.Debug.WriteLine(tn);
+                Console.WriteLine(tn);
             }
         }
 
@@ -151,7 +152,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             foreach (var tn in testNames)
             {
                 Assert.IsTrue(expectations.Any(e => string.Equals(e, tn.Name, StringComparison.OrdinalIgnoreCase)));
-                System.Diagnostics.Debug.WriteLine(tn);
+                Console.WriteLine(tn);
             }
         }
 
@@ -167,7 +168,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
 
             foreach (var p in testSubject.MyItems)
-                System.Diagnostics.Debug.WriteLine(p);
+                Console.WriteLine(p);
         }
 
         [Test]
@@ -185,7 +186,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreNotEqual(0, testInput.MyItems.Count);
 
             var diff = Math.Abs(testInput.TotalAnnualPay.ToDouble() - annualIncome.ToDouble());
-            System.Diagnostics.Debug.WriteLine(diff);
+            Console.WriteLine(diff);
             Assert.IsTrue(Math.Round(diff) == 0.0D);
 
             var testSubject = new AmericanDeductions(testInput);
@@ -199,12 +200,12 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreNotEqual(0.0D.ToPecuniam(), totalDeductions);
             //expect deductions as a negative number
             Assert.IsTrue(totalDeductions.ToDouble() < 0.0D);
-            System.Diagnostics.Debug.WriteLine(totalDeductions);
+            Console.WriteLine(totalDeductions);
 
             var ratio = Math.Abs(Math.Round(((annualIncome + totalDeductions) / annualIncome).ToDouble(), 2));
             Assert.IsTrue(ratio < 1.0);
             Assert.IsTrue(ratio > 0.5);
-            System.Diagnostics.Debug.WriteLine(totalDeductions);
+            Console.WriteLine(totalDeductions);
         }
 
         [Test]
@@ -222,7 +223,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreNotEqual(0, testInput.MyItems.Count);
 
             var diff = Math.Abs(testInput.TotalAnnualPay.ToDouble() - annualIncome.ToDouble());
-            System.Diagnostics.Debug.WriteLine(diff);
+            Console.WriteLine(diff);
             Assert.IsTrue(Math.Round(diff) == 0.0D);
 
             var testSubject = new AmericanDeductions(testInput);
@@ -234,7 +235,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(allDeductionsItesm);
 
             Assert.AreEqual(allDeductionsItesm.Count, testResults.Length);
-            System.Diagnostics.Debug.WriteLine(Pondus.GetExpectedAnnualSum(testResults));
+            Console.WriteLine(Pondus.GetExpectedAnnualSum(testResults));
         }
 
         [Test]
@@ -284,7 +285,22 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testResultItem = testSubject.MyItems.FirstOrDefault(x => x.Expectation.Name == "Child Support");
             Assert.IsNotNull(testResultItem);
             Assert.AreNotEqual(0.ToPecuniam(), testResultItem.Expectation.Value);
-            System.Diagnostics.Debug.WriteLine(testResultItem.Expectation.Value);
+            Console.WriteLine(testResultItem.Expectation.Value);
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubjectContext = AmericanEmployment.RandomEmployment();
+            var testSubject = new AmericanDeductions(testSubjectContext);
+            testSubject.RandomizeAllItems(null);
+
+            Assert.IsNotNull(testSubject);
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach(var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
         }
     }
 }

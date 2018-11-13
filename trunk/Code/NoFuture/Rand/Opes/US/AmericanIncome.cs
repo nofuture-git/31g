@@ -114,6 +114,33 @@ namespace NoFuture.Rand.Opes.US
                 _otherIncome.Add(otherIncome);
         }
 
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            var itemData = new Dictionary<string, object>();
+
+            foreach (var job in CurrentEmployment)
+            {
+                var pay = job.CurrentPay;
+                if (pay == null || !pay.Any())
+                    continue;
+                foreach (var p in pay)
+                {
+                    if (p.Value == Pecuniam.Zero)
+                        continue;
+                    AddOrReplace(itemData, p.ToData(txtCase));
+                }
+            }
+
+            foreach (var p in CurrentExpectedOtherIncome)
+            {
+                if (p.Value == Pecuniam.Zero)
+                    continue;
+                AddOrReplace(itemData, p.ToData(txtCase));
+            }
+
+            return itemData;
+        }
+
         protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
             return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>

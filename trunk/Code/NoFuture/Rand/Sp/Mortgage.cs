@@ -7,15 +7,6 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class Mortgage : SecuredFixedRateLoan
     {
-        #region fields
-        /// <summary>
-        /// Src https://data.worldbank.org/indicator/NY.GDP.MKTP.KD 1960-2016
-        /// </summary>
-        public const float AVG_GDP_GROWTH_RATE = 0.031046655f;
-        #endregion
-
-        #region ctors
-
         /// <summary>
         /// Creates a new mortgage with the given data
         /// </summary>
@@ -30,26 +21,6 @@ namespace NoFuture.Rand.Sp
             FormOfCredit = Enums.FormOfCredit.Mortgage;
         }
 
-        #endregion
-
-        #region properties
-
-        /// <summary>
-        /// The average estimated rate at which the 
-        /// value of the real-estate is 
-        /// expected to grow (default is <see cref="AVG_GDP_GROWTH_RATE"/>).
-        /// </summary>
-        public float ExpectedAppreciationRate { get; set; } = AVG_GDP_GROWTH_RATE;
-
-        /// <summary>
-        /// The original purchase price of the real-estate.
-        /// </summary>
-        public Pecuniam PurchasePrice => GetValueAt(Inception);
-
-        #endregion
-
-        #region methods
-
         /// <summary>
         /// Gets the difference of the current 
         /// market value to the remaining balance on the note.
@@ -58,10 +29,9 @@ namespace NoFuture.Rand.Sp
         /// The date of query.
         /// </param>
         /// <param name="marketValue">
-        /// Optional, defaults to <see cref="GetEstimatedMarketValueAt"/>
         /// </param>
         /// <returns></returns>
-        public Pecuniam GetEquityAt(DateTime? dt, Pecuniam marketValue = null)
+        public virtual Pecuniam GetEquityAt(DateTime? dt, Pecuniam marketValue = null)
         {
             var qDt = dt ?? DateTime.Today;
 
@@ -73,29 +43,5 @@ namespace NoFuture.Rand.Sp
             return mv - qRemaining;
         }
 
-        /// <summary>
-        /// Calculates an estimated market value as the purchase price grown at 
-        /// the <see cref="ExpectedAppreciationRate"/>
-        /// </summary>
-        /// <param name="dt">
-        /// The date of query
-        /// </param>
-        /// <returns></returns>
-        public Pecuniam GetEstimatedMarketValueAt(DateTime? dt)
-        {
-            var qDt = dt ?? DateTime.Today;
-            var pDt = Inception;
-
-            if(qDt < pDt)
-                return PurchasePrice;
-
-            var numDays = (qDt - pDt).TotalDays;
-
-            var marketValue =
-                PurchasePrice.GetAbs().Amount.PerDiemInterest(ExpectedAppreciationRate,numDays, DaysPerYear);
-
-            return marketValue.ToPecuniam();
-        }
-        #endregion
     }
 }
