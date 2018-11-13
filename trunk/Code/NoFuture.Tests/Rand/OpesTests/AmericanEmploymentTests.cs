@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Opes;
 using NoFuture.Rand.Opes.US;
@@ -180,6 +181,18 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(60000.0.ToPecuniam(), testResult);
             testResult = testSubject.TotalAnnualNetPay;
             Assert.AreEqual((60000.0 - fedTax).ToPecuniam(), testResult);
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = AmericanEmployment.RandomEmployment();
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach (var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
+
         }
     }
 }

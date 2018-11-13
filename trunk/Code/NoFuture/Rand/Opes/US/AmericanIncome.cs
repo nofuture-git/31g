@@ -116,26 +116,24 @@ namespace NoFuture.Rand.Opes.US
 
         public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x?.Replace(",", "").Replace(" ", ""), txtCase);
             var itemData = new Dictionary<string, object>();
 
-            foreach (var job in CurrentEmployment)
+            var jobs = CurrentEmployment;
+            foreach (var job in jobs)
             {
-                var pay = job.CurrentPay;
-                if (pay == null || !pay.Any())
-                    continue;
-                foreach (var p in pay)
-                {
-                    if (p.Value == Pecuniam.Zero)
-                        continue;
-                    AddOrReplace(itemData, p.ToData(txtCase));
-                }
+                AddOrReplace(itemData, job.ToData(txtCase));
             }
 
-            foreach (var p in CurrentExpectedOtherIncome)
+            var coi = CurrentExpectedOtherIncome;
+            foreach (var p in coi)
             {
-                if (p.Value == Pecuniam.Zero)
+                if (p.Expectation == null || p.Expectation.Value == Pecuniam.Zero)
                     continue;
-                AddOrReplace(itemData, p.ToData(txtCase));
+
+                var expenseName = Division.ToString() + p.Expectation.Interval;
+                expenseName += p.Name;
+                itemData.Add(textFormat(expenseName), p.Expectation.Value.ToString());
             }
 
             return itemData;

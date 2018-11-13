@@ -89,7 +89,7 @@ namespace NoFuture.Rand.Sp
             if (_freq == null || Math.Abs(totalDays) < 0.0000001 || Value == Pecuniam.Zero)
                 return Value;
             var vPerDay = Convert.ToDouble(Value.Amount) / _freq.Value.TotalDays;
-            return new Pecuniam(Convert.ToDecimal(totalDays * vPerDay));
+            return new Pecuniam(Convert.ToDecimal(totalDays * vPerDay)).GetRounded();
         }
 
         public List<string> GetExempliGratia()

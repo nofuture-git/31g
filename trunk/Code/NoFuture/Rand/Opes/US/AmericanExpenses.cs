@@ -65,13 +65,17 @@ namespace NoFuture.Rand.Opes.US
 
         public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x?.Replace(",", "").Replace(" ", ""), txtCase);
             var itemData = new Dictionary<string, object>();
 
             foreach (var p in CurrentExpectedExpenses)
             {
-                if (p.Value == Pecuniam.Zero)
+                if (p.Expectation == null || p.Expectation.Value == Pecuniam.Zero)
                     continue;
-                AddOrReplace(itemData, p.ToData(txtCase));
+
+                var expenseName = Division.ToString() + Interval.Monthly;
+                expenseName += p.Name;
+                itemData.Add(textFormat(expenseName), p.Expectation.GetValueInTimespanDenominator(30));
             }
 
             return itemData;

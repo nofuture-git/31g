@@ -262,7 +262,7 @@ namespace NoFuture.Rand.Opes
         {
             if (items == null)
                 return null;
-            var o = items.Where(x => x.Terminus == null && x.Expectation.Value != Pecuniam.Zero).ToList();
+            var o = items.Where(x => x.Terminus == null).ToList();
             o.Sort(Comparer);
             return o.ToArray();
         }

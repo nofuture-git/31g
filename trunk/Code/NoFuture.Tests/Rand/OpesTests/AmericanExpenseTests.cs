@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Opes;
 using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Sp;
@@ -577,6 +578,17 @@ namespace NoFuture.Rand.Tests.OpesTests
             testSubject.AddItem("Tractor", 1850);
             testResult = testSubject.TotalAnnualExpectedExpenses;
             Assert.AreEqual(((900.0D * -12) - 1850).ToPecuniam(), testResult);
+        }
+
+        [Test]
+        public void TestToData()
+        {
+            var testSubject = AmericanExpenses.RandomExpenses();
+            var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+            foreach (var tr in testResult.Keys)
+                Console.WriteLine($"{tr}, {testResult[tr]}");
         }
     }
 }

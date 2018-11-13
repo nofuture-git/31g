@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Cc;
 using NoFuture.Rand.Sp.Enums;
 
@@ -30,6 +32,18 @@ namespace NoFuture.Rand.Sp
         #endregion
 
         #region methods
+
+        public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            Func<string, string> textFormat = (x) => VocaBase.TransformText(x?.Replace(",", "").Replace(" ", ""), txtCase);
+            var acctName = Name + RoutingNumber + Id?.ValueLastFour();
+            var itemData = new Dictionary<string, object>
+            {
+                {textFormat(acctName + "Balance"), Value.ToString()}
+            };
+
+            return itemData;
+        }
 
         public override Pecuniam GetValueAt(DateTime dt)
         {

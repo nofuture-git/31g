@@ -107,12 +107,6 @@ namespace NoFuture.Rand.Opes.US
             {
                 if (p.Value == Pecuniam.Zero)
                     continue;
-                var mortgage = p as Mortgage;
-                if (mortgage != null)
-                {
-
-                }
-
                 AddOrReplace(itemData, p.ToData(txtCase));
             }
 
