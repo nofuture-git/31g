@@ -9,11 +9,11 @@ digraph noFutureRandDataSp {
     CreditCardAccount -> FixedRateLoan
     CreditCardAccount -> IAccount
     FixedRateLoan -> LoanBase
-    LoanBase -> Pondus
-    Rent -> Pondus
+    LoanBase -> NamedReceivable
+    Rent -> NamedReceivable
     CheckingAccount -> DepositAccount
     SavingsAccount -> DepositAccount
-    DepositAccount -> Pondus
+    DepositAccount -> NamedReceivable
     DepositAccount -> IAccount
     Receivable -> IReceivable
     Receivable -> TradeLine
@@ -32,7 +32,7 @@ digraph noFutureRandDataSp {
     ITradeLine -> IObviate
     IAccount -> IAsset
     IAccount -> ITempore
-    Pondus -> Receivable
+    NamedReceivable -> Receivable
     ITradeLine -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
     Balance -> IBalance
     Balance -> TransactionHistory

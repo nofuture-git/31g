@@ -11,7 +11,6 @@ namespace NoFuture.Rand.Sp
     /// <summary>
     /// A capital concrete composition type to 
     /// bind time and names with expected and actual money value.
-    /// Is Latin for weight.
     /// </summary>
     [Serializable]
     public class NamedReceivable : Receivable

@@ -21,58 +21,58 @@
 </g>
 <!-- Mortgage -->
 <g id="node3" class="node"><title>Mortgage</title>
-<polygon fill="none" stroke="black" points="480,-925 403,-925 403,-889 480,-889 480,-925"/>
-<text text-anchor="middle" x="441.5" y="-903.3" font-family="Consolas" font-size="14.00">Mortgage</text>
+<polygon fill="none" stroke="black" points="467,-925 390,-925 390,-889 467,-889 467,-925"/>
+<text text-anchor="middle" x="428.5" y="-903.3" font-family="Consolas" font-size="14.00">Mortgage</text>
 </g>
 <!-- SecuredFixedRateLoan -->
 <g id="node4" class="node"><title>SecuredFixedRateLoan</title>
-<polygon fill="none" stroke="black" points="525,-852 358,-852 358,-816 525,-816 525,-852"/>
-<text text-anchor="middle" x="441.5" y="-830.3" font-family="Consolas" font-size="14.00">SecuredFixedRateLoan</text>
+<polygon fill="none" stroke="black" points="512,-852 345,-852 345,-816 512,-816 512,-852"/>
+<text text-anchor="middle" x="428.5" y="-830.3" font-family="Consolas" font-size="14.00">SecuredFixedRateLoan</text>
 </g>
 <!-- Mortgage&#45;&gt;SecuredFixedRateLoan -->
 <g id="edge1" class="edge"><title>Mortgage&#45;&gt;SecuredFixedRateLoan</title>
-<path fill="none" stroke="black" d="M441.5,-888.813C441.5,-880.789 441.5,-871.047 441.5,-862.069"/>
-<polygon fill="black" stroke="black" points="445,-862.029 441.5,-852.029 438,-862.029 445,-862.029"/>
+<path fill="none" stroke="black" d="M428.5,-888.813C428.5,-880.789 428.5,-871.047 428.5,-862.069"/>
+<polygon fill="black" stroke="black" points="432,-862.029 428.5,-852.029 425,-862.029 432,-862.029"/>
 </g>
 <!-- FixedRateLoan -->
 <g id="node5" class="node"><title>FixedRateLoan</title>
-<polygon fill="none" stroke="black" points="498.5,-779 384.5,-779 384.5,-743 498.5,-743 498.5,-779"/>
-<text text-anchor="middle" x="441.5" y="-757.3" font-family="Consolas" font-size="14.00">FixedRateLoan</text>
+<polygon fill="none" stroke="black" points="485.5,-779 371.5,-779 371.5,-743 485.5,-743 485.5,-779"/>
+<text text-anchor="middle" x="428.5" y="-757.3" font-family="Consolas" font-size="14.00">FixedRateLoan</text>
 </g>
 <!-- SecuredFixedRateLoan&#45;&gt;FixedRateLoan -->
 <g id="edge2" class="edge"><title>SecuredFixedRateLoan&#45;&gt;FixedRateLoan</title>
-<path fill="none" stroke="black" d="M441.5,-815.813C441.5,-807.789 441.5,-798.047 441.5,-789.069"/>
-<polygon fill="black" stroke="black" points="445,-789.029 441.5,-779.029 438,-789.029 445,-789.029"/>
+<path fill="none" stroke="black" d="M428.5,-815.813C428.5,-807.789 428.5,-798.047 428.5,-789.069"/>
+<polygon fill="black" stroke="black" points="432,-789.029 428.5,-779.029 425,-789.029 432,-789.029"/>
 </g>
 <!-- LoanBase -->
 <g id="node8" class="node"><title>LoanBase</title>
-<polygon fill="none" stroke="black" points="480,-706 403,-706 403,-670 480,-670 480,-706"/>
-<text text-anchor="middle" x="441.5" y="-684.3" font-family="Consolas" font-size="14.00">LoanBase</text>
+<polygon fill="none" stroke="black" points="467,-706 390,-706 390,-670 467,-670 467,-706"/>
+<text text-anchor="middle" x="428.5" y="-684.3" font-family="Consolas" font-size="14.00">LoanBase</text>
 </g>
 <!-- FixedRateLoan&#45;&gt;LoanBase -->
 <g id="edge5" class="edge"><title>FixedRateLoan&#45;&gt;LoanBase</title>
-<path fill="none" stroke="black" d="M441.5,-742.813C441.5,-734.789 441.5,-725.047 441.5,-716.069"/>
-<polygon fill="black" stroke="black" points="445,-716.029 441.5,-706.029 438,-716.029 445,-716.029"/>
+<path fill="none" stroke="black" d="M428.5,-742.813C428.5,-734.789 428.5,-725.047 428.5,-716.069"/>
+<polygon fill="black" stroke="black" points="432,-716.029 428.5,-706.029 425,-716.029 432,-716.029"/>
 </g>
 <!-- CreditCardAccount -->
 <g id="node6" class="node"><title>CreditCardAccount</title>
-<polygon fill="none" stroke="black" points="786.5,-852 642.5,-852 642.5,-816 786.5,-816 786.5,-852"/>
-<text text-anchor="middle" x="714.5" y="-830.3" font-family="Consolas" font-size="14.00">CreditCardAccount</text>
+<polygon fill="none" stroke="black" points="773.5,-852 629.5,-852 629.5,-816 773.5,-816 773.5,-852"/>
+<text text-anchor="middle" x="701.5" y="-830.3" font-family="Consolas" font-size="14.00">CreditCardAccount</text>
 </g>
 <!-- CreditCardAccount&#45;&gt;FixedRateLoan -->
 <g id="edge3" class="edge"><title>CreditCardAccount&#45;&gt;FixedRateLoan</title>
-<path fill="none" stroke="black" d="M649.11,-815.994C606.67,-804.956 551.506,-790.61 508.71,-779.479"/>
-<polygon fill="black" stroke="black" points="509.505,-776.07 498.946,-776.94 507.743,-782.844 509.505,-776.07"/>
+<path fill="none" stroke="black" d="M636.11,-815.994C593.67,-804.956 538.506,-790.61 495.71,-779.479"/>
+<polygon fill="black" stroke="black" points="496.505,-776.07 485.946,-776.94 494.743,-782.844 496.505,-776.07"/>
 </g>
 <!-- IAccount -->
 <g id="node7" class="node"><title>IAccount</title>
-<polygon fill="none" stroke="black" points="630,-579 553,-579 553,-543 630,-543 630,-579"/>
-<text text-anchor="middle" x="591.5" y="-557.3" font-family="Consolas" font-size="14.00">IAccount</text>
+<polygon fill="none" stroke="black" points="646,-579 569,-579 569,-543 646,-543 646,-579"/>
+<text text-anchor="middle" x="607.5" y="-557.3" font-family="Consolas" font-size="14.00">IAccount</text>
 </g>
 <!-- CreditCardAccount&#45;&gt;IAccount -->
 <g id="edge4" class="edge"><title>CreditCardAccount&#45;&gt;IAccount</title>
-<path fill="none" stroke="black" d="M768.89,-815.947C792.344,-804.891 814.5,-787.657 814.5,-762 814.5,-762 814.5,-762 814.5,-651 814.5,-613.757 705.851,-585.143 640.228,-571.258"/>
-<polygon fill="black" stroke="black" points="640.591,-567.759 630.089,-569.157 639.171,-574.613 640.591,-567.759"/>
+<path fill="none" stroke="black" d="M755.89,-815.947C779.344,-804.891 801.5,-787.657 801.5,-762 801.5,-762 801.5,-762 801.5,-651 801.5,-587.204 713.759,-568.963 656.291,-563.857"/>
+<polygon fill="black" stroke="black" points="656.536,-560.366 646.293,-563.073 655.988,-567.344 656.536,-560.366"/>
 </g>
 <!-- IAsset -->
 <g id="node18" class="node"><title>IAsset</title>
@@ -81,8 +81,8 @@
 </g>
 <!-- IAccount&#45;&gt;IAsset -->
 <g id="edge27" class="edge"><title>IAccount&#45;&gt;IAsset</title>
-<path fill="none" stroke="black" d="M593.254,-542.791C596.908,-506.955 605.355,-424.087 609.743,-381.047"/>
-<polygon fill="black" stroke="black" points="613.233,-381.319 610.765,-371.015 606.269,-380.609 613.233,-381.319"/>
+<path fill="none" stroke="black" d="M607.918,-542.791C608.788,-506.955 610.799,-424.087 611.844,-381.047"/>
+<polygon fill="black" stroke="black" points="615.343,-381.097 612.087,-371.015 608.345,-380.927 615.343,-381.097"/>
 </g>
 <!-- ITempore -->
 <g id="node24" class="node"><title>ITempore</title>
@@ -91,83 +91,83 @@
 </g>
 <!-- IAccount&#45;&gt;ITempore -->
 <g id="edge28" class="edge"><title>IAccount&#45;&gt;ITempore</title>
-<path fill="none" stroke="black" d="M579.267,-542.856C568.159,-525.576 553.5,-497.713 553.5,-471 553.5,-471 553.5,-471 553.5,-352 553.5,-334.893 553.5,-315.703 553.5,-300.52"/>
+<path fill="none" stroke="black" d="M589.218,-542.775C573.552,-526.076 553.5,-499.194 553.5,-471 553.5,-471 553.5,-471 553.5,-352 553.5,-334.893 553.5,-315.703 553.5,-300.52"/>
 <polygon fill="black" stroke="black" points="557,-300.26 553.5,-290.26 550,-300.26 557,-300.26"/>
 </g>
-<!-- Pondus -->
-<g id="node9" class="node"><title>Pondus</title>
-<polygon fill="none" stroke="black" points="418.5,-633 356.5,-633 356.5,-597 418.5,-597 418.5,-633"/>
-<text text-anchor="middle" x="387.5" y="-611.3" font-family="Consolas" font-size="14.00">Pondus</text>
+<!-- NamedReceivable -->
+<g id="node9" class="node"><title>NamedReceivable</title>
+<polygon fill="none" stroke="black" points="470,-633 341,-633 341,-597 470,-597 470,-633"/>
+<text text-anchor="middle" x="405.5" y="-611.3" font-family="Consolas" font-size="14.00">NamedReceivable</text>
 </g>
-<!-- LoanBase&#45;&gt;Pondus -->
-<g id="edge6" class="edge"><title>LoanBase&#45;&gt;Pondus</title>
-<path fill="none" stroke="black" d="M428.428,-669.813C421.862,-661.179 413.781,-650.555 406.54,-641.034"/>
-<polygon fill="black" stroke="black" points="409.291,-638.87 400.452,-633.029 403.719,-643.107 409.291,-638.87"/>
+<!-- LoanBase&#45;&gt;NamedReceivable -->
+<g id="edge6" class="edge"><title>LoanBase&#45;&gt;NamedReceivable</title>
+<path fill="none" stroke="black" d="M422.932,-669.813C420.305,-661.702 417.109,-651.836 414.174,-642.777"/>
+<polygon fill="black" stroke="black" points="417.428,-641.463 411.016,-633.029 410.769,-643.621 417.428,-641.463"/>
 </g>
 <!-- ILoan -->
 <g id="node23" class="node"><title>ILoan</title>
-<polygon fill="none" stroke="black" points="490.5,-633 436.5,-633 436.5,-597 490.5,-597 490.5,-633"/>
-<text text-anchor="middle" x="463.5" y="-611.3" font-family="Consolas" font-size="14.00">ILoan</text>
+<polygon fill="none" stroke="black" points="542.5,-633 488.5,-633 488.5,-597 542.5,-597 542.5,-633"/>
+<text text-anchor="middle" x="515.5" y="-611.3" font-family="Consolas" font-size="14.00">ILoan</text>
 </g>
 <!-- LoanBase&#45;&gt;ILoan -->
 <g id="edge22" class="edge"><title>LoanBase&#45;&gt;ILoan</title>
-<path fill="none" stroke="black" d="M446.826,-669.813C449.339,-661.702 452.396,-651.836 455.203,-642.777"/>
-<polygon fill="black" stroke="black" points="458.607,-643.617 458.223,-633.029 451.92,-641.545 458.607,-643.617"/>
+<path fill="none" stroke="black" d="M449.56,-669.813C460.674,-660.743 474.479,-649.477 486.581,-639.6"/>
+<polygon fill="black" stroke="black" points="489.099,-642.063 494.634,-633.029 484.673,-636.64 489.099,-642.063"/>
 </g>
 <!-- Receivable -->
 <g id="node14" class="node"><title>Receivable</title>
-<polygon fill="none" stroke="black" points="433.5,-525 341.5,-525 341.5,-489 433.5,-489 433.5,-525"/>
-<text text-anchor="middle" x="387.5" y="-503.3" font-family="Consolas" font-size="14.00">Receivable</text>
+<polygon fill="none" stroke="black" points="451.5,-525 359.5,-525 359.5,-489 451.5,-489 451.5,-525"/>
+<text text-anchor="middle" x="405.5" y="-503.3" font-family="Consolas" font-size="14.00">Receivable</text>
 </g>
-<!-- Pondus&#45;&gt;Receivable -->
-<g id="edge29" class="edge"><title>Pondus&#45;&gt;Receivable</title>
-<path fill="none" stroke="black" d="M387.5,-596.969C387.5,-580.378 387.5,-554.883 387.5,-535.431"/>
-<polygon fill="black" stroke="black" points="391,-535.341 387.5,-525.341 384,-535.341 391,-535.341"/>
+<!-- NamedReceivable&#45;&gt;Receivable -->
+<g id="edge29" class="edge"><title>NamedReceivable&#45;&gt;Receivable</title>
+<path fill="none" stroke="black" d="M405.5,-596.969C405.5,-580.378 405.5,-554.883 405.5,-535.431"/>
+<polygon fill="black" stroke="black" points="409,-535.341 405.5,-525.341 402,-535.341 409,-535.341"/>
 </g>
 <!-- Rent -->
 <g id="node10" class="node"><title>Rent</title>
-<polygon fill="none" stroke="black" points="384.5,-706 330.5,-706 330.5,-670 384.5,-670 384.5,-706"/>
-<text text-anchor="middle" x="357.5" y="-684.3" font-family="Consolas" font-size="14.00">Rent</text>
+<polygon fill="none" stroke="black" points="371.5,-706 317.5,-706 317.5,-670 371.5,-670 371.5,-706"/>
+<text text-anchor="middle" x="344.5" y="-684.3" font-family="Consolas" font-size="14.00">Rent</text>
 </g>
-<!-- Rent&#45;&gt;Pondus -->
-<g id="edge7" class="edge"><title>Rent&#45;&gt;Pondus</title>
-<path fill="none" stroke="black" d="M364.762,-669.813C368.226,-661.615 372.448,-651.623 376.309,-642.485"/>
-<polygon fill="black" stroke="black" points="379.637,-643.603 380.305,-633.029 373.188,-640.878 379.637,-643.603"/>
+<!-- Rent&#45;&gt;NamedReceivable -->
+<g id="edge7" class="edge"><title>Rent&#45;&gt;NamedReceivable</title>
+<path fill="none" stroke="black" d="M359.266,-669.813C366.759,-661.092 375.996,-650.34 384.239,-640.746"/>
+<polygon fill="black" stroke="black" points="387.008,-642.895 390.87,-633.029 381.698,-638.333 387.008,-642.895"/>
 </g>
 <!-- CheckingAccount -->
 <g id="node11" class="node"><title>CheckingAccount</title>
-<polygon fill="none" stroke="black" points="646,-779 517,-779 517,-743 646,-743 646,-779"/>
-<text text-anchor="middle" x="581.5" y="-757.3" font-family="Consolas" font-size="14.00">CheckingAccount</text>
+<polygon fill="none" stroke="black" points="633,-779 504,-779 504,-743 633,-743 633,-779"/>
+<text text-anchor="middle" x="568.5" y="-757.3" font-family="Consolas" font-size="14.00">CheckingAccount</text>
 </g>
 <!-- DepositAccount -->
 <g id="node12" class="node"><title>DepositAccount</title>
-<polygon fill="none" stroke="black" points="649.5,-706 527.5,-706 527.5,-670 649.5,-670 649.5,-706"/>
-<text text-anchor="middle" x="588.5" y="-684.3" font-family="Consolas" font-size="14.00">DepositAccount</text>
+<polygon fill="none" stroke="black" points="634.5,-706 512.5,-706 512.5,-670 634.5,-670 634.5,-706"/>
+<text text-anchor="middle" x="573.5" y="-684.3" font-family="Consolas" font-size="14.00">DepositAccount</text>
 </g>
 <!-- CheckingAccount&#45;&gt;DepositAccount -->
 <g id="edge8" class="edge"><title>CheckingAccount&#45;&gt;DepositAccount</title>
-<path fill="none" stroke="black" d="M583.195,-742.813C583.986,-734.789 584.946,-725.047 585.831,-716.069"/>
-<polygon fill="black" stroke="black" points="589.323,-716.324 586.821,-706.029 582.357,-715.637 589.323,-716.324"/>
+<path fill="none" stroke="black" d="M569.71,-742.813C570.275,-734.789 570.961,-725.047 571.594,-716.069"/>
+<polygon fill="black" stroke="black" points="575.09,-716.25 572.301,-706.029 568.107,-715.758 575.09,-716.25"/>
 </g>
 <!-- DepositAccount&#45;&gt;IAccount -->
 <g id="edge11" class="edge"><title>DepositAccount&#45;&gt;IAccount</title>
-<path fill="none" stroke="black" d="M588.911,-669.881C589.408,-649.146 590.253,-613.953 590.842,-589.422"/>
-<polygon fill="black" stroke="black" points="594.343,-589.394 591.084,-579.313 587.345,-589.226 594.343,-589.394"/>
+<path fill="none" stroke="black" d="M578.156,-669.881C583.822,-649.053 593.455,-613.637 600.131,-589.092"/>
+<polygon fill="black" stroke="black" points="603.543,-589.881 602.791,-579.313 596.789,-588.044 603.543,-589.881"/>
 </g>
-<!-- DepositAccount&#45;&gt;Pondus -->
-<g id="edge10" class="edge"><title>DepositAccount&#45;&gt;Pondus</title>
-<path fill="none" stroke="black" d="M534.092,-669.924C504.984,-660.518 468.39,-648.264 428.283,-633.175"/>
-<polygon fill="black" stroke="black" points="429.44,-629.871 418.849,-629.597 426.958,-636.416 429.44,-629.871"/>
+<!-- DepositAccount&#45;&gt;NamedReceivable -->
+<g id="edge10" class="edge"><title>DepositAccount&#45;&gt;NamedReceivable</title>
+<path fill="none" stroke="black" d="M533.26,-669.994C509.847,-660.099 480.142,-647.545 455.268,-637.033"/>
+<polygon fill="black" stroke="black" points="456.568,-633.783 445.994,-633.114 453.843,-640.23 456.568,-633.783"/>
 </g>
 <!-- SavingsAccount -->
 <g id="node13" class="node"><title>SavingsAccount</title>
-<polygon fill="none" stroke="black" points="786.5,-779 664.5,-779 664.5,-743 786.5,-743 786.5,-779"/>
-<text text-anchor="middle" x="725.5" y="-757.3" font-family="Consolas" font-size="14.00">SavingsAccount</text>
+<polygon fill="none" stroke="black" points="773.5,-779 651.5,-779 651.5,-743 773.5,-743 773.5,-779"/>
+<text text-anchor="middle" x="712.5" y="-757.3" font-family="Consolas" font-size="14.00">SavingsAccount</text>
 </g>
 <!-- SavingsAccount&#45;&gt;DepositAccount -->
 <g id="edge9" class="edge"><title>SavingsAccount&#45;&gt;DepositAccount</title>
-<path fill="none" stroke="black" d="M692.685,-742.994C674.013,-733.317 650.433,-721.097 630.43,-710.73"/>
-<polygon fill="black" stroke="black" points="632.011,-707.607 621.522,-706.114 628.79,-713.822 632.011,-707.607"/>
+<path fill="none" stroke="black" d="M679.206,-742.994C660.261,-733.317 636.337,-721.097 616.042,-710.73"/>
+<polygon fill="black" stroke="black" points="617.502,-707.546 607.004,-706.114 614.317,-713.779 617.502,-707.546"/>
 </g>
 <!-- IReceivable -->
 <g id="node15" class="node"><title>IReceivable</title>
@@ -176,8 +176,8 @@
 </g>
 <!-- Receivable&#45;&gt;IReceivable -->
 <g id="edge12" class="edge"><title>Receivable&#45;&gt;IReceivable</title>
-<path fill="none" stroke="black" d="M407.834,-488.813C418.565,-479.743 431.894,-468.477 443.578,-458.6"/>
-<polygon fill="black" stroke="black" points="445.975,-461.157 451.353,-452.029 441.456,-455.811 445.975,-461.157"/>
+<path fill="none" stroke="black" d="M421.477,-488.813C429.665,-480.005 439.778,-469.125 448.764,-459.458"/>
+<polygon fill="black" stroke="black" points="451.425,-461.736 455.67,-452.029 446.298,-456.97 451.425,-461.736"/>
 </g>
 <!-- TradeLine -->
 <g id="node16" class="node"><title>TradeLine</title>
@@ -186,18 +186,18 @@
 </g>
 <!-- Receivable&#45;&gt;TradeLine -->
 <g id="edge13" class="edge"><title>Receivable&#45;&gt;TradeLine</title>
-<path fill="none" stroke="black" d="M381.206,-488.813C378.204,-480.615 374.545,-470.623 371.199,-461.485"/>
-<polygon fill="black" stroke="black" points="374.461,-460.215 367.736,-452.029 367.888,-462.623 374.461,-460.215"/>
+<path fill="none" stroke="black" d="M394.849,-488.813C389.606,-480.353 383.18,-469.984 377.373,-460.612"/>
+<polygon fill="black" stroke="black" points="380.296,-458.685 372.053,-452.029 374.346,-462.373 380.296,-458.685"/>
 </g>
 <!-- ITradeLine -->
 <g id="node17" class="node"><title>ITradeLine</title>
-<polygon fill="none" stroke="black" points="512.5,-371 420.5,-371 420.5,-335 512.5,-335 512.5,-371"/>
-<text text-anchor="middle" x="466.5" y="-349.3" font-family="Consolas" font-size="14.00">ITradeLine</text>
+<polygon fill="none" stroke="black" points="511.5,-371 419.5,-371 419.5,-335 511.5,-335 511.5,-371"/>
+<text text-anchor="middle" x="465.5" y="-349.3" font-family="Consolas" font-size="14.00">ITradeLine</text>
 </g>
 <!-- IReceivable&#45;&gt;ITradeLine -->
 <g id="edge14" class="edge"><title>IReceivable&#45;&gt;ITradeLine</title>
-<path fill="none" stroke="black" d="M470.415,-415.858C469.773,-405.713 468.945,-392.634 468.216,-381.117"/>
-<polygon fill="black" stroke="black" points="471.708,-380.867 467.583,-371.108 464.722,-381.31 471.708,-380.867"/>
+<path fill="none" stroke="black" d="M470.198,-415.858C469.428,-405.713 468.434,-392.634 467.56,-381.117"/>
+<polygon fill="black" stroke="black" points="471.047,-380.815 466.799,-371.108 464.067,-381.345 471.047,-380.815"/>
 </g>
 <!-- IReceivable&#45;&gt;IAsset -->
 <g id="edge15" class="edge"><title>IReceivable&#45;&gt;IAsset</title>
@@ -206,24 +206,24 @@
 </g>
 <!-- IMereo -->
 <g id="node19" class="node"><title>IMereo</title>
-<polygon fill="none" stroke="black" points="179.5,-371 117.5,-371 117.5,-335 179.5,-335 179.5,-371"/>
-<text text-anchor="middle" x="148.5" y="-349.3" font-family="Consolas" font-size="14.00">IMereo</text>
+<polygon fill="none" stroke="black" points="168.5,-371 106.5,-371 106.5,-335 168.5,-335 168.5,-371"/>
+<text text-anchor="middle" x="137.5" y="-349.3" font-family="Consolas" font-size="14.00">IMereo</text>
 </g>
 <!-- IReceivable&#45;&gt;IMereo -->
 <g id="edge16" class="edge"><title>IReceivable&#45;&gt;IMereo</title>
-<path fill="none" stroke="black" stroke-dasharray="1,5" d="M421.975,-418.536C418.773,-417.661 415.594,-416.809 412.5,-416 333.925,-395.467 241.374,-374.455 189.359,-362.932"/>
-<polygon fill="black" stroke="black" points="190.032,-359.496 179.513,-360.757 188.522,-366.331 190.032,-359.496"/>
-<text text-anchor="middle" x="352" y="-391.6" font-family="Consolas" font-size="8.00">HAS&#45;A</text>
+<path fill="none" stroke="black" stroke-dasharray="1,5" d="M421.983,-418.504C418.779,-417.637 415.598,-416.795 412.5,-416 329.886,-394.805 232.313,-373.735 178.431,-362.442"/>
+<polygon fill="black" stroke="black" points="179.078,-359.002 168.573,-360.383 177.646,-365.854 179.078,-359.002"/>
+<text text-anchor="middle" x="349" y="-391.6" font-family="Consolas" font-size="8.00">HAS&#45;A</text>
 </g>
 <!-- TradeLine&#45;&gt;ITradeLine -->
 <g id="edge23" class="edge"><title>TradeLine&#45;&gt;ITradeLine</title>
-<path fill="none" stroke="black" d="M384.283,-415.858C399.281,-404.574 419.103,-389.66 435.526,-377.304"/>
-<polygon fill="black" stroke="black" points="437.874,-379.917 443.761,-371.108 433.666,-374.324 437.874,-379.917"/>
+<path fill="none" stroke="black" d="M384.066,-415.858C398.921,-404.574 418.555,-389.66 434.821,-377.304"/>
+<polygon fill="black" stroke="black" points="437.132,-379.944 442.978,-371.108 432.897,-374.37 437.132,-379.944"/>
 </g>
 <!-- ITradeLine&#45;&gt;ITempore -->
 <g id="edge24" class="edge"><title>ITradeLine&#45;&gt;ITempore</title>
-<path fill="none" stroke="black" d="M485.378,-334.858C497.576,-323.781 513.627,-309.207 527.084,-296.987"/>
-<polygon fill="black" stroke="black" points="529.609,-299.422 534.659,-290.108 524.903,-294.24 529.609,-299.422"/>
+<path fill="none" stroke="black" d="M484.595,-334.858C496.934,-323.781 513.169,-309.207 526.781,-296.987"/>
+<polygon fill="black" stroke="black" points="529.339,-299.393 534.443,-290.108 524.663,-294.184 529.339,-299.393"/>
 </g>
 <!-- ITransactionable -->
 <g id="node25" class="node"><title>ITransactionable</title>
@@ -232,8 +232,8 @@
 </g>
 <!-- ITradeLine&#45;&gt;ITransactionable -->
 <g id="edge25" class="edge"><title>ITradeLine&#45;&gt;ITransactionable</title>
-<path fill="none" stroke="black" d="M437.641,-334.858C418.121,-323.264 392.149,-307.837 371.026,-295.29"/>
-<polygon fill="black" stroke="black" points="372.688,-292.206 362.303,-290.108 369.113,-298.224 372.688,-292.206"/>
+<path fill="none" stroke="black" d="M436.858,-334.858C417.485,-323.264 391.708,-307.837 370.744,-295.29"/>
+<polygon fill="black" stroke="black" points="372.464,-292.241 362.086,-290.108 368.869,-298.247 372.464,-292.241"/>
 </g>
 <!-- IObviate -->
 <g id="node26" class="node"><title>IObviate</title>
@@ -242,8 +242,8 @@
 </g>
 <!-- ITradeLine&#45;&gt;IObviate -->
 <g id="edge26" class="edge"><title>ITradeLine&#45;&gt;IObviate</title>
-<path fill="none" stroke="black" d="M464.764,-334.858C463.737,-324.713 462.412,-311.634 461.246,-300.117"/>
-<polygon fill="black" stroke="black" points="464.722,-299.705 460.232,-290.108 457.758,-300.41 464.722,-299.705"/>
+<path fill="none" stroke="black" d="M463.981,-334.858C463.082,-324.713 461.923,-311.634 460.903,-300.117"/>
+<polygon fill="black" stroke="black" points="464.385,-299.76 460.016,-290.108 457.412,-300.378 464.385,-299.76"/>
 </g>
 <!-- IBalance -->
 <g id="node27" class="node"><title>IBalance</title>
@@ -252,14 +252,14 @@
 </g>
 <!-- ITradeLine&#45;&gt;IBalance -->
 <g id="edge30" class="edge"><title>ITradeLine&#45;&gt;IBalance</title>
-<path fill="none" stroke="black" stroke-dasharray="1,5" d="M512.565,-344.943C571.733,-335.413 677.635,-316.781 776.979,-289.925"/>
-<polygon fill="black" stroke="black" points="778.158,-293.231 786.879,-287.215 776.31,-286.479 778.158,-293.231"/>
-<text text-anchor="middle" x="714" y="-310.6" font-family="Consolas" font-size="8.00">HAS&#45;A</text>
+<path fill="none" stroke="black" stroke-dasharray="1,5" d="M511.715,-344.959C571.074,-335.444 677.317,-316.831 776.95,-289.932"/>
+<polygon fill="black" stroke="black" points="778.157,-293.23 786.88,-287.217 776.311,-286.478 778.157,-293.23"/>
+<text text-anchor="middle" x="713" y="-310.6" font-family="Consolas" font-size="8.00">HAS&#45;A</text>
 </g>
 <!-- IMereo&#45;&gt;PecuniamIdentifier -->
 <g id="edge21" class="edge"><title>IMereo&#45;&gt;PecuniamIdentifier</title>
-<path fill="none" stroke="black" d="M150.887,-334.858C152.299,-324.713 154.121,-311.634 155.724,-300.117"/>
-<polygon fill="black" stroke="black" points="159.205,-300.496 157.118,-290.108 152.272,-299.53 159.205,-300.496"/>
+<path fill="none" stroke="black" d="M142.274,-334.858C145.128,-324.609 148.816,-311.366 152.047,-299.765"/>
+<polygon fill="black" stroke="black" points="155.425,-300.681 154.736,-290.108 148.681,-298.803 155.425,-300.681"/>
 </g>
 <!-- IVoca -->
 <g id="node22" class="node"><title>IVoca</title>
@@ -268,18 +268,18 @@
 </g>
 <!-- IMereo&#45;&gt;IVoca -->
 <g id="edge19" class="edge"><title>IMereo&#45;&gt;IVoca</title>
-<path fill="none" stroke="black" d="M122.245,-334.858C104.645,-323.367 81.279,-308.112 62.1558,-295.627"/>
-<polygon fill="black" stroke="black" points="63.9908,-292.645 53.704,-290.108 60.1639,-298.506 63.9908,-292.645"/>
+<path fill="none" stroke="black" d="M113.632,-334.858C97.7756,-323.471 76.7723,-308.386 59.4761,-295.965"/>
+<polygon fill="black" stroke="black" points="61.4858,-293.099 51.3218,-290.108 57.4025,-298.785 61.4858,-293.099"/>
 </g>
 <!-- Mereo -->
 <g id="node20" class="node"><title>Mereo</title>
-<polygon fill="none" stroke="black" points="121.5,-452 67.5,-452 67.5,-416 121.5,-416 121.5,-452"/>
-<text text-anchor="middle" x="94.5" y="-430.3" font-family="Consolas" font-size="14.00">Mereo</text>
+<polygon fill="none" stroke="black" points="115.5,-452 61.5,-452 61.5,-416 115.5,-416 115.5,-452"/>
+<text text-anchor="middle" x="88.5" y="-430.3" font-family="Consolas" font-size="14.00">Mereo</text>
 </g>
 <!-- Mereo&#45;&gt;IMereo -->
 <g id="edge18" class="edge"><title>Mereo&#45;&gt;IMereo</title>
-<path fill="none" stroke="black" d="M106.217,-415.858C113.506,-405.195 123.01,-391.291 131.161,-379.367"/>
-<polygon fill="black" stroke="black" points="134.052,-381.339 136.806,-371.108 128.273,-377.389 134.052,-381.339"/>
+<path fill="none" stroke="black" d="M99.1323,-415.858C105.682,-405.299 114.203,-391.561 121.55,-379.715"/>
+<polygon fill="black" stroke="black" points="124.592,-381.451 126.888,-371.108 118.643,-377.762 124.592,-381.451"/>
 </g>
 <!-- VocaBase -->
 <g id="node21" class="node"><title>VocaBase</title>
@@ -288,8 +288,8 @@
 </g>
 <!-- Mereo&#45;&gt;VocaBase -->
 <g id="edge17" class="edge"><title>Mereo&#45;&gt;VocaBase</title>
-<path fill="none" stroke="black" d="M82.3488,-415.858C74.7903,-405.195 64.9344,-391.291 56.4815,-379.367"/>
-<polygon fill="black" stroke="black" points="59.2659,-377.243 50.6275,-371.108 53.5552,-381.291 59.2659,-377.243"/>
+<path fill="none" stroke="black" d="M77.6507,-415.858C70.9676,-405.299 62.2728,-391.561 54.7751,-379.715"/>
+<polygon fill="black" stroke="black" points="57.6335,-377.686 49.3281,-371.108 51.7187,-381.43 57.6335,-377.686"/>
 </g>
 <!-- VocaBase&#45;&gt;IVoca -->
 <g id="edge20" class="edge"><title>VocaBase&#45;&gt;IVoca</title>
@@ -298,13 +298,13 @@
 </g>
 <!-- Balance -->
 <g id="node28" class="node"><title>Balance</title>
-<polygon fill="none" stroke="black" points="981,-371 912,-371 912,-335 981,-335 981,-371"/>
-<text text-anchor="middle" x="946.5" y="-349.3" font-family="Consolas" font-size="14.00">Balance</text>
+<polygon fill="none" stroke="black" points="953,-371 884,-371 884,-335 953,-335 953,-371"/>
+<text text-anchor="middle" x="918.5" y="-349.3" font-family="Consolas" font-size="14.00">Balance</text>
 </g>
 <!-- Balance&#45;&gt;IBalance -->
 <g id="edge31" class="edge"><title>Balance&#45;&gt;IBalance</title>
-<path fill="none" stroke="black" d="M920.245,-334.858C902.645,-323.367 879.279,-308.112 860.156,-295.627"/>
-<polygon fill="black" stroke="black" points="861.991,-292.645 851.704,-290.108 858.164,-298.506 861.991,-292.645"/>
+<path fill="none" stroke="black" d="M898.32,-334.858C885.159,-323.678 867.802,-308.934 853.335,-296.645"/>
+<polygon fill="black" stroke="black" points="855.528,-293.915 845.64,-290.108 850.996,-299.25 855.528,-293.915"/>
 </g>
 <!-- TransactionHistory -->
 <g id="node29" class="node"><title>TransactionHistory</title>
@@ -313,38 +313,38 @@
 </g>
 <!-- Balance&#45;&gt;TransactionHistory -->
 <g id="edge32" class="edge"><title>Balance&#45;&gt;TransactionHistory</title>
-<path fill="none" stroke="black" d="M949.104,-334.858C950.645,-324.713 952.632,-311.634 954.381,-300.117"/>
-<polygon fill="black" stroke="black" points="957.86,-300.521 955.901,-290.108 950.939,-299.469 957.86,-300.521"/>
+<path fill="none" stroke="black" d="M927.179,-334.858C932.473,-324.402 939.346,-310.83 945.303,-299.064"/>
+<polygon fill="black" stroke="black" points="948.443,-300.611 949.838,-290.108 942.198,-297.449 948.443,-300.611"/>
 </g>
 <!-- VariableRateLoan -->
 <g id="node30" class="node"><title>VariableRateLoan</title>
-<polygon fill="none" stroke="black" points="366,-779 229,-779 229,-743 366,-743 366,-779"/>
-<text text-anchor="middle" x="297.5" y="-757.3" font-family="Consolas" font-size="14.00">VariableRateLoan</text>
+<polygon fill="none" stroke="black" points="353,-779 216,-779 216,-743 353,-743 353,-779"/>
+<text text-anchor="middle" x="284.5" y="-757.3" font-family="Consolas" font-size="14.00">VariableRateLoan</text>
 </g>
 <!-- VariableRateLoan&#45;&gt;LoanBase -->
 <g id="edge33" class="edge"><title>VariableRateLoan&#45;&gt;LoanBase</title>
-<path fill="none" stroke="black" d="M331.992,-742.994C351.706,-733.273 376.626,-720.987 397.711,-710.59"/>
-<polygon fill="black" stroke="black" points="399.37,-713.675 406.791,-706.114 396.274,-707.397 399.37,-713.675"/>
+<path fill="none" stroke="black" d="M318.992,-742.994C338.706,-733.273 363.626,-720.987 384.711,-710.59"/>
+<polygon fill="black" stroke="black" points="386.37,-713.675 393.791,-706.114 383.274,-707.397 386.37,-713.675"/>
 </g>
 <!-- Security -->
 <g id="node31" class="node"><title>Security</title>
-<polygon fill="none" stroke="black" points="1107,-452 1030,-452 1030,-416 1107,-416 1107,-452"/>
-<text text-anchor="middle" x="1068.5" y="-430.3" font-family="Consolas" font-size="14.00">Security</text>
+<polygon fill="none" stroke="black" points="1104,-452 1027,-452 1027,-416 1104,-416 1104,-452"/>
+<text text-anchor="middle" x="1065.5" y="-430.3" font-family="Consolas" font-size="14.00">Security</text>
 </g>
 <!-- Security&#45;&gt;IAsset -->
 <g id="edge34" class="edge"><title>Security&#45;&gt;IAsset</title>
-<path fill="none" stroke="black" d="M1029.62,-426.265C944.249,-411.474 741.054,-376.271 653.641,-361.128"/>
-<polygon fill="black" stroke="black" points="654.022,-357.641 643.571,-359.383 652.827,-364.539 654.022,-357.641"/>
+<path fill="none" stroke="black" d="M1026.88,-426.265C942.169,-411.492 740.697,-376.357 653.687,-361.183"/>
+<polygon fill="black" stroke="black" points="654.111,-357.704 643.659,-359.434 652.909,-364.6 654.111,-357.704"/>
 </g>
 <!-- Pecuniam -->
 <g id="node32" class="node"><title>Pecuniam</title>
-<polygon fill="none" stroke="black" points="1107,-371 1030,-371 1030,-335 1107,-335 1107,-371"/>
-<text text-anchor="middle" x="1068.5" y="-349.3" font-family="Consolas" font-size="14.00">Pecuniam</text>
+<polygon fill="none" stroke="black" points="1104,-371 1027,-371 1027,-335 1104,-335 1104,-371"/>
+<text text-anchor="middle" x="1065.5" y="-349.3" font-family="Consolas" font-size="14.00">Pecuniam</text>
 </g>
 <!-- Security&#45;&gt;Pecuniam -->
 <g id="edge35" class="edge"><title>Security&#45;&gt;Pecuniam</title>
-<path fill="none" stroke="black" d="M1068.5,-415.858C1068.5,-405.713 1068.5,-392.634 1068.5,-381.117"/>
-<polygon fill="black" stroke="black" points="1072,-381.108 1068.5,-371.108 1065,-381.108 1072,-381.108"/>
+<path fill="none" stroke="black" d="M1065.5,-415.858C1065.5,-405.713 1065.5,-392.634 1065.5,-381.117"/>
+<polygon fill="black" stroke="black" points="1069,-381.108 1065.5,-371.108 1062,-381.108 1069,-381.108"/>
 </g>
 <!-- Cusip -->
 <g id="node33" class="node"><title>Cusip</title>
@@ -353,9 +353,9 @@
 </g>
 <!-- Security&#45;&gt;Cusip -->
 <g id="edge36" class="edge"><title>Security&#45;&gt;Cusip</title>
-<path fill="none" stroke="black" stroke-dasharray="1,5" d="M1087.38,-415.858C1099.58,-404.781 1115.63,-390.207 1129.08,-377.987"/>
-<polygon fill="black" stroke="black" points="1131.61,-380.422 1136.66,-371.108 1126.9,-375.24 1131.61,-380.422"/>
-<text text-anchor="middle" x="1120.5" y="-391.6" font-family="Consolas" font-size="8.00">Id</text>
+<path fill="none" stroke="black" stroke-dasharray="1,5" d="M1085.03,-415.858C1097.65,-404.781 1114.25,-390.207 1128.17,-377.987"/>
+<polygon fill="black" stroke="black" points="1130.8,-380.336 1136.01,-371.108 1126.19,-375.075 1130.8,-380.336"/>
+<text text-anchor="middle" x="1118.5" y="-391.6" font-family="Consolas" font-size="8.00">Id</text>
 </g>
 <!-- Currency -->
 <g id="node37" class="node"><title>Currency</title>
@@ -364,9 +364,9 @@
 </g>
 <!-- Pecuniam&#45;&gt;Currency -->
 <g id="edge40" class="edge"><title>Pecuniam&#45;&gt;Currency</title>
-<path fill="none" stroke="black" stroke-dasharray="1,5" d="M1067.73,-334.885C1066.72,-312.44 1064.93,-272.799 1063.73,-246.215"/>
-<polygon fill="black" stroke="black" points="1067.22,-245.882 1063.27,-236.049 1060.22,-246.197 1067.22,-245.882"/>
-<text text-anchor="middle" x="1072.5" y="-310.6" font-family="Consolas" font-size="8.00">Id</text>
+<path fill="none" stroke="black" stroke-dasharray="1,5" d="M1065.11,-334.885C1064.61,-312.44 1063.71,-272.799 1063.11,-246.215"/>
+<polygon fill="black" stroke="black" points="1066.61,-245.968 1062.88,-236.049 1059.61,-246.126 1066.61,-245.968"/>
+<text text-anchor="middle" x="1070.5" y="-310.6" font-family="Consolas" font-size="8.00">Id</text>
 </g>
 <!-- INumera -->
 <g id="node38" class="node"><title>INumera</title>
@@ -375,8 +375,8 @@
 </g>
 <!-- Pecuniam&#45;&gt;INumera -->
 <g id="edge42" class="edge"><title>Pecuniam&#45;&gt;INumera</title>
-<path fill="none" stroke="black" d="M1080.87,-334.858C1088.56,-324.195 1098.59,-310.291 1107.2,-298.367"/>
-<polygon fill="black" stroke="black" points="1110.14,-300.266 1113.16,-290.108 1104.47,-296.17 1110.14,-300.266"/>
+<path fill="none" stroke="black" d="M1078.52,-334.858C1086.62,-324.195 1097.18,-310.291 1106.23,-298.367"/>
+<polygon fill="black" stroke="black" points="1109.25,-300.189 1112.51,-290.108 1103.67,-295.955 1109.25,-300.189"/>
 </g>
 <!-- RIdentifierWithChkDigit -->
 <g id="node34" class="node"><title>RIdentifierWithChkDigit</title>
