@@ -1,12 +1,17 @@
 ﻿using System;
-using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// Represents something of value which may be sold 
-    /// on the open market for cash
+    /// on the open market for cash.
     /// </summary>
+    /// <remarks>
+    /// Considers time as a discrete set of indivisible units where
+    /// a single unit is the smallest possible division of the <see cref="DateTime"/> type.
+    /// An asset is participatory in-time and <see cref="Value"/> 
+    /// is, therefore, a function of time.
+    /// </remarks>
     public interface IAsset
     {
         /// <summary>
@@ -15,17 +20,15 @@ namespace NoFuture.Rand.Sp
         Pecuniam Value { get; }
 
         /// <summary>
-        /// Get the status for the given asset at time <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        SpStatus GetStatus(DateTime? dt);
-
-        /// <summary>
-        /// Get the current balance for the given <see cref="dt"/>
+        /// Get the current value of this asset at time <see cref="dt"/>
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
         Pecuniam GetValueAt(DateTime dt);
+
+        /// <summary>
+        /// Represents the expectation of the given asset in the from of value and name(s).
+        /// </summary>
+        IMereo Expectation { get; }
     }
 }

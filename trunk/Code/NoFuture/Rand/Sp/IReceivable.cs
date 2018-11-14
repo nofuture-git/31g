@@ -25,13 +25,15 @@ namespace NoFuture.Rand.Sp
         Pecuniam GetMinPayment(DateTime dt);
 
         /// <summary>
-        /// Represents the expected value of the given receivable
-        /// </summary>
-        IMereo Expectation { get; }
-
-        /// <summary>
         /// Get the status, if applicable, of the receivable at the current time.
         /// </summary>
         SpStatus? CurrentStatus { get; }
+
+        /// <summary>
+        /// Get the status for the given asset at time <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        SpStatus GetStatus(DateTime? dt);
     }
 }

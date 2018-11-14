@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Sp
         public Pondus(string name, Interval interval)
         {
             Expectation.Name = name;
-            Expectation.DueFrequency = interval.ToTimeSpan();
+            Expectation.TimeDenominator = interval.ToTimeSpan();
         }
 
         public Pondus(IVoca names)
@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Sp
         public Pondus(IVoca names, Interval interval)
         {
             Expectation.CopyFrom(names);
-            Expectation.DueFrequency = interval.ToTimeSpan();
+            Expectation.TimeDenominator = interval.ToTimeSpan();
         }
 
         public Pondus(DateTime startDate) : base(startDate)

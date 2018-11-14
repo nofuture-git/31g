@@ -636,3 +636,14 @@ Nikefication: a branding strategy without actual industrial processes behind it.
 reify: make something which is abstract  more concrete or real
 contrapasso: suffer the opposite, from Dante's Inferno, a punishment which resembles 
              or contrast with the freely choosen sin itself
+domain: is the set of values which may go into a function
+codomain: is a set of values which may possibly come out of a function
+range: is the set of values which may come out of a function
+range[Statistics]: the lowest and highest values of a set
+span: deals with space, the amount of space something covers
+slice: concerns food, being a thin, board piece cut from some source
+sector: area of a circle connected by three points, two points on 
+        circumference and center point (pizza slice)
+segment: part of a line that connects two points
+ray: part of a line with starting point but no ending point
+ 

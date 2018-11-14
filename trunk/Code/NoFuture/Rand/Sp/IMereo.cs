@@ -8,13 +8,18 @@ namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="IVoca" />
     /// <summary>
-    /// Represents a name of any kind of money entry
+    /// A money item which expresses value as a ratio of some time-span.
+    /// Is Latin for &apos;earn&apos;.
     /// </summary>
+    /// <remarks>
+    /// Unlike <see cref="IAsset"/>, <see cref="IIdentifier{T}.Value"/> 
+    /// has both a get and set.  This type is denominated by a range-of-time
+    /// but value is not itself a function of-time.
+    /// </remarks>
     public interface IMereo : IVoca, IIdentifier<Pecuniam>
     {
         /// <summary>
-        /// Readable version of <see cref="DueFrequency"/>
-        /// Default is always Annual 
+        /// Readable version of <see cref="TimeDenominator"/>
         /// </summary>
         Interval Interval { get; }
 
@@ -22,12 +27,7 @@ namespace NoFuture.Rand.Sp
         /// The numerical equiv. of <see cref="Interval"/> which calling assembly 
         /// must specify.
         /// </summary>
-        TimeSpan? DueFrequency { get; set; }
-
-        /// <summary>
-        /// Contractual classification of the money item
-        /// </summary>
-        Classification? Classification { get; set; }
+        TimeSpan? TimeDenominator { get; set; }
 
         /// <summary>
         /// Other names or common examples of this money entry item 

@@ -162,7 +162,7 @@ namespace NoFuture.Rand.Opes
         {
             var p = new Pondus(new VocaBase(name, groupName));
             p.Expectation.Value = expectedValue;
-            p.Expectation.DueFrequency = Constants.TropicalYear;
+            p.Expectation.TimeDenominator = Constants.TropicalYear;
             AddItem(p);
         }
 
@@ -171,7 +171,7 @@ namespace NoFuture.Rand.Opes
         {
             var p = new Pondus(new VocaBase(name, Division.ToString()));
             p.Expectation.Value = new Pecuniam(Convert.ToDecimal(expectedValue), c);
-            p.Expectation.DueFrequency = Constants.TropicalYear;
+            p.Expectation.TimeDenominator = Constants.TropicalYear;
             AddItem(p);
         }
 
@@ -968,7 +968,7 @@ namespace NoFuture.Rand.Opes
                 var p = GetPondusForItemAndGroup(item, grpName, options);
                 if (p.Expectation.Value == null || p.Expectation.Value == Pecuniam.Zero)
                     p.Expectation.Value = CalcValue(options.SumTotal, grpRates[item] * grpRate);
-                p.Expectation.DueFrequency = options.Interval.ToTimeSpan();
+                p.Expectation.TimeDenominator = options.Interval.ToTimeSpan();
                 itemsout.Add(p);
             }
 

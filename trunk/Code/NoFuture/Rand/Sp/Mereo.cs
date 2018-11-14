@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
-using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="IMereo"/>
     /// <inheritdoc cref="VocaBase"/>
     /// <summary>
-    /// Base implementation a name of any kind of money entry
     /// </summary>
     [Serializable]
     public class Mereo : VocaBase, IMereo
@@ -43,16 +41,15 @@ namespace NoFuture.Rand.Sp
         public Mereo(IMereo mereo) : this((IVoca)mereo)
         {
             Value = mereo.Value;
-            DueFrequency = mereo.DueFrequency;
-            Classification = mereo.Classification;
+            TimeDenominator = mereo.TimeDenominator;
             foreach(var eg in mereo.GetExempliGratia())
                 GetExempliGratia().Add(eg);
         }
         #endregion
 
         #region properties
-        public Interval Interval => DueFrequency.ToInterval() ?? Interval.Annually;
-        public TimeSpan? DueFrequency
+        public Interval Interval => TimeDenominator.ToInterval() ?? Interval.Annually;
+        public TimeSpan? TimeDenominator
         {
             get => _freq;
             set
@@ -63,8 +60,6 @@ namespace NoFuture.Rand.Sp
                 _freq = nextFreq;
             }
         }
-
-        public Classification? Classification { get; set; }
 
         public string Abbrev => Name;
         public string Src { get; set; }
@@ -114,8 +109,6 @@ namespace NoFuture.Rand.Sp
             }
             if(Interval != Interval.OnceOnly)
                 itemData.Add(textFormat(nameof(Interval)), Interval.ToString());
-            if(Classification != null)
-                itemData.Add(textFormat(nameof(Classification)), Classification.ToString());
             if(!string.IsNullOrWhiteSpace(Src))
                 itemData.Add(textFormat("Source"), Src);
             if(Value != Pecuniam.Zero)
