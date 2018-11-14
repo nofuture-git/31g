@@ -19,39 +19,24 @@ namespace NoFuture.Rand.Sp
         #region fields
         private readonly Guid _uniqueId = Guid.NewGuid();
         private readonly Balance _balance = new Balance();
-        private DateTime _openDate;
-        private DateTime? _closeDate;
-        private TimeSpan? _dueFrequency;
         #endregion
 
         public TradeLine(){ }
 
         public TradeLine(DateTime openDate)
         {
-            _openDate = openDate;
+            Inception = openDate;
         }
 
         #region properties
         public FormOfCredit? FormOfCredit { get; set; }
         public IBalance Balance => _balance;
 
-        public TimeSpan? DueFrequency
-        {
-            get => _dueFrequency;
-            set => _dueFrequency = value;
-        }
+        public TimeSpan? DueFrequency { get; set; }
 
-        public DateTime Inception
-        {
-            get => _openDate;
-            set => _openDate = value;
-        }
+        public DateTime Inception { get; set; }
 
-        public DateTime? Terminus
-        {
-            get => _closeDate;
-            set => _closeDate = value;
-        }
+        public DateTime? Terminus { get; set; }
 
         public ClosedCondition? Closure { get; set; }
 

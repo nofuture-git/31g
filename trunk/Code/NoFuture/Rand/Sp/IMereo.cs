@@ -13,8 +13,8 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     /// <remarks>
     /// Unlike <see cref="IAsset"/>, <see cref="IIdentifier{T}.Value"/> 
-    /// has both a get and set.  This type is denominated by a range-of-time
-    /// but value is not itself a function of-time.
+    /// has both a get and set.  This type may be denominated by a 
+    /// range-of-time but value is not itself a function of-time.
     /// </remarks>
     public interface IMereo : IVoca, IIdentifier<Pecuniam>
     {
@@ -24,8 +24,7 @@ namespace NoFuture.Rand.Sp
         Interval Interval { get; }
 
         /// <summary>
-        /// The numerical equiv. of <see cref="Interval"/> which calling assembly 
-        /// must specify.
+        /// Optional, to denote that value is particular to some range-of-time.
         /// </summary>
         TimeSpan? TimeDenominator { get; set; }
 

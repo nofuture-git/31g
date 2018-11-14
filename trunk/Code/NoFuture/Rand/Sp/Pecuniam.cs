@@ -5,6 +5,7 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc />
     /// <summary>
     /// Basic Money object pattern 
     /// </summary>

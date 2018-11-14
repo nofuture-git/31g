@@ -75,6 +75,7 @@
     <Compile Include="OpesTests\OpesOptionsTests.cs" />
     <Compile Include="OpesTests\AmericanExpenseTests.cs" />
     <Compile Include="OpesTests\AmericanFactorsTests.cs" />
+    <Compile Include="SpTests\SecurityTests.cs" />
     <Compile Include="SpTests\TradeLineTests.cs" />
     <Compile Include="EduTests\AmericanHighSchoolTests.cs" />
     <Compile Include="EduTests\AmericanUniversityTests.cs" />

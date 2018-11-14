@@ -26,9 +26,5 @@ namespace NoFuture.Rand.Sp
         /// <returns></returns>
         Pecuniam GetValueAt(DateTime dt);
 
-        /// <summary>
-        /// Represents the expectation of the given asset in the from of value and name(s).
-        /// </summary>
-        IMereo Expectation { get; }
     }
 }

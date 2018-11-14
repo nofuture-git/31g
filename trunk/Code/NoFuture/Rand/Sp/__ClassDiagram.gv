@@ -1,7 +1,8 @@
 digraph noFutureRandDataSp {
     node [fontname=Consolas, shape=box]
     
-    IIdentifier [label="IIdentifier<Pecuniam>"]
+    PecuniamIdentifier [label="IIdentifier<Pecuniam>"]
+    StringId [label="IIdentifier<string>"]
     
     Mortgage -> SecuredFixedRateLoan
     SecuredFixedRateLoan -> FixedRateLoan
@@ -18,22 +19,41 @@ digraph noFutureRandDataSp {
     Receivable -> TradeLine
     IReceivable -> ITradeLine
     IReceivable -> IAsset
-    IReceivable -> IMereo [style="dotted", label="Expectation",fontname=Consolas, fontsize=8]
+    IReceivable -> IMereo [style="dotted", label="HAS-A",fontname=Consolas, fontsize=8]
     Mereo -> VocaBase
     Mereo -> IMereo
     IMereo -> IVoca
     VocaBase -> IVoca
-    IMereo -> IIdentifier
-    IIdentifier -> ICited
+    IMereo -> PecuniamIdentifier
     LoanBase -> ILoan
     TradeLine -> ITradeLine
     ITradeLine -> ITempore
     ITradeLine -> ITransactionable
+    ITradeLine -> IObviate
     IAccount -> IAsset
     IAccount -> ITempore
     Pondus -> Receivable
-    ITradeLine -> IBalance [style="dotted"]
+    ITradeLine -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
     Balance -> IBalance
     Balance -> TransactionHistory
     VariableRateLoan -> LoanBase
+    Security -> IAsset
+    Security -> Pecuniam
+    Security -> Cusip [style="dotted", label="Id",fontname=Consolas, fontsize=8]
+    Cusip -> RIdentifierWithChkDigit
+    RIdentifierWithChkDigit -> RIdentifier
+    RIdentifier -> Identifier
+    Pecuniam -> Currency [style="dotted", label="Id",fontname=Consolas, fontsize=8]
+    Currency -> Identifier
+    Pecuniam -> INumera
+    CreditScore -> Identifier
+    PersonalCreditScore -> CreditScore
+    CreditCardNumber -> RIdentifierWithChkDigit
+    VisaCc -> CreditCard
+    MasterCardCc -> CreditCard
+    AmexCc -> CreditCard
+    DiscoverCc -> CreditCard
+    CreditCard -> ICreditCard
+    ICreditCard -> CreditCardNumber [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
+    Identifier -> StringId
 }

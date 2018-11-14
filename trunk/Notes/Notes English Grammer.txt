@@ -159,6 +159,8 @@ Declension
 	- in English, use of 'by', 'with', 'from', 'in' and 'on'
   - locative: the place where an action is performed.
    - this is the uncommon one
+   
+ - Interrogative: the what, why, when, where, who and how
 ----
 
 ----
