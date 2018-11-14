@@ -17,11 +17,11 @@ namespace NoFuture.Rand.Opes.US
     public class AmericanExpenses : WealthBase, IExpense
     {
         private const double PERCENT_EXPENSE_OF_INCOME = 0.85;
-        private readonly HashSet<Pondus> _expenses = new HashSet<Pondus>();
+        private readonly HashSet<NamedReceivable> _expenses = new HashSet<NamedReceivable>();
 
-        public virtual Pondus[] CurrentExpectedExpenses => GetCurrent(MyItems);
+        public virtual NamedReceivable[] CurrentExpectedExpenses => GetCurrent(MyItems);
 
-        public virtual Pecuniam TotalAnnualExpectedExpenses => Pondus.GetExpectedAnnualSum(CurrentExpectedExpenses);
+        public virtual Pecuniam TotalAnnualExpectedExpenses => NamedReceivable.GetExpectedAnnualSum(CurrentExpectedExpenses);
 
         protected override DomusOpesDivisions Division => DomusOpesDivisions.Expense;
 
@@ -39,12 +39,12 @@ namespace NoFuture.Rand.Opes.US
             return exp;
         }
 
-        public virtual Pondus[] GetExpectedExpensesAt(DateTime? dt)
+        public virtual NamedReceivable[] GetExpectedExpensesAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
         }
 
-        protected internal override List<Pondus> MyItems
+        protected internal override List<NamedReceivable> MyItems
         {
             get
             {
@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        public override void AddItem(Pondus expense)
+        public override void AddItem(NamedReceivable expense)
         {
             if (expense == null)
                 return;

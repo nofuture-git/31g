@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Sp
     /// Represents a Rent or Lease
     /// </summary>
     [Serializable]
-    public class Rent : Pondus
+    public class Rent : NamedReceivable
     {
         #region fields
         private readonly Pecuniam _proRatedAmt;

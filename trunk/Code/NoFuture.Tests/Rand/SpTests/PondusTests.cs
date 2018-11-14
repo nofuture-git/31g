@@ -12,13 +12,13 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestEquals()
         {
-            var testSubject = new Pondus("test")
+            var testSubject = new NamedReceivable("test")
             {
                 Inception = DateTime.Today.AddYears(-1),
                 Terminus = DateTime.Today
             };
 
-            var testCompare = new Pondus("test")
+            var testCompare = new NamedReceivable("test")
             {
                 Inception = DateTime.Today.AddYears(-1),
                 Terminus = DateTime.Today
@@ -48,10 +48,10 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestCopyFrom()
         {
-            var testSubject = new Pondus("TestCorporation");
+            var testSubject = new NamedReceivable("TestCorporation");
             testSubject.Expectation.AddName(KindsOfNames.Group, "Company");
 
-            var testSubject2 = new Pondus(testSubject.Expectation);
+            var testSubject2 = new NamedReceivable(testSubject.Expectation);
             Assert.AreEqual(testSubject.Expectation.Name, testSubject2.Expectation.Name);
             var groupName = testSubject2.Expectation.GetName(KindsOfNames.Group);
             Assert.IsNotNull(groupName);
@@ -63,7 +63,7 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestToData()
         {
             var dt = DateTime.Today;
-            var testSubject = new Pondus("Test Name");
+            var testSubject = new NamedReceivable("Test Name");
             testSubject.Expectation.AddName(KindsOfNames.Group, "Company");
             var cusip = new Cusip().Value;
             testSubject.AddPositiveValue(dt.AddDays(-360), new Security(cusip, 5000));

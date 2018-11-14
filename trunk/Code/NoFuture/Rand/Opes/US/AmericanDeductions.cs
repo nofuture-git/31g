@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Opes.US
     [Serializable]
     public class AmericanDeductions : WealthBase, ITributum
     {
-        private readonly HashSet<Pondus> _deductions = new HashSet<Pondus>();
+        private readonly HashSet<NamedReceivable> _deductions = new HashSet<NamedReceivable>();
         private readonly AmericanEmployment _employment;
 
         /// <summary>
@@ -34,14 +34,14 @@ namespace NoFuture.Rand.Opes.US
 
         #region properties
 
-        public virtual Pondus[] CurrentDeductions => GetCurrent(MyItems);
-        public Pecuniam TotalAnnualDeductions => Pondus.GetExpectedAnnualSum(CurrentDeductions).GetNeg();
-        public virtual Pondus[] GetDeductionsAt(DateTime? dt)
+        public virtual NamedReceivable[] CurrentDeductions => GetCurrent(MyItems);
+        public Pecuniam TotalAnnualDeductions => NamedReceivable.GetExpectedAnnualSum(CurrentDeductions).GetNeg();
+        public virtual NamedReceivable[] GetDeductionsAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
         }
 
-        protected internal override List<Pondus> MyItems
+        protected internal override List<NamedReceivable> MyItems
         {
             get
             {
@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Opes.US
 
         #region methods
 
-        public override void AddItem(Pondus d)
+        public override void AddItem(NamedReceivable d)
         {
             d.Expectation.Value = d.Expectation.Value.GetNeg();
             _deductions.Add(d);
@@ -352,7 +352,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? OpesOptions.RandomOpesOptions();
 
-            var pPay = Pondus.GetExpectedAnnualSum(_employment.GetPayAt(options.Inception)) ?? Pecuniam.Zero;
+            var pPay = NamedReceivable.GetExpectedAnnualSum(_employment.GetPayAt(options.Inception)) ?? Pecuniam.Zero;
             var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.Inception, options).ToDouble() : pPay.ToDouble();
             return pay;
         }
@@ -361,7 +361,7 @@ namespace NoFuture.Rand.Opes.US
         {
             var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(_employment.EmployingCompanyName,
                 _employment.Occupation?.ToString(),
-                _employment.Inception, _employment.Terminus, Pondus.GetExpectedAnnualSum(GetCurrent(MyItems)));
+                _employment.Inception, _employment.Terminus, NamedReceivable.GetExpectedAnnualSum(GetCurrent(MyItems)));
             return t.ToString();
         }
 

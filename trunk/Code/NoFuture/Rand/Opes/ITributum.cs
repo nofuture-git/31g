@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// List of the current deductions on this employment
         /// </summary>
-        Pondus[] CurrentDeductions { get; }
+        NamedReceivable[] CurrentDeductions { get; }
 
         /// <summary>
         /// The monetary sum of all current deduction items
@@ -25,6 +25,6 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        Pondus[] GetDeductionsAt(DateTime? dt);
+        NamedReceivable[] GetDeductionsAt(DateTime? dt);
     }
 }

@@ -14,32 +14,32 @@ namespace NoFuture.Rand.Sp
     /// Is Latin for weight.
     /// </summary>
     [Serializable]
-    public class Pondus : Receivable
+    public class NamedReceivable : Receivable
     {
         #region ctor
-        public Pondus(string name)
+        public NamedReceivable(string name)
         {
             Expectation.Name = name;
         }
 
-        public Pondus(string name, Interval interval)
+        public NamedReceivable(string name, Interval interval)
         {
             Expectation.Name = name;
             Expectation.TimeDenominator = interval.ToTimeSpan();
         }
 
-        public Pondus(IVoca names)
+        public NamedReceivable(IVoca names)
         {
             Expectation.CopyFrom(names);
         }
 
-        public Pondus(IVoca names, Interval interval)
+        public NamedReceivable(IVoca names, Interval interval)
         {
             Expectation.CopyFrom(names);
             Expectation.TimeDenominator = interval.ToTimeSpan();
         }
 
-        public Pondus(DateTime startDate) : base(startDate)
+        public NamedReceivable(DateTime startDate) : base(startDate)
         {
         }
         #endregion
@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Sp
             }
         }
 
-        public static Pecuniam GetExpectedSum(IEnumerable<Pondus> items)
+        public static Pecuniam GetExpectedSum(IEnumerable<NamedReceivable> items)
         {
             if(items == null || !items.Any())
                 return Pecuniam.Zero;
@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static Pecuniam GetExpectedAnnualSum(IEnumerable<Pondus> items)
+        public static Pecuniam GetExpectedAnnualSum(IEnumerable<NamedReceivable> items)
         {
             if(items == null || !items.Any())
                 return Pecuniam.Zero;
@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Sp
         public override bool Equals(object obj)
         {
             //asserts the names equal
-            if (!(obj is Pondus p))
+            if (!(obj is NamedReceivable p))
                 return base.Equals(obj);
             var namesEqual = p.Expectation.Equals(Expectation);
 

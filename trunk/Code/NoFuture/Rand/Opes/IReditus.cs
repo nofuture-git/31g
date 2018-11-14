@@ -33,12 +33,12 @@ namespace NoFuture.Rand.Opes
         /// Returns all non-employment forms of income for the current time which have 
         /// a non-zero value
         /// </summary>
-        Pondus[] CurrentExpectedOtherIncome { get; }
+        NamedReceivable[] CurrentExpectedOtherIncome { get; }
 
         /// <summary>
         /// Returns all non-employment forms of income at the time of <see cref="dt"/>
         /// </summary>
-        Pondus[] GetExpectedOtherIncomeAt(DateTime? dt);
+        NamedReceivable[] GetExpectedOtherIncomeAt(DateTime? dt);
 
         /// <summary>
         /// A monetary sum of all income

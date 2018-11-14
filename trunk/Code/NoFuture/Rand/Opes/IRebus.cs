@@ -15,12 +15,12 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        Pondus[] GetAssetsAt(DateTime? dt);
+        NamedReceivable[] GetAssetsAt(DateTime? dt);
 
         /// <summary>
         /// Gets the current list of assets
         /// </summary>
-        Pondus[] CurrentAssets { get; }
+        NamedReceivable[] CurrentAssets { get; }
 
         /// <summary>
         /// Gets the money sum of all assets for the current time

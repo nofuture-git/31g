@@ -128,7 +128,7 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// The items which belong to this <see cref="Division"/>
         /// </summary>
-        protected internal abstract List<Pondus> MyItems { get; }
+        protected internal abstract List<NamedReceivable> MyItems { get; }
 
         protected internal static XmlDocument UsDomusOpesData => OpesXml ?? (OpesXml =
                                                                      XmlDocXrefIdentifier.GetEmbeddedXmlDoc(
@@ -156,11 +156,11 @@ namespace NoFuture.Rand.Opes
         /// Adds the <see cref="item"/> to <see cref="MyItems"/>
         /// </summary>
         /// <param name="item"></param>
-        public abstract void AddItem(Pondus item);
+        public abstract void AddItem(NamedReceivable item);
 
         public virtual void AddItem(string name, string groupName, Pecuniam expectedValue, Interval interval = Interval.Annually)
         {
-            var p = new Pondus(new VocaBase(name, groupName));
+            var p = new NamedReceivable(new VocaBase(name, groupName));
             p.Expectation.Value = expectedValue;
             p.Expectation.TimeDenominator = Constants.TropicalYear;
             AddItem(p);
@@ -169,7 +169,7 @@ namespace NoFuture.Rand.Opes
         public virtual void AddItem(string name, double expectedValue, Interval interval = Interval.Annually,
             CurrencyAbbrev c = CurrencyAbbrev.USD)
         {
-            var p = new Pondus(new VocaBase(name, Division.ToString()));
+            var p = new NamedReceivable(new VocaBase(name, Division.ToString()));
             p.Expectation.Value = new Pecuniam(Convert.ToDecimal(expectedValue), c);
             p.Expectation.TimeDenominator = Constants.TropicalYear;
             AddItem(p);
@@ -258,7 +258,7 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetCurrent(List<Pondus> items)
+        protected internal virtual NamedReceivable[] GetCurrent(List<NamedReceivable> items)
         {
             if (items == null)
                 return null;
@@ -274,7 +274,7 @@ namespace NoFuture.Rand.Opes
         /// <param name="dt"></param>
         /// <param name="items"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetAt(DateTime? dt, List<Pondus> items)
+        protected internal virtual NamedReceivable[] GetAt(DateTime? dt, List<NamedReceivable> items)
         {
             if (items == null)
                 return null;
@@ -924,11 +924,11 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetItemsForRange(OpesOptions options)
+        protected internal virtual NamedReceivable[] GetItemsForRange(OpesOptions options)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
 
-            var itemsout = new List<Pondus>();
+            var itemsout = new List<NamedReceivable>();
 
             var grp2Rates = GetGroupNames2Portions(options);
 
@@ -945,11 +945,11 @@ namespace NoFuture.Rand.Opes
         /// <param name="grp2Rate"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetItemsForRange(Tuple<string, double> grp2Rate, OpesOptions options)
+        protected internal virtual NamedReceivable[] GetItemsForRange(Tuple<string, double> grp2Rate, OpesOptions options)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
 
-            var itemsout = new List<Pondus>();
+            var itemsout = new List<NamedReceivable>();
 
             var name2Op = GetItems2Functions();
 
@@ -983,10 +983,10 @@ namespace NoFuture.Rand.Opes
         /// <param name="grpName"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Pondus GetPondusForItemAndGroup(string itemName, string grpName, OpesOptions options)
+        protected internal virtual NamedReceivable GetPondusForItemAndGroup(string itemName, string grpName, OpesOptions options)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
-            var p = new Pondus(itemName, options.Interval)
+            var p = new NamedReceivable(itemName, options.Interval)
             {
                 Inception = options.Inception,
                 Terminus = options.Terminus,

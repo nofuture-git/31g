@@ -34,14 +34,14 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// The current pay for this employment
         /// </summary>
-        Pondus[] CurrentPay { get; }
+        NamedReceivable[] CurrentPay { get; }
 
         /// <summary>
         /// The pay as it was at time <see cref="dt"/>
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        Pondus[] GetPayAt(DateTime? dt);
+        NamedReceivable[] GetPayAt(DateTime? dt);
 
         /// <summary>
         /// The monetary sum of of total annual employment income

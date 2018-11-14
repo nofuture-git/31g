@@ -74,7 +74,7 @@
     <Compile Include="Pecuniam.cs" />
     <Compile Include="PecuniamExtensions.cs" />
     <Compile Include="PersonalCreditScore.cs" />
-    <Compile Include="Pondus.cs" />
+    <Compile Include="NamedReceivable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Receivable.cs" />
     <Compile Include="Rent.cs" />

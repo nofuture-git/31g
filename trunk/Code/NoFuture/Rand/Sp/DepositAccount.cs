@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Sp
     /// Base type for a depository account held at a commercial bank.
     /// </summary>
     [Serializable]
-    public abstract class DepositAccount : Pondus, IAccount<Identifier>
+    public abstract class DepositAccount : NamedReceivable, IAccount<Identifier>
     {
         #region ctor
 

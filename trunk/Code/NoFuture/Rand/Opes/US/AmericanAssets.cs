@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Opes.US
         internal const string INSTITUTIONAL_CHECKING = "Checking";
         internal const string INSTITUTIONAL_SAVINGS = "Savings";
 
-        private readonly HashSet<Pondus> _assets = new HashSet<Pondus>();
+        private readonly HashSet<NamedReceivable> _assets = new HashSet<NamedReceivable>();
 
         private bool _factorsSet;
         private double _randCheckingAcctAmt;
@@ -48,15 +48,15 @@ namespace NoFuture.Rand.Opes.US
 
         #region properties
 
-        public Pondus[] CurrentAssets => GetCurrent(MyItems);
+        public NamedReceivable[] CurrentAssets => GetCurrent(MyItems);
 
-        public Pecuniam TotalCurrentExpectedValue => Pondus.GetExpectedSum(CurrentAssets);
+        public Pecuniam TotalCurrentExpectedValue => NamedReceivable.GetExpectedSum(CurrentAssets);
 
         public IMereo HousePayment { get; private set; }
 
         public IMereo CarPayment { get; private set; }
 
-        protected internal override List<Pondus> MyItems
+        protected internal override List<NamedReceivable> MyItems
         {
             get
             {
@@ -86,12 +86,12 @@ namespace NoFuture.Rand.Opes.US
             return assets;
         }
 
-        public Pondus[] GetAssetsAt(DateTime? dt)
+        public NamedReceivable[] GetAssetsAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
         }
 
-        public override void AddItem(Pondus item)
+        public override void AddItem(NamedReceivable item)
         {
             if (item == null)
                 return;
@@ -193,7 +193,7 @@ namespace NoFuture.Rand.Opes.US
             return base.GetGroupNames2Portions(options);
         }
 
-        protected internal override Pondus GetPondusForItemAndGroup(string item, string grp, OpesOptions options)
+        protected internal override NamedReceivable GetPondusForItemAndGroup(string item, string grp, OpesOptions options)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = RiskFreeInterestRate.DF_VALUE;
@@ -212,7 +212,7 @@ namespace NoFuture.Rand.Opes.US
             var isCarLoan = string.Equals(grp, AssetGroupNames.PERSONAL_PROPERTY, OPT) &&
                             string.Equals(item, PERSONAL_PROPERTY_MOTOR_VEHICLES, OPT);
 
-            Pondus p;
+            NamedReceivable p;
             if (isCheckingAccount)
             {
                 var checkingAmt = amt == null || amt == Pecuniam.Zero
@@ -297,7 +297,7 @@ namespace NoFuture.Rand.Opes.US
             }
             else
             {
-                p = new Pondus(item, options.Interval)
+                p = new NamedReceivable(item, options.Interval)
                 {
                     Inception = startDate,
                     Terminus = options.Terminus,

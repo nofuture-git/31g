@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Opes.US
     public class AmericanEmployment : WealthBase, ILaboris
     {
         #region fields
-        private readonly HashSet<Pondus> _pay = new HashSet<Pondus>();
+        private readonly HashSet<NamedReceivable> _pay = new HashSet<NamedReceivable>();
         private SocDetailedOccupation _occupation;
         private bool _isWages;
         private bool _isTips;
@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Opes.US
 
         public ITributum Deductions { get; set; }
 
-        public virtual Pondus[] CurrentPay => GetCurrent(MyItems);
+        public virtual NamedReceivable[] CurrentPay => GetCurrent(MyItems);
 
         /// <summary>
         /// Convenience method which is more straight-foward than <see cref="Inception"/>
@@ -74,10 +74,10 @@ namespace NoFuture.Rand.Opes.US
             set => _endDate = value;
         }
 
-        public Pecuniam TotalAnnualPay => Pondus.GetExpectedAnnualSum(CurrentPay).GetAbs();
+        public Pecuniam TotalAnnualPay => NamedReceivable.GetExpectedAnnualSum(CurrentPay).GetAbs();
         public Pecuniam TotalAnnualNetPay => TotalAnnualPay - (Deductions?.TotalAnnualDeductions)?.GetAbs() ?? Pecuniam.Zero;
 
-        protected internal override List<Pondus> MyItems
+        protected internal override List<NamedReceivable> MyItems
         {
             get
             {
@@ -145,7 +145,7 @@ namespace NoFuture.Rand.Opes.US
             return afterOrOnFromDt && beforeOrOnToDt;
         }
 
-        public virtual Pondus[] GetPayAt(DateTime? dt)
+        public virtual NamedReceivable[] GetPayAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
         }
@@ -318,7 +318,7 @@ namespace NoFuture.Rand.Opes.US
             return incomeName2Rate;
         }
 
-        public override void AddItem(Pondus p)
+        public override void AddItem(NamedReceivable p)
         {
             if (IsInRange(p))
             {
@@ -327,7 +327,7 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        protected internal bool IsInRange(Pondus item)
+        protected internal bool IsInRange(NamedReceivable item)
         {
             if (item == null)
                 return false;
@@ -377,7 +377,7 @@ namespace NoFuture.Rand.Opes.US
         public override string ToString()
         {
             var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(EmployingCompanyName, Occupation?.ToString(),
-                Inception, Terminus, Pondus.GetExpectedSum(GetCurrent(MyItems)));
+                Inception, Terminus, NamedReceivable.GetExpectedSum(GetCurrent(MyItems)));
             return t.ToString();
         }
 

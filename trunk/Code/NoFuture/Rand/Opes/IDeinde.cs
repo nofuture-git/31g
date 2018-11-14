@@ -9,11 +9,11 @@ namespace NoFuture.Rand.Opes
     /// </summary>
     public interface IDeinde
     {
-        void AddItem(Pondus item);
+        void AddItem(NamedReceivable item);
 
         /// <summary>
         /// Convenience method to pass only the required 
-        /// info to add a new <see cref="Pondus"/> to the 
+        /// info to add a new <see cref="NamedReceivable"/> to the 
         /// instance&apos;s store
         /// </summary>
         /// <param name="name"></param>

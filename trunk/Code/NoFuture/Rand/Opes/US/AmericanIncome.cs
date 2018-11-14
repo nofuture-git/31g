@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Opes.US
     {
         #region fields
         private readonly HashSet<ILaboris> _employment = new HashSet<ILaboris>();
-        private readonly HashSet<Pondus> _otherIncome = new HashSet<Pondus>();
+        private readonly HashSet<NamedReceivable> _otherIncome = new HashSet<NamedReceivable>();
         #endregion
 
         #region properties
@@ -39,10 +39,10 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        public virtual Pondus[] CurrentExpectedOtherIncome => GetCurrent(MyItems);
+        public virtual NamedReceivable[] CurrentExpectedOtherIncome => GetCurrent(MyItems);
 
         public virtual Pecuniam TotalAnnualExpectedIncome =>
-            Pondus.GetExpectedAnnualSum(CurrentExpectedOtherIncome) + TotalAnnualExpectedNetEmploymentIncome;
+            NamedReceivable.GetExpectedAnnualSum(CurrentExpectedOtherIncome) + TotalAnnualExpectedNetEmploymentIncome;
 
         public virtual Pecuniam TotalAnnualExpectedNetEmploymentIncome =>
             CurrentEmployment.Select(e => e.TotalAnnualNetPay).GetSum();
@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        protected internal override List<Pondus> MyItems
+        protected internal override List<NamedReceivable> MyItems
         {
             get
             {
@@ -97,7 +97,7 @@ namespace NoFuture.Rand.Opes.US
                 : Employment.Where(x => x.IsInRange(dt.Value)).ToArray();
         }
 
-        public virtual Pondus[] GetExpectedOtherIncomeAt(DateTime? dt)
+        public virtual NamedReceivable[] GetExpectedOtherIncomeAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
         }
@@ -108,7 +108,7 @@ namespace NoFuture.Rand.Opes.US
                 _employment.Add(employment);
         }
 
-        public override void AddItem(Pondus otherIncome)
+        public override void AddItem(NamedReceivable otherIncome)
         {
             if (otherIncome != null)
                 _otherIncome.Add(otherIncome);
@@ -276,12 +276,12 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Pondus[] GetPublicBenefitIncomeItemsForRange(OpesOptions options)
+        protected internal virtual NamedReceivable[] GetPublicBenefitIncomeItemsForRange(OpesOptions options)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
             var startDate = options.Inception;
             var endDate = options.Terminus;
-            var itemsout = new List<Pondus>();
+            var itemsout = new List<NamedReceivable>();
             startDate = startDate == DateTime.MinValue ? GetYearNeg(-1) : startDate;
             var isPoor = IsBelowFedPovertyAt(options);
 
@@ -293,7 +293,7 @@ namespace NoFuture.Rand.Opes.US
             var incomeItems = GetIncomeItemNames().Where(i => i.GetName(KindsOfNames.Group) == "Public Benefits");
             foreach (var incomeItem in incomeItems)
             {
-                var p = new Pondus(incomeItem, Interval.Monthly)
+                var p = new NamedReceivable(incomeItem, Interval.Monthly)
                 {
                     Inception = startDate,
                     Terminus = endDate
@@ -487,7 +487,7 @@ namespace NoFuture.Rand.Opes.US
             foreach (var emp in payAtDt)
             {
                 var payAt = emp.GetPayAt(dt);
-                var f = Pondus.GetExpectedAnnualSum(payAt);
+                var f = NamedReceivable.GetExpectedAnnualSum(payAt);
                 sum += f;
             }
 
@@ -503,8 +503,8 @@ namespace NoFuture.Rand.Opes.US
             var sum = Pecuniam.Zero;
             foreach (var emp in payAtDt)
             {
-                var pay = Pondus.GetExpectedAnnualSum(emp.GetPayAt(dt));
-                var ded = Pondus.GetExpectedAnnualSum(emp.Deductions?.GetDeductionsAt(dt)) ?? Pecuniam.Zero;
+                var pay = NamedReceivable.GetExpectedAnnualSum(emp.GetPayAt(dt));
+                var ded = NamedReceivable.GetExpectedAnnualSum(emp.Deductions?.GetDeductionsAt(dt)) ?? Pecuniam.Zero;
                 sum += pay - ded.GetAbs();
             }
 

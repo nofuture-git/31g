@@ -6,12 +6,12 @@ using NoFuture.Rand.Core.Enums;
 namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="ILoan"/>
-    /// <inheritdoc cref="Pondus"/>
+    /// <inheritdoc cref="NamedReceivable"/>
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public abstract class LoanBase<T> : Pondus, ILoan
+    public abstract class LoanBase<T> : NamedReceivable, ILoan
     {
         protected float _minPaymentRate;
 
