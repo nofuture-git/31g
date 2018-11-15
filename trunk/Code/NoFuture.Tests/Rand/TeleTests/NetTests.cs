@@ -34,6 +34,14 @@ namespace NoFuture.Rand.Tests.TeleTests
         }
 
         [Test]
+        public void TestChildishUserNames()
+        {
+            var testResult = Tele.NetUri.ChildishUserNames;
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Length);
+        }
+
+        [Test]
         public void TestToUri()
         {
             var testSubject = new NetUri {Value = "http://localhost:8993/Somewhere/", Descriptor = KindsOfLabels.Home};

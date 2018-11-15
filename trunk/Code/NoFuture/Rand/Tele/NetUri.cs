@@ -80,13 +80,18 @@ namespace NoFuture.Rand.Tele
             }
         }
 
+        /// <summary>
+        /// These are just made-up to look silly
+        /// </summary>
         public static string[] ChildishUserNames
         {
             get
             {
                 if (_childishUserNames != null && _childishUserNames.Any())
                     return _childishUserNames;
-                _childishUserNames = ReadTextFileData(CHILDISH_USER_NAMES);
+                _childishUserNames = ReadTextFileData(CHILDISH_USER_NAMES)
+                    .Where(v => !string.IsNullOrWhiteSpace(v))
+                    .ToArray();
                 return _childishUserNames;
             }
         }

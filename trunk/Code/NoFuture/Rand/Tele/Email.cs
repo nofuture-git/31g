@@ -45,10 +45,13 @@ namespace NoFuture.Rand.Tele
             var withUcase = Etc.CapWords(Etx.RandomPickOne(shortWords), ' ');
             shortWordList.Add(withUcase);
             shortWordList.Add(Etx.RandomPickOne(otherWords));
+            if(Etx.RandomCoinToss())
+                shortWordList.Add(Etc.CapWords(Etx.RandomPickOne(shortWords), ' '));
 
             shortWordList = Etx.RandomShuffle(shortWordList.ToArray()).ToList();
 
-            shortWordList.Add((Etx.RandomCoinToss() ? "_" : "") + Etx.RandomInteger(100, 9999));
+            if(Etx.RandomCoinToss())
+                shortWordList.Add((Etx.RandomCoinToss() ? "_" : "") + Etx.RandomInteger(100, 9999));
             return RandomEmail(string.Join("", shortWordList), usCommonOnly);
         }
 
