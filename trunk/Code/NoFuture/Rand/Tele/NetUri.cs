@@ -20,9 +20,11 @@ namespace NoFuture.Rand.Tele
         internal const string WEB_MAIL_DOMAINS = "webmailDomains.txt";
         internal const string SUBDOMAINS = "subdomains.txt";
         internal const string US_WEBMAIL_DOMAINS = "usWebmailDomains.txt";
+        internal const string CHILDISH_USER_NAMES = "childishUserNames.txt";
         private static string[] _webMaildomains;
         private static string[] _subDomains;
         private static string[] _usWebmailDomains;
+        private static string[] _childishUserNames;
         #endregion
 
         public string Scheme => ToUri()?.Scheme;
@@ -78,7 +80,18 @@ namespace NoFuture.Rand.Tele
             }
         }
 
-        private static string[] ReadTextFileData(string name)
+        public static string[] ChildishUserNames
+        {
+            get
+            {
+                if (_childishUserNames != null && _childishUserNames.Any())
+                    return _childishUserNames;
+                _childishUserNames = ReadTextFileData(CHILDISH_USER_NAMES);
+                return _childishUserNames;
+            }
+        }
+
+        internal static string[] ReadTextFileData(string name)
         {
             var asm = Assembly.GetExecutingAssembly();
 

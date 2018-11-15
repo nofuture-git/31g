@@ -65,5 +65,8 @@
     <EmbeddedResource Include="Data\subdomains.txt" />
     <EmbeddedResource Include="Data\usWebmailDomains.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\childishUserNames.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

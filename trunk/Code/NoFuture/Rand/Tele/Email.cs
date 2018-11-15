@@ -40,20 +40,7 @@ namespace NoFuture.Rand.Tele
         {
             var shortWords = Etx.EnglishWords.Where(x => x.Item1.Length <= 3).Select(x => x.Item1).ToArray();
             var shortWordList = new List<string>();
-            var otherWords = new[]
-            {
-                "FART","Butt","K1tty","Turb0","T4ashy","Ch1ck","Dud3","P00p",
-                "Peepee","RaZZ","C00l","D0PE","Sa7age","Techno","Kn0cka","Turd",
-                "D00D00","D00M","LEET","D0lla","PWND","Twitch","Tank","Fr1es",
-                "P1mp","Punk","Bla5e","Blunt","H0tty","PRO","Babe","Fatty","Candy", "Cand1e",
-                "Mas33a","Brut1l","BRO","P1zza","P0ny", "D0ll","Ball3r","P1mpin",
-                "R0cka","Wanka","Sanp1e","DewWWW","W1cked","B0gus","M1lki","Pan_ts",
-                "L0aded","T1pp1n","Get1n","Bomba","Suck","Nasta","Toot","Prancin","Princess",
-                "K1ng","S1ck","SlaMMa","P1rate","B0ss","Dirty","Naked","Pay33d","P1pe",
-                "Aws0me","Mortie","Sacce","Darkness","Lips","Kickin","Killa","Digg",
-                "DaMMe","Villan", "V1llen","Fasta","Doggo","Dang3r","Vap3", "Skull", "SmOke",
-                "Smokin","Holla","Rasta","B0ner","SIffie","Bang1n","Br1ngIt","GH0SST"
-            };
+            var otherWords = ChildishUserNames;
 
             var withUcase = Etc.CapWords(Etx.RandomPickOne(shortWords), ' ');
             shortWordList.Add(withUcase);
@@ -74,7 +61,7 @@ namespace NoFuture.Rand.Tele
         {
             var host = NetUri.RandomUriHost(false, usCommonOnly);
             username = username ?? NetUri.RandomUsername();
-            return new Email { Value = String.Join("@", username, host) };
+            return new Email { Value = string.Join("@", username, host) };
         }
     }
 }
