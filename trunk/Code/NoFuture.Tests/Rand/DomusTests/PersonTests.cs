@@ -420,7 +420,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             var addrLine1 = "4455 Deweier St.";
             var addrLine2 = "Huntington Beach, CA 90802";
 
-            PostalAddress.TryParseAmericanAddress(addrLine1, addrLine2, out var address);
+            PostalAddress.TryParse(addrLine1, addrLine2, out var address);
             testSubject.AddAddress(address);
 
             Assert.AreEqual($"{firstName} {middleName} {lastName}", testSubject.FullName);

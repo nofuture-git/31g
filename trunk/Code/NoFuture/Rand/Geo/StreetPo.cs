@@ -8,6 +8,7 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Geo
 {
+    /// <inheritdoc cref="GeoBase"/>
     /// <summary>
     /// Base type representing the first half of a typical Postal Address
     /// </summary>
@@ -44,7 +45,6 @@ namespace NoFuture.Rand.Geo
         }
 
         public abstract IDictionary<string, object> ToData(KindsOfTextCase txtCase);
-
 
         /// <summary>
         /// Generates at random a street address in the typical American form
@@ -171,7 +171,6 @@ namespace NoFuture.Rand.Geo
             addressData.ThoroughfareNumber = Etx.MyRand.Next(0, 999).ToString(CultureInfo.InvariantCulture);
 
             return new UsStreetPo(addressData);
-
         }
     }
 }

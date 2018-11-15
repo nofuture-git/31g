@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using NUnit.Framework;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
@@ -144,5 +145,45 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.AreNotEqual(0, testResult.Length);
         }
 
+        [Test]
+        public void TestEquality()
+        {
+            var addressNumber = Path.GetRandomFileName();
+            var postalCode = Path.GetRandomFileName();
+            var city = Path.GetRandomFileName();
+            var streetName = Path.GetRandomFileName();
+            var stateAbbrv = Path.GetRandomFileName();
+            var streetType = Path.GetRandomFileName();
+            var testSubject =
+                new UsStreetPo(new AddressData()
+                {
+                    ThoroughfareNumber = addressNumber,
+                    PostalCode = postalCode,
+                    Locality = city,
+                    ThoroughfareName = streetName,
+                    RegionAbbrev = stateAbbrv,
+                    ThoroughfareType = streetType
+                });
+
+            Assert.IsFalse(testSubject.Equals(null));
+            Assert.IsFalse(testSubject.Equals(new UsStreetPo(new AddressData())));
+
+            var testAreEqual = new UsStreetPo(new AddressData()
+            {
+                ThoroughfareNumber = addressNumber,
+                PostalCode = postalCode,
+                Locality = city,
+                ThoroughfareName = streetName,
+                RegionAbbrev = stateAbbrv,
+                ThoroughfareType = streetType
+            });
+
+            Assert.IsTrue(testSubject.Equals(testAreEqual));
+
+            testAreEqual.GetData().ThoroughfareNumber = testAreEqual.GetData().ThoroughfareNumber.ToUpper();
+
+            Assert.IsTrue(testSubject.Equals(testAreEqual));
+
+        }
     }
 }

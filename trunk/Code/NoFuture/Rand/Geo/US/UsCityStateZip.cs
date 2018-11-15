@@ -32,9 +32,23 @@ namespace NoFuture.Rand.Geo.US
         public const string DF_STATE_ABBREV = "NY";
         public const string DF_CITY_NAME = "New York";
 
+        internal const string ZIP_CODE_SINGULAR = "zip-code";
+        internal const string ZIP_CODE_PLURAL = "zip-codes";
+        internal const string MSA_CODE = "msa-code";
+        internal const string CBSA_CODE = "cbsa-code";
+        internal const string ZIP_STAT = "zip-stat";
+
+        internal const string US_ZIP_CODE_DATA = "US_Zip_Data.xml";
+        internal const string US_ZIP_PROB_TABLE = "US_Zip_ProbTable.xml";
+        internal const string US_CITY_DATA = "US_City_Data.xml";
+
         #endregion
 
         #region fields
+
+        internal static XmlDocument UsZipCodeXml;
+        internal static XmlDocument UsZipProbXml;
+        internal static XmlDocument UsCityXml;
 
         private static Dictionary<string, double> _zipCodePrefix2Pop = new Dictionary<string, double>();
         private static string[] _usPostalStateAbbrev;
@@ -69,7 +83,7 @@ namespace NoFuture.Rand.Geo.US
             }
         }
 
-        public static string RegexUsPostalStateAbbrev => @"[\x20|\x2C](" + string.Join("|", UsPostalStateAbbrev) + @")([^A-Za-z]|$)";
+        public static string RegexUsPostalStateAbbrev => @"[\x20|\x2C](" + String.Join("|", UsPostalStateAbbrev) + @")([^A-Za-z]|$)";
 
         public string StateName => GetData().RegionName ?? UsState.GetState(GetData().RegionAbbrev)?.ToString();
         public string StateAbbrev => GetData().RegionAbbrev ?? UsState.GetState(GetData().RegionName)?.StateAbbrev;
@@ -157,14 +171,10 @@ namespace NoFuture.Rand.Geo.US
         /// <param name="cityStateZip">
         /// The resulting instance when true is returned
         /// </param>
-        /// <param name="pickSuburbAtRandom">
-        /// Optional, will choose one of the surrounding suburbs at random, set to false to force to the 
-        /// city proper.
-        /// </param>
         /// <returns></returns>
-        public static bool TryParse(string lastLine, out UsCityStateZip cityStateZip, bool pickSuburbAtRandom = false)
+        public static bool TryParse(string lastLine, out UsCityStateZip cityStateZip)
         {
-            if (String.IsNullOrWhiteSpace(lastLine))
+            if (string.IsNullOrWhiteSpace(lastLine))
             {
                 cityStateZip = null;
                 return false;
@@ -173,10 +183,10 @@ namespace NoFuture.Rand.Geo.US
 
             var addrData = new AddressData
             {
-                PostalCode = String.Empty,
-                SortingCode = String.Empty,
-                RegionAbbrev = String.Empty,
-                Locality = String.Empty
+                PostalCode = string.Empty,
+                SortingCode = string.Empty,
+                RegionAbbrev = string.Empty,
+                Locality = string.Empty
             };
             GetZipCode(lastLine, addrData);
 
@@ -186,32 +196,46 @@ namespace NoFuture.Rand.Geo.US
 
             cityStateZip = new UsCityStateZip(addrData) {Src = lastLine};
             cityStateZip.GetXmlData();
-            return true;
+            return !string.IsNullOrWhiteSpace(addrData.PostalCode) 
+                   && !string.IsNullOrWhiteSpace(addrData.RegionAbbrev) 
+                   && !string.IsNullOrWhiteSpace(addrData.Locality);
         }
 
         internal static void GetCity(string lastLine, AddressData addrData)
         {
             //city
-            var city = lastLine ?? "";
-            if (!String.IsNullOrEmpty(addrData.PostalCode))
-                city = city.Replace(addrData.PostalCode, String.Empty);
-            if (!String.IsNullOrEmpty(addrData.SortingCode))
-                city = city.Replace($"-{addrData.SortingCode}", String.Empty);
-            if (!String.IsNullOrEmpty(addrData.RegionAbbrev) && city.Contains(" " + addrData.RegionAbbrev))
-                city = city.Replace(" " + addrData.RegionAbbrev, String.Empty);
-            if (!String.IsNullOrEmpty(addrData.RegionAbbrev) && city.Contains("," + addrData.RegionAbbrev))
-                city = city.Replace("," + addrData.RegionAbbrev, String.Empty);
+            var rem = new[]
+            {
+                addrData.PostalCode,
+                addrData.PostalCode?.Replace(" ",""),
+                $"-{addrData.SortingCode}",
+                $" {addrData.RegionAbbrev}" ,
+                $",{addrData.RegionAbbrev}"
+            };
 
-            city = city.Replace(",", String.Empty).Trim();
+            var city = lastLine ?? "";
+
+            foreach (var rm in rem)
+            {
+                
+                if (!string.IsNullOrWhiteSpace(rm) && rm.Length > 1 && city.Contains(rm))
+                    city = city.Replace(rm, string.Empty);
+            }
+
+            city = city.Replace(",", string.Empty).Trim();
 
             city = FinesseCityName(city);
 
             addrData.Locality = city;
         }
 
-        internal static void GetState(string lastLine, AddressData addrData)
+        internal static void GetState(string lastLine, AddressData addrData, string regexPattern = null)
         {
-            var regex = new Regex(RegexUsPostalStateAbbrev, RegexOptions.IgnoreCase);
+            if (string.IsNullOrWhiteSpace(lastLine))
+                return;
+
+            regexPattern = regexPattern ?? RegexUsPostalStateAbbrev;
+            var regex = new Regex(regexPattern, RegexOptions.IgnoreCase);
             if (!regex.IsMatch(lastLine))
                 return;
             var matches = regex.Match(lastLine);
@@ -227,6 +251,9 @@ namespace NoFuture.Rand.Geo.US
         internal static void GetZipCode(string lastLine, AddressData addrData)
         {
             //zip code
+            if (string.IsNullOrWhiteSpace(lastLine))
+                return;
+
             var regex = new Regex(ZIP_CODE_REGEX, RegexOptions.IgnoreCase);
             if (!regex.IsMatch(lastLine))
                 return;
@@ -388,16 +415,14 @@ namespace NoFuture.Rand.Geo.US
             if(UsZipCodeXml == null)
                 return AmericanRacePercents.GetNatlAvg();
             //get the data for the given zip code
-            var zipStatElem =
-                UsZipCodeXml.SelectSingleNode(
+            var zipStatElem = UsZipCodeXml.SelectSingleNode(
                     $"//{ZIP_STAT}[@{VALUE}='{zipCode}']");
 
             if (zipStatElem == null || !zipStatElem.HasChildNodes)
             {
                 //try to find on the zip code prefix 
                 var zip3 = zipCode.Substring(0, 3);
-                var zipCodeElem =
-                    UsZipCodeXml.SelectSingleNode(
+                var zipCodeElem = UsZipCodeXml.SelectSingleNode(
                         $"//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zip3}']");
 
                 if (zipCodeElem == null || !zipCodeElem.HasChildNodes)
@@ -466,43 +491,43 @@ namespace NoFuture.Rand.Geo.US
             var attr = node.Attributes["american-indian"];
             if (attr != null)
             {
-                if (double.TryParse(attr.Value, out var dblOut))
+                if (Double.TryParse(attr.Value, out var dblOut))
                     arp.AmericanIndian = dblOut;
             }
             attr = node.Attributes["asian"];
             if (attr != null)
             {
-                if (double.TryParse(attr.Value, out var dblOut))
+                if (Double.TryParse(attr.Value, out var dblOut))
                     arp.Asian = dblOut;
             }
             attr = node.Attributes["hispanic"];
             if (attr != null)
             {
-                if (double.TryParse(attr.Value, out var dblOut))
+                if (Double.TryParse(attr.Value, out var dblOut))
                     arp.Hispanic = dblOut;
             }
             attr = node.Attributes["black"];
             if (attr != null)
             {
-                if (double.TryParse(attr.Value, out var dblOut))
+                if (Double.TryParse(attr.Value, out var dblOut))
                     arp.Black = dblOut;
             }
             attr = node.Attributes["white"];
             if (attr != null)
             {
-                if (double.TryParse(attr.Value, out var dblOut))
+                if (Double.TryParse(attr.Value, out var dblOut))
                     arp.White = dblOut;
             }
             attr = node.Attributes["pacific"];
             if (attr != null)
             {
-                if (double.TryParse(attr.Value, out var dblOut))
+                if (Double.TryParse(attr.Value, out var dblOut))
                     arp.Pacific = dblOut;
             }
             attr = node.Attributes["mixed-race"];
             if (attr != null)
             {
-                if (double.TryParse(attr.Value, out var dblOut))
+                if (Double.TryParse(attr.Value, out var dblOut))
                     arp.Mixed = dblOut;
             }
 
@@ -604,38 +629,20 @@ namespace NoFuture.Rand.Geo.US
             GetData().Locality = suburbName;
         }
 
-        private static string[] ReadTextFileData(string name)
-        {
-            var asm = Assembly.GetExecutingAssembly();
-
-            var data = asm.GetManifestResourceStream($"{asm.GetName().Name}.Data.{name}");
-            if (data == null)
-                return null;
-
-            var strmRdr = new StreamReader(data);
-            var webmailData = strmRdr.ReadToEnd();
-            if (string.IsNullOrWhiteSpace(webmailData))
-                return null;
-
-            var txtData = webmailData.Split(Constants.LF).ToArray();
-            return txtData;
-        }
-
         public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
             var itemData = new Dictionary<string, object>();
 
-            if(!string.IsNullOrWhiteSpace(City))
+            if(!String.IsNullOrWhiteSpace(City))
                 itemData.Add(textFormat(nameof(City)), City);
-            if(!string.IsNullOrWhiteSpace(StateAbbrev))
+            if(!String.IsNullOrWhiteSpace(StateAbbrev))
                 itemData.Add(textFormat("State"), StateAbbrev);
-            if(!string.IsNullOrWhiteSpace(ZipCode))
+            if(!String.IsNullOrWhiteSpace(ZipCode))
                 itemData.Add(textFormat(nameof(ZipCode)), ZipCode);
             return itemData;
         }
 
         #endregion
-
     }
 }

@@ -31,4 +31,10 @@ namespace NoFuture.Shared.Core
         public Safuas(string msg) : base(msg) { }
         public Safuas(string msg, Exception innerException) : base(msg, innerException) { }
     }
+
+    public class WatDaFookIzDis : ItsDeadJim
+    {
+        public WatDaFookIzDis(string msg) : base(msg) { }
+        public WatDaFookIzDis(string msg, Exception innerException) : base(msg, innerException) { }
+    }
 }

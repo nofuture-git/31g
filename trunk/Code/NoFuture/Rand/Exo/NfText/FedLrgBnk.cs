@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Exo.NfText
             bank.AddName(KindsOfNames.Legal, unfoldedName);
             bank.AddName(KindsOfNames.Abbrev, li.BankName);
             bank.Rssd = new ResearchStatisticsSupervisionDiscount { Value = li.BankId };
-            if (UsCityStateZip.TryParse(li.Location, out UsCityStateZip cityOut, false))
+            if (UsCityStateZip.TryParse(li.Location, out UsCityStateZip cityOut))
                 bank.BusinessAddress = new PostalAddress {CityArea = cityOut};
             if (TypeOfBankAbbrev3Enum.ContainsKey(li.Chtr))
                 bank.BankType = TypeOfBankAbbrev3Enum[li.Chtr];

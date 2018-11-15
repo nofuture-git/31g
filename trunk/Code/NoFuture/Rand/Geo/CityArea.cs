@@ -11,6 +11,7 @@ using NoFuture.Rand.Gov.US;
 
 namespace NoFuture.Rand.Geo
 {
+    /// <inheritdoc cref="GeoBase"/>
     /// <summary>
     /// Base type representing the second half of a typical Postal Address
     /// </summary>
@@ -18,37 +19,17 @@ namespace NoFuture.Rand.Geo
     public abstract class CityArea : GeoBase, ICited, IObviate
     {
         #region constants
-
-        public const string ZIP_CODE_SINGULAR = "zip-code";
-        public const string ZIP_CODE_PLURAL = "zip-codes";
-        public const string NAME = "name";
-        public const string VALUE = "value";
-        public const string PREFIX = "prefix";
-        public const string MSA_CODE = "msa-code";
-        public const string CBSA_CODE = "cbsa-code";
-        public const string ZIP_STAT = "zip-stat";
-
-        internal const string US_ZIP_CODE_DATA = "US_Zip_Data.xml";
-        internal const string CA_POST_CODE_DATA = "CA_Postal_Data.xml";
-        internal const string US_ZIP_PROB_TABLE = "US_Zip_ProbTable.xml";
-        internal const string US_CITY_DATA = "US_City_Data.xml";
-
+        internal const string NAME = "name";
+        internal const string VALUE = "value";
+        internal const string PREFIX = "prefix";
         #endregion
 
-        #region fields
-        internal static XmlDocument UsZipCodeXml;
-        internal static XmlDocument CaPostCodeXml;
-        internal static XmlDocument UsZipProbXml;
-        internal static XmlDocument UsCityXml;
-        #endregion
-
-        #region ctor
         protected CityArea(AddressData d) :base(d)
         {
         }
-        #endregion
 
         #region properties
+
         public virtual string Src { get; set; }
         public string City => GetData().Locality;
         public string Country => GetData().NationState;
@@ -116,13 +97,12 @@ namespace NoFuture.Rand.Geo
                 zipCodePrefix = UsCityStateZip.RandomAmericanPartialZipCode() ?? UsCityStateZip.DF_ZIPCODE_PREFIX;
 
             //x-ref it to the zip code data
-            var xpathString = $"//{ZIP_CODE_PLURAL}//{ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']";
-            UsZipCodeXml = UsZipCodeXml ??
-                            XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_ZIP_CODE_DATA, Assembly.GetExecutingAssembly());
-            if (UsZipCodeXml == null)
+            var xpathString = $"//{UsCityStateZip.ZIP_CODE_PLURAL}//{UsCityStateZip.ZIP_CODE_SINGULAR}[@{PREFIX}='{zipCodePrefix}']";
+            UsCityStateZip.UsZipCodeXml = UsCityStateZip.UsZipCodeXml ??
+                            XmlDocXrefIdentifier.GetEmbeddedXmlDoc(UsCityStateZip.US_ZIP_CODE_DATA, Assembly.GetExecutingAssembly());
+            if (UsCityStateZip.UsZipCodeXml == null)
                 return null;
-            var randZipCode =
-                UsZipCodeXml.SelectSingleNode(xpathString);
+            var randZipCode = UsCityStateZip.UsZipCodeXml.SelectSingleNode(xpathString);
             if (randZipCode?.ParentNode?.Attributes?[NAME] == null)
             {
                 ctz.Locality = UsCityStateZip.DF_CITY_NAME;
@@ -171,19 +151,12 @@ namespace NoFuture.Rand.Geo
         [RandomFactory]
         public static CaCityProvidencePost RandomCanadianCity()
         {
-            const string POSTAL_CODE = "postal-code";
-            const string DF_FIRST_THREE_CHARS = "M5A";
-            const string DF_CITY = "Toronto";
-            const string DF_LAST_THREE_CHARS = "4Z4";
-            const string MUNICIPALITY = "municipality";
-            const string ABBREVIATION = "abbreviation";
-
             var ctz = new AddressData();
-            CaPostCodeXml = CaPostCodeXml ??
-                             XmlDocXrefIdentifier.GetEmbeddedXmlDoc(CA_POST_CODE_DATA, Assembly.GetExecutingAssembly());
-            if (CaPostCodeXml == null)
+            CaCityProvidencePost.CaPostCodeXml = CaCityProvidencePost.CaPostCodeXml ??
+                             XmlDocXrefIdentifier.GetEmbeddedXmlDoc(CaCityProvidencePost.CA_POST_CODE_DATA, Assembly.GetExecutingAssembly());
+            if (CaCityProvidencePost.CaPostCodeXml == null)
                 return null;
-            var postalCodes = CaPostCodeXml.SelectNodes($"//{POSTAL_CODE}");
+            var postalCodes = CaCityProvidencePost.CaPostCodeXml.SelectNodes($"//{CaCityProvidencePost.POSTAL_CODE}");
             var dfReturn = new CaCityProvidencePost(ctz);
             if (postalCodes == null)
                 return dfReturn;
@@ -198,17 +171,17 @@ namespace NoFuture.Rand.Geo
             if (providenceElem == null)
                 return dfReturn;
 
-            ctz.RegionAbbrev = providenceElem.GetAttribute(ABBREVIATION);
+            ctz.RegionAbbrev = providenceElem.GetAttribute(CaCityProvidencePost.ABBREVIATION);
             ctz.RegionName = providenceElem.GetAttribute(NAME);
             
             var postalPrefix = randPostalCode.GetAttribute(PREFIX);
-            postalPrefix = String.IsNullOrWhiteSpace(postalPrefix) ? DF_FIRST_THREE_CHARS : postalPrefix;
-            ctz.PostalCode = $"{postalPrefix} {DF_LAST_THREE_CHARS}";
+            postalPrefix = String.IsNullOrWhiteSpace(postalPrefix) ? CaCityProvidencePost.DF_FIRST_THREE_CHARS : postalPrefix;
+            ctz.PostalCode = $"{postalPrefix} {CaCityProvidencePost.DF_LAST_THREE_CHARS}";
 
             var municipalityNode = randPostalCode.ChildNodes.OfType<XmlElement>()
-                .FirstOrDefault(x => x.LocalName == MUNICIPALITY && !String.IsNullOrWhiteSpace(x.InnerText));
+                .FirstOrDefault(x => x.LocalName == CaCityProvidencePost.MUNICIPALITY && !string.IsNullOrWhiteSpace(x.InnerText));
 
-            ctz.Locality = municipalityNode?.InnerText ?? DF_CITY;
+            ctz.Locality = municipalityNode?.InnerText ?? CaCityProvidencePost.DF_CITY;
 
             return new CaCityProvidencePost(ctz);
         }
