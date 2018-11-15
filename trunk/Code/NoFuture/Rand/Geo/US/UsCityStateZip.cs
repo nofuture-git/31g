@@ -166,7 +166,7 @@ namespace NoFuture.Rand.Geo.US
         /// Attempts to turn <see cref="lastLine"/> into an instance of <see cref="UsCityStateZip"/>
         /// </summary>
         /// <param name="lastLine">
-        /// This is assumed to be a classic USPS Address&apos;s last-line (e.g. New York City, NW 10001). 
+        /// This is assumed to be a classic USPS Address&apos;s last-line (e.g. New York City, NY 10001). 
         /// </param>
         /// <param name="cityStateZip">
         /// The resulting instance when true is returned

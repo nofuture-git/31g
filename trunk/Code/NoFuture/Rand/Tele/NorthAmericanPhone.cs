@@ -22,12 +22,6 @@ namespace NoFuture.Rand.Tele
     [Serializable]
     public class NorthAmericanPhone : Phone
     {
-        #region fields
-        private string _areaCode;
-        private string _centralOfficeCode;
-        private string _subscriberCode;
-        #endregion
-
         #region inner types
         [Serializable]
         public enum PhoneCodes
@@ -42,10 +36,10 @@ namespace NoFuture.Rand.Tele
 
         public NorthAmericanPhone(params Tuple<PhoneCodes, string>[] parts)
         {
-            _areaCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.AreaCode)?.Item2 ?? "";
-            _centralOfficeCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.CentralOfficeCode)?.Item2 ??
+            AreaCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.AreaCode)?.Item2 ?? "";
+            CentralOfficeCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.CentralOfficeCode)?.Item2 ??
                                  "";
-            _subscriberCode = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.SubscriberCode)?.Item2 ??
+            SubscriberNumber = parts.FirstOrDefault(x => x.Item1 == PhoneCodes.SubscriberCode)?.Item2 ??
                               "";
         }
 
@@ -58,17 +52,17 @@ namespace NoFuture.Rand.Tele
         /// <summary>
         /// The first 3 digits of a telephone number
         /// </summary>
-        public string AreaCode => _areaCode;
+        public string AreaCode { get; private set; }
 
         /// <summary>
         /// The middle 3 digits of a telephone number
         /// </summary>
-        public string CentralOfficeCode => _centralOfficeCode;
+        public string CentralOfficeCode { get; private set; }
 
         /// <summary>
         /// The last 4 digits of a telephone number
         /// </summary>
-        public string SubscriberNumber => _subscriberCode;
+        public string SubscriberNumber { get; private set; }
 
         public static IEnumerable<string> TollFreeAreaCodes = new[] { "800", "888", "877", "866", "855", "844" };
 
@@ -80,9 +74,9 @@ namespace NoFuture.Rand.Tele
                 if(!TryParse(value, out var phout))
                     throw new InvalidOperationException($"Cannot parse the value '{value}' into " +
                                                         "a North American phone number");
-                _areaCode = phout.AreaCode;
-                _centralOfficeCode = phout.CentralOfficeCode;
-                _subscriberCode = phout.SubscriberNumber;
+                AreaCode = phout.AreaCode;
+                CentralOfficeCode = phout.CentralOfficeCode;
+                SubscriberNumber = phout.SubscriberNumber;
             }
         }
 
