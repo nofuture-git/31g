@@ -304,8 +304,8 @@ namespace NoFuture.Rand.Opes.US
                 };
             }
 
-            p.Expectation.Name = item;
-            p.Expectation.AddName(KindsOfNames.Group, grp);
+            p.Name = item;
+            p.AddName(KindsOfNames.Group, grp);
             return p;
         }
 

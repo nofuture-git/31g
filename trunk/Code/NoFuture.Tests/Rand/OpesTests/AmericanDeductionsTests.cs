@@ -282,7 +282,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
 
-            var testResultItem = testSubject.MyItems.FirstOrDefault(x => x.Expectation.Name == "Child Support");
+            var testResultItem = testSubject.MyItems.FirstOrDefault(x => x.Name == "Child Support");
             Assert.IsNotNull(testResultItem);
             Assert.AreNotEqual(0.ToPecuniam(), testResultItem.Expectation.Value);
             Console.WriteLine(testResultItem.Expectation.Value);

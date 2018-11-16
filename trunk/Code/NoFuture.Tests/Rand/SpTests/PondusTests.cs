@@ -33,12 +33,12 @@ namespace NoFuture.Rand.Tests.SpTests
 
             //same dates, diff name
             testCompare.Terminus = DateTime.Today.AddDays(1);
-            testCompare.Expectation.Name = "test2";
+            testCompare.Name = "test2";
 
             Assert.IsFalse(testSubject.Equals(testCompare));
 
             //null date is diff date
-            testCompare.Expectation.Name = "test";
+            testCompare.Name = "test";
             testCompare.Terminus = null;
 
             Assert.IsFalse(testSubject.Equals(testCompare));
@@ -49,11 +49,11 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestCopyFrom()
         {
             var testSubject = new NamedReceivable("TestCorporation");
-            testSubject.Expectation.AddName(KindsOfNames.Group, "Company");
+            testSubject.AddName(KindsOfNames.Group, "Company");
 
-            var testSubject2 = new NamedReceivable(testSubject.Expectation);
-            Assert.AreEqual(testSubject.Expectation.Name, testSubject2.Expectation.Name);
-            var groupName = testSubject2.Expectation.GetName(KindsOfNames.Group);
+            var testSubject2 = new NamedReceivable(testSubject);
+            Assert.AreEqual(testSubject.Name, testSubject2.Name);
+            var groupName = testSubject2.GetName(KindsOfNames.Group);
             Assert.IsNotNull(groupName);
 
             Assert.AreEqual("Company", groupName);
@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Tests.SpTests
         {
             var dt = DateTime.Today;
             var testSubject = new NamedReceivable("Test Name");
-            testSubject.Expectation.AddName(KindsOfNames.Group, "Company");
+            testSubject.AddName(KindsOfNames.Group, "Company");
             var cusip = new Cusip().Value;
             testSubject.AddPositiveValue(dt.AddDays(-360), new Security(cusip, 5000));
             testSubject.AddPositiveValue(dt.AddDays(-360), new Pecuniam(500000.0M));

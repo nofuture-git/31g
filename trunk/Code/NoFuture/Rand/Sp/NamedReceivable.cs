@@ -8,33 +8,36 @@ using NoFuture.Rand.Sp.Enums;
 namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="Receivable" />
+    /// <inheritdoc cref="IVoca" />
     /// <summary>
     /// A capital concrete composition type to 
     /// bind time and names with expected and actual money value.
     /// </summary>
     [Serializable]
-    public class NamedReceivable : Receivable
+    public class NamedReceivable : Receivable, IVoca
     {
+        private readonly IVoca _voca = new VocaBase();
+
         #region ctor
         public NamedReceivable(string name)
         {
-            Expectation.Name = name;
+            _voca.Name = name;
         }
 
         public NamedReceivable(string name, Interval interval)
         {
-            Expectation.Name = name;
+            _voca.Name = name;
             Expectation.TimeDenominator = interval.ToTimeSpan();
         }
 
         public NamedReceivable(IVoca names)
         {
-            Expectation.CopyFrom(names);
+            _voca.CopyFrom(names);
         }
 
         public NamedReceivable(IVoca names, Interval interval)
         {
-            Expectation.CopyFrom(names);
+            _voca.CopyFrom(names);
             Expectation.TimeDenominator = interval.ToTimeSpan();
         }
 
@@ -43,20 +46,70 @@ namespace NoFuture.Rand.Sp
         }
         #endregion
 
-        /// <summary>
-        /// Gets the name from the Exceptation
-        /// </summary>
         public string Name
         {
-            get
-            {
-                if (Expectation == null)
-                    return null;
-                var grpName = Expectation.GetName(KindsOfNames.Group);
-                return string.IsNullOrWhiteSpace(grpName)
-                    ? Expectation.Name
-                    : string.Join(", ", grpName, Expectation.Name);
-            }
+            get => _voca.Name;
+            set => _voca.Name = value;
+        }
+
+        public void AddName(KindsOfNames k, string name)
+        {
+            _voca.AddName(k, name);
+        }
+
+        public string GetName(KindsOfNames k)
+        {
+            return _voca.GetName(k);
+        }
+
+        public bool AnyOfKind(KindsOfNames k)
+        {
+            return _voca.AnyOfKind(k);
+        }
+
+        public bool AnyOfKindContaining(KindsOfNames k)
+        {
+            return _voca.AnyOfKindContaining(k);
+        }
+
+        public bool AnyOfNameAs(string name)
+        {
+            return _voca.AnyOfNameAs(name);
+        }
+
+        public bool AnyOfKindAndValue(KindsOfNames k, string name)
+        {
+            return _voca.AnyOfKindAndValue(k, name);
+        }
+
+        public bool RemoveNameByKind(KindsOfNames k)
+        {
+            return _voca.RemoveNameByKind(k);
+        }
+
+        public int RemoveNameByValue(string name)
+        {
+            return _voca.RemoveNameByValue(name);
+        }
+
+        public bool RemoveNameByKindAndValue(KindsOfNames k, string name)
+        {
+            return _voca.RemoveNameByKindAndValue(k, name);
+        }
+
+        public int GetCountOfNames()
+        {
+            return _voca.GetCountOfNames();
+        }
+
+        public KindsOfNames[] GetAllKindsOfNames()
+        {
+            return _voca.GetAllKindsOfNames();
+        }
+
+        public void CopyFrom(IVoca voca)
+        {
+            _voca.CopyFrom(voca);
         }
 
         public static Pecuniam GetExpectedSum(IEnumerable<NamedReceivable> items)
@@ -115,8 +168,8 @@ namespace NoFuture.Rand.Sp
 
         public override string ToString()
         {
-            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Expectation?.Value.ToString(), Expectation?.Name,
-                Expectation?.GetName(KindsOfNames.Group), Expectation?.Interval.ToString(), Inception, Terminus);
+            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Expectation?.Value.ToString(), Name,
+                GetName(KindsOfNames.Group), Expectation?.Interval.ToString(), Inception, Terminus);
             return d.ToString();
         }
 
@@ -136,5 +189,6 @@ namespace NoFuture.Rand.Sp
 
             return itemData;
         }
+
     }
 }

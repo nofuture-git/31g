@@ -162,7 +162,7 @@ namespace NoFuture.Rand.Opes
         {
             var p = new NamedReceivable(new VocaBase(name, groupName));
             p.Expectation.Value = expectedValue;
-            p.Expectation.TimeDenominator = Constants.TropicalYear;
+            p.Expectation.TimeDenominator = interval.ToTimeSpan();
             AddItem(p);
         }
 
@@ -171,7 +171,7 @@ namespace NoFuture.Rand.Opes
         {
             var p = new NamedReceivable(new VocaBase(name, Division.ToString()));
             p.Expectation.Value = new Pecuniam(Convert.ToDecimal(expectedValue), c);
-            p.Expectation.TimeDenominator = Constants.TropicalYear;
+            p.Expectation.TimeDenominator = interval.ToTimeSpan();
             AddItem(p);
         }
 
@@ -991,7 +991,7 @@ namespace NoFuture.Rand.Opes
                 Inception = options.Inception,
                 Terminus = options.Terminus,
             };
-            p.Expectation.AddName(KindsOfNames.Group, grpName);
+            p.AddName(KindsOfNames.Group, grpName);
             return p;
         }
 
