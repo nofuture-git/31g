@@ -105,7 +105,6 @@ namespace NoFuture.Rand.Sp
         /// <param name="dt"></param>
         /// <param name="amt"></param>
         /// <param name="note"></param>
-        /// <param name="fee"></param>
         public virtual void AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null)
         {
             if (amt == Pecuniam.Zero)
@@ -119,7 +118,6 @@ namespace NoFuture.Rand.Sp
         /// <param name="dt"></param>
         /// <param name="val"></param>
         /// <param name="note"></param>
-        /// <param name="fee"></param>
         /// <returns></returns>
         public virtual bool AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null)
         {
