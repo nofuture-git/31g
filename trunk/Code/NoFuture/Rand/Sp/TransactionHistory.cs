@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Sp
                 return Guid.Empty;
             while (_transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {
-                dt = dt.AddMilliseconds(10);
+                dt = dt.AddTicks(1L);
             }
             var t = new Transaction(dt, amnt, note);
             _transactions.Add(t);
