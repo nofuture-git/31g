@@ -22,7 +22,6 @@ namespace NoFuture.Rand.Sp
         /// <param name="dt"></param>
         /// <param name="amnt"></param>
         /// <param name="note"></param>
-        /// <param name="fee"></param>
         Guid AddTransaction(DateTime dt, Pecuniam amnt, IVoca note = null);
 
         /// <summary>

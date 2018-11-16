@@ -65,7 +65,6 @@ namespace NoFuture.Rand.Sp.Cc
         /// <param name="dt"></param>
         /// <param name="val"></param>
         /// <param name="note"></param>
-        /// <param name="fee"></param>
         /// <returns>
         /// True when the card is not expired and
         /// the purchase amount <see cref="val"/>
