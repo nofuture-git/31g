@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Sp;
+using NoFuture.Rand.Sp.Enums;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.SpTests
@@ -48,6 +49,28 @@ namespace NoFuture.Rand.Tests.SpTests
             current = testBalance.GetCurrent(DateTime.Today, 1.5f);
             Assert.AreEqual(25704.93M, current.Amount);
 
+        }
+
+        [Test]
+        public void TestAveragePerPeriod()
+        {
+            var dt = DateTime.Today;
+            var testSubject = new TradeLine(DateTime.Now.AddDays(-180));
+            testSubject.DueFrequency = new TimeSpan(30,0,0,0);
+            for (var i = -180; i < 0; i += 30)
+            {
+                var pastDt = dt.AddDays(i);
+                for (var j = 0; j < 3; j++)
+                {
+                    //should get average around 28 per 30 days
+                    testSubject.AddPositiveValue(pastDt.AddDays(j), new Pecuniam(27 + j));
+                }
+            }
+
+            var testResult = testSubject.AveragePerDueFrequency();
+            Console.WriteLine(testResult);
+
+            Assert.AreEqual(28M.ToPecuniam(), testResult);
         }
     }
 }

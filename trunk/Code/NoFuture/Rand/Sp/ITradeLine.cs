@@ -23,11 +23,6 @@ namespace NoFuture.Rand.Sp
         IBalance Balance { get; }
 
         /// <summary>
-        /// Readable version of <see cref="DueFrequency"/>
-        /// </summary>
-        Interval Interval { get; }
-
-        /// <summary>
         /// The recurring frequency of activity of the tradeline, if any.
         /// </summary>
         TimeSpan? DueFrequency { get; set; }
@@ -42,5 +37,11 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         double DaysPerYear { get; set; }
 
+        /// <summary>
+        /// Gets the average value per <see cref="DueFrequency"/>
+        /// Annual if null.
+        /// </summary>
+        /// <returns></returns>
+        Pecuniam AveragePerDueFrequency();
     }
 }

@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Sp
         public Transaction(DateTime atTime, Pecuniam amt, IVoca description = null)
         {
             AtTime = atTime;
-            Cash = amt;
+            Cash = amt ?? Pecuniam.Zero;
             Description = description;
             if (!(Description is IMereo mereo))
                 return;

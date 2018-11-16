@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -31,7 +34,6 @@ namespace NoFuture.Rand.Sp
         #region properties
         public FormOfCredit? FormOfCredit { get; set; }
         public IBalance Balance => _balance;
-        public Interval Interval => DueFrequency.ToInterval() ?? Interval.Annually;
         public TimeSpan? DueFrequency { get; set; }
 
         public DateTime Inception { get; set; }
@@ -125,6 +127,33 @@ namespace NoFuture.Rand.Sp
                 return false;
             Balance.AddTransaction(dt, val.GetAbs(), note);
             return true;
+        }
+
+        public virtual Pecuniam AveragePerDueFrequency()
+        {
+            var ts = DueFrequency ?? Constants.TropicalYear;
+
+            var now = DateTime.Now;
+            var start = Inception == DateTime.MinValue ? now.Add(Constants.TropicalYear.Negate()) : Inception;
+            var end = Terminus == null || Terminus == DateTime.MinValue ? now : Terminus.Value;
+
+            if(start > end)
+                return Pecuniam.Zero;
+            //how many whole-blocks of ts can we get between start and end
+            var wholeTimeBlocks = Convert.ToInt32(Math.Round((end - start).TotalDays / ts.TotalDays));
+            if(wholeTimeBlocks <= 0)
+                return Pecuniam.Zero;
+            var avgPerBlock = new List<double>();
+            var begin = start;
+            for (var i = 0; i < wholeTimeBlocks; i++)
+            {
+                var transactions = Balance.GetTransactionsBetween(begin, begin.Add(ts), true);
+                var avgAtBlockI = Util.Core.Math.Extensions.Mean(transactions.Select(t => t.Cash.ToDouble()));
+                avgPerBlock.Add(avgAtBlockI);
+            }
+
+            var totalAvg = Util.Core.Math.Extensions.Mean(avgPerBlock);
+            return new Pecuniam(Convert.ToDecimal(totalAvg));
         }
         #endregion
     }
