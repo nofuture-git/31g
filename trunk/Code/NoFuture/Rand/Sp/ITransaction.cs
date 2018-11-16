@@ -11,7 +11,6 @@ namespace NoFuture.Rand.Sp
         Guid UniqueId { get; }
         DateTime AtTime { get; }
         Pecuniam Cash { get; }
-        Pecuniam Fee { get; }
         IVoca Description { get; }
     }
 }

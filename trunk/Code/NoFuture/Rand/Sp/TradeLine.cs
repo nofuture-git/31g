@@ -106,12 +106,11 @@ namespace NoFuture.Rand.Sp
         /// <param name="amt"></param>
         /// <param name="note"></param>
         /// <param name="fee"></param>
-        public virtual void AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null, Pecuniam fee = null)
+        public virtual void AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null)
         {
             if (amt == Pecuniam.Zero)
                 return;
-            fee = fee == null ? Pecuniam.Zero : fee.GetNeg();
-            Balance.AddTransaction(dt, amt.GetNeg(), note, fee);
+            Balance.AddTransaction(dt, amt.GetNeg(), note);
         }
 
         /// <summary>
@@ -122,12 +121,11 @@ namespace NoFuture.Rand.Sp
         /// <param name="note"></param>
         /// <param name="fee"></param>
         /// <returns></returns>
-        public virtual bool AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null, Pecuniam fee = null)
+        public virtual bool AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null)
         {
             if (val == Pecuniam.Zero)
                 return false;
-            fee = fee == null ? Pecuniam.Zero : fee.GetAbs();
-            Balance.AddTransaction(dt, val.GetAbs(), note, fee);
+            Balance.AddTransaction(dt, val.GetAbs(), note);
             return true;
         }
         #endregion

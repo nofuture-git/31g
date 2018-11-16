@@ -23,27 +23,12 @@ namespace NoFuture.Rand.Sp
             asVoca.CopyFrom(mereo);
             Description = asVoca;
         }
-        public Transaction(DateTime atTime, Pecuniam amt, Pecuniam fee, IVoca description = null)
-        {
-            AtTime = atTime;
-            Cash = amt;
-            Description = description;
-            if (Description is IMereo mereo)
-            {
-                //having another money amount here is confusing
-                var asVoca = new VocaBase();
-                asVoca.CopyFrom(mereo);
-                Description = asVoca;
-            }
-            Fee = fee;
-        }
         #endregion
 
         #region properties
         public Guid UniqueId { get; } = Guid.NewGuid();
         public DateTime AtTime { get; }
         public Pecuniam Cash { get; }
-        public Pecuniam Fee { get; }
         public IVoca Description { get; }
         #endregion
 

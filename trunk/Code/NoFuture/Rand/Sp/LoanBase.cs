@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Sp
         {
             if (amount != null && amount.Amount != 0)
             {
-                Balance.AddTransaction(openedDate, amount.GetAbs(), new Mereo("Initial Transaction"), Pecuniam.Zero);
+                Balance.AddTransaction(openedDate, amount.GetAbs(), new Mereo("Initial Transaction"));
             }
             FormOfCredit = Enums.FormOfCredit.Installment;
             DueFrequency = DefaultDueFrequency;

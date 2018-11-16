@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Sp
         /// <param name="amnt"></param>
         /// <param name="note"></param>
         /// <param name="fee"></param>
-        Guid AddTransaction(DateTime dt, Pecuniam amnt, IVoca note = null, Pecuniam fee = null);
+        Guid AddTransaction(DateTime dt, Pecuniam amnt, IVoca note = null);
 
         /// <summary>
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>
@@ -73,13 +73,6 @@ namespace NoFuture.Rand.Sp
         /// </param>
         /// <returns></returns>
         Pecuniam GetCurrent(DateTime dt, Dictionary<DateTime, float> variableRate);
-
-        /// <summary>
-        /// Gets the sum of fees for all transactions up-to-and-including <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        Pecuniam GetFees(DateTime dt);
 
         /// <summary>
         /// The number of days in a year used to calc per-diem interest
