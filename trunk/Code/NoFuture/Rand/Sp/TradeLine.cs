@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Sp
         #region properties
         public FormOfCredit? FormOfCredit { get; set; }
         public IBalance Balance => _balance;
-
+        public Interval Interval => DueFrequency.ToInterval() ?? Interval.Annually;
         public TimeSpan? DueFrequency { get; set; }
 
         public DateTime Inception { get; set; }
