@@ -5,7 +5,6 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -140,7 +139,7 @@ namespace NoFuture.Rand.Sp
             if(start > end)
                 return Pecuniam.Zero;
             //how many whole-blocks of ts can we get between start and end
-            var wholeTimeBlocks = Convert.ToInt32(Math.Round((end - start).TotalDays / ts.TotalDays));
+            var wholeTimeBlocks = Convert.ToInt32(Math.Floor((end - start).TotalDays / ts.TotalDays));
             if(wholeTimeBlocks <= 0)
                 return Pecuniam.Zero;
             var avgPerBlock = new List<double>();
