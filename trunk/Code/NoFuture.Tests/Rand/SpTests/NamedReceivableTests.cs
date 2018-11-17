@@ -76,6 +76,38 @@ namespace NoFuture.Rand.Tests.SpTests
 
             var asJson = JsonConvert.SerializeObject(testResult, Formatting.Indented);
             Console.WriteLine(asJson);
+        }
+
+        [Test]
+        public void TestRandomNamedReceivableWithVariedHistory()
+        {
+            var testResult = NamedReceivable.RandomNamedReceivableWithVariedHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
+                DateTime.Today.AddYears(-1));
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual("firstName", testResult.GetName(KindsOfNames.Legal));
+            Assert.AreEqual("groupName", testResult.GetName(KindsOfNames.Group));
+            var testResultAverage = testResult.AveragePerDueFrequency();
+            Console.WriteLine(testResultAverage);
+            var testResultDiff = System.Math.Abs(250M - testResultAverage.Amount);
+            Assert.IsTrue(testResultDiff < 83M);
+            Console.WriteLine(testResult.Balance.FirstTransaction);
+            Console.WriteLine(testResult.Balance.LastTransaction);
+        }
+
+        [Test]
+        public void TestRandomNamedReceivalbleWithSteadyHistory()
+        {
+            var testResult = NamedReceivable.RandomNamedReceivalbleWithSteadyHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
+                DateTime.Today.AddYears(-1));
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual("firstName", testResult.GetName(KindsOfNames.Legal));
+            Assert.AreEqual("groupName", testResult.GetName(KindsOfNames.Group));
+            var testResultAverage = testResult.AveragePerDueFrequency();
+            Console.WriteLine(testResultAverage);
+            var testResultDiff = System.Math.Abs(250M - testResultAverage.Amount);
+            Assert.IsTrue(testResultDiff < 1M);
+            Console.WriteLine(testResult.Balance.FirstTransaction);
+            Console.WriteLine(testResult.Balance.LastTransaction);
 
         }
     }
