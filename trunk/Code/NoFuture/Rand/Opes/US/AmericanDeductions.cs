@@ -7,6 +7,7 @@ using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Opes.US
@@ -103,7 +104,7 @@ namespace NoFuture.Rand.Opes.US
             foreach (var range in ranges.Distinct())
             {
                 var cloneOptions = options.GetClone();
-                cloneOptions.Interval = Interval.Annually;
+                cloneOptions.DueFrequency = Constants.TropicalYear;
                
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;

@@ -110,6 +110,7 @@ namespace NoFuture.Rand.Opes
         /// The interval is passed to the created items
         /// </summary>
         public Interval Interval { get; set; }
+        public TimeSpan? DueFrequency { get; set; }
 
         #endregion
 
@@ -212,7 +213,7 @@ namespace NoFuture.Rand.Opes
                 NumberOfCreditCards = Etx.RandomInteger(0, 3),
                 NumberOfVehicles = 1,
                 PersonsName = name,
-                Interval = Interval.Annually,
+                DueFrequency = Constants.TropicalYear,
                 IsVehiclePaidOff = false
             };
             return opt;

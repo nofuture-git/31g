@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testInput = new OpesOptions
             {
                 Inception = DateTime.Today.AddYears(-1),
-                Interval = Interval.Daily,
+                DueFrequency = new TimeSpan(1,0,0,0),
                 DerivativeSlope = -0.33,
                 SumTotal = 88000.ToPecuniam(),
                 IsVehiclePaidOff = true,
@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             Assert.IsNotNull(testResult);
             Assert.AreEqual(testInput.Inception, testResult.Inception);
-            Assert.AreEqual(testInput.Interval, testResult.Interval);
+            Assert.AreEqual(testInput.DueFrequency, testResult.DueFrequency);
             Assert.AreEqual(testInput.DerivativeSlope, testResult.DerivativeSlope);
             Assert.AreEqual(testInput.SumTotal, testResult.SumTotal);
             Assert.AreEqual(testInput.IsVehiclePaidOff, testResult.IsVehiclePaidOff);

@@ -965,10 +965,10 @@ namespace NoFuture.Rand.Opes
 
             foreach (var item in grpRates.Keys)
             {
-                var p = GetPondusForItemAndGroup(item, grpName, options);
+                var p = GetNamedReceivableForItemAndGroup(item, grpName, options);
                 if (p.Expectation.Value == null || p.Expectation.Value == Pecuniam.Zero)
                     p.Expectation.Value = CalcValue(options.SumTotal, grpRates[item] * grpRate);
-                p.Expectation.TimeDenominator = options.Interval.ToTimeSpan();
+                p.Expectation.TimeDenominator = options.DueFrequency;
                 itemsout.Add(p);
             }
 
@@ -983,13 +983,14 @@ namespace NoFuture.Rand.Opes
         /// <param name="grpName"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable GetPondusForItemAndGroup(string itemName, string grpName, OpesOptions options)
+        protected internal virtual NamedReceivable GetNamedReceivableForItemAndGroup(string itemName, string grpName, OpesOptions options)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
-            var p = new NamedReceivable(itemName, options.Interval)
+            var p = new NamedReceivable(itemName)
             {
                 Inception = options.Inception,
                 Terminus = options.Terminus,
+                DueFrequency = options.DueFrequency
             };
             p.AddName(KindsOfNames.Group, grpName);
             return p;

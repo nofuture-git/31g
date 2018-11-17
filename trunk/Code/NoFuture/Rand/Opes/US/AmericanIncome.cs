@@ -9,6 +9,7 @@ using NoFuture.Rand.Org;
 using NoFuture.Rand.Pneuma;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes.US
 {
@@ -170,7 +171,7 @@ namespace NoFuture.Rand.Opes.US
             foreach (var range in ranges)
             {
                 var cloneOptions = options.GetClone();
-                cloneOptions.Interval = Interval.Annually;
+                cloneOptions.DueFrequency = Constants.TropicalYear;
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
                 if(cloneOptions.SumTotal == null || cloneOptions.SumTotal == Pecuniam.Zero)
@@ -293,10 +294,11 @@ namespace NoFuture.Rand.Opes.US
             var incomeItems = GetIncomeItemNames().Where(i => i.GetName(KindsOfNames.Group) == "Public Benefits");
             foreach (var incomeItem in incomeItems)
             {
-                var p = new NamedReceivable(incomeItem, Interval.Monthly)
+                var p = new NamedReceivable(incomeItem)
                 {
                     Inception = startDate,
-                    Terminus = endDate
+                    Terminus = endDate,
+                    DueFrequency = new TimeSpan(30,0,0,0)
                 };
 
                 switch (incomeItem.Name)

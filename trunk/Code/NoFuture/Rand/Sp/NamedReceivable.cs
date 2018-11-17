@@ -24,34 +24,15 @@ namespace NoFuture.Rand.Sp
             _voca.Name = name;
         }
 
-        public NamedReceivable(string name, Interval interval)
-        {
-            _voca.Name = name;
-            Expectation.TimeDenominator = interval.ToTimeSpan();
-        }
-
         public NamedReceivable(IVoca names)
         {
             _voca.CopyFrom(names);
-        }
-
-        public NamedReceivable(IVoca names, Interval interval)
-        {
-            _voca.CopyFrom(names);
-            Expectation.TimeDenominator = interval.ToTimeSpan();
         }
 
         public NamedReceivable(DateTime startDate) : base(startDate)
         {
         }
 
-        public NamedReceivable(string name, string groupName, DateTime startDate, Pecuniam intialValue)
-        {
-            _voca.AddName(KindsOfNames.Legal, name);
-            _voca.AddName(KindsOfNames.Group, groupName);
-            Balance.AddTransaction(startDate, intialValue);
-
-        }
         #endregion
 
         public string Name

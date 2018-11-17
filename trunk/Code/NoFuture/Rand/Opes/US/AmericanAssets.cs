@@ -10,6 +10,7 @@ using NoFuture.Rand.Gov.US.Fed;
 using NoFuture.Rand.Gov.US.Nhtsa;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes.US
 {
@@ -128,7 +129,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? OpesOptions.RandomOpesOptions();
             AssignFactorValues(options.FactorOptions);
-            options.Interval = Interval.Annually;
+            options.DueFrequency = Constants.TropicalYear;
             var items = GetItemsForRange(options);
             foreach (var item in items)
                 AddItem(item);
@@ -193,7 +194,7 @@ namespace NoFuture.Rand.Opes.US
             return base.GetGroupNames2Portions(options);
         }
 
-        protected internal override NamedReceivable GetPondusForItemAndGroup(string item, string grp, OpesOptions options)
+        protected internal override NamedReceivable GetNamedReceivableForItemAndGroup(string item, string grp, OpesOptions options)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = RiskFreeInterestRate.DF_VALUE;
@@ -297,10 +298,11 @@ namespace NoFuture.Rand.Opes.US
             }
             else
             {
-                p = new NamedReceivable(item, options.Interval)
+                p = new NamedReceivable(item)
                 {
                     Inception = startDate,
                     Terminus = options.Terminus,
+                    DueFrequency =  options.DueFrequency
                 };
             }
 

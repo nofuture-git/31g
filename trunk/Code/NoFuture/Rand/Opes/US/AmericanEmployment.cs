@@ -6,6 +6,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes.US
 {
@@ -297,7 +298,7 @@ namespace NoFuture.Rand.Opes.US
             if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
             {
                 options.SumTotal = GetRandomYearlyIncome(options.Inception, options);
-                options.Interval = Interval.Annually;
+                options.DueFrequency = Constants.TropicalYear;
             }
 
             var incomeName2Rate = new Dictionary<string, double>
