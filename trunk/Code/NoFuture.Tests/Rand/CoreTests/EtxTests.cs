@@ -312,5 +312,19 @@ namespace NoFuture.Rand.Tests.CoreTests
             foreach(var t in testResult)
                 Console.WriteLine(t.Name);
         }
+
+        [Test]
+        public void TestRandomValuesFromAverage()
+        {
+            var expectedAverage = 250D;
+            var testResults = Etx.RandomValuesFromAverage(expectedAverage)?.ToList();
+            Assert.IsNotNull(testResults);
+            Assert.IsTrue(testResults.Count >=2);
+            var testResultAverage = NoFuture.Util.Core.Math.Extensions.Mean(testResults);
+            Console.WriteLine(testResultAverage);
+            var testResult = System.Math.Abs(expectedAverage - testResultAverage);
+            Assert.IsTrue(testResult < 10D);
+
+        }
     }
 }

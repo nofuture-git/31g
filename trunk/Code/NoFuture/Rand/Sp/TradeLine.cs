@@ -131,19 +131,12 @@ namespace NoFuture.Rand.Sp
         public virtual Pecuniam AveragePerDueFrequency()
         {
             var ts = DueFrequency ?? Constants.TropicalYear;
-
-            var now = DateTime.Now;
-            var start = Inception == DateTime.MinValue ? now.Add(Constants.TropicalYear.Negate()) : Inception;
-            var end = Terminus == null || Terminus == DateTime.MinValue ? now : Terminus.Value;
-
-            if(start > end)
-                return Pecuniam.Zero;
             //how many whole-blocks of ts can we get between start and end
-            var wholeTimeBlocks = Convert.ToInt32(Math.Floor((end - start).TotalDays / ts.TotalDays));
+            var wholeTimeBlocks = GetWholeTimeBlocks();
             if(wholeTimeBlocks <= 0)
                 return Pecuniam.Zero;
             var avgPerBlock = new List<double>();
-            var begin = start;
+            var begin = Inception == DateTime.MinValue ? DateTime.Now.Add(Constants.TropicalYear.Negate()) : Inception;
             for (var i = 0; i < wholeTimeBlocks; i++)
             {
                 var transactions = Balance.GetTransactionsBetween(begin, begin.Add(ts), true);
@@ -154,6 +147,100 @@ namespace NoFuture.Rand.Sp
             var totalAvg = Util.Core.Math.Extensions.Mean(avgPerBlock);
             return new Pecuniam(Convert.ToDecimal(totalAvg));
         }
+
+        /// <summary>
+        /// Produces a random <see cref="TradeLine"/> with random transactions which average about to <see cref="averageAmount"/>
+        /// </summary>
+        /// <param name="averageAmount"></param>
+        /// <param name="ts"></param>
+        /// <param name="inception"></param>
+        /// <param name="terminus"></param>
+        /// <param name="randomActsIrresponsible"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static TradeLine RandomTradeLineWithVariedHistory(Pecuniam averageAmount = null, TimeSpan? ts = null,
+            DateTime? inception = null, DateTime? terminus = null, Func<bool> randomActsIrresponsible = null)
+        {
+            averageAmount = averageAmount ?? Pecuniam.RandomPecuniam(30, 200);
+            var tss = ts == null || ts == TimeSpan.MinValue ? new TimeSpan(30,0,0,0) : ts.Value;
+            var start = inception ?? DateTime.Today.AddDays(Etx.RandomInteger(45, 360));
+            //makes the fake history more colorful
+            var score = Etx.RandomDouble();
+            randomActsIrresponsible =
+                randomActsIrresponsible ?? (() => Etx.RandomValueInNormalDist(score, 0.33334D) > 0);
+
+            var tl = new TradeLine(start)
+            {
+                Terminus = terminus,
+                DueFrequency = ts
+            };
+            var wholeTimeBlocks = tl.GetWholeTimeBlocks();
+            if (wholeTimeBlocks <= 0)
+                return tl;
+
+            var randEntries = Etx.RandomValuesFromAverage(averageAmount.ToDouble(), wholeTimeBlocks).ToList();
+            var someDaysFromBlockStart = Etx.RandomInteger(0, tss.Days - 1);
+            for (var i = 0; i < randEntries.Count; i++)
+            {
+                var onDay = randomActsIrresponsible() ? Etx.RandomInteger(1, 5) : 0;
+                onDay = onDay + someDaysFromBlockStart;
+                tl.Balance.AddTransaction(start.AddDays(onDay), randEntries[i].ToPecuniam());
+                //move the date foward
+                start = start.Add(tss);
+            }
+
+            return tl;
+        }
+
+        /// <summary>
+        /// Produces a random <see cref="TradeLine"/> with a history 
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="ts"></param>
+        /// <param name="inception"></param>
+        /// <param name="terminus"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static TradeLine RandomTradeLineWithSteadyHistory(Pecuniam amount = null, TimeSpan? ts = null,
+            DateTime? inception = null, DateTime? terminus = null)
+        {
+            amount = amount ?? Pecuniam.RandomPecuniam(30, 200);
+            var tss = ts == null || ts == TimeSpan.MinValue ? new TimeSpan(30, 0, 0, 0) : ts.Value;
+            var start = inception ?? DateTime.Today.AddDays(Etx.RandomInteger(45, 360));
+            var tl = new TradeLine(start)
+            {
+                Terminus = terminus,
+                DueFrequency = ts
+            };
+            var wholeTimeBlocks = tl.GetWholeTimeBlocks();
+            if (wholeTimeBlocks <= 0)
+                return tl;
+
+            for (var i = 0; i < wholeTimeBlocks; i++)
+            {
+                tl.Balance.AddTransaction(start, amount);
+                //move the date foward
+                start = start.Add(tss);
+            }
+
+            return tl;
+        }
+
+        protected internal int GetWholeTimeBlocks()
+        {
+            var ts = DueFrequency ?? Constants.TropicalYear;
+
+            var now = DateTime.Now;
+            var start = Inception == DateTime.MinValue ? now.Add(Constants.TropicalYear.Negate()) : Inception;
+            var end = Terminus == null || Terminus == DateTime.MinValue ? now : Terminus.Value;
+
+            if (start > end)
+                return 0;
+            //how many whole-blocks of ts can we get between start and end
+            var wholeTimeBlocks = Convert.ToInt32(Math.Floor((end - start).TotalDays / ts.TotalDays));
+            return wholeTimeBlocks < 0 ? 0 : wholeTimeBlocks;
+        }
+
         #endregion
     }
 }

@@ -72,5 +72,35 @@ namespace NoFuture.Rand.Tests.SpTests
 
             Assert.AreEqual(28M.ToPecuniam(), testResult);
         }
+
+        [Test]
+        public void TestRandomTradeLineWithVariedHistory()
+        {
+            var testResult = TradeLine.RandomTradeLineWithVariedHistory(250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
+                DateTime.Today.AddYears(-1));
+            Assert.IsNotNull(testResult);
+            var testResultAverage = testResult.AveragePerDueFrequency();
+            Console.WriteLine(testResultAverage);
+            var testResultDiff = System.Math.Abs(250M - testResultAverage.Amount);
+            Assert.IsTrue(testResultDiff < 83M);
+            Console.WriteLine(testResult.Balance.FirstTransaction);
+            Console.WriteLine(testResult.Balance.LastTransaction);
+        }
+
+        [Test]
+        public void TestRandomTradeLineWithSteadyHistory()
+        {
+            var testResult = TradeLine.RandomTradeLineWithSteadyHistory(250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
+                DateTime.Today.AddYears(-1));
+            Assert.IsNotNull(testResult);
+            var testResultAverage = testResult.AveragePerDueFrequency();
+            Console.WriteLine(testResultAverage);
+            var testResultDiff = System.Math.Abs(250M - testResultAverage.Amount);
+            Assert.IsTrue(testResultDiff < 1M);
+            Console.WriteLine(testResult.Balance.FirstTransaction);
+            Console.WriteLine(testResult.Balance.LastTransaction);
+
+        }
+
     }
 }

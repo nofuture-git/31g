@@ -731,6 +731,26 @@ namespace NoFuture.Rand.Core
         }
 
         /// <summary>
+        /// Gets a collection of values whose normal distribution is <see cref="mean"/>
+        /// </summary>
+        /// <returns></returns>
+        [RandomFactory]
+        public static IEnumerable<double> RandomValuesFromAverage(double mean = 0.0D, int count = 128)
+        {
+            //get some random number of items
+            count = count <= 1 ? RandomInteger(2, 128) : count;
+            var stdDev = mean * 0.32D;
+            var normalDist = new NormalDistEquation {Mean = mean, StdDev = stdDev};
+            var randList = new List<double>();
+            for (var i = 0; i < count; i++)
+            {
+                randList.Add(RandomValueInNormalDist(normalDist));
+            }
+
+            return randList;
+        }
+
+        /// <summary>
         /// A discovery method to get a list of all the random factories present throughout the app domain.
         /// </summary>
         /// <returns></returns>
