@@ -206,7 +206,10 @@ namespace NoFuture.Rand.Sp
 
             //given this value and rate - calc the timespan needed to have aquired this amount of equity
             var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
-            var loan = new SecuredFixedRateLoan(property, firstOfYear, totalCost, rate, termInYears);
+            var loan = new SecuredFixedRateLoan(property, firstOfYear, totalCost, rate, termInYears)
+            {
+                DueFrequency = new TimeSpan(30, 0, 0, 0)
+            };
 
             var dtIncrement = firstOfYear.AddMonths(1);
             while (loan.GetValueAt(dtIncrement) > remainingCost)

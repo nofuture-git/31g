@@ -53,9 +53,9 @@ namespace NoFuture.Rand.Opes.US
 
         public Pecuniam TotalCurrentExpectedValue => NamedReceivable.GetExpectedSum(CurrentAssets);
 
-        public IMereo HousePayment { get; private set; }
+        public Pecuniam HousePayment { get; private set; }
 
-        public IMereo CarPayment { get; private set; }
+        public Pecuniam CarPayment { get; private set; }
 
         protected internal override List<NamedReceivable> MyItems
         {
@@ -222,7 +222,6 @@ namespace NoFuture.Rand.Opes.US
                 p = DepositAccount.RandomCheckingAccount(options.PersonsName, startDate,
                     $"{Etx.RandomInteger(1, 9999):0000}");
                 ((DepositAccount)p).Deposit(startDate.AddDays(-1), checkingAmt.ToPecuniam());
-                p.Expectation.Value = checkingAmt.ToPecuniam();
             }
             else if (isSavingsAccount)
             {
@@ -231,7 +230,6 @@ namespace NoFuture.Rand.Opes.US
                     : _savingsAccountRate * amt.ToDouble();
                 p = DepositAccount.RandomSavingAccount(options.PersonsName, startDate);
                 ((DepositAccount)p).Deposit(startDate.AddDays(-1), savingAmt.ToPecuniam());
-                p.Expectation.Value = savingAmt.ToPecuniam();
             }
             else if (isMortgage || isCarLoan)
             {
@@ -286,14 +284,12 @@ namespace NoFuture.Rand.Opes.US
                 if (isMortgage)
                 {
                     p.Expectation.Value = homeEquityAmt.ToPecuniam();
-                    HousePayment =
-                        new Mereo(item, grp) {Value = loan.MonthlyPayment, TimeDenominator = new TimeSpan(30, 0, 0, 0)};
+                    HousePayment = loan.MonthlyPayment;
                 }
                 else
                 {
                     p.Expectation.Value = carEquityAmt.ToPecuniam();
-                    CarPayment =
-                        new Mereo(item, grp) {Value = loan.MonthlyPayment, TimeDenominator = new TimeSpan(30, 0, 0, 0) };
+                    CarPayment =loan.MonthlyPayment;
                 }
             }
             else
