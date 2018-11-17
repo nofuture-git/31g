@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Tests.SpTests
 {
     [TestFixture]
-    public class PondusTests
+    public class NamedReceivableTests
     {
         [Test]
         public void TestEquals()
