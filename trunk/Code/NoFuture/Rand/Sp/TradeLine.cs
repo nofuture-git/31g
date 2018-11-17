@@ -151,82 +151,109 @@ namespace NoFuture.Rand.Sp
         /// <summary>
         /// Produces a random <see cref="TradeLine"/> with random transactions which average about to <see cref="averageAmount"/>
         /// </summary>
-        /// <param name="averageAmount"></param>
-        /// <param name="ts"></param>
-        /// <param name="inception"></param>
-        /// <param name="terminus"></param>
-        /// <param name="randomActsIrresponsible"></param>
+        /// <param name="averageAmount">
+        /// The random history will have many values whose average is more or less this value.
+        /// </param>
+        /// <param name="dueFrequency">
+        /// Optional, if null then assigned to 30-days.
+        /// Assigned to the resulting instance&apos;s property of the same name
+        /// </param>
+        /// <param name="inception">
+        /// Optional, if null then random value some day in the past year.
+        /// Assigned to the resulting instance&apos; property of the same name.
+        /// </param>
+        /// <param name="terminus">Passed directly to resulting instance</param>
+        /// <param name="randomActsIrresponsible">A function pointer to a kind of personality</param>
         /// <returns></returns>
         [RandomFactory]
-        public static TradeLine RandomTradeLineWithVariedHistory(Pecuniam averageAmount = null, TimeSpan? ts = null,
+        public static ITradeLine RandomTradeLineWithVariedHistory(Pecuniam averageAmount = null, TimeSpan? dueFrequency = null,
             DateTime? inception = null, DateTime? terminus = null, Func<bool> randomActsIrresponsible = null)
         {
             averageAmount = averageAmount ?? Pecuniam.RandomPecuniam(30, 200);
-            var tss = ts == null || ts == TimeSpan.MinValue ? new TimeSpan(30,0,0,0) : ts.Value;
             var start = inception ?? DateTime.Today.AddDays(Etx.RandomInteger(45, 360));
-            //makes the fake history more colorful
-            var score = Etx.RandomDouble();
-            randomActsIrresponsible =
-                randomActsIrresponsible ?? (() => Etx.RandomValueInNormalDist(score, 0.33334D) > 0);
-
             var tl = new TradeLine(start)
             {
                 Terminus = terminus,
-                DueFrequency = ts
+                DueFrequency = dueFrequency
             };
             var wholeTimeBlocks = tl.GetWholeTimeBlocks();
             if (wholeTimeBlocks <= 0)
                 return tl;
 
-            var randEntries = Etx.RandomValuesFromAverage(averageAmount.ToDouble(), wholeTimeBlocks).ToList();
-            var someDaysFromBlockStart = Etx.RandomInteger(0, tss.Days - 1);
-            for (var i = 0; i < randEntries.Count; i++)
-            {
-                var onDay = randomActsIrresponsible() ? Etx.RandomInteger(1, 5) : 0;
-                onDay = onDay + someDaysFromBlockStart;
-                tl.Balance.AddTransaction(start.AddDays(onDay), randEntries[i].ToPecuniam());
-                //move the date foward
-                start = start.Add(tss);
-            }
-
+            tl.GetRandomHistory(averageAmount, false, randomActsIrresponsible);
             return tl;
         }
 
         /// <summary>
         /// Produces a random <see cref="TradeLine"/> with a history 
         /// </summary>
-        /// <param name="amount"></param>
-        /// <param name="ts"></param>
-        /// <param name="inception"></param>
-        /// <param name="terminus"></param>
+        /// <param name="amount">
+        /// Every entry in the history will have this exact value on a regular <see cref="dueFrequency"/>
+        /// </param>
+        /// <param name="dueFrequency">
+        /// Optional, if null then assigned to 30-days.
+        /// Assigned to the resulting instance&apos;s property of the same name
+        /// </param>
+        /// <param name="inception">
+        /// Optional, if null then random value some day in the past year.
+        /// Assigned to the resulting instance&apos; property of the same name.
+        /// </param>
+        /// <param name="terminus">Passed directly to resulting instance</param>
         /// <returns></returns>
         [RandomFactory]
-        public static TradeLine RandomTradeLineWithSteadyHistory(Pecuniam amount = null, TimeSpan? ts = null,
+        public static ITradeLine RandomTradeLineWithSteadyHistory(Pecuniam amount = null, TimeSpan? dueFrequency = null,
             DateTime? inception = null, DateTime? terminus = null)
         {
             amount = amount ?? Pecuniam.RandomPecuniam(30, 200);
-            var tss = ts == null || ts == TimeSpan.MinValue ? new TimeSpan(30, 0, 0, 0) : ts.Value;
             var start = inception ?? DateTime.Today.AddDays(Etx.RandomInteger(45, 360));
             var tl = new TradeLine(start)
             {
                 Terminus = terminus,
-                DueFrequency = ts
+                DueFrequency = dueFrequency
             };
-            var wholeTimeBlocks = tl.GetWholeTimeBlocks();
-            if (wholeTimeBlocks <= 0)
-                return tl;
-
-            for (var i = 0; i < wholeTimeBlocks; i++)
-            {
-                tl.Balance.AddTransaction(start, amount);
-                //move the date foward
-                start = start.Add(tss);
-            }
+            tl.GetRandomHistory(amount);
 
             return tl;
         }
 
-        protected internal int GetWholeTimeBlocks()
+        /// <summary>
+        /// A instance version of the random factories - this allows for child-type&apos;s random factories to reuse this code.
+        /// </summary>
+        protected internal virtual void GetRandomHistory(Pecuniam amount = null, bool steadyPayments = true, Func<bool> randomActsIrresponsible = null)
+        {
+            amount = amount ?? Pecuniam.RandomPecuniam(30, 200);
+            var wholeTimeBlocks = GetWholeTimeBlocks();
+            if (wholeTimeBlocks <= 0)
+                return;
+            var tss = DueFrequency == null || DueFrequency == TimeSpan.MinValue ? new TimeSpan(30, 0, 0, 0) : DueFrequency.Value;
+            var start = Inception;
+
+            if (steadyPayments)
+            {
+                for (var i = 0; i < wholeTimeBlocks; i++)
+                {
+                    Balance.AddTransaction(start, amount);
+                    start = start.Add(tss);
+                }
+                return;
+            }
+
+            var score = Etx.RandomDouble();
+            randomActsIrresponsible =
+                randomActsIrresponsible ?? (() => Etx.RandomValueInNormalDist(score, 0.33334D) > 0);
+
+            var randEntries = Etx.RandomValuesFromAverage(amount.ToDouble(), wholeTimeBlocks).ToList();
+            var someDaysFromBlockStart = Etx.RandomInteger(0, tss.Days - 1);
+            for (var i = 0; i < randEntries.Count; i++)
+            {
+                var onDay = randomActsIrresponsible() ? Etx.RandomInteger(1, 5) : 0;
+                onDay = onDay + someDaysFromBlockStart;
+                Balance.AddTransaction(start.AddDays(onDay), randEntries[i].ToPecuniam());
+                start = start.Add(tss);
+            }
+        }
+
+        protected internal virtual int GetWholeTimeBlocks()
         {
             var ts = DueFrequency ?? Constants.TropicalYear;
 

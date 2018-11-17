@@ -103,6 +103,7 @@ namespace NoFuture.Rand.Opes
         public IVoca PersonsName { get; set; }
 
         public DateTime Inception { get; set; }
+        public DateTime InceptionOrToday => Inception == DateTime.MinValue ? DateTime.Today : Inception;
         public DateTime? Terminus { get; set; }
 
         /// <summary>

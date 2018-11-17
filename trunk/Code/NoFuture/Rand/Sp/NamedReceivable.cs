@@ -198,5 +198,95 @@ namespace NoFuture.Rand.Sp
             return itemData;
         }
 
+        /// <summary>
+        /// Produces a random <see cref="NamedReceivable"/> with random names 
+        /// and transactions which average about to <see cref="averageAmount"/>
+        /// </summary>
+        /// <param name="name">
+        /// Assigned to Legal name, will randomize to some english word if null.
+        /// </param>
+        /// <param name="groupName">
+        /// Assigned to Group Name, will randomize to some english word if null
+        /// </param>
+        /// <param name="averageAmount">
+        /// The random history will have many values whose average is more or less this value.
+        /// </param>
+        /// <param name="dueFrequency">
+        /// Optional, if null then assigned to 30-days.
+        /// Assigned to the resulting instance&apos;s property of the same name
+        /// </param>
+        /// <param name="inception">
+        /// Optional, if null then random value some day in the past year.
+        /// Assigned to the resulting instance&apos; property of the same name.
+        /// </param>
+        /// <param name="terminus">Passed directly to resulting instance</param>
+        /// <param name="randomActsIrresponsible">A function pointer to a kind of personality</param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static NamedReceivable RandomNamedReceivableWithVariedHistory(
+            string name = null, 
+            string groupName = null, 
+            Pecuniam averageAmount = null, 
+            TimeSpan? dueFrequency = null,
+            DateTime? inception = null, 
+            DateTime? terminus = null, 
+            Func<bool> randomActsIrresponsible = null)
+        {
+            name = name ?? Etx.RandomWord();
+            groupName = groupName ?? Etx.RandomWord();
+            var nr = new NamedReceivable(name)
+            {
+                Inception = inception ?? DateTime.Today.AddDays(Etx.RandomInteger(45, 360)),
+                Terminus = terminus
+            };
+            nr.AddName(KindsOfNames.Group, groupName);
+
+            nr.GetRandomHistory(averageAmount, false, randomActsIrresponsible);
+
+            return nr;
+        }
+
+        /// <summary>
+        /// Produces a random <see cref="NamedReceivable"/> with a history 
+        /// </summary>
+        /// <param name="name">
+        /// Assigned to Legal name, will randomize to some english word if null.
+        /// </param>
+        /// <param name="groupName">
+        /// Assigned to Group Name, will randomize to some english word if null
+        /// </param>
+        /// <param name="amount">
+        /// Every entry in the history will have this exact value on a regular <see cref="dueFrequency"/>
+        /// </param>
+        /// <param name="dueFrequency">
+        /// Optional, if null then assigned to 30-days.
+        /// Assigned to the resulting instance&apos;s property of the same name
+        /// </param>
+        /// <param name="inception">
+        /// Optional, if null then random value some day in the past year.
+        /// Assigned to the resulting instance&apos; property of the same name.
+        /// </param>
+        /// <param name="terminus">Passed directly to resulting instance</param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static NamedReceivable RandomNamedReceivalbleWithSteadyHistory(
+            string name = null, 
+            string groupName = null,
+            Pecuniam amount = null, 
+            TimeSpan? dueFrequency = null, 
+            DateTime? inception = null,
+            DateTime? terminus = null)
+        {
+            name = name ?? Etx.RandomWord();
+            groupName = groupName ?? Etx.RandomWord();
+            var nr = new NamedReceivable(name)
+            {
+                Inception = inception ?? DateTime.Today.AddDays(Etx.RandomInteger(45, 360)),
+                Terminus = terminus
+            };
+            nr.AddName(KindsOfNames.Group, groupName);
+            nr.GetRandomHistory(amount);
+            return nr;
+        }
     }
 }
