@@ -109,7 +109,7 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// The interval is passed to the created items
         /// </summary>
-        public Interval Interval { get; set; }
+        public Interval? Interval => DueFrequency.ToInterval();
         public TimeSpan? DueFrequency { get; set; }
 
         #endregion
