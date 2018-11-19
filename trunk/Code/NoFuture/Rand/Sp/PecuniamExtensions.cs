@@ -122,5 +122,32 @@ namespace NoFuture.Rand.Sp
             var tropicalYearTicks = Constants.TropicalYear.Ticks;
             return new TimeSpan(tropicalYearTicks/12L);
         }
+
+        /// <summary>
+        /// Calculates the sum of all item&apos;s Value
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static Pecuniam Sum(this IEnumerable<IReceivable> items)
+        {
+            if (items == null || !items.Any())
+                return Pecuniam.Zero;
+
+            var p = Pecuniam.Zero;
+            foreach (var i in items)
+                p += i?.Value ?? Pecuniam.Zero;
+            return p;
+        }
+
+        public static Pecuniam AnnualSum(this IEnumerable<IReceivable> items)
+        {
+            if (items == null || !items.Any())
+                return Pecuniam.Zero;
+
+            var p = Pecuniam.Zero;
+            foreach (var i in items)
+                p += i?.Value ?? Pecuniam.Zero;
+            return p;
+        }
     }
 }

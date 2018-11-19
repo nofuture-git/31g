@@ -123,9 +123,9 @@ namespace NoFuture.Rand.Sp
             return Balance.AddPositiveValue(dt, val, note);
         }
 
-        public virtual Pecuniam AveragePerDueFrequency()
+        public virtual Pecuniam AveragePerDueFrequency(TimeSpan? duration = null)
         {
-            var ts = DueFrequency ?? Constants.TropicalYear;
+            var ts = duration ?? DueFrequency ?? Constants.TropicalYear;
             //how many whole-blocks of ts can we get between start and end
             var wholeTimeBlocks = GetWholeTimeBlocks();
             if(wholeTimeBlocks <= 0)

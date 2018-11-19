@@ -38,10 +38,9 @@ namespace NoFuture.Rand.Sp
         double DaysPerYear { get; set; }
 
         /// <summary>
-        /// Gets the average value per <see cref="DueFrequency"/>
-        /// Annual if null.
+        /// Gets the average value per <see cref="duration"/> or <see cref="DueFrequency"/> or Annual
         /// </summary>
         /// <returns></returns>
-        Pecuniam AveragePerDueFrequency();
+        Pecuniam AveragePerDueFrequency(TimeSpan? duration = null);
     }
 }

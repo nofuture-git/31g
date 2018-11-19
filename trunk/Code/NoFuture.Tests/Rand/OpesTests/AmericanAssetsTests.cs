@@ -18,8 +18,11 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreEqual(0, testSubject.MyItems.Count);
 
+            var futures =
+                NamedReceivable.RandomNamedReceivalbleWithHistoryToSum("Futures", "Securities", 9000D.ToPecuniam());
             
-            testSubject.AddItem("Futures", "Securities", 9000D.ToPecuniam());
+            //testSubject.AddItem("Futures", "Securities", 9000D.ToPecuniam());
+            testSubject.AddItem(futures);
             var testResultSum = testSubject.TotalCurrentExpectedValue;
 
             Assert.IsNotNull(testResultSum);
