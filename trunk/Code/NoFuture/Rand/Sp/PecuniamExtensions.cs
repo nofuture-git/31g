@@ -146,7 +146,7 @@ namespace NoFuture.Rand.Sp
 
             var p = Pecuniam.Zero;
             foreach (var i in items)
-                p += i?.Value ?? Pecuniam.Zero;
+                p += i?.AveragePerDueFrequency(Constants.TropicalYear) ?? Pecuniam.Zero;
             return p;
         }
     }

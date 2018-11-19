@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Sp
             if(wholeTimeBlocks <= 0)
                 return Pecuniam.Zero;
             var avgPerBlock = new List<double>();
-            var begin = Inception == DateTime.MinValue ? DateTime.Now.Add(Constants.TropicalYear.Negate()) : Inception;
+            var begin = Inception == DateTime.MinValue ? DateTime.Today.Add(Constants.TropicalYear.Negate()) : Inception;
             for (var i = 0; i < wholeTimeBlocks; i++)
             {
                 var transactions = Balance.GetTransactionsBetween(begin, begin.Add(ts), true);

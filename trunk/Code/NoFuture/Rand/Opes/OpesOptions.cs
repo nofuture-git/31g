@@ -181,7 +181,7 @@ namespace NoFuture.Rand.Opes
 
             var opt = new OpesOptions
             {
-                Inception = Etx.RandomDate(-1, null, true),
+                Inception = DateTime.Today.Add(Constants.TropicalYear.Negate()),
                 HomeLocation = CityArea.RandomAmericanCity(),
                 IsRenting = Etx.RandomCoinToss(),
                 Personality = Rand.Pneuma.Personality.RandomPersonality(),

@@ -186,7 +186,7 @@ namespace NoFuture.Rand.Opes.US
             return base.GetGroupNames2Portions(options);
         }
 
-        protected internal override NamedReceivable GetNamedReceivableForItemAndGroup(string item, string grp, OpesOptions options)
+        protected internal override NamedReceivable GetNamedReceivableForItemAndGroup(string item, string grp, OpesOptions options, double rate)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = RiskFreeInterestRate.DF_VALUE;

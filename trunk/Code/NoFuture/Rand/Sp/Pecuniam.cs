@@ -38,6 +38,7 @@ namespace NoFuture.Rand.Sp
         public virtual Pecuniam GetAbs() => new Pecuniam(Math.Abs(_amount));
         public virtual Pecuniam GetNeg() => new Pecuniam(-1 * Math.Abs(_amount));
         public virtual Pecuniam GetRounded() => new Pecuniam(Math.Round(_amount, 2));
+        public virtual Pecuniam GetWholeNumber() => new Pecuniam(Math.Round(_amount));
 
         public virtual double ToDouble()
         {

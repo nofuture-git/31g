@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //then its truely random
             foreach (var u in testResult)
-                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+                Console.WriteLine($"{u.Key} -> {u.Value}");
         }
 
         [Test]
@@ -183,7 +183,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsTrue(otherItems < 0.17D && otherItems > 0.15D);
 
             foreach (var u in testResult)
-                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+                Console.WriteLine($"{u.Key} -> {u.Value}");
         }
 
         [Test]
@@ -206,7 +206,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             // sumtotal gives us a denominator and GivenDirectly give us a numerator
             // without both there is nothing to do...
             foreach (var u in testResult)
-                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+                Console.WriteLine($"{u.Key} -> {u.Value}");
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //no, it just ignores them
             foreach (var u in testResult)
-                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+                Console.WriteLine($"{u.Key} -> {u.Value}");
 
         }
 
@@ -253,7 +253,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(0.0D, testItem.Value);
 
             foreach (var u in testResult)
-                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+                Console.WriteLine($"{u.Key} -> {u.Value}");
         }
 
         [Test]
@@ -289,7 +289,7 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //nothing - its just the random ratios since the SumTotal is zero by default
             foreach (var u in testResult)
-                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+                Console.WriteLine($"{u.Key} -> {u.Value}");
         }
 
         [Test]
@@ -314,7 +314,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
 
             foreach (var u in testResult)
-                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+                Console.WriteLine($"{u.Key} -> {u.Value}");
         }
 
         [Test]
@@ -335,7 +335,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
 
             foreach (var u in testResult)
-                System.Diagnostics.Debug.WriteLine($"{u.Key} -> {u.Value}");
+                Console.WriteLine($"{u.Key} -> {u.Value}");
         }
 
         #endregion
@@ -353,9 +353,9 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testResultSum = testResult.Select(kv => kv.Value).Sum();
             Assert.AreEqual(1D, Math.Round(testResultSum));
 
-            System.Diagnostics.Debug.WriteLine("Owns");
+            Console.WriteLine("Owns");
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
 
             testResult = testSubject.GetHomeExpenseNames2RandomRates(new OpesOptions(){IsRenting = true});
 
@@ -365,9 +365,9 @@ namespace NoFuture.Rand.Tests.OpesTests
             testResultSum = testResult.Select(kv => kv.Value).Sum();
             Assert.AreEqual(1D, Math.Round(testResultSum));
 
-            System.Diagnostics.Debug.WriteLine("Rents");
+            Console.WriteLine("Rents");
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
         }
 
         [Test]
@@ -384,7 +384,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(1D, Math.Round(testResultSum));
 
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
         }
 
         [Test]
@@ -399,9 +399,9 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             var testResultSum = testResult.Select(kv => kv.Value).Sum();
             Assert.AreEqual(1D, Math.Round(testResultSum));
-            System.Diagnostics.Debug.WriteLine("No Car");
+            Console.WriteLine("No Car");
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
 
             Assert.IsTrue(testResult.ContainsKey("Public Transportation"));
             Assert.AreEqual(1D, Math.Round(testResult["Public Transportation"]));
@@ -417,9 +417,9 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsTrue(testResult.ContainsKey("Public Transportation"));
             Assert.AreEqual(0D, testResult["Public Transportation"]);
 
-            System.Diagnostics.Debug.WriteLine("Has Car");
+            Console.WriteLine("Has Car");
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
         }
 
         [Test]
@@ -438,9 +438,9 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsTrue(testResult.ContainsKey("Renters"));
             Assert.AreEqual(0D, Math.Round(testResult["Renters"]));
 
-            System.Diagnostics.Debug.WriteLine("Owns");
+            Console.WriteLine("Owns");
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
 
             testResult = testSubject.GetInsuranceExpenseNames2RandomRates(new OpesOptions{IsRenting = true});
 
@@ -453,9 +453,9 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsTrue(testResult.ContainsKey("Renters"));
             Assert.IsTrue(testResult["Renters"] > 0.0D);
 
-            System.Diagnostics.Debug.WriteLine("Rents");
+            Console.WriteLine("Rents");
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
         }
 
         [Test]
@@ -472,7 +472,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(1D, Math.Round(testResultSum));
 
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
         }
 
 
@@ -490,7 +490,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(1D, Math.Round(testResultSum));
 
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
         }
 
         [Test]
@@ -507,7 +507,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(1D, Math.Round(testResultSum));
 
             foreach (var rate in testResult)
-                System.Diagnostics.Debug.WriteLine(rate);
+                Console.WriteLine(rate);
         }
 
 
@@ -521,7 +521,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             foreach (var tn in testNames)
             {
                 Assert.IsTrue(expectations.Any(e => string.Equals(e, tn, StringComparison.OrdinalIgnoreCase)));
-                System.Diagnostics.Debug.WriteLine(tn);
+                Console.WriteLine(tn);
             }
         }
 
@@ -535,7 +535,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             foreach (var tn in testNames)
             {
                 Assert.IsTrue(expectations.Any(e => string.Equals(e, tn.Name, StringComparison.OrdinalIgnoreCase)));
-                System.Diagnostics.Debug.WriteLine(tn);
+                Console.WriteLine(tn);
             }
         }
 
@@ -551,7 +551,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
 
             foreach (var item in testSubject.MyItems)
-                System.Diagnostics.Debug.WriteLine(item);
+                Console.WriteLine(item);
         }
 
         [Test]

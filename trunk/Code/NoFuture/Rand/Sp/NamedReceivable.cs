@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Sp
@@ -288,8 +287,9 @@ namespace NoFuture.Rand.Sp
             sumOfAllHistory = sumOfAllHistory ?? Pecuniam.RandomPecuniam(30, 200);
             var oneTropicalYearAgo = DateTime.Today.Add(Constants.TropicalYear.Negate());
             var start = inception ?? oneTropicalYearAgo;
-            var tl = new NamedReceivable(start)
+            var tl = new NamedReceivable(new VocaBase(name, groupName))
             {
+                Inception = start,
                 Terminus = terminus,
                 DueFrequency = dueFrequency == null || dueFrequency == TimeSpan.MinValue ? PecuniamExtensions.GetTropicalMonth() : dueFrequency.Value
             };

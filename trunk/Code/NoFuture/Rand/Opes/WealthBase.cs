@@ -983,10 +983,7 @@ namespace NoFuture.Rand.Opes
 
             foreach (var item in grpRates.Keys)
             {
-                var p = GetNamedReceivableForItemAndGroup(item, grpName, options);
-                if (p.Expectation.Value == null || p.Expectation.Value == Pecuniam.Zero)
-                    p.Expectation.Value = CalcValue(options.SumTotal, grpRates[item] * grpRate);
-                p.Expectation.TimeDenominator = options.DueFrequency;
+                var p = GetNamedReceivableForItemAndGroup(item, grpName, options, grpRates[item] * grpRate);
                 itemsout.Add(p);
             }
 
@@ -1000,17 +997,19 @@ namespace NoFuture.Rand.Opes
         /// <param name="itemName"></param>
         /// <param name="grpName"></param>
         /// <param name="options"></param>
+        /// <param name="rate"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable GetNamedReceivableForItemAndGroup(string itemName, string grpName, OpesOptions options)
+        protected internal virtual NamedReceivable GetNamedReceivableForItemAndGroup(string itemName, string grpName, OpesOptions options, double rate)
         {
             options = options ?? OpesOptions.RandomOpesOptions();
-            var p = new NamedReceivable(itemName)
-            {
-                Inception = options.Inception,
-                Terminus = options.Terminus,
-                DueFrequency = options.DueFrequency
-            };
-            p.AddName(KindsOfNames.Group, grpName);
+
+            var calcValue = CalcValue(options.SumTotal, rate);
+            var p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(itemName, grpName, calcValue,
+                options.DueFrequency, options.Inception, options.Terminus);
+            if (p.Expectation.Value == null || p.Expectation.Value == Pecuniam.Zero)
+                p.Expectation.Value = calcValue;
+            p.Expectation.TimeDenominator = options.DueFrequency;
+
             return p;
         }
 
