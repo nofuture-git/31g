@@ -129,12 +129,18 @@ namespace NoFuture.Rand.Opes.US
 
             foreach (var p in CurrentPay)
             {
-                if (p.Expectation == null || p.Expectation.Value == Pecuniam.Zero)
+                var v = p.Value;
+                if (v == Pecuniam.Zero)
                     continue;
-                var deductionName = Division.ToString() + p.Expectation.Interval;
-                deductionName += p.Name;
-                itemData.Add(textFormat(deductionName), p.Expectation.Value);
+                var employmentName = Division.ToString() + p.DueFrequency.ToInterval();
+                employmentName += p.Name;
+                if(itemData.ContainsKey(textFormat(employmentName)))
+                    continue;
+                itemData.Add(textFormat(employmentName), v);
             }
+
+            var deductionItems = Deductions.ToData(txtCase);
+            AddOrReplace(itemData, deductionItems);
 
             return itemData;
         }
@@ -165,6 +171,8 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? OpesOptions.RandomOpesOptions();
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
+
+            //circle this around to this intance, need be
             if (Inception == DateTime.MinValue)
                 Inception = options.Inception;
 

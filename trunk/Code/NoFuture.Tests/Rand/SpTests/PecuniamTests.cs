@@ -83,5 +83,20 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.AreEqual(Constants.TropicalYear.Ticks, back2Year);
 
         }
+
+        [Test]
+        public void TestToInterval()
+        {
+            var testInput = PecuniamExtensions.GetTropicalMonth();
+            var testResult = PecuniamExtensions.ToInterval(testInput);
+            Console.WriteLine(testResult.ToString());
+            Assert.AreEqual(Interval.Monthly, testResult);
+
+            testInput = Constants.TropicalYear;
+            testResult = PecuniamExtensions.ToInterval(testInput);
+            Console.WriteLine(testResult.ToString());
+            Assert.AreEqual(Interval.Annually, testResult);
+
+        }
     }
 }

@@ -76,14 +76,16 @@ namespace NoFuture.Rand.Opes.US
 
             foreach (var p in CurrentDeductions)
             {
-                if (p.Expectation == null || p.Expectation.Value == Pecuniam.Zero)
+                var v = p.Value;
+                if(v == Pecuniam.Zero)
                     continue;
 
-                var deductionName =  Division.ToString() + p.Expectation.Interval;
+                var deductionName = Division.ToString() + p.DueFrequency.ToInterval();
                 deductionName += p.Name;
-                itemData.Add(textFormat(deductionName), p.Expectation.Value);
+                if(itemData.ContainsKey(textFormat(deductionName)))
+                    continue;
+                itemData.Add(textFormat(deductionName), v);
             }
-
             return itemData;
         }
 

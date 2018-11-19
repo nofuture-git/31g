@@ -321,8 +321,16 @@ namespace NoFuture.Rand.Tests.CoreTests
             Assert.IsNotNull(testResults);
             Assert.IsTrue(testResults.Count >=2);
             var testResultAverage = NoFuture.Util.Core.Math.Extensions.Mean(testResults);
-            Console.WriteLine(testResultAverage);
             var testResult = System.Math.Abs(expectedAverage - testResultAverage);
+            Assert.IsTrue(testResult < 10D);
+
+            expectedAverage = -250D;
+            testResults = Etx.RandomValuesFromAverage(-250D)?.ToList();
+            Assert.IsNotNull(testResults);
+            Assert.IsTrue(testResults.Count >= 2);
+            testResultAverage = NoFuture.Util.Core.Math.Extensions.Mean(testResults);
+            Console.WriteLine(testResultAverage);
+            testResult = System.Math.Abs(expectedAverage - testResultAverage);
             Assert.IsTrue(testResult < 10D);
 
         }

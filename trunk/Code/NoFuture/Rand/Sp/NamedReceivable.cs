@@ -170,10 +170,13 @@ namespace NoFuture.Rand.Sp
             var itemName = textFormat(Name.Replace(",", "").Replace(" ",""));
             foreach (var rData in recvData.Keys)
             {
+                var v = recvData[rData]?.ToString();
+                if (string.IsNullOrWhiteSpace(v))
+                    continue;
                 var itemDataName = textFormat(itemName + rData);
                 if(itemData.ContainsKey(itemDataName))
                     continue;
-                itemData.Add(itemDataName, recvData[rData]);
+                itemData.Add(itemDataName, v);
             }
 
             return itemData;

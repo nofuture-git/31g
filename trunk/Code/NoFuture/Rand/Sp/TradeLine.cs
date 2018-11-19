@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Sp
         {
             var ts = duration ?? DueFrequency ?? Constants.TropicalYear;
             //how many whole-blocks of ts can we get between start and end
-            var wholeTimeBlocks = GetWholeTimeBlocks();
+            var wholeTimeBlocks = GetWholeTimeBlocks(duration);
             if(wholeTimeBlocks <= 0)
                 return Pecuniam.Zero;
             var avgPerBlock = new List<double>();
@@ -141,6 +141,21 @@ namespace NoFuture.Rand.Sp
 
             var totalAvg = Util.Core.Math.Extensions.Mean(avgPerBlock);
             return new Pecuniam(Convert.ToDecimal(totalAvg));
+        }
+
+        protected internal virtual int GetWholeTimeBlocks(TimeSpan? duration = null)
+        {
+            var ts = duration ?? DueFrequency ?? Constants.TropicalYear;
+
+            var now = DateTime.Now;
+            var start = Inception == DateTime.MinValue ? now.Add(Constants.TropicalYear.Negate()) : Inception;
+            var end = Terminus == null || Terminus == DateTime.MinValue ? now : Terminus.Value;
+
+            if (start > end)
+                return 0;
+            //how many whole-blocks of ts can we get between start and end
+            var wholeTimeBlocks = Convert.ToInt32(Math.Floor((end - start).TotalDays / ts.TotalDays));
+            return wholeTimeBlocks < 0 ? 0 : wholeTimeBlocks;
         }
 
         /// <summary>
@@ -218,16 +233,18 @@ namespace NoFuture.Rand.Sp
         {
             amount = amount ?? Pecuniam.RandomPecuniam(30, 200);
             var wholeTimeBlocks = GetWholeTimeBlocks();
-            if (wholeTimeBlocks <= 0)
-                return;
+            wholeTimeBlocks = wholeTimeBlocks == 0 ? 1 : wholeTimeBlocks;
             var tss = DueFrequency == null || DueFrequency == TimeSpan.MinValue ? PecuniamExtensions.GetTropicalMonth() : DueFrequency.Value;
             var start = Inception;
-
+            var isNegative = amount.Amount < 0;
             if (steadyPayments)
             {
                 for (var i = 0; i < wholeTimeBlocks; i++)
                 {
-                    Balance.AddPositiveValue(start, amount);
+                    if (isNegative)
+                        Balance.AddNegativeValue(start, amount);
+                    else
+                        Balance.AddPositiveValue(start, amount);
                     start = start.Add(tss);
                 }
                 return;
@@ -243,26 +260,13 @@ namespace NoFuture.Rand.Sp
             {
                 var onDay = randomActsIrresponsible() ? Etx.RandomInteger(1, 5) : 0;
                 onDay = onDay + someDaysFromBlockStart;
-                Balance.AddPositiveValue(start.AddDays(onDay), randEntries[i].ToPecuniam());
+                if (isNegative)
+                    Balance.AddNegativeValue(start.AddDays(onDay), randEntries[i].ToPecuniam());
+                else
+                    Balance.AddPositiveValue(start.AddDays(onDay), randEntries[i].ToPecuniam());
                 start = start.Add(tss);
             }
         }
-
-        protected internal virtual int GetWholeTimeBlocks()
-        {
-            var ts = DueFrequency ?? Constants.TropicalYear;
-
-            var now = DateTime.Now;
-            var start = Inception == DateTime.MinValue ? now.Add(Constants.TropicalYear.Negate()) : Inception;
-            var end = Terminus == null || Terminus == DateTime.MinValue ? now : Terminus.Value;
-
-            if (start > end)
-                return 0;
-            //how many whole-blocks of ts can we get between start and end
-            var wholeTimeBlocks = Convert.ToInt32(Math.Floor((end - start).TotalDays / ts.TotalDays));
-            return wholeTimeBlocks < 0 ? 0 : wholeTimeBlocks;
-        }
-
         #endregion
     }
 }

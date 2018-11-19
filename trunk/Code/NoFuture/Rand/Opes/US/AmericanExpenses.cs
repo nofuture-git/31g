@@ -76,14 +76,14 @@ namespace NoFuture.Rand.Opes.US
 
             foreach (var p in CurrentExpectedExpenses)
             {
-                if (p.Expectation == null || p.Expectation.Value == Pecuniam.Zero)
+                var v = p.AveragePerDueFrequency(PecuniamExtensions.GetTropicalMonth());
+                if (v == Pecuniam.Zero)
                     continue;
-
-                var expenseName = Division.ToString() + Interval.Monthly;
+                var expenseName = Division.ToString() + p.DueFrequency.ToInterval();
                 expenseName += p.Name;
-                if(itemData.ContainsKey(textFormat(expenseName)))
+                if (itemData.ContainsKey(textFormat(expenseName)))
                     continue;
-                itemData.Add(textFormat(expenseName), p.Expectation.GetValueInTimespanDenominator(30));
+                itemData.Add(textFormat(expenseName), v.GetRounded());
             }
 
             return itemData;
@@ -122,7 +122,7 @@ namespace NoFuture.Rand.Opes.US
                 var cloneOptions = options.GetClone();
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
-                cloneOptions.DueFrequency = Constants.TropicalYear;
+                cloneOptions.DueFrequency = PecuniamExtensions.GetTropicalMonth();
 
                 var items = GetItemsForRange(cloneOptions);
                 foreach (var item in items)

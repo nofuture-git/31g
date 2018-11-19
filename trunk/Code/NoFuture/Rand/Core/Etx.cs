@@ -738,13 +738,15 @@ namespace NoFuture.Rand.Core
         public static IEnumerable<double> RandomValuesFromAverage(double mean = 0.0D, int count = 128)
         {
             //get some random number of items
+            var matchSign = mean < 0 ? -1D : 1;
             count = count <= 1 ? RandomInteger(2, 128) : count;
-            var stdDev = mean * 0.32D;
+            mean = Math.Abs(mean);
+            var stdDev = mean * 0.125D;
             var normalDist = new NormalDistEquation {Mean = mean, StdDev = stdDev};
             var randList = new List<double>();
             for (var i = 0; i < count; i++)
             {
-                randList.Add(RandomValueInNormalDist(normalDist));
+                randList.Add(RandomValueInNormalDist(normalDist) * matchSign);
             }
 
             return randList;

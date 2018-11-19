@@ -119,9 +119,6 @@ namespace NoFuture.Rand.Sp
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x, txtCase);
             var itemData = base.ToData(txtCase) ?? new Dictionary<string, object>();
 
-            if(Expectation != null && Expectation.Value != Pecuniam.Zero)
-                itemData.Add(textFormat("ExpectValue"), Expectation.Value.ToString());
-
             var v = Value;
             if(v != Pecuniam.Zero)
                 itemData.Add(textFormat("ActualValue"), v.ToString());
