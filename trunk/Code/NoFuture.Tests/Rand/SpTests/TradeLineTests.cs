@@ -101,6 +101,5 @@ namespace NoFuture.Rand.Tests.SpTests
             Console.WriteLine(testResult.Balance.LastTransaction);
 
         }
-
     }
 }

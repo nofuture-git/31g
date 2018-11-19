@@ -1,5 +1,7 @@
-﻿using NoFuture.Rand.Sp;
+﻿using System;
+using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.SpTests
@@ -69,6 +71,17 @@ namespace NoFuture.Rand.Tests.SpTests
             {
                 Assert.True(true);
             }
+        }
+
+        [Test]
+        public void TestGetTropicalMonth()
+        {
+            var testResult = PecuniamExtensions.GetTropicalMonth();
+            Console.WriteLine($"Days: {testResult.Days}, Hours: {testResult.Hours}, Minutes: {testResult.Minutes}, Seconds: {testResult.Seconds}, Milliseconds: {testResult.Milliseconds}");
+
+            var back2Year = testResult.Ticks * 12L;
+            Assert.AreEqual(Constants.TropicalYear.Ticks, back2Year);
+
         }
     }
 }

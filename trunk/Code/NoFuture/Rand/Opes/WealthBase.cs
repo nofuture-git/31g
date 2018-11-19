@@ -175,6 +175,24 @@ namespace NoFuture.Rand.Opes
             AddItem(p);
         }
 
+        public virtual void AddItem(string name, string groupName, Pecuniam expectedValue, DateTime? atTime,
+            TimeSpan? dueFrequency = null)
+        {
+            var dt = atTime.GetValueOrDefault(DateTime.Now);
+            var tss = dueFrequency ?? Constants.TropicalYear;
+            var p = new NamedReceivable(new VocaBase(name, Division.ToString())) {DueFrequency = dueFrequency};
+            p.AddPositiveValue(dt, expectedValue);
+            AddItem(p);
+        }
+
+        public virtual void AddItem(string name, string groupName, double expectedValue,
+            CurrencyAbbrev c = CurrencyAbbrev.USD, DateTime? atTime = null,
+            TimeSpan? dueFrequency = null)
+        {
+            var amt = new Pecuniam(Convert.ToDecimal(expectedValue), c);
+            AddItem(name, groupName, amt, atTime, dueFrequency);
+        }
+
         /// <summary>
         /// Maps the <see cref="Division"/> groups names to a function which produces that group&apos;s item names and rate.
         /// </summary>

@@ -4,6 +4,7 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -268,6 +269,36 @@ namespace NoFuture.Rand.Sp
             nr.AddName(KindsOfNames.Group, groupName);
             nr.GetRandomHistory(amount);
             return nr;
+        }
+
+
+        /// <summary>
+        /// Produces a random <see cref="TradeLine"/> with history sums to the given value
+        /// </summary>
+        /// <returns></returns>
+        [RandomFactory]
+        public static NamedReceivable RandomNamedReceivalbleWithHistoryToSum(
+            string name = null,
+            string groupName = null, 
+            Pecuniam sumOfAllHistory = null,
+            TimeSpan? dueFrequency = null, 
+            DateTime? inception = null, 
+            DateTime? terminus = null)
+        {
+            sumOfAllHistory = sumOfAllHistory ?? Pecuniam.RandomPecuniam(30, 200);
+            var oneTropicalYearAgo = DateTime.Today.Add(Constants.TropicalYear.Negate());
+            var start = inception ?? oneTropicalYearAgo;
+            var tl = new NamedReceivable(start)
+            {
+                Terminus = terminus,
+                DueFrequency = dueFrequency == null || dueFrequency == TimeSpan.MinValue ? PecuniamExtensions.GetTropicalMonth() : dueFrequency.Value
+            };
+
+            var blocks = tl.GetWholeTimeBlocks();
+            blocks = blocks == 0 ? 1 : blocks;
+            var perBlockAmt = sumOfAllHistory.Amount / blocks;
+            tl.GetRandomHistory(perBlockAmt.ToPecuniam());
+            return tl;
         }
     }
 }

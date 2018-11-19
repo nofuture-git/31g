@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Sp.Enums;
+using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -110,6 +111,16 @@ namespace NoFuture.Rand.Sp
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Divides <see cref="Constants.TropicalYear"/> tick by 12
+        /// </summary>
+        /// <returns></returns>
+        public static TimeSpan GetTropicalMonth()
+        {
+            var tropicalYearTicks = Constants.TropicalYear.Ticks;
+            return new TimeSpan(tropicalYearTicks/12L);
         }
     }
 }

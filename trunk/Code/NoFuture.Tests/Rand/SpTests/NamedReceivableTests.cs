@@ -110,5 +110,17 @@ namespace NoFuture.Rand.Tests.SpTests
             Console.WriteLine(testResult.Balance.LastTransaction);
 
         }
+
+        [Test]
+        public void TestRandomNamedReceivalbleWithHistoryToSum()
+        {
+            var testResult =
+                NamedReceivable.RandomNamedReceivalbleWithHistoryToSum("first name", "group name",
+                    120000M.ToPecuniam());
+            var testResultValue = testResult.Value;
+            Console.WriteLine(testResultValue);
+            Assert.AreEqual(120000M.ToPecuniam(), testResultValue);
+
+        }
     }
 }

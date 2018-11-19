@@ -177,6 +177,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testResult = testSubject.TotalCurrentExpectedValue;
             Assert.AreEqual(Pecuniam.Zero, testResult);
 
+            
             testSubject.AddItem("Home",120000.0D);
             testResult = testSubject.TotalCurrentExpectedValue;
             Assert.AreEqual(120000.0D.ToPecuniam(), testResult);

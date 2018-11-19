@@ -220,7 +220,7 @@ namespace NoFuture.Rand.Sp
             var wholeTimeBlocks = GetWholeTimeBlocks();
             if (wholeTimeBlocks <= 0)
                 return;
-            var tss = DueFrequency == null || DueFrequency == TimeSpan.MinValue ? new TimeSpan(30, 0, 0, 0) : DueFrequency.Value;
+            var tss = DueFrequency == null || DueFrequency == TimeSpan.MinValue ? PecuniamExtensions.GetTropicalMonth() : DueFrequency.Value;
             var start = Inception;
 
             if (steadyPayments)
