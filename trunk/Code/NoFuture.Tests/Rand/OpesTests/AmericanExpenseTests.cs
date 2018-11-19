@@ -571,7 +571,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testResult = testSubject.TotalAnnualExpectedExpenses;
             Assert.AreEqual(Pecuniam.Zero, testResult);
 
-            testSubject.AddItem("Rent", 900.0D, Interval.Monthly);
+            testSubject.AddItem("Rent", 900.0D * 12, Interval.Monthly);
             testResult = testSubject.TotalAnnualExpectedExpenses;
             var expected = (900.0D * -12).ToPecuniam();
             Console.WriteLine($"expected {expected} actual {testResult}");

@@ -135,41 +135,6 @@ namespace NoFuture.Rand.Opes
             return afterOrOnFromDt && beforeOrOnToDt;
         }
 
-        /// <summary>
-        /// Helper method to assert if any items have been added to option&apos;s given directly
-        /// by name and group
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="groupName"></param>
-        /// <returns></returns>
-        public bool AnyGivenDirectlyOfNameAndGroup(string name, string groupName)
-        {
-            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            return GivenDirectly.Any(g =>
-                string.Equals(g.Name, name, OPT) && string.Equals(g.GetName(KindsOfNames.Group), groupName, OPT));
-        }
-
-        /// <summary>
-        /// Helper method to assert if any items have been added to option&apos;s given directly
-        /// with the given name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public bool AnyGivenDirectlyOfName(string name)
-        {
-            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            return GivenDirectly.Any(g => string.Equals(g.Name, name, OPT));
-        }
-
-        /// <summary>
-        /// Helper method to assert if any option&apos;s given directly have group name <see cref="groupName"/>
-        /// </summary>
-        /// <param name="groupName"></param>
-        /// <returns></returns>
-        public bool AnyGivenDirectlyOfGroupName(string groupName)
-        {
-            return GivenDirectly.Any(x => x.AnyOfKindAndValue(KindsOfNames.Group, groupName));
-        }
 
         /// <summary>
         /// Creates a new instance on the heap with the exact same property values as this instance.
@@ -190,7 +155,7 @@ namespace NoFuture.Rand.Opes
                 o.PossibleZeroOuts.Add(zo);
 
             foreach (var me in GivenDirectly)
-                o.GivenDirectly.Add(new Mereo(me));
+                o.AddGivenDirectly(me.Item1.Name, me.Item1.GetName(KindsOfNames.Group), me.Item2);
 
             foreach(var ca in ChildrenDobs)
                 o.ChildrenDobs.Add(ca);

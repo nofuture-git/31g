@@ -501,15 +501,15 @@ namespace NoFuture.Rand.Opes
 
             options = options ?? new OpesPortions();
 
-            var givenDirectlyItems = options.GivenDirectly ?? new List<IMereo>();
+            var givenDirectlyItems = options.GivenDirectly ?? new List<Tuple<VocaBase, Pecuniam>>();
 
             //immediately reduce this to only the items present in 'itemNames'
             givenDirectlyItems = givenDirectlyItems.Where(gd =>
-                itemOrGroupNames.Any(n => String.Equals(gd.Name, n, STR_OPT))).ToList();
+                itemOrGroupNames.Any(n => String.Equals(gd.Item1.Name, n, STR_OPT))).ToList();
 
             //get the direct assign's total
             var givenDirectTotal = givenDirectlyItems
-                .Select(x => Math.Round(x.Value.GetAbs().ToDouble(), DF_ROUND_DECIMAL_PLACES)).Sum();
+                .Select(x => Math.Round(x.Item2.GetAbs().ToDouble(), DF_ROUND_DECIMAL_PLACES)).Sum();
 
             //get total given by the caller if any
             var sumTotal = (options.SumTotal ?? Pecuniam.Zero).ToDouble();
@@ -547,7 +547,7 @@ namespace NoFuture.Rand.Opes
                     //these predicates are filters
                     var isAlreadyPresent = actualZeroOuts.Any(z => z.Item1 == pzo);
                     var isInGivenDirectly = givenDirectlyItems.Any(x =>
-                        String.Equals(x.Name, pzo, STR_OPT));
+                        String.Equals(x.Item1.Name, pzo, STR_OPT));
                     
                     if (diceRoll && !isAlreadyPresent && !isInGivenDirectly)
                         actualZeroOuts.Add(new Tuple<string, double>(pzo, 0.0D));
@@ -555,10 +555,10 @@ namespace NoFuture.Rand.Opes
             }
 
             //apply any GivenDirectly's of zero like PossiableZeroOuts
-            foreach (var dr in givenDirectlyItems.Where(o => o.Value == Pecuniam.Zero))
+            foreach (var dr in givenDirectlyItems.Where(o => o.Item2 == Pecuniam.Zero))
             {
-                if (actualZeroOuts.All(z => z.Item1 != dr.Name))
-                    actualZeroOuts.Add(new Tuple<string, double>(dr.Name, 0.0D));
+                if (actualZeroOuts.All(z => z.Item1 != dr.Item1.Name))
+                    actualZeroOuts.Add(new Tuple<string, double>(dr.Item1.Name, 0.0D));
             }
 
             //zero out all the select names
@@ -591,15 +591,15 @@ namespace NoFuture.Rand.Opes
             //get the sum of each given directly item
             foreach (var d in givenDirectlyItems)
             {
-                var dName = d.Name;
+                var dName = d.Item1.Name;
                 if (String.IsNullOrWhiteSpace(dName)
-                    || d.Value == null
-                    || d.Value == Pecuniam.Zero)
+                    || d.Item2 == null
+                    || d.Item2 == Pecuniam.Zero)
                     continue;
                 if (calcDict.ContainsKey(dName))
-                    calcDict[dName] += d.Value.GetAbs().ToDouble();
+                    calcDict[dName] += d.Item2.GetAbs().ToDouble();
                 else
-                    calcDict.Add(dName, d.Value.GetAbs().ToDouble());
+                    calcDict.Add(dName, d.Item2.GetAbs().ToDouble());
             }
 
             var calcMap = new List<Tuple<string, double>>();

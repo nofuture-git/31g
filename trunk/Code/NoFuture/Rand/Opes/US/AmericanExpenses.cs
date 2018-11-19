@@ -76,6 +76,8 @@ namespace NoFuture.Rand.Opes.US
 
                 var expenseName = Division.ToString() + Interval.Monthly;
                 expenseName += p.Name;
+                if(itemData.ContainsKey(textFormat(expenseName)))
+                    continue;
                 itemData.Add(textFormat(expenseName), p.Expectation.GetValueInTimespanDenominator(30));
             }
 

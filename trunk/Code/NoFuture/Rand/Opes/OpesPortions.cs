@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Opes
@@ -20,12 +21,7 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         public Pecuniam SumTotal { get; set; }
 
-        /// <summary>
-        /// The means to assign an items value directly; thereby, removing
-        /// all the randomness of its value - the resulting portion will be equal
-        /// to the <see cref="IMereo.Value"/> over <see cref="SumTotal"/>
-        /// </summary>
-        public List<IMereo> GivenDirectly { get; } = new List<IMereo>();
+        protected internal List<Tuple<VocaBase, Pecuniam>> GivenDirectly { get; } = new List<Tuple<VocaBase, Pecuniam>>();
 
         /// <summary>
         /// By default, every item will get &apos;some portion&apos;, no matter 
@@ -60,12 +56,12 @@ namespace NoFuture.Rand.Opes
 
         public void AddGivenDirectly(string name, string groupName, Pecuniam amount)
         {
-            GivenDirectly.Add(new Mereo(name, groupName) {Value = amount});
+            GivenDirectly.Add(new Tuple<VocaBase, Pecuniam>(new VocaBase(name, groupName),amount));
         }
 
         public void AddGivenDirectly(string name, Pecuniam amount)
         {
-            GivenDirectly.Add(new Mereo(name) { Value = amount });
+            GivenDirectly.Add(new Tuple<VocaBase, Pecuniam>(new VocaBase(name),amount));
         }
 
         public void AddGivenDirectlyZero(string name, string groupName)
@@ -93,5 +89,42 @@ namespace NoFuture.Rand.Opes
         }
 
         public int GivenDirectlyCount => GivenDirectly.Count;
+
+
+        /// <summary>
+        /// Helper method to assert if any items have been added to option&apos;s given directly
+        /// by name and group
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        public bool AnyGivenDirectlyOfNameAndGroup(string name, string groupName)
+        {
+            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
+            return GivenDirectly.Any(g =>
+                string.Equals(g.Item1.Name, name, OPT) && string.Equals(g.Item1.GetName(KindsOfNames.Group), groupName, OPT));
+        }
+
+        /// <summary>
+        /// Helper method to assert if any items have been added to option&apos;s given directly
+        /// with the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool AnyGivenDirectlyOfName(string name)
+        {
+            const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
+            return GivenDirectly.Any(g => string.Equals(g.Item1.Name, name, OPT));
+        }
+
+        /// <summary>
+        /// Helper method to assert if any option&apos;s given directly have group name <see cref="groupName"/>
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        public bool AnyGivenDirectlyOfGroupName(string groupName)
+        {
+            return GivenDirectly.Any(x => x.Item1.AnyOfKindAndValue(KindsOfNames.Group, groupName));
+        }
     }
 }
