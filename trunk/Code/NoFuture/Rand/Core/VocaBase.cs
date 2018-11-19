@@ -193,6 +193,7 @@ namespace NoFuture.Rand.Core
 
         public static string TransformText(string x, KindsOfTextCase txtCase)
         {
+            x = x.Replace('\n', ' ').Replace('\r', ' ');
             switch (txtCase)
             {
                 case KindsOfTextCase.Camel:
@@ -200,9 +201,9 @@ namespace NoFuture.Rand.Core
                 case KindsOfTextCase.Pascel:
                     return Etc.ToPascelCase(x);
                 case KindsOfTextCase.Kabab:
-                    return Etc.TransformCaseToSeparator(x, '-')?.ToLower();
+                    return Etc.TransformCaseToSeparator(Etc.ToCamelCase(x), '-')?.ToLower();
                 case KindsOfTextCase.Snake:
-                    return Etc.TransformCaseToSeparator(x, '_')?.ToLower();
+                    return Etc.TransformCaseToSeparator(Etc.ToCamelCase(x), '_')?.ToLower();
             }
 
             return x;
