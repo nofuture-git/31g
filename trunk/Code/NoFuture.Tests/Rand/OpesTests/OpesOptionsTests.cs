@@ -29,8 +29,8 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             testInput.ChildrenDobs.Add(DateTime.Today.AddYears(-2));
             testInput.ChildrenDobs.Add(DateTime.Today.AddYears(-4));
-            testInput.GivenDirectly.Add(new Mereo("name00", "group00"){Value = 9900.ToPecuniam()});
-            testInput.GivenDirectly.Add(new Mereo("name01", "group00") { Value = 1100.ToPecuniam() });
+            testInput.AddGivenDirectly("name00", "group00", 9900.ToPecuniam());
+            testInput.AddGivenDirectly("name01", "group00", 1100.ToPecuniam());
 
             var testResult = testInput.GetClone();
 

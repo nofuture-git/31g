@@ -179,11 +179,11 @@ namespace NoFuture.Rand.Opes.US
 
                 //there aren't ever random but calculated off gross and net income(s)
                 if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.PUBLIC_BENEFITS))
-                    cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.PUBLIC_BENEFITS){Value = Pecuniam.Zero});
+                    cloneOptions.AddGivenDirectlyZero(IncomeGroupNames.PUBLIC_BENEFITS, null);
 
                 //make the caller assign these directly
                 if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.JUDGMENTS))
-                    cloneOptions.GivenDirectly.Add(new Mereo(IncomeGroupNames.JUDGMENTS) { Value = Pecuniam.Zero });
+                    cloneOptions.AddGivenDirectlyZero(IncomeGroupNames.JUDGMENTS, null);
 
                 var items = GetItemsForRange(cloneOptions);
                 foreach (var item in items)

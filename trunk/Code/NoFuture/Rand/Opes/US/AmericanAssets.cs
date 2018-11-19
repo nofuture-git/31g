@@ -143,7 +143,7 @@ namespace NoFuture.Rand.Opes.US
                 ? _totalEquity.ToPecuniam()
                 : options.SumTotal;
 
-            var givenDirectly = new List<IMereo>();
+            var givenDirectly = new List<Tuple<string, string, Pecuniam>>();
             var assignedRealEstateDirectly =
                 options.AnyGivenDirectlyOfNameAndGroup(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
 
@@ -158,38 +158,30 @@ namespace NoFuture.Rand.Opes.US
 
             if (!options.IsRenting && !assignedRealEstateDirectly)
             {
-                givenDirectly.Add(new Mereo(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY)
-                {
-                    Value = (_homeEquityRate * amt.ToDouble()).ToPecuniam()
-                });
+                givenDirectly.Add(new Tuple<string, string, Pecuniam>(REAL_PROPERTY_HOME_OWNERSHIP,
+                    AssetGroupNames.REAL_PROPERTY, (_homeEquityRate * amt.ToDouble()).ToPecuniam()));
             }
 
             if (options.NumberOfVehicles > 0 && !assignedVehicleDirectly)
             {
-                givenDirectly.Add(new Mereo(PERSONAL_PROPERTY_MOTOR_VEHICLES, AssetGroupNames.PERSONAL_PROPERTY)
-                {
-                    Value = (_carEquityRate * amt.ToDouble()).ToPecuniam()
-                });
+                givenDirectly.Add(new Tuple<string, string, Pecuniam>(PERSONAL_PROPERTY_MOTOR_VEHICLES,
+                    AssetGroupNames.PERSONAL_PROPERTY, (_carEquityRate * amt.ToDouble()).ToPecuniam()));
             }
             if (!assignedCheckingDirectly)
             {
-                givenDirectly.Add(new Mereo(INSTITUTIONAL_CHECKING, AssetGroupNames.INSTITUTIONAL)
-                {
-                    Value = (_checkingAccountRate * amt.ToDouble()).ToPecuniam()
-                });
+                givenDirectly.Add(new Tuple<string, string, Pecuniam>(INSTITUTIONAL_CHECKING,
+                    AssetGroupNames.INSTITUTIONAL, (_checkingAccountRate * amt.ToDouble()).ToPecuniam()));
             }
             if (!assignedSavingDirectly)
             {
-                givenDirectly.Add(new Mereo(INSTITUTIONAL_SAVINGS, AssetGroupNames.INSTITUTIONAL)
-                {
-                    Value = (_savingsAccountRate * amt.ToDouble()).ToPecuniam()
-                });
+                givenDirectly.Add(new Tuple<string, string, Pecuniam>(INSTITUTIONAL_SAVINGS, AssetGroupNames.INSTITUTIONAL,
+                    (_savingsAccountRate * amt.ToDouble()).ToPecuniam()));
             }
 
             if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
             {
                 options.DerivativeSlope = -0.2D;
-                options.GivenDirectly.AddRange(givenDirectly);
+                options.AddGivenDirectlyRange(givenDirectly);
             }
             return base.GetGroupNames2Portions(options);
         }
@@ -320,11 +312,7 @@ namespace NoFuture.Rand.Opes.US
 
             if (options.IsRenting)
             {
-                options.GivenDirectly.Add(
-                    new Mereo(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY)
-                    {
-                        Value = Pecuniam.Zero
-                    });
+                options.AddGivenDirectlyZero(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
             }
             options.PossibleZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Rights" });
             var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, options);
@@ -346,11 +334,9 @@ namespace NoFuture.Rand.Opes.US
                                  usCityState.Msa?.MsaType >= UrbanCentric.Fringe;
             if (!livesInCountry)
             {
-                options.GivenDirectly.Add(
-                    new Mereo("Crops", AssetGroupNames.PERSONAL_PROPERTY) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Crops", AssetGroupNames.PERSONAL_PROPERTY);
 
-                options.GivenDirectly.Add(
-                    new Mereo("Livestock", AssetGroupNames.PERSONAL_PROPERTY) {Value = Pecuniam.Zero});
+                options.AddGivenDirectlyZero("Livestock", AssetGroupNames.PERSONAL_PROPERTY);
             }
 
             var d = GetItemNames2Portions(AssetGroupNames.PERSONAL_PROPERTY, options);

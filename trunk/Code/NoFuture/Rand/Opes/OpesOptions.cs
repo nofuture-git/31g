@@ -162,6 +162,16 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
+        /// Helper method to assert if any option&apos; given directly have group name <see cref="groupName"/>
+        /// </summary>
+        /// <param name="groupName"></param>
+        /// <returns></returns>
+        public bool AnyGivenDirectlyOfGroupName(string groupName)
+        {
+            return GivenDirectly.Any(x => x.AnyOfKindAndValue(KindsOfNames.Group, groupName));
+        }
+
+        /// <summary>
         /// Creates a new instance on the heap with the exact same property values as this instance.
         /// </summary>
         /// <returns></returns>

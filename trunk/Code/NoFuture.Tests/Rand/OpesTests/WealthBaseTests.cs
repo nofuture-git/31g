@@ -134,8 +134,8 @@ namespace NoFuture.Rand.Tests.OpesTests
         public void TestGetGroupNames2Portions()
         {
             var testInput = new OpesOptions();
-            testInput.GivenDirectly.Add(new Mereo("Real Property"){Value = 7800.ToPecuniam()});
-            testInput.GivenDirectly.Add(new Mereo("Securities"){Value = 1000.ToPecuniam()});
+            testInput.AddGivenDirectly("Real Property",7800.ToPecuniam());
+            testInput.AddGivenDirectly("Securities", 1000.ToPecuniam());
             testInput.SumTotal = 12000.ToPecuniam();
             var testSubject = new AmericanAssets();
             var testResult = testSubject.GetGroupNames2Portions(testInput);
@@ -164,9 +164,9 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testInput = new OpesOptions();
             var grpName = "Institutional";
-            testInput.GivenDirectly.Add(new Mereo("Partnerships", grpName) { Value = 7800.ToPecuniam() });
-            testInput.GivenDirectly.Add(new Mereo("Fellowships", grpName) { Value = 1000.ToPecuniam() });
-            testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { Value = 1000.ToPecuniam() });
+            testInput.AddGivenDirectly("Partnerships", grpName, 7800.ToPecuniam());
+            testInput.AddGivenDirectly("Fellowships", grpName, 1000.ToPecuniam() );
+            testInput.AddGivenDirectly("Annuity", grpName, 1000.ToPecuniam());
             testInput.SumTotal = 15000.ToPecuniam();
 
             var testSubject = new AmericanIncome();
@@ -183,9 +183,9 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //expect that when SumTotal is unassigned the ratios align exactly with assigned values
             testInput = new OpesOptions();
-            testInput.GivenDirectly.Add(new Mereo("Partnerships", grpName) { Value = 7800.ToPecuniam() });
-            testInput.GivenDirectly.Add(new Mereo("Fellowships", grpName) { Value = 1000.ToPecuniam() });
-            testInput.GivenDirectly.Add(new Mereo("Annuity", grpName) { Value = 1000.ToPecuniam() });
+            testInput.AddGivenDirectly("Partnerships", grpName, 7800.ToPecuniam());
+            testInput.AddGivenDirectly("Fellowships", grpName, 1000.ToPecuniam() );
+            testInput.AddGivenDirectly("Annuity", grpName, 1000.ToPecuniam() );
             testSubject = new AmericanIncome();
             testResults =
                 testSubject.GetItemNames2Portions(grpName, testInput);

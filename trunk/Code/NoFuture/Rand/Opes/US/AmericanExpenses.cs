@@ -133,29 +133,24 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? OpesOptions.RandomOpesOptions();
 
             //TODO - integrate ability to have multiple mortgages in options
-            options.GivenDirectly.Add(new Mereo("Other Lein", ExpenseGroupNames.HOME) { Value = Pecuniam.Zero });
+            options.AddGivenDirectlyZero("Other Lein", ExpenseGroupNames.HOME);
 
             //we want almost all-of-it in Mortgage
             options.DerivativeSlope = -0.2D;
 
             if (options.IsRenting)
             {
-                options.GivenDirectly.Add(
-                    new Mereo("Mortgage", ExpenseGroupNames.HOME) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Mortgage", ExpenseGroupNames.HOME);
 
-                options.GivenDirectly.Add(
-                    new Mereo("Maintenance", ExpenseGroupNames.HOME) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Maintenance", ExpenseGroupNames.HOME);
 
-                options.GivenDirectly.Add(
-                    new Mereo("Property Tax", ExpenseGroupNames.HOME) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Property Tax", ExpenseGroupNames.HOME);
 
-                options.GivenDirectly.Add(
-                    new Mereo("Association Fees", ExpenseGroupNames.HOME) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Association Fees", ExpenseGroupNames.HOME);
             }
             else
             {
-                options.GivenDirectly.Add(
-                    new Mereo("Rent", ExpenseGroupNames.HOME) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Rent", ExpenseGroupNames.HOME);
                 options.PossibleZeroOuts.Add("Association Fees");
             }
 
@@ -197,31 +192,21 @@ namespace NoFuture.Rand.Opes.US
             if (options.NumberOfVehicles > 0)
             {
                 if (options.IsVehiclePaidOff)
-                    options.GivenDirectly.Add(
-                        new Mereo("Loan Payments", ExpenseGroupNames.TRANSPORTATION) { Value = Pecuniam.Zero });
+                    options.AddGivenDirectlyZero("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
 
-                options.GivenDirectly.Add(
-                    new Mereo("Public Transportation", ExpenseGroupNames.TRANSPORTATION)
-                    {
-                        Value = Pecuniam.Zero
-                    });
+                options.AddGivenDirectlyZero("Public Transportation", ExpenseGroupNames.TRANSPORTATION);
             }
             else
             {
-                options.GivenDirectly.Add(
-                    new Mereo("Loan Payments", ExpenseGroupNames.TRANSPORTATION) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
 
-                options.GivenDirectly.Add(
-                    new Mereo("Fuel", ExpenseGroupNames.TRANSPORTATION) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Fuel", ExpenseGroupNames.TRANSPORTATION);
 
-                options.GivenDirectly.Add(
-                    new Mereo("Maintenance", ExpenseGroupNames.TRANSPORTATION) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Maintenance", ExpenseGroupNames.TRANSPORTATION);
 
-                options.GivenDirectly.Add(
-                    new Mereo("Property Tax", ExpenseGroupNames.TRANSPORTATION) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Property Tax", ExpenseGroupNames.TRANSPORTATION);
 
-                options.GivenDirectly.Add(
-                    new Mereo("Parking", ExpenseGroupNames.TRANSPORTATION) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Parking", ExpenseGroupNames.TRANSPORTATION);
             }
 
             var d = GetItemNames2Portions(ExpenseGroupNames.TRANSPORTATION, options);
@@ -240,13 +225,10 @@ namespace NoFuture.Rand.Opes.US
             options.PossibleZeroOuts.AddRange(new[] { "Pet", "Vision",
                 "Dental", "Health", "Disability", "Life" });
 
-            options.GivenDirectly.Add(
-                options.IsRenting
-                    ? new Mereo("Home", ExpenseGroupNames.INSURANCE) { Value = Pecuniam.Zero }
-                    : new Mereo("Renters", ExpenseGroupNames.INSURANCE) { Value = Pecuniam.Zero });
+            options.AddGivenDirectlyZero(options.IsRenting ? "Home" : "Renters", ExpenseGroupNames.INSURANCE);
 
             if (options.NumberOfVehicles > 0)
-                options.GivenDirectly.Add(new Mereo("Vehicle", ExpenseGroupNames.INSURANCE) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Vehicle", ExpenseGroupNames.INSURANCE);
 
             var d = GetItemNames2Portions(ExpenseGroupNames.INSURANCE, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -280,18 +262,12 @@ namespace NoFuture.Rand.Opes.US
             //when children are young we want to reflect that
             if (options.GetChildrenAges().All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
             {
-                options.GivenDirectly.Add(
-                    new Mereo("Transportation", ExpenseGroupNames.CHILDREN) { Value = Pecuniam.Zero });
-                options.GivenDirectly.Add(
-                    new Mereo("School Supplies", ExpenseGroupNames.CHILDREN) { Value = Pecuniam.Zero });
-                options.GivenDirectly.Add(
-                    new Mereo("Lunch Money", ExpenseGroupNames.CHILDREN) { Value = Pecuniam.Zero });
-                options.GivenDirectly.Add(
-                    new Mereo("Extracurricular", ExpenseGroupNames.CHILDREN) { Value = Pecuniam.Zero });
-                options.GivenDirectly.Add(
-                    new Mereo("Camp", ExpenseGroupNames.CHILDREN) { Value = Pecuniam.Zero });
-                options.GivenDirectly.Add(
-                    new Mereo("Allowance", ExpenseGroupNames.CHILDREN) { Value = Pecuniam.Zero });
+                options.AddGivenDirectlyZero("Transportation", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectlyZero("School Supplies", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectlyZero("Lunch Money", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectlyZero("Extracurricular", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectlyZero("Camp", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectlyZero("Allowance", ExpenseGroupNames.CHILDREN);
             }
             else
             {

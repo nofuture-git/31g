@@ -259,7 +259,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS).Item2);
 
             var testOptions = new OpesOptions();
-            testOptions.GivenDirectly.Add(new Mereo(WealthBase.DeductionGroupNames.JUDGMENTS) {Value =  1000.ToPecuniam()});
+            testOptions.AddGivenDirectly(WealthBase.DeductionGroupNames.JUDGMENTS,1000.ToPecuniam());
 
             testResults = testSubject.GetGroupNames2Portions(testOptions);
             Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS));

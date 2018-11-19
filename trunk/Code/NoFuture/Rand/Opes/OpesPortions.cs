@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 
@@ -14,8 +15,8 @@ namespace NoFuture.Rand.Opes
         private double _derivativeSlope;
 
         /// <summary>
-        /// Optional, this is only used when the <see cref="GivenDirectly"/>
-        /// is not empty - its expected to exceed the total of the <see cref="GivenDirectly"/>.
+        /// Optional, this is only used when the option&apos;s given directly
+        /// is not empty - its expected to exceed the total of the option&apos;s given directly.
         /// </summary>
         public Pecuniam SumTotal { get; set; }
 
@@ -56,5 +57,41 @@ namespace NoFuture.Rand.Opes
         /// possible into actual.
         /// </summary>
         public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.RandomRollBelowOrAt;
+
+        public void AddGivenDirectly(string name, string groupName, Pecuniam amount)
+        {
+            GivenDirectly.Add(new Mereo(name, groupName) {Value = amount});
+        }
+
+        public void AddGivenDirectly(string name, Pecuniam amount)
+        {
+            GivenDirectly.Add(new Mereo(name) { Value = amount });
+        }
+
+        public void AddGivenDirectlyZero(string name, string groupName)
+        {
+            if(string.IsNullOrWhiteSpace(groupName))
+                AddGivenDirectly(name, Pecuniam.Zero);
+            else
+                AddGivenDirectly(name, groupName, Pecuniam.Zero);
+        }
+
+        public void AddGivenDirectlyRange(IEnumerable<Tuple<string, string, Pecuniam>> name2Values)
+        {
+            if (name2Values == null || !name2Values.Any())
+                return;
+
+            foreach (var n2v in name2Values)
+            {
+                AddGivenDirectly(n2v.Item1, n2v.Item2, n2v.Item3);
+            }
+        }
+
+        public bool AnyGivenDirectly()
+        {
+            return GivenDirectly.Any();
+        }
+
+        public int GivenDirectlyCount => GivenDirectly.Count;
     }
 }

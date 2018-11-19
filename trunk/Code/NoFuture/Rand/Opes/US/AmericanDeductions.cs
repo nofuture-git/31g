@@ -126,9 +126,8 @@ namespace NoFuture.Rand.Opes.US
                 new Tuple<string, double>(DeductionGroupNames.GOVERNMENT, 1),
             };
 
-            var assignedJudgmentsDirectly = options.GivenDirectly.Any(x =>
-                x.AnyOfNameAs(DeductionGroupNames.JUDGMENTS) ||
-                x.AnyOfKindAndValue(KindsOfNames.Group, DeductionGroupNames.JUDGMENTS));
+            var assignedJudgmentsDirectly = options.AnyGivenDirectlyOfName(DeductionGroupNames.JUDGMENTS)
+                || options.AnyGivenDirectlyOfGroupName(DeductionGroupNames.JUDGMENTS);
 
             var optionsIncludeJudgment = options.IsPayingChildSupport || options.IsPayingSpousalSupport;
 
@@ -154,7 +153,7 @@ namespace NoFuture.Rand.Opes.US
             });
 
             //if the caller has assign values themselves - then just use those and leave
-            if (options.GivenDirectly.Any())
+            if (options.AnyGivenDirectly())
             {
                 return GetItemNames2Portions(DeductionGroupNames.INSURANCE, options)
                     .ToDictionary(t => t.Item1, t => t.Item2);
@@ -164,23 +163,11 @@ namespace NoFuture.Rand.Opes.US
             var expectedDentalInsCost = GetRandomValueFrom(expectedHealthInsCost, 8);
             var expectedVisionInsCost = GetRandomValueFrom(expectedHealthInsCost, 13);
 
-            options.GivenDirectly.Add(
-                new Mereo("Health", DeductionGroupNames.INSURANCE)
-                {
-                    Value = expectedHealthInsCost.ToPecuniam()
-                });
+            options.AddGivenDirectly("Health", DeductionGroupNames.INSURANCE, expectedHealthInsCost.ToPecuniam());
 
-            options.GivenDirectly.Add(
-                new Mereo("Dental", DeductionGroupNames.INSURANCE)
-                {
-                    Value = expectedDentalInsCost.ToPecuniam()
-                });
+            options.AddGivenDirectly("Dental", DeductionGroupNames.INSURANCE, expectedDentalInsCost.ToPecuniam());
 
-            options.GivenDirectly.Add(
-                new Mereo("Vision", DeductionGroupNames.INSURANCE)
-                {
-                    Value = expectedVisionInsCost.ToPecuniam()
-                });
+            options.AddGivenDirectly("Vision", DeductionGroupNames.INSURANCE, expectedVisionInsCost.ToPecuniam());
             var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.GetAge());
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
@@ -205,7 +192,7 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? OpesOptions.RandomOpesOptions();
 
             //if the caller has assign values themselves - then just use those and leave
-            if (options.GivenDirectly.Any())
+            if (options.AnyGivenDirectly())
             {
                 return GetItemNames2Portions(DeductionGroupNames.GOVERNMENT, options)
                     .ToDictionary(t => t.Item1, t => t.Item2);
@@ -221,26 +208,10 @@ namespace NoFuture.Rand.Opes.US
             var ficaTaxAmt = pay * AmericanData.FICA_DEDUCTION_TAX_RATE;
             var medicareTaxAmt = pay * AmericanData.MEDICARE_DEDUCTION_TAX_RATE;
 
-            options.GivenDirectly.Add(
-                new Mereo("Federal tax", DeductionGroupNames.INSURANCE)
-                {
-                    Value = fedTaxAmt.ToPecuniam()
-                });
-            options.GivenDirectly.Add(
-                new Mereo("State tax", DeductionGroupNames.INSURANCE)
-                {
-                    Value = stateTaxAmt.ToPecuniam()
-                });
-            options.GivenDirectly.Add(
-                new Mereo("FICA", DeductionGroupNames.INSURANCE)
-                {
-                    Value = ficaTaxAmt.ToPecuniam()
-                });
-            options.GivenDirectly.Add(
-                new Mereo("Medicare", DeductionGroupNames.INSURANCE)
-                {
-                    Value = medicareTaxAmt.ToPecuniam()
-                });
+            options.AddGivenDirectly("Federal tax", DeductionGroupNames.INSURANCE, fedTaxAmt.ToPecuniam());
+            options.AddGivenDirectly("State tax", DeductionGroupNames.INSURANCE, stateTaxAmt.ToPecuniam());
+            options.AddGivenDirectly("FICA", DeductionGroupNames.INSURANCE, ficaTaxAmt.ToPecuniam());
+            options.AddGivenDirectly("Medicare", DeductionGroupNames.INSURANCE, medicareTaxAmt.ToPecuniam());
 
             //this will be used later to create Pondus so only overwrite it if is unassigned
             if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
@@ -265,7 +236,7 @@ namespace NoFuture.Rand.Opes.US
             });
 
             //if the caller has assign values themselves - then just use those and leave
-            if (options.GivenDirectly.Any())
+            if (options.AnyGivenDirectly())
             {
                 return GetItemNames2Portions(DeductionGroupNames.EMPLOYMENT, options)
                     .ToDictionary(t => t.Item1, t => t.Item2);
@@ -275,20 +246,14 @@ namespace NoFuture.Rand.Opes.US
 
             var retirementRate = Etx.RandomPickOne(new[] {0.01D, 0.02D, 0.03D, 0.04D, 0.05D});
             var retirementAmt = pay * retirementRate;
-            options.GivenDirectly.Add(
-                new Mereo("Registered Retirement Savings Plan", DeductionGroupNames.INSURANCE)
-                {
-                    Value = retirementAmt.ToPecuniam()
-                });
+            options.AddGivenDirectly(
+                "Registered Retirement Savings Plan", DeductionGroupNames.INSURANCE,retirementAmt.ToPecuniam());
+
             var unionDuesAmt = StandardOccupationalClassification.IsLaborUnion(_employment.Occupation)
                 ? pay * GetRandomValueFrom(0.04)
                 : 0.0D;
 
-            options.GivenDirectly.Add(
-                new Mereo("Union Dues", DeductionGroupNames.INSURANCE)
-                {
-                    Value = unionDuesAmt.ToPecuniam()
-                });
+            options.AddGivenDirectly("Union Dues", DeductionGroupNames.INSURANCE, unionDuesAmt.ToPecuniam());
 
             //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
             var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.GetAge());
@@ -328,11 +293,7 @@ namespace NoFuture.Rand.Opes.US
 
                 //need to turn this back into annual amount
                 childSupport = childSupport * 12;
-                options.GivenDirectly.Add(
-                    new Mereo(CHILD_SUPPORT, DeductionGroupNames.JUDGMENTS)
-                    {
-                        Value = childSupport.ToPecuniam()
-                    });
+                options.AddGivenDirectly(CHILD_SUPPORT, DeductionGroupNames.JUDGMENTS, childSupport.ToPecuniam());
             }
 
             if (options.IsPayingSpousalSupport &&
@@ -341,8 +302,7 @@ namespace NoFuture.Rand.Opes.US
                 //this is technically computed as 0.25 * (diff in spousal income)
                 var randRate = Etx.RandomDouble(0.01, 0.25);
                 var spouseSupport = Math.Round(randRate * pay, 2);
-                options.GivenDirectly.Add(
-                    new Mereo(ALIMONY, DeductionGroupNames.JUDGMENTS) {Value = spouseSupport.ToPecuniam()});
+                options.AddGivenDirectly(ALIMONY, DeductionGroupNames.JUDGMENTS, spouseSupport.ToPecuniam());
             }
 
             var d = GetItemNames2Portions(DeductionGroupNames.JUDGMENTS, options);
