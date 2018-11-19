@@ -108,7 +108,7 @@ namespace NoFuture.Rand.Sp
         /// <param name="note"></param>
         public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null)
         {
-            return amt == Pecuniam.Zero ? Guid.Empty : Balance.AddTransaction(dt, amt.GetNeg(), note);
+            return Balance.AddNegativeValue(dt, amt, note);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Sp
         /// <returns></returns>
         public virtual Guid AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null)
         {
-            return val == Pecuniam.Zero ? Guid.Empty : Balance.AddTransaction(dt, val.GetAbs(), note);
+            return Balance.AddPositiveValue(dt, val, note);
         }
 
         public virtual Pecuniam AveragePerDueFrequency()
@@ -227,7 +227,7 @@ namespace NoFuture.Rand.Sp
             {
                 for (var i = 0; i < wholeTimeBlocks; i++)
                 {
-                    Balance.AddTransaction(start, amount);
+                    Balance.AddPositiveValue(start, amount);
                     start = start.Add(tss);
                 }
                 return;
@@ -243,7 +243,7 @@ namespace NoFuture.Rand.Sp
             {
                 var onDay = randomActsIrresponsible() ? Etx.RandomInteger(1, 5) : 0;
                 onDay = onDay + someDaysFromBlockStart;
-                Balance.AddTransaction(start.AddDays(onDay), randEntries[i].ToPecuniam());
+                Balance.AddPositiveValue(start.AddDays(onDay), randEntries[i].ToPecuniam());
                 start = start.Add(tss);
             }
         }

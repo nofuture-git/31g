@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Sp
             }
             Terminus = _dtOfFirstFullRentDue.AddMonths(forMonths);
             var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
-            Balance.AddTransaction(signing, fullTermAmt, new Mereo("Lease Signing"));
+            Balance.AddPositiveValue(signing, fullTermAmt, new VocaBase("Lease Signing"));
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
             MonthlyPmt = monthlyRent;

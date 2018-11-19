@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Sp
             : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
-                Balance.AddTransaction(openedDate, amt.GetAbs(), new Mereo("Initial Transaction"));
+                Balance.AddPositiveValue(openedDate, amt.GetAbs(), new Mereo("Initial Transaction"));
         }
 
         #endregion

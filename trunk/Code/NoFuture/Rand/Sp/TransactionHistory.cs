@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Sp
         public double DaysPerYear { get; set; } = Shared.Core.Constants.DBL_TROPICAL_YEAR;
         #endregion
 
-        public Guid AddTransaction(DateTime dt, Pecuniam amnt, IVoca note = null)
+        public Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null)
         {
             if (amnt == null)
                 return Guid.Empty;
@@ -45,7 +45,22 @@ namespace NoFuture.Rand.Sp
             {
                 dt = dt.AddTicks(1L);
             }
-            var t = new Transaction(dt, amnt, note);
+            var t = new Transaction(dt, amnt.GetNeg(), note);
+            _transactions.Add(t);
+            return t.UniqueId;
+        }
+
+        public Guid AddPositiveValue(DateTime dt, Pecuniam amnt, IVoca note = null)
+        {
+            if (amnt == null)
+                return Guid.Empty;
+            if (amnt == Pecuniam.Zero)
+                return Guid.Empty;
+            while (_transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
+            {
+                dt = dt.AddTicks(1L);
+            }
+            var t = new Transaction(dt, amnt.GetAbs(), note);
             _transactions.Add(t);
             return t.UniqueId;
         }

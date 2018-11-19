@@ -8,21 +8,13 @@ namespace NoFuture.Rand.Sp
     /// Represents a currency value in-time in 
     /// the form of a push-only stack of transactions
     /// </summary>
-    public interface IBalance
+    public interface IBalance : ITransactionable
     {
         bool IsEmpty { get; }
 
         ITransaction FirstTransaction { get; }
 
         ITransaction LastTransaction { get; }
-
-        /// <summary>
-        /// Adds the new transaction to the balance
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="amnt"></param>
-        /// <param name="note"></param>
-        Guid AddTransaction(DateTime dt, Pecuniam amnt, IVoca note = null);
 
         /// <summary>
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>
