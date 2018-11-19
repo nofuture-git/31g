@@ -12,5 +12,6 @@ namespace NoFuture.Rand.Sp
         DateTime AtTime { get; }
         Pecuniam Cash { get; }
         IVoca Description { get; }
+        ITransaction GetInverse();
     }
 }

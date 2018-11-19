@@ -25,6 +25,12 @@ namespace NoFuture.Rand.Sp
             }
         }
 
+        protected void AddTransaction(ITransaction t)
+        {
+            if(t != null)
+                _transactions.Add(t);
+        }
+
         protected internal IComparer<ITransaction> Comparer { get; } = new TransactionComparer();
 
         public bool IsEmpty => _transactions.Count <= 0;

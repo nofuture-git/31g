@@ -139,6 +139,17 @@ namespace NoFuture.Rand.Sp
                 .ToList();
         }
 
+        public IBalance GetInverse()
+        {
+            var b = new Balance();
+            foreach (var t in Transactions)
+            {
+                b.AddTransaction(t.GetInverse());
+            }
+
+            return b;
+        }
+
         protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Func<decimal, bool> op)
         {
             var ts = Transactions;

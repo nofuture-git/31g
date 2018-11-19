@@ -16,6 +16,8 @@ namespace NoFuture.Rand.Sp
 
         ITransaction LastTransaction { get; }
 
+        int TransactionCount { get; }
+
         /// <summary>
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>
         /// </summary>
@@ -69,5 +71,12 @@ namespace NoFuture.Rand.Sp
         /// The number of days in a year used to calc per-diem interest
         /// </summary>
         double DaysPerYear { get; set; }
+
+        /// <summary>
+        /// Gets a new copy of this instance where all 
+        /// positive value transactions be come negative and vice versa
+        /// </summary>
+        /// <returns></returns>
+        IBalance GetInverse();
     }
 }

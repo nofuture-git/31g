@@ -99,6 +99,7 @@
     <Compile Include="OrgTests\StandardIndustryClassificationTests.cs" />
     <Compile Include="OrgTests\NorthAmericanIndustryTests.cs" />
     <Compile Include="OrgTests\StandardOccupationalTests.cs" />
+    <Compile Include="SpTests\TransactionTests.cs" />
     <Compile Include="TeleTests\PhoneTests.cs" />
     <Compile Include="PneumaTests\PesonalityTests.cs" />
     <Compile Include="SpTests\RentTests.cs" />

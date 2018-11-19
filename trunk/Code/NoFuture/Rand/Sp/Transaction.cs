@@ -32,7 +32,13 @@ namespace NoFuture.Rand.Sp
         public IVoca Description { get; }
         #endregion
 
-        #region overrides
+        #region methods
+
+        public ITransaction GetInverse()
+        {
+            return new Transaction(AtTime, (Cash.Amount *-1M).ToPecuniam(), Description);
+
+        }
         public override bool Equals(object obj)
         {
             if (Equals(obj, null))
