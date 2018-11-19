@@ -106,11 +106,9 @@ namespace NoFuture.Rand.Sp
         /// <param name="dt"></param>
         /// <param name="amt"></param>
         /// <param name="note"></param>
-        public virtual void AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null)
+        public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null)
         {
-            if (amt == Pecuniam.Zero)
-                return;
-            Balance.AddTransaction(dt, amt.GetNeg(), note);
+            return amt == Pecuniam.Zero ? Guid.Empty : Balance.AddTransaction(dt, amt.GetNeg(), note);
         }
 
         /// <summary>
@@ -120,12 +118,9 @@ namespace NoFuture.Rand.Sp
         /// <param name="val"></param>
         /// <param name="note"></param>
         /// <returns></returns>
-        public virtual bool AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null)
+        public virtual Guid AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null)
         {
-            if (val == Pecuniam.Zero)
-                return false;
-            Balance.AddTransaction(dt, val.GetAbs(), note);
-            return true;
+            return val == Pecuniam.Zero ? Guid.Empty : Balance.AddTransaction(dt, val.GetAbs(), note);
         }
 
         public virtual Pecuniam AveragePerDueFrequency()

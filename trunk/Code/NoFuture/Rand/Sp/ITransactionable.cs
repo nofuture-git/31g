@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public interface ITransactionable
     {
-        void AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null);
-        bool AddPositiveValue(DateTime dt, Pecuniam amt, IVoca note = null);
+        Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null);
+        Guid AddPositiveValue(DateTime dt, Pecuniam amt, IVoca note = null);
     }
 }
