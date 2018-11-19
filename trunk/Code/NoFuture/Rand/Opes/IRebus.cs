@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// Gets the money sum of all assets for the current time
         /// </summary>
-        Pecuniam TotalCurrentExpectedValue { get; }
+        Pecuniam TotalCurrentValue { get; }
 
     }
 }

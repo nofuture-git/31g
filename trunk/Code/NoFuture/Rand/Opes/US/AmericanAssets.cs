@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Opes.US
 
         public NamedReceivable[] CurrentAssets => GetCurrent(MyItems);
 
-        public Pecuniam TotalCurrentExpectedValue => NamedReceivable.GetExpectedSum(CurrentAssets);
+        public Pecuniam TotalCurrentValue => CurrentAssets.Sum();
 
         public Pecuniam HousePayment { get; private set; }
 
@@ -275,12 +275,10 @@ namespace NoFuture.Rand.Opes.US
                 var loan = (SecuredFixedRateLoan) p;
                 if (isMortgage)
                 {
-                    p.Expectation.Value = homeEquityAmt.ToPecuniam();
                     HousePayment = loan.MonthlyPayment;
                 }
                 else
                 {
-                    p.Expectation.Value = carEquityAmt.ToPecuniam();
                     CarPayment =loan.MonthlyPayment;
                 }
             }

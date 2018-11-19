@@ -13,17 +13,17 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// Returns all current expenses right Now
         /// </summary>
-        NamedReceivable[] CurrentExpectedExpenses { get; }
+        NamedReceivable[] CurrentExpenses { get; }
 
         /// <summary>
         /// Returns all current expenses at the time of <see cref="dt"/>
         /// </summary>
-        NamedReceivable[] GetExpectedExpensesAt(DateTime? dt);
+        NamedReceivable[] GetExpensesAt(DateTime? dt);
 
         /// <summary>
         /// A monetary sum of all current expenses
         /// </summary>
-        Pecuniam TotalAnnualExpectedExpenses { get; }
+        Pecuniam TotalAnnualExpenses { get; }
 
     }
 }

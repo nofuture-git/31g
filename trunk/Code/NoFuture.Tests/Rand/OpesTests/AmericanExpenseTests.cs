@@ -21,13 +21,13 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(0, testSubject.MyItems.Count);
 
             testSubject.AddItem("Gas", "Utility", 65D.ToPecuniam());
-            var testResultSum = testSubject.TotalAnnualExpectedExpenses;
+            var testResultSum = testSubject.TotalAnnualExpenses;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(65D.ToPecuniam().GetNeg(), testResultSum);
 
             testSubject.AddItem("Groceries", "Personal", 600D.ToPecuniam());
-            testResultSum = testSubject.TotalAnnualExpectedExpenses;
+            testResultSum = testSubject.TotalAnnualExpenses;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(665D.ToPecuniam().GetNeg(), testResultSum);
@@ -562,24 +562,6 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
-        }
-
-        [Test]
-        public void TestAddItems()
-        {
-            var testSubject = new AmericanExpenses();
-            var testResult = testSubject.TotalAnnualExpectedExpenses;
-            Assert.AreEqual(Pecuniam.Zero, testResult);
-
-            testSubject.AddItem("Rent", 900.0D * 12, Interval.Monthly);
-            testResult = testSubject.TotalAnnualExpectedExpenses;
-            var expected = (900.0D * -12).ToPecuniam();
-            Console.WriteLine($"expected {expected} actual {testResult}");
-            Assert.IsTrue(expected >= testResult);
-
-            testSubject.AddItem("Tractor", 1850);
-            testResult = testSubject.TotalAnnualExpectedExpenses;
-            Assert.IsTrue(((900.0D * -12) - 1850).ToPecuniam() >= testResult);
         }
 
         [Test]

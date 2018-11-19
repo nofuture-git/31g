@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Opes.US
             set => _endDate = value;
         }
 
-        public Pecuniam TotalAnnualPay => NamedReceivable.GetExpectedAnnualSum(CurrentPay).GetAbs();
+        public Pecuniam TotalAnnualPay => CurrentPay.Sum().GetAbs();
         public Pecuniam TotalAnnualNetPay => TotalAnnualPay - (Deductions?.TotalAnnualDeductions)?.GetAbs() ?? Pecuniam.Zero;
 
         protected internal override List<NamedReceivable> MyItems

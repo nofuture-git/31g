@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             //testSubject.AddItem(futures);
 
             testSubject.AddItem("Futures", "Securities", 9000D.ToPecuniam());
-            var testResultSum = testSubject.TotalCurrentExpectedValue;
+            var testResultSum = testSubject.TotalCurrentValue;
 
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
@@ -33,9 +33,7 @@ namespace NoFuture.Rand.Tests.OpesTests
                 NamedReceivable.RandomNamedReceivalbleWithHistoryToSum("Stocks", "Securities", 2000D.ToPecuniam());
             testSubject.AddItem(stocks);
 
-            testSubject.AddItem("Stocks", "Securities", 2000D.ToPecuniam());
-
-            testResultSum = testSubject.TotalCurrentExpectedValue.GetWholeNumber();
+            testResultSum = testSubject.TotalCurrentValue.GetWholeNumber();
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(11000D.ToPecuniam(), testResultSum);
         }
@@ -181,16 +179,16 @@ namespace NoFuture.Rand.Tests.OpesTests
         public void TestAddItems()
         {
             var testSubject = new AmericanAssets();
-            var testResult = testSubject.TotalCurrentExpectedValue;
+            var testResult = testSubject.TotalCurrentValue;
             Assert.AreEqual(Pecuniam.Zero, testResult);
 
             
-            testSubject.AddItem("Home",120000.0D);
-            testResult = testSubject.TotalCurrentExpectedValue;
+            testSubject.AddItem("Home",null,120000.0D);
+            testResult = testSubject.TotalCurrentValue;
             Assert.AreEqual(120000.0D.ToPecuniam(), testResult);
 
-            testSubject.AddItem("Car", 25000);
-            testResult = testSubject.TotalCurrentExpectedValue;
+            testSubject.AddItem("Car", null, 25000);
+            testResult = testSubject.TotalCurrentValue;
             Assert.AreEqual((120000.0D + 25000).ToPecuniam(), testResult);
 
         }

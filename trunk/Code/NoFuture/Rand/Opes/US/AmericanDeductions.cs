@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Opes.US
         #region properties
 
         public virtual NamedReceivable[] CurrentDeductions => GetCurrent(MyItems);
-        public Pecuniam TotalAnnualDeductions => NamedReceivable.GetExpectedAnnualSum(CurrentDeductions).GetNeg();
+        public Pecuniam TotalAnnualDeductions => CurrentDeductions.Sum().GetNeg();
         public virtual NamedReceivable[] GetDeductionsAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
@@ -60,7 +60,9 @@ namespace NoFuture.Rand.Opes.US
 
         public override void AddItem(NamedReceivable d)
         {
-            d.Expectation.Value = d.Expectation.Value.GetNeg();
+            if (d == null)
+                return;
+            //d.Expectation.Value = d.Expectation.Value.GetNeg();
             _deductions.Add(d);
         }
 

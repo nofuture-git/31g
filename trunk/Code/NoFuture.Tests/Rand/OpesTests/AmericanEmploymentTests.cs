@@ -157,7 +157,7 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             var occ = new SocDetailedOccupation {Value = "Accountant"};
             testSubject.Occupation = occ;
-            testSubject.AddItem("Salary", 55000.0);
+            testSubject.AddItem("Salary",null, 55000.0);
             testResult = testSubject.TotalAnnualPay;
             Assert.AreEqual(v, testResult);
             testResult = testSubject.TotalAnnualNetPay;
@@ -172,13 +172,13 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             var fedTax = 55000.0D * AmericanEquations.FederalIncomeTaxRate.SolveForY(55000.0);
 
-            tax.AddItem("Federal", fedTax);
+            tax.AddItem("Federal",null, fedTax);
             testResult = testSubject.TotalAnnualPay;
             Assert.AreEqual(v, testResult);
             testResult = testSubject.TotalAnnualNetPay;
             Assert.AreEqual((55000.0D - fedTax).ToPecuniam(), testResult);
 
-            testSubject.AddItem("Commission", 5000.0D);
+            testSubject.AddItem("Commission", null, 5000.0D);
             testResult = testSubject.TotalAnnualPay;
             Assert.AreEqual(60000.ToPecuniam(), testResult);
             testResult = testSubject.TotalAnnualNetPay;

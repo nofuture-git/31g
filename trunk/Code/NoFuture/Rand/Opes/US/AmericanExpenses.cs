@@ -20,9 +20,9 @@ namespace NoFuture.Rand.Opes.US
         private const double PERCENT_EXPENSE_OF_INCOME = 0.85;
         private readonly HashSet<NamedReceivable> _expenses = new HashSet<NamedReceivable>();
 
-        public virtual NamedReceivable[] CurrentExpectedExpenses => GetCurrent(MyItems);
+        public virtual NamedReceivable[] CurrentExpenses => GetCurrent(MyItems);
 
-        public virtual Pecuniam TotalAnnualExpectedExpenses => NamedReceivable.GetExpectedAnnualSum(CurrentExpectedExpenses);
+        public virtual Pecuniam TotalAnnualExpenses => CurrentExpenses.Sum().GetNeg();
 
         protected override DomusOpesDivisions Division => DomusOpesDivisions.Expense;
 
@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Opes.US
             return exp;
         }
 
-        public virtual NamedReceivable[] GetExpectedExpensesAt(DateTime? dt)
+        public virtual NamedReceivable[] GetExpensesAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
         }
@@ -74,7 +74,7 @@ namespace NoFuture.Rand.Opes.US
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x?.Replace(",", "").Replace(" ", ""), txtCase);
             var itemData = new Dictionary<string, object>();
 
-            foreach (var p in CurrentExpectedExpenses)
+            foreach (var p in CurrentExpenses)
             {
                 var v = p.AveragePerDueFrequency(PecuniamExtensions.GetTropicalMonth());
                 if (v == Pecuniam.Zero)

@@ -33,27 +33,27 @@ namespace NoFuture.Rand.Opes
         /// Returns all non-employment forms of income for the current time which have 
         /// a non-zero value
         /// </summary>
-        NamedReceivable[] CurrentExpectedOtherIncome { get; }
+        NamedReceivable[] CurrentOtherIncome { get; }
 
         /// <summary>
         /// Returns all non-employment forms of income at the time of <see cref="dt"/>
         /// </summary>
-        NamedReceivable[] GetExpectedOtherIncomeAt(DateTime? dt);
+        NamedReceivable[] GetOtherIncomeAt(DateTime? dt);
 
         /// <summary>
         /// A monetary sum of all income
         /// </summary>
-        Pecuniam TotalAnnualExpectedIncome { get; }
+        Pecuniam TotalAnnualIncome { get; }
 
         /// <summary>
         /// The monetary sum of just employment income less all employment deductions
         /// </summary>
-        Pecuniam TotalAnnualExpectedNetEmploymentIncome { get; }
+        Pecuniam TotalAnnualNetEmploymentIncome { get; }
 
         /// <summary>
         /// The gross monetary sum of employment income 
         /// </summary>
-        Pecuniam TotalAnnualExpectedGrossEmploymentIncome { get; }
+        Pecuniam TotalAnnualGrossEmploymentIncome { get; }
 
         /// <summary>
         /// Adds an employment income to this object

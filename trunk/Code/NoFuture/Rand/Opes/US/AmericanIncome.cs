@@ -40,15 +40,14 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        public virtual NamedReceivable[] CurrentExpectedOtherIncome => GetCurrent(MyItems);
+        public virtual NamedReceivable[] CurrentOtherIncome => GetCurrent(MyItems);
 
-        public virtual Pecuniam TotalAnnualExpectedIncome =>
-            NamedReceivable.GetExpectedAnnualSum(CurrentExpectedOtherIncome) + TotalAnnualExpectedNetEmploymentIncome;
+        public virtual Pecuniam TotalAnnualIncome => CurrentOtherIncome.Sum() + TotalAnnualNetEmploymentIncome;
 
-        public virtual Pecuniam TotalAnnualExpectedNetEmploymentIncome =>
+        public virtual Pecuniam TotalAnnualNetEmploymentIncome =>
             CurrentEmployment.Select(e => e.TotalAnnualNetPay).GetSum();
 
-        public virtual Pecuniam TotalAnnualExpectedGrossEmploymentIncome =>
+        public virtual Pecuniam TotalAnnualGrossEmploymentIncome =>
             CurrentEmployment.Select(e => e.TotalAnnualPay).GetSum();
 
         protected internal virtual List<ILaboris> Employment
@@ -98,7 +97,7 @@ namespace NoFuture.Rand.Opes.US
                 : Employment.Where(x => x.IsInRange(dt.Value)).ToArray();
         }
 
-        public virtual NamedReceivable[] GetExpectedOtherIncomeAt(DateTime? dt)
+        public virtual NamedReceivable[] GetOtherIncomeAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
         }
@@ -126,7 +125,7 @@ namespace NoFuture.Rand.Opes.US
                 AddOrReplace(itemData, job.ToData(txtCase));
             }
 
-            var coi = CurrentExpectedOtherIncome;
+            var coi = CurrentOtherIncome;
             foreach (var p in coi)
             {
                 if (p.Expectation == null || p.Expectation.Value == Pecuniam.Zero)

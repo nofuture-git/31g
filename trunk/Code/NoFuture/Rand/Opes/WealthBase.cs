@@ -152,36 +152,19 @@ namespace NoFuture.Rand.Opes
             return itemData;
         }
 
-        /// <summary>
-        /// Adds the <see cref="item"/> to <see cref="MyItems"/>
-        /// </summary>
-        /// <param name="item"></param>
         public abstract void AddItem(NamedReceivable item);
 
-        public virtual void AddItem(string name, string groupName, Pecuniam expectedValue, Interval interval = Interval.Annually)
-        {
-            var p = new NamedReceivable(new VocaBase(name, groupName));
-            p.Expectation.Value = expectedValue;
-            p.Expectation.TimeDenominator = interval.ToTimeSpan();
-            AddItem(p);
-        }
-
-        public virtual void AddItem(string name, double expectedValue, Interval interval = Interval.Annually,
-            CurrencyAbbrev c = CurrencyAbbrev.USD)
-        {
-            var p = new NamedReceivable(new VocaBase(name, Division.ToString()));
-            p.Expectation.Value = new Pecuniam(Convert.ToDecimal(expectedValue), c);
-            p.Expectation.TimeDenominator = interval.ToTimeSpan();
-            AddItem(p);
-        }
-
-        public virtual void AddItem(string name, string groupName, Pecuniam expectedValue, DateTime? atTime,
+        public virtual void AddItem(string name, string groupName, Pecuniam expectedValue, DateTime? atTime = null,
             TimeSpan? dueFrequency = null)
         {
+            var amt = expectedValue ?? Pecuniam.Zero;
             var dt = atTime.GetValueOrDefault(DateTime.Now);
             var tss = dueFrequency ?? Constants.TropicalYear;
-            var p = new NamedReceivable(new VocaBase(name, Division.ToString())) {DueFrequency = dueFrequency};
-            p.AddPositiveValue(dt, expectedValue);
+            var p = new NamedReceivable(new VocaBase(name, Division.ToString())) {DueFrequency = tss };
+            if (amt.Amount < 0M)
+                p.AddNegativeValue(dt, amt);
+            else
+                p.AddPositiveValue(dt, amt);
             AddItem(p);
         }
 

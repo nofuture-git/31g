@@ -142,7 +142,8 @@ namespace NoFuture.Rand.Sp
             //asserts the names equal
             if (!(obj is NamedReceivable p))
                 return base.Equals(obj);
-            var namesEqual = p.Expectation.Equals(Expectation);
+
+            var namesEqual = NamesEqual((IVoca) obj);
 
             var sDtEq = Inception == p.Inception;
             var eDtEq = Terminus == p.Terminus;
@@ -150,15 +151,20 @@ namespace NoFuture.Rand.Sp
             return namesEqual && sDtEq && eDtEq;
         }
 
+        public virtual bool NamesEqual(IVoca voca)
+        {
+            return voca != null && _voca.Equals(voca);
+        }
+
         public override int GetHashCode()
         {
-            return Inception.GetHashCode() + Terminus?.GetHashCode() ?? 1 + Expectation?.GetHashCode() ?? 1;
+            return Inception.GetHashCode() + Terminus?.GetHashCode() ?? 1 + _voca?.GetHashCode() ?? 1;
         }
 
         public override string ToString()
         {
-            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Expectation?.Value.ToString(), Name,
-                GetName(KindsOfNames.Group), Expectation?.Interval.ToString(), Inception, Terminus);
+            var d = new Tuple<string, string, string, string, DateTime?, DateTime?>(Value.ToString(), Name,
+                GetName(KindsOfNames.Group), DueFrequency.ToInterval().ToString(), Inception, Terminus);
             return d.ToString();
         }
 
