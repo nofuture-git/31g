@@ -53,8 +53,8 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testResult.GetChildrenAges());
             Assert.AreEqual(2, testResult.GetChildrenAges().Count);
 
-            Assert.IsNotNull(testResult.GivenDirectly);
-            Assert.AreEqual(2, testResult.GivenDirectly.Count);
+            Assert.IsTrue(testResult.AnyGivenDirectly());
+            Assert.AreEqual(2, testResult.GivenDirectlyCount);
 
             Assert.IsNotNull(testResult.FactorOptions);
 

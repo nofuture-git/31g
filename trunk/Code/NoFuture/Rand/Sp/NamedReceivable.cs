@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Sp
                 //don't include if expectation is missing
                 if (item?.Expectation?.Value == null)
                     continue;
-                sum += item.Expectation.GetValueInTimespanDenominator(item.DaysPerYear).Amount;
+                sum += item.Expectation.Value.Amount;
             }
             return new Pecuniam(sum);
         }

@@ -136,7 +136,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Helper method to assert if any items have been added to <see cref="OpesPortions.GivenDirectly"/>
+        /// Helper method to assert if any items have been added to option&apos;s given directly
         /// by name and group
         /// </summary>
         /// <param name="name"></param>
@@ -150,7 +150,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Helper method to assert if any items have been added to <see cref="OpesPortions.GivenDirectly"/>
+        /// Helper method to assert if any items have been added to option&apos;s given directly
         /// with the given name
         /// </summary>
         /// <param name="name"></param>
@@ -162,7 +162,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Helper method to assert if any option&apos; given directly have group name <see cref="groupName"/>
+        /// Helper method to assert if any option&apos;s given directly have group name <see cref="groupName"/>
         /// </summary>
         /// <param name="groupName"></param>
         /// <returns></returns>
