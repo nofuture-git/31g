@@ -328,6 +328,11 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
+        protected override Pecuniam CalcValue(Pecuniam pecuniam, double d)
+        {
+            return base.CalcValue(pecuniam, d).GetAbs();
+        }
+
         protected internal bool IsInRange(NamedReceivable item)
         {
             if (item == null)

@@ -757,7 +757,7 @@ namespace NoFuture.Rand.Opes
             return Etx.RandomRollBelowOrAt(roll, Etx.Dice.OneHundred);
         }
 
-        protected Pecuniam CalcValue(Pecuniam pecuniam, double d)
+        protected virtual Pecuniam CalcValue(Pecuniam pecuniam, double d)
         {
             pecuniam = pecuniam ?? Pecuniam.Zero;
             return Math.Round(pecuniam.ToDouble() * d, 2).ToPecuniam();

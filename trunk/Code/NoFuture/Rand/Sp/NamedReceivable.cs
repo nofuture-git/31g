@@ -293,7 +293,8 @@ namespace NoFuture.Rand.Sp
                 Terminus = terminus,
                 DueFrequency = dueFrequency == null || dueFrequency == TimeSpan.MinValue ? PecuniamExtensions.GetTropicalMonth() : dueFrequency.Value
             };
-
+            if (sumOfAllHistory == Pecuniam.Zero)
+                return tl;
             var blocks = tl.GetWholeTimeBlocks();
             blocks = blocks == 0 ? 1 : blocks;
             var perBlockAmt = sumOfAllHistory.Amount / blocks;

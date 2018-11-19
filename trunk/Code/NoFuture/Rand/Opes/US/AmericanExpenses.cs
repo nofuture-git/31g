@@ -64,6 +64,11 @@ namespace NoFuture.Rand.Opes.US
             _expenses.Add(expense);
         }
 
+        protected override Pecuniam CalcValue(Pecuniam pecuniam, double d)
+        {
+            return base.CalcValue(pecuniam, d).GetNeg();
+        }
+
         public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x?.Replace(",", "").Replace(" ", ""), txtCase);
