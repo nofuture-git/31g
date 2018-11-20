@@ -3,8 +3,9 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Represents a single one-time currency exchange 
+    /// Represents a single one-time exchange at an exact moment in-time.
     /// </summary>
     public interface ITransaction : ITransactionHistory
     {
