@@ -13,21 +13,18 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class Security : Pecuniam, IAsset
     {
-        private readonly IMereo _expectation;
         private readonly SortedDictionary<DateTime, Pecuniam> _historicData = new SortedDictionary<DateTime, Pecuniam>();
         #region ctor
         public Security(string cusip, decimal qty) :base(0.0M)
         {
             Quantity = (double) qty;
             Id = new Cusip { Value = cusip };
-            _expectation = new Mereo(cusip);
         }
 
         public Security(Cusip id, decimal qty) : base(0.0M)
         {
             Quantity = (double)qty;
             Id = id;
-            _expectation = new Mereo(id.Value);
         }
         #endregion
 
@@ -37,7 +34,6 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         public override Identifier Id { get; }
         public virtual double Quantity { get; }
-        public virtual IMereo Expectation => _expectation;
         public virtual Pecuniam Value => GetValueAt(DateTime.Now);
         #endregion
 

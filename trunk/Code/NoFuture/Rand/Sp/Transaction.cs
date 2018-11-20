@@ -15,13 +15,6 @@ namespace NoFuture.Rand.Sp
             AtTime = atTime;
             Cash = amt ?? Pecuniam.Zero;
             Description = description;
-            if (!(Description is IMereo mereo))
-                return;
-
-            //having another money amount here is confusing
-            var asVoca = new VocaBase();
-            asVoca.CopyFrom(mereo);
-            Description = asVoca;
         }
         #endregion
 

@@ -32,11 +32,11 @@ namespace NoFuture.Rand.Opes
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
 
-        private static IMereo[] _incomeItemNames;
-        private static IMereo[] _deductionItemNames;
-        private static IMereo[] _expenseItemNames;
-        private static IMereo[] _assetItemNames;
-        private static IMereo[] _employmentItemNames;
+        private static IVoca[] _incomeItemNames;
+        private static IVoca[] _deductionItemNames;
+        private static IVoca[] _expenseItemNames;
+        private static IVoca[] _assetItemNames;
+        private static IVoca[] _employmentItemNames;
         internal static XmlDocument OpesXml;
         #endregion
 
@@ -287,7 +287,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Gets the <see cref="IMereo"/> Income items
+        /// Gets the <see cref="IVoca"/> Income items
         /// from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
@@ -298,7 +298,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Gets the <see cref="IMereo"/> Deduction items
+        /// Gets the <see cref="IVoca"/> Deduction items
         /// (e.g. Fed Tax, Child Support, FICA, etc.) from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
@@ -309,7 +309,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Gets the <see cref="IMereo"/> Expense items 
+        /// Gets the <see cref="IVoca"/> Expense items 
         /// (i.e. household budget) from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
@@ -320,7 +320,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Gets the <see cref="IMereo"/> Expense items 
+        /// Gets the <see cref="IVoca"/> Expense items 
         /// (i.e. real and private property) 
         /// from US Domus Opes data file
         /// </summary>
@@ -332,7 +332,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Gets the <see cref="IMereo"/> Employment items 
+        /// Gets the <see cref="IVoca"/> Employment items 
         /// (e.g. wage, salary, tips, etc.) 
         /// from US Domus Opes data file
         /// </summary>
@@ -373,7 +373,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Get the Domus Opes item names as a composite <see cref="IMereo"/>
+        /// Get the Domus Opes item names as a composite <see cref="IVoca"/>
         /// which contains both the item name and its group name.
         /// </summary>
         /// <param name="division"></param>
@@ -640,11 +640,11 @@ namespace NoFuture.Rand.Opes
         /// from the US Domus Opes data file
         /// </summary>
         /// <param name="xmlNode"></param>
-        /// <param name="mereo"></param>
+        /// <param name="voca"></param>
         /// <returns></returns>
-        internal static bool TryParseUsDomusOpesXml(XmlNode xmlNode, out IMereo mereo)
+        internal static bool TryParseUsDomusOpesXml(XmlNode xmlNode, out IVoca voca)
         {
-            mereo = null;
+            voca = null;
 
             if (xmlNode == null)
                 return false;
@@ -674,18 +674,13 @@ namespace NoFuture.Rand.Opes
                 }
             }
 
-            mereo = new Mereo(itemName);
-            if (!String.IsNullOrWhiteSpace(abbrev))
-                mereo.AddName(KindsOfNames.Abbrev, abbrev);
-            if (!String.IsNullOrWhiteSpace(groupName))
-                mereo.AddName(KindsOfNames.Group, groupName);
-            if (egs.Any())
-            {
-                foreach (var eg in egs)
-                    mereo.GetExempliGratia().Add(eg);
-            }
+            voca = new VocaBase(itemName);
+            if (!string.IsNullOrWhiteSpace(abbrev))
+                voca.AddName(KindsOfNames.Abbrev, abbrev);
+            if (!string.IsNullOrWhiteSpace(groupName))
+                voca.AddName(KindsOfNames.Group, groupName);
 
-            return !String.IsNullOrWhiteSpace(itemName);
+            return !string.IsNullOrWhiteSpace(itemName);
         }
 
         private static bool IsCloseEnoughToOne(double testValue)
@@ -699,7 +694,7 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="xPath"></param>
         /// <returns></returns>
-        internal static IMereo[] GetDomusOpesItemNames(string xPath)
+        internal static IVoca[] GetDomusOpesItemNames(string xPath)
         {
             if (String.IsNullOrWhiteSpace(xPath))
                 return null;
@@ -709,7 +704,7 @@ namespace NoFuture.Rand.Opes
             var nodes = OpesXml.SelectNodes(xPath);
             if (nodes == null || nodes.Count <= 0)
                 return null;
-            var names = new List<IMereo>();
+            var names = new List<IVoca>();
             foreach (var o in nodes)
             {
                 if (!(o is XmlNode node))
