@@ -13,6 +13,7 @@ namespace NoFuture.Rand.Sp
     {
         #region fields
         private readonly List<ITransaction> _transactions = new List<ITransaction>();
+
         #endregion
 
         #region properties
@@ -39,6 +40,8 @@ namespace NoFuture.Rand.Sp
         public ITransaction LastTransaction => Transactions.LastOrDefault();
         public int TransactionCount => Transactions.Count;
         public double DaysPerYear { get; set; } = Shared.Core.Constants.DBL_TROPICAL_YEAR;
+        public Guid Id { get; } = Guid.NewGuid();
+
         #endregion
 
         public Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null)

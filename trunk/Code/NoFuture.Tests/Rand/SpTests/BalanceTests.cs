@@ -25,8 +25,6 @@ namespace NoFuture.Rand.Tests.SpTests
             var testResult = testBalance.GetCurrent(DateTime.Now, 0);
             Assert.AreEqual(1309.86M, testResult.Amount);
             Console.WriteLine(testResult.Amount);
-
-
         }
 
         [Test]
@@ -119,7 +117,7 @@ namespace NoFuture.Rand.Tests.SpTests
             var testResult = testBalance.GetCurrent(DateTime.Now, 0.0875f);
 
             Assert.IsTrue(testResult.Amount <= 4723.45M || testResult.Amount >= 4723.46M);
-            Debug.WriteLine(testResult.Amount);
+            Console.WriteLine(testResult.Amount);
 
         }
 

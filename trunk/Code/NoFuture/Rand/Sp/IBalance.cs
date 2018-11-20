@@ -10,6 +10,8 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public interface IBalance : ITransactionable
     {
+        Guid Id { get; }
+
         bool IsEmpty { get; }
 
         ITransaction FirstTransaction { get; }
