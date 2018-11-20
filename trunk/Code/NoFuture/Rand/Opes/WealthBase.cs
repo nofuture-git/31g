@@ -108,14 +108,14 @@ namespace NoFuture.Rand.Opes
         /// Maps the <see cref="Division"/> groups names to a function which produces that group&apos;s item names and rate.
         /// </summary>
         /// <returns></returns>
-        protected abstract Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions();
+        protected abstract Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>> GetItems2Functions();
 
         /// <summary>
         /// Gets all the items of the given Opes type as random values based on the 
         /// options.
         /// </summary>
         /// <param name="options"></param>
-        protected internal abstract void RandomizeAllItems(OpesOptions options);
+        protected internal abstract void RandomizeAllItems(DomusOpesOptions options);
 
         /// <summary>
         /// Helper method to get only those on-going items from within <see cref="items"/>
@@ -158,9 +158,9 @@ namespace NoFuture.Rand.Opes
         /// <returns>
         /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
         /// </returns>
-        protected internal virtual List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
+        protected internal virtual List<Tuple<string, double>> GetGroupNames2Portions(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var grpNames = GetGroupNames(DivisionName);
 
@@ -176,9 +176,9 @@ namespace NoFuture.Rand.Opes
         /// <returns>
         /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
         /// </returns>
-        protected internal virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName, OpesOptions options)
+        protected internal virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName, DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             //get all the item names we are targeting
             var itemNames = GetItemNames(DivisionName).Where(x =>
@@ -550,9 +550,9 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetItemsForRange(OpesOptions options)
+        protected internal virtual NamedReceivable[] GetItemsForRange(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var itemsout = new List<NamedReceivable>();
 
@@ -571,9 +571,9 @@ namespace NoFuture.Rand.Opes
         /// <param name="grp2Rate"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetItemsForRange(Tuple<string, double> grp2Rate, OpesOptions options)
+        protected internal virtual NamedReceivable[] GetItemsForRange(Tuple<string, double> grp2Rate, DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var itemsout = new List<NamedReceivable>();
 
@@ -599,7 +599,7 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// While <see cref="GetItemsForRange(OpesOptions)"/> deals with all the 
+        /// While <see cref="GetItemsForRange(DomusOpesOptions)"/> deals with all the 
         /// items of this <see cref="Division"/> this is concerned with one-item-at-a-time.
         /// </summary>
         /// <param name="itemName"></param>
@@ -607,9 +607,9 @@ namespace NoFuture.Rand.Opes
         /// <param name="options"></param>
         /// <param name="rate"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable GetNamedReceivableForItemAndGroup(string itemName, string grpName, OpesOptions options, double rate)
+        protected internal virtual NamedReceivable GetNamedReceivableForItemAndGroup(string itemName, string grpName, DomusOpesOptions options, double rate)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var calcValue = CalcValue(options.SumTotal, rate);
             var p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(itemName, grpName, calcValue,

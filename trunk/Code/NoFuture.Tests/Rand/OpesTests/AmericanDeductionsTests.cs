@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
-                new OpesOptions() { Inception = DateTime.Today.AddYears(-1) };
+                new DomusOpesOptions() { Inception = DateTime.Today.AddYears(-1) };
             var testResult = testSubject.GetInsuranceDeductionName2RandRates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
-                new OpesOptions { Inception = DateTime.Today.AddYears(-1) };
+                new DomusOpesOptions { Inception = DateTime.Today.AddYears(-1) };
             var testResult = testSubject.GetGovernmentDeductionName2Rates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
-                new OpesOptions { Inception = DateTime.Today.AddYears(-1) };
+                new DomusOpesOptions { Inception = DateTime.Today.AddYears(-1) };
             var testResult = testSubject.GetEmploymentDeductionName2Rates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
-                new OpesOptions { Inception = DateTime.Today.AddYears(-1) };
+                new DomusOpesOptions { Inception = DateTime.Today.AddYears(-1) };
 
             var testResult = testSubject.GetJudgmentDeductionName2RandomRates(testOptions);
             Assert.IsNotNull(testResult);
@@ -179,7 +179,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testInput = new AmericanEmployment();
             var annualIncome = 75000.ToPecuniam();
 
-            var options = new OpesOptions {SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1)};
+            var options = new DomusOpesOptions {SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1)};
 
             testInput.RandomizeAllItems(options);
 
@@ -216,7 +216,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testInput = new AmericanEmployment();
             var annualIncome = 75000.ToPecuniam();
 
-            var options = new OpesOptions { SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1) };
+            var options = new DomusOpesOptions { SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1) };
 
             testInput.RandomizeAllItems(options);
 
@@ -259,7 +259,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS));
             Assert.AreEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS).Item2);
 
-            var testOptions = new OpesOptions();
+            var testOptions = new DomusOpesOptions();
             testOptions.AddGivenDirectly(DomusOpesBase.DeductionGroupNames.JUDGMENTS,1000.ToPecuniam());
 
             testResults = testSubject.GetGroupNames2Portions(testOptions);
@@ -271,7 +271,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         public void TestResolveItemsWithJudgements()
         {
             var testInput = new AmericanEmployment();
-            var options = new OpesOptions { SumTotal = 75000D.ToPecuniam(), Inception = DateTime.Today.AddYears(-1) };
+            var options = new DomusOpesOptions { SumTotal = 75000D.ToPecuniam(), Inception = DateTime.Today.AddYears(-1) };
 
             testInput.RandomizeAllItems(options);
 

@@ -100,9 +100,9 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static AmericanEmployment RandomEmployment(OpesOptions options = null)
+        public static AmericanEmployment RandomEmployment(DomusOpesOptions options = null)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var emply = new AmericanEmployment
             {
                 Inception = options.Inception,
@@ -118,7 +118,7 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static TimeSpan RandomEmploymentTenure(OpesOptions options = null)
+        public static TimeSpan RandomEmploymentTenure(DomusOpesOptions options = null)
         {
             //TODO - use[https://www.bls.gov/news.release/tenure.nr0.htm]
             return new TimeSpan(Etx.RandomInteger(745, 1855), 0, 0, 0);
@@ -154,18 +154,18 @@ namespace NoFuture.Rand.Opes.US
             return afterOrOnFromDt && beforeOrOnToDt;
         }
 
-        protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected override Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
-            return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
+            return new Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>>
             {
                 {EmploymentGroupNames.PAY, GetPayName2RandRates},
             };
         }
 
-        protected internal override void RandomizeAllItems(OpesOptions options)
+        protected internal override void RandomizeAllItems(DomusOpesOptions options)
         {
             //expecting the caller to have passed in a hire-date to termination-date
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
 
@@ -206,9 +206,9 @@ namespace NoFuture.Rand.Opes.US
         /// to capture the discrete time-ranges where wage\salary do not change.
         /// </summary>
         /// <returns></returns>
-        protected internal virtual List<Tuple<DateTime, DateTime?>> GetYearsOfServiceInDates(OpesOptions options)
+        protected internal virtual List<Tuple<DateTime, DateTime?>> GetYearsOfServiceInDates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var ranges = new List<Tuple<DateTime, DateTime?>>();
 
             var stDt = options.Inception.Date;
@@ -252,7 +252,7 @@ namespace NoFuture.Rand.Opes.US
         /// Produces the item names to rates for the Employment Pay (e.g. salary, tips, etc.)
         /// </summary>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetPayName2RandRates(OpesOptions options)
+        protected internal virtual Dictionary<string, double> GetPayName2RandRates(DomusOpesOptions options)
         {
             var bonusRate = Etx.RandomRollBelowOrAt(1, Etx.Dice.Ten)
                 ? Etx.RandomValueInNormalDist(0.02, 0.001)

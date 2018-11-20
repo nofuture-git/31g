@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Opes.US
         /// Optional, a randomizes the calculated value around a mean.
         /// </param>
         /// <returns></returns>
-        public virtual Pecuniam GetRandomYearlyIncome(DateTime? dt = null, OpesOptions options = null, Pecuniam min = null,
+        public virtual Pecuniam GetRandomYearlyIncome(DateTime? dt = null, DomusOpesOptions options = null, Pecuniam min = null,
             double stdDevInUsd = 2000)
         {
             if (min == null)
@@ -169,7 +169,7 @@ namespace NoFuture.Rand.Opes.US
         /// <remarks>
         /// compiled data from BEA
         /// </remarks>
-        protected internal virtual IEquation GetAvgEarningPerYear(OpesOptions options)
+        protected internal virtual IEquation GetAvgEarningPerYear(DomusOpesOptions options)
         {
             var ca = options?.HomeLocation as UsCityStateZip;
             if (ca == null)

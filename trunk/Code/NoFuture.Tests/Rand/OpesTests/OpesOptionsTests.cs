@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetClone()
         {
-            var testInput = new OpesOptions
+            var testInput = new DomusOpesOptions
             {
                 Inception = DateTime.Today.AddYears(-1),
                 DueFrequency = new TimeSpan(1,0,0,0),

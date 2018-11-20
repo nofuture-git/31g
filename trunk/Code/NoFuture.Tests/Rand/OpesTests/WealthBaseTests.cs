@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetPaycheck()
         {
-            var options = new OpesOptions {IsRenting = true};
+            var options = new DomusOpesOptions {IsRenting = true};
             options.FactorOptions.Gender = Gender.Female;
             options.FactorOptions.DateOfBirth = Etx.RandomAdultBirthDate();
             var testSubject = new AmericanIncome();
@@ -133,7 +133,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetGroupNames2Portions()
         {
-            var testInput = new OpesOptions();
+            var testInput = new DomusOpesOptions();
             testInput.AddGivenDirectly("Real Property",7800.ToPecuniam());
             testInput.AddGivenDirectly("Securities", 1000.ToPecuniam());
             testInput.SumTotal = 12000.ToPecuniam();
@@ -162,7 +162,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetItemNames2Portions()
         {
-            var testInput = new OpesOptions();
+            var testInput = new DomusOpesOptions();
             var grpName = "Institutional";
             testInput.AddGivenDirectly("Partnerships", grpName, 7800.ToPecuniam());
             testInput.AddGivenDirectly("Fellowships", grpName, 1000.ToPecuniam() );
@@ -182,7 +182,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsTrue(Math.Round(testResultSum) == 1.0D);
 
             //expect that when SumTotal is unassigned the ratios align exactly with assigned values
-            testInput = new OpesOptions();
+            testInput = new DomusOpesOptions();
             testInput.AddGivenDirectly("Partnerships", grpName, 7800.ToPecuniam());
             testInput.AddGivenDirectly("Fellowships", grpName, 1000.ToPecuniam() );
             testInput.AddGivenDirectly("Annuity", grpName, 1000.ToPecuniam() );

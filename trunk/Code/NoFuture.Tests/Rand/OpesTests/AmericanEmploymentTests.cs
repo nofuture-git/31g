@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             //still employed
             var testSubject = new AmericanEmployment();
 
-            var testResult = testSubject.GetYearsOfServiceInDates(new OpesOptions{Inception = new DateTime(2011, 10, 5) });
+            var testResult = testSubject.GetYearsOfServiceInDates(new DomusOpesOptions{Inception = new DateTime(2011, 10, 5) });
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Tests.OpesTests
                 System.Diagnostics.Debug.WriteLine(r);
 
             testSubject = new AmericanEmployment();
-            testResult = testSubject.GetYearsOfServiceInDates(new OpesOptions(){Inception = new DateTime(2013, 5, 16), Terminus = new DateTime(2017, 8, 1) });
+            testResult = testSubject.GetYearsOfServiceInDates(new DomusOpesOptions(){Inception = new DateTime(2013, 5, 16), Terminus = new DateTime(2017, 8, 1) });
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
 
@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanEmployment();
             testSubject.Occupation = StandardOccupationalClassification.GetById("41-2031");
-            var testResult = testSubject.GetPayName2RandRates(new OpesOptions(){Inception = new DateTime(2011, 10, 5) });
+            var testResult = testSubject.GetPayName2RandRates(new DomusOpesOptions(){Inception = new DateTime(2011, 10, 5) });
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -135,7 +135,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         public void TestRandomEmployment()
         {
             var testSubject =
-                AmericanEmployment.RandomEmployment(new OpesOptions
+                AmericanEmployment.RandomEmployment(new DomusOpesOptions
                 {
                     Inception = new DateTime(DateTime.Today.Year, 1, 1)
                 });

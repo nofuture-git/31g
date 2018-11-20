@@ -85,9 +85,9 @@ namespace NoFuture.Rand.Opes.US
             return itemData;
         }
 
-        protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected override Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
-            return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
+            return new Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>>
             {
                 {DeductionGroupNames.EMPLOYMENT, GetEmploymentDeductionName2Rates},
                 {DeductionGroupNames.GOVERNMENT, GetGovernmentDeductionName2Rates},
@@ -96,9 +96,9 @@ namespace NoFuture.Rand.Opes.US
             };
         }
 
-        protected internal override void RandomizeAllItems(OpesOptions options)
+        protected internal override void RandomizeAllItems(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var ranges = _employment.MyItems.Any()
                 ? _employment.MyItems.Select(e => new Tuple<DateTime, DateTime?>(e.Inception, e.Terminus))
@@ -118,9 +118,9 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        protected internal override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
+        protected internal override List<Tuple<string, double>> GetGroupNames2Portions(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             //deductions act differently than other items since they are calculated from income
             var grps = new List<Tuple<string, double>>
             {
@@ -145,9 +145,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetInsuranceDeductionName2RandRates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             options.PossibleZeroOuts.AddRange(new[]
             {
@@ -190,9 +190,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetGovernmentDeductionName2Rates(OpesOptions options)
+        protected internal Dictionary<string, double> GetGovernmentDeductionName2Rates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             //if the caller has assign values themselves - then just use those and leave
             if (options.AnyGivenDirectly())
@@ -229,9 +229,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetEmploymentDeductionName2Rates(OpesOptions options)
+        protected internal Dictionary<string, double> GetEmploymentDeductionName2Rates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             options.PossibleZeroOuts.AddRange(new[]
             {
@@ -278,9 +278,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetJudgmentDeductionName2RandomRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetJudgmentDeductionName2RandomRates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             const string CHILD_SUPPORT = "Child Support";
             const string ALIMONY = "Alimony";
 
@@ -312,9 +312,9 @@ namespace NoFuture.Rand.Opes.US
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
 
-        private double GetPay(OpesOptions options)
+        private double GetPay(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var pPay = _employment.GetAt(options.Inception).Sum() ?? Pecuniam.Zero;
             var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.Inception, options).ToDouble() : pPay.ToDouble();

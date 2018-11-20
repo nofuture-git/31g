@@ -49,7 +49,7 @@
     <Compile Include="FactorTables.cs" />
     <Compile Include="ILaboris.cs" />
     <Compile Include="IReditus.cs" />
-    <Compile Include="OpesOptions.cs" />
+    <Compile Include="DomusOpesOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WealthBase.cs" />
   </ItemGroup>

@@ -73,9 +73,9 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static AmericanAssets RandomAssets(OpesOptions options = null)
+        public static AmericanAssets RandomAssets(DomusOpesOptions options = null)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var assets = new AmericanAssets();
             assets.RandomizeAllItems(options);
             return assets;
@@ -103,9 +103,9 @@ namespace NoFuture.Rand.Opes.US
             return itemData;
         }
 
-        protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected override Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
-            return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
+            return new Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>>
             {
                 {AssetGroupNames.REAL_PROPERTY, GetRealPropertyName2RandomRates},
                 {AssetGroupNames.PERSONAL_PROPERTY, GetPersonalPropertyAssetNames2Rates},
@@ -114,9 +114,9 @@ namespace NoFuture.Rand.Opes.US
             };
         }
 
-        protected internal override void RandomizeAllItems(OpesOptions options)
+        protected internal override void RandomizeAllItems(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             AssignFactorValues(options.FactorOptions);
             options.DueFrequency = Constants.TropicalYear;
             var items = GetItemsForRange(options);
@@ -124,9 +124,9 @@ namespace NoFuture.Rand.Opes.US
                 AddItem(item);
         }
 
-        protected internal override List<Tuple<string, double>> GetGroupNames2Portions(OpesOptions options)
+        protected internal override List<Tuple<string, double>> GetGroupNames2Portions(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var amt = options.SumTotal == null || options.SumTotal == Pecuniam.Zero
                 ? _totalEquity.ToPecuniam()
@@ -175,12 +175,12 @@ namespace NoFuture.Rand.Opes.US
             return base.GetGroupNames2Portions(options);
         }
 
-        protected internal override NamedReceivable GetNamedReceivableForItemAndGroup(string item, string grp, OpesOptions options, double rate)
+        protected internal override NamedReceivable GetNamedReceivableForItemAndGroup(string item, string grp, DomusOpesOptions options, double rate)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = RiskFreeInterestRate.DF_VALUE;
 
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var startDate = options.Inception;
             var amt = options.SumTotal;
@@ -291,9 +291,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(OpesOptions options)
+        protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             options.DerivativeSlope = -0.2D;
 
@@ -311,9 +311,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(OpesOptions options)
+        protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             options.PossibleZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
 
             //remove obvious rural related items for everyone except those who are way out in the country
@@ -335,9 +335,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(OpesOptions options)
+        protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             options.PossibleZeroOuts.AddRange(new[]
             {
                 "Certificate of Deposit", "Insurance Policies",
@@ -357,9 +357,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetSecuritiesAssetNames2RandomRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetSecuritiesAssetNames2RandomRates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var tOptions = options.GetClone();
             tOptions.PossibleZeroOuts.AddRange(new[] { "Derivatives" });
             var d = GetItemNames2Portions(AssetGroupNames.SECURITIES, tOptions);

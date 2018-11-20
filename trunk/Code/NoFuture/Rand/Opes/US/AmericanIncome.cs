@@ -81,9 +81,9 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static AmericanIncome RandomIncome(OpesOptions options = null)
+        public static AmericanIncome RandomIncome(DomusOpesOptions options = null)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var income = new AmericanIncome();
             income.RandomizeAllItems(options);
             return income;
@@ -136,9 +136,9 @@ namespace NoFuture.Rand.Opes.US
             return itemData;
         }
 
-        protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected override Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
-            return new Dictionary<string, Func<OpesOptions, Dictionary<string, double>>>
+            return new Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>>
             {
                 {IncomeGroupNames.JUDGMENTS, GetJudgmentIncomeNames2RandomRates},
                 {IncomeGroupNames.SUBITO, GetSubitoIncomeNames2RandomRates},
@@ -148,9 +148,9 @@ namespace NoFuture.Rand.Opes.US
             };
         }
 
-        protected internal override void RandomizeAllItems(OpesOptions options)
+        protected internal override void RandomizeAllItems(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var personality = options.Personality;
             var eduFlag = options.FactorOptions.EducationLevel;
@@ -203,9 +203,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetJudgmentIncomeNames2RandomRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetJudgmentIncomeNames2RandomRates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var d = GetItemNames2Portions(IncomeGroupNames.JUDGMENTS, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -215,9 +215,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetSubitoIncomeNames2RandomRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetSubitoIncomeNames2RandomRates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             options.PossibleZeroOuts.AddRange(new[] { "Lottery Winnings", "Gambling Winnings", "Gifts" });
             var d = GetItemNames2Portions(IncomeGroupNames.SUBITO, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -228,9 +228,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetRealPropertyIncomeNames2RandomRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetRealPropertyIncomeNames2RandomRates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var d = GetItemNames2Portions(IncomeGroupNames.REAL_PROPERTY, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -240,9 +240,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetSecuritiesIncomeNames2RandomRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetSecuritiesIncomeNames2RandomRates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             options.PossibleZeroOuts.AddRange(new []{ "Derivatives" });
             var d = GetItemNames2Portions(IncomeGroupNames.SECURITIES, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -253,9 +253,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetInstitutionalIncomeNames2RandomRates(OpesOptions options)
+        protected internal Dictionary<string, double> GetInstitutionalIncomeNames2RandomRates(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             options.PossibleZeroOuts.AddRange(new[]
             {
                 "Royalties", "Stipends", "Fellowships", "Partnerships",
@@ -273,9 +273,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetPublicBenefitIncomeItemsForRange(OpesOptions options)
+        protected internal virtual NamedReceivable[] GetPublicBenefitIncomeItemsForRange(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var startDate = options.Inception;
             var endDate = options.Terminus;
             var itemsout = new List<NamedReceivable>();
@@ -344,9 +344,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual bool IsBelowFedPovertyAt(OpesOptions options)
+        protected internal virtual bool IsBelowFedPovertyAt(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var dt = options.Inception;
             var numHouseholdMembers =
                 1 + (options.FactorOptions.MaritialStatus == MaritialStatus.Married ? 1 : 0) + options.ChildrenDobs?.Count ?? 0;
@@ -369,10 +369,10 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <param name="personality"></param>
         /// <returns></returns>
-        protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(OpesOptions options,
+        protected internal virtual List<Tuple<DateTime, DateTime?>> GetEmploymentRanges(DomusOpesOptions options,
             IPersonality personality = null)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var emply = new List<Tuple<DateTime, DateTime?>>();
 
             //make it appear as if the start date is randomly before options start date
@@ -410,10 +410,10 @@ namespace NoFuture.Rand.Opes.US
         /// Optional, allows calling assembly to set this directly, defaults to <see cref="GetEmploymentRanges"/>
         /// </param>
         /// <returns></returns>
-        protected internal virtual List<ILaboris> GetRandomEmployment(OpesOptions options, IPersonality personality = null,
+        protected internal virtual List<ILaboris> GetRandomEmployment(DomusOpesOptions options, IPersonality personality = null,
             OccidentalEdu eduLevel = OccidentalEdu.None, List<Tuple<DateTime, DateTime?>> emplyRanges = null)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
             var empls = new HashSet<ILaboris>();
             emplyRanges = emplyRanges ?? GetEmploymentRanges(options, personality);
 
@@ -445,9 +445,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Pecuniam GetRandomExpectedIncomeAmount(OpesOptions options)
+        protected internal virtual Pecuniam GetRandomExpectedIncomeAmount(DomusOpesOptions options)
         {
-            options = options ?? OpesOptions.RandomOpesOptions();
+            options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var dt = options.Inception == DateTime.MinValue ? DateTime.Today : options.Inception;
 

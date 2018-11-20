@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanAssets();
 
-            var testResult = testSubject.GetGroupNames2Portions(new OpesOptions() { IsRenting = false, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam() });
+            var testResult = testSubject.GetGroupNames2Portions(new DomusOpesOptions() { IsRenting = false, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam() });
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanAssets();
 
-            var testResult = testSubject.GetRealPropertyName2RandomRates(new OpesOptions());
+            var testResult = testSubject.GetRealPropertyName2RandomRates(new DomusOpesOptions());
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanAssets();
 
-            var testResult = testSubject.GetPersonalPropertyAssetNames2Rates(new OpesOptions());
+            var testResult = testSubject.GetPersonalPropertyAssetNames2Rates(new DomusOpesOptions());
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -92,7 +92,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanAssets();
 
-            var testResult = testSubject.GetInstitutionalAssetName2Rates(new OpesOptions());
+            var testResult = testSubject.GetInstitutionalAssetName2Rates(new DomusOpesOptions());
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -110,7 +110,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanAssets();
 
-            var testResult = testSubject.GetSecuritiesAssetNames2RandomRates(new OpesOptions());
+            var testResult = testSubject.GetSecuritiesAssetNames2RandomRates(new DomusOpesOptions());
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -158,7 +158,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanAssets();
 
-            testSubject.RandomizeAllItems(new OpesOptions(){Inception = new DateTime(DateTime.Today.Year, 1,1)});
+            testSubject.RandomizeAllItems(new DomusOpesOptions(){Inception = new DateTime(DateTime.Today.Year, 1,1)});
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
@@ -170,7 +170,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestRandomAssets()
         {
-            var testSubject = AmericanAssets.RandomAssets(new OpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });
+            var testSubject = AmericanAssets.RandomAssets(new DomusOpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });
             Assert.IsNotNull(testSubject);
 
             Assert.IsNotNull(testSubject.MyItems);

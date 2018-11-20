@@ -22,13 +22,13 @@ namespace NoFuture.Rand.Opes
     /// the various types of Domus.Opes
     /// </summary>
     [Serializable]
-    public class OpesOptions : OpesPortions, ITempore
+    public class DomusOpesOptions : OpesPortions, ITempore
     {
         private CityArea _cityArea;
 
         #region properties
 
-        public OpesOptions(AmericanFactorOptions factorOptions = null)
+        public DomusOpesOptions(AmericanFactorOptions factorOptions = null)
         {
             FactorOptions = factorOptions ?? AmericanFactorOptions.RandomFactorOptions();
         }
@@ -143,9 +143,9 @@ namespace NoFuture.Rand.Opes
         /// Creates a new instance on the heap with the exact same property values as this instance.
         /// </summary>
         /// <returns></returns>
-        public OpesOptions GetClone()
+        public DomusOpesOptions GetClone()
         {
-            var o = new OpesOptions(FactorOptions.GetClone());
+            var o = new DomusOpesOptions(FactorOptions.GetClone());
 
             var pi = GetType().GetProperties(NfSettings.DefaultFlags).Where(p => p.CanWrite).ToList();
             foreach (var p in pi)
@@ -174,7 +174,7 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static OpesOptions RandomOpesOptions(string firstName = null, string lastName = null)
+        public static DomusOpesOptions RandomOpesOptions(string firstName = null, string lastName = null)
         {
             var name = new VocaBase();
             lastName = lastName ?? Etx.RandomWord();
@@ -182,7 +182,7 @@ namespace NoFuture.Rand.Opes
             name.AddName(KindsOfNames.First, firstName);
             name.AddName(KindsOfNames.Surname, lastName);
 
-            var opt = new OpesOptions
+            var opt = new DomusOpesOptions
             {
                 Inception = DateTime.Today.Add(Constants.TropicalYear.Negate()),
                 HomeLocation = CityArea.RandomAmericanCity(),
