@@ -18,20 +18,19 @@ namespace NoFuture.Rand.Opes
     /// <inheritdoc cref="OpesPortions" />
     /// <inheritdoc cref="ITempore" />
     /// <summary>
-    /// A control object to exercise control over the randomness of 
+    /// An object to exercise control over the randomness of 
     /// the various types of Domus.Opes
     /// </summary>
     [Serializable]
     public class OpesOptions : OpesPortions, ITempore
     {
-        private readonly AmericanFactorOptions _factorOptions;
         private CityArea _cityArea;
 
         #region properties
 
         public OpesOptions(AmericanFactorOptions factorOptions = null)
         {
-            _factorOptions = factorOptions ?? AmericanFactorOptions.RandomFactorOptions();
+            FactorOptions = factorOptions ?? AmericanFactorOptions.RandomFactorOptions();
         }
 
         /// <summary>
@@ -95,7 +94,7 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// The options related to the american factor multipliers
         /// </summary>
-        public AmericanFactorOptions FactorOptions => _factorOptions;
+        public AmericanFactorOptions FactorOptions { get; }
 
         /// <summary>
         /// The name of the person to whom this wealth belongs
@@ -103,7 +102,12 @@ namespace NoFuture.Rand.Opes
         public IVoca PersonsName { get; set; }
 
         public DateTime Inception { get; set; }
+
+        /// <summary>
+        /// Helper method to avoid checking for <see cref="Inception"/> as min-date-time
+        /// </summary>
         public DateTime InceptionOrToday => Inception == DateTime.MinValue ? DateTime.Today : Inception;
+
         public DateTime? Terminus { get; set; }
 
         /// <summary>
@@ -134,7 +138,6 @@ namespace NoFuture.Rand.Opes
             var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
         }
-
 
         /// <summary>
         /// Creates a new instance on the heap with the exact same property values as this instance.

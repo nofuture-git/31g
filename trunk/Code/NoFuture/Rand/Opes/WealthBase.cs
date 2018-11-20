@@ -119,6 +119,10 @@ namespace NoFuture.Rand.Opes
 
         #region properties
 
+        public virtual NamedReceivable[] CurrentItems => GetCurrent(MyItems);
+
+        public virtual Pecuniam Total => CurrentItems.Sum();
+
         /// <summary>
         /// Determines which kind of wealth concept is 
         /// at play here (e.g. expense, assets, income, etc.).
@@ -174,6 +178,11 @@ namespace NoFuture.Rand.Opes
         {
             var amt = new Pecuniam(Convert.ToDecimal(expectedValue), c);
             AddItem(name, groupName, amt, atTime, dueFrequency);
+        }
+
+        public virtual NamedReceivable[] GetAt(DateTime? dt)
+        {
+            return GetAt(dt, MyItems);
         }
 
         /// <summary>
@@ -991,6 +1000,12 @@ namespace NoFuture.Rand.Opes
             return p;
         }
 
+        /// <summary>
+        /// Adds the entries in <see cref="b"/> into <see cref="a"/> or updates the existing entry in <see cref="a"/>
+        /// with the value from <see cref="b"/>
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
         protected static void AddOrReplace(IDictionary<string, object> a, IDictionary<string, object> b)
         {
             a = a ?? new Dictionary<string, object>();

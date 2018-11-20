@@ -46,11 +46,8 @@
     <Compile Include="US\AmericanFactors.cs" />
     <Compile Include="US\AmericanIncome.cs" />
     <Compile Include="FactorTables.cs" />
-    <Compile Include="IExpense.cs" />
     <Compile Include="ILaboris.cs" />
-    <Compile Include="IRebus.cs" />
     <Compile Include="IReditus.cs" />
-    <Compile Include="ITributum.cs" />
     <Compile Include="OpesOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WealthBase.cs" />

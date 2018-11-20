@@ -5,7 +5,6 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Sp;
-using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes.US
@@ -29,9 +28,13 @@ namespace NoFuture.Rand.Opes.US
 
         #region properties
         public virtual string EmployingCompanyName { get; set; }
+
         public virtual int FiscalYearEndDay { get; set; } = 1;
+
         public virtual bool IsOwner { get; set; }
+
         protected override DomusOpesDivisions Division => DomusOpesDivisions.Employment;
+
         public SocDetailedOccupation Occupation
         {
             get => _occupation;
@@ -44,9 +47,7 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        public ITributum Deductions { get; set; }
-
-        public virtual NamedReceivable[] CurrentPay => GetCurrent(MyItems);
+        public IDeinde Deductions { get; set; }
 
         /// <summary>
         /// Convenience method which is more straight-foward than <see cref="Inception"/>
@@ -75,8 +76,9 @@ namespace NoFuture.Rand.Opes.US
             set => _endDate = value;
         }
 
-        public Pecuniam TotalAnnualPay => CurrentPay.Sum().GetAbs();
-        public Pecuniam TotalAnnualNetPay => TotalAnnualPay - (Deductions?.TotalAnnualDeductions)?.GetAbs() ?? Pecuniam.Zero;
+        public override Pecuniam Total => CurrentItems.Sum().GetAbs();
+
+        public Pecuniam TotalAnnualNetPay => Total - (Deductions?.Total)?.GetAbs() ?? Pecuniam.Zero;
 
         protected internal override List<NamedReceivable> MyItems
         {
@@ -127,7 +129,7 @@ namespace NoFuture.Rand.Opes.US
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x?.Replace(",", "").Replace(" ", ""), txtCase);
             var itemData = new Dictionary<string, object>();
 
-            foreach (var p in CurrentPay)
+            foreach (var p in CurrentItems)
             {
                 var v = p.Value;
                 if (v == Pecuniam.Zero)
@@ -150,11 +152,6 @@ namespace NoFuture.Rand.Opes.US
             var afterOrOnFromDt = Inception <= dt;
             var beforeOrOnToDt = Terminus == null || Terminus.Value >= dt;
             return afterOrOnFromDt && beforeOrOnToDt;
-        }
-
-        public virtual NamedReceivable[] GetPayAt(DateTime? dt)
-        {
-            return GetAt(dt, MyItems);
         }
 
         protected override Dictionary<string, Func<OpesOptions, Dictionary<string, double>>> GetItems2Functions()
@@ -201,7 +198,7 @@ namespace NoFuture.Rand.Opes.US
 
             var deductions = new AmericanDeductions(this);
             deductions.RandomizeAllItems(options);
-            Deductions = deductions;
+            Deductions = (IDeinde)deductions;
         }
         
         /// <summary>
@@ -340,7 +337,7 @@ namespace NoFuture.Rand.Opes.US
             return base.CalcValue(pecuniam, d).GetAbs();
         }
 
-        protected internal bool IsInRange(NamedReceivable item)
+        protected internal virtual bool IsInRange(NamedReceivable item)
         {
             if (item == null)
                 return false;

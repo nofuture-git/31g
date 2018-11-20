@@ -21,13 +21,13 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(0, testSubject.MyItems.Count);
 
             testSubject.AddItem("Gas", "Utility", 65D.ToPecuniam());
-            var testResultSum = testSubject.TotalAnnualExpenses;
+            var testResultSum = testSubject.Total;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(65D.ToPecuniam().GetNeg(), testResultSum);
 
             testSubject.AddItem("Groceries", "Personal", 600D.ToPecuniam());
-            testResultSum = testSubject.TotalAnnualExpenses;
+            testResultSum = testSubject.Total;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(665D.ToPecuniam().GetNeg(), testResultSum);

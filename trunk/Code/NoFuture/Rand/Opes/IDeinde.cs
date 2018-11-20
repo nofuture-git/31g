@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 
@@ -8,7 +9,7 @@ namespace NoFuture.Rand.Opes
     /// A wealth base containing methods common to all forms of Opes types
     /// Is Latin for &apos;then&apos;
     /// </summary>
-    public interface IDeinde
+    public interface IDeinde : IObviate
     {
         /// <summary>
         /// Adds the <see cref="item"/> 
@@ -39,5 +40,10 @@ namespace NoFuture.Rand.Opes
         void AddItem(string name, string groupName, double expectedValue, CurrencyAbbrev c = CurrencyAbbrev.USD, DateTime? atTime = null,
             TimeSpan? dueFrequency = null);
 
+        NamedReceivable[] CurrentItems { get; }
+
+        NamedReceivable[] GetAt(DateTime? dt);
+
+        Pecuniam Total { get; }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Opes
 {
+    /// <inheritdoc />
     /// <summary>
     /// Expresses a personal income in time.
     /// Is Latin for revenue.
     /// </summary>
-    public interface IReditus : IDeinde, IObviate
+    public interface IReditus : IDeinde
     {
         /// <summary>
         /// Returns the <see cref="ILaboris"/> right Now
@@ -28,22 +28,6 @@ namespace NoFuture.Rand.Opes
         /// one job at a single time.
         /// </returns>
         ILaboris[] GetEmploymentAt(DateTime? dt);
-
-        /// <summary>
-        /// Returns all non-employment forms of income for the current time which have 
-        /// a non-zero value
-        /// </summary>
-        NamedReceivable[] CurrentOtherIncome { get; }
-
-        /// <summary>
-        /// Returns all non-employment forms of income at the time of <see cref="dt"/>
-        /// </summary>
-        NamedReceivable[] GetOtherIncomeAt(DateTime? dt);
-
-        /// <summary>
-        /// A monetary sum of all income
-        /// </summary>
-        Pecuniam TotalAnnualIncome { get; }
 
         /// <summary>
         /// The monetary sum of just employment income less all employment deductions

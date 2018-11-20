@@ -5,26 +5,31 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Sp;
-using NoFuture.Rand.Sp.Enums;
-using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes.US
 {
-    /// <inheritdoc cref="IExpense" />
     /// <inheritdoc cref="WealthBase" />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class AmericanExpenses : WealthBase, IExpense
+    public class AmericanExpenses : WealthBase, IDeinde
     {
         private const double PERCENT_EXPENSE_OF_INCOME = 0.85;
         private readonly HashSet<NamedReceivable> _expenses = new HashSet<NamedReceivable>();
 
-        public virtual NamedReceivable[] CurrentExpenses => GetCurrent(MyItems);
-
-        public virtual Pecuniam TotalAnnualExpenses => CurrentExpenses.Sum().GetNeg();
-
         protected override DomusOpesDivisions Division => DomusOpesDivisions.Expense;
+
+        public override Pecuniam Total => base.Total.GetNeg();
+
+        protected internal override List<NamedReceivable> MyItems
+        {
+            get
+            {
+                var e = _expenses.ToList();
+                e.Sort(Comparer);
+                return e.ToList();
+            }
+        }
 
         /// <summary>
         /// Gets expenses at random
@@ -40,27 +45,10 @@ namespace NoFuture.Rand.Opes.US
             return exp;
         }
 
-        public virtual NamedReceivable[] GetExpensesAt(DateTime? dt)
-        {
-            return GetAt(dt, MyItems);
-        }
-
-        protected internal override List<NamedReceivable> MyItems
-        {
-            get
-            {
-                var e = _expenses.ToList();
-                e.Sort(Comparer);
-                return e.ToList();
-            }
-        }
-
         public override void AddItem(NamedReceivable expense)
         {
             if (expense == null)
                 return;
-            //if (expense.Expectation?.Value != null)
-            //    expense.Expectation.Value = expense.Expectation.Value.GetNeg();
             _expenses.Add(expense);
         }
 
@@ -74,7 +62,7 @@ namespace NoFuture.Rand.Opes.US
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x?.Replace(",", "").Replace(" ", ""), txtCase);
             var itemData = new Dictionary<string, object>();
 
-            foreach (var p in CurrentExpenses)
+            foreach (var p in CurrentItems)
             {
                 var v = p.AveragePerDueFrequency(PecuniamExtensions.GetTropicalMonth());
                 if (v == Pecuniam.Zero)

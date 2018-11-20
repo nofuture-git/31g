@@ -54,16 +54,25 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.RandomRollBelowOrAt;
 
+        /// <summary>
+        /// Add a directly-assigned item with no randomness
+        /// </summary>
         public void AddGivenDirectly(string name, string groupName, Pecuniam amount)
         {
             GivenDirectly.Add(new Tuple<VocaBase, Pecuniam>(new VocaBase(name, groupName),amount));
         }
 
+        /// <summary>
+        /// Add a directly-assigned item with no randomness
+        /// </summary>
         public void AddGivenDirectly(string name, Pecuniam amount)
         {
             GivenDirectly.Add(new Tuple<VocaBase, Pecuniam>(new VocaBase(name),amount));
         }
 
+        /// <summary>
+        /// Add an item which is forced out of the random generators scope.
+        /// </summary>
         public void AddGivenDirectlyZero(string name, string groupName)
         {
             if(string.IsNullOrWhiteSpace(groupName))
@@ -72,7 +81,11 @@ namespace NoFuture.Rand.Opes
                 AddGivenDirectly(name, groupName, Pecuniam.Zero);
         }
 
-        public void AddGivenDirectlyRange(IEnumerable<Tuple<string, string, Pecuniam>> name2Values)
+        /// <summary>
+        /// Helper method to add a range of directly-assigned items
+        /// </summary>
+        /// <param name="name2Values"></param>
+        protected internal void AddGivenDirectlyRange(IEnumerable<Tuple<string, string, Pecuniam>> name2Values)
         {
             if (name2Values == null || !name2Values.Any())
                 return;
@@ -83,13 +96,19 @@ namespace NoFuture.Rand.Opes
             }
         }
 
+        /// <summary>
+        /// Gets the current count of given-directly items
+        /// </summary>
+        public int GivenDirectlyCount => GivenDirectly.Count;
+
+        /// <summary>
+        /// Asserts if any given-directly items have been added.
+        /// </summary>
+        /// <returns></returns>
         public bool AnyGivenDirectly()
         {
             return GivenDirectly.Any();
         }
-
-        public int GivenDirectlyCount => GivenDirectly.Count;
-
 
         /// <summary>
         /// Helper method to assert if any items have been added to option&apos;s given directly

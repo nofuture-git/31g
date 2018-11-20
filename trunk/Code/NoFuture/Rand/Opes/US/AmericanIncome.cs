@@ -8,7 +8,6 @@ using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Pneuma;
 using NoFuture.Rand.Sp;
-using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes.US
@@ -42,13 +41,13 @@ namespace NoFuture.Rand.Opes.US
 
         public virtual NamedReceivable[] CurrentOtherIncome => GetCurrent(MyItems);
 
-        public virtual Pecuniam TotalAnnualIncome => CurrentOtherIncome.Sum() + TotalAnnualNetEmploymentIncome;
+        public override Pecuniam Total => CurrentItems.Sum() + TotalAnnualNetEmploymentIncome;
 
         public virtual Pecuniam TotalAnnualNetEmploymentIncome =>
             CurrentEmployment.Select(e => e.TotalAnnualNetPay).GetSum();
 
         public virtual Pecuniam TotalAnnualGrossEmploymentIncome =>
-            CurrentEmployment.Select(e => e.TotalAnnualPay).GetSum();
+            CurrentEmployment.Select(e => e.Total).GetSum();
 
         protected internal virtual List<ILaboris> Employment
         {
@@ -97,11 +96,6 @@ namespace NoFuture.Rand.Opes.US
                 : Employment.Where(x => x.IsInRange(dt.Value)).ToArray();
         }
 
-        public virtual NamedReceivable[] GetOtherIncomeAt(DateTime? dt)
-        {
-            return GetAt(dt, MyItems);
-        }
-
         public virtual void AddEmployment(ILaboris employment)
         {
             if (employment != null)
@@ -125,7 +119,7 @@ namespace NoFuture.Rand.Opes.US
                 AddOrReplace(itemData, job.ToData(txtCase));
             }
 
-            var coi = CurrentOtherIncome;
+            var coi = CurrentItems;
             foreach (var p in coi)
             {
                 var v = p.Value;
@@ -486,7 +480,7 @@ namespace NoFuture.Rand.Opes.US
             var sum = Pecuniam.Zero;
             foreach (var emp in payAtDt)
             {
-                var payAt = emp.GetPayAt(dt);
+                var payAt = emp.GetAt(dt);
                 var f = payAt.Sum();
                 sum += f;
             }
@@ -503,8 +497,8 @@ namespace NoFuture.Rand.Opes.US
             var sum = Pecuniam.Zero;
             foreach (var emp in payAtDt)
             {
-                var pay = emp.GetPayAt(dt).Sum();
-                var ded = emp.Deductions?.GetDeductionsAt(dt).Sum() ?? Pecuniam.Zero;
+                var pay = emp.GetAt(dt).Sum();
+                var ded = emp.Deductions?.GetAt(dt).Sum() ?? Pecuniam.Zero;
                 sum += pay - ded.GetAbs();
             }
 
@@ -513,5 +507,4 @@ namespace NoFuture.Rand.Opes.US
 
         #endregion
     }
-
 }

@@ -19,16 +19,16 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreEqual(0, testSubject.MyItems.Count);
-            Assert.AreEqual(Pecuniam.Zero, testSubject.TotalAnnualDeductions);
+            Assert.AreEqual(Pecuniam.Zero, testSubject.Total);
 
             testSubject.AddItem("FICA", "Government", 1200D.ToPecuniam());
-            var testResultSum = testSubject.TotalAnnualDeductions;
+            var testResultSum = testSubject.Total;
             Assert.IsNotNull( testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(1200M.ToPecuniam().GetNeg(), testResultSum);
 
             testSubject.AddItem("State Tax", "Government", 600D.ToPecuniam());
-            testResultSum = testSubject.TotalAnnualDeductions;
+            testResultSum = testSubject.Total;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(1800M.ToPecuniam().GetNeg(), testResultSum);
@@ -185,7 +185,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testInput.MyItems);
             Assert.AreNotEqual(0, testInput.MyItems.Count);
 
-            var diff = Math.Abs(testInput.TotalAnnualPay.ToDouble() - annualIncome.ToDouble());
+            var diff = Math.Abs(testInput.Total.ToDouble() - annualIncome.ToDouble());
             Console.WriteLine(diff);
             Assert.IsTrue(Math.Round(diff) == 0.0D);
 
@@ -196,7 +196,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreNotEqual(0, testSubject.MyItems.Count);
 
-            var totalDeductions = testSubject.TotalAnnualDeductions;
+            var totalDeductions = testSubject.Total;
             Assert.AreNotEqual(0.0D.ToPecuniam(), totalDeductions);
             //expect deductions as a negative number
             Assert.IsTrue(totalDeductions.ToDouble() < 0.0D);
@@ -222,14 +222,14 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testInput.MyItems);
             Assert.AreNotEqual(0, testInput.MyItems.Count);
 
-            var diff = Math.Abs(testInput.TotalAnnualPay.ToDouble() - annualIncome.ToDouble());
+            var diff = Math.Abs(testInput.Total.ToDouble() - annualIncome.ToDouble());
             Console.WriteLine(diff);
             Assert.IsTrue(Math.Round(diff) == 0.0D);
 
             var testSubject = new AmericanDeductions(testInput);
             testSubject.RandomizeAllItems(null);
 
-            var testResults = testSubject.GetDeductionsAt(DateTime.Today.AddDays(-182));
+            var testResults = testSubject.GetAt(DateTime.Today.AddDays(-182));
             var allDeductionsItesm = WealthBaseTests.GetExpectedNamesFromXml("deduction");
             Assert.IsNotNull(testResults);
             Assert.IsNotNull(allDeductionsItesm);

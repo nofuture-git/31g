@@ -9,18 +9,16 @@ using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US.Fed;
 using NoFuture.Rand.Gov.US.Nhtsa;
 using NoFuture.Rand.Sp;
-using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes.US
 {
-    /// <inheritdoc cref="IRebus" />
     /// <inheritdoc cref="WealthBase" />
     /// <summary>
     /// Represents the assets of a North American over some span of time
     /// </summary>
     [Serializable]
-    public class AmericanAssets : WealthBase, IRebus
+    public class AmericanAssets : WealthBase, IDeinde
     {
         #region fields
         internal const string REAL_PROPERTY_HOME_OWNERSHIP = "Home Ownership";
@@ -48,10 +46,6 @@ namespace NoFuture.Rand.Opes.US
         #endregion
 
         #region properties
-
-        public NamedReceivable[] CurrentAssets => GetCurrent(MyItems);
-
-        public Pecuniam TotalCurrentValue => CurrentAssets.Sum();
 
         public Pecuniam HousePayment { get; private set; }
 
@@ -87,11 +81,6 @@ namespace NoFuture.Rand.Opes.US
             return assets;
         }
 
-        public NamedReceivable[] GetAssetsAt(DateTime? dt)
-        {
-            return GetAt(dt, MyItems);
-        }
-
         public override void AddItem(NamedReceivable item)
         {
             if (item == null)
@@ -104,7 +93,7 @@ namespace NoFuture.Rand.Opes.US
         {
             var itemData = new Dictionary<string, object>();
 
-            foreach (var p in CurrentAssets)
+            foreach (var p in CurrentItems)
             {
                 if (p.Value == Pecuniam.Zero)
                     continue;

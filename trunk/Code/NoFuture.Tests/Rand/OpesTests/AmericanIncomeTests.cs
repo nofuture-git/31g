@@ -21,13 +21,13 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(0, testSubject.MyItems.Count);
 
             testSubject.AddItem("Lottery","Subito", 10000D.ToPecuniam());
-            var testResultSum = testSubject.TotalAnnualIncome;
+            var testResultSum = testSubject.Total;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(10000D.ToPecuniam(), testResultSum);
 
             testSubject.AddItem("something else", "Subitio", 900D.ToPecuniam());
-            testResultSum = testSubject.TotalAnnualIncome;
+            testResultSum = testSubject.Total;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(10900D.ToPecuniam(), testResultSum);
@@ -223,7 +223,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(Pecuniam.Zero, testResult);
             testResult = testSubject.TotalAnnualNetEmploymentIncome;
             Assert.AreEqual(Pecuniam.Zero, testResult);
-            testResult = testSubject.TotalAnnualIncome;
+            testResult = testSubject.Total;
             Assert.AreEqual(Pecuniam.Zero, testResult);
 
             testSubject.AddItem("stocks", "securities", 9000.0D.ToPecuniam());
@@ -232,7 +232,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(Pecuniam.Zero, testResult);
             testResult = testSubject.TotalAnnualNetEmploymentIncome;
             Assert.AreEqual(Pecuniam.Zero, testResult);
-            testResult = testSubject.TotalAnnualIncome;
+            testResult = testSubject.Total;
             Assert.AreEqual(9000.0D.ToPecuniam(), testResult);
 
             testSubject.AddItem("savings", "Banks", 600.0D.ToPecuniam());
@@ -241,7 +241,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(Pecuniam.Zero, testResult);
             testResult = testSubject.TotalAnnualNetEmploymentIncome;
             Assert.AreEqual(Pecuniam.Zero, testResult);
-            testResult = testSubject.TotalAnnualIncome;
+            testResult = testSubject.Total;
             Assert.AreEqual(9600.0D.ToPecuniam(), testResult);
 
             var testEmployment = new AmericanEmployment();
@@ -254,7 +254,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(55000.0.ToPecuniam(), testResult);
             testResult = testSubject.TotalAnnualNetEmploymentIncome;
             Assert.AreEqual(55000.0.ToPecuniam(), testResult);
-            testResult = testSubject.TotalAnnualIncome;
+            testResult = testSubject.Total;
             Assert.AreEqual((55000.0 + 9600.0D).ToPecuniam(), testResult);
 
             var tax = new AmericanDeductions(testEmployment);
@@ -267,7 +267,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(55000.0.ToPecuniam(), testResult);
             testResult = testSubject.TotalAnnualNetEmploymentIncome;
             Assert.AreEqual((55000.0 - fedTax).ToPecuniam(), testResult);
-            testResult = testSubject.TotalAnnualIncome;
+            testResult = testSubject.Total;
             Assert.AreEqual((55000.0 + 9600.0D - fedTax).ToPecuniam(), testResult);
         }
 

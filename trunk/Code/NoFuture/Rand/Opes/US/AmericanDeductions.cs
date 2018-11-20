@@ -6,18 +6,16 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Sp;
-using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Opes.US
 {
     /// <inheritdoc cref="WealthBase"/>
-    /// <inheritdoc cref="ITributum"/>
     /// <summary>
     /// </summary>
     [Serializable]
-    public class AmericanDeductions : WealthBase, ITributum
+    public class AmericanDeductions : WealthBase, IDeinde
     {
         private readonly HashSet<NamedReceivable> _deductions = new HashSet<NamedReceivable>();
         private readonly AmericanEmployment _employment;
@@ -35,12 +33,7 @@ namespace NoFuture.Rand.Opes.US
 
         #region properties
 
-        public virtual NamedReceivable[] CurrentDeductions => GetCurrent(MyItems);
-        public Pecuniam TotalAnnualDeductions => CurrentDeductions.Sum().GetNeg();
-        public virtual NamedReceivable[] GetDeductionsAt(DateTime? dt)
-        {
-            return GetAt(dt, MyItems);
-        }
+        public override Pecuniam Total => CurrentItems.Sum().GetNeg();
 
         protected internal override List<NamedReceivable> MyItems
         {
@@ -76,7 +69,7 @@ namespace NoFuture.Rand.Opes.US
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x?.Replace(",", "").Replace(" ", ""), txtCase);
             var itemData = new Dictionary<string, object>();
 
-            foreach (var p in CurrentDeductions)
+            foreach (var p in CurrentItems)
             {
                 var v = p.Value;
                 if(v == Pecuniam.Zero)
@@ -322,7 +315,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? OpesOptions.RandomOpesOptions();
 
-            var pPay = _employment.GetPayAt(options.Inception).Sum() ?? Pecuniam.Zero;
+            var pPay = _employment.GetAt(options.Inception).Sum() ?? Pecuniam.Zero;
             var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.Inception, options).ToDouble() : pPay.ToDouble();
             return pay;
         }

@@ -1,15 +1,15 @@
-﻿using System;
-using NoFuture.Rand.Core;
+﻿using NoFuture.Rand.Core;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Opes
 {
+    /// <inheritdoc cref="IDeinde"/>
     /// <summary>
     /// Expresses a single form of personal employment in time.
     /// Is Latin for work.
     /// </summary>
-    public interface ILaboris : ITempore, IDeinde, IObviate
+    public interface ILaboris : ITempore, IDeinde
     {
         /// <summary>
         /// A flag to designate a person as the legal owner of the employing company.
@@ -32,23 +32,6 @@ namespace NoFuture.Rand.Opes
         SocDetailedOccupation Occupation { get; set; }
 
         /// <summary>
-        /// The current pay for this employment
-        /// </summary>
-        NamedReceivable[] CurrentPay { get; }
-
-        /// <summary>
-        /// The pay as it was at time <see cref="dt"/>
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        NamedReceivable[] GetPayAt(DateTime? dt);
-
-        /// <summary>
-        /// The monetary sum of of total annual employment income
-        /// </summary>
-        Pecuniam TotalAnnualPay { get; }
-
-        /// <summary>
         /// The monetary difference between pay and deductions
         /// </summary>
         Pecuniam TotalAnnualNetPay { get; }
@@ -56,7 +39,7 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// The deductions associated to this employment
         /// </summary>
-        ITributum Deductions { get; set; }
+        IDeinde Deductions { get; set; }
 
     }
 }

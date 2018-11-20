@@ -19,16 +19,16 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanEmployment();
             Assert.IsNotNull(testSubject.MyItems);
             Assert.AreEqual(0, testSubject.MyItems.Count);
-            Assert.AreEqual(Pecuniam.Zero, testSubject.TotalAnnualPay);
+            Assert.AreEqual(Pecuniam.Zero, testSubject.Total);
 
             testSubject.AddItem("Salary", "Pay", 55000D.ToPecuniam());
-            var testResultSum = testSubject.TotalAnnualPay;
+            var testResultSum = testSubject.Total;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(55000D.ToPecuniam(), testResultSum);
 
             testSubject.AddItem("Tips", "Pay", 8000D.ToPecuniam());
-            testResultSum = testSubject.TotalAnnualPay;
+            testResultSum = testSubject.Total;
             Assert.IsNotNull(testResultSum);
             Assert.AreNotEqual(Pecuniam.Zero, testResultSum);
             Assert.AreEqual(63000D.ToPecuniam(), testResultSum);
@@ -119,8 +119,8 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             var testNetIncome = testSubject.TotalAnnualNetPay;
 
-            var testGrossPay = testSubject.TotalAnnualPay;
-            var testTotalDeductions = testSubject.Deductions.TotalAnnualDeductions;
+            var testGrossPay = testSubject.Total;
+            var testTotalDeductions = testSubject.Deductions.Total;
 
             Assert.IsTrue(testGrossPay > testNetIncome);
 
@@ -148,7 +148,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanEmployment();
 
-            var testResult = testSubject.TotalAnnualPay;
+            var testResult = testSubject.Total;
             Assert.AreEqual(Pecuniam.Zero, testResult);
             testResult = testSubject.TotalAnnualNetPay;
             Assert.AreEqual(Pecuniam.Zero, testResult);
@@ -158,14 +158,14 @@ namespace NoFuture.Rand.Tests.OpesTests
             var occ = new SocDetailedOccupation {Value = "Accountant"};
             testSubject.Occupation = occ;
             testSubject.AddItem("Salary",null, 55000.0);
-            testResult = testSubject.TotalAnnualPay;
+            testResult = testSubject.Total;
             Assert.AreEqual(v, testResult);
             testResult = testSubject.TotalAnnualNetPay;
             Assert.AreEqual(v, testResult);
 
             var tax = new AmericanDeductions(testSubject);
             testSubject.Deductions = tax;
-            testResult = testSubject.TotalAnnualPay;
+            testResult = testSubject.Total;
             Assert.AreEqual(v, testResult);
             testResult = testSubject.TotalAnnualNetPay;
             Assert.AreEqual(v, testResult);
@@ -173,13 +173,13 @@ namespace NoFuture.Rand.Tests.OpesTests
             var fedTax = 55000.0D * AmericanEquations.FederalIncomeTaxRate.SolveForY(55000.0);
 
             tax.AddItem("Federal",null, fedTax);
-            testResult = testSubject.TotalAnnualPay;
+            testResult = testSubject.Total;
             Assert.AreEqual(v, testResult);
             testResult = testSubject.TotalAnnualNetPay;
             Assert.AreEqual((55000.0D - fedTax).ToPecuniam(), testResult);
 
             testSubject.AddItem("Commission", null, 5000.0D);
-            testResult = testSubject.TotalAnnualPay;
+            testResult = testSubject.Total;
             Assert.AreEqual(60000.ToPecuniam(), testResult);
             testResult = testSubject.TotalAnnualNetPay;
             Assert.AreEqual(49841.5.ToPecuniam(), testResult);
