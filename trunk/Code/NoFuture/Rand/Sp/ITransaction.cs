@@ -7,9 +7,8 @@ namespace NoFuture.Rand.Sp
     /// <summary>
     /// Represents a single one-time exchange at an exact moment in-time.
     /// </summary>
-    public interface ITransaction : ITransactionHistory
+    public interface ITransaction : ITransactionId
     {
-        Guid UniqueId { get; }
         Pecuniam Cash { get; }
         IVoca Description { get; }
         ITransaction GetInverse();

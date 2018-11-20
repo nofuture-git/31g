@@ -1,0 +1,43 @@
+﻿using System;
+
+namespace NoFuture.Rand.Sp
+{
+    /// <summary>
+    /// Represents the identity of a single transaction
+    /// </summary>
+    public interface ITransactionId
+    {
+        /// <summary>
+        /// The id of the originating ledger from which this transaction was copied.
+        /// </summary>
+        Guid FromLedgerId { get; }
+
+        /// <summary>
+        /// The id the the ledger currently containing this transaction
+        /// </summary>
+        Guid LedgerId { get; }
+
+        /// <summary>
+        /// The unique id of this transaction
+        /// </summary>
+        Guid UniqueId { get; }
+
+        /// <summary>
+        /// The time at which the transaction occured in time
+        /// </summary>
+        DateTime AtTime { get; }
+
+        /// <summary>
+        /// A record of where this transaction has been
+        /// </summary>
+        ITransactionId Trace { get; }
+
+        /// <summary>
+        /// Method to push a new entry onto the historic trace of this transaction
+        /// </summary>
+        /// <param name="fromLedgerId"></param>
+        /// <param name="toLedgerId"></param>
+        /// <param name="atTime"></param>
+        void PushTrace(Guid fromLedgerId, Guid toLedgerId, DateTime? atTime = null);
+    }
+}

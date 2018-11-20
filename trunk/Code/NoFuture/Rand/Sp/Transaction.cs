@@ -3,58 +3,45 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="TransactionId"/>
+    /// <inheritdoc cref="ITransaction"/>
     /// <summary>
     /// Single immutable money transaction
     /// </summary>
     [Serializable]
-    public class Transaction : ITransaction
+    public class Transaction : TransactionId, ITransaction
     {
         #region ctor
-        internal Transaction(DateTime atTime, Pecuniam amt, Guid ledgerId, IVoca description = null)
+        internal Transaction(DateTime atTime, Pecuniam amt, Guid ledgerId, IVoca description = null):base(atTime, ledgerId)
         {
-            UniqueId = Guid.NewGuid();
-            AtTime = atTime;
             Cash = amt ?? Pecuniam.Zero;
             Description = description;
-            LedgerId = ledgerId;
         }
 
         internal Transaction(DateTime atTime, Pecuniam amt, Guid ledgerId, Guid fromLedgerId,
-            ITransactionHistory history, IVoca description = null) : this(atTime, amt, ledgerId, description)
+            ITransactionId history, IVoca description = null) : base(atTime, ledgerId, fromLedgerId, history)
         {
-            History = history;
-            FromLedgerId = fromLedgerId;
-
+            Cash = amt ?? Pecuniam.Zero;
+            Description = description;
         }
 
         #endregion
 
         #region properties
-        public Guid FromLedgerId { get; }
-        public Guid LedgerId { get; }
-        public Guid UniqueId { get; } 
-        public DateTime AtTime { get; }
         public Pecuniam Cash { get; }
         public IVoca Description { get; }
-        public ITransactionHistory History { get; }
         #endregion
 
         #region methods
 
         public ITransaction GetInverse()
         {
-            return new Transaction(AtTime, (Cash.Amount *-1M).ToPecuniam(), LedgerId, FromLedgerId, History, Description);
+            return new Transaction(AtTime, (Cash.Amount *-1M).ToPecuniam(), LedgerId, FromLedgerId, Trace, Description);
         }
 
         public ITransaction Clone()
         {
-            return new Transaction(AtTime, Cash, LedgerId, FromLedgerId, History, Description);
-        }
-
-        public void PushHistory(Guid fromLedgerId, Guid toLedgerId, DateTime? atTime = null)
-        {
-            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
+            return new Transaction(AtTime, Cash, LedgerId, FromLedgerId, Trace, Description);
         }
 
         public override bool Equals(object obj)

@@ -67,7 +67,7 @@
     <Compile Include="ITradeLine.cs" />
     <Compile Include="ITransaction.cs" />
     <Compile Include="ITransactionable.cs" />
-    <Compile Include="ITransactionHistory.cs" />
+    <Compile Include="ITransactionId.cs" />
     <Compile Include="LoanBase.cs" />
     <Compile Include="Mortgage.cs" />
     <Compile Include="Pecuniam.cs" />
@@ -84,6 +84,7 @@
     <Compile Include="Transaction.cs" />
     <Compile Include="TransactionComparer.cs" />
     <Compile Include="Ledger.cs" />
+    <Compile Include="TransactionId.cs" />
     <Compile Include="VariableRateLoan.cs" />
   </ItemGroup>
   <ItemGroup>
