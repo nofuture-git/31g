@@ -1,8 +1,7 @@
 digraph noFutureRandDataSp {
     node [fontname=Consolas, shape=box]
     
-    PecuniamIdentifier [label="IIdentifier<Pecuniam>"]
-    StringId [label="IIdentifier<string>"]
+    StringId [label="IIdentifier<T>"]
     
     Mortgage -> SecuredFixedRateLoan
     SecuredFixedRateLoan -> FixedRateLoan
@@ -19,12 +18,7 @@ digraph noFutureRandDataSp {
     Receivable -> TradeLine
     IReceivable -> ITradeLine
     IReceivable -> IAsset
-    IReceivable -> IMereo [style="dotted", label="HAS-A",fontname=Consolas, fontsize=8]
-    Mereo -> VocaBase
-    Mereo -> IMereo
-    IMereo -> IVoca
     VocaBase -> IVoca
-    IMereo -> PecuniamIdentifier
     LoanBase -> ILoan
     TradeLine -> ITradeLine
     ITradeLine -> ITempore
@@ -33,6 +27,7 @@ digraph noFutureRandDataSp {
     IAccount -> IAsset
     IAccount -> ITempore
     NamedReceivable -> Receivable
+    NamedReceivable -> IVoca
     ITradeLine -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
     Balance -> IBalance
     Balance -> TransactionHistory
@@ -56,4 +51,8 @@ digraph noFutureRandDataSp {
     CreditCard -> ICreditCard
     ICreditCard -> CreditCardNumber [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
     Identifier -> StringId
+    IBalance -> ITransactionable
+    AccountId -> RIdentifier
+    TransactionHistory -> ITransaction [style="dotted" arrowhead="diamond"]
+    Transaction -> ITransaction
 }

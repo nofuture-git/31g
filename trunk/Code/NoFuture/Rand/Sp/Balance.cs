@@ -123,7 +123,7 @@ namespace NoFuture.Rand.Sp
             return bal;
         }
 
-        public List<ITransaction> GetTransactionsBetween(DateTime? from, DateTime? to, bool includeThoseOnToDate = false)
+        public List<ITransaction> GetTransactionsBetween(DateTime? from = null, DateTime? to = null, bool includeThoseOnToDate = false)
         {
             var fromDt = @from ?? FirstTransaction.AtTime;
             var toDt = @to ?? LastTransaction.AtTime;

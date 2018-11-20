@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -22,16 +21,17 @@ namespace NoFuture.Rand.Sp
         /// Gets transactions which occured on or after <see cref="from"/> up to the <see cref="to"/>
         /// </summary>
         /// <param name="from">
+        /// Optional, leave null to default to first transaction.
         /// Transactions which occured exactly on this date WILL be included in the results.
         /// </param>
         /// <param name="to">
-        /// Transactions which occured exactly 
-        /// on this date will not be included unless <see cref="includeThoseOnToDate"/>
+        /// Optional, leave null to default to last transaction
+        /// Transactions which occured exactly on this date will not be included unless <see cref="includeThoseOnToDate"/>
         /// is set to true.
         /// </param>
         /// <param name="includeThoseOnToDate"></param>
         /// <returns></returns>
-        List<ITransaction> GetTransactionsBetween(DateTime? from, DateTime? to, bool includeThoseOnToDate = false);
+        List<ITransaction> GetTransactionsBetween(DateTime? from = null, DateTime? to = null, bool includeThoseOnToDate = false);
 
         /// <summary>
         /// Returns a negative value being the sum of all payments-out between dates in <see cref="between"/>

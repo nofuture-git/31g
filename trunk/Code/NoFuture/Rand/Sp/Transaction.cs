@@ -3,6 +3,7 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc />
     /// <summary>
     /// Single immutable money transaction
     /// </summary>
