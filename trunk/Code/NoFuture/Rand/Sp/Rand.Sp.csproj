@@ -67,6 +67,7 @@
     <Compile Include="ITradeLine.cs" />
     <Compile Include="ITransaction.cs" />
     <Compile Include="ITransactionable.cs" />
+    <Compile Include="ITransactionHistory.cs" />
     <Compile Include="LoanBase.cs" />
     <Compile Include="Mortgage.cs" />
     <Compile Include="Pecuniam.cs" />

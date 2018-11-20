@@ -55,4 +55,5 @@ digraph noFutureRandDataSp {
     AccountId -> RIdentifier
     Ledger -> ITransaction [style="dotted" arrowhead="diamond"]
     Transaction -> ITransaction
+    ITransaction -> ITransactionHistory 
 }

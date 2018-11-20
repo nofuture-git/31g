@@ -13,31 +13,42 @@ namespace NoFuture.Rand.Sp
         #region ctor
         internal Transaction(DateTime atTime, Pecuniam amt, Guid ledgerId, IVoca description = null)
         {
+            UniqueId = Guid.NewGuid();
             AtTime = atTime;
             Cash = amt ?? Pecuniam.Zero;
             Description = description;
             LedgerId = ledgerId;
         }
+
+        internal Transaction(DateTime atTime, Pecuniam amt, Guid ledgerId, Guid fromLedgerId,
+            ITransactionHistory history, IVoca description = null):this(atTime,amt, ledgerId, description)
+        {
+            History = history;
+            FromLedger = fromLedgerId;
+
+        }
         #endregion
 
         #region properties
+        public Guid FromLedger { get; }
         public Guid LedgerId { get; }
-        public Guid UniqueId { get; } = Guid.NewGuid();
+        public Guid UniqueId { get; } 
         public DateTime AtTime { get; }
         public Pecuniam Cash { get; }
         public IVoca Description { get; }
+        public ITransactionHistory History { get; }
         #endregion
 
         #region methods
 
         public ITransaction GetInverse()
         {
-            return new Transaction(AtTime, (Cash.Amount *-1M).ToPecuniam(), LedgerId, Description);
+            return new Transaction(AtTime, (Cash.Amount *-1M).ToPecuniam(), LedgerId, FromLedger, History, Description);
         }
 
         public ITransaction Clone()
         {
-            return new Transaction(AtTime, Cash, LedgerId, Description);
+            return new Transaction(AtTime, Cash, LedgerId, FromLedger, History, Description);
         }
 
         public override bool Equals(object obj)
