@@ -63,13 +63,11 @@
     <Compile Include="IAsset.cs" />
     <Compile Include="IBalance.cs" />
     <Compile Include="ILoan.cs" />
-    <Compile Include="IMereo.cs" />
     <Compile Include="IReceivable.cs" />
     <Compile Include="ITradeLine.cs" />
     <Compile Include="ITransaction.cs" />
     <Compile Include="ITransactionable.cs" />
     <Compile Include="LoanBase.cs" />
-    <Compile Include="Mereo.cs" />
     <Compile Include="Mortgage.cs" />
     <Compile Include="Pecuniam.cs" />
     <Compile Include="PecuniamExtensions.cs" />

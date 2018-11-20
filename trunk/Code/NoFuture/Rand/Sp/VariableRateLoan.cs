@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -15,7 +16,7 @@ namespace NoFuture.Rand.Sp
             : base(openedDate, minPaymentRate)
         {
             if (amt != null && amt.Amount != 0)
-                Balance.AddPositiveValue(openedDate, amt.GetAbs(), new Mereo("Initial Transaction"));
+                Balance.AddPositiveValue(openedDate, amt.GetAbs(), new VocaBase("Initial Transaction"));
         }
 
         #endregion
