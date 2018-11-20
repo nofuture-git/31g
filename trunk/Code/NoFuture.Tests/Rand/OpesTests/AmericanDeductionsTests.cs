@@ -235,7 +235,6 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(allDeductionsItesm);
 
             Assert.AreEqual(allDeductionsItesm.Count, testResults.Length);
-            Console.WriteLine(NamedReceivable.GetExpectedAnnualSum(testResults));
         }
 
         [Test]
@@ -284,8 +283,8 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             var testResultItem = testSubject.MyItems.FirstOrDefault(x => x.Name == "Child Support");
             Assert.IsNotNull(testResultItem);
-            Assert.AreNotEqual(0.ToPecuniam(), testResultItem.Expectation.Value);
-            Console.WriteLine(testResultItem.Expectation.Value);
+            Assert.AreNotEqual(0.ToPecuniam(), testResultItem.Value);
+            Console.WriteLine(testResultItem.Value);
         }
 
         [Test]

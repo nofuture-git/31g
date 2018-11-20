@@ -128,12 +128,15 @@ namespace NoFuture.Rand.Opes.US
             var coi = CurrentOtherIncome;
             foreach (var p in coi)
             {
-                if (p.Expectation == null || p.Expectation.Value == Pecuniam.Zero)
+                var v = p.Value;
+                if (v == Pecuniam.Zero)
                     continue;
 
-                var expenseName = Division.ToString() + p.Expectation.Interval;
+                var expenseName = Division.ToString() + p.DueFrequency.ToInterval();
                 expenseName += p.Name;
-                itemData.Add(textFormat(expenseName), p.Expectation.Value.ToString());
+                if(itemData.ContainsKey(textFormat(expenseName)))
+                    continue;
+                itemData.Add(textFormat(expenseName), v.ToString());
             }
 
             return itemData;
@@ -285,36 +288,32 @@ namespace NoFuture.Rand.Opes.US
             startDate = startDate == DateTime.MinValue ? GetYearNeg(-1) : startDate;
             var isPoor = IsBelowFedPovertyAt(options);
 
-            var grossIncome = GetExpectedAnnualEmplyGrossIncome(startDate);
-            var netIncome = GetExpectedAnnualEmplyNetIncome(startDate);
+            var grossIncome = GetAnnualEmplyGrossIncome(startDate);
+            var netIncome = GetAnnualEmplyNetIncome(startDate);
             var hudAmt = isPoor ? GetHudMonthlyAmount(grossIncome, netIncome) : Pecuniam.Zero;
             var snapAmt = isPoor ? GetFoodStampsMonthlyAmount(netIncome) : Pecuniam.Zero;
 
-            var incomeItems = GetIncomeItemNames().Where(i => i.GetName(KindsOfNames.Group) == "Public Benefits");
+            var incomeItems = GetIncomeItemNames().Where(i => i.GetName(KindsOfNames.Group) == IncomeGroupNames.PUBLIC_BENEFITS);
             foreach (var incomeItem in incomeItems)
             {
-                var p = new NamedReceivable(incomeItem)
-                {
-                    Inception = startDate,
-                    Terminus = endDate,
-                    DueFrequency = new TimeSpan(30,0,0,0)
-                };
+                NamedReceivable p = null;
 
                 switch (incomeItem.Name)
                 {
                     case "Supplemental Nutrition Assistance Program":
-                        p.Expectation.Value = snapAmt;
+                        p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(incomeItem.Name,
+                            IncomeGroupNames.PUBLIC_BENEFITS, snapAmt,
+                            PecuniamExtensions.GetTropicalMonth(), startDate, endDate);
                         break;
                     case "Housing Choice Voucher Program Section 8":
-                        p.Expectation.Value = hudAmt;
+                        p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(incomeItem.Name,
+                            IncomeGroupNames.PUBLIC_BENEFITS, hudAmt,
+                            PecuniamExtensions.GetTropicalMonth(), startDate, endDate);
                         break;
                     //TODO implement the other welfare programs
-                    default:
-                        p.Expectation.Value = Pecuniam.Zero;
-                        break;
                 }
-
-                itemsout.Add(p);
+                if(p != null)
+                    itemsout.Add(p);
             }
             return itemsout.ToArray();
         }
@@ -366,7 +365,7 @@ namespace NoFuture.Rand.Opes.US
 
             numHouseholdMembers = numHouseholdMembers <= 0 ? 1 : numHouseholdMembers;
 
-            return GetExpectedAnnualEmplyGrossIncome(dt).ToDouble() <= povertyLevel.SolveForY(numHouseholdMembers);
+            return GetAnnualEmplyGrossIncome(dt).ToDouble() <= povertyLevel.SolveForY(numHouseholdMembers);
         }
 
         /// <summary>
@@ -471,14 +470,14 @@ namespace NoFuture.Rand.Opes.US
 
             //get some base to calc the product 
             var someBase = Employment.Any() 
-                           ? GetExpectedAnnualEmplyGrossIncome(dt) 
+                           ? GetAnnualEmplyGrossIncome(dt) 
                            : GetRandomYearlyIncome(dt, options);
 
             var randAmt = someBase.ToDouble() * randRate;
             return randAmt.ToPecuniam();
         }
 
-        private Pecuniam GetExpectedAnnualEmplyGrossIncome(DateTime? dt)
+        private Pecuniam GetAnnualEmplyGrossIncome(DateTime? dt)
         {
             var payAtDt = GetEmploymentAt(dt);
             if (payAtDt == null || !payAtDt.Any())
@@ -488,14 +487,14 @@ namespace NoFuture.Rand.Opes.US
             foreach (var emp in payAtDt)
             {
                 var payAt = emp.GetPayAt(dt);
-                var f = NamedReceivable.GetExpectedAnnualSum(payAt);
+                var f = payAt.Sum();
                 sum += f;
             }
 
             return sum;
         }
 
-        private Pecuniam GetExpectedAnnualEmplyNetIncome(DateTime? dt)
+        private Pecuniam GetAnnualEmplyNetIncome(DateTime? dt)
         {
             var payAtDt = GetEmploymentAt(dt);
             if (payAtDt == null || !payAtDt.Any())
@@ -504,8 +503,8 @@ namespace NoFuture.Rand.Opes.US
             var sum = Pecuniam.Zero;
             foreach (var emp in payAtDt)
             {
-                var pay = NamedReceivable.GetExpectedAnnualSum(emp.GetPayAt(dt));
-                var ded = NamedReceivable.GetExpectedAnnualSum(emp.Deductions?.GetDeductionsAt(dt)) ?? Pecuniam.Zero;
+                var pay = emp.GetPayAt(dt).Sum();
+                var ded = emp.Deductions?.GetDeductionsAt(dt).Sum() ?? Pecuniam.Zero;
                 sum += pay - ded.GetAbs();
             }
 

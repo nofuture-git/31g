@@ -69,7 +69,7 @@ namespace NoFuture.Rand.Tests.SpTests
             testSubject.AddPositiveValue(dt.AddDays(-360), new Security(cusip, 5000));
             testSubject.AddPositiveValue(dt.AddDays(-360), new Pecuniam(500000.0M));
             testSubject.Inception = dt.AddDays(-365);
-            testSubject.Expectation.Value = new Pecuniam(800000M);
+            testSubject.AddPositiveValue(dt.AddDays(-365), new Pecuniam(800000M));
             
 
             var testResult = testSubject.ToData(KindsOfTextCase.Kabab);

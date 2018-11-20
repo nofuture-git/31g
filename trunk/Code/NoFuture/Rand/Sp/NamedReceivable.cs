@@ -101,37 +101,6 @@ namespace NoFuture.Rand.Sp
             _voca.CopyFrom(voca);
         }
 
-        public static Pecuniam GetExpectedSum(IEnumerable<NamedReceivable> items)
-        {
-            if(items == null || !items.Any())
-                return Pecuniam.Zero;
-
-            var p = Pecuniam.Zero;
-            foreach (var i in items)
-                p += i?.Expectation?.Value ?? Pecuniam.Zero;
-            return p;
-        }
-
-        /// <summary>
-        /// Helper method to get an annual sum based on each items interval
-        /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
-        public static Pecuniam GetExpectedAnnualSum(IEnumerable<NamedReceivable> items)
-        {
-            if(items == null || !items.Any())
-                return Pecuniam.Zero;
-            var sum = 0M;
-            foreach (var item in items)
-            {
-                //don't include if expectation is missing
-                if (item?.Expectation?.Value == null)
-                    continue;
-                sum += item.Expectation.Value.Amount;
-            }
-            return new Pecuniam(sum);
-        }
-
         /// <summary>
         /// Consider equality as being the same name at the same time
         /// </summary>

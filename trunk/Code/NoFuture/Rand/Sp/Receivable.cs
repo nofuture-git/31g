@@ -31,8 +31,6 @@ namespace NoFuture.Rand.Sp
 
         public virtual Pecuniam Value => Balance.GetCurrent(DateTime.Now, 0f);
 
-        public IMereo Expectation { get; } = new Mereo();
-
         public virtual PastDue? GetDelinquency(DateTime dt)
         {
             if (GetStatus(dt) != SpStatus.Late)

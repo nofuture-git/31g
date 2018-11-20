@@ -989,9 +989,9 @@ namespace NoFuture.Rand.Opes
             var calcValue = CalcValue(options.SumTotal, rate);
             var p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(itemName, grpName, calcValue,
                 options.DueFrequency, options.Inception, options.Terminus);
-            if (p.Expectation.Value == null || p.Expectation.Value == Pecuniam.Zero)
-                p.Expectation.Value = calcValue;
-            p.Expectation.TimeDenominator = options.DueFrequency;
+            //if (p.Expectation.Value == null || p.Expectation.Value == Pecuniam.Zero)
+            //    p.Expectation.Value = calcValue;
+            //p.Expectation.TimeDenominator = options.DueFrequency;
 
             return p;
         }

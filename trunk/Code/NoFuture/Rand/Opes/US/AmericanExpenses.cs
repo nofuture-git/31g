@@ -59,8 +59,8 @@ namespace NoFuture.Rand.Opes.US
         {
             if (expense == null)
                 return;
-            if (expense.Expectation?.Value != null)
-                expense.Expectation.Value = expense.Expectation.Value.GetNeg();
+            //if (expense.Expectation?.Value != null)
+            //    expense.Expectation.Value = expense.Expectation.Value.GetNeg();
             _expenses.Add(expense);
         }
 

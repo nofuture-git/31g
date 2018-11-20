@@ -331,7 +331,6 @@ namespace NoFuture.Rand.Opes.US
         {
             if (IsInRange(p))
             {
-                p.Expectation.Value = p.Expectation.Value.GetAbs();
                 _pay.Add(p);
             }
         }
@@ -391,7 +390,7 @@ namespace NoFuture.Rand.Opes.US
         public override string ToString()
         {
             var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(EmployingCompanyName, Occupation?.ToString(),
-                Inception, Terminus, NamedReceivable.GetExpectedSum(GetCurrent(MyItems)));
+                Inception, Terminus, GetCurrent(MyItems).Sum());
             return t.ToString();
         }
 

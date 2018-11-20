@@ -322,7 +322,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? OpesOptions.RandomOpesOptions();
 
-            var pPay = NamedReceivable.GetExpectedAnnualSum(_employment.GetPayAt(options.Inception)) ?? Pecuniam.Zero;
+            var pPay = _employment.GetPayAt(options.Inception).Sum() ?? Pecuniam.Zero;
             var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.Inception, options).ToDouble() : pPay.ToDouble();
             return pay;
         }
@@ -331,7 +331,7 @@ namespace NoFuture.Rand.Opes.US
         {
             var t = new Tuple<string, string, DateTime?, DateTime?, Pecuniam>(_employment.EmployingCompanyName,
                 _employment.Occupation?.ToString(),
-                _employment.Inception, _employment.Terminus, NamedReceivable.GetExpectedAnnualSum(GetCurrent(MyItems)));
+                _employment.Inception, _employment.Terminus, GetCurrent(MyItems).Sum());
             return t.ToString();
         }
 

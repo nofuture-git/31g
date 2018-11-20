@@ -36,9 +36,5 @@ namespace NoFuture.Rand.Sp
         /// <returns></returns>
         SpStatus GetStatus(DateTime? dt);
 
-        /// <summary>
-        /// Represents the expectation of the given receivable in the from of value and name(s).
-        /// </summary>
-        IMereo Expectation { get; }
     }
 }
