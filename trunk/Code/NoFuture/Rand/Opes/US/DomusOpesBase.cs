@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
-using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Sp;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 
-namespace NoFuture.Rand.Opes
+namespace NoFuture.Rand.Opes.US
 {
+    /// <inheritdoc cref="WealthBase" />
     /// <summary>
     /// Base type for US household wealth
     /// </summary>
