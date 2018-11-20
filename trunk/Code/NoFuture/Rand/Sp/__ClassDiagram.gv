@@ -55,5 +55,9 @@ digraph noFutureRandDataSp {
     AccountId -> RIdentifier
     Ledger -> ITransaction [style="dotted" arrowhead="diamond"]
     Transaction -> ITransaction
-    ITransaction -> ITransactionHistory 
+    Transaction -> TransactionId
+    ITransaction -> ITransactionId
+    TransactionId -> ITransactionId
+    TraceTransactionId -> ITransactionId
+    NamedReceivable -> VocaBase [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
 }
