@@ -82,7 +82,7 @@
     <Compile Include="TradeLine.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="TransactionComparer.cs" />
-    <Compile Include="TransactionHistory.cs" />
+    <Compile Include="Ledger.cs" />
     <Compile Include="VariableRateLoan.cs" />
   </ItemGroup>
   <ItemGroup>

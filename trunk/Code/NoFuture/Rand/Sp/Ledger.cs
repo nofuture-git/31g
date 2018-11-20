@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Sp
     /// Represent an ordered set of <see cref="Transaction"/> in time.
     /// </summary>
     [Serializable]
-    public class TransactionHistory
+    public class Ledger
     {
         #region fields
         private readonly List<ITransaction> _transactions = new List<ITransaction>();
@@ -28,8 +28,10 @@ namespace NoFuture.Rand.Sp
 
         protected void AddTransaction(ITransaction t)
         {
-            if(t != null)
+            if (t != null)
+            {
                 _transactions.Add(t);
+            }
         }
 
         protected internal IComparer<ITransaction> Comparer { get; } = new TransactionComparer();
@@ -54,8 +56,8 @@ namespace NoFuture.Rand.Sp
             {
                 dt = dt.AddTicks(1L);
             }
-            var t = new Transaction(dt, amnt.GetNeg(), note);
-            _transactions.Add(t);
+            var t = new Transaction(dt, amnt.GetNeg(), Id, note);
+            AddTransaction(t);
             return t.UniqueId;
         }
 
@@ -69,8 +71,8 @@ namespace NoFuture.Rand.Sp
             {
                 dt = dt.AddTicks(1L);
             }
-            var t = new Transaction(dt, amnt.GetAbs(), note);
-            _transactions.Add(t);
+            var t = new Transaction(dt, amnt.GetAbs(), Id, note);
+            AddTransaction(t);
             return t.UniqueId;
         }
     }

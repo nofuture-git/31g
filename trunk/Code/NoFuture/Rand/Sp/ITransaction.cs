@@ -8,6 +8,7 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public interface ITransaction
     {
+        Guid LedgerId { get; }
         Guid UniqueId { get; }
         DateTime AtTime { get; }
         Pecuniam Cash { get; }

@@ -11,15 +11,17 @@ namespace NoFuture.Rand.Sp
     public class Transaction : ITransaction
     {
         #region ctor
-        public Transaction(DateTime atTime, Pecuniam amt, IVoca description = null)
+        internal Transaction(DateTime atTime, Pecuniam amt, Guid ledgerId, IVoca description = null)
         {
             AtTime = atTime;
             Cash = amt ?? Pecuniam.Zero;
             Description = description;
+            LedgerId = ledgerId;
         }
         #endregion
 
         #region properties
+        public Guid LedgerId { get; }
         public Guid UniqueId { get; } = Guid.NewGuid();
         public DateTime AtTime { get; }
         public Pecuniam Cash { get; }
@@ -30,7 +32,7 @@ namespace NoFuture.Rand.Sp
 
         public ITransaction GetInverse()
         {
-            return new Transaction(AtTime, (Cash.Amount *-1M).ToPecuniam(), Description);
+            return new Transaction(AtTime, (Cash.Amount *-1M).ToPecuniam(), LedgerId, Description);
 
         }
         public override bool Equals(object obj)
