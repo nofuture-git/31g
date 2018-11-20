@@ -291,7 +291,7 @@ namespace NoFuture.Rand.Opes
         /// from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
-        public static IMereo[] GetIncomeItemNames()
+        public static IVoca[] GetIncomeItemNames()
         {
             var xpath = $"//{DomusOpesDivisions.Income.ToString().ToLower()}//item";
             return _incomeItemNames = _incomeItemNames ?? GetDomusOpesItemNames(xpath);
@@ -302,7 +302,7 @@ namespace NoFuture.Rand.Opes
         /// (e.g. Fed Tax, Child Support, FICA, etc.) from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
-        public static IMereo[] GetDeductionItemNames()
+        public static IVoca[] GetDeductionItemNames()
         {
             var xpath = $"//{DomusOpesDivisions.Deduction.ToString().ToLower()}//item";
             return _deductionItemNames = _deductionItemNames ?? GetDomusOpesItemNames(xpath);
@@ -313,7 +313,7 @@ namespace NoFuture.Rand.Opes
         /// (i.e. household budget) from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
-        public static IMereo[] GetExpenseItemNames()
+        public static IVoca[] GetExpenseItemNames()
         {
             var xpath = $"//{DomusOpesDivisions.Expense.ToString().ToLower()}//item";
             return _expenseItemNames = _expenseItemNames ?? GetDomusOpesItemNames(xpath);
@@ -325,7 +325,7 @@ namespace NoFuture.Rand.Opes
         /// from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
-        public static IMereo[] GetAssetItemNames()
+        public static IVoca[] GetAssetItemNames()
         {
             var xpath = $"//{DomusOpesDivisions.Assets.ToString().ToLower()}//item";
             return _assetItemNames = _assetItemNames ?? GetDomusOpesItemNames(xpath);
@@ -337,7 +337,7 @@ namespace NoFuture.Rand.Opes
         /// from US Domus Opes data file
         /// </summary>
         /// <returns></returns>
-        public static IMereo[] GetEmploymentItemNames()
+        public static IVoca[] GetEmploymentItemNames()
         {
             var xpath = $"//{DomusOpesDivisions.Employment.ToString().ToLower()}//item";
             return _employmentItemNames = _employmentItemNames ?? GetDomusOpesItemNames(xpath);
@@ -378,9 +378,9 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="division"></param>
         /// <returns></returns>
-        public static IMereo[] GetItemNames(DomusOpesDivisions division)
+        public static IVoca[] GetItemNames(DomusOpesDivisions division)
         {
-            var grpNames = new List<IMereo>();
+            var grpNames = new List<IVoca>();
             switch (division)
             {
                 case DomusOpesDivisions.Assets:

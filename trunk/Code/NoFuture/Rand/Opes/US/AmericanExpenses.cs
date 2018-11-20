@@ -214,6 +214,8 @@ namespace NoFuture.Rand.Opes.US
                 options.AddGivenDirectlyZero("Property Tax", ExpenseGroupNames.TRANSPORTATION);
 
                 options.AddGivenDirectlyZero("Parking", ExpenseGroupNames.TRANSPORTATION);
+
+                options.AddGivenDirectlyZero("Registration Fees", ExpenseGroupNames.TRANSPORTATION);
             }
 
             var d = GetItemNames2Portions(ExpenseGroupNames.TRANSPORTATION, options);
