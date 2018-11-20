@@ -184,6 +184,19 @@ namespace NoFuture.Rand.Sp
             return string.Join("\n", Transactions);
         }
 
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var ledger = obj as Balance;
+            if (ledger == null)
+                return base.Equals(obj);
+            return ledger.Id == Id;
+        }
+
         #endregion
     }
 }

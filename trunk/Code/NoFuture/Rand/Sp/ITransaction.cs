@@ -14,5 +14,6 @@ namespace NoFuture.Rand.Sp
         Pecuniam Cash { get; }
         IVoca Description { get; }
         ITransaction GetInverse();
+        ITransaction Clone();
     }
 }

@@ -33,16 +33,17 @@ namespace NoFuture.Rand.Sp
         public ITransaction GetInverse()
         {
             return new Transaction(AtTime, (Cash.Amount *-1M).ToPecuniam(), LedgerId, Description);
-
         }
+
+        public ITransaction Clone()
+        {
+            return new Transaction(AtTime, Cash, LedgerId, Description);
+        }
+
         public override bool Equals(object obj)
         {
-            if (Equals(obj, null))
-                return false;
             var t = obj as Transaction;
-            if (t == null)
-                return false;
-            return UniqueId.Equals(t.UniqueId);
+            return t != null && UniqueId.Equals(t.UniqueId);
         }
 
         public override int GetHashCode()
