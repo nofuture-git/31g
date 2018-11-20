@@ -8,11 +8,11 @@ using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Opes.US
 {
-    /// <inheritdoc cref="WealthBase" />
+    /// <inheritdoc cref="DomusOpesBase" />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class AmericanExpenses : WealthBase, IDeinde
+    public class AmericanExpenses : DomusOpesBase, IDeinde
     {
         private const double PERCENT_EXPENSE_OF_INCOME = 0.85;
         private readonly HashSet<NamedReceivable> _expenses = new HashSet<NamedReceivable>();

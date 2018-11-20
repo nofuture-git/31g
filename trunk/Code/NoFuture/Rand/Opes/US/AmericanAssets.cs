@@ -13,12 +13,12 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes.US
 {
-    /// <inheritdoc cref="WealthBase" />
+    /// <inheritdoc cref="DomusOpesBase" />
     /// <summary>
     /// Represents the assets of a North American over some span of time
     /// </summary>
     [Serializable]
-    public class AmericanAssets : WealthBase, IDeinde
+    public class AmericanAssets : DomusOpesBase, IDeinde
     {
         #region fields
         internal const string REAL_PROPERTY_HOME_OWNERSHIP = "Home Ownership";

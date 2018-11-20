@@ -11,11 +11,11 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Opes.US
 {
-    /// <inheritdoc cref="WealthBase"/>
+    /// <inheritdoc cref="DomusOpesBase"/>
     /// <summary>
     /// </summary>
     [Serializable]
-    public class AmericanDeductions : WealthBase, IDeinde
+    public class AmericanDeductions : DomusOpesBase, IDeinde
     {
         private readonly HashSet<NamedReceivable> _deductions = new HashSet<NamedReceivable>();
         private readonly AmericanEmployment _employment;

@@ -13,12 +13,12 @@ using NoFuture.Shared.Core;
 namespace NoFuture.Rand.Opes.US
 {
     /// <inheritdoc cref="IReditus" />
-    /// <inheritdoc cref="WealthBase" />
+    /// <inheritdoc cref="DomusOpesBase" />
     /// <summary>
     /// Represents the income (both employment and other) of a NorthAmerican over some span of time.
     /// </summary>
     [Serializable]
-    public class AmericanIncome : WealthBase, IReditus
+    public class AmericanIncome : DomusOpesBase, IReditus
     {
         #region fields
         private readonly HashSet<ILaboris> _employment = new HashSet<ILaboris>();

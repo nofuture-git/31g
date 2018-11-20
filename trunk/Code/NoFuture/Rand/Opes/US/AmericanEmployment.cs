@@ -10,11 +10,11 @@ using NoFuture.Shared.Core;
 namespace NoFuture.Rand.Opes.US
 {
     /// <inheritdoc cref="ILaboris" />
-    /// <inheritdoc cref="WealthBase" />
+    /// <inheritdoc cref="DomusOpesBase" />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class AmericanEmployment : WealthBase, ILaboris
+    public class AmericanEmployment : DomusOpesBase, ILaboris
     {
         #region fields
         private readonly HashSet<NamedReceivable> _pay = new HashSet<NamedReceivable>();
