@@ -15,14 +15,14 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestGetCurrentNoInterest()
         {
             var testBalance = new Balance();
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-15), new Pecuniam(2000.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-12), new Pecuniam(-451.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-12), new Pecuniam(-101.91M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-12), new Pecuniam(-87.88M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-12), new Pecuniam(-32.47M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-12), new Pecuniam(-16.88M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-15), new Pecuniam(2000.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-12), new Pecuniam(-451.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-12), new Pecuniam(-101.91M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-12), new Pecuniam(-87.88M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-12), new Pecuniam(-32.47M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-12), new Pecuniam(-16.88M));
 
-            var testResult = testBalance.GetCurrent(DateTime.Now, 0);
+            var testResult = testBalance.GetCurrent(DateTime.UtcNow, 0);
             Assert.AreEqual(1309.86M, testResult.Amount);
             Console.WriteLine(testResult.Amount);
         }
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestGetPaymentSum()
         {
             var testSubject = new Balance();
-            var dt = DateTime.Now;
+            var dt = DateTime.UtcNow;
 
             testSubject.AddNegativeValue(dt.AddDays(-360), new Pecuniam(-450.0M));
             testSubject.AddNegativeValue(dt.AddDays(-30), new Pecuniam(-461.0M));
@@ -60,14 +60,14 @@ namespace NoFuture.Rand.Tests.SpTests
             testSubject.AddPositiveValue(dt.AddDays(-155), new Pecuniam(173.4M));
 
             var testResult =
-                testSubject.GetDebitSum(new Tuple<DateTime, DateTime>(dt.AddDays(-31).Date, DateTime.Now));
+                testSubject.GetDebitSum(new Tuple<DateTime, DateTime>(dt.AddDays(-31).Date, DateTime.UtcNow));
 
             Assert.AreEqual(-461.0M, testResult.Amount);
 
             testSubject.AddNegativeValue(dt.AddDays(-15), new Pecuniam(-120.0M));
 
             testResult =
-                testSubject.GetDebitSum(new Tuple<DateTime, DateTime>(dt.AddDays(-31).Date, DateTime.Now));
+                testSubject.GetDebitSum(new Tuple<DateTime, DateTime>(dt.AddDays(-31).Date, DateTime.UtcNow));
 
             Assert.AreEqual((-461.0M - 120.0M), testResult.Amount);
 
@@ -88,33 +88,33 @@ namespace NoFuture.Rand.Tests.SpTests
             var testBalance = new Balance();
             //monthly payments
 
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-360), new Pecuniam(-450.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-30), new Pecuniam(-461.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-120), new Pecuniam(-458.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-150), new Pecuniam(-457.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-90), new Pecuniam(-459.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-240), new Pecuniam(-454.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-60), new Pecuniam(-460.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-300), new Pecuniam(-452.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-270), new Pecuniam(-453.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-180), new Pecuniam(-456.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-210), new Pecuniam(-455.0M));
-            testBalance.AddNegativeValue(DateTime.Now.AddDays(-330), new Pecuniam(-451.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-360), new Pecuniam(-450.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-30), new Pecuniam(-461.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-120), new Pecuniam(-458.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-150), new Pecuniam(-457.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-90), new Pecuniam(-459.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-240), new Pecuniam(-454.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-60), new Pecuniam(-460.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-300), new Pecuniam(-452.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-270), new Pecuniam(-453.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-180), new Pecuniam(-456.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-210), new Pecuniam(-455.0M));
+            testBalance.AddNegativeValue(DateTime.UtcNow.AddDays(-330), new Pecuniam(-451.0M));
 
             //charges
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-365), new Pecuniam(8000.0M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-350), new Pecuniam(164.4M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-198), new Pecuniam(165.4M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-24), new Pecuniam(166.4M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-74), new Pecuniam(167.4M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-88), new Pecuniam(168.4M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-92), new Pecuniam(169.4M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-121), new Pecuniam(170.4M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-180), new Pecuniam(171.4M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-142), new Pecuniam(172.4M));
-            testBalance.AddPositiveValue(DateTime.Now.AddDays(-155), new Pecuniam(173.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-365), new Pecuniam(8000.0M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-350), new Pecuniam(164.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-198), new Pecuniam(165.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-24), new Pecuniam(166.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-74), new Pecuniam(167.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-88), new Pecuniam(168.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-92), new Pecuniam(169.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-121), new Pecuniam(170.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-180), new Pecuniam(171.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-142), new Pecuniam(172.4M));
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-155), new Pecuniam(173.4M));
 
-            var testResult = testBalance.GetCurrent(DateTime.Now, 0.0875f);
+            var testResult = testBalance.GetCurrent(DateTime.UtcNow, 0.0875f);
 
             Assert.IsTrue(testResult.Amount <= 4723.45M || testResult.Amount >= 4723.46M);
             Console.WriteLine(testResult.Amount);
@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Tests.SpTests
         {
             //set some past date 
             var testBalance = new Balance();
-            var dt = DateTime.Now;
+            var dt = DateTime.UtcNow;
             testBalance.AddPositiveValue(dt.AddDays(-360), new Pecuniam(450.0M));
             //180 day spread
             testBalance.AddPositiveValue(dt.AddDays(-180), new Pecuniam(450.0M));
@@ -159,13 +159,13 @@ namespace NoFuture.Rand.Tests.SpTests
             testBalance.AddPositiveValue(dt.AddDays(-180), new Pecuniam(450.0M));
             testBalance.AddPositiveValue(dt.AddDays(-30), new Pecuniam(450.0M));
 
-            var testResult = testBalance.GetTransactionsBetween(dt.AddDays(-360), dt.AddDays(-180));
+            var testResult = testBalance.GetTransactions(dt.AddDays(-360), dt.AddDays(-180));
             Assert.AreEqual(1, testResult.Count);
-            testResult = testBalance.GetTransactionsBetween(dt.AddDays(-360), dt.AddDays(-180), true);
+            testResult = testBalance.GetTransactions(dt.AddDays(-360), dt.AddDays(-180), true);
             Assert.AreEqual(2, testResult.Count);
-            testResult = testBalance.GetTransactionsBetween(dt.AddDays(-360), dt.AddDays(-179));
+            testResult = testBalance.GetTransactions(dt.AddDays(-360), dt.AddDays(-179));
             Assert.AreEqual(2, testResult.Count);
-            testResult = testBalance.GetTransactionsBetween(dt.AddDays(-360), dt);
+            testResult = testBalance.GetTransactions(dt.AddDays(-360), dt);
             Assert.AreEqual(3, testResult.Count);
 
         }
@@ -177,7 +177,7 @@ namespace NoFuture.Rand.Tests.SpTests
             var testBalance = new Balance();
             //monthly payments
 
-            var dt = DateTime.Now;
+            var dt = DateTime.UtcNow;
 
             var oldestDt = dt.AddDays(-360);
             var newestDt = dt.AddDays(-30);
@@ -208,14 +208,14 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestGetInverse()
         {
             var testBalance = new Balance();
-            var dt = DateTime.Now.AddDays(-1);
+            var dt = DateTime.UtcNow.AddDays(-1);
 
             for (var i = 0; i <= 10; i++)
             {
                 testBalance.AddPositiveValue(dt.AddDays(i*-1), 128M.ToPecuniam());
             }
 
-            var testBalanceValue = testBalance.GetCurrent(DateTime.Now, 0.0f);
+            var testBalanceValue = testBalance.GetCurrent(DateTime.UtcNow, 0.0f);
             Console.WriteLine(testBalanceValue);
 
             var testResult = testBalance.GetInverse() as Balance;
@@ -232,7 +232,35 @@ namespace NoFuture.Rand.Tests.SpTests
                 Assert.IsTrue(diff == Pecuniam.Zero);
 
             }
-            Assert.IsTrue(testBalanceValue + testResult.GetCurrent(DateTime.Now, 0.0f) == Pecuniam.Zero);
+            Assert.IsTrue(testBalanceValue + testResult.GetCurrent(DateTime.UtcNow, 0.0f) == Pecuniam.Zero);
+        }
+
+        [Test]
+        public void TestGetDebitsCredits()
+        {
+            var testBalance = new Balance();
+            var dt = DateTime.UtcNow.AddDays(-1);
+            var numOfEachEntry = 12;
+            for (var i = 0; i < numOfEachEntry; i++)
+            {
+                testBalance.AddPositiveValue(dt.AddDays(-1 * i), 10M.ToPecuniam());
+            }
+
+            for (var i = 0; i < numOfEachEntry; i++)
+            {
+                testBalance.AddNegativeValue(dt.AddDays(-1 * i), (-10M).ToPecuniam());
+            }
+            Assert.AreEqual(numOfEachEntry*2, testBalance.TransactionCount);
+            var testResult = testBalance.GetCredits();
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(numOfEachEntry, testResult.Count);
+            Assert.IsTrue(testResult.Sum(x => x.Cash.Amount) > 0);
+
+            testResult = testBalance.GetDebits();
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(numOfEachEntry, testResult.Count);
+            Assert.IsTrue(testResult.Sum(x => x.Cash.Amount) < 0);
+
         }
     }
 }

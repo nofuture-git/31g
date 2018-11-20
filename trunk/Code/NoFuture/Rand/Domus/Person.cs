@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Domus
 
         public virtual List<Child> GetChildrenAt(DateTime? dt)
         {
-            var ddt = dt.GetValueOrDefault(DateTime.Now);
+            var ddt = dt.GetValueOrDefault(DateTime.UtcNow);
 
             return
                 _children.Where(
@@ -112,7 +112,7 @@ namespace NoFuture.Rand.Domus
 
         public int GetAgeAt(DateTime? atTime)
         {
-            var dt = atTime ?? DateTime.Now;
+            var dt = atTime ?? DateTime.UtcNow;
             ThrowOnBirthDateNull(this);
 
             if (DeathCert != null && dt > DeathCert.DateOfDeath)
@@ -175,7 +175,7 @@ namespace NoFuture.Rand.Domus
             if (separatedOn == null)
             {
                 //when this is the bride
-                if (Gender == Gender.Female && DateTime.Now >= marriedOn)
+                if (Gender == Gender.Female && DateTime.UtcNow >= marriedOn)
                 {
                     if (LastName != null && !AnyOfKind(KindsOfNames.Maiden))
                         AddName(KindsOfNames.Maiden, BirthCert.GetFatherSurname() ?? LastName);
@@ -183,7 +183,7 @@ namespace NoFuture.Rand.Domus
                     LastName = spouse.LastName;
                 }
             }
-            else if (Gender == Gender.Female && DateTime.Now >= separatedOn.Value)
+            else if (Gender == Gender.Female && DateTime.UtcNow >= separatedOn.Value)
             {
                 //add ex-husband last name to list
                 AddName(KindsOfNames.Former | KindsOfNames.Surname | KindsOfNames.Spouse, spouse.LastName);
@@ -231,7 +231,7 @@ namespace NoFuture.Rand.Domus
 
         public virtual Spouse GetSpouseNear(DateTime? dt, int days = PREG_DAYS + MS_DAYS)
         {
-            var ddt = (dt ?? DateTime.Now).Date;
+            var ddt = (dt ?? DateTime.UtcNow).Date;
             days = Math.Abs(days);
             return GetSpouseAt(ddt) ??
                    GetSpouseAt(ddt.AddDays(-1 * days)) ??

@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Sp
             {
                 if (string.IsNullOrWhiteSpace(_ficoScore))
                 {
-                    _ficoScore = GetScore(DateTime.Now).ToString();
+                    _ficoScore = GetScore(DateTime.UtcNow).ToString();
                 }
                 return _ficoScore;
             }

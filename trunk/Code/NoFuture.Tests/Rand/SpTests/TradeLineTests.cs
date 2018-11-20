@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestGetCurrent()
         {
-            var testSubject = new TradeLine(DateTime.Now.AddDays(-370));
+            var testSubject = new TradeLine(DateTime.UtcNow.AddDays(-370));
             var testBalance = testSubject.Balance;
 
             var today = DateTime.Today;
@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestAveragePerPeriod()
         {
             var dt = DateTime.Today;
-            var testSubject = new TradeLine(DateTime.Now.AddDays(-180));
+            var testSubject = new TradeLine(DateTime.UtcNow.AddDays(-180));
             testSubject.DueFrequency = new TimeSpan(30,0,0,0);
             for (var i = -180; i < 0; i += 30)
             {

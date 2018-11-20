@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Tests.EduTests
         [Test]
         public void RandomEducationYoungChild()
         {
-            var testResult = AmericanEducation.RandomEducation(DateTime.Now.AddYears(-9), "FL", "32162");
+            var testResult = AmericanEducation.RandomEducation(DateTime.UtcNow.AddYears(-9), "FL", "32162");
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.HighSchool);
             Assert.IsNull(testResult.HighSchool.Item1);

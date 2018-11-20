@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Domus.US
 
             var deathDate = AmericanDeathCert.RandomDeathDate(p.BirthCert.DateOfBirth, p.Gender.ToString());
 
-            if (nullOnFutureDate && deathDate > DateTime.Now)
+            if (nullOnFutureDate && deathDate > DateTime.UtcNow)
                 return null;
 
             var manner = Etx.RandomPickOne(AmericanData.MannerOfDeathAvgs);
@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Domus.US
                 numberOfSiblings = 3;
 
             //default atTime to now
-            var dt = atTime ?? DateTime.Now;
+            var dt = atTime ?? DateTime.UtcNow;
 
             var motherAge = Etc.CalcAge(motherDob, dt);
 
@@ -184,7 +184,7 @@ namespace NoFuture.Rand.Domus.US
                 ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())
                 : AmericanEquations.MaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble());
 
-            var cdt = DateTime.Now;
+            var cdt = DateTime.UtcNow;
             var currentAge = Etc.CalcAge(dob.Value, cdt);
 
             if (currentAge < avgAgeMarriage)
@@ -320,7 +320,7 @@ namespace NoFuture.Rand.Domus.US
         public static int RandomNumberOfChildren(DateTime? dob, DateTime? atDateTime = null)
         {
             //average to be 2.5 
-            var vt = DateTime.Now;
+            var vt = DateTime.UtcNow;
             if (atDateTime != null)
                 vt = atDateTime.Value;
             dob = dob ?? Etx.RandomAdultBirthDate();
@@ -388,7 +388,7 @@ namespace NoFuture.Rand.Domus.US
         public static DateTime? RandomMarriageDate(DateTime? dob, Gender myGender)
         {
             dob = dob ?? Etx.RandomAdultBirthDate();
-            var dt = DateTime.Now;
+            var dt = DateTime.UtcNow;
             var avgAgeMarriage = myGender == Gender.Female
                 ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())
                 : AmericanEquations.MaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble());

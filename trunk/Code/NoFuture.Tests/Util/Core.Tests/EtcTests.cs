@@ -458,7 +458,7 @@ namespace NoFuture.Util.Core.Tests
                 Etc.SafeDotNetIdentifier("Â© The End Â©", false);
             Console.WriteLine(testResult);
 
-            Assert.AreEqual("TheEnd", testResult);
+            Assert.AreEqual("_u0000TheEnd", testResult);
 
             testResult =
                 Etc.SafeDotNetIdentifier("Â© The End Â©", true);

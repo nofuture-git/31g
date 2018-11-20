@@ -52,6 +52,11 @@ namespace NoFuture.Rand.Sp
             return new Transaction(AtTime, Cash, LedgerId, FromLedgerId, History, Description);
         }
 
+        public void PushHistory(Guid fromLedgerId, Guid toLedgerId, DateTime? atTime = null)
+        {
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
+        }
+
         public override bool Equals(object obj)
         {
             var t = obj as Transaction;

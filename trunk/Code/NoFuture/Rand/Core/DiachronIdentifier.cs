@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Core
 
         protected DiachronIdentifier()
         {
-            _dateRange = new Tuple<DateTime, DateTime?>(DateTime.Now, null);
+            _dateRange = new Tuple<DateTime, DateTime?>(DateTime.UtcNow, null);
         }
         protected DiachronIdentifier(DateTime startDate, DateTime? endDate)
         {

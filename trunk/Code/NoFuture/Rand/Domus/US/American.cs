@@ -89,7 +89,7 @@ namespace NoFuture.Rand.Domus.US
         /// <returns></returns>
         public override MaritialStatus GetMaritalStatusAt(DateTime? dt)
         {
-            var mdt = dt ?? DateTime.Now;
+            var mdt = dt ?? DateTime.UtcNow;
             var spouses = GetSpouses();
             if (!IsLegalAdult(mdt) ||!spouses.Any() || spouses.All(s => s.MarriedOn > mdt))
                 return MaritialStatus.Single;
@@ -116,7 +116,7 @@ namespace NoFuture.Rand.Domus.US
                 return null;
             }
 
-            dt = (dt ?? DateTime.Now).Date;
+            dt = (dt ?? DateTime.UtcNow).Date;
 
             var spouseData =
                 GetSpouses().FirstOrDefault(
@@ -211,7 +211,7 @@ namespace NoFuture.Rand.Domus.US
         {
             if (addr == null)
                 return;
-            dt = dt ?? DateTime.Now;
+            dt = dt ?? DateTime.UtcNow;
             AddAddress(addr);
 
             Func<Child, bool> isUnderageChild =
@@ -315,7 +315,7 @@ namespace NoFuture.Rand.Domus.US
         protected internal void ResolveFamilyState(bool skipParents = false)
         {
             ThrowOnBirthDateNull(this);
-            var dt = DateTime.Now;
+            var dt = DateTime.UtcNow;
 
             if (!skipParents)
                 ResolveParents();
@@ -401,7 +401,7 @@ namespace NoFuture.Rand.Domus.US
             if (myMaritialStatus == MaritialStatus.Single || myMaritialStatus == MaritialStatus.Unknown)
                 return;
 
-            var dt = atDate ?? DateTime.Now;
+            var dt = atDate ?? DateTime.UtcNow;
 
             ThrowOnBirthDateNull(this);
 
@@ -540,7 +540,7 @@ namespace NoFuture.Rand.Domus.US
             if(DeathCert != null && myChildDob > DeathCert.DateOfDeath)
                 return;
 
-            var dt = DateTime.Now;
+            var dt = DateTime.UtcNow;
             if (IsTwin(myChildDob, out var dtOut) && DateTime.Compare(dtOut, DateTime.MinValue) != 0)
             {
                 myChildDob = dtOut;
@@ -590,7 +590,7 @@ namespace NoFuture.Rand.Domus.US
             if (isChildAdult)
             {
                 nAmerChild.ResolveSpouse(AmericanUtil.RandomMaritialStatus(myChildDob, myChildGender));
-                nAmerChild.AlignCohabitantsHomeDataAt(DateTime.Now, nAmerChild.GetAddressAt(null));
+                nAmerChild.AlignCohabitantsHomeDataAt(DateTime.UtcNow, nAmerChild.GetAddressAt(null));
             }
 
             AddChild(nAmerChild);

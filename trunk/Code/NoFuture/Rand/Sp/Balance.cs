@@ -13,8 +13,14 @@ namespace NoFuture.Rand.Sp
     public class Balance : Ledger, IBalance
     {
         #region fields
-        private readonly Func<decimal, bool> _debitOp = x => x < 0;
-        private readonly Func<decimal, bool> _creditOp = x => x > 0;
+        private readonly Predicate<Pecuniam> _debitOp = x => (x ?? Pecuniam.Zero).Amount < 0;
+        private readonly Predicate<Pecuniam> _creditOp = x => (x ?? Pecuniam.Zero).Amount > 0;
+        private readonly Predicate<Pecuniam> _allOp = x => true;
+
+        private readonly Func<ITransaction, DateTime, bool> _inclusiveTimes = (x, toDt) =>
+            DateTime.Compare(x.AtTime, toDt) <= 0;
+        private readonly Func<ITransaction, DateTime, bool> _exclusiveTimes = (x, toDt) =>
+            DateTime.Compare(x.AtTime, toDt) < 0;
         #endregion
 
         #region methods
@@ -107,7 +113,7 @@ namespace NoFuture.Rand.Sp
                 }
 
                 //get those transactions which occured between
-                var betwixtTs = GetTransactionsBetween(prevVdt, currVdt);
+                var betwixtTs = GetTransactions(prevVdt, currVdt);
                 betwixtTs.Sort(Comparer);
 
                 //add in this date-ranges transactions to the running balance
@@ -123,20 +129,30 @@ namespace NoFuture.Rand.Sp
             return bal;
         }
 
-        public List<ITransaction> GetTransactionsBetween(DateTime? from = null, DateTime? to = null, bool includeThoseOnToDate = false)
+        public List<ITransaction> GetTransactions(DateTime? from = null, DateTime? to = null, bool includeThoseOnToDate = false)
         {
             var fromDt = @from ?? FirstTransaction.AtTime;
             var toDt = @to ?? LastTransaction.AtTime;
 
-            if (includeThoseOnToDate)
-            {
-                return Transactions.Where(
-                    x => DateTime.Compare(x.AtTime, fromDt) >= 0 && DateTime.Compare(x.AtTime, toDt) <= 0)
-                    .ToList();
-            }
-            return Transactions.Where(
-                x => DateTime.Compare(x.AtTime, fromDt) >= 0 && DateTime.Compare(x.AtTime, toDt) < 0)
-                .ToList();
+            return GetRange(new Tuple<DateTime, DateTime>(fromDt, toDt), _allOp, includeThoseOnToDate);
+        }
+
+        public List<ITransaction> GetDebits(DateTime? from = null, DateTime? to = null,
+            bool includeThoseOnToDate = true)
+        {
+            var fromDt = @from ?? FirstTransaction.AtTime;
+            var toDt = @to ?? LastTransaction.AtTime;
+
+            return GetRange(new Tuple<DateTime, DateTime>(fromDt, toDt), _debitOp, includeThoseOnToDate);
+        }
+
+        public List<ITransaction> GetCredits(DateTime? from = null, DateTime? to = null,
+            bool includeThoseOnToDate = true)
+        {
+            var fromDt = @from ?? FirstTransaction.AtTime;
+            var toDt = @to ?? LastTransaction.AtTime;
+
+            return GetRange(new Tuple<DateTime, DateTime>(fromDt, toDt), _creditOp, includeThoseOnToDate);
         }
 
         public IBalance GetInverse()
@@ -150,33 +166,50 @@ namespace NoFuture.Rand.Sp
             return b;
         }
 
-        protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Func<decimal, bool> op)
+        public void Transfer(IBalance source)
         {
-            var ts = Transactions;
-            if (ts.Count <= 0)
-                return Pecuniam.Zero;
+            if (source == null || source.TransactionCount <= 0)
+                return;
+            var credits = source.GetCredits();
+            var debits = source.GetDebits();
 
-            var fromDt = between?.Item1 ?? FirstTransaction.AtTime;
-            var toDt = between?.Item2 ?? LastTransaction.AtTime;
 
-            if (fromDt.Equals(toDt))
-                return Pecuniam.Zero;
+            throw new NotImplementedException();
+        }
 
-            var olderDate = DateTime.Compare(fromDt, toDt) < 0 ? fromDt : toDt;
-            var newerDate = DateTime.Compare(toDt, fromDt) > 0 ? toDt : fromDt;
-
-            var paymentsInRange =
-                ts.Where(
-                    x =>
-                        DateTime.Compare(x.AtTime, olderDate) >= 0 && DateTime.Compare(x.AtTime, newerDate) <= 0 &&
-                        op(x.Cash.Amount))
-                    .ToList();
+        protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Predicate<Pecuniam> op)
+        {
+            var paymentsInRange = GetRange(between, op);
 
             if (paymentsInRange.Count == 0)
                 return Pecuniam.Zero;
 
             var sumPayments = paymentsInRange.Select(x => x.Cash.Amount).Sum();
             return new Pecuniam(sumPayments);
+        }
+
+        protected internal List<ITransaction> GetRange(Tuple<DateTime, DateTime> between, Predicate<Pecuniam> op, bool includeThoseOnToDate = true)
+        {
+            var ts = Transactions;
+            if (ts.Count <= 0)
+                return new List<ITransaction>();
+
+            var fromDt = between?.Item1 ?? FirstTransaction.AtTime;
+            var toDt = between?.Item2 ?? LastTransaction.AtTime;
+
+            if (fromDt.Equals(toDt))
+                return new List<ITransaction>();
+
+            var olderDate = DateTime.Compare(fromDt, toDt) < 0 ? fromDt : toDt;
+            var newerDate = DateTime.Compare(toDt, fromDt) > 0 ? toDt : fromDt;
+
+            op = op ?? _allOp;
+
+            var uptoOp = includeThoseOnToDate ? _inclusiveTimes : _exclusiveTimes;
+
+            return Transactions.Where(
+                    x => op(x.Cash) && DateTime.Compare(x.AtTime, olderDate) >= 0 && uptoOp(x, newerDate))
+                .ToList();
         }
 
         public override string ToString()

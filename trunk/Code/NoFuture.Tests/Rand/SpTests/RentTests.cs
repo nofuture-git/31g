@@ -168,7 +168,7 @@ namespace NoFuture.Rand.Tests.SpTests
             //Assert.AreNotEqual(Pecuniam.Zero, testResult.MonthlyPmt);
             Assert.AreNotEqual(DateTime.MinValue, testResult.SigningDate);
             Assert.IsNotNull(testResult.Balance);
-            var payments = testResult.Balance.GetTransactionsBetween(null, null);
+            var payments = testResult.Balance.GetTransactions(null, null);
             Assert.IsNotNull(payments);
             Assert.AreNotEqual(0, payments.Count);
         }

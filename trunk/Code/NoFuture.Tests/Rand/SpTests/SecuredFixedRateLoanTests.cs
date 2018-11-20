@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Tests.SpTests
             Console.WriteLine("CurrentStatus      : {0}", testResult.CurrentStatus);
             Console.WriteLine("CurrentValue       : {0}", testResult.Value);
 
-            foreach (var t in testResult.Balance.GetTransactionsBetween(null, null, true))
+            foreach (var t in testResult.Balance.GetTransactions(null, null, true))
             {
                 Console.WriteLine(string.Join(" ", t.AtTime, t.Cash, t.Description));
             }

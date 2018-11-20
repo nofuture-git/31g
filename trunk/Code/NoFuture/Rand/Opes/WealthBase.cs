@@ -158,7 +158,7 @@ namespace NoFuture.Rand.Opes
             TimeSpan? dueFrequency = null)
         {
             var amt = expectedValue ?? Pecuniam.Zero;
-            var dt = atTime.GetValueOrDefault(DateTime.Now);
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
             var tss = dueFrequency ?? Constants.TropicalYear;
             var p = new NamedReceivable(new VocaBase(name, Division.ToString())) {DueFrequency = tss };
             if (amt.Amount < 0M)

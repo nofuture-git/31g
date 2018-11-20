@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Sp.Cc
 
         protected CreditCard(IVoca cardholder, DateTime? openedDate, DateTime? expiryDate)
         {
-            CardHolderSince = openedDate.GetValueOrDefault(DateTime.Now);
+            CardHolderSince = openedDate.GetValueOrDefault(DateTime.UtcNow);
 
             if (expiryDate == null)
             {

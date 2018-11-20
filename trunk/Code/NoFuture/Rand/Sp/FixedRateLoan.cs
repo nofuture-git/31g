@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Sp
         {
         }
 
-        public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, Rate);
+        public override Pecuniam Value => Balance.GetCurrent(DateTime.UtcNow, Rate);
         public override Pecuniam GetValueAt(DateTime dt)
         {
             return Balance.GetCurrent(dt, Rate);

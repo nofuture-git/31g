@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Core
         #endregion
 
         public static Random MyRand
-            => _myRand ?? (_myRand = new Random(Convert.ToInt32($"{DateTime.Now:ffffff}")));
+            => _myRand ?? (_myRand = new Random(Convert.ToInt32($"{DateTime.UtcNow:ffffff}")));
 
         #region API
 
@@ -541,7 +541,7 @@ namespace NoFuture.Rand.Core
         public static DateTime RandomDate(int? plusOrMinusYears = null, DateTime? fromThisDate = null, bool forceInPast = false, int maxDaysSpread = 360)
         {
             var pmYears = plusOrMinusYears ??  RandomPlusOrMinus() * RandomInteger(0, 5);
-            var dt = DateTime.Now;
+            var dt = DateTime.UtcNow;
             if (fromThisDate != null)
                 dt = fromThisDate.Value;
             //plus or minus some random days
@@ -727,7 +727,7 @@ namespace NoFuture.Rand.Core
                 min = ageOfAdult;
             if (max > 67)
                 max = 67;
-            return DateTime.Now.AddYears(-1 * MyRand.Next(min, max)).AddDays(RandomInteger(1, 360));
+            return DateTime.UtcNow.AddYears(-1 * MyRand.Next(min, max)).AddDays(RandomInteger(1, 360));
         }
 
         /// <summary>

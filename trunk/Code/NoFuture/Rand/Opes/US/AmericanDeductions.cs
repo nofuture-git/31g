@@ -352,7 +352,7 @@ namespace NoFuture.Rand.Opes.US
 
         private double GetRandomHealthInsCost(DateTime? atDate)
         {
-            var dt = atDate.GetValueOrDefault(DateTime.Now);
+            var dt = atDate.GetValueOrDefault(DateTime.UtcNow);
             var mean = AmericanEquations.HealthInsuranceCostPerPerson.SolveForY(dt.ToDouble());
             var stdDev = Math.Round(mean * 0.155, 2);
 

@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Sp
 
         #endregion
 
-        public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, Rate);
+        public override Pecuniam Value => Balance.GetCurrent(DateTime.UtcNow, Rate);
 
         #region methods
         public override Pecuniam GetValueAt(DateTime dt)

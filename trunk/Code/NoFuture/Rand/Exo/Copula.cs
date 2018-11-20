@@ -78,7 +78,7 @@ namespace NoFuture.Rand.Exo
             if (corp == null)
                 return false;
 
-            var dt = Util.Core.Etc.ToUnixTime(atTime.GetValueOrDefault(DateTime.Now));
+            var dt = Util.Core.Etc.ToUnixTime(atTime.GetValueOrDefault(DateTime.UtcNow));
 
             var myDynData = DynamicDataFactory.GetDataParser(srcUri);
             var myDynDataRslt = myDynData.ParseContent(rawJsonContent);
@@ -360,7 +360,7 @@ namespace NoFuture.Rand.Exo
                 if (titleNode.StartsWith(SecForm.NOTIFICATION_OF_INABILITY_TO_TIMELY_FILE))
                     secForm.IsLate = true;
 
-                var parseRslt = DateTime.Now;
+                var parseRslt = DateTime.UtcNow;
                 if (formDtNode != null && !String.IsNullOrWhiteSpace(formDtNode) &&
                     DateTime.TryParse(formDtNode.ToString(), out parseRslt))
                 {

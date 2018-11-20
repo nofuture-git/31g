@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         public override Identifier Id { get; }
         public virtual double Quantity { get; }
-        public virtual Pecuniam Value => GetValueAt(DateTime.Now);
+        public virtual Pecuniam Value => GetValueAt(DateTime.UtcNow);
         #endregion
 
         public virtual void SetHistoricData(IEnumerable<Tuple<DateTime, decimal>> data, CurrencyAbbrev currency)

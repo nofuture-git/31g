@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Sp
             var begin = Inception == DateTime.MinValue ? DateTime.Today.Add(Constants.TropicalYear.Negate()) : Inception;
             for (var i = 0; i < wholeTimeBlocks; i++)
             {
-                var transactions = Balance.GetTransactionsBetween(begin, begin.Add(ts), true);
+                var transactions = Balance.GetTransactions(begin, begin.Add(ts), true);
                 var avgAtBlockI = Util.Core.Math.Extensions.Mean(transactions.Select(t => t.Cash.ToDouble()));
                 avgPerBlock.Add(avgAtBlockI);
             }
@@ -147,7 +147,7 @@ namespace NoFuture.Rand.Sp
         {
             var ts = duration ?? DueFrequency ?? Constants.TropicalYear;
 
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var start = Inception == DateTime.MinValue ? now.Add(Constants.TropicalYear.Negate()) : Inception;
             var end = Terminus == null || Terminus == DateTime.MinValue ? now : Terminus.Value;
 

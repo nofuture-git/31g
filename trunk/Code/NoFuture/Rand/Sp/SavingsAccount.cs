@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Sp
 
         #region properties
         public float InterestRate { get; set; }
-        public override Pecuniam Value => Balance.GetCurrent(DateTime.Now, InterestRate);
+        public override Pecuniam Value => Balance.GetCurrent(DateTime.UtcNow, InterestRate);
         #endregion
 
         #region methods

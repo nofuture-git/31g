@@ -34,9 +34,27 @@ namespace NoFuture.Rand.Sp
         /// </param>
         /// <param name="includeThoseOnToDate"></param>
         /// <returns></returns>
-        List<ITransaction> GetTransactionsBetween(DateTime? from = null, DateTime? to = null, bool includeThoseOnToDate = false);
+        List<ITransaction> GetTransactions(DateTime? from = null, DateTime? to = null, bool includeThoseOnToDate = false);
 
         /// <summary>
+        /// Same as <see cref="GetTransactions"/> except exclusive to positive values
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="includeThoseOnToDate"></param>
+        /// <returns></returns>
+        List<ITransaction> GetDebits(DateTime? from = null, DateTime? to = null, bool includeThoseOnToDate = true);
+
+        /// <summary>
+        /// Same as <see cref="GetTransactions"/> except exclusive to negative values
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="includeThoseOnToDate"></param>
+        /// <returns></returns>
+        List<ITransaction> GetCredits(DateTime? from = null, DateTime? to = null, bool includeThoseOnToDate = true);
+
+            /// <summary>
         /// Returns a negative value being the sum of all payments-out between dates in <see cref="between"/>
         /// </summary>
         /// <param name="between"></param>
@@ -82,5 +100,11 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <returns></returns>
         IBalance GetInverse();
+
+        /// <summary>
+        /// Moves the entries from <see cref="source"/> into this instance.
+        /// </summary>
+        /// <param name="source"></param>
+        void Transfer(IBalance source);
     }
 }

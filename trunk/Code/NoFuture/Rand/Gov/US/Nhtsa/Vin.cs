@@ -409,7 +409,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
 
         public static Uri GetUriVpicEquipPlantCodes(int? year)
         {
-            var yyyy = year ?? DateTime.Now.Year;
+            var yyyy = year ?? DateTime.UtcNow.Year;
             return new Uri(PUBLIC_WEB_API_ROOT_URI + "GetEquipmentPlantCodes/" + yyyy + "?format=json");
         }
 
@@ -420,7 +420,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
 
         public static Uri GetVpicModels2Makes2YearUrl(string manufacturerName, int? year)
         {
-            var yyyy = year ?? DateTime.Now.Year;
+            var yyyy = year ?? DateTime.UtcNow.Year;
             return new Uri(PUBLIC_WEB_API_ROOT_URI + "GetModelsForMakeYear/make/" + manufacturerName + "/modelyear/" + yyyy +
                            "?format=json");
         }

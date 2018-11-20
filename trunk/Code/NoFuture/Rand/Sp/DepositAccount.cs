@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Sp
         [RandomFactory]
         public static CheckingAccount RandomCheckingAccount(IVoca personName = null, DateTime? dt = null, string debitPin = null)
         {
-            var dtd = dt.GetValueOrDefault(DateTime.Now);
+            var dtd = dt.GetValueOrDefault(DateTime.UtcNow);
             var accountId = new AccountId(Etx.RandomRChars(true));
             return CheckingAccount.IsPossiablePin(debitPin)
                 ? new CheckingAccount(accountId, dtd,
@@ -148,7 +148,7 @@ namespace NoFuture.Rand.Sp
         [RandomFactory]
         public static SavingsAccount RandomSavingAccount(IVoca personName = null, DateTime? dt = null)
         {
-            var dtd = dt.GetValueOrDefault(DateTime.Now);
+            var dtd = dt.GetValueOrDefault(DateTime.UtcNow);
             var accountId = new AccountId(Etx.RandomRChars(true));
             return new SavingsAccount(accountId, dtd);
         }

@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestGetInverse()
         {
-            var testSubject = new Transaction(DateTime.Now, 128M.ToPecuniam(), Guid.NewGuid());
+            var testSubject = new Transaction(DateTime.UtcNow, 128M.ToPecuniam(), Guid.NewGuid());
             var testResult = testSubject.GetInverse();
             Assert.IsTrue((testSubject.Cash + testResult.Cash).GetRounded() == Pecuniam.Zero);
         }

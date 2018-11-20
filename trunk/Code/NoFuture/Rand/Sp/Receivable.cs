@@ -24,12 +24,12 @@ namespace NoFuture.Rand.Sp
             {
                 if (DueFrequency == null)
                     return null;
-                return GetStatus(DateTime.Now);
+                return GetStatus(DateTime.UtcNow);
             }
         }
-        public PastDue? CurrentDelinquency => GetDelinquency(DateTime.Now);
+        public PastDue? CurrentDelinquency => GetDelinquency(DateTime.UtcNow);
 
-        public virtual Pecuniam Value => Balance.GetCurrent(DateTime.Now, 0f);
+        public virtual Pecuniam Value => Balance.GetCurrent(DateTime.UtcNow, 0f);
 
         public virtual PastDue? GetDelinquency(DateTime dt)
         {
@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Sp
 
         public virtual SpStatus GetStatus(DateTime? dt)
         {
-            var ddt = dt ?? DateTime.Now;
+            var ddt = dt ?? DateTime.UtcNow;
             if (Terminus != null && DateTime.Compare(Terminus.Value, ddt) < 0)
                 return SpStatus.Closed;
 

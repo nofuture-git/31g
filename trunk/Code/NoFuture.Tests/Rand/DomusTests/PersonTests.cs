@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestAmericanFull()
         {
-            var testResult = American.RandomAmerican(DateTime.Now.AddYears(-36), Gender.Female, true);
+            var testResult = American.RandomAmerican(DateTime.UtcNow.AddYears(-36), Gender.Female, true);
             Assert.IsNotNull(testResult.GetBiologicalMother());
             Assert.AreNotEqual(0, testResult.GetBiologicalMother().GetChildrenAt(null));
         }
@@ -151,7 +151,7 @@ namespace NoFuture.Rand.Tests.DomusTests
             //averages, 18 year old never has children.
             for (var i = 0; i < 100; i++)
             {
-                testResult = AmericanUtil.RandomNumberOfChildren(DateTime.Now.AddYears(-18).AddDays(-128), null);
+                testResult = AmericanUtil.RandomNumberOfChildren(DateTime.UtcNow.AddYears(-18).AddDays(-128), null);
                 Assert.AreEqual(0,testResult);
             }
         }
@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestGetChildBirthDate()
         {
-            var inputDob = DateTime.Now.AddYears(-50);
+            var inputDob = DateTime.UtcNow.AddYears(-50);
 
             var testResult = AmericanUtil.RandomChildBirthDate(inputDob, 0, null);
 
@@ -177,7 +177,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestNorthAmericanWithFamily()
         {
-            var testResult = American.RandomAmerican(DateTime.Now.AddYears(-40), Gender.Female, true);
+            var testResult = American.RandomAmerican(DateTime.UtcNow.AddYears(-40), Gender.Female, true);
 
             Assert.IsNotNull(testResult.GetBiologicalMother());
             Assert.IsNotNull(testResult.GetBiologicalFather());
@@ -187,7 +187,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestResolveParents()
         {
-            var testResult = American.RandomAmerican(DateTime.Now.AddYears(-40), Gender.Female);
+            var testResult = American.RandomAmerican(DateTime.UtcNow.AddYears(-40), Gender.Female);
             Assert.IsNull(testResult.GetBiologicalMother());
             Assert.IsNull(testResult.GetBiologicalFather());
             testResult.ResolveParents();
@@ -200,7 +200,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestGetMaritalStatus()
         {
-            var testSubject = American.RandomAmerican(DateTime.Now.AddYears(-40), Gender.Female);
+            var testSubject = American.RandomAmerican(DateTime.UtcNow.AddYears(-40), Gender.Female);
 
             var testResult = testSubject.GetMaritalStatusAt(null);
 
@@ -208,7 +208,7 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             Console.WriteLine(testResult);
 
-            testResult = testSubject.GetMaritalStatusAt(DateTime.Now.AddYears(-10));
+            testResult = testSubject.GetMaritalStatusAt(DateTime.UtcNow.AddYears(-10));
 
             Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
 
@@ -262,12 +262,12 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestGetSpouseAt()
         {
             //test with full timestamps
-            var firstMarriageDate = new DateTime(DateTime.Today.Year - 15, 8, 8, DateTime.Now.Hour, DateTime.Now.Minute,
-                DateTime.Now.Second);
-            var firstDivorceDate = new DateTime(DateTime.Today.Year - 3, 2, 14, DateTime.Now.Hour, DateTime.Now.Minute,
-                DateTime.Now.Second);
-            var secondMarriageDate = new DateTime((DateTime.Today.Year - 1), 12, 23, DateTime.Now.Hour, DateTime.Now.Minute,
-                DateTime.Now.Second);
+            var firstMarriageDate = new DateTime(DateTime.Today.Year - 15, 8, 8, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute,
+                DateTime.UtcNow.Second);
+            var firstDivorceDate = new DateTime(DateTime.Today.Year - 3, 2, 14, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute,
+                DateTime.UtcNow.Second);
+            var secondMarriageDate = new DateTime((DateTime.Today.Year - 1), 12, 23, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute,
+                DateTime.UtcNow.Second);
 
 
             var testPerson = American.RandomAmerican(new DateTime((DateTime.Today.Year - 42), 6, 20), Gender.Female);
@@ -425,7 +425,7 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             Assert.AreEqual($"{firstName} {middleName} {lastName}", testSubject.FullName);
             Assert.IsNotNull(testSubject.Address);
-            Assert.AreEqual($"{addrLine1}  {addrLine2}", testSubject.Address.ToString());
+            Assert.AreEqual($"{addrLine1}\r\n{addrLine2}", testSubject.Address.ToString());
 
             var phNum = "707-884-5563";
             NorthAmericanPhone.TryParse(phNum, out var naph);
@@ -450,7 +450,7 @@ namespace NoFuture.Rand.Tests.DomusTests
         [Test]
         public void TestToData()
         {
-            var testSubject = American.RandomAmerican(DateTime.Now.AddYears(-36), Gender.Female, true);
+            var testSubject = American.RandomAmerican(DateTime.UtcNow.AddYears(-36), Gender.Female, true);
             var testResult = testSubject.ToData(KindsOfTextCase.Kabab);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);

@@ -214,7 +214,7 @@ namespace NoFuture.Rand.Sp
             var dtIncrement = firstOfYear.AddMonths(1);
             while (loan.GetValueAt(dtIncrement) > remainingCost)
             {
-                if (dtIncrement > DateTime.Now.AddYears(termInYears))
+                if (dtIncrement > DateTime.UtcNow.AddYears(termInYears))
                     break;
                 loan.MakeAPayment(dtIncrement, loan.MonthlyPayment);
                 dtIncrement = dtIncrement.AddMonths(1);
@@ -259,7 +259,7 @@ namespace NoFuture.Rand.Sp
             var dtIncrement = loan.Inception.AddMonths(1);
             while (loan.GetValueAt(dtIncrement) > remainingCost)
             {
-                if (dtIncrement >= DateTime.Now)
+                if (dtIncrement >= DateTime.UtcNow)
                     break;
                 var paidOnDate = dtIncrement;
                 if (randomActsIrresponsible())

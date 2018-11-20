@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Tests.SpTests
             var dtIncrement = testSubject.Inception.AddMonths(1);
             while (testSubject.GetValueAt(dtIncrement) > remainingCost.ToPecuniam())
             {
-                if (dtIncrement > DateTime.Now.AddYears(30))
+                if (dtIncrement > DateTime.UtcNow.AddYears(30))
                     break;
                 testSubject.AddNegativeValue(dtIncrement, monthlyPayment.ToPecuniam());
                 dtIncrement = dtIncrement.AddMonths(1);
