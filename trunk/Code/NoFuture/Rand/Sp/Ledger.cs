@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Sp
 
         #endregion
 
-        public Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null)
+        public Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
         {
             if (amnt == null)
                 return Guid.Empty;
@@ -56,12 +56,12 @@ namespace NoFuture.Rand.Sp
             {
                 dt = dt.AddTicks(1L);
             }
-            var t = new Transaction(dt, amnt.GetNeg(), Id, note);
+            var t = new Transaction(dt, amnt.GetNeg(), Id, note) { Trace = trace };
             AddTransaction(t);
             return t.UniqueId;
         }
 
-        public Guid AddPositiveValue(DateTime dt, Pecuniam amnt, IVoca note = null)
+        public Guid AddPositiveValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
         {
             if (amnt == null)
                 return Guid.Empty;
@@ -71,7 +71,8 @@ namespace NoFuture.Rand.Sp
             {
                 dt = dt.AddTicks(1L);
             }
-            var t = new Transaction(dt, amnt.GetAbs(), Id, note);
+
+            var t = new Transaction(dt, amnt.GetAbs(), Id, note) {Trace = trace};
             AddTransaction(t);
             return t.UniqueId;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Sp
@@ -166,15 +167,30 @@ namespace NoFuture.Rand.Sp
             return b;
         }
 
-        public void Transfer(IBalance source)
+        public void Transfer(IBalance source, DateTime? atTime = null)
         {
             if (source == null || source.TransactionCount <= 0)
                 return;
+
+            if (source.Id == Id || ReferenceEquals(source, this))
+                return;
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
             var credits = source.GetCredits();
             var debits = source.GetDebits();
 
+            foreach (var credit in credits)
+            {
+                var traceEntry = new TraceTransactionId(credit.UniqueId, source.Id, dt) { Trace = credit.Trace };
+                AddPositiveValue(credit.AtTime, credit.Cash, credit.Description, traceEntry);
+                source.AddNegativeValue(DateTime.UtcNow, credit.Cash, new VocaBase($"{nameof(Transfer)} from {source.Id} to {Id}"));
+            }
 
-            throw new NotImplementedException();
+            foreach (var debit in debits)
+            {
+                var traceEntry = new TraceTransactionId(debit.UniqueId, source.Id, dt) {Trace = debit.Trace};
+                AddNegativeValue(debit.AtTime, debit.Cash, debit.Description, traceEntry);
+                source.AddPositiveValue(DateTime.UtcNow, debit.Cash, new VocaBase($"{nameof(Transfer)} from {source.Id} to {Id}"));
+            }
         }
 
         protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Predicate<Pecuniam> op)

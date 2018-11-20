@@ -102,9 +102,10 @@ namespace NoFuture.Rand.Sp
         IBalance GetInverse();
 
         /// <summary>
-        /// Moves the entries from <see cref="source"/> into this instance.
+        /// Performs dual operation: one, transferring from <see cref="source"/> 
+        /// into this instance. Two, adding counterbalance entries 
+        /// in <see cref="source"/> so that its total balance is zero.
         /// </summary>
-        /// <param name="source"></param>
-        void Transfer(IBalance source);
+        void Transfer(IBalance source, DateTime? atTime = null);
     }
 }

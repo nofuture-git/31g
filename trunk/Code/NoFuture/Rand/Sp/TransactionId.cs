@@ -3,30 +3,37 @@
 namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc />
-    public class TransactionId : ITransactionId
+    public abstract class TransactionId : ITransactionId
     {
-        internal TransactionId(DateTime atTime, Guid ledgerId)
+        protected internal TransactionId(DateTime atTime, Guid ledgerId) :this(Guid.NewGuid(), atTime, ledgerId)
         {
-            UniqueId = Guid.NewGuid();
+        }
+
+        private TransactionId(Guid uniqueId, DateTime atTime, Guid ledgerId)
+        {
+            UniqueId = uniqueId;
             AtTime = atTime;
             LedgerId = ledgerId;
         }
 
-        internal TransactionId(DateTime atTime, Guid ledgerId, Guid fromLedgerId,
-            ITransactionId history) : this(atTime, ledgerId)
-        {
-            Trace = history;
-            FromLedgerId = fromLedgerId;
-        }
-
-        public Guid FromLedgerId { get; }
         public Guid LedgerId { get; }
         public Guid UniqueId { get; }
         public DateTime AtTime { get; }
-        public ITransactionId Trace { get; }
-        public virtual void PushTrace(Guid fromLedgerId, Guid toLedgerId, DateTime? atTime = null)
+        public ITransactionId Trace { get; protected internal set; }
+    }
+
+    public class TraceTransactionId : ITransactionId
+    {
+        public TraceTransactionId(Guid uniqueId, Guid ledgerId, DateTime atTime)
         {
-            throw new NotImplementedException();
+            LedgerId = ledgerId;
+            UniqueId = uniqueId;
+            AtTime = atTime;
         }
+
+        public Guid LedgerId { get; }
+        public Guid UniqueId { get; }
+        public DateTime AtTime { get; }
+        public ITransactionId Trace { get; protected internal set; }
     }
 }

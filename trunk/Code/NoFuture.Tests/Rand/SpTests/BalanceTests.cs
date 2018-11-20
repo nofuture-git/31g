@@ -262,5 +262,72 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.IsTrue(testResult.Sum(x => x.Cash.Amount) < 0);
 
         }
+
+        [Test]
+        public void TestTransfer()
+        {
+            var testSubject = new Balance();
+            var testInput = new Balance();
+            var dt = DateTime.UtcNow;
+            var testInputIds = new List<Tuple<Guid, Guid>>();
+            for (var i = 0; i < 24; i++)
+            {
+                var atDt = dt.AddDays((-1 * i));
+                var amt = (i * 10M).ToPecuniam();
+                if (i % 2 == 0)
+                {
+                    var creditId = testInput.AddPositiveValue(atDt, amt);
+                    testInputIds.Add(new Tuple<Guid, Guid>(testInput.Id, creditId));
+                }
+                else
+                {
+                    var debitId = testInput.AddNegativeValue(atDt, amt);
+                    testInputIds.Add(new Tuple<Guid, Guid>(testInput.Id, debitId));
+                }
+            }
+
+            //expect all entries are only in testInput
+            var testInputCreditSum = testInput.GetCreditSum(null);
+            var testInputDebitSum = testInput.GetDebitSum(null);
+
+            Assert.AreNotEqual(Pecuniam.Zero, testInputCreditSum);
+            Assert.AreNotEqual(Pecuniam.Zero, testInputDebitSum);
+
+            var testSubjectCreditSum = testSubject.GetCreditSum(null);
+            var testSubjectDebitSum = testSubject.GetDebitSum(null);
+
+            Assert.AreEqual(Pecuniam.Zero, testSubjectCreditSum);
+            Assert.AreEqual(Pecuniam.Zero, testSubjectDebitSum);
+
+            //perform transfer
+            testSubject.Transfer(testInput);
+
+            //expect all entries are not in testSubject
+            testSubjectCreditSum = testSubject.GetCreditSum(null);
+            testSubjectDebitSum = testSubject.GetDebitSum(null);
+
+            //expect all value is present
+            Assert.AreEqual(testInputCreditSum, testSubjectCreditSum);
+            Assert.AreEqual(testInputDebitSum, testSubjectDebitSum);
+
+            //expect that testInput has been reduced to zero
+            testInputCreditSum = testInput.GetCreditSum(null);
+            testInputDebitSum = testInput.GetDebitSum(null);
+
+            //expect the input to now have a zero balance
+            Assert.AreEqual(Pecuniam.Zero, (testInputCreditSum + testInputDebitSum).GetWholeNumber());
+
+            var testResults = testSubject.GetCredits();
+            testResults.AddRange(testSubject.GetDebits());
+
+            //expect to find evidence in the trace of each item
+            foreach (var tr in testResults)
+            {
+                var trace = tr.Trace;
+                Assert.IsNotNull(trace);
+                Assert.IsTrue(testInputIds.Any(v => v.Item1 == testInput.Id && v.Item2 == trace.UniqueId));
+            }
+
+        }
     }
 }

@@ -12,19 +12,13 @@ namespace NoFuture.Rand.Sp
     public class Transaction : TransactionId, ITransaction
     {
         #region ctor
-        internal Transaction(DateTime atTime, Pecuniam amt, Guid ledgerId, IVoca description = null):base(atTime, ledgerId)
+        protected internal Transaction(DateTime atTime, Pecuniam amt, Guid ledgerId, IVoca description = null):base(atTime, ledgerId)
         {
             Cash = amt ?? Pecuniam.Zero;
             Description = description;
         }
 
-        internal Transaction(DateTime atTime, Pecuniam amt, Guid ledgerId, Guid fromLedgerId,
-            ITransactionId history, IVoca description = null) : base(atTime, ledgerId, fromLedgerId, history)
-        {
-            Cash = amt ?? Pecuniam.Zero;
-            Description = description;
-        }
-
+        
         #endregion
 
         #region properties
@@ -36,12 +30,12 @@ namespace NoFuture.Rand.Sp
 
         public ITransaction GetInverse()
         {
-            return new Transaction(AtTime, (Cash.Amount *-1M).ToPecuniam(), LedgerId, FromLedgerId, Trace, Description);
+            return new Transaction(AtTime, (Cash.Amount * -1M).ToPecuniam(), LedgerId, Description) {Trace = Trace};
         }
 
         public ITransaction Clone()
         {
-            return new Transaction(AtTime, Cash, LedgerId, FromLedgerId, Trace, Description);
+            return new Transaction(AtTime, Cash, LedgerId, Description) {Trace = Trace};
         }
 
         public override bool Equals(object obj)

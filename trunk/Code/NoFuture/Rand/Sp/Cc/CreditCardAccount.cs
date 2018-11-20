@@ -65,12 +65,13 @@ namespace NoFuture.Rand.Sp.Cc
         /// <param name="dt"></param>
         /// <param name="val"></param>
         /// <param name="note"></param>
+        /// <param name="trace"></param>
         /// <returns>
         /// True when the card is not expired and
         /// the purchase amount <see cref="val"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
-        public override Guid AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null)
+        public override Guid AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null, ITransactionId trace = null)
         {
             if (dt > Cc.ExpDate)
                 return Guid.Empty;

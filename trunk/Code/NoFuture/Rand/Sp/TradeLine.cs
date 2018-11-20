@@ -100,27 +100,14 @@ namespace NoFuture.Rand.Sp
             return itemData;
         }
 
-        /// <summary>
-        /// Applies a negative valued transaction against the balance.
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="amt"></param>
-        /// <param name="note"></param>
-        public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null)
+        public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
         {
-            return Balance.AddNegativeValue(dt, amt, note);
+            return Balance.AddNegativeValue(dt, amt, note, trace);
         }
 
-        /// <summary>
-        /// Applies a positive valued transaction against the balance
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="val"></param>
-        /// <param name="note"></param>
-        /// <returns></returns>
-        public virtual Guid AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null)
+        public virtual Guid AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null, ITransactionId trace = null)
         {
-            return Balance.AddPositiveValue(dt, val, note);
+            return Balance.AddPositiveValue(dt, val, note, trace);
         }
 
         public virtual Pecuniam AveragePerDueFrequency(TimeSpan? duration = null)

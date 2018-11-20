@@ -8,11 +8,6 @@ namespace NoFuture.Rand.Sp
     public interface ITransactionId
     {
         /// <summary>
-        /// The id of the originating ledger from which this transaction was copied.
-        /// </summary>
-        Guid FromLedgerId { get; }
-
-        /// <summary>
         /// The id the the ledger currently containing this transaction
         /// </summary>
         Guid LedgerId { get; }
@@ -32,12 +27,5 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         ITransactionId Trace { get; }
 
-        /// <summary>
-        /// Method to push a new entry onto the historic trace of this transaction
-        /// </summary>
-        /// <param name="fromLedgerId"></param>
-        /// <param name="toLedgerId"></param>
-        /// <param name="atTime"></param>
-        void PushTrace(Guid fromLedgerId, Guid toLedgerId, DateTime? atTime = null);
     }
 }
