@@ -6,7 +6,9 @@ namespace NoFuture.Rand.Sp
     /// <inheritdoc cref="IAsset" />
     /// <inheritdoc cref="ITradeLine" />
     /// <summary>
-    /// Represents money owed by debtors
+    /// Represents an asset as participatory set of 
+    /// money records through time and the sense-of-status of said 
+    /// record-set.
     /// </summary>
     public interface IReceivable : IAsset, ITradeLine
     {

@@ -8,8 +8,8 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     /// <remarks>
     /// Considers time as a discrete set of indivisible units where
-    /// a single unit is the smallest possible division of the <see cref="DateTime"/> type.
-    /// An asset is participatory in-time and <see cref="Value"/> 
+    /// a single unit is the smallest possible division of the <see cref="T:System.DateTime" /> type.
+    /// An asset is participatory in-time and <see cref="P:NoFuture.Rand.Sp.IAsset.Value" /> 
     /// is, therefore, a function of time.
     /// </remarks>
     public interface IAsset

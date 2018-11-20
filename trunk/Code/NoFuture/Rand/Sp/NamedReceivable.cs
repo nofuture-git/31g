@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Shared.Core;
@@ -11,7 +10,7 @@ namespace NoFuture.Rand.Sp
     /// <inheritdoc cref="IVoca" />
     /// <summary>
     /// A capital concrete composition type to 
-    /// bind time and names with expected and actual money value.
+    /// bind value-in-time with a name.
     /// </summary>
     [Serializable]
     public class NamedReceivable : Receivable, IVoca
