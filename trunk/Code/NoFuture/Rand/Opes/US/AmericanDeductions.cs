@@ -30,6 +30,7 @@ namespace NoFuture.Rand.Opes.US
             if (_employment.Inception == DateTime.MinValue)
                 _employment.Inception = GetYearNeg(-1);
         }
+        internal AmericanDeductions(){ }
 
         #region properties
 

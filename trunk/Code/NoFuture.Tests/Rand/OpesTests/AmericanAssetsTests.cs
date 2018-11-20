@@ -126,7 +126,8 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetGroupNames()
         {
-            var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Assets);
+            var testSubject = new AmericanAssets();
+            var testNames = testSubject.GetGroupNames(testSubject.DivisionName);
             var allNames = WealthBaseTests.GetExpectedNamesFromXml("assets");
             var expectations = allNames.Select(n => n.Item1).Distinct();
 
@@ -140,7 +141,8 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetItemNames()
         {
-            var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Assets);
+            var testSubject = new AmericanAssets();
+            var testNames = testSubject.GetItemNames(testSubject.DivisionName);
             var allNames = WealthBaseTests.GetExpectedNamesFromXml("assets");
             var expectations = allNames.Select(n => n.Item2).Distinct();
 

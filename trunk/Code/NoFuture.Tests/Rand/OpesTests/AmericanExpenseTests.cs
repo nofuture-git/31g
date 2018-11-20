@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanExpenses();
             var testOptions = new OpesOptions();
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectly("Student", WealthBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
+            testOptions.AddGivenDirectly("Student", DomusOpesBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
 
             Assert.IsNotNull(testResult);
@@ -78,8 +78,8 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //so if we add another then their assigned rates will be their portion of the whole?
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectly("Student", WealthBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
-            testOptions.AddGivenDirectly("Other Consumer", WealthBase.ExpenseGroupNames.DEBT, 1000.ToPecuniam());
+            testOptions.AddGivenDirectly("Student", DomusOpesBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
+            testOptions.AddGivenDirectly("Other Consumer", DomusOpesBase.ExpenseGroupNames.DEBT, 1000.ToPecuniam());
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
 
             Assert.IsNotNull(testResult);
@@ -103,8 +103,8 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //so now what happens if we do give a SumTotal which happens to exactly equal the GivenDirectly's sum?
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectly("Student", WealthBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
-            testOptions.AddGivenDirectly("Other Consumer", WealthBase.ExpenseGroupNames.DEBT, 1000.ToPecuniam());
+            testOptions.AddGivenDirectly("Student", DomusOpesBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
+            testOptions.AddGivenDirectly("Other Consumer", DomusOpesBase.ExpenseGroupNames.DEBT, 1000.ToPecuniam());
             testOptions.SumTotal = 10000.ToPecuniam();
 
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
@@ -130,8 +130,8 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //so what happens if the sumtotal is actually less than the sum of the GivenDirectly's sum?
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectly("Student", WealthBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
-            testOptions.AddGivenDirectly("Other Consumer", WealthBase.ExpenseGroupNames.DEBT, 1000.ToPecuniam());
+            testOptions.AddGivenDirectly("Student", DomusOpesBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
+            testOptions.AddGivenDirectly("Other Consumer", DomusOpesBase.ExpenseGroupNames.DEBT, 1000.ToPecuniam());
             testOptions.SumTotal = 9000.ToPecuniam(); //1000 less
 
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
@@ -158,8 +158,8 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //what about when the sumtotal is greater than the GivenDirectly's sum?
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectly("Student", WealthBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
-            testOptions.AddGivenDirectly("Other Consumer", WealthBase.ExpenseGroupNames.DEBT, 1000.ToPecuniam());
+            testOptions.AddGivenDirectly("Student", DomusOpesBase.ExpenseGroupNames.DEBT, 9000.ToPecuniam());
+            testOptions.AddGivenDirectly("Other Consumer", DomusOpesBase.ExpenseGroupNames.DEBT, 1000.ToPecuniam());
 
             testOptions.SumTotal = 12000.ToPecuniam(); //2000 more
 
@@ -239,7 +239,7 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //so how will it handle a case where GivenDirectly's are assigned zero
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectlyZero("Student", WealthBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectlyZero("Student", DomusOpesBase.ExpenseGroupNames.DEBT);
             testOptions.SumTotal = 12000.ToPecuniam();
 
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
@@ -264,12 +264,12 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //how will it handle the case where I accidently zero'ed out everything?
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectlyZero("Credit Card", WealthBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Health Care", WealthBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Other Consumer", WealthBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Student", WealthBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Tax", WealthBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Other", WealthBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectlyZero("Credit Card", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectlyZero("Health Care", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectlyZero("Other Consumer", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectlyZero("Student", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectlyZero("Tax", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectlyZero("Other", DomusOpesBase.ExpenseGroupNames.DEBT);
 
             //this is actually exceptional and so an exception is thrown
             Assert.Throws<RahRowRagee>(() =>  testSubject.GetDebtExpenseNames2RandomRates(testOptions));
@@ -300,12 +300,12 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //how do the PossiableZero outs play with explict values on GivenDirectly?
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectly("Credit Card", WealthBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
-            testOptions.AddGivenDirectly("Health Care", WealthBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
-            testOptions.AddGivenDirectly("Other Consumer", WealthBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
-            testOptions.AddGivenDirectly("Student", WealthBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
-            testOptions.AddGivenDirectly("Tax", WealthBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
-            testOptions.AddGivenDirectly("Other", WealthBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
+            testOptions.AddGivenDirectly("Credit Card", DomusOpesBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
+            testOptions.AddGivenDirectly("Health Care", DomusOpesBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
+            testOptions.AddGivenDirectly("Other Consumer", DomusOpesBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
+            testOptions.AddGivenDirectly("Student", DomusOpesBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
+            testOptions.AddGivenDirectly("Tax", DomusOpesBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
+            testOptions.AddGivenDirectly("Other", DomusOpesBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
 
             testOptions.PossibleZeroOuts.AddRange(new []{ "Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other" });
 
@@ -326,7 +326,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             //what if the SumTotal exceeds the GivenDirectly's sum but all the other options are present in the PossiablyZeroOut's?
             // and it just so happens that they all, in fact do, get selected to be zero'ed out
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectly("Credit Card", WealthBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
+            testOptions.AddGivenDirectly("Credit Card", DomusOpesBase.ExpenseGroupNames.DEBT, 1000D.ToPecuniam());
             testOptions.DiceRoll = (i, dice) => true;
             testOptions.PossibleZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
             testOptions.SumTotal = 2000D.ToPecuniam(); //1000 above
@@ -514,7 +514,8 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetGroupNames()
         {
-            var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Expense);
+            var testSubject = new AmericanExpenses();
+            var testNames = testSubject.GetGroupNames();
             var allNames = WealthBaseTests.GetExpectedNamesFromXml("expense");
             var expectations = allNames.Select(n => n.Item1).Distinct();
 
@@ -528,7 +529,8 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetItemNames()
         {
-            var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Expense);
+            var testSubject = new AmericanExpenses();
+            var testNames = testSubject.GetItemNames();
             var allNames = WealthBaseTests.GetExpectedNamesFromXml("expense");
             var expectations = allNames.Select(n => n.Item2).Distinct();
 

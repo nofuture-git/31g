@@ -131,7 +131,8 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetGroupNames()
         {
-            var testNames = WealthBase.GetGroupNames(WealthBase.DomusOpesDivisions.Deduction);
+            var testSubject = new AmericanDeductions();
+            var testNames = testSubject.GetGroupNames(testSubject.DivisionName);
             var allNames = WealthBaseTests.GetExpectedNamesFromXml("deduction");
             var expectations = allNames.Select(n => n.Item1).Distinct();
 
@@ -145,7 +146,8 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetItemNames()
         {
-            var testNames = WealthBase.GetItemNames(WealthBase.DomusOpesDivisions.Deduction);
+            var testSubject = new AmericanDeductions();
+            var testNames = testSubject.GetItemNames(testSubject.DivisionName);
             var allNames = WealthBaseTests.GetExpectedNamesFromXml("deduction");
             var expectations = allNames.Select(n => n.Item2).Distinct();
 
@@ -245,24 +247,24 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             var testResults = testSubject.GetGroupNames2Portions(null);
             
-            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.INSURANCE));
-            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.INSURANCE).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.INSURANCE));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.INSURANCE).Item2);
 
-            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.EMPLOYMENT));
-            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.EMPLOYMENT).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.EMPLOYMENT));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.EMPLOYMENT).Item2);
 
-            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.GOVERNMENT));
-            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.GOVERNMENT).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.GOVERNMENT));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.GOVERNMENT).Item2);
 
-            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS));
-            Assert.AreEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS));
+            Assert.AreEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS).Item2);
 
             var testOptions = new OpesOptions();
-            testOptions.AddGivenDirectly(WealthBase.DeductionGroupNames.JUDGMENTS,1000.ToPecuniam());
+            testOptions.AddGivenDirectly(DomusOpesBase.DeductionGroupNames.JUDGMENTS,1000.ToPecuniam());
 
             testResults = testSubject.GetGroupNames2Portions(testOptions);
-            Assert.IsTrue(testResults.Any(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS));
-            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == WealthBase.DeductionGroupNames.JUDGMENTS).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS).Item2);
         }
 
         [Test]

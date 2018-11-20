@@ -26,94 +26,15 @@ namespace NoFuture.Rand.Opes
         #region constants
         public const double DF_STD_DEV_PERCENT = 0.0885D;
         protected internal const int DF_ROUND_DECIMAL_PLACES = 5;
-        internal const string US_DOMUS_OPES = "US_DomusOpes.xml";
+
         #endregion
 
         #region fields
         protected internal IComparer<ITempore> Comparer { get; } = new TemporeComparer();
 
-        private static IVoca[] _incomeItemNames;
-        private static IVoca[] _deductionItemNames;
-        private static IVoca[] _expenseItemNames;
-        private static IVoca[] _assetItemNames;
-        private static IVoca[] _employmentItemNames;
-        internal static XmlDocument OpesXml;
         #endregion
 
         #region inner types
-
-        /// <summary>
-        /// The general concept or kind on which the idea of wealth is divided.
-        /// </summary>
-        public enum DomusOpesDivisions
-        {
-            Employment,
-            Income,
-            Deduction,
-            Expense,
-            Assets
-        }
-
-        /// <summary>
-        /// The group names of the Assets Division
-        /// </summary>
-        internal static class AssetGroupNames
-        {
-            internal const string REAL_PROPERTY = "Real Property";
-            internal const string PERSONAL_PROPERTY = "Personal Property";
-            internal const string SECURITIES = "Securities";
-            internal const string INSTITUTIONAL = "Institutional";
-        }
-
-        /// <summary>
-        /// The group names of the Expense Division
-        /// </summary>
-        internal static class ExpenseGroupNames
-        {
-            internal const string HOME = "Home";
-            internal const string UTILITIES = "Utilities";
-            internal const string TRANSPORTATION = "Transportation";
-            internal const string INSURANCE = "Insurance Premiums";
-            internal const string PERSONAL = "Personal";
-            internal const string CHILDREN = "Children";
-            internal const string DEBT = "Debts";
-            internal const string HEALTH = "Health";
-        }
-
-        /// <summary>
-        /// The group name of the Income Division
-        /// </summary>
-        internal static class IncomeGroupNames
-        {
-            internal const string JUDGMENTS = "Judgments";
-            internal const string SUBITO = "Subito";
-            internal const string EMPLOYMENT = "Employment";
-            internal const string PUBLIC_BENEFITS = "Public Benefits";
-            internal const string REAL_PROPERTY = AssetGroupNames.REAL_PROPERTY;
-            internal const string SECURITIES = AssetGroupNames.SECURITIES;
-            internal const string INSTITUTIONAL = AssetGroupNames.INSTITUTIONAL;
-            internal const string DEBT = "Debts";
-            internal const string HEALTH = ExpenseGroupNames.HEALTH;
-        }
-
-        /// <summary>
-        /// The group name of the Deductions Division
-        /// </summary>
-        internal static class DeductionGroupNames
-        {
-            internal const string INSURANCE = "Insurance";
-            internal const string GOVERNMENT = "Government";
-            internal const string JUDGMENTS = IncomeGroupNames.JUDGMENTS;
-            internal const string EMPLOYMENT = IncomeGroupNames.EMPLOYMENT;
-        }
-
-        /// <summary>
-        /// The group name of the Employment Division
-        /// </summary>
-        internal static class EmploymentGroupNames
-        {
-            internal const string PAY = "Pay";
-        }
 
         #endregion
 
@@ -124,20 +45,14 @@ namespace NoFuture.Rand.Opes
         public virtual Pecuniam Total => CurrentItems.Sum();
 
         /// <summary>
-        /// Determines which kind of wealth concept is 
-        /// at play here (e.g. expense, assets, income, etc.).
-        /// </summary>
-        protected abstract DomusOpesDivisions Division { get; }
-
-        /// <summary>
         /// The items which belong to this <see cref="Division"/>
         /// </summary>
         protected internal abstract List<NamedReceivable> MyItems { get; }
 
-        protected internal static XmlDocument UsDomusOpesData => OpesXml ?? (OpesXml =
-                                                                     XmlDocXrefIdentifier.GetEmbeddedXmlDoc(
-                                                                         US_DOMUS_OPES,
-                                                                         Assembly.GetExecutingAssembly()));
+        /// <summary>
+        /// A name on which a clear division is understood (e.g. Income, Balance)
+        /// </summary>
+        protected internal abstract string DivisionName { get; }
 
         #endregion
 
@@ -158,13 +73,17 @@ namespace NoFuture.Rand.Opes
 
         public abstract void AddItem(NamedReceivable item);
 
+        public abstract List<string> GetGroupNames(string division = null);
+
+        public abstract IVoca[] GetItemNames(string division = null);
+
         public virtual void AddItem(string name, string groupName, Pecuniam expectedValue, DateTime? atTime = null,
             TimeSpan? dueFrequency = null)
         {
             var amt = expectedValue ?? Pecuniam.Zero;
             var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
             var tss = dueFrequency ?? Constants.TropicalYear;
-            var p = new NamedReceivable(new VocaBase(name, Division.ToString())) {DueFrequency = tss };
+            var p = new NamedReceivable(new VocaBase(name, DivisionName)) {DueFrequency = tss };
             if (amt.Amount < 0M)
                 p.AddNegativeValue(dt, amt);
             else
@@ -197,70 +116,6 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="options"></param>
         protected internal abstract void RandomizeAllItems(OpesOptions options);
-
-        /// <summary>
-        /// Calculate a yearly income at random.
-        /// </summary>
-        /// <param name="dt">
-        /// Optional, date used for solving the <see cref="GetAvgEarningPerYear"/> equation, 
-        /// the default is the current system time.
-        /// </param>
-        /// <param name="min">
-        /// Optional, absolute minimum value where results should always be this value or higher.
-        /// </param>
-        /// <param name="options">
-        /// </param>
-        /// <param name="stdDevInUsd">
-        /// Optional, a randomizes the calculated value around a mean.
-        /// </param>
-        /// <returns></returns>
-        public Pecuniam GetRandomYearlyIncome(DateTime? dt = null, OpesOptions options = null, Pecuniam min = null,
-            double stdDevInUsd = 2000)
-        {
-            if (min == null)
-                min = Pecuniam.Zero;
-
-            //get linear eq for earning 
-            var eq = GetAvgEarningPerYear(options);
-            if (eq == null)
-                return Pecuniam.Zero;
-            var baseValue = Math.Round(eq.SolveForY(dt.GetValueOrDefault(DateTime.Today).ToDouble()), 2);
-            if (baseValue <= 0)
-                return Pecuniam.Zero;
-
-            var netWorth = new AmericanFactors(options?.FactorOptions).NetWorthFactor;
-
-            var factorValue = baseValue * netWorth;
-
-            baseValue = Math.Round(factorValue, 2);
-
-            stdDevInUsd = Math.Abs(stdDevInUsd);
-
-            var randValue = Math.Round(
-                Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), stdDevInUsd), 2);
-
-            //honor the promise to never let the value go below the 'min' if caller gave one.
-            if (min > Pecuniam.Zero && randValue < 0)
-                randValue = 0;
-            return new Pecuniam((decimal) randValue) + min;
-        }
-
-        /// <summary>
-        /// Get the linear eq of the city if its found otherwise defaults to the state, and failing that to the national
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// compiled data from BEA
-        /// </remarks>
-        protected internal virtual IEquation GetAvgEarningPerYear(OpesOptions options)
-        {
-            var ca = options?.HomeLocation as UsCityStateZip;
-            if (ca == null)
-                return AmericanEquations.NatlAverageEarnings;
-            ca.GetXmlData();
-            return (ca.AverageEarnings ?? UsStateData.GetStateData(ca?.StateName)?.AverageEarnings) ??
-                   AmericanEquations.NatlAverageEarnings;
-        }
 
         /// <summary>
         /// Helper method to get only those on-going items from within <see cref="items"/>
@@ -296,119 +151,6 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// Gets the <see cref="IVoca"/> Income items
-        /// from US Domus Opes data file
-        /// </summary>
-        /// <returns></returns>
-        public static IVoca[] GetIncomeItemNames()
-        {
-            var xpath = $"//{DomusOpesDivisions.Income.ToString().ToLower()}//item";
-            return _incomeItemNames = _incomeItemNames ?? GetDomusOpesItemNames(xpath);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IVoca"/> Deduction items
-        /// (e.g. Fed Tax, Child Support, FICA, etc.) from US Domus Opes data file
-        /// </summary>
-        /// <returns></returns>
-        public static IVoca[] GetDeductionItemNames()
-        {
-            var xpath = $"//{DomusOpesDivisions.Deduction.ToString().ToLower()}//item";
-            return _deductionItemNames = _deductionItemNames ?? GetDomusOpesItemNames(xpath);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IVoca"/> Expense items 
-        /// (i.e. household budget) from US Domus Opes data file
-        /// </summary>
-        /// <returns></returns>
-        public static IVoca[] GetExpenseItemNames()
-        {
-            var xpath = $"//{DomusOpesDivisions.Expense.ToString().ToLower()}//item";
-            return _expenseItemNames = _expenseItemNames ?? GetDomusOpesItemNames(xpath);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IVoca"/> Expense items 
-        /// (i.e. real and private property) 
-        /// from US Domus Opes data file
-        /// </summary>
-        /// <returns></returns>
-        public static IVoca[] GetAssetItemNames()
-        {
-            var xpath = $"//{DomusOpesDivisions.Assets.ToString().ToLower()}//item";
-            return _assetItemNames = _assetItemNames ?? GetDomusOpesItemNames(xpath);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IVoca"/> Employment items 
-        /// (e.g. wage, salary, tips, etc.) 
-        /// from US Domus Opes data file
-        /// </summary>
-        /// <returns></returns>
-        public static IVoca[] GetEmploymentItemNames()
-        {
-            var xpath = $"//{DomusOpesDivisions.Employment.ToString().ToLower()}//item";
-            return _employmentItemNames = _employmentItemNames ?? GetDomusOpesItemNames(xpath);
-        }
-
-        /// <summary>
-        /// Get the Domus Opes group names for the given division
-        /// </summary>
-        /// <param name="division"></param>
-        /// <returns></returns>
-        public static List<string> GetGroupNames(DomusOpesDivisions division)
-        {
-            var grpNames = new List<string>();
-            switch (division)
-            {
-                case DomusOpesDivisions.Assets:
-                    grpNames.AddRange(GetAssetItemNames().Select(x => x.GetName(KindsOfNames.Group)));
-                    break;
-                case DomusOpesDivisions.Deduction:
-                    grpNames.AddRange(GetDeductionItemNames().Select(x => x.GetName(KindsOfNames.Group)));
-                    break;
-                case DomusOpesDivisions.Expense:
-                    grpNames.AddRange(GetExpenseItemNames().Select(x => x.GetName(KindsOfNames.Group)));
-                    break;
-                case DomusOpesDivisions.Income:
-                    grpNames.AddRange(GetIncomeItemNames().Select(x => x.GetName(KindsOfNames.Group)));
-                    break;
-                case DomusOpesDivisions.Employment:
-                    grpNames.AddRange(GetEmploymentItemNames().Select(x => x.GetName(KindsOfNames.Group)));
-                    break;
-            }
-            return grpNames.Distinct().ToList();
-        }
-
-        /// <summary>
-        /// Get the Domus Opes item names as a composite <see cref="IVoca"/>
-        /// which contains both the item name and its group name.
-        /// </summary>
-        /// <param name="division"></param>
-        /// <returns></returns>
-        public static IVoca[] GetItemNames(DomusOpesDivisions division)
-        {
-            var grpNames = new List<IVoca>();
-            switch (division)
-            {
-                case DomusOpesDivisions.Assets:
-                    grpNames.AddRange(GetAssetItemNames());
-                    break;
-                case DomusOpesDivisions.Deduction:
-                    grpNames.AddRange(GetDeductionItemNames());
-                    break;
-                case DomusOpesDivisions.Expense:
-                    grpNames.AddRange(GetExpenseItemNames());
-                    break;
-                case DomusOpesDivisions.Income:
-                    grpNames.AddRange(GetIncomeItemNames());
-                    break;
-            }
-            return grpNames.Distinct().ToArray();
-        }
-
-        /// <summary>
         /// Factory method to get a list of group-name to group-rate using 
         /// the given <see cref="options"/>
         /// </summary>
@@ -420,7 +162,7 @@ namespace NoFuture.Rand.Opes
         {
             options = options ?? OpesOptions.RandomOpesOptions();
 
-            var grpNames = GetGroupNames(Division);
+            var grpNames = GetGroupNames(DivisionName);
 
             return GetNames2Portions(options, grpNames.ToArray());
         }
@@ -439,7 +181,7 @@ namespace NoFuture.Rand.Opes
             options = options ?? OpesOptions.RandomOpesOptions();
 
             //get all the item names we are targeting
-            var itemNames = GetItemNames(Division).Where(x =>
+            var itemNames = GetItemNames(DivisionName).Where(x =>
                 String.Equals(x.GetName(KindsOfNames.Group), groupName, StringComparison.OrdinalIgnoreCase)).ToArray();
 
             return GetNames2Portions(options, itemNames.Select(k => k.Name).ToArray());
@@ -644,104 +386,10 @@ namespace NoFuture.Rand.Opes
             return ReassignRates(randDict, calcMap).Select(kv => new Tuple<string, double>(kv.Key, kv.Value)).ToList();
         }
 
-        /// <summary>
-        /// Tries to parse a single &apos;mereo&apos; item
-        /// from the US Domus Opes data file
-        /// </summary>
-        /// <param name="xmlNode"></param>
-        /// <param name="voca"></param>
-        /// <returns></returns>
-        internal static bool TryParseUsDomusOpesXml(XmlNode xmlNode, out IVoca voca)
-        {
-            voca = null;
-
-            if (xmlNode == null)
-                return false;
-
-            if (!(xmlNode is XmlElement xmlElem))
-                return false;
-
-            var egs = new List<string>();
-
-            var groupName = xmlElem.ParentNode is XmlElement groupElem && groupElem.HasAttributes
-                ? groupElem.GetAttribute("name")
-                : "";
-            var itemName = xmlElem.GetAttribute("name");
-            var abbrev = xmlElem.GetAttribute("abbrev");
-            if (xmlElem.HasChildNodes)
-            {
-                foreach (var cn in xmlElem.ChildNodes)
-                {
-                    if (!(cn is XmlElement childElem))
-                        continue;
-                    if (childElem.LocalName != "eg" || !childElem.HasAttributes)
-                        continue;
-                    var eg = childElem.GetAttribute("name");
-                    if (String.IsNullOrWhiteSpace(eg))
-                        continue;
-                    egs.Add(eg);
-                }
-            }
-
-            voca = new VocaBase(itemName);
-            if (!string.IsNullOrWhiteSpace(abbrev))
-                voca.AddName(KindsOfNames.Abbrev, abbrev);
-            if (!string.IsNullOrWhiteSpace(groupName))
-                voca.AddName(KindsOfNames.Group, groupName);
-
-            return !string.IsNullOrWhiteSpace(itemName);
-        }
-
         private static bool IsCloseEnoughToOne(double testValue)
         {
             var calcMapSumRemainder = 1 - Math.Abs(testValue);
             return calcMapSumRemainder <= 0.00001 && calcMapSumRemainder >= -0.00001;
-        }
-
-        /// <summary>
-        /// Gets all Group-Item names at the given <see cref="xPath"/>
-        /// </summary>
-        /// <param name="xPath"></param>
-        /// <returns></returns>
-        internal static IVoca[] GetDomusOpesItemNames(string xPath)
-        {
-            if (String.IsNullOrWhiteSpace(xPath))
-                return null;
-
-            OpesXml = OpesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_DOMUS_OPES,
-                           Assembly.GetExecutingAssembly());
-            var nodes = OpesXml.SelectNodes(xPath);
-            if (nodes == null || nodes.Count <= 0)
-                return null;
-            var names = new List<IVoca>();
-            foreach (var o in nodes)
-            {
-                if (!(o is XmlNode node))
-                    continue;
-                if (TryParseUsDomusOpesXml(node, out var nameOut))
-                    names.Add(nameOut);
-            }
-            return names.ToArray();
-        }
-
-        /// <summary>
-        /// Weights the probability that a person will lease when they are young, living in a dense urban area or both.
-        /// </summary>
-        /// <param name="msaType"></param>
-        /// <param name="age"></param>
-        /// <returns></returns>
-        protected internal bool GetIsLeaseResidence(UrbanCentric msaType, int age)
-        {
-
-            var livesInDenseUrbanArea = msaType == (UrbanCentric.City | UrbanCentric.Large);
-            var isYoung = age < 32;
-            var roll = 65;
-            if (livesInDenseUrbanArea)
-                roll -= 23;
-            //is scaled where 29 year-old loses 3 while 21 year-old loses 11
-            if (isYoung)
-                roll -= 32 - age;
-            return Etx.RandomRollBelowOrAt(roll, Etx.Dice.OneHundred);
         }
 
         protected virtual Pecuniam CalcValue(Pecuniam pecuniam, double d)
@@ -848,33 +496,6 @@ namespace NoFuture.Rand.Opes
 
             n2r = n2r.ToDictionary(kv => kv.Key, kv => Math.Round(kv.Value, DF_ROUND_DECIMAL_PLACES-1));
             return n2r;
-        }
-
-        /// <summary>
-        /// Gets a rate, at random, using the <see cref="AmericanEquations.ClassicHook"/>
-        /// </summary>
-        /// <param name="age">
-        /// Optional, will use the Person&apos;s Age or the mean age of Americans.
-        /// </param>
-        /// <returns></returns>
-        protected internal virtual double GetRandomRateFromClassicHook(double? age = null)
-        {
-            //we want age to have an effect on the randomness
-            var hookEquation = AmericanEquations.ClassicHook;
-            age = age ?? (int)Math.Round(AmericanData.AVG_AGE_AMERICAN);
-
-            var ageAtDt = age <= 0 
-                ? AmericanData.AVG_AGE_AMERICAN 
-                : age.Value;
-
-            //some asymetric percentage based on age
-            var yVal = hookEquation.SolveForY(ageAtDt);
-
-            //get something randome near this value
-            var randRate = Etx.RandomValueInNormalDist(yVal, 0.01921);
-
-            //its income so it shouldn't be negative by definition
-            return randRate <= 0D ? 0D : randRate;
         }
 
         /// <summary>

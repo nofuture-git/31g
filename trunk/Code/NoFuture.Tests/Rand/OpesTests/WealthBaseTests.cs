@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetIncomeItemNames()
         {
-            var testResult = WealthBase.GetIncomeItemNames();
+            var testResult = DomusOpesBase.GetIncomeItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -77,7 +77,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetDeductionItemNames()
         {
-            var testResult = WealthBase.GetDeductionItemNames();
+            var testResult = DomusOpesBase.GetDeductionItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetExpenseItemNames()
         {
-            var testResult = WealthBase.GetExpenseItemNames();
+            var testResult = DomusOpesBase.GetExpenseItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetAssetItemNames()
         {
-            var testResult = WealthBase.GetAssetItemNames();
+            var testResult = DomusOpesBase.GetAssetItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -215,7 +215,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)
         {
             var grpsAndNames = new List<Tuple<string, string>>();
-            var srcXml = WealthBase.UsDomusOpesData;
+            var srcXml = DomusOpesBase.UsDomusOpesData;
             var incomeNode = srcXml.SelectSingleNode($"//{sectionName}");
 
             foreach (var grpNode in incomeNode.ChildNodes)
