@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc />
     /// <summary>
     /// Represents a currency value in-time in 
     /// the form of a push-only stack of transactions
@@ -68,7 +69,8 @@ namespace NoFuture.Rand.Sp
         Pecuniam GetCurrent(DateTime dt, Dictionary<DateTime, float> variableRate);
 
         /// <summary>
-        /// The number of days in a year used to calc per-diem interest
+        /// The number of days in a year used to calc per-diem interest.
+        /// This is a double to reflect that a tropical-year is not a whole number.
         /// </summary>
         double DaysPerYear { get; set; }
 

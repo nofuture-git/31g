@@ -10,7 +10,14 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public interface ITransactionable
     {
+        /// <summary>
+        /// Will consider <see cref="amt"/> as a negative value.
+        /// </summary>
         Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null);
+
+        /// <summary>
+        /// Will consider <see cref="amt"/> as a positive value.
+        /// </summary>
         Guid AddPositiveValue(DateTime dt, Pecuniam amt, IVoca note = null);
     }
 }
