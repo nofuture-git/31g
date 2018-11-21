@@ -16,6 +16,27 @@ namespace NoFuture.Rand.Tests.OpesTests
     [TestFixture]
     public class WealthBaseTests
     {
+        [Test]
+        public void TestAmericanFinAffidavit()
+        {
+            var options = AmericanDomusOpesOptions.RandomOpesOptions(
+                Domus.US.AmericanUtil.RandomAmericanFirstName(Gender.Female),
+                Domus.US.AmericanUtil.RandomAmericanLastName());
+
+            var income = AmericanIncome.RandomIncome(options);
+            var assets = AmericanAssets.RandomAssets(options);
+            var expenses = AmericanExpenses.RandomExpenses(options);
+
+            var allItems = income.ToData(KindsOfTextCase.Kabab);
+            foreach(var asset in assets.ToData(KindsOfTextCase.Kabab))
+                allItems.Add(asset.Key, asset.Value);
+            foreach(var expense in expenses.ToData(KindsOfTextCase.Kabab))
+                allItems.Add(expense.Key, expense.Value);
+
+            foreach(var key in allItems.Keys)
+                Console.WriteLine($"{key}, {allItems[key]}");
+
+        }
 
         [Test]
         public void TestGetFactor()

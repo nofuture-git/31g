@@ -47,10 +47,6 @@ namespace NoFuture.Rand.Opes.US
 
         #region properties
 
-        public Pecuniam HousePayment { get; private set; }
-
-        public Pecuniam CarPayment { get; private set; }
-
         protected internal override List<NamedReceivable> MyItems
         {
             get
@@ -265,11 +261,11 @@ namespace NoFuture.Rand.Opes.US
                 var loan = (SecuredFixedRateLoan) p;
                 if (isMortgage)
                 {
-                    HousePayment = loan.MonthlyPayment;
+                    options.HousePayment = loan.MonthlyPayment;
                 }
                 else
                 {
-                    CarPayment =loan.MonthlyPayment;
+                    options.CarPayment = loan.MonthlyPayment;
                 }
             }
             else
@@ -300,7 +296,7 @@ namespace NoFuture.Rand.Opes.US
 
             if (options.IsRenting)
             {
-                options.AddGivenDirectly(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
+                options.AddZeroPortion(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
             }
             options.AddPossibleZeroOuts("Time Shares", "Land", "Mineral Rights");
             var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, options);
@@ -322,9 +318,9 @@ namespace NoFuture.Rand.Opes.US
                                  usCityState.Msa?.MsaType >= UrbanCentric.Fringe;
             if (!livesInCountry)
             {
-                options.AddGivenDirectly("Crops", AssetGroupNames.PERSONAL_PROPERTY);
+                options.AddZeroPortion("Crops", AssetGroupNames.PERSONAL_PROPERTY);
 
-                options.AddGivenDirectly("Livestock", AssetGroupNames.PERSONAL_PROPERTY);
+                options.AddZeroPortion("Livestock", AssetGroupNames.PERSONAL_PROPERTY);
             }
 
             var d = GetItemNames2Portions(AssetGroupNames.PERSONAL_PROPERTY, options);

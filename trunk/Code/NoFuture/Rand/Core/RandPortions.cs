@@ -164,6 +164,16 @@ namespace NoFuture.Rand.Core
         }
 
         /// <summary>
+        /// Add item which will be given zero portion.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="groupName"></param>
+        public void AddZeroPortion(string name, string groupName)
+        {
+            GivenDirectly.Add(new Tuple<VocaBase, double>(new VocaBase(name, groupName), 0D));
+        }
+
+        /// <summary>
         /// Same as its overload, just without a group name
         /// </summary>
         public void AddGivenDirectly(string name, double? amount = null)

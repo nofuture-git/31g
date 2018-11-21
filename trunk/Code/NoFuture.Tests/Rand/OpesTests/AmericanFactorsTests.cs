@@ -1,7 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
-using NoFuture.Rand.Opes;
 using NoFuture.Rand.Opes.US;
 using NUnit.Framework;
 
@@ -16,12 +15,13 @@ namespace NoFuture.Rand.Tests.OpesTests
             var stdDev = 0.2685D;
             var testResult = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.CheckingAccount, 1.0D, stdDev);
             var isInRange = testResult >= 1000D - (1000 * stdDev * 3) && testResult <= 1000D + (1000 * stdDev * 3);
-            System.Diagnostics.Debug.WriteLine(testResult);
+            Console.WriteLine(testResult);
             Assert.IsTrue(isInRange);
 
             stdDev = 0.0485D;
             testResult = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.HomeEquity, 1.0D, stdDev);
             isInRange = testResult >= 81000D - (81000 * stdDev * 3) && testResult <= 81000D + (81000 * stdDev * 3);
+            Console.WriteLine(testResult);
             Assert.IsTrue(isInRange);
         }
 

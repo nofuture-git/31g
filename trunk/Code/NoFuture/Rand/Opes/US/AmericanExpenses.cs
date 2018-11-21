@@ -128,22 +128,21 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             //TODO - integrate ability to have multiple mortgages in options
-            options.AddGivenDirectly("Other Lein", ExpenseGroupNames.HOME);
+            options.AddZeroPortion("Other Lein", ExpenseGroupNames.HOME);
 
             //we want almost all-of-it in Mortgage
             options.Rate = RandPortions.DiminishingRate.VeryFast;
 
             if (options.IsRenting)
             {
-                options.AddGivenDirectly("Mortgage", ExpenseGroupNames.HOME);
-                options.AddGivenDirectly("Maintenance", ExpenseGroupNames.HOME);
-                options.AddGivenDirectly("Property Tax", ExpenseGroupNames.HOME);
-                options.AddGivenDirectly("Association Fees", ExpenseGroupNames.HOME);
-
+                options.AddZeroPortion("Mortgage", ExpenseGroupNames.HOME);
+                options.AddZeroPortion("Maintenance", ExpenseGroupNames.HOME);
+                options.AddZeroPortion("Property Tax", ExpenseGroupNames.HOME);
+                options.AddZeroPortion("Association Fees", ExpenseGroupNames.HOME);
             }
             else
             {
-                options.AddGivenDirectly("Rent", ExpenseGroupNames.HOME);
+                options.AddZeroPortion("Rent", ExpenseGroupNames.HOME);
                 options.AddPossibleZeroOuts("Association Fees");
             }
 
@@ -161,7 +160,7 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             if (options.IsRenting)
-                options.AddPossibleZeroOuts(new[] { "Gas", "Water", "Sewer", "Trash" });
+                options.AddPossibleZeroOuts("Gas", "Water", "Sewer", "Trash");
 
             var d = GetItemNames2Portions(ExpenseGroupNames.UTILITIES, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -177,7 +176,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            options.AddPossibleZeroOuts(new[] { "Parking", "Registration Fees" });
+            options.AddPossibleZeroOuts("Parking", "Registration Fees");
 
             //focus most-of-it on Loan Payments or fuel
             options.Rate = RandPortions.DiminishingRate.Fast;
@@ -186,19 +185,19 @@ namespace NoFuture.Rand.Opes.US
             {
                 if (options.IsVehiclePaidOff)
                 {
-                    options.AddGivenDirectly("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
+                    options.AddZeroPortion("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
                 }
 
-                options.AddGivenDirectly("Public Transportation", ExpenseGroupNames.TRANSPORTATION);
+                options.AddZeroPortion("Public Transportation", ExpenseGroupNames.TRANSPORTATION);
             }
             else
             {
-                options.AddGivenDirectly("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
-                options.AddGivenDirectly("Fuel", ExpenseGroupNames.TRANSPORTATION);
-                options.AddGivenDirectly("Maintenance", ExpenseGroupNames.TRANSPORTATION);
-                options.AddGivenDirectly("Property Tax", ExpenseGroupNames.TRANSPORTATION);
-                options.AddGivenDirectly("Parking", ExpenseGroupNames.TRANSPORTATION);
-                options.AddGivenDirectly("Registration Fees", ExpenseGroupNames.TRANSPORTATION);
+                options.AddZeroPortion("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
+                options.AddZeroPortion("Fuel", ExpenseGroupNames.TRANSPORTATION);
+                options.AddZeroPortion("Maintenance", ExpenseGroupNames.TRANSPORTATION);
+                options.AddZeroPortion("Property Tax", ExpenseGroupNames.TRANSPORTATION);
+                options.AddZeroPortion("Parking", ExpenseGroupNames.TRANSPORTATION);
+                options.AddZeroPortion("Registration Fees", ExpenseGroupNames.TRANSPORTATION);
             }
 
             var d = GetItemNames2Portions(ExpenseGroupNames.TRANSPORTATION, options);
@@ -217,11 +216,11 @@ namespace NoFuture.Rand.Opes.US
             options.AddPossibleZeroOuts(new[] { "Pet", "Vision",
                 "Dental", "Health", "Disability", "Life" });
 
-            options.AddGivenDirectly(options.IsRenting ? "Home" : "Renters", ExpenseGroupNames.INSURANCE);
+            options.AddZeroPortion(options.IsRenting ? "Home" : "Renters", ExpenseGroupNames.INSURANCE);
 
             if (options.NumberOfVehicles > 0)
             {
-                options.AddGivenDirectly("Vehicle", ExpenseGroupNames.INSURANCE);
+                options.AddZeroPortion("Vehicle", ExpenseGroupNames.INSURANCE);
             }
 
             var d = GetItemNames2Portions(ExpenseGroupNames.INSURANCE, options);
@@ -256,12 +255,12 @@ namespace NoFuture.Rand.Opes.US
             //when children are young we want to reflect that
             if (options.GetChildrenAges().All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
             {
-                options.AddGivenDirectly("Transportation", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectly("School Supplies", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectly("Lunch Money", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectly("Extracurricular", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectly("Camp", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectly("Allowance", ExpenseGroupNames.CHILDREN);
+                options.AddZeroPortion("Transportation", ExpenseGroupNames.CHILDREN);
+                options.AddZeroPortion("School Supplies", ExpenseGroupNames.CHILDREN);
+                options.AddZeroPortion("Lunch Money", ExpenseGroupNames.CHILDREN);
+                options.AddZeroPortion("Extracurricular", ExpenseGroupNames.CHILDREN);
+                options.AddZeroPortion("Camp", ExpenseGroupNames.CHILDREN);
+                options.AddZeroPortion("Allowance", ExpenseGroupNames.CHILDREN);
             }
             else
             {

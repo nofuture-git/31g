@@ -24,12 +24,32 @@ namespace NoFuture.Rand.Opes.US
     public class AmericanDomusOpesOptions : RandPortions, ITempore
     {
         private CityArea _cityArea;
+        private Pecuniam _carPayment;
 
         #region properties
 
         public AmericanDomusOpesOptions(AmericanFactorOptions factorOptions = null)
         {
             FactorOptions = factorOptions ?? AmericanFactorOptions.RandomFactorOptions();
+        }
+
+        /// <summary>
+        /// The monthly mortgage or rent payment
+        /// </summary>
+        protected internal Pecuniam HousePayment { get; set; }
+
+        /// <summary>
+        /// The monthly car payment.
+        /// </summary>
+        protected internal Pecuniam CarPayment
+        {
+            get => _carPayment;
+            set
+            {
+                if (value != null && value != Pecuniam.Zero)
+                    IsVehiclePaidOff = false;
+                _carPayment = value;
+            }
         }
 
         /// <summary>
@@ -113,6 +133,7 @@ namespace NoFuture.Rand.Opes.US
         /// The interval is passed to the created items
         /// </summary>
         public Interval? Interval => DueFrequency.ToInterval();
+
         public TimeSpan? DueFrequency { get; set; }
 
         #endregion
