@@ -9,7 +9,7 @@ using NoFuture.Rand.Gov.US;
 namespace NoFuture.Rand.Opes.US
 {
     /// <summary>
-    /// Applies each of the <see cref="FactorTables"/> to the given <see cref="AmericanFactorOptions"/>
+    /// Applies each of the <see cref="AmericanFactorTables"/> to the given <see cref="AmericanFactorOptions"/>
     /// which attempt to take into account education level, race, region, age, gender and 
     /// marital status.
     /// </summary>
@@ -94,23 +94,23 @@ namespace NoFuture.Rand.Opes.US
             var gender = options.Gender;
             var maritalStatus = options.MaritialStatus;
 
-            HomeDebtFactor = GetFactor(FactorTables.HomeDebt, edu, race, region, age, gender,
+            HomeDebtFactor = GetFactor(AmericanFactorTables.HomeDebt, edu, race, region, age, gender,
                 maritalStatus);
-            VehicleDebtFactor = GetFactor(FactorTables.VehicleDebt, edu, race, region, age, gender,
+            VehicleDebtFactor = GetFactor(AmericanFactorTables.VehicleDebt, edu, race, region, age, gender,
                 maritalStatus);
-            CreditCardDebtFactor = GetFactor(FactorTables.CreditCardDebt, edu, race, region, age, gender,
+            CreditCardDebtFactor = GetFactor(AmericanFactorTables.CreditCardDebt, edu, race, region, age, gender,
                 maritalStatus);
-            SavingsAcctFactor = GetFactor(FactorTables.SavingsAccount, edu, race, region, age, gender,
+            SavingsAcctFactor = GetFactor(AmericanFactorTables.SavingsAccount, edu, race, region, age, gender,
                 maritalStatus);
-            CheckingAcctFactor = GetFactor(FactorTables.CheckingAccount, edu, race, region, age, gender,
+            CheckingAcctFactor = GetFactor(AmericanFactorTables.CheckingAccount, edu, race, region, age, gender,
                 maritalStatus);
-            NetWorthFactor = GetFactor(FactorTables.NetWorth, edu, race, region, age, gender,
+            NetWorthFactor = GetFactor(AmericanFactorTables.NetWorth, edu, race, region, age, gender,
                 maritalStatus);
-            HomeEquityFactor = GetFactor(FactorTables.HomeEquity, edu, race, region, age, gender,
+            HomeEquityFactor = GetFactor(AmericanFactorTables.HomeEquity, edu, race, region, age, gender,
                 maritalStatus);
-            VehicleEquityFactor = GetFactor(FactorTables.VehicleEquity, edu, race, region, age, gender,
+            VehicleEquityFactor = GetFactor(AmericanFactorTables.VehicleEquity, edu, race, region, age, gender,
                 maritalStatus);
-            OtherDebtFactor = GetFactor(FactorTables.OtherDebt, edu, race, region, age, gender,
+            OtherDebtFactor = GetFactor(AmericanFactorTables.OtherDebt, edu, race, region, age, gender,
                 maritalStatus);
         }
 
@@ -125,7 +125,7 @@ namespace NoFuture.Rand.Opes.US
         /// the value from <see cref="GetFactorBaseValue"/>
         /// </param>
         /// <returns></returns>
-        public static double GetRandomFactorValue(FactorTables factor, double factorMultiplier,
+        public static double GetRandomFactorValue(AmericanFactorTables factor, double factorMultiplier,
             double stdDevAsPercent, double? assignedBase = null)
         {
             var baseValue = assignedBase.GetValueOrDefault(GetFactorBaseValue(factor));
@@ -152,18 +152,18 @@ namespace NoFuture.Rand.Opes.US
         /// src https://www2.census.gov/programs-surveys/demo/tables/wealth/2013/wealth-asset-ownership/wealth-tables-2013.xlsx
         ///     https://www2.census.gov/programs-surveys/demo/tables/wealth/2011/wealth-asset-ownership/debt-tables-2011.xlsx
         /// </remarks>
-        public static double GetFactor(FactorTables tbl, OccidentalEdu edu, NorthAmericanRace race,
+        public static double GetFactor(AmericanFactorTables tbl, OccidentalEdu edu, NorthAmericanRace race,
             AmericanRegion region, int age, Gender gender, MaritialStatus maritialStatus)
         {
             DebtXml = DebtXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_DEBT,
                            Assembly.GetExecutingAssembly());
             WealthXml = WealthXml ??
                          XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_WEALTH, Assembly.GetExecutingAssembly());
-            var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
-                         tbl == FactorTables.VehicleDebt
+            var xmlDoc = tbl == AmericanFactorTables.CreditCardDebt || tbl == AmericanFactorTables.HomeDebt ||
+                         tbl == AmericanFactorTables.VehicleDebt
                 ? DebtXml
                 : WealthXml;
-            var tblName = Enum.GetName(typeof(FactorTables), tbl);
+            var tblName = Enum.GetName(typeof(AmericanFactorTables), tbl);
             var eduName = GetXmlEduName(edu);
             var raceName = Enum.GetName(typeof(NorthAmericanRace), race);
             var regionName = Enum.GetName(typeof(AmericanRegion), region);
@@ -229,7 +229,7 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="tbl"></param>
         /// <returns></returns>
-        public static double GetFactorBaseValue(FactorTables tbl)
+        public static double GetFactorBaseValue(AmericanFactorTables tbl)
         {
             DebtXml = DebtXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_DEBT,
                            Assembly.GetExecutingAssembly());
@@ -237,11 +237,11 @@ namespace NoFuture.Rand.Opes.US
                          XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_WEALTH, Assembly.GetExecutingAssembly());
 
 
-            var xmlDoc = tbl == FactorTables.CreditCardDebt || tbl == FactorTables.HomeDebt ||
-                         tbl == FactorTables.VehicleDebt || tbl == FactorTables.OtherDebt
+            var xmlDoc = tbl == AmericanFactorTables.CreditCardDebt || tbl == AmericanFactorTables.HomeDebt ||
+                         tbl == AmericanFactorTables.VehicleDebt || tbl == AmericanFactorTables.OtherDebt
                 ? DebtXml
                 : WealthXml;
-            var tblName = Enum.GetName(typeof(FactorTables), tbl);
+            var tblName = Enum.GetName(typeof(AmericanFactorTables), tbl);
             var tblXPath = $"//table[@name='{tblName}']";
             var tblNode = xmlDoc.SelectSingleNode(tblXPath) as XmlElement;
             if (string.IsNullOrWhiteSpace(tblNode?.Attributes?["value"]?.Value))

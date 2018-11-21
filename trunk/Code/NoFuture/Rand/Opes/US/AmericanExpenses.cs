@@ -8,11 +8,11 @@ using NoFuture.Rand.Sp;
 
 namespace NoFuture.Rand.Opes.US
 {
-    /// <inheritdoc cref="DomusOpesBase" />
+    /// <inheritdoc cref="AmericanDomusOpesBase" />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class AmericanExpenses : DomusOpesBase, IDeinde
+    public class AmericanExpenses : AmericanDomusOpesBase, IDeinde
     {
         private const double PERCENT_EXPENSE_OF_INCOME = 0.85;
         private readonly HashSet<NamedReceivable> _expenses = new HashSet<NamedReceivable>();
@@ -37,9 +37,9 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static AmericanExpenses RandomExpenses(DomusOpesOptions options = null)
+        public static AmericanExpenses RandomExpenses(AmericanDomusOpesOptions options = null)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             var exp = new AmericanExpenses();
             exp.RandomizeAllItems(options);
             return exp;
@@ -77,9 +77,9 @@ namespace NoFuture.Rand.Opes.US
             return itemData;
         }
 
-        protected override Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected override Dictionary<string, Func<AmericanDomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
-            return new Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>>
+            return new Dictionary<string, Func<AmericanDomusOpesOptions, Dictionary<string, double>>>
             {
                 {ExpenseGroupNames.HOME, GetHomeExpenseNames2RandomRates},
                 {ExpenseGroupNames.UTILITIES, GetUtilityExpenseNames2RandomRates},
@@ -92,9 +92,9 @@ namespace NoFuture.Rand.Opes.US
             };
         }
 
-        protected internal override void RandomizeAllItems(DomusOpesOptions options)
+        protected internal override void RandomizeAllItems(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             var stDt = options.Inception == DateTime.MinValue ? GetYearNeg(-1) : options.Inception;
             var ranges = GetYearsInDates(stDt);
 
@@ -123,9 +123,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetHomeExpenseNames2RandomRates(DomusOpesOptions options)
+        protected internal virtual Dictionary<string, double> GetHomeExpenseNames2RandomRates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             //TODO - integrate ability to have multiple mortgages in options
             options.AddGivenDirectly("Other Lein", ExpenseGroupNames.HOME);
@@ -156,9 +156,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetUtilityExpenseNames2RandomRates(DomusOpesOptions options)
+        protected internal Dictionary<string, double> GetUtilityExpenseNames2RandomRates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             if (options.IsRenting)
                 options.AddPossibleZeroOuts(new[] { "Gas", "Water", "Sewer", "Trash" });
@@ -173,9 +173,9 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         protected internal virtual Dictionary<string, double> GetTransportationExpenseNames2RandomRates(
-            DomusOpesOptions options)
+            AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             options.AddPossibleZeroOuts(new[] { "Parking", "Registration Fees" });
 
@@ -210,9 +210,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetInsuranceExpenseNames2RandomRates(DomusOpesOptions options)
+        protected internal virtual Dictionary<string, double> GetInsuranceExpenseNames2RandomRates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             options.AddPossibleZeroOuts(new[] { "Pet", "Vision",
                 "Dental", "Health", "Disability", "Life" });
@@ -233,9 +233,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetPersonalExpenseNames2RandomRates(DomusOpesOptions options)
+        protected internal Dictionary<string, double> GetPersonalExpenseNames2RandomRates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             options.AddPossibleZeroOuts(new[] { "Dues", "Subscriptions",
                 "Gifts", "Vice", "Clothing" });
@@ -249,9 +249,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetChildrenExpenseNames2RandomRates(DomusOpesOptions options)
+        protected internal Dictionary<string, double> GetChildrenExpenseNames2RandomRates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             //when children are young we want to reflect that
             if (options.GetChildrenAges().All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
@@ -278,9 +278,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetDebtExpenseNames2RandomRates(DomusOpesOptions options)
+        protected internal Dictionary<string, double> GetDebtExpenseNames2RandomRates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             options.AddPossibleZeroOuts(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
             var d = GetItemNames2Portions(ExpenseGroupNames.DEBT, options);
@@ -292,9 +292,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetHealthExpenseNames2RandomRates(DomusOpesOptions options)
+        protected internal Dictionary<string, double> GetHealthExpenseNames2RandomRates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             options.AddPossibleZeroOuts(new[] { "Therapy", "Hospital",
                 "Optical", "Dental", "Physician", "Supplements" });

@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Opes
+namespace NoFuture.Rand.Opes.US
 {
     /// <summary>
     /// Defines the kinds of factors effecting wealth.
     /// </summary>
     [Serializable]
-    public enum FactorTables
+    public enum AmericanFactorTables
     {
         HomeDebt,
         VehicleDebt,

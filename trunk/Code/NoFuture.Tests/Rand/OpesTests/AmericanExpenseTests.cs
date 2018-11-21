@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             foreach (var rate in testResult)
                 Console.WriteLine(rate);
 
-            testResult = testSubject.GetHomeExpenseNames2RandomRates(new DomusOpesOptions(){IsRenting = true});
+            testResult = testSubject.GetHomeExpenseNames2RandomRates(new AmericanDomusOpesOptions(){IsRenting = true});
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanExpenses();
 
-            var testResult = testSubject.GetTransportationExpenseNames2RandomRates(new DomusOpesOptions(){NumberOfVehicles = 0});
+            var testResult = testSubject.GetTransportationExpenseNames2RandomRates(new AmericanDomusOpesOptions(){NumberOfVehicles = 0});
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -98,7 +98,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsTrue(testResult.ContainsKey("Public Transportation"));
             Assert.AreEqual(1D, Math.Round(testResult["Public Transportation"]));
 
-            testResult = testSubject.GetTransportationExpenseNames2RandomRates(new DomusOpesOptions{NumberOfVehicles = 1});
+            testResult = testSubject.GetTransportationExpenseNames2RandomRates(new AmericanDomusOpesOptions{NumberOfVehicles = 1});
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -119,7 +119,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanExpenses();
 
-            var testResult = testSubject.GetInsuranceExpenseNames2RandomRates(new DomusOpesOptions { IsRenting = false });
+            var testResult = testSubject.GetInsuranceExpenseNames2RandomRates(new AmericanDomusOpesOptions { IsRenting = false });
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             foreach (var rate in testResult)
                 Console.WriteLine(rate);
 
-            testResult = testSubject.GetInsuranceExpenseNames2RandomRates(new DomusOpesOptions{IsRenting = true});
+            testResult = testSubject.GetInsuranceExpenseNames2RandomRates(new AmericanDomusOpesOptions{IsRenting = true});
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -236,7 +236,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestResolveItems()
         {
-            var testOptions = new DomusOpesOptions {SumTotal = 10000.0D };
+            var testOptions = new AmericanDomusOpesOptions {SumTotal = 10000.0D };
             var testSubject = new AmericanExpenses();
 
             testSubject.RandomizeAllItems(testOptions);
@@ -251,7 +251,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestRandomExpenses()
         {
-            var testSubject = AmericanExpenses.RandomExpenses(new DomusOpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });
+            var testSubject = AmericanExpenses.RandomExpenses(new AmericanDomusOpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });
             Assert.IsNotNull(testSubject);
 
             Assert.IsNotNull(testSubject.MyItems);

@@ -36,7 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="US\DomusOpesBase.cs" />
+    <Compile Include="US\AmericanDomusOpesBase.cs" />
     <Compile Include="IDeinde.cs" />
     <Compile Include="US\AmericanAssets.cs" />
     <Compile Include="US\AmericanDeductions.cs" />
@@ -45,10 +45,10 @@
     <Compile Include="US\AmericanFactorOptions.cs" />
     <Compile Include="US\AmericanFactors.cs" />
     <Compile Include="US\AmericanIncome.cs" />
-    <Compile Include="FactorTables.cs" />
+    <Compile Include="US\AmericanFactorTables.cs" />
     <Compile Include="ILaboris.cs" />
     <Compile Include="IReditus.cs" />
-    <Compile Include="DomusOpesOptions.cs" />
+    <Compile Include="US\AmericanDomusOpesOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WealthBase.cs" />
   </ItemGroup>

@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Geo.US;
-using NoFuture.Rand.Gov;
-using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Core;
-using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Opes
 {
@@ -97,14 +90,14 @@ namespace NoFuture.Rand.Opes
         /// Maps the <see cref="Division"/> groups names to a function which produces that group&apos;s item names and rate.
         /// </summary>
         /// <returns></returns>
-        protected abstract Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>> GetItems2Functions();
+        protected abstract Dictionary<string, Func<AmericanDomusOpesOptions, Dictionary<string, double>>> GetItems2Functions();
 
         /// <summary>
         /// Gets all the items of the given Opes type as random values based on the 
         /// options.
         /// </summary>
         /// <param name="options"></param>
-        protected internal abstract void RandomizeAllItems(DomusOpesOptions options);
+        protected internal abstract void RandomizeAllItems(AmericanDomusOpesOptions options);
 
         /// <summary>
         /// Helper method to get only those on-going items from within <see cref="items"/>
@@ -147,9 +140,9 @@ namespace NoFuture.Rand.Opes
         /// <returns>
         /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
         /// </returns>
-        protected internal virtual List<Tuple<string, double>> GetGroupNames2Portions(DomusOpesOptions options)
+        protected internal virtual List<Tuple<string, double>> GetGroupNames2Portions(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             var grpNames = GetGroupNames(DivisionName);
 
@@ -165,9 +158,9 @@ namespace NoFuture.Rand.Opes
         /// <returns>
         /// A set of item names to some percent where the sum of all the names is 1 (i.e. 100%).
         /// </returns>
-        protected internal virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName, DomusOpesOptions options)
+        protected internal virtual List<Tuple<string, double>> GetItemNames2Portions(string groupName, AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             //get all the item names we are targeting
             var itemNames = GetItemNames(DivisionName).Where(x =>
@@ -234,9 +227,9 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetItemsForRange(DomusOpesOptions options)
+        protected internal virtual NamedReceivable[] GetItemsForRange(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             var itemsout = new List<NamedReceivable>();
 
@@ -255,9 +248,9 @@ namespace NoFuture.Rand.Opes
         /// <param name="grp2Rate"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetItemsForRange(Tuple<string, double> grp2Rate, DomusOpesOptions options)
+        protected internal virtual NamedReceivable[] GetItemsForRange(Tuple<string, double> grp2Rate, AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             var itemsout = new List<NamedReceivable>();
 
@@ -283,17 +276,17 @@ namespace NoFuture.Rand.Opes
         }
 
         /// <summary>
-        /// While <see cref="GetItemsForRange(DomusOpesOptions)"/> deals with all the 
-        /// items of this <see cref="Division"/> this is concerned with one-item-at-a-time.
+        /// While <see cref="GetItemsForRange(AmericanDomusOpesOptions)"/> deals with all the 
+        /// items of this <see cref="DivisionName"/> this is concerned with one-item-at-a-time.
         /// </summary>
         /// <param name="itemName"></param>
         /// <param name="grpName"></param>
         /// <param name="options"></param>
         /// <param name="rate"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable GetNamedReceivableForItemAndGroup(string itemName, string grpName, DomusOpesOptions options, double rate)
+        protected internal virtual NamedReceivable GetNamedReceivableForItemAndGroup(string itemName, string grpName, AmericanDomusOpesOptions options, double rate)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             var calcValueR = CalcValue((options.SumTotal ?? 0).ToPecuniam(), rate);
             var p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(itemName, grpName, calcValueR,

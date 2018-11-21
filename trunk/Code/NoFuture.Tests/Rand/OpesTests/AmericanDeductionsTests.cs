@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
-                new DomusOpesOptions() { Inception = DateTime.Today.AddYears(-1) };
+                new AmericanDomusOpesOptions() { Inception = DateTime.Today.AddYears(-1) };
             var testResult = testSubject.GetInsuranceDeductionName2RandRates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
-                new DomusOpesOptions { Inception = DateTime.Today.AddYears(-1) };
+                new AmericanDomusOpesOptions { Inception = DateTime.Today.AddYears(-1) };
             var testResult = testSubject.GetGovernmentDeductionName2Rates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
-                new DomusOpesOptions { Inception = DateTime.Today.AddYears(-1) };
+                new AmericanDomusOpesOptions { Inception = DateTime.Today.AddYears(-1) };
             var testResult = testSubject.GetEmploymentDeductionName2Rates(testOptions);
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);
@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testSubject = new AmericanDeductions(testInput);
 
             var testOptions =
-                new DomusOpesOptions { Inception = DateTime.Today.AddYears(-1) };
+                new AmericanDomusOpesOptions { Inception = DateTime.Today.AddYears(-1) };
 
             var testResult = testSubject.GetJudgmentDeductionName2RandomRates(testOptions);
             Assert.IsNotNull(testResult);
@@ -179,7 +179,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testInput = new AmericanEmployment();
             var annualIncome = 75000.ToPecuniam();
 
-            var options = new DomusOpesOptions
+            var options = new AmericanDomusOpesOptions
             {
                 Inception = DateTime.Today.AddYears(-1),
                 SumTotal = annualIncome.ToDouble()
@@ -219,7 +219,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testInput = new AmericanEmployment();
 
-            var options = new DomusOpesOptions
+            var options = new AmericanDomusOpesOptions
             {
                 Inception = DateTime.Today.AddYears(-1),
                 SumTotal = 75000D
@@ -254,31 +254,31 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             var testResults = testSubject.GetGroupNames2Portions(null);
             
-            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.INSURANCE));
-            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.INSURANCE).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.INSURANCE));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.INSURANCE).Item2);
 
-            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.EMPLOYMENT));
-            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.EMPLOYMENT).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.EMPLOYMENT));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.EMPLOYMENT).Item2);
 
-            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.GOVERNMENT));
-            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.GOVERNMENT).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.GOVERNMENT));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.GOVERNMENT).Item2);
 
-            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS));
-            Assert.AreEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.JUDGMENTS));
+            Assert.AreEqual(0, testResults.First(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.JUDGMENTS).Item2);
 
-            var testOptions = new DomusOpesOptions();
-            testOptions.AddGivenDirectly(DomusOpesBase.DeductionGroupNames.JUDGMENTS, 1000);
+            var testOptions = new AmericanDomusOpesOptions();
+            testOptions.AddGivenDirectly(AmericanDomusOpesBase.DeductionGroupNames.JUDGMENTS, 1000);
 
             testResults = testSubject.GetGroupNames2Portions(testOptions);
-            Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS));
-            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS).Item2);
+            Assert.IsTrue(testResults.Any(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.JUDGMENTS));
+            Assert.AreNotEqual(0, testResults.First(t => t.Item1 == AmericanDomusOpesBase.DeductionGroupNames.JUDGMENTS).Item2);
         }
 
         [Test]
         public void TestResolveItemsWithJudgements()
         {
             var testInput = new AmericanEmployment();
-            var options = new DomusOpesOptions
+            var options = new AmericanDomusOpesOptions
             {
                 Inception = DateTime.Today.AddYears(-1),
                 SumTotal = 75000D

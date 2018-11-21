@@ -13,12 +13,12 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes.US
 {
-    /// <inheritdoc cref="DomusOpesBase" />
+    /// <inheritdoc cref="AmericanDomusOpesBase" />
     /// <summary>
     /// Represents the assets of a North American over some span of time
     /// </summary>
     [Serializable]
-    public class AmericanAssets : DomusOpesBase, IDeinde
+    public class AmericanAssets : AmericanDomusOpesBase, IDeinde
     {
         #region fields
         internal const string REAL_PROPERTY_HOME_OWNERSHIP = "Home Ownership";
@@ -73,9 +73,9 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static AmericanAssets RandomAssets(DomusOpesOptions options = null)
+        public static AmericanAssets RandomAssets(AmericanDomusOpesOptions options = null)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             var assets = new AmericanAssets();
             assets.RandomizeAllItems(options);
             return assets;
@@ -103,9 +103,9 @@ namespace NoFuture.Rand.Opes.US
             return itemData;
         }
 
-        protected override Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected override Dictionary<string, Func<AmericanDomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
-            return new Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>>
+            return new Dictionary<string, Func<AmericanDomusOpesOptions, Dictionary<string, double>>>
             {
                 {AssetGroupNames.REAL_PROPERTY, GetRealPropertyName2RandomRates},
                 {AssetGroupNames.PERSONAL_PROPERTY, GetPersonalPropertyAssetNames2Rates},
@@ -114,9 +114,9 @@ namespace NoFuture.Rand.Opes.US
             };
         }
 
-        protected internal override void RandomizeAllItems(DomusOpesOptions options)
+        protected internal override void RandomizeAllItems(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             AssignFactorValues(options.FactorOptions);
             options.DueFrequency = Constants.TropicalYear;
             var items = GetItemsForRange(options);
@@ -124,9 +124,9 @@ namespace NoFuture.Rand.Opes.US
                 AddItem(item);
         }
 
-        protected internal override List<Tuple<string, double>> GetGroupNames2Portions(DomusOpesOptions options)
+        protected internal override List<Tuple<string, double>> GetGroupNames2Portions(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             var amtR = options.SumTotal == null || options.SumTotal == 0
                 ? _totalEquity
@@ -176,12 +176,12 @@ namespace NoFuture.Rand.Opes.US
             return base.GetGroupNames2Portions(options);
         }
 
-        protected internal override NamedReceivable GetNamedReceivableForItemAndGroup(string item, string grp, DomusOpesOptions options, double rate)
+        protected internal override NamedReceivable GetNamedReceivableForItemAndGroup(string item, string grp, AmericanDomusOpesOptions options, double rate)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = RiskFreeInterestRate.DF_VALUE;
 
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             var startDate = options.Inception;
             var amtR = options.SumTotal;
@@ -292,9 +292,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(DomusOpesOptions options)
+        protected internal virtual Dictionary<string, double> GetRealPropertyName2RandomRates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             options.Rate = RandPortions.DiminishingRate.VeryFast;
 
@@ -312,9 +312,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(DomusOpesOptions options)
+        protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             options.AddPossibleZeroOuts("Art", "Firearms", "Collections", "Antiques");
 
             //remove obvious rural related items for everyone except those who are way out in the country
@@ -336,9 +336,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(DomusOpesOptions options)
+        protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             options.AddPossibleZeroOuts(new[]
             {
                 "Certificate of Deposit", "Insurance Policies",
@@ -358,9 +358,9 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal Dictionary<string, double> GetSecuritiesAssetNames2RandomRates(DomusOpesOptions options)
+        protected internal Dictionary<string, double> GetSecuritiesAssetNames2RandomRates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             var tOptions = options.GetClone();
             tOptions.AddPossibleZeroOuts("Derivatives");
             var d = GetItemNames2Portions(AssetGroupNames.SECURITIES, tOptions);
@@ -373,31 +373,31 @@ namespace NoFuture.Rand.Opes.US
                 return;
             var factors = new AmericanFactors(factorOptions);
 
-            _randCheckingAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.CheckingAccount,
+            _randCheckingAcctAmt = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.CheckingAccount,
                 factors.CheckingAcctFactor, stdDev);
-            _randSavingsAcctAmt = AmericanFactors.GetRandomFactorValue(FactorTables.SavingsAccount,
+            _randSavingsAcctAmt = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.SavingsAccount,
                 factors.SavingsAcctFactor, stdDev);
 
-            _randHomeEquity = AmericanFactors.GetRandomFactorValue(FactorTables.HomeEquity,
+            _randHomeEquity = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.HomeEquity,
                 factors.HomeEquityFactor,
                 DF_STD_DEV_PERCENT);
 
-            _randCarEquity = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleEquity,
+            _randCarEquity = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.VehicleEquity,
                 factors.VehicleEquityFactor, stdDev);
 
-            var randCcDebt = AmericanFactors.GetRandomFactorValue(FactorTables.CreditCardDebt,
+            var randCcDebt = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.CreditCardDebt,
                 factors.CreditCardDebtFactor,
                 DF_STD_DEV_PERCENT);
 
-            _randHomeDebt = AmericanFactors.GetRandomFactorValue(FactorTables.HomeDebt, factors.HomeDebtFactor,
+            _randHomeDebt = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.HomeDebt, factors.HomeDebtFactor,
                 DF_STD_DEV_PERCENT);
 
-            _randCarDebt = AmericanFactors.GetRandomFactorValue(FactorTables.VehicleDebt,
+            _randCarDebt = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.VehicleDebt,
                 factors.VehicleDebtFactor, stdDev);
 
             _totalEquity = _randCheckingAcctAmt + _randSavingsAcctAmt + _randHomeEquity + _randCarEquity;
 
-            var randNetWorth = AmericanFactors.GetRandomFactorValue(FactorTables.NetWorth,
+            var randNetWorth = AmericanFactors.GetRandomFactorValue(AmericanFactorTables.NetWorth,
                 factors.NetWorthFactor, stdDev);
 
             var allOtherAssetEquity = _totalEquity - randNetWorth;

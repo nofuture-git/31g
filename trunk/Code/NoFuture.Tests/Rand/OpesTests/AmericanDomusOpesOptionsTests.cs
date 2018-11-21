@@ -1,17 +1,18 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Opes;
+using NoFuture.Rand.Opes.US;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.OpesTests
 {
     [TestFixture]
-    public class DomusOpesOptionsTests
+    public class AmericanDomusOpesOptionsTests
     {
         [Test]
         public void TestGetClone()
         {
-            var testInput = new DomusOpesOptions
+            var testInput = new AmericanDomusOpesOptions
             {
                 Inception = DateTime.Today.AddYears(-1),
                 DueFrequency = new TimeSpan(1,0,0,0),

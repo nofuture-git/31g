@@ -6,14 +6,13 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Rand.Gov.US;
-using NoFuture.Rand.Opes.US;
 using NoFuture.Rand.Pneuma;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 
-namespace NoFuture.Rand.Opes
+namespace NoFuture.Rand.Opes.US
 {
     /// <inheritdoc cref="RandPortions" />
     /// <inheritdoc cref="ITempore" />
@@ -22,13 +21,13 @@ namespace NoFuture.Rand.Opes
     /// the various types of Domus.Opes
     /// </summary>
     [Serializable]
-    public class DomusOpesOptions : RandPortions, ITempore
+    public class AmericanDomusOpesOptions : RandPortions, ITempore
     {
         private CityArea _cityArea;
 
         #region properties
 
-        public DomusOpesOptions(AmericanFactorOptions factorOptions = null)
+        public AmericanDomusOpesOptions(AmericanFactorOptions factorOptions = null)
         {
             FactorOptions = factorOptions ?? AmericanFactorOptions.RandomFactorOptions();
         }
@@ -143,9 +142,9 @@ namespace NoFuture.Rand.Opes
         /// Creates a new instance on the heap with the exact same property values as this instance.
         /// </summary>
         /// <returns></returns>
-        public DomusOpesOptions GetClone()
+        public AmericanDomusOpesOptions GetClone()
         {
-            var o = new DomusOpesOptions(FactorOptions.GetClone());
+            var o = new AmericanDomusOpesOptions(FactorOptions.GetClone());
 
             var pi = GetType().GetProperties(NfSettings.DefaultFlags).Where(p => p.CanWrite).ToList();
             foreach (var p in pi)
@@ -181,7 +180,7 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static DomusOpesOptions RandomOpesOptions(string firstName = null, string lastName = null)
+        public static AmericanDomusOpesOptions RandomOpesOptions(string firstName = null, string lastName = null)
         {
             var name = new VocaBase();
             lastName = lastName ?? Etx.RandomWord();
@@ -189,7 +188,7 @@ namespace NoFuture.Rand.Opes
             name.AddName(KindsOfNames.First, firstName);
             name.AddName(KindsOfNames.Surname, lastName);
 
-            var opt = new DomusOpesOptions
+            var opt = new AmericanDomusOpesOptions
             {
                 Inception = DateTime.Today.Add(Constants.TropicalYear.Negate()),
                 HomeLocation = CityArea.RandomAmericanCity(),

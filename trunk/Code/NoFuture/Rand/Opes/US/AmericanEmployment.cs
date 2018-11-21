@@ -10,11 +10,11 @@ using NoFuture.Shared.Core;
 namespace NoFuture.Rand.Opes.US
 {
     /// <inheritdoc cref="ILaboris" />
-    /// <inheritdoc cref="DomusOpesBase" />
+    /// <inheritdoc cref="AmericanDomusOpesBase" />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class AmericanEmployment : DomusOpesBase, ILaboris
+    public class AmericanEmployment : AmericanDomusOpesBase, ILaboris
     {
         #region fields
         private readonly HashSet<NamedReceivable> _pay = new HashSet<NamedReceivable>();
@@ -100,9 +100,9 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static AmericanEmployment RandomEmployment(DomusOpesOptions options = null)
+        public static AmericanEmployment RandomEmployment(AmericanDomusOpesOptions options = null)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             var emply = new AmericanEmployment
             {
                 Inception = options.Inception,
@@ -118,7 +118,7 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="options"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static TimeSpan RandomEmploymentTenure(DomusOpesOptions options = null)
+        public static TimeSpan RandomEmploymentTenure(AmericanDomusOpesOptions options = null)
         {
             //TODO - use[https://www.bls.gov/news.release/tenure.nr0.htm]
             return new TimeSpan(Etx.RandomInteger(745, 1855), 0, 0, 0);
@@ -154,18 +154,18 @@ namespace NoFuture.Rand.Opes.US
             return afterOrOnFromDt && beforeOrOnToDt;
         }
 
-        protected override Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
+        protected override Dictionary<string, Func<AmericanDomusOpesOptions, Dictionary<string, double>>> GetItems2Functions()
         {
-            return new Dictionary<string, Func<DomusOpesOptions, Dictionary<string, double>>>
+            return new Dictionary<string, Func<AmericanDomusOpesOptions, Dictionary<string, double>>>
             {
                 {EmploymentGroupNames.PAY, GetPayName2RandRates},
             };
         }
 
-        protected internal override void RandomizeAllItems(DomusOpesOptions options)
+        protected internal override void RandomizeAllItems(AmericanDomusOpesOptions options)
         {
             //expecting the caller to have passed in a hire-date to termination-date
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
 
@@ -206,9 +206,9 @@ namespace NoFuture.Rand.Opes.US
         /// to capture the discrete time-ranges where wage\salary do not change.
         /// </summary>
         /// <returns></returns>
-        protected internal virtual List<Tuple<DateTime, DateTime?>> GetYearsOfServiceInDates(DomusOpesOptions options)
+        protected internal virtual List<Tuple<DateTime, DateTime?>> GetYearsOfServiceInDates(AmericanDomusOpesOptions options)
         {
-            options = options ?? DomusOpesOptions.RandomOpesOptions();
+            options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             var ranges = new List<Tuple<DateTime, DateTime?>>();
 
             var stDt = options.Inception.Date;
@@ -252,7 +252,7 @@ namespace NoFuture.Rand.Opes.US
         /// Produces the item names to rates for the Employment Pay (e.g. salary, tips, etc.)
         /// </summary>
         /// <returns></returns>
-        protected internal virtual Dictionary<string, double> GetPayName2RandRates(DomusOpesOptions options)
+        protected internal virtual Dictionary<string, double> GetPayName2RandRates(AmericanDomusOpesOptions options)
         {
             var bonusRate = Etx.RandomRollBelowOrAt(1, Etx.Dice.Ten)
                 ? Etx.RandomValueInNormalDist(0.02, 0.001)

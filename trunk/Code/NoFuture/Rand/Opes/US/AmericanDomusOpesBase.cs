@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Opes.US
     /// Base type for US household wealth
     /// </summary>
     [Serializable]
-    public abstract class DomusOpesBase : WealthBase
+    public abstract class AmericanDomusOpesBase : WealthBase
     {
         private static IVoca[] _incomeItemNames;
         private static IVoca[] _deductionItemNames;
@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Opes.US
         /// Optional, a randomizes the calculated value around a mean.
         /// </param>
         /// <returns></returns>
-        public virtual Pecuniam GetRandomYearlyIncome(DateTime? dt = null, DomusOpesOptions options = null, Pecuniam min = null,
+        public virtual Pecuniam GetRandomYearlyIncome(DateTime? dt = null, AmericanDomusOpesOptions options = null, Pecuniam min = null,
             double stdDevInUsd = 2000)
         {
             if (min == null)
@@ -169,7 +169,7 @@ namespace NoFuture.Rand.Opes.US
         /// <remarks>
         /// compiled data from BEA
         /// </remarks>
-        protected internal virtual IEquation GetAvgEarningPerYear(DomusOpesOptions options)
+        protected internal virtual IEquation GetAvgEarningPerYear(AmericanDomusOpesOptions options)
         {
             var ca = options?.HomeLocation as UsCityStateZip;
             if (ca == null)

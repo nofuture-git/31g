@@ -74,7 +74,7 @@
     <Compile Include="OpesTests\AmericanDeductionsTests.cs" />
     <Compile Include="OpesTests\AmericanEmploymentTests.cs" />
     <Compile Include="OpesTests\AmericanIncomeTests.cs" />
-    <Compile Include="OpesTests\DomusOpesOptionsTests.cs" />
+    <Compile Include="OpesTests\AmericanDomusOpesOptionsTests.cs" />
     <Compile Include="OpesTests\AmericanExpenseTests.cs" />
     <Compile Include="OpesTests\AmericanFactorsTests.cs" />
     <Compile Include="SpTests\SecurityTests.cs" />

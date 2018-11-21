@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetFactor()
         {
-            var testResult = AmericanFactors.GetFactor(FactorTables.HomeDebt,
+            var testResult = AmericanFactors.GetFactor(AmericanFactorTables.HomeDebt,
                 (OccidentalEdu.Bachelor | OccidentalEdu.Grad), NorthAmericanRace.Asian, AmericanRegion.West, 38,
                 Gender.Male, MaritialStatus.Single);
             Assert.AreNotEqual(0.0D, testResult);
@@ -30,17 +30,17 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetFactorBaseValue()
         {
-            var testResult = AmericanFactors.GetFactorBaseValue(FactorTables.VehicleDebt);
+            var testResult = AmericanFactors.GetFactorBaseValue(AmericanFactorTables.VehicleDebt);
             Assert.AreEqual(10000.0D, testResult);
 
-            testResult = AmericanFactors.GetFactorBaseValue(FactorTables.HomeEquity);
+            testResult = AmericanFactors.GetFactorBaseValue(AmericanFactorTables.HomeEquity);
             Assert.AreEqual(81000.0D, testResult);
         }
 
         [Test]
         public void TestGetPaycheck()
         {
-            var options = new DomusOpesOptions {IsRenting = true};
+            var options = new AmericanDomusOpesOptions {IsRenting = true};
             options.FactorOptions.Gender = Gender.Female;
             options.FactorOptions.DateOfBirth = Etx.RandomAdultBirthDate();
             var testSubject = new AmericanIncome();
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetIncomeItemNames()
         {
-            var testResult = DomusOpesBase.GetIncomeItemNames();
+            var testResult = AmericanDomusOpesBase.GetIncomeItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -77,7 +77,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetDeductionItemNames()
         {
-            var testResult = DomusOpesBase.GetDeductionItemNames();
+            var testResult = AmericanDomusOpesBase.GetDeductionItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetExpenseItemNames()
         {
-            var testResult = DomusOpesBase.GetExpenseItemNames();
+            var testResult = AmericanDomusOpesBase.GetExpenseItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetAssetItemNames()
         {
-            var testResult = DomusOpesBase.GetAssetItemNames();
+            var testResult = AmericanDomusOpesBase.GetAssetItemNames();
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
 
@@ -133,7 +133,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetGroupNames2Portions()
         {
-            var testInput = new DomusOpesOptions();
+            var testInput = new AmericanDomusOpesOptions();
             testInput.AddGivenDirectly("Real Property", 7800);
             testInput.AddGivenDirectly("Securities", 1000);
 
@@ -163,7 +163,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestGetItemNames2Portions()
         {
-            var testInput = new DomusOpesOptions();
+            var testInput = new AmericanDomusOpesOptions();
             var grpName = "Institutional";
             testInput.AddGivenDirectly("Partnerships", grpName, 7800);
             testInput.AddGivenDirectly("Fellowships", grpName, 1000);
@@ -184,7 +184,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsTrue(Math.Round(testResultSum) == 1.0D);
 
             //expect that when SumTotal is unassigned the ratios align exactly with assigned values
-            testInput = new DomusOpesOptions();
+            testInput = new AmericanDomusOpesOptions();
             testInput.AddGivenDirectly("Partnerships", grpName, 7800);
             testInput.AddGivenDirectly("Fellowships", grpName, 1000);
             testInput.AddGivenDirectly("Annuity", grpName, 1000);
@@ -218,7 +218,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         public static List<Tuple<string, string>> GetExpectedNamesFromXml(string sectionName)
         {
             var grpsAndNames = new List<Tuple<string, string>>();
-            var srcXml = DomusOpesBase.UsDomusOpesData;
+            var srcXml = AmericanDomusOpesBase.UsDomusOpesData;
             var incomeNode = srcXml.SelectSingleNode($"//{sectionName}");
 
             foreach (var grpNode in incomeNode.ChildNodes)

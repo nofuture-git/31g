@@ -209,7 +209,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         [Test]
         public void TestRandomIncome()
         {
-            var testSubject = AmericanIncome.RandomIncome(new DomusOpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });
+            var testSubject = AmericanIncome.RandomIncome(new AmericanDomusOpesOptions { Inception = new DateTime(DateTime.Today.Year, 1, 1) });
             Assert.IsNotNull(testSubject);
 
             Assert.IsNotNull(testSubject.MyItems);
