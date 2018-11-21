@@ -154,8 +154,16 @@ namespace NoFuture.Rand.Opes
                 p.SetValue(o, gVal);
             }
 
-            foreach (var zo in PossibleZeroOuts)
-                o.PossibleZeroOuts.Add(zo);
+            foreach (var pzo in Pzos2Prob.Keys)
+            {
+                var d = Pzos2Prob[pzo];
+                if (o.Pzos2Prob.ContainsKey(pzo))
+                    o.Pzos2Prob[pzo] = d;
+                else
+                {
+                    o.Pzos2Prob.Add(pzo, d);
+                }
+            }
 
             foreach(var me in GivenDirectly)
                 o.AddGivenDirectly(me.Item1.Name, me.Item1.GetName(KindsOfNames.Group), me.Item2);
@@ -165,7 +173,6 @@ namespace NoFuture.Rand.Opes
 
             o.Rate = Rate;
             o.SumTotal = SumTotal;
-            o.DiceRoll = DiceRoll;
             return o;
         }
 

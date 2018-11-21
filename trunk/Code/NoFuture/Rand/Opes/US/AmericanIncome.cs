@@ -223,7 +223,7 @@ namespace NoFuture.Rand.Opes.US
         protected internal Dictionary<string, double> GetSubitoIncomeNames2RandomRates(DomusOpesOptions options)
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
-            options.PossibleZeroOuts.AddRange(new[] { "Lottery Winnings", "Gambling Winnings", "Gifts" });
+            options.AddPossibleZeroOuts("Lottery Winnings", "Gambling Winnings", "Gifts");
             var d = GetItemNames2Portions(IncomeGroupNames.SUBITO, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -248,7 +248,7 @@ namespace NoFuture.Rand.Opes.US
         protected internal Dictionary<string, double> GetSecuritiesIncomeNames2RandomRates(DomusOpesOptions options)
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
-            options.PossibleZeroOuts.AddRange(new []{ "Derivatives" });
+            options.AddPossibleZeroOuts("Derivatives");
             var d = GetItemNames2Portions(IncomeGroupNames.SECURITIES, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -261,7 +261,7 @@ namespace NoFuture.Rand.Opes.US
         protected internal Dictionary<string, double> GetInstitutionalIncomeNames2RandomRates(DomusOpesOptions options)
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
-            options.PossibleZeroOuts.AddRange(new[]
+            options.AddPossibleZeroOuts(new[]
             {
                 "Royalties", "Stipends", "Fellowships", "Partnerships",
                 "Trusts", "Money Market", "Profit Sharing", "Annuity",

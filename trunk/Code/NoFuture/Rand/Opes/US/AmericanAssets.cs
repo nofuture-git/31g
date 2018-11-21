@@ -302,7 +302,7 @@ namespace NoFuture.Rand.Opes.US
             {
                 options.AddGivenDirectly(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
             }
-            options.PossibleZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Rights" });
+            options.AddPossibleZeroOuts("Time Shares", "Land", "Mineral Rights");
             var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -315,7 +315,7 @@ namespace NoFuture.Rand.Opes.US
         protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(DomusOpesOptions options)
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
-            options.PossibleZeroOuts.AddRange(new[] { "Art", "Firearms", "Collections", "Antiques" });
+            options.AddPossibleZeroOuts("Art", "Firearms", "Collections", "Antiques");
 
             //remove obvious rural related items for everyone except those who are way out in the country
             var livesInCountry = options.HomeLocation is UsCityStateZip usCityState &&
@@ -339,7 +339,7 @@ namespace NoFuture.Rand.Opes.US
         protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(DomusOpesOptions options)
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
-            options.PossibleZeroOuts.AddRange(new[]
+            options.AddPossibleZeroOuts(new[]
             {
                 "Certificate of Deposit", "Insurance Policies",
                 "Money Market", "Annuity",
@@ -362,7 +362,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
             var tOptions = options.GetClone();
-            tOptions.PossibleZeroOuts.AddRange(new[] { "Derivatives" });
+            tOptions.AddPossibleZeroOuts("Derivatives");
             var d = GetItemNames2Portions(AssetGroupNames.SECURITIES, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }

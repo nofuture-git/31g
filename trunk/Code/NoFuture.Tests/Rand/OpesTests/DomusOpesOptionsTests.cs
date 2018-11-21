@@ -20,12 +20,11 @@ namespace NoFuture.Rand.Tests.OpesTests
                 IsVehiclePaidOff = true,
                 NumberOfCreditCards = 3,
                 NumberOfVehicles = 2,
-                PossibleZeroOuts = {"abc", "xyz"},
                 IsRenting = true,
                 IsPayingChildSupport = true,
                 IsPayingSpousalSupport = true
             };
-
+            testInput.AddPossibleZeroOuts("abc", "xyz");
             testInput.ChildrenDobs.Add(DateTime.Today.AddYears(-2));
             testInput.ChildrenDobs.Add(DateTime.Today.AddYears(-4));
             testInput.AddGivenDirectly("name00", "group00", 9900);
@@ -46,8 +45,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(testInput.IsPayingSpousalSupport, testResult.IsPayingSpousalSupport);
             Assert.IsTrue(testResult.IsPayingChildSupport);
 
-            Assert.IsNotNull(testResult.PossibleZeroOuts);
-            Assert.AreEqual(2, testResult.PossibleZeroOuts.Count);
+            Assert.AreEqual(2, testResult.PossibleZeroOutCount);
 
             Assert.IsNotNull(testResult.GetChildrenAges());
             Assert.AreEqual(2, testResult.GetChildrenAges().Count);

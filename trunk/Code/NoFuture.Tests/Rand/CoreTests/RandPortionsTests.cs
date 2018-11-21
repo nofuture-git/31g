@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Opes;
 using NoFuture.Shared.Core;
 using NUnit.Framework;
 
@@ -291,7 +290,7 @@ namespace NoFuture.Rand.Tests.CoreTests
             testSubject.AddGivenDirectly("Tax", "Debts", 1000D);
             testSubject.AddGivenDirectly("Other", "Debts", 1000D);
 
-            testSubject.PossibleZeroOuts.AddRange(new[] { "Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other" });
+            testSubject.AddPossibleZeroOuts("Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other");
 
             //the PossiableZeroOuts are only considered when they are not present in the GivenDirectly 
             // so the results are the same as if PossiableZeroOuts had nothing in it at all
@@ -314,8 +313,7 @@ namespace NoFuture.Rand.Tests.CoreTests
             //what if the SumTotal exceeds the GivenDirectly's sum but all the other options are present in the PossiablyZeroOut's?
             // and it just so happens that they all, in fact do, get selected to be zero'ed out
             testSubject.AddGivenDirectly("Credit Card", "Debts", 1000D);
-            testSubject.DiceRoll = (i, dice) => true;
-            testSubject.PossibleZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
+            testSubject.AddPossibleZeroOuts(s => true, "Health Care", "Other Consumer", "Student", "Tax", "Other");
             testSubject.SumTotal = 2000D; //1000 above
 
             //it leaves one to receive the excess - in effect forcing the dice role to be false for at least one item in this case

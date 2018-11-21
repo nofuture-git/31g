@@ -144,7 +144,7 @@ namespace NoFuture.Rand.Opes.US
             else
             {
                 options.AddGivenDirectly("Rent", ExpenseGroupNames.HOME);
-                options.PossibleZeroOuts.Add("Association Fees");
+                options.AddPossibleZeroOuts("Association Fees");
             }
 
             var d = GetItemNames2Portions(ExpenseGroupNames.HOME, options);
@@ -161,7 +161,7 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             if (options.IsRenting)
-                options.PossibleZeroOuts.AddRange(new[] { "Gas", "Water", "Sewer", "Trash" });
+                options.AddPossibleZeroOuts(new[] { "Gas", "Water", "Sewer", "Trash" });
 
             var d = GetItemNames2Portions(ExpenseGroupNames.UTILITIES, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -177,7 +177,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            options.PossibleZeroOuts.AddRange(new[] { "Parking", "Registration Fees" });
+            options.AddPossibleZeroOuts(new[] { "Parking", "Registration Fees" });
 
             //focus most-of-it on Loan Payments or fuel
             options.Rate = RandPortions.DiminishingRate.Fast;
@@ -214,7 +214,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            options.PossibleZeroOuts.AddRange(new[] { "Pet", "Vision",
+            options.AddPossibleZeroOuts(new[] { "Pet", "Vision",
                 "Dental", "Health", "Disability", "Life" });
 
             options.AddGivenDirectly(options.IsRenting ? "Home" : "Renters", ExpenseGroupNames.INSURANCE);
@@ -237,7 +237,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            options.PossibleZeroOuts.AddRange(new[] { "Dues", "Subscriptions",
+            options.AddPossibleZeroOuts(new[] { "Dues", "Subscriptions",
                 "Gifts", "Vice", "Clothing" });
             var d = GetItemNames2Portions(ExpenseGroupNames.PERSONAL, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -265,7 +265,7 @@ namespace NoFuture.Rand.Opes.US
             }
             else
             {
-                options.PossibleZeroOuts.AddRange(new[]{"Lunch Money",
+                options.AddPossibleZeroOuts(new[]{"Lunch Money",
                     "Extracurricular", "Camp", "Transportation", "Allowance"});
             }
 
@@ -282,7 +282,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            options.PossibleZeroOuts.AddRange(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
+            options.AddPossibleZeroOuts(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
             var d = GetItemNames2Portions(ExpenseGroupNames.DEBT, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -296,7 +296,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            options.PossibleZeroOuts.AddRange(new[] { "Therapy", "Hospital",
+            options.AddPossibleZeroOuts(new[] { "Therapy", "Hospital",
                 "Optical", "Dental", "Physician", "Supplements" });
             var d = GetItemNames2Portions(ExpenseGroupNames.HEALTH, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);

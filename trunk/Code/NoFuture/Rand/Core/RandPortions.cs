@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Core
     {
         internal const int DF_ROUND_DECIMAL_PLACES = 5;
         private double _derivativeSlope = -1.0;
+        private readonly Predicate<string> _defaultDice = (d) => Etx.RandomRollBelowOrAt(3, Etx.Dice.Four);
 
         /// <summary>
         /// A discrete way to describe exponential slope.
@@ -61,10 +62,50 @@ namespace NoFuture.Rand.Core
         protected List<Tuple<VocaBase, double>> GivenDirectly { get; } = new List<Tuple<VocaBase, double>>();
 
         /// <summary>
-        /// By default, every item will get &apos;some portion&apos;, no matter 
-        /// how small - add item names to this to have them assigned to zero at random.
+        /// Mapping of possible-zero-out name to its predicate
         /// </summary>
-        public List<string> PossibleZeroOuts { get; } = new List<string>();
+        protected Dictionary<string, Predicate<string>> Pzos2Prob { get; } = new Dictionary<string, Predicate<string>>();
+
+        /// <summary>
+        /// Add a name to the list of what may-or-may-not be 
+        /// assigned a 0.0 portion within <see cref="GetNames2Portions"/> at the default probability.
+        /// </summary>
+        public void AddPossibleZeroOuts(params string[] pzos)
+        {
+            foreach(var pzo in pzos)
+            {
+                if(Pzos2Prob.ContainsKey(pzo))
+                    continue;
+                Pzos2Prob.Add(pzo, _defaultDice);
+            }
+        }
+
+        /// <summary>
+        /// Add a name to the list of what may-or-may-not be 
+        /// assigned a 0.0 portion within <see cref="GetNames2Portions"/> 
+        /// at the <see cref="prob"/> probability.
+        /// </summary>
+        public void AddPossibleZeroOuts(Predicate<string> prob, params string[] pzos)
+        {
+            prob = prob ?? _defaultDice;
+            foreach (var pzo in pzos)
+            {
+                if (Pzos2Prob.ContainsKey(pzo))
+                    Pzos2Prob[pzo] = prob;
+                else
+                    Pzos2Prob.Add(pzo, prob);
+            }
+        }
+
+        /// <summary>
+        /// Assert if anything has been added to the possible-zero-out items
+        /// </summary>
+        public bool AnyPossibleZeroOuts => Pzos2Prob.Any();
+
+        /// <summary>
+        /// The current count of possible zero out items.
+        /// </summary>
+        public int PossibleZeroOutCount => Pzos2Prob.Count;
 
         /// <summary>
         /// Determines how fast the portions drop off after the first one.
@@ -110,13 +151,6 @@ namespace NoFuture.Rand.Core
                 }
             }
         }
- 
-        /// <summary>
-        /// Related to the names in <see cref="PossibleZeroOuts"/> - turns 
-        /// possible into actual.
-        /// </summary>
-        public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.RandomRollBelowOrAt;
-
 
         /// <summary>
         /// Add a directly-assigned item with no randomness
@@ -292,7 +326,7 @@ namespace NoFuture.Rand.Core
             }
 
             //filter zero out's down, likewise, to only what's actually in itemNames
-            var possibleZeroOuts = PossibleZeroOuts.Distinct().ToList();
+            var possibleZeroOuts = Pzos2Prob.Keys.Distinct().ToList();
             possibleZeroOuts = possibleZeroOuts
                 .Where(p => itemOrGroupNames.Any(i => String.Equals(p, i, STR_OPT))).ToList();
 
@@ -305,14 +339,14 @@ namespace NoFuture.Rand.Core
                 foreach (var pzo in possibleZeroOuts)
                 {
                     //this is the only random part in actual zero-outs
-                    var diceRoll = DiceRoll(3, Etx.Dice.Four);
+                    var diceRoll = Pzos2Prob.ContainsKey(pzo) ? Pzos2Prob[pzo] : _defaultDice;
 
                     //these predicates are filters
                     var isAlreadyPresent = actualZeroOuts.Any(z => z.Item1 == pzo);
                     var isInGivenDirectly = givenDirectlyItems.Any(x =>
-                        String.Equals(x.Item1.Name, pzo, STR_OPT));
+                        string.Equals(x.Item1.Name, pzo, STR_OPT));
 
-                    if (diceRoll && !isAlreadyPresent && !isInGivenDirectly)
+                    if (diceRoll(pzo) && !isAlreadyPresent && !isInGivenDirectly)
                         actualZeroOuts.Add(new Tuple<string, double>(pzo, 0.0D));
                 }
             }

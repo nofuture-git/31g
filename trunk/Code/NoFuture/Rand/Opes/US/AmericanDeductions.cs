@@ -149,11 +149,10 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            options.PossibleZeroOuts.AddRange(new[]
-            {
+            options.AddPossibleZeroOuts(
                 "Life", "Supplemental Life", "Dependent Life", "Accidental Death & Dismemberment",
                 "Short-term Disability", "Long-term Disability"
-            });
+            );
 
             //if the caller has assign values themselves - then just use those and leave
             if (options.AnyGivenDirectly())
@@ -234,10 +233,9 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            options.PossibleZeroOuts.AddRange(new[]
-            {
-                "Profit Sharing", "Pension", "Health Savings Account", "Credit Union Loan", "Flexible Spending Account"
-            });
+            options.AddPossibleZeroOuts(
+                "Profit Sharing", "Pension", "Health Savings Account", 
+                "Credit Union Loan", "Flexible Spending Account");
 
             //if the caller has assign values themselves - then just use those and leave
             if (options.AnyGivenDirectly())
