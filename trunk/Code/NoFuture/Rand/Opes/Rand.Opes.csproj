@@ -38,7 +38,6 @@
   <ItemGroup>
     <Compile Include="US\DomusOpesBase.cs" />
     <Compile Include="IDeinde.cs" />
-    <Compile Include="OpesPortions.cs" />
     <Compile Include="US\AmericanAssets.cs" />
     <Compile Include="US\AmericanDeductions.cs" />
     <Compile Include="US\AmericanEmployment.cs" />

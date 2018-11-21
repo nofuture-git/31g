@@ -40,6 +40,7 @@
     <Compile Include="IObviate.cs" />
     <Compile Include="Enums\KindsOfTextCase.cs" />
     <Compile Include="LabelledIdentifier.cs" />
+    <Compile Include="OpesPortions.cs" />
     <Compile Include="RandomFactoryAttribute.cs" />
     <Compile Include="TemporeComparer.cs" />
     <Compile Include="DiachronIdentifier.cs" />

@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Opes
         /// Helper method to add a range of directly-assigned items
         /// </summary>
         /// <param name="name2Values"></param>
-        protected internal void AddGivenDirectlyRange(IEnumerable<Tuple<string, string, double>> name2Values)
+        public void AddGivenDirectlyRange(IEnumerable<Tuple<string, string, double>> name2Values)
         {
             if (name2Values == null || !name2Values.Any())
                 return;
