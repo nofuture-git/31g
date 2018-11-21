@@ -295,12 +295,9 @@ namespace NoFuture.Rand.Opes
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            var calcValue = CalcValue(options.SumTotal, rate);
-            var p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(itemName, grpName, calcValue,
+            var calcValueR = CalcValue((options.SumTotal ?? 0).ToPecuniam(), rate);
+            var p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(itemName, grpName, calcValueR,
                 options.DueFrequency, options.Inception, options.Terminus);
-            //if (p.Expectation.Value == null || p.Expectation.Value == Pecuniam.Zero)
-            //    p.Expectation.Value = calcValue;
-            //p.Expectation.TimeDenominator = options.DueFrequency;
 
             return p;
         }

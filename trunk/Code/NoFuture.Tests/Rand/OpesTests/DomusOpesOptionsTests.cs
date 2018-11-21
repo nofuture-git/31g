@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Tests.OpesTests
 {
     [TestFixture]
-    public class OpesOptionsTests
+    public class DomusOpesOptionsTests
     {
         [Test]
         public void TestGetClone()
@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Tests.OpesTests
                 Inception = DateTime.Today.AddYears(-1),
                 DueFrequency = new TimeSpan(1,0,0,0),
                 DerivativeSlope = -0.33,
-                SumTotal = 88000.ToPecuniam(),
+                SumTotal = 88000,
                 IsVehiclePaidOff = true,
                 NumberOfCreditCards = 3,
                 NumberOfVehicles = 2,
@@ -29,8 +29,8 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             testInput.ChildrenDobs.Add(DateTime.Today.AddYears(-2));
             testInput.ChildrenDobs.Add(DateTime.Today.AddYears(-4));
-            testInput.AddGivenDirectly("name00", "group00", 9900.ToPecuniam());
-            testInput.AddGivenDirectly("name01", "group00", 1100.ToPecuniam());
+            testInput.AddGivenDirectly("name00", "group00", 9900);
+            testInput.AddGivenDirectly("name01", "group00", 1100);
 
             var testResult = testInput.GetClone();
 

@@ -134,9 +134,10 @@ namespace NoFuture.Rand.Tests.OpesTests
         public void TestGetGroupNames2Portions()
         {
             var testInput = new DomusOpesOptions();
-            testInput.AddGivenDirectly("Real Property",7800.ToPecuniam());
-            testInput.AddGivenDirectly("Securities", 1000.ToPecuniam());
-            testInput.SumTotal = 12000.ToPecuniam();
+            testInput.AddGivenDirectly("Real Property", 7800);
+            testInput.AddGivenDirectly("Securities", 1000);
+
+            testInput.SumTotal = 12000;
             var testSubject = new AmericanAssets();
             var testResult = testSubject.GetGroupNames2Portions(testInput);
             Assert.IsNotNull(testResult);
@@ -164,10 +165,11 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testInput = new DomusOpesOptions();
             var grpName = "Institutional";
-            testInput.AddGivenDirectly("Partnerships", grpName, 7800.ToPecuniam());
-            testInput.AddGivenDirectly("Fellowships", grpName, 1000.ToPecuniam() );
-            testInput.AddGivenDirectly("Annuity", grpName, 1000.ToPecuniam());
-            testInput.SumTotal = 15000.ToPecuniam();
+            testInput.AddGivenDirectly("Partnerships", grpName, 7800);
+            testInput.AddGivenDirectly("Fellowships", grpName, 1000);
+            testInput.AddGivenDirectly("Annuity", grpName, 1000);
+
+            testInput.SumTotal = 15000;
 
             var testSubject = new AmericanIncome();
 
@@ -183,9 +185,10 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //expect that when SumTotal is unassigned the ratios align exactly with assigned values
             testInput = new DomusOpesOptions();
-            testInput.AddGivenDirectly("Partnerships", grpName, 7800.ToPecuniam());
-            testInput.AddGivenDirectly("Fellowships", grpName, 1000.ToPecuniam() );
-            testInput.AddGivenDirectly("Annuity", grpName, 1000.ToPecuniam() );
+            testInput.AddGivenDirectly("Partnerships", grpName, 7800);
+            testInput.AddGivenDirectly("Fellowships", grpName, 1000);
+            testInput.AddGivenDirectly("Annuity", grpName, 1000);
+
             testSubject = new AmericanIncome();
             testResults =
                 testSubject.GetItemNames2Portions(grpName, testInput);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Sp;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Opes
@@ -22,9 +21,9 @@ namespace NoFuture.Rand.Opes
         /// Optional, this is only used when the option&apos;s given directly
         /// is not empty - its expected to exceed the total of the option&apos;s given directly.
         /// </summary>
-        public Pecuniam SumTotal { get; set; }
+        public double? SumTotal { get; set; }
 
-        protected internal List<Tuple<VocaBase, Pecuniam>> GivenDirectly { get; } = new List<Tuple<VocaBase, Pecuniam>>();
+        protected internal List<Tuple<VocaBase, double>> GivenDirectlyRefactor { get; } = new List<Tuple<VocaBase, double>>();
 
         /// <summary>
         /// By default, every item will get &apos;some portion&apos;, no matter 
@@ -60,25 +59,24 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// Add a directly-assigned item with no randomness
         /// </summary>
-        public void AddGivenDirectly(string name, string groupName, Pecuniam amount = null)
+        public void AddGivenDirectly(string name, string groupName, double? amount = null)
         {
-            amount = amount ?? Pecuniam.Zero;
-            GivenDirectly.Add(new Tuple<VocaBase, Pecuniam>(new VocaBase(name, groupName),amount));
+            GivenDirectlyRefactor.Add(new Tuple<VocaBase, double>(new VocaBase(name, groupName), amount ?? 0D));
         }
 
         /// <summary>
         /// Add a directly-assigned item with no randomness
         /// </summary>
-        public void AddGivenDirectly(string name, Pecuniam amount)
+        public void AddGivenDirectly(string name, double? amount = null)
         {
-            GivenDirectly.Add(new Tuple<VocaBase, Pecuniam>(new VocaBase(name),amount));
+            GivenDirectlyRefactor.Add(new Tuple<VocaBase, double>(new VocaBase(name), amount ?? 0D));
         }
 
         /// <summary>
         /// Helper method to add a range of directly-assigned items
         /// </summary>
         /// <param name="name2Values"></param>
-        protected internal void AddGivenDirectlyRange(IEnumerable<Tuple<string, string, Pecuniam>> name2Values)
+        protected internal void AddGivenDirectlyRange(IEnumerable<Tuple<string, string, double>> name2Values)
         {
             if (name2Values == null || !name2Values.Any())
                 return;
@@ -92,7 +90,7 @@ namespace NoFuture.Rand.Opes
         /// <summary>
         /// Gets the current count of given-directly items
         /// </summary>
-        public int GivenDirectlyCount => GivenDirectly.Count;
+        public int GivenDirectlyCount => GivenDirectlyRefactor.Count;
 
         /// <summary>
         /// Asserts if any given-directly items have been added.
@@ -100,7 +98,7 @@ namespace NoFuture.Rand.Opes
         /// <returns></returns>
         public bool AnyGivenDirectly()
         {
-            return GivenDirectly.Any();
+            return GivenDirectlyRefactor.Any();
         }
 
         /// <summary>
@@ -113,7 +111,7 @@ namespace NoFuture.Rand.Opes
         public bool AnyGivenDirectlyOfNameAndGroup(string name, string groupName)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            return GivenDirectly.Any(g =>
+            return GivenDirectlyRefactor.Any(g =>
                 string.Equals(g.Item1.Name, name, OPT) && string.Equals(g.Item1.GetName(KindsOfNames.Group), groupName, OPT));
         }
 
@@ -126,7 +124,7 @@ namespace NoFuture.Rand.Opes
         public bool AnyGivenDirectlyOfName(string name)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            return GivenDirectly.Any(g => string.Equals(g.Item1.Name, name, OPT));
+            return GivenDirectlyRefactor.Any(g => string.Equals(g.Item1.Name, name, OPT));
         }
 
         /// <summary>
@@ -136,7 +134,7 @@ namespace NoFuture.Rand.Opes
         /// <returns></returns>
         public bool AnyGivenDirectlyOfGroupName(string groupName)
         {
-            return GivenDirectly.Any(x => x.Item1.AnyOfKindAndValue(KindsOfNames.Group, groupName));
+            return GivenDirectlyRefactor.Any(x => x.Item1.AnyOfKindAndValue(KindsOfNames.Group, groupName));
         }
 
         /// <summary>
@@ -200,18 +198,18 @@ namespace NoFuture.Rand.Opes
             if (itemOrGroupNames == null || !itemOrGroupNames.Any())
                 throw new ArgumentNullException(nameof(itemOrGroupNames));
 
-            var givenDirectlyItems = GivenDirectly ?? new List<Tuple<VocaBase, Pecuniam>>();
+            var givenDirectlyItems = GivenDirectlyRefactor ?? new List<Tuple<VocaBase, double>>();
 
             //immediately reduce this to only the items present in 'itemNames'
             givenDirectlyItems = givenDirectlyItems.Where(gd =>
-                itemOrGroupNames.Any(n => String.Equals(gd.Item1.Name, n, STR_OPT))).ToList();
+                itemOrGroupNames.Any(n => string.Equals(gd.Item1.Name, n, STR_OPT))).ToList();
 
             //get the direct assign's total
             var givenDirectTotal = givenDirectlyItems.Where(x => x?.Item2 != null)
-                .Select(x => Math.Round(x.Item2.GetAbs().ToDouble(), DF_ROUND_DECIMAL_PLACES)).Sum();
+                .Select(x => Math.Round(Math.Abs(x.Item2), DF_ROUND_DECIMAL_PLACES)).Sum();
 
             //get total given by the caller if any
-            var sumTotal = (SumTotal ?? Pecuniam.Zero).ToDouble();
+            var sumTotalR = SumTotal.GetValueOrDefault(0);
 
             //get a random rate for all item names
             var randPortions = Etx.RandomDiminishingPortions(itemOrGroupNames.Length, DerivativeSlope);
@@ -254,7 +252,7 @@ namespace NoFuture.Rand.Opes
             }
 
             //apply any GivenDirectly's of zero like PossiableZeroOuts
-            foreach (var dr in givenDirectlyItems.Where(o => o.Item2 == Pecuniam.Zero))
+            foreach (var dr in givenDirectlyItems.Where(o => o.Item2 == 0))
             {
                 if (actualZeroOuts.All(z => z.Item1 != dr.Item1.Name))
                     actualZeroOuts.Add(new Tuple<string, double>(dr.Item1.Name, 0.0D));
@@ -278,7 +276,7 @@ namespace NoFuture.Rand.Opes
             }
 
             //we will need a denominator if the caller didn't give one use the sum what they did give
-            var total = sumTotal;
+            var total = sumTotalR;
 
             //if caller gives a sumtotal in which all the GivenDirectly won't fit then up the total to make it fit
             if (total < givenDirectTotal)
@@ -291,14 +289,13 @@ namespace NoFuture.Rand.Opes
             foreach (var d in givenDirectlyItems)
             {
                 var dName = d.Item1.Name;
-                if (String.IsNullOrWhiteSpace(dName)
-                    || d.Item2 == null
-                    || d.Item2 == Pecuniam.Zero)
+                if (string.IsNullOrWhiteSpace(dName)
+                    || d.Item2 == 0)
                     continue;
                 if (calcDict.ContainsKey(dName))
-                    calcDict[dName] += d.Item2.GetAbs().ToDouble();
+                    calcDict[dName] += Math.Abs(d.Item2);
                 else
-                    calcDict.Add(dName, d.Item2.GetAbs().ToDouble());
+                    calcDict.Add(dName, Math.Abs(d.Item2));
             }
 
             var calcMap = new List<Tuple<string, double>>();
@@ -322,7 +319,7 @@ namespace NoFuture.Rand.Opes
                 //still need to add in the 0.0 items since calcMap has only the directly assigned values
                 foreach (var k in itemOrGroupNames)
                 {
-                    if (calcMap.Any(t => String.Equals(t.Item1, k, STR_OPT)))
+                    if (calcMap.Any(t => string.Equals(t.Item1, k, STR_OPT)))
                         continue;
                     calcMap.Add(new Tuple<string, double>(k, 0.0D));
                 }
@@ -338,7 +335,6 @@ namespace NoFuture.Rand.Opes
             var calcMapSumRemainder = 1 - Math.Abs(testValue);
             return calcMapSumRemainder <= 0.00001 && calcMapSumRemainder >= -0.00001;
         }
-
 
         /// <summary>
         /// Reassigns the rates in <see cref="names2Rates"/> to the Item2 of the matched tuple in <see cref="reassignNames2Rates"/>
@@ -372,7 +368,7 @@ namespace NoFuture.Rand.Opes
             var n2r = new Dictionary<string, double>();
 
             bool IsMatch(Tuple<string, double> tuple, string s) =>
-                tuple.Item1 != null && String.Equals(tuple.Item1, s, StringComparison.OrdinalIgnoreCase);
+                tuple.Item1 != null && string.Equals(tuple.Item1, s, StringComparison.OrdinalIgnoreCase);
 
             //make temp copies of all the differences in reassignment
             foreach (var k in names2Rates.Keys)

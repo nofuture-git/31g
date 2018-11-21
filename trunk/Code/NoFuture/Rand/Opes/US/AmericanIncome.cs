@@ -170,16 +170,21 @@ namespace NoFuture.Rand.Opes.US
                 cloneOptions.DueFrequency = Constants.TropicalYear;
                 cloneOptions.Inception = range.Item1;
                 cloneOptions.Terminus = range.Item2;
-                if(cloneOptions.SumTotal == null || cloneOptions.SumTotal == Pecuniam.Zero)
-                    cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(cloneOptions);
+
+                if (cloneOptions.SumTotal == null || cloneOptions.SumTotal == 0)
+                    cloneOptions.SumTotal = GetRandomExpectedIncomeAmount(cloneOptions).ToDouble();
 
                 //there aren't ever random but calculated off gross and net income(s)
-                if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.PUBLIC_BENEFITS))
-                    cloneOptions.AddGivenDirectly(IncomeGroupNames.PUBLIC_BENEFITS, null);
+                if (!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.PUBLIC_BENEFITS))
+                {
+                    cloneOptions.AddGivenDirectly(IncomeGroupNames.PUBLIC_BENEFITS);
+                }
 
                 //make the caller assign these directly
-                if(!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.JUDGMENTS))
-                    cloneOptions.AddGivenDirectly(IncomeGroupNames.JUDGMENTS, null);
+                if (!cloneOptions.AnyGivenDirectlyOfName(IncomeGroupNames.JUDGMENTS))
+                {
+                    cloneOptions.AddGivenDirectly(IncomeGroupNames.JUDGMENTS);
+                }
 
                 var items = GetItemsForRange(cloneOptions);
                 foreach (var item in items)

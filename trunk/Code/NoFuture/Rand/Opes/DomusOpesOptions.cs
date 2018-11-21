@@ -157,14 +157,14 @@ namespace NoFuture.Rand.Opes
             foreach (var zo in PossibleZeroOuts)
                 o.PossibleZeroOuts.Add(zo);
 
-            foreach (var me in GivenDirectly)
+            foreach(var me in GivenDirectlyRefactor)
                 o.AddGivenDirectly(me.Item1.Name, me.Item1.GetName(KindsOfNames.Group), me.Item2);
 
             foreach(var ca in ChildrenDobs)
                 o.ChildrenDobs.Add(ca);
 
             o.DerivativeSlope = DerivativeSlope;
-            o.SumTotal = SumTotal == null ? null : new Pecuniam(SumTotal.Amount);
+            o.SumTotal = SumTotal;
             o.DiceRoll = DiceRoll;
             return o;
         }

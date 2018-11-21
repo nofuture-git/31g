@@ -128,11 +128,11 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            var amt = options.SumTotal == null || options.SumTotal == Pecuniam.Zero
-                ? _totalEquity.ToPecuniam()
-                : options.SumTotal;
+            var amtR = options.SumTotal == null || options.SumTotal == 0
+                ? _totalEquity
+                : (double) options.SumTotal;
 
-            var givenDirectly = new List<Tuple<string, string, Pecuniam>>();
+            var givenDirectly = new List<Tuple<string, string, double>>();
             var assignedRealEstateDirectly =
                 options.AnyGivenDirectlyOfNameAndGroup(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
 
@@ -147,31 +147,32 @@ namespace NoFuture.Rand.Opes.US
 
             if (!options.IsRenting && !assignedRealEstateDirectly)
             {
-                givenDirectly.Add(new Tuple<string, string, Pecuniam>(REAL_PROPERTY_HOME_OWNERSHIP,
-                    AssetGroupNames.REAL_PROPERTY, (_homeEquityRate * amt.ToDouble()).ToPecuniam()));
+                givenDirectly.Add(new Tuple<string, string, double>(REAL_PROPERTY_HOME_OWNERSHIP,
+                    AssetGroupNames.REAL_PROPERTY, (_homeEquityRate * amtR)));
             }
 
             if (options.NumberOfVehicles > 0 && !assignedVehicleDirectly)
             {
-                givenDirectly.Add(new Tuple<string, string, Pecuniam>(PERSONAL_PROPERTY_MOTOR_VEHICLES,
-                    AssetGroupNames.PERSONAL_PROPERTY, (_carEquityRate * amt.ToDouble()).ToPecuniam()));
+                givenDirectly.Add(new Tuple<string, string, double>(PERSONAL_PROPERTY_MOTOR_VEHICLES,
+                    AssetGroupNames.PERSONAL_PROPERTY, (_carEquityRate * amtR)));
             }
             if (!assignedCheckingDirectly)
             {
-                givenDirectly.Add(new Tuple<string, string, Pecuniam>(INSTITUTIONAL_CHECKING,
-                    AssetGroupNames.INSTITUTIONAL, (_checkingAccountRate * amt.ToDouble()).ToPecuniam()));
+                givenDirectly.Add(new Tuple<string, string, double>(INSTITUTIONAL_CHECKING,
+                    AssetGroupNames.INSTITUTIONAL, (_checkingAccountRate * amtR)));
             }
             if (!assignedSavingDirectly)
             {
-                givenDirectly.Add(new Tuple<string, string, Pecuniam>(INSTITUTIONAL_SAVINGS, AssetGroupNames.INSTITUTIONAL,
-                    (_savingsAccountRate * amt.ToDouble()).ToPecuniam()));
+                givenDirectly.Add(new Tuple<string, string, double>(INSTITUTIONAL_SAVINGS, AssetGroupNames.INSTITUTIONAL,
+                    (_savingsAccountRate * amtR)));
             }
 
-            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
+            if (options.SumTotal == null || options.SumTotal == 0)
             {
                 options.DerivativeSlope = -0.2D;
                 options.AddGivenDirectlyRange(givenDirectly);
             }
+
             return base.GetGroupNames2Portions(options);
         }
 
@@ -183,7 +184,7 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             var startDate = options.Inception;
-            var amt = options.SumTotal;
+            var amtR = options.SumTotal;
 
             var isCheckingAccount = string.Equals(grp, AssetGroupNames.INSTITUTIONAL, OPT) &&
                                     string.Equals(item, INSTITUTIONAL_CHECKING, OPT);
@@ -197,35 +198,35 @@ namespace NoFuture.Rand.Opes.US
             NamedReceivable p;
             if (isCheckingAccount)
             {
-                var checkingAmt = amt == null || amt == Pecuniam.Zero
+                var checkingAmt = amtR == null || amtR == 0
                     ? _randCheckingAcctAmt
-                    : _checkingAccountRate * amt.ToDouble();
+                    : _checkingAccountRate * amtR;
                 p = DepositAccount.RandomCheckingAccount(options.PersonsName, startDate,
                     $"{Etx.RandomInteger(1, 9999):0000}");
-                ((DepositAccount)p).Deposit(startDate.AddDays(-1), checkingAmt.ToPecuniam());
+                ((DepositAccount)p).Deposit(startDate.AddDays(-1), (checkingAmt ?? 0).ToPecuniam());
             }
             else if (isSavingsAccount)
             {
-                var savingAmt = amt == null || amt == Pecuniam.Zero
+                var savingAmt = amtR == null || amtR == 0
                     ? _randSavingsAcctAmt
-                    : _savingsAccountRate * amt.ToDouble();
+                    : _savingsAccountRate * amtR;
                 p = DepositAccount.RandomSavingAccount(options.PersonsName, startDate);
-                ((DepositAccount)p).Deposit(startDate.AddDays(-1), savingAmt.ToPecuniam());
+                ((DepositAccount)p).Deposit(startDate.AddDays(-1), (savingAmt ?? 0).ToPecuniam());
             }
             else if (isMortgage || isCarLoan)
             {
-                var homeDebtAmt = amt == null || amt == Pecuniam.Zero 
+                var homeDebtAmt = amtR == null || amtR == 0
                     ? _randHomeDebt 
-                    : _homeDebtRate * amt.ToDouble();
-                var homeEquityAmt = amt == null || amt == Pecuniam.Zero
+                    : _homeDebtRate * amtR;
+                var homeEquityAmt = amtR == null || amtR == 0
                     ? _randHomeEquity
-                    : _homeEquityRate * amt.ToDouble();
-                var carDebtAmt = amt == null || amt == Pecuniam.Zero 
+                    : _homeEquityRate * amtR;
+                var carDebtAmt = amtR == null || amtR == 0
                     ? _randCarDebt 
-                    : _carDebtRate * amt.ToDouble();
-                var carEquityAmt = amt == null || amt == Pecuniam.Zero
+                    : _carDebtRate * amtR;
+                var carEquityAmt = amtR == null || amtR == 0
                     ? _randCarEquity
-                    : _carEquityRate * amt.ToDouble();
+                    : _carEquityRate * amtR;
 
                 var baseRate = isMortgage ? FED_RATE : FED_RATE + 3.2;
                 var creditScore = new PersonalCreditScore(options.FactorOptions.DateOfBirth)
@@ -240,12 +241,12 @@ namespace NoFuture.Rand.Opes.US
                     : Vin.RandomVin();
 
                 var remainingCost = isMortgage
-                    ? homeDebtAmt.ToPecuniam()
-                    : carDebtAmt.ToPecuniam();
+                    ? (homeDebtAmt ?? 0).ToPecuniam()
+                    : (carDebtAmt ?? 0).ToPecuniam();
 
                 var totalValue = isMortgage
-                    ? (homeDebtAmt + homeEquityAmt).ToPecuniam()
-                    : (carDebtAmt + carEquityAmt).ToPecuniam();
+                    ? ((homeDebtAmt ?? 0) + (homeEquityAmt ?? 0)).ToPecuniam()
+                    : ((carDebtAmt ?? 0) + (carEquityAmt ?? 0)).ToPecuniam();
 
                 var buyer = options.Personality;
 

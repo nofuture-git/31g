@@ -300,9 +300,9 @@ namespace NoFuture.Rand.Opes.US
                 : 0D;
 
             //TODO - why is there here in the middle of something else?
-            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
+            if (options.SumTotal == null || options.SumTotal == 0)
             {
-                options.SumTotal = GetRandomYearlyIncome(options.Inception, options);
+                options.SumTotal = GetRandomYearlyIncome(options.Inception, options).ToDouble();
                 options.DueFrequency = Constants.TropicalYear;
             }
 

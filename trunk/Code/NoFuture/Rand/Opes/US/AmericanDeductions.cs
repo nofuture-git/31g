@@ -166,11 +166,12 @@ namespace NoFuture.Rand.Opes.US
             var expectedDentalInsCost = GetRandomValueFrom(expectedHealthInsCost, 8);
             var expectedVisionInsCost = GetRandomValueFrom(expectedHealthInsCost, 13);
 
-            options.AddGivenDirectly("Health", DeductionGroupNames.INSURANCE, expectedHealthInsCost.ToPecuniam());
+            options.AddGivenDirectly("Health", DeductionGroupNames.INSURANCE, expectedHealthInsCost);
 
-            options.AddGivenDirectly("Dental", DeductionGroupNames.INSURANCE, expectedDentalInsCost.ToPecuniam());
+            options.AddGivenDirectly("Dental", DeductionGroupNames.INSURANCE, expectedDentalInsCost);
 
-            options.AddGivenDirectly("Vision", DeductionGroupNames.INSURANCE, expectedVisionInsCost.ToPecuniam());
+            options.AddGivenDirectly("Vision", DeductionGroupNames.INSURANCE, expectedVisionInsCost);
+
             var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.GetAge());
 
             //we will use to force the SumTotal to exceed current GivenDirectly's sum
@@ -178,8 +179,8 @@ namespace NoFuture.Rand.Opes.US
             var otherInsCost = currentTotal * someRandRate;
 
             //this will be used later to create Pondus so only overwrite it if is unassigned
-            if(options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
-                options.SumTotal = (otherInsCost + currentTotal).ToPecuniam();
+            if (options.SumTotal == null || options.SumTotal == 0)
+                options.SumTotal = otherInsCost + currentTotal;
 
             var d = GetItemNames2Portions(DeductionGroupNames.INSURANCE, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -211,14 +212,14 @@ namespace NoFuture.Rand.Opes.US
             var ficaTaxAmt = pay * AmericanData.FICA_DEDUCTION_TAX_RATE;
             var medicareTaxAmt = pay * AmericanData.MEDICARE_DEDUCTION_TAX_RATE;
 
-            options.AddGivenDirectly("Federal tax", DeductionGroupNames.INSURANCE, fedTaxAmt.ToPecuniam());
-            options.AddGivenDirectly("State tax", DeductionGroupNames.INSURANCE, stateTaxAmt.ToPecuniam());
-            options.AddGivenDirectly("FICA", DeductionGroupNames.INSURANCE, ficaTaxAmt.ToPecuniam());
-            options.AddGivenDirectly("Medicare", DeductionGroupNames.INSURANCE, medicareTaxAmt.ToPecuniam());
+            options.AddGivenDirectly("Federal tax", DeductionGroupNames.INSURANCE, fedTaxAmt);
+            options.AddGivenDirectly("State tax", DeductionGroupNames.INSURANCE, stateTaxAmt);
+            options.AddGivenDirectly("FICA", DeductionGroupNames.INSURANCE, ficaTaxAmt);
+            options.AddGivenDirectly("Medicare", DeductionGroupNames.INSURANCE, medicareTaxAmt);
 
             //this will be used later to create Pondus so only overwrite it if is unassigned
-            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
-                options.SumTotal = (fedTaxAmt + stateTaxAmt + ficaTaxAmt + medicareTaxAmt).ToPecuniam();
+            if (options.SumTotal == null || options.SumTotal == 0)
+                options.SumTotal = (fedTaxAmt + stateTaxAmt + ficaTaxAmt + medicareTaxAmt);
 
             return GetItemNames2Portions(DeductionGroupNames.GOVERNMENT, options)
                 .ToDictionary(t => t.Item1, t => t.Item2);
@@ -249,14 +250,14 @@ namespace NoFuture.Rand.Opes.US
 
             var retirementRate = Etx.RandomPickOne(new[] {0.01D, 0.02D, 0.03D, 0.04D, 0.05D});
             var retirementAmt = pay * retirementRate;
-            options.AddGivenDirectly(
-                "Registered Retirement Savings Plan", DeductionGroupNames.INSURANCE,retirementAmt.ToPecuniam());
+            options.AddGivenDirectly("Registered Retirement Savings Plan", DeductionGroupNames.INSURANCE,
+                retirementAmt);
 
             var unionDuesAmt = StandardOccupationalClassification.IsLaborUnion(_employment.Occupation)
                 ? pay * GetRandomValueFrom(0.04)
                 : 0.0D;
 
-            options.AddGivenDirectly("Union Dues", DeductionGroupNames.INSURANCE, unionDuesAmt.ToPecuniam());
+            options.AddGivenDirectly("Union Dues", DeductionGroupNames.INSURANCE, unionDuesAmt);
 
             //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
             var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.GetAge());
@@ -266,8 +267,8 @@ namespace NoFuture.Rand.Opes.US
             var someRandAmount = currentTotal * someRandRate;
 
             //this will be used later to create Pondus so only overwrite it if is unassigned
-            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
-                options.SumTotal = (currentTotal + someRandAmount).ToPecuniam();
+            if (options.SumTotal == null || options.SumTotal == 0)
+                options.SumTotal = currentTotal + someRandAmount;
 
             return GetItemNames2Portions(DeductionGroupNames.EMPLOYMENT, options)
                 .ToDictionary(t => t.Item1, t => t.Item2);
@@ -296,7 +297,7 @@ namespace NoFuture.Rand.Opes.US
 
                 //need to turn this back into annual amount
                 childSupport = childSupport * 12;
-                options.AddGivenDirectly(CHILD_SUPPORT, DeductionGroupNames.JUDGMENTS, childSupport.ToPecuniam());
+                options.AddGivenDirectly(CHILD_SUPPORT, DeductionGroupNames.JUDGMENTS, childSupport);
             }
 
             if (options.IsPayingSpousalSupport &&
@@ -305,7 +306,7 @@ namespace NoFuture.Rand.Opes.US
                 //this is technically computed as 0.25 * (diff in spousal income)
                 var randRate = Etx.RandomDouble(0.01, 0.25);
                 var spouseSupport = Math.Round(randRate * pay, 2);
-                options.AddGivenDirectly(ALIMONY, DeductionGroupNames.JUDGMENTS, spouseSupport.ToPecuniam());
+                options.AddGivenDirectly(ALIMONY, DeductionGroupNames.JUDGMENTS, spouseSupport);
             }
 
             var d = GetItemNames2Portions(DeductionGroupNames.JUDGMENTS, options);

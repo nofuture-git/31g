@@ -98,11 +98,11 @@ namespace NoFuture.Rand.Opes.US
             var stDt = options.Inception == DateTime.MinValue ? GetYearNeg(-1) : options.Inception;
             var ranges = GetYearsInDates(stDt);
 
-            if (options.SumTotal == null || options.SumTotal == Pecuniam.Zero)
+            if (options.SumTotal == null || options.SumTotal == 0)
             {
                 var randIncome = Math.Round(GetRandomYearlyIncome(options.Inception, options).ToDouble() *
                                             PERCENT_EXPENSE_OF_INCOME);
-                options.SumTotal = randIncome.ToPecuniam();
+                options.SumTotal = randIncome;
             }
 
             foreach (var range in ranges)
@@ -136,12 +136,10 @@ namespace NoFuture.Rand.Opes.US
             if (options.IsRenting)
             {
                 options.AddGivenDirectly("Mortgage", ExpenseGroupNames.HOME);
-
                 options.AddGivenDirectly("Maintenance", ExpenseGroupNames.HOME);
-
                 options.AddGivenDirectly("Property Tax", ExpenseGroupNames.HOME);
-
                 options.AddGivenDirectly("Association Fees", ExpenseGroupNames.HOME);
+
             }
             else
             {
@@ -187,22 +185,19 @@ namespace NoFuture.Rand.Opes.US
             if (options.NumberOfVehicles > 0)
             {
                 if (options.IsVehiclePaidOff)
+                {
                     options.AddGivenDirectly("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
+                }
 
                 options.AddGivenDirectly("Public Transportation", ExpenseGroupNames.TRANSPORTATION);
             }
             else
             {
                 options.AddGivenDirectly("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
-
                 options.AddGivenDirectly("Fuel", ExpenseGroupNames.TRANSPORTATION);
-
                 options.AddGivenDirectly("Maintenance", ExpenseGroupNames.TRANSPORTATION);
-
                 options.AddGivenDirectly("Property Tax", ExpenseGroupNames.TRANSPORTATION);
-
                 options.AddGivenDirectly("Parking", ExpenseGroupNames.TRANSPORTATION);
-
                 options.AddGivenDirectly("Registration Fees", ExpenseGroupNames.TRANSPORTATION);
             }
 
@@ -225,7 +220,9 @@ namespace NoFuture.Rand.Opes.US
             options.AddGivenDirectly(options.IsRenting ? "Home" : "Renters", ExpenseGroupNames.INSURANCE);
 
             if (options.NumberOfVehicles > 0)
+            {
                 options.AddGivenDirectly("Vehicle", ExpenseGroupNames.INSURANCE);
+            }
 
             var d = GetItemNames2Portions(ExpenseGroupNames.INSURANCE, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);

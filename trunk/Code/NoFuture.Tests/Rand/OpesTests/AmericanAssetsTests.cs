@@ -43,7 +43,12 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testSubject = new AmericanAssets();
 
-            var testResult = testSubject.GetGroupNames2Portions(new DomusOpesOptions() { IsRenting = false, NumberOfVehicles = 1, SumTotal = 75000.ToPecuniam() });
+            var testResult = testSubject.GetGroupNames2Portions(new DomusOpesOptions()
+            {
+                IsRenting = false,
+                NumberOfVehicles = 1,
+                SumTotal = 75000D
+            });
 
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Count);

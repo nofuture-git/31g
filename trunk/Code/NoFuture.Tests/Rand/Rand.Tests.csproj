@@ -55,6 +55,7 @@
     <Compile Include="GeoTests\CaCityProvidencePostTests.cs" />
     <Compile Include="GeoTests\PostalAddressTests.cs" />
     <Compile Include="GovTests\VitalRecordTests.cs" />
+    <Compile Include="CoreTests\RandPortionsTests.cs" />
     <Compile Include="SpTests\BalanceTests.cs" />
     <Compile Include="SpTests\PersonalCreditScoreTests.cs" />
     <Compile Include="SpTests\DepositAccountTests.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="OpesTests\AmericanDeductionsTests.cs" />
     <Compile Include="OpesTests\AmericanEmploymentTests.cs" />
     <Compile Include="OpesTests\AmericanIncomeTests.cs" />
-    <Compile Include="OpesTests\OpesOptionsTests.cs" />
+    <Compile Include="OpesTests\DomusOpesOptionsTests.cs" />
     <Compile Include="OpesTests\AmericanExpenseTests.cs" />
     <Compile Include="OpesTests\AmericanFactorsTests.cs" />
     <Compile Include="SpTests\SecurityTests.cs" />

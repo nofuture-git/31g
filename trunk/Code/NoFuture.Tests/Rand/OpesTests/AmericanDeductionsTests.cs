@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(1D, Math.Round(testResultSum));
 
             Assert.IsNotNull(testOptions.SumTotal);
-            Assert.AreNotEqual(Pecuniam.Zero, testOptions.SumTotal);
+            Assert.AreNotEqual(0D, testOptions.SumTotal);
 
             Console.WriteLine(testOptions.SumTotal);
 
@@ -79,7 +79,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(1D, Math.Round(testResultSum));
 
             Assert.IsNotNull(testOptions.SumTotal);
-            Assert.AreNotEqual(Pecuniam.Zero, testOptions.SumTotal);
+            Assert.AreNotEqual(0D, testOptions.SumTotal);
 
             Console.WriteLine(testOptions.SumTotal);
         }
@@ -103,7 +103,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(1D, Math.Round(testResultSum));
 
             Assert.IsNotNull(testOptions.SumTotal);
-            Assert.AreNotEqual(Pecuniam.Zero, testOptions.SumTotal);
+            Assert.AreNotEqual(0D, testOptions.SumTotal);
 
             Console.WriteLine(testOptions.SumTotal);
         }
@@ -179,7 +179,11 @@ namespace NoFuture.Rand.Tests.OpesTests
             var testInput = new AmericanEmployment();
             var annualIncome = 75000.ToPecuniam();
 
-            var options = new DomusOpesOptions {SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1)};
+            var options = new DomusOpesOptions
+            {
+                Inception = DateTime.Today.AddYears(-1),
+                SumTotal = annualIncome.ToDouble()
+            };
 
             testInput.RandomizeAllItems(options);
 
@@ -214,9 +218,12 @@ namespace NoFuture.Rand.Tests.OpesTests
         public void TestDeductionsAllPresent()
         {
             var testInput = new AmericanEmployment();
-            var annualIncome = 75000.ToPecuniam();
 
-            var options = new DomusOpesOptions { SumTotal = annualIncome, Inception = DateTime.Today.AddYears(-1) };
+            var options = new DomusOpesOptions
+            {
+                Inception = DateTime.Today.AddYears(-1),
+                SumTotal = 75000D
+            };
 
             testInput.RandomizeAllItems(options);
 
@@ -224,7 +231,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testInput.MyItems);
             Assert.AreNotEqual(0, testInput.MyItems.Count);
 
-            var diff = Math.Abs(testInput.Total.ToDouble() - annualIncome.ToDouble());
+            var diff = Math.Abs(testInput.Total.ToDouble() - 75000);
             Console.WriteLine(diff);
             Assert.IsTrue(Math.Round(diff) == 0.0D);
 
@@ -260,7 +267,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(0, testResults.First(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS).Item2);
 
             var testOptions = new DomusOpesOptions();
-            testOptions.AddGivenDirectly(DomusOpesBase.DeductionGroupNames.JUDGMENTS,1000.ToPecuniam());
+            testOptions.AddGivenDirectly(DomusOpesBase.DeductionGroupNames.JUDGMENTS, 1000);
 
             testResults = testSubject.GetGroupNames2Portions(testOptions);
             Assert.IsTrue(testResults.Any(t => t.Item1 == DomusOpesBase.DeductionGroupNames.JUDGMENTS));
@@ -271,7 +278,11 @@ namespace NoFuture.Rand.Tests.OpesTests
         public void TestResolveItemsWithJudgements()
         {
             var testInput = new AmericanEmployment();
-            var options = new DomusOpesOptions { SumTotal = 75000D.ToPecuniam(), Inception = DateTime.Today.AddYears(-1) };
+            var options = new DomusOpesOptions
+            {
+                Inception = DateTime.Today.AddYears(-1),
+                SumTotal = 75000D
+            };
 
             testInput.RandomizeAllItems(options);
 
