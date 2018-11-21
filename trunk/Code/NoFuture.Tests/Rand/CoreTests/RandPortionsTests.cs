@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Opes;
 using NoFuture.Shared.Core;
 using NUnit.Framework;
@@ -12,7 +13,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_NoOptions()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
             var testResult =
                 testSubject.GetNames2Portions(new[] { "Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other" });
             Assert.IsNotNull(testResult);
@@ -28,7 +29,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_SingleGivenDirectly()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
             testSubject.AddGivenDirectly("Student", "Debts", 9000);
             var testResult =
                 testSubject.GetNames2Portions(new[] { "Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other" });
@@ -45,7 +46,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_TwoGivenDirectly()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
             testSubject.AddGivenDirectly("Student", "Debts", 9000);
             testSubject.AddGivenDirectly("Other Consumer", "Debts", 1000);
             var testResult =
@@ -70,7 +71,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_TwoGivenDirectlyAndSumWhichEquals()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //so now what happens if we do give a SumTotal which happens to exactly equal the GivenDirectly's sum?
             testSubject.AddGivenDirectly("Student", "Debts", 9000);
@@ -100,7 +101,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_TwoGivenDirectlyAndSumWhichLt()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //so what happens if the sumtotal is actually less than the sum of the GivenDirectly's sum?
             testSubject.AddGivenDirectly("Student", "Debts", 9000);
@@ -130,7 +131,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_TwoGivenDirectlyAndSumWhichGt()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //what about when the sumtotal is greater than the GivenDirectly's sum?
             testSubject.AddGivenDirectly("Student", "Debts", 9000);
@@ -168,7 +169,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_JustSumTotal()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //so what happens if I give a sumtotal and no GivenDirectly's - does it matter?
             testSubject.SumTotal = 10000;
@@ -192,7 +193,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_UnmatchedNames()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //so will it blow up if GivenDirectly's names are not found?
             testSubject.AddGivenDirectly("NotFound", "Somewhere", 9000);
@@ -215,7 +216,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_GivenDirectlyValueOfZero()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //so how will it handle a case where GivenDirectly's are assigned zero
             testSubject.AddGivenDirectly("Student", "Debts");
@@ -243,7 +244,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_EverythingZeroOut()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //how will it handle the case where I accidently zero'ed out everything?
             testSubject.AddGivenDirectly("Credit Card", "Debts");
@@ -260,7 +261,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_SumTotalIsZero()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //so what is going to happen if the only thing I give is a SumTotal of zero?
             testSubject.SumTotal = 0D;
@@ -280,7 +281,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_GivenDirectlyOverlapZeroOuts()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //how do the PossiableZero outs play with explict values on GivenDirectly?
             testSubject.AddGivenDirectly("Credit Card", "Debts", 1000D);
@@ -308,7 +309,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestGetNames2Portions_SumTotalExceedsAndZeroOuts()
         {
-            var testSubject = new OpesPortions();
+            var testSubject = new RandPortions();
 
             //what if the SumTotal exceeds the GivenDirectly's sum but all the other options are present in the PossiablyZeroOut's?
             // and it just so happens that they all, in fact do, get selected to be zero'ed out

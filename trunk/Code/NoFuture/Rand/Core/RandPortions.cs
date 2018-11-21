@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Rand.Opes
+namespace NoFuture.Rand.Core
 {
     /// <summary>
     /// Excercises control over the generation of random portions whose sum equals 1.
     /// </summary>
     [Serializable]
-    public class OpesPortions
+    public class RandPortions
     {
         public const double DF_STD_DEV_PERCENT = 0.0885D;
         protected internal const int DF_ROUND_DECIMAL_PLACES = 5;

@@ -15,14 +15,14 @@ using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Opes
 {
-    /// <inheritdoc cref="OpesPortions" />
+    /// <inheritdoc cref="RandPortions" />
     /// <inheritdoc cref="ITempore" />
     /// <summary>
     /// An object to exercise control over the randomness of 
     /// the various types of Domus.Opes
     /// </summary>
     [Serializable]
-    public class DomusOpesOptions : OpesPortions, ITempore
+    public class DomusOpesOptions : RandPortions, ITempore
     {
         private CityArea _cityArea;
 
