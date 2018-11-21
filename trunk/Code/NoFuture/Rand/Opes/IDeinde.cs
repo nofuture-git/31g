@@ -40,10 +40,21 @@ namespace NoFuture.Rand.Opes
         void AddItem(string name, string groupName, double expectedValue, CurrencyAbbrev c = CurrencyAbbrev.USD, DateTime? atTime = null,
             TimeSpan? dueFrequency = null);
 
+        /// <summary>
+        /// The items applicable to the current time
+        /// </summary>
         NamedReceivable[] CurrentItems { get; }
 
+        /// <summary>
+        /// Gets the items applicable at the given time <see cref="dt"/>
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         NamedReceivable[] GetAt(DateTime? dt);
 
+        /// <summary>
+        /// Gets the sum total of the attached items at the current time
+        /// </summary>
         Pecuniam Total { get; }
     }
 }
