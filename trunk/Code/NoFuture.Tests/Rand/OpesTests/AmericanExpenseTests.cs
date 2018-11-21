@@ -239,7 +239,7 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //so how will it handle a case where GivenDirectly's are assigned zero
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectlyZero("Student", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectly("Student", DomusOpesBase.ExpenseGroupNames.DEBT);
             testOptions.SumTotal = 12000.ToPecuniam();
 
             var testResult = testSubject.GetDebtExpenseNames2RandomRates(testOptions);
@@ -264,15 +264,15 @@ namespace NoFuture.Rand.Tests.OpesTests
 
             //how will it handle the case where I accidently zero'ed out everything?
             testOptions.Inception = DateTime.Today;
-            testOptions.AddGivenDirectlyZero("Credit Card", DomusOpesBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Health Care", DomusOpesBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Other Consumer", DomusOpesBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Student", DomusOpesBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Tax", DomusOpesBase.ExpenseGroupNames.DEBT);
-            testOptions.AddGivenDirectlyZero("Other", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectly("Credit Card", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectly("Health Care", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectly("Other Consumer", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectly("Student", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectly("Tax", DomusOpesBase.ExpenseGroupNames.DEBT);
+            testOptions.AddGivenDirectly("Other", DomusOpesBase.ExpenseGroupNames.DEBT);
 
             //this is actually exceptional and so an exception is thrown
-            Assert.Throws<RahRowRagee>(() =>  testSubject.GetDebtExpenseNames2RandomRates(testOptions));
+            Assert.Throws<WatDaFookIzDis>(() =>  testSubject.GetDebtExpenseNames2RandomRates(testOptions));
         }
 
         [Test]

@@ -128,24 +128,24 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
             //TODO - integrate ability to have multiple mortgages in options
-            options.AddGivenDirectlyZero("Other Lein", ExpenseGroupNames.HOME);
+            options.AddGivenDirectly("Other Lein", ExpenseGroupNames.HOME);
 
             //we want almost all-of-it in Mortgage
             options.DerivativeSlope = -0.2D;
 
             if (options.IsRenting)
             {
-                options.AddGivenDirectlyZero("Mortgage", ExpenseGroupNames.HOME);
+                options.AddGivenDirectly("Mortgage", ExpenseGroupNames.HOME);
 
-                options.AddGivenDirectlyZero("Maintenance", ExpenseGroupNames.HOME);
+                options.AddGivenDirectly("Maintenance", ExpenseGroupNames.HOME);
 
-                options.AddGivenDirectlyZero("Property Tax", ExpenseGroupNames.HOME);
+                options.AddGivenDirectly("Property Tax", ExpenseGroupNames.HOME);
 
-                options.AddGivenDirectlyZero("Association Fees", ExpenseGroupNames.HOME);
+                options.AddGivenDirectly("Association Fees", ExpenseGroupNames.HOME);
             }
             else
             {
-                options.AddGivenDirectlyZero("Rent", ExpenseGroupNames.HOME);
+                options.AddGivenDirectly("Rent", ExpenseGroupNames.HOME);
                 options.PossibleZeroOuts.Add("Association Fees");
             }
 
@@ -187,23 +187,23 @@ namespace NoFuture.Rand.Opes.US
             if (options.NumberOfVehicles > 0)
             {
                 if (options.IsVehiclePaidOff)
-                    options.AddGivenDirectlyZero("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
+                    options.AddGivenDirectly("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
 
-                options.AddGivenDirectlyZero("Public Transportation", ExpenseGroupNames.TRANSPORTATION);
+                options.AddGivenDirectly("Public Transportation", ExpenseGroupNames.TRANSPORTATION);
             }
             else
             {
-                options.AddGivenDirectlyZero("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
+                options.AddGivenDirectly("Loan Payments", ExpenseGroupNames.TRANSPORTATION);
 
-                options.AddGivenDirectlyZero("Fuel", ExpenseGroupNames.TRANSPORTATION);
+                options.AddGivenDirectly("Fuel", ExpenseGroupNames.TRANSPORTATION);
 
-                options.AddGivenDirectlyZero("Maintenance", ExpenseGroupNames.TRANSPORTATION);
+                options.AddGivenDirectly("Maintenance", ExpenseGroupNames.TRANSPORTATION);
 
-                options.AddGivenDirectlyZero("Property Tax", ExpenseGroupNames.TRANSPORTATION);
+                options.AddGivenDirectly("Property Tax", ExpenseGroupNames.TRANSPORTATION);
 
-                options.AddGivenDirectlyZero("Parking", ExpenseGroupNames.TRANSPORTATION);
+                options.AddGivenDirectly("Parking", ExpenseGroupNames.TRANSPORTATION);
 
-                options.AddGivenDirectlyZero("Registration Fees", ExpenseGroupNames.TRANSPORTATION);
+                options.AddGivenDirectly("Registration Fees", ExpenseGroupNames.TRANSPORTATION);
             }
 
             var d = GetItemNames2Portions(ExpenseGroupNames.TRANSPORTATION, options);
@@ -222,10 +222,10 @@ namespace NoFuture.Rand.Opes.US
             options.PossibleZeroOuts.AddRange(new[] { "Pet", "Vision",
                 "Dental", "Health", "Disability", "Life" });
 
-            options.AddGivenDirectlyZero(options.IsRenting ? "Home" : "Renters", ExpenseGroupNames.INSURANCE);
+            options.AddGivenDirectly(options.IsRenting ? "Home" : "Renters", ExpenseGroupNames.INSURANCE);
 
             if (options.NumberOfVehicles > 0)
-                options.AddGivenDirectlyZero("Vehicle", ExpenseGroupNames.INSURANCE);
+                options.AddGivenDirectly("Vehicle", ExpenseGroupNames.INSURANCE);
 
             var d = GetItemNames2Portions(ExpenseGroupNames.INSURANCE, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -259,12 +259,12 @@ namespace NoFuture.Rand.Opes.US
             //when children are young we want to reflect that
             if (options.GetChildrenAges().All(x => x < AmericanData.AVG_AGE_CHILD_ENTER_SCHOOL))
             {
-                options.AddGivenDirectlyZero("Transportation", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectlyZero("School Supplies", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectlyZero("Lunch Money", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectlyZero("Extracurricular", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectlyZero("Camp", ExpenseGroupNames.CHILDREN);
-                options.AddGivenDirectlyZero("Allowance", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectly("Transportation", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectly("School Supplies", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectly("Lunch Money", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectly("Extracurricular", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectly("Camp", ExpenseGroupNames.CHILDREN);
+                options.AddGivenDirectly("Allowance", ExpenseGroupNames.CHILDREN);
             }
             else
             {

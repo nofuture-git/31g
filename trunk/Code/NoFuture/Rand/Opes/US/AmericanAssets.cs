@@ -299,7 +299,7 @@ namespace NoFuture.Rand.Opes.US
 
             if (options.IsRenting)
             {
-                options.AddGivenDirectlyZero(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
+                options.AddGivenDirectly(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
             }
             options.PossibleZeroOuts.AddRange(new []{ "Time Shares", "Land", "Mineral Rights" });
             var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, options);
@@ -321,9 +321,9 @@ namespace NoFuture.Rand.Opes.US
                                  usCityState.Msa?.MsaType >= UrbanCentric.Fringe;
             if (!livesInCountry)
             {
-                options.AddGivenDirectlyZero("Crops", AssetGroupNames.PERSONAL_PROPERTY);
+                options.AddGivenDirectly("Crops", AssetGroupNames.PERSONAL_PROPERTY);
 
-                options.AddGivenDirectlyZero("Livestock", AssetGroupNames.PERSONAL_PROPERTY);
+                options.AddGivenDirectly("Livestock", AssetGroupNames.PERSONAL_PROPERTY);
             }
 
             var d = GetItemNames2Portions(AssetGroupNames.PERSONAL_PROPERTY, options);
