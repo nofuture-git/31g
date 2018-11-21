@@ -9,12 +9,45 @@ namespace NoFuture.Rand.Core
     /// <summary>
     /// Excercises control over the generation of random portions whose sum equals 1.
     /// </summary>
+    /// <remarks>
+    /// See <see cref="GetNames2Portions"/> for more details
+    /// </remarks>
     [Serializable]
     public class RandPortions
     {
-        public const double DF_STD_DEV_PERCENT = 0.0885D;
-        protected internal const int DF_ROUND_DECIMAL_PLACES = 5;
-        private double _derivativeSlope;
+        internal const int DF_ROUND_DECIMAL_PLACES = 5;
+        private double _derivativeSlope = -1.0;
+
+        /// <summary>
+        /// A discrete way to describe exponential slope.
+        /// </summary>
+        public enum DiminishingRate
+        {
+            /// <summary>
+            /// The first item will receive about 33% of the total.
+            /// </summary>
+            Normal,
+
+            /// <summary>
+            /// The first item will receive about 15%-10% of the total
+            /// </summary>
+            VerySlow,
+
+            /// <summary>
+            /// The first item will receive about 25%-15% of the total.
+            /// </summary>
+            Slow,
+
+            /// <summary>
+            /// The first item will receive about 60%-50% of the total
+            /// </summary>
+            Fast,
+
+            /// <summary>
+            /// The first item will receive 80%-70% of the total
+            /// </summary>
+            VeryFast
+        }
 
         /// <summary>
         /// Optional, this is only used when the option&apos;s given directly
@@ -22,7 +55,10 @@ namespace NoFuture.Rand.Core
         /// </summary>
         public double? SumTotal { get; set; }
 
-        protected internal List<Tuple<VocaBase, double>> GivenDirectlyRefactor { get; } = new List<Tuple<VocaBase, double>>();
+        /// <summary>
+        /// Direct access to the underlying collection is protected.
+        /// </summary>
+        protected List<Tuple<VocaBase, double>> GivenDirectly { get; } = new List<Tuple<VocaBase, double>>();
 
         /// <summary>
         /// By default, every item will get &apos;some portion&apos;, no matter 
@@ -31,44 +67,74 @@ namespace NoFuture.Rand.Core
         public List<string> PossibleZeroOuts { get; } = new List<string>();
 
         /// <summary>
-        /// Controls the diminishing rates, the closer to zero the faster 
-        /// the rates diminish (e.g. -0.2 will have probably over 75 % in the first 
-        /// item with the second item having almost all the rest of it and everything
-        /// else just getting a tiny sprinkle - values greater than -1.0 tend to flatten
-        /// it out).
+        /// Determines how fast the portions drop off after the first one.
         /// </summary>
-        public double DerivativeSlope
+        public DiminishingRate Rate
         {
             get
             {
-                if (_derivativeSlope <= 0.0001 && _derivativeSlope >= -0.0001)
-                    _derivativeSlope = -1.0D;
-
-                return _derivativeSlope;
+                switch (_derivativeSlope)
+                {
+                    case -0.1:
+                        return DiminishingRate.VeryFast;
+                    case -0.3:
+                        return DiminishingRate.Fast;
+                    case -10.0:
+                        return DiminishingRate.VerySlow;
+                    case -3.0:
+                        return DiminishingRate.Slow;
+                    default:
+                        return DiminishingRate.Normal;
+                }
             }
-            set => _derivativeSlope = value;
+            set
+            {
+                var r = value;
+                switch (r)
+                {
+                    case DiminishingRate.VeryFast:
+                        _derivativeSlope = -0.1;
+                        break;
+                    case DiminishingRate.Fast:
+                        _derivativeSlope = -0.3;
+                        break;
+                    case DiminishingRate.VerySlow:
+                        _derivativeSlope = -10.0;
+                        break;
+                    case DiminishingRate.Slow:
+                        _derivativeSlope = -3.0;
+                        break;
+                    default:
+                        _derivativeSlope = -1.0;
+                        break;
+                }
+            }
         }
-
+ 
         /// <summary>
         /// Related to the names in <see cref="PossibleZeroOuts"/> - turns 
         /// possible into actual.
         /// </summary>
         public Func<int, Etx.Dice, bool> DiceRoll { get; set; } = Etx.RandomRollBelowOrAt;
 
-        /// <summary>
-        /// Add a directly-assigned item with no randomness
-        /// </summary>
-        public void AddGivenDirectly(string name, string groupName, double? amount = null)
-        {
-            GivenDirectlyRefactor.Add(new Tuple<VocaBase, double>(new VocaBase(name, groupName), amount ?? 0D));
-        }
 
         /// <summary>
         /// Add a directly-assigned item with no randomness
         /// </summary>
+        /// <param name="name">Some direct name of the item</param>
+        /// <param name="groupName">A name used for grouping items</param>
+        /// <param name="amount">Optional, the numerical value assoc. to this named item, default is zero.</param>
+        public void AddGivenDirectly(string name, string groupName, double? amount = null)
+        {
+            GivenDirectly.Add(new Tuple<VocaBase, double>(new VocaBase(name, groupName), amount ?? 0D));
+        }
+
+        /// <summary>
+        /// Same as its overload, just without a group name
+        /// </summary>
         public void AddGivenDirectly(string name, double? amount = null)
         {
-            GivenDirectlyRefactor.Add(new Tuple<VocaBase, double>(new VocaBase(name), amount ?? 0D));
+            GivenDirectly.Add(new Tuple<VocaBase, double>(new VocaBase(name), amount ?? 0D));
         }
 
         /// <summary>
@@ -89,7 +155,7 @@ namespace NoFuture.Rand.Core
         /// <summary>
         /// Gets the current count of given-directly items
         /// </summary>
-        public int GivenDirectlyCount => GivenDirectlyRefactor.Count;
+        public int GivenDirectlyCount => GivenDirectly.Count;
 
         /// <summary>
         /// Asserts if any given-directly items have been added.
@@ -97,7 +163,7 @@ namespace NoFuture.Rand.Core
         /// <returns></returns>
         public bool AnyGivenDirectly()
         {
-            return GivenDirectlyRefactor.Any();
+            return GivenDirectly.Any();
         }
 
         /// <summary>
@@ -110,7 +176,7 @@ namespace NoFuture.Rand.Core
         public bool AnyGivenDirectlyOfNameAndGroup(string name, string groupName)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            return GivenDirectlyRefactor.Any(g =>
+            return GivenDirectly.Any(g =>
                 string.Equals(g.Item1.Name, name, OPT) && string.Equals(g.Item1.GetName(KindsOfNames.Group), groupName, OPT));
         }
 
@@ -123,7 +189,7 @@ namespace NoFuture.Rand.Core
         public bool AnyGivenDirectlyOfName(string name)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
-            return GivenDirectlyRefactor.Any(g => string.Equals(g.Item1.Name, name, OPT));
+            return GivenDirectly.Any(g => string.Equals(g.Item1.Name, name, OPT));
         }
 
         /// <summary>
@@ -133,7 +199,7 @@ namespace NoFuture.Rand.Core
         /// <returns></returns>
         public bool AnyGivenDirectlyOfGroupName(string groupName)
         {
-            return GivenDirectlyRefactor.Any(x => x.Item1.AnyOfKindAndValue(KindsOfNames.Group, groupName));
+            return GivenDirectly.Any(x => x.Item1.AnyOfKindAndValue(KindsOfNames.Group, groupName));
         }
 
         /// <summary>
@@ -146,48 +212,49 @@ namespace NoFuture.Rand.Core
         /// A set of item names to some percent where the sum of all the name&apos;s portion is 1 (i.e. 100%).
         /// </returns>
         /// <remarks>
+        /// <![CDATA[
         /// FAQ
         /// Q: What happens if no names are given?
         /// A: An ArgumentNullException is thrown.
         /// 
-        /// Q: What happens if you just invoke it with no options whatsoever?
+        /// Q: What happens if you just invoke it with no options whatsoever (meaning, just instantiate it and call this)?
         /// A: Then every item-name gets a truly random value - the sum of which equals 1.
         /// 
         /// Q: How does SumTotal work with GivenDirectly?
-        /// A: By relation of the SumTotal to the actual total of all the GivenDirectly&apos;s ExpectedValue.
-        ///    The only time it matters is when SumTotal exceeds the actual total; furthermore, SumTotal has no use
+        /// A: The only time it matters is when SumTotal exceeds the GivenDirectly's cumulative total; furthermore, SumTotal has no use
         ///    when the GivenDirectly is empty since we are getting random portions and not random values.
         ///    
         /// Q: So what happens when there are GivenDirectly values and no SumTotal?
         /// A: Then its just doing the math and nothing is random.
         /// 
-        /// Q: What happens if SumTotal is less-than GivenDirectly's actual total.
-        /// A: Then SumTotal is just reassigned to the actual total and it again just doing the math - nothing random.
+        /// Q: What happens if SumTotal is less-than GivenDirectly's cumulative total.
+        /// A: Then SumTotal is just reassigned to the cumulative total and it again just doing the math - nothing random.
         /// 
-        /// Q: What about when SumTotal exceeds actual total?
+        /// Q: What about when SumTotal exceeds cumulative total?
         /// A: Then the excess amount is what is used to generate random portions for the other item-names not present 
         ///    in GivenDirectly.
         /// 
         /// Q: What if there are no items in GivenDirectly?
         /// A: It just resorts back to all item-names having a random portion.
         /// 
-        /// Q: What happens when the item-names don&apos;t match the names present in GivenDirectly?
+        /// Q: What happens when the item-names don't match the names present in GivenDirectly?
         /// A: The output is always tied to the item-names - any GivenDirectly not found in the item-names is ignored.
         /// 
-        /// Q: Can GivenDirectly be assigned an ExpectedValue of zero?
+        /// Q: Can a GivenDirectly entry be assigned an value of zero?
         /// A: Yes, and that is their main purpose to selectively remove randomness for certian item-names - recall 
         ///    that the function wants to assign some portion to every item-name, no matter how small.
         /// 
         /// Q: What happens if I force every item to be zero using GivenDirectly?
         /// A: An exception is thrown - the function cannot satisfy portions whose sum is equal to both zero and one.
         /// 
-        /// Q: How do the PossiableZero outs play with explict values on GivenDirectly?
+        /// Q: How do the PossibleZeroOuts play with explict values on GivenDirectly?
         /// A: The PossiableZeroOuts are only considered when they are not present in the GivenDirectly.
         /// 
         /// Q: What if the SumTotal exceeds the GivenDirectly's sum but all the other item-names are present 
-        ///    in the PossiablyZeroOut&apos;s and it just so happens that they all, in fact do, get selected to be zero-ed out?
+        ///    in the PossiablyZeroOut's and, it just so happens, that they all get selected to be zero-ed out?
         /// A: It leaves one to receive the excess - in effect forcing the dice role to be false for at least 
         ///    one of the PossiablyZeroOuts in this case no matter the odds.
+        /// ]]>
         /// </remarks>
         public List<Tuple<string, double>> GetNames2Portions(string[] itemOrGroupNames)
         {
@@ -197,7 +264,7 @@ namespace NoFuture.Rand.Core
             if (itemOrGroupNames == null || !itemOrGroupNames.Any())
                 throw new ArgumentNullException(nameof(itemOrGroupNames));
 
-            var givenDirectlyItems = GivenDirectlyRefactor ?? new List<Tuple<VocaBase, double>>();
+            var givenDirectlyItems = GivenDirectly ?? new List<Tuple<VocaBase, double>>();
 
             //immediately reduce this to only the items present in 'itemNames'
             givenDirectlyItems = givenDirectlyItems.Where(gd =>
@@ -211,7 +278,7 @@ namespace NoFuture.Rand.Core
             var sumTotalR = SumTotal.GetValueOrDefault(0);
 
             //get a random rate for all item names
-            var randPortions = Etx.RandomDiminishingPortions(itemOrGroupNames.Length, DerivativeSlope);
+            var randPortions = Etx.RandomDiminishingPortions(itemOrGroupNames.Length, _derivativeSlope);
 
             //put this random rate together with each item name
             var randMap = itemOrGroupNames
@@ -265,7 +332,7 @@ namespace NoFuture.Rand.Core
                     throw new WatDaFookIzDis("A sum total of 1 cannot be perserved when " +
                                              "all items have been directly assigned to 0.");
 
-                randDict = ReassignRates(randDict, actualZeroOuts, DerivativeSlope);
+                randDict = ReassignRates(randDict, actualZeroOuts, _derivativeSlope);
             }
 
             //there is nothing left to do so leave

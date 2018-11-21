@@ -237,10 +237,29 @@ namespace NoFuture.Rand.Tests.CoreTests
 
             Assert.IsTrue(testResults.First() == testResults.Max());
 
-            testResults = Etx.RandomDiminishingPortions(12, -10.0);
+            for (var i = -1.0D; i <= -0.1; i+=0.1)
+            {
+                Console.WriteLine($"======={i}=======");
 
-            foreach (var t in testResults)
-                Console.WriteLine(t);
+                testResults = Etx.RandomDiminishingPortions(12, i);
+
+                foreach (var t in testResults)
+                    Console.WriteLine(t);
+                Console.WriteLine();
+            }
+
+
+            for (var i = -1.0D; i >= -10.0D; i--)
+            {
+                Console.WriteLine($"======={i}=======");
+
+                testResults = Etx.RandomDiminishingPortions(12, i);
+
+                foreach (var t in testResults)
+                    Console.WriteLine(t);
+                Console.WriteLine();
+            }
+
         }
 
         [Test]

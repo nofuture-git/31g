@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Opes.US
             options.AddGivenDirectly("Other Lein", ExpenseGroupNames.HOME);
 
             //we want almost all-of-it in Mortgage
-            options.DerivativeSlope = -0.2D;
+            options.Rate = RandPortions.DiminishingRate.VeryFast;
 
             if (options.IsRenting)
             {
@@ -180,7 +180,7 @@ namespace NoFuture.Rand.Opes.US
             options.PossibleZeroOuts.AddRange(new[] { "Parking", "Registration Fees" });
 
             //focus most-of-it on Loan Payments or fuel
-            options.DerivativeSlope = -0.33D;
+            options.Rate = RandPortions.DiminishingRate.Fast;
 
             if (options.NumberOfVehicles > 0)
             {

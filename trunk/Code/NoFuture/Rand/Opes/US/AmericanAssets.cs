@@ -169,7 +169,7 @@ namespace NoFuture.Rand.Opes.US
 
             if (options.SumTotal == null || options.SumTotal == 0)
             {
-                options.DerivativeSlope = -0.2D;
+                options.Rate = RandPortions.DiminishingRate.VeryFast;
                 options.AddGivenDirectlyRange(givenDirectly);
             }
 
@@ -296,7 +296,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? DomusOpesOptions.RandomOpesOptions();
 
-            options.DerivativeSlope = -0.2D;
+            options.Rate = RandPortions.DiminishingRate.VeryFast;
 
             if (options.IsRenting)
             {

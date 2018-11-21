@@ -1,7 +1,6 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Opes;
-using NoFuture.Rand.Sp;
-using NoFuture.Rand.Sp.Enums;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.OpesTests
@@ -16,7 +15,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             {
                 Inception = DateTime.Today.AddYears(-1),
                 DueFrequency = new TimeSpan(1,0,0,0),
-                DerivativeSlope = -0.33,
+                Rate =  RandPortions.DiminishingRate.Fast,
                 SumTotal = 88000,
                 IsVehiclePaidOff = true,
                 NumberOfCreditCards = 3,
@@ -37,7 +36,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.IsNotNull(testResult);
             Assert.AreEqual(testInput.Inception, testResult.Inception);
             Assert.AreEqual(testInput.DueFrequency, testResult.DueFrequency);
-            Assert.AreEqual(testInput.DerivativeSlope, testResult.DerivativeSlope);
+            Assert.AreEqual(testInput.Rate, testResult.Rate);
             Assert.AreEqual(testInput.SumTotal, testResult.SumTotal);
             Assert.AreEqual(testInput.IsVehiclePaidOff, testResult.IsVehiclePaidOff);
             Assert.AreEqual(testInput.NumberOfCreditCards, testResult.NumberOfCreditCards);
