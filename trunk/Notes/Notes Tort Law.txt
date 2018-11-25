@@ -160,3 +160,77 @@ Trespass
 Conversion
  - chattel trespass where tortfeasor caused "serious" damage
 ----
+
+----
+Consent
+ - an affirmative defense against liability of intentional tort
+          Consent
+             |
+      +------+------+
+      |             |
+   Implied       Express
+      |
+ +----+----------+
+ |               |
+in-fact        in-law
+ - Express: actually saying it out-loud or in writing
+ - Implied In-Fact: expected circumstance, didn't object or leave
+ - Scope-of-Consent: implied consent is limited to some circumstance
+ - Implied In-Law: rare, used by first responders on unresponsive persons
+ - Invalidated by 
+  - Duress: threat of force
+  - Fraud: consent based on lies
+  - Mistake: based on ambiguous assumptions
+  - Incapacity: drunk, insain, etc.
+  - Illegality: cannot consent to what is simply illegal
+----
+
+----
+Degree of Force
+ - the other affirmative defense against liability of intentional tort
+ - an equal amount of force against an invasion of whatever.
+  - Proportionate: defense was equal to threat
+  - Necessary: no other way to repel invasion
+ - of three forms:
+  - self-defense
+  - defense of others
+  - defense of property
+----
+
+----
+Necessity
+ - another kind of defense (aka privilage) against intentional tort
+  - Public Necessity: is a complete privilege where no liability can be held
+    - e.g. stopping zombies by blowing up your lab
+  - Private Necessity: is incomplete, reasonable purpose for trespass but still
+     gotta pay for the damage
+----
+
+----
+Negligence:
+ 1. Duty (owed to be mindful to others) 
+ 2. Breach (didn't do such duty), 
+ 3. Causation (breach was the direct cause), 
+ 4. Damages (suffered actual harm, not just emotional harm)
+ - differs in that its more what you didn't do
+ - Duty and Breach est. fault, taking the place of Intent 
+   in intentional tort
+----
+
+----
+Reasonableness & Foreseeability
+ - recurrent concepts in affirmative defense of liability
+ - are coupled to each other in definition since what is not forseeable
+   is therefore unreasonable
+ - are opaque concepts
+----
+
+----
+Assumption of Risk
+ - a affirmative defense against negligence tort
+----
+
+----
+Contributory\Comparative Negligence
+ - the other affirmative defense against negligence tort
+----
