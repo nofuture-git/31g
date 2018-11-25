@@ -139,9 +139,13 @@ Battery
 ----
 Assault
  - same a battery except that, "it felt like they would!"
+ - requires both fear plantiff is about to attack and plantiff is indeed 
+   capable of attacking
  - battery which is incomplete, 
   - pulling the trigger on a gun, which only I know is not-loaded, while
     pointing it directly at another
+ - emotional & dignitary assult
+  - limited, everyday friction and unpleasant encounters is not assault
 ----
 
 ----
@@ -218,14 +222,6 @@ Negligence:
 ----
 
 ----
-Reasonableness & Foreseeability
- - recurrent concepts in affirmative defense of liability
- - are coupled to each other in definition since what is not forseeable
-   is therefore unreasonable
- - are opaque concepts
-----
-
-----
 Assumption of Risk
  - a affirmative defense against negligence tort
 ----
@@ -233,4 +229,12 @@ Assumption of Risk
 ----
 Contributory\Comparative Negligence
  - the other affirmative defense against negligence tort
+----
+
+----
+Reasonableness & Foreseeability
+ - recurrent concepts in affirmative defense of liability
+ - are coupled to each other in definition since what is not forseeable
+   is therefore unreasonable
+ - are opaque concepts
 ----
