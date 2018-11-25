@@ -646,4 +646,6 @@ sector: area of a circle connected by three points, two points on
         circumference and center point (pizza slice)
 segment: part of a line that connects two points
 ray: part of a line with starting point but no ending point
- 
+remuneration: money paid for work or a service
+segue: (seg-way) move, without interruption, from one thing to another
+tendentious: intended to promote a particular cause or point of view

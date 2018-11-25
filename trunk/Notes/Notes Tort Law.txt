@@ -1,0 +1,162 @@
+﻿----
+Notes: Tort Law
+Torts, Cases, Principles and Institutions 
+3rd ed. 
+John Fabian Witt
+CALI eLangdell Press 2018
+----
+
+----
+Overview:
+ - Tort Law: is common law of civil wrongs not arising out of contract
+
+                       Law
+                        |
+             +----------+----------+
+             |                     | 
+        Civil Cases          Criminal Cases
+        - plantiff           - prosecutor
+        - liable             - guilty
+        - more-than-likely   - beyond-reasonable-doubt
+        - civil damages      - criminal penalties
+        - intent             - motive
+             |
+      +------+----------------+
+      |                       |
+ Statutory Law            Common Law
+ - Legislature made       - Judge made
+                              |
+                   +----------+----------+
+                   |                     |           
+                  Tort                Contract  
+                  - no agreement      - agreement creation
+                  - default agreement - agreement enforcement                            
+                   |      
+     +-------------+---+--------------------+
+     |                 |                    |
+ Intentional         Negligence           Strict Liability
+ - Battery           - unreasonable       - limited
+ - Assault           & unintentionable    - accidental 
+ - Tresprass                              & careful
+ - False imprisonment
+ - Conversion
+ - "outrage" 
+ - Defamation 
+  - dignitary torts
+  - slander 
+  - libel
+  
+ - "outrage": intentional infliction of emotional distress
+ - wrongful death/survival action: procedural distinction where 
+    plantiff is dead
+ - "Tort" means injury, 
+  - from Latin tortus: wrung, twisted
+ - is "common law" because it arises out of judge-made law 
+ - is "civil" because its not about criminal violations
+  - does not remedy through punishment
+  - attempts to compensate  
+   - Punitive Damages: monetary sums awarded by judge or jury for the purpose
+     of punishing tort defendants
+ - is "wrongs" because its tied up to moral concept
+  - as moral concept, gets tricky, some domains attempt to do away with this
+    with 'no-fault liability doctrins'
+  - is intangled in moral philosophy, social mores and folkways
+  - is likewise coupled to social practices
+  - is shaped by social institutions like insurance companies
+ - is "not arising out of contract" because recognizes obligations which are 
+   independent of any agreement
+  - settlement: the resolution of tort law cases is a kind of contract itself
+    - est. 95% resolved this way
+ - concern kinds of questions of fact and law
+   - fact of causation
+   - fact of intent
+   - what the law is or what is ought to be
+ - is billion dollar business 
+  - 1.82% of GDP in 2010
+  - engaging tort law in public court system is almost always 
+    bad for biz for both sides 
+  - actual values, facts, outcomes, etc. have no public record whatsoever
+  - American tort system, therfore, is only known to insurers
+   - is party-driven, 
+   - highly opaque
+   - radically decentralized
+   - and vast
+ - on the whole, is tautological
+  - e.g. intent: acting with substantial certainty
+         substantial certainty: is not mere knowledge and awareness of 
+          inherent risks
+  - in America, its just business (money)
+ - Tortfeasor: person or entity that committed the tort
+ - Estate: whatever the tortfeasor was a member of which you can get money from
+ - Affirmative Defense: a kind-of immediate-escape from liability
+    - Intentional tort
+     - self defense
+     - consent
+   - Negligence
+    - assumption of risk
+    - contributory negligence
+----
+
+----
+Intentional Tort: 
+ 1. Act (Volition), 
+ 2. Intent, 
+ 3. Contact (this is where differentiation occurs), 
+ 4. Causation (results)
+
+ - Volitional action: really, only understood by its opposite
+ - Reflexive action: obviously involuntary
+ - 'lift my arm to hit you' is volitional
+ - 'was falling and lifted arm' is reflexive
+ 
+ - Intent: basically motive without the "why"
+  - knew the punch would land on-yo-face
+   - it does not matter 'why' I wanted this, 
+     I knew it would land on-yo-face (yee-ahh)
+  - wanna punch dat-bi'ch and da-bouncer 
+    in-da-way - punch anyway (its still battery)
+  - its a matter of preception
+   - "looked right at me with a mean look and then..."
+----
+
+----
+Battery
+ - intent to cause harmful contact
+ - occurrence of harmful contact 
+ - actually caused harm
+ - in terms of "these" damages
+  - Single Intent: expected that something bad may result
+  - Dual Intent: wanna throw-a-punch, but also wanted something
+     bad to result
+ - Restatement 2d. section 18  
+  - an actor is subject to liability to another for battery if he acts 
+    intending to cause a harmful of offensive contact with the person 
+    of the other or a third person, or an imminent apprehension of such 
+    a contact, and an offensive contact with the person of the other 
+    directly or indirectly results.
+----
+
+----
+Assault
+ - same a battery except that, "it felt like they would!"
+ - battery which is incomplete, 
+  - pulling the trigger on a gun, which only I know is not-loaded, while
+    pointing it directly at another
+----
+
+----
+False Imprisonment
+ - confinement of a person to a limited area
+----
+
+----
+Trespass
+ - invasion of someone else's property interest
+ - trespass-to-land: invasion into real property
+ - trespass-to-chattel: invasion into personal property
+----
+
+----
+Conversion
+ - chattel trespass where tortfeasor caused "serious" damage
+----
