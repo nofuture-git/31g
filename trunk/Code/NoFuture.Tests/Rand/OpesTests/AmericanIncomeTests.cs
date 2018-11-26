@@ -283,5 +283,16 @@ namespace NoFuture.Rand.Tests.OpesTests
             foreach (var tr in testResult.Keys)
                 Console.WriteLine($"{tr}, {testResult[tr]}");
         }
+
+        [Test]
+        public void TestGetAllowZeroNames()
+        {
+            var testResults =
+                AmericanDomusOpesBase.GetAllowZeroNames(AmericanDomusOpesBase.DomusOpesDivisions.Income, "Institutional");
+            Assert.IsNotNull(testResults);
+            Assert.AreNotEqual(0, testResults.Length);
+            foreach(var tr in testResults)
+                Console.WriteLine(tr);
+        }
     }
 }

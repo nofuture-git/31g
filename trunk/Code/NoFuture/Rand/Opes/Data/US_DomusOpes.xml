@@ -40,20 +40,20 @@
               <item name="Stock"/>
               <item name="Bond"/>
               <item name="Funds" />
-              <item name="Derivatives" />
+              <item name="Derivatives" allow-zero="true"/>
             </group>
             <group name="Institutional">
               <item name="Retirement Plans" />
               <item name="Savings Interest"/>
-              <item name="Certificate of Deposit" abbrev="COD"/>
-              <item name="Annuity"/>
-              <item name="Profit Sharing"/>
-              <item name="Money Market"/>
-              <item name="Trusts"/>
-              <item name="Partnerships"/>
-              <item name="Fellowships"/>
-              <item name="Stipends"/>
-              <item name="Royalties"/>
+              <item name="Certificate of Deposit" abbrev="COD" allow-zero="true"/>
+              <item name="Annuity" allow-zero="true"/>
+              <item name="Profit Sharing" allow-zero="true"/>
+              <item name="Money Market" allow-zero="true"/>
+              <item name="Trusts" allow-zero="true"/>
+              <item name="Partnerships" allow-zero="true"/>
+              <item name="Fellowships" allow-zero="true"/>
+              <item name="Stipends" allow-zero="true"/>
+              <item name="Royalties" allow-zero="true"/>
             </group>
             <group name="Real Property">
               <item name="Real Estate" />
@@ -67,9 +67,9 @@
               <item name="Injury" />
             </group>
             <group name="Subito">
-              <item name="Gifts" />
-              <item name="Lottery Winnings" />
-              <item name="Gambling Winnings" />
+              <item name="Gifts"  allow-zero="true"/>
+              <item name="Lottery Winnings"  allow-zero="true"/>
+              <item name="Gambling Winnings"  allow-zero="true"/>
               <item name="Inheritance" />
               <item name="Family" />
             </group>
@@ -159,14 +159,14 @@
           <deduction>
             <group name="Insurance">
               <item name="Health" />
-              <item name="Life" />
-              <item name="Supplemental Life" />
-              <item name="Dependent Life" />
-              <item name="Accidental Death &amp; Dismemberment" abbrev="AD&amp;D" />
+              <item name="Life" allow-zero="true"/>
+              <item name="Supplemental Life" allow-zero="true"/>
+              <item name="Dependent Life" allow-zero="true"/>
+              <item name="Accidental Death &amp; Dismemberment" abbrev="AD&amp;D" allow-zero="true"/>
               <item name="Dental" />
               <item name="Vision" />
-              <item name="Short-term Disability" />
-              <item name="Long-term Disability" />
+              <item name="Short-term Disability" allow-zero="true"/>
+              <item name="Long-term Disability" allow-zero="true"/>
             </group>
             <group name="Government">
               <item name="Federal tax" />
@@ -176,12 +176,12 @@
             </group>
             <group name="Employment">
               <item name="Registered Retirement Savings Plan" abbrev="401(k)" />
-              <item name="Profit Sharing" />
-              <item name="Pension" />
+              <item name="Profit Sharing" allow-zero="true"/>
+              <item name="Pension" allow-zero="true"/>
               <item name="Union Dues" />
-              <item name="Health Savings Account" abbrev="HRA" />
-              <item name="Flexible Spending Account" abbrev="FSA" />
-              <item name="Credit Union Loan" />
+              <item name="Health Savings Account" abbrev="HRA" allow-zero="true"/>
+              <item name="Flexible Spending Account" abbrev="FSA" allow-zero="true"/>
+              <item name="Credit Union Loan" allow-zero="true"/>
             </group>
             <group name="Judgments">
               <item name="Child Support" />
@@ -223,25 +223,25 @@
                 <eg name="nails" />
                 <eg name="spa" />
               </item>
-              <item name="Clothing" />
-              <item name="Vice">
+              <item name="Clothing" allow-zero="true"/>
+              <item name="Vice" allow-zero="true">
                 <eg name="tobacco" />
                 <eg name="alcohol" />
                 <eg name="gambling" />
               </item>
-              <item name="Gifts">
+              <item name="Gifts" allow-zero="true">
                 <eg name="church" />
                 <eg name="charity" />
                 <eg name="birthday" />
                 <eg name="holiday" />
                 <eg name="anniversary" />
               </item>
-              <item name="Subscriptions">
+              <item name="Subscriptions" allow-zero="true">
                 <eg name="internet" />
                 <eg name="magazines" />
                 <eg name="newspaper" />
               </item>
-              <item name="Dues">
+              <item name="Dues" allow-zero="true">
                 <eg name="professional" />
                 <eg name="clubs" />
               </item>
@@ -256,8 +256,8 @@
               </item>
               <item name="Public Transportation" />
               <item name="Property Tax" />
-              <item name="Registration Fees" />
-              <item name="Parking" />
+              <item name="Registration Fees" allow-zero="true"/>
+              <item name="Parking" allow-zero="true"/>
             </group>
             <group name="Utilities">
               <item name="Telecommunications">
@@ -267,23 +267,23 @@
                 <eg name="plain-old-telephone service" />
               </item>
               <item name="Electricity" />
-              <item name="Gas" />
-              <item name="Water" />
-              <item name="Sewer" />
-              <item name="Trash" />
+              <item name="Gas" allow-zero="true"/>
+              <item name="Water" allow-zero="true"/>
+              <item name="Sewer" allow-zero="true"/>
+              <item name="Trash" allow-zero="true"/>
             </group>
             <group name="Children">
               <item name="Childcare" />
               <item name="School Supplies" />
-              <item name="Lunch Money" />
-              <item name="Extracurricular">
+              <item name="Lunch Money" allow-zero="true"/>
+              <item name="Extracurricular" allow-zero="true">
                 <eg name="lessons" />
                 <eg name="sports" />
                 <eg name="music equipment" />
               </item>
-              <item name="Camp" />
-              <item name="Transportation" />
-              <item name="Allowance" />
+              <item name="Camp" allow-zero="true"/>
+              <item name="Transportation" allow-zero="true"/>
+              <item name="Allowance" allow-zero="true"/>
               <item name="Education">
                 <eg name="elementary" />
                 <eg name="secondary" />
@@ -293,41 +293,41 @@
             </group>
             <group name="Debts">
               <item name="Credit Card" />
-              <item name="Health Care" />
-              <item name="Other Consumer" />
-              <item name="Student" />
-              <item name="Tax" />
-              <item name="Other" />
+              <item name="Health Care" allow-zero="true" />
+              <item name="Other Consumer" allow-zero="true" />
+              <item name="Student" allow-zero="true" />
+              <item name="Tax" allow-zero="true" />
+              <item name="Other" allow-zero="true" />
             </group>
             <group name="Insurance Premiums">
               <item name="Home" />
               <item name="Vehicle" />
-              <item name="Life" />
+              <item name="Life" allow-zero="true"/>
               <item name="Renters" />
-              <item name="Disability" />
-              <item name="Health" />
-              <item name="Dental" />
-              <item name="Vision" />
-              <item name="Pet" />
+              <item name="Disability" allow-zero="true"/>
+              <item name="Health" allow-zero="true"/>
+              <item name="Dental" allow-zero="true"/>
+              <item name="Vision" allow-zero="true"/>
+              <item name="Pet" allow-zero="true"/>
             </group>
             <group name="Health">
               <item name="Prescriptions" />
               <item name="OTC Medicine" />
-              <item name="Supplements" />
-              <item name="Physician" />
-              <item name="Dental" />
-              <item name="Optical" />
-              <item name="Therapy" />
-              <item name="Hospital" />
+              <item name="Supplements" allow-zero="true" />
+              <item name="Physician" allow-zero="true" />
+              <item name="Dental" allow-zero="true" />
+              <item name="Optical" allow-zero="true" />
+              <item name="Therapy" allow-zero="true" />
+              <item name="Hospital" allow-zero="true" />
             </group>            
           </expense>
           <assets>
             <group name="Real Property">
               <item name="Home Ownership" />
               <item name="Rental Property" />
-              <item name="Land" />
-              <item name="Time Shares"/>
-              <item name="Mineral Rights"/>
+              <item name="Land" allow-zero="true" />
+              <item name="Time Shares" allow-zero="true"/>
+              <item name="Mineral Rights" allow-zero="true"/>
             </group>
             <group name="Personal Property">
               <item name="Motor Vehicles">
@@ -357,17 +357,17 @@
                 <eg name="campers" />
                 <eg name="electronics" />
               </item>
-              <item name="Antiques" />
-              <item name="Collections">
+              <item name="Antiques" allow-zero="true" />
+              <item name="Collections" allow-zero="true">
                 <eg name="coins" />
                 <eg name="stamps" />
                 <eg name="comic books" />
                 <eg name="cards" />
               </item>
-              <item name="Firearms" />
-              <item name="Art" />
-              <item name="Crops" />
-              <item name="Livestock" />
+              <item name="Firearms" allow-zero="true" />
+              <item name="Art" allow-zero="true" />
+              <item name="Crops" allow-zero="true" />
+              <item name="Livestock" allow-zero="true" />
             </group>
             <group name="Institutional">
               <item name="Checking" />
@@ -380,20 +380,20 @@
                 <eg name="403(b)" />
                 <eg name="SEP" />
               </item>
-              <item name="Certificate of Deposit" abbrev="COD"/>
-              <item name="Insurance Policies" />
-              <item name="Money Market"/>
-              <item name="Annuity"/>
-              <item name="Credit Union" />
-              <item name="Profit Sharing"/>
-              <item name="Safe Deposit Box" />
-              <item name="Trusts"/>
-              <item name="Brokerage" />
-              <item name="Partnerships"/>
-              <item name="Fellowships"/>
-              <item name="Escrow" />
-              <item name="Stipends"/>
-              <item name="Royalties"/>
+              <item name="Certificate of Deposit" abbrev="COD" allow-zero="true"/>
+              <item name="Insurance Policies"  allow-zero="true"/>
+              <item name="Money Market" allow-zero="true"/>
+              <item name="Annuity" allow-zero="true"/>
+              <item name="Credit Union" allow-zero="true"/>
+              <item name="Profit Sharing" allow-zero="true"/>
+              <item name="Safe Deposit Box" allow-zero="true" />
+              <item name="Trusts" allow-zero="true"/>
+              <item name="Brokerage" allow-zero="true" />
+              <item name="Partnerships" allow-zero="true"/>
+              <item name="Fellowships" allow-zero="true"/>
+              <item name="Escrow" allow-zero="true" />
+              <item name="Stipends" allow-zero="true"/>
+              <item name="Royalties" allow-zero="true"/>
             </group>            
             <group name="Securities">
               <item name="Stocks"/>
@@ -402,7 +402,7 @@
                 <eg name="mutual funds" />
                 <eg name="bond funds" />
               </item>
-              <item name="Derivatives">
+              <item name="Derivatives" allow-zero="true">
                 <eg name="options" />
                 <eg name="swaps" />
                 <eg name="futures" />

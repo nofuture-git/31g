@@ -244,7 +244,7 @@ namespace NoFuture.Rand.Sp
         /// <returns></returns>
         [RandomFactory]
         public static SecuredFixedRateLoan RandomSecuredFixedRateLoanWithHistory(Pecuniam remainingCost = null,
-            Pecuniam totalCost = null, float rate = Mortgage.AVG_GDP_GROWTH_RATE, int termInYears = 5,
+            Pecuniam totalCost = null, float rate = AVG_GDP_GROWTH_RATE, int termInYears = 5,
             Identifier property = null,
             Func<bool> randomActsIrresponsible = null)
         {

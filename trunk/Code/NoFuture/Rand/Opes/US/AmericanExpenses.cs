@@ -160,7 +160,7 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             if (options.IsRenting)
-                options.AddPossibleZeroOuts("Gas", "Water", "Sewer", "Trash");
+                options.AddPossibleZeroOuts(GetAllowZeroNames(Division, ExpenseGroupNames.UTILITIES));
 
             var d = GetItemNames2Portions(ExpenseGroupNames.UTILITIES, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
@@ -176,7 +176,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            options.AddPossibleZeroOuts("Parking", "Registration Fees");
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, ExpenseGroupNames.TRANSPORTATION));
 
             //focus most-of-it on Loan Payments or fuel
             options.Rate = RandPortions.DiminishingRate.Fast;
@@ -213,8 +213,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            options.AddPossibleZeroOuts(new[] { "Pet", "Vision",
-                "Dental", "Health", "Disability", "Life" });
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, ExpenseGroupNames.INSURANCE));
 
             options.AddZeroPortion(options.IsRenting ? "Home" : "Renters", ExpenseGroupNames.INSURANCE);
 
@@ -236,8 +235,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            options.AddPossibleZeroOuts(new[] { "Dues", "Subscriptions",
-                "Gifts", "Vice", "Clothing" });
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, ExpenseGroupNames.PERSONAL));
             var d = GetItemNames2Portions(ExpenseGroupNames.PERSONAL, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -264,8 +262,7 @@ namespace NoFuture.Rand.Opes.US
             }
             else
             {
-                options.AddPossibleZeroOuts(new[]{"Lunch Money",
-                    "Extracurricular", "Camp", "Transportation", "Allowance"});
+                options.AddPossibleZeroOuts(GetAllowZeroNames(Division, ExpenseGroupNames.CHILDREN));
             }
 
             var d = GetItemNames2Portions(ExpenseGroupNames.CHILDREN, options);
@@ -281,7 +278,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            options.AddPossibleZeroOuts(new[] { "Health Care", "Other Consumer", "Student", "Tax", "Other" });
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, ExpenseGroupNames.DEBT));
             var d = GetItemNames2Portions(ExpenseGroupNames.DEBT, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -295,8 +292,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            options.AddPossibleZeroOuts(new[] { "Therapy", "Hospital",
-                "Optical", "Dental", "Physician", "Supplements" });
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, ExpenseGroupNames.HEALTH));
             var d = GetItemNames2Portions(ExpenseGroupNames.HEALTH, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }

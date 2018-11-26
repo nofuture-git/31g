@@ -149,10 +149,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            options.AddPossibleZeroOuts(
-                "Life", "Supplemental Life", "Dependent Life", "Accidental Death & Dismemberment",
-                "Short-term Disability", "Long-term Disability"
-            );
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, DeductionGroupNames.INSURANCE));
 
             //if the caller has assign values themselves - then just use those and leave
             if (options.AnyGivenDirectly())
@@ -211,10 +208,10 @@ namespace NoFuture.Rand.Opes.US
             var ficaTaxAmt = pay * AmericanData.FICA_DEDUCTION_TAX_RATE;
             var medicareTaxAmt = pay * AmericanData.MEDICARE_DEDUCTION_TAX_RATE;
 
-            options.AddGivenDirectly("Federal tax", DeductionGroupNames.INSURANCE, fedTaxAmt);
-            options.AddGivenDirectly("State tax", DeductionGroupNames.INSURANCE, stateTaxAmt);
-            options.AddGivenDirectly("FICA", DeductionGroupNames.INSURANCE, ficaTaxAmt);
-            options.AddGivenDirectly("Medicare", DeductionGroupNames.INSURANCE, medicareTaxAmt);
+            options.AddGivenDirectly("Federal tax", DeductionGroupNames.GOVERNMENT, fedTaxAmt);
+            options.AddGivenDirectly("State tax", DeductionGroupNames.GOVERNMENT, stateTaxAmt);
+            options.AddGivenDirectly("FICA", DeductionGroupNames.GOVERNMENT, ficaTaxAmt);
+            options.AddGivenDirectly("Medicare", DeductionGroupNames.GOVERNMENT, medicareTaxAmt);
 
             //this will be used later to create Pondus so only overwrite it if is unassigned
             if (options.SumTotal == null || options.SumTotal == 0)
@@ -233,9 +230,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            options.AddPossibleZeroOuts(
-                "Profit Sharing", "Pension", "Health Savings Account", 
-                "Credit Union Loan", "Flexible Spending Account");
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, DeductionGroupNames.EMPLOYMENT));
 
             //if the caller has assign values themselves - then just use those and leave
             if (options.AnyGivenDirectly())
@@ -248,14 +243,14 @@ namespace NoFuture.Rand.Opes.US
 
             var retirementRate = Etx.RandomPickOne(new[] {0.01D, 0.02D, 0.03D, 0.04D, 0.05D});
             var retirementAmt = pay * retirementRate;
-            options.AddGivenDirectly("Registered Retirement Savings Plan", DeductionGroupNames.INSURANCE,
+            options.AddGivenDirectly("Registered Retirement Savings Plan", DeductionGroupNames.EMPLOYMENT,
                 retirementAmt);
 
             var unionDuesAmt = StandardOccupationalClassification.IsLaborUnion(_employment.Occupation)
                 ? pay * GetRandomValueFrom(0.04)
                 : 0.0D;
 
-            options.AddGivenDirectly("Union Dues", DeductionGroupNames.INSURANCE, unionDuesAmt);
+            options.AddGivenDirectly("Union Dues", DeductionGroupNames.EMPLOYMENT, unionDuesAmt);
 
             //we need to have a SumTotal exceeding the current GivenDirectly's sum to have any of the others show up at random
             var someRandRate = GetRandomRateFromClassicHook(options.FactorOptions.GetAge());

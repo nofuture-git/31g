@@ -346,6 +346,37 @@ namespace NoFuture.Rand.Opes.US
             return !string.IsNullOrWhiteSpace(itemName);
         }
 
+        internal static string[] GetAllowZeroNames(DomusOpesDivisions division, string groupName)
+        {
+            if(string.IsNullOrWhiteSpace(groupName))
+                return new string[]{};
+            var xPath = $"//{division.ToString().ToLower()}/group[@name='{groupName}']/item";
+            OpesXml = OpesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_DOMUS_OPES,
+                          Assembly.GetExecutingAssembly());
+            var nodes = OpesXml.SelectNodes(xPath);
+            if (nodes == null || nodes.Count <= 0)
+                return new string[] { };
+            var allowZeroNames = new List<string>();
+            foreach (var o in nodes)
+            {
+                if (!(o is XmlElement node))
+                    continue;
+                var name = node.GetAttribute("name");
+                if (string.IsNullOrWhiteSpace(name))
+                    continue;
+                var allowZeroAttrValue = node.GetAttribute("allow-zero");
+                if (string.IsNullOrWhiteSpace(allowZeroAttrValue))
+                    continue;
+                if (!bool.TryParse(allowZeroAttrValue, out var allowZero))
+                    continue;
+                if (!allowZero)
+                    continue;
+                allowZeroNames.Add(name);
+            }
+
+            return allowZeroNames.ToArray();
+        }
+
         /// <summary>
         /// Gets all Group-Item names at the given <see cref="xPath"/>
         /// </summary>

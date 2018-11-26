@@ -88,7 +88,6 @@ namespace NoFuture.Rand.Opes.US
         public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
             var itemData = new Dictionary<string, object>();
-
             foreach (var p in CurrentItems)
             {
                 if (p.Value == Pecuniam.Zero)
@@ -268,19 +267,14 @@ namespace NoFuture.Rand.Opes.US
                 {
                     options.CarPayment = loan.MonthlyPayment;
                 }
+                p.Name = item;
+                p.AddName(KindsOfNames.Group, grp);
             }
             else
             {
-                p = new NamedReceivable(item)
-                {
-                    Inception = startDate,
-                    Terminus = options.Terminus,
-                    DueFrequency =  options.DueFrequency
-                };
+                p = base.GetNamedReceivableForItemAndGroup(item, grp, options, rate);
             }
 
-            p.Name = item;
-            p.AddName(KindsOfNames.Group, grp);
             return p;
         }
 
@@ -299,7 +293,7 @@ namespace NoFuture.Rand.Opes.US
             {
                 options.AddZeroPortion(REAL_PROPERTY_HOME_OWNERSHIP, AssetGroupNames.REAL_PROPERTY);
             }
-            options.AddPossibleZeroOuts("Time Shares", "Land", "Mineral Rights");
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, AssetGroupNames.REAL_PROPERTY));
             var d = GetItemNames2Portions(AssetGroupNames.REAL_PROPERTY, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -312,7 +306,7 @@ namespace NoFuture.Rand.Opes.US
         protected internal virtual Dictionary<string, double> GetPersonalPropertyAssetNames2Rates(AmericanDomusOpesOptions options)
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
-            options.AddPossibleZeroOuts("Art", "Firearms", "Collections", "Antiques");
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, AssetGroupNames.PERSONAL_PROPERTY));
 
             //remove obvious rural related items for everyone except those who are way out in the country
             var livesInCountry = options.HomeLocation is UsCityStateZip usCityState &&
@@ -336,16 +330,7 @@ namespace NoFuture.Rand.Opes.US
         protected internal Dictionary<string, double> GetInstitutionalAssetName2Rates(AmericanDomusOpesOptions options)
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
-            options.AddPossibleZeroOuts(new[]
-            {
-                "Certificate of Deposit", "Insurance Policies",
-                "Money Market", "Annuity",
-                "Credit Union", "Profit Sharing",
-                "Safe Deposit Box", "Trusts",
-                "Brokerage", "Partnerships",
-                "Fellowships", "Escrow",
-                "Stipends", "Royalties"
-            });
+            options.AddPossibleZeroOuts(GetAllowZeroNames(Division, AssetGroupNames.INSTITUTIONAL));
             var d = GetItemNames2Portions(AssetGroupNames.INSTITUTIONAL, options);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
@@ -359,7 +344,7 @@ namespace NoFuture.Rand.Opes.US
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             var tOptions = options.GetClone();
-            tOptions.AddPossibleZeroOuts("Derivatives");
+            tOptions.AddPossibleZeroOuts(GetAllowZeroNames(Division, AssetGroupNames.SECURITIES));
             var d = GetItemNames2Portions(AssetGroupNames.SECURITIES, tOptions);
             return d.ToDictionary(t => t.Item1, t => t.Item2);
         }
