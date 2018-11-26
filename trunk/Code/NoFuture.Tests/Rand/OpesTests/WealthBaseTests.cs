@@ -59,19 +59,6 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(81000.0D, testResult);
         }
 
-        [Test]
-        public void TestGetPaycheck()
-        {
-            var options = new AmericanDomusOpesOptions {IsRenting = true};
-            options.FactorOptions.Gender = Gender.Female;
-            options.FactorOptions.DateOfBirth = Etx.RandomAdultBirthDate();
-            var testSubject = new AmericanIncome();
-
-            var testResult = testSubject.GetRandomYearlyIncome(null, options, 1.0.ToPecuniam());
-            Console.WriteLine(testResult);
-            Assert.IsNotNull(testResult);
-            Assert.IsTrue(testResult.Amount > 0.0M);
-        }
 
         [Test]
         public void TestGetXmlEduName()

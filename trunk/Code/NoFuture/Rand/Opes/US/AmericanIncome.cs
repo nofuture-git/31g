@@ -465,7 +465,7 @@ namespace NoFuture.Rand.Opes.US
             //get some base to calc the product 
             var someBase = Employment.Any() 
                            ? GetAnnualEmplyGrossIncome(dt) 
-                           : GetRandomYearlyIncome(dt, options);
+                           : options.GetRandomYearlyIncome(dt);
 
             var randAmt = someBase.ToDouble() * randRate;
             return randAmt.ToPecuniam();

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using NoFuture.Rand.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Gov.US
 {
@@ -176,6 +179,60 @@ namespace NoFuture.Rand.Gov.US
                 {AmericanRegion.Midwest, 20.8962},
                 {AmericanRegion.Northeast, 18.6229}
             };
+
+
+        /// <summary>
+        /// Returns the <see cref="MaritialStatus"/> based on the gender and age.
+        /// </summary>
+        /// <param name="dob"></param>
+        /// <param name="gender"></param>
+        /// <returns></returns>
+        [RandomFactory]
+        public static MaritialStatus RandomMaritialStatus(DateTime? dob, Gender gender)
+        {
+            if (Etx.MyRand.NextDouble() <= AmericanData.PERCENT_UNMARRIED_WHOLE_LIFE)
+                return MaritialStatus.Single;
+            dob = dob ?? Etx.RandomAdultBirthDate();
+
+            var avgAgeMarriage = gender == Gender.Female
+                ? AmericanEquations.FemaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble())
+                : AmericanEquations.MaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble());
+
+            var cdt = DateTime.UtcNow;
+            var currentAge = Etc.CalcAge(dob.Value, cdt);
+
+            if (currentAge < avgAgeMarriage)
+                return MaritialStatus.Single;
+
+            //chance for being widowed goes up exp for older 
+            if (Etx.MyRand.NextDouble() <= AmericanEquations.Age2ProbWidowed.SolveForY(currentAge))
+                return MaritialStatus.Widowed;
+
+            //young first marriage
+            if (!(currentAge > avgAgeMarriage + AmericanData.AVG_LENGTH_OF_MARRIAGE)) return MaritialStatus.Married;
+
+            //spin for divorce
+            var df = Etx.MyRand.NextDouble() <= AmericanData.PERCENT_DIVORCED;
+
+            //have 'separated' (whatever it means) as low probablity
+            if (df && currentAge < avgAgeMarriage + AmericanData.AVG_LENGTH_OF_MARRIAGE + AmericanData.YEARS_BEFORE_NEXT_MARRIAGE)
+                return Etx.RandomRollBelowOrAt(64, Etx.Dice.OneThousand) ? MaritialStatus.Separated : MaritialStatus.Divorced;
+
+            //have prob of never remarry
+            if (df && gender == Gender.Male)
+            {
+                return Etx.MyRand.NextDouble() <= AmericanData.PERCENT_OF_MEN_MARRIED_ONCE_NEVER_AGAIN
+                    ? MaritialStatus.Divorced
+                    : MaritialStatus.Remarried;
+            }
+            if (df && gender == Gender.Female)
+            {
+                return Etx.MyRand.NextDouble() <= AmericanData.PERCENT_OF_WOMEN_MARRIED_ONCE_NEVER_AGAIN
+                    ? MaritialStatus.Divorced
+                    : MaritialStatus.Remarried;
+            }
+            return df ? MaritialStatus.Remarried : MaritialStatus.Married;
+        }
 
         #endregion
     }

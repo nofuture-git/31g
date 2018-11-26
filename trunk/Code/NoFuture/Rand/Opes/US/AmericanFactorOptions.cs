@@ -46,21 +46,18 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static AmericanFactorOptions RandomFactorOptions()
+        public static AmericanFactorOptions RandomFactorOptions(Gender? gender = null, DateTime? birthDate = null)
         {
+            var sex = gender ?? (Etx.RandomCoinToss() ? Gender.Male : Gender.Female);
+            var dob = birthDate.GetValueOrDefault(Etx.RandomAdultBirthDate());
             return new AmericanFactorOptions
             {
                 EducationLevel = Etx.RandomPickOne(AmericanData.EducationLevelAvgs),
                 Race = Etx.RandomPickOne(AmericanRacePercents.NorthAmericanRaceAvgs),
                 Region = Etx.RandomPickOne(AmericanData.RegionPopulationAvgs),
-                Gender = Etx.RandomCoinToss() ? Gender.Male : Gender.Female,
-                DateOfBirth = Etx.RandomAdultBirthDate(),
-                MaritialStatus = Etx.RandomPickOne(new[]
-                {
-                    MaritialStatus.Divorced, MaritialStatus.Married,
-                    MaritialStatus.Remarried, MaritialStatus.Separated,
-                    MaritialStatus.Single
-                })
+                Gender = sex,
+                DateOfBirth = dob,
+                MaritialStatus = AmericanData.RandomMaritialStatus(dob, sex)
             };
         }
     }

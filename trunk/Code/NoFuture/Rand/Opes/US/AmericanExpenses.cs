@@ -100,7 +100,7 @@ namespace NoFuture.Rand.Opes.US
 
             if (options.SumTotal == null || options.SumTotal == 0)
             {
-                var randIncome = Math.Round(GetRandomYearlyIncome(options.Inception, options).ToDouble() *
+                var randIncome = Math.Round(options.GetRandomYearlyIncome(options.Inception).ToDouble() *
                                             PERCENT_EXPENSE_OF_INCOME);
                 options.SumTotal = randIncome;
             }

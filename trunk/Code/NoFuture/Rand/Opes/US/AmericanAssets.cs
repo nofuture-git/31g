@@ -258,15 +258,6 @@ namespace NoFuture.Rand.Opes.US
                     termInYears,
                     id, irresp);
 
-                var loan = (SecuredFixedRateLoan) p;
-                if (isMortgage)
-                {
-                    options.HousePayment = loan.MonthlyPayment;
-                }
-                else
-                {
-                    options.CarPayment = loan.MonthlyPayment;
-                }
                 p.Name = item;
                 p.AddName(KindsOfNames.Group, grp);
             }

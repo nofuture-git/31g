@@ -116,70 +116,6 @@ namespace NoFuture.Rand.Opes.US
                                                                          Assembly.GetExecutingAssembly()));
 
         /// <summary>
-        /// Calculate a yearly income at random.
-        /// </summary>
-        /// <param name="dt">
-        /// Optional, date used for solving the <see cref="GetAvgEarningPerYear"/> equation, 
-        /// the default is the current system time.
-        /// </param>
-        /// <param name="min">
-        /// Optional, absolute minimum value where results should always be this value or higher.
-        /// </param>
-        /// <param name="options">
-        /// </param>
-        /// <param name="stdDevInUsd">
-        /// Optional, a randomizes the calculated value around a mean.
-        /// </param>
-        /// <returns></returns>
-        public virtual Pecuniam GetRandomYearlyIncome(DateTime? dt = null, AmericanDomusOpesOptions options = null, Pecuniam min = null,
-            double stdDevInUsd = 2000)
-        {
-            if (min == null)
-                min = Pecuniam.Zero;
-
-            //get linear eq for earning 
-            var eq = GetAvgEarningPerYear(options);
-            if (eq == null)
-                return Pecuniam.Zero;
-            var baseValue = Math.Round((double) eq.SolveForY(dt.GetValueOrDefault(DateTime.Today).ToDouble()), 2);
-            if (baseValue <= 0)
-                return Pecuniam.Zero;
-
-            var netWorth = new AmericanFactors(options?.FactorOptions).NetWorthFactor;
-
-            var factorValue = baseValue * netWorth;
-
-            baseValue = Math.Round(factorValue, 2);
-
-            stdDevInUsd = Math.Abs(stdDevInUsd);
-
-            var randValue = Math.Round(
-                Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), stdDevInUsd), 2);
-
-            //honor the promise to never let the value go below the 'min' if caller gave one.
-            if (min > Pecuniam.Zero && randValue < 0)
-                randValue = 0;
-            return new Pecuniam((decimal) randValue) + min;
-        }
-
-        /// <summary>
-        /// Get the linear eq of the city if its found otherwise defaults to the state, and failing that to the national
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>
-        /// compiled data from BEA
-        /// </remarks>
-        protected internal virtual IEquation GetAvgEarningPerYear(AmericanDomusOpesOptions options)
-        {
-            var ca = options?.HomeLocation as UsCityStateZip;
-            if (ca == null)
-                return AmericanEquations.NatlAverageEarnings;
-            ca.GetXmlData();
-            return (ca.AverageEarnings ?? UsStateData.GetStateData(ca?.StateName)?.AverageEarnings) ??
-                   AmericanEquations.NatlAverageEarnings;
-        }
-
-        /// <summary>
         /// Gets the <see cref="IVoca"/> Income items
         /// from US Domus Opes data file
         /// </summary>
@@ -403,25 +339,6 @@ namespace NoFuture.Rand.Opes.US
             return names.ToArray();
         }
 
-        /// <summary>
-        /// Weights the probability that a person will lease when they are young, living in a dense urban area or both.
-        /// </summary>
-        /// <param name="msaType"></param>
-        /// <param name="age"></param>
-        /// <returns></returns>
-        protected internal virtual bool GetIsLeaseResidence(UrbanCentric msaType, int age)
-        {
-
-            var livesInDenseUrbanArea = msaType == (UrbanCentric.City | UrbanCentric.Large);
-            var isYoung = age < 32;
-            var roll = 65;
-            if (livesInDenseUrbanArea)
-                roll -= 23;
-            //is scaled where 29 year-old loses 3 while 21 year-old loses 11
-            if (isYoung)
-                roll -= 32 - age;
-            return Etx.RandomRollBelowOrAt(roll, Etx.Dice.OneHundred);
-        }
 
         /// <summary>
         /// Gets a rate, at random, using the <see cref="AmericanEquations.ClassicHook"/>

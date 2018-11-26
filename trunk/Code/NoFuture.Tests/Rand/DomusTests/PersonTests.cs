@@ -79,13 +79,13 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestGetAmericanMaritialStatus()
         {
             //too young 
-            Assert.AreEqual(MaritialStatus.Single, AmericanUtil.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Male));
-            Assert.AreEqual(MaritialStatus.Single, AmericanUtil.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Female));
+            Assert.AreEqual(MaritialStatus.Single, AmericanData.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Male));
+            Assert.AreEqual(MaritialStatus.Single, AmericanData.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Female));
 
             //cannot test further since its is random...
-            Console.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1974, 11, 21), Gender.Male));
-            Console.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1962, 1, 31), Gender.Female));
-            Console.WriteLine(AmericanUtil.RandomMaritialStatus(new DateTime(1982, 1, 31), Gender.Female));
+            Console.WriteLine(AmericanData.RandomMaritialStatus(new DateTime(1974, 11, 21), Gender.Male));
+            Console.WriteLine(AmericanData.RandomMaritialStatus(new DateTime(1962, 1, 31), Gender.Female));
+            Console.WriteLine(AmericanData.RandomMaritialStatus(new DateTime(1982, 1, 31), Gender.Female));
         }
 
         [Test]

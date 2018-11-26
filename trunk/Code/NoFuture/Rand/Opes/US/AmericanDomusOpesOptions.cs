@@ -5,12 +5,14 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo;
 using NoFuture.Rand.Geo.US;
+using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Rand.Pneuma;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
+using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Opes.US
 {
@@ -24,34 +26,13 @@ namespace NoFuture.Rand.Opes.US
     public class AmericanDomusOpesOptions : RandPortions, ITempore
     {
         private CityArea _cityArea;
-        private Pecuniam _carPayment;
-
-        #region properties
 
         public AmericanDomusOpesOptions(AmericanFactorOptions factorOptions = null)
         {
             FactorOptions = factorOptions ?? AmericanFactorOptions.RandomFactorOptions();
         }
 
-        /// <summary>
-        /// The monthly mortgage or rent payment
-        /// </summary>
-        protected internal Pecuniam HousePayment { get; set; }
-
-        /// <summary>
-        /// The monthly car payment.
-        /// </summary>
-        protected internal Pecuniam CarPayment
-        {
-            get => _carPayment;
-            set
-            {
-                if (value != null && value != Pecuniam.Zero)
-                    IsVehiclePaidOff = false;
-                _carPayment = value;
-            }
-        }
-
+        #region properties
         /// <summary>
         /// A judgement related expense - this is too complicated 
         /// to be determined randomly
@@ -201,27 +182,126 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static AmericanDomusOpesOptions RandomOpesOptions(string firstName = null, string lastName = null)
+        public static AmericanDomusOpesOptions RandomOpesOptions(string firstName = null, string lastName = null, Gender? gender = null, DateTime? birthDate = null)
         {
             var name = new VocaBase();
             lastName = lastName ?? Etx.RandomWord();
             firstName = firstName ?? Etx.RandomWord();
             name.AddName(KindsOfNames.First, firstName);
             name.AddName(KindsOfNames.Surname, lastName);
-
-            var opt = new AmericanDomusOpesOptions
+            var factorOptions = AmericanFactorOptions.RandomFactorOptions(gender, birthDate);
+            var location = CityArea.RandomAmericanCity();
+            var isRenting = GetIsLeaseResidence(location.Msa.MsaType, factorOptions.GetAge());
+            var hasCar = GetAtLeastOneVehicle(location.Msa.MsaType);
+            var opt = new AmericanDomusOpesOptions(factorOptions)
             {
                 Inception = DateTime.Today.Add(Constants.TropicalYear.Negate()),
-                HomeLocation = CityArea.RandomAmericanCity(),
-                IsRenting = Etx.RandomCoinToss(),
-                Personality = Rand.Pneuma.Personality.RandomPersonality(),
+                HomeLocation = location,
+                IsRenting = isRenting,
+                Personality = Pneuma.Personality.RandomPersonality(),
                 NumberOfCreditCards = Etx.RandomInteger(0, 3),
-                NumberOfVehicles = 1,
+                NumberOfVehicles = hasCar ? 1 : 0,
                 PersonsName = name,
                 DueFrequency = Constants.TropicalYear,
                 IsVehiclePaidOff = false
             };
             return opt;
+        }
+
+        internal static bool GetAtLeastOneVehicle(UrbanCentric msaType)
+        {
+            var percentNoCarWholeNumber = (int) Math.Round(AmericanData.PERCENT_WITH_NO_CAR * 100);
+
+            var livesInDenseUrbanArea = msaType == (UrbanCentric.City | UrbanCentric.Large);
+
+            //just made this up
+            if (livesInDenseUrbanArea)
+                percentNoCarWholeNumber += 21;
+
+            return Etx.RandomRollBelowOrAt(percentNoCarWholeNumber, Etx.Dice.OneHundred);
+
+        }
+
+        /// <summary>
+        /// Weights the probability that a person will lease when they are young, living in a dense urban area or both.
+        /// </summary>
+        /// <param name="msaType"></param>
+        /// <param name="age"></param>
+        /// <returns></returns>
+        internal static bool GetIsLeaseResidence(UrbanCentric msaType, int age)
+        {
+            var livesInDenseUrbanArea = msaType == (UrbanCentric.City | UrbanCentric.Large);
+            var isYoung = age < 32;
+            var roll = 65;
+            if (livesInDenseUrbanArea)
+                roll -= 23;
+            //is scaled where 29 year-old loses 3 while 21 year-old loses 11
+            if (isYoung)
+                roll -= 32 - age;
+            return Etx.RandomRollBelowOrAt(roll, Etx.Dice.OneHundred);
+        }
+
+        /// <summary>
+        /// Calculate a yearly income at random.
+        /// </summary>
+        /// <param name="dt">
+        /// Optional, date used for solving the <see cref="GetAvgEarningPerYear"/> equation, 
+        /// the default is the current system time.
+        /// </param>
+        /// <param name="min">
+        /// Optional, absolute minimum value where results should always be this value or higher.
+        /// </param>
+        /// <param name="stdDevInUsd">
+        /// Optional, a randomizes the calculated value around a mean.
+        /// </param>
+        /// <returns></returns>
+        public virtual Pecuniam GetRandomYearlyIncome(DateTime? dt = null, Pecuniam min = null,
+            double stdDevInUsd = 2000)
+        {
+            if (min == null)
+                min = Pecuniam.Zero;
+
+            //get linear eq for earning 
+            var eq = GetAvgEarningPerYear();
+            if (eq == null)
+                return Pecuniam.Zero;
+            var dtt = dt.GetValueOrDefault(InceptionOrToday);
+            var baseValue = Math.Round(eq.SolveForY(dtt.ToDouble()), 2);
+            if (baseValue <= 0)
+                return Pecuniam.Zero;
+
+            var netWorth = new AmericanFactors(FactorOptions).NetWorthFactor;
+
+            var factorValue = baseValue * netWorth;
+
+            baseValue = Math.Round(factorValue, 2);
+
+            stdDevInUsd = Math.Abs(stdDevInUsd);
+
+            var randValue = Math.Round(
+                Etx.RandomValueInNormalDist(Math.Round(baseValue, 0), stdDevInUsd), 2);
+
+            //honor the promise to never let the value go below the 'min' if caller gave one.
+            if (min > Pecuniam.Zero && randValue < 0)
+                randValue = 0;
+            return new Pecuniam((decimal)randValue) + min;
+        }
+
+        /// <summary>
+        /// Get the linear eq of the city if its found otherwise defaults to the state, and failing that to the national
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// compiled data from BEA
+        /// </remarks>
+        protected internal virtual IEquation GetAvgEarningPerYear()
+        {
+            var ca = HomeLocation as UsCityStateZip;
+            if (ca == null)
+                return AmericanEquations.NatlAverageEarnings;
+            ca.GetXmlData();
+            return (ca.AverageEarnings ?? UsStateData.GetStateData(ca?.StateName)?.AverageEarnings) ??
+                   AmericanEquations.NatlAverageEarnings;
         }
 
         #endregion

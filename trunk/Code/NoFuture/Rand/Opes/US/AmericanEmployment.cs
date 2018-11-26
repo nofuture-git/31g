@@ -302,7 +302,7 @@ namespace NoFuture.Rand.Opes.US
             //TODO - why is there here in the middle of something else?
             if (options.SumTotal == null || options.SumTotal == 0)
             {
-                options.SumTotal = GetRandomYearlyIncome(options.Inception, options).ToDouble();
+                options.SumTotal = options.GetRandomYearlyIncome(options.Inception).ToDouble();
                 options.DueFrequency = Constants.TropicalYear;
             }
 

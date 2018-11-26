@@ -311,7 +311,7 @@ namespace NoFuture.Rand.Opes.US
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             var pPay = _employment.GetAt(options.Inception).Sum() ?? Pecuniam.Zero;
-            var pay = pPay == Pecuniam.Zero ? GetRandomYearlyIncome(options.Inception, options).ToDouble() : pPay.ToDouble();
+            var pay = pPay == Pecuniam.Zero ? options.GetRandomYearlyIncome(options.Inception).ToDouble() : pPay.ToDouble();
             return pay;
         }
 
