@@ -24,6 +24,7 @@ namespace NoFuture.Rand.Tests.OpesTests
                 Domus.US.AmericanUtil.RandomAmericanLastName());
 
             var income = AmericanIncome.RandomIncome(options);
+            options.SumTotal = income.Total.ToDouble();
             var assets = AmericanAssets.RandomAssets(options);
             var expenses = AmericanExpenses.RandomExpenses(options);
 

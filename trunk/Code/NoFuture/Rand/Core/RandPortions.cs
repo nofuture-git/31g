@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Core
         /// Optional, this is only used when the option&apos;s given directly
         /// is not empty - its expected to exceed the total of the option&apos;s given directly.
         /// </summary>
-        public double? SumTotal { get; set; }
+        public virtual double? SumTotal { get; set; }
 
         /// <summary>
         /// Direct access to the underlying collection is protected.
@@ -70,7 +70,7 @@ namespace NoFuture.Rand.Core
         /// Add a name to the list of what may-or-may-not be 
         /// assigned a 0.0 portion within <see cref="GetNames2Portions"/> at the default probability.
         /// </summary>
-        public void AddPossibleZeroOuts(params string[] pzos)
+        public virtual void AddPossibleZeroOuts(params string[] pzos)
         {
             foreach(var pzo in pzos)
             {
@@ -85,7 +85,7 @@ namespace NoFuture.Rand.Core
         /// assigned a 0.0 portion within <see cref="GetNames2Portions"/> 
         /// at the <see cref="prob"/> probability.
         /// </summary>
-        public void AddPossibleZeroOuts(Predicate<string> prob, params string[] pzos)
+        public virtual void AddPossibleZeroOuts(Predicate<string> prob, params string[] pzos)
         {
             prob = prob ?? _defaultDice;
             foreach (var pzo in pzos)
@@ -110,7 +110,7 @@ namespace NoFuture.Rand.Core
         /// <summary>
         /// Determines how fast the portions drop off after the first one.
         /// </summary>
-        public DiminishingRate Rate
+        public virtual DiminishingRate Rate
         {
             get
             {
@@ -158,7 +158,7 @@ namespace NoFuture.Rand.Core
         /// <param name="name">Some direct name of the item</param>
         /// <param name="groupName">A name used for grouping items</param>
         /// <param name="amount">Optional, the numerical value assoc. to this named item, default is zero.</param>
-        public void AddGivenDirectly(string name, string groupName, double? amount = null)
+        public virtual void AddGivenDirectly(string name, string groupName, double? amount = null)
         {
             GivenDirectly.Add(new Tuple<VocaBase, double>(new VocaBase(name, groupName), amount ?? 0D));
         }
@@ -168,7 +168,7 @@ namespace NoFuture.Rand.Core
         /// </summary>
         /// <param name="name"></param>
         /// <param name="groupName"></param>
-        public void AddZeroPortion(string name, string groupName)
+        public virtual void AddZeroPortion(string name, string groupName)
         {
             GivenDirectly.Add(new Tuple<VocaBase, double>(new VocaBase(name, groupName), 0D));
         }
@@ -176,7 +176,7 @@ namespace NoFuture.Rand.Core
         /// <summary>
         /// Same as its overload, just without a group name
         /// </summary>
-        public void AddGivenDirectly(string name, double? amount = null)
+        public virtual void AddGivenDirectly(string name, double? amount = null)
         {
             GivenDirectly.Add(new Tuple<VocaBase, double>(new VocaBase(name), amount ?? 0D));
         }
@@ -185,7 +185,7 @@ namespace NoFuture.Rand.Core
         /// Helper method to add a range of directly-assigned items
         /// </summary>
         /// <param name="name2Values"></param>
-        public void AddGivenDirectlyRange(IEnumerable<Tuple<string, string, double>> name2Values)
+        public virtual void AddGivenDirectlyRange(IEnumerable<Tuple<string, string, double>> name2Values)
         {
             if (name2Values == null || !name2Values.Any())
                 return;
@@ -300,7 +300,7 @@ namespace NoFuture.Rand.Core
         ///    one of the PossiablyZeroOuts in this case no matter the odds.
         /// ]]>
         /// </remarks>
-        public List<Tuple<string, double>> GetNames2Portions(string[] itemOrGroupNames)
+        public virtual List<Tuple<string, double>> GetNames2Portions(string[] itemOrGroupNames)
         {
             const StringComparison STR_OPT = StringComparison.OrdinalIgnoreCase;
 

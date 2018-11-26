@@ -186,9 +186,10 @@ namespace NoFuture.Rand.Opes.US
                                     string.Equals(item, INSTITUTIONAL_CHECKING, OPT);
             var isSavingsAccount = string.Equals(grp, AssetGroupNames.INSTITUTIONAL, OPT) &&
                                    string.Equals(item, INSTITUTIONAL_SAVINGS, OPT);
-            var isMortgage = string.Equals(grp, AssetGroupNames.REAL_PROPERTY, OPT) &&
+            var isMortgage = !options.IsRenting && string.Equals(grp, AssetGroupNames.REAL_PROPERTY, OPT) &&
                              string.Equals(item, REAL_PROPERTY_HOME_OWNERSHIP, OPT);
-            var isCarLoan = string.Equals(grp, AssetGroupNames.PERSONAL_PROPERTY, OPT) &&
+            var isCarLoan = options.NumberOfVehicles > 0 &&
+                            string.Equals(grp, AssetGroupNames.PERSONAL_PROPERTY, OPT) &&
                             string.Equals(item, PERSONAL_PROPERTY_MOTOR_VEHICLES, OPT);
 
             NamedReceivable p;
