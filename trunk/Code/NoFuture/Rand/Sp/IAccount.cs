@@ -45,7 +45,5 @@ namespace NoFuture.Rand.Sp
         /// a credit will increase the cash of the account
         /// </summary>
         Guid Credit(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null);
-
-
     }
 }

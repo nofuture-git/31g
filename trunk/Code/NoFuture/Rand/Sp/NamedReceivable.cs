@@ -100,6 +100,12 @@ namespace NoFuture.Rand.Sp
             _voca.CopyFrom(voca);
         }
 
+        public override Pecuniam GetMinPayment(DateTime dt)
+        {
+            var d = Balance.GetCurrent(dt, 0.0F);
+            return d < Pecuniam.Zero ? d.GetAbs() : Pecuniam.Zero;
+        }
+
         /// <summary>
         /// Consider equality as being the same name at the same time
         /// </summary>

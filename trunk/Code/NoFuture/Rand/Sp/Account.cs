@@ -47,11 +47,5 @@ namespace NoFuture.Rand.Sp
         {
             return Balance.GetCurrent(dt, 0.0F);
         }
-
-        public override Pecuniam GetMinPayment(DateTime dt)
-        {
-            var d = Balance.GetCurrent(dt, 0.0F);
-            return d < Pecuniam.Zero ? d.GetAbs() : Pecuniam.Zero;
-        }
     }
 }
