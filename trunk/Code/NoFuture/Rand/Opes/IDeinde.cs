@@ -41,6 +41,12 @@ namespace NoFuture.Rand.Opes
             TimeSpan? dueFrequency = null);
 
         /// <summary>
+        /// Removes the item from the internal collection
+        /// </summary>
+        /// <param name="item"></param>
+        void RemoveItem(NamedReceivable item);
+
+        /// <summary>
         /// The items applicable to the current time
         /// </summary>
         NamedReceivable[] CurrentItems { get; }

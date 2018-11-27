@@ -23,6 +23,7 @@ namespace NoFuture.Rand.Opes.US
         #region fields
         private readonly HashSet<ILaboris> _employment = new HashSet<ILaboris>();
         private readonly HashSet<NamedReceivable> _otherIncome = new HashSet<NamedReceivable>();
+
         #endregion
 
         #region properties
@@ -108,6 +109,16 @@ namespace NoFuture.Rand.Opes.US
                 _otherIncome.Add(otherIncome);
         }
 
+        public void RemoveEmployment(ILaboris employment)
+        {
+            if (employment == null)
+                return;
+            var fromCollection = _employment.FirstOrDefault(e => e.Equals(employment) || ReferenceEquals(e, employment));
+            if (fromCollection == null)
+                return;
+            _employment.Remove(fromCollection);
+        }
+
         public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {
             Func<string, string> textFormat = (x) => VocaBase.TransformText(x?.Replace(",", "").Replace(" ", ""), txtCase);
@@ -155,6 +166,7 @@ namespace NoFuture.Rand.Opes.US
             var personality = options.Personality;
             var eduFlag = options.FactorOptions.EducationLevel;
 
+            //employment will be in jagged blocks start-end being random
             var emply = GetRandomEmployment(options, personality, eduFlag);
             foreach (var emp in emply)
             {
@@ -162,6 +174,8 @@ namespace NoFuture.Rand.Opes.US
             }
 
             var minDate = options.Inception == DateTime.MinValue ? GetYearNeg(-1) : options.Inception;
+
+            //for all the other items we want the blocks to be nice and even
             var ranges = GetYearsInDates(minDate);
 
             foreach (var range in ranges)

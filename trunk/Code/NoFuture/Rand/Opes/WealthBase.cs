@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Opes
         public virtual Pecuniam Total => CurrentItems.Sum();
 
         /// <summary>
-        /// The items which belong to this <see cref="Division"/>
+        /// The items which belong to this <see cref="DivisionName"/>
         /// </summary>
         protected internal abstract List<NamedReceivable> MyItems { get; }
 
@@ -81,13 +81,23 @@ namespace NoFuture.Rand.Opes
             AddItem(name, groupName, amt, atTime, dueFrequency);
         }
 
+        public virtual void RemoveItem(NamedReceivable item)
+        {
+            if (item == null)
+                return;
+            var matchFromCollection = MyItems.FirstOrDefault(i => i.Equals(item) || ReferenceEquals(i, item));
+            if (matchFromCollection == null)
+                return;
+            MyItems.Remove(matchFromCollection);
+        }
+
         public virtual NamedReceivable[] GetAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
         }
 
         /// <summary>
-        /// Maps the <see cref="Division"/> groups names to a function which produces that group&apos;s item names and rate.
+        /// Maps the <see cref="DivisionName"/> groups names to a function which produces that group&apos;s item names and rate.
         /// </summary>
         /// <returns></returns>
         protected abstract Dictionary<string, Func<AmericanDomusOpesOptions, Dictionary<string, double>>> GetItems2Functions();

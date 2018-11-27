@@ -45,5 +45,10 @@ namespace NoFuture.Rand.Opes
         /// <param name="employment"></param>
         void AddEmployment(ILaboris employment);
 
+        /// <summary>
+        /// Removes the employment 
+        /// </summary>
+        /// <param name="employment"></param>
+        void RemoveEmployment(ILaboris employment);
     }
 }
