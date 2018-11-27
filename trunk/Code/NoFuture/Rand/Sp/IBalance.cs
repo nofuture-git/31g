@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -102,10 +103,19 @@ namespace NoFuture.Rand.Sp
         IBalance GetInverse();
 
         /// <summary>
-        /// Performs dual operation: one, transferring from <see cref="source"/> 
-        /// into this instance. Two, adding counterbalance entries 
-        /// in <see cref="source"/> so that its total balance is zero.
+        /// Performs a post of all the debit and credit entries in <see cref="source"/>
+        /// to this instance perserving the original transaction(s) date from source.
         /// </summary>
-        void Transfer(IBalance source, DateTime? atTime = null);
+        void PostBalance(IBalance source, DateTime? atTime = null);
+
+        /// <summary>
+        /// Takes cash from <see cref="source"/> and puts it into this instance.
+        /// </summary>
+        Guid AddPositiveValue(IBalance source, Pecuniam amount, DateTime? atTime = null, IVoca description = null);
+
+        /// <summary>
+        /// Takes cash from this instance and puts it into <see cref="source"/>
+        /// </summary>
+        Guid AddNegativeValue(IBalance source, Pecuniam amount, DateTime? atTime = null, IVoca description = null);
     }
 }

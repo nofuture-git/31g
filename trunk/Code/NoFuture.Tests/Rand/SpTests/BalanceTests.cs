@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 using NUnit.Framework;
 
@@ -264,7 +265,7 @@ namespace NoFuture.Rand.Tests.SpTests
         }
 
         [Test]
-        public void TestTransfer()
+        public void TestPostBalance()
         {
             var testSubject = new Balance();
             var testInput = new Balance();
@@ -300,7 +301,7 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.AreEqual(Pecuniam.Zero, testSubjectDebitSum);
 
             //perform transfer
-            testSubject.Transfer(testInput);
+            testSubject.PostBalance(testInput);
 
             //expect all entries are not in testSubject
             testSubjectCreditSum = testSubject.GetCreditSum(null);
@@ -329,5 +330,34 @@ namespace NoFuture.Rand.Tests.SpTests
             }
 
         }
+
+        [Test]
+        public void TestTransferCredit()
+        {
+            var testSource = new Balance();
+            var testDest = new Balance();
+            var dt = DateTime.UtcNow;
+            //now the source has a large balance
+            testSource.AddPositiveValue(dt.AddDays(-4), 10000.ToPecuniam(), new VocaBase("initial deposit"));
+
+            var testCreditId = testDest.AddPositiveValue(testSource, 1000.ToPecuniam(), dt.AddDays(-3));
+
+            //expect the balance of source to be 1000 less
+            Assert.AreEqual(9000.ToPecuniam(), testSource.GetCurrent(dt, 0f));
+            
+            //expect the balance of dest to be just this one deposit
+            Assert.AreEqual(1000.ToPecuniam(), testDest.GetCurrent(dt, 0f));
+
+            var testRemCashFromSource = testSource.GetDebits().FirstOrDefault();
+            Assert.IsNotNull(testRemCashFromSource);
+            Assert.AreEqual(1000.ToPecuniam().GetNeg(), testRemCashFromSource.Cash);
+
+            var testAddCashToDest = testDest.GetCredits().FirstOrDefault();
+            Assert.IsNotNull(testAddCashToDest);
+            Assert.AreEqual(1000.ToPecuniam(), testAddCashToDest.Cash);
+            Assert.AreEqual(testCreditId, testAddCashToDest.UniqueId);
+        }
+
+
     }
 }

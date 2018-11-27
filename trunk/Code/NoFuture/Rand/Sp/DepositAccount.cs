@@ -91,18 +91,26 @@ namespace NoFuture.Rand.Sp
         /// When the amount exceeds what is available it will be divided in half continously until
         /// it fits or goes down to one penny.
         /// </summary>
-        /// <param name="fromAccount"></param>
-        /// <param name="toAccount"></param>
-        /// <param name="amt"></param>
-        /// <param name="dt"></param>
+        /// <param name="fromAccount">
+        /// The account which will incur a decrease in cash (a.k.a. withdraw, credit, etc.)
+        /// </param>
+        /// <param name="toAccount">
+        /// The account which will incur a increase in case (a.k.a. deposit, debit, etc.)
+        /// </param>
+        /// <param name="amt">
+        /// Required, must be a value other than zero
+        /// </param>
+        /// <param name="dt">
+        /// Optional, will default to the current utc time
+        /// </param>
         public static void TransferFundsInBankAccounts<T>(IAccount<T> fromAccount, IAccount<T> toAccount,
-            Pecuniam amt, DateTime dt)
+            Pecuniam amt, DateTime? dt = null)
         {
             if (fromAccount == null || toAccount == null || amt == null || amt == Pecuniam.Zero)
                 return;
-
-            if (fromAccount.Inception < dt
-                || toAccount.Inception < dt)
+            var dtt = dt.GetValueOrDefault(DateTime.UtcNow);
+            if (fromAccount.Inception < dtt
+                || toAccount.Inception < dtt)
                 return;
             amt = amt.GetAbs();
 
@@ -112,8 +120,8 @@ namespace NoFuture.Rand.Sp
                 if (amt.Amount < 0.01M)
                     break;
             }
-            fromAccount.Balance.AddNegativeValue(dt, amt);
-            toAccount.Balance.AddPositiveValue(dt.AddMilliseconds(10), amt);
+
+            toAccount.Balance.AddPositiveValue(fromAccount.Balance, amt, dtt);;
         }
 
         /// <summary>

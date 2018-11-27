@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Sp
@@ -167,7 +168,7 @@ namespace NoFuture.Rand.Sp
             return b;
         }
 
-        public void Transfer(IBalance source, DateTime? atTime = null)
+        public void PostBalance(IBalance source, DateTime? atTime = null)
         {
             if (source == null || source.TransactionCount <= 0)
                 return;
@@ -182,15 +183,55 @@ namespace NoFuture.Rand.Sp
             {
                 var traceEntry = new TraceTransactionId(credit.UniqueId, source.Id, dt) { Trace = credit.Trace };
                 AddPositiveValue(credit.AtTime, credit.Cash, credit.Description, traceEntry);
-                source.AddNegativeValue(DateTime.UtcNow, credit.Cash, new VocaBase($"{nameof(Transfer)} from {source.Id} to {Id}"));
+                source.AddNegativeValue(DateTime.UtcNow, credit.Cash, new VocaBase($"{nameof(PostBalance)} from {source.Id} to {Id}"));
             }
 
             foreach (var debit in debits)
             {
                 var traceEntry = new TraceTransactionId(debit.UniqueId, source.Id, dt) {Trace = debit.Trace};
                 AddNegativeValue(debit.AtTime, debit.Cash, debit.Description, traceEntry);
-                source.AddPositiveValue(DateTime.UtcNow, debit.Cash, new VocaBase($"{nameof(Transfer)} from {source.Id} to {Id}"));
+                source.AddPositiveValue(DateTime.UtcNow, debit.Cash, new VocaBase($"{nameof(PostBalance)} from {source.Id} to {Id}"));
             }
+        }
+
+        public Guid AddPositiveValue(IBalance source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
+        {
+            return Transfer(source, amount, true, atTime, description);
+        }
+
+        public Guid AddNegativeValue(IBalance source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
+        {
+            return Transfer(source, amount, false, atTime, description);
+        }
+
+        protected internal Guid Transfer(IBalance source, Pecuniam amount, bool asCredit, DateTime? atTime = null,
+            IVoca description = null)
+        {
+            if(source == null || source.IsEmpty)
+                return Guid.Empty;
+
+            amount = amount ?? Pecuniam.Zero;
+            amount = amount.GetAbs();
+            if (amount == Pecuniam.Zero)
+                return Guid.Empty;
+
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
+
+            if(asCredit && amount > source.GetCurrent(dt, 0f))
+                throw new WatDaFookIzDis($"The total balance for id {source.Id} is less-than the amount of {amount}.");
+
+            if(!asCredit && amount > GetCurrent(dt, 0f))
+                throw new WatDaFookIzDis($"The total balance for id {Id} is less-than the amount of {amount}.");
+            var srcMethod = asCredit ? nameof(AddPositiveValue) : nameof(AddNegativeValue);
+            description = description ?? new VocaBase($"{srcMethod} from {source.Id} to {Id}");
+
+            var fromSrcId = asCredit
+                ? source.AddNegativeValue(dt, amount, description)
+                : AddNegativeValue(dt, amount, description);
+            var traceEntry = new TraceTransactionId(fromSrcId, source.Id, dt);
+            return asCredit
+                ? AddPositiveValue(dt, amount, description, traceEntry)
+                : source.AddPositiveValue(dt, amount, description, traceEntry);
         }
 
         protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Predicate<Pecuniam> op)
@@ -209,6 +250,10 @@ namespace NoFuture.Rand.Sp
             var ts = Transactions;
             if (ts.Count <= 0)
                 return new List<ITransaction>();
+
+            //for single transaction-history, just wrap it and return
+            if (ts.Count == 1)
+                return new List<ITransaction> {FirstTransaction};
 
             var fromDt = between?.Item1 ?? FirstTransaction.AtTime;
             var toDt = between?.Item2 ?? LastTransaction.AtTime;
