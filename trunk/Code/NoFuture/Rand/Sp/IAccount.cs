@@ -9,5 +9,10 @@ namespace NoFuture.Rand.Sp
     public interface IAccount<T> : IAsset, ITempore
     {
         T Id { get; }
+
+        /// <summary>
+        /// The complete history of the tradeline.
+        /// </summary>
+        IBalance Balance { get; }
     }
 }

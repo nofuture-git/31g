@@ -22,8 +22,8 @@ namespace NoFuture.Rand.Tests.SpTests
 
             var checkingAcctValue = checkingAccount.Value;
             var savingAcctValue = savingAcct.Value;
-            System.Diagnostics.Debug.WriteLine(checkingAcctValue);
-            System.Diagnostics.Debug.WriteLine(savingAcctValue);
+            Console.WriteLine(checkingAcctValue);
+            Console.WriteLine(savingAcctValue);
 
             Assert.AreEqual(900D.ToPecuniam(), checkingAcctValue);
             Assert.AreEqual(100D.ToPecuniam(), savingAcctValue);

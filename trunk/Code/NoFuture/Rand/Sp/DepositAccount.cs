@@ -95,12 +95,10 @@ namespace NoFuture.Rand.Sp
         /// <param name="toAccount"></param>
         /// <param name="amt"></param>
         /// <param name="dt"></param>
-        public static void TransferFundsInBankAccounts(DepositAccount fromAccount, DepositAccount toAccount,
+        public static void TransferFundsInBankAccounts<T>(IAccount<T> fromAccount, IAccount<T> toAccount,
             Pecuniam amt, DateTime dt)
         {
             if (fromAccount == null || toAccount == null || amt == null || amt == Pecuniam.Zero)
-                return;
-            if (fromAccount.GetStatus(dt) != SpStatus.Current && toAccount.GetStatus(dt) != SpStatus.Current)
                 return;
 
             if (fromAccount.Inception < dt
@@ -114,8 +112,8 @@ namespace NoFuture.Rand.Sp
                 if (amt.Amount < 0.01M)
                     break;
             }
-            fromAccount.Withdraw(dt, amt);
-            toAccount.Deposit(dt.AddMilliseconds(100), amt);
+            fromAccount.Balance.AddNegativeValue(dt, amt);
+            toAccount.Balance.AddPositiveValue(dt.AddMilliseconds(10), amt);
         }
 
         /// <summary>
