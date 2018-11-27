@@ -12,8 +12,9 @@ digraph noFutureRandDataSp {
     Rent -> NamedReceivable
     CheckingAccount -> DepositAccount
     SavingsAccount -> DepositAccount
-    DepositAccount -> NamedReceivable
-    DepositAccount -> IAccount
+    Account -> NamedReceivable
+    Account -> IAccount
+    DepositAccount -> Account
     Receivable -> IReceivable
     Receivable -> TradeLine
     IReceivable -> ITradeLine
@@ -25,6 +26,7 @@ digraph noFutureRandDataSp {
     ITradeLine -> ITransactionable
     ITradeLine -> IObviate
     IAccount -> IAsset
+    IAccount -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
     IAccount -> ITempore
     NamedReceivable -> Receivable
     NamedReceivable -> IVoca
