@@ -110,6 +110,20 @@ namespace NoFuture.Rand.Sp
             return Balance.AddPositiveValue(dt, val, note, trace);
         }
 
+        public virtual Guid AddPositiveValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null,
+            IVoca description = null)
+        {
+            var tradeLine = source as ITradeLine;
+            return Balance.AddPositiveValue(tradeLine != null ? tradeLine.Balance : source, amount, atTime, description);
+        }
+
+        public virtual Guid AddNegativeValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null,
+            IVoca description = null)
+        {
+            var tradeLine = source as ITradeLine;
+            return Balance.AddNegativeValue(tradeLine != null ? tradeLine.Balance : source, amount, atTime, description);
+        }
+
         public virtual Pecuniam AveragePerDueFrequency(TimeSpan? duration = null)
         {
             var ts = duration ?? DueFrequency ?? Constants.TropicalYear;

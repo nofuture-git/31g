@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Sp
                 return Pecuniam.Zero;
 
             //when between signing and first months rent
-            if(dt < _dtOfFirstFullRentDue)
+            if (dt < _dtOfFirstFullRentDue)
                 return _proRatedAmt;
 
             var numOfRentPmts = CountOfWholeCalendarMonthsBetween(Inception, dt, _dayOfMonthRentDue);

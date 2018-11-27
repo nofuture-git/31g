@@ -107,15 +107,5 @@ namespace NoFuture.Rand.Sp
         /// to this instance perserving the original transaction(s) date from source.
         /// </summary>
         void PostBalance(IBalance source, DateTime? atTime = null);
-
-        /// <summary>
-        /// Takes cash from <see cref="source"/> and puts it into this instance.
-        /// </summary>
-        Guid AddPositiveValue(IBalance source, Pecuniam amount, DateTime? atTime = null, IVoca description = null);
-
-        /// <summary>
-        /// Takes cash from this instance and puts it into <see cref="source"/>
-        /// </summary>
-        Guid AddNegativeValue(IBalance source, Pecuniam amount, DateTime? atTime = null, IVoca description = null);
     }
 }

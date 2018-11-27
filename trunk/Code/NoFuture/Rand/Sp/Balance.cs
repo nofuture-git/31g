@@ -194,14 +194,14 @@ namespace NoFuture.Rand.Sp
             }
         }
 
-        public Guid AddPositiveValue(IBalance source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
+        public Guid AddPositiveValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
         {
-            return Transfer(source, amount, true, atTime, description);
+            return Transfer(source as IBalance, amount, true, atTime, description);
         }
 
-        public Guid AddNegativeValue(IBalance source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
+        public Guid AddNegativeValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
         {
-            return Transfer(source, amount, false, atTime, description);
+            return Transfer(source as IBalance, amount, false, atTime, description);
         }
 
         protected internal Guid Transfer(IBalance source, Pecuniam amount, bool asCredit, DateTime? atTime = null,
@@ -250,10 +250,6 @@ namespace NoFuture.Rand.Sp
             var ts = Transactions;
             if (ts.Count <= 0)
                 return new List<ITransaction>();
-
-            //for single transaction-history, just wrap it and return
-            if (ts.Count == 1)
-                return new List<ITransaction> {FirstTransaction};
 
             var fromDt = between?.Item1 ?? FirstTransaction.AtTime;
             var toDt = between?.Item2 ?? LastTransaction.AtTime;

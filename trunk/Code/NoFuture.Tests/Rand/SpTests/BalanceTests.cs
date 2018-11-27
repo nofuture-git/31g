@@ -11,6 +11,15 @@ namespace NoFuture.Rand.Tests.SpTests
     [TestFixture]
     public class BalanceTests
     {
+        [Test]
+        public void TestGetCurrent_OnlyOneTransaction()
+        {
+            var testBalance = new Balance();
+            var expected = 10000.ToPecuniam();
+            testBalance.AddPositiveValue(DateTime.UtcNow.AddDays(-11), expected);
+            var testResult = testBalance.GetCurrent(DateTime.UtcNow, 0f);
+            Assert.AreEqual(expected, testResult);
+        }
 
         [Test]
         public void TestGetCurrentNoInterest()
@@ -352,7 +361,7 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.IsNotNull(testRemCashFromSource);
             Assert.AreEqual(1000.ToPecuniam().GetNeg(), testRemCashFromSource.Cash);
 
-            var testAddCashToDest = testDest.GetCredits().FirstOrDefault();
+            var testAddCashToDest = testDest.Transactions.FirstOrDefault();
             Assert.IsNotNull(testAddCashToDest);
             Assert.AreEqual(1000.ToPecuniam(), testAddCashToDest.Cash);
             Assert.AreEqual(testCreditId, testAddCashToDest.UniqueId);

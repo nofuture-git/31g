@@ -15,10 +15,10 @@ namespace NoFuture.Rand.Tests.SpTests
         {
             var savingAcct = DepositAccount.RandomSavingAccount();
             var checkingAccount = DepositAccount.RandomCheckingAccount();
-
+            //initial deposit
             checkingAccount.AddPositiveValue(DateTime.Today.AddDays(-14), 1000.0D.ToPecuniam());
 
-            DepositAccount.TransferFundsInBankAccounts(checkingAccount, savingAcct, 100D.ToPecuniam(), DateTime.Today.AddDays(-1));
+            savingAcct.AddPositiveValue(checkingAccount, 100.ToPecuniam(), DateTime.Today.AddDays(-1));
 
             var checkingAcctValue = checkingAccount.Value;
             var savingAcctValue = savingAcct.Value;
