@@ -82,11 +82,8 @@ namespace NoFuture.Rand.Sp
 
         /// <summary>
         /// Helper method to put functionality in common vernacular 
-        /// - is the exact same as <see cref="ITransactionable.AddNegativeValue"/>
+        /// - is the exact same as <see cref="ITransactionable.AddNegativeValue(DateTime, Pecuniam, IVoca, ITransactionId)"/>
         /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="amount"></param>
-        /// <param name="note"></param>
         public void PayRent(DateTime dt, Pecuniam amount, IVoca note = null)
         {
             AddNegativeValue(dt, amount, note);

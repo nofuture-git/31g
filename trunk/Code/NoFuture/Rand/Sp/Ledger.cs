@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Sp
 
         #endregion
 
-        public Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
+        public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
         {
             if (amnt == null)
                 return Guid.Empty;
@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Sp
             return t.UniqueId;
         }
 
-        public Guid AddPositiveValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
+        public virtual Guid AddPositiveValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
         {
             if (amnt == null)
                 return Guid.Empty;

@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public abstract class DepositAccount : Account
     {
-        protected DepositAccount(DateTime dateOpenned) : base(dateOpenned)
+        protected DepositAccount(DateTime dateOpenned) : base(dateOpenned, false)
         {
         }
 

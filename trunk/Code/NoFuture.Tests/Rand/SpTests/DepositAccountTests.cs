@@ -13,12 +13,13 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestTransferFundsInBankAccounts()
         {
-            var savingAcct = DepositAccount.RandomSavingAccount();
-            var checkingAccount = DepositAccount.RandomCheckingAccount();
+            var dt = DateTime.UtcNow;
+            var savingAcct = DepositAccount.RandomSavingAccount(new VocaBase("savings"), dt.AddDays(-14) );
+            var checkingAccount = DepositAccount.RandomCheckingAccount(new VocaBase("checking"), dt.AddDays(-14));
             //initial deposit
-            checkingAccount.AddPositiveValue(DateTime.Today.AddDays(-14), 1000.0D.ToPecuniam());
+            checkingAccount.AddPositiveValue(dt.AddDays(-12), 1000.0D.ToPecuniam());
 
-            savingAcct.AddPositiveValue(checkingAccount, 100.ToPecuniam(), DateTime.Today.AddDays(-1));
+            savingAcct.AddPositiveValue(checkingAccount, 100.ToPecuniam(), dt.AddDays(-2));
 
             var checkingAcctValue = checkingAccount.Value;
             var savingAcctValue = savingAcct.Value;

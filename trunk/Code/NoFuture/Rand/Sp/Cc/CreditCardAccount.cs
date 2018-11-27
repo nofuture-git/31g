@@ -32,9 +32,28 @@ namespace NoFuture.Rand.Sp.Cc
         public Pecuniam Max => _ccMax;
         public ICreditCard Cc { get; }
         public Identifier Id => Cc.Number;
+        public bool IsOppositeForm => true;
+
         #endregion
 
         #region methods
+        /// <summary>
+        /// Helper method to put functionality in common vernacular 
+        /// - is the exact same as <see cref="ITransactionable.AddPositiveValue(DateTime, Pecuniam, IVoca, ITransactionId)"/>
+        /// </summary>
+        public Guid MakePurchase(DateTime dt, Pecuniam val, IVoca note = null)
+        {
+            return AddPositiveValue(dt, val, note);
+        }
+
+        /// <summary>
+        /// Helper method to put functionality in common vernacular 
+        /// - is the exact same as <see cref="ITransactionable.AddPositiveValue(DateTime, Pecuniam, IVoca, ITransactionId)"/>
+        /// </summary>
+        public virtual Guid MakePayment(DateTime dt, Pecuniam val, IVoca note = null)
+        {
+            return AddNegativeValue(dt, val, note);
+        }
 
         /// <summary>
         /// Public API method to allow the <see cref="Max"/> to 
@@ -62,10 +81,6 @@ namespace NoFuture.Rand.Sp.Cc
         /// <summary>
         /// Applies a purchase transation to this credit card.
         /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="val"></param>
-        /// <param name="note"></param>
-        /// <param name="trace"></param>
         /// <returns>
         /// True when the card is not expired and
         /// the purchase amount <see cref="val"/>
@@ -79,6 +94,53 @@ namespace NoFuture.Rand.Sp.Cc
             if (cBal >= Max || cBal + val >= Max)
                 return Guid.Empty;
             return base.AddPositiveValue(dt, val, note);
+        }
+
+        /// <summary>
+        /// Applies a payment to the credit card account
+        /// </summary>
+        /// <returns>
+        /// when <see cref="dt"/> is after the expiration date
+        /// </returns>
+        public override Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
+        {
+            if (dt > Cc.ExpDate)
+                return Guid.Empty;
+            return base.AddNegativeValue(dt, amt, note, trace);
+        }
+
+        /// <summary>
+        /// For a credit card, this is the same as making a payment
+        /// </summary>
+        public Guid Debit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
+        {
+            return AddNegativeValue(dt, amt, note, trace);
+        }
+
+        /// <summary>
+        /// For a credit card, this is the same as making a purchase 
+        /// </summary>
+        public Guid Credit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
+        {
+            return AddPositiveValue(dt, amt, note, trace);
+        }
+
+        /// <summary>
+        /// For a credit card, this is the same as making a payment
+        /// </summary>
+        public Guid Debit(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
+        {
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
+            return AddPositiveValue(source, amount, dt, description);
+        }
+
+        /// <summary>
+        /// For a credit card, this is the same as making a purchase 
+        /// </summary>
+        public Guid Credit(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
+        {
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
+            return AddNegativeValue(source, amount, dt, description);
         }
 
         /// <summary>

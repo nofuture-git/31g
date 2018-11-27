@@ -194,12 +194,12 @@ namespace NoFuture.Rand.Sp
             }
         }
 
-        public Guid AddPositiveValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
+        public virtual Guid AddPositiveValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
         {
             return Transfer(source as IBalance, amount, true, atTime, description);
         }
 
-        public Guid AddNegativeValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
+        public virtual Guid AddNegativeValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
         {
             return Transfer(source as IBalance, amount, false, atTime, description);
         }

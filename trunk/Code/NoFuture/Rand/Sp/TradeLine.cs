@@ -102,26 +102,44 @@ namespace NoFuture.Rand.Sp
 
         public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
         {
+            if(dt < Inception)
+                return Guid.Empty;
             return Balance.AddNegativeValue(dt, amt, note, trace);
         }
 
         public virtual Guid AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null, ITransactionId trace = null)
         {
+            if (dt < Inception)
+                return Guid.Empty;
             return Balance.AddPositiveValue(dt, val, note, trace);
         }
 
         public virtual Guid AddPositiveValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null,
             IVoca description = null)
         {
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
+            if (dt < Inception)
+                return Guid.Empty;
             var tradeLine = source as ITradeLine;
-            return Balance.AddPositiveValue(tradeLine != null ? tradeLine.Balance : source, amount, atTime, description);
+            var account = source as IAccount<Identifier>;
+
+            var src = tradeLine != null ? tradeLine.Balance : (account != null ? account.Balance : source);
+
+            return Balance.AddPositiveValue(src, amount, dt, description);
         }
 
         public virtual Guid AddNegativeValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null,
             IVoca description = null)
         {
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
+            if (dt < Inception)
+                return Guid.Empty;
             var tradeLine = source as ITradeLine;
-            return Balance.AddNegativeValue(tradeLine != null ? tradeLine.Balance : source, amount, atTime, description);
+            var account = source as IAccount<Identifier>;
+
+            var src = tradeLine != null ? tradeLine.Balance : (account != null ? account.Balance : source);
+
+            return Balance.AddNegativeValue(src, amount, dt, description);
         }
 
         public virtual Pecuniam AveragePerDueFrequency(TimeSpan? duration = null)
