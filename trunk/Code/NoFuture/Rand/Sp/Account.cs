@@ -10,15 +10,18 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public class Account : NamedReceivable, IAccount<Identifier>
     {
-        public Account(DateTime dateOpenned, bool isOppositeForm) : base(dateOpenned)
+        public Account(Identifier acctId, DateTime dateOpenned, bool isOppositeForm) : base(dateOpenned)
         {
+            Id = acctId;
             DueFrequency = TimeSpan.Zero;
             FormOfCredit = Enums.FormOfCredit.None;
             IsOppositeForm = isOppositeForm;
         }
 
-        public Identifier Id { get; set; }
+        public Identifier Id { get; }
+
         public bool IsOppositeForm { get; }
+
         public Guid Debit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
         {
             return IsOppositeForm ? AddNegativeValue(dt, amt, note, trace) : AddPositiveValue(dt, amt, note, trace);
@@ -46,6 +49,19 @@ namespace NoFuture.Rand.Sp
         public override Pecuniam GetValueAt(DateTime dt)
         {
             return Balance.GetCurrent(dt, 0.0F);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var acct = obj as Account;
+            if (acct == null)
+                return base.Equals(obj);
+            return Id.Equals(acct.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
         }
     }
 }

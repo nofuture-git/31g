@@ -19,24 +19,21 @@ namespace NoFuture.Rand.Sp
         #region ctor
 
         public CheckingAccount(string acctId, DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) : this(
-            dateOpenned, debitCard)
+            new AccountId(acctId), dateOpenned, debitCard)
         {
-            Id = new AccountId(acctId);
-        }
-        public CheckingAccount(Identifier acctId, DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) : this(dateOpenned, debitCard)
-        {
-            Id = acctId;
         }
 
         /// <summary>
         /// Creates new Checking Deposit account instance
         /// </summary>
+        /// <param name="acctId"></param>
         /// <param name="dateOpenned"></param>
         /// <param name="debitCard">
         /// Item2 is the PIN number and must be 4 numerical chars. 
         /// Its value is hashed and not stored within the instance.
         /// </param>
-        public CheckingAccount(DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) : base(dateOpenned)
+        public CheckingAccount(Identifier acctId, DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) :
+            base(acctId, dateOpenned)
         {
             if (debitCard?.Item1 == null || !IsPossiablePin(debitCard.Item2))
                 return;
@@ -44,6 +41,7 @@ namespace NoFuture.Rand.Sp
             _pinKey = Encoding.UTF8.GetBytes(Path.GetRandomFileName());
             _pinHash = ComputePinHash(debitCard.Item2);
         }
+
         #endregion
 
         #region properties

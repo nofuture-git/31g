@@ -67,10 +67,7 @@ namespace NoFuture.Rand.Tests.SpTests
             var accountId = ((Hashtable)someData["bank-account"])["account-number"].ToString();
 
             var testResult =
-                new CheckingAccount(DateTime.Today, new Tuple<ICreditCard, string>(someVisaCard, "8451"))
-                {
-                    Id = new AccountId(accountId)
-                };
+                new CheckingAccount(new AccountId(accountId), DateTime.Today, new Tuple<ICreditCard, string>(someVisaCard, "8451"));
 
             Assert.IsNotNull(testResult.Id);
             Assert.AreNotEqual("",testResult.Id.Value);

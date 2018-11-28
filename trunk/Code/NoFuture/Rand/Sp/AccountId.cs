@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class AccountId : RIdentifier
     {
-        private readonly int? _refId;
+        private int? _refId;
         public AccountId(string id, int? refId):this(id)
         {
             _refId = refId;
@@ -25,6 +25,10 @@ namespace NoFuture.Rand.Sp
             this.format = format;
         }
 
+        protected internal virtual void SetRefId(int? id)
+        {
+            _refId = id;
+        }
         public override string Abbrev => _refId?.ToString() ?? "Acct";
     }
 }

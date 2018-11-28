@@ -24,20 +24,27 @@ namespace NoFuture.Rand.Sp
             return GetEnumerator();
         }
 
-        public IAccount<Identifier> Add(string accountId, bool isOppositeForm, int? refId = null, DateTime? atTime = null)
+        public IAccount<Identifier> Add(string accountName, bool isOppositeForm, int? refId = null, DateTime? atTime = null)
         {
-            if(string.IsNullOrWhiteSpace(accountId))
-                throw new ArgumentNullException(nameof(accountId));
+            if(string.IsNullOrWhiteSpace(accountName))
+                throw new ArgumentNullException(nameof(accountName));
+
+            var existing = _dataStore.FirstOrDefault(a => a.Id.Equals(accountName));
+            if (existing != null)
+            {
+                ((AccountId)existing.Id).SetRefId(refId);
+                return existing;
+            }
 
             var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
-            var acct = new Account(dt, isOppositeForm) {Id = new AccountId(accountId, refId), Name = accountId};
+            var acct = new Account(new AccountId(accountName, refId), dt, isOppositeForm) {Name = accountName};
             _dataStore.Add(acct);
             return acct;
         }
 
-        public IAccount<Identifier> Get(string accountId)
+        public IAccount<Identifier> Get(string accountName)
         {
-            return _dataStore.FirstOrDefault(acct => acct.Id.Equals(accountId));
+            return _dataStore.FirstOrDefault(acct => acct.Id.Equals(accountName));
         }
 
         public IAccount<Identifier> Get(int refId)
@@ -45,9 +52,9 @@ namespace NoFuture.Rand.Sp
             return _dataStore.FirstOrDefault(acct => acct.Id.Abbrev == refId.ToString());
         }
 
-        public IAccount<Identifier> Remove(string accountId)
+        public IAccount<Identifier> Remove(string accountName)
         {
-            var acct = Get(accountId);
+            var acct = Get(accountName);
             if (acct == null)
                 return null;
             _dataStore.Remove(acct);
