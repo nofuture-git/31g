@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Sp
         /// <summary>
         /// The id the the ledger currently containing this transaction
         /// </summary>
-        Guid LedgerId { get; }
+        Guid AccountId { get; }
 
         /// <summary>
         /// The unique id of this transaction

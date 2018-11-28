@@ -5,18 +5,18 @@ namespace NoFuture.Rand.Sp
     /// <inheritdoc />
     public abstract class TransactionId : ITransactionId
     {
-        protected internal TransactionId(DateTime atTime, Guid ledgerId) :this(Guid.NewGuid(), atTime, ledgerId)
+        protected internal TransactionId(DateTime atTime, Guid accountId) :this(Guid.NewGuid(), atTime, accountId)
         {
         }
 
-        private TransactionId(Guid uniqueId, DateTime atTime, Guid ledgerId)
+        private TransactionId(Guid uniqueId, DateTime atTime, Guid accountId)
         {
             UniqueId = uniqueId;
             AtTime = atTime;
-            LedgerId = ledgerId;
+            AccountId = accountId;
         }
 
-        public Guid LedgerId { get; }
+        public Guid AccountId { get; }
         public Guid UniqueId { get; }
         public DateTime AtTime { get; }
         public ITransactionId Trace { get; protected internal set; }
@@ -24,16 +24,20 @@ namespace NoFuture.Rand.Sp
 
     public class TraceTransactionId : ITransactionId
     {
-        public TraceTransactionId(Guid uniqueId, Guid ledgerId, DateTime atTime)
+        public TraceTransactionId(Guid uniqueId, Guid accountId, DateTime atTime)
         {
-            LedgerId = ledgerId;
+            AccountId = accountId;
             UniqueId = uniqueId;
             AtTime = atTime;
         }
 
-        public Guid LedgerId { get; }
+        public Guid AccountId { get; }
         public Guid UniqueId { get; }
         public DateTime AtTime { get; }
         public ITransactionId Trace { get; protected internal set; }
+        public override string ToString()
+        {
+            return new Tuple<Guid, Guid, DateTime>(UniqueId, AccountId, AtTime).ToString();
+        }
     }
 }
