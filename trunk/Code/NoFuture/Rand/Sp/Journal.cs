@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Sp
     /// Represent an ordered set of <see cref="Transaction"/> in time.
     /// </summary>
     [Serializable]
-    public class Ledger
+    public class Journal
     {
         #region fields
         private readonly List<ITransaction> _transactions = new List<ITransaction>();
