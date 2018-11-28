@@ -8,11 +8,11 @@ using NoFuture.Util.Core.Math;
 namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="IBalance" />
-    /// <inheritdoc cref="Ledger" />
+    /// <inheritdoc cref="Journal" />
     /// <summary>
     /// </summary>
     [Serializable]
-    public class Balance : Ledger, IBalance
+    public class Balance : Journal, IBalance
     {
         #region fields
         private readonly Predicate<Pecuniam> _debitOp = x => (x ?? Pecuniam.Zero).Amount < 0;

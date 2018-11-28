@@ -42,5 +42,30 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.IsTrue(testSubject.IsPin("8745"));
 
         }
+
+        [Test]
+        public void TestAccount_Equation()
+        {
+            var dt = DateTime.UtcNow;
+
+            //debits add cash, credits reduce cash
+            var assets = new NoFuture.Rand.Sp.Account(dt.AddDays(-2), false);
+            assets.Debit(dt.AddDays(-1), 10000m.ToPecuniam(), new VocaBase("first debit"));
+            Console.WriteLine(assets.Value);
+            Assert.AreEqual(10000m.ToPecuniam(), assets.Value);
+
+            var liabilities = new NoFuture.Rand.Sp.Account(dt.AddDays(-2), true);
+            liabilities.Credit(dt.AddDays(-1), 10000M.ToPecuniam(), new VocaBase("first credit"));
+            Console.WriteLine(liabilities.Value);
+            Assert.AreEqual(10000m.ToPecuniam(), liabilities.Value);
+
+            //owners equity
+            var ownersCapital = new Account(dt.AddDays(-2), true);
+            var ownersDrawings = new Account(dt.AddDays(-2), false);
+            var revenues = new Account(dt.AddDays(-2), true);
+            var expenses = new Account(dt.AddDays(-2), false);
+
+
+        }
     }
 }
