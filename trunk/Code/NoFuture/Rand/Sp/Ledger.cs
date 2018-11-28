@@ -6,8 +6,10 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
-    public abstract class Ledger : IEnumerable<IAccount<Identifier>>
+    public class Ledger : IEnumerable<IAccount<Identifier>>
     {
+        public const string NO_NAME_ACCOUNT = "no-name";
+
         private readonly SortedSet<IAccount<Identifier>> _dataStore =
             new SortedSet<IAccount<Identifier>>(new AccountComparer<Identifier>());
 
@@ -52,6 +54,20 @@ namespace NoFuture.Rand.Sp
             return _dataStore.FirstOrDefault(acct => acct.Id.Abbrev == refId.ToString());
         }
 
+        protected internal IAccount<Identifier> Get(IVoca name)
+        {
+            foreach (var g in _dataStore)
+            {
+                var acct = g as Account;
+                if (acct == null)
+                    continue;
+                if (acct.Equals(name))
+                    return acct;
+            }
+
+            return null;
+        }
+
         public IAccount<Identifier> Remove(string accountName)
         {
             var acct = Get(accountName);
@@ -61,9 +77,29 @@ namespace NoFuture.Rand.Sp
             return acct;
         }
 
-        public void PostBalance(IBalance balance)
+        public void PostBalance(IBalance balance, DateTime? atTime = null)
         {
+            if (balance == null)
+                return;
+            var credits = balance.GetCredits() ?? new List<ITransaction>();
+            var debits = balance.GetDebits() ?? new List<ITransaction>();
 
+            if (!credits.Any() && !debits.Any())
+                return;
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
+            foreach (var credit in credits)
+            {
+                var acctName = credit.Description?.Name ?? NO_NAME_ACCOUNT;
+                var creditAcct = Get(acctName) ?? Add(acctName, false);
+                creditAcct.Credit(credit.AtTime, credit.Cash, null, credit.GetThisAsTraceId(dt));
+            }
+
+            foreach (var debit in debits)
+            {
+                var acctName = debit.Description?.Name ?? NO_NAME_ACCOUNT;
+                var debitAcct = Get(acctName) ?? Add(acctName, false);
+                debitAcct.Debit(debit.AtTime, debit.Cash, null, debit.GetThisAsTraceId(dt));
+            }
         }
 
     }

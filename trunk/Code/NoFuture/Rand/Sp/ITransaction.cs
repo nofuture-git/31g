@@ -36,5 +36,14 @@ namespace NoFuture.Rand.Sp
         /// <param name="percent">A percent value in whole or floating point representation (e.g. 56.0 is the same as 0.56)</param>
         /// <param name="atTime">Optional, default to current utc time</param>
         Tuple<ITransaction, ITransaction> SplitOnPercent(double percent, DateTime? atTime = null);
+
+        /// <summary>
+        /// Composes a trace id version of this instance
+        /// </summary>
+        /// <param name="atTime">
+        /// Optional, allows for overriding the property of like name.
+        /// </param>
+        /// <returns></returns>
+        TraceTransactionId GetThisAsTraceId(DateTime? atTime = null);
     }
 }

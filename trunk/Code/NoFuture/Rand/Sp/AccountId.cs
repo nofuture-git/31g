@@ -29,6 +29,20 @@ namespace NoFuture.Rand.Sp
         {
             _refId = id;
         }
+
+        /// <summary>
+        /// Will return the refId value given in the ctor, if it was present
+        /// </summary>
         public override string Abbrev => _refId?.ToString() ?? "Acct";
+
+        /// <summary>
+        /// Helper method to determine if a name matches this account id
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public virtual bool Equals(IVoca name)
+        {
+            return name != null && name.AnyOfNameAs(Value);
+        }
     }
 }

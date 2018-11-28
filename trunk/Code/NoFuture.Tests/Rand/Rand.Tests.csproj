@@ -57,6 +57,7 @@
     <Compile Include="GovTests\VitalRecordTests.cs" />
     <Compile Include="CoreTests\RandPortionsTests.cs" />
     <Compile Include="SpTests\BalanceTests.cs" />
+    <Compile Include="SpTests\LedgerTests.cs" />
     <Compile Include="SpTests\PersonalCreditScoreTests.cs" />
     <Compile Include="SpTests\DepositAccountTests.cs" />
     <Compile Include="PneumaTests\TraitTests.cs" />

@@ -23,12 +23,12 @@ namespace NoFuture.Rand.Sp
 
         public ITransaction GetInverse()
         {
-            return new Transaction(AtTime, (Cash.Amount * -1M).ToPecuniam(), Description) {Trace = GetMySelfAsTrace() };
+            return new Transaction(AtTime, (Cash.Amount * -1M).ToPecuniam(), Description) {Trace = GetThisAsTraceId() };
         }
 
         public ITransaction Clone()
         {
-            return new Transaction(AtTime, Cash, Description) {Trace = GetMySelfAsTrace()};
+            return new Transaction(AtTime, Cash, Description) {Trace = GetThisAsTraceId()};
         }
 
         public Tuple<ITransaction, ITransaction> SplitOnAmount(Pecuniam item1Amount, DateTime? atTime = null)
@@ -87,15 +87,16 @@ namespace NoFuture.Rand.Sp
 
                 spinRound += 1;
             }
-            var trans1 = new Transaction(dt, val1.ToPecuniam(), Description) { Trace = GetMySelfAsTrace() };
-            var trans2 = new Transaction(dt, val2.ToPecuniam(), Description) { Trace = GetMySelfAsTrace() };
+            var trans1 = new Transaction(dt, val1.ToPecuniam(), Description) { Trace = GetThisAsTraceId() };
+            var trans2 = new Transaction(dt, val2.ToPecuniam(), Description) { Trace = GetThisAsTraceId() };
 
             return new Tuple<ITransaction, ITransaction>(trans1, trans2);
         }
 
-        protected internal TraceTransactionId GetMySelfAsTrace()
+        public TraceTransactionId GetThisAsTraceId(DateTime? atTime = null)
         {
-            return new TraceTransactionId(UniqueId, Description, AtTime) {Trace = Trace};
+            var dt = atTime ?? AtTime;
+            return new TraceTransactionId(UniqueId, Description, dt) {Trace = Trace};
         }
 
         public override bool Equals(object obj)

@@ -54,9 +54,16 @@ namespace NoFuture.Rand.Sp
         public override bool Equals(object obj)
         {
             var acct = obj as Account;
-            if (acct == null)
-                return base.Equals(obj);
-            return Id.Equals(acct.Id);
+            return acct == null ? base.Equals(obj) : Id.Equals(acct.Id);
+        }
+
+        public virtual bool Equals(IVoca name)
+        {
+            if (name == null)
+                return false;
+
+            var acctId = Id as AccountId;
+            return acctId?.Equals(name) ?? Equals((object) name);
         }
 
         public override int GetHashCode()
