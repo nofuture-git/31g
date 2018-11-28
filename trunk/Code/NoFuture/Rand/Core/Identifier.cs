@@ -36,6 +36,11 @@ namespace NoFuture.Rand.Core
             return id != null && Equals(id);
         }
 
+        public virtual bool Equals(string idValue)
+        {
+            return string.Equals(idValue, _value);
+        }
+
         public override int GetHashCode()
         {
             return Value?.GetHashCode() ?? 0;

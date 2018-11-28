@@ -11,12 +11,7 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class Journal
     {
-        #region fields
         private readonly List<ITransaction> _transactions = new List<ITransaction>();
-
-        #endregion
-
-        #region properties
         protected internal List<ITransaction> Transactions
         {
             get
@@ -43,8 +38,6 @@ namespace NoFuture.Rand.Sp
         public int TransactionCount => Transactions.Count;
         public double DaysPerYear { get; set; } = Shared.Core.Constants.DBL_TROPICAL_YEAR;
         public Guid Id { get; } = Guid.NewGuid();
-
-        #endregion
 
         public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
         {

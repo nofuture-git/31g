@@ -6,6 +6,12 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class AccountId : RIdentifier
     {
+        private readonly int? _refId;
+        public AccountId(string id, int? refId):this(id)
+        {
+            _refId = refId;
+        }
+
         public AccountId(string id)
         {
             if(string.IsNullOrWhiteSpace(id))
@@ -19,6 +25,6 @@ namespace NoFuture.Rand.Sp
             this.format = format;
         }
 
-        public override string Abbrev => "Acct";
+        public override string Abbrev => _refId?.ToString() ?? "Acct";
     }
 }

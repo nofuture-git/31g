@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="AccountComparer.cs" />
     <Compile Include="AccountId.cs" />
     <Compile Include="Balance.cs" />
     <Compile Include="Cc\AmexCc.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="ITransaction.cs" />
     <Compile Include="ITransactionable.cs" />
     <Compile Include="ITransactionId.cs" />
+    <Compile Include="Ledger.cs" />
     <Compile Include="LoanBase.cs" />
     <Compile Include="Mortgage.cs" />
     <Compile Include="Pecuniam.cs" />
