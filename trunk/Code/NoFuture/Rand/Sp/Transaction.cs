@@ -12,20 +12,14 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class Transaction : TransactionId, ITransaction
     {
-        #region ctor
         protected internal Transaction(DateTime atTime, Pecuniam amt, Guid accountId, IVoca description = null):base(atTime, accountId)
         {
             Cash = amt ?? Pecuniam.Zero;
             Description = description;
         }
-
         
-        #endregion
-
-        #region properties
         public Pecuniam Cash { get; }
         public IVoca Description { get; }
-        #endregion
 
         #region methods
 
