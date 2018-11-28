@@ -11,8 +11,6 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public interface IBalance : ITransactionable
     {
-        Guid Id { get; }
-
         bool IsEmpty { get; }
 
         ITransaction FirstTransaction { get; }
@@ -101,11 +99,5 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <returns></returns>
         IBalance GetInverse();
-
-        /// <summary>
-        /// Performs a post of all the debit and credit entries in <see cref="source"/>
-        /// to this instance perserving the original transaction(s) date from source.
-        /// </summary>
-        void PostBalance(IBalance source, DateTime? atTime = null);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
@@ -7,11 +8,8 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public interface ITransactionId
     {
-        /// <summary>
-        /// The id the the ledger currently containing this transaction
-        /// </summary>
-        Guid AccountId { get; }
 
+        IVoca Description { get; }
         /// <summary>
         /// The unique id of this transaction
         /// </summary>

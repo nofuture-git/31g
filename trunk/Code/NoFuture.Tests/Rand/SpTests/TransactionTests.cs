@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestGetInverse()
         {
-            var testSubject = new Transaction(DateTime.UtcNow, 128M.ToPecuniam(), Guid.NewGuid());
+            var testSubject = new Transaction(DateTime.UtcNow, 128M.ToPecuniam());
             var testResult = testSubject.GetInverse();
             Assert.IsTrue((testSubject.Cash + testResult.Cash).GetRounded() == Pecuniam.Zero);
         }
@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestGetClone()
         {
-            var testSubject = new Transaction(DateTime.UtcNow, 128M.ToPecuniam(), Guid.NewGuid());
+            var testSubject = new Transaction(DateTime.UtcNow, 128M.ToPecuniam());
             var testClone = testSubject.Clone();
             var testClone2 = testClone.Clone();
             var testClone3 = testClone2.Clone();
@@ -33,11 +33,11 @@ namespace NoFuture.Rand.Tests.SpTests
                 {testSubject.Equals(testClone), testClone.Equals(testClone2), testClone2.Equals(testClone3)};
             Assert.IsTrue(trs.All(x => x == false));
 
-            Console.WriteLine(new Tuple<Guid, Guid>(testClone3.AccountId, testClone3.UniqueId));
+            Console.WriteLine(testClone3.UniqueId);
             var c = 1;
             while (testResult != null)
             {
-                Console.WriteLine($"{new string('\t', c)}{new Tuple<Guid, Guid>(testResult.AccountId, testResult.UniqueId)}");
+                Console.WriteLine($"{new string('\t', c)}{testResult.UniqueId}");
                 c += 1;
                 testResult = testResult.Trace;
             }
@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestSplitOnAmount()
         {
-            var testSubject = new Transaction(DateTime.UtcNow, 128M.ToPecuniam(), Guid.NewGuid());
+            var testSubject = new Transaction(DateTime.UtcNow, 128M.ToPecuniam());
             var testAmount = 56M.ToPecuniam();
             var testResult = testSubject.SplitOnAmount(testAmount);
             Assert.IsNotNull(testResult);
@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestSplitOnPercent()
         {
-            var testSubject = new Transaction(DateTime.UtcNow, 128M.ToPecuniam(), Guid.NewGuid());
+            var testSubject = new Transaction(DateTime.UtcNow, 128M.ToPecuniam());
             var testAmount = 64M.ToPecuniam();
             var testResult = testSubject.SplitOnPercent(50.0);
             Assert.IsNotNull(testResult);

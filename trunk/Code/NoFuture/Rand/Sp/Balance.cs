@@ -168,32 +168,6 @@ namespace NoFuture.Rand.Sp
             return b;
         }
 
-        public void PostBalance(IBalance source, DateTime? atTime = null)
-        {
-            if (source == null || source.TransactionCount <= 0)
-                return;
-
-            if (source.Id == Id || ReferenceEquals(source, this))
-                return;
-            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
-            var credits = source.GetCredits();
-            var debits = source.GetDebits();
-
-            foreach (var credit in credits)
-            {
-                var traceEntry = new TraceTransactionId(credit.UniqueId, source.Id, dt) { Trace = credit.Trace };
-                AddPositiveValue(credit.AtTime, credit.Cash, credit.Description, traceEntry);
-                source.AddNegativeValue(DateTime.UtcNow, credit.Cash, new VocaBase($"{nameof(PostBalance)} from {source.Id} to {Id}"));
-            }
-
-            foreach (var debit in debits)
-            {
-                var traceEntry = new TraceTransactionId(debit.UniqueId, source.Id, dt) {Trace = debit.Trace};
-                AddNegativeValue(debit.AtTime, debit.Cash, debit.Description, traceEntry);
-                source.AddPositiveValue(DateTime.UtcNow, debit.Cash, new VocaBase($"{nameof(PostBalance)} from {source.Id} to {Id}"));
-            }
-        }
-
         public virtual Guid AddPositiveValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
         {
             return Transfer(source as IBalance, amount, true, atTime, description);
@@ -218,17 +192,15 @@ namespace NoFuture.Rand.Sp
             var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
 
             if(asCredit && amount > source.GetCurrent(dt, 0f))
-                throw new WatDaFookIzDis($"The total balance for id {source.Id} is less-than the amount of {amount}.");
+                throw new WatDaFookIzDis($"The total balance is less-than the amount of {amount}.");
 
             if(!asCredit && amount > GetCurrent(dt, 0f))
-                throw new WatDaFookIzDis($"The total balance for id {Id} is less-than the amount of {amount}.");
-            var srcMethod = asCredit ? nameof(AddPositiveValue) : nameof(AddNegativeValue);
-            description = description ?? new VocaBase($"{srcMethod} from {source.Id} to {Id}");
+                throw new WatDaFookIzDis($"The total balance is less-than the amount of {amount}.");
 
             var fromSrcId = asCredit
                 ? source.AddNegativeValue(dt, amount, description)
                 : AddNegativeValue(dt, amount, description);
-            var traceEntry = new TraceTransactionId(fromSrcId, source.Id, dt);
+            var traceEntry = new TraceTransactionId(fromSrcId, description, dt);
             return asCredit
                 ? AddPositiveValue(dt, amount, description, traceEntry)
                 : source.AddPositiveValue(dt, amount, description, traceEntry);
@@ -272,19 +244,6 @@ namespace NoFuture.Rand.Sp
         public override string ToString()
         {
             return string.Join("\n", Transactions);
-        }
-
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            var ledger = obj as Balance;
-            if (ledger == null)
-                return base.Equals(obj);
-            return ledger.Id == Id;
         }
 
         #endregion

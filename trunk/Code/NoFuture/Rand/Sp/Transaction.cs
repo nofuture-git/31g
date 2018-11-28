@@ -12,25 +12,23 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class Transaction : TransactionId, ITransaction
     {
-        protected internal Transaction(DateTime atTime, Pecuniam amt, Guid accountId, IVoca description = null):base(atTime, accountId)
+        protected internal Transaction(DateTime atTime, Pecuniam amt, IVoca description = null):base(atTime, description)
         {
             Cash = amt ?? Pecuniam.Zero;
-            Description = description;
         }
         
         public Pecuniam Cash { get; }
-        public IVoca Description { get; }
 
         #region methods
 
         public ITransaction GetInverse()
         {
-            return new Transaction(AtTime, (Cash.Amount * -1M).ToPecuniam(), AccountId, Description) {Trace = GetMySelfAsTrace() };
+            return new Transaction(AtTime, (Cash.Amount * -1M).ToPecuniam(), Description) {Trace = GetMySelfAsTrace() };
         }
 
         public ITransaction Clone()
         {
-            return new Transaction(AtTime, Cash, AccountId, Description) {Trace = GetMySelfAsTrace()};
+            return new Transaction(AtTime, Cash, Description) {Trace = GetMySelfAsTrace()};
         }
 
         public Tuple<ITransaction, ITransaction> SplitOnAmount(Pecuniam item1Amount, DateTime? atTime = null)
@@ -89,15 +87,15 @@ namespace NoFuture.Rand.Sp
 
                 spinRound += 1;
             }
-            var trans1 = new Transaction(dt, val1.ToPecuniam(), AccountId, Description) { Trace = GetMySelfAsTrace() };
-            var trans2 = new Transaction(dt, val2.ToPecuniam(), AccountId, Description) { Trace = GetMySelfAsTrace() };
+            var trans1 = new Transaction(dt, val1.ToPecuniam(), Description) { Trace = GetMySelfAsTrace() };
+            var trans2 = new Transaction(dt, val2.ToPecuniam(), Description) { Trace = GetMySelfAsTrace() };
 
             return new Tuple<ITransaction, ITransaction>(trans1, trans2);
         }
 
         protected internal TraceTransactionId GetMySelfAsTrace()
         {
-            return new TraceTransactionId(UniqueId, AccountId, AtTime) {Trace = Trace};
+            return new TraceTransactionId(UniqueId, Description, AtTime) {Trace = Trace};
         }
 
         public override bool Equals(object obj)

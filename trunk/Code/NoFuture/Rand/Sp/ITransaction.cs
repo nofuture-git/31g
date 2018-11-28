@@ -11,7 +11,6 @@ namespace NoFuture.Rand.Sp
     {
         Pecuniam Cash { get; }
 
-        IVoca Description { get; }
         /// <summary>
         /// Gets a new copy of this instance with negation of <see cref="Cash"/> value.
         /// </summary>

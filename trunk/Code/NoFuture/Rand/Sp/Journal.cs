@@ -37,7 +37,6 @@ namespace NoFuture.Rand.Sp
         public ITransaction LastTransaction => Transactions.LastOrDefault();
         public int TransactionCount => Transactions.Count;
         public double DaysPerYear { get; set; } = Shared.Core.Constants.DBL_TROPICAL_YEAR;
-        public Guid Id { get; } = Guid.NewGuid();
 
         public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
         {
@@ -49,7 +48,7 @@ namespace NoFuture.Rand.Sp
             {
                 dt = dt.AddTicks(1L);
             }
-            var t = new Transaction(dt, amnt.GetNeg(), Id, note) { Trace = trace };
+            var t = new Transaction(dt, amnt.GetNeg(), note) { Trace = trace };
             AddTransaction(t);
             return t.UniqueId;
         }
@@ -65,7 +64,7 @@ namespace NoFuture.Rand.Sp
                 dt = dt.AddTicks(1L);
             }
 
-            var t = new Transaction(dt, amnt.GetAbs(), Id, note) {Trace = trace};
+            var t = new Transaction(dt, amnt.GetAbs(), note) {Trace = trace};
             AddTransaction(t);
             return t.UniqueId;
         }
