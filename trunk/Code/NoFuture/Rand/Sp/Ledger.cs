@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
@@ -31,7 +32,7 @@ namespace NoFuture.Rand.Sp
             return GetEnumerator();
         }
 
-        public IAccount<Identifier> Add(string accountName, bool isOppositeForm, int? refId = null, DateTime? atTime = null)
+        public IAccount<Identifier> Add(string accountName, KindsOfAccounts accountType, bool isOppositeForm, int? refId = null, DateTime? atTime = null)
         {
             if(string.IsNullOrWhiteSpace(accountName))
                 throw new ArgumentNullException(nameof(accountName));
@@ -44,7 +45,7 @@ namespace NoFuture.Rand.Sp
             }
 
             var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
-            var acct = new Account(new AccountId(accountName, refId), dt, isOppositeForm) {Name = accountName};
+            var acct = new Account(new AccountId(accountName, refId), dt, accountType, isOppositeForm) {Name = accountName};
             _dataStore.Add(acct);
             return acct;
         }
@@ -94,14 +95,15 @@ namespace NoFuture.Rand.Sp
             foreach (var credit in credits)
             {
                 var acctName = credit.Description?.Name ?? NO_NAME_ACCOUNT;
-                var creditAcct = Get(acctName) ?? Add(acctName, false, null, credit.AtTime);
+                //TODO - the kind of account does and should not travel with Journal - so where's it come from?
+                var creditAcct = Get(acctName) ?? Add(acctName, KindsOfAccounts.Asset, false, null, credit.AtTime);
                 creditAcct.Credit(credit.AtTime, credit.Cash, null, credit.GetThisAsTraceId(dt, balance as IVoca));
             }
 
             foreach (var debit in debits)
             {
                 var acctName = debit.Description?.Name ?? NO_NAME_ACCOUNT;
-                var debitAcct = Get(acctName) ?? Add(acctName, false, null, debit.AtTime);
+                var debitAcct = Get(acctName) ?? Add(acctName, KindsOfAccounts.Asset, false, null, debit.AtTime);
                 debitAcct.Debit(debit.AtTime, debit.Cash, null, debit.GetThisAsTraceId(dt, balance as IVoca));
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Sp.Cc;
+using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
@@ -13,7 +14,7 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public abstract class DepositAccount : Account
     {
-        protected DepositAccount(Identifier acctId, DateTime dateOpenned) : base(acctId, dateOpenned, false)
+        protected DepositAccount(Identifier acctId, DateTime dateOpenned) : base(acctId, dateOpenned, KindsOfAccounts.Asset, false)
         {
         }
 

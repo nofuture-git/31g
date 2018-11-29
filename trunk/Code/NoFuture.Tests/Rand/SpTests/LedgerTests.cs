@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
+using NoFuture.Rand.Sp.Enums;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.SpTests
@@ -14,12 +15,12 @@ namespace NoFuture.Rand.Tests.SpTests
             var dt = DateTime.Today;
             var testSubject = new Ledger();
             var testName00 = "Assets";
-            var testResults00 = testSubject.Add(testName00, false, 101, dt.AddDays(-12));
+            var testResults00 = testSubject.Add(testName00, KindsOfAccounts.Asset, false, 101, dt.AddDays(-12));
             Assert.IsNotNull(testResults00);
             Assert.AreEqual(testName00, testResults00.Id.Value);
             Assert.AreEqual("101", testResults00.Id.Abbrev);
 
-            var testResults01 = testSubject.Add(testName00, false);
+            var testResults01 = testSubject.Add(testName00, KindsOfAccounts.Asset, false);
             Assert.IsNotNull(testResults01);
             Assert.IsTrue(testResults00.Equals(testResults01));
 
@@ -31,7 +32,7 @@ namespace NoFuture.Rand.Tests.SpTests
             var dt = DateTime.Today;
             var testSubject = new Ledger();
             var testName00 = "Assets";
-            var testResults00 = testSubject.Add(testName00, false, 101, dt.AddDays(-12));
+            var testResults00 = testSubject.Add(testName00, KindsOfAccounts.Asset, false, 101, dt.AddDays(-12));
 
             Assert.IsNotNull(testResults00);
             var testResults01 = testSubject.Get(testName00);
@@ -55,9 +56,9 @@ namespace NoFuture.Rand.Tests.SpTests
             var testSubject = new Ledger();
             var testName00 = "Assets";
             var testName01 = "Liabilities";
-            var testResults00 = testSubject.Add(testName00, false, 101, dt.AddDays(-12));
+            var testResults00 = testSubject.Add(testName00, KindsOfAccounts.Asset, false, 101, dt.AddDays(-12));
             Assert.IsNotNull(testResults00);
-            var testResults01 = testSubject.Add(testName01, false, 112, dt.AddDays(-12));
+            var testResults01 = testSubject.Add(testName01, KindsOfAccounts.Asset, false, 112, dt.AddDays(-12));
             Assert.IsNotNull(testResults01);
             var testResults02 = testSubject.Remove(testName01);
             Assert.IsNotNull(testResults02);

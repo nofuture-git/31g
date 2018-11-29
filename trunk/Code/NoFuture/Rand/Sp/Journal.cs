@@ -11,32 +11,23 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class Journal : VocaBase
     {
-        private readonly List<ITransaction> _transactions = new List<ITransaction>();
-
         public Journal(){ }
         public Journal(string name) : base(name) { }
         public Journal(string name, string group) : base(name, group) { }
 
-        protected internal List<ITransaction> Transactions
-        {
-            get
-            {
-                _transactions.Sort(Comparer);
-                return _transactions;
-            }
-        }
+        protected internal SortedSet<ITransaction> Transactions { get; } = new SortedSet<ITransaction>(new TransactionComparer());
 
         protected void AddTransaction(ITransaction t)
         {
             if (t != null)
             {
-                _transactions.Add(t);
+                Transactions.Add(t);
             }
         }
 
         protected internal IComparer<ITransaction> Comparer { get; } = new TransactionComparer();
 
-        public bool IsEmpty => _transactions.Count <= 0;
+        public bool IsEmpty => Transactions.Count <= 0;
 
         public ITransaction FirstTransaction => Transactions.FirstOrDefault();
 
@@ -52,7 +43,7 @@ namespace NoFuture.Rand.Sp
                 return Guid.Empty;
             if (amnt == Pecuniam.Zero)
                 return Guid.Empty;
-            while (_transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
+            while (Transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {
                 dt = dt.AddTicks(1L);
             }
@@ -67,7 +58,7 @@ namespace NoFuture.Rand.Sp
                 return Guid.Empty;
             if (amnt == Pecuniam.Zero)
                 return Guid.Empty;
-            while (_transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
+            while (Transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {
                 dt = dt.AddTicks(1L);
             }

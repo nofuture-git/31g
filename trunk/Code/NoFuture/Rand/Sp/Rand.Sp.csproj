@@ -56,7 +56,8 @@
     <Compile Include="Enums\CurrencyAbbrev.cs" />
     <Compile Include="Enums\FormOfCredit.cs" />
     <Compile Include="Enums\Interval.cs" />
-    <Compile Include="Enums\Ownership.cs" />
+    <Compile Include="Enums\KindsOfAccounts.cs" />
+    <Compile Include="Enums\KindsOfOwnership.cs" />
     <Compile Include="Enums\PastDue.cs" />
     <Compile Include="Enums\SecurityIssueGroup.cs" />
     <Compile Include="Enums\SpStatus.cs" />

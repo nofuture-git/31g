@@ -4,6 +4,7 @@ using NoFuture.Rand.Domus.US;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Cc;
+using NoFuture.Rand.Sp.Enums;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.SpTests
@@ -49,12 +50,12 @@ namespace NoFuture.Rand.Tests.SpTests
             var dt = DateTime.UtcNow;
 
             //debits add cash, credits reduce cash
-            var assets = new Account(new AccountId("assets"), dt.AddDays(-2), false);
+            var assets = new Account(new AccountId("assets"), dt.AddDays(-2), KindsOfAccounts.Asset, false);
             assets.Debit(dt.AddDays(-1), 10000m.ToPecuniam(), new VocaBase("first debit"));
             Console.WriteLine(assets.Value);
             Assert.AreEqual(10000m.ToPecuniam(), assets.Value);
 
-            var liabilities = new Account(new AccountId("liabilities"),  dt.AddDays(-2), true);
+            var liabilities = new Account(new AccountId("liabilities"),  dt.AddDays(-2), KindsOfAccounts.Asset, true);
             liabilities.Credit(dt.AddDays(-1), 10000M.ToPecuniam(), new VocaBase("first credit"));
             Console.WriteLine(liabilities.Value);
             Assert.AreEqual(10000m.ToPecuniam(), liabilities.Value);

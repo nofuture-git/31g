@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Sp.Enums
     /// </summary>
     [Serializable]
     [Flags]
-    public enum Ownership
+    public enum KindsOfOwnership
     {
         None = 0,
         Proprietorship = 1,

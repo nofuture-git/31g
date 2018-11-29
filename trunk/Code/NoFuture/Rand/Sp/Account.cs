@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
@@ -10,13 +11,17 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public class Account : NamedReceivable, IAccount<Identifier>
     {
-        public Account(Identifier acctId, DateTime dateOpenned, bool isOppositeForm) : base(dateOpenned)
+        public Account(Identifier acctId, DateTime dateOpenned, KindsOfAccounts accountType, bool isOppositeForm) : base(dateOpenned)
         {
             Id = acctId;
             DueFrequency = TimeSpan.Zero;
             FormOfCredit = Enums.FormOfCredit.None;
             IsOppositeForm = isOppositeForm;
+            AccountType = accountType;
+
         }
+
+        public KindsOfAccounts AccountType { get; }
 
         public Identifier Id { get; }
 

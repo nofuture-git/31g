@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Sp
 
         public Pecuniam GetCurrent(DateTime dt, float rate)
         {
-            if (!Transactions.Any())
+            if (IsEmpty)
                 return Pecuniam.Zero;
 
             if (Transactions.All(x => x.AtTime > dt))
@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Sp
                 throw new ArgumentNullException(nameof(variableRate));
 
             //get very first recorded transaction
-            var oldestTransaction = Transactions.FirstOrDefault();
+            var oldestTransaction = FirstTransaction;
             if (oldestTransaction == null)
                 return Pecuniam.Zero;
 

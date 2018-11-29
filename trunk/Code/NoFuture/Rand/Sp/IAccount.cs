@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
@@ -10,6 +11,8 @@ namespace NoFuture.Rand.Sp
     public interface IAccount<T> : IValoresTempus, ITempore, IVoca
     {
         T Id { get; }
+
+        KindsOfAccounts AccountType { get; }
 
         /// <summary>
         /// In opposite form the account operates like a liability the default is false which

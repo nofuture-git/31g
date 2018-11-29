@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp.Cc
 {
@@ -15,23 +16,26 @@ namespace NoFuture.Rand.Sp.Cc
         public const float DF_MIN_PMT_RATE = 0.0125F;
         #endregion
 
-        private Pecuniam _ccMax;
-
         #region ctor
         public CreditCardAccount(ICreditCard cc, float minPaymentRate, Pecuniam ccMax = null)
             : base(cc.CardHolderSince, minPaymentRate <= 0 ? DF_MIN_PMT_RATE : minPaymentRate)
         {
             Cc = cc;
-            _ccMax = ccMax ?? new Pecuniam(1000);
+            Max = ccMax ?? new Pecuniam(1000);
             FormOfCredit = Rand.Sp.Enums.FormOfCredit.Revolving;
             DueFrequency = new TimeSpan(30, 0, 0, 0);
         }
         #endregion
 
         #region properties
-        public Pecuniam Max => _ccMax;
+        public Pecuniam Max { get; private set; }
+
         public ICreditCard Cc { get; }
+
         public Identifier Id => Cc.Number;
+
+        public KindsOfAccounts AccountType => KindsOfAccounts.Liability;
+
         public bool IsOppositeForm => true;
 
         #endregion
@@ -62,9 +66,9 @@ namespace NoFuture.Rand.Sp.Cc
         /// <param name="val"></param>
         public void IncreaseMaxTo(Pecuniam val)
         {
-            if (_ccMax != null && _ccMax > val)
+            if (Max != null && Max > val)
                 return;
-            _ccMax = val;
+            Max = val;
         }
 
         /// <summary>
