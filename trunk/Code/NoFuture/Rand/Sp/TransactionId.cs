@@ -25,6 +25,17 @@ namespace NoFuture.Rand.Sp
 
     public class TraceTransactionId : ITransactionId
     {
+        public TraceTransactionId(ITransaction transactionId, DateTime? atTime = null, IVoca description = null)
+        {
+            if(transactionId == null)
+                throw new ArgumentNullException(nameof(transactionId));
+
+            Description = description ?? transactionId.Description;
+            AtTime = atTime ?? transactionId.AtTime;
+            UniqueId = transactionId.UniqueId;
+            Trace = transactionId.Trace;
+        }
+
         public TraceTransactionId(Guid uniqueId, IVoca description, DateTime atTime)
         {
             Description = description;

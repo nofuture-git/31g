@@ -204,7 +204,7 @@ namespace NoFuture.Rand.Sp
 
         public override string ToString()
         {
-            return string.Join("\n", Transactions);
+            return Name;
         }
     }
 }

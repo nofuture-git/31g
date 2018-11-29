@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {

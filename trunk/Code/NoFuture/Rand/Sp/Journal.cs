@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Sp
     /// Represent an ordered set of <see cref="Transaction"/> in time.
     /// </summary>
     [Serializable]
-    public class Journal : VocaBase
+    public class Journal : VocaBase, ITransactionable
     {
         public Journal(){ }
         public Journal(string name) : base(name) { }

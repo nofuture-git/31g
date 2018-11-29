@@ -98,14 +98,14 @@ namespace NoFuture.Rand.Sp
             var dt = atTime ?? AtTime;
 
             //get copy of myself as a transaction id
-            var innerTrace = new TraceTransactionId(UniqueId, Description, dt) { Trace = Trace };
+            var innerTrace = new TraceTransactionId(this);
 
             //with this, consider linked-list of trace as journal -> myself -> my-trace
             if (journalName != null && journalName.AnyNames())
             {
                 innerTrace = new TraceTransactionId(Guid.Empty, journalName, dt)
                 {
-                    Trace = new TraceTransactionId(UniqueId, Description, AtTime) {Trace = Trace}
+                    Trace = new TraceTransactionId(this)
                 };
             }
 
