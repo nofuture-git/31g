@@ -27,16 +27,24 @@ namespace NoFuture.Rand.Sp
 
         public bool IsOppositeForm { get; }
 
-        public Guid Debit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
+        public IAccount<Identifier> Debit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
             var dt = atTime ?? Balance.LastTransaction.AtTime;
-            return IsOppositeForm ? AddNegativeValue(dt, amt, note, trace) : AddPositiveValue(dt, amt, note, trace);
+            if (IsOppositeForm)
+                AddNegativeValue(dt, amt, note, trace);
+            else
+                AddPositiveValue(dt, amt, note, trace);
+            return this;
         }
 
-        public Guid Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
+        public IAccount<Identifier> Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
             var dt = atTime ?? Balance.LastTransaction.AtTime;
-            return IsOppositeForm ? AddPositiveValue(dt, amt, note, trace) : AddNegativeValue(dt, amt, note, trace);
+            if (IsOppositeForm)
+                AddPositiveValue(dt, amt, note, trace);
+            else
+                AddNegativeValue(dt, amt, note, trace);
+            return this;
         }
 
         public override Pecuniam GetValueAt(DateTime dt)
