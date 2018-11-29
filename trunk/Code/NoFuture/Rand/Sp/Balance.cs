@@ -40,11 +40,11 @@ namespace NoFuture.Rand.Sp
             if (IsEmpty)
                 return Pecuniam.Zero;
 
-            if (Transactions.All(x => x.AtTime > dt))
+            if (DataSet.All(x => x.AtTime > dt))
                 return Pecuniam.Zero;
 
             var prev = FirstTransaction;
-            var rest = Transactions.Skip(1);
+            var rest = DataSet.Skip(1);
 
             var bal = prev.Cash.Amount;
             foreach (var t in rest)
@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Sp
         public IBalance GetInverse()
         {
             var b = new Balance();
-            foreach (var t in Transactions)
+            foreach (var t in DataSet)
             {
                 b.AddTransaction(t.GetInverse());
             }
@@ -180,7 +180,7 @@ namespace NoFuture.Rand.Sp
 
         protected internal List<ITransaction> GetRange(Tuple<DateTime, DateTime> between, Predicate<Pecuniam> op, bool includeThoseOnToDate = true)
         {
-            var ts = Transactions;
+            var ts = DataSet;
             if (ts.Count <= 0)
                 return new List<ITransaction>();
 
@@ -197,7 +197,7 @@ namespace NoFuture.Rand.Sp
 
             var uptoOp = includeThoseOnToDate ? _inclusiveTimes : _exclusiveTimes;
 
-            return Transactions.Where(
+            return DataSet.Where(
                     x => op(x.Cash) && DateTime.Compare(x.AtTime, olderDate) >= 0 && uptoOp(x, newerDate))
                 .ToList();
         }

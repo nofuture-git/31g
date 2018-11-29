@@ -205,11 +205,11 @@ namespace NoFuture.Rand.Tests.SpTests
             testBalance.AddNegativeValue(dt.AddDays(-210), new Pecuniam(-455.0M));
             testBalance.AddNegativeValue(dt.AddDays(-330), new Pecuniam(-451.0M));
 
-            var testResult = testBalance.Transactions.FirstOrDefault();
+            var testResult = testBalance.DataSet.FirstOrDefault();
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.AtTime.Date == oldestDt.Date);
 
-            testResult = testBalance.Transactions.LastOrDefault();
+            testResult = testBalance.DataSet.LastOrDefault();
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.AtTime.Date == newestDt.Date);
         }
@@ -232,10 +232,10 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.IsNotNull(testResult);
 
             Assert.AreEqual(testBalance.TransactionCount, testResult.TransactionCount);
-            foreach (var t in testBalance.Transactions)
+            foreach (var t in testBalance.DataSet)
             {
                 
-                var dayMatch = testResult.Transactions.FirstOrDefault(tr => DateTime.Equals(t.AtTime, tr.AtTime));
+                var dayMatch = testResult.DataSet.FirstOrDefault(tr => DateTime.Equals(t.AtTime, tr.AtTime));
                 Assert.IsNotNull(dayMatch);
                 var diff = (t.Cash + dayMatch.Cash).GetRounded();
                 Console.WriteLine(diff);

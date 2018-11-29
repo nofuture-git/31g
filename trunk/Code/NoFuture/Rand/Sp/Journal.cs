@@ -15,25 +15,25 @@ namespace NoFuture.Rand.Sp
         public Journal(string name) : base(name) { }
         public Journal(string name, string group) : base(name, group) { }
 
-        protected internal SortedSet<ITransaction> Transactions { get; } = new SortedSet<ITransaction>(new TransactionComparer());
+        protected internal SortedSet<ITransaction> DataSet { get; } = new SortedSet<ITransaction>(new TransactionComparer());
 
         protected void AddTransaction(ITransaction t)
         {
             if (t != null)
             {
-                Transactions.Add(t);
+                DataSet.Add(t);
             }
         }
 
         protected internal IComparer<ITransaction> Comparer { get; } = new TransactionComparer();
 
-        public bool IsEmpty => Transactions.Count <= 0;
+        public bool IsEmpty => DataSet.Count <= 0;
 
-        public ITransaction FirstTransaction => Transactions.FirstOrDefault();
+        public ITransaction FirstTransaction => DataSet.FirstOrDefault();
 
-        public ITransaction LastTransaction => Transactions.LastOrDefault();
+        public ITransaction LastTransaction => DataSet.LastOrDefault();
 
-        public int TransactionCount => Transactions.Count;
+        public int TransactionCount => DataSet.Count;
 
         public double DaysPerYear { get; set; } = Shared.Core.Constants.DBL_TROPICAL_YEAR;
 
@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Sp
                 return Guid.Empty;
             if (amnt == Pecuniam.Zero)
                 return Guid.Empty;
-            while (Transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
+            while (DataSet.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {
                 dt = dt.AddTicks(1L);
             }
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Sp
                 return Guid.Empty;
             if (amnt == Pecuniam.Zero)
                 return Guid.Empty;
-            while (Transactions.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
+            while (DataSet.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {
                 dt = dt.AddTicks(1L);
             }
