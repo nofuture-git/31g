@@ -191,8 +191,8 @@ namespace NoFuture.Rand.Opes.US
             name.AddName(KindsOfNames.Surname, lastName);
             var factorOptions = AmericanFactorOptions.RandomFactorOptions(gender, birthDate);
             var location = CityArea.RandomAmericanCity();
-            var isRenting = GetIsLeaseResidence(location.Msa.MsaType, factorOptions.GetAge());
-            var hasCar = GetAtLeastOneVehicle(location.Msa.MsaType);
+            var isRenting = GetIsLeaseResidence(location?.Msa?.MsaType, factorOptions.GetAge());
+            var hasCar = GetAtLeastOneVehicle(location?.Msa?.MsaType);
             var opt = new AmericanDomusOpesOptions(factorOptions)
             {
                 Inception = DateTime.Today.Add(Constants.TropicalYear.Negate()),
@@ -208,8 +208,10 @@ namespace NoFuture.Rand.Opes.US
             return opt;
         }
 
-        internal static bool GetAtLeastOneVehicle(UrbanCentric msaType)
+        internal static bool GetAtLeastOneVehicle(UrbanCentric? msaType)
         {
+            if (msaType == null)
+                return false;
             var percentNoCarWholeNumber = (int) Math.Round(AmericanData.PERCENT_WITH_NO_CAR * 100);
 
             var livesInDenseUrbanArea = msaType == (UrbanCentric.City | UrbanCentric.Large);
@@ -228,8 +230,10 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="msaType"></param>
         /// <param name="age"></param>
         /// <returns></returns>
-        internal static bool GetIsLeaseResidence(UrbanCentric msaType, int age)
+        internal static bool GetIsLeaseResidence(UrbanCentric? msaType, int age)
         {
+            if (msaType == null)
+                return false;
             var livesInDenseUrbanArea = msaType == (UrbanCentric.City | UrbanCentric.Large);
             var isYoung = age < 32;
             var roll = 65;

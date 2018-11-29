@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Sp
     /// Represents a individual finacial agreement in time.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IAccount<T> : IValoresTempus, ITempore, IVoca
+    public interface IAccount<T> : IValoresTempus, IVoca
     {
         T Id { get; }
 

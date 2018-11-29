@@ -25,12 +25,10 @@ digraph noFutureRandDataSp {
     ITradeLine -> ITransactionable
     ITradeLine -> IObviate
     IAccount -> IValoresTempus
-    IAccount -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
-    IAccount -> ITempore
     NamedReceivable -> Receivable
     ITradeLine -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
     Balance -> IBalance
-    Balance -> Journal
+    Balance -> Transactions
     VariableRateLoan -> LoanBase
     Security -> IValoresTempus
     Security -> Pecuniam
@@ -53,10 +51,14 @@ digraph noFutureRandDataSp {
     Identifier -> StringId
     IBalance -> ITransactionable
     AccountId -> RIdentifier
-    Journal -> ITransaction [style="dotted" arrowhead="diamond"]
+    Transactions -> ITransaction [style="dotted" arrowhead="diamond"]
+    Transactions -> ITransactionable
     Transaction -> ITransaction
     Transaction -> TransactionId
     ITransaction -> ITransactionId
     TransactionId -> ITransactionId
     TraceTransactionId -> ITransactionId
+    Journal -> Balance
+    Journal -> IAccount
+    Ledger -> IAccount [style="dotted" arrowhead="diamond"]
 }
