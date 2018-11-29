@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Core
@@ -781,6 +782,26 @@ namespace NoFuture.Rand.Core
         }
 
         #endregion
+
+
+        /// <summary>
+        /// Turns a bitwise combination of <see cref="KindsOfNames"/> into a discrete list
+        /// </summary>
+        /// <param name="kon"></param>
+        /// <returns></returns>
+        public static KindsOfNames[] ToDiscreteKindsOfNames(this KindsOfNames kon)
+        {
+            var vals = Enum.GetValues(typeof(KindsOfNames)).Cast<KindsOfNames>().ToArray();
+            var dKon = new List<KindsOfNames>();
+            foreach (var val in vals)
+            {
+                var d = (UInt32)val & (UInt32)kon;
+                if (d == (UInt32)val)
+                    dKon.Add(val);
+            }
+
+            return dKon.Distinct().ToArray();
+        }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         private static bool TryRoll(int v, Dice die, Func<int, int, bool> op)

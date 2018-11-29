@@ -51,10 +51,10 @@ namespace NoFuture.Rand.Tests.CoreTests
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former | KindsOfNames.Technical, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            Assert.IsTrue(testSubject.AnyOfKind(KindsOfNames.Legal));
-            Assert.IsTrue(testSubject.AnyOfKind(KindsOfNames.Former | KindsOfNames.Technical));
+            Assert.IsTrue(testSubject.AnyNames(k => k == KindsOfNames.Legal));
+            Assert.IsTrue(testSubject.AnyNames(k => k == (KindsOfNames.Former | KindsOfNames.Technical)));
 
-            Assert.IsFalse(testSubject.AnyOfKind(KindsOfNames.Legal | KindsOfNames.Technical));
+            Assert.IsFalse(testSubject.AnyNames(k => k == (KindsOfNames.Legal | KindsOfNames.Technical)));
         }
 
 
@@ -65,11 +65,10 @@ namespace NoFuture.Rand.Tests.CoreTests
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former | KindsOfNames.Technical, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            Assert.IsTrue(testSubject.AnyOfNameAs("TechnicalName"));
+            Assert.IsTrue(testSubject.AnyNames(n => n == "TechnicalName"));
 
-            Assert.IsFalse(testSubject.AnyOfNameAs(null));
-            Assert.IsFalse(testSubject.AnyOfNameAs(""));
-            Assert.IsFalse(testSubject.AnyOfNameAs("foijhdlkjae"));
+            Assert.IsFalse(testSubject.AnyNames(n => n == ""));
+            Assert.IsFalse(testSubject.AnyNames(n => n == "foijhdlkjae"));
 
         }
 
@@ -80,12 +79,12 @@ namespace NoFuture.Rand.Tests.CoreTests
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former | KindsOfNames.Technical, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            Assert.IsTrue(testSubject.AnyOfKindAndValue(KindsOfNames.Legal, "TestCorporation"));
-            Assert.IsTrue(testSubject.AnyOfKindAndValue(KindsOfNames.Former | KindsOfNames.Technical, "TechnicalName"));
+            Assert.IsTrue(testSubject.AnyNames((k,v) => k == KindsOfNames.Legal && v == "TestCorporation"));
+            Assert.IsTrue(testSubject.AnyNames((k,v) => k == (KindsOfNames.Former | KindsOfNames.Technical) && v == "TechnicalName"));
 
-            Assert.IsFalse(testSubject.AnyOfKindAndValue(KindsOfNames.Legal, "Test Corporation"));
+            Assert.IsFalse(testSubject.AnyNames((k, v) => k == KindsOfNames.Legal && v == "Test Corporation"));
 
-            Assert.IsFalse(testSubject.AnyOfKindAndValue(KindsOfNames.Former, "TestCorporation"));
+            Assert.IsFalse(testSubject.AnyNames((k, v) => k == KindsOfNames.Former && v == "TestCorporation"));
 
         }
 
@@ -96,7 +95,7 @@ namespace NoFuture.Rand.Tests.CoreTests
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            testSubject.RemoveNameByKind(KindsOfNames.Legal);
+            testSubject.RemoveName(k => k == KindsOfNames.Legal);
             var testResult =
                 testSubject.Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Legal);
             Assert.IsNull(testResult);
@@ -112,13 +111,13 @@ namespace NoFuture.Rand.Tests.CoreTests
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            var testResult = testSubject.RemoveNameByValue("TestCorporation");
+            var testResult = testSubject.RemoveName(n => n =="TestCorporation");
             Assert.AreEqual(2, testResult);
 
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            testResult = testSubject.RemoveNameByValue("TechnicalName");
+            testResult = testSubject.RemoveName(n => n =="TechnicalName");
             Assert.AreEqual(0, testResult);
         }
 
@@ -129,8 +128,8 @@ namespace NoFuture.Rand.Tests.CoreTests
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            var testResult = testSubject.RemoveNameByKindAndValue(KindsOfNames.Legal | KindsOfNames.Technical, "TestCorporation");
-            Assert.IsTrue(testResult);
+            var testResult = testSubject.RemoveName((k,v) => k == (KindsOfNames.Legal | KindsOfNames.Technical) && v == "TestCorporation");
+            Assert.IsTrue(testResult > 0);
             var testEntry = testSubject.Names.FirstOrDefault(x => x.Item1 == KindsOfNames.Legal);
             Assert.IsNotNull(testEntry);
             Assert.AreEqual("TestCorporation", testEntry.Item2);
@@ -158,7 +157,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         [Test]
         public void TestToToDiscreteKindsOfNames()
         {
-            var testResult = VocaBase.ToDiscreteKindsOfNames(KindsOfNames.Legal | KindsOfNames.Technical);
+            var testResult = (KindsOfNames.Legal | KindsOfNames.Technical).ToDiscreteKindsOfNames();
             Assert.IsNotNull(testResult);
             var tra = testResult.ToArray();
             Assert.AreEqual(2, tra.Length);
@@ -174,19 +173,19 @@ namespace NoFuture.Rand.Tests.CoreTests
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Former | KindsOfNames.Technical | KindsOfNames.Legal, "TechnicalName"));
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, "TestCorporation"));
 
-            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Former));
-            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Technical));
-            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Legal));
+            Assert.IsTrue(testSubject.AnyNames(k => k.ToDiscreteKindsOfNames().Any(v => v ==KindsOfNames.Former)));
+            Assert.IsTrue(testSubject.AnyNames(k => k.ToDiscreteKindsOfNames().Any(v => v == KindsOfNames.Technical)));
+            Assert.IsTrue(testSubject.AnyNames(k => k.ToDiscreteKindsOfNames().Any(v => v == KindsOfNames.Legal)));
 
-            Assert.IsFalse(testSubject.AnyOfKind(KindsOfNames.Former));
-            Assert.IsFalse(testSubject.AnyOfKind(KindsOfNames.Technical));
+            Assert.IsFalse(testSubject.AnyNames(k => k == KindsOfNames.Former));
+            Assert.IsFalse(testSubject.AnyNames(k => k == KindsOfNames.Technical));
 
 
             testSubject.Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Abbrev | KindsOfNames.Group | KindsOfNames.Colloquial, "TestCorporation"));
 
-            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Abbrev));
-            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Group));
-            Assert.IsTrue(testSubject.AnyOfKindContaining(KindsOfNames.Colloquial));
+            Assert.IsTrue(testSubject.AnyNames(k => k.ToDiscreteKindsOfNames().Any(v => v == KindsOfNames.Abbrev)));
+            Assert.IsTrue(testSubject.AnyNames(k => k.ToDiscreteKindsOfNames().Any(v => v == KindsOfNames.Group)));
+            Assert.IsTrue(testSubject.AnyNames(k => k.ToDiscreteKindsOfNames().Any(v => v == KindsOfNames.Colloquial)));
         }
 
         [Test]

@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Sp
 
         public NamedReceivable(IVoca names)
         {
-            _voca.CopyFrom(names);
+            _voca.CopyNamesFrom(names);
         }
 
         public NamedReceivable(DateTime startDate) : base(startDate)
@@ -40,6 +40,8 @@ namespace NoFuture.Rand.Sp
             set => _voca.Name = value;
         }
 
+        public int NamesCount => _voca.NamesCount;
+
         public void AddName(KindsOfNames k, string name)
         {
             _voca.AddName(k, name);
@@ -50,49 +52,39 @@ namespace NoFuture.Rand.Sp
             return _voca.GetName(k);
         }
 
+        public bool AnyNames(Predicate<KindsOfNames> filter)
+        {
+            return _voca.AnyNames(filter);
+        }
+
+        public bool AnyNames(Predicate<string> filter)
+        {
+            return _voca.AnyNames(filter);
+        }
+
+        public bool AnyNames(Func<KindsOfNames, string, bool> filter)
+        {
+            return _voca.AnyNames(filter);
+        }
+
         public bool AnyNames()
         {
             return _voca.AnyNames();
         }
 
-        public bool AnyOfKind(KindsOfNames k)
+        public int RemoveName(Predicate<KindsOfNames> filter)
         {
-            return _voca.AnyOfKind(k);
+            return _voca.RemoveName(filter);
         }
 
-        public bool AnyOfKindContaining(KindsOfNames k)
+        public int RemoveName(Predicate<string> filter)
         {
-            return _voca.AnyOfKindContaining(k);
+            return _voca.RemoveName(filter);
         }
 
-        public bool AnyOfNameAs(string name)
+        public int RemoveName(Func<KindsOfNames, string, bool> filter)
         {
-            return _voca.AnyOfNameAs(name);
-        }
-
-        public bool AnyOfKindAndValue(KindsOfNames k, string name)
-        {
-            return _voca.AnyOfKindAndValue(k, name);
-        }
-
-        public bool RemoveNameByKind(KindsOfNames k)
-        {
-            return _voca.RemoveNameByKind(k);
-        }
-
-        public int RemoveNameByValue(string name)
-        {
-            return _voca.RemoveNameByValue(name);
-        }
-
-        public bool RemoveNameByKindAndValue(KindsOfNames k, string name)
-        {
-            return _voca.RemoveNameByKindAndValue(k, name);
-        }
-
-        public int GetCountOfNames()
-        {
-            return _voca.GetCountOfNames();
+            return _voca.RemoveName(filter);
         }
 
         public KindsOfNames[] GetAllKindsOfNames()
@@ -100,9 +92,9 @@ namespace NoFuture.Rand.Sp
             return _voca.GetAllKindsOfNames();
         }
 
-        public void CopyFrom(IVoca voca)
+        public void CopyNamesFrom(IVoca voca)
         {
-            _voca.CopyFrom(voca);
+            _voca.CopyNamesFrom(voca);
         }
 
         public override Pecuniam GetMinPayment(DateTime dt)

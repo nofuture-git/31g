@@ -13,21 +13,20 @@ namespace NoFuture.Rand.Sp
     {
         public Account(Identifier acctId, DateTime dateOpenned, KindsOfAccounts accountType, bool isOppositeForm) : base(dateOpenned)
         {
-            Id = acctId;
-            DueFrequency = TimeSpan.Zero;
-            FormOfCredit = Enums.FormOfCredit.None;
+            Id = acctId ?? throw new ArgumentNullException(nameof(acctId));
+            DueFrequency = null;
+            FormOfCredit = null;
             IsOppositeForm = isOppositeForm;
             AccountType = accountType;
-
         }
 
-        public KindsOfAccounts AccountType { get; }
+        public virtual KindsOfAccounts? AccountType { get; }
 
-        public Identifier Id { get; }
+        public virtual Identifier Id { get; }
 
-        public bool IsOppositeForm { get; }
+        public virtual bool IsOppositeForm { get; }
 
-        public IAccount<Identifier> Debit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
+        public virtual IAccount<Identifier> Debit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
             var dt = atTime ?? Balance.LastTransaction.AtTime;
             if (IsOppositeForm)
@@ -37,7 +36,7 @@ namespace NoFuture.Rand.Sp
             return this;
         }
 
-        public IAccount<Identifier> Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
+        public virtual IAccount<Identifier> Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
             var dt = atTime ?? Balance.LastTransaction.AtTime;
             if (IsOppositeForm)

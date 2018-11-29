@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Core.Enums;
+﻿using System;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Core
 {
@@ -16,6 +17,8 @@ namespace NoFuture.Rand.Core
         /// </summary>
         string Name { get; set; }
 
+        int NamesCount { get; }
+
         /// <summary>
         /// Adds or replaces the name by the given pair
         /// </summary>
@@ -30,72 +33,14 @@ namespace NoFuture.Rand.Core
         /// <returns></returns>
         string GetName(KindsOfNames k);
 
-        /// <summary>
-        /// Asserts if there is any names present whatsoever.
-        /// </summary>
-        /// <returns></returns>
+        bool AnyNames(Predicate<KindsOfNames> filter);
+        bool AnyNames(Predicate<string> filter);
+        bool AnyNames(Func<KindsOfNames, string, bool> filter);
         bool AnyNames();
 
-        /// <summary>
-        /// Asserts if there is an entry by the given <see cref="KindsOfNames"/>
-        /// </summary>
-        /// <param name="k"></param>
-        /// <returns></returns>
-        bool AnyOfKind(KindsOfNames k);
-
-        /// <summary>
-        /// Asserts if there are any entries 
-        /// which contain at least <see cref="k"/> in their combination.
-        /// </summary>
-        /// <param name="k"></param>
-        /// <returns></returns>
-        bool AnyOfKindContaining(KindsOfNames k);
-
-        /// <summary>
-        /// Asserts if there is at least one entry by the given <see cref="name"/> value
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        bool AnyOfNameAs(string name);
-
-        /// <summary>
-        /// Asserts if there is a unique entry by both kind and value
-        /// </summary>
-        /// <param name="k"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        bool AnyOfKindAndValue(KindsOfNames k, string name);
-
-        /// <summary>
-        /// Removes the item by the given <see cref="KindsOfNames"/>
-        /// </summary>
-        /// <param name="k"></param>
-        /// <returns>
-        /// True if something was removed, false if no match\no action
-        /// </returns>
-        bool RemoveNameByKind(KindsOfNames k);
-
-        /// <summary>
-        /// Removes all items whose value equals <see cref="name"/>
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns>
-        /// The count of items removed
-        /// </returns>
-        int RemoveNameByValue(string name);
-
-        /// <summary>
-        /// Removes a unique entry by both kind and value
-        /// </summary>
-        /// <param name="k"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        bool RemoveNameByKindAndValue(KindsOfNames k, string name);
-
-        /// <summary>
-        /// Gets the count of <see cref="KindsOfNames"/> to value pairs
-        /// </summary>
-        int GetCountOfNames();
+        int RemoveName(Predicate<KindsOfNames> filter);
+        int RemoveName(Predicate<string> filter);
+        int RemoveName(Func<KindsOfNames, string, bool> filter);
 
         /// <summary>
         /// Gets an array of all the <see cref="KindsOfNames"/> currently present/
@@ -107,6 +52,6 @@ namespace NoFuture.Rand.Core
         /// Helper method to quickly move data from one to another
         /// </summary>
         /// <param name="voca"></param>
-        void CopyFrom(IVoca voca);
+        void CopyNamesFrom(IVoca voca);
     }
 }

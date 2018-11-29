@@ -37,10 +37,7 @@ namespace NoFuture.Rand.Core
             set => AddName(KindsOfNames.Legal, value);
         }
 
-        public int GetCountOfNames()
-        {
-            return Names.Count;
-        }
+        public virtual int NamesCount => Names.Count;
 
         public virtual void AddName(KindsOfNames k, string name)
         {
@@ -59,47 +56,31 @@ namespace NoFuture.Rand.Core
             return cname?.Item2;
         }
 
+        public bool AnyNames(Predicate<KindsOfNames> filter)
+        {
+            return filter == null ? Names.Any() : Names.Any(t => filter(t.Item1));
+        }
+
+        public bool AnyNames(Predicate<string> filter)
+        {
+            return filter == null ? Names.Any() : Names.Any(t => filter(t.Item2));
+        }
+
+        public virtual bool AnyNames(Func<KindsOfNames, string, bool> filter)
+        {
+            return filter == null ? Names.Any() : Names.Any(v => filter(v.Item1, v.Item2));
+        }
+
         public virtual bool AnyNames()
         {
             return Names.Any();
         }
 
-        public virtual bool AnyOfKind(KindsOfNames k)
+        public virtual int RemoveName(Predicate<KindsOfNames> filter)
         {
-            return Names.Any(x => x.Item1 == k);
-        }
-
-        public virtual bool AnyOfKindContaining(KindsOfNames k)
-        {
-            var allMyKinds = Names.SelectMany(x => ToDiscreteKindsOfNames(x.Item1)).ToArray();
-            var allItsKinds = ToDiscreteKindsOfNames(k);
-
-            return allItsKinds.All(ak => allMyKinds.Contains(ak));
-        }
-
-        public virtual bool AnyOfNameAs(string name)
-        {
-            return Names.Any(x => string.Equals(x.Item2, name));
-        }
-
-        public virtual bool AnyOfKindAndValue(KindsOfNames k, string name)
-        {
-            return Names.Any(x => x.Item1 == k && x.Item2 == name);
-        }
-
-        public virtual bool RemoveNameByKind(KindsOfNames k)
-        {
-            var cname = Names.FirstOrDefault(x => x.Item1 == k);
-            if (cname == null)
-                return false;
-            Names.Remove(cname);
-            return true;
-        }
-
-        public virtual int RemoveNameByValue(string name)
-        {
+            filter = filter ?? (k => true);
             var cnt = 0;
-            var byName = Names.Where(x => string.Equals(x.Item2, name)).ToList();
+            var byName = Names.Where(x => filter(x.Item1)).ToList();
             foreach (var cname in byName)
             {
                 Names.Remove(cname);
@@ -108,13 +89,30 @@ namespace NoFuture.Rand.Core
             return cnt;
         }
 
-        public virtual bool RemoveNameByKindAndValue(KindsOfNames k, string name)
+        public virtual int RemoveName(Predicate<string> filter)
         {
-            var cname = Names.FirstOrDefault(x => x.Item1 == k && x.Item2 == name);
-            if (cname == null)
-                return false;
-            Names.Remove(cname);
-            return true;
+            filter = filter ?? (k => true);
+            var cnt = 0;
+            var byName = Names.Where(x => filter(x.Item2)).ToList();
+            foreach (var cname in byName)
+            {
+                Names.Remove(cname);
+                cnt += 1;
+            }
+            return cnt;
+        }
+
+        public virtual int RemoveName(Func<KindsOfNames, string, bool> filter)
+        {
+            filter = filter ?? ((k,v) => true);
+            var cnt = 0;
+            var byName = Names.Where(x => filter(x.Item1, x.Item2)).ToList();
+            foreach (var cname in byName)
+            {
+                Names.Remove(cname);
+                cnt += 1;
+            }
+            return cnt;
         }
 
         public override bool Equals(object obj)
@@ -127,12 +125,12 @@ namespace NoFuture.Rand.Core
             if (obj1 == null || obj2 == null)
                 return false;
 
-            if ( obj1.GetCountOfNames() != obj2.GetCountOfNames())
+            if ( obj1.NamesCount != obj2.NamesCount)
                 return false;
 
             foreach (var kon1 in obj1.GetAllKindsOfNames())
             {
-                if (!obj2.AnyOfKindAndValue(kon1, obj1.GetName(kon1)))
+                if (!obj2.AnyNames((k,v) => k == kon1 && v == obj1.GetName(kon1)))
                     return false;
             }
 
@@ -168,32 +166,13 @@ namespace NoFuture.Rand.Core
             return Names.Select(n => n.Item1).ToArray();
         }
 
-        public virtual void CopyFrom(IVoca voca)
+        public virtual void CopyNamesFrom(IVoca voca)
         {
             if (voca == null)
                 return;
 
             foreach(var k in voca.GetAllKindsOfNames())
                 AddName(k, voca.GetName(k));
-        }
-
-        /// <summary>
-        /// Turns a bitwise combination of <see cref="KindsOfNames"/> into a discrete list
-        /// </summary>
-        /// <param name="kon"></param>
-        /// <returns></returns>
-        public static KindsOfNames[] ToDiscreteKindsOfNames(KindsOfNames kon)
-        {
-            var vals = Enum.GetValues(typeof(KindsOfNames)).Cast<KindsOfNames>().ToArray();
-            var dKon = new List<KindsOfNames>();
-            foreach (var val in vals)
-            {
-                var d = (UInt32) val & (UInt32) kon;
-                if(d == (UInt32)val)
-                    dKon.Add(val);
-            }
-            
-            return dKon.Distinct().ToArray();
         }
 
         public static string TransformText(string x, KindsOfTextCase txtCase)

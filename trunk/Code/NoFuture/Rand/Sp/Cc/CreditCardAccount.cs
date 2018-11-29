@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Sp.Cc
 
         public Identifier Id => Cc.Number;
 
-        public KindsOfAccounts AccountType => KindsOfAccounts.Liability;
+        public KindsOfAccounts? AccountType => KindsOfAccounts.Liability;
 
         public bool IsOppositeForm => true;
 

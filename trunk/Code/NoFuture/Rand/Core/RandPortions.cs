@@ -243,7 +243,7 @@ namespace NoFuture.Rand.Core
         /// <returns></returns>
         public bool AnyGivenDirectlyOfGroupName(string groupName)
         {
-            return GivenDirectly.Any(x => x.Item1.AnyOfKindAndValue(KindsOfNames.Group, groupName));
+            return GivenDirectly.Any(x => x.Item1.AnyNames((k,v) => k == KindsOfNames.Group && v == groupName));
         }
 
         /// <summary>

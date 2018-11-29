@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Sp
         /// <returns></returns>
         public virtual bool Equals(IVoca name)
         {
-            return name != null && name.AnyOfNameAs(Value);
+            return name != null && name.AnyNames(n => n == Value);
         }
     }
 }

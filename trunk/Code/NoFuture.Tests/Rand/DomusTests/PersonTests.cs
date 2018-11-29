@@ -351,14 +351,14 @@ namespace NoFuture.Rand.Tests.DomusTests
             Assert.AreEqual(1, testChild.Parents.Count());
 
             var testResult =
-                testChild.Parents.FirstOrDefault(c => c.AnyOfKind(KindsOfNames.Biological | KindsOfNames.Mother));
+                testChild.Parents.FirstOrDefault(c => c.AnyNames(k => k == (KindsOfNames.Biological | KindsOfNames.Mother)));
             Assert.IsNotNull(testResult);
             Assert.AreEqual(testMother, testResult.Est);
 
             //nothing changes 
             testChild.AddParent(testMother, KindsOfNames.Biological | KindsOfNames.Mother);
             testResult =
-                testChild.Parents.FirstOrDefault(c => c.AnyOfKind(KindsOfNames.Biological | KindsOfNames.Mother));
+                testChild.Parents.FirstOrDefault(c => c.AnyNames(k => k == (KindsOfNames.Biological | KindsOfNames.Mother)));
             Assert.IsNotNull(testResult);
             Assert.AreEqual(testMother, testResult.Est);
 

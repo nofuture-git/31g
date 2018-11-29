@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Sp
     {
         T Id { get; }
 
-        KindsOfAccounts AccountType { get; }
+        KindsOfAccounts? AccountType { get; }
 
         /// <summary>
         /// In opposite form the account operates like a liability the default is false which

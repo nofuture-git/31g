@@ -177,7 +177,7 @@ namespace NoFuture.Rand.Domus
                 //when this is the bride
                 if (Gender == Gender.Female && DateTime.UtcNow >= marriedOn)
                 {
-                    if (LastName != null && !AnyOfKind(KindsOfNames.Maiden))
+                    if (LastName != null && !AnyNames(t => t == KindsOfNames.Maiden))
                         AddName(KindsOfNames.Maiden, BirthCert.GetFatherSurname() ?? LastName);
 
                     LastName = spouse.LastName;
@@ -261,12 +261,12 @@ namespace NoFuture.Rand.Domus
 
         protected internal IPerson GetParent(KindsOfNames parentalTitle)
         {
-            var parent = Parents.FirstOrDefault(p => p.AnyOfKind(parentalTitle));
+            var parent = Parents.FirstOrDefault(p => p.AnyNames(t => t == parentalTitle));
 
             if (parent?.Est == null)
             {
                 parent = Parents.FirstOrDefault(p =>
-                    p.AnyOfKindContaining(parentalTitle));
+                    p.AnyNames(k => k.ToDiscreteKindsOfNames().Any(v => v == parentalTitle)));
             }
 
             return parent?.Est;
@@ -317,7 +317,7 @@ namespace NoFuture.Rand.Domus
             if (!p2C)
                 return false;
 
-            return !ToDiscreteKindsOfNames(title).Contains(KindsOfNames.Biological) ||
+            return !title.ToDiscreteKindsOfNames().Contains(KindsOfNames.Biological) ||
                    IsValidDobChild2Siblings(childDob);
         }
 

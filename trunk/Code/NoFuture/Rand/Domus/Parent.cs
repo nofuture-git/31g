@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Domus
             var kons = GetAllKindsOfNames();
             if (kons.Any())
             {
-                parentTitle = string.Join(",", ToDiscreteKindsOfNames(kons.First()));
+                parentTitle = string.Join(",", kons.First().ToDiscreteKindsOfNames());
             }
 
             return string.Join(" ", parentTitle, Est?.FirstName, Est?.LastName);
