@@ -64,46 +64,46 @@ namespace NoFuture.Rand.Tests.SpTests
             var testInput = American.RandomAmerican(Etx.RandomAdultBirthDate(), Gender.Female);
             var testSubject = new CreditCardAccount(new VisaCc(testInput, new DateTime(2014,1,11), null), CreditCardAccount.DF_MIN_PMT_RATE, new Pecuniam(1800.0M));
 
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 11), new Pecuniam(63.32M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 11), new Pecuniam(7.54M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 12), new Pecuniam(139.47M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 12), new Pecuniam(2.38M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 14), new Pecuniam(57.89M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 14), new Pecuniam(10.09M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 15), new Pecuniam(7.78M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 15), new Pecuniam(52.13M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 15), new Pecuniam(22.95M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 16), new Pecuniam(47.59M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 17), new Pecuniam(703.65M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 17), new Pecuniam(32.11M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 17), new Pecuniam(12.83M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 18), new Pecuniam(60.83M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 20), new Pecuniam(57.64M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 20), new Pecuniam(49.07M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 21), new Pecuniam(3.55M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 24), new Pecuniam(6.94M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 25), new Pecuniam(6.94M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 27), new Pecuniam(10.61M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 27), new Pecuniam(50.73M));
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 28), new Pecuniam(8.32M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 11), new Pecuniam(63.32M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 11), new Pecuniam(7.54M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 12), new Pecuniam(139.47M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 12), new Pecuniam(2.38M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 14), new Pecuniam(57.89M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 14), new Pecuniam(10.09M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 15), new Pecuniam(7.78M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 15), new Pecuniam(52.13M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 15), new Pecuniam(22.95M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 16), new Pecuniam(47.59M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 17), new Pecuniam(703.65M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 17), new Pecuniam(32.11M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 17), new Pecuniam(12.83M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 18), new Pecuniam(60.83M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 20), new Pecuniam(57.64M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 20), new Pecuniam(49.07M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 21), new Pecuniam(3.55M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 24), new Pecuniam(6.94M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 25), new Pecuniam(6.94M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 27), new Pecuniam(10.61M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 27), new Pecuniam(50.73M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 28), new Pecuniam(8.32M));
 
             var testResult = testSubject.GetMinPayment(new DateTime(2014, 1, 28));
 
             Assert.AreEqual(-17.58M, testResult.Amount);
-            System.Diagnostics.Debug.WriteLine(testResult);
-            System.Diagnostics.Debug.WriteLine(testSubject.GetValueAt(new DateTime(2014, 1, 28)));
+            Console.WriteLine(testResult);
+            Console.WriteLine(testSubject.GetValueAt(new DateTime(2014, 1, 28)));
 
-            testSubject.AddPositiveValue(new DateTime(2014, 1, 30), new Pecuniam(61.28M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 1), new Pecuniam(23.11M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 2), new Pecuniam(9.83M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 3), new Pecuniam(8.53M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 3), new Pecuniam(2.09M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 4), new Pecuniam(7.79M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 6), new Pecuniam(47.24M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 7), new Pecuniam(55.95M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 7), new Pecuniam(30.1M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 8), new Pecuniam(37.39M));
-            testSubject.AddPositiveValue(new DateTime(2014, 2, 10), new Pecuniam(3.91M));
+            testSubject.MakePurchase(new DateTime(2014, 1, 30), new Pecuniam(61.28M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 1), new Pecuniam(23.11M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 2), new Pecuniam(9.83M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 3), new Pecuniam(8.53M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 3), new Pecuniam(2.09M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 4), new Pecuniam(7.79M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 6), new Pecuniam(47.24M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 7), new Pecuniam(55.95M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 7), new Pecuniam(30.1M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 8), new Pecuniam(37.39M));
+            testSubject.MakePurchase(new DateTime(2014, 2, 10), new Pecuniam(3.91M));
 
 
 

@@ -11,23 +11,16 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class Rent : NamedReceivable
     {
-        #region fields
         private readonly Pecuniam _proRatedAmt;
         private readonly DateTime _dtOfFirstFullRentDue;
         private int _dayOfMonthRentDue = 1;
-        #endregion
 
-        #region properties
         public Pecuniam Deposit { get; }
         public int LeaseTermInMonths { get; }
         public Pecuniam MonthlyPmt { get; }
         public DateTime? LeaseExpiry => Terminus;
         public Identifier Id { get; }
         public DateTime SigningDate => Inception;
-
-        #endregion
-
-        #region ctors
 
         public Rent(Identifier property, DateTime signing, int forMonths, Pecuniam monthlyRent, Pecuniam deposit): base(signing)
         {
@@ -57,9 +50,6 @@ namespace NoFuture.Rand.Sp
             FormOfCredit = Enums.FormOfCredit.None;
 
         }
-        #endregion
-
-        #region methods
 
         public override Pecuniam GetValueAt(DateTime dt)
         {
@@ -237,6 +227,5 @@ namespace NoFuture.Rand.Sp
 
             return new Pecuniam((decimal)eq.SolveForY(year));
         }
-        #endregion
     }
 }

@@ -11,12 +11,8 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class CheckingAccount : DepositAccount
     {
-        #region fields
         private readonly byte[] _pinKey;
         private readonly byte[] _pinHash;
-        #endregion
-
-        #region ctor
 
         public CheckingAccount(string acctId, DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) : this(
             new AccountId(acctId), dateOpenned, debitCard)
@@ -42,14 +38,9 @@ namespace NoFuture.Rand.Sp
             _pinHash = ComputePinHash(debitCard.Item2);
         }
 
-        #endregion
-
-        #region properties
         public override Pecuniam Value => Balance.GetCurrent(DateTime.UtcNow, 0F);
         public virtual ICreditCard DebitCard { get; }
-        #endregion
 
-        #region methods
         /// <summary>
         /// Returns true if <see cref="tryPin"/>
         /// equals the PIN assigned at ctor-time.
@@ -77,7 +68,5 @@ namespace NoFuture.Rand.Sp
         {
             return !string.IsNullOrWhiteSpace(somestring) && Regex.IsMatch(somestring, "[0-9]{4}");
         }
-
-        #endregion
     }
 }

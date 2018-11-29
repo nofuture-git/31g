@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Sp.Cc
         #region methods
         /// <summary>
         /// Helper method to put functionality in common vernacular 
-        /// - is the exact same as <see cref="ITransactionable.AddPositiveValue(DateTime, Pecuniam, IVoca, ITransactionId)"/>
+        /// - is the exact same as <see cref="AddPositiveValue"/> and <see cref="Credit"/>
         /// </summary>
         public Guid MakePurchase(DateTime dt, Pecuniam val, IVoca note = null)
         {
@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Sp.Cc
 
         /// <summary>
         /// Helper method to put functionality in common vernacular 
-        /// - is the exact same as <see cref="ITransactionable.AddPositiveValue(DateTime, Pecuniam, IVoca, ITransactionId)"/>
+        /// - is the exact same as <see cref="AddPositiveValue"/> and <see cref="Debit"/>
         /// </summary>
         public virtual Guid MakePayment(DateTime dt, Pecuniam val, IVoca note = null)
         {
@@ -110,7 +110,7 @@ namespace NoFuture.Rand.Sp.Cc
         }
 
         /// <summary>
-        /// For a credit card, this is the same as making a payment
+        /// This is the Accounting name for making a payment (<see cref="MakePayment"/>)
         /// </summary>
         public Guid Debit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
         {
@@ -118,7 +118,7 @@ namespace NoFuture.Rand.Sp.Cc
         }
 
         /// <summary>
-        /// For a credit card, this is the same as making a purchase 
+        /// This is the Accounting name for making a purchase (<see cref="MakePurchase"/>
         /// </summary>
         public Guid Credit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
         {

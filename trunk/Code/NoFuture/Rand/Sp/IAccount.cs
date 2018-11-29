@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Sp
         T Id { get; }
 
         /// <summary>
-        /// The complete history of the tradeline.
+        /// The accounts balance through time.
         /// </summary>
         IBalance Balance { get; }
 
