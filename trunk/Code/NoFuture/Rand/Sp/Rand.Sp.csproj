@@ -62,7 +62,7 @@
     <Compile Include="Enums\SpStatus.cs" />
     <Compile Include="FixedRateLoan.cs" />
     <Compile Include="IAccount.cs" />
-    <Compile Include="IAsset.cs" />
+    <Compile Include="IValoresTempus.cs" />
     <Compile Include="IBalance.cs" />
     <Compile Include="ILoan.cs" />
     <Compile Include="IReceivable.cs" />

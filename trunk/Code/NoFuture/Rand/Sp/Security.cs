@@ -6,12 +6,12 @@ using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
-    /// <inheritdoc cref="IAsset" />
+    /// <inheritdoc cref="IValoresTempus" />
     /// <summary>
     /// Represents a tradable security of high liquidity
     /// </summary>
     [Serializable]
-    public class Security : Pecuniam, IAsset
+    public class Security : Pecuniam, IValoresTempus
     {
         private readonly SortedDictionary<DateTime, Pecuniam> _historicData = new SortedDictionary<DateTime, Pecuniam>();
         #region ctor

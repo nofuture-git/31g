@@ -3,14 +3,14 @@ using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
-    /// <inheritdoc cref="IAsset" />
+    /// <inheritdoc cref="IValoresTempus" />
     /// <inheritdoc cref="ITradeLine" />
     /// <summary>
     /// Represents an asset as participatory set of 
     /// money records through time and the sense-of-status of said 
     /// record-set.
     /// </summary>
-    public interface IReceivable : IAsset, ITradeLine
+    public interface IReceivable : IValoresTempus, ITradeLine
     {
         /// <summary>
         /// Determins the deliquency for the given <see cref="dt"/>
