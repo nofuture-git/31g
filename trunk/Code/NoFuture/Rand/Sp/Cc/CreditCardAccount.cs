@@ -126,24 +126,6 @@ namespace NoFuture.Rand.Sp.Cc
         }
 
         /// <summary>
-        /// For a credit card, this is the same as making a payment
-        /// </summary>
-        public Guid Debit(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
-        {
-            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
-            return AddPositiveValue(source, amount, dt, description);
-        }
-
-        /// <summary>
-        /// For a credit card, this is the same as making a purchase 
-        /// </summary>
-        public Guid Credit(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
-        {
-            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
-            return AddNegativeValue(source, amount, dt, description);
-        }
-
-        /// <summary>
         /// Returns the credit card in a format
         /// like what is on a receipt.
         /// </summary>

@@ -168,44 +168,6 @@ namespace NoFuture.Rand.Sp
             return b;
         }
 
-        public virtual Guid AddPositiveValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
-        {
-            return Transfer(source as IBalance, amount, true, atTime, description);
-        }
-
-        public virtual Guid AddNegativeValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
-        {
-            return Transfer(source as IBalance, amount, false, atTime, description);
-        }
-
-        protected internal Guid Transfer(IBalance source, Pecuniam amount, bool asCredit, DateTime? atTime = null,
-            IVoca description = null)
-        {
-            if(source == null || source.IsEmpty)
-                return Guid.Empty;
-
-            amount = amount ?? Pecuniam.Zero;
-            amount = amount.GetAbs();
-            if (amount == Pecuniam.Zero)
-                return Guid.Empty;
-
-            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
-
-            if(asCredit && amount > source.GetCurrent(dt, 0f))
-                throw new WatDaFookIzDis($"The total balance is less-than the amount of {amount}.");
-
-            if(!asCredit && amount > GetCurrent(dt, 0f))
-                throw new WatDaFookIzDis($"The total balance is less-than the amount of {amount}.");
-
-            var fromSrcId = asCredit
-                ? source.AddNegativeValue(dt, amount, description)
-                : AddNegativeValue(dt, amount, description);
-            var traceEntry = new TraceTransactionId(fromSrcId, description, dt);
-            return asCredit
-                ? AddPositiveValue(dt, amount, description, traceEntry)
-                : source.AddPositiveValue(dt, amount, description, traceEntry);
-        }
-
         protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Predicate<Pecuniam> op)
         {
             var paymentsInRange = GetRange(between, op);

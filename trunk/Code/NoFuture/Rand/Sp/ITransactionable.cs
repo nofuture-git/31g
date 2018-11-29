@@ -19,15 +19,5 @@ namespace NoFuture.Rand.Sp
         /// Will consider <see cref="amt"/> as a positive value.
         /// </summary>
         Guid AddPositiveValue(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null);
-
-        /// <summary>
-        /// Takes cash from <see cref="source"/> and puts it into this instance.
-        /// </summary>
-        Guid AddPositiveValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null);
-
-        /// <summary>
-        /// Takes cash from this instance and puts it into <see cref="source"/>
-        /// </summary>
-        Guid AddNegativeValue(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null);
     }
 }

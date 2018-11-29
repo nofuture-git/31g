@@ -34,17 +34,5 @@ namespace NoFuture.Rand.Sp
         /// a credit will increase the cash of the account
         /// </summary>
         Guid Credit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null);
-
-        /// <summary>
-        /// In normal form will record debits as an increase in cash, in <see cref="IsOppositeForm"/>
-        /// a debit will reduce the cash of the account
-        /// </summary>
-        Guid Debit(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null);
-
-        /// <summary>
-        /// In normal form will record credits as a decrease in cash, in <see cref="IsOppositeForm"/>
-        /// a credit will increase the cash of the account
-        /// </summary>
-        Guid Credit(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null);
     }
 }

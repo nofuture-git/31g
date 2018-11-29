@@ -32,20 +32,6 @@ namespace NoFuture.Rand.Sp
             return IsOppositeForm ? AddPositiveValue(dt, amt, note, trace) : AddNegativeValue(dt, amt, note, trace);
         }
 
-        public Guid Debit(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
-        {
-            return IsOppositeForm
-                ? AddNegativeValue(source, amount, atTime, description)
-                : AddPositiveValue(source, amount, atTime, description);
-        }
-
-        public Guid Credit(ITransactionable source, Pecuniam amount, DateTime? atTime = null, IVoca description = null)
-        {
-            return IsOppositeForm
-                ? AddPositiveValue(source, amount, atTime, description)
-                : AddNegativeValue(source, amount, atTime, description);
-        }
-
         public override Pecuniam GetValueAt(DateTime dt)
         {
             return Balance.GetCurrent(dt, 0.0F);

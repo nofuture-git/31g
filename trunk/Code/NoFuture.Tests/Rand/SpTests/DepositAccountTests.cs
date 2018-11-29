@@ -11,26 +11,6 @@ namespace NoFuture.Rand.Tests.SpTests
     public class DepositAccountTests
     {
         [Test]
-        public void TestTransferFundsInBankAccounts()
-        {
-            var dt = DateTime.UtcNow;
-            var savingAcct = DepositAccount.RandomSavingAccount(new VocaBase("savings"), dt.AddDays(-14) );
-            var checkingAccount = DepositAccount.RandomCheckingAccount(new VocaBase("checking"), dt.AddDays(-14));
-            //initial deposit
-            checkingAccount.AddPositiveValue(dt.AddDays(-12), 1000.0D.ToPecuniam());
-
-            savingAcct.AddPositiveValue(checkingAccount, 100.ToPecuniam(), dt.AddDays(-2));
-
-            var checkingAcctValue = checkingAccount.Value;
-            var savingAcctValue = savingAcct.Value;
-            Console.WriteLine(checkingAcctValue);
-            Console.WriteLine(savingAcctValue);
-
-            Assert.AreEqual(900D.ToPecuniam(), checkingAcctValue);
-            Assert.AreEqual(100D.ToPecuniam(), savingAcctValue);
-        }
-
-        [Test]
         public void TestCtor()
         {
             //have some data from another external source
