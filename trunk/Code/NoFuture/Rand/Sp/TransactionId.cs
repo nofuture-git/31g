@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Sp
             Description = description;
         }
 
-        public IVoca Description { get; }
+        public IVoca Description { get; protected internal set; }
         public Guid UniqueId { get; }
         public DateTime AtTime { get; }
         public ITransactionId Trace { get; protected internal set; }
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Sp
             UniqueId = uniqueId;
             AtTime = atTime;
         }
-        public IVoca Description { get; }
+        public IVoca Description { get; protected internal set; }
         public Guid UniqueId { get; }
         public DateTime AtTime { get; }
         public ITransactionId Trace { get; protected internal set; }

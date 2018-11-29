@@ -18,13 +18,13 @@ digraph noFutureRandDataSp {
     Receivable -> IReceivable
     Receivable -> TradeLine
     IReceivable -> ITradeLine
-    IReceivable -> IAsset
+    IReceivable -> IValoresTempus
     LoanBase -> ILoan
     TradeLine -> ITradeLine
     ITradeLine -> ITempore
     ITradeLine -> ITransactionable
     ITradeLine -> IObviate
-    IAccount -> IAsset
+    IAccount -> IValoresTempus
     IAccount -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
     IAccount -> ITempore
     NamedReceivable -> Receivable
@@ -32,7 +32,7 @@ digraph noFutureRandDataSp {
     Balance -> IBalance
     Balance -> Journal
     VariableRateLoan -> LoanBase
-    Security -> IAsset
+    Security -> IValoresTempus
     Security -> Pecuniam
     Security -> Cusip [style="dotted", label="Id",fontname=Consolas, fontsize=8]
     Cusip -> RIdentifierWithChkDigit

@@ -106,14 +106,6 @@ namespace NoFuture.Rand.Tests.SpTests
 
             var testResult00 = testSubject.Get("Assets");
             Assert.IsNotNull(testResult00);
-            var firstAssetTransaction = testResult00.Balance?.FirstTransaction;
-            Assert.IsNotNull(firstAssetTransaction);
-            var firstAssetTransactionTrace = firstAssetTransaction.Trace;
-            Assert.IsNotNull(firstAssetTransactionTrace);
-            Assert.IsTrue(VocaBase.Equals(testInput, firstAssetTransactionTrace.Description));
-
-            Console.WriteLine(firstAssetTransaction.Trace.ToString());
-
 
             var testResult01 = testSubject.Get("Liabilities");
             Assert.IsNotNull(testResult01);

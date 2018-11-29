@@ -12,11 +12,6 @@ namespace NoFuture.Rand.Sp
         T Id { get; }
 
         /// <summary>
-        /// The accounts balance through time.
-        /// </summary>
-        IBalance Balance { get; }
-
-        /// <summary>
         /// In opposite form the account operates like a liability the default is false which
         /// operates like an asset (in the Accounting sense).  
         /// This is also known as debit-balance\credit-balance
