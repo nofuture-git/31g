@@ -56,15 +56,14 @@ namespace NoFuture.Rand.Sp
 
         protected internal IAccount<Identifier> Get(IVoca name)
         {
-            foreach (var g in _dataStore)
+            foreach (var acct in _dataStore)
             {
-                var acct = g as Account;
-                if (acct == null)
+                var acctName = acct as IVoca;
+                if (acctName == null)
                     continue;
-                if (acct.Equals(name))
+                if (VocaBase.Equals(acctName, name))
                     return acct;
             }
-
             return null;
         }
 

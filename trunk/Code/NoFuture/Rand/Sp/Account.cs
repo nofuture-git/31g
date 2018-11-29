@@ -59,11 +59,7 @@ namespace NoFuture.Rand.Sp
 
         public virtual bool Equals(IVoca name)
         {
-            if (name == null)
-                return false;
-
-            var acctId = Id as AccountId;
-            return acctId?.Equals(name) ?? Equals((object) name);
+            return name != null && VocaBase.Equals(this, name);
         }
 
         public override int GetHashCode()
