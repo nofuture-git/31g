@@ -50,6 +50,11 @@ namespace NoFuture.Rand.Sp
             return _voca.GetName(k);
         }
 
+        public bool AnyNames()
+        {
+            return _voca.AnyNames();
+        }
+
         public bool AnyOfKind(KindsOfNames k)
         {
             return _voca.AnyOfKind(k);

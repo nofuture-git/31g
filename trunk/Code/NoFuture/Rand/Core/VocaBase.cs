@@ -59,6 +59,11 @@ namespace NoFuture.Rand.Core
             return cname?.Item2;
         }
 
+        public virtual bool AnyNames()
+        {
+            return Names.Any();
+        }
+
         public virtual bool AnyOfKind(KindsOfNames k)
         {
             return Names.Any(x => x.Item1 == k);
@@ -77,12 +82,12 @@ namespace NoFuture.Rand.Core
             return Names.Any(x => string.Equals(x.Item2, name));
         }
 
-        public bool AnyOfKindAndValue(KindsOfNames k, string name)
+        public virtual bool AnyOfKindAndValue(KindsOfNames k, string name)
         {
             return Names.Any(x => x.Item1 == k && x.Item2 == name);
         }
 
-        public bool RemoveNameByKind(KindsOfNames k)
+        public virtual bool RemoveNameByKind(KindsOfNames k)
         {
             var cname = Names.FirstOrDefault(x => x.Item1 == k);
             if (cname == null)
@@ -91,7 +96,7 @@ namespace NoFuture.Rand.Core
             return true;
         }
 
-        public int RemoveNameByValue(string name)
+        public virtual int RemoveNameByValue(string name)
         {
             var cnt = 0;
             var byName = Names.Where(x => string.Equals(x.Item2, name)).ToList();
@@ -103,7 +108,7 @@ namespace NoFuture.Rand.Core
             return cnt;
         }
 
-        public bool RemoveNameByKindAndValue(KindsOfNames k, string name)
+        public virtual bool RemoveNameByKindAndValue(KindsOfNames k, string name)
         {
             var cname = Names.FirstOrDefault(x => x.Item1 == k && x.Item2 == name);
             if (cname == null)
@@ -158,12 +163,12 @@ namespace NoFuture.Rand.Core
             return itemData;
         }
 
-        public KindsOfNames[] GetAllKindsOfNames()
+        public virtual KindsOfNames[] GetAllKindsOfNames()
         {
             return Names.Select(n => n.Item1).ToArray();
         }
 
-        public void CopyFrom(IVoca voca)
+        public virtual void CopyFrom(IVoca voca)
         {
             if (voca == null)
                 return;

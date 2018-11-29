@@ -19,7 +19,6 @@ digraph noFutureRandDataSp {
     Receivable -> TradeLine
     IReceivable -> ITradeLine
     IReceivable -> IAsset
-    VocaBase -> IVoca
     LoanBase -> ILoan
     TradeLine -> ITradeLine
     ITradeLine -> ITempore
@@ -29,7 +28,6 @@ digraph noFutureRandDataSp {
     IAccount -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
     IAccount -> ITempore
     NamedReceivable -> Receivable
-    NamedReceivable -> IVoca
     ITradeLine -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
     Balance -> IBalance
     Balance -> Journal
@@ -61,5 +59,4 @@ digraph noFutureRandDataSp {
     ITransaction -> ITransactionId
     TransactionId -> ITransactionId
     TraceTransactionId -> ITransactionId
-    NamedReceivable -> VocaBase [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
 }

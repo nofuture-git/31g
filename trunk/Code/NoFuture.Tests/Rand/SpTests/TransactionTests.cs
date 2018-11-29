@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 using NoFuture.Shared.Core;
 using NUnit.Framework;
@@ -77,6 +78,36 @@ namespace NoFuture.Rand.Tests.SpTests
 
             Assert.Throws<ArgumentException>(() => testSubject.SplitOnPercent(0));
             Assert.Throws<ArgumentException>(() => testSubject.SplitOnPercent(300));
+        }
+
+        [Test]
+        public void TestGetThisAsTraceId()
+        {
+            var testSubject = new Transaction(DateTime.UtcNow, 8000M.ToPecuniam(), new VocaBase("Owner's Capital"));
+            var testResult = testSubject.GetThisAsTraceId();
+            Assert.IsNotNull(testResult);
+            Assert.AreEqual(testSubject.AtTime, testResult.AtTime);
+            Assert.AreEqual(testSubject.UniqueId, testResult.UniqueId);
+            Assert.AreEqual(testSubject.Description, testResult.Description);
+
+            testResult = testSubject.GetThisAsTraceId(DateTime.UtcNow.AddDays(1));
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(testSubject.AtTime, testResult.AtTime);
+            Assert.AreEqual(testSubject.UniqueId, testResult.UniqueId);
+            Assert.AreEqual(testSubject.Description, testResult.Description);
+
+            var journalName = new VocaBase("Journal J1");
+            testResult = testSubject.GetThisAsTraceId(DateTime.UtcNow.AddDays(1), journalName);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(testSubject.AtTime, testResult.AtTime);
+            Assert.AreEqual(Guid.Empty, testResult.UniqueId);
+            Assert.AreEqual(journalName, testResult.Description);
+
+            var testResultTrace = testResult.Trace;
+            Assert.IsNotNull(testResultTrace);
+            Assert.AreEqual(testSubject.AtTime, testResultTrace.AtTime);
+            Assert.AreEqual(testSubject.UniqueId, testResultTrace.UniqueId);
+            Assert.AreEqual(testSubject.Description, testResultTrace.Description);
         }
     }
 }

@@ -6,6 +6,11 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <summary>
+    /// The Accounting concept of a kind-of capital object that contains the 
+    /// exhuastive list of all accounts
+    /// </summary>
+    [Serializable]
     public class Ledger : IEnumerable<IAccount<Identifier>>
     {
         public const string NO_NAME_ACCOUNT = "no-name";
@@ -90,14 +95,14 @@ namespace NoFuture.Rand.Sp
             {
                 var acctName = credit.Description?.Name ?? NO_NAME_ACCOUNT;
                 var creditAcct = Get(acctName) ?? Add(acctName, false, null, credit.AtTime);
-                creditAcct.Credit(credit.AtTime, credit.Cash, null, credit.GetThisAsTraceId(dt));
+                creditAcct.Credit(credit.AtTime, credit.Cash, null, credit.GetThisAsTraceId(dt, balance as IVoca));
             }
 
             foreach (var debit in debits)
             {
                 var acctName = debit.Description?.Name ?? NO_NAME_ACCOUNT;
                 var debitAcct = Get(acctName) ?? Add(acctName, false, null, debit.AtTime);
-                debitAcct.Debit(debit.AtTime, debit.Cash, null, debit.GetThisAsTraceId(dt));
+                debitAcct.Debit(debit.AtTime, debit.Cash, null, debit.GetThisAsTraceId(dt, balance as IVoca));
             }
         }
 

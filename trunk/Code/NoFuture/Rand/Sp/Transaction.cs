@@ -93,10 +93,23 @@ namespace NoFuture.Rand.Sp
             return new Tuple<ITransaction, ITransaction>(trans1, trans2);
         }
 
-        public TraceTransactionId GetThisAsTraceId(DateTime? atTime = null)
+        public TraceTransactionId GetThisAsTraceId(DateTime? atTime = null, IVoca journalName = null)
         {
             var dt = atTime ?? AtTime;
-            return new TraceTransactionId(UniqueId, Description, dt) {Trace = Trace};
+
+            //get copy of myself as a transaction id
+            var innerTrace = new TraceTransactionId(UniqueId, Description, dt) { Trace = Trace };
+
+            //with this, consider linked-list of trace as journal -> myself -> my-trace
+            if (journalName != null && journalName.AnyNames())
+            {
+                innerTrace = new TraceTransactionId(Guid.Empty, journalName, dt)
+                {
+                    Trace = new TraceTransactionId(UniqueId, Description, AtTime) {Trace = Trace}
+                };
+            }
+
+            return innerTrace;
         }
 
         public override bool Equals(object obj)

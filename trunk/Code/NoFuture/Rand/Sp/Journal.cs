@@ -9,9 +9,14 @@ namespace NoFuture.Rand.Sp
     /// Represent an ordered set of <see cref="Transaction"/> in time.
     /// </summary>
     [Serializable]
-    public class Journal
+    public class Journal : VocaBase
     {
         private readonly List<ITransaction> _transactions = new List<ITransaction>();
+
+        public Journal(){ }
+        public Journal(string name) : base(name) { }
+        public Journal(string name, string group) : base(name, group) { }
+
         protected internal List<ITransaction> Transactions
         {
             get
@@ -34,8 +39,11 @@ namespace NoFuture.Rand.Sp
         public bool IsEmpty => _transactions.Count <= 0;
 
         public ITransaction FirstTransaction => Transactions.FirstOrDefault();
+
         public ITransaction LastTransaction => Transactions.LastOrDefault();
+
         public int TransactionCount => Transactions.Count;
+
         public double DaysPerYear { get; set; } = Shared.Core.Constants.DBL_TROPICAL_YEAR;
 
         public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)

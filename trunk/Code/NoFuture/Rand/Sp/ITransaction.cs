@@ -43,7 +43,10 @@ namespace NoFuture.Rand.Sp
         /// <param name="atTime">
         /// Optional, allows for overriding the property of like name.
         /// </param>
+        /// <param name="journalName">
+        /// Optional, allow the caller to set the trace in the context of a journal
+        /// </param>
         /// <returns></returns>
-        TraceTransactionId GetThisAsTraceId(DateTime? atTime = null);
+        TraceTransactionId GetThisAsTraceId(DateTime? atTime = null, IVoca journalName = null);
     }
 }

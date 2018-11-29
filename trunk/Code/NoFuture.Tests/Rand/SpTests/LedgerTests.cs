@@ -70,7 +70,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestPostBalance()
         {
-            var testInput = new Balance();
+            var testInput = new Balance("Journal-552");
             var dt = DateTime.UtcNow;
             var assets = new VocaBase("Assets");
             var liabilities = new VocaBase("Liabilities");
@@ -108,7 +108,10 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.IsNotNull(testResult00);
             var firstAssetTransaction = testResult00.Balance?.FirstTransaction;
             Assert.IsNotNull(firstAssetTransaction);
-            Assert.IsNotNull(firstAssetTransaction.Trace);
+            var firstAssetTransactionTrace = firstAssetTransaction.Trace;
+            Assert.IsNotNull(firstAssetTransactionTrace);
+            Assert.IsTrue(VocaBase.Equals(testInput, firstAssetTransactionTrace.Description));
+
             Console.WriteLine(firstAssetTransaction.Trace.ToString());
 
 

@@ -31,6 +31,12 @@ namespace NoFuture.Rand.Core
         string GetName(KindsOfNames k);
 
         /// <summary>
+        /// Asserts if there is any names present whatsoever.
+        /// </summary>
+        /// <returns></returns>
+        bool AnyNames();
+
+        /// <summary>
         /// Asserts if there is an entry by the given <see cref="KindsOfNames"/>
         /// </summary>
         /// <param name="k"></param>

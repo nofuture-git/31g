@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Shared.Core;
 using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Sp
@@ -14,7 +12,6 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class Balance : Journal, IBalance
     {
-        #region fields
         private readonly Predicate<Pecuniam> _debitOp = x => (x ?? Pecuniam.Zero).Amount < 0;
         private readonly Predicate<Pecuniam> _creditOp = x => (x ?? Pecuniam.Zero).Amount > 0;
         private readonly Predicate<Pecuniam> _allOp = x => true;
@@ -23,9 +20,11 @@ namespace NoFuture.Rand.Sp
             DateTime.Compare(x.AtTime, toDt) <= 0;
         private readonly Func<ITransaction, DateTime, bool> _exclusiveTimes = (x, toDt) =>
             DateTime.Compare(x.AtTime, toDt) < 0;
-        #endregion
 
-        #region methods
+        public Balance(){ }
+        public Balance(string name) :base(name) { }
+        public Balance(string name, string group) : base(name, group) { }
+
         public Pecuniam GetDebitSum(Tuple<DateTime, DateTime> between)
         {
             return GetRangeSum(between, _debitOp);
@@ -207,7 +206,5 @@ namespace NoFuture.Rand.Sp
         {
             return string.Join("\n", Transactions);
         }
-
-        #endregion
     }
 }
