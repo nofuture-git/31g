@@ -90,14 +90,14 @@ namespace NoFuture.Rand.Sp
             foreach (var credit in credits)
             {
                 var acctName = credit.Description?.Name ?? NO_NAME_ACCOUNT;
-                var creditAcct = Get(acctName) ?? Add(acctName, false);
+                var creditAcct = Get(acctName) ?? Add(acctName, false, null, credit.AtTime);
                 creditAcct.Credit(credit.AtTime, credit.Cash, null, credit.GetThisAsTraceId(dt));
             }
 
             foreach (var debit in debits)
             {
                 var acctName = debit.Description?.Name ?? NO_NAME_ACCOUNT;
-                var debitAcct = Get(acctName) ?? Add(acctName, false);
+                var debitAcct = Get(acctName) ?? Add(acctName, false, null, debit.AtTime);
                 debitAcct.Debit(debit.AtTime, debit.Cash, null, debit.GetThisAsTraceId(dt));
             }
         }

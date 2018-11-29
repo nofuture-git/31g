@@ -110,6 +110,11 @@ namespace NoFuture.Rand.Tests.SpTests
 
             var testResult00 = testSubject.Get("Assets");
             Assert.IsNotNull(testResult00);
+            var firstAssetTransaction = testResult00.Balance?.FirstTransaction;
+            Assert.IsNotNull(firstAssetTransaction);
+            Assert.IsNotNull(firstAssetTransaction.Trace);
+            Console.WriteLine(firstAssetTransaction.Trace.ToString());
+
 
             var testResult01 = testSubject.Get("Liabilities");
             Assert.IsNotNull(testResult01);

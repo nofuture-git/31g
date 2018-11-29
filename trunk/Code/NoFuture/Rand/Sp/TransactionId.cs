@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Sp
         public ITransactionId Trace { get; protected internal set; }
         public override string ToString()
         {
-            return new Tuple<Guid, string, DateTime>(UniqueId, Description?.ToString(), AtTime).ToString();
+            return new Tuple<Guid, string, DateTime>(UniqueId, Description?.Name, AtTime).ToString();
         }
     }
 }
