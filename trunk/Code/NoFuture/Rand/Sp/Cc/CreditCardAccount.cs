@@ -116,16 +116,18 @@ namespace NoFuture.Rand.Sp.Cc
         /// <summary>
         /// This is the Accounting name for making a payment (<see cref="MakePayment"/>)
         /// </summary>
-        public Guid Debit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
+        public Guid Debit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
+            var dt = atTime ?? Balance.LastTransaction.AtTime;
             return AddNegativeValue(dt, amt, note, trace);
         }
 
         /// <summary>
         /// This is the Accounting name for making a purchase (<see cref="MakePurchase"/>
         /// </summary>
-        public Guid Credit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
+        public Guid Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
+            var dt = atTime ?? Balance.LastTransaction.AtTime;
             return AddPositiveValue(dt, amt, note, trace);
         }
 

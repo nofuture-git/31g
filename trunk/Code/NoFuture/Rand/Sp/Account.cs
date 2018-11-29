@@ -27,13 +27,15 @@ namespace NoFuture.Rand.Sp
 
         public bool IsOppositeForm { get; }
 
-        public Guid Debit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
+        public Guid Debit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
+            var dt = atTime ?? Balance.LastTransaction.AtTime;
             return IsOppositeForm ? AddNegativeValue(dt, amt, note, trace) : AddPositiveValue(dt, amt, note, trace);
         }
 
-        public Guid Credit(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
+        public Guid Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
+            var dt = atTime ?? Balance.LastTransaction.AtTime;
             return IsOppositeForm ? AddPositiveValue(dt, amt, note, trace) : AddNegativeValue(dt, amt, note, trace);
         }
 

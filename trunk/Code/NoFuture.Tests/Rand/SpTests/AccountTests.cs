@@ -51,12 +51,12 @@ namespace NoFuture.Rand.Tests.SpTests
 
             //debits add cash, credits reduce cash
             var assets = new Account(new AccountId("assets"), dt.AddDays(-2), KindsOfAccounts.Asset, false);
-            assets.Debit(dt.AddDays(-1), 10000m.ToPecuniam(), new VocaBase("first debit"));
+            assets.Debit(10000m.ToPecuniam(), new VocaBase("first debit"), dt.AddDays(-1));
             Console.WriteLine(assets.Value);
             Assert.AreEqual(10000m.ToPecuniam(), assets.Value);
 
             var liabilities = new Account(new AccountId("liabilities"),  dt.AddDays(-2), KindsOfAccounts.Asset, true);
-            liabilities.Credit(dt.AddDays(-1), 10000M.ToPecuniam(), new VocaBase("first credit"));
+            liabilities.Credit(10000M.ToPecuniam(), new VocaBase("first credit"), dt.AddDays(-1));
             Console.WriteLine(liabilities.Value);
             Assert.AreEqual(10000m.ToPecuniam(), liabilities.Value);
         }

@@ -97,14 +97,14 @@ namespace NoFuture.Rand.Sp
                 var acctName = credit.Description?.Name ?? NO_NAME_ACCOUNT;
                 //TODO - the kind of account does and should not travel with Journal - so where's it come from?
                 var creditAcct = Get(acctName) ?? Add(acctName, KindsOfAccounts.Asset, false, null, credit.AtTime);
-                creditAcct.Credit(credit.AtTime, credit.Cash, null, credit.GetThisAsTraceId(dt, balance as IVoca));
+                creditAcct.Credit(credit.Cash, null, credit.AtTime, credit.GetThisAsTraceId(dt, balance as IVoca));
             }
 
             foreach (var debit in debits)
             {
                 var acctName = debit.Description?.Name ?? NO_NAME_ACCOUNT;
                 var debitAcct = Get(acctName) ?? Add(acctName, KindsOfAccounts.Asset, false, null, debit.AtTime);
-                debitAcct.Debit(debit.AtTime, debit.Cash, null, debit.GetThisAsTraceId(dt, balance as IVoca));
+                debitAcct.Debit(debit.Cash, null, debit.AtTime, debit.GetThisAsTraceId(dt, balance as IVoca));
             }
         }
 
