@@ -1,12 +1,32 @@
 digraph noFutureRandDataSp {
-    node [fontname=Consolas, shape=box]
+    node [fontname=Consolas, shape=box fontcolor="blue"]
+    graph [splines=ortho];
     
-    StringId [label="IIdentifier<T>"]
+    LoanBase [fontcolor="lightblue"]
+    CreditCard [fontcolor="lightblue"]
+    CreditScore [fontcolor="lightblue"]
+    ICreditCard [fontcolor="grey"]
+    IAccount [fontcolor="grey"]
+    IBalance [fontcolor="grey"]
+    ILoan [fontcolor="grey"]
+    IReceivable [fontcolor="grey"]
+    ITradeLine [fontcolor="grey"]
+    ITransaction [fontcolor="grey"]
+    ITransactionable [fontcolor="grey"]
+    ITransactionId [fontcolor="grey"]
+    IValoresTempus [fontcolor="grey"]
+    LoanBase [fontcolor="lightblue"]
+    Receivable [fontcolor="lightblue"]
+    TransactionId [fontcolor="lightblue"]
+    DepositAccount [fontcolor="lightblue"]
+    Identifier [fontcolor="lightblue"]
+    Transactions [fontcolor="lightblue"]
     
     Mortgage -> SecuredFixedRateLoan
     SecuredFixedRateLoan -> FixedRateLoan
     CreditCardAccount -> FixedRateLoan
     CreditCardAccount -> IAccount
+    CreditCardAccount -> ICreditCard [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
     FixedRateLoan -> LoanBase
     LoanBase -> NamedReceivable
     Rent -> NamedReceivable
@@ -21,36 +41,31 @@ digraph noFutureRandDataSp {
     IReceivable -> IValoresTempus
     LoanBase -> ILoan
     TradeLine -> ITradeLine
-    ITradeLine -> ITempore
     ITradeLine -> ITransactionable
-    ITradeLine -> IObviate
     IAccount -> IValoresTempus
+    IAccount -> Identifier [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
     NamedReceivable -> Receivable
-    ITradeLine -> IBalance [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
+    ITradeLine -> IBalance [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
     Balance -> IBalance
     Balance -> Transactions
     VariableRateLoan -> LoanBase
     Security -> IValoresTempus
     Security -> Pecuniam
-    Security -> Cusip [style="dotted", label="Id",fontname=Consolas, fontsize=8]
-    Cusip -> RIdentifierWithChkDigit
-    RIdentifierWithChkDigit -> RIdentifier
-    RIdentifier -> Identifier
-    Pecuniam -> Currency [style="dotted", label="Id",fontname=Consolas, fontsize=8]
+    Security -> Cusip [style="dotted", taillabel="Id",fontname=Consolas, fontsize=8]
+    Cusip -> Identifier
+    Pecuniam -> Currency [style="dotted", taillabel="Id",fontname=Consolas, fontsize=8]
     Currency -> Identifier
-    Pecuniam -> INumera
     CreditScore -> Identifier
     PersonalCreditScore -> CreditScore
-    CreditCardNumber -> RIdentifierWithChkDigit
+    CreditCardNumber -> Identifier
     VisaCc -> CreditCard
     MasterCardCc -> CreditCard
     AmexCc -> CreditCard
     DiscoverCc -> CreditCard
     CreditCard -> ICreditCard
-    ICreditCard -> CreditCardNumber [style="dotted" label="HAS-A",fontname=Consolas, fontsize=8]
-    Identifier -> StringId
+    ICreditCard -> CreditCardNumber [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
     IBalance -> ITransactionable
-    AccountId -> RIdentifier
+    AccountId -> Identifier
     Transactions -> ITransaction [style="dotted" arrowhead="diamond"]
     Transactions -> ITransactionable
     Transaction -> ITransaction
