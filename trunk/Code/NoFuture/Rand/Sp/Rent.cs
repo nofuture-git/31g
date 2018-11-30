@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Sp
             }
             Terminus = _dtOfFirstFullRentDue.AddMonths(forMonths);
             var fullTermAmt = _proRatedAmt + new Pecuniam(monthlyRent.Amount*forMonths);
-            Balance.AddPositiveValue(signing, fullTermAmt, new VocaBase("Lease Signing"));
+            Balance.AddPositiveValue(signing, fullTermAmt, new TransactionNote("Lease Signing"));
             LeaseTermInMonths = forMonths;
             Deposit = deposit;
             MonthlyPmt = monthlyRent;
@@ -192,7 +192,7 @@ namespace NoFuture.Rand.Sp
             var randRent = rent.MonthlyPmt;
             //create payment history until current
             var firstPmt = rent.GetMinPayment(randDate);
-            var note = property == null ? null : new VocaBase(property.ToString());
+            var note = property == null ? null : new TransactionNote(property.ToString());
             rent.PayRent(randDate.AddDays(1), firstPmt, note);
 
             var rentDueDate = randDate.Month == 12
@@ -206,7 +206,7 @@ namespace NoFuture.Rand.Sp
                 if (randomActsIrresponsible())
                     paidRentOn = paidRentOn.AddDays(Etx.RandomInteger(5, 15));
 
-                note = rent.Id != null ? new VocaBase(rent.Id.ToString()) : null;
+                note = rent.Id != null ? new TransactionNote(rent.Id.ToString()) : null;
 
                 rent.PayRent(paidRentOn, randRent, note);
                 rentDueDate = rentDueDate.AddMonths(1);

@@ -10,6 +10,11 @@ namespace NoFuture.Rand.Sp
         {
         }
 
+        public FixedRateLoan(DateTime openedDate, Pecuniam amount) : base(openedDate, amount)
+        {
+
+        }
+
         public override Pecuniam Value => Balance.GetCurrent(DateTime.UtcNow, Rate);
         public override Pecuniam GetValueAt(DateTime dt)
         {

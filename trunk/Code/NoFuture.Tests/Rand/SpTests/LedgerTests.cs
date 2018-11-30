@@ -115,6 +115,25 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.IsNotNull(testResult02);
         }
 
+        [Test]
+        public void TestFromText()
+        {
+            var ledger = new Ledger();
+            var journal = new Journal(new AccountId("J1"));
+            var yyyy = DateTime.Today.Year;
+            //on October 1, such-and-such invests 10000 cas in Company
+            journal.Debit(10000M.ToPecuniam(), new VocaBase("Cash"), new DateTime(yyyy, 10, 1))
+                .Credit(10000M.ToPecuniam(), new VocaBase("Owners Capital"));
 
+            ledger.PostBalance(journal);
+
+            //on Oct 1, Company purchases office equipment costing 5000 
+            //USD by signing 3-month, 12%, 5000 USD note payable
+            journal.Debit(5000M.ToPecuniam(), new VocaBase("Equipment"), new DateTime(yyyy, 10, 1))
+                .Credit(5000M.ToPecuniam(), new VocaBase("Notes Payable"));
+
+
+
+        }
     }
 }

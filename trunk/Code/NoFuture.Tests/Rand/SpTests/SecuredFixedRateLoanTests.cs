@@ -62,7 +62,8 @@ namespace NoFuture.Rand.Tests.SpTests
         {
             var testLoan = new SecuredFixedRateLoan(null, new DateTime(2013, 10, 13), 0.016667f, new Pecuniam(1461.62M))
             {
-                Rate = 0.08499f
+                Rate = 0.08499f,
+                MinPaymentRate = 0.016667f
             };
             testLoan.AddNegativeValue(Convert.ToDateTime("2013-11-20 00:00:00.0000"), new Pecuniam(37.26M), new VocaBase("Vehicle Payment"));
             testLoan.AddNegativeValue(Convert.ToDateTime("2013-12-25 00:00:00.0000"), new Pecuniam(37.26M), new VocaBase("Vehicle Payment"));

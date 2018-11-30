@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Sp
             if(string.IsNullOrWhiteSpace(note))
                 AddNegativeValue(dt,amount);
             else
-                AddNegativeValue(dt, amount, new VocaBase(note));
+                AddNegativeValue(dt, amount, new TransactionNote(note));
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Sp
             if (string.IsNullOrWhiteSpace(note))
                 AddPositiveValue(dt, amount);
             else
-                AddPositiveValue(dt, amount, new VocaBase(note));
+                AddPositiveValue(dt, amount, new TransactionNote(note));
         }
 
         /// <summary>

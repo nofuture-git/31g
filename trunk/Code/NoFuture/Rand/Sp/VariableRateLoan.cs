@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc />
     /// <summary>
     /// A loan whose rate changes in time
     /// </summary>
@@ -13,10 +13,15 @@ namespace NoFuture.Rand.Sp
         #region ctors
 
         public VariableRateLoan(DateTime openedDate, float minPaymentRate, Pecuniam amt = null)
-            : base(openedDate, minPaymentRate)
+            : this(openedDate, amt)
         {
-            if (amt != null && amt.Amount != 0)
-                Balance.AddPositiveValue(openedDate, amt.GetAbs(), new VocaBase("Initial Transaction"));
+            _minPaymentRate = minPaymentRate;
+        }
+
+        public VariableRateLoan(DateTime openedDate, Pecuniam amount) : base(openedDate, amount)
+        {
+            if (amount != null && amount.Amount != 0)
+                Balance.AddPositiveValue(openedDate, amount.GetAbs(), new TransactionNote("Initial Transaction"));
         }
 
         #endregion

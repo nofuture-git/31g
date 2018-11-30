@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Sp
 {
@@ -13,17 +11,24 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public abstract class LoanBase<T> : NamedReceivable, ILoan
     {
+        public const float DF_MIN_PMT_RATE = 0.0125F;
+
         protected float _minPaymentRate;
 
-        protected LoanBase(DateTime openedDate, float minPaymentRate, Pecuniam amount = null) :base(openedDate)
+        protected LoanBase(DateTime openedDate, float minPaymentRate, Pecuniam amount = null) :this(openedDate, amount)
+        {
+            _minPaymentRate = minPaymentRate;
+        }
+
+        protected LoanBase(DateTime openedDate, Pecuniam amount) : base(openedDate)
         {
             if (amount != null && amount.Amount != 0)
             {
-                Balance.AddPositiveValue(openedDate, amount.GetAbs(), new VocaBase("Initial Transaction"));
+                Balance.AddPositiveValue(openedDate, amount.GetAbs(), new TransactionNote("Initial Transaction"));
             }
             FormOfCredit = Enums.FormOfCredit.Installment;
             DueFrequency = DefaultDueFrequency;
-            _minPaymentRate = minPaymentRate;
+            _minPaymentRate = DF_MIN_PMT_RATE;
         }
 
         public virtual float MinPaymentRate

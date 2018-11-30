@@ -88,6 +88,7 @@
     <Compile Include="TradeLine.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="TransactionComparer.cs" />
+    <Compile Include="TransactionNote.cs" />
     <Compile Include="Transactions.cs" />
     <Compile Include="TransactionId.cs" />
     <Compile Include="VariableRateLoan.cs" />

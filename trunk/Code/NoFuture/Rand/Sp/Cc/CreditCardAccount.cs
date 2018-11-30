@@ -12,10 +12,6 @@ namespace NoFuture.Rand.Sp.Cc
     [Serializable]
     public class CreditCardAccount : FixedRateLoan, IAccount<Identifier>
     {
-        #region constants
-        public const float DF_MIN_PMT_RATE = 0.0125F;
-        #endregion
-
         #region ctor
         public CreditCardAccount(ICreditCard cc, float minPaymentRate, Pecuniam ccMax = null)
             : base(cc.CardHolderSince, minPaymentRate <= 0 ? DF_MIN_PMT_RATE : minPaymentRate)

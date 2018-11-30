@@ -267,7 +267,7 @@ namespace NoFuture.Rand.Sp
             sumOfAllHistory = sumOfAllHistory ?? Pecuniam.RandomPecuniam(30, 200);
             var oneTropicalYearAgo = DateTime.Today.Add(Constants.TropicalYear.Negate());
             var start = inception ?? oneTropicalYearAgo;
-            var tl = new NamedReceivable(new VocaBase(name, groupName))
+            var tl = new NamedReceivable(new TransactionNote(name, groupName))
             {
                 Inception = start,
                 Terminus = terminus,

@@ -171,6 +171,9 @@ namespace NoFuture.Rand.Sp
         {
             var dict = new SortedDictionary<DateTime,Pecuniam>();
 
+            if (FirstTransaction == null)
+                return dict;
+
             var fromDt = from ?? FirstTransaction.AtTime;
             var toDt = to ?? LastTransaction.AtTime;
 
