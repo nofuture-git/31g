@@ -98,5 +98,15 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <returns></returns>
         IBalance GetInverse();
+
+        /// <summary>
+        /// Gets ordered table of dates-to-cash sum for all the days between <see cref="from"/> and <see cref="to"/>
+        /// </summary>
+        /// <param name="from">Optional, will use first transaction&apos;s date if null</param>
+        /// <param name="to">Optional, will use last transaction&apos;s date if null</param>
+        /// <returns>
+        /// A sorted dictionary of the date-only to the sum of that day - dates with no transactions will be omitted.
+        /// </returns>
+        SortedDictionary<DateTime, Pecuniam> GetSumPerDay(DateTime? from = null, DateTime? to = null);
     }
 }

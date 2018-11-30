@@ -272,5 +272,49 @@ namespace NoFuture.Rand.Tests.SpTests
             Assert.IsTrue(testResult.Sum(x => x.Cash.Amount) < 0);
 
         }
+
+        [Test]
+        public void TestGetSumPerDay()
+        {
+            var testBalance = new Balance();
+            var origDt = DateTime.Now.AddDays(-7);
+            var dt = origDt;
+
+            testBalance.AddPositiveValue(dt, 1500M.ToPecuniam(), new VocaBase("AssetAccount00"));
+            testBalance.AddNegativeValue(dt, 1500M.ToPecuniam(), new VocaBase("LiabilityAccount00"));
+
+            //the next day
+            dt = dt.AddDays(1);
+
+            //jagged balance
+            testBalance.AddPositiveValue(dt, 150M.ToPecuniam(), new VocaBase("AssetAccount01"));
+            testBalance.AddPositiveValue(dt.AddMinutes(30), 250M.ToPecuniam(), new VocaBase("AssetAccount00"));
+
+            //skip two days
+            dt = dt.AddDays(4);
+            testBalance.AddPositiveValue(dt, 1500M.ToPecuniam(), new VocaBase("AssetAccount00"));
+            testBalance.AddNegativeValue(dt.AddMinutes(30), 900M.ToPecuniam(), new VocaBase("LiabilityAccount00"));
+            testBalance.AddNegativeValue(dt.AddHours(3), 600M.ToPecuniam(), new VocaBase("LiabilityAccount01"));
+
+            var testResult = testBalance.GetSumPerDay();
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(0, testResult.Count);
+
+            Assert.IsTrue(testResult.ContainsKey(origDt.Date));
+            var trAtDate = testResult[origDt.Date];
+            Assert.IsNotNull(trAtDate);
+            Assert.AreEqual(Pecuniam.Zero, trAtDate);
+
+            Assert.IsTrue(testResult.ContainsKey(origDt.AddDays(1).Date));
+            trAtDate = testResult[origDt.AddDays(1).Date];
+            Assert.IsNotNull(trAtDate);
+            Assert.AreNotEqual(Pecuniam.Zero, trAtDate);
+
+            Assert.IsTrue(testResult.ContainsKey(origDt.AddDays(5).Date));
+            trAtDate = testResult[origDt.AddDays(5).Date];
+            Assert.IsNotNull(trAtDate);
+            Assert.AreEqual(Pecuniam.Zero, trAtDate);
+
+        }
     }
 }

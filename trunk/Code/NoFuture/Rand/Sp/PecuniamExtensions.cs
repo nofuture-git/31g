@@ -150,5 +150,13 @@ namespace NoFuture.Rand.Sp
                 p += i?.AveragePerDueFrequency(Constants.TropicalYear) ?? Pecuniam.Zero;
             return p;
         }
+
+        public static Pecuniam Sum(this IEnumerable<ITransaction> items)
+        {
+            if(items == null || !items.Any())
+                return Pecuniam.Zero;
+
+            return items.Select(t => t.Cash).GetSum();
+        }
     }
 }

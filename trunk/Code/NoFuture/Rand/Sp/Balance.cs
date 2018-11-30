@@ -167,6 +167,47 @@ namespace NoFuture.Rand.Sp
             return b;
         }
 
+        public SortedDictionary<DateTime, Pecuniam> GetSumPerDay(DateTime? from = null, DateTime? to = null)
+        {
+            var dict = new SortedDictionary<DateTime,Pecuniam>();
+
+            var fromDt = from ?? FirstTransaction.AtTime;
+            var toDt = to ?? LastTransaction.AtTime;
+
+            var targetTransactions = GetTransactions(fromDt, toDt, true);
+            if (targetTransactions == null || !targetTransactions.Any())
+                return dict;
+
+            //drop the times and make sure these are in the correct order
+            var olderDate = GetOlderDate(fromDt, toDt).Date;
+            var newerDate = GetNewerDate(fromDt, toDt).Date;
+
+            //need spread between oldest and newest plus one since we have a day-zero
+            var wholeDaysBetween = (newerDate - olderDate).Days + 1;
+
+            //set a per-iteration date
+            var workingDate = olderDate;
+
+            for (var i = 1; i <= wholeDaysBetween; i++)
+            {
+                //get all the transactions from this day
+                var transactionsPerdayI = targetTransactions.Where(t => t.AtTime.Date == workingDate).ToList();
+
+                //omit dates which have no transactions
+                if (!transactionsPerdayI.Any())
+                {
+                    workingDate = olderDate.AddDays(i);
+                    continue;
+                }
+
+                dict.Add(workingDate, transactionsPerdayI.Sum());
+
+                workingDate = olderDate.AddDays(i);
+            }
+
+            return dict;
+        }
+
         protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Predicate<Pecuniam> op)
         {
             var paymentsInRange = GetRange(between, op);
@@ -190,8 +231,8 @@ namespace NoFuture.Rand.Sp
             if (fromDt.Equals(toDt))
                 return new List<ITransaction>();
 
-            var olderDate = DateTime.Compare(fromDt, toDt) < 0 ? fromDt : toDt;
-            var newerDate = DateTime.Compare(toDt, fromDt) > 0 ? toDt : fromDt;
+            var olderDate = GetOlderDate(fromDt, toDt);
+            var newerDate = GetNewerDate(fromDt, toDt);
 
             op = op ?? _allOp;
 
@@ -200,6 +241,16 @@ namespace NoFuture.Rand.Sp
             return DataSet.Where(
                     x => op(x.Cash) && DateTime.Compare(x.AtTime, olderDate) >= 0 && uptoOp(x, newerDate))
                 .ToList();
+        }
+
+        private DateTime GetOlderDate(DateTime fromDt, DateTime toDt)
+        {
+            return DateTime.Compare(fromDt, toDt) < 0 ? fromDt : toDt;
+        }
+
+        private DateTime GetNewerDate(DateTime fromDt, DateTime toDt)
+        {
+            return DateTime.Compare(toDt, fromDt) > 0 ? toDt : fromDt;
         }
 
         public override string ToString()
