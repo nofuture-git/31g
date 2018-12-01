@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp.Enums;
 
@@ -80,7 +81,7 @@ namespace NoFuture.Rand.Sp
             if (!IsDoubleBookEntry)
                 return;
 
-            var isNewDay = atTime.Date != WorkingDate.Date;
+            var isNewDay = IsNewDay(atTime);
             if (!isNewDay)
                 return;
             var sumPerDay = GetSumPerDay();
@@ -95,6 +96,11 @@ namespace NoFuture.Rand.Sp
                                                     $"balance {string.Join(", ", inbalanceDays.Select(d => d.ToString("d")))}.  " +
                                                     $"Either correct these dates or turn off {nameof(IsDoubleBookEntry)}");
             }
+        }
+
+        protected internal bool IsNewDay(DateTime atTime)
+        {
+            return atTime.Date != WorkingDate.Date;
         }
     }
 }

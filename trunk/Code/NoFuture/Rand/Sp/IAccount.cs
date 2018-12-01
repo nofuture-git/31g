@@ -32,5 +32,7 @@ namespace NoFuture.Rand.Sp
         /// a credit will increase the cash of the account
         /// </summary>
         IAccount<T> Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null);
+
+        bool AnyTransaction(Predicate<ITransactionId> filter);
     }
 }

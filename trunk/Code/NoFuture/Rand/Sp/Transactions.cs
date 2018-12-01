@@ -5,8 +5,9 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc cref="ITransactionable"/>
     /// <summary>
-    /// Represent an ordered set of <see cref="Transaction"/> in time.
+    /// Represent an ordered set of <see cref="T:NoFuture.Rand.Sp.Transaction" /> in time.
     /// </summary>
     [Serializable]
     public abstract class Transactions : VocaBase, ITransactionable
@@ -16,14 +17,6 @@ namespace NoFuture.Rand.Sp
         protected Transactions(string name, string group) : base(name, group) { }
 
         protected internal SortedSet<ITransaction> DataSet { get; } = new SortedSet<ITransaction>(new TransactionComparer());
-
-        protected void AddTransaction(ITransaction t)
-        {
-            if (t != null)
-            {
-                DataSet.Add(t);
-            }
-        }
 
         protected internal IComparer<ITransaction> Comparer { get; } = new TransactionComparer();
 
@@ -37,35 +30,31 @@ namespace NoFuture.Rand.Sp
 
         public double DaysPerYear { get; set; } = Shared.Core.Constants.DBL_TROPICAL_YEAR;
 
-        public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
+        public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amount, IVoca note = null, ITransactionId trace = null)
         {
-            if (amnt == null)
+            if (amount == null)
                 return Guid.Empty;
-            if (amnt == Pecuniam.Zero)
+            if (amount == Pecuniam.Zero)
                 return Guid.Empty;
             while (DataSet.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {
                 dt = dt.AddTicks(1L);
             }
-            var t = new Transaction(dt, amnt.GetNeg(), note) { Trace = trace };
-            AddTransaction(t);
-            return t.UniqueId;
+            return Transaction.AddTransaction(DataSet, dt, amount.GetNeg(), note, trace);
         }
 
-        public virtual Guid AddPositiveValue(DateTime dt, Pecuniam amnt, IVoca note = null, ITransactionId trace = null)
+        public virtual Guid AddPositiveValue(DateTime dt, Pecuniam amount, IVoca note = null, ITransactionId trace = null)
         {
-            if (amnt == null)
+            if (amount == null)
                 return Guid.Empty;
-            if (amnt == Pecuniam.Zero)
+            if (amount == Pecuniam.Zero)
                 return Guid.Empty;
             while (DataSet.Any(x => DateTime.Compare(x.AtTime, dt) == 0))
             {
                 dt = dt.AddTicks(1L);
             }
 
-            var t = new Transaction(dt, amnt.GetAbs(), note) {Trace = trace};
-            AddTransaction(t);
-            return t.UniqueId;
+            return Transaction.AddTransaction(DataSet, dt, amount.GetAbs(), note, trace);
         }
     }
 }

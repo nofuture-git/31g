@@ -45,10 +45,10 @@ namespace NoFuture.Rand.Opes.US
         public override Pecuniam Total => CurrentItems.Sum() + TotalAnnualNetEmploymentIncome;
 
         public virtual Pecuniam TotalAnnualNetEmploymentIncome =>
-            CurrentEmployment.Select(e => e.TotalAnnualNetPay).GetSum();
+            CurrentEmployment.Select(e => e.TotalAnnualNetPay).Sum();
 
         public virtual Pecuniam TotalAnnualGrossEmploymentIncome =>
-            CurrentEmployment.Select(e => e.Total).GetSum();
+            CurrentEmployment.Select(e => e.Total).Sum();
 
         protected internal virtual List<ILaboris> Employment
         {

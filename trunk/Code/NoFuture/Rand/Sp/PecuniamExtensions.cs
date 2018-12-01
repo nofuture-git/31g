@@ -69,7 +69,7 @@ namespace NoFuture.Rand.Sp
             return new Pecuniam(x);
         }
 
-        public static Pecuniam GetSum(this IEnumerable<Pecuniam> x)
+        public static Pecuniam Sum(this IEnumerable<Pecuniam> x)
         {
             return x == null ? Pecuniam.Zero : x.Aggregate(Pecuniam.Zero, (current, i) => current + i);
         }
@@ -140,6 +140,11 @@ namespace NoFuture.Rand.Sp
             return p;
         }
 
+        /// <summary>
+        /// Gets the sum of the average-per-year for each of the items
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public static Pecuniam AnnualSum(this IEnumerable<IReceivable> items)
         {
             if (items == null || !items.Any())
@@ -151,12 +156,33 @@ namespace NoFuture.Rand.Sp
             return p;
         }
 
+        /// <summary>
+        /// Gets the sum of each transaction&apos;s Cash
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public static Pecuniam Sum(this IEnumerable<ITransaction> items)
         {
             if(items == null || !items.Any())
                 return Pecuniam.Zero;
 
-            return items.Select(t => t.Cash).GetSum();
+            return items.Select(t => t.Cash).Sum();
+        }
+
+        /// <summary>
+        /// Calculates the sum of all item&apos;s Value
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static Pecuniam Sum<T>(this IEnumerable<IAccount<T>> items)
+        {
+            if (items == null || !items.Any())
+                return Pecuniam.Zero;
+
+            var p = Pecuniam.Zero;
+            foreach (var i in items)
+                p += i?.Value ?? Pecuniam.Zero;
+            return p;
         }
     }
 }

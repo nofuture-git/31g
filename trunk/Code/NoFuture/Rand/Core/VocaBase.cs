@@ -25,9 +25,8 @@ namespace NoFuture.Rand.Core
             Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));
         }
 
-        public VocaBase(string name, string groupName)
+        public VocaBase(string name, string groupName): this(name)
         {
-            Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Legal, name));
             Names.Add(new Tuple<KindsOfNames, string>(KindsOfNames.Group, groupName));
         }
 
@@ -166,7 +165,7 @@ namespace NoFuture.Rand.Core
             return Names.Select(n => n.Item1).ToArray();
         }
 
-        public virtual void CopyNamesFrom(IVoca voca)
+        public void CopyNamesFrom(IVoca voca)
         {
             if (voca == null)
                 return;

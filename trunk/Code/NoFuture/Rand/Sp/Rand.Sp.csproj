@@ -85,6 +85,7 @@
     <Compile Include="SavingsAccount.cs" />
     <Compile Include="SecuredFixedRateLoan.cs" />
     <Compile Include="Security.cs" />
+    <Compile Include="TraceTransactionId.cs" />
     <Compile Include="TradeLine.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="TransactionComparer.cs" />

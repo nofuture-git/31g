@@ -25,9 +25,17 @@ namespace NoFuture.Rand.Sp
             this.format = format;
         }
 
-        protected internal virtual void SetRefId(int? id)
+        protected internal virtual void SetRefId(int? referenceId)
         {
-            _refId = id;
+            _refId = referenceId;
+        }
+
+        protected internal virtual void SetRefId(string referenceId)
+        {
+            if (string.IsNullOrWhiteSpace(referenceId))
+                _refId = null;
+            if (int.TryParse(referenceId, out var valInt))
+                _refId = valInt;
         }
 
         /// <summary>

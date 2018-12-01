@@ -46,6 +46,11 @@ namespace NoFuture.Rand.Sp
             return this;
         }
 
+        public virtual bool AnyTransaction(Predicate<ITransactionId> filter)
+        {
+            return Balance.AnyTransaction(filter);
+        }
+
         public override Pecuniam GetValueAt(DateTime dt)
         {
             return Balance.GetCurrent(dt, 0.0F);

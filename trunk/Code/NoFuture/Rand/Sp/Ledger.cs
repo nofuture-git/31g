@@ -32,6 +32,32 @@ namespace NoFuture.Rand.Sp
             return GetEnumerator();
         }
 
+        public virtual bool IsBalanced()
+        {
+            if (!_dataStore.Any())
+                return true;
+            var assetAccounts = new List<IAccount<Identifier>>();
+            var liabilityAccounts = new List<IAccount<Identifier>>();
+            var equityAccounts = new List<IAccount<Identifier>>();
+            foreach (var acct in _dataStore)
+            {
+                switch (acct.AccountType)
+                {
+                    case KindsOfAccounts.Asset:
+                        assetAccounts.Add(acct);
+                        continue;
+                    case KindsOfAccounts.Liability:
+                        liabilityAccounts.Add(acct);
+                        continue;
+                    case KindsOfAccounts.Equity:
+                        equityAccounts.Add(acct);
+                        continue;
+                }
+            }
+
+            return assetAccounts.Sum() == liabilityAccounts.Sum() + equityAccounts.Sum();
+        }
+
         public IAccount<Identifier> Add(string accountName, KindsOfAccounts accountType, bool isOppositeForm, int? refId = null, DateTime? atTime = null)
         {
             if(string.IsNullOrWhiteSpace(accountName))
@@ -48,6 +74,22 @@ namespace NoFuture.Rand.Sp
             var acct = new Account(new AccountId(accountName, refId), dt, accountType, isOppositeForm) {Name = accountName};
             _dataStore.Add(acct);
             return acct;
+        }
+
+        public IAccount<Identifier> Add(IAccount<Identifier> account)
+        {
+            if(account == null)
+                throw new ArgumentNullException(nameof(account));
+
+            var existing = _dataStore.FirstOrDefault(a => a.Equals(account));
+            if (existing != null)
+            {
+                ((AccountId)existing.Id).SetRefId(account.Id.Abbrev);
+                return existing;
+            }
+
+            _dataStore.Add(account);
+            return account;
         }
 
         public IAccount<Identifier> Get(string accountName)
@@ -82,6 +124,11 @@ namespace NoFuture.Rand.Sp
             return acct;
         }
 
+        public void Clear()
+        {
+            _dataStore.Clear();
+        }
+
         public void PostBalance(IBalance balance, DateTime? atTime = null)
         {
             if (balance == null)
@@ -92,21 +139,44 @@ namespace NoFuture.Rand.Sp
             if (!credits.Any() && !debits.Any())
                 return;
             var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
+
             foreach (var credit in credits)
             {
-                var acctName = credit.Description?.Name ?? NO_NAME_ACCOUNT;
-                //TODO - the kind of account does and should not travel with Journal - so where's it come from?
-                var creditAcct = Get(acctName) ?? Add(acctName, KindsOfAccounts.Asset, false, null, credit.AtTime);
-                creditAcct.Credit(credit.Cash, null, credit.AtTime, credit.GetThisAsTraceId(dt, balance as IVoca));
+                AddTransaction(credit, dt, balance);
             }
 
             foreach (var debit in debits)
             {
-                var acctName = debit.Description?.Name ?? NO_NAME_ACCOUNT;
-                var debitAcct = Get(acctName) ?? Add(acctName, KindsOfAccounts.Asset, false, null, debit.AtTime);
-                debitAcct.Debit(debit.Cash, null, debit.AtTime, debit.GetThisAsTraceId(dt, balance as IVoca));
+                AddTransaction(debit, dt, balance);
             }
         }
 
+        private void AddTransaction(ITransaction transaction, DateTime dt, IBalance balance, bool lrFlag = true)
+        {
+            var note = GetAsNote(transaction);
+            var toAccount = Get(note.Name) ?? Add(note.Name, note.AssociatedAccountType ?? KindsOfAccounts.Asset,
+                                false, null, transaction.AtTime);
+            var traceId = transaction.GetThisAsTraceId(dt, balance as IVoca);
+            var checkDup = toAccount.AnyTransaction(tr => tr.Trace.UniqueId == traceId.UniqueId);
+            if (checkDup)
+                return;
+            if(lrFlag)
+                toAccount.Debit(transaction.Cash, null, transaction.AtTime, traceId);
+            else
+                toAccount.Credit(transaction.Cash, null, transaction.AtTime, traceId);
+        }
+
+        protected internal TransactionNote GetAsNote(ITransaction transaction)
+        {
+            if(transaction?.Description == null)
+                return new TransactionNote(NO_NAME_ACCOUNT);
+            var note = transaction.Description as TransactionNote;
+            if (note != null)
+                return note;
+
+            var nNote = new TransactionNote();
+            nNote.CopyNamesFrom(transaction.Description);
+            return nNote;
+        }
     }
 }

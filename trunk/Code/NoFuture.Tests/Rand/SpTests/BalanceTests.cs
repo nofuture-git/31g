@@ -215,37 +215,6 @@ namespace NoFuture.Rand.Tests.SpTests
         }
 
         [Test]
-        public void TestGetInverse()
-        {
-            var testBalance = new Balance();
-            var dt = DateTime.UtcNow.AddDays(-1);
-
-            for (var i = 0; i <= 10; i++)
-            {
-                testBalance.AddPositiveValue(dt.AddDays(i*-1), 128M.ToPecuniam());
-            }
-
-            var testBalanceValue = testBalance.GetCurrent(DateTime.UtcNow, 0.0f);
-            Console.WriteLine(testBalanceValue);
-
-            var testResult = testBalance.GetInverse() as Balance;
-            Assert.IsNotNull(testResult);
-
-            Assert.AreEqual(testBalance.TransactionCount, testResult.TransactionCount);
-            foreach (var t in testBalance.DataSet)
-            {
-                
-                var dayMatch = testResult.DataSet.FirstOrDefault(tr => DateTime.Equals(t.AtTime, tr.AtTime));
-                Assert.IsNotNull(dayMatch);
-                var diff = (t.Cash + dayMatch.Cash).GetRounded();
-                Console.WriteLine(diff);
-                Assert.IsTrue(diff == Pecuniam.Zero);
-
-            }
-            Assert.IsTrue(testBalanceValue + testResult.GetCurrent(DateTime.UtcNow, 0.0f) == Pecuniam.Zero);
-        }
-
-        [Test]
         public void TestGetDebitsCredits()
         {
             var testBalance = new Balance();

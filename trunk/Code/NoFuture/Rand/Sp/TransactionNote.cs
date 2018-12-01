@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
@@ -19,10 +20,19 @@ namespace NoFuture.Rand.Sp
             _additionalInfo = additionalInfo;
         }
 
+        public TransactionNote(IVoca copyFrom)
+        {
+            if (copyFrom == null)
+                return;
+            CopyNamesFrom(copyFrom);
+        }
+
         public virtual string AdditionalInformation
         {
             get => _additionalInfo;
             set => _additionalInfo = value;
         }
+
+        public virtual KindsOfAccounts? AssociatedAccountType { get; set; }
     }
 }

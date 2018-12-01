@@ -100,18 +100,18 @@ namespace NoFuture.Rand.Sp
             return itemData;
         }
 
-        public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
+        public virtual Guid AddNegativeValue(DateTime dt, Pecuniam amount, IVoca note = null, ITransactionId trace = null)
         {
             if(dt < Inception)
                 return Guid.Empty;
-            return Balance.AddNegativeValue(dt, amt, note, trace);
+            return Balance.AddNegativeValue(dt, amount, note, trace);
         }
 
-        public virtual Guid AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null, ITransactionId trace = null)
+        public virtual Guid AddPositiveValue(DateTime dt, Pecuniam amount, IVoca note = null, ITransactionId trace = null)
         {
             if (dt < Inception)
                 return Guid.Empty;
-            return Balance.AddPositiveValue(dt, val, note, trace);
+            return Balance.AddPositiveValue(dt, amount, note, trace);
         }
 
         public virtual Pecuniam AveragePerDueFrequency(TimeSpan? duration = null)

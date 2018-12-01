@@ -86,14 +86,14 @@ namespace NoFuture.Rand.Sp.Cc
         /// the purchase amount <see cref="val"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
-        public override Guid AddPositiveValue(DateTime dt, Pecuniam val, IVoca note = null, ITransactionId trace = null)
+        public override Guid AddPositiveValue(DateTime dt, Pecuniam amount, IVoca note = null, ITransactionId trace = null)
         {
             if (dt > Cc.ExpDate)
                 return Guid.Empty;
             var cBal = GetValueAt(dt);
-            if (cBal >= Max || cBal + val >= Max)
+            if (cBal >= Max || cBal + amount >= Max)
                 return Guid.Empty;
-            return base.AddPositiveValue(dt, val, note);
+            return base.AddPositiveValue(dt, amount, note);
         }
 
         /// <summary>
@@ -102,11 +102,11 @@ namespace NoFuture.Rand.Sp.Cc
         /// <returns>
         /// when <see cref="dt"/> is after the expiration date
         /// </returns>
-        public override Guid AddNegativeValue(DateTime dt, Pecuniam amt, IVoca note = null, ITransactionId trace = null)
+        public override Guid AddNegativeValue(DateTime dt, Pecuniam amount, IVoca note = null, ITransactionId trace = null)
         {
             if (dt > Cc.ExpDate)
                 return Guid.Empty;
-            return base.AddNegativeValue(dt, amt, note, trace);
+            return base.AddNegativeValue(dt, amount, note, trace);
         }
 
         /// <summary>
@@ -127,6 +127,11 @@ namespace NoFuture.Rand.Sp.Cc
             var dt = atTime ?? Balance.LastTransaction.AtTime;
             AddPositiveValue(dt, amt, note, trace);
             return this;
+        }
+
+        public bool AnyTransaction(Predicate<ITransactionId> filter)
+        {
+            return Balance.AnyTransaction(filter);
         }
 
         /// <summary>

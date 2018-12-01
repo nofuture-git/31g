@@ -93,13 +93,6 @@ namespace NoFuture.Rand.Sp
         double DaysPerYear { get; set; }
 
         /// <summary>
-        /// Gets a new copy of this instance where all 
-        /// positive value transactions be come negative and vice versa
-        /// </summary>
-        /// <returns></returns>
-        IBalance GetInverse();
-
-        /// <summary>
         /// Gets ordered table of dates-to-cash sum for all the days between <see cref="from"/> and <see cref="to"/>
         /// </summary>
         /// <param name="from">Optional, will use first transaction&apos;s date if null</param>
@@ -108,5 +101,7 @@ namespace NoFuture.Rand.Sp
         /// A sorted dictionary of the date-only to the sum of that day - dates with no transactions will be omitted.
         /// </returns>
         SortedDictionary<DateTime, Pecuniam> GetSumPerDay(DateTime? from = null, DateTime? to = null);
+
+        bool AnyTransaction(Predicate<ITransactionId> filter);
     }
 }

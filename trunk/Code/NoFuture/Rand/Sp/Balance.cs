@@ -156,17 +156,6 @@ namespace NoFuture.Rand.Sp
             return GetRange(new Tuple<DateTime, DateTime>(fromDt, toDt), _creditOp, includeThoseOnToDate);
         }
 
-        public IBalance GetInverse()
-        {
-            var b = new Balance();
-            foreach (var t in DataSet)
-            {
-                b.AddTransaction(t.GetInverse());
-            }
-
-            return b;
-        }
-
         public SortedDictionary<DateTime, Pecuniam> GetSumPerDay(DateTime? from = null, DateTime? to = null)
         {
             var dict = new SortedDictionary<DateTime,Pecuniam>();
@@ -209,6 +198,18 @@ namespace NoFuture.Rand.Sp
             }
 
             return dict;
+        }
+
+        public virtual bool AnyTransaction(Predicate<ITransactionId> filter)
+        {
+            foreach (var t in DataSet)
+            {
+                var r = filter(t);
+                //for debugging
+                if (r)
+                    return true;
+            }
+            return false;
         }
 
         protected internal Pecuniam GetRangeSum(Tuple<DateTime, DateTime> between, Predicate<Pecuniam> op)
