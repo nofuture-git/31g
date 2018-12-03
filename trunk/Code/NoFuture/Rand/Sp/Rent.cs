@@ -5,6 +5,7 @@ using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc />
     /// <summary>
     /// Represents a Rent or Lease
     /// </summary>

@@ -276,12 +276,6 @@ namespace NoFuture.Rand.Tests.SpTests
         }
 
         [Test]
-        public void TestDeferralAccrual()
-        {
-
-        }
-
-        [Test]
         public void TestPrepaidExpenses()
         {
             //remaining supplies are counted, its 1000 USD worth remaining on hand
@@ -335,10 +329,14 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestDepreciation()
         {
+
+            //TODO - this needs to be its own type which extends Account
             var yyyy = DateTime.Today.Year;
             var jal = GetTextExampleData();
             var ledger = jal.Item2;
             var journal = jal.Item1;
+
+
         }
 
         [Test]

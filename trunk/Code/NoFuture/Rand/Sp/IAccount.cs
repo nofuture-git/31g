@@ -5,16 +5,26 @@ using NoFuture.Rand.Sp.Enums;
 namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="IValoresTempus" />
+    /// <inheritdoc cref="IVoca" />
     /// <summary>
-    /// Represents a individual finacial agreement in time.
+    /// An uniquly identified balance of some asset, liability or owner&apos;s equity.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IAccount<out T> : IValoresTempus, IVoca
     {
+        /// <summary>
+        /// The associated identity of the given <see cref="Balance"/>
+        /// </summary>
         T Id { get; }
 
+        /// <summary>
+        /// Where the given account appears in the Basic Accounting Equation
+        /// </summary>
         KindsOfAccounts? AccountType { get; }
 
+        /// <summary>
+        /// The mathematical center of an account in terms of actual history.
+        /// </summary>
         IBalance Balance { get; }
 
         /// <summary>
@@ -25,14 +35,12 @@ namespace NoFuture.Rand.Sp
         bool IsOppositeForm { get; }
 
         /// <summary>
-        /// In normal form will record debits as an increase in cash, in <see cref="IsOppositeForm"/>
-        /// a debit will reduce the cash of the account
+        /// The Left side entries of a T-Account book system (abbrev. Dr).
         /// </summary>
         IAccount<T> Debit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null);
 
         /// <summary>
-        /// In normal form will record credits as a decrease in cash, in <see cref="IsOppositeForm"/>
-        /// a credit will increase the cash of the account
+        /// The Right side entries of a T-account book system (abbrev. Cr)
         /// </summary>
         IAccount<T> Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null);
 
