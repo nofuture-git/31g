@@ -309,12 +309,12 @@ namespace NoFuture.Rand.Opes.US
                 switch (incomeItem.Name)
                 {
                     case "Supplemental Nutrition Assistance Program":
-                        p = NamedTradeline.RandomNamedReceivalbleWithHistoryToSum(incomeItem.Name,
+                        p = NamedTradeline.RandomNamedTradelineWithHistoryToSum(incomeItem.Name,
                             IncomeGroupNames.PUBLIC_BENEFITS, snapAmt,
                             PecuniamExtensions.GetTropicalMonth(), startDate, endDate);
                         break;
                     case "Housing Choice Voucher Program Section 8":
-                        p = NamedTradeline.RandomNamedReceivalbleWithHistoryToSum(incomeItem.Name,
+                        p = NamedTradeline.RandomNamedTradelineWithHistoryToSum(incomeItem.Name,
                             IncomeGroupNames.PUBLIC_BENEFITS, hudAmt,
                             PecuniamExtensions.GetTropicalMonth(), startDate, endDate);
                         break;

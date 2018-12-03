@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Sp
         Pecuniam GetMinPayment(DateTime dt);
 
         /// <summary>
-        /// Get the status, if applicable, of the receivable at the current time.
+        /// Get the status, if applicable, of the tradeline at the current time.
         /// </summary>
         SpStatus? CurrentStatus { get; }
 

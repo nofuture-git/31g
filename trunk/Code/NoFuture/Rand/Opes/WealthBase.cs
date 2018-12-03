@@ -299,7 +299,7 @@ namespace NoFuture.Rand.Opes
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             var calcValueR = CalcValue((options.SumTotal ?? 0).ToPecuniam(), rate);
-            var p = NamedTradeline.RandomNamedReceivalbleWithHistoryToSum(itemName, grpName, calcValueR,
+            var p = NamedTradeline.RandomNamedTradelineWithHistoryToSum(itemName, grpName, calcValueR,
                 options.DueFrequency, options.Inception, options.Terminus);
 
             return p;

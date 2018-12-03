@@ -184,7 +184,7 @@ namespace NoFuture.Rand.Sp
         /// <param name="randomActsIrresponsible">A function pointer to a kind of personality</param>
         /// <returns></returns>
         [RandomFactory]
-        public static NamedTradeline RandomNamedReceivableWithVariedHistory(
+        public static NamedTradeline RandomNamedTradelineWithVariedHistory(
             string name = null, 
             string groupName = null, 
             Pecuniam averageAmount = null, 
@@ -230,7 +230,7 @@ namespace NoFuture.Rand.Sp
         /// <param name="terminus">Passed directly to resulting instance</param>
         /// <returns></returns>
         [RandomFactory]
-        public static NamedTradeline RandomNamedReceivalbleWithSteadyHistory(
+        public static NamedTradeline RandomNamedTradelineWithSteadyHistory(
             string name = null, 
             string groupName = null,
             Pecuniam amount = null, 
@@ -256,7 +256,7 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static NamedTradeline RandomNamedReceivalbleWithHistoryToSum(
+        public static NamedTradeline RandomNamedTradelineWithHistoryToSum(
             string name = null,
             string groupName = null, 
             Pecuniam sumOfAllHistory = null,

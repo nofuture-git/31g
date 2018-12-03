@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestRandomNamedReceivableWithVariedHistory()
         {
-            var testResult = NamedTradeline.RandomNamedReceivableWithVariedHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
+            var testResult = NamedTradeline.RandomNamedTradelineWithVariedHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
                 DateTime.Today.AddYears(-1));
             Assert.IsNotNull(testResult);
             Assert.AreEqual("firstName", testResult.GetName(KindsOfNames.Legal));
@@ -97,7 +97,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestRandomNamedReceivalbleWithSteadyHistory()
         {
-            var testResult = NamedTradeline.RandomNamedReceivalbleWithSteadyHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
+            var testResult = NamedTradeline.RandomNamedTradelineWithSteadyHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
                 DateTime.Today.AddYears(-1));
             Assert.IsNotNull(testResult);
             Assert.AreEqual("firstName", testResult.GetName(KindsOfNames.Legal));
@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestRandomNamedReceivalbleWithHistoryToSum()
         {
             var testResult =
-                NamedTradeline.RandomNamedReceivalbleWithHistoryToSum("first name", "group name",
+                NamedTradeline.RandomNamedTradelineWithHistoryToSum("first name", "group name",
                     120000M.ToPecuniam());
             var testResultValue = testResult.Value;
             Console.WriteLine(testResultValue);

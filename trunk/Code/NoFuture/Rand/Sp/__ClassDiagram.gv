@@ -1,6 +1,6 @@
 digraph noFutureRandDataSp {
-    node [fontname=Consolas, shape=box fontcolor="blue"]
-    graph [splines=ortho];
+    node [fontname=Consolas, shape=box, fontcolor="blue", fontsize=16]
+    //graph [splines=ortho];
     
     LoanBase [fontcolor="lightblue"]
     CreditCard [fontcolor="lightblue"]
@@ -9,14 +9,12 @@ digraph noFutureRandDataSp {
     IAccount [fontcolor="grey"]
     IBalance [fontcolor="grey"]
     ILoan [fontcolor="grey"]
-    IReceivable [fontcolor="grey"]
     ITradeLine [fontcolor="grey"]
     ITransaction [fontcolor="grey"]
     ITransactionable [fontcolor="grey"]
     ITransactionId [fontcolor="grey"]
     IValoresTempus [fontcolor="grey"]
     LoanBase [fontcolor="lightblue"]
-    Receivable [fontcolor="lightblue"]
     TransactionId [fontcolor="lightblue"]
     DepositAccount [fontcolor="lightblue"]
     Identifier [fontcolor="lightblue"]
@@ -28,24 +26,21 @@ digraph noFutureRandDataSp {
     CreditCardAccount -> IAccount
     CreditCardAccount -> ICreditCard [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
     FixedRateLoan -> LoanBase
-    LoanBase -> NamedReceivable
-    Rent -> NamedReceivable
+    LoanBase -> NamedTradeline
+    Rent -> NamedTradeline
     CheckingAccount -> DepositAccount
     SavingsAccount -> DepositAccount
-    Account -> NamedReceivable
+    Account -> NamedTradeline
     Account -> IAccount
     DepositAccount -> Account
-    Receivable -> IReceivable
-    Receivable -> TradeLine
-    IReceivable -> ITradeLine
-    IReceivable -> IValoresTempus
+    ITradeLine -> IValoresTempus
     LoanBase -> ILoan
     TradeLine -> ITradeLine
     ITradeLine -> ITransactionable
     IAccount -> IValoresTempus
     IAccount -> Identifier [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
     IAccount -> IBalance [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
-    NamedReceivable -> Receivable
+    NamedTradeline -> TradeLine
     ITradeLine -> IBalance [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
     Balance -> IBalance
     Balance -> Transactions
