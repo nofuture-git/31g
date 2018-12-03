@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp.Enums;
 

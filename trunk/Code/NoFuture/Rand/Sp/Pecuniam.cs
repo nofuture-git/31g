@@ -88,6 +88,13 @@ namespace NoFuture.Rand.Sp
         #endregion
 
         #region operator overloads
+
+        public static Pecuniam operator -(Pecuniam p)
+        {
+            p = p ?? Zero;
+            return new Pecuniam(p.Amount * -1);
+        }
+
         public static Pecuniam operator +(Pecuniam p1, INumera p2)
         {
             var pp1 = p1 ?? Zero;

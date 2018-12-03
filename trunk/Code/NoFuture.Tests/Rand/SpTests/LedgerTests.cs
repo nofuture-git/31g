@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Enums;
@@ -231,7 +232,7 @@ namespace NoFuture.Rand.Tests.SpTests
              * from Aero Supply for 2500 USD
              */
             journal.Debit(2500M.ToPecuniam(),
-                    new TransactionNote("Supplies") {AssociatedAccountType = KindsOfAccounts.Equity},
+                    new TransactionNote("Supplies") {AssociatedAccountType = KindsOfAccounts.Asset},
                     new DateTime(yyyy, 10, 5))
                 .Credit(2500M.ToPecuniam(),
                     new TransactionNote("Accounts Payable", "(Purchased supplies on account from Aero Supply)")
@@ -270,33 +271,113 @@ namespace NoFuture.Rand.Tests.SpTests
                     });
             ledger.PostBalance(journal);
 
-            var cashAccount = ledger.Get("Cash") as Account;
+            var cashAccount = ledger.Get("Cash",101);
+
+            var equipAccount = ledger.Get("Equipment",157);
+            var suppliesAccount = ledger.Get("Supplies", 126);
+            var insAccount = ledger.Get("Prepaid Insurance",130);
+
+            var acctPayable = ledger.Get("Accounts Payable",201);
+            var notesPayable = ledger.Get("Notes Payable",200);
+            var unearnedSvcRev = ledger.Get("Unearned Service Revenue",209);
+
+            var ownCapitalAcct = ledger.Get("Owners Capital",301);
+            var ownDrawAcct = ledger.Get("Owner's Drawings",306);
+            var svcRevAcct = ledger.Get("Service Revenue", 400);
+            var rentExpense = ledger.Get("Rent Expense",729);
+            var salariesAcct = ledger.Get("Salaries and Wages Expense",726);
+
             Assert.IsNotNull(cashAccount);
-            Console.WriteLine("----Debits----");
-            var cashDebits = cashAccount.Balance.GetDebits();
-            foreach (var transaction in cashDebits)
-            {
-                Console.WriteLine(string.Join("\t", transaction.AtTime.ToShortDateString(), transaction.Cash.ToString(), transaction.Trace.ToString()));
-            }
+            Assert.AreEqual(KindsOfAccounts.Asset, cashAccount.AccountType);
+            Assert.IsNotNull(equipAccount);
+            Assert.AreEqual(KindsOfAccounts.Asset, equipAccount.AccountType);
+            Assert.IsNotNull(suppliesAccount);
+            Assert.AreEqual(KindsOfAccounts.Asset, suppliesAccount.AccountType);
+            Assert.IsNotNull(insAccount);
+            Assert.AreEqual(KindsOfAccounts.Asset, insAccount.AccountType);
 
-            Console.WriteLine();
-            Console.WriteLine("----Credits----");
+            Assert.IsNotNull(acctPayable);
+            Assert.AreEqual(KindsOfAccounts.Liability, acctPayable.AccountType);
+            Assert.IsNotNull(notesPayable);
+            Assert.AreEqual(KindsOfAccounts.Liability, notesPayable.AccountType);
+            Assert.IsNotNull(unearnedSvcRev);
+            Assert.AreEqual(KindsOfAccounts.Liability, notesPayable.AccountType);
 
-            var cashCredits = cashAccount.Balance.GetCredits();
-            foreach (var transaction in cashCredits)
-            {
-                Console.WriteLine(string.Join("\t", transaction.AtTime.ToShortDateString(), transaction.Cash.ToString()));
-            }
+            Assert.IsNotNull(ownCapitalAcct);
+            Assert.AreEqual(KindsOfAccounts.Equity, ownCapitalAcct.AccountType);
+            Assert.IsNotNull(ownDrawAcct);
+            Assert.AreEqual(KindsOfAccounts.Equity, ownDrawAcct.AccountType);
+            Assert.IsNotNull(rentExpense);
+            Assert.AreEqual(KindsOfAccounts.Equity, rentExpense.AccountType);
+            Assert.IsNotNull(salariesAcct);
+            Assert.AreEqual(KindsOfAccounts.Equity, salariesAcct.AccountType);
+            Assert.IsNotNull(svcRevAcct);
+            Assert.AreEqual(KindsOfAccounts.Equity, svcRevAcct.AccountType);
 
-            Console.WriteLine();
-            Console.WriteLine("----Daily Balance----");
-            var cashPerDay = cashAccount.Balance.GetSumPerDay();
-            Assert.IsNotNull(cashPerDay);
-            foreach (var day in cashPerDay.Keys)
+            var cashAcctSum = cashAccount.Value;
+            var suppliesSum = suppliesAccount.Value;
+            var insSum = insAccount.Value;
+            var equipSum = equipAccount.Value;
+
+            var notePaySum = notesPayable.Value;
+            var acctPaySum = acctPayable.Value;
+
+            var unRevSum = unearnedSvcRev.Value;
+            var ownCapital = ownCapitalAcct.Value;
+            var ownDrawSum = ownDrawAcct.Value;
+
+            var svcRevSum = svcRevAcct.Value;
+            var salarySum = salariesAcct.Value;
+
+            var rentSum = rentExpense.Value;
+
+            Assert.AreEqual(-15200M.ToPecuniam(), cashAcctSum);
+            Assert.AreEqual(-2500M.ToPecuniam(), suppliesSum);
+            Assert.AreEqual(-600M.ToPecuniam(), insSum);
+            Assert.AreEqual(-5000.ToPecuniam(), equipSum);
+            Assert.AreEqual(5000.ToPecuniam(), notePaySum);
+            Assert.AreEqual(2500.ToPecuniam(), acctPaySum);
+            Assert.AreEqual(1200.ToPecuniam(), unRevSum);
+            Assert.AreEqual(10000.ToPecuniam(), ownCapital);
+            Assert.AreEqual(-500.ToPecuniam(), ownDrawSum);
+            Assert.AreEqual(10000.ToPecuniam(), svcRevSum);
+            Assert.AreEqual(-4000.ToPecuniam(), salarySum);
+            Assert.AreEqual(-900.ToPecuniam(), rentSum);
+
+            Console.WriteLine($"Cash: {cashAcctSum}");
+            Console.WriteLine($"Supplies: {suppliesSum}");
+            Console.WriteLine($"Prepaid Insurance: {insSum}");
+            Console.WriteLine($"Equipment: {equipSum}");
+            Console.WriteLine($"Notes Payable: {notePaySum}");
+            Console.WriteLine($"Accounts Payable: {acctPaySum}");
+            Console.WriteLine($"Unearned Service Revenue: {unRevSum}");
+            Console.WriteLine($"Owner's Capital: {ownCapital}");
+            Console.WriteLine($"Owner's Drawings: {ownDrawSum}");
+            Console.WriteLine($"Service Revenue: {svcRevSum}");
+            Console.WriteLine($"Salaries and Wages Expense: {salarySum}");
+            Console.WriteLine($"Rent Expense: {rentSum}");
+
+            var totalSum = new[]
             {
-                var val = cashPerDay[day];
-                Console.WriteLine(string.Join("\t", day.ToShortDateString(), val.ToString()));
-            }
+                cashAcctSum, suppliesSum, insSum, equipSum, notePaySum, acctPaySum, unRevSum, ownCapital, ownDrawSum,
+                svcRevSum, salarySum, rentSum
+            }.Sum();
+            Assert.AreEqual(Pecuniam.Zero, totalSum);
+            Console.WriteLine($"Total Sum: {totalSum}");
+
+            var assetSum = ledger.Where(a => a.AccountType == KindsOfAccounts.Asset).Sum();
+            Assert.AreEqual(-23300M.ToPecuniam(), assetSum);
+            Console.WriteLine($"Asset Sum: {assetSum}");
+            var liabilitySum = ledger.Where(a => a.AccountType == KindsOfAccounts.Liability).Sum();
+            Assert.AreEqual(8700.0M.ToPecuniam(), liabilitySum);
+            Console.WriteLine($"Liability Sum: {liabilitySum}");
+            var equitySum = ledger.Where(a => a.AccountType == KindsOfAccounts.Equity).Sum();
+            Assert.AreEqual(14600.0M.ToPecuniam(), equitySum);
+            Console.WriteLine($"Equity Sum: {equitySum}");
+
+            var isBalanced = ledger.IsBalanced();
+            Assert.IsTrue(isBalanced);
+            Console.WriteLine($"Is Balanced: {isBalanced}");
 
         }
     }

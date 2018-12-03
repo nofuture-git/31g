@@ -55,7 +55,8 @@ namespace NoFuture.Rand.Sp
                 }
             }
 
-            return assetAccounts.Sum() == liabilityAccounts.Sum() + equityAccounts.Sum();
+            return assetAccounts.Sum().GetRounded().GetAbs() ==
+                   (liabilityAccounts.Sum() + equityAccounts.Sum()).GetRounded().GetAbs();
         }
 
         public IAccount<Identifier> Add(string accountName, KindsOfAccounts accountType, bool isOppositeForm, int? refId = null, DateTime? atTime = null)
@@ -92,9 +93,17 @@ namespace NoFuture.Rand.Sp
             return account;
         }
 
-        public IAccount<Identifier> Get(string accountName)
+        public IAccount<Identifier> Get(string accountName, int? refId = null)
         {
-            return _dataStore.FirstOrDefault(acct => acct.Id.Equals(accountName));
+            var r = _dataStore.FirstOrDefault(acct => acct.Id.Equals(accountName));
+            if (refId != null && r?.Id != null)
+            {
+                var acctId = r.Id as AccountId;
+                if (acctId == null)
+                    return r;
+                acctId.SetRefId(refId);
+            }
+            return r;
         }
 
         public IAccount<Identifier> Get(int refId)
