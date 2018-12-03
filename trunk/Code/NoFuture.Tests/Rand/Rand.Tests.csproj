@@ -67,7 +67,7 @@
     <Compile Include="SpTests\CreditCardTests.cs" />
     <Compile Include="SpTests\CreditScoreTests.cs" />
     <Compile Include="SpTests\CusipTests.cs" />
-    <Compile Include="SpTests\NamedReceivableTests.cs" />
+    <Compile Include="SpTests\NamedTradelineTests.cs" />
     <Compile Include="SpTests\MortgageTests.cs" />
     <Compile Include="SpTests\SecuredFixedRateLoanTests.cs" />
     <Compile Include="SpTests\AccountTests.cs" />
