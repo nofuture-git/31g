@@ -66,7 +66,6 @@
     <Compile Include="IValoresTempus.cs" />
     <Compile Include="IBalance.cs" />
     <Compile Include="ILoan.cs" />
-    <Compile Include="IReceivable.cs" />
     <Compile Include="ITradeLine.cs" />
     <Compile Include="ITransaction.cs" />
     <Compile Include="ITransactionable.cs" />
@@ -80,7 +79,6 @@
     <Compile Include="PersonalCreditScore.cs" />
     <Compile Include="NamedReceivable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Receivable.cs" />
     <Compile Include="Rent.cs" />
     <Compile Include="SavingsAccount.cs" />
     <Compile Include="SecuredFixedRateLoan.cs" />

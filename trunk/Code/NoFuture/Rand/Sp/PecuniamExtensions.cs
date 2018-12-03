@@ -129,7 +129,7 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static Pecuniam Sum(this IEnumerable<IReceivable> items)
+        public static Pecuniam Sum(this IEnumerable<ITradeLine> items)
         {
             if (items == null || !items.Any())
                 return Pecuniam.Zero;
@@ -145,7 +145,7 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public static Pecuniam AnnualSum(this IEnumerable<IReceivable> items)
+        public static Pecuniam AnnualSum(this IEnumerable<ITradeLine> items)
         {
             if (items == null || !items.Any())
                 return Pecuniam.Zero;

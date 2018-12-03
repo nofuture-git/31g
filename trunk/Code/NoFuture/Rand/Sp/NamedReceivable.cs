@@ -6,14 +6,14 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Sp
 {
-    /// <inheritdoc cref="Receivable" />
+    /// <inheritdoc cref="TradeLine" />
     /// <inheritdoc cref="IVoca" />
     /// <summary>
     /// A capital concrete composition type to 
     /// bind value-in-time with a name.
     /// </summary>
     [Serializable]
-    public class NamedReceivable : Receivable, IVoca
+    public class NamedReceivable : TradeLine, IVoca
     {
         private readonly IVoca _voca = new VocaBase();
 
