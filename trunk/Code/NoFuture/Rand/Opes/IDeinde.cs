@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Opes
         /// Adds the <see cref="item"/> 
         /// </summary>
         /// <param name="item"></param>
-        void AddItem(NamedReceivable item);
+        void AddItem(NamedTradeline item);
 
         /// <summary>
         /// Convenience method to add an receivable from basic parts
@@ -44,19 +44,19 @@ namespace NoFuture.Rand.Opes
         /// Removes the item from the internal collection
         /// </summary>
         /// <param name="item"></param>
-        void RemoveItem(NamedReceivable item);
+        void RemoveItem(NamedTradeline item);
 
         /// <summary>
         /// The items applicable to the current time
         /// </summary>
-        NamedReceivable[] CurrentItems { get; }
+        NamedTradeline[] CurrentItems { get; }
 
         /// <summary>
         /// Gets the items applicable at the given time <see cref="dt"/>
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        NamedReceivable[] GetAt(DateTime? dt);
+        NamedTradeline[] GetAt(DateTime? dt);
 
         /// <summary>
         /// Gets the sum total of the attached items at the current time

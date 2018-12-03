@@ -13,22 +13,22 @@ namespace NoFuture.Rand.Sp
     /// bind value-in-time with a name.
     /// </summary>
     [Serializable]
-    public class NamedReceivable : TradeLine, IVoca
+    public class NamedTradeline : TradeLine, IVoca
     {
         private readonly IVoca _voca = new VocaBase();
 
         #region ctor
-        public NamedReceivable(string name)
+        public NamedTradeline(string name)
         {
             _voca.Name = name;
         }
 
-        public NamedReceivable(IVoca names)
+        public NamedTradeline(IVoca names)
         {
             _voca.CopyNamesFrom(names);
         }
 
-        public NamedReceivable(DateTime startDate) : base(startDate)
+        public NamedTradeline(DateTime startDate) : base(startDate)
         {
         }
 
@@ -111,7 +111,7 @@ namespace NoFuture.Rand.Sp
         public override bool Equals(object obj)
         {
             //asserts the names equal
-            if (!(obj is NamedReceivable p))
+            if (!(obj is NamedTradeline p))
                 return base.Equals(obj);
 
             var namesEqual = NamesEqual((IVoca) obj);
@@ -160,7 +160,7 @@ namespace NoFuture.Rand.Sp
         }
 
         /// <summary>
-        /// Produces a random <see cref="NamedReceivable"/> with random names 
+        /// Produces a random <see cref="NamedTradeline"/> with random names 
         /// and transactions which average about to <see cref="averageAmount"/>
         /// </summary>
         /// <param name="name">
@@ -184,7 +184,7 @@ namespace NoFuture.Rand.Sp
         /// <param name="randomActsIrresponsible">A function pointer to a kind of personality</param>
         /// <returns></returns>
         [RandomFactory]
-        public static NamedReceivable RandomNamedReceivableWithVariedHistory(
+        public static NamedTradeline RandomNamedReceivableWithVariedHistory(
             string name = null, 
             string groupName = null, 
             Pecuniam averageAmount = null, 
@@ -195,7 +195,7 @@ namespace NoFuture.Rand.Sp
         {
             name = name ?? Etx.RandomWord();
             groupName = groupName ?? Etx.RandomWord();
-            var nr = new NamedReceivable(name)
+            var nr = new NamedTradeline(name)
             {
                 Inception = inception ?? DateTime.Today.AddDays(Etx.RandomInteger(45, 360)),
                 Terminus = terminus
@@ -208,7 +208,7 @@ namespace NoFuture.Rand.Sp
         }
 
         /// <summary>
-        /// Produces a random <see cref="NamedReceivable"/> with a history 
+        /// Produces a random <see cref="NamedTradeline"/> with a history 
         /// </summary>
         /// <param name="name">
         /// Assigned to Legal name, will randomize to some english word if null.
@@ -230,7 +230,7 @@ namespace NoFuture.Rand.Sp
         /// <param name="terminus">Passed directly to resulting instance</param>
         /// <returns></returns>
         [RandomFactory]
-        public static NamedReceivable RandomNamedReceivalbleWithSteadyHistory(
+        public static NamedTradeline RandomNamedReceivalbleWithSteadyHistory(
             string name = null, 
             string groupName = null,
             Pecuniam amount = null, 
@@ -240,7 +240,7 @@ namespace NoFuture.Rand.Sp
         {
             name = name ?? Etx.RandomWord();
             groupName = groupName ?? Etx.RandomWord();
-            var nr = new NamedReceivable(name)
+            var nr = new NamedTradeline(name)
             {
                 Inception = inception ?? DateTime.Today.AddDays(Etx.RandomInteger(45, 360)),
                 Terminus = terminus
@@ -256,7 +256,7 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static NamedReceivable RandomNamedReceivalbleWithHistoryToSum(
+        public static NamedTradeline RandomNamedReceivalbleWithHistoryToSum(
             string name = null,
             string groupName = null, 
             Pecuniam sumOfAllHistory = null,
@@ -267,7 +267,7 @@ namespace NoFuture.Rand.Sp
             sumOfAllHistory = sumOfAllHistory ?? Pecuniam.RandomPecuniam(30, 200);
             var oneTropicalYearAgo = DateTime.Today.Add(Constants.TropicalYear.Negate());
             var start = inception ?? oneTropicalYearAgo;
-            var tl = new NamedReceivable(new TransactionNote(name, groupName))
+            var tl = new NamedTradeline(new TransactionNote(name, groupName))
             {
                 Inception = start,
                 Terminus = terminus,

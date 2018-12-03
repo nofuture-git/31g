@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Opes.US
     [Serializable]
     public class AmericanDeductions : AmericanDomusOpesBase, IDeinde
     {
-        private readonly HashSet<NamedReceivable> _deductions = new HashSet<NamedReceivable>();
+        private readonly HashSet<NamedTradeline> _deductions = new HashSet<NamedTradeline>();
         private readonly AmericanEmployment _employment;
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Opes.US
 
         public override Pecuniam Total => CurrentItems.Sum().GetNeg();
 
-        protected internal override List<NamedReceivable> MyItems
+        protected internal override List<NamedTradeline> MyItems
         {
             get
             {
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Opes.US
 
         #region methods
 
-        public override void AddItem(NamedReceivable d)
+        public override void AddItem(NamedTradeline d)
         {
             if (d == null)
                 return;

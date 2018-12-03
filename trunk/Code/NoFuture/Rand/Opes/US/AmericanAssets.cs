@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Opes.US
         internal const string INSTITUTIONAL_CHECKING = "Checking";
         internal const string INSTITUTIONAL_SAVINGS = "Savings";
 
-        private readonly HashSet<NamedReceivable> _assets = new HashSet<NamedReceivable>();
+        private readonly HashSet<NamedTradeline> _assets = new HashSet<NamedTradeline>();
 
         private bool _factorsSet;
         private double _randCheckingAcctAmt;
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Opes.US
 
         #region properties
 
-        protected internal override List<NamedReceivable> MyItems
+        protected internal override List<NamedTradeline> MyItems
         {
             get
             {
@@ -77,7 +77,7 @@ namespace NoFuture.Rand.Opes.US
             return assets;
         }
 
-        public override void AddItem(NamedReceivable item)
+        public override void AddItem(NamedTradeline item)
         {
             if (item == null)
                 return;
@@ -171,7 +171,7 @@ namespace NoFuture.Rand.Opes.US
             return base.GetGroupNames2Portions(options);
         }
 
-        protected internal override NamedReceivable GetNamedReceivableForItemAndGroup(string item, string grp, AmericanDomusOpesOptions options, double rate)
+        protected internal override NamedTradeline GetNamedReceivableForItemAndGroup(string item, string grp, AmericanDomusOpesOptions options, double rate)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = RiskFreeInterestRate.DF_VALUE;
@@ -191,7 +191,7 @@ namespace NoFuture.Rand.Opes.US
                             string.Equals(grp, AssetGroupNames.PERSONAL_PROPERTY, OPT) &&
                             string.Equals(item, PERSONAL_PROPERTY_MOTOR_VEHICLES, OPT);
 
-            NamedReceivable p;
+            NamedTradeline p;
             if (isCheckingAccount)
             {
                 var checkingAmt = amtR == null || amtR == 0

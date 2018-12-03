@@ -22,14 +22,14 @@ namespace NoFuture.Rand.Opes
 
         #region properties
 
-        public virtual NamedReceivable[] CurrentItems => GetCurrent(MyItems);
+        public virtual NamedTradeline[] CurrentItems => GetCurrent(MyItems);
 
         public virtual Pecuniam Total => CurrentItems.Sum();
 
         /// <summary>
         /// The items which belong to this <see cref="DivisionName"/>
         /// </summary>
-        protected internal abstract List<NamedReceivable> MyItems { get; }
+        protected internal abstract List<NamedTradeline> MyItems { get; }
 
         /// <summary>
         /// A name on which a clear division is understood (e.g. Income, Balance)
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Opes
             return itemData;
         }
 
-        public abstract void AddItem(NamedReceivable item);
+        public abstract void AddItem(NamedTradeline item);
 
         public abstract List<string> GetGroupNames(string division = null);
 
@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Opes
             var amt = expectedValue ?? Pecuniam.Zero;
             var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
             var tss = dueFrequency ?? Constants.TropicalYear;
-            var p = new NamedReceivable(new VocaBase(name, DivisionName)) {DueFrequency = tss };
+            var p = new NamedTradeline(new VocaBase(name, DivisionName)) {DueFrequency = tss };
             if (amt.Amount < 0M)
                 p.AddNegativeValue(dt, amt);
             else
@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Opes
             AddItem(name, groupName, amt, atTime, dueFrequency);
         }
 
-        public virtual void RemoveItem(NamedReceivable item)
+        public virtual void RemoveItem(NamedTradeline item)
         {
             if (item == null)
                 return;
@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Opes
             MyItems.Remove(matchFromCollection);
         }
 
-        public virtual NamedReceivable[] GetAt(DateTime? dt)
+        public virtual NamedTradeline[] GetAt(DateTime? dt)
         {
             return GetAt(dt, MyItems);
         }
@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetCurrent(List<NamedReceivable> items)
+        protected internal virtual NamedTradeline[] GetCurrent(List<NamedTradeline> items)
         {
             if (items == null)
                 return null;
@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Opes
         /// <param name="dt"></param>
         /// <param name="items"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetAt(DateTime? dt, List<NamedReceivable> items)
+        protected internal virtual NamedTradeline[] GetAt(DateTime? dt, List<NamedTradeline> items)
         {
             if (items == null)
                 return null;
@@ -237,11 +237,11 @@ namespace NoFuture.Rand.Opes
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetItemsForRange(AmericanDomusOpesOptions options)
+        protected internal virtual NamedTradeline[] GetItemsForRange(AmericanDomusOpesOptions options)
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            var itemsout = new List<NamedReceivable>();
+            var itemsout = new List<NamedTradeline>();
 
             var grp2Rates = GetGroupNames2Portions(options);
 
@@ -258,11 +258,11 @@ namespace NoFuture.Rand.Opes
         /// <param name="grp2Rate"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetItemsForRange(Tuple<string, double> grp2Rate, AmericanDomusOpesOptions options)
+        protected internal virtual NamedTradeline[] GetItemsForRange(Tuple<string, double> grp2Rate, AmericanDomusOpesOptions options)
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
-            var itemsout = new List<NamedReceivable>();
+            var itemsout = new List<NamedTradeline>();
 
             var name2Op = GetItems2Functions();
 
@@ -294,12 +294,12 @@ namespace NoFuture.Rand.Opes
         /// <param name="options"></param>
         /// <param name="rate"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable GetNamedReceivableForItemAndGroup(string itemName, string grpName, AmericanDomusOpesOptions options, double rate)
+        protected internal virtual NamedTradeline GetNamedReceivableForItemAndGroup(string itemName, string grpName, AmericanDomusOpesOptions options, double rate)
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
 
             var calcValueR = CalcValue((options.SumTotal ?? 0).ToPecuniam(), rate);
-            var p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(itemName, grpName, calcValueR,
+            var p = NamedTradeline.RandomNamedReceivalbleWithHistoryToSum(itemName, grpName, calcValueR,
                 options.DueFrequency, options.Inception, options.Terminus);
 
             return p;

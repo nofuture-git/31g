@@ -15,13 +15,13 @@ namespace NoFuture.Rand.Opes.US
     public class AmericanExpenses : AmericanDomusOpesBase, IDeinde
     {
         private const double PERCENT_EXPENSE_OF_INCOME = 0.85;
-        private readonly HashSet<NamedReceivable> _expenses = new HashSet<NamedReceivable>();
+        private readonly HashSet<NamedTradeline> _expenses = new HashSet<NamedTradeline>();
 
         protected override DomusOpesDivisions Division => DomusOpesDivisions.Expense;
 
         public override Pecuniam Total => base.Total.GetNeg();
 
-        protected internal override List<NamedReceivable> MyItems
+        protected internal override List<NamedTradeline> MyItems
         {
             get
             {
@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Opes.US
             return exp;
         }
 
-        public override void AddItem(NamedReceivable expense)
+        public override void AddItem(NamedTradeline expense)
         {
             if (expense == null)
                 return;

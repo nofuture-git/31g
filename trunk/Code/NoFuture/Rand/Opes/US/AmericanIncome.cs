@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Opes.US
     {
         #region fields
         private readonly HashSet<ILaboris> _employment = new HashSet<ILaboris>();
-        private readonly HashSet<NamedReceivable> _otherIncome = new HashSet<NamedReceivable>();
+        private readonly HashSet<NamedTradeline> _otherIncome = new HashSet<NamedTradeline>();
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        public virtual NamedReceivable[] CurrentOtherIncome => GetCurrent(MyItems);
+        public virtual NamedTradeline[] CurrentOtherIncome => GetCurrent(MyItems);
 
         public override Pecuniam Total => CurrentItems.Sum() + TotalAnnualNetEmploymentIncome;
 
@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Opes.US
             }
         }
 
-        protected internal override List<NamedReceivable> MyItems
+        protected internal override List<NamedTradeline> MyItems
         {
             get
             {
@@ -103,7 +103,7 @@ namespace NoFuture.Rand.Opes.US
                 _employment.Add(employment);
         }
 
-        public override void AddItem(NamedReceivable otherIncome)
+        public override void AddItem(NamedTradeline otherIncome)
         {
             if (otherIncome != null)
                 _otherIncome.Add(otherIncome);
@@ -287,12 +287,12 @@ namespace NoFuture.Rand.Opes.US
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        protected internal virtual NamedReceivable[] GetPublicBenefitIncomeItemsForRange(AmericanDomusOpesOptions options)
+        protected internal virtual NamedTradeline[] GetPublicBenefitIncomeItemsForRange(AmericanDomusOpesOptions options)
         {
             options = options ?? AmericanDomusOpesOptions.RandomOpesOptions();
             var startDate = options.Inception;
             var endDate = options.Terminus;
-            var itemsout = new List<NamedReceivable>();
+            var itemsout = new List<NamedTradeline>();
             startDate = startDate == DateTime.MinValue ? GetYearNeg(-1) : startDate;
             var isPoor = IsBelowFedPovertyAt(options);
 
@@ -304,17 +304,17 @@ namespace NoFuture.Rand.Opes.US
             var incomeItems = GetIncomeItemNames().Where(i => i.GetName(KindsOfNames.Group) == IncomeGroupNames.PUBLIC_BENEFITS);
             foreach (var incomeItem in incomeItems)
             {
-                NamedReceivable p = null;
+                NamedTradeline p = null;
 
                 switch (incomeItem.Name)
                 {
                     case "Supplemental Nutrition Assistance Program":
-                        p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(incomeItem.Name,
+                        p = NamedTradeline.RandomNamedReceivalbleWithHistoryToSum(incomeItem.Name,
                             IncomeGroupNames.PUBLIC_BENEFITS, snapAmt,
                             PecuniamExtensions.GetTropicalMonth(), startDate, endDate);
                         break;
                     case "Housing Choice Voucher Program Section 8":
-                        p = NamedReceivable.RandomNamedReceivalbleWithHistoryToSum(incomeItem.Name,
+                        p = NamedTradeline.RandomNamedReceivalbleWithHistoryToSum(incomeItem.Name,
                             IncomeGroupNames.PUBLIC_BENEFITS, hudAmt,
                             PecuniamExtensions.GetTropicalMonth(), startDate, endDate);
                         break;

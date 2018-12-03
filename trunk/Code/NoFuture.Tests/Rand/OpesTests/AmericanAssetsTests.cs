@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(9000D.ToPecuniam(), testResultSum);
 
             var stocks =
-                NamedReceivable.RandomNamedReceivalbleWithHistoryToSum("Stocks", "Securities", 2000D.ToPecuniam());
+                NamedTradeline.RandomNamedReceivalbleWithHistoryToSum("Stocks", "Securities", 2000D.ToPecuniam());
             testSubject.AddItem(stocks);
 
             testResultSum = testSubject.Total.GetWholeNumber();

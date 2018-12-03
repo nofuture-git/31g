@@ -12,13 +12,13 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestEquals()
         {
-            var testSubject = new NamedReceivable("test")
+            var testSubject = new NamedTradeline("test")
             {
                 Inception = DateTime.Today.AddYears(-1),
                 Terminus = DateTime.Today
             };
 
-            var testCompare = new NamedReceivable("test")
+            var testCompare = new NamedTradeline("test")
             {
                 Inception = DateTime.Today.AddYears(-1),
                 Terminus = DateTime.Today
@@ -48,10 +48,10 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestCopyFrom()
         {
-            var testSubject = new NamedReceivable("TestCorporation");
+            var testSubject = new NamedTradeline("TestCorporation");
             testSubject.AddName(KindsOfNames.Group, "Company");
 
-            var testSubject2 = new NamedReceivable(testSubject);
+            var testSubject2 = new NamedTradeline(testSubject);
             Assert.AreEqual(testSubject.Name, testSubject2.Name);
             var groupName = testSubject2.GetName(KindsOfNames.Group);
             Assert.IsNotNull(groupName);
@@ -63,7 +63,7 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestToData()
         {
             var dt = DateTime.Today;
-            var testSubject = new NamedReceivable("Test Name");
+            var testSubject = new NamedTradeline("Test Name");
             testSubject.AddName(KindsOfNames.Group, "Company");
             var cusip = new Cusip().Value;
             testSubject.AddPositiveValue(dt.AddDays(-360), new Security(cusip, 5000));
@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestRandomNamedReceivableWithVariedHistory()
         {
-            var testResult = NamedReceivable.RandomNamedReceivableWithVariedHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
+            var testResult = NamedTradeline.RandomNamedReceivableWithVariedHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
                 DateTime.Today.AddYears(-1));
             Assert.IsNotNull(testResult);
             Assert.AreEqual("firstName", testResult.GetName(KindsOfNames.Legal));
@@ -97,7 +97,7 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestRandomNamedReceivalbleWithSteadyHistory()
         {
-            var testResult = NamedReceivable.RandomNamedReceivalbleWithSteadyHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
+            var testResult = NamedTradeline.RandomNamedReceivalbleWithSteadyHistory("firstName", "groupName", 250M.ToPecuniam(), new TimeSpan(30, 0, 0, 0),
                 DateTime.Today.AddYears(-1));
             Assert.IsNotNull(testResult);
             Assert.AreEqual("firstName", testResult.GetName(KindsOfNames.Legal));
@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Tests.SpTests
         public void TestRandomNamedReceivalbleWithHistoryToSum()
         {
             var testResult =
-                NamedReceivable.RandomNamedReceivalbleWithHistoryToSum("first name", "group name",
+                NamedTradeline.RandomNamedReceivalbleWithHistoryToSum("first name", "group name",
                     120000M.ToPecuniam());
             var testResultValue = testResult.Value;
             Console.WriteLine(testResultValue);

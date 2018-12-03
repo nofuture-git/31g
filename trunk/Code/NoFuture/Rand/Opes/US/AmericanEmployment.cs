@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Opes.US
     public class AmericanEmployment : AmericanDomusOpesBase, ILaboris
     {
         #region fields
-        private readonly HashSet<NamedReceivable> _pay = new HashSet<NamedReceivable>();
+        private readonly HashSet<NamedTradeline> _pay = new HashSet<NamedTradeline>();
         private SocDetailedOccupation _occupation;
         private bool _isWages;
         private bool _isTips;
@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Opes.US
 
         public Pecuniam TotalAnnualNetPay => Total - (Deductions?.Total)?.GetAbs() ?? Pecuniam.Zero;
 
-        protected internal override List<NamedReceivable> MyItems
+        protected internal override List<NamedTradeline> MyItems
         {
             get
             {
@@ -324,7 +324,7 @@ namespace NoFuture.Rand.Opes.US
             return incomeName2Rate;
         }
 
-        public override void AddItem(NamedReceivable p)
+        public override void AddItem(NamedTradeline p)
         {
             if (IsInRange(p))
             {
@@ -337,7 +337,7 @@ namespace NoFuture.Rand.Opes.US
             return base.CalcValue(pecuniam, d).GetAbs();
         }
 
-        protected internal virtual bool IsInRange(NamedReceivable item)
+        protected internal virtual bool IsInRange(NamedTradeline item)
         {
             if (item == null)
                 return false;

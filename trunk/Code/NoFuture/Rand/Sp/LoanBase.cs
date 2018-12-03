@@ -4,12 +4,12 @@ using NoFuture.Rand.Core;
 namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="ILoan"/>
-    /// <inheritdoc cref="NamedReceivable"/>
+    /// <inheritdoc cref="NamedTradeline"/>
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public abstract class LoanBase<T> : NamedReceivable, ILoan
+    public abstract class LoanBase<T> : NamedTradeline, ILoan
     {
         public const float DF_MIN_PMT_RATE = 0.0125F;
 

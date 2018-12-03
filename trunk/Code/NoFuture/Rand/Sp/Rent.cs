@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Sp
     /// Represents a Rent or Lease
     /// </summary>
     [Serializable]
-    public class Rent : NamedReceivable
+    public class Rent : NamedTradeline
     {
         private readonly Pecuniam _proRatedAmt;
         private readonly DateTime _dtOfFirstFullRentDue;

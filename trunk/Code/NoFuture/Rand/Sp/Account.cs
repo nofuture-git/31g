@@ -4,12 +4,12 @@ using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
-    /// <inheritdoc cref="NamedReceivable" />
+    /// <inheritdoc cref="NamedTradeline" />
     /// <inheritdoc cref="IAccount{T}"/>
     /// <summary>
     /// Basic Accounting type entity
     /// </summary>
-    public class Account : NamedReceivable, IAccount<Identifier>
+    public class Account : NamedTradeline, IAccount<Identifier>
     {
         public Account(Identifier acctId, DateTime dateOpenned, KindsOfAccounts accountType, bool isOppositeForm) : base(dateOpenned)
         {
