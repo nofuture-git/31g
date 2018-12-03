@@ -18,8 +18,9 @@ namespace NoFuture.Rand.Sp
             AtTime = atTime ?? transactionId.AtTime;
             UniqueId = transactionId.UniqueId;
             Trace = transactionId.Trace;
+            Phase = transactionId.Phase;
         }
-
+        public Enum Phase { get; }
         public IVoca Description { get; internal set; }
         public Guid UniqueId { get; }
         public DateTime AtTime { get; }

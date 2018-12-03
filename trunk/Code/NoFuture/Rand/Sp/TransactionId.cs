@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
@@ -17,6 +18,13 @@ namespace NoFuture.Rand.Sp
             Description = description;
         }
 
+        /// <inheritdoc />
+        /// <summary>
+        /// Generally accepted accounting principles record a transaction on 
+        /// an accrual-basis; meaning, the revenue or cost associated are 
+        /// recorded at the time the service is performaned.
+        /// </summary>
+        public Enum Phase => TransactionCycle.Performant;
         public IVoca Description { get; protected internal set; }
         public Guid UniqueId { get; }
         public DateTime AtTime { get; }

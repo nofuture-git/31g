@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Core
 {
     /// <summary>
-    /// Any type which is tied to a discrete range of time
+    /// Any type which is tied to a discrete range of linear time
     /// </summary>
     public interface ITempore
     {
