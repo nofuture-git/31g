@@ -29,8 +29,6 @@ namespace NoFuture.Rand.Sp
         }
         public PastDue? CurrentDelinquency => GetDelinquency(DateTime.UtcNow);
 
-        public virtual Pecuniam Value => Balance.GetCurrent(DateTime.UtcNow, 0f);
-
         public virtual PastDue? GetDelinquency(DateTime dt)
         {
             if (GetStatus(dt) != SpStatus.Late)
@@ -102,10 +100,6 @@ namespace NoFuture.Rand.Sp
                 : SpStatus.Current;
         }
 
-        public virtual Pecuniam GetValueAt(DateTime dt)
-        {
-            return Balance.GetCurrent(dt, 0.0F);
-        }
 
         public virtual Pecuniam GetMinPayment(DateTime dt)
         {

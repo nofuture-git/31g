@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Sp
     /// money records through time and the sense-of-status of said 
     /// record-set.
     /// </summary>
-    public interface IReceivable : IValoresTempus, ITradeLine
+    public interface IReceivable : ITradeLine
     {
         /// <summary>
         /// Determins the deliquency for the given <see cref="dt"/>

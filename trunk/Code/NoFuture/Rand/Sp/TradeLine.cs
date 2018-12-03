@@ -47,9 +47,15 @@ namespace NoFuture.Rand.Sp
             set => _balance.DaysPerYear = value;
         }
 
+        public virtual Pecuniam Value => Balance.GetCurrent(DateTime.UtcNow, 0f);
         #endregion
 
         #region methods
+
+        public virtual Pecuniam GetValueAt(DateTime dt)
+        {
+            return Balance.GetCurrent(dt, 0.0F);
+        }
 
         public virtual bool IsInRange(DateTime dt)
         {
