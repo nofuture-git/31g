@@ -102,6 +102,11 @@ namespace NoFuture.Rand.Sp
         /// </returns>
         SortedDictionary<DateTime, Pecuniam> GetSumPerDay(DateTime? from = null, DateTime? to = null);
 
+        /// <summary>
+        /// Method to test for a transaction which is matched to the given predicate
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         bool AnyTransaction(Predicate<ITransactionId> filter);
     }
 }

@@ -44,6 +44,7 @@ digraph noFutureRandDataSp {
     ITradeLine -> ITransactionable
     IAccount -> IValoresTempus
     IAccount -> Identifier [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
+    IAccount -> IBalance [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
     NamedReceivable -> Receivable
     ITradeLine -> IBalance [style="dotted" taillabel="HAS-A",fontname=Consolas, fontsize=8]
     Balance -> IBalance

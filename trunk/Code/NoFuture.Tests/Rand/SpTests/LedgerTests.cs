@@ -138,11 +138,45 @@ namespace NoFuture.Rand.Tests.SpTests
         }
 
         [Test]
+        public void TestDetectDup()
+        {
+            var yyyy = DateTime.Today.Year;
+            var ledger = new Ledger();
+
+            var journal = new Journal(new AccountId("J1"));
+
+            var testAmount = 10000M.ToPecuniam();
+
+            journal.Debit(testAmount, new TransactionNote("Cash"), new DateTime(yyyy, 10, 1))
+                .Credit(testAmount,
+                    new TransactionNote("Owners Capital") { AssociatedAccountType = KindsOfAccounts.Equity });
+            ledger.PostBalance(journal);
+
+            var testAccount = ledger.Get("Cash") as Account;
+            Assert.IsNotNull(testAccount);
+            var testAccountValue = testAccount.Value;
+            Assert.IsNotNull(testAccountValue);
+            Assert.AreNotEqual(Pecuniam.Zero, testAccountValue);
+
+            var testTransaction = journal.FirstTransaction;
+            Assert.IsNotNull(testTransaction);
+
+            var testTraceId = testTransaction.GetThisAsTraceId(DateTime.UtcNow, journal);
+            Assert.AreEqual(testTransaction.UniqueId, testTraceId.UniqueId);
+            var testResult = ledger.IsDuplicate(testAccount, testTraceId);
+            Assert.IsTrue(testResult);
+
+            ledger.PostBalance(journal);
+            testAccount = ledger.Get("Cash") as Account;
+            Assert.IsNotNull(testAccount);
+            Console.WriteLine(testAccount.Balance.TransactionCount);
+        }
+
+        [Test]
         public void TestFromText()
         {
             var yyyy = DateTime.Today.Year;
             var ledger = new Ledger();
-            ledger.Clear();
 
             var journal = new Journal(new AccountId("J1"));
 

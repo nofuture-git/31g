@@ -29,6 +29,8 @@ namespace NoFuture.Rand.Sp
             return GetCurrent(dt, 0f);
         }
 
+        public virtual IBalance Balance => this;
+
         /// <summary>
         /// Requires that all entries for any given date must sum to zero.
         /// </summary>

@@ -4,15 +4,18 @@ using NoFuture.Rand.Sp.Enums;
 
 namespace NoFuture.Rand.Sp
 {
+    /// <inheritdoc cref="IValoresTempus" />
     /// <summary>
     /// Represents a individual finacial agreement in time.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IAccount<T> : IValoresTempus, IVoca
+    public interface IAccount<out T> : IValoresTempus, IVoca
     {
         T Id { get; }
 
         KindsOfAccounts? AccountType { get; }
+
+        IBalance Balance { get; }
 
         /// <summary>
         /// In opposite form the account operates like a liability the default is false which
@@ -33,6 +36,11 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         IAccount<T> Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null);
 
+        /// <summary>
+        /// Method to test for a transaction which is matched to the given predicate
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         bool AnyTransaction(Predicate<ITransactionId> filter);
     }
 }

@@ -138,32 +138,37 @@ namespace NoFuture.Rand.Sp
 
             if (!credits.Any() && !debits.Any())
                 return;
-            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
 
             foreach (var credit in credits)
             {
-                AddTransaction(credit, dt, balance);
+                AddTransaction(credit, balance, atTime, false);
             }
 
             foreach (var debit in debits)
             {
-                AddTransaction(debit, dt, balance);
+                AddTransaction(debit, balance, atTime);
             }
         }
 
-        private void AddTransaction(ITransaction transaction, DateTime dt, IBalance balance, bool lrFlag = true)
+        private void AddTransaction(ITransaction transaction, IBalance balance, DateTime? atTime = null, bool lrFlag = true)
         {
+            var dt = atTime.GetValueOrDefault(DateTime.UtcNow);
             var note = GetAsNote(transaction);
             var toAccount = Get(note.Name) ?? Add(note.Name, note.AssociatedAccountType ?? KindsOfAccounts.Asset,
                                 false, null, transaction.AtTime);
             var traceId = transaction.GetThisAsTraceId(dt, balance as IVoca);
-            var checkDup = toAccount.AnyTransaction(tr => tr.Trace.UniqueId == traceId.UniqueId);
-            if (checkDup)
+            var isDup = IsDuplicate(toAccount, traceId);
+            if (isDup)
                 return;
             if(lrFlag)
                 toAccount.Debit(transaction.Cash, null, transaction.AtTime, traceId);
             else
                 toAccount.Credit(transaction.Cash, null, transaction.AtTime, traceId);
+        }
+
+        protected internal bool IsDuplicate(IAccount<Identifier> toAccount, TraceTransactionId incomingTransaction)
+        {
+            return toAccount.AnyTransaction(tr => tr.Trace.UniqueId == incomingTransaction.UniqueId);
         }
 
         protected internal TransactionNote GetAsNote(ITransaction transaction)
