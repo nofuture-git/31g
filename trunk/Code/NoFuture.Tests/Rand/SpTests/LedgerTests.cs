@@ -173,8 +173,7 @@ namespace NoFuture.Rand.Tests.SpTests
             Console.WriteLine(testAccount.Balance.TransactionCount);
         }
 
-        [Test]
-        public void TestFromText()
+        public Tuple<Journal, Ledger> GetTextExampleData()
         {
             var yyyy = DateTime.Today.Year;
             var ledger = new Ledger();
@@ -184,7 +183,7 @@ namespace NoFuture.Rand.Tests.SpTests
             //on October 1, such-and-such invests 10000 cas in Company
             journal.Debit(10000M.ToPecuniam(), new TransactionNote("Cash"), new DateTime(yyyy, 10, 1))
                 .Credit(10000M.ToPecuniam(),
-                    new TransactionNote("Owners Capital") {AssociatedAccountType = KindsOfAccounts.Equity});
+                    new TransactionNote("Owners Capital") { AssociatedAccountType = KindsOfAccounts.Equity });
             ledger.PostBalance(journal);
 
             /*
@@ -215,15 +214,15 @@ namespace NoFuture.Rand.Tests.SpTests
              * On Oct 3, Company pays office rent for October in cash 900
              */
             journal.Debit(900M.ToPecuniam(),
-                    new TransactionNote("Rent Expense") {AssociatedAccountType = KindsOfAccounts.Equity},
+                    new TransactionNote("Rent Expense") { AssociatedAccountType = KindsOfAccounts.Equity },
                     new DateTime(yyyy, 10, 3))
                 .Credit(900M.ToPecuniam(), new TransactionNote("Cash", "(Paid October rent)"));
-             ledger.PostBalance(journal);
+            ledger.PostBalance(journal);
 
             /*
              * On Oct 4. Company pays 600 USD for one-year insurance policy that will expire next year on Sept 30
              */
-            journal.Debit(600M.ToPecuniam(), new TransactionNote("Prepaid Insurance"){AssociatedAccountType = KindsOfAccounts.Asset}, new DateTime(yyyy, 10, 4))
+            journal.Debit(600M.ToPecuniam(), new TransactionNote("Prepaid Insurance") { AssociatedAccountType = KindsOfAccounts.Asset }, new DateTime(yyyy, 10, 4))
                 .Credit(600M.ToPecuniam(), new TransactionNote("Cash", "(Paid one-year policy; effective date Oct 1)"));
             ledger.PostBalance(journal);
 
@@ -232,7 +231,7 @@ namespace NoFuture.Rand.Tests.SpTests
              * from Aero Supply for 2500 USD
              */
             journal.Debit(2500M.ToPecuniam(),
-                    new TransactionNote("Supplies") {AssociatedAccountType = KindsOfAccounts.Asset},
+                    new TransactionNote("Supplies") { AssociatedAccountType = KindsOfAccounts.Asset },
                     new DateTime(yyyy, 10, 5))
                 .Credit(2500M.ToPecuniam(),
                     new TransactionNote("Accounts Payable", "(Purchased supplies on account from Aero Supply)")
@@ -245,7 +244,7 @@ namespace NoFuture.Rand.Tests.SpTests
              * On Oct 5, owner withdraws 500 USD cash for personal use
              */
             journal.Debit(500M.ToPecuniam(),
-                    new TransactionNote("Owner's Drawings") {AssociatedAccountType = KindsOfAccounts.Equity},
+                    new TransactionNote("Owner's Drawings") { AssociatedAccountType = KindsOfAccounts.Equity },
                     new DateTime(yyyy, 10, 20))
                 .Credit(500M.ToPecuniam(), new TransactionNote("Cash", "(Withdraw cash for personal use)"));
             ledger.PostBalance(journal);
@@ -254,7 +253,7 @@ namespace NoFuture.Rand.Tests.SpTests
              * On Oct 26, Company owes employee salaries of 4000 USD and pays them in cash
              */
             journal.Debit(4000M.ToPecuniam(),
-                    new TransactionNote("Salaries and Wages Expense") {AssociatedAccountType = KindsOfAccounts.Equity},
+                    new TransactionNote("Salaries and Wages Expense") { AssociatedAccountType = KindsOfAccounts.Equity },
                     new DateTime(yyyy, 10, 26))
                 .Credit(4000M.ToPecuniam(), new TransactionNote("Cash", "(Paid salaries to date)"));
             ledger.PostBalance(journal);
@@ -270,6 +269,55 @@ namespace NoFuture.Rand.Tests.SpTests
                         AssociatedAccountType = KindsOfAccounts.Equity
                     });
             ledger.PostBalance(journal);
+
+            //Deferral \ Accrual
+
+            return new Tuple<Journal, Ledger>(journal, ledger);
+        }
+
+        [Test]
+        public void TestDeferralAccrual()
+        {
+            var yyyy = DateTime.Today.Year;
+            var jal = GetTextExampleData();
+            var ledger = jal.Item2;
+            var journal = jal.Item1;
+            journal.Credit(
+                    1500M.ToPecuniam(),
+                    new TransactionNote("Supplies", "(To record supplies used)"),
+                    new DateTime(yyyy, 10, 31))
+                .Debit(
+                    1500M.ToPecuniam(),
+                    new TransactionNote("Supplies Expense") {AssociatedAccountType = KindsOfAccounts.Equity});
+            ledger.PostBalance(journal);
+
+            var suppliesExpense = ledger.Get("Supplies Expense", 631);
+            Assert.IsNotNull(suppliesExpense);
+            var isBalanced = ledger.IsBalanced();
+            Assert.IsTrue(isBalanced);
+            Console.WriteLine($"Is Balanced: {isBalanced}");
+
+            journal.Credit(
+                    50M.ToPecuniam(), 
+                    new TransactionNote("Prepaid Insurance", "(To record insurance expired)"), 
+                    new DateTime(yyyy, 10, 31))
+                .Debit(
+                    50M.ToPecuniam(),
+                    new TransactionNote("Insurance Expense") {AssociatedAccountType = KindsOfAccounts.Equity});
+            ledger.PostBalance(journal);
+
+            var insExpenseAcct = ledger.Get("Insurance Expense", 722);
+            Assert.IsNotNull(insExpenseAcct);
+            isBalanced = ledger.IsBalanced();
+            Assert.IsTrue(isBalanced);
+            Console.WriteLine($"Is Balanced: {isBalanced}");
+        }
+
+        [Test]
+        public void TestFromText()
+        {
+            var jal = GetTextExampleData();
+            var ledger = jal.Item2;
 
             var cashAccount = ledger.Get("Cash",101);
 
@@ -378,7 +426,6 @@ namespace NoFuture.Rand.Tests.SpTests
             var isBalanced = ledger.IsBalanced();
             Assert.IsTrue(isBalanced);
             Console.WriteLine($"Is Balanced: {isBalanced}");
-
         }
     }
 }
