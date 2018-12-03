@@ -278,6 +278,14 @@ namespace NoFuture.Rand.Tests.SpTests
         [Test]
         public void TestDeferralAccrual()
         {
+
+        }
+
+        [Test]
+        public void TestPrepaidExpenses()
+        {
+            //remaining supplies are counted, its 1000 USD worth remaining on hand
+            // original supplies asset was 2500 USD
             var yyyy = DateTime.Today.Year;
             var jal = GetTextExampleData();
             var ledger = jal.Item2;
@@ -288,7 +296,7 @@ namespace NoFuture.Rand.Tests.SpTests
                     new DateTime(yyyy, 10, 31))
                 .Debit(
                     1500M.ToPecuniam(),
-                    new TransactionNote("Supplies Expense") {AssociatedAccountType = KindsOfAccounts.Equity});
+                    new TransactionNote("Supplies Expense") { AssociatedAccountType = KindsOfAccounts.Equity });
             ledger.PostBalance(journal);
 
             var suppliesExpense = ledger.Get("Supplies Expense", 631);
@@ -296,21 +304,41 @@ namespace NoFuture.Rand.Tests.SpTests
             var isBalanced = ledger.IsBalanced();
             Assert.IsTrue(isBalanced);
             Console.WriteLine($"Is Balanced: {isBalanced}");
+        }
+
+        [Test]
+        public void TestInsurancePayment()
+        {
+            // purchased a policy for 600 USD that last one year 
+            // so its worth 600/12 less each month
+            var yyyy = DateTime.Today.Year;
+            var jal = GetTextExampleData();
+            var ledger = jal.Item2;
+            var journal = jal.Item1;
 
             journal.Credit(
-                    50M.ToPecuniam(), 
-                    new TransactionNote("Prepaid Insurance", "(To record insurance expired)"), 
+                    50M.ToPecuniam(),
+                    new TransactionNote("Prepaid Insurance", "(To record insurance expired)"),
                     new DateTime(yyyy, 10, 31))
                 .Debit(
                     50M.ToPecuniam(),
-                    new TransactionNote("Insurance Expense") {AssociatedAccountType = KindsOfAccounts.Equity});
+                    new TransactionNote("Insurance Expense") { AssociatedAccountType = KindsOfAccounts.Equity });
             ledger.PostBalance(journal);
 
             var insExpenseAcct = ledger.Get("Insurance Expense", 722);
             Assert.IsNotNull(insExpenseAcct);
-            isBalanced = ledger.IsBalanced();
+            var isBalanced = ledger.IsBalanced();
             Assert.IsTrue(isBalanced);
             Console.WriteLine($"Is Balanced: {isBalanced}");
+        }
+
+        [Test]
+        public void TestDepreciation()
+        {
+            var yyyy = DateTime.Today.Year;
+            var jal = GetTextExampleData();
+            var ledger = jal.Item2;
+            var journal = jal.Item1;
         }
 
         [Test]

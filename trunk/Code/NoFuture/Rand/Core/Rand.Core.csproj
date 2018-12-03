@@ -50,7 +50,6 @@
     <Compile Include="ICited.cs" />
     <Compile Include="Identifier.cs" />
     <Compile Include="IIdentifier.cs" />
-    <Compile Include="INumera.cs" />
     <Compile Include="ITempore.cs" />
     <Compile Include="IVoca.cs" />
     <Compile Include="XmlDocIdentifier.cs" />

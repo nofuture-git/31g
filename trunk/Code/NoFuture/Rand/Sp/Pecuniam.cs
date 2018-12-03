@@ -5,7 +5,6 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Sp
 {
-    /// <inheritdoc />
     /// <summary>
     /// Basic Money object pattern 
     /// </summary>
@@ -13,7 +12,7 @@ namespace NoFuture.Rand.Sp
     /// Is Latin for Money
     /// </remarks>
     [Serializable]
-    public class Pecuniam : INumera
+    public class Pecuniam
     {
         #region fields
         private readonly decimal _amount;
@@ -95,7 +94,7 @@ namespace NoFuture.Rand.Sp
             return new Pecuniam(p.Amount * -1);
         }
 
-        public static Pecuniam operator +(Pecuniam p1, INumera p2)
+        public static Pecuniam operator +(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
@@ -105,7 +104,7 @@ namespace NoFuture.Rand.Sp
             return new Pecuniam(pp1.Amount + pp2.Amount);
         }
 
-        public static Pecuniam operator -(Pecuniam p1, INumera p2)
+        public static Pecuniam operator -(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
@@ -116,7 +115,7 @@ namespace NoFuture.Rand.Sp
             return new Pecuniam(pp1.Amount - pp2.Amount);
         }
 
-        public static Pecuniam operator *(Pecuniam p1, INumera p2)
+        public static Pecuniam operator *(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
@@ -127,7 +126,7 @@ namespace NoFuture.Rand.Sp
             return new Pecuniam(pp1.Amount * pp2.Amount);
         }
 
-        public static Pecuniam operator /(Pecuniam p1, INumera p2)
+        public static Pecuniam operator /(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
@@ -138,7 +137,7 @@ namespace NoFuture.Rand.Sp
             return new Pecuniam(pp1.Amount / pp2.Amount);
         }
 
-        public static bool operator ==(Pecuniam p1, INumera p2)
+        public static bool operator ==(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
@@ -149,12 +148,12 @@ namespace NoFuture.Rand.Sp
             return pp1.Amount == pp2.Amount;
         }
 
-        public static bool operator !=(Pecuniam p1, INumera p2)
+        public static bool operator !=(Pecuniam p1, Pecuniam p2)
         {
             return !(p1 == p2);
         }
 
-        public static bool operator >(Pecuniam p1, INumera p2)
+        public static bool operator >(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
@@ -164,7 +163,7 @@ namespace NoFuture.Rand.Sp
             return pp1.Amount > pp2.Amount;
         }
 
-        public static bool operator <(Pecuniam p1, INumera p2)
+        public static bool operator <(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
@@ -173,7 +172,7 @@ namespace NoFuture.Rand.Sp
             return pp1.Amount < pp2.Amount;
         }
 
-        public static bool operator >=(Pecuniam p1, INumera p2)
+        public static bool operator >=(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
@@ -183,7 +182,7 @@ namespace NoFuture.Rand.Sp
             return pp1.Amount >= pp2.Amount;
         }
 
-        public static bool operator <=(Pecuniam p1, INumera p2)
+        public static bool operator <=(Pecuniam p1, Pecuniam p2)
         {
             var pp1 = p1 ?? Zero;
             var pp2 = p2 ?? Zero;
