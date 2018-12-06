@@ -51,19 +51,39 @@ Graph Theory (Formal)
     
  - bijection: ("by Jove its a perfect match") one and 
       only one girl for every boy and nobody is alone.
-      
+    Boys Girls
+     1 -> A
+     2 -> B
+     3 -> C
+     4 -> D
+     
  - surjective: ("sure we can share") one girl 
       for every boy but some boys have to 
       share the same girl, but at least 
       no one is alone
-      
+   Boys Girls  
+    1 -> A
+    2 -> A
+    3 -> B
+    4 -> C
+    
  - injective: ("intense feelings of loneness") one girl 
       for every boy and no boy ever shares the same 
       girl, but some girls are all alone
-      
+   Boys  Girls
+    1 -> A
+    2 -> B
+    3 -> C
+         D
+         
  - non-surjective & non-injective: ("no! no!") state of 
       some girls being all alone and some girls sharing boys
-      
+   Boys Girls
+    1 -> A
+    2 -> A
+    3 -> B
+         D
+
  - isomorphic graph: when two graphs are drawn the same
  
  - automorphic graph: when two graphs are drawn the same

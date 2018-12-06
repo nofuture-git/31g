@@ -179,6 +179,24 @@ Syntactic Analysis
  - concerned with the structure of words into sentences and phrases
   - to convey logical order
   - is defined by rules of grammar
+ - Constituency Grammar: classic form of grammar analysis based on 
+    subject-predicate division
+ - Dependency Grammar: newer idea, 
+  - deny subject-predicat division
+  - root the clause at the verb
+  - forms a surjective directed tree graph
+   - a graph because its made up of nodes and edges
+   - a tree because it has one root node
+   - directed because the edges are pointing in one direction
+   - surjective because the root node has an outdegree above 1
+    - outdegree is the number of edges originating out of a node
+      (think color-book sun with rays)
+  - Universial Dependencies: recent spec between Google and Stanford
+    to have a finite set of node-types used in all possible langs
+    (e.g. nsubj is the label for nominal subject)
+    - any given sentence of any given lang can be parsed to a
+      dependency graph where each morph (word) is one of these
+      finite labels
 ----
 
 ----
