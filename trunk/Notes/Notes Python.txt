@@ -67,7 +67,10 @@ Command line
  - install packages from web
  python -m pip install some_package_name
   - behind corporate firewall
+  - if your password has (e.g. at-symbol, exclaimation, etc.) then 
+    url encode the symbols with %-encoded format (@ is %40)
  python -m pip install --proxy DOMAIN\username:password@proxyserver:port some_package_name
+   
 
  - test for a module being avail for import (ver. 3.4+)
  import importlib
