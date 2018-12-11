@@ -514,5 +514,34 @@ namespace NoFuture.Util.Core.Tests
 
 
         }
+
+        [Test]
+        public void TestToWordWrap()
+        {
+            var sometext = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi hendrerit leo id justo interdum, eu luctus urna tincidunt. Integer eu ex libero. Curabitur quis est volutpat, suscipit massa iaculis, posuere nisl. Vivamus mollis erat sed sem vulputate auctor. Fusce id dictum leo. Donec sed lectus scelerisque turpis sollicitudin vehicula quis non nisi. Sed et imperdiet ex, sed facilisis quam. Morbi scelerisque neque eget massa tincidunt, at finibus mauris gravida. Suspendisse nec luctus justo. Ut porta pretium mi, ac tristique ligula tempor id. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras at velit ac mi congue posuere. Etiam rutrum risus lacus, id luctus diam pretium vulputate. Ut sed neque tortor. Ut tempor augue sem.";
+            //var testResult = Etc.ToWordWrap(sometext);
+            var expected = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi hendrerit leo id 
+justo interdum, eu luctus urna tincidunt. Integer eu ex libero. Curabitur quis 
+est volutpat, suscipit massa iaculis, posuere nisl. Vivamus mollis erat sed sem 
+vulputate auctor. Fusce id dictum leo. Donec sed lectus scelerisque turpis sollicitudin 
+vehicula quis non nisi. Sed et imperdiet ex, sed facilisis quam. Morbi scelerisque 
+neque eget massa tincidunt, at finibus mauris gravida. Suspendisse nec luctus justo. 
+Ut porta pretium mi, ac tristique ligula tempor id. Cum sociis natoque penatibus 
+et magnis dis parturient montes, nascetur ridiculus mus. Cras at velit ac mi congue 
+posuere. Etiam rutrum risus lacus, id luctus diam pretium vulputate. Ut sed neque 
+tortor. Ut tempor augue sem.".Replace("\n", "\r\n");
+
+            //Assert.AreEqual(expected, testResult);
+
+            sometext = @"Thomas and wife v. Winchester3
+Court of Appeals of New York 4
+Decided July 1852 5
+6 NY 397
+RUGGLES, Ch. J.6 delivered the opinion of the court.
+This is an action brought to recover damages from the defendant for negligently7 putting up, labeling and selling as and for the extract of dandelion, which is a simple and harmless medicine, a jar of the extract of belladonna8, which is a deadly poison; by means of which the plaintiff Mary Ann Thomas, to whom, being sick, a dose of dandelion was prescribed by a physician, and a portion of the contents of the jar, was administered as and for the extract of dandelion, was greatly injured.";
+            var testResult = Etc.ToWordWrap(sometext);
+            Console.Write(testResult);
+
+        }
     }
 }

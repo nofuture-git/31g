@@ -174,6 +174,55 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
+        /// Attempts to perform a word-warp of the given text at the specified column.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="lineLen">The absolute min is 20</param>
+        /// <returns></returns>
+        public static string ToWordWrap(string text, int? lineLen = 80)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return text;
+
+            text = ConvertToLf(text);
+            var lnLen = lineLen ?? 80;
+            if (lnLen < 20)
+                lnLen = 20;
+
+            var docBldr = new StringBuilder();
+            var lineBldr = new StringBuilder();
+            var wordBldr = new StringBuilder();
+            foreach (var c in text.ToCharArray())
+            {
+                //perserve any existing new lines
+                if (c == Constants.LF)
+                {
+                    lineBldr.Append(wordBldr);
+                    wordBldr.Clear();
+                    docBldr.AppendLine($"{lineBldr}");
+                    lineBldr.Clear();
+                    continue;
+                }
+
+                if (lineBldr.Length+1 >= lnLen)
+                {
+                    docBldr.AppendLine($"{lineBldr}");
+                    lineBldr.Clear();
+                }
+                wordBldr.Append(c);
+
+                if (c == (char) 0x20)
+                {
+                    lineBldr.Append(wordBldr);
+                    wordBldr.Clear();
+                }
+            }
+            lineBldr.Append(wordBldr);
+            docBldr.Append(lineBldr);
+            return docBldr.ToString();
+        }
+
+        /// <summary>
         /// Calls in tandem <see cref="DistillCrLf"/>, <see cref="DistillTabs"/>
         /// and <see cref="DistillSpaces"/>
         /// </summary>
@@ -277,11 +326,24 @@ namespace NoFuture.Util.Core
         {
             if (fileContent == null)
                 return null;
-            fileContent = fileContent.Replace(new string(new[] {Constants.CR, Constants.LF}),
-                new string(new[] {Constants.LF}));
-            fileContent = fileContent.Replace(new string(new[] {Constants.CR}), new string(new[] {Constants.LF}));
+            fileContent = ConvertToLf(fileContent);
             fileContent = fileContent.Replace(new string(new[] {Constants.LF}),
                 new string(new[] {Constants.CR, Constants.LF}));
+            return fileContent;
+        }
+
+        /// <summary>
+        /// Converts line endings to Lf
+        /// </summary>
+        /// <param name="fileContent"></param>
+        /// <returns></returns>
+        public static string ConvertToLf(string fileContent)
+        {
+            if (fileContent == null)
+                return null;
+            fileContent = fileContent.Replace(new string(new[] { Constants.CR, Constants.LF }),
+                new string(new[] { Constants.LF }));
+            fileContent = fileContent.Replace(new string(new[] { Constants.CR }), new string(new[] { Constants.LF }));
             return fileContent;
         }
 

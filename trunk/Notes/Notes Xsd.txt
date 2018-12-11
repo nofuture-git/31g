@@ -80,3 +80,213 @@ Define an Element
 	<xs:attribute name="framework" type="Framework-Types" use="optional" />
   </xs:complexType>
 </xs:schema>
+
+<!--
+=====================================
+Another example - the classic looking 
+ outline from school
+=====================================
+-->
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Outline"
+    targetNamespace="http://tempuri.org/Outline.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/Outline.xsd"
+    xmlns:mstns="http://tempuri.org/Outline.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="outline" type="ClassicOutline">
+  </xs:element>
+
+  <xs:simpleType name="Level_0">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="I" />
+      <xs:enumeration value="II" />
+      <xs:enumeration value="III" />
+      <xs:enumeration value="IV" />
+      <xs:enumeration value="V" />
+      <xs:enumeration value="VI" />
+      <xs:enumeration value="VII" />
+      <xs:enumeration value="VIII" />
+      <xs:enumeration value="XI" />
+      <xs:enumeration value="X" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Level_1">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A." />
+      <xs:enumeration value="B." />
+      <xs:enumeration value="C." />
+      <xs:enumeration value="D." />
+      <xs:enumeration value="E." />
+      <xs:enumeration value="F." />
+      <xs:enumeration value="G." />
+      <xs:enumeration value="H." />
+      <xs:enumeration value="I." />
+      <xs:enumeration value="J." />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Level_2">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1." />
+      <xs:enumeration value="2." />
+      <xs:enumeration value="3." />
+      <xs:enumeration value="4." />
+      <xs:enumeration value="5." />
+      <xs:enumeration value="6." />
+      <xs:enumeration value="7." />
+      <xs:enumeration value="8." />
+      <xs:enumeration value="9." />
+      <xs:enumeration value="10." />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Level_3">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="a." />
+      <xs:enumeration value="b." />
+      <xs:enumeration value="c." />
+      <xs:enumeration value="d." />
+      <xs:enumeration value="e." />
+      <xs:enumeration value="f." />
+      <xs:enumeration value="g." />
+      <xs:enumeration value="h." />
+      <xs:enumeration value="i." />
+      <xs:enumeration value="j." />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Level_4">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="(1)" />
+      <xs:enumeration value="(2)" />
+      <xs:enumeration value="(3)" />
+      <xs:enumeration value="(4)" />
+      <xs:enumeration value="(5)" />
+      <xs:enumeration value="(6)" />
+      <xs:enumeration value="(7)" />
+      <xs:enumeration value="(8)" />
+      <xs:enumeration value="(9)" />
+      <xs:enumeration value="(10)" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Level_5">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="(a)" />
+      <xs:enumeration value="(b)" />
+      <xs:enumeration value="(c)" />
+      <xs:enumeration value="(d)" />
+      <xs:enumeration value="(e)" />
+      <xs:enumeration value="(f)" />
+      <xs:enumeration value="(g)" />
+      <xs:enumeration value="(h)" />
+      <xs:enumeration value="(i)" />
+      <xs:enumeration value="(j)" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Level_6">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="(i)" />
+      <xs:enumeration value="(ii)" />
+      <xs:enumeration value="(iii)" />
+      <xs:enumeration value="(iv)" />
+      <xs:enumeration value="(v)" />
+      <xs:enumeration value="(vi)" />
+      <xs:enumeration value="(vii)" />
+      <xs:enumeration value="(viii)" />
+      <xs:enumeration value="(ix)" />
+      <xs:enumeration value="(x)" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="BottomLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="-" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ClassicOutline">
+    <xs:sequence>
+      <xs:element name="section" type="Group_0" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="Group_0" mixed="true">
+    <xs:sequence>
+      <xs:element name="note" type="Bottom" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element name="section" type="Group_1" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="id" type="Level_0" use="required" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="Group_1" mixed="true">
+    <xs:sequence>
+      <xs:element name="note" type="Bottom" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element name="section" type="Group_2" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="id" type="Level_1" use="required" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="Group_2" mixed="true">
+    <xs:sequence>
+      <xs:element name="note" type="Bottom" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element name="section" type="Group_3" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="id" type="Level_2" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="Group_3" mixed="true">
+    <xs:sequence>
+      <xs:element name="note" type="Bottom" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element name="section" type="Group_4" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="id" type="Level_3" use="required" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="Group_4" mixed="true">
+    <xs:sequence>
+      <xs:element name="note" type="Bottom" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element name="section" type="Group_5" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="id" type="Level_4" use="required" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="Group_5" mixed="true">
+    <xs:sequence>
+      <xs:element name="note" type="Bottom" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element name="section" type="Group_6" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="id" type="Level_5" use="required" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="Group_6" mixed="true">
+    <xs:sequence>
+      <xs:element name="note" type="Bottom" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="id" type="Level_6" use="required" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="Bottom" mixed="true">
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+  </xs:complexType>
+
+</xs:schema>

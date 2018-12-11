@@ -1,0 +1,54 @@
+----
+Notes YAML
+ - https://yaml.org/spec/1.2/spec.pdf
+ - md5: 1bd3377cd62461c1f5c92c8ac36a1733
+----
+
+----
+Overview 
+ - "Ain't Markup Language"
+ - priority is human-readable
+ - shares some with JSON
+ - is not related to XML but is, somewhat,
+   its supplement
+ - online validator at 
+   https://codebeautify.org/yaml-validator
+----
+
+----
+Basics
+ - use indentation for scope (py'esque)
+  - scope by square-brace and curly-brace 
+    is allowed
+  - item-sep is ', ' (\x2c\x20)
+ - use '- ' (\x2d\x20) for item entry
+ - use '#' (\x23) octothorpe for comments like 
+    bash, powershell, py
+ - use ': ' (\x3a\x20) for name-value mappings
+ - allows for multi-document files using
+  --- (\x2d\x2d\x2d) and 
+  ... (\x2e\x2e\x2e)
+  - the three-dash is the document start delimiter
+  - the three-dot is the document end delimiter
+   - this is implied if another three-dash shows up
+    (i.e. that document ended, here is the start of another)
+ - by-ref identifier's are avail using the C-style 
+   declarator syntax 
+  - use '&' (\x26) in the declarator 
+  - use '*' (\x2a) to reference
+ - verbatim strings (aka here-strings) are indicated 
+   by a pipe '|' (\x7c) 
+ - verbatim'esque strings are indicated by a 
+   greater-that '>' (\x3e)
+  - the diff here is that new-line chars are replaced
+    with a space (\x20), to get a new-line a blank-line 
+    is needed.
+ - quote and double-quote strings are avail. and behave 
+   like they do in powershell where single quote is an 
+   exact string literal 
+   (e.g. '\r\n' decodes to (\x5C\x72\x5C\x6E), not (\x0D\x0A)
+ - there are explicit types and implementors can add there own
+ - files are typically in UTF-16 BOM where BOM is \xFEFF
+ - new-line is either CR or LF
+----
+
