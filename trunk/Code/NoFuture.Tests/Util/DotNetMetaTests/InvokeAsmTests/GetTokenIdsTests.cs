@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NoFuture.Shared.Cfg;
+using NoFuture.Util.Binary;
 using NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis;
 using NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds;
 using NoFuture.Util.DotNetMeta.TokenId;
@@ -29,7 +30,7 @@ namespace NoFuture.Util.DotNetMeta.Tests.InvokeAsmTests
 
             NfConfig.AssemblySearchPaths.Add(dllsPath);
             NfConfig.UseReflectionOnlyLoad = false;
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
 
             var testAsm =
                 System.Reflection.Assembly.Load(

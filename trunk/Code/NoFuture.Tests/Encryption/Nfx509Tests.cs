@@ -6,6 +6,7 @@ using NoFuture.Encryption;
 using NUnit.Framework;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 
 namespace NoFuture.Tests.Encryption
@@ -21,7 +22,7 @@ namespace NoFuture.Tests.Encryption
         [SetUp]
         public void Init()
         {
-            NoFuture.Util.FxPointers.AddSHA512ToCryptoConfig();
+            FxPointers.AddSHA512ToCryptoConfig();
         }
 
         [Test]

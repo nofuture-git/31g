@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 
 

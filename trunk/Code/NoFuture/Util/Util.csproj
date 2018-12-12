@@ -111,7 +111,7 @@
     <Compile Include="Etymological\En.cs" />
     <Compile Include="Etymological\INomenclature.cs" />
     <Compile Include="Etymological\Psy\Nomenclature.cs" />
-    <Compile Include="FxPointers.cs" />
+    <Compile Include="Binary\FxPointers.cs" />
     <Compile Include="Gia\Args.cs" />
     <Compile Include="Gia\Flatten.cs" />
     <Compile Include="Gia\FlattenedItem.cs" />

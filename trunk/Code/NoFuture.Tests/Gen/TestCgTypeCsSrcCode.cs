@@ -7,6 +7,7 @@ using NoFuture.Gen;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Binary;
 
 namespace NoFuture.Tests.Gen
 {
@@ -25,7 +26,7 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestCtor()
         {
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.Production.Product";
             var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
             Assert.IsTrue(File.Exists(testAsm));
@@ -36,7 +37,7 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestCtor2()
         {
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.Production.Product";
             var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
             var testFile = TestAssembly.UnitTestsRoot +
@@ -79,7 +80,7 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestMyRefactoredLines()
         {
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
             var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
 
@@ -104,7 +105,7 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestMoveMethods()
         {
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
             var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
             var testMethodNames = new List<string> { "UsesLocalAndInstanceStuff", "ddlScreeningLocation_SelectedIndexChanged" };
@@ -137,7 +138,7 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestRemoveMethods()
         {
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
             var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
             var testMethodNames = new List<string> { "MyReversedString", "UsesLocalAndInstanceStuff", "Page_Load" };
@@ -164,7 +165,7 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestMyOriginalLines()
         {
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
             var testAsm = TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll";
 

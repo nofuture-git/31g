@@ -4,6 +4,7 @@ using System.Reflection;
 using NUnit.Framework;
 using NoFuture.Gen;
 using NoFuture.Shared.Cfg;
+using NoFuture.Util.Binary;
 using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 
@@ -59,7 +60,7 @@ namespace NoFuture.Tests.Gen
         public void TestResolveAllMetadataTokens()
         {
             NfConfig.UseReflectionOnlyLoad = false;
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
             var testAsm =
@@ -91,7 +92,7 @@ namespace NoFuture.Tests.Gen
                 @"C:\Projects\31g\trunk\bin\NoFuture.Tokens.InvokeNfTypeName.exe";
             NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
             NfConfig.UseReflectionOnlyLoad = false;
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             var testAsm =
                 System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(
@@ -151,7 +152,7 @@ namespace NoFuture.Tests.Gen
     @"C:\Projects\31g\trunk\bin\NoFuture.Tokens.InvokeNfTypeName.exe";
             NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
             NfConfig.UseReflectionOnlyLoad = false;
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             var testAsm =
                 System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(

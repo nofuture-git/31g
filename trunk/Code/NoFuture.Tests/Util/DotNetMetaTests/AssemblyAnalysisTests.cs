@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Cfg;
+using NoFuture.Util.Binary;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NUnit.Framework;
 
@@ -36,7 +37,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
         {
             NfConfig.AssemblySearchPaths.Add(TestInit.UnitTestsRoot + @"\ExampleDlls\");
             NfConfig.UseReflectionOnlyLoad = false;
-            NoFuture.Util.FxPointers.AddResolveAsmEventHandlerToDomain();
+            FxPointers.AddResolveAsmEventHandlerToDomain();
             var testAsm =
                 System.Reflection.Assembly.Load(
                     System.IO.File.ReadAllBytes(

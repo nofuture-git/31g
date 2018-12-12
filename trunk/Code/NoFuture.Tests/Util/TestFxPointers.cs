@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Binary;
 
 namespace NoFuture.Tests.Util
 {
@@ -18,7 +19,7 @@ namespace NoFuture.Tests.Util
                 AppDomain.CurrentDomain.GetAssemblies().First());
             try
             {
-                var testResult = NoFuture.Util.FxPointers.ResolveReflectionOnlyAssembly(new object(), arg);
+                var testResult = FxPointers.ResolveReflectionOnlyAssembly(new object(), arg);
             }
             catch (ItsDeadJim)
             {
@@ -35,7 +36,7 @@ namespace NoFuture.Tests.Util
                 new ResolveEventArgs(
                     "System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                     AppDomain.CurrentDomain.GetAssemblies().First());
-            var testResult = NoFuture.Util.FxPointers.ResolveReflectionOnlyAssembly(new object(), arg);
+            var testResult = FxPointers.ResolveReflectionOnlyAssembly(new object(), arg);
             Assert.IsNotNull(testResult);
         }
 
@@ -47,7 +48,7 @@ namespace NoFuture.Tests.Util
             var testAsm2 =
                 System.Reflection.Assembly.ReflectionOnlyLoadFrom(System.IO.Path.Combine(TEMPDIR, "TestAsm2.dll"));
             var arg = new ResolveEventArgs("TestAsm, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", testAsm2);
-            var testResult = NoFuture.Util.FxPointers.ResolveReflectionOnlyAssembly(new object(), arg);
+            var testResult = FxPointers.ResolveReflectionOnlyAssembly(new object(), arg);
             Assert.IsNotNull(testResult);
             Assert.AreEqual("TestAsm, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", testResult.FullName);
         }
