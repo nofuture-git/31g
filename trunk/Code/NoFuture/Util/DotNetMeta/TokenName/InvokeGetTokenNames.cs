@@ -18,7 +18,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             if (!IsMyProcessRunning(ProcessId))
                 throw new RahRowRagee($"The process by id [{ProcessId}] has exited");
 
-            if (!Net.IsValidPortNumber(SocketPort))
+            if (!NfNet.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
 
             var metadataTokenIds = anything as MetadataTokenId[];
@@ -29,7 +29,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             var json = JsonConvert.SerializeObject(rqst);
             var bufferIn = Encoding.UTF8.GetBytes(json);
 
-            var bufferOut = Net.SendToLocalhostSocket(bufferIn, SocketPort);
+            var bufferOut = NfNet.SendToLocalhostSocket(bufferIn, SocketPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(

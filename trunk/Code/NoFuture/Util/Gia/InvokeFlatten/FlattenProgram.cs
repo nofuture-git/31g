@@ -31,7 +31,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
         {
             get
             {
-                if(Net.IsValidPortNumber(_getFlattenAssemblyCmdPort))
+                if(NfNet.IsValidPortNumber(_getFlattenAssemblyCmdPort))
                     return _getFlattenAssemblyCmdPort;
 
                 _getFlattenAssemblyCmdPort = ResolvePort("GetFlattenAssemblyCmdPort");
@@ -132,7 +132,7 @@ namespace NoFuture.Util.Gia.InvokeFlatten
         protected override void LaunchListeners()
         {
 
-            if(!Net.IsValidPortNumber(GetFlattenAssemblyCmdPort))
+            if(!NfNet.IsValidPortNumber(GetFlattenAssemblyCmdPort))
                 throw new RahRowRagee("the command's ports are either null or invalid " +
                                       String.Format(" GetFlattenAssemblyCmdPort is port [{0}]", GetFlattenAssemblyCmdPort));
             _taskFactory = new TaskFactory();

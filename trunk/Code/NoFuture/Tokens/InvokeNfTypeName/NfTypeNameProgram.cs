@@ -26,7 +26,7 @@ namespace NoFuture.Tokens.InvokeNfTypeName
         {
             get
             {
-                if (Net.IsValidPortNumber(_getNfTypeNamePort))
+                if (NfNet.IsValidPortNumber(_getNfTypeNamePort))
                     return _getNfTypeNamePort;
                 _getNfTypeNamePort = ResolvePort("GetNfTypeName");
                 return _getNfTypeNamePort;
@@ -107,7 +107,7 @@ namespace NoFuture.Tokens.InvokeNfTypeName
 
         protected override void LaunchListeners()
         {
-            if(!Net.IsValidPortNumber(GetNfTypeNamePort))
+            if(!NfNet.IsValidPortNumber(GetNfTypeNamePort))
                 throw new RahRowRagee("the command's ports are either null or invalid " +
                                       $" GetFlattenAssemblyCmdPort is port [{GetNfTypeNamePort}]");
             _taskFactory = new TaskFactory();

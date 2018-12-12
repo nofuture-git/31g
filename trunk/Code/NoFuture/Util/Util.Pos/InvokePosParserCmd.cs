@@ -17,10 +17,10 @@ namespace NoFuture.Util.Pos
             if (!IsMyProcessRunning(ProcessId))
                 throw new RahRowRagee($"The process by id [{ProcessId}] has exited");
 
-            if (!Net.IsValidPortNumber(SocketPort))
+            if (!NfNet.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
 
-            var bufferOut = Net.SendToLocalhostSocket(Encoding.UTF8.GetBytes(anything.ToString()), SocketPort);
+            var bufferOut = NfNet.SendToLocalhostSocket(Encoding.UTF8.GetBytes(anything.ToString()), SocketPort);
             
             var taggedText = Encoding.UTF8.GetString(bufferOut);
 

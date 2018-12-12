@@ -177,7 +177,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         {
             get
             {
-                if (Net.IsValidPortNumber(_getTokenNamesCmdPort))
+                if (NfNet.IsValidPortNumber(_getTokenNamesCmdPort))
                     return _getTokenNamesCmdPort;
 
                 _getTokenNamesCmdPort = ResolvePort("GetTokenNamesCmdPort");
@@ -192,7 +192,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         {
             get
             {
-                if (Net.IsValidPortNumber(_getTokenIdsCmdPort))
+                if (NfNet.IsValidPortNumber(_getTokenIdsCmdPort))
                     return _getTokenIdsCmdPort;
 
                 _getTokenIdsCmdPort = ResolvePort("GetTokenIdsCmdPort");
@@ -207,7 +207,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         {
             get
             {
-                if (Net.IsValidPortNumber(_getasmIndicesCmdPort))
+                if (NfNet.IsValidPortNumber(_getasmIndicesCmdPort))
                     return _getasmIndicesCmdPort;
 
                 _getasmIndicesCmdPort = ResolvePort("GetAsmIndicesCmdPort");
@@ -222,7 +222,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         {
             get
             {
-                if (Net.IsValidPortNumber(_getTokenPageRankCmdPort))
+                if (NfNet.IsValidPortNumber(_getTokenPageRankCmdPort))
                     return _getTokenPageRankCmdPort;
 
                 _getTokenPageRankCmdPort = ResolvePort("GetTokenPageRankCmdPort");
@@ -236,7 +236,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         {
             get
             {
-                if (Net.IsValidPortNumber(_getTokenTypesCmdPort))
+                if (NfNet.IsValidPortNumber(_getTokenTypesCmdPort))
                     return _getTokenTypesCmdPort;
 
                 _getTokenTypesCmdPort = ResolvePort("GetTokenTypesCmdPort");
@@ -251,7 +251,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         {
             get
             {
-                if (Net.IsValidPortNumber(_reassignTokenNamesCmdPort))
+                if (NfNet.IsValidPortNumber(_reassignTokenNamesCmdPort))
                     return _reassignTokenNamesCmdPort;
 
                 _reassignTokenNamesCmdPort = ResolvePort("ReassignTokensPort");
@@ -451,12 +451,12 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
 
         protected override void LaunchListeners()
         {
-            if (!Net.IsValidPortNumber(GetTokenIdsCmdPort) 
-                || !Net.IsValidPortNumber(GetTokenNamesCmdPort) 
-                || !Net.IsValidPortNumber(GetAsmIndicesCmdPort) 
-                || !Net.IsValidPortNumber(GetTokenPageRankCmdPort)
-                || !Net.IsValidPortNumber(GetTokenTypesCmdPort)
-                || !Net.IsValidPortNumber(ReassignTokenNamesCmdPort))
+            if (!NfNet.IsValidPortNumber(GetTokenIdsCmdPort) 
+                || !NfNet.IsValidPortNumber(GetTokenNamesCmdPort) 
+                || !NfNet.IsValidPortNumber(GetAsmIndicesCmdPort) 
+                || !NfNet.IsValidPortNumber(GetTokenPageRankCmdPort)
+                || !NfNet.IsValidPortNumber(GetTokenTypesCmdPort)
+                || !NfNet.IsValidPortNumber(ReassignTokenNamesCmdPort))
                 throw new RahRowRagee("the command's ports are either null or invalid " +
                                       $" {nameof(GetAsmIndicesCmdPort)} is port [{GetAsmIndicesCmdPort}]" +
                                       $" {nameof(GetTokenIdsCmdPort)} is port [{GetTokenIdsCmdPort}]" +

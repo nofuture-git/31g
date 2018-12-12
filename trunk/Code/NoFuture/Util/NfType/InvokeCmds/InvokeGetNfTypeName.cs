@@ -20,10 +20,10 @@ namespace NoFuture.Util.NfType.InvokeCmds
             if (!IsMyProcessRunning(ProcessId))
                 throw new ItsDeadJim("The NoFuture.Tokens.InvokeNfTypeName.exe is either dead or was never started.");
 
-            if (!Net.IsValidPortNumber(SocketPort))
+            if (!NfNet.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
 
-            var bufferOut = Net.SendToLocalhostSocket(Encoding.UTF8.GetBytes(anything.ToString()), SocketPort);
+            var bufferOut = NfNet.SendToLocalhostSocket(Encoding.UTF8.GetBytes(anything.ToString()), SocketPort);
 
             if (bufferOut == null || bufferOut.Length <= 0)
                 throw new ItsDeadJim(

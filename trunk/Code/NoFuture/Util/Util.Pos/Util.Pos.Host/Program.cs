@@ -24,7 +24,7 @@ namespace NoFuture.Util.Pos.Host
         {
             get
             {
-                if (Net.IsValidPortNumber(_utilPosHostCmdPort))
+                if (NfNet.IsValidPortNumber(_utilPosHostCmdPort))
                     return _utilPosHostCmdPort;
 
                 _utilPosHostCmdPort = ResolvePort("UtilPosHostDefaultPort");
@@ -118,7 +118,7 @@ namespace NoFuture.Util.Pos.Host
 
         protected override void LaunchListeners()
         {
-            if (!Net.IsValidPortNumber(CmdPort))
+            if (!NfNet.IsValidPortNumber(CmdPort))
                 throw new RahRowRagee("the command's ports are either null or invalid " +
                                       $"[{CmdPort}].");
 
