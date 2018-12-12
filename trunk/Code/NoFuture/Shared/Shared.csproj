@@ -55,7 +55,6 @@
     <Compile Include="DiaSdk\JsonData\Types.cs" />
     <Compile Include="DiaSdk\PdbData.cs" />
     <Compile Include="CipherText.cs" />
-    <Compile Include="Misc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

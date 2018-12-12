@@ -1074,7 +1074,7 @@ function Get-DatabaseDll
 
         if(-not (Test-Path $codeFile)){throw "SqlMetal did not generate the expected code file at '$codeFile'"}
 
-        $csc = (Join-Path $global:net40Path $global:cscExe)
+        $csc = "C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\csc.exe"
 
         if(-not (Test-Path $csc)) {throw "The Microsoft .NET v4.0 C# compiler was not at the expected location of '$csc'"}
 

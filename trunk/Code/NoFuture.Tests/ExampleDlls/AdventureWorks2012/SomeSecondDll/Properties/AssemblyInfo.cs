@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SomeSecondDll")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Quest Diagnostics Incorporated")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SomeSecondDll")]
-[assembly: AssemblyCopyright("Copyright © Quest Diagnostics Incorporated 2015")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
