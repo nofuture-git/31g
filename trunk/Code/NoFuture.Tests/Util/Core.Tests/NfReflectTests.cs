@@ -154,7 +154,7 @@ namespace NoFuture.Util.Core.Tests
             };
 
             var testOutput = new Entity();
-            var testResult = NfReflect.TryAssignValueTypeProperties(testInput, testOutput, null);
+            var testResult = NfMapper.TryAssignValueTypeProperties(testInput, testOutput, null);
             Console.WriteLine(testResult);
 
             Assert.IsNotNull(testOutput.Gender);
@@ -177,7 +177,7 @@ namespace NoFuture.Util.Core.Tests
             Assert.IsNotNull(testOutput.Contact);
             Assert.AreEqual("e.krabs@bikinibottom.net", testOutput.Contact.Email);
 
-            foreach (var l in NfReflect.GetAssignPropertiesData("\t"))
+            foreach (var l in NfMapper.GetAssignPropertiesData("\t"))
                 Console.WriteLine(l);
 
         }
@@ -188,10 +188,10 @@ namespace NoFuture.Util.Core.Tests
             var testInput = new TestDtoLikeType();
             var testOutput = new Entity();
 
-            var testResult = NfReflect.TryAssignProperties(testInput, testOutput);
+            var testResult = NfMapper.TryAssignProperties(testInput, testOutput);
             Assert.AreNotEqual(0, testResult);
             Console.WriteLine(testResult);
-            foreach (var l in NfReflect.GetAssignPropertiesData())
+            foreach (var l in NfMapper.GetAssignPropertiesData())
                 Console.WriteLine(l);
 
         }
@@ -209,10 +209,10 @@ namespace NoFuture.Util.Core.Tests
                 Contact = new Contact { Email = "e.krabs@bikinibottom.net" },
                 Id = 0
             };
-            var testResult = NfReflect.TryAssignProperties(testInput, testOutput);
+            var testResult = NfMapper.TryAssignProperties(testInput, testOutput);
             Console.WriteLine(testResult);
 
-            foreach (var l in NfReflect.GetAssignPropertiesData())
+            foreach (var l in NfMapper.GetAssignPropertiesData())
                 Console.WriteLine(l);
         }
 

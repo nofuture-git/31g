@@ -120,7 +120,7 @@
     <Compile Include="Gia\GraphViz\FlattenMrecord.cs" />
     <Compile Include="Gsm.cs" />
     <Compile Include="Lexicon.cs" />
-    <Compile Include="Net.cs" />
+    <Compile Include="NfNet.cs" />
     <Compile Include="NfConsole\ICmd.cs" />
     <Compile Include="NfConsole\IInvokeCmd.cs" />
     <Compile Include="NfConsole\InvokeCmdBase.cs" />

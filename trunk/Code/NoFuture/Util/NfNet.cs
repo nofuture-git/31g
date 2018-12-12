@@ -17,7 +17,7 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Util
 {
-    public class Net
+    public class NfNet
     {
 
         [EditorBrowsable(EditorBrowsableState.Never)]
