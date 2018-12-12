@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algo\StringDist.cs" />
     <Compile Include="Etc.cs" />
     <Compile Include="NfMapper.cs" />
     <Compile Include="NfNet.cs" />
