@@ -18,6 +18,7 @@ if(-not [NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.ContainsValue(
 [NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Get-DatabaseDbml",$MyInvocation.MyCommand)
 [NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Import-ExcelWs",$MyInvocation.MyCommand)
 [NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Find-StringInDb",$MyInvocation.MyCommand)
+[NoFuture.Shared.Cfg.NfConfig+MyFunctions]::FunctionFiles.Add("Trace-StoredProcedure",$MyInvocation.MyCommand)
 }
 }catch{
     Write-Host "file is being loaded independent of 'start.ps1' - some functions may not be available."
@@ -1445,5 +1446,68 @@ function Find-StringInDb
         }#end foreach table
 
         return $isMatchTables
+    }
+}
+<#
+    .synopsis
+    Recurse trace of a stored procedures.
+    
+    .Description
+    Performs a recursive trace of a list of stored procedure names.
+    When another stored procedure is found to be calling one of the 
+    procedures in the list it is, in turn, added to the list and the cycle
+    is repeated. 
+    
+    The recurse continues until no more calls are found for any procedure
+    in the list.
+    
+    The final list is then returned.
+    
+    Depends on the sql.ps1 script being in scope.
+    
+    .parameter StoredProcedures
+    An array of stored procedure names.
+    
+    .example
+    C:\PS>Trace-StoredProcedure -Names @("p_storedproc1","p_storedProc2")
+    
+    .example
+    C:\PS>Trace-StoredProcedure ,"stored_proc"
+    
+    .outputs
+    null
+    
+#>
+function Trace-StoredProcedure
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=0)]
+        [array] $Names
+    )
+    Process
+    {
+        $procList = $Names
+        $localList = @()
+        if($procList.GetType() -ne @().GetType()){ $val = $procList; $procList = @(); $procList += $val }
+        $procList | % {
+            Write-Progress -Activity $_ -Status "OK"
+            $result = $null
+            $proc = $_
+            $results = (pss ('\W{0}\W' -f $_))
+            if($results -ne $null){
+                $results |? {$_ -ne $null -and $_.Line -notmatch "\WPROCEDURE\W"}| % {
+                    $path = $_.Path.Replace((Join-Path $mypshome "\temp\procs\"),"").Replace(".sql","")
+                    if($procList -notcontains $path){
+                        $localList += $path
+                    }#end add to recursive list
+                }#end foreach results
+            }#end if results not null
+        }#end foreach w/i list
+        if($locallist.Count -gt 0){
+            $procList += (Trace-StoredProcedure $locallist)
+        }
+        return ($procList | Sort-Object -Unique)
     }
 }
