@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    Call java on the antlr-4.1-complete.jar with the given arg.
+    Call java on the antlr-4.7.1-complete.jar with the given arg.
     
     .DESCRIPTION
     Concise manner to have the ANTLR files generated given the 
