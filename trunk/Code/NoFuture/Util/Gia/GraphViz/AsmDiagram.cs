@@ -8,6 +8,7 @@ using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Util.Gia.GraphViz
 {
@@ -27,8 +28,8 @@ namespace NoFuture.Util.Gia.GraphViz
             public string Node2 { get; }
             public AsmDiagramEdge(Tuple<FlattenedItem, FlattenedItem> f)
             {
-                _node1Name = Etc.SafeDotNetIdentifier(f.Item1.TypeFullName.Replace(".", "_"), false, 128);
-                _node2Name = Etc.SafeDotNetIdentifier(f.Item2.TypeFullName.Replace(".", "_"), false, 128);
+                _node1Name = NfString.SafeDotNetIdentifier(f.Item1.TypeFullName.Replace(".", "_"), false, 128);
+                _node2Name = NfString.SafeDotNetIdentifier(f.Item2.TypeFullName.Replace(".", "_"), false, 128);
 
                 Node1 = f.Item1.TypeFullName;
                 Node2 = f.Item2.TypeFullName;
@@ -156,7 +157,7 @@ namespace NoFuture.Util.Gia.GraphViz
                 if (_nsNodes == null || _nsNodes.Count <= 0)
                     return string.Empty;
                 var graphViz = new StringBuilder();
-                graphViz.Append($"subgraph cluster_{Etc.SafeDotNetIdentifier(_ns)}");
+                graphViz.Append($"subgraph cluster_{NfString.SafeDotNetIdentifier(_ns)}");
                 graphViz.AppendLine("{");
                 graphViz.AppendLine("\tlabel=\"\";");
                 graphViz.AppendLine("\tcolor=red;");
@@ -193,7 +194,7 @@ namespace NoFuture.Util.Gia.GraphViz
             _targetedNs = asm.GetName().Name;
 
             _withNsSubgraphs = withNamespaceSubGraphs;
-            _asmName = Etc.SafeDotNetIdentifier(asm.GetName().Name);
+            _asmName = NfString.SafeDotNetIdentifier(asm.GetName().Name);
             foreach (
                 var asmType in
                     asm.NfGetExportedTypes()

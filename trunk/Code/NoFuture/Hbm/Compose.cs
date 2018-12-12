@@ -8,6 +8,7 @@ using NoFuture.Shared.Core;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Hbm
 {
@@ -30,19 +31,19 @@ namespace NoFuture.Hbm
             {
                 var nameParts = name.Split(Shared.Core.NfSettings.DefaultTypeSeparator);
                 var actualClassName = nameParts[(nameParts.Length - 1)].Replace(" ",Globals.REPLACE_SPACE_WITH_SEQUENCE);
-                nameParts[(nameParts.Length - 1)] = Etc.SafeDotNetTypeName(actualClassName);
+                nameParts[(nameParts.Length - 1)] = NfString.SafeDotNetTypeName(actualClassName);
                 name = string.Join(Shared.Core.NfSettings.DefaultTypeSeparator.ToString(CultureInfo.InvariantCulture), nameParts);
             }
 
             //remove any chars not allowed in C# ids
-            name = Etc.SafeDotNetTypeName(name);
+            name = NfString.SafeDotNetTypeName(name);
 
             //capitalize first letter of whole word to avoid conflict with C# reserved words
-            name = Etc.CapWords(name, Shared.Core.NfSettings.DefaultTypeSeparator);
+            name = NfString.CapWords(name, Shared.Core.NfSettings.DefaultTypeSeparator);
 
             if (!String.IsNullOrWhiteSpace(outputNamespace))
             {
-                outputNamespace = Etc.CapWords(outputNamespace, Shared.Core.NfSettings.DefaultTypeSeparator);
+                outputNamespace = NfString.CapWords(outputNamespace, Shared.Core.NfSettings.DefaultTypeSeparator);
                 asmQualifiedName.AppendFormat("{0}{1}", outputNamespace,Shared.Core.NfSettings.DefaultTypeSeparator);
             }
 
@@ -60,9 +61,9 @@ namespace NoFuture.Hbm
         }
         public static string PropertyName(string name, bool replaceInvalidsWithHexEsc = false)
         {
-            name = Etc.ExtractLastWholeWord(name,Shared.Core.NfSettings.DefaultTypeSeparator);
-            name = Etc.CapWords(name, null);
-            return Etc.SafeDotNetIdentifier(name,replaceInvalidsWithHexEsc);
+            name = NfString.ExtractLastWholeWord(name,Shared.Core.NfSettings.DefaultTypeSeparator);
+            name = NfString.CapWords(name, null);
+            return NfString.SafeDotNetIdentifier(name,replaceInvalidsWithHexEsc);
         }
         public static void ValidSplit(string name, int expectedLength)
         {
@@ -87,7 +88,7 @@ namespace NoFuture.Hbm
             var fkPropertyType = new NfTypeName(fullAssemblyQualTypeName);
 
             var fkPropertyName = fkPropertyType.ClassName;
-            fkColumnNames = fkColumnNames.Select(x => Etc.CapWords(Etc.ExtractLastWholeWord(x, '.'), null)).ToArray();
+            fkColumnNames = fkColumnNames.Select(x => NfString.CapWords(NfString.ExtractLastWholeWord(x, '.'), null)).ToArray();
             return string.Format("{0}By{1}", fkPropertyName,
                 string.Join("And", fkColumnNames));
         }
@@ -102,7 +103,7 @@ namespace NoFuture.Hbm
         {
             if (string.IsNullOrWhiteSpace(someName))
                 return null;
-            someName = Etc.CapWords(someName, '.');
+            someName = NfString.CapWords(someName, '.');
             return $"{someName}.hbm.xml";
         }
 

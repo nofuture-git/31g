@@ -46,7 +46,7 @@ namespace NoFuture.Gen
         public static string ToGraphVizEdge(this CgType cgType)
         {
             var graphViz = new StringBuilder();
-            var myName = Util.Core.Etc.SafeDotNetIdentifier(cgType.FullName);
+            var myName = NfString.SafeDotNetIdentifier(cgType.FullName);
             var edges = new List<string>();
             foreach (
                 var property in
@@ -55,7 +55,7 @@ namespace NoFuture.Gen
                 )
             {
                 var toName =
-                    Util.Core.Etc.SafeDotNetIdentifier(NfReflect.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"));
+                    NfString.SafeDotNetIdentifier(NfReflect.GetLastTypeNameFromArrayAndGeneric(property.TypeName, "<"));
                 var edg = new StringBuilder();
                 edg.AppendFormat("{0} -> {1}", myName, toName);
                 edg.Append(property.IsEnumerableType ? " [arrowhead=odiamond]" : " [arrowhead=vee]");
@@ -78,7 +78,7 @@ namespace NoFuture.Gen
         public static string ToGraphVizNode(this CgType cgType)
         {
             var graphViz = new StringBuilder();
-            graphViz.Append(Util.Core.Etc.SafeDotNetIdentifier(cgType.FullName));
+            graphViz.Append(NfString.SafeDotNetIdentifier(cgType.FullName));
             graphViz.AppendLine(" [shape=Mrecord, label=<<table bgcolor=\"white\" border=\"0\" >");
             graphViz.AppendLine("<th>");
             graphViz.AppendLine("<td bgcolor=\"grey\" align=\"center\">");
@@ -113,7 +113,7 @@ namespace NoFuture.Gen
             var ns = NfReflect.GetNamespaceWithoutTypeName(typeFullName);
             var fullName = string.Format("{0}{1}", string.IsNullOrWhiteSpace(ns) ? string.Empty : ns + ".", className);
             var graphViz = new StringBuilder();
-            graphViz.Append(Util.Core.Etc.SafeDotNetIdentifier(fullName));
+            graphViz.Append(NfString.SafeDotNetIdentifier(fullName));
             graphViz.AppendLine(" [shape=Mrecord, label=<<table bgcolor=\"white\" border=\"0\" >");
             graphViz.AppendLine("<th>");
             graphViz.AppendLine("<td bgcolor=\"grey\" align=\"center\">");

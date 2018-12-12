@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Util;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Timeline
 {
@@ -134,7 +135,7 @@ namespace NoFuture.Timeline
                     var newEntry = entry1i.Copy();
                     newEntry.Ranges.AddRange(entry2i.Ranges);
                     newEntry.Text =
-                        Etc.MergeString(new string(entry1i.Text.ToArray()), new string(entry2i.Text.ToArray()))
+                        NfString.MergeString(new string(entry1i.Text.ToArray()), new string(entry2i.Text.ToArray()))
                             .ToCharArray().Where(c => Convert.ToInt32(c) >= 0x20)
                             .ToList();
                     textCanvas.Items.Add(newEntry);

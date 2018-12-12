@@ -132,7 +132,7 @@ function Get-HbmMetadataDump(){
         $counter = 0
         $allHbmItems | % {
             
-            $pcount = ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter, $allHbmItems.Count)) 
+            $pcount = ([NoFuture.Util.Core.NfString]::CalcProgressCounter($counter, $allHbmItems.Count)) 
             Write-Progress -Activity ("Saving data to '{0}'" -f $_.OutputPath) -Status "Metadata Dump: Fetching Metadata [Step 1 of $script:numOfSteps]" -PercentComplete $pcount
             $doNotDisplay = (Get-SingleHbmMetadataDump $_)
             $counter += 1
@@ -770,7 +770,7 @@ function Invoke-HbmCsCompile
         $hbmsidDll = (Join-Path $rootBin "NoFuture.Hbm.Sid.dll")
         [NoFuture.Hbm.Settings]::LoadOutputPathCurrentSettings();
         $cscCompiler = (Join-Path $global:net40Path $global:cscExe)
-        $OutputNamespace = [NoFuture.Util.Core.Etc]::CapWords($OutputNamespace,'.')
+        $OutputNamespace = [NoFuture.Util.Core.NfString]::CapWords($OutputNamespace,'.')
         $dllOutputFile = (Join-Path $lhbmDirectory ([NoFuture.Util.Core.NfReflect]::DraftCscDllName($OutputNamespace)))
 
         $targetArg = "/t:library"

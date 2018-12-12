@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Util;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Timeline
 {
@@ -127,7 +128,7 @@ namespace NoFuture.Timeline
             if (_width - 2 <= 0)
                 return Name;
 
-            var title = Etc.PrintInCenter((_width - 2), Name);
+            var title = NfString.PrintInCenter(Name, (_width - 2));
             var strBuilder = new StringBuilder();
             if (_rulerWidth > 0)
                 strBuilder.Append(new string((char) 0x20, _rulerWidth));

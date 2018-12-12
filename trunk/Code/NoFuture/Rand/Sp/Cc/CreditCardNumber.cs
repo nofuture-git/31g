@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Sp.Cc
 {
@@ -18,7 +19,7 @@ namespace NoFuture.Rand.Sp.Cc
 
         public CreditCardNumber(string id, string abbrev = null)
         {
-            CheckDigitFunc = Etc.CalcLuhnCheckDigit;
+            CheckDigitFunc = NfString.CalcLuhnCheckDigit;
             format = DeriveFromValue(id);
             _value = id;
             _abbrev = abbrev;
@@ -26,7 +27,7 @@ namespace NoFuture.Rand.Sp.Cc
 
         public CreditCardNumber(Rchar[] format, string abbrev = null)
         {
-            CheckDigitFunc = Etc.CalcLuhnCheckDigit;
+            CheckDigitFunc = NfString.CalcLuhnCheckDigit;
             this.format = format;
             _abbrev = abbrev;
         }

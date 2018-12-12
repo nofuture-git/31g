@@ -7,6 +7,7 @@ using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Hbm.Templates
 {
@@ -112,7 +113,7 @@ namespace NoFuture.Hbm.Templates
 
         public Ef35PropertyAttr(ColumnMetadata md, bool addUpdateCheckNever)
         {
-            Name = Etc.ExtractLastWholeWord(md.column_name, Shared.Core.NfSettings.DefaultTypeSeparator);
+            Name = NfString.ExtractLastWholeWord(md.column_name, Shared.Core.NfSettings.DefaultTypeSeparator);
             _composedName = Compose.PropertyName(md.column_name);
             DbType = md.data_type.ToUpper();
 

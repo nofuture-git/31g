@@ -9,6 +9,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Tele
 {
@@ -332,7 +333,7 @@ namespace NoFuture.Rand.Tele
 
             if (qryBy == NAME)
             {
-                stateQry = string.Join(" ", Etc.DistillToWholeWords(stateQry));
+                stateQry = string.Join(" ", NfString.DistillToWholeWords(stateQry));
             }
 
             if (countryCode.ToLower() == "ca")

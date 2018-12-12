@@ -8,6 +8,7 @@ using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Edu.US
 {
@@ -275,7 +276,7 @@ namespace NoFuture.Rand.Edu.US
                     attr = zipStatNode.Attributes["value"];
                 hs.PostalCode = attr?.Value;
 
-                hs.Name = Etc.CapWords(hs.Name.Replace("JR\\SR", "Jr\\Sr"), ' ');
+                hs.Name = NfString.CapWords(hs.Name.Replace("JR\\SR", "Jr\\Sr"), ' ');
                 return true;
             }
             catch(Exception ex)

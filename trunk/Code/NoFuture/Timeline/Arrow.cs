@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NoFuture.Util;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Timeline
 {
@@ -120,7 +121,7 @@ namespace NoFuture.Timeline
             }
 
             tc.Items.First(t => t.Index == arrowIdx.Item1).Text =
-                Etc.MergeString(arrowText.ToString(),
+                NfString.MergeString(arrowText.ToString(),
                     new string(tc.Items.First(t => t.Index == arrowIdx.Item1).Text.ToArray())).ToCharArray().ToList();
             
             return tc;

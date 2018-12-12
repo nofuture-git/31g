@@ -6,6 +6,7 @@ using NoFuture.Shared.Core;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
+using NfString = NoFuture.Util.Core.NfString;
 using Nm = NoFuture.Hbm.Globals.HbmXmlNames;
 
 namespace NoFuture.Hbm
@@ -21,7 +22,7 @@ namespace NoFuture.Hbm
 
         public static XElement HibernateConfigurationNode(string connectionString, string outputNamespace)
         {
-            outputNamespace = Etc.CapWords(outputNamespace, Shared.Core.NfSettings.DefaultTypeSeparator);
+            outputNamespace = NfString.CapWords(outputNamespace, Shared.Core.NfSettings.DefaultTypeSeparator);
             XNamespace hbmXmlNs = Globals.HBM_XML_NS;
             var hbmConfigNode = new XElement(hbmXmlNs + Nm.HIBERNATE_CONFIGURATION);
             var sessionFactoryNode = new XElement(Nm.SESSION_FACTORY);
@@ -147,7 +148,7 @@ namespace NoFuture.Hbm
         public static XElement IdNode(string name)
         {
             if (String.IsNullOrWhiteSpace(name))
-                name = String.Format("{0}__{1}", Globals.HbmXmlNames.ID, Etc.GetNfRandomName());
+                name = String.Format("{0}__{1}", Globals.HbmXmlNames.ID, NfString.GetNfRandomName());
             return new XElement(Globals.HbmXmlNames.ID.ToLower(),
                 new XAttribute(Globals.HbmXmlNames.NAME, name),
                 new XAttribute(Globals.HbmXmlNames.TYPE, "Guid"),

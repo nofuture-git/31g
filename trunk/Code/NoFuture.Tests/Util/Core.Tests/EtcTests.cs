@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Shared.Core;
 using NUnit.Framework;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Util.Core.Tests
 {
@@ -13,7 +14,7 @@ namespace NoFuture.Util.Core.Tests
         {
             var testInput = @"    He has refused his Assent to Laws, the most wholesome and necessary for the public good.
     He has forbidden his Governors to pass Laws of immediate and pressing importance, ";
-            var testResult = Etc.DistillCrLf(testInput);
+            var testResult = NfString.DistillCrLf(testInput);
 
             Console.WriteLine(testResult);
         }
@@ -21,12 +22,12 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestDistillSpaces()
         {
-            var testResult = Etc.DistillSpaces("              here             is          to many           spaces");
+            var testResult = NfString.DistillSpaces("              here             is          to many           spaces");
             Assert.IsNotNull(testResult);
             Assert.AreEqual(" here is to many spaces", testResult);
 
             testResult =
-                Etc.DistillSpaces(
+                NfString.DistillSpaces(
                     "            December 31,      2016    2015   (in millions)Net operating losses         ");
             Assert.IsNotNull(testResult);
             Assert.AreEqual(" December 31, 2016 2015 (in millions)Net operating losses ", testResult);
@@ -107,18 +108,18 @@ namespace NoFuture.Util.Core.Tests
         public void TestCapitalizeFirstLetterOfWholeWords()
         {
             const string typicalTypeName = "noFuture.util.etc";
-            var testResult = Etc.CapWords(typicalTypeName, '.');
+            var testResult = NfString.CapWords(typicalTypeName, '.');
             Assert.AreEqual("NoFuture.Util.Etc", testResult);
 
             const string allCaps = "KEYCODE";
-            testResult = Etc.CapWords(allCaps, '.');
+            testResult = NfString.CapWords(allCaps, '.');
             Assert.AreEqual("Keycode", testResult);
 
             const string capsLockOn = "nOFUTURE.uTIL.eTC";
-            testResult = Etc.CapWords(capsLockOn, '.');
+            testResult = NfString.CapWords(capsLockOn, '.');
             Assert.AreEqual("Nofuture.Util.Etc",testResult);
 
-            testResult = Etc.CapWords("WINSTON SALEM".ToLower(), ' ');
+            testResult = NfString.CapWords("WINSTON SALEM".ToLower(), ' ');
             Console.WriteLine(testResult);
         }
 
@@ -126,19 +127,19 @@ namespace NoFuture.Util.Core.Tests
         public void TestEscapeString()
         {
             const string DEC_EXPECT = "&#73;&#32;&#97;&#109;&#32;&#100;&#101;&#99;&#105;&#109;&#97;&#108;";
-            var dec = Etc.EscapeString("I am decimal", EscapeStringType.DECIMAL);
+            var dec = NfString.EscapeString("I am decimal", EscapeStringType.DECIMAL);
 
             const string UNI_EXPECT = @"\u00C0\u00C8\u00CC\u00D2\u00D9\u00E0\u00E8\u00EC\u00F2\u00F9\u00C1\u00C9\u00CD\u00D3\u00DA\u00DD\u00E1\u00E9\u00ED\u00F3\u00FA\u00FD\u00C2\u00CA\u00CE\u00D4\u00DB\u00E2\u00EA\u00EE\u00F4\u00FB\u00C3\u00D1\u00D5\u00E3\u00F1\u00F5\u00C4\u00CB\u00CF\u00D6\u00DC\u00E4\u00EB\u00EF\u00F6\u00FC\u00E7\u00C7\u00DF\u00D8\u00F8\u00C5\u00E5\u00C6\u00E6\u00DE\u00FE\u00D0\u00F0\u0152\u0153\u0178\u00FF\u0160\u0161";
-            var uni = Etc.EscapeString("ÀÈÌÒÙàèìòùÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÃÑÕãñõÄËÏÖÜäëïöüçÇßØøÅåÆæÞþÐðŒœŸÿŠš", EscapeStringType.UNICODE);
+            var uni = NfString.EscapeString("ÀÈÌÒÙàèìòùÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÃÑÕãñõÄËÏÖÜäëïöüçÇßØøÅåÆæÞþÐðŒœŸÿŠš", EscapeStringType.UNICODE);
 
             const string REGEX_EXPECT = @"\x5b\x72\x65\x67\x65\x78\x5d";
-            var regex = Etc.EscapeString("[regex]", EscapeStringType.REGEX);
+            var regex = NfString.EscapeString("[regex]", EscapeStringType.REGEX);
 
             const string HTML_EXPECT = "&nbsp;&pound;&iexcl;&yen;&sect;";
-            var html = Etc.EscapeString(" £¡¥§", EscapeStringType.HTML);
+            var html = NfString.EscapeString(" £¡¥§", EscapeStringType.HTML);
 
             const string URI_EXPECT = "F%40r0ut%7eDu%2cde%3d";
-            var uri = Etc.EscapeString("F@r0ut~Du,de=", EscapeStringType.URI);
+            var uri = NfString.EscapeString("F@r0ut~Du,de=", EscapeStringType.URI);
 
             Assert.AreEqual(DEC_EXPECT,dec);
             Assert.AreEqual(UNI_EXPECT,uni);
@@ -154,7 +155,7 @@ namespace NoFuture.Util.Core.Tests
             var textInput = "Judea";
             var printBlock = 26;
 
-            var testResult = Etc.PrintInCenter(printBlock, textInput);
+            var testResult = NfString.PrintInCenter(textInput, printBlock);
 
             Assert.IsNotNull(testResult);
 
@@ -167,7 +168,7 @@ namespace NoFuture.Util.Core.Tests
             var testPrimaryInput = "   <~~~Some~Name";
             var testSecondaryInput = "                   ";
 
-            var testResult = Etc.MergeString(testPrimaryInput, testSecondaryInput);
+            var testResult = NfString.MergeString(testPrimaryInput, testSecondaryInput);
 
             Assert.IsNotNull(testResult);
 
@@ -180,7 +181,7 @@ namespace NoFuture.Util.Core.Tests
             var firstString = " a typical string ";
             var secondString = "--+|---------------";
 
-            var testResult = Etc.BinaryMergeString(firstString, secondString);
+            var testResult = NfString.BinaryMergeString(firstString, secondString);
 
             Assert.IsNotNull(testResult);
 
@@ -190,27 +191,27 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestCalcLuhnCheckDigit()
         {
-            var testResult = Etc.CalcLuhnCheckDigit("455673758689985");
+            var testResult = NfString.CalcLuhnCheckDigit("455673758689985");
             Assert.AreEqual(5, testResult);
-            testResult = Etc.CalcLuhnCheckDigit("453211001754030");
+            testResult = NfString.CalcLuhnCheckDigit("453211001754030");
             Assert.AreEqual(9,testResult);
-            testResult = Etc.CalcLuhnCheckDigit("471604448140316");
+            testResult = NfString.CalcLuhnCheckDigit("471604448140316");
             Assert.AreEqual(5, testResult);
-            testResult = Etc.CalcLuhnCheckDigit("554210251648257");
+            testResult = NfString.CalcLuhnCheckDigit("554210251648257");
             Assert.AreEqual(5, testResult);
-            testResult = Etc.CalcLuhnCheckDigit("537886423943754");
+            testResult = NfString.CalcLuhnCheckDigit("537886423943754");
             Assert.AreEqual(6, testResult);
-            testResult = Etc.CalcLuhnCheckDigit("511329925461278");
+            testResult = NfString.CalcLuhnCheckDigit("511329925461278");
             Assert.AreEqual(2, testResult);
-            testResult = Etc.CalcLuhnCheckDigit("37322049976972");
+            testResult = NfString.CalcLuhnCheckDigit("37322049976972");
             Assert.AreEqual(0, testResult);
-            testResult = Etc.CalcLuhnCheckDigit("34561114407525");
+            testResult = NfString.CalcLuhnCheckDigit("34561114407525");
             Assert.AreEqual(4, testResult);
-            testResult = Etc.CalcLuhnCheckDigit("34831152135173");
+            testResult = NfString.CalcLuhnCheckDigit("34831152135173");
             Assert.AreEqual(6, testResult);
-            testResult = Etc.CalcLuhnCheckDigit("601198900163944");
+            testResult = NfString.CalcLuhnCheckDigit("601198900163944");
             Assert.AreEqual(0, testResult);
-            testResult = Etc.CalcLuhnCheckDigit("3653092434341");
+            testResult = NfString.CalcLuhnCheckDigit("3653092434341");
             Assert.AreEqual(5, testResult);
         }
 
@@ -224,7 +225,7 @@ namespace NoFuture.Util.Core.Tests
                     (char) 0x09, 'e', 'f', (char) 0x20
                 });
 
-            var testResult = Etc.DistillTabs(testInput);
+            var testResult = NfString.DistillTabs(testInput);
             Assert.AreEqual(" a bcd ef ",testResult);
 
         }
@@ -232,7 +233,7 @@ namespace NoFuture.Util.Core.Tests
         public void TestTransformScreamingCapsToCamelCase()
         {
             const string TEST_INPUT = "USER_NAME";
-            var testOutput = Etc.ToPascelCase(TEST_INPUT);
+            var testOutput = NfString.ToPascelCase(TEST_INPUT);
             Assert.AreEqual("userName", testOutput);
         }
 
@@ -240,29 +241,29 @@ namespace NoFuture.Util.Core.Tests
         public void TestToCamelCase()
         {
             const string TEST_INPUT = "UserName";
-            var testOutput = Etc.ToCamelCase(TEST_INPUT, true);
+            var testOutput = NfString.ToCamelCase(TEST_INPUT, true);
             Assert.AreEqual("userName", testOutput);
 
-            testOutput = Etc.ToCamelCase("__" + TEST_INPUT, true);
+            testOutput = NfString.ToCamelCase("__" + TEST_INPUT, true);
             Assert.AreEqual("__userName", testOutput);
 
-            testOutput = Etc.ToCamelCase("__" + TEST_INPUT.ToUpper(), true);
+            testOutput = NfString.ToCamelCase("__" + TEST_INPUT.ToUpper(), true);
             Assert.AreEqual("__username", testOutput);
 
-            testOutput = Etc.ToCamelCase("ID", true);
+            testOutput = NfString.ToCamelCase("ID", true);
             Assert.AreNotEqual("iD", testOutput);
             Assert.AreEqual("id", testOutput);
 
-            testOutput = Etc.ToCamelCase("498375938720", true);
+            testOutput = NfString.ToCamelCase("498375938720", true);
             Assert.AreEqual("498375938720", testOutput);
 
-            testOutput = Etc.ToCamelCase("__userNAME_ID", true);
+            testOutput = NfString.ToCamelCase("__userNAME_ID", true);
             Assert.AreEqual("__userName_Id", testOutput);
 
-            testOutput = Etc.ToCamelCase("The-VariousThings\\which,AllowYou ToRead=this");
+            testOutput = NfString.ToCamelCase("The-VariousThings\\which,AllowYou ToRead=this");
             Assert.AreEqual("theVariousThingsWhichAllowYouToReadThis", testOutput);
 
-            testOutput = Etc.ToCamelCase("Server Purpose(s); Installed Component(s)");
+            testOutput = NfString.ToCamelCase("Server Purpose(s); Installed Component(s)");
             Assert.AreEqual("serverPurposeSInstalledComponentS", testOutput);
 
         }
@@ -271,27 +272,27 @@ namespace NoFuture.Util.Core.Tests
         public void TestTransformCamelCaseToSeparator()
         {
             const string TEST_INPUT = "UserName";
-            var testOutput = Etc.TransformCaseToSeparator(TEST_INPUT, '_');
+            var testOutput = NfString.TransformCaseToSeparator(TEST_INPUT, '_');
             Assert.AreEqual("User_Name", testOutput);
 
-            testOutput = Etc.TransformCaseToSeparator("user_Name", '_');
+            testOutput = NfString.TransformCaseToSeparator("user_Name", '_');
             Assert.AreEqual("user_Name", testOutput);
 
         }
         [Test]
         public void TestToPascelCase()
         {
-            var testResult = Etc.ToPascelCase("dbo.DELETED_LookupDetails");
+            var testResult = NfString.ToPascelCase("dbo.DELETED_LookupDetails");
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
             Assert.AreEqual("DboDeletedLookupDetails",testResult);
 
-            testResult = Etc.ToPascelCase("dbo.DELETED_LookupDetails", true);
+            testResult = NfString.ToPascelCase("dbo.DELETED_LookupDetails", true);
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
             Assert.AreEqual("Dbo.Deleted_LookupDetails",testResult);
 
-            testResult = Etc.ToPascelCase("Test.dbo.SET_OP_lli", true);
+            testResult = NfString.ToPascelCase("Test.dbo.SET_OP_lli", true);
             Assert.AreEqual("Test.dbo.Set_Op_lli",testResult);
         }
 
@@ -299,24 +300,24 @@ namespace NoFuture.Util.Core.Tests
         public void TestDistillToWholeWords()
         {
             var testResult =
-                Etc.DistillToWholeWords(
+                NfString.DistillToWholeWords(
                     "FilmMaster-AccountDetail-ClientDetails-LocationDetails-TimeMasters-IsGolfVoucher");
             Assert.IsNotNull(testResult);
             
             Assert.AreEqual("Film Master Account Detail Client Details Location Time Masters Is Golf Voucher", string.Join(" ", testResult));
 
             testResult =
-                Etc.DistillToWholeWords("Id");
+                NfString.DistillToWholeWords("Id");
 
             Assert.IsNotNull(testResult);
             Assert.IsTrue(testResult.Length == 1);
             Assert.AreEqual("Id",testResult[0]);
 
-            testResult = Etc.DistillToWholeWords("RTDC IR Questions");
+            testResult = NfString.DistillToWholeWords("RTDC IR Questions");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("RtdcIrQuestions", string.Join("", testResult));
 
-            testResult = Etc.DistillToWholeWords("The-VariousThings\\which,AllowYou ToRead=this");
+            testResult = NfString.DistillToWholeWords("The-VariousThings\\which,AllowYou ToRead=this");
             Assert.IsNotNull(testResult);
             Assert.AreEqual(9, testResult.Length);
             Assert.AreEqual("TheVariousThingsWhichAllowYouToReadThis", string.Join("",testResult));
@@ -399,31 +400,31 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestSafeDotNetTypeName()
         {
-            var testResult = Etc.SafeDotNetTypeName("dbo.123ProcName");
+            var testResult = NfString.SafeDotNetTypeName("dbo.123ProcName");
             Assert.IsNotNull(testResult);
             Assert.AreEqual("dbo.123ProcName", testResult);
             Console.WriteLine(testResult);
 
-            testResult = Etc.SafeDotNetTypeName(null);
+            testResult = NfString.SafeDotNetTypeName(null);
             Assert.IsNotNull(testResult);
 
             var testInput = string.Empty;
-            testResult = Etc.SafeDotNetTypeName(testInput);
+            testResult = NfString.SafeDotNetTypeName(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             Console.WriteLine(testResult);
 
             testInput = "     ";
-            testResult = Etc.SafeDotNetTypeName(testInput);
+            testResult = NfString.SafeDotNetTypeName(testInput);
             Assert.IsNotNull(testResult);
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
             Console.WriteLine(testResult);
 
-            testResult = Etc.SafeDotNetTypeName("dbo.DELETED_LookupDetails");
+            testResult = NfString.SafeDotNetTypeName("dbo.DELETED_LookupDetails");
             Console.WriteLine(testResult);
             Assert.AreEqual("dbo.DELETED_LookupDetails", testResult);
 
-            testResult = Etc.SafeDotNetTypeName("Â© The End");
+            testResult = NfString.SafeDotNetTypeName("Â© The End");
 
             Console.WriteLine(testResult);
 
@@ -432,36 +433,36 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestSafeDotNetIdentifier()
         {
-            var testResult = Etc.SafeDotNetIdentifier("Personal Ph #", true);
+            var testResult = NfString.SafeDotNetIdentifier("Personal Ph #", true);
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
             Assert.AreEqual("Personal_u0020Ph_u0020_u0023", testResult);
 
-            testResult = Etc.SafeDotNetIdentifier("Personal Ph #");
+            testResult = NfString.SafeDotNetIdentifier("Personal Ph #");
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
             Assert.AreEqual("PersonalPh", testResult);
 
-            testResult = Etc.SafeDotNetIdentifier("global::Some_Aspx_Page_With_No_Namespace");
+            testResult = NfString.SafeDotNetIdentifier("global::Some_Aspx_Page_With_No_Namespace");
             Console.WriteLine(testResult);
 
             Assert.AreEqual("globalSome_Aspx_Page_With_No_Namespace", testResult);
 
             testResult =
-                Etc.SafeDotNetIdentifier(
+                NfString.SafeDotNetIdentifier(
                     "<p><font style='font-size:11px;font-family:calibri;text-align:left'>", true);
             Console.WriteLine(testResult);
 
-            Assert.IsTrue(testResult.StartsWith(Etc.DefaultNamePrefix + "_u003cp_u003e_u003cfont_u0020style"));
+            Assert.IsTrue(testResult.StartsWith(NfString.DefaultNamePrefix + "_u003cp_u003e_u003cfont_u0020style"));
 
             testResult =
-                Etc.SafeDotNetIdentifier("Â© The End Â©", false);
+                NfString.SafeDotNetIdentifier("Â© The End Â©", false);
             Console.WriteLine(testResult);
 
             Assert.AreEqual("_u0000TheEnd", testResult);
 
             testResult =
-                Etc.SafeDotNetIdentifier("Â© The End Â©", true);
+                NfString.SafeDotNetIdentifier("Â© The End Â©", true);
             Console.WriteLine(testResult);
 
             Assert.AreEqual("_u00c2_u00a9_u0020The_u0020End_u0020_u00c2_u00a9", testResult);
@@ -539,7 +540,7 @@ Decided July 1852 5
 6 NY 397
 RUGGLES, Ch. J.6 delivered the opinion of the court.
 This is an action brought to recover damages from the defendant for negligently7 putting up, labeling and selling as and for the extract of dandelion, which is a simple and harmless medicine, a jar of the extract of belladonna8, which is a deadly poison; by means of which the plaintiff Mary Ann Thomas, to whom, being sick, a dose of dandelion was prescribed by a physician, and a portion of the contents of the jar, was administered as and for the extract of dandelion, was greatly injured.";
-            var testResult = Etc.ToWordWrap(sometext);
+            var testResult = NfString.ToWordWrap(sometext);
             Console.Write(testResult);
 
         }

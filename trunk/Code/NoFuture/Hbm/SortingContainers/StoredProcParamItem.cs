@@ -3,6 +3,7 @@ using System.Data;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Hbm.SortingContainers
 {
@@ -76,8 +77,8 @@ namespace NoFuture.Hbm.SortingContainers
             if (string.IsNullOrWhiteSpace(ParamName))
                 return null;
             var cName = ParamName.StartsWith("@") ? ParamName.Substring(1, ParamName.Length - 1) : ParamName;
-            cName = Etc.SafeDotNetIdentifier(cName);
-            cName = Etc.CapWords(cName, null);
+            cName = NfString.SafeDotNetIdentifier(cName);
+            cName = NfString.CapWords(cName, null);
             if (GetSqlDataType() == SqlDbType.Bit && !cName.StartsWith("Is"))
                 cName = string.Format("Is{0}", cName);
             if (cName.EndsWith("ID"))

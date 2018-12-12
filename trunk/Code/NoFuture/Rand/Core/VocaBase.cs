@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Core
 {
@@ -180,13 +181,13 @@ namespace NoFuture.Rand.Core
             switch (txtCase)
             {
                 case KindsOfTextCase.Camel:
-                    return Etc.ToCamelCase(x);
+                    return NfString.ToCamelCase(x);
                 case KindsOfTextCase.Pascel:
-                    return Etc.ToPascelCase(x);
+                    return NfString.ToPascelCase(x);
                 case KindsOfTextCase.Kabab:
-                    return Etc.TransformCaseToSeparator(Etc.ToCamelCase(x), '-')?.ToLower();
+                    return NfString.TransformCaseToSeparator(NfString.ToCamelCase(x), '-')?.ToLower();
                 case KindsOfTextCase.Snake:
-                    return Etc.TransformCaseToSeparator(Etc.ToCamelCase(x), '_')?.ToLower();
+                    return NfString.TransformCaseToSeparator(NfString.ToCamelCase(x), '_')?.ToLower();
             }
 
             return x;

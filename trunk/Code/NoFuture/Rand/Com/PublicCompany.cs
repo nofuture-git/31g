@@ -7,6 +7,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Gov.US.Irs;
 using NoFuture.Rand.Gov.US.Sec;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Com
 {
@@ -35,7 +36,7 @@ namespace NoFuture.Rand.Com
             set => _tickerSymbols = value;
         }
 
-        public string UrlEncodedName => Util.Core.Etc.EscapeString(GetSearchCompanyName(Name), EscapeStringType.URI);
+        public string UrlEncodedName => NfString.EscapeString(GetSearchCompanyName(Name), EscapeStringType.URI);
 
         public override void LoadXrefXmlData()
         {

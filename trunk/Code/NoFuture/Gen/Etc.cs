@@ -201,7 +201,7 @@ namespace NoFuture.Gen
                     $"This type '{typeFullName}' could not be found in the assembly '{assembly.GetName().Name}'");
 
             var gv = new StringBuilder();
-            var graphName = Util.Core.Etc.SafeDotNetIdentifier(assembly.GetName().Name);
+            var graphName = NfString.SafeDotNetIdentifier(assembly.GetName().Name);
 
             var topClass = GetCgOfType(assembly, typeFullName, false);
             var allCgTypeNames =

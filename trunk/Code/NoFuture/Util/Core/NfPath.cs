@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Shared.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Util.Core
 {
@@ -132,7 +133,7 @@ namespace NoFuture.Util.Core
         public static string GetRandomFileFullName(string fileNamePrefix = null)
         {
             return Path.Combine(NfSettings.AppData,
-                (fileNamePrefix ?? Etc.DEFAULT_NAME_PREFIX) + Path.GetRandomFileName());
+                (fileNamePrefix ?? NfString.DEFAULT_NAME_PREFIX) + Path.GetRandomFileName());
         }
 
         /// <summary>
@@ -149,7 +150,7 @@ namespace NoFuture.Util.Core
                 return;
 
             var fileContent = File.ReadAllText(somePath);
-            fileContent = Etc.ConvertToCrLf(fileContent);
+            fileContent = NfString.ConvertToCrLf(fileContent);
 
             File.WriteAllText(somePath, fileContent);
 
@@ -170,7 +171,7 @@ namespace NoFuture.Util.Core
                 return;
 
             var fileContent = File.ReadAllText(somePath);
-            fileContent = Etc.ConvertToCrLf(fileContent);
+            fileContent = NfString.ConvertToCrLf(fileContent);
 
             File.WriteAllText(somePath, fileContent, encoder);
 

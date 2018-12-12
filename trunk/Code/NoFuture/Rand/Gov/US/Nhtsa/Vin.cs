@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Gov.US.Nhtsa
 {
@@ -92,7 +93,7 @@ namespace NoFuture.Rand.Gov.US.Nhtsa
                     return;
                 }
 
-                vinIn = Etc.BinaryMergeString(vinIn, AllZeros);
+                vinIn = NfString.BinaryMergeString(vinIn, AllZeros);
 
                 var vinChars = vinIn.ToCharArray();
                 Wmi = new WorldManufacturerId

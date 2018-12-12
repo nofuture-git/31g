@@ -7,6 +7,7 @@ using NoFuture.Rand.Geo.CA;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Geo
 {
@@ -37,7 +38,7 @@ namespace NoFuture.Rand.Geo
                 var lf = Constants.LF.ToString();
 
                 //normalize to the same new-line char sequence then convert back to just LF
-                val = Etc.ConvertToCrLf(val).Replace(crlf, lf);
+                val = NfString.ConvertToCrLf(val).Replace(crlf, lf);
 
                 var ln1 = val.Split(Constants.LF).FirstOrDefault();
                 var ln2 = val.Split(Constants.LF).LastOrDefault();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Util.Gia.GraphViz
 {
@@ -23,7 +24,7 @@ namespace NoFuture.Util.Gia.GraphViz
 
         public static string MrecordName(string labelName)
         {
-            var safeLabelName = Etc.SafeDotNetIdentifier(labelName);
+            var safeLabelName = NfString.SafeDotNetIdentifier(labelName);
             return string.Format("{0}", safeLabelName);
         }
 

@@ -232,7 +232,7 @@ namespace NoFuture.Rand.Exo.NfXml
                 try
                 {
                     var htmlText = tbnElem.InnerText;
-                    foreach (var k in Etc.HtmlEscStrings)
+                    foreach (var k in NfString.HtmlEscStrings)
                     {
                         var replaceWith = new string(new []{(char)k.Item1});
                         var htmlEscTxt = k.Item2;

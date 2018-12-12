@@ -121,7 +121,7 @@ function Convert-PsObjsToCsCode
 
         $Obj = $ArrayOfPsObjs
         if(-not ([string]::IsNullOrWhiteSpace($Extends))){$Extends = ": $Extends" }
-        $TypeName = [NoFuture.Util.Core.Etc]::CapWords($Name,([char]".")).Replace(".","")
+        $TypeName = [NoFuture.Util.Core.NfString]::CapWords($Name,([char]".")).Replace(".","")
         $TypeDecl = @"
 using System;
 using System.Collections.Generic;
@@ -137,7 +137,7 @@ namespace $Namespace
         $members = ( $Obj[0] | Get-Member -MemberType NoteProperty | % {$_.Name})
         $csMembers = @{}
         $members | % {
-            $propName = [NoFuture.Util.Core.Etc]::CapWords($_,([char]"_")).Replace("_","") ;
+            $propName = [NoFuture.Util.Core.NfString]::CapWords($_,([char]"_")).Replace("_","") ;
             #member names cannot be the same as thier enclosing types
             if($propName -eq $TypeName){
                 $propName = "Name"

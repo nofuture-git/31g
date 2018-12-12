@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Tele
 {
@@ -42,11 +43,11 @@ namespace NoFuture.Rand.Tele
             var shortWordList = new List<string>();
             var otherWords = ChildishUserNames;
 
-            var withUcase = Etc.CapWords(Etx.RandomPickOne(shortWords), ' ');
+            var withUcase = NfString.CapWords(Etx.RandomPickOne(shortWords), ' ');
             shortWordList.Add(withUcase);
             shortWordList.Add(Etx.RandomPickOne(otherWords));
             if(Etx.RandomCoinToss())
-                shortWordList.Add(Etc.CapWords(Etx.RandomPickOne(shortWords), ' '));
+                shortWordList.Add(NfString.CapWords(Etx.RandomPickOne(shortWords), ' '));
 
             shortWordList = Etx.RandomShuffle(shortWordList.ToArray()).ToList();
 

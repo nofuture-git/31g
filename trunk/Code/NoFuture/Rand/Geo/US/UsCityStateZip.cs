@@ -14,6 +14,7 @@ using NoFuture.Rand.Gov.US.Census;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Geo.US
 {
@@ -288,7 +289,7 @@ namespace NoFuture.Rand.Geo.US
             if (isHyphen)
                 workingName = workingName.Replace("-", " ");
 
-            workingName = Etc.CapWords(workingName.ToLower(), ' ');
+            workingName = NfString.CapWords(workingName.ToLower(), ' ');
 
             if (workingName == "New York")
                 return "New York City";

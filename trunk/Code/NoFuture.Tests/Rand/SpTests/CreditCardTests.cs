@@ -8,6 +8,7 @@ using NoFuture.Rand.Sp;
 using NoFuture.Rand.Sp.Cc;
 using NoFuture.Util.Core;
 using NUnit.Framework;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Tests.SpTests
 {
@@ -22,7 +23,7 @@ namespace NoFuture.Rand.Tests.SpTests
             testInput.AddRange(Etx.RandomRChars(true, 8, 1));
             var testSubject = new CreditCardNumber(testInput.ToArray())
             {
-                CheckDigitFunc = Etc.CalcLuhnCheckDigit
+                CheckDigitFunc = NfString.CalcLuhnCheckDigit
             };
 
             var testResult00 = testSubject.Value;

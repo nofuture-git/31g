@@ -8,6 +8,7 @@ using NoFuture.Rand.Geo;
 using NoFuture.Rand.Org;
 using NoFuture.Rand.Tele;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Com
 {
@@ -589,7 +590,7 @@ namespace NoFuture.Rand.Com
 
                 ssout.Add(f);
             }
-            return Etc.CapWords(String.Join(" ", ssout), ' ');
+            return NfString.CapWords(String.Join(" ", ssout), ' ');
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Shared.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 
 namespace NoFuture.Util.Core
@@ -182,7 +183,7 @@ namespace NoFuture.Util.Core
                     simplePropType.IndexOf(Constants.TYPE_METHOD_NAME_SPLIT_ON, StringComparison.Ordinal));
             }
 
-            return Etc.ExtractLastWholeWord(simplePropType, NfSettings.DefaultTypeSeparator);
+            return NfString.ExtractLastWholeWord(simplePropType, NfSettings.DefaultTypeSeparator);
         }
 
         /// <summary>

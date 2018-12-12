@@ -47,6 +47,7 @@
     <Compile Include="NfNet.cs" />
     <Compile Include="NfPath.cs" />
     <Compile Include="NfReflect.cs" />
+    <Compile Include="NfString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

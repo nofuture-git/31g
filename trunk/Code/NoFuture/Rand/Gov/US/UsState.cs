@@ -5,6 +5,7 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov.US.TheStates;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Gov.US
 {
@@ -29,7 +30,7 @@ namespace NoFuture.Rand.Gov.US
         protected UsState(string stateAbbrv)
         {
             _stateAbbrev = stateAbbrv;
-            _stateName = Etc.TransformCaseToSeparator(GetType().Name, ' ');
+            _stateName = NfString.TransformCaseToSeparator(GetType().Name, ' ');
         }
         #endregion
 
@@ -67,7 +68,7 @@ namespace NoFuture.Rand.Gov.US
 
         public override string ToString()
         {
-            return String.Join(" ", Etc.DistillToWholeWords(GetType().Name));
+            return String.Join(" ", NfString.DistillToWholeWords(GetType().Name));
         }
 
         /// <summary>

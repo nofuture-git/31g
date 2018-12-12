@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Tokens
 {
@@ -95,8 +96,8 @@ namespace NoFuture.Tokens
                 throw new ItsDeadJim("The input string arg is empty.");
             }
 
-            inputString = Etc.DistillCrLf(inputString);
-            inputString = Etc.DistillTabs(inputString);
+            inputString = NfString.DistillCrLf(inputString);
+            inputString = NfString.DistillTabs(inputString);
 
             var tokens = GetTokens(inputString);
             var gaps = GetGaps(tokens);
@@ -131,8 +132,8 @@ namespace NoFuture.Tokens
             }
 
             //crit - the indices must match the original so process like frame f(x) did
-            inputString = Etc.DistillCrLf(inputString);
-            inputString = Etc.DistillTabs(inputString);
+            inputString = NfString.DistillCrLf(inputString);
+            inputString = NfString.DistillTabs(inputString);
 
             XDocIter(xDoc,inputString);
 

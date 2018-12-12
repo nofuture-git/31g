@@ -2,6 +2,7 @@
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Gov
 {
@@ -18,7 +19,7 @@ namespace NoFuture.Rand.Gov
             if (personName == null)
                 return;
 
-            PersonFullName = Etc.DistillSpaces(
+            PersonFullName = NfString.DistillSpaces(
                 string.Join(" ", personName.GetName(KindsOfNames.First),
                                  personName.GetName(KindsOfNames.Surname)));
 

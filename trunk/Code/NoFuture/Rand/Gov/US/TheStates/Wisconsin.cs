@@ -2,6 +2,7 @@
 using System.Text;
 using NoFuture.Rand.Core;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Gov.US.TheStates
 {
@@ -19,7 +20,7 @@ namespace NoFuture.Rand.Gov.US.TheStates
         public override string GetRandomDriversLicense()
         {
             var dlVal = base.GetRandomDriversLicense();
-            var chkDigit = Etc.CalcLuhnCheckDigit(dlVal);
+            var chkDigit = NfString.CalcLuhnCheckDigit(dlVal);
             var dlOut = new StringBuilder();
             dlOut.Append(dlVal);
             dlOut.Append(chkDigit.ToString());
@@ -38,7 +39,7 @@ namespace NoFuture.Rand.Gov.US.TheStates
             if (!int.TryParse(dlLastChar, out dlChkDigit))
                 return false;
 
-            var calcChkDigit = Etc.CalcLuhnCheckDigit(dlVal);
+            var calcChkDigit = NfString.CalcLuhnCheckDigit(dlVal);
 
             return base.ValidDriversLicense(dlVal) && dlChkDigit == calcChkDigit;
         }

@@ -5,6 +5,7 @@ using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Geo
 {
@@ -28,7 +29,7 @@ namespace NoFuture.Rand.Geo
         public override string ToString()
         {
             var data = GetData();
-            return Etc.DistillSpaces(string.Join(" ", data.ThoroughfareNumber, data.ThoroughfareDirectional, data.ThoroughfareName, 
+            return NfString.DistillSpaces(string.Join(" ", data.ThoroughfareNumber, data.ThoroughfareDirectional, data.ThoroughfareName, 
                 data.ThoroughfareType, data.SecondaryUnitDesignator,
                 data.SecondaryUnitId).Trim());
         }

@@ -8,6 +8,7 @@ using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
 using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Edu.US
 {
@@ -108,7 +109,7 @@ namespace NoFuture.Rand.Edu.US
             if (state.Length == 2)
                 qryBy = "abbreviation";
             else
-                state = string.Join(" ", Etc.DistillToWholeWords(state));
+                state = string.Join(" ", NfString.DistillToWholeWords(state));
 
             var elements =
                 UnivXml.SelectSingleNode($"//state[@{qryBy}='{state}']");

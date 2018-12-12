@@ -6,6 +6,7 @@ using System.Linq;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
+using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Util.Pos
 {
@@ -172,7 +173,7 @@ namespace NoFuture.Util.Pos
             {
                 return tagset.ToArray();
             }
-            taggedString = Etc.DistillCrLf(taggedString);
+            taggedString = NfString.DistillCrLf(taggedString);
 
             var valueArray = taggedString.Split(' ');
 

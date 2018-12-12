@@ -237,7 +237,7 @@ namespace NoFuture.Encryption
                 throw new ItsDeadJim("The private could not be resolved.");
 
             var plainTextFile = Path.Combine(Path.GetDirectoryName(path) ?? Environment.CurrentDirectory,
-                Path.GetFileNameWithoutExtension(path) ?? Etc.GetNfRandomName());
+                Path.GetFileNameWithoutExtension(path) ?? NfString.GetNfRandomName());
 
             using (var aes = new AesManaged())
             {

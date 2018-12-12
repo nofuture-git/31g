@@ -4,6 +4,7 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Com
 {
@@ -27,7 +28,7 @@ namespace NoFuture.Rand.Com
             set => _symbol = value;
         }
 
-        public string UriEncodedSymbol => Util.Core.Etc.EscapeString(Symbol, EscapeStringType.URI);
+        public string UriEncodedSymbol => NfString.EscapeString(Symbol, EscapeStringType.URI);
 
         public string Exchange { get; set; }
         public string InstrumentType { get; set; }
