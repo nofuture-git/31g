@@ -126,6 +126,9 @@
     <EmbeddedResource Include="MsSql\PrimaryKeys.sql" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="NoFuture.Gen.Hbm.psm1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Templates\Ef35Mapping.tt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
