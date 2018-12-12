@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
@@ -939,6 +941,105 @@ namespace NoFuture.Gen
                 return false;
             }
             return false;
+        }
+
+
+        /// <summary>
+        /// Used in <see cref="ToPlural"/> for nouns which posses no discernable pattern
+        /// for being rendered plural.
+        /// </summary>
+        public static readonly Hashtable IRREGULAR_PLURALS = new Hashtable()
+        {
+            {"Woman", "Women"},
+            {"Man", "Men"},
+            {"Child", "Children"},
+            {"Person", "People"},
+            {"Datum", "Data" },
+            {"Foot", "Feet" },
+            {"Goose","Geese" },
+            {"Tooth","Teeth" },
+            {"Mouse","Mice" },
+            {"Deer", "Deer" },
+            {"Moose", "Moose" },
+        };
+
+        /// <summary>
+        /// Puralize an English word - pays no respect to if word may already 
+        /// be the plural version of itself, nor if the word is actually a noun.
+        /// </summary>
+        /// <param name="name">Expected to be a singular noun.</param>
+        /// <param name="skipWordsEndingInS">Set this to true to break out when words already end with 's'.</param>
+        /// <remarks>
+        /// The command handles some diphthong (e.g. Tooth -> Teeth).
+        /// </remarks>
+        /// <returns></returns>
+        public static string ToPlural(string name, bool skipWordsEndingInS = false)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return name;
+
+            name = name.Trim();
+
+            if (name.Length <= 1)
+                return name;
+
+            if (name.EndsWith("s") && skipWordsEndingInS)
+                return name;
+
+            if (name.EndsWith("us") && name.Length > 2)
+            {
+                return $"{name.Substring(0, name.Length - 2)}i";
+            }
+
+            if ((name.EndsWith("s") || name.EndsWith("ch") || name.EndsWith("o")) && !name.EndsWith("es"))
+            {
+                return $"{name}es";
+            }
+            if (name.EndsWith("y"))
+            {
+                var nameArray = name.ToCharArray();
+                var secondToLastIndex = name.Length - 2;
+                if (secondToLastIndex > 0)
+                {
+                    if (!Regex.IsMatch(nameArray[secondToLastIndex].ToString(CultureInfo.InvariantCulture), "[aeiou]"))
+                    {
+
+                        return $"{name.Substring(0, name.Length - 1)}ies";
+                    }
+                }
+            }
+            if (name.EndsWith("fe") && name.Length > 2)
+            {
+                return $"{name.Substring(0, name.Length - 2)}ves";
+            }
+            if ((name.EndsWith("lf") || name.EndsWith("af") || name.EndsWith("ef")) && name.Length > 2)
+            {
+                return $"{name.Substring(0, name.Length - 1)}ves";
+            }
+            if (name.EndsWith("x"))
+            {
+                return $"{name.Substring(0, name.Length - 1)}ces";
+            }
+
+            if ((name.EndsWith("on") || name.EndsWith("um")) && name.Length > 2)
+            {
+                return $"{name.Substring(0, name.Length - 2)}a";
+            }
+
+            if (IRREGULAR_PLURALS.ContainsKey(name))
+            {
+                return IRREGULAR_PLURALS[name].ToString();
+            }
+
+            foreach (var val in IRREGULAR_PLURALS.Values)
+            {
+                if (val == null)
+                    continue;
+                if (name.EndsWith(val.ToString()))
+                    return name;
+            }
+
+            return $"{name}s";
         }
         #endregion
     }

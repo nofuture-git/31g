@@ -129,7 +129,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\GsmTests.cs" />
-    <Compile Include="Util\EtymologicalTest.cs" />
     <Compile Include="Util\BinaryTests.cs" />
     <Compile Include="Util\TestFxPointers.cs" />
     <Compile Include="Util\NetTests.cs" />

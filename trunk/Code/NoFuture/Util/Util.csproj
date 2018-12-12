@@ -107,10 +107,6 @@
     <Compile Include="Gia\InvokeCmds\InvokeGetFlattenAssembly.cs" />
     <Compile Include="NfConsole\CmdBase.cs" />
     <Compile Include="NfConsole\ConsoleCmd.cs" />
-    <Compile Include="Etymological\Biz\Nomenclature.cs" />
-    <Compile Include="Etymological\En.cs" />
-    <Compile Include="Etymological\INomenclature.cs" />
-    <Compile Include="Etymological\Psy\Nomenclature.cs" />
     <Compile Include="Binary\FxPointers.cs" />
     <Compile Include="Gia\Args.cs" />
     <Compile Include="Gia\Flatten.cs" />
@@ -119,7 +115,6 @@
     <Compile Include="Gia\FlattenedType.cs" />
     <Compile Include="Gia\GraphViz\FlattenMrecord.cs" />
     <Compile Include="Gsm.cs" />
-    <Compile Include="Lexicon.cs" />
     <Compile Include="NfNet.cs" />
     <Compile Include="NfConsole\ICmd.cs" />
     <Compile Include="NfConsole\IInvokeCmd.cs" />

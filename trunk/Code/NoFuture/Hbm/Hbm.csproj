@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compose.cs" />
+    <Compile Include="Lexicon.cs" />
     <Compile Include="SortingContainers\HbmFileContent.cs" />
     <Compile Include="Templates\Ef35Mapping.cs" />
     <Compile Include="Templates\Ef6xFluentMapping.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
@@ -732,6 +733,66 @@ namespace NoFuture.Tests.Gen
             Assert.IsFalse(testResult);
 
 
+        }
+
+        [Test]
+        public void TestToPlural()
+        {
+            var testResult = Etc.ToPlural("Birth");
+            Console.WriteLine($"Birth -> {testResult}");
+            Assert.AreEqual("Births", testResult);
+
+            testResult = Etc.ToPlural("Apple");
+            Console.WriteLine($"Apple -> {testResult}");
+            Assert.AreEqual("Apples", testResult);
+
+            testResult = Etc.ToPlural("Banana");
+            Debug.WriteLine($"Banana -> {testResult}");
+            Assert.AreEqual("Bananas", testResult);
+
+            testResult = Etc.ToPlural("Woman");
+            Console.WriteLine($"Woman -> {testResult}");
+            Assert.AreEqual("Women", testResult);
+
+            testResult = Etc.ToPlural("Wolf");
+            Debug.WriteLine($"Wolf -> {testResult}");
+            Assert.AreEqual("Wolves", testResult);
+
+            testResult = Etc.ToPlural("Freeway");
+            Console.WriteLine($"Freeway -> {testResult}");
+            Assert.AreEqual("Freeways", testResult);
+
+            testResult = Etc.ToPlural("Today");
+            Console.WriteLine($"Today -> {testResult}");
+            Assert.AreEqual("Todays", testResult);
+
+            testResult = Etc.ToPlural("Addendum");
+            Console.WriteLine($"Addendum -> {testResult}");
+            Assert.AreEqual("Addenda", testResult);
+
+            testResult = Etc.ToPlural("Nucleus");
+            Console.WriteLine($"Nucleus -> {testResult}");
+            Assert.AreEqual("Nuclei", testResult);
+
+            testResult = Etc.ToPlural("Criterion");
+            Console.WriteLine($"Criterion -> {testResult}");
+            Assert.AreEqual("Criteria", testResult);
+
+            testResult = Etc.ToPlural("Die");
+            Console.WriteLine($"Die -> {testResult}");
+            Assert.AreEqual("Dies", testResult);
+
+            testResult = Etc.ToPlural("Life");
+            Console.WriteLine($"Life -> {testResult}");
+            Assert.AreEqual("Lives", testResult);
+
+            testResult = Etc.ToPlural("Shelf");
+            Console.WriteLine($"Shelf -> {testResult}");
+            Assert.AreEqual("Shelves", testResult);
+
+            testResult = Etc.ToPlural("Wife");
+            Console.WriteLine($"Wife -> {testResult}");
+            Assert.AreEqual("Wives", testResult);
         }
     }
 }

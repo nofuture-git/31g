@@ -95,7 +95,7 @@ namespace NoFuture.Hbm
         public static string BagPropertyName(string fullAssemblyQualTypeName)
         {
             var pluralBagName = new NfTypeName(fullAssemblyQualTypeName);
-            return Util.Etymological.En.ToPlural(pluralBagName.ClassName, true);
+            return Gen.Etc.ToPlural(pluralBagName.ClassName, true);
         }
 
         public static string HbmFileName(string someName)
