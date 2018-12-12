@@ -58,10 +58,6 @@
       <HintPath>..\packages\Jurassic.2.2.1\lib\net35\Jurassic.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
@@ -128,10 +124,8 @@
     <Compile Include="Host.Encryption\ProgramTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\GsmTests.cs" />
     <Compile Include="Util\BinaryTests.cs" />
     <Compile Include="Util\TestFxPointers.cs" />
-    <Compile Include="Util\NetTests.cs" />
     <Compile Include="Util\NfTypeTests\TypeNameTests.cs" />
     <Compile Include="Util\TestConsoleCmd.cs" />
     <Compile Include="Util\AsmTests.cs" />
@@ -209,6 +203,10 @@
       <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
       <Name>Tokens</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Util\Binary\Util.Binary.csproj">
+      <Project>{c02e6247-e99f-4ef2-b275-12f8bb27acc7}</Project>
+      <Name>Util.Binary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NoFuture\Util\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
@@ -217,9 +215,17 @@
       <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
       <Name>Util.DotNetMeta</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NoFuture\Util\Util.csproj">
-      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
-      <Name>Util</Name>
+    <ProjectReference Include="..\NoFuture\Util\Gia\Util.Gia.csproj">
+      <Project>{280000ce-bc04-4a97-ba73-c978439ef280}</Project>
+      <Name>Util.Gia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Util\NfConsole\Util.NfConsole.csproj">
+      <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>
+      <Name>Util.NfConsole</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NoFuture\Util\NfType\Util.NfType.csproj">
+      <Project>{e0e624fb-47b3-474f-af43-205fa019e4d3}</Project>
+      <Name>Util.NfType</Name>
     </ProjectReference>
     <ProjectReference Include="..\NoFuture\Util\Util.Pos\Util.Pos.csproj">
       <Project>{39627590-0d97-4de2-b598-172b04587550}</Project>

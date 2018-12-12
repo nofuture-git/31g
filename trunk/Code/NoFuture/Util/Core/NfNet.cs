@@ -11,8 +11,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Principal;
 using Newtonsoft.Json;
-using NoFuture.Shared;
-using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Util
@@ -66,7 +64,7 @@ namespace NoFuture.Util
                     //Json
                     if (iniValue.ToLower().StartsWith("%7b") && iniValue.ToLower().EndsWith("%7d"))
                     {
-                        var v = JsonConvert.DeserializeObject<dynamic>(System.Web.HttpUtility.UrlDecode(iniValue));
+                        var v = JsonConvert.DeserializeObject<object>(System.Web.HttpUtility.UrlDecode(iniValue));
                         values.Add(new Tuple<string, object>(name, v));
                     }
 
@@ -172,13 +170,14 @@ namespace NoFuture.Util
 
         public static byte[] SendOnSocket(IPAddress ip, byte[] mdt, int port)
         {
+            const int DF_BLOCK = 256;
             var buffer = new List<byte>();
             using (var server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP))
             {
                 ip = ip ?? IPAddress.Loopback;
                 server.Connect(new IPEndPoint(ip, port));
                 server.Send(mdt);
-                var data = new byte[NfConfig.DefaultBlockSize];
+                var data = new byte[DF_BLOCK];
 
                 //waits for response
                 server.Receive(data, 0, data.Length, SocketFlags.None);
@@ -186,14 +185,14 @@ namespace NoFuture.Util
                 while (server.Available > 0)
                 {
                     var avail = server.Available;
-                    data = avail < NfConfig.DefaultBlockSize
+                    data = avail < DF_BLOCK
                         ? new byte[avail]
-                        : new byte[NfConfig.DefaultBlockSize];
+                        : new byte[DF_BLOCK];
                     server.Receive(data, 0, data.Length, SocketFlags.None);
                     buffer.AddRange(data.Where(b => b != (byte)'\0'));
 
                     if (server.Available == 0)
-                        Thread.Sleep(NfConfig.ThreadSleepTime);//give it a moment
+                        Thread.Sleep(500);//give it a moment
                 }
                 server.Close();
             }

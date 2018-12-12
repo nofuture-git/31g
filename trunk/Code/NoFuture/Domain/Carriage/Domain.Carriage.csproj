@@ -117,9 +117,9 @@
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Util\Util.csproj">
-      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
-      <Name>Util</Name>
+    <ProjectReference Include="..\..\Util\NfConsole\Util.NfConsole.csproj">
+      <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>
+      <Name>Util.NfConsole</Name>
     </ProjectReference>
     <ProjectReference Include="..\Engine\Domain.Engine.csproj">
       <Project>{9DAC506B-CC22-43D2-9E72-A463E0015A03}</Project>

@@ -161,7 +161,6 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cmds\PosParserCmd.cs" />
@@ -185,17 +184,13 @@
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Shared\Shared.csproj">
-      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
-      <Name>Shared</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Util.csproj">
-      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
-      <Name>Util</Name>
+    <ProjectReference Include="..\..\NfConsole\Util.NfConsole.csproj">
+      <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>
+      <Name>Util.NfConsole</Name>
     </ProjectReference>
     <ProjectReference Include="..\Util.Pos.csproj">
       <Project>{39627590-0d97-4de2-b598-172b04587550}</Project>

@@ -73,9 +73,21 @@
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Util.csproj">
-      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
-      <Name>Util</Name>
+    <ProjectReference Include="..\..\Binary\Util.Binary.csproj">
+      <Project>{c02e6247-e99f-4ef2-b275-12f8bb27acc7}</Project>
+      <Name>Util.Binary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NfConsole\Util.NfConsole.csproj">
+      <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>
+      <Name>Util.NfConsole</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util.Gia.csproj">
+      <Project>{280000ce-bc04-4a97-ba73-c978439ef280}</Project>
+      <Name>Util.Gia</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

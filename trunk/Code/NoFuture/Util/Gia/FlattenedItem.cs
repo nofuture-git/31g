@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Util.Core;
 using NoFuture.Util.Gia.GraphViz;
-using NoFuture.Util.NfType;
 
 namespace NoFuture.Util.Gia
 {

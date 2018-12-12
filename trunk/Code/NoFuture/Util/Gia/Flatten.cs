@@ -15,7 +15,6 @@ using NoFuture.Util.Core;
 using NoFuture.Util.Gia.Args;
 using NoFuture.Util.Gia.InvokeCmds;
 using NoFuture.Util.NfConsole;
-using NoFuture.Util.NfType;
 
 namespace NoFuture.Util.Gia
 {

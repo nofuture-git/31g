@@ -4,20 +4,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F3AA72F2-7E33-4A99-A10D-110DEC5A8384}</ProjectGuid>
+    <ProjectGuid>{C02E6247-E99F-4EF2-B275-12F8BB27ACC7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Rand.Edu</RootNamespace>
-    <AssemblyName>NoFuture.Rand.Edu</AssemblyName>
+    <RootNamespace>NoFuture.Util.Binary</RootNamespace>
+    <AssemblyName>NoFuture.Util.Binary</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,48 +33,24 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="US\AmericanCollegeStudent.cs" />
-    <Compile Include="US\AmericanSchoolBase.cs" />
-    <Compile Include="US\AmericanHighSchool.cs" />
-    <Compile Include="US\AmericanHighSchoolStudent.cs" />
-    <Compile Include="US\AmericanUniversity.cs" />
-    <Compile Include="IEducation.cs" />
-    <Compile Include="IHighSchool.cs" />
-    <Compile Include="IStudent.cs" />
-    <Compile Include="IUniversity.cs" />
-    <Compile Include="US\AmericanEducation.cs" />
-    <Compile Include="US\AmericanStudentBase.cs" />
+    <Compile Include="Asm.cs" />
+    <Compile Include="ByteArray.cs" />
+    <Compile Include="Calc.cs" />
+    <Compile Include="Compression.cs" />
+    <Compile Include="FxPointers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Cfg\Shared.Cfg.csproj">
+      <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
+      <Name>Shared.Cfg</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Shared\Core\Shared.Core.csproj">
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Util\Core\Math\Util.Core.Math.csproj">
-      <Project>{5bc9b3aa-96df-4e29-b5b7-961d28af76b3}</Project>
-      <Name>Util.Core.Math</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Util\Core\Util.Core.csproj">
-      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
-      <Name>Util.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Rand.Core.csproj">
-      <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
-      <Name>Rand.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Gov\Rand.Gov.csproj">
-      <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
-      <Name>Rand.Gov</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Data\US_HighSchools_Data.xml" />
-    <EmbeddedResource Include="Data\US_Universities_Data.xml" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

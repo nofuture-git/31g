@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NoFuture.Util.Core;
 using NoFuture.Util.Gia.GraphViz;
-using NoFuture.Util.NfType;
 
 namespace NoFuture.Util.Gia
 {

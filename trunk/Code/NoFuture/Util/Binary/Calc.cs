@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NoFuture.Util.Binary
+﻿namespace NoFuture.Util.Binary
 {
     public class Calc
     {

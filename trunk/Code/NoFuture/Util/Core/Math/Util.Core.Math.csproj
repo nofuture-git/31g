@@ -4,20 +4,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{349A1C91-CA14-4D04-946D-8B257A863CE0}</ProjectGuid>
+    <ProjectGuid>{5BC9B3AA-96DF-4E29-B5B7-961D28AF76B3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Util.Core</RootNamespace>
-    <AssemblyName>NoFuture.Util.Core</AssemblyName>
+    <RootNamespace>NoFuture.Util.Core.Math</RootNamespace>
+    <AssemblyName>NoFuture.Util.Core.Math</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,35 +31,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algo\StringDist.cs" />
-    <Compile Include="Etc.cs" />
-    <Compile Include="NfMapper.cs" />
-    <Compile Include="NfNet.cs" />
-    <Compile Include="NfPath.cs" />
-    <Compile Include="NfReflect.cs" />
+    <Compile Include="Combination.cs" />
+    <Compile Include="CustomEquation.cs" />
+    <Compile Include="Econ.cs" />
+    <Compile Include="ExponentialEquation.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="IEquation.cs" />
+    <Compile Include="LinearEquation.cs" />
+    <Compile Include="NaturalLogEquation.cs" />
+    <Compile Include="NormalDistEquation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\LoremIpsum.EightParagraphs.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Shared\Core\Shared.Core.csproj">
-      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
-      <Name>Shared.Core</Name>
-    </ProjectReference>
+    <Compile Include="SecondDegreePolynomial.cs" />
+    <Compile Include="SinusoidEquation.cs" />
+    <Compile Include="ThirdDegreePolynomial.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

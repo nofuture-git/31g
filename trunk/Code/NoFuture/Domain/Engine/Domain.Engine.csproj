@@ -94,9 +94,9 @@
     <Content Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Util\Util.csproj">
-      <Project>{d7f28538-ba6a-46b4-a080-65124e899317}</Project>
-      <Name>Util</Name>
+    <ProjectReference Include="..\..\Util\NfConsole\Util.NfConsole.csproj">
+      <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>
+      <Name>Util.NfConsole</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
