@@ -6,7 +6,6 @@ using System.Text;
 using System.Web;
 using NoFuture.Shared.Core;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NoFuture.Util.Core
 {

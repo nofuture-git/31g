@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using NoFuture.Rand.Core;
-using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Gov.US.Nhtsa
