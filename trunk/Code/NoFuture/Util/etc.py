@@ -1,9 +1,8 @@
 import encodings
 import string
 import urllib.parse
-import Util.net as nfNet
-import Shared.constants as nfConstants
-import Shared.nfConfig as nfConfig
+from enum import Enum
+from datetime import timedelta
 
 def distillString(someString):
     """Distills the continous spaces into a single space and
@@ -46,9 +45,9 @@ def convertToCrLf(fileContent):
     """Converts line endings to CrLf"""
     if fileContent is None:
         return None
-    fileContent = fileContent.replace( nfConstants.WIN_NEW_LINE,'\n')
+    fileContent = fileContent.replace( WIN_NEW_LINE,'\n')
     fileContent = fileContent.replace('\r','\n')
-    fileContent = fileContent.replace('\n', nfConstants.WIN_NEW_LINE)
+    fileContent = fileContent.replace('\n', WIN_NEW_LINE)
     return fileContent
 
 def escapeString(value, escapeType = nfConstants.EscapeStringType.REGEX):
@@ -70,39 +69,39 @@ def escapeString(value, escapeType = nfConstants.EscapeStringType.REGEX):
     myCodec = encodings.codecs.lookup("ISO-8859-1")
     data, _ = myCodec.encode(value)
     dataOut = ""
-    if escapeType == nfConstants.EscapeStringType.DECIMAL:
+    if escapeType == EscapeStringType.DECIMAL:
         for dex in data:
             dataOut += "&#{0};".format(dex)
-    elif escapeType == nfConstants.EscapeStringType.DECIMAL_LONG:
+    elif escapeType == EscapeStringType.DECIMAL_LONG:
         for dex in data:
             dataOut += "&#{0:0>7}".format(dex)
-    elif escapeType == nfConstants.EscapeStringType.HEXDECIMAL:
+    elif escapeType == EscapeStringType.HEXDECIMAL:
         for dex in data:
             dataOut += "&#x{0}".format(dex)
-    elif escapeType == nfConstants.EscapeStringType.REGEX:
+    elif escapeType == EscapeStringType.REGEX:
         #switch back to df utf-8
         myCodec = encodings.codecs.lookup("UTF-8")
         data, _ = myCodec.encode(value)
         for dex in data:
             dataOut += "\\x{0:x}".format(dex)
-    elif escapeType == nfConstants.EscapeStringType.UNICODE:
+    elif escapeType == EscapeStringType.UNICODE:
         for dex in list(value):
             dataOut += "\\u{:0>4X}".format(ord(dex))
-    elif escapeType == nfConstants.EscapeStringType.HTML:
+    elif escapeType == EscapeStringType.HTML:
         for dex in data:
-            if dex in nfNet.htmlEscStrings:
-                dataOut += nfNet.htmlEscStrings.get(dex)
+            if dex in htmlEscStrings:
+                dataOut += htmlEscStrings.get(dex)
             else:
                 dataOut += "&#{0};".format(dex)
-    elif escapeType == nfConstants.EscapeStringType.XML:
+    elif escapeType == EscapeStringType.XML:
         for dex in data:
-            if dex in nfNet.xmlEscStrings:
-                dataOut += nfNet.xmlEscStrings.get(dex)
+            if dex in xmlEscStrings:
+                dataOut += xmlEscStrings.get(dex)
             else:
                 dataOut += chr(dex)
-    elif escapeType == nfConstants.EscapeStringType.URI:
+    elif escapeType == EscapeStringType.URI:
         return urllib.parse.quote(value)
-    elif escapeType == nfConstants.EscapeStringType.BLANK:
+    elif escapeType == EscapeStringType.BLANK:
         for dex in data:
             dataOut += ' '
     else:
@@ -210,10 +209,10 @@ def distillToWholeWords(value):
         return [value]
 
     value = toPascelCase(value)
-    value = transformCaseToSeparator(value, nfConfig.defaultCharSeparator)
+    value = transformCaseToSeparator(value, defaultCharSeparator)
     #need to perserve order
     outList = list()
-    for p in value.split(nfConfig.defaultCharSeparator):
+    for p in value.split(defaultCharSeparator):
         if not p in outList:
             outList.append(p)
     
@@ -403,5 +402,132 @@ def shortestDistance(s, candidates):
     minValue = min(dict.values())
     return [k for (k,v) in dict.items() if v == minValue]
     
-    
+class EscapeStringType(Enum):
+    """For encoding strings"""
+    DECIMAL = 1
+    DECIMAL_LONG = 2
+    HEXDECIMAL = 3
+    UNICODE = 4
+    REGEX = 5
+    HTML = 6
+    XML = 7
+    URI = 8
+    BLANK = 9
+
+WIN_NEW_LINE = '\r\n'
+
+DBL_TROPICAL_YEAR = 365.24255
+
+tropicalYear = timedelta(days=365,hours=5, minutes=49,seconds=16,milliseconds=320)    
         
+defaultCharSeparator = ','
+"""str: The op char used to delimit the start of a command line switch."""
+
+xmlEscStrings = {
+    60: "&lt;",
+    62 : "&gt;",
+    38 : "&amp;",
+    34 : "&quot;",
+    39 : "&apos;"
+}
+
+htmlEscStrings = {
+    162 : '&cent;', 
+    161 : '&iexcl;',
+    160 : '&nbsp;',
+    229 : '&aring;',
+    202 : '&Ecirc;',
+    227 : '&atilde;',
+    197 : '&Aring;',
+    225 : '&aacute;',
+    255 : '&yuml',
+    254 : '&thorn;',
+    253 : '&yacute;',
+    252 : '&uuml;',
+    251 : '&ucirc;',
+    250 : '&uacute;',
+    249 : '&ugrave;',
+    248 : '&oslash;',
+    247 : '&divide;',
+    246 : '&ouml;',
+    245 : '&otilde;',
+    244 : '&ocirc;',
+    243 : '&oacute;',
+    242 : '&ograve;',
+    241 : '&ntilde;',
+    240 : '&eth;',
+    239 : '&iuml;',
+    238 : '&icirc;',
+    237 : '&iacute;',
+    236 : '&igrave;',
+    235 : '&euml;',
+    234 : '&ecirc;',
+    233 : '&eacute;',
+    232 : '&egrave;',
+    231 : '&ccedil;',
+    230 : '&aelig;',
+    223 : '&szlig;',
+    228 : '&auml;',
+    226 : '&acirc;',
+    224 : '&agrave;',
+    222 : '&THORN;',
+    221 : '&Yacute;',
+    220 : '&Uuml;',
+    219 : '&Ucirc;',
+    218 : '&Uacute;',
+    217 : '&Ugrave;',
+    216 : '&Oslash;',
+    215 : '&times;',
+    214 : '&Ouml;',
+    213 : '&Otilde;',
+    212 : '&Ocirc;',
+    211 : '&Oacute;',
+    210 : '&Ograve;',
+    209 : '&Ntilde;',
+    208 : '&ETH;',
+    207 : '&Iuml;',
+    206 : '&Icirc;',
+    205 : '&Iacute;',
+    204 : '&Igrave;',
+    203 : '&Euml;',
+    201 : '&Eacute;',
+    200 : '&Egrave;',
+    199 : '&Ccedil;',
+    198 : '&AElig;',
+    196 : '&Auml;',
+    195 : '&Atilde;',
+    194 : '&Acirc;',
+    193 : '&Aacute;',
+    192 : '&Agrave;',
+    191 : '&iquest;',
+    190 : '&frac34;',
+    189 : '&frac12;',
+    188 : '&frac14;',
+    187 : '&raquo;',
+    186 : '&ordm;',
+    185 : '&sup1;',
+    184 : '&cedil;',
+    183 : '&middot;',
+    182 : '&para;',
+    181 : '&micro;',
+    180 : '&acute;',
+    179 : '&sup3;',
+    178 : '&sup2;',
+    177 : '&plusmn;',
+    176 : '&deg;',
+    175 : '&macr;',
+    174 : '&reg;',
+    173 : '&shy;',
+    172 : '&not;',
+    171 : '&laquo;',
+    170 : '&ordf;',
+    169 : '&copy;',
+    168 : '&uml;',
+    167 : '&sect;',
+    166 : '&brvbar;',
+    165 : '&yen;',
+    164 : '&curren;',
+    163 : '&pound;',
+}
+
+htmlEscStrings.update(xmlEscStrings)

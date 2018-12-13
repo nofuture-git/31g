@@ -1,9 +1,5 @@
-# -*- coding=latin-1 -*-
 import unittest
-import Util.net as nfNet
-import Shared.constants as nfConstants
 import Util.etc as toTest
-
 
 class TestNfUtilEtc(unittest.TestCase):
     def test_distillString(self):
@@ -34,8 +30,8 @@ class TestNfUtilEtc(unittest.TestCase):
         testResult = toTest.escapeString("[regex]", nfConstants.EscapeStringType.REGEX)
         self.assertEqual("\\x5b\\x72\\x65\\x67\\x65\\x78\\x5d",testResult)
 
-        testResult = toTest.escapeString(" £¡¥§'", nfConstants.EscapeStringType.HTML)
-        self.assertEqual("&nbsp;&pound;&iexcl;&yen;&sect;&apos;",testResult)
+        testResult = toTest.escapeString("Â¥'", nfConstants.EscapeStringType.HTML)
+        self.assertEqual("&yen;",testResult)
 
         testResult = toTest.escapeString("F@r0ut~Du,de=",nfConstants.EscapeStringType.URI)
         self.assertEqual("F%40r0ut%7EDu%2Cde%3D",testResult)

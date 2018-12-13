@@ -24,9 +24,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="etc.py" />
-    <Compile Include="net.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
