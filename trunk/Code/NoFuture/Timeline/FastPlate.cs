@@ -163,6 +163,8 @@ namespace NoFuture.Timeline
             return this;
         }
 
+        public virtual FastPlate this[double index] => Blk(index);
+
         /// <summary>
         /// Prints a single line on to current block.
         /// </summary>
