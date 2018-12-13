@@ -1,0 +1,22 @@
+/trunk/NoFuture.pfx
+/trunk/Code/NoFuture.sdf
+*.db
+/trunk/temp/
+/trunk/bin/
+/trunk/__occultum/
+/trunk/temp/
+/trunk/Notes/misc/
+.vscode/
+*.suo
+*.user
+
+#for ANTLR generated files
+*.tokens
+
+#python compiled files
+__pycache__/
+
+#fsharp data files
+/trunk/Code/NoFuture/Rand/Src/Data/
+/trunk/Code/NoFuture/Rand/Src/libiomp5md.dll
+/trunk/Code/NoFuture/Rand/Src/MathNet.Numerics.MKL.dll
