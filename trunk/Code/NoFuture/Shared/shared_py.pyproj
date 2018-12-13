@@ -31,9 +31,6 @@
     <OutputPath>bin\Pkg\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="constants.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="nfConfig.py">
       <SubType>Code</SubType>
     </Compile>
