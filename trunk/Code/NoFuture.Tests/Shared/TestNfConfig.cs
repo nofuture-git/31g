@@ -35,7 +35,6 @@ namespace NoFuture.Tests.Shared
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\sql", TempDirectories.Sql);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\prox", TempDirectories.StoredProx);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code", TempDirectories.Code);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\text", TempDirectories.Text);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\debug", TempDirectories.Debug);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\graph", TempDirectories.Graph);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\svcUtil", TempDirectories.SvcUtil);
@@ -45,35 +44,22 @@ namespace NoFuture.Tests.Shared
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\java\build", TempDirectories.JavaBuild);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\java\dist", TempDirectories.JavaDist);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\code\java\archive", TempDirectories.JavaArchive);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\Calendar", TempDirectories.Calendar);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\httpAppDomain", TempDirectories.HttpAppDomain);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\audio", TempDirectories.Audio);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\tsvCsv", TempDirectories.TsvCsv);
 
-            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\t4Temp.tt", TempFiles.T4Template);
             Assert.AreEqual(@"C:\Projects\31g\trunk\temp\netstat.txt", TempFiles.NetStat);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\temp\text\wmi.txt", TempFiles.Wmi);
 
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64", BinDirectories.X64Root);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\x86", BinDirectories.X86Root);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java", BinDirectories.JavaRoot);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\Templates", BinDirectories.T4Templates);
 
             Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\svcUtil.exe", X64.SvcUtil);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\debug\tlist.exe", X64.TList);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\debug\symChk.exe", X64.SymChk);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\depends\depends.exe", X64.Depends);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\vs10\dumpbin.exe", X64.Dumpbin);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\amd64\sqlcmd\SQLCMD.EXE", X64.SqlCmd);
             Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\wsdl.exe", X64.Wsdl);
-            Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\clrver.exe", X64.ClrVer);
             Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64\xsd.exe", X64.XsdExe);
 
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\x86\depends\depends.exe", X86.Depends);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\x86\vs10\dumpbin.exe", X86.Dumpbin);
             Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\sqlmetal.exe", X86.SqlMetal);
             Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\svcUtil.exe", X86.SvcUtil);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\x86\TextTransform.exe", X86.TextTransform);
             Assert.AreEqual(@"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\wsdl.exe", X86.Wsdl);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\graphviz-2.38\bin\dot.exe", X86.DotExe);
 
@@ -81,10 +67,7 @@ namespace NoFuture.Tests.Shared
 
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\javac.exe", JavaTools.Javac);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\java.exe", JavaTools.Java);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\javadoc.exe", JavaTools.JavaDoc);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\jre\lib\rt.jar", JavaTools.JavaRtJar);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\jar.exe", JavaTools.Jar);
-            Assert.AreEqual(@"C:\Projects\31g\trunk\bin\java\bin\jrunscript.exe", JavaTools.JRunScript);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\antlr-4.1-complete.jar", JavaTools.Antlr);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\stanford-postagger-2015-12-09\stanford-postagger.jar", JavaTools.StanfordPostTagger);
             Assert.AreEqual(@"C:\Projects\31g\trunk\bin\stanford-postagger-2015-12-09\models\", JavaTools.StanfordPostTaggerModels);

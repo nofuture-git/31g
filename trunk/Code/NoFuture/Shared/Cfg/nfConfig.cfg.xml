@@ -7,7 +7,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
 <no-future>
   <shared>
     <config>
-      <root id='myPsHome' value='C:\Projects\31g\trunk' />
+      <root id='myPsHome' value='C:\Projects\_NoFuture' />
       <bools>
         <add id='switchPrintWebHeaders' value='True' />
         <add id='switchSqlCmdHeadersOff' value='True' />
@@ -41,10 +41,6 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
         <add id='portHbmInvokeStoredProcMgr' value='45121' />
       </ports>
       <keys>
-        <!--these are just for flippin' bits not indended to provide any security-->
-        <add id='keyAesEncryptionKey' value='gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s=' />
-        <add id='keyAesIV' value='az9HzsMj6pygMvZyTpRo6g==' />
-        <add id='keyHMACSHA1' value='eTcmPilTLmtbalRpKjFFJjpMNns=' />
         <!--
         deliberately left blank and should be assigned by the runtime from sources not under 
         any kind of source control.
@@ -65,20 +61,13 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <add id='favicon' value='$(myPsHome)\favicon.ico' />
         </images>
         <temps>
-          <add id='tempStdOutFile' value='$(tempRootDir)\stdout.txt' />
-          <add id='tempT4TemplateFile' value='$(tempRootDir)\t4Temp.tt' />
           <add id='tempNetStatFile' value='$(tempRootDir)\netstat.txt' />
-          <add id='tempWmiFile' value='$(tempTextDir)\wmi.txt' />
         </temps>
         <tools>
           <x64>
             <add id='x64SvcUtilTool' value='$(net461SdkTools)\x64\svcUtil.exe' />
             <add id='x64WsdlTool' value='$(net461SdkTools)\x64\wsdl.exe' />
-            <add id='x64ClrVerTool' value='$(net461SdkTools)\x64\clrver.exe' />
             <add id='x64XsdExeTool' value='$(net461SdkTools)\x64\xsd.exe' />
-            <add id='x64TListTool' value='$(binX64RootDir)\debug\tlist.exe' />
-            <add id='x64DependsTool' value='$(binX64RootDir)\depends\depends.exe' />
-            <add id='x64SymChkTool' value='$(binX64RootDir)\debug\symChk.exe' />
             <add id='x64DumpbinTool' value='$(binX64RootDir)\vs10\dumpbin.exe' />
             <add id='x64SqlCmdTool' value='$(binX64RootDir)\sqlcmd\SQLCMD.EXE' />
           </x64>
@@ -86,9 +75,6 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='x86SqlMetalTool' value='$(net461SdkTools)\sqlmetal.exe' />
             <add id='x86SvcUtilTool' value='$(net461SdkTools)\svcUtil.exe' />
             <add id='x86WsdlTool' value='$(net461SdkTools)\wsdl.exe' />
-            <add id='x86DependsTool' value='$(binX86RootDir)\depends\depends.exe' />
-            <add id='x86DumpbinTool' value='$(binX86RootDir)\vs10\dumpbin.exe' />
-            <add id='x86TextTransformTool' value='$(binX86RootDir)\TextTransform.exe' />
             <add id='x86DotExeTool' value='$(binRootDir)\graphviz-2.38\bin\dot.exe' />
           </x86>
           <dotnet>
@@ -98,10 +84,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <java>
             <add id='javaJavacTool' value='$(binJavaRootDir)\bin\javac.exe' />
             <add id='javaJavaTool' value='$(binJavaRootDir)\bin\java.exe' />
-            <add id='javaJavaDocTool' value='$(binJavaRootDir)\bin\javadoc.exe' />
-            <add id='javaJavaRtJarTool' value='$(binJavaRootDir)\jre\lib\rt.jar' />
             <add id='javaJarTool' value='$(binJavaRootDir)\bin\jar.exe' />
-            <add id='javaJRunScriptTool' value='$(binJavaRootDir)\bin\jrunscript.exe' />
             <add id='javaAntlrTool' value='$(binRootDir)\antlr-4.7.1-complete.jar' />
             <add id='javaStanfordPostTaggerTool' value='$(binRootDir)\stanford-postagger-2017-06-09\stanford-postagger.jar' />
             <add id='javaStanfordPostTaggerModelsTool' value='$(binRootDir)\stanford-postagger-2017-06-09\models\' />
@@ -134,7 +117,6 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <add id='tempSqlDir' value='$(tempRootDir)\sql' />
           <add id='tempProcsDir' value='$(tempRootDir)\prox' />
           <add id='tempCodeDir' value='$(tempRootDir)\code' />
-          <add id='tempTextDir' value='$(tempRootDir)\text' />
           <add id='tempDebugsDir' value='$(tempRootDir)\debug' />
           <add id='tempGraphDir' value='$(tempRootDir)\graph' />
           <add id='tempSvcUtilDir' value='$(tempCodeDir)\svcUtil' />
@@ -144,10 +126,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <add id='tempJavaBuildDir' value='$(tempCodeDir)\java\build' />
           <add id='tempJavaDistDir' value='$(tempCodeDir)\java\dist' />
           <add id='tempJavaArchiveDir' value='$(tempCodeDir)\java\archive' />
-          <add id='tempCalendarDir' value='$(tempRootDir)\Calendar' />
-          <add id='tempHttpAppDomainDir' value='$(tempRootDir)\httpAppDomain' />
           <add id='tempAudioDir' value='$(tempRootDir)\audio' />
-          <add id='tempTsvCsvDir' value='$(tempRootDir)\tsvCsv' />
         </temps>
         <bins>
           <add id='binRootDir' value='$(myPsHome)\bin' />
@@ -155,7 +134,6 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <add id='binX64RootDir' value='$(binRootDir)\amd64' />
           <add id='binX86RootDir' value='$(binRootDir)\x86' />
           <add id='binJavaRootDir' value='$(binRootDir)\java' />
-          <add id='binT4TemplatesDir' value='$(binRootDir)\Templates' />
         </bins>
       </directories>
     </config>

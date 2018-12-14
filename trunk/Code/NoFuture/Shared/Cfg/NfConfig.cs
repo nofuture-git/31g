@@ -33,20 +33,6 @@ namespace NoFuture.Shared.Cfg
         public const string CTOR_NAME = ".ctor";
 
         /// <summary>
-        /// The location within the Registry where one may set 
-        /// domains to a specific Zone.
-        /// </summary>
-        public const string REGISTRY_ZONE_PATH =
-            @"HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
-
-        /// <summary>
-        /// Useful link to a very extensive list of domains used 
-        /// by advertisers.  Its original intention was for use in 
-        /// 'Hosts' file.
-        /// </summary>
-        public const string HOST_TXT = "http://winhelp2002.mvps.org/hosts.txt";
-
-        /// <summary>
         /// see http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnection.connectionstring(v=vs.90).aspx
         /// </summary>
         public static string[] MsSqlConnStrKeywords =
@@ -74,31 +60,19 @@ namespace NoFuture.Shared.Cfg
         {
             {"certFileNoFutureX509", s => SecurityKeys.NoFutureX509Cert = s},
             {"favicon", s => Favicon = s },
-            {"tempT4TemplateFile", s => TempFiles.T4Template = s},
             {"tempNetStatFile", s => TempFiles.NetStat = s},
-            {"tempWmiFile", s => TempFiles.Wmi = s},
             {"x64SvcUtilTool", s => X64.SvcUtil = s},
             {"x64WsdlTool", s => X64.Wsdl = s},
-            {"x64ClrVerTool", s => X64.ClrVer = s},
             {"x64XsdExeTool", s => X64.XsdExe = s},
-            {"x64TListTool", s => X64.TList = s},
-            {"x64SymChkTool", s => X64.SymChk = s},
             {"x64DumpbinTool", s => X64.Dumpbin = s},
-            {"x64DependsTool", s => X64.Depends = s},
             {"x64SqlCmdTool", s => X64.SqlCmd = s},
             {"x86SqlMetalTool", s => X86.SqlMetal = s},
             {"x86SvcUtilTool", s => X86.SvcUtil = s},
             {"x86WsdlTool", s => X86.Wsdl = s},
-            {"x86DependsTool", s => X86.Depends = s},
-            {"x86DumpbinTool", s => X86.Dumpbin = s},
-            {"x86TextTransformTool", s => X86.TextTransform = s},
             {"x86DotExeTool", s => X86.DotExe = s},
             {"javaJavacTool", s => JavaTools.Javac = s},
             {"javaJavaTool", s => JavaTools.Java = s},
-            {"javaJavaDocTool", s => JavaTools.JavaDoc = s},
-            {"javaJavaRtJarTool", s => JavaTools.JavaRtJar = s},
             {"javaJarTool", s => JavaTools.Jar = s},
-            {"javaJRunScriptTool", s => JavaTools.JRunScript = s},
             {"javaAntlrTool", s => JavaTools.Antlr = s},
             {"javaStanfordPostTaggerTool", s => JavaTools.StanfordPostTagger = s},
             {"javaStanfordPostTaggerModelsTool", s => JavaTools.StanfordPostTaggerModels = s},
@@ -116,7 +90,6 @@ namespace NoFuture.Shared.Cfg
             {"tempSqlDir", s => TempDirectories.Sql = s },
             {"tempProcsDir", s => TempDirectories.StoredProx = s},
             {"tempCodeDir", s => TempDirectories.Code = s},
-            {"tempTextDir", s => TempDirectories.Text = s},
             {"tempDebugsDir", s => TempDirectories.Debug = s},
             {"tempGraphDir", s => TempDirectories.Graph = s},
             {"tempSvcUtilDir", s => TempDirectories.SvcUtil = s},
@@ -126,15 +99,11 @@ namespace NoFuture.Shared.Cfg
             {"tempJavaBuildDir", s => TempDirectories.JavaBuild = s},
             {"tempJavaDistDir", s => TempDirectories.JavaDist = s},
             {"tempJavaArchiveDir", s => TempDirectories.JavaArchive = s},
-            {"tempCalendarDir", s => TempDirectories.Calendar = s},
             {"tempAudioDir", s => TempDirectories.Audio = s },
-            {"tempHttpAppDomainDir", s => TempDirectories.HttpAppDomain = s},
-            {"tempTsvCsvDir", s => TempDirectories.TsvCsv = s},
             {"binRootDir", s => BinDirectories.Root = s},
             {"binX64RootDir", s => BinDirectories.X64Root = s},
             {"binX86RootDir", s => BinDirectories.X86Root = s},
             {"binJavaRootDir", s => BinDirectories.JavaRoot = s},
-            {"binT4TemplatesDir", s => BinDirectories.T4Templates = s},
             {"portNsLookupPort", s => NfDefaultPorts.NsLookupPort = Convert.ToInt32(s)},
             {"portDomainEngine", s => NfDefaultPorts.DomainEngine = Convert.ToInt32(s)},
             {"portHostProc", s => NfDefaultPorts.HostProc = Convert.ToInt32(s)},
@@ -150,9 +119,6 @@ namespace NoFuture.Shared.Cfg
             {"switchSqlCmdHeadersOff", s => Switches.SqlCmdHeadersOff = Convert.ToBoolean(s)},
             {"switchSqlFiltersOff", s => Switches.SqlFiltersOff = Convert.ToBoolean(s)},
             {"switchSupressNpp", s => Switches.SupressNpp = Convert.ToBoolean(s)},
-            {"keyAesEncryptionKey", s => SecurityKeys.AesEncryptionKey = s},
-            {"keyAesIV", s => SecurityKeys.AesIV = s},
-            {"keyHMACSHA1", s => SecurityKeys.HMACSHA1 = s},
             {"code-file-extensions", s => NfSettings.CodeFileExtensions = s.Split(' ')},
             {"config-file-extensions", s => NfSettings.ConfigFileExtensions = s.Split(' ')},
             {"binary-file-extensions", s => NfSettings.BinaryFileExtensions = s.Split(' ')},
@@ -452,14 +418,11 @@ namespace NoFuture.Shared.Cfg
         /// </summary>
         public class TempDirectories
         {
-
-
             public static string Root { get; set; }
             public static string Sql { get; set; }
             public static string StoredProx { get; set; }
             public static string Code { get; set; }
             public static string Graph { get; set; }
-            public static string Text { get; set; }
             public static string Debug { get; set; }
             public static string SvcUtil { get; set; }
             public static string Wsdl { get; set; }
@@ -468,10 +431,7 @@ namespace NoFuture.Shared.Cfg
             public static string JavaBuild { get; set; }
             public static string JavaDist { get; set; }
             public static string JavaArchive { get; set; }
-            public static string Calendar { get; set; }
-            public static string HttpAppDomain { get; set; }
             public static string Audio { get; set; }
-            public static string TsvCsv { get; set; }
         }
 
         /// <summary>
@@ -493,8 +453,6 @@ namespace NoFuture.Shared.Cfg
         public class TempFiles
         {
             public static string NetStat { get; set; }
-            public static string T4Template { get; set; }
-            public static string Wmi { get; set; }
         }
         /// <summary>
         /// Paths to specific directories used by powershell scripts, 
@@ -507,7 +465,6 @@ namespace NoFuture.Shared.Cfg
             public static string X64Root { get; set; }
             public static string X86Root { get; set; }
             public static string JavaRoot { get; set; }
-            public static string T4Templates { get; set; }
         }
 
         /// <summary>
@@ -516,13 +473,9 @@ namespace NoFuture.Shared.Cfg
         public class X64
         {
             public static string SvcUtil { get; set; }
-            public static string TList { get; set; }
-            public static string Depends { get; set; }
             public static string Dumpbin { get; set; }
             public static string SqlCmd { get; set; }
             public static string Wsdl { get; set; }
-            public static string ClrVer { get; set; }
-            public static string SymChk { get; set; }
             public static string XsdExe { get; set; }
         }
         /// <summary>
@@ -530,11 +483,8 @@ namespace NoFuture.Shared.Cfg
         /// </summary>
         public class X86
         {
-            public static string Depends { get; set; }
-            public static string Dumpbin { get; set; }
             public static string SqlMetal { get; set; }
             public static string SvcUtil { get; set; }
-            public static string TextTransform { get; set; }
             public static string Wsdl { get; set; }
             public static string DotExe { get; set; }
         }
@@ -552,10 +502,7 @@ namespace NoFuture.Shared.Cfg
         {
             public static string Javac { get; set; }
             public static string Java { get; set; }
-            public static string JavaDoc { get; set; }
-            public static string JavaRtJar { get; set; }
             public static string Jar { get; set; }
-            public static string JRunScript { get; set; }
             public static string Antlr { get; set; }
             public static string StanfordPostTagger { get; set; }
             public static string StanfordPostTaggerModels { get; set; }
@@ -616,9 +563,6 @@ namespace NoFuture.Shared.Cfg
         /// </summary>
         public class SecurityKeys
         {
-            public static string AesEncryptionKey = "gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s=";
-            public static string AesIV = "az9HzsMj6pygMvZyTpRo6g==";
-            public static string HMACSHA1 = "eTcmPilTLmtbalRpKjFFJjpMNns=";
             public static Uri ProxyServer;
             public static string GoogleCodeApiKey { get; set; }
             public static string BeaDataApiKey { get; set; }

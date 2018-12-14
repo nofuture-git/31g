@@ -17,10 +17,6 @@ __cfgIdName2PropertyAssignment = {
     "favicon" : lambda s: setattr(sys.modules[__name__], "favicon", s),
     "certFileNoFutureX509" : lambda s: setattr(SecurityKeys, 'noFutureX509Cert', s),
     "tempRootDir" : lambda s: setattr(TempDirectories, 'root', s),
-    "tempTsvCsvDir" : lambda s: setattr(TempDirectories, 'tsvCsv', s),
-    "keyAesEncryptionKey" : lambda s: setattr(SecurityKeys, 'aesEncryptionString', s),
-    "keyAesIV" : lambda s: setattr(SecurityKeys, 'aesIv', s),
-    "keyHMACSHA1" : lambda s: setattr(SecurityKeys, 'hmacsha1', s),
     "code-file-extensions" : lambda s: setattr(sys.modules[__name__], 'codeFileExtensions', s.split(' ')),
     "config-file-extensions" : lambda s: setattr(sys.modules[__name__], 'configFileExtensions', s.split(' ')),
     "binary-file-extensions" : lambda s: setattr(sys.modules[__name__], 'binaryFileExtensions', s.split(' ')),
@@ -180,16 +176,12 @@ favicon = ''
 class TempDirectories:
     """Paths to directories used for storing temp results of NoFuture scripts."""
     root = ''
-    tsvCsv = ''
 
 class SecurityKeys:
     """
     Various keys, those which are not assigned a value would be real keys externally defined -
     the rest is just for flippin' bits.
     """
-    aesEncryptionString = 'gb0352wHVco94Gr260BpJzH+N1yrwmt5/BaVhXmPm6s='
-    aesIv = 'az9HzsMj6pygMvZyTpRo6g=='
-    hmacsha1 = 'eTcmPilTLmtbalRpKjFFJjpMNns='
     proxyServer = ''
     googleCodeApiKey = ''
     beaDataApiKey = ''
