@@ -102,7 +102,6 @@
     <Compile Include="Hbm\TestStoredProcMetadata.cs" />
     <Compile Include="Hbm\TestConfigFile.cs" />
     <Compile Include="Hbm\TestHbmFileContent.cs" />
-    <Compile Include="Shared\TestBindings.cs" />
     <Compile Include="Sql\TestExportTo.cs" />
     <Compile Include="Sql\TestPsTypeInfo.cs" />
     <Compile Include="Sql\TestPsMetadata.cs" />

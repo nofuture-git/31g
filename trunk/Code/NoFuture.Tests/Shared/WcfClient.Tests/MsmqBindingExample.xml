@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+ <system.serviceModel>
+    <services>
+      <service behaviorConfiguration="msmqBehavior" name="MyNamespace.Viz.Transfer.TransferService">
+        <endpoint address="net.msmq://localhost/private/TransferService/TransferService.svc" binding="netMsmqBinding" bindingConfiguration="msmqBindingConfiguration" contract="MyNamespace.Viz.Transfer.ITransferService" />
+        <endpoint address="mex" binding="mexHttpBinding" contract="IMetadataExchange" />
+      </service>
+      <service behaviorConfiguration="msmqBehavior" name="MyNamespace.Viz.Transfer.TransferService_PoisonMessageHandler">
+        <endpoint address="net.msmq://localhost/private/TransferService/TransferService.svc;poison" binding="netMsmqBinding" bindingConfiguration="msmqBindingConfiguration" contract="MyNamespace.Viz.Transfer.ITransferService" />
+        <endpoint address="mex" binding="mexHttpBinding" contract="IMetadataExchange" />
+      </service>
+    </services>
+    <behaviors>
+      <serviceBehaviors>
+        <behavior>
+          <serviceMetadata httpGetEnabled="true" />
+          <serviceDebug includeExceptionDetailInFaults="false" />
+        </behavior>
+        <behavior name="msmqBehavior">
+          <serviceMetadata httpGetEnabled="true" httpsGetEnabled="false" />
+          <serviceDebug includeExceptionDetailInFaults="false" />
+          <serviceThrottling maxConcurrentCalls="1000" maxConcurrentSessions="1000" maxConcurrentInstances="1000" />
+          <dataContractSerializer maxItemsInObjectGraph="2147483647" />
+        </behavior>
+      </serviceBehaviors>
+    </behaviors>
+    <serviceHostingEnvironment multipleSiteBindingsEnabled="true" />
+    <bindings>
+      <netMsmqBinding>
+        <binding name="msmqBindingConfiguration" closeTimeout="00:10:00" openTimeout="00:10:00" receiveTimeout="00:10:00" sendTimeout="00:10:00" maxBufferPoolSize="524288" maxReceivedMessageSize="65536" exactlyOnce="true" timeToLive="1.00:00:00" maxRetryCycles="3" retryCycleDelay="00:00:30" receiveRetryCount="2" receiveErrorHandling="Move">
+          <security mode="None" />
+        </binding>
+        <binding name="CntrlHub">
+          <security mode="None" />
+        </binding>
+        <binding name="Lmnop">
+          <security mode="None" />
+        </binding>
+        <binding name="DepNoxic">
+          <security mode="None" />
+        </binding>
+        <binding name="H11">
+          <security mode="None" />
+        </binding>
+      </netMsmqBinding>
+      <wsHttpBinding>
+        <binding name="wsHttp" closeTimeout="00:05:00" openTimeout="00:05:00" receiveTimeout="00:10:00" sendTimeout="00:05:00" allowCookies="false" bypassProxyOnLocal="true" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="500000000" messageEncoding="Text" textEncoding="utf-8" useDefaultWebProxy="true">
+          <readerQuotas maxDepth="32" maxStringContentLength="8192" maxArrayLength="500000000" maxBytesPerRead="4096" maxNameTableCharCount="16384" />
+          <security mode="None" />
+        </binding>
+        <binding name="wsHttps" closeTimeout="00:05:00" openTimeout="00:05:00" receiveTimeout="00:10:00" sendTimeout="00:05:00" allowCookies="false" bypassProxyOnLocal="true" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="500000000" messageEncoding="Text" textEncoding="utf-8" useDefaultWebProxy="true">
+          <readerQuotas maxDepth="32" maxStringContentLength="8192" maxArrayLength="500000000" maxBytesPerRead="4096" maxNameTableCharCount="16384" />
+          <security mode="Transport">
+            <transport clientCredentialType="None" />
+          </security>
+        </binding>
+        <binding name="WSHttpBinding_ILoggingService">
+          <security mode="None" />
+        </binding>
+      </wsHttpBinding>
+    </bindings>
+    <client>
+      <endpoint address="net.msmq://localhost/private/ProviderServices/CntrlHubService.svc" binding="netMsmqBinding" bindingConfiguration="CntrlHub" contract="MyNamespace.Viz.ProviderInterface.DataServiceProxy.ProviderService.IProviderService" name="EC" />
+      <endpoint address="net.msmq://localhost/private/ProviderServices/DepnAddOnTestInterfaceService.svc" binding="netMsmqBinding" bindingConfiguration="DepNoxic" contract="MyNamespace.Viz.ProviderInterface.DataServiceProxy.ProviderService.IProviderService" name="LIS" />
+      <endpoint address="net.msmq://localhost/private/ProviderServices/LmnopService.svc" binding="netMsmqBinding" bindingConfiguration="Lmnop" contract="MyNamespace.Viz.ProviderInterface.DataServiceProxy.ProviderService.IProviderService" name="ODS" />
+      <endpoint address="net.msmq://localhost/private/ProviderServices/ApsOrderService.svc" binding="netMsmqBinding" bindingConfiguration="H11" contract="MyNamespace.Viz.ProviderInterface.DataServiceProxy.ProviderService.IProviderService" name="H11" />
+      <endpoint address="http://localhost:8081/LoggingService.svc" binding="wsHttpBinding" bindingConfiguration="wsHttp" contract="MyNamespace.Viz.ProviderInterface.DataServiceProxy.PortalApp.ILoggingService" name="WSHttpBinding_ILoggingService" />
+    </client>
+  </system.serviceModel>
+</configuration>
