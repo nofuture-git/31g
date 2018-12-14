@@ -1,12 +1,9 @@
-/trunk/NoFuture.pfx
-/trunk/Code/NoFuture.sdf
 *.db
 /trunk/temp/
-/trunk/bin/
-/trunk/__occultum/
-/trunk/temp/
 /trunk/Notes/misc/
-.vscode/
+/trunk/Code/.vscode
+/trunk/Code/.vs
+/trunk/Code/packages
 *.suo
 *.user
 

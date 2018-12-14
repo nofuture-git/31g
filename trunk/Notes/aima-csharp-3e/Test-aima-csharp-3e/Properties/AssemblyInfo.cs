@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Test-aima-csharp-3e")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Quest Diagnostics Incorporated")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Test-aima-csharp-3e")]
-[assembly: AssemblyCopyright("Copyright © Quest Diagnostics Incorporated 2016")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

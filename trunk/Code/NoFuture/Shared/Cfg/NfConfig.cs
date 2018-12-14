@@ -84,8 +84,8 @@ namespace NoFuture.Shared.Cfg
             {"customUtilPosHostTool", s => CustomTools.UtilPosHost = s},
             {"customInvokeDpxTool", s => CustomTools.InvokeDpx = s},
             {"customInvokeNfTypeNameTool", s => CustomTools.InvokeNfTypeName = s},
-            {"binFfmpegTool", s => BinTools.Ffmpeg = s},
-            {"binYoutubeDlTool", s => BinTools.YoutubeDl = s},
+            {"ffmpegTool", s => PythonTools.Ffmpeg = s},
+            {"youtubeDlTool", s => PythonTools.YoutubeDl = s},
             {"tempRootDir", s => TempDirectories.Root = s},
             {"tempSqlDir", s => TempDirectories.Sql = s },
             {"tempProcsDir", s => TempDirectories.StoredProx = s},
@@ -104,6 +104,7 @@ namespace NoFuture.Shared.Cfg
             {"binX64RootDir", s => BinDirectories.X64Root = s},
             {"binX86RootDir", s => BinDirectories.X86Root = s},
             {"binJavaRootDir", s => BinDirectories.JavaRoot = s},
+            {"python36", s => BinDirectories.PythonRoot = s},
             {"portNsLookupPort", s => NfDefaultPorts.NsLookupPort = Convert.ToInt32(s)},
             {"portDomainEngine", s => NfDefaultPorts.DomainEngine = Convert.ToInt32(s)},
             {"portHostProc", s => NfDefaultPorts.HostProc = Convert.ToInt32(s)},
@@ -131,6 +132,7 @@ namespace NoFuture.Shared.Cfg
             {"punctuation-chars", s => NfSettings.PunctuationChars = s.Split(' ').Select(Convert.ToChar).ToArray()},
             {"cscExe", s => DotNet.CscCompiler = s},
             {"vbcExe", s => DotNet.VbcCompiler = s},
+            {"pythonExe", s => PythonTools.PythonExe = s}
         };
 
         private static int _threadSleepTime;
@@ -465,6 +467,7 @@ namespace NoFuture.Shared.Cfg
             public static string X64Root { get; set; }
             public static string X86Root { get; set; }
             public static string JavaRoot { get; set; }
+            public static string PythonRoot { get; set; }
         }
 
         /// <summary>
@@ -540,8 +543,9 @@ namespace NoFuture.Shared.Cfg
             public static int HbmInvokeStoredProcMgr { get; set; } = 45121;
         }
 
-        public class BinTools
+        public class PythonTools
         {
+            public static string PythonExe { get; set; }
             public static string Ffmpeg { get; set; }
             public static string YoutubeDl { get; set; }
         }

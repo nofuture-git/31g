@@ -623,7 +623,7 @@ namespace NoFuture.Util.Core
 
                 foreach (var envStyle in envVarStyles)
                 {
-                    if (!lowerSomePath.Contains(envVar)) continue;
+                    if (!lowerSomePath.Contains(envStyle)) continue;
 
                     var resolvedValue = Environment.GetEnvironmentVariable(envVar);
                     tempPath = tempPath.Replace(envStyle, resolvedValue);

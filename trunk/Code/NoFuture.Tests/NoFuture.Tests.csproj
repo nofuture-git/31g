@@ -104,7 +104,6 @@
     <Compile Include="Hbm\TestHbmFileContent.cs" />
     <Compile Include="Shared\TestBindings.cs" />
     <Compile Include="Shared\TestRegexCatalog.cs" />
-    <Compile Include="Shared\TestNfConfig.cs" />
     <Compile Include="Sql\TestExportTo.cs" />
     <Compile Include="Sql\TestPsTypeInfo.cs" />
     <Compile Include="Sql\TestPsMetadata.cs" />

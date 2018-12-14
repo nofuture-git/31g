@@ -117,6 +117,11 @@ namespace NoFuture.Util.Core.Tests
             testResultOut = string.Empty;
             testResult = NfPath.TryResolveEnvVar(System.IO.Path.Combine(System.Environment.GetEnvironmentVariable("windir"), @"\Microsoft.NET\Framework"), ref testResultOut);
             Assert.IsFalse(testResult);
+            
+            testResultOut = string.Empty;
+            testResult = NfPath.TryResolveEnvVar(@"%SystemRoot%\system32\WindowsPowerShell\v1.0\", ref testResultOut);
+            Console.WriteLine(testResult);
+            Console.WriteLine(testResultOut);
 
         }
 

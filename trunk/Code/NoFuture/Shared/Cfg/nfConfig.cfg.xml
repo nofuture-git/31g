@@ -78,8 +78,8 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='x86DotExeTool' value='$(binRootDir)\graphviz-2.38\bin\dot.exe' />
           </x86>
           <dotnet>
-            <add id='cscExe' value='$(binRootDir)\roslyn-master\Binaries\Release\Exes\csc\net46\csc.exe' />
-            <add id='vbcExe' value='$(binRootDir)\roslyn-master\Binaries\Release\Exes\vbc\net46\vbc.exe' />
+            <add id='cscExe' value='C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe' />
+            <add id='vbcExe' value='C:\Windows\Microsoft.NET\Framework64\v4.0.30319\vbc.exe' />
           </dotnet>
           <java>
             <add id='javaJavacTool' value='$(binJavaRootDir)\bin\javac.exe' />
@@ -99,10 +99,11 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='customInvokeDpxTool' value='$(binRootDir)\NoFuture.Util.DotNetMeta.InvokeDpx.exe' />
             <add id='customInvokeNfTypeNameTool' value='$(binRootDir)\NoFuture.Tokens.InvokeNfTypeName.exe' />
           </custom>
-          <bin>
-            <add id='binFfmpegTool' value='$(binRootDir)\ffmpeg.exe' />
-            <add id='binYoutubeDlTool' value='$(binRootDir)\youtube-dl.exe' />
-          </bin>
+          <python>
+            <add id='pythonExe' value='$(python36)\python.exe' />
+            <add id='ffmpegTool' value='$(binRootDir)\ffmpeg.exe' />
+            <add id='youtubeDlTool' value='$(binRootDir)\youtube-dl.exe' />
+          </python>
         </tools>
         <extensions>
           <add id='code-file-extensions'><![CDATA[ada adb adml admx ads as asa asax ascx asm asmx asp aspx bas bat bsh c cbd cbl cc cdb cdc cls cmd cob cpp cs cshtml css cu cuh cxx dsr dtd f f2k f90 f95 fbs for frm fs fsx fxh g4 gv h hpp hs hta htm html hxx idl inc java js jsx json kml las lhs lisp lsp lua m master ml mli mx nt pas php php3 phtml pl plx pm ps ps1 psm1 py pyw r rb rbw rpx sbt scala scm scp scss sep sh shtm shtml smd sml sql ss st tcl tex thy tt ts vb vbhtml vbs vrg wsc wsdl wsf xaml xhtml xlf xliff xsd xsl xslt xsml xst xsx]]></add>
@@ -134,6 +135,9 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <add id='binX64RootDir' value='$(binRootDir)\amd64' />
           <add id='binX86RootDir' value='$(binRootDir)\x86' />
           <add id='binJavaRootDir' value='$(binRootDir)\java' />
+          <add id='python36' value='C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64' />
+          <add id='python35' value='C:\Anaconda3' />
+          <add id='anaconda5_2_0' value='C:\Program Files (x86)\Microsoft Visual Studio\Shared\Anaconda3_64' />
         </bins>
       </directories>
     </config>
