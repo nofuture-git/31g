@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Shared.Core")]
-[assembly: AssemblyDescription("The base strings, ints, paths of the NoFuture namespace")]
+[assembly: AssemblyTitle("NoFuture.Shared.Core.Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Shared.Core")]
+[assembly: AssemblyProduct("NoFuture.Shared.Core.Tests")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -18,9 +18,9 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-[assembly:InternalsVisibleTo("NoFuture.Shared.Core.Tests")]
+
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6eca48dc-fdb4-4660-9914-3b74d5975ff9")]
+[assembly: Guid("0edad277-95f6-4d50-aeda-fd1ed6ae3c28")]
 
 // Version information for an assembly consists of the following four values:
 //
