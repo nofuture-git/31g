@@ -120,11 +120,8 @@
     <Compile Include="Host.Encryption\ProgramTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\BinaryTests.cs" />
-    <Compile Include="Util\TestFxPointers.cs" />
     <Compile Include="Util\NfTypeTests\TypeNameTests.cs" />
     <Compile Include="Util\TestConsoleCmd.cs" />
-    <Compile Include="Util\AsmTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NoFuture\Antlr\CSharp4\Antlr.CSharp4.csproj">

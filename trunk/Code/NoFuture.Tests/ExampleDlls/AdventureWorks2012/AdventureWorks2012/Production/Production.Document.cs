@@ -7,7 +7,7 @@ namespace AdventureWorks.Production
     public class Document
     {
         #region Id
-        public virtual NoFuture.Hbm.Sid.BinaryId Id { get; set; }
+        public virtual int Id { get; set; }
         #endregion
 
         #region RequiredOverrides
@@ -52,7 +52,7 @@ namespace AdventureWorks.Production
 
        public virtual string DocumentSummary { get; set; }
 
-       public virtual NoFuture.Hbm.Sid.BinaryId Document00 { get; set; }
+       public virtual string Document00 { get; set; }
 
        public virtual System.DateTime ModifiedDate { get; set; }
 

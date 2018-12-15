@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.Binary")]
-[assembly: AssemblyDescription("NoFuture binary utilities")]
+[assembly: AssemblyTitle("NoFuture.Util.Binary.Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Util.Binary")]
+[assembly: AssemblyProduct("NoFuture.Util.Binary.Tests")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,8 +20,8 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c02e6247-e99f-4ef2-b275-12f8bb27acc7")]
-[assembly:InternalsVisibleTo("NoFuture.Util.Binary.Tests")]
+[assembly: Guid("b106132f-526a-419d-bd38-31a846ef7a80")]
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

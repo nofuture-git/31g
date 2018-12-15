@@ -5,12 +5,54 @@ using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
 using NoFuture.Util.DotNetMeta.TokenType;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace NoFuture.Util.DotNetMeta.Tests
 {
     [SetUpFixture]
     public sealed class TestInit
     {
+        public static string PutTestFileOnDisk(string embeddedFileName)
+        {
+            //need this to be another object each time and not just another reference
+            var asmName = Assembly.GetExecutingAssembly().GetName().Name;
+            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.{embeddedFileName}");
+            if (liSteam == null)
+            {
+                Assert.Fail($"Cannot find the embedded file {embeddedFileName}");
+            }
+
+            string fileContent = null;
+            using (var txtSr = new StreamReader(liSteam))
+            {
+                fileContent = txtSr.ReadToEnd();
+            }
+            Assert.IsNotNull(fileContent);
+
+            var nfAppData = GetTestFileDirectory();
+            nfAppData = Path.Combine(nfAppData, "NoFuture.Tests");
+            if (!Directory.Exists(nfAppData))
+            {
+                Directory.CreateDirectory(nfAppData);
+            }
+
+            var fileOnDisk = Path.Combine(nfAppData, embeddedFileName);
+            File.WriteAllText(fileOnDisk, fileContent);
+            System.Threading.Thread.Sleep(50);
+            return fileOnDisk;
+        }
+
+        public static string GetTestFileDirectory()
+        {
+            var nfAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (String.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
+                throw new DirectoryNotFoundException("The Environment.GetFolderPath for " +
+                                                     "SpecialFolder.ApplicationData returned a bad path.");
+            nfAppData = Path.Combine(nfAppData, "NoFuture.Tests");
+            return nfAppData;
+
+        }
+
         private static string _testRoot;
         private static string _rootBin;
         private static string _dotNetMetaTestRoot;
@@ -27,16 +69,16 @@ namespace NoFuture.Util.DotNetMeta.Tests
         public static void AssemblyInitialize()
         {
             _testRoot = @"C:\Projects\31g\trunk\Code\NoFuture.Tests";
-            if(!System.IO.Directory.Exists(_testRoot))
+            if(!Directory.Exists(_testRoot))
                 throw new InvalidOperationException("The root directory, from which all resources " +
                                                     "specific to testing are located, was not found. ");
             _rootBin = @"C:\Projects\31g\trunk\bin";
-            if(!System.IO.Directory.Exists(_rootBin))
+            if(!Directory.Exists(_rootBin))
                 throw new InvalidOperationException("The root directory, in which all NoFuture binaries are " +
                                                     "built to, was not found.");
 
             _dotNetMetaTestRoot = Path.Combine(_testRoot, @"Util\DotNetMetaTests");
-            if (!System.IO.Directory.Exists(_dotNetMetaTestRoot))
+            if (!Directory.Exists(_dotNetMetaTestRoot))
                 throw new InvalidOperationException("The specific directory for DotNetMeta unit tests " +
                                                     "was not found.");
             //_jsonFolder = Path.Combine(TestAssembly.DotNetMetaTestRoot, @"TestJsonData");

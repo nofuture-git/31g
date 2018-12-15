@@ -40,11 +40,11 @@ namespace AdventureWorks.Production
 
         #region ValueTypes
 
-       public virtual NoFuture.Hbm.Sid.BinaryId ThumbNailPhoto { get; set; }
+       public virtual string ThumbNailPhoto { get; set; }
 
        public virtual string ThumbnailPhotoFileName { get; set; }
 
-       public virtual NoFuture.Hbm.Sid.BinaryId LargePhoto { get; set; }
+       public virtual string LargePhoto { get; set; }
 
        public virtual string LargePhotoFileName { get; set; }
 

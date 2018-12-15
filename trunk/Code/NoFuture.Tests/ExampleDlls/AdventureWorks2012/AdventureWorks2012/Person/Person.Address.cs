@@ -48,8 +48,6 @@ namespace AdventureWorks.Person
 
        public virtual string PostalCode { get; set; }
 
-       public virtual NoFuture.Hbm.Sid.BinaryId SpatialLocation { get; set; }
-
        public virtual System.DateTime ModifiedDate { get; set; }
 
        #endregion

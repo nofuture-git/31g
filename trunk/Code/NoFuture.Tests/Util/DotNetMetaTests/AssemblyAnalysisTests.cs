@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Cfg;
@@ -11,26 +12,7 @@ namespace NoFuture.Util.DotNetMeta.Tests
     [TestFixture]
     public class AssemblyAnalysisTests
     {
-        [Test]
-        public void TestMapAssemblyWordLeftAndRight()
-        {
-            var testAsm =
-                AppDomain.CurrentDomain.GetAssemblies()
-                    .FirstOrDefault(x => x.GetName().FullName.StartsWith("AdventureWorks"));
 
-            if (testAsm == null)
-            {
-                Assembly.Load(
-                    System.IO.File.ReadAllBytes(TestInit.RootBin + @"\NoFuture.Hbm.Sid.dll"));
-                testAsm =
-                    Assembly.Load(
-                        System.IO.File.ReadAllBytes(
-                            TestInit.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
-            }
-
-            Assert.IsNotNull(testAsm);
-
-        }
 
         [Test]
         public void TestToMetadataTokenName()
@@ -38,30 +20,11 @@ namespace NoFuture.Util.DotNetMeta.Tests
             NfConfig.AssemblySearchPaths.Add(TestInit.UnitTestsRoot + @"\ExampleDlls\");
             NfConfig.UseReflectionOnlyLoad = false;
             FxPointers.AddResolveAsmEventHandlerToDomain();
-            var testAsm =
-                System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestInit.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestInit.UnitTestsRoot + @"\ExampleDlls\Iesi.Collections.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestInit.UnitTestsRoot + @"\ExampleDlls\NHibernate.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestInit.UnitTestsRoot + @"\ExampleDlls\NoFuture.Hbm.Sid.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestInit.UnitTestsRoot + @"\ExampleDlls\SomeSecondDll.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestInit.UnitTestsRoot + @"\ExampleDlls\SomethingShared.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestInit.UnitTestsRoot + @"\ExampleDlls\ThirdDll.dll"));
-
-            var testType = testAsm.GetType("AdventureWorks.VeryBadCode.BasicGenerics");
+            var testAsm = Assembly.Load(File.ReadAllBytes(TestInit.PutTestFileOnDisk(@"AdventureWorks2012.dll")));
+            Assembly.Load(File.ReadAllBytes(TestInit.PutTestFileOnDisk(@"SomeSecondDll.dll")));
+            Assembly.Load(File.ReadAllBytes(TestInit.PutTestFileOnDisk(@"SomethingShared.dll")));
+            Assembly.Load(File.ReadAllBytes(TestInit.PutTestFileOnDisk(@"ThirdDll.dll")));
+            var testType = testAsm.GetType("AdventureWorks.VeryBadCode.Program");
             Assert.IsNotNull(testType);
 
             var testMethod = testType.GetMember("TakesGenericArg").FirstOrDefault();
@@ -84,7 +47,34 @@ namespace NoFuture.Util.DotNetMeta.Tests
             testResult = AssemblyAnalysis.ConvertToMetadataTokenName(testMethod, asmRspn, null);
             Console.WriteLine(testResult.Name);
             Assert.AreEqual("AdventureWorks.VeryBadCode.BasicGenerics::TakesThisAsmGenericArg(System.Collections.Generic.List`1[AdventureWorks.VeryBadCode.Order])", testResult.Name);
+        }
 
+        [Test]
+        public void TestGetMetadataToken()
+        {
+            NfConfig.AssemblySearchPaths.Add(TestInit.GetTestFileDirectory());
+            NfConfig.UseReflectionOnlyLoad = false;
+            FxPointers.AddResolveAsmEventHandlerToDomain();
+            var myAsm = Assembly.Load(File.ReadAllBytes(TestInit.PutTestFileOnDisk(@"AdventureWorks2012.dll")));
+            Assembly.Load(File.ReadAllBytes(TestInit.PutTestFileOnDisk(@"SomeSecondDll.dll")));
+            Assembly.Load(File.ReadAllBytes(TestInit.PutTestFileOnDisk(@"SomethingShared.dll")));
+            Assembly.Load(File.ReadAllBytes(TestInit.PutTestFileOnDisk(@"ThirdDll.dll")));
+            var myTestType = myAsm.GetType("AdventureWorks.VeryBadCode.Program");
+            var testResult = AssemblyAnalysis.GetMetadataToken(myTestType);
+            Assert.IsNotNull(testResult);
+            Assert.IsNotNull(testResult.Items);
+            Assert.AreNotEqual(0, testResult.Items.Length);
+
+            foreach (var t in testResult.Items)
+            {
+                Console.WriteLine("----");
+                Console.WriteLine(t.Id.ToString("X4"));
+                Console.WriteLine("----");
+                foreach (var tt in t.Items)
+                {
+                    Console.WriteLine(tt.Id.ToString("X4"));
+                }
+            }
         }
     }
 }

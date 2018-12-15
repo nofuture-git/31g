@@ -7,8 +7,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Iesi.Collections;
-using Iesi.Collections.Generic;
 using Microsoft.CSharp;
 
 namespace AdventureWorks.VeryBadCode
@@ -21,9 +19,6 @@ namespace AdventureWorks.VeryBadCode
     #region a region
     using AnAbomination = global::System.Web.AspNetHostingPermission;
     using Microsoft.CSharp.RuntimeBinder;
-    using NHibernate;
-    using NHibernate.Action;
-    using NHibernate.Bytecode;
     using System.CodeDom;
 
     /// <summary>

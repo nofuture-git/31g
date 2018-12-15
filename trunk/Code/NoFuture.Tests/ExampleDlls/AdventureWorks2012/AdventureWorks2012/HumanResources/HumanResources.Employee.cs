@@ -44,8 +44,6 @@ namespace AdventureWorks.HumanResources
 
        public virtual string LoginID { get; set; }
 
-       public virtual NoFuture.Hbm.Sid.BinaryId OrganizationNode { get; set; }
-
        public virtual string JobTitle { get; set; }
 
        public virtual System.DateTime BirthDate { get; set; }
