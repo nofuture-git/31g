@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace NoFuture.Tests.Util.Gia
+namespace NoFuture.Util.Gia.Tests
 {
     [TestFixture]
     public class FlattenTests
     {
 
-        [Test]
-        public void TestFlattenTypeMembers()
+        private Assembly GetTestAsm()
         {
             var testAsm =
                 AppDomain.CurrentDomain.GetAssemblies()
@@ -19,13 +18,22 @@ namespace NoFuture.Tests.Util.Gia
 
             if (testAsm == null)
             {
-                Assembly.Load(
-                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
-                testAsm =
-                    Assembly.Load(
-                        System.IO.File.ReadAllBytes(
-                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
+                Assembly.Load(File.ReadAllBytes(AsmDiagramTests.PutTestFileOnDisk("ThirdDll.dll")));
+                Assembly.Load(File.ReadAllBytes(AsmDiagramTests.PutTestFileOnDisk("SomethingShared.dll")));
+                Assembly.Load(File.ReadAllBytes(AsmDiagramTests.PutTestFileOnDisk("SomeSecondDll.dll")));
+                testAsm = Assembly.Load(File.ReadAllBytes(AsmDiagramTests.PutTestFileOnDisk("AdventureWorks2012.dll")));
             }
+            NoFuture.Shared.Cfg.NfConfig.AssemblySearchPaths.Add(AsmDiagramTests.GetTestFileDirectory());
+            NoFuture.Util.Binary.FxPointers.AddResolveAsmEventHandlerToDomain();
+
+
+            return testAsm;
+        }
+
+        [Test]
+        public void TestFlattenTypeMembers()
+        {
+            var testAsm = GetTestAsm();
 
             Assert.IsNotNull(testAsm);
 
@@ -41,7 +49,7 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsNotNull(testPrint);
             var printLines = testPrint.PrintLines();
             Assert.IsNotNull(printLines);
-            System.IO.File.WriteAllLines(TestAssembly.UnitTestsRoot + @"\FlattenedExample.txt", printLines);
+            System.IO.File.WriteAllLines(AsmDiagramTests.GetTestFileDirectory() + @"\FlattenedExample.txt", printLines);
             foreach (var p in printLines)
                 Console.WriteLine(p);
         }
@@ -50,19 +58,7 @@ namespace NoFuture.Tests.Util.Gia
         public void TestFlattenTypeMembersWithLimit()
         {
             var limitOn = "System.String";
-            var testAsm =
-                AppDomain.CurrentDomain.GetAssemblies()
-                    .FirstOrDefault(x => x.GetName().FullName.StartsWith("AdventureWorks"));
-
-            if (testAsm == null)
-            {
-                Assembly.Load(
-                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
-                testAsm =
-                    Assembly.Load(
-                        System.IO.File.ReadAllBytes(
-                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
-            }
+            var testAsm = GetTestAsm();
 
             Assert.IsNotNull(testAsm);
             
@@ -79,7 +75,7 @@ namespace NoFuture.Tests.Util.Gia
             Assert.IsNotNull(testPrint);
             var printLines = testPrint.PrintLines();
             Assert.IsNotNull(printLines);
-            System.IO.File.WriteAllLines(TestAssembly.UnitTestsRoot + @"\FlattenedExample.txt", printLines);
+            System.IO.File.WriteAllLines(AsmDiagramTests.GetTestFileDirectory() + @"\FlattenedExample.txt", printLines);
             foreach(var p in printLines)
                 Console.WriteLine(p);
         }
@@ -87,19 +83,7 @@ namespace NoFuture.Tests.Util.Gia
         [Test]
         public void TestFlattenTypeGetGraphVizMrecords()
         {
-            var testAsm =
-                AppDomain.CurrentDomain.GetAssemblies()
-                    .FirstOrDefault(x => x.GetName().FullName.StartsWith("AdventureWorks"));
-
-            if (testAsm == null)
-            {
-                Assembly.Load(
-                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
-                testAsm =
-                    Assembly.Load(
-                        System.IO.File.ReadAllBytes(
-                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
-            }
+            var testAsm = GetTestAsm();
 
             Assert.IsNotNull(testAsm);
 
@@ -124,19 +108,7 @@ namespace NoFuture.Tests.Util.Gia
         [Test]
         public void TestFlattenTypeGetGraphVizEdges()
         {
-            var testAsm =
-                AppDomain.CurrentDomain.GetAssemblies()
-                    .FirstOrDefault(x => x.GetName().FullName.StartsWith("AdventureWorks"));
-
-            if (testAsm == null)
-            {
-                Assembly.Load(
-                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
-                testAsm =
-                    Assembly.Load(
-                        System.IO.File.ReadAllBytes(
-                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
-            }
+            var testAsm = GetTestAsm();
 
             Assert.IsNotNull(testAsm);
 
@@ -160,20 +132,7 @@ namespace NoFuture.Tests.Util.Gia
         [Test]
         public void TestFlattentypeToGraphVizString()
         {
-            var testAsm =
-                AppDomain.CurrentDomain.GetAssemblies()
-                    .FirstOrDefault(x => x.GetName().FullName.StartsWith("AdventureWorks"));
-
-            if (testAsm == null)
-            {
-                Assembly.Load(
-                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
-                testAsm =
-                    Assembly.Load(
-                        System.IO.File.ReadAllBytes(
-                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
-            }
-
+            var testAsm = GetTestAsm();
             Assert.IsNotNull(testAsm);
 
             var testGia = new NoFuture.Util.Gia.Args.FlattenTypeArgs()
@@ -189,32 +148,7 @@ namespace NoFuture.Tests.Util.Gia
             var testResult = flattenedType.ToGraphVizString();
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
-            System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\TestGraphVizFlatType.gv", testResult);
-        }
-
-        [Test]
-        public void TestFlattenType_DeleteMe()
-        {
-            var testAsm =
-                NoFuture.Util.Binary.Asm.NfLoadFrom(
-                    @"C:\Projects\31g\trunk\temp\debug\testAsms\Debug\Bfw.Domain.Model.dll");
-            var testTypeName = "Bfw.Domain.Model.Customer.Participant";
-
-            var startCount = 0;
-            var testResult = NoFuture.Util.Gia.Flatten.FlattenType(testAsm, testTypeName, ref startCount, 16, null,
-                false, null, null);
-
-            var lastItem = testResult.LastOrDefault();
-
-            Assert.IsNotNull(lastItem);
-            Console.WriteLine(lastItem);
-
-            var lf = lastItem.Items.Count;
-
-            var lastLine = lastItem.Items[lf - 2];
-
-            Assert.IsNotNull(lastLine);
-            Console.WriteLine(lastLine.TypeFullName);
+            System.IO.File.WriteAllText(AsmDiagramTests.GetTestFileDirectory() + @"\TestGraphVizFlatType.gv", testResult);
         }
     }
 }

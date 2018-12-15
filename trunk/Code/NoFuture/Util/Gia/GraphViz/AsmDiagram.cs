@@ -198,7 +198,8 @@ namespace NoFuture.Util.Gia.GraphViz
             foreach (
                 var asmType in
                     asm.NfGetExportedTypes()
-                        .Where(x => !string.IsNullOrWhiteSpace(x.Namespace) && x.Namespace.StartsWith(_targetedNs)))
+                        .Where(x => !string.IsNullOrWhiteSpace(x.Namespace) 
+                                    && AssemblyName.ReferenceMatchesDefinition(asm.GetName(), x.Assembly.GetName())))
             {
                 var item1 = new FlattenedItem(asmType) {FlName = asmType.Name};
                 if (item1.IsTerminalNode || NfReflect.IsEnumType(asmType))
@@ -206,11 +207,11 @@ namespace NoFuture.Util.Gia.GraphViz
 
                 foreach (
                     var p in
-                        asmType.GetProperties(NfSettings.DefaultFlags)
+                        asmType.NfGetProperties(NfSettings.DefaultFlags, false)
                             .Where(
-                                x =>
-                                    !string.IsNullOrWhiteSpace(x.PropertyType.Namespace) &&
-                                    x.PropertyType.Namespace.StartsWith(_targetedNs))
+                                x => x != null && 
+                                    !string.IsNullOrWhiteSpace(x.NfPropertyType(false)?.Namespace) &&
+                                    AssemblyName.ReferenceMatchesDefinition(x.NfPropertyType(false)?.Assembly.GetName(), asm.GetName()))
                     )
                 {
                     if (NfReflect.IsEnumType(p.PropertyType))

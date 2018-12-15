@@ -1,14 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace NoFuture.Tests.Util.Gia
+namespace NoFuture.Util.Gia.Tests
 {
     [TestFixture]
     public class AsmDiagramTests
     {
+        public static string PutTestFileOnDisk(string embeddedFileName)
+        {
+            var nfAppData = GetTestFileDirectory();
+            var fileOnDisk = Path.Combine(nfAppData, embeddedFileName);
+            if (File.Exists(fileOnDisk))
+                return fileOnDisk;
+
+            //need this to be another object each time and not just another reference
+            var asmName = Assembly.GetExecutingAssembly().GetName().Name;
+            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.{embeddedFileName}");
+            if (liSteam == null)
+            {
+                Assert.Fail($"Cannot find the embedded file {embeddedFileName}");
+            }
+            if (!Directory.Exists(nfAppData))
+            {
+                Directory.CreateDirectory(nfAppData);
+            }
+
+            var buffer = new byte[liSteam.Length];
+            liSteam.Read(buffer, 0, buffer.Length);
+            File.WriteAllBytes(fileOnDisk, buffer);
+            System.Threading.Thread.Sleep(50);
+            return fileOnDisk;
+        }
+
+        public static string GetTestFileDirectory()
+        {
+            var nfAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (String.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
+                throw new DirectoryNotFoundException("The Environment.GetFolderPath for " +
+                                                     "SpecialFolder.ApplicationData returned a bad path.");
+            nfAppData = Path.Combine(nfAppData, "NoFuture.Tests");
+            return nfAppData;
+        }
+
+
         private Assembly GetTestAsm()
         {
             var testAsm =
@@ -17,14 +55,22 @@ namespace NoFuture.Tests.Util.Gia
 
             if (testAsm == null)
             {
-                Assembly.Load(
-                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
-                testAsm =
-                    Assembly.Load(
-                        System.IO.File.ReadAllBytes(
-                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
+                Assembly.Load(File.ReadAllBytes(PutTestFileOnDisk("ThirdDll.dll")));
+                Assembly.Load(File.ReadAllBytes(PutTestFileOnDisk("SomethingShared.dll")));
+                Assembly.Load(File.ReadAllBytes(PutTestFileOnDisk("SomeSecondDll.dll")));
+                testAsm = Assembly.Load(File.ReadAllBytes(PutTestFileOnDisk("AdventureWorks2012.dll")));
             }
+            NoFuture.Shared.Cfg.NfConfig.AssemblySearchPaths.Add(GetTestFileDirectory());
+            NoFuture.Util.Binary.FxPointers.AddResolveAsmEventHandlerToDomain();
+
             return testAsm;
+        }
+
+        [Test]
+        public void TestGetAsm()
+        {
+            var testAsm = GetTestAsm();
+            Assert.IsNotNull(testAsm);
         }
 
         [Test]
@@ -32,63 +78,14 @@ namespace NoFuture.Tests.Util.Gia
         {
 
             var testAsm = GetTestAsm();
-
+            Assert.IsNotNull(testAsm);
             var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(testAsm);
-
+            
             var testResult = testSubject.ToGraphVizString();
 
             Assert.IsNotNull(testResult);
 
-            System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\ExampleDlls\AsmDiagramTest.gv", testResult);
+            System.IO.File.WriteAllText(GetTestFileDirectory() + @"\AsmDiagramTest.gv", testResult);
         }
-
-        [Test]
-        public void TestGetDupIndices()
-        {
-            var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(GetTestAsm());
-
-            var tesdf = testSubject.Edges;
-
-            var t = tesdf.FirstOrDefault(x => x.NodeName[0] == "WorkOrder" && x.NodeName[1] == "Product");
-            Assert.IsNotNull(t);
-            var f = tesdf.FirstOrDefault(x => x.NodeName[0] == "Product" && x.NodeName[1] == "WorkOrder");
-            Assert.IsNotNull(f);
-
-            Assert.IsTrue(f.AreCounterparts(t));
-        }
-
-        [Test]
-        public void TestGetAdjacencyMatrix()
-        {
-            var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(GetTestAsm());
-            var testResult = testSubject.GetAdjacencyMatrix();
-            Assert.IsNotNull(testResult.Item1);
-            Assert.AreNotEqual(0, testResult.Item1.Length);
-            Assert.IsNotNull(testResult.Item2);
-            Assert.AreNotEqual(0,testResult.Item2.GetLongLength(0));
-            Assert.AreNotEqual(0L, testResult.Item2.GetLongLength(1));
-            Assert.AreEqual(testResult.Item2.GetLongLength(0), testResult.Item2.GetLongLength(1));
-
-            for(var i = 0; i < testResult.Item2.GetLongLength(0); i++)
-            {
-                var ln = new List<int>();
-                for (var j = 0; j < testResult.Item2.GetLongLength(1); j++)
-                {
-                    ln.Add(testResult.Item2[i,j]);
-                }
-                Console.WriteLine(string.Join(" ", ln));
-            }
-        }
-
-        [Test]
-        public void TestGetAdjacencyMatrixJson()
-        {
-            var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(GetTestAsm());
-            var testResult = testSubject.GetAdjacencyMatrixJson();
-            Assert.IsNotNull(testResult);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(testResult));
-            Console.WriteLine(testResult);
-        }
-
     }
 }

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.Gia")]
-[assembly: AssemblyDescription("NoFuture GraphViz diagrams and such")]
+[assembly: AssemblyTitle("NoFuture.Util.Gia.Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Util.Gia")]
+[assembly: AssemblyProduct("NoFuture.Util.Gia.Tests")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,8 +20,8 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("280000ce-bc04-4a97-ba73-c978439ef280")]
-[assembly: InternalsVisibleTo("NoFuture.Util.Gia.Tests")]
+[assembly: Guid("d1c86174-63c8-4e3a-a762-16fff32c3f7e")]
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
