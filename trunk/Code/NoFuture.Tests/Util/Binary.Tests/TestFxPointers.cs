@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
 using NUnit.Framework;
 
 namespace NoFuture.Util.Binary.Tests

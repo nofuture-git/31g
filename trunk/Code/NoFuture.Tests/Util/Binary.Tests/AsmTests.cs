@@ -11,6 +11,11 @@ namespace NoFuture.Util.Binary.Tests
     {
         public static string PutTestFileOnDisk(string embeddedFileName)
         {
+            var nfAppData = GetTestFileDirectory();
+            var fileOnDisk = Path.Combine(nfAppData, embeddedFileName);
+            if (File.Exists(fileOnDisk))
+                return fileOnDisk;
+
             //need this to be another object each time and not just another reference
             var asmName = Assembly.GetExecutingAssembly().GetName().Name;
             var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.{embeddedFileName}");
@@ -26,14 +31,11 @@ namespace NoFuture.Util.Binary.Tests
             }
             Assert.IsNotNull(fileContent);
 
-            var nfAppData = GetTestFileDirectory();
-            nfAppData = Path.Combine(nfAppData, "NoFuture.Tests");
             if (!Directory.Exists(nfAppData))
             {
                 Directory.CreateDirectory(nfAppData);
             }
 
-            var fileOnDisk = Path.Combine(nfAppData, embeddedFileName);
             File.WriteAllText(fileOnDisk, fileContent);
             System.Threading.Thread.Sleep(50);
             return fileOnDisk;

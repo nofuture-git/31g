@@ -62,7 +62,7 @@ namespace NoFuture.Util.DotNetMeta.Tests.TokenNameTest
 
             var testSubject = new MetadataTokenNameComparer();
             var testResult = testSubject.Equals(tx, ty);
-            Assert.IsFalse(testResult);
+            Assert.IsTrue(testResult);
         }
 
         [Test]

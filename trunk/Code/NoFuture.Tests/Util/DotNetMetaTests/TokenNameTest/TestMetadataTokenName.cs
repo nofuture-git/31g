@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using NoFuture.Util.DotNetMeta.TokenName;
 using NoFuture.Util.DotNetMeta.TokenType;
 using NUnit.Framework;
@@ -10,92 +9,6 @@ namespace NoFuture.Util.DotNetMeta.Tests.TokenNameTest
 {
     public class TestMetadataTokenName
     {
-
-        [Test]
-        public void TestBuildMetadataTokenName()
-        {
-            var tokenData = TestInit.GetTokenData();
-            var testResult = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
-                tokenData.Item2.GetAsRoot(), tokenData.Item1);
-            Assert.IsNotNull(testResult);
-            Assert.IsNotNull(testResult.Items);
-            Assert.AreNotEqual(0 ,testResult.Items.Length);
-        }
-
-        [Test]
-        public void TestSelectDistinct_ByMethod()
-        {
-            var tokenData = TestInit.GetTokenData();
-            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
-                tokenData.Item2.GetAsRoot(), tokenData.Item1);
-            var testResult = testSubject.SelectDistinct("TestBegin", "Index");
-            Assert.IsNotNull(testResult);
-            Assert.IsNotNull(testResult.Items);
-            Assert.AreNotEqual(0, testResult.Items.Length);
-        }
-
-        [Test]
-        public void TestBuildWithTokenTypes()
-        {
-            var tokenData = TestInit.GetTokenData();
-            var testSubject = MetadataTokenName.BuildMetadataTokenName(tokenData.Item3.GetAsRoot(),
-                tokenData.Item2.GetAsRoot(), tokenData.Item1, tokenData.Item4.GetAsRoot());
-            Assert.IsNotNull(testSubject);
-        }
-
-        [Test]
-        public void TestGetUnion()
-        {
-            var tokenData = TestInit.GetTokenData();
-            var testSubject = tokenData.Item3.GetAsRoot();
-            var testInput = testSubject.SelectDistinct("OptumController", "Index");
-            var testInput2 = testSubject.SelectDistinct("OptumController", "GetInitSsoToken");
-
-            var trIds = testInput.Items.Select(t => t.Id).ToList();
-            var tr2Ids = testInput2.Items.Select(t => t.Id).ToList();
-
-            var trNames = testInput.Items.Select(t => t.Name).ToList();
-            var tr2Names = testInput2.Items.Select(t => t.Name).ToList();
-
-            Console.WriteLine($"Total id count {trIds.Count + tr2Ids.Count}" );
-            trIds.AddRange(tr2Ids);
-            var distinctIds = trIds.Distinct().ToList();
-            Console.WriteLine($"Distinct id count {distinctIds.Count}" );
-
-            Console.WriteLine($"Total name count {trNames.Count  + tr2Names.Count}");
-            trNames.AddRange(tr2Names);
-            var distinctNames = trNames.Distinct().ToList();
-            Console.WriteLine($"Distinct name count {distinctNames.Count}");
-
-            var testResult = testInput.GetUnion(testInput2);
-            Assert.AreNotEqual(0 , testResult.Items.Length);
-        }
-
-        [Test]
-        public void TestSelectByRegex()
-        {
-            var tokenData = TestInit.GetTokenData();
-            var testSubject = tokenData.Item3.GetAsRoot();
-            var testResult = testSubject.SelectByRegex(@"\.OptumController");
-            Assert.IsNotNull(testResult?.Items);
-            Assert.AreNotEqual(0, testResult.Items.Length);
-            foreach(var t in testResult.Items)
-                Console.WriteLine(t.Name);
-
-        }
-
-        [Test]
-        public void TestGetTrace()
-        {
-            var tokenData = TestInit.GetTokenData();
-            var testSubject = tokenData.Item3.GetAsRoot();
-            var testResult = testSubject.GetTrace(@"\:\:RegisterParticipant");
-            Assert.IsNotNull(testResult);
-            var asJson = JsonConvert.SerializeObject(testResult, Formatting.Indented);
-            Console.WriteLine(asJson);
-
-        }
-
         public static MetadataTokenName GetTestMetadataTokenNameTree()
         {
             /*
