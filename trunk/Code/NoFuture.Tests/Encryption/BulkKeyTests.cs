@@ -1,8 +1,8 @@
 ﻿using System;
-using NUnit.Framework;
 using NoFuture.Shared;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Encryption
+namespace NoFuture.Encryption.Tests
 {
     [TestFixture]
     public class BulkKeyTests

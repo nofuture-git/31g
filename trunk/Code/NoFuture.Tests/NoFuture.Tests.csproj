@@ -77,12 +77,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Encryption\BulkKeyTests.cs" />
-    <Compile Include="Encryption\CipherTextTests.cs" />
-    <Compile Include="Encryption\PublicKeyTests.cs" />
-    <Compile Include="Encryption\ResourceTests.cs" />
-    <Compile Include="Encryption\HashTests.cs" />
-    <Compile Include="Encryption\Nfx509Tests.cs" />
     <Compile Include="Gen\EtcTests.cs" />
     <Compile Include="Gen\LangRulesTests.cs" />
     <Compile Include="Gen\TestInvokeDia2Dump.cs" />
@@ -205,7 +199,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Encryption\EncryptionTests.js" />
     <None Include="Gen\ATestableCsFileContent.txt" />
     <Content Include="Gen\SourceFlatMembersDataData.txt" />
     <Content Include="Gen\TargetFlatMembersData.txt" />

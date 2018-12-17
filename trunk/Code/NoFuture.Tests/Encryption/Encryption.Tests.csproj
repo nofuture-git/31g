@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BF48E929-FEBF-41C8-BF0C-E41865D7069F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Encryption.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Encryption.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Jurassic, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Jurassic.2.2.1\lib\net35\Jurassic.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BulkKeyTests.cs" />
+    <Compile Include="CipherTextTests.cs" />
+    <Compile Include="HashTests.cs" />
+    <Compile Include="Nfx509Tests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicKeyTests.cs" />
+    <Compile Include="ResourceTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MyTestCert01.cer" />
+    <EmbeddedResource Include="MyTestCert01.pfx" />
+    <None Include="packages.config" />
+    <EmbeddedResource Include="TestCipherText.txt.nfk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\NoFuture\Encryption\Encryption.csproj">
+      <Project>{e7ad99ce-f93a-4844-92d1-1d544d83364f}</Project>
+      <Name>Encryption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Shared\Cfg\Shared.Cfg.csproj">
+      <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
+      <Name>Shared.Cfg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Shared\Core\Shared.Core.csproj">
+      <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
+      <Name>Shared.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Shared\Shared.csproj">
+      <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Util\Binary\Util.Binary.csproj">
+      <Project>{c02e6247-e99f-4ef2-b275-12f8bb27acc7}</Project>
+      <Name>Util.Binary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Util\Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestPlainText.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

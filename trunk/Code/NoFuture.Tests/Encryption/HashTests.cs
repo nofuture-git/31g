@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace NoFuture.Tests.Encryption
+namespace NoFuture.Encryption.Tests
 {
     [TestFixture]
     public class HashTests

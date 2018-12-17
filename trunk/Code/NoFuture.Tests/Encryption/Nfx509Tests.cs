@@ -1,23 +1,18 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using NoFuture.Encryption;
-using NUnit.Framework;
-using NoFuture.Shared;
-using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Encryption
+namespace NoFuture.Encryption.Tests
 {
     [TestFixture]
     public class Nfx509Tests
     {
         public const string TEST_PWD = "Test1234";
-        public string TEST_CERT_PFX_PATH = TestAssembly.UnitTestsRoot + @"\Encryption\MyTestCert01.pfx";
-        public string TEST_CERT_CER_PATH = TestAssembly.UnitTestsRoot + @"\Encryption\MyTestCert01.cer";
-        public string TEST_PLAINTEXT = TestAssembly.UnitTestsRoot + @"\Encryption\TestPlainText.txt";
 
         [SetUp]
         public void Init()
@@ -25,25 +20,25 @@ namespace NoFuture.Tests.Encryption
             FxPointers.AddSHA512ToCryptoConfig();
         }
 
-        [Test]
         public void TestCreateAndSave()
         {
+            var certPath = PutTestFileOnDisk("MyTestCert01.pfx");
             var dn = new NoFuture.Encryption.NfX509.DistinguishedName("MyTestCert01");
             var myCert = NoFuture.Encryption.NfX509.CreateSelfSignedCert(dn, new DateTime(2047, 1, 1),
                 TEST_PWD);
             var pfx = myCert.Export(X509ContentType.Pkcs12, TEST_PWD);
 
-            File.WriteAllBytes(TEST_CERT_PFX_PATH, pfx);
+            File.WriteAllBytes(certPath, pfx);
         }
 
-        [Test]
         public void TestGetCerOfTestPfx()
         {
-            var myCert = new X509Certificate2(TEST_CERT_PFX_PATH, TEST_PWD);
+            var certPath = PutTestFileOnDisk("MyTestCert01.pfx");
+            var myCert = new X509Certificate2(certPath, TEST_PWD);
             var myCerCert = NoFuture.Encryption.NfX509.ExportToPem(myCert);
             File.WriteAllText(
-                Path.Combine(Path.GetDirectoryName(TEST_CERT_PFX_PATH),
-                    Path.GetFileNameWithoutExtension(TEST_CERT_PFX_PATH) + ".cer"), myCerCert);
+                Path.Combine(Path.GetDirectoryName(certPath),
+                    Path.GetFileNameWithoutExtension(certPath) + ".cer"), myCerCert);
         }
 
         [Test]
@@ -52,35 +47,74 @@ namespace NoFuture.Tests.Encryption
             
             //a file to encrypts
             var someText = Etc.LoremIpsumEightParagraphs;
-            File.WriteAllText(TEST_PLAINTEXT, someText);
+            var testFile = PutTestFileOnDisk("TestPlainText.txt");
+            File.WriteAllText(testFile, someText);
             Thread.Sleep(1000);
 
-            Assert.IsTrue(File.Exists(TEST_PLAINTEXT));
+            Assert.IsTrue(File.Exists(testFile));
+            var certPath = PutTestFileOnDisk("MyTestCert01.cer");
+            NoFuture.Encryption.NfX509.EncryptFile(testFile, certPath);
 
-            NoFuture.Encryption.NfX509.EncryptFile(TEST_PLAINTEXT, TEST_CERT_CER_PATH);
-
-            Assert.IsTrue(File.Exists(TEST_PLAINTEXT + NfX509.NF_CRYPTO_EXT));
+            Assert.IsTrue(File.Exists(testFile + NfX509.NF_CRYPTO_EXT));
 
         }
 
         [Test]
         public void TestDecryptFile()
         {
-            Assert.IsTrue(File.Exists(TEST_PLAINTEXT + NfX509.NF_CRYPTO_EXT));
 
-            if (File.Exists(TEST_PLAINTEXT))
-            {
-                File.Delete(TEST_PLAINTEXT);
-            }
+            var certPath = PutTestFileOnDisk("MyTestCert01.pfx");
+            var testFile = PutTestFileOnDisk("TestCipherText.txt.nfk");
+            Assert.IsTrue(File.Exists(testFile));
+
             Thread.Sleep(1000);
 
-            NoFuture.Encryption.NfX509.DecryptFile(TEST_PLAINTEXT + NfX509.NF_CRYPTO_EXT, TEST_CERT_PFX_PATH, TEST_PWD);
+            NfX509.DecryptFile(testFile, certPath, TEST_PWD);
 
-            Assert.IsTrue(File.Exists(TEST_PLAINTEXT));
+            var testResultFile = Path.Combine(GetTestFileDirectory(), Path.GetFileNameWithoutExtension(testFile));
+            Console.WriteLine(testResultFile);
+            Assert.IsNotNull(testResultFile);
+            Assert.IsTrue(File.Exists(testResultFile));
 
-            var content = File.ReadAllText(TEST_PLAINTEXT);
+            var content = File.ReadAllText(testResultFile);
 
             Assert.AreEqual(Etc.LoremIpsumEightParagraphs, content);
+        }
+
+        public static string PutTestFileOnDisk(string embeddedFileName)
+        {
+            var nfAppData = GetTestFileDirectory();
+            var fileOnDisk = Path.Combine(nfAppData, embeddedFileName);
+            if (File.Exists(fileOnDisk))
+                return fileOnDisk;
+
+            //need this to be another object each time and not just another reference
+            var asmName = Assembly.GetExecutingAssembly().GetName().Name;
+            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.{embeddedFileName}");
+            if (liSteam == null)
+            {
+                Assert.Fail($"Cannot find the embedded file {embeddedFileName}");
+            }
+            if (!Directory.Exists(nfAppData))
+            {
+                Directory.CreateDirectory(nfAppData);
+            }
+
+            var buffer = new byte[liSteam.Length];
+            liSteam.Read(buffer, 0, buffer.Length);
+            File.WriteAllBytes(fileOnDisk, buffer);
+            System.Threading.Thread.Sleep(50);
+            return fileOnDisk;
+        }
+
+        public static string GetTestFileDirectory()
+        {
+            var nfAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (String.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
+                throw new DirectoryNotFoundException("The Environment.GetFolderPath for " +
+                                                     "SpecialFolder.ApplicationData returned a bad path.");
+            nfAppData = Path.Combine(nfAppData, "NoFuture.Tests");
+            return nfAppData;
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
-using NUnit.Framework;
 using NoFuture.Shared;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Encryption
+namespace NoFuture.Encryption.Tests
 {
     [TestFixture]
     public class PublicKeyTests
@@ -47,6 +47,7 @@ namespace NoFuture.Tests.Encryption
             };
             Console.WriteLine(test_input.ToString());
             var testResult = NoFuture.Encryption.Sjcl.BulkCipherKey.ToPlainText(test_input, pk);
+            Assert.IsNotNull(testResult);
         }
     }
 }
