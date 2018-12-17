@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
-using NoFuture.Tokens;
 
-namespace NoFuture.Tests.Tokens
+namespace NoFuture.Tokens.Tests
 {
     [TestFixture]
     public class TestXDocFrame
@@ -211,26 +212,41 @@ namespace NoFuture.Tests.Tokens
         [Test]
         public void TestGetXDocFrame()
         {
-            var testInput =
-                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\Tokens\TokensTestFile.txt");
+            var testInput = GetTestFileContent();
             var testSubject = new XDocFrame('{', '}') {MinTokenSpan = 1};
             var testResults = testSubject.GetXDocFrame(testInput);
             var testResultsXml = testResults.ToString();
-            System.IO.File.WriteAllBytes(TestAssembly.UnitTestsRoot + @"\Tokens\GetXDocFrameResults.xml", System.Text.Encoding.UTF8.GetBytes(testResultsXml));
-
+            Assert.IsNotNull(testResultsXml);
         }
 
         [Test]
         public void TestApplyXDocFrame()
         {
-            var testInput =
-                System.IO.File.ReadAllText(TestAssembly.UnitTestsRoot + @"\Tokens\TokensTestFile.txt");
+            var testInput =GetTestFileContent();
             var testSubject = new XDocFrame('{', '}') { MinTokenSpan = 1 };
             var testResults = testSubject.GetXDocFrame(testInput);
             testSubject.ApplyXDocFrame(testResults, testInput);
             var testResultsXml = testResults.ToString();
-            System.IO.File.WriteAllBytes(TestAssembly.UnitTestsRoot + @"\Tokens\ApplyXDocFrameResults.xml", System.Text.Encoding.UTF8.GetBytes(testResultsXml));
-            
+            Assert.IsNotNull(testResultsXml);
+        }
+
+        public static string GetTestFileContent()
+        {
+            //need this to be another object each time and not just another reference
+            var asmName = Assembly.GetExecutingAssembly().GetName().Name;
+            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.TokensTestFile.txt");
+            if (liSteam == null)
+            {
+                Assert.Fail($"Cannot find the embedded file TokensTestFile.txt");
+            }
+
+            string fileContent = null;
+            using (var txtSr = new StreamReader(liSteam))
+            {
+                fileContent = txtSr.ReadToEnd();
+            }
+            Assert.IsNotNull(fileContent);
+            return fileContent;
         }
     }
 }

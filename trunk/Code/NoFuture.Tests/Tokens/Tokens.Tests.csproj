@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A0E77589-2FFD-4C72-B2EC-EB9F98B4D264}</ProjectGuid>
+    <ProjectGuid>{7D490E32-76A2-4EEF-99A0-72C10CD7DAA9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Util.NfConsole.Tests</RootNamespace>
-    <AssemblyName>NoFuture.Util.NfConsole.Tests</AssemblyName>
+    <RootNamespace>NoFuture.Tokens.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Tokens.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -32,23 +32,32 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestConsoleCmd.cs" />
+    <Compile Include="TestXDocFrame.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NoFuture\Util\NfConsole\Util.NfConsole.csproj">
-      <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>
-      <Name>Util.NfConsole</Name>
+    <ProjectReference Include="..\..\NoFuture\Tokens\Tokens.csproj">
+      <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
+      <Name>Tokens</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TokensTestFile.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

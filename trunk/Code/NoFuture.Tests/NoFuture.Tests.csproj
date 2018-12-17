@@ -107,11 +107,9 @@
     <Compile Include="Sql\TestPsMetadata.cs" />
     <Compile Include="Sql\TestEtc.cs" />
     <Compile Include="TestsInit.cs" />
-    <Compile Include="Tokens\TestXDocFrame.cs" />
     <Compile Include="Tokens\TestAspNetParseTree.cs" />
     <Compile Include="TestRead.cs" />
     <Compile Include="Tokens\TestErlangConfigParseTree.cs" />
-    <Compile Include="Tokens\TestEtx.cs" />
     <Compile Include="Tokens\TestTypeNameParseTree.cs" />
     <Compile Include="Host.Encryption\ProgramTests.cs" />
     <Compile Include="Program.cs" />
