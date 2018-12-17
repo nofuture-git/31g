@@ -1,8 +1,6 @@
-﻿using System;
-using NUnit.Framework;
-using NoFuture.Hbm;
+﻿using NUnit.Framework;
 
-namespace NoFuture.Tests.Hbm
+namespace NoFuture.Hbm.Tests
 {
     [TestFixture]
     public class TestInvokeStoredProcManager

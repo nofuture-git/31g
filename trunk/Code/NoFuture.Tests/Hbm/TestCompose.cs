@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace NoFuture.Tests.Hbm
+namespace NoFuture.Hbm.Tests
 {
     [TestFixture]
     public class TestCompose
@@ -12,7 +12,7 @@ namespace NoFuture.Tests.Hbm
             var testResult = NoFuture.Hbm.Compose.ClassName("dbo.123ProcName", "NoFuture");
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
-            Assert.AreEqual("NoFuture.Dbo.Nf123ProcName, NoFuture, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",testResult);
+            Assert.AreEqual("NoFuture.Dbo._u0000123ProcName, NoFuture, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",testResult);
             
             testResult = NoFuture.Hbm.Compose.ClassName("dbo.ShipmentTrackingMaster", "NoFuture");
             Assert.IsNotNull(testResult);
@@ -32,7 +32,7 @@ namespace NoFuture.Tests.Hbm
             var testResult = NoFuture.Hbm.Compose.PropertyName("# of Stations");
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
-            Assert.AreEqual("NfofStations",testResult);
+            Assert.AreEqual("_u0000ofStations",testResult);
 
             testResult = NoFuture.Hbm.Compose.PropertyName("ExpectedArrivalDate");
             Assert.IsNotNull(testResult);

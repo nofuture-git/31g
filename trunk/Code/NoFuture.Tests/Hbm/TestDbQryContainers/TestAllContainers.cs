@@ -1,11 +1,9 @@
 ﻿using System;
-using NUnit.Framework;
 using NoFuture.Hbm.DbQryContainers.MetadataDump;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Hbm.TestDbQryContainers
+namespace NoFuture.Hbm.Tests.TestDbQryContainers
 {
     [TestFixture]
     public class TestAllContainers
@@ -13,7 +11,7 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
         [SetUp]
         public void Init()
         {
-            NfConfig.TempDirectories.Hbm = @"C:\Projects\31g\trunk\temp\code\hbm";
+            NfConfig.TempDirectories.Hbm = TestAssembly.GetTestFileDirectory();
             NfConfig.SqlServer = "localhost";
             NfConfig.SqlCatalog = "Whatever";
         }
@@ -27,27 +25,6 @@ namespace NoFuture.Tests.Hbm.TestDbQryContainers
             Assert.AreNotEqual(0, testResult);
             foreach(var n in testResult)
                 Console.WriteLine(n);
-        }
-
-        [Test]
-        public void TestHbmAllColumns()
-        {
-            var testSubject = new HbmAllColumns();
-            Assert.IsNotNull(testSubject.SelectStatement);
-            Assert.IsNotNull(testSubject.OutputPath);
-            var testResult = testSubject.Data;
-            Assert.IsNotNull(testResult);
-        }
-
-        [Test]
-        public void TestHbmAllIndex()
-        {
-            var testSubject = new HbmAllIndex();
-            Assert.IsNotNull(testSubject.SelectStatement);
-            Assert.IsNotNull(testSubject.OutputPath);
-            var testResult = testSubject.Data;
-            Assert.IsNotNull(testResult);
-            System.Diagnostics.Debug.Write(testResult.Length);
         }
 
         [Test]

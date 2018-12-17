@@ -103,11 +103,15 @@ namespace NoFuture.Hbm
         private const string Status = "Metadata Dump";
         private readonly TaskFactory _taskFactory = new TaskFactory();
 
-        private readonly string _nfHbmInvokeProxExePath = Path.Combine(NfConfig.BinDirectories.Root,
-            "NoFuture.Hbm.InvokeStoredProc.exe");
+        private string _nfHbmInvokeProxExePath;
 
         private int _pInvokePaddingSeconds = 10;
         #endregion
+
+        public InvokeStoredProcManager(string noFutureHbmInvokeStoredProcExe = null)
+        {
+            _nfHbmInvokeProxExePath = noFutureHbmInvokeStoredProcExe;
+        }
 
         #region cmd line switches
         /// <summary>
@@ -362,8 +366,13 @@ namespace NoFuture.Hbm
         /// </remarks>
         public void GetSpResultSetXsd(StoredProxSearchCriteria filterOnNamesLike, string connectionString)
         {
+            if (string.IsNullOrWhiteSpace(_nfHbmInvokeProxExePath) && !string.IsNullOrWhiteSpace(NfConfig.BinDirectories.Root))
+            {
+                _nfHbmInvokeProxExePath = Path.Combine(NfConfig.BinDirectories.Root, "NoFuture.Hbm.InvokeStoredProc");
+            }
+
             //blow up for this
-            if(!File.Exists(_nfHbmInvokeProxExePath))
+            if(!string.IsNullOrWhiteSpace(_nfHbmInvokeProxExePath) || !File.Exists(_nfHbmInvokeProxExePath))
                 throw new ItsDeadJim(string.Format("The required console app is missing at '{0}'", _nfHbmInvokeProxExePath));
 
             BroadcastProgress(new ProgressMessage

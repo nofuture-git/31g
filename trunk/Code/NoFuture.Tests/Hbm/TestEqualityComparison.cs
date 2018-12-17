@@ -2,7 +2,7 @@
 using System.Text;
 using NUnit.Framework;
 
-namespace NoFuture.Tests.Hbm
+namespace NoFuture.Hbm.Tests
 {
     [TestFixture]
     public class TestEqualityComparison

@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace NoFuture.Tests.Hbm
+namespace NoFuture.Hbm.Tests
 {
     [TestFixture]
     public class TestConfigFile

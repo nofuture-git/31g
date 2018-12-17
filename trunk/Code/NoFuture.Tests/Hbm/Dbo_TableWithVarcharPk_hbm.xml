@@ -1,0 +1,28 @@
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="NoFuture.Dbo.TableWithVarcharPk, NoFuture, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" table="[TableWithVarcharPk]" schema="[dbo]">
+    <id name="Id" type="AnsiString" length="16">
+      <column name="[MyVarcharPk]">
+        <comment><![CDATA[{"column_name":"dbo.TableWithVarcharPk.MyVarcharPk","column_ordinal":1,"constraint_name":"dbo.PK_TableWithVarcharPk","data_type":"varchar","is_auto_increment":false,"is_nullable":false,"precision":"0,0","schema_name":"dbo","string_length":16,"table_name":"dbo.TableWithVarcharPk","unique_constraint_name":null,"unique_constraint_schema":null}]]></comment>
+      </column>
+      <generator class="assigned" />
+    </id>
+    <property name="MyData00" type="AnsiString" length="16" not-null="true">
+      <column name="[MyData00]">
+        <comment><![CDATA[{"column_name":"dbo.TableWithVarcharPk.MyData00","column_ordinal":null,"constraint_name":null,"data_type":"varchar","is_auto_increment":null,"is_nullable":true,"precision":"0,0","schema_name":"dbo","string_length":16,"table_name":"dbo.TableWithVarcharPk","unique_constraint_name":null,"unique_constraint_schema":null}]]></comment>
+      </column>
+    </property>
+    <property name="MyData01" type="AnsiString" length="16" not-null="true">
+      <column name="[MyData01]">
+        <comment><![CDATA[{"column_name":"dbo.TableWithVarcharPk.MyData01","column_ordinal":3,"constraint_name":"dbo.FK_MyData01_to_NoKey","data_type":"varchar","is_auto_increment":null,"is_nullable":true,"precision":"0,0","schema_name":"dbo","string_length":16,"table_name":"dbo.TableWithVarcharPk","unique_constraint_name":"dbo.IX_MyNotNull","unique_constraint_schema":"dbo"}]]></comment>
+      </column>
+    </property>
+    <bag name="TableWithCompositePks" cascade="all-delete-orphan" inverse="true" lazy="true" batch-size="512">
+      <key>
+        <column name="[MyData03]">
+          <comment><![CDATA[{"column_name":"dbo.TableWithCompositePk.MyData03","column_ordinal":8,"constraint_name":"dbo.FK_MyData03_to_MyVarcharPk","data_type":"varchar","is_auto_increment":null,"is_nullable":true,"precision":"0,0","schema_name":"dbo","string_length":16,"table_name":"dbo.TableWithCompositePk","unique_constraint_name":"dbo.PK_TableWithVarcharPk","unique_constraint_schema":"dbo"}]]></comment>
+        </column>
+      </key>
+      <one-to-many class="NoFuture.Dbo.TableWithCompositePk, NoFuture, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    </bag>
+  </class>
+</hibernate-mapping>

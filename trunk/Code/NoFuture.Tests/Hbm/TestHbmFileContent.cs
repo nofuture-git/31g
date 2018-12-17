@@ -1,15 +1,13 @@
 ﻿using System;
 using System.IO;
 using NUnit.Framework;
-using NoFuture.Hbm;
-using NoFuture.Shared;
 
-namespace NoFuture.Tests.Hbm
+namespace NoFuture.Hbm.Tests
 {
     [TestFixture]
     public class TestHbmFileContent
     {
-        public string TestFilePath = TestAssembly.UnitTestsRoot + @"\Hbm\TestFiles\localhost\Whatever";
+        public string TestFilePath = Path.Combine(TestAssembly.GetTestFileDirectory() + @"\localhost\Whatever");
         public const string IdHbmXmlTestFile = "Dbo.TableWithVarcharPk.hbm.xml";
         public const string CompositeIdXmlTestFile = "Dbo.TableWithCompositePk.hbm.xml";
         public const string StoredProcXmlTestFile = "Dbo.MyStoredProc.hbm.xml";

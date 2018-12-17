@@ -54,7 +54,7 @@ namespace NoFuture.Hbm
             internal const string RETURN_PROPERTY = "return-property";
             internal const string SECTION = "section";
             internal const string MAPPING = "mapping";
-            internal const string ASSEMBLY = "";
+            internal const string ASSEMBLY = "assembly";
         }
 
         public const string COMP_KEY_ID_SUFFIX = "CompositeId";

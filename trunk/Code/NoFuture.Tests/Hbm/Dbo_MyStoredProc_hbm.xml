@@ -1,0 +1,41 @@
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="NoFuture.TestHbm.Prox.Dbo.MyStoredProcTable, NoFuture.TestHbm.Prox, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <id name="id__dfuamxrp_m5y" type="Guid" generator="guid" />
+    <property name="Id" type="Int32" />
+    <property name="ServerName" type="AnsiString" length="8000" />
+    <property name="W3SVC" type="Int32" />
+    <property name="RequestDateTime" type="DateTime" />
+    <property name="S_ip" type="AnsiString" length="8000" />
+    <property name="Cs_method" type="AnsiString" length="8000" />
+    <property name="Cs_uri_stem" type="AnsiString" length="8000" />
+    <property name="S_port" type="Int32" />
+    <property name="Cs_username" type="AnsiString" length="8000" />
+    <property name="C_ip" type="AnsiString" length="8000" />
+    <property name="Sc_status" type="Int32" />
+    <property name="Sc_substatus" type="Int32" />
+    <property name="Sc_win32_status" type="Int32" />
+    <property name="Time_taken" type="Int32" />
+  </class>
+  <sql-query name="dboMyStoredProc" callable="true">
+    <return alias="dboMyStoredProc" class="NoFuture.TestHbm.Prox.Dbo.MyStoredProcTable, NoFuture.TestHbm.Prox, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <return-property column="[ID]" name="Id" />
+      <return-property column="[ServerName]" name="ServerName" />
+      <return-property column="[W3SVC]" name="W3SVC" />
+      <return-property column="[requestDateTime]" name="RequestDateTime" />
+      <return-property column="[s_ip]" name="S_ip" />
+      <return-property column="[cs_method]" name="Cs_method" />
+      <return-property column="[cs_uri_stem]" name="Cs_uri_stem" />
+      <return-property column="[s_port]" name="S_port" />
+      <return-property column="[cs_username]" name="Cs_username" />
+      <return-property column="[c_ip]" name="C_ip" />
+      <return-property column="[sc_status]" name="Sc_status" />
+      <return-property column="[sc_substatus]" name="Sc_substatus" />
+      <return-property column="[sc_win32_status]" name="Sc_win32_status" />
+      <return-property column="[time_taken]" name="Time_taken" />
+    </return><![CDATA[
+EXEC dbo.MyStoredProc
+	:FirstParam,
+	:SecondParam,
+	:ThirdParam
+]]></sql-query>
+</hibernate-mapping>
