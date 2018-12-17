@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using NoFuture.Antlr.CSharp4;
 using NoFuture.Shared.Core;
 
@@ -48,6 +49,36 @@ namespace NoFuture.Gen
             _cgType.AssignPdbSymbols(pdbLines.moduleSymbols);
 
             var sourceCodeFiles = pdbLines.moduleSymbols.Select(ms => ms.file);
+
+            foreach (var src in sourceCodeFiles)
+            {
+                var antlrParseRslts = CsharpParseTree.InvokeParse(src);
+                _cgType.AssignAntlrParseItems(GetAntlrParseItems(antlrParseRslts));
+            }
+        }
+
+        public CgTypeCsSrcCode(Assembly asm, string typeFullName, params string[] sourceCodeFiles)
+        {
+            if (asm == null)
+                throw new ArgumentNullException(nameof(asm));
+            AssemblyPath = asm.Location;
+            if (!File.Exists(AssemblyPath))
+            {
+                throw new FileNotFoundException("Cannot find the compiled assembly.", AssemblyPath);
+            }
+
+            //this is how we line up a source code file to a reflected runtime type
+            var invokeDia2Dump = new InvokeDia2Dump.GetPdbData(AssemblyPath);
+            var pdbLines = invokeDia2Dump.SingleTypeNamed(typeFullName);
+            if (pdbLines == null)
+                throw new ItsDeadJim($"Dia2Dump.exe did not return anything for the type named '{typeFullName}'");
+
+            _cgType = Etc.GetCgOfType(asm, typeFullName, true);
+
+            _cgType.AssignPdbSymbols(pdbLines.moduleSymbols);
+
+            var scf = sourceCodeFiles?.ToList() ?? new List<string>();
+            scf.AddRange(pdbLines.moduleSymbols.Select(ms => ms.file));
 
             foreach (var src in sourceCodeFiles)
             {

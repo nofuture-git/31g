@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using System.Text;
-using Microsoft.SqlServer.Server;
-using NUnit.Framework;
 using System.Text.RegularExpressions;
-using NoFuture.Gen;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Gen
+namespace NoFuture.Gen.Tests
 {
     [TestFixture]
     public class LangRulesTests
@@ -1371,8 +1368,11 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestTryFindFirstLineInClass()
         {
+            var testFilePath = PutTestFileOnDisk("ATestableCsFileContent.txt");
+            Assert.IsNotNull(testFilePath);
+            Assert.IsTrue(File.Exists(testFilePath));
             var testFileContent =
-                File.ReadAllLines(TestAssembly.UnitTestsRoot + @"\Gen\ATestableCsFileContent.txt");
+                File.ReadAllLines(testFilePath);
             var testTypeName = "PlummetToxic.DPP.Onss.ViewWankathon";
             int testResultOut;
             var testResult = NoFuture.Gen.Settings.LangStyle.TryFindFirstLineInClass(testTypeName, testFileContent,
@@ -1397,8 +1397,11 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestTryFindLastLineInClass()
         {
+            var testFilePath = PutTestFileOnDisk("ATestableCsFileContent.txt");
+            Assert.IsNotNull(testFilePath);
+            Assert.IsTrue(File.Exists(testFilePath));
             var testFileContent =
-                File.ReadAllLines(TestAssembly.UnitTestsRoot + @"\Gen\ATestableCsFileContent.txt");
+                File.ReadAllLines(testFilePath);
             var testTypeName = "PlummetToxic.DPP.Onss.ViewWankathon";
             int testResultOut;
             var testResult = NoFuture.Gen.Settings.LangStyle.TryFindLastLineInClass(testTypeName, testFileContent,
@@ -1937,17 +1940,40 @@ namespace NoFuture.Tests.Gen
             Assert.IsTrue(Regex.IsMatch("             protected string AProperty",testInput));
         }
 
-        [Test]
-        public void TestGetDecoratorRegex()
+        public static string PutTestFileOnDisk(string embeddedFileName)
         {
-            //var testCsRegex00 =
-            //    "[System.Web.Services.Protocols.SoapDocumentMethodAttribute(\"http://tempuri.org/1stMethod\", RequestElementName = \"1stMethod\", RequestNamespace = \"http://tempuri.org/\", ResponseElementName = \"1stMethodResponse\", ResponseNamespace = \"http://tempuri.org/\", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]";
-            //var testCsRegex01 = "[return: System.Xml.Serialization.XmlElementAttribute(\"1stMethodResult\")]";
-            /*
-                   [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/1stMethod", RequestElementName = "1stMethod", RequestNamespace = "http://tempuri.org/", ResponseElementName = "1stMethodResponse", ResponseNamespace = "http://tempuri.org/", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-      [return: System.Xml.Serialization.XmlElementAttribute(\"1stMethodResult\")]
+            var nfAppData = GetTestFileDirectory();
+            var fileOnDisk = Path.Combine(nfAppData, embeddedFileName);
+            if (File.Exists(fileOnDisk))
+                return fileOnDisk;
 
-             */
+            //need this to be another object each time and not just another reference
+            var asmName = Assembly.GetExecutingAssembly().GetName().Name;
+            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.{embeddedFileName}");
+            if (liSteam == null)
+            {
+                Assert.Fail($"Cannot find the embedded file {embeddedFileName}");
+            }
+            if (!Directory.Exists(nfAppData))
+            {
+                Directory.CreateDirectory(nfAppData);
+            }
+
+            var buffer = new byte[liSteam.Length];
+            liSteam.Read(buffer, 0, buffer.Length);
+            File.WriteAllBytes(fileOnDisk, buffer);
+            System.Threading.Thread.Sleep(50);
+            return fileOnDisk;
+        }
+
+        public static string GetTestFileDirectory()
+        {
+            var nfAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (String.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
+                throw new DirectoryNotFoundException("The Environment.GetFolderPath for " +
+                                                     "SpecialFolder.ApplicationData returned a bad path.");
+            nfAppData = Path.Combine(nfAppData, "NoFuture.Tests");
+            return nfAppData;
         }
     }
 }

@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using NUnit.Framework;
-using NoFuture.Gen;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Pos;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Gen
+namespace NoFuture.Gen.Tests
 {
     [TestFixture]
     public class EtcTests
@@ -663,31 +657,6 @@ namespace NoFuture.Tests.Gen
             testSubject = new CgType();
             testSubject.Properties.Add(cgOne);
             Assert.IsTrue(testSubject.ContainsThisMember(cgTwo));
-        }
-
-        [Test]
-        public void TestGetGraphVizClassDiagram()
-        {
-            var testAsm =
-                AppDomain.CurrentDomain.GetAssemblies()
-                    .FirstOrDefault(x => x.GetName().FullName.StartsWith("AdventureWorks"));
-
-            if (testAsm == null)
-            {
-                Assembly.Load(
-                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
-                testAsm =
-                    Assembly.Load(
-                        System.IO.File.ReadAllBytes(
-                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
-            }
-
-            Assert.IsNotNull(testAsm);
-
-            var testResult = NoFuture.Gen.Etc.GetClassDiagram(testAsm, "AdventureWorks.Person.Person");
-            Assert.AreNotEqual(string.Empty, testResult);
-
-            System.IO.File.WriteAllText(TestAssembly.UnitTestsRoot + @"\GraphVizClassDiagram.gv", testResult);
         }
 
         [Test]

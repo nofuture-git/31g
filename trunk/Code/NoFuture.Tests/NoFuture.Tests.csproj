@@ -77,12 +77,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gen\EtcTests.cs" />
-    <Compile Include="Gen\LangRulesTests.cs" />
-    <Compile Include="Gen\TestInvokeDia2Dump.cs" />
-    <Compile Include="Gen\TestCgMember.cs" />
-    <Compile Include="Gen\TestCgType.cs" />
-    <Compile Include="Gen\TestCgTypeCsSrcCode.cs" />
     <Compile Include="Hbm\TestDbQryContainers\TestAllContainers.cs" />
     <Compile Include="Hbm\TestDbQryContainers\TestSortedKeys.cs" />
     <Compile Include="Hbm\TestSorting.cs" />
@@ -197,11 +191,6 @@
       <Project>{39627590-0d97-4de2-b598-172b04587550}</Project>
       <Name>Util.Pos</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Gen\ATestableCsFileContent.txt" />
-    <Content Include="Gen\SourceFlatMembersDataData.txt" />
-    <Content Include="Gen\TargetFlatMembersData.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

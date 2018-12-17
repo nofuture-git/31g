@@ -1,44 +1,23 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using NUnit.Framework;
-using NoFuture.Gen;
 using NoFuture.Shared.Cfg;
 using NoFuture.Util.Binary;
 using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.DotNetMeta.TokenAsm;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Gen
+namespace NoFuture.Gen.Tests
 {
     [TestFixture]
     public class TestCgType
     {
 
-        [SetUp]
-        public void Init()
-        {
-            NfConfig.TempDirectories.Code = TestAssembly.UnitTestsRoot + @"\Gen";
-            NfConfig.TempDirectories.Debug = TestAssembly.UnitTestsRoot + @"\Gen";
-            NfConfig.CustomTools.Dia2Dump = TestAssembly.RootBin + @"\Dia2Dump.exe";
-            NfConfig.CustomTools.InvokeGetCgType = TestAssembly.RootBin + @"\NoFuture.Gen.InvokeGetCgOfType.exe";
-            NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls");
-        }
         [Test]
         public void TestToGraphVizString()
         {
-            var testAsm =
-                AppDomain.CurrentDomain.GetAssemblies()
-                    .FirstOrDefault(x => x.GetName().FullName.StartsWith("AdventureWorks"));
-
-            if (testAsm == null)
-            {
-                Assembly.Load(
-                    System.IO.File.ReadAllBytes(TestAssembly.RootBin + @"\NoFuture.Hbm.Sid.dll"));
-                testAsm =
-                    Assembly.Load(
-                        System.IO.File.ReadAllBytes(
-                            TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks.dll"));
-            }
+            var testAsm = GetAdventureWorks2012();
 
             Assert.IsNotNull(testAsm);
 
@@ -63,9 +42,7 @@ namespace NoFuture.Tests.Gen
             FxPointers.AddResolveAsmEventHandlerToDomain();
             
             var testtypeName = "AdventureWorks.VeryBadCode.ViewWankathon";
-            var testAsm =
-                    NoFuture.Util.Binary.Asm.NfLoadFrom(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll");
+            var testAsm = GetAdventureWorks2012();
 
             Assert.IsNotNull(testAsm);
 
@@ -88,33 +65,9 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestFindCgMemberByTokenName()
         {
-            NoFuture.Shared.Cfg.NfConfig.CustomTools.InvokeNfTypeName =
-                @"C:\Projects\31g\trunk\bin\NoFuture.Tokens.InvokeNfTypeName.exe";
-            NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
             NfConfig.UseReflectionOnlyLoad = false;
             FxPointers.AddResolveAsmEventHandlerToDomain();
-            var testAsm =
-                System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\Iesi.Collections.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NHibernate.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NoFuture.Hbm.Sid.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomeSecondDll.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomethingShared.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\ThirdDll.dll"));
+            var testAsm = GetAdventureWorks2012();
 
             const string testTypeName = "AdventureWorks.VeryBadCode.BasicGenerics";
             var testType = testAsm.GetType(testTypeName);
@@ -148,33 +101,9 @@ namespace NoFuture.Tests.Gen
         [Test]
         public void TestFindCgMember()
         {
-            NoFuture.Shared.Cfg.NfConfig.CustomTools.InvokeNfTypeName =
-    @"C:\Projects\31g\trunk\bin\NoFuture.Tokens.InvokeNfTypeName.exe";
-            NfConfig.AssemblySearchPaths.Add(TestAssembly.UnitTestsRoot + @"\ExampleDlls\");
             NfConfig.UseReflectionOnlyLoad = false;
             FxPointers.AddResolveAsmEventHandlerToDomain();
-            var testAsm =
-                System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\AdventureWorks2012.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\Iesi.Collections.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NHibernate.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\NoFuture.Hbm.Sid.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomeSecondDll.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\SomethingShared.dll"));
-            System.Reflection.Assembly.Load(
-                    System.IO.File.ReadAllBytes(
-                        TestAssembly.UnitTestsRoot + @"\ExampleDlls\ThirdDll.dll"));
+            var testAsm = GetAdventureWorks2012();
 
             const string testTypeName = "AdventureWorks.VeryBadCode.BasicGenerics";
             var testType = testAsm.GetType(testTypeName);
@@ -189,6 +118,66 @@ namespace NoFuture.Tests.Gen
             var testResult = testCgType.FindCgMember("TakesGenericArg", new []{ "myGenericArg"});
             Assert.IsNotNull(testResult);
             Assert.AreEqual("TakesGenericArg", testResult.Name);
+        }
+
+        public static Assembly GetAdventureWorks2012()
+        {
+            var testAsm =
+                AppDomain.CurrentDomain.GetAssemblies()
+                    .FirstOrDefault(x => x.GetName().FullName.StartsWith("AdventureWorks"));
+
+            if (testAsm == null)
+            {
+                Assembly.LoadFile(PutTestFileOnDisk("SomeSecondDll.dll"));
+                PutTestFileOnDisk("SomeSecondDll.pdb");
+                Assembly.LoadFile(PutTestFileOnDisk("SomethingShared.dll"));
+                PutTestFileOnDisk("SomethingShared.pdb");
+                Assembly.LoadFile(PutTestFileOnDisk("ThirdDll.dll"));
+                PutTestFileOnDisk("ThirdDll.pdb");
+                Assembly.LoadFile(PutTestFileOnDisk("IndependentDll.dll"));
+                PutTestFileOnDisk("IndependentDll.pdb");
+                PutTestFileOnDisk("AdventureWorks2012.pdb");
+                testAsm =
+                    Assembly.LoadFile(PutTestFileOnDisk("AdventureWorks2012.dll"));
+            }
+
+            return testAsm;
+        }
+
+        public static string PutTestFileOnDisk(string embeddedFileName)
+        {
+            var nfAppData = GetTestFileDirectory();
+            var fileOnDisk = Path.Combine(nfAppData, embeddedFileName);
+            if (File.Exists(fileOnDisk))
+                return fileOnDisk;
+
+            //need this to be another object each time and not just another reference
+            var asmName = Assembly.GetExecutingAssembly().GetName().Name;
+            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.{embeddedFileName}");
+            if (liSteam == null)
+            {
+                Assert.Fail($"Cannot find the embedded file {embeddedFileName}");
+            }
+            if (!Directory.Exists(nfAppData))
+            {
+                Directory.CreateDirectory(nfAppData);
+            }
+
+            var buffer = new byte[liSteam.Length];
+            liSteam.Read(buffer, 0, buffer.Length);
+            File.WriteAllBytes(fileOnDisk, buffer);
+            System.Threading.Thread.Sleep(50);
+            return fileOnDisk;
+        }
+
+        public static string GetTestFileDirectory()
+        {
+            var nfAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (String.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
+                throw new DirectoryNotFoundException("The Environment.GetFolderPath for " +
+                                                     "SpecialFolder.ApplicationData returned a bad path.");
+            nfAppData = Path.Combine(nfAppData, "NoFuture.Tests");
+            return nfAppData;
         }
     }
 }

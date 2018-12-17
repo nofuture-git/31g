@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
-using NoFuture.Gen;
-using NoFuture.Shared;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Gen
+namespace NoFuture.Gen.Tests
 {
     [TestFixture]
     public class TestCgMember
@@ -656,7 +654,7 @@ namespace NoFuture.Tests.Gen
             };
             testResult = testCgMem.GetMyStartEnclosure(TestFileContent);
             Assert.IsNotNull(testResult);
-            Assert.AreEqual(354, testResult.Item1);
+            Assert.AreEqual(453, testResult.Item1);
             Assert.AreEqual(1, testResult.Item2);
             Console.WriteLine(string.Format("{0},{1}", testResult.Item1, testResult.Item2));
         }

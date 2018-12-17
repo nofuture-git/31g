@@ -530,7 +530,10 @@ namespace NoFuture.Gen.LangRules
             foreach (var ln in fileContent)
             {
                 //need to perserve keywords, but control chars may be trimmed.
-                var distillLn = ln.DistillCrLf().ToCharArray();
+                var ddKLn = ln.DistillCrLf();
+                if (string.IsNullOrWhiteSpace(ddKLn))
+                    continue;
+                var distillLn = ddKLn.ToCharArray();
                 var enclosedInQuotes = false;
                 for (var j = 0; j < distillLn.Length; j++)
                 {
