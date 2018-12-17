@@ -6,6 +6,9 @@
 /trunk/Code/packages
 *.suo
 *.user
+/trunk/Code/DIA SDK/Samples/DIA2Dump/Debug
+/bin
+/obj
 
 #for ANTLR generated files
 *.tokens
