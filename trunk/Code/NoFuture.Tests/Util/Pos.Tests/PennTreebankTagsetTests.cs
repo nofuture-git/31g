@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NUnit.Framework;
-using NoFuture.Util.Pos;
 
-namespace NoFuture.Tests.Util.Pos
+namespace NoFuture.Util.Pos.Tests
 {
     [TestFixture]
     public class PennTreebankTagsetTests

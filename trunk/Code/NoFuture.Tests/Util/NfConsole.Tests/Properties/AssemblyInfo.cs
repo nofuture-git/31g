@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.NfConsole")]
-[assembly: AssemblyDescription("NoFuture types for console applications")]
+[assembly: AssemblyTitle("NoFuture.Util.NfConsole.Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Util.NfConsole")]
+[assembly: AssemblyProduct("NoFuture.Util.NfConsole.Tests")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,8 +20,8 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8884496a-369c-4ac3-9f98-c7fb4313d3ac")]
-[assembly: InternalsVisibleTo("NoFuture.Util.NfConsole.Tests")]
+[assembly: Guid("a0e77589-2ffd-4c72-b2ec-eb9f98b4d264")]
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
