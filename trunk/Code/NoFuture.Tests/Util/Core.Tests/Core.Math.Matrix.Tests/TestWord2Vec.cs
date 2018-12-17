@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Util.Core.Math;
@@ -13,6 +15,42 @@ namespace NoFuture.Util.Core.Tests.Algo
     [TestFixture]
     public class TestWord2Vec
     {
+
+        public static string PutTestFileOnDisk(string embeddedFileName)
+        {
+            var nfAppData = GetTestFileDirectory();
+            var fileOnDisk = Path.Combine(nfAppData, embeddedFileName);
+            if (File.Exists(fileOnDisk))
+                return fileOnDisk;
+
+            //need this to be another object each time and not just another reference
+            var asmName = Assembly.GetExecutingAssembly().GetName().Name;
+            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.{embeddedFileName}");
+            if (liSteam == null)
+            {
+                Assert.Fail($"Cannot find the embedded file {embeddedFileName}");
+            }
+            if (!Directory.Exists(nfAppData))
+            {
+                Directory.CreateDirectory(nfAppData);
+            }
+
+            var buffer = new byte[liSteam.Length];
+            liSteam.Read(buffer, 0, buffer.Length);
+            File.WriteAllBytes(fileOnDisk, buffer);
+            System.Threading.Thread.Sleep(50);
+            return fileOnDisk;
+        }
+
+        public static string GetTestFileDirectory()
+        {
+            var nfAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (String.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
+                throw new DirectoryNotFoundException("The Environment.GetFolderPath for " +
+                                                     "SpecialFolder.ApplicationData returned a bad path.");
+            nfAppData = Path.Combine(nfAppData, "NoFuture.Tests");
+            return nfAppData;
+        }
         [Test]
         public void TestGetRandomWindowStartEnd()
         {
@@ -98,7 +136,8 @@ namespace NoFuture.Util.Core.Tests.Algo
         [Test, Ignore("long running")]
         public void TestGetSampleSentence()
         {
-            var dictPath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\Util\Core.Tests\HPBook3Dict.json";
+            
+            var dictPath = PutTestFileOnDisk("HPBook3Dict.json");
             Assert.IsTrue(System.IO.File.Exists(dictPath));
             var dictText = System.IO.File.ReadAllText(dictPath);
             Assert.IsNotNull(dictText);
@@ -110,7 +149,7 @@ namespace NoFuture.Util.Core.Tests.Algo
             testing.Sample = 0;
             testing.BuildVocab(dict);
             var corpus =
-                System.IO.File.ReadAllText(@"C:\Projects\31g\trunk\Code\NoFuture.Tests\Util\Core.Tests\HPBook3.txt");
+                PutTestFileOnDisk("HPBook3.txt");
             testing.AssignCorpus(corpus);
             var testResult = testing.GetContextNodes(8);
             Assert.IsNotNull(testResult);

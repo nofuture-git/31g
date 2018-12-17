@@ -40,13 +40,6 @@ namespace NoFuture.Util.Core.Tests
             Assert.IsTrue(testResult);
             Assert.AreEqual(@"..\..\QuickView\source\Tam.Vmm2\Tam.Vmm2.Lib.Config\Tam.Vmm2.Lib.Config.csproj", testInput);
 
-            testInput = @"C:\Projects\31g\trunk\bin\Iesi.Collections.dll";
-            testResult =
-                NfPath.TryGetRelPath(
-                    @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\AdventureWorks2012\AdventureWorks2012",
-                    ref testInput);
-            Console.WriteLine(testInput);
-
         }
 
         [Test]
