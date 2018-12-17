@@ -37,7 +37,7 @@ namespace NoFuture.Tests.Util.Pos
         [Test]
         public void TestParseResults()
         {
-            const string TEST_INPUT = "This/DT is/VBZ a/DT sample/NN sentence/NN";
+            const string TEST_INPUT = "This_DT is_VBZ a_DT sample_NN sentence_NN";
             TagsetBase[] testOutList = null;
             var testResult = NoFuture.Util.Pos.PtTagset.TryParse(TEST_INPUT, out testOutList);
 

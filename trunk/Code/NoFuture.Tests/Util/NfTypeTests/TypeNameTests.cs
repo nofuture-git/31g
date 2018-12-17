@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Shared.Cfg;
 using NUnit.Framework;
 
 namespace NoFuture.Util.NfType.Tests
