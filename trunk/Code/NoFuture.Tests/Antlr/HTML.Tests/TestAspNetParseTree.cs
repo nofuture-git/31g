@@ -3,46 +3,34 @@ using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace NoFuture.Antlr.CSharp4.Tests
+namespace NoFuture.Antlr.HTML.Tests
 {
     [TestFixture]
-    public class TestCsharpParseTree
+    public class TestAspNetParseTree
     {
         [Test]
-        public void TestInvokeParse()
+        public void TestPoc()
         {
-            var testFile = PutTestFileOnDisk("Class00.eg");
-            if(!File.Exists(testFile))
-                Assert.Fail($"missing test file at {testFile}");
-
-            var testResult =
-                NoFuture.Antlr.CSharp4.CsharpParseTree.InvokeParse(testFile);
-
-            Assert.IsNotNull(testResult);
-            //Assert.AreNotEqual(0, testResult.ClassNames.Count);
-            Assert.AreNotEqual(0, testResult.MethodNames);
-
-            foreach(var n in testResult.TypeNames)
-                Console.WriteLine(n);
-        }
-
-
-        [Test]
-        public void TestCsharpParse()
-        {
-            var testFile = PutTestFileOnDisk("SimpleExample.eg");
+            var testFile = PutTestFileOnDisk("AccountEdit_aspx.eg");
 
             Assert.IsTrue(System.IO.File.Exists(testFile));
 
-            var testResult = CsharpParseTree.InvokeParse(testFile);
+            var testResult = AspNetParseTree.InvokeParse(testFile);
 
             Assert.IsNotNull(testResult);
-            Assert.IsNotNull(testResult.CatchBlocks);
-            Assert.AreNotEqual(0, testResult.CatchBlocks.Count);
-
-            foreach (var c in testResult.CatchBlocks)
+            Assert.IsNotNull(testResult.Tags2Attrs);
+            Assert.AreNotEqual(0,testResult.Tags2Attrs.Keys.Count);
+            foreach (var key in testResult.Tags2Attrs.Keys)
             {
-                Console.WriteLine(c);
+                //var attrs = string.Join("|", testResult.DistinctTags[key]);
+                Console.WriteLine(key);
+            }
+
+            Assert.IsNotNull(testResult.ScriptBodies);
+            Assert.AreNotEqual(0,testResult.ScriptBodies.Count);
+            foreach (var script in testResult.ScriptBodies)
+            {
+                Console.WriteLine(script);
             }
         }
 

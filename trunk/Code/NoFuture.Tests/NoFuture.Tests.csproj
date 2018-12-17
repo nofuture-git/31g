@@ -106,7 +106,6 @@
     <Compile Include="Sql\TestPsMetadata.cs" />
     <Compile Include="Sql\TestEtc.cs" />
     <Compile Include="TestsInit.cs" />
-    <Compile Include="Antlr\TestAspNetParseTree.cs" />
     <Compile Include="TestRead.cs" />
     <Compile Include="Antlr\TestErlangConfigParseTree.cs" />
     <Compile Include="Antlr\TestTypeNameParseTree.cs" />
