@@ -66,9 +66,13 @@ namespace NoFuture.Sql.Mssql
             var mergeDataLine = new List<string>();
 
             Func<PsMetadata, string, bool> isSkipColumn =
-                (metadata, key) => metaData.AutoNumKeys.Any(x => String.Equals(x, key, Oic)) ||
-                                   metaData.IsComputedKeys.Any(x => String.Equals(x, key, Oic)) ||
-                                   metaData.TimestampColumns.Any(x => String.Equals(x, key, Oic));
+                (metadata, key) =>
+                {
+                    
+                    return (metaData.AutoNumKeys?.Any(x => String.Equals(x, key, Oic)) ?? false) ||
+                           (metaData.IsComputedKeys?.Any(x => String.Equals(x, key, Oic)) ?? false) ||
+                           (metaData.TimestampColumns?.Any(x => String.Equals(x, key, Oic)) ?? false);
+                };
 
             //#for each database record
             foreach (DataRow currec in results)

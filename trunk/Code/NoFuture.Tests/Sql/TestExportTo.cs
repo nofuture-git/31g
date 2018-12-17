@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.IO;
-using System.Text;
-using NUnit.Framework;
+using System.Reflection;
 using NoFuture.Sql.Mssql;
 using NoFuture.Sql.Mssql.Md;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Sql
+namespace NoFuture.Sql.Tests
 {
     [TestFixture]
     public class TestExportTo
@@ -98,7 +97,7 @@ namespace NoFuture.Tests.Sql
         [Test]
         public void TestScriptDataBodyInsert()
         {
-            var dt = ReadSerializedTableFromDisk("NoFuture.Tests.Sql.DataTable.Person.bin");
+            var dt = ReadSerializedTableFromDisk("DataTable.Person.bin");
             var testResult = ExportTo.ScriptDataBody(QRY, 32, ExportToStatementType.INSERT,
                 SerializedTableMetadata(), dt);
 
@@ -109,7 +108,7 @@ namespace NoFuture.Tests.Sql
         [Test]
         public void TestScriptDataBodyUpdate()
         {
-            var dt = ReadSerializedTableFromDisk("NoFuture.Tests.Sql.DataTable.Person.bin");
+            var dt = ReadSerializedTableFromDisk("DataTable.Person.bin");
             var testResult = ExportTo.ScriptDataBody(QRY, 32, ExportToStatementType.UPDATE,
                 SerializedTableMetadata(), dt);
 
@@ -120,7 +119,7 @@ namespace NoFuture.Tests.Sql
         [Test]
         public void TestScriptDataBodyMerge()
         {
-            var dt = ReadSerializedTableFromDisk("NoFuture.Tests.Sql.DataTable.Person.bin");
+            var dt = ReadSerializedTableFromDisk("DataTable.Person.bin");
             var testResult = ExportTo.ScriptDataBody(QRY, 32, ExportToStatementType.MERGE,
                 SerializedTableMetadata(), dt);
 
@@ -197,41 +196,6 @@ namespace NoFuture.Tests.Sql
 
         }
 
-        [Test]
-        public void RecreateBinFiles()
-        {
-            DataTable testOutput;
-
-            using (
-                var connection =
-                    new SqlConnection("Server=localhost;Database=AdventureWorks2012;Trusted_Connection=True;"))
-            {
-                var qryText = new StringBuilder();
-                qryText.AppendLine(QRY);
-                testOutput = new DataTable();
-                using (var command = connection.CreateCommand())
-                {
-                    command.Connection.Open();
-                    command.CommandType = CommandType.Text;
-                    command.CommandText = qryText.ToString();
-
-                    using (var da = new SqlDataAdapter { SelectCommand = command })
-                        da.Fill(testOutput);
-                    command.Connection.Close();
-                }
-            }
-
-
-            var binSer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-
-            using (var ms = new MemoryStream())
-            {
-                binSer.Serialize(ms, testOutput);
-                using (var binWtr = new BinaryWriter(File.Open(TestAssembly.UnitTestsRoot + @"\Sql\DataTable.Person.bin", FileMode.Create)))
-                    binWtr.Write(ms.GetBuffer());
-            }
-        }
-
         internal static NoFuture.Sql.Mssql.Md.PsMetadata SerializedTableMetadata()
         {
             var psmd = new NoFuture.Sql.Mssql.Md.PsMetadata
@@ -259,7 +223,8 @@ namespace NoFuture.Tests.Sql
         internal static DataRow[] ReadSerializedTableFromDisk(string embeddedResourceName)
         {
             var binSer = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            var asmStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(embeddedResourceName);
+            var asmName = Assembly.GetExecutingAssembly().GetName().Name;
+            var asmStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.{embeddedResourceName}");
             if (asmStream == null)
                 throw new Exception(string.Format("Cannot read the embedded resource named '{0}'", embeddedResourceName));
             using (var binRdr = new BinaryReader(asmStream))

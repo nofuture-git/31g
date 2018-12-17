@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace NoFuture.Tests.Sql
+namespace NoFuture.Sql.Tests
 {
     [TestFixture]
     public class TestPsMetadata

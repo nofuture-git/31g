@@ -31,7 +31,21 @@ namespace NoFuture.Sql.Mssql.Md
         /// <summary>
         /// Distinct list of names from all collections herein
         /// </summary>
-        public List<string> AllColumnNames { get; set; }
+        public List<string> AllColumnNames
+        {
+            get
+            {
+                var names = new List<string>();
+                names.AddRange(TickKeys);
+                names.AddRange(UqIndexKeys);
+                names.AddRange(PkKeys.Keys);
+                names.AddRange(IsComputedKeys);
+                names.AddRange(AutoNumKeys);
+                names.AddRange(FkKeys.Keys);
+                names = names.Distinct().ToList();
+                return names;
+            }
+        }
 
         public List<string> TimestampColumns { get; set; }
 
@@ -82,7 +96,7 @@ namespace NoFuture.Sql.Mssql.Md
         {
             get
             {
-                return AllColumnNames.Max(x => x.Length);
+                return AllColumnNames.Max(x => (x?.Length ?? 0));
             }
         }
     }

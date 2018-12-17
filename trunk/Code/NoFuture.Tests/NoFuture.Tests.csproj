@@ -101,10 +101,6 @@
     <Compile Include="Hbm\TestStoredProcMetadata.cs" />
     <Compile Include="Hbm\TestConfigFile.cs" />
     <Compile Include="Hbm\TestHbmFileContent.cs" />
-    <Compile Include="Sql\TestExportTo.cs" />
-    <Compile Include="Sql\TestPsTypeInfo.cs" />
-    <Compile Include="Sql\TestPsMetadata.cs" />
-    <Compile Include="Sql\TestEtc.cs" />
     <Compile Include="TestsInit.cs" />
     <Compile Include="TestRead.cs" />
     <Compile Include="Host.Encryption\ProgramTests.cs" />
@@ -240,7 +236,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Sql\DataTable.Person.bin" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

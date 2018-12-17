@@ -1,17 +1,13 @@
 ﻿using System;
-using System.IO;
-using NUnit.Framework;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Sql
+namespace NoFuture.Sql.Tests
 {
     [TestFixture]
     public class TestEtc
     {
         public const string sqlQry = "SELECT * FROM [AdventureWorks2012].[Production].[Location]";
-        public string sqlQryFile = TestAssembly.UnitTestsRoot + @"\Sql\TestMakeInputfileSqlCmd.sql";
 
         public const string insertQry =
             "INSERT INTO [Person].[Person]([PersonType],[Title],[FirstName],[MiddleName],[LastName]) VALUES ('EM',NULL,'Ken','J','Sánchez')";
@@ -19,7 +15,7 @@ namespace NoFuture.Tests.Sql
         public void TestMakeSqlCommand()
         {
             var expectedResult =
-                "sqlcmd.exe -S localhost -d AdventureWorks2012 -k 2 -W -s \"|\" -Q \"SELECT * FROM [AdventureWorks2012].[Production].[Location]\"";
+                "sqlcmd.exe -S \"localhost\" -d AdventureWorks2012 -k 2 -W -s \"|\" -Q \"SELECT * FROM [AdventureWorks2012].[Production].[Location]\"";
 
             var testResult = NoFuture.Sql.Mssql.Etc.MakeSqlCmd(sqlQry, "localhost", "AdventureWorks2012");
             Assert.AreEqual(expectedResult, testResult);
@@ -30,7 +26,7 @@ namespace NoFuture.Tests.Sql
         {
             NfConfig.Switches.SqlCmdHeadersOff = true;
             var expectedResult =
-                "sqlcmd.exe -S localhost -d AdventureWorks2012 -k 2 -h \"-1\" -W -s \"|\" -Q \"SELECT * FROM [AdventureWorks2012].[Production].[Location]\"";
+                "sqlcmd.exe -S \"localhost\" -d AdventureWorks2012 -k 2 -h \"-1\" -W -s \"|\" -Q \"SELECT * FROM [AdventureWorks2012].[Production].[Location]\"";
 
             var testResult = NoFuture.Sql.Mssql.Etc.MakeSqlCmd(sqlQry, "localhost", "AdventureWorks2012");
             Assert.AreEqual(expectedResult, testResult);
@@ -42,30 +38,12 @@ namespace NoFuture.Tests.Sql
         {
             NfConfig.Switches.SqlCmdHeadersOff = false;
             var expectedResult =
-                "sqlcmd.exe -S localhost -d AdventureWorks2012 -k 2 -W -s \"|\" -I -Q \"INSERT INTO [Person].[Person]([PersonType],[Title],[FirstName],[MiddleName],[LastName]) VALUES ('EM',NULL,'Ken','J','Sánchez')\"";
+                "sqlcmd.exe -S \"localhost\" -d AdventureWorks2012 -k 2 -W -s \"|\" -I -Q \"INSERT INTO [Person].[Person]([PersonType],[Title],[FirstName],[MiddleName],[LastName]) VALUES ('EM',NULL,'Ken','J','Sánchez')\"";
 
             var testResult = NoFuture.Sql.Mssql.Etc.MakeSqlCmd(insertQry, "localhost", "AdventureWorks2012");
 
             Assert.AreEqual(expectedResult, testResult);
 
-        }
-
-        [Test]
-        public void TestMakeInputFilesSqlCmd()
-        {
-            System.IO.File.AppendAllText(sqlQryFile, string.Empty);
-            System.IO.File.AppendAllText(sqlQryFile, sqlQry);
-
-            System.Threading.Thread.Sleep(300);
-
-            Assert.IsTrue(File.Exists(sqlQryFile));
-
-            var testResult = NoFuture.Sql.Mssql.Etc.MakeInputFilesSqlCmd(sqlQryFile, "localhost", "AdventureWorks2012");
-
-            Assert.IsNotNull(testResult);
-            Console.WriteLine(testResult);
-
-            Assert.AreEqual(@"sqlcmd.exe -S localhost -d AdventureWorks2012 -i " + TestAssembly.UnitTestsRoot + @"\Sql\TestMakeInputfileSqlCmd.sql", testResult);
         }
 
         [Test]

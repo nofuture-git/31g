@@ -1,8 +1,8 @@
 ﻿using System;
-using NUnit.Framework;
 using System.Collections.Generic;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Sql
+namespace NoFuture.Sql.Tests
 {
     [TestFixture]
     public class TestPsTypeInfo
