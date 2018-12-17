@@ -98,7 +98,7 @@ namespace NoFuture.Util.Core.Tests.Algo
         [Test, Ignore("long running")]
         public void TestBuildVocab()
         {
-            var textPath = @"C:\Projects\31g\trunk\Code\NoFuture.Tests\ExampleDlls\HPBook3.txt";
+            var textPath = PutTestFileOnDisk("HPBook3.txt");
             Console.WriteLine(textPath);
 
             Assert.IsTrue(System.IO.File.Exists(textPath));
