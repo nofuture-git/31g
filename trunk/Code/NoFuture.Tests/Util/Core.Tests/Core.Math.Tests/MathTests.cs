@@ -1,9 +1,8 @@
 ﻿using System;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Core.Math;
 using NUnit.Framework;
 
-namespace NoFuture.Util.Core.Tests
+namespace NoFuture.Util.Core.Math.Tests
 {
     [TestFixture]
     public class MathTests

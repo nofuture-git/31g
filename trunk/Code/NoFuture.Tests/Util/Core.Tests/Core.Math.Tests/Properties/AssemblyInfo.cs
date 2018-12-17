@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.Core.Math")]
-[assembly: AssemblyDescription("NoFuture assembly for math functions as types")]
+[assembly: AssemblyTitle("NoFuture.Util.Core.Math.Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Util.Core.Math")]
+[assembly: AssemblyProduct("NoFuture.Util.Core.Math.Tests")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -18,10 +18,10 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-[assembly:InternalsVisibleTo("NoFuture.Util.Core.Tests")]
+
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5bc9b3aa-96df-4e29-b5b7-961d28af76b3")]
-[assembly: InternalsVisibleTo("NoFuture.Util.Core.Math.Tests")]
+[assembly: Guid("569d7a12-dac3-4fe5-9601-5e80f0ecc68a")]
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
