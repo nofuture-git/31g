@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace NoFuture.Tests.Domain
+namespace NoFuture.Domain.Engine.Tests
 {
     [TestFixture]
     public class AspTappetTests

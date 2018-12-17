@@ -77,7 +77,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\AspTappetTests.cs" />
     <Compile Include="Encryption\BulkKeyTests.cs" />
     <Compile Include="Encryption\CipherTextTests.cs" />
     <Compile Include="Encryption\PublicKeyTests.cs" />
