@@ -47,6 +47,7 @@
     <Compile Include="EtcTests.cs" />
     <Compile Include="NetTests.cs" />
     <Compile Include="NfReflectTests.cs" />
+    <Compile Include="NfStringTests.cs" />
     <Compile Include="TestNfPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,10 +58,6 @@
     <ProjectReference Include="..\..\..\NoFuture\Shared\Core\Shared.Core.csproj">
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NoFuture\Util\Core\Math\Util.Core.Math.csproj">
-      <Project>{5bc9b3aa-96df-4e29-b5b7-961d28af76b3}</Project>
-      <Name>Util.Core.Math</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Util\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>

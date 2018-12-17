@@ -54,8 +54,6 @@ namespace NoFuture.Util.Core.Tests
                 NfReflect.GetNamespaceWithoutTypeName(
                     "Wanker.DCF.UI.Controller.Operator.OperatorUIController::set_OperatorContacts(Wanker.DCF.DTO.WankerContact)");
 
-            Console.WriteLine(testResult);
-            Assert.AreEqual(testResult, "OperatorUIController");
 
         }
 
