@@ -77,7 +77,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Antlr\TestCsharpParseTree.cs" />
     <Compile Include="Domain\AspTappetTests.cs" />
     <Compile Include="Encryption\BulkKeyTests.cs" />
     <Compile Include="Encryption\CipherTextTests.cs" />
