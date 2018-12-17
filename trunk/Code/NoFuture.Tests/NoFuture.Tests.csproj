@@ -113,12 +113,10 @@
     <Compile Include="Tokens\TestErlangConfigParseTree.cs" />
     <Compile Include="Tokens\TestEtx.cs" />
     <Compile Include="Tokens\TestTypeNameParseTree.cs" />
-    <Compile Include="Util\NfTypeTests\TypeNameProcessTests.cs" />
     <Compile Include="Util\Pos\PennTreebankTagsetTests.cs" />
     <Compile Include="Host.Encryption\ProgramTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\NfTypeTests\TypeNameTests.cs" />
     <Compile Include="Util\TestConsoleCmd.cs" />
   </ItemGroup>
   <ItemGroup>

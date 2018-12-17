@@ -1,11 +1,8 @@
 ﻿using System;
-using NUnit.Framework;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
-using NoFuture.Shared.Core;
-using NoFuture.Util.NfType;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Util.NfTypeTests
+namespace NoFuture.Util.NfType.Tests
 {
     [TestFixture]
     public class TypeNameProcessTests

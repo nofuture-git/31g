@@ -1,19 +1,12 @@
 ﻿using System;
-using NUnit.Framework;
 using NoFuture.Shared.Cfg;
-using NoFuture.Util.NfType;
+using NUnit.Framework;
 
-namespace NoFuture.Tests.Util.NfTypeTests
+namespace NoFuture.Util.NfType.Tests
 {
     [TestFixture]
     public class TypeNameTests
     {
-        [SetUp]
-        public void Init()
-        {
-            NfConfig.CustomTools.InvokeNfTypeName =
-                @"C:\Projects\31g\trunk\Code\NoFuture\bin\NoFuture.Tokens.InvokeNfTypeName.exe";
-        }
 
         [Test]
         public void TestCtor()
