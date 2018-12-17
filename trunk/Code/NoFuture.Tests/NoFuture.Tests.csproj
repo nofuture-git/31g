@@ -107,7 +107,6 @@
     <Compile Include="Sql\TestEtc.cs" />
     <Compile Include="TestsInit.cs" />
     <Compile Include="TestRead.cs" />
-    <Compile Include="Antlr\TestTypeNameParseTree.cs" />
     <Compile Include="Host.Encryption\ProgramTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

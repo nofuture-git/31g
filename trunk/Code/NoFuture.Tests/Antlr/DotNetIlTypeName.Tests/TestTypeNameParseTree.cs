@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using NoFuture.Antlr.DotNetIlTypeName;
 
-namespace NoFuture.Tests.Tokens
+namespace NoFuture.Antlr.DotNetIlTypeName.Tests
 {
     [TestFixture]
     public class TestTypeNameParseTree
