@@ -65,6 +65,8 @@ Basics
   python -m pip install --proxy WINDOWSDOMAIN\user.name:somePassword@corpproxy.domain.com:9090 nltk
   
   - download the corpora directly from http://www.nltk.org/nltk_data/
+   - https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/brown.zip
+   - https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip
   - place corpus zip files into 
   C:\nltk_data\corpora
   - place "punkt" as unzipped content into
