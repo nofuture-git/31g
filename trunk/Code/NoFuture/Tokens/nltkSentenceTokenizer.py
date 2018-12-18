@@ -1,14 +1,12 @@
-"""
-Simple hook python script to pass some text file
-to the sentence tokenizer of NLTK package.
-To install the package:
- C:\PS> python -m pip install nltk
-
-To run the script (from PowerShell on Windows):
- C:\PS> $thisScript = "C:\Projects\31g\trunk\Code\NoFuture\Tokens\nltkSentenceTokenizer.py"
- C:\PS> $myTextFile = C:\Temp\someTextFile.txt
- C:\PS> $tokenFile = python $thisScript $myTextFile
-"""
+#Simple hook python script to pass some text file
+#to the sentence tokenizer of NLTK package.
+#To install the package:
+# C:\PS> python -m pip install nltk
+#
+#To run the script (from PowerShell on Windows):
+# C:\PS> $thisScript = "C:\Tokens\nltkSentenceTokenizer.py"
+# C:\PS> $myTextFile = C:\Temp\someTextFile.txt
+# C:\PS> $tokenFile = python $thisScript $myTextFile
 
 from nltk.tokenize import sent_tokenize, word_tokenize
 import sys
