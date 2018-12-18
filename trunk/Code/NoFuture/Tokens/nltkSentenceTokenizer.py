@@ -24,6 +24,7 @@ tokenFile = open(fullOutFile, 'w')
 txtLines = txtFile.readlines()
 tokenLines = []
 for txtLn in txtLines:
+    tokenLines.append("\n")
     for tokenSen in sent_tokenize(txtLn):
         tokenLines.append(tokenSen + "\n")
 

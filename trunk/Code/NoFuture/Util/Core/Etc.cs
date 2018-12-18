@@ -179,7 +179,7 @@ namespace NoFuture.Util.Core
             {
                 linesOut.Append(String.IsNullOrWhiteSpace(ln)
                     ? Environment.NewLine
-                    : $"{ln}{Environment.NewLine}");
+                    : $"{ln}{Environment.NewLine}{Environment.NewLine}");
             }
 
             var value = linesOut.ToString();

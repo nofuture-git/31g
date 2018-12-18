@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace NoFuture.Util.Core.Tests
@@ -113,6 +116,42 @@ namespace NoFuture.Util.Core.Tests
         }
 
         [Test]
+        public void TestJoinLinesWhere()
+        {
+            var exampleFileContent = @"Id.
+at 815.
+The court went on to find that surrogate parenting agreements are not void, but are voidable if they are not in accordance with the state's adoption statutes.
+Id.
+at 817.
+The court then upheld the payment of money in connection with the surrogacy arrangement on the ground that the New York Legislature did not contemplate surrogacy when the baby-selling statute was passed.
+Id.
+at 818.
+";
+            var testFilePath = Path.Combine(GetTestFileDirectory(), "TestJoinLinesWhere.txt");
+            File.WriteAllText(testFilePath, exampleFileContent);
+            System.Threading.Thread.Sleep(50);
+            Assert.IsTrue(File.Exists(testFilePath));
+            var testLinesCount = File.ReadAllLines(testFilePath).Length;
+
+            Func<string, string, bool> testWith = (s1, s2) =>
+            {
+                s1 = (s1 ?? string.Empty).Trim();
+                s2 = (s2 ?? string.Empty).Trim();
+                if (new[] {s1, s2}.Any(string.IsNullOrWhiteSpace))
+                    return false;
+
+                var s1p = s1.EndsWith("Id.");
+                var s2p = Regex.IsMatch(s2, "at\x20[0-9]");
+                return s1p && s2p;
+            };
+
+            NoFuture.Util.Core.NfPath.JoinLinesWhere(testFilePath, testWith);
+
+            var testLinesResultCount = File.ReadAllLines(testFilePath).Length;
+            Assert.IsTrue(testLinesCount > testLinesResultCount);
+        }
+
+        [Test]
         public void TestHasKnownExtension()
         {
             var testResult =
@@ -132,6 +171,17 @@ namespace NoFuture.Util.Core.Tests
         public void TestContainsExcludeCodeDirectory()
         {
             Assert.IsTrue(NfPath.ContainsExcludeCodeDirectory(@"C:\Projects\Wanker\Services\WCF\WSXXX\bin\QA3"));
+        }
+
+
+        public static string GetTestFileDirectory()
+        {
+            var nfAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            if (String.IsNullOrWhiteSpace(nfAppData) || !Directory.Exists(nfAppData))
+                throw new DirectoryNotFoundException("The Environment.GetFolderPath for " +
+                                                     "SpecialFolder.ApplicationData returned a bad path.");
+            nfAppData = Path.Combine(nfAppData, "NoFuture.Tests");
+            return nfAppData;
         }
     }
 }

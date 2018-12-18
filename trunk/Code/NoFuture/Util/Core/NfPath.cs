@@ -683,6 +683,43 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
+        /// Utility method to join two lines in some text file based on whatever criteria
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <param name="matchOn">
+        /// Caller must specify the criteria
+        /// </param>
+        /// <example>
+        /// <![CDATA[
+        ///  # in PowerShell
+        ///  $matchOn = [System.Func[string, string, bool]] {param($s1) param($s2); [string]::Equals($s1, $s2)}
+        /// ]]>
+        /// </example>
+        public static void JoinLinesWhere(string fileFullName, Func<string, string, bool> matchOn)
+        {
+            if (String.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName) || matchOn == null)
+                return;
+            var output = new List<string>();
+            var lines = File.ReadAllLines(fileFullName);
+            for (var i = 0; i < lines.Length-1; i++)
+            {
+                var lineI = lines[i];
+                var lineIplus1 = lines[i + 1];
+
+                if (matchOn(lineI, lineIplus1))
+                {
+                    output.Add($"{lineI} {lineIplus1}");
+                    i += 1;
+                }
+                else
+                {
+                    output.Add(lineI);
+                }
+            }
+            File.WriteAllLines(fileFullName, output);
+        }
+
+        /// <summary>
         /// Removes the <see cref="Path.GetInvalidPathChars"/> from <see cref="outFile"/>
         /// </summary>
         /// <param name="outFile"></param>
