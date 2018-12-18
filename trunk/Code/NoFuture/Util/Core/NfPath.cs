@@ -668,6 +668,19 @@ namespace NoFuture.Util.Core
             File.WriteAllLines(fileFullName, output);
         }
 
+        /// <summary>
+        /// Utility method to apply word-wrap to a text document.
+        /// </summary>
+        /// <param name="fileFullName"></param>
+        /// <param name="lineLength"></param>
+        public static void ToWordWrap(string fileFullName, int? lineLength = 80)
+        {
+            if (String.IsNullOrWhiteSpace(fileFullName) || !File.Exists(fileFullName))
+                return;
+            var content = File.ReadAllText(fileFullName);
+            var wwContent = NfString.ToWordWrap(content, lineLength);
+            File.WriteAllText(fileFullName, wwContent);
+        }
 
         /// <summary>
         /// Removes the <see cref="Path.GetInvalidPathChars"/> from <see cref="outFile"/>

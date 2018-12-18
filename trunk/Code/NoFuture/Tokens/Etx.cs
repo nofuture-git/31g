@@ -42,6 +42,52 @@ namespace NoFuture.Tokens
         }
 
         /// <summary>
+        /// Composition of the helper methods herein, extracts the text from <see cref="fi"/>
+        /// and saves it to a file along side the original
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <returns>
+        /// The path the the text file.
+        /// </returns>
+        public static string ToTextOnly(FileInfo fi)
+        {
+            var fullFileName = fi.FullName;
+            if (string.IsNullOrWhiteSpace(fullFileName) || !File.Exists(fullFileName))
+                return fullFileName;
+
+            var fileExtentsion = fi.Extension;
+            var dirOut = fi.DirectoryName ??
+                         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var fileOut = System.IO.Path.GetFileNameWithoutExtension(fullFileName);
+            var fullFileOut = System.IO.Path.Combine(dirOut, $"{fileOut}.txt");
+
+            switch (fileExtentsion)
+            {
+                case ".txt":
+                    return fi.FullName;
+                case ".pdf":
+                    var bytes = File.ReadAllBytes(fullFileName);
+                    var pdfTxt = GetPdfText(bytes);
+                    File.WriteAllText(fullFileOut, pdfTxt);
+                    return fullFileOut;
+                case ".html":
+                case ".htm":
+                    var htmlDoc = GetHtmlDocument(File.ReadAllText(fullFileName));
+                    var htmlTxt = htmlDoc?.DocumentNode.InnerText ?? "";
+                    File.WriteAllText(fullFileOut, htmlTxt);
+                    return fullFileOut;
+                case ".xml":
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.Load(fi.FullName);
+                    var xmlTxt = xmlDoc.InnerText;
+                    File.WriteAllText(fullFileOut, xmlTxt);
+                    return fullFileOut;
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Helper method to get <see cref="rawHtml"/> as a <see cref="HtmlDocument"/>
         /// </summary>
         /// <param name="rawHtml"></param>
