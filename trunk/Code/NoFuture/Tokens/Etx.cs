@@ -4,13 +4,43 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using HtmlAgilityPack;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 using Newtonsoft.Json;
 using NoFuture.Antlr.HTML;
 
 namespace NoFuture.Tokens
 {
+    /// <summary>
+    /// General utility class to concentrate various parsers into one place
+    /// </summary>
     public static class Etx
     {
+        /// <summary>
+        /// Helper method to quick get the text out of a PDF file.
+        /// </summary>
+        /// <param name="pdfBuffer"></param>
+        /// <returns></returns>
+        public static string GetPdfText(byte[] pdfBuffer)
+        {
+            var pdfText = new StringBuilder();
+            if (pdfBuffer == null || pdfBuffer.Length <= 0)
+                return null;
+            using (var reader = new PdfReader(pdfBuffer))
+            {
+                var numOfPages = reader.NumberOfPages;
+                for (var i = 1; i <= numOfPages; i++)
+                {
+                    var pageText = PdfTextExtractor.GetTextFromPage(reader, i);
+                    if (string.IsNullOrWhiteSpace(pageText))
+                        continue;
+                    pdfText.Append(pageText);
+                }
+            }
+
+            return pdfText.ToString();
+        }
+
         /// <summary>
         /// Helper method to get <see cref="rawHtml"/> as a <see cref="HtmlDocument"/>
         /// </summary>

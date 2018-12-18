@@ -46,8 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Jurassic, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Jurassic.2.2.1\lib\net35\Jurassic.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Jurassic.2.2.2\lib\net35\Jurassic.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -76,9 +75,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Shared\Core\Shared.Core.csproj">
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
@@ -91,6 +87,9 @@
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
