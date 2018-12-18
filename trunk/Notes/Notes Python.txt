@@ -458,7 +458,7 @@ IO Util
  os.path.isdir(path)
  os.path.join(path1 [,path2]*)
  (filepath, filename) = os.path.split(path) #splits dir from filename
- (fileNameLessExt, fileExtension) = os.path.splittext(path) #splits filename from extension
+ (fileNameLessExt, fileExtension) = os.path.splitext(path) #splits filename from extension
  myPath = os.path.join(os.path.expanduser("~"), "AppData\\Roaming")
  
  - get environment variables
