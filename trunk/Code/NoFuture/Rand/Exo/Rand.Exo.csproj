@@ -108,7 +108,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="UsGov\Bea\bea_web_service_api_user_guide.pdf" />
   </ItemGroup>
   <ItemGroup>
