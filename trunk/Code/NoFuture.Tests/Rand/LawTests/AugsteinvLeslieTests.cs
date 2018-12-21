@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Tests.LawTests
         public class TwentyThousandUsdReward : Promise
         {
             private readonly List<string> _audit = new List<string>();
-            public override IList<string> Audit => _audit;
+            public override List<string> Audit => _audit;
 
             public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
             {
@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Tests.LawTests
         public class RyanLesliesLaptopComputerAndExternalHd : Performance
         {
             private readonly List<string> _audit = new List<string>();
-            public override IList<string> Audit => _audit;
+            public override List<string> Audit => _audit;
 
             /// <summary>
             /// the court did not consider this the substance of the performance

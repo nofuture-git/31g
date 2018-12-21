@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     public class LegalContract<T> : Promise where T : LegalDuty
     {
         private readonly List<string> _audit = new List<string>();
-        public override IList<string> Audit => _audit;
+        public override List<string> Audit => _audit;
 
         [Note("bargained for: if it is sought by one and given by the other")]
         public Consideration<T> Consideration { get; set; }

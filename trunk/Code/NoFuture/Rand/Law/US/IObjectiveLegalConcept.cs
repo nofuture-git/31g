@@ -12,6 +12,6 @@ namespace NoFuture.Rand.Law.US
         /// <returns></returns>
         bool IsValid(ILegalPerson promisor, ILegalPerson promisee);
 
-        IList<string> Audit { get; }
+        List<string> Audit { get; }
     }
 }

@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     public class MutualAssent : IObjectiveLegalConcept
     {
         private readonly List<string> _audit = new List<string>();
-        public IList<string> Audit => _audit;
+        public List<string> Audit => _audit;
 
         /// <summary>
         /// Is invoked twice, once for promisor and again for promisee.
@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// </remarks>
         public Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
 
-        public bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public virtual bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
             if (promisor == null)
             {

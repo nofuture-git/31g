@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     [Aka("Donative Promise")]
     public class SocialContract : Promise
     {
-        public override IList<string> Audit => new List<string>();
+        public override List<string> Audit => new List<string>();
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
             throw new NotSupportedException("A donative promise is not enforceable.");

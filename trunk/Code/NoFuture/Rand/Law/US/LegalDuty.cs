@@ -8,6 +8,6 @@ namespace NoFuture.Rand.Law.US
 
         public abstract bool IsEnforceableInCourt { get; }
 
-        public abstract IList<string> Audit { get; }
+        public abstract List<string> Audit { get; }
     }
 }

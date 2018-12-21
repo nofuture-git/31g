@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     public abstract class Consideration<T> : IObjectiveLegalConcept where T : LegalDuty
     {
         private readonly List<string> _audit = new List<string>();
-        public virtual IList<string> Audit => _audit;
+        public virtual List<string> Audit => _audit;
 
         /// <summary>
         /// What the promisor is putting out there.
