@@ -39,12 +39,14 @@
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="ILegalPerson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Term.cs" />
     <Compile Include="US\CaseReading\Citation.cs" />
     <Compile Include="US\Contracts\Consideration.cs" />
     <Compile Include="US\Contracts\LegalContract.cs" />
     <Compile Include="US\Contracts\MutualAssent.cs" />
     <Compile Include="US\Contracts\Promise.cs" />
     <Compile Include="US\Contracts\SocialContract.cs" />
+    <Compile Include="US\IObjectiveLegalConcept.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
