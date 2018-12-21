@@ -4,18 +4,36 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
+    /// <summary>
+    /// The type which from the reciprocal of an offer
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Note("a consideration: a performance or return promise must be bargained for")]
-    public class Consideration : IObjectiveLegalConcept
+    public abstract class Consideration<T> : IObjectiveLegalConcept where T : LegalDuty
     {
         private readonly List<string> _audit = new List<string>();
-        public IList<string> Audit => _audit;
+        public virtual IList<string> Audit => _audit;
 
+        /// <summary>
+        /// What the promisor is putting out there.
+        /// </summary>
+        [Note("Is the manifestation of willingness to enter into a bargain")]
         public Promise Offer { get; set; }
 
-        public Func<Promise, Promise> GetReturnPromise { get; set; }
+        /// <summary>
+        /// A function which resolves what the offer gets in return.
+        /// </summary>
+        public abstract Func<Promise, T> GetInReturnFor { get; set; }
 
-        public Func<ILegalPerson, Promise, bool> IsSoughtByPromisor { get; set; }
-        public Func<ILegalPerson, Promise, bool> IsGivenByPromisee { get; set; }
+        /// <summary>
+        /// A test for if <see cref="GetInReturnFor"/> is actually what the promisor wants.
+        /// </summary>
+        public abstract Func<ILegalPerson, T, bool> IsSoughtByPromisor { get; set; }
+
+        /// <summary>
+        /// A test for if <see cref="Offer"/> is actually what the promisee wants.
+        /// </summary>
+        public abstract Func<ILegalPerson, Promise, bool> IsGivenByPromisee { get; set; }
 
         public bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
@@ -25,9 +43,9 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (GetReturnPromise == null)
+            if (GetInReturnFor == null)
             {
-                _audit.Add($"{nameof(GetReturnPromise)} is null");
+                _audit.Add($"{nameof(GetInReturnFor)} is null");
                 return false;
             }
 
@@ -43,7 +61,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            var returnPromise = GetReturnPromise(Offer);
+            var returnPromise = GetInReturnFor(Offer);
             if (returnPromise == null)
             {
                 _audit.Add($"{nameof(returnPromise)} is null");
@@ -68,7 +86,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (IsGivenByPromisee(promisee, Offer))
+            if (!IsGivenByPromisee(promisee, Offer))
             {
                 _audit.Add($"the offer is not what the {promisee.Name} wants");
                 return false;

@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Tests.LawTests
 {
     [TestFixture]
-    public class MutualAssentTests
+    public class OswaldvAllen
     {
         /// <summary>
         /// Dr. Werner OSWALD, Plaintiff-Appellant, v. Jane B. ALLEN, Defendant-Appellee 417 F.2d 43; 1969 U.S. App.

@@ -11,16 +11,17 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         /// <summary>
         /// Is invoked twice, once for promisor and again for promisee.
-        /// The resulting pair of terms must equal each other for a contract to exist.
+        /// The resulting pair of terms must equal each other in both 
+        /// name and reference for a contract to exist.
         /// </summary>
         /// <remarks>
-        /// src [OSWALD v. ALLEN 417 F.2d 43 (2d Cir. 1969)]
-        /// &quot;
-        /// when any of the terms used to express an agreement is ambivalent, and 
+        /// src [OSWALD v. ALLEN United States Court of Appeals for the Second Circuit 417 F.2d 43 (2d Cir. 1969)]
+        /// <![CDATA[
+        /// when any of the terms used to express an agreement is ambivalent, and
         /// the parties understand it in different ways, there cannot be a 
         /// contract unless one of them should have been aware of the other's 
         /// understanding.
-        /// &quot;
+        /// ]]>
         /// </remarks>
         public Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
 
@@ -28,6 +29,13 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// A predicate when given either formative party of the contract
         /// will return some outward expression of approval.
         /// </summary>
+        /// <remarks>
+        /// src [LUCY v. ZEHMER Supreme Court of Virginia 196 Va. 493; 84 S.E.2d 516 (1954)]
+        /// <![CDATA[
+        /// If his words and acts, judged by a reasonable standard, manifest an intention 
+        /// to agree, it is immaterial what may be the real but unexpressed state of his mind.
+        /// ]]>
+        /// </remarks>
         public Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
 
         public bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
