@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Tests.LawTests
                 Consideration = new BilateralConsideration
                 {
                     Offer = new FergusonFarm(),
-                    GetInReturnFor = usd => usd is FergusonFarm ? new FiftyThousandUsd() : null,
+                    GetInReturnFor = theFarm => theFarm is FergusonFarm ? new FiftyThousandUsd() : null,
                     //its here, whatever Mr. Lucy is 'thinking' is irrelevant 
                     IsSoughtByPromisor = (lp, promise) => lp is WOLucy && promise is FiftyThousandUsd,
                     IsGivenByPromisee = (lp, promise) => lp is AHZehmer && promise is FergusonFarm
@@ -89,7 +89,7 @@ namespace NoFuture.Rand.Tests.LawTests
 
         /// <summary>
         /// This is the external assent - the subjective nature of
-        /// whoever's mind is meaningless when everybody understood that
+        /// whoever&apos;s mind is meaningless when everybody understood that
         /// signing is the real thing.
         /// </summary>
         /// <param name="person"></param>
@@ -100,8 +100,7 @@ namespace NoFuture.Rand.Tests.LawTests
         }
 
         /// <summary>
-        /// Everyone involved understands that &quot;Ferguson Farm&quot; is a tract of land
-        /// and &quot;$50,000&quot; is money.
+        /// The shared terms of this contract - no confusion on this.
         /// </summary>
         /// <returns></returns>
         public static ISet<Term<object>> GetTerms()

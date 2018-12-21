@@ -18,12 +18,12 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// What the promisor is putting out there.
         /// </summary>
         [Note("Is the manifestation of willingness to enter into a bargain")]
-        public Promise Offer { get; set; }
+        public LegalDuty Offer { get; set; }
 
         /// <summary>
         /// A function which resolves what the offer gets in return.
         /// </summary>
-        public abstract Func<Promise, T> GetInReturnFor { get; set; }
+        public abstract Func<LegalDuty, T> GetInReturnFor { get; set; }
 
         /// <summary>
         /// A test for if <see cref="GetInReturnFor"/> is actually what the promisor wants.
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <summary>
         /// A test for if <see cref="Offer"/> is actually what the promisee wants.
         /// </summary>
-        public abstract Func<ILegalPerson, Promise, bool> IsGivenByPromisee { get; set; }
+        public abstract Func<ILegalPerson, LegalDuty, bool> IsGivenByPromisee { get; set; }
 
         public bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
@@ -61,6 +61,13 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
+            if (!Offer.IsEnforceableInCourt)
+            {
+                _audit.Add($"the offer is not enforceable in court");
+                _audit.AddRange(Offer.Audit);
+                return false;
+            }
+
             var returnPromise = GetInReturnFor(Offer);
             if (returnPromise == null)
             {
@@ -68,15 +75,10 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!Offer.IsEnforceableInCourt)
-            {
-                _audit.Add($"the offer is not enforceable in court");
-                return false;
-            }
-
             if (!returnPromise.IsEnforceableInCourt)
             {
                 _audit.Add($"the return promise is not enforceable in court");
+                _audit.AddRange(returnPromise.Audit);
                 return false;
             }
 

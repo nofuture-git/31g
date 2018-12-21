@@ -2,6 +2,9 @@
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
+    /// <summary>
+    /// Differs from unilateral in that it deals with a promise for a promise or performance
+    /// </summary>
     public class BilateralContract : LegalContract<Promise>
     {
         [Note("assent: expression of approval or agreement")]

@@ -649,3 +649,5 @@ ray: part of a line with starting point but no ending point
 remuneration: money paid for work or a service
 segue: (seg-way) move, without interruption, from one thing to another
 tendentious: intended to promote a particular cause or point of view
+insouciant: showing a casual lack of concern; indifferent.
+defrock: deprive someone of professional status
