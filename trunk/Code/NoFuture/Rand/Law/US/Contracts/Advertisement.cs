@@ -2,33 +2,31 @@
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
+    /// <summary>
+    /// is merely an invitation to negotiate for purchase of commercial goods
+    /// </summary>
     public class Advertisement : LegalDuty
     {
+        private readonly List<string> _audit = new List<string>();
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
             return IsEnforceableInCourt;
         }
 
-        /// <summary>
-        /// Lefkowitz v. Great Minneapolis Surplus Store, 86 N.W.2d 689, 691 (Minn. 1957)
-        /// </summary>
         public bool IsClear { get; set; }
-        /// <summary>
-        /// Lefkowitz v. Great Minneapolis Surplus Store, 86 N.W.2d 689, 691 (Minn. 1957)
-        /// </summary>
+
         public bool IsDefinite { get; set; }
-        /// <summary>
-        /// Lefkowitz v. Great Minneapolis Surplus Store, 86 N.W.2d 689, 691 (Minn. 1957)
-        /// </summary>
+
         public bool IsExplicit { get; set; }
-        /// <summary>
-        /// Lefkowitz v. Great Minneapolis Surplus Store, 86 N.W.2d 689, 691 (Minn. 1957)
-        /// </summary>
+
         public bool IsNothingLeftToOpenNegotiation { get; set; }
 
-        private readonly List<string> _audit = new List<string>();
         public override List<string> Audit => _audit;
 
+        /// <summary>
+        /// Only when all predictes are true is this true.
+        /// Lefkowitz v. Great Minneapolis Surplus Store, 86 N.W.2d 689, 691 (Minn. 1957)
+        /// </summary>
         public override bool IsEnforceableInCourt
         {
             get
@@ -45,6 +43,5 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return rslt;
             }
         }
-            
     }
 }

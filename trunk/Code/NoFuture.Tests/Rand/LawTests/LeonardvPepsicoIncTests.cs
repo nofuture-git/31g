@@ -16,8 +16,10 @@ namespace NoFuture.Rand.Tests.LawTests
         [Test]
         public void LeonardvPepsicoInc()
         {
+            
             var testSubject = new BilateralContract
             {
+                //the court did not consider this a unilateral 
                 Consideration = new BilateralConsideration
                 {
                     Offer = new PepsiStuffCommercial(),
