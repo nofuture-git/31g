@@ -19,15 +19,17 @@ namespace NoFuture.Rand.Tests.LawTests
             var testSubject = new BilateralContract
             {
                 MutualAssent = new BarTab(),
-                Consideration = new BilateralConsideration
-                {
-                    Offer = new FergusonFarm(),
-                    GetInReturnFor = theFarm => theFarm is FergusonFarm ? new FiftyThousandUsd() : null,
-                    //its here, whatever Mr. Lucy is 'thinking' is irrelevant 
-                    IsSoughtByPromisor = (lp, promise) => lp is WOLucy && promise is FiftyThousandUsd,
-                    IsGivenByPromisee = (lp, promise) => lp is AHZehmer && promise is FergusonFarm
-                }
+                Offer = new FergusonFarm(),
+                Acceptance = theFarm => theFarm is FergusonFarm ? new FiftyThousandUsd() : null,
             };
+
+            testSubject.Consideration = new Consideration<Promise>(testSubject)
+            {
+                //its here, whatever Mr. Lucy is 'thinking' is irrelevant 
+                IsSoughtByPromisor = (lp, promise) => lp is WOLucy && promise is FiftyThousandUsd,
+                IsGivenByPromisee = (lp, promise) => lp is AHZehmer && promise is FergusonFarm
+            };
+
             var testResult = testSubject.IsValid(new WOLucy(), new AHZehmer());
             Console.WriteLine(string.Join(", ", testSubject.Audit));
             Console.WriteLine(string.Join(", ", testSubject.MutualAssent.Audit));

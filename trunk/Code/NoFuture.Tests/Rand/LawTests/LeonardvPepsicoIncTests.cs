@@ -16,18 +16,16 @@ namespace NoFuture.Rand.Tests.LawTests
         [Test]
         public void LeonardvPepsicoInc()
         {
-            
             var testSubject = new BilateralContract
             {
-                //the court did not consider this a unilateral 
-                Consideration = new BilateralConsideration
-                {
-                    Offer = new PepsiStuffCommercial(),
-                    GetInReturnFor = orderForm => orderForm is PepsiPoints ? new PepsiStuff() : null,
-                    IsSoughtByPromisor = (lp, promise) => lp is PepsicoInc && promise is PepsiStuff,
-                    IsGivenByPromisee = (lp, promise) => lp is ConsumerOfPepsi && promise is PepsiPoints
-                },
-                MutualAssent = new PepsiStuffCatalogOrderForm()
+                MutualAssent = new PepsiStuffCatalogOrderForm(),
+                Offer = new PepsiStuffCommercial(),
+                Acceptance = orderForm => orderForm is PepsiPoints ? new PepsiStuff() : null,
+            };
+            testSubject.Consideration = new Consideration<Promise>(testSubject)
+            {
+                IsSoughtByPromisor = (lp, promise) => lp is PepsicoInc && promise is PepsiStuff,
+                IsGivenByPromisee = (lp, promise) => lp is ConsumerOfPepsi && promise is PepsiPoints
             };
 
             var testResult = testSubject.IsValid(new PepsicoInc(), new Leonard());

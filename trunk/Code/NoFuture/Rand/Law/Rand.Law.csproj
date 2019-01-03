@@ -42,7 +42,6 @@
     <Compile Include="Term.cs" />
     <Compile Include="US\CaseReading\Citation.cs" />
     <Compile Include="US\Contracts\Advertisement.cs" />
-    <Compile Include="US\Contracts\BilateralConsideration.cs" />
     <Compile Include="US\Contracts\BilateralContract.cs" />
     <Compile Include="US\Contracts\Consideration.cs" />
     <Compile Include="US\Contracts\LegalContract.cs" />
@@ -50,7 +49,6 @@
     <Compile Include="US\Contracts\Performance.cs" />
     <Compile Include="US\Contracts\Promise.cs" />
     <Compile Include="US\Contracts\SocialContract.cs" />
-    <Compile Include="US\Contracts\UnilateralConsideration.cs" />
     <Compile Include="US\Contracts\UnilateralContract.cs" />
     <Compile Include="US\IObjectiveLegalConcept.cs" />
     <Compile Include="US\ObjectiveLegalConcept.cs" />

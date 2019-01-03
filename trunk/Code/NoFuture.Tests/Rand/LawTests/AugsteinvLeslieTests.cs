@@ -16,17 +16,21 @@ namespace NoFuture.Rand.Tests.LawTests
         [Test]
         public void AugsteinvLeslie()
         {
-            var consideration = new UnilateralConsideration
+            var testSubject = new UnilateralContract
             {
                 Offer = new TwentyThousandUsdReward(),
-                GetInReturnFor = offer =>
+                Acceptance = offer =>
                     offer is TwentyThousandUsdReward ? new RyanLesliesLaptopComputerAndExternalHd() : null,
+
+            };
+            testSubject.Consideration = new Consideration<Performance>(testSubject)
+            {
                 IsSoughtByPromisor = (ryan, equipment) =>
                     ryan is RyanLeslie && equipment is RyanLesliesLaptopComputerAndExternalHd,
                 IsGivenByPromisee = (augstein, reward) =>
                     augstein is ArminAugstein && reward is TwentyThousandUsdReward
             };
-            var testSubject = new UnilateralContract {Consideration = consideration};
+
             Assert.IsTrue(testSubject.IsValid(new RyanLeslie(), new ArminAugstein()));
 
         }

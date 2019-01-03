@@ -9,43 +9,39 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Note("a consideration: a performance or return promise must be bargained for")]
-    public abstract class Consideration<T> : IObjectiveLegalConcept where T : ObjectiveLegalConcept
+    public class Consideration<T> : IObjectiveLegalConcept where T : ObjectiveLegalConcept
     {
         private readonly List<string> _audit = new List<string>();
         public virtual List<string> Audit => _audit;
+        private readonly LegalContract<T> _contract;
+
+        public Consideration(LegalContract<T> contract)
+        {
+            _contract = contract;
+            _contract.Consideration = this;
+        }
 
         /// <summary>
-        /// What the promisor is putting out there.
+        /// A test for if Acceptance is actually what the promisor wants.
         /// </summary>
-        [Note("Is the manifestation of willingness to enter into a bargain")]
-        public ObjectiveLegalConcept Offer { get; set; }
+        public virtual Func<ILegalPerson, T, bool> IsSoughtByPromisor { get; set; }
 
         /// <summary>
-        /// A function which resolves what the offer gets in return.
+        /// A test for if Offer is actually what the promisee wants.
         /// </summary>
-        public abstract Func<ObjectiveLegalConcept, T> GetInReturnFor { get; set; }
-
-        /// <summary>
-        /// A test for if <see cref="GetInReturnFor"/> is actually what the promisor wants.
-        /// </summary>
-        public abstract Func<ILegalPerson, T, bool> IsSoughtByPromisor { get; set; }
-
-        /// <summary>
-        /// A test for if <see cref="Offer"/> is actually what the promisee wants.
-        /// </summary>
-        public abstract Func<ILegalPerson, ObjectiveLegalConcept, bool> IsGivenByPromisee { get; set; }
+        public virtual Func<ILegalPerson, ObjectiveLegalConcept, bool> IsGivenByPromisee { get; set; }
 
         public bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
-            if (Offer == null)
+            if (_contract?.Offer == null)
             {
                 _audit.Add($"{nameof(Audit)} is null");
                 return false;
             }
 
-            if (GetInReturnFor == null)
+            if (_contract?.Acceptance == null)
             {
-                _audit.Add($"{nameof(GetInReturnFor)} is null");
+                _audit.Add($"{nameof(_contract.Acceptance)} is null");
                 return false;
             }
 
@@ -61,14 +57,14 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!Offer.IsEnforceableInCourt)
+            if (!_contract.Offer.IsEnforceableInCourt)
             {
                 _audit.Add($"the offer is not enforceable in court");
-                _audit.AddRange(Offer.Audit);
+                _audit.AddRange(_contract.Offer.Audit);
                 return false;
             }
 
-            var returnPromise = GetInReturnFor(Offer);
+            var returnPromise = _contract.Acceptance(_contract.Offer);
             if (returnPromise == null)
             {
                 _audit.Add($"{nameof(returnPromise)} is null");
@@ -88,7 +84,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!IsGivenByPromisee(promisee, Offer))
+            if (!IsGivenByPromisee(promisee, _contract.Offer))
             {
                 _audit.Add($"the offer is not what the {promisee.Name} wants");
                 return false;
