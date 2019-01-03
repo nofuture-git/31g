@@ -53,7 +53,7 @@
     <Compile Include="US\Contracts\UnilateralConsideration.cs" />
     <Compile Include="US\Contracts\UnilateralContract.cs" />
     <Compile Include="US\IObjectiveLegalConcept.cs" />
-    <Compile Include="US\LegalDuty.cs" />
+    <Compile Include="US\ObjectiveLegalConcept.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

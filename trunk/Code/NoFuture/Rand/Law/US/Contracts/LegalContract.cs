@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law.US.Contracts
 {
     [Aka("Enforceable Promise")]
-    public class LegalContract<T> : Promise where T : LegalDuty
+    public class LegalContract<T> : Promise where T : ObjectiveLegalConcept
     {
         private readonly List<string> _audit = new List<string>();
         public override List<string> Audit => _audit;

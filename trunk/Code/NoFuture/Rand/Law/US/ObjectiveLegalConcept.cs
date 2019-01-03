@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Law.US
 {
-    public abstract class LegalDuty : IObjectiveLegalConcept
+    public abstract class ObjectiveLegalConcept : IObjectiveLegalConcept
     {
         public abstract bool IsValid(ILegalPerson promisor, ILegalPerson promisee);
 

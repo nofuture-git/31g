@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Note("a consideration: a performance or return promise must be bargained for")]
-    public abstract class Consideration<T> : IObjectiveLegalConcept where T : LegalDuty
+    public abstract class Consideration<T> : IObjectiveLegalConcept where T : ObjectiveLegalConcept
     {
         private readonly List<string> _audit = new List<string>();
         public virtual List<string> Audit => _audit;
@@ -18,12 +18,12 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// What the promisor is putting out there.
         /// </summary>
         [Note("Is the manifestation of willingness to enter into a bargain")]
-        public LegalDuty Offer { get; set; }
+        public ObjectiveLegalConcept Offer { get; set; }
 
         /// <summary>
         /// A function which resolves what the offer gets in return.
         /// </summary>
-        public abstract Func<LegalDuty, T> GetInReturnFor { get; set; }
+        public abstract Func<ObjectiveLegalConcept, T> GetInReturnFor { get; set; }
 
         /// <summary>
         /// A test for if <see cref="GetInReturnFor"/> is actually what the promisor wants.
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <summary>
         /// A test for if <see cref="Offer"/> is actually what the promisee wants.
         /// </summary>
-        public abstract Func<ILegalPerson, LegalDuty, bool> IsGivenByPromisee { get; set; }
+        public abstract Func<ILegalPerson, ObjectiveLegalConcept, bool> IsGivenByPromisee { get; set; }
 
         public bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
