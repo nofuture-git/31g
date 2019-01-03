@@ -5,15 +5,15 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law.US.Contracts
 {
     [Aka("Enforceable Promise")]
-    public class LegalContract<T> : Promise where T : ObjectiveLegalConcept
+    public class LegalContract<T> : IObjectiveLegalConcept where T : ObjectiveLegalConcept
     {
         private readonly List<string> _audit = new List<string>();
-        public override List<string> Audit => _audit;
+        public List<string> Audit => _audit;
 
         [Note("bargained for: if it is sought by one and given by the other")]
-        public Consideration<T> Consideration { get; set; }
+        public virtual Consideration<T> Consideration { get; set; }
 
-        public override bool IsEnforceableInCourt => true;
+        public virtual bool IsEnforceableInCourt => true;
 
         /// <summary>
         /// What the promisor is putting out there.
@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// </summary>
         public Func<ObjectiveLegalConcept, T> Acceptance { get; set; }
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public virtual bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
             if (Consideration == null)
             {

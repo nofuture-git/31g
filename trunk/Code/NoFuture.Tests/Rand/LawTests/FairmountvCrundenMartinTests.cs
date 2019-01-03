@@ -11,7 +11,8 @@ namespace NoFuture.Rand.Tests.LawTests
     /// <summary>
     /// FAIRMOUNT GLASS WORKS v. CRUNDEN-MARTIN WOODEN WARE CO. Court of Appeals of Kentucky 106 Ky. 659, 51 S.W. 196 (1899)
     /// The doctrinal point of this case seems to be that the sequence (as in ordered and unique set of telegrams) produced 
-    /// mutual assent in the parties.
+    /// an offer and acceptance and therefore is a contract.  The fact that Fairmount sent a response to the acceptance is 
+    /// irrelevant.
     /// </summary>
     [TestFixture]
     public class FairmountvCrundenMartinTests
@@ -28,8 +29,6 @@ namespace NoFuture.Rand.Tests.LawTests
             {
                 Offer = getOrigOffer,
                 Acceptance = initRequest => seller.GetCommunication(initRequest) as Promise,
-
-
                 MutualAssent = new MutualAssent
                 {
                     TermsOfAgreement = lp =>
@@ -63,12 +62,12 @@ namespace NoFuture.Rand.Tests.LawTests
                 IsSoughtByPromisor = (lp, promise) =>
                 {
                     var fairmount = lp as Fairmount;
-                    return fairmount?.GetCommunication(promise) is Apr23rdResponseTelegram;
+                    return fairmount?.GetCommunication(promise) is TelegramQuote2CurdenMartin;
                 },
                 IsGivenByPromisee = (lp, promise) =>
                 {
                     var cMartin = lp as CrundenMartin;
-                    return cMartin?.GetCommunication(promise) is Apr24thResponseTelegram;
+                    return cMartin?.GetCommunication(promise) is TelegramAcceptance2Fairmount;
                 },
             };
 
@@ -77,7 +76,7 @@ namespace NoFuture.Rand.Tests.LawTests
         }
     }
 
-    public class Apr20InitialTelegram : ObjectiveLegalConcept
+    public class InitTelegram : ObjectiveLegalConcept
     {
         [Note("Nothing illegal about buying some glass jars")]
         public override bool IsEnforceableInCourt => true;
@@ -86,12 +85,12 @@ namespace NoFuture.Rand.Tests.LawTests
 
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
-            return (promisor is CrundenMartin && promisee is Fairmount)
-                   || (promisor is Fairmount && promisee is CrundenMartin);
+            return promisor is CrundenMartin && promisee is Fairmount
+                   || promisor is Fairmount && promisee is CrundenMartin;
         }
     }
 
-    public class Apr23rdResponseTelegram : Promise
+    public class TelegramQuote2CurdenMartin : Promise
     {
         public override bool IsEnforceableInCourt => true;
 
@@ -99,8 +98,8 @@ namespace NoFuture.Rand.Tests.LawTests
 
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
-            return (promisor is CrundenMartin && promisee is Fairmount)
-                   || (promisor is Fairmount && promisee is CrundenMartin);
+            return promisor is CrundenMartin && promisee is Fairmount
+                   || promisor is Fairmount && promisee is CrundenMartin;
         }
 
         public static ISet<Term<object>> GetTerms()
@@ -114,7 +113,7 @@ namespace NoFuture.Rand.Tests.LawTests
         }
     }
 
-    public class Apr24thResponseTelegram : Promise
+    public class TelegramAcceptance2Fairmount : Promise
     {
         public override bool IsEnforceableInCourt => true;
 
@@ -122,8 +121,21 @@ namespace NoFuture.Rand.Tests.LawTests
 
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
-            return (promisor is CrundenMartin && promisee is Fairmount)
-                   || (promisor is Fairmount && promisee is CrundenMartin);
+            return promisor is CrundenMartin && promisee is Fairmount
+                   || promisor is Fairmount && promisee is CrundenMartin;
+        }
+    }
+
+    public class TelegramAllSoldOut : Promise
+    {
+        public override bool IsEnforceableInCourt => true;
+
+        public override List<string> Audit => new List<string>();
+
+        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        {
+            Audit.Add("All sold out");
+            return false;
         }
     }
 
@@ -131,7 +143,7 @@ namespace NoFuture.Rand.Tests.LawTests
     {
         public ISet<Term<object>> GetTerms()
         {
-            return Apr23rdResponseTelegram.GetTerms();
+            return TelegramQuote2CurdenMartin.GetTerms();
         }
 
         public virtual ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
@@ -139,9 +151,10 @@ namespace NoFuture.Rand.Tests.LawTests
             if (inResponseTo == null)
                 return null;
 
-            if (inResponseTo is Apr20InitialTelegram)
-                return new Apr23rdResponseTelegram();
-
+            if (inResponseTo is InitTelegram)
+                return new TelegramQuote2CurdenMartin();
+            if(inResponseTo is TelegramAcceptance2Fairmount)
+                return new TelegramAllSoldOut();
             return null;
         }
     }
@@ -158,17 +171,17 @@ namespace NoFuture.Rand.Tests.LawTests
         public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
         {
             if (inResponseTo == null)
-                return new Apr20InitialTelegram();
+                return new InitTelegram();
 
-            if (inResponseTo is Apr23rdResponseTelegram)
-                return new Apr24thResponseTelegram();
+            if (inResponseTo is TelegramQuote2CurdenMartin)
+                return new TelegramAcceptance2Fairmount();
 
             return null;
         }
 
         public override ISet<Term<object>> GetTerms()
         {
-            return Apr23rdResponseTelegram.GetTerms();
+            return TelegramQuote2CurdenMartin.GetTerms();
         }
     }
 }
