@@ -63,6 +63,4 @@ namespace NoFuture.Rand.Law
             return Name;
         }
     }
-
-   
 }

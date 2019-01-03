@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law
     {
     }
 
-    public interface INaturalPerson  : ILegalPerson { }
-
     public interface IJudicialPerson : ILegalPerson { }
+
+    public interface INaturalPerson : IJudicialPerson { }
 }
