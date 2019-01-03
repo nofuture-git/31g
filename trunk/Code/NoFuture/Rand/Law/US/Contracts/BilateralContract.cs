@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     public class BilateralContract : LegalContract<Promise>
     {
         [Note("assent: expression of approval or agreement")]
-        public MutualAssent MutualAssent { get; set; }
+        public virtual MutualAssent MutualAssent { get; set; }
 
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {

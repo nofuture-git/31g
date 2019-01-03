@@ -17,7 +17,6 @@ namespace NoFuture.Rand.Tests.LawTests
     [TestFixture]
     public class FairmountvCrundenMartinTests
     {
-
         [Test]
         public void FairmountvCrundenMartin()
         {

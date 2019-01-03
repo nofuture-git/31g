@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
@@ -27,6 +28,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// Only when all predictes are true is this true.
         /// Lefkowitz v. Great Minneapolis Surplus Store, 86 N.W.2d 689, 691 (Minn. 1957)
         /// </summary>
+        [Note("an ad is not an offer unless it is true for all predicates herein")]
         public override bool IsEnforceableInCourt
         {
             get

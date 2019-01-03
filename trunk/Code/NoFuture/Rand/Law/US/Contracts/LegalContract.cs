@@ -13,18 +13,19 @@ namespace NoFuture.Rand.Law.US.Contracts
         [Note("bargained for: if it is sought by one and given by the other")]
         public virtual Consideration<T> Consideration { get; set; }
 
+        [Note("this is what distinguishes a common (donative) promise from a legal one")]
         public virtual bool IsEnforceableInCourt => true;
 
         /// <summary>
         /// What the promisor is putting out there.
         /// </summary>
         [Note("Is the manifestation of willingness to enter into a bargain")]
-        public ObjectiveLegalConcept Offer { get; set; }
+        public virtual ObjectiveLegalConcept Offer { get; set; }
 
         /// <summary>
         /// A function which resolves what the offer gets in return.
         /// </summary>
-        public Func<ObjectiveLegalConcept, T> Acceptance { get; set; }
+        public virtual Func<ObjectiveLegalConcept, T> Acceptance { get; set; }
 
         public virtual bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
