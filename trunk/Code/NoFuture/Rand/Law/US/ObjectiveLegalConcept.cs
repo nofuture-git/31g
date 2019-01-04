@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.US
     {
         private readonly List<string> _audit = new List<string>();
 
-        public abstract bool IsValid(ILegalPerson promisor, ILegalPerson promisee);
+        public abstract bool IsValid(ILegalPerson offeror, ILegalPerson offeree);
 
         public abstract bool IsEnforceableInCourt { get; }
 

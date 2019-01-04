@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// </summary>
         public virtual Func<ILegalPerson, ObjectiveLegalConcept, bool> IsGivenByPromisee { get; set; }
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             if (_contract?.Offer == null)
             {
@@ -76,15 +76,15 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!IsSoughtByPromisor(promisor, returnPromise))
+            if (!IsSoughtByPromisor(offeror, returnPromise))
             {
-                AddAuditEntry($"the return promise is not what {promisor.Name} wants");
+                AddAuditEntry($"the return promise is not what {offeror.Name} wants");
                 return false;
             }
 
-            if (!IsGivenByPromisee(promisee, _contract.Offer))
+            if (!IsGivenByPromisee(offeree, _contract.Offer))
             {
-                AddAuditEntry($"the offer is not what the {promisee.Name} wants");
+                AddAuditEntry($"the offer is not what the {offeree.Name} wants");
                 return false;
             }
 

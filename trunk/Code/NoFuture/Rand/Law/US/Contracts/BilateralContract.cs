@@ -12,10 +12,10 @@ namespace NoFuture.Rand.Law.US.Contracts
         [Note("assent: expression of approval or agreement")]
         public virtual MutualAssent MutualAssent { get; set; }
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             //test consideration
-            if (!base.IsValid(promisor, promisee))
+            if (!base.IsValid(offeror, offeree))
                 return false;
 
             //test mutual assent
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!MutualAssent.IsValid(promisor, promisee))
+            if (!MutualAssent.IsValid(offeror, offeree))
             {
                 AddAuditEntry($"{nameof(MutualAssent)}.{nameof(IsValid)} returned false");
                 return false;

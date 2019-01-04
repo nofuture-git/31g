@@ -136,9 +136,9 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
     /// </summary>
     public class PepsiStuff : Promise
     {
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return promisor is PepsicoInc && promisee is ConsumerOfPepsi;
+            return offeror is PepsicoInc && offeree is ConsumerOfPepsi;
         }
 
         public override bool IsEnforceableInCourt => true;

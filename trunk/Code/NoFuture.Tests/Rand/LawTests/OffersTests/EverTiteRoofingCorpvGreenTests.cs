@@ -70,9 +70,9 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
 
     public class OfferReRoofResidence : Promise
     {
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return promisor is EverTiteRoofingCorp || promisee is EverTiteRoofingCorp;
+            return offeror is EverTiteRoofingCorp || offeree is EverTiteRoofingCorp;
         }
 
         public override bool IsEnforceableInCourt => true;
@@ -82,9 +82,9 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
     {
         public bool IsApprovedByLendingAgy { get; set; } = true;
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return promisor is Green || promisee is Green && IsApprovedByLendingAgy;
+            return offeror is Green || offeree is Green && IsApprovedByLendingAgy;
         }
 
         public override bool IsEnforceableInCourt => true;

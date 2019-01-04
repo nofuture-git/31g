@@ -75,9 +75,9 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
 
     public class OfferDefendantPay2SettleLawsuit : Promise
     {
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return promisor is PartiesInCase && promisee is PartiesInCase;
+            return offeror is PartiesInCase && offeree is PartiesInCase;
         }
 
         public override bool IsEnforceableInCourt => true;
@@ -87,9 +87,9 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
     {
         public abstract string EmailText { get; }
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return promisor is PartiesInCase && promisee is PartiesInCase;
+            return offeror is PartiesInCase && offeree is PartiesInCase;
         }
 
         public override bool IsEnforceableInCourt => true;
@@ -125,7 +125,7 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
 
     public class SubsequentRefusal2Sign : Promise
     {
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return false;
         }

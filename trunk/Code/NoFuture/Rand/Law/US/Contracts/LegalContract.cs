@@ -16,6 +16,12 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <summary>
         /// What the promisor is putting out there.
         /// </summary>
+        /// <remarks>
+        /// Can be terminated by 
+        /// (1) rejection
+        /// (2) counter-offer
+        /// (3) expires
+        /// </remarks>
         [Note("Is the manifestation of willingness to enter into a bargain")]
         public virtual ObjectiveLegalConcept Offer { get; set; }
 
@@ -24,7 +30,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// </summary>
         public virtual Func<ObjectiveLegalConcept, T> Acceptance { get; set; }
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             if (Consideration == null)
             {
@@ -32,7 +38,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!Consideration.IsValid(promisor, promisee))
+            if (!Consideration.IsValid(offeror, offeree))
             {
                 AddAuditEntry($"{nameof(Consideration)}.{nameof(IsValid)} returned false");
                 return false;

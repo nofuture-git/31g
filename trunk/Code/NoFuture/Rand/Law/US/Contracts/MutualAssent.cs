@@ -37,17 +37,17 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// </remarks>
         public Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            if (promisor == null)
+            if (offeror == null)
             {
-                AddAuditEntry($"{nameof(promisor)} is null");
+                AddAuditEntry($"{nameof(offeror)} is null");
                 return false;
             }
 
-            if (promisee == null)
+            if (offeree == null)
             {
-                AddAuditEntry($"{nameof(promisee)} is null");
+                AddAuditEntry($"{nameof(offeree)} is null");
                 return false;
             }
 
@@ -63,18 +63,18 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!IsTermsOfAgreementValid(promisor, promisee))
+            if (!IsTermsOfAgreementValid(offeror, offeree))
                 return false;
 
-            if (!IsApprovalExpressed(promisor))
+            if (!IsApprovalExpressed(offeror))
             {
-                AddAuditEntry($"{promisor.Name} did not outwardly express approval");
+                AddAuditEntry($"{offeror.Name} did not outwardly express approval");
                 return false;
             }
 
-            if (!IsApprovalExpressed(promisee))
+            if (!IsApprovalExpressed(offeree))
             {
-                AddAuditEntry($"{promisee.Name} did not outwardly express approval");
+                AddAuditEntry($"{offeree.Name} did not outwardly express approval");
                 return false;
             }
 

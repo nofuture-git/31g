@@ -39,12 +39,12 @@ namespace NoFuture.Rand.Tests.LawTests.MutualAssentTests
         public class TwentyThousandUsdReward : Promise
         {
 
-            public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+            public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
             {
                 //it has to be ryan leslie
-                if (!(promisor is RyanLeslie _))
+                if (!(offeror is RyanLeslie _))
                 {
-                    AddAuditEntry($"{promisor?.Name} is not Ryan Leslie");
+                    AddAuditEntry($"{offeror?.Name} is not Ryan Leslie");
                     return false;
                 }
 
@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Tests.LawTests.MutualAssentTests
             /// </summary>
             public bool IsIntellectualPropertyPresent { get; set; }
 
-            public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+            public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
             {
                 //this either is or isn't the equipment
                 return true;

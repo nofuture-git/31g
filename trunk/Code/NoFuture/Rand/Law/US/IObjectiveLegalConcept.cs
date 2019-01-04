@@ -8,10 +8,10 @@ namespace NoFuture.Rand.Law.US
         /// Subjective, inner thoughts, feelings, etc. 
         /// Objective, outward actions, works, deeds, etc.
         /// </summary>
-        /// <param name="promisor"></param>
-        /// <param name="promisee"></param>
+        /// <param name="offeror"></param>
+        /// <param name="offeree"></param>
         /// <returns></returns>
-        bool IsValid(ILegalPerson promisor, ILegalPerson promisee);
+        bool IsValid(ILegalPerson offeror, ILegalPerson offeree);
 
         void AddAuditEntry(string msg);
 

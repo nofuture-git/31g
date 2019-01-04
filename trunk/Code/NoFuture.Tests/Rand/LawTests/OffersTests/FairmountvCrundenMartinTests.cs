@@ -77,10 +77,10 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
         [Note("Nothing illegal about buying some glass jars")]
         public override bool IsEnforceableInCourt => true;
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return promisor is CrundenMartin && promisee is Fairmount
-                   || promisor is Fairmount && promisee is CrundenMartin;
+            return offeror is CrundenMartin && offeree is Fairmount
+                   || offeror is Fairmount && offeree is CrundenMartin;
         }
     }
 
@@ -88,10 +88,10 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
     {
         public override bool IsEnforceableInCourt => true;
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return promisor is CrundenMartin && promisee is Fairmount
-                   || promisor is Fairmount && promisee is CrundenMartin;
+            return offeror is CrundenMartin && offeree is Fairmount
+                   || offeror is Fairmount && offeree is CrundenMartin;
         }
 
         public static ISet<Term<object>> GetTerms()
@@ -109,10 +109,10 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
     {
         public override bool IsEnforceableInCourt => true;
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return promisor is CrundenMartin && promisee is Fairmount
-                   || promisor is Fairmount && promisee is CrundenMartin;
+            return offeror is CrundenMartin && offeree is Fairmount
+                   || offeror is Fairmount && offeree is CrundenMartin;
         }
     }
 
@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
     {
         public override bool IsEnforceableInCourt => true;
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             AddAuditEntry("All sold out");
             return false;

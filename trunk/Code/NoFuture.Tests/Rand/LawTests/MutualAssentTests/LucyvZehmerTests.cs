@@ -118,7 +118,7 @@ namespace NoFuture.Rand.Tests.LawTests.MutualAssentTests
 
     public class FiftyThousandUsd : Promise
     {
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return true;
         }
@@ -140,7 +140,7 @@ namespace NoFuture.Rand.Tests.LawTests.MutualAssentTests
     /// </summary>
     public class FergusonFarm : Promise
     {
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return true;
         }

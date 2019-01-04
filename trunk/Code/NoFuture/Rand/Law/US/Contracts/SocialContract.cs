@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.US.Contracts
             base.AddAuditEntry($"A {nameof(SocialContract)} is a donative promise and cannot be breached.");
         }
 
-        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return false;
         }
