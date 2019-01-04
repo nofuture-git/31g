@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
@@ -8,7 +7,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     {
         public SocialContract()
         {
-            _audit.Add($"A {nameof(SocialContract)} is a donative promise and cannot be breached.");
+            base.AddAuditEntry($"A {nameof(SocialContract)} is a donative promise and cannot be breached.");
         }
 
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
@@ -16,8 +15,6 @@ namespace NoFuture.Rand.Law.US.Contracts
             return false;
         }
 
-        private readonly List<string> _audit = new List<string>();
-        public override List<string> Audit => _audit;
         public override bool IsEnforceableInCourt => false;
     }
 }

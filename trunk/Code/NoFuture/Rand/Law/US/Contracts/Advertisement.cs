@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
@@ -8,7 +7,6 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// </summary>
     public class Advertisement : ObjectiveLegalConcept
     {
-        private readonly List<string> _audit = new List<string>();
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
             return IsEnforceableInCourt;
@@ -22,8 +20,6 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         public bool IsNothingLeftToOpenNegotiation { get; set; }
 
-        public override List<string> Audit => _audit;
-
         /// <summary>
         /// Only when all predictes are true is this true.
         /// Lefkowitz v. Great Minneapolis Surplus Store, 86 N.W.2d 689, 691 (Minn. 1957)
@@ -36,7 +32,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 var rslt = IsClear && IsDefinite && IsExplicit && IsNothingLeftToOpenNegotiation;
                 if (!rslt)
                 {
-                    _audit.Add($"This {nameof(Advertisement)} is not enforceable: " +
+                    AddAuditEntry($"This {nameof(Advertisement)} is not enforceable: " +
                                $"{nameof(IsClear)} = {IsClear} " +
                                $"{nameof(IsDefinite)} = {IsDefinite} " +
                                $"{nameof(IsExplicit)} = {IsExplicit} " +

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
@@ -9,11 +8,10 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Note("a consideration: a performance or return promise must be bargained for")]
-    public class Consideration<T> : IObjectiveLegalConcept where T : ObjectiveLegalConcept
+    public class Consideration<T> : ObjectiveLegalConcept where T : ObjectiveLegalConcept
     {
-        private readonly List<string> _audit = new List<string>();
-        public virtual List<string> Audit => _audit;
         private readonly LegalContract<T> _contract;
+        public override bool IsEnforceableInCourt => true;
 
         public Consideration(LegalContract<T> contract)
         {
@@ -31,66 +29,67 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// </summary>
         public virtual Func<ILegalPerson, ObjectiveLegalConcept, bool> IsGivenByPromisee { get; set; }
 
-        public bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
             if (_contract?.Offer == null)
             {
-                _audit.Add($"{nameof(Audit)} is null");
+                AddAuditEntry($"{nameof(_contract.Offer)} is null");
                 return false;
             }
 
             if (_contract?.Acceptance == null)
             {
-                _audit.Add($"{nameof(_contract.Acceptance)} is null");
+                AddAuditEntry($"{nameof(_contract.Acceptance)} is null");
                 return false;
             }
 
             if (IsSoughtByPromisor == null)
             {
-                _audit.Add($"{nameof(IsSoughtByPromisor)} is null");
+                AddAuditEntry($"{nameof(IsSoughtByPromisor)} is null");
                 return false;
             }
 
             if (IsGivenByPromisee == null)
             {
-                _audit.Add($"{nameof(IsGivenByPromisee)} is null");
+                AddAuditEntry($"{nameof(IsGivenByPromisee)} is null");
                 return false;
             }
 
             if (!_contract.Offer.IsEnforceableInCourt)
             {
-                _audit.Add($"the offer is not enforceable in court");
-                _audit.AddRange(_contract.Offer.Audit);
+                AddAuditEntry($"the offer is not enforceable in court");
+                AddAuditEntryRange(_contract.Offer.GetAuditEntries());
                 return false;
             }
 
             var returnPromise = _contract.Acceptance(_contract.Offer);
             if (returnPromise == null)
             {
-                _audit.Add($"{nameof(returnPromise)} is null");
+                AddAuditEntry($"{nameof(returnPromise)} is null");
                 return false;
             }
 
             if (!returnPromise.IsEnforceableInCourt)
             {
-                _audit.Add($"the return promise is not enforceable in court");
-                _audit.AddRange(returnPromise.Audit);
+                AddAuditEntry($"the return promise is not enforceable in court");
+                AddAuditEntryRange(returnPromise.GetAuditEntries());
                 return false;
             }
 
             if (!IsSoughtByPromisor(promisor, returnPromise))
             {
-                _audit.Add($"the return promise is not what {promisor.Name} wants");
+                AddAuditEntry($"the return promise is not what {promisor.Name} wants");
                 return false;
             }
 
             if (!IsGivenByPromisee(promisee, _contract.Offer))
             {
-                _audit.Add($"the offer is not what the {promisee.Name} wants");
+                AddAuditEntry($"the offer is not what the {promisee.Name} wants");
                 return false;
             }
 
             return true;
         }
+
     }
 }

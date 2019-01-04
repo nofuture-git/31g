@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {

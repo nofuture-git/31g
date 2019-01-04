@@ -80,8 +80,6 @@ namespace NoFuture.Rand.Tests.LawTests
         [Note("Nothing illegal about buying some glass jars")]
         public override bool IsEnforceableInCourt => true;
 
-        public override List<string> Audit => new List<string>();
-
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
             return promisor is CrundenMartin && promisee is Fairmount
@@ -92,8 +90,6 @@ namespace NoFuture.Rand.Tests.LawTests
     public class TelegramQuote2CurdenMartin : Promise
     {
         public override bool IsEnforceableInCourt => true;
-
-        public override List<string> Audit => new List<string>();
 
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
@@ -116,8 +112,6 @@ namespace NoFuture.Rand.Tests.LawTests
     {
         public override bool IsEnforceableInCourt => true;
 
-        public override List<string> Audit => new List<string>();
-
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
             return promisor is CrundenMartin && promisee is Fairmount
@@ -129,11 +123,9 @@ namespace NoFuture.Rand.Tests.LawTests
     {
         public override bool IsEnforceableInCourt => true;
 
-        public override List<string> Audit => new List<string>();
-
         public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
-            Audit.Add("All sold out");
+            AddAuditEntry("All sold out");
             return false;
         }
     }

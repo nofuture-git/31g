@@ -31,8 +31,8 @@ namespace NoFuture.Rand.Tests.LawTests
             };
 
             var testResult = testSubject.IsValid(new WOLucy(), new AHZehmer());
-            Console.WriteLine(string.Join(", ", testSubject.Audit));
-            Console.WriteLine(string.Join(", ", testSubject.MutualAssent.Audit));
+            Console.WriteLine(string.Join(", ", testSubject.GetAuditEntries()));
+            Console.WriteLine(string.Join(", ", testSubject.MutualAssent.GetAuditEntries()));
             Assert.IsTrue(testResult);
         }
     }
@@ -123,7 +123,6 @@ namespace NoFuture.Rand.Tests.LawTests
             return true;
         }
 
-        public override List<string> Audit => new List<string>();
         public override bool IsEnforceableInCourt => true;
         public override bool Equals(object obj)
         {
@@ -146,7 +145,6 @@ namespace NoFuture.Rand.Tests.LawTests
             return true;
         }
 
-        public override List<string> Audit => new List<string>();
         public override bool IsEnforceableInCourt => true;
         public override bool Equals(object obj)
         {

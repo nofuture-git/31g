@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests
 {
     /// <summary>
     /// KLOIAN v. DOMINO’S PIZZA, L.L.C. Court of Appeals of Michigan 273 Mich.App. 449, 733 N.W.2d 766 (2006)
     /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// This seems to be another example that once you have all the requirements of a contract then you have a 
+    /// contract - the only way out now is if both parties want out.
+    /// ]]>
+    /// </remarks>
     [TestFixture]
     public class KloianvDominosPizzaTests
     {
@@ -27,15 +29,45 @@ namespace NoFuture.Rand.Tests.LawTests
             var testSubject = new OfferDefendantPay2SettleLawsuit();
             Assert.IsTrue(testSubject.IsValid(ekLawyer, dpLawyer));
         }
-       
-    }
 
-    public class TestSubject : BilateralContract
-    {
-        public override ObjectiveLegalConcept Offer { get; set; } = new OfferDefendantPay2SettleLawsuit();
+        [Test]
+        public void KloianvDominosPizza()
+        {
+            var testSubject = new BilateralContract
+            {
+                Offer = new OfferDefendantPay2SettleLawsuit(),
+                Acceptance = o =>
+                    o is OfferDefendantPay2SettleLawsuit ? new AcceptanceEmailFromPlaintiffAttorney() : null,
+                MutualAssent = new MutualAssent
+                {
+                    TermsOfAgreement = lp =>
+                    {
+                        var isParty = lp is PartiesInCase;
+                        return !isParty ? null : GetTerms();
+                    },
+                    IsApprovalExpressed = lp => (lp as PartiesInCase)?.IsApprovalExpressed ?? false
+                },
+            };
 
-        public override Func<ObjectiveLegalConcept, Promise> Acceptance { get; set; } = o =>
-            o is OfferDefendantPay2SettleLawsuit ? new AcceptanceEmailFromPlaintiffAttorney() : null;
+            testSubject.Consideration = new Consideration<Promise>(testSubject)
+            {
+                IsSoughtByPromisor = (lp, promise) =>
+                {
+                    var plaintiff = lp as EdwardKloian;
+                    return plaintiff?.GetCommunication(promise) is AcceptanceEmailFromPlaintiffAttorney;
+                },
+                IsGivenByPromisee = (lp, promise) =>
+                {
+                    var defendant = lp as DominosPizzaLlc;
+                    return defendant?.GetCommunication(promise) is AcceptanceEmailFromDefendantAttorney;
+                }
+            };
+
+            var testResult = testSubject.IsValid(new EdwardKloianAttorney(), new DominosPizzaLlcAttorney());
+            
+            Console.WriteLine(testResult);
+            Console.WriteLine(testSubject.ToString());
+        }
 
         public static ISet<Term<object>> GetTerms()
         {
@@ -54,7 +86,6 @@ namespace NoFuture.Rand.Tests.LawTests
             return promisor is PartiesInCase && promisee is PartiesInCase;
         }
 
-        public override List<string> Audit => new List<string>();
         public override bool IsEnforceableInCourt => true;
     }
 
@@ -67,7 +98,6 @@ namespace NoFuture.Rand.Tests.LawTests
             return promisor is PartiesInCase && promisee is PartiesInCase;
         }
 
-        public override List<string> Audit => new List<string>();
         public override bool IsEnforceableInCourt => true;
     }
 
@@ -106,18 +136,22 @@ namespace NoFuture.Rand.Tests.LawTests
             return false;
         }
 
-        public override List<string> Audit => new List<string>();
         public override bool IsEnforceableInCourt => true;
 
     }
 
     public abstract class PartiesInCase : VocaBase, ILegalPerson
     {
+        protected PartiesInCase(string name) : base(name) { }
+
         public abstract ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null);
+        public abstract bool IsApprovalExpressed { get; }
     }
 
-    public class EdwardKloianAttorney : PartiesInCase
+    public class EdwardKloianAttorney : EdwardKloian
     {
+        public EdwardKloianAttorney() :base("Edward Kloian's Attorney") { }
+
         public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
         {
             if (inResponseTo == null)
@@ -131,10 +165,14 @@ namespace NoFuture.Rand.Tests.LawTests
 
             return null;
         }
+
+        public override bool IsApprovalExpressed => true;
     }
 
-    public class DominosPizzaLlcAttorney : PartiesInCase
+    public class DominosPizzaLlcAttorney : DominosPizzaLlc
     {
+        public DominosPizzaLlcAttorney(): base("Dominos Pizza LLC Attorney") { }
+
         public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
         {
             if(inResponseTo == null)
@@ -145,23 +183,30 @@ namespace NoFuture.Rand.Tests.LawTests
                 return new ResponseAboutMutualRelease();
             return null;
         }
+        public override bool IsApprovalExpressed => true;
     }
 
     public class EdwardKloian : PartiesInCase
     {
+        public EdwardKloian(string name) : base (name ?? "Edward Kloian") { }
+
         public EdwardKloianAttorney Attorney => new EdwardKloianAttorney();
         public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
         {
             return Attorney.GetCommunication(inResponseTo);
         }
+        public override bool IsApprovalExpressed => Attorney.IsApprovalExpressed;
     }
 
     public class DominosPizzaLlc : PartiesInCase
     {
+        public DominosPizzaLlc(string name)  : base(name ?? "Dominos Pizza LLC") { }
+
         public DominosPizzaLlcAttorney Attorney => new DominosPizzaLlcAttorney();
         public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
         {
             return Attorney.GetCommunication(inResponseTo);
         }
+        public override bool IsApprovalExpressed => Attorney.IsApprovalExpressed;
     }
 }

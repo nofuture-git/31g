@@ -1,4 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
@@ -19,17 +21,25 @@ namespace NoFuture.Rand.Law.US.Contracts
             //test mutual assent
             if (MutualAssent == null)
             {
-                Audit.Add($"{nameof(MutualAssent)} is null");
+                AddAuditEntry($"{nameof(MutualAssent)} is null");
                 return false;
             }
 
             if (!MutualAssent.IsValid(promisor, promisee))
             {
-                Audit.Add($"{nameof(MutualAssent)}.{nameof(IsValid)} returned false");
+                AddAuditEntry($"{nameof(MutualAssent)}.{nameof(IsValid)} returned false");
                 return false;
             }
 
             return true;
+        }
+
+        public override string ToString()
+        {
+            var allEntries = GetAuditEntries() as List<string> ?? new List<string>();
+            allEntries.AddRange(MutualAssent.GetAuditEntries());
+            allEntries.AddRange(Consideration.GetAuditEntries());
+            return string.Join(Environment.NewLine, allEntries);
         }
     }
 }

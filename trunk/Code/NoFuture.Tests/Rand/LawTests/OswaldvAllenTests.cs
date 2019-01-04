@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Tests.LawTests
 
             var testResult = testSubject.IsValid(new MrsAllen(), new DrOswald());
             Assert.IsFalse(testResult);
-            Console.WriteLine("--" + string.Join(",", testSubject.Audit));
+            Console.WriteLine("--" + string.Join(",", testSubject.GetAuditEntries()));
         }
     }
 

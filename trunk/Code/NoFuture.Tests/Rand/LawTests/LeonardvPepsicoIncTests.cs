@@ -29,9 +29,9 @@ namespace NoFuture.Rand.Tests.LawTests
             };
 
             var testResult = testSubject.IsValid(new PepsicoInc(), new Leonard());
-            Console.WriteLine(string.Join(", ", testSubject.Audit));
-            Console.WriteLine(string.Join(", ", testSubject.MutualAssent.Audit));
-            Console.WriteLine(string.Join(", ", testSubject.Consideration.Audit));
+            Console.WriteLine(string.Join(", ", testSubject.GetAuditEntries()));
+            Console.WriteLine(string.Join(", ", testSubject.MutualAssent.GetAuditEntries()));
+            Console.WriteLine(string.Join(", ", testSubject.Consideration.GetAuditEntries()));
             Assert.IsFalse(testResult);
         }
     }
@@ -141,7 +141,6 @@ namespace NoFuture.Rand.Tests.LawTests
             return promisor is PepsicoInc && promisee is ConsumerOfPepsi;
         }
 
-        public override List<string> Audit => new List<string>();
         public override bool IsEnforceableInCourt => true;
 
         public override bool Equals(object obj)

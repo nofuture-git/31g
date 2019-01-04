@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
     [Aka("Enforceable Promise")]
-    public class LegalContract<T> : IObjectiveLegalConcept where T : ObjectiveLegalConcept
+    public class LegalContract<T> : ObjectiveLegalConcept where T : ObjectiveLegalConcept
     {
-        private readonly List<string> _audit = new List<string>();
-        public List<string> Audit => _audit;
 
         [Note("bargained for: if it is sought by one and given by the other")]
         public virtual Consideration<T> Consideration { get; set; }
 
         [Note("this is what distinguishes a common (donative) promise from a legal one")]
-        public virtual bool IsEnforceableInCourt => true;
+        public override bool IsEnforceableInCourt => true;
 
         /// <summary>
         /// What the promisor is putting out there.
@@ -27,17 +24,17 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// </summary>
         public virtual Func<ObjectiveLegalConcept, T> Acceptance { get; set; }
 
-        public virtual bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
+        public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
         {
             if (Consideration == null)
             {
-                _audit.Add($"{nameof(Consideration)} is null");
+                AddAuditEntry($"{nameof(Consideration)} is null");
                 return false;
             }
 
             if (!Consideration.IsValid(promisor, promisee))
             {
-                _audit.Add($"{nameof(Consideration)}.{nameof(IsValid)} returned false");
+                AddAuditEntry($"{nameof(Consideration)}.{nameof(IsValid)} returned false");
                 return false;
             }
 

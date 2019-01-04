@@ -40,15 +40,13 @@ namespace NoFuture.Rand.Tests.LawTests
         /// </summary>
         public class TwentyThousandUsdReward : Promise
         {
-            private readonly List<string> _audit = new List<string>();
-            public override List<string> Audit => _audit;
 
             public override bool IsValid(ILegalPerson promisor, ILegalPerson promisee)
             {
                 //it has to be ryan leslie
                 if (!(promisor is RyanLeslie _))
                 {
-                    _audit.Add($"{promisor?.Name} is not Ryan Leslie");
+                    AddAuditEntry($"{promisor?.Name} is not Ryan Leslie");
                     return false;
                 }
 
@@ -67,9 +65,6 @@ namespace NoFuture.Rand.Tests.LawTests
         /// </summary>
         public class RyanLesliesLaptopComputerAndExternalHd : Performance
         {
-            private readonly List<string> _audit = new List<string>();
-            public override List<string> Audit => _audit;
-
             /// <summary>
             /// the court did not consider this the substance of the performance
             /// </summary>
