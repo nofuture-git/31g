@@ -51,30 +51,24 @@ namespace NoFuture.Rand.Tests.LawTests
 
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
-                IsSoughtByPromisor = (lp, promise) =>
-                {
-                    var plaintiff = lp as EdwardKloian;
-                    return plaintiff?.GetCommunication(promise) is AcceptanceEmailFromPlaintiffAttorney;
-                },
-                IsGivenByPromisee = (lp, promise) =>
-                {
-                    var defendant = lp as DominosPizzaLlc;
-                    return defendant?.GetCommunication(promise) is AcceptanceEmailFromDefendantAttorney;
-                }
+                IsSoughtByPromisor = (lp, promise) => lp is EdwardKloian && promise is AcceptanceEmailFromPlaintiffAttorney,
+                IsGivenByPromisee = (lp, promise) => lp is DominosPizzaLlc && promise is OfferDefendantPay2SettleLawsuit,
             };
 
             var testResult = testSubject.IsValid(new EdwardKloianAttorney(), new DominosPizzaLlcAttorney());
             
-            Console.WriteLine(testResult);
+            Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
         }
+
+        private static object _termMeaning = new object();
 
         public static ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {
                 new Term<object>("payment", 48000m),
-                new Term<object>("dismissal with prejudice of all claims and release of all possible claims", new object())
+                new Term<object>("dismissal with prejudice of all claims and release of all possible claims", _termMeaning)
             };
         }
     }

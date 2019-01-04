@@ -26,8 +26,8 @@ namespace NoFuture.Rand.Tests.LawTests
 
             var testSubject = new BilateralContract
             {
-                Offer = getOrigOffer,
-                Acceptance = initRequest => seller.GetCommunication(initRequest) as Promise,
+                Offer = new TelegramQuote2CurdenMartin(),
+                Acceptance = initRequest => initRequest is TelegramQuote2CurdenMartin ? new TelegramAcceptance2Fairmount() : null,
                 MutualAssent = new MutualAssent
                 {
                     TermsOfAgreement = lp =>
@@ -58,20 +58,13 @@ namespace NoFuture.Rand.Tests.LawTests
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
 
-                IsSoughtByPromisor = (lp, promise) =>
-                {
-                    var fairmount = lp as Fairmount;
-                    return fairmount?.GetCommunication(promise) is TelegramQuote2CurdenMartin;
-                },
-                IsGivenByPromisee = (lp, promise) =>
-                {
-                    var cMartin = lp as CrundenMartin;
-                    return cMartin?.GetCommunication(promise) is TelegramAcceptance2Fairmount;
-                },
+                IsSoughtByPromisor = (lp, promise) => lp is CrundenMartin && promise is TelegramAcceptance2Fairmount,
+                IsGivenByPromisee = (lp, promise) => lp is Fairmount && promise is TelegramQuote2CurdenMartin ,
             };
 
-            var testResult = testSubject.IsValid(buyer, seller);
-            System.Console.WriteLine(testResult);
+            var testResult = testSubject.IsValid(new CrundenMartin(), new Fairmount());
+            Assert.IsTrue(testResult);
+            System.Console.WriteLine(testSubject.ToString());
         }
     }
 
