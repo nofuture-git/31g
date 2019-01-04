@@ -29,9 +29,7 @@ namespace NoFuture.Rand.Tests.LawTests.OffersTests
             };
 
             var testResult = testSubject.IsValid(new PepsicoInc(), new Leonard());
-            Console.WriteLine(string.Join(", ", testSubject.GetAuditEntries()));
-            Console.WriteLine(string.Join(", ", testSubject.MutualAssent.GetAuditEntries()));
-            Console.WriteLine(string.Join(", ", testSubject.Consideration.GetAuditEntries()));
+            Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
         }
     }

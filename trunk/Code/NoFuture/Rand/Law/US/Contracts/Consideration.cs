@@ -31,18 +31,6 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            if (_contract?.Offer == null)
-            {
-                AddAuditEntry($"{nameof(_contract.Offer)} is null");
-                return false;
-            }
-
-            if (_contract?.Acceptance == null)
-            {
-                AddAuditEntry($"{nameof(_contract.Acceptance)} is null");
-                return false;
-            }
-
             if (IsSoughtByPromisor == null)
             {
                 AddAuditEntry($"{nameof(IsSoughtByPromisor)} is null");
@@ -55,24 +43,10 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!_contract.Offer.IsEnforceableInCourt)
-            {
-                AddAuditEntry($"the offer is not enforceable in court");
-                AddAuditEntryRange(_contract.Offer.GetAuditEntries());
-                return false;
-            }
-
             var returnPromise = _contract.Acceptance(_contract.Offer);
             if (returnPromise == null)
             {
                 AddAuditEntry($"{nameof(returnPromise)} is null");
-                return false;
-            }
-
-            if (!returnPromise.IsEnforceableInCourt)
-            {
-                AddAuditEntry($"the return promise is not enforceable in court");
-                AddAuditEntryRange(returnPromise.GetAuditEntries());
                 return false;
             }
 

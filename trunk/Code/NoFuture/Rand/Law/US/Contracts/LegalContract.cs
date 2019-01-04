@@ -17,10 +17,11 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// What the promisor is putting out there.
         /// </summary>
         /// <remarks>
-        /// Can be terminated by 
-        /// (1) rejection
-        /// (2) counter-offer
-        /// (3) expires
+        /// May be terminated by
+        /// (a) rejection or counter-offer by the offeree, or
+        /// (b) lapse of time, or
+        /// (c) revocation by the offeror, or
+        /// (d) death or incapacity of the offeror or offeree.
         /// </remarks>
         [Note("Is the manifestation of willingness to enter into a bargain")]
         public virtual ObjectiveLegalConcept Offer { get; set; }
@@ -32,6 +33,53 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
+            if (Offer == null)
+            {
+                AddAuditEntry($"{nameof(Offer)} is null");
+                return false;
+            }
+
+            if (Acceptance == null)
+            {
+                AddAuditEntry($"{nameof(Acceptance)} is null");
+                return false;
+            }
+
+            if (!Offer.IsEnforceableInCourt)
+            {
+                AddAuditEntry("the offer is not enforceable in court");
+                AddAuditEntryRange(Offer.GetAuditEntries());
+                return false;
+            }
+
+            if (!Offer.IsValid(offeror, offeree))
+            {
+                AddAuditEntry("the offer in invalid");
+                AddAuditEntryRange(Offer.GetAuditEntries());
+                return false;
+            }
+
+            var returnPromise = Acceptance(Offer);
+            if (returnPromise == null)
+            {
+                AddAuditEntry($"{nameof(returnPromise)} is null");
+                return false;
+            }
+
+            if (!returnPromise.IsEnforceableInCourt)
+            {
+                AddAuditEntry("the return promise is not enforceable in court");
+                AddAuditEntryRange(returnPromise.GetAuditEntries());
+                return false;
+            }
+
+            if (!returnPromise.IsValid(offeror, offeree))
+            {
+                AddAuditEntry("the return promise is invalid");
+                AddAuditEntryRange(returnPromise.GetAuditEntries());
+                return false;
+            }
+
             if (Consideration == null)
             {
                 AddAuditEntry($"{nameof(Consideration)} is null");
