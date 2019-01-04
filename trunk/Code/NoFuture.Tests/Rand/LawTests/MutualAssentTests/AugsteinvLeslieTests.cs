@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using NoFuture.Rand.Core;
+﻿using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests
+namespace NoFuture.Rand.Tests.LawTests.MutualAssentTests
 {
     /// <summary>
     /// AUGSTEIN v. LESLIE United States District Court for the Southern District of New York 11 Civ. 7512 (HB), 2012 U.S.Dist.LEXIS 149517 (S.D.N.Y.Oct. 17, 2012)

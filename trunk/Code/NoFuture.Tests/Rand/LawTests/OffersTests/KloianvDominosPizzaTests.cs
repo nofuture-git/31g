@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests
+namespace NoFuture.Rand.Tests.LawTests.OffersTests
 {
     /// <summary>
     /// KLOIAN v. DOMINO’S PIZZA, L.L.C. Court of Appeals of Michigan 273 Mich.App. 449, 733 N.W.2d 766 (2006)
