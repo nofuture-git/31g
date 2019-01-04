@@ -59,6 +59,7 @@
     <Compile Include="CoreTests\RandPortionsTests.cs" />
     <Compile Include="LawTests\CitationTests.cs" />
     <Compile Include="LawTests\AugsteinvLeslieTests.cs" />
+    <Compile Include="LawTests\EverTiteRoofingCorpvGreenTests.cs" />
     <Compile Include="LawTests\FairmountvCrundenMartinTests.cs" />
     <Compile Include="LawTests\KloianvDominosPizzaTests.cs" />
     <Compile Include="LawTests\LeonardvPepsicoIncTests.cs" />

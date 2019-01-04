@@ -20,12 +20,12 @@ namespace NoFuture.Rand.Law.US.Contracts
         }
 
         /// <summary>
-        /// A test for if Acceptance is actually what the promisor wants.
+        /// A test for if Acceptance is actually what the promisor wants in return.
         /// </summary>
         public virtual Func<ILegalPerson, T, bool> IsSoughtByPromisor { get; set; }
 
         /// <summary>
-        /// A test for if Offer is actually what the promisee wants.
+        /// A test for if Offer is actually what the promisee wants in return.
         /// </summary>
         public virtual Func<ILegalPerson, ObjectiveLegalConcept, bool> IsGivenByPromisee { get; set; }
 

@@ -10,10 +10,14 @@ namespace NoFuture.Rand.Tests.LawTests
 {
     /// <summary>
     /// FAIRMOUNT GLASS WORKS v. CRUNDEN-MARTIN WOODEN WARE CO. Court of Appeals of Kentucky 106 Ky. 659, 51 S.W. 196 (1899)
-    /// The doctrinal point of this case seems to be that the sequence (as in ordered and unique set of telegrams) produced 
-    /// an offer and acceptance and therefore is a contract.  The fact that Fairmount sent a response to the acceptance is 
-    /// irrelevant.
     /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// The doctrinal point of this case seems to be that the sequence (as in ordered and unique set of telegrams) produced 
+    /// an offer and acceptance and therefore is a contract.  The fact that Fairmount sent a, "all sold out" afterwords is 
+    /// not good enough.
+    /// ]]>
+    /// </remarks>
     [TestFixture]
     public class FairmountvCrundenMartinTests
     {
