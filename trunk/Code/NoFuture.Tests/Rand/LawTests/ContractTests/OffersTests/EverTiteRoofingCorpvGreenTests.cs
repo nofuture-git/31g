@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.OffersTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
 {
     /// <summary>
     /// EVER-TITE ROOFING CORP. v. GREEN Court of Appeal of Louisiana, Second Circuit 83 So. 2d 449 (1955)

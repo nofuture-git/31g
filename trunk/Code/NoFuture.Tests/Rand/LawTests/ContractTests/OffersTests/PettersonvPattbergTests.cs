@@ -4,7 +4,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.OffersTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
 {
     /// <summary>
     /// PETTERSON v. PATTBERG Court of Appeals of New York 248 N.Y. 86, 161 N.E. 428 (1928)

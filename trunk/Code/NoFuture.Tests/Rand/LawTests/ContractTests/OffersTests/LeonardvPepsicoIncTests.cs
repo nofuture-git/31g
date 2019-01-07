@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.OffersTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
 {
     /// <summary>
     /// LEONARD v. PEPSICO, INC. United States District Court for the Southern District of New York 88 F.Supp. 2d 116 (S.D.N.Y. 1999)

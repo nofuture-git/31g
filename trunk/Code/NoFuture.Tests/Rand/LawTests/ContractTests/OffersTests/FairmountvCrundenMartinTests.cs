@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.OffersTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
 {
     /// <summary>
     /// FAIRMOUNT GLASS WORKS v. CRUNDEN-MARTIN WOODEN WARE CO. Court of Appeals of Kentucky 106 Ky. 659, 51 S.W. 196 (1899)
