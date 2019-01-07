@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Tests.LawTests.MutualAssentTests
             var testSubject = new UnilateralContract
             {
                 Offer = new TwentyThousandUsdReward(),
+                //the court views acceptance occuring as soon as the equipment was turned over to the police in Germany
                 Acceptance = offer =>
                     offer is TwentyThousandUsdReward ? new RyanLesliesLaptopComputerAndExternalHd() : null,
 

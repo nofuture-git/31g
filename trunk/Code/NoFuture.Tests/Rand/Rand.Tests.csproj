@@ -66,6 +66,7 @@
     <Compile Include="LawTests\OffersTests\LeonardvPepsicoIncTests.cs" />
     <Compile Include="LawTests\MutualAssentTests\LucyvZehmerTests.cs" />
     <Compile Include="LawTests\MutualAssentTests\OswaldvAllenTests.cs" />
+    <Compile Include="LawTests\OffersTests\PettersonvPattbergTests.cs" />
     <Compile Include="LawTests\TermTests.cs" />
     <Compile Include="SpTests\BalanceTests.cs" />
     <Compile Include="SpTests\JournalTests.cs" />
