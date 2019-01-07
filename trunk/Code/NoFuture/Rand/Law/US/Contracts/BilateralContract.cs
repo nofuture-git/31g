@@ -37,8 +37,10 @@ namespace NoFuture.Rand.Law.US.Contracts
         public override string ToString()
         {
             var allEntries = GetAuditEntries() as List<string> ?? new List<string>();
-            allEntries.AddRange(MutualAssent.GetAuditEntries());
-            allEntries.AddRange(Consideration.GetAuditEntries());
+            if(MutualAssent != null)
+                allEntries.AddRange(MutualAssent.GetAuditEntries());
+            if(Consideration != null)
+                allEntries.AddRange(Consideration.GetAuditEntries());
             return string.Join(Environment.NewLine, allEntries);
         }
     }

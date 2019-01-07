@@ -58,7 +58,9 @@
     <Compile Include="GovTests\VitalRecordTests.cs" />
     <Compile Include="CoreTests\RandPortionsTests.cs" />
     <Compile Include="LawTests\CitationTests.cs" />
+    <Compile Include="LawTests\ContractTests\AcceptanceTests\DavisvJacobyTests.cs" />
     <Compile Include="LawTests\ContractTests\MutualAssentTests\AugsteinvLeslieTests.cs" />
+    <Compile Include="LawTests\ContractTests\OffersTests\ConfederateMotorsvTernyTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\EverTiteRoofingCorpvGreenTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\FairmountvCrundenMartinTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\InReEstateOfServertsonTests.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="LawTests\ContractTests\MutualAssentTests\LucyvZehmerTests.cs" />
     <Compile Include="LawTests\ContractTests\MutualAssentTests\OswaldvAllenTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\PettersonvPattbergTests.cs" />
+    <Compile Include="LawTests\ContractTests\OffersTests\PoelvBrunswickTests.cs" />
     <Compile Include="LawTests\TermTests.cs" />
     <Compile Include="SpTests\BalanceTests.cs" />
     <Compile Include="SpTests\JournalTests.cs" />
@@ -196,6 +199,7 @@
   <ItemGroup>
     <EmbeddedResource Include="LawTests\CaseExample00.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

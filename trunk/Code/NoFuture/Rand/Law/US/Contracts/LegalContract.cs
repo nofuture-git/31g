@@ -29,6 +29,11 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <summary>
         /// A function which resolves what the offer gets in return.
         /// </summary>
+        /// <remarks>
+        /// when an offer has indicated the mode and means of acceptance, 
+        /// an acceptance in accordance with that mode or means is binding 
+        /// on the offeror
+        /// </remarks>
         public virtual Func<ObjectiveLegalConcept, T> Acceptance { get; set; }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
