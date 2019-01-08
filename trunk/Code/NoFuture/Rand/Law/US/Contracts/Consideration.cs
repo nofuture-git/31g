@@ -7,7 +7,17 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// The type which from the reciprocal of an offer
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [Note("a consideration: a performance or return promise must be bargained for")]
+    /// <remarks>
+    /// <![CDATA[
+    /// - origin from "quid pro quo",
+    /// is it offered in order to get something in return,
+    /// something that has value in the eyes of the law.  
+    /// Illusionary promise: words in promissory form that promise nothing
+    /// ]]>
+    /// </remarks>
+    [Note("is performance or return promise bargained for", 
+          "is not just a choice (illusionary promise)",
+          "is not already obligated to do")]
     public class Consideration<T> : ObjectiveLegalConcept where T : ObjectiveLegalConcept
     {
         private readonly LegalContract<T> _contract;

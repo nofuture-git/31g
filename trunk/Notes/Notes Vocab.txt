@@ -651,3 +651,4 @@ segue: (seg-way) move, without interruption, from one thing to another
 tendentious: intended to promote a particular cause or point of view
 insouciant: showing a casual lack of concern; indifferent.
 defrock: deprive someone of professional status
+mesne: (law) intermediate
