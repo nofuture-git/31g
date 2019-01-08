@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         }
     }
 
-    public class OfferOneCent : SocialContract
+    public class OfferOneCent : DonativePromise
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {

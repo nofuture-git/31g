@@ -21,12 +21,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         [Test]
         public void RidgeRunnerForestryvVeneman()
         {
-            var testSubject = new LegalContract<SocialContract>()
+            var testSubject = new LegalContract<DonativePromise>()
             {
                 Offer = new OfferRequestForQuotations(),
                 Acceptance = o => o is OfferRequestForQuotations ? new AcceptanceInteragencyRental() : null,
             };
-            testSubject.Consideration = new Consideration<SocialContract>(testSubject)
+            testSubject.Consideration = new Consideration<DonativePromise>(testSubject)
             {
                 IsSoughtByPromisor = (lp, p) => lp is RidgeRunnerForestry && p is AcceptanceInteragencyRental,
                 IsGivenByPromisee = (lp, p) => lp is Veneman && p is OfferRequestForQuotations
@@ -37,12 +37,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         }
     }
 
-    public class OfferRequestForQuotations : SocialContract
+    public class OfferRequestForQuotations : DonativePromise
     {
 
     }
 
-    public class AcceptanceInteragencyRental : SocialContract
+    public class AcceptanceInteragencyRental : DonativePromise
     {
 
     }

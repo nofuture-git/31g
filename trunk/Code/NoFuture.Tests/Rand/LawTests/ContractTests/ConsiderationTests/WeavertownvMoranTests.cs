@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         }
     }
 
-    public class OfferSellTicketLicx : SocialContract
+    public class OfferSellTicketLicx : DonativePromise
     {
     }
 

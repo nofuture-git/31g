@@ -2,12 +2,12 @@
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
-    [Aka("Donative Promise")]
-    public class SocialContract : Promise
+    [Aka("Social Contract")]
+    public class DonativePromise : Promise
     {
-        public SocialContract()
+        public DonativePromise()
         {
-            base.AddAuditEntry($"A {nameof(SocialContract)} is a donative promise and cannot be breached.");
+            base.AddAuditEntry($"A {nameof(DonativePromise)} cannot be breached.");
         }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
