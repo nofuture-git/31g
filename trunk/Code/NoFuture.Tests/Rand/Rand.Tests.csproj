@@ -63,11 +63,16 @@
     <Compile Include="LawTests\ContractTests\AcceptanceTests\HobbsvMassasoitWhipCoTests.cs" />
     <Compile Include="LawTests\ContractTests\AcceptanceTests\MunicipalvTownOfRamapoTests.cs" />
     <Compile Include="LawTests\ContractTests\AcceptanceTests\UnitedStatesLifeInsCovWilsonTests.cs" />
+    <Compile Include="LawTests\ContractTests\ConsiderationTests\AlaskaPackersAssocvDomenicoTests.cs" />
     <Compile Include="LawTests\ContractTests\ConsiderationTests\HamervSidwayTests.cs" />
+    <Compile Include="LawTests\ContractTests\ConsiderationTests\HarringtonvTaylorTests.cs" />
     <Compile Include="LawTests\ContractTests\ConsiderationTests\JankowskivJedzTests.cs" />
+    <Compile Include="LawTests\ContractTests\ConsiderationTests\MillsvWymanTests.cs" />
+    <Compile Include="LawTests\ContractTests\ConsiderationTests\QuigleyvWilsonTests.cs" />
     <Compile Include="LawTests\ContractTests\ConsiderationTests\RidgeRunnerForestryvVenemanTests.cs" />
     <Compile Include="LawTests\ContractTests\ConsiderationTests\SchnellvNellTests.cs" />
     <Compile Include="LawTests\ContractTests\ConsiderationTests\WeavertownvMoranTests.cs" />
+    <Compile Include="LawTests\ContractTests\ConsiderationTests\WebbvMcGowinTests.cs" />
     <Compile Include="LawTests\ContractTests\MutualAssentTests\AugsteinvLeslieTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\ConfederateMotorsvTernyTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\EverTiteRoofingCorpvGreenTests.cs" />

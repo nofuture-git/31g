@@ -8,24 +8,23 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
 {
     /// <summary>
-    /// WEAVERTOWN TRANSPORT LEASING, INC. v. MORAN Superior Court of Pennsylvania 834 A.2d 1169 (Pa.Super.Ct. 2003)
+    /// MILLS v. WYMAN Supreme Court of Massachusetts 20 Mass. (3 Pick.) 207 (1825)
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// Doctrine issue, seems to be that understanding the side of a bargin in consideration can be 
-    /// tricky.  Appeal court found the arrangement as "gratuitous" so its without consideration.
+    /// Doctrine issue, still can't enforce a donative promise even when morally ought to.
     /// ]]>
     /// </remarks>
     [TestFixture]
-    public class WeavertownvMoranTests
+    public class MillsvWymanTests
     {
         [Test]
-        public void WeavertownvMoran()
+        public void MillsvWyman()
         {
             var testSubject = new BilateralContract
             {
-                Offer = new OfferSellTicketLicx(),
-                Acceptance = o => o is OfferSellTicketLicx ? new AcceptanceBuyTicketLicx() : null,
+                Offer =  new OfferMedicalTreatment(),
+                Acceptance = o => o is OfferMedicalTreatment ? new AcceptancePayForItAfterWords() : null,
                 MutualAssent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
@@ -38,32 +37,31 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
                 IsSoughtByPromisor = (lp, p) => true,
                 IsGivenByPromisee = (lp, p) => true
             };
-
-            var testResult = testSubject.IsValid(new Weavertown(), new Moran());
+            var testResult = testSubject.IsValid(new Mills(), new Wyman());
             Assert.IsFalse(testResult);
             Console.WriteLine(testSubject.ToString());
         }
     }
 
-    public class OfferSellTicketLicx : DonativePromise
-    {
-    }
-
-    public class AcceptanceBuyTicketLicx : Promise
+    public class OfferMedicalTreatment : Promise
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return offeror is Moran && offeree is Weavertown;
+            return true;
         }
     }
 
-    public class Weavertown : VocaBase, ILegalPerson
+    public class AcceptancePayForItAfterWords : DonativePromise
     {
-        public Weavertown() : base("WEAVERTOWN TRANSPORT LEASING, INC.") { }
     }
 
-    public class Moran : VocaBase, ILegalPerson
+    public class Mills : VocaBase, ILegalPerson
     {
-        public Moran(): base("Daniel Moran") { }
+        public Mills() : base("MILLS") { }
+    }
+
+    public class Wyman : VocaBase, ILegalPerson
+    {
+        public Wyman() :base("Levi Wyman") { }
     }
 }
