@@ -50,6 +50,11 @@
     <Compile Include="US\Contracts\Promise.cs" />
     <Compile Include="US\Contracts\DonativePromise.cs" />
     <Compile Include="US\Contracts\PromissoryEstoppel.cs" />
+    <Compile Include="US\Contracts\Ucc\Agreement.cs" />
+    <Compile Include="US\Contracts\Ucc\Contract.cs" />
+    <Compile Include="US\Contracts\Ucc\Goods.cs" />
+    <Compile Include="US\Contracts\Ucc\GoodsInTerra.cs" />
+    <Compile Include="US\Contracts\Ucc\IUccItem.cs" />
     <Compile Include="US\Contracts\UnilateralContract.cs" />
     <Compile Include="US\IObjectiveLegalConcept.cs" />
     <Compile Include="US\ObjectiveLegalConcept.cs" />
