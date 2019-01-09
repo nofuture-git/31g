@@ -44,6 +44,7 @@
     <Compile Include="US\Contracts\Advertisement.cs" />
     <Compile Include="US\Contracts\BilateralContract.cs" />
     <Compile Include="US\Contracts\Consideration.cs" />
+    <Compile Include="US\Contracts\IAssent.cs" />
     <Compile Include="US\Contracts\LegalContract.cs" />
     <Compile Include="US\Contracts\MutualAssent.cs" />
     <Compile Include="US\Contracts\Performance.cs" />
