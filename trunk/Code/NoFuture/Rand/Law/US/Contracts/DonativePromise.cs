@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return false;
+            return true;
         }
 
         public override bool IsEnforceableInCourt => false;

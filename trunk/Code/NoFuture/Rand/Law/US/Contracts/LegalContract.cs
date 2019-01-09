@@ -38,16 +38,37 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
+
+            if (Consideration == null)
+            {
+                AddAuditEntry($"{nameof(Consideration)} is null");
+                return false;
+            }
+
+            if (!Consideration.IsValid(offeror, offeree))
+            {
+                AddAuditEntry($"{nameof(Consideration)}.{nameof(IsValid)} returned false");
+                return false;
+            }
+
             if (Offer == null)
             {
                 AddAuditEntry($"{nameof(Offer)} is null");
                 return false;
             }
 
-            if (Acceptance == null)
+            if (!Offer.IsValid(offeror, offeree))
             {
-                AddAuditEntry($"{nameof(Acceptance)} is null");
+                AddAuditEntry("the offer in invalid");
+                AddAuditEntryRange(Offer.GetAuditEntries());
                 return false;
+            }
+
+            //short-circuit since this allows for no return promise 
+            var promissoryEstoppel = Consideration as PromissoryEstoppel;
+            if (promissoryEstoppel != null)
+            {
+                return true;
             }
 
             if (!Offer.IsEnforceableInCourt)
@@ -57,10 +78,9 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!Offer.IsValid(offeror, offeree))
+            if (Acceptance == null)
             {
-                AddAuditEntry("the offer in invalid");
-                AddAuditEntryRange(Offer.GetAuditEntries());
+                AddAuditEntry($"{nameof(Acceptance)} is null");
                 return false;
             }
 
@@ -85,17 +105,6 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (Consideration == null)
-            {
-                AddAuditEntry($"{nameof(Consideration)} is null");
-                return false;
-            }
-
-            if (!Consideration.IsValid(offeror, offeree))
-            {
-                AddAuditEntry($"{nameof(Consideration)}.{nameof(IsValid)} returned false");
-                return false;
-            }
 
             return true;
         }

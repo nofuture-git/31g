@@ -49,6 +49,7 @@
     <Compile Include="US\Contracts\Performance.cs" />
     <Compile Include="US\Contracts\Promise.cs" />
     <Compile Include="US\Contracts\DonativePromise.cs" />
+    <Compile Include="US\Contracts\PromissoryEstoppel.cs" />
     <Compile Include="US\Contracts\UnilateralContract.cs" />
     <Compile Include="US\IObjectiveLegalConcept.cs" />
     <Compile Include="US\ObjectiveLegalConcept.cs" />

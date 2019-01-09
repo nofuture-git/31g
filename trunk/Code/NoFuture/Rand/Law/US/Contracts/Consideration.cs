@@ -16,6 +16,8 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         public Consideration(LegalContract<T> contract)
         {
+            if (contract == null)
+                return;
             _contract = contract;
             _contract.Consideration = this;
         }
