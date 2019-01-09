@@ -5,9 +5,9 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// <summary>
     /// This is a substitute for Consideration
     /// </summary>
-    public class PromissoryEstoppel : Consideration<DonativePromise>
+    public class PromissoryEstoppel<T> : Consideration<T> where T : ObjectiveLegalConcept
     {
-        public PromissoryEstoppel(LegalContract<DonativePromise> contract) : base(contract)
+        public PromissoryEstoppel(LegalContract<T> contract) : base(contract)
         {
         }
 
@@ -16,18 +16,33 @@ namespace NoFuture.Rand.Law.US.Contracts
             var dependent = IsOffereeDependedOnPromise ?? (o => true);
             var worse = IsOffereePositionWorse ?? (o => true);
 
-            return dependent(offeree) && worse(offeree);
+            var isdependent = dependent(offeree);
+            if (!isdependent)
+            {
+                AddAuditEntry($"{nameof(PromissoryEstoppel<T>)} is not a " +
+                              $"consideration substitute: {nameof(IsOffereeDependedOnPromise)} " +
+                              $"for {offeree?.Name} is false");
+            }
+            var isWorse = worse(offeree);
+            if (!isWorse)
+            {
+                AddAuditEntry($"{nameof(PromissoryEstoppel<T>)} is not a " +
+                              $"consideration substitute: {nameof(IsOffereePositionWorse)} " +
+                              $"for {offeree?.Name} is false");
+            }
+
+            return isdependent && isWorse;
         }
 
         /// <summary>
         /// Offeree changed conduct based on promise and is now depend upon it.
         /// </summary>
-        public Predicate<ILegalPerson> IsOffereeDependedOnPromise { get; set; } = o => true;
+        public virtual Predicate<ILegalPerson> IsOffereeDependedOnPromise { get; set; } = o => true;
 
         /// <summary>
         /// Retracting the gift now will leave offeree in position worse than if
         /// the promise had never been made.
         /// </summary>
-        public Predicate<ILegalPerson> IsOffereePositionWorse { get; set; } = o => true;
+        public virtual Predicate<ILegalPerson> IsOffereePositionWorse { get; set; } = o => true;
     }
 }

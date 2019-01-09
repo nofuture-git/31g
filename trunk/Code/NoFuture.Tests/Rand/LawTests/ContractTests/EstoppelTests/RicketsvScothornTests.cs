@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
 {
 
     /// <summary>
-    /// 
+    /// RICKETTS v. SCOTHORN Supreme Court of Nebraska 57 Neb. 51, 77 N.W. 365 (1898)
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// right arising from acts, admissions, or conduct which have induced a change 
+    /// [ right arising from acts, admissions, or conduct which have induced a change 
     /// of position in accordance with the real or apparent intention of the party 
-    /// against whom they are alleged.
+    /// against whom they are alleged.]
     /// (1) A makes donative promise X to B
     /// (2) B changes conduct based on X
     /// (3) A retracts X
@@ -38,10 +33,10 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
             {
                 Offer = new OfferTwoThousandToGranddaughter(),
             };
-            testSubject.Consideration = new PromissoryEstoppel(testSubject);
+            testSubject.Consideration = new PromissoryEstoppel<DonativePromise>(testSubject);
 
             var testResult = testSubject.IsValid(new Rickets(), new Scothorn());
-            Console.WriteLine(testResult);
+            Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
         }
     }

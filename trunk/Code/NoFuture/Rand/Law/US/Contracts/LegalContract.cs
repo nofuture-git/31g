@@ -48,6 +48,7 @@ namespace NoFuture.Rand.Law.US.Contracts
             if (!Consideration.IsValid(offeror, offeree))
             {
                 AddAuditEntry($"{nameof(Consideration)}.{nameof(IsValid)} returned false");
+                AddAuditEntryRange(Consideration.GetAuditEntries());
                 return false;
             }
 
@@ -65,7 +66,7 @@ namespace NoFuture.Rand.Law.US.Contracts
             }
 
             //short-circuit since this allows for no return promise 
-            var promissoryEstoppel = Consideration as PromissoryEstoppel;
+            var promissoryEstoppel = Consideration as PromissoryEstoppel<T>;
             if (promissoryEstoppel != null)
             {
                 return true;
