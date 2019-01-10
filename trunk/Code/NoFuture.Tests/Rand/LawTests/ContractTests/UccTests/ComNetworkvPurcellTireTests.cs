@@ -20,7 +20,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         [Test]
         public void ComNetworkvPurcellTire()
         {
-            var testSubject = new UccContract<Goods>{SaleOf = new IbmPersonalComputers(), Agreement = new LetterFromCBrown()};
+            var testSubject = new UccContract<Goods>
+            {
+                Agreement = new LetterFromCBrown{ IsApprovalExpressed = lp => true},
+                Offer = new IbmPersonalComputers(),
+                Acceptance = o => new IbmPersonalComputers()
+            };
             var testResult = testSubject.IsValid(new ComNetwork(), new PurcellTire());
             Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
@@ -39,7 +44,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         }
     }
 
-    public class LetterFromCBrown : Agreement
+    public class LetterFromCBrown : Agreement<Goods>
     {
         /// <summary>
         /// The court finds that both parties manifest assent based on the written

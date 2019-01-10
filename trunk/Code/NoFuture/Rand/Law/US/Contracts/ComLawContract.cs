@@ -3,38 +3,19 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
+    /// <inheritdoc cref="IContract{T}"/>
     [Aka("Enforceable Promise")]
-    public class ComLawContract<T> : ObjectiveLegalConcept where T : ObjectiveLegalConcept
+    public class ComLawContract<T> : ObjectiveLegalConcept, IContract<T> where T : IObjectiveLegalConcept
     {
-
         [Note("bargained for: if it is sought by one and given by the other")]
         public virtual Consideration<T> Consideration { get; set; }
 
         [Note("this is what distinguishes a common (donative) promise from a legal one")]
         public override bool IsEnforceableInCourt => true;
 
-        /// <summary>
-        /// What the promisor is putting out there.
-        /// </summary>
-        /// <remarks>
-        /// May be terminated by
-        /// (a) rejection or counter-offer by the offeree, or
-        /// (b) lapse of time, or
-        /// (c) revocation by the offeror, or
-        /// (d) death or incapacity of the offeror or offeree.
-        /// </remarks>
-        [Note("Is the manifestation of willingness to enter into a bargain")]
-        public virtual ObjectiveLegalConcept Offer { get; set; }
+        public virtual IObjectiveLegalConcept Offer { get; set; }
 
-        /// <summary>
-        /// A function which resolves what the offer gets in return.
-        /// </summary>
-        /// <remarks>
-        /// when an offer has indicated the mode and means of acceptance, 
-        /// an acceptance in accordance with that mode or means is binding 
-        /// on the offeror
-        /// </remarks>
-        public virtual Func<ObjectiveLegalConcept, T> Acceptance { get; set; }
+        public virtual Func<IObjectiveLegalConcept, T> Acceptance { get; set; }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {

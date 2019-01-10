@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// <typeparam name="T"></typeparam>
     [Note("is performance or return promise bargained for")]
     [Aka("quid pro quo", "this for that")]
-    public class Consideration<T> : ObjectiveLegalConcept where T : ObjectiveLegalConcept
+    public class Consideration<T> : ObjectiveLegalConcept where T : IObjectiveLegalConcept
     {
         private readonly ComLawContract<T> _contract;
         public override bool IsEnforceableInCourt => true;
@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <summary>
         /// A test for if Offer is actually what the promisee wants in return.
         /// </summary>
-        public virtual Func<ILegalPerson, ObjectiveLegalConcept, bool> IsGivenByPromisee { get; set; }
+        public virtual Func<ILegalPerson, IObjectiveLegalConcept, bool> IsGivenByPromisee { get; set; }
 
         /// <summary>
         /// What is bargained for must have value
@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            var promise = _contract.Offer;
+            var promise = _contract.Offer is T valueM ? valueM : default(T);
             var returnPromise = _contract.Acceptance(promise);
             if (returnPromise == null)
             {
@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Law.US.Contracts
 
             var valPredicate = IsValueInEyesOfLaw ?? (o => true);
 
-            if (!valPredicate(promise as T))
+            if (!valPredicate(promise))
             {
                 AddAuditEntry($"The promise given by {offeror.Name} has no value in the eyes-of-the-law.");
                 return false;
@@ -103,7 +103,7 @@ namespace NoFuture.Rand.Law.US.Contracts
             }
 
             var illusionPredicate = IsIllusionaryPromise ?? (o => false);
-            if (illusionPredicate(promise as T))
+            if (illusionPredicate(promise))
             {
                 AddAuditEntry($"The promise given by {offeror.Name} is illusionary - it is not a promise at all.");
                 return false;
@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Law.US.Contracts
             }
 
             var existingDutyPredicate = IsExistingDuty ?? (o => false);
-            if (existingDutyPredicate(promise as T))
+            if (existingDutyPredicate(promise))
             {
                 AddAuditEntry($"The promise given by {offeror.Name} is an existing duty and cannot be bargined with nor for.");
                 return false;

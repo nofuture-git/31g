@@ -1,7 +1,10 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
+    /// <inheritdoc cref="ObjectiveLegalConcept"/>
+    /// <inheritdoc cref="IAssent"/>
     /// <summary>
     /// <![CDATA[
     /// the bargain of the parties in fact, as found in their 
@@ -9,11 +12,10 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     /// course of performance, course of dealing, or usage of trade
     /// ]]>
     /// </summary>
-    public abstract class Agreement : ObjectiveLegalConcept, IUccItem, IAssent
+    public abstract class Agreement<T> : ObjectiveLegalConcept, IUccItem, IAssent where T : IUccItem
     {
         public override bool IsEnforceableInCourt => true;
 
-        /// <inheritdoc />
         public virtual Predicate<ILegalPerson> IsApprovalExpressed { get; set; } = lp => true;
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)

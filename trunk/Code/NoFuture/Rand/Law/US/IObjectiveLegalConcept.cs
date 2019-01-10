@@ -15,5 +15,7 @@ namespace NoFuture.Rand.Law.US
         void AddAuditEntryRange(IEnumerable<string> msgs);
 
         IEnumerable<string> GetAuditEntries();
+
+        bool IsEnforceableInCourt { get; }
     }
 }

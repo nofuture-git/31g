@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Contracts.Ucc;
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
 {
     /// <summary>
-    /// TOUSLEY-BIXLER CONSTRUCTION CO.  v.COLGATE ENTERPRISES, INC. Court of Appeals of Indiana 429 N.E.2d 979 (Ind.Ct.App. 1982)
+    /// TOUSLEY-BIXLER CONSTRUCTION CO. v.COLGATE ENTERPRISES, INC. Court of Appeals of Indiana 429 N.E.2d 979 (Ind.Ct.App. 1982)
     /// </summary>
     /// <remarks>
     /// <![CDATA[
@@ -21,21 +21,27 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         public void TousleyBixlervColgate()
         {
             var testSubject =
-                new UccContract<Goods> {SaleOf = new Order4EarthenClay(), Agreement = new PurchaseOrder50000CubicFeetClay()};
+                new UccContract<Goods>
+                {
+                    Agreement = new PurchaseOrder50000CubicFeetClay
+                    {
+                        IsApprovalExpressed = lp => true
+                    },
+                    Offer = new Order4EarthenClay(),
+                    Acceptance = o => new Pay4EarthenClay()
+                };
             var testResult = testSubject.IsValid(new Colgate(), new TousleyBixler());
             Assert.IsFalse(testResult);
             Console.WriteLine(testSubject.ToString());
         }
     }
 
-    public class PurchaseOrder50000CubicFeetClay : Agreement
+    public class PurchaseOrder50000CubicFeetClay : Agreement<Goods>
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
-        {
-            return (offeror is TousleyBixler || offeror is Colgate)
-                   && (offeree is TousleyBixler || offeree is Colgate);
-        }
+
     }
+
+    public class Pay4EarthenClay : Order4EarthenClay { }
 
     public class Order4EarthenClay : GoodsInTerra
     {

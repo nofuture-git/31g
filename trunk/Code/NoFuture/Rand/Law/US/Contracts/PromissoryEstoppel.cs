@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// <summary>
     /// This is a substitute for Consideration
     /// </summary>
-    public class PromissoryEstoppel<T> : Consideration<T> where T : ObjectiveLegalConcept
+    public class PromissoryEstoppel<T> : Consideration<T> where T : IObjectiveLegalConcept
     {
         public PromissoryEstoppel(ComLawContract<T> contract) : base(contract)
         {

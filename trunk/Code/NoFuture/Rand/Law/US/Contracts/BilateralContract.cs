@@ -4,6 +4,7 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
+    /// <inheritdoc />
     /// <summary>
     /// Differs from unilateral in that it deals with a promise for a promise or performance
     /// </summary>
