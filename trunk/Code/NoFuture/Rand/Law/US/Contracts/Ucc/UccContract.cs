@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     /// the parties' agreement as determined by the UCC
     /// ]]>
     /// </summary>
-    public class Contract<T> : ObjectiveLegalConcept, IUccItem where T : IUccItem
+    public class UccContract<T> : ObjectiveLegalConcept, IUccItem where T : IUccItem
     {
         [Note("the bargain of the parties")]
         public virtual Agreement Agreement { get; set; }

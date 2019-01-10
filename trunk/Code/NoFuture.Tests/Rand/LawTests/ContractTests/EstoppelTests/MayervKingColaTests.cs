@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
         [Test]
         public void MayervKingCola()
         {
-            var testSubject = new LegalContract<Promise>
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferEmploymentWithKingCola(),
             };

@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law.US.Contracts
 {
     [Aka("Enforceable Promise")]
-    public class LegalContract<T> : ObjectiveLegalConcept where T : ObjectiveLegalConcept
+    public class ComLawContract<T> : ObjectiveLegalConcept where T : ObjectiveLegalConcept
     {
 
         [Note("bargained for: if it is sought by one and given by the other")]

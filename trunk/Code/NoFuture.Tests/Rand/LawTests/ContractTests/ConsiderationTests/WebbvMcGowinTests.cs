@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         [Test]
         public void WebbvMcGowin()
         {
-            var testSubject = new LegalContract<Promise>()
+            var testSubject = new ComLawContract<Promise>()
             {
                 Offer = new OfferSavedMcGowinLife(),
                 Acceptance = o => o is OfferSavedMcGowinLife ? new AcceptancePayForWebbsInjuries(): null,

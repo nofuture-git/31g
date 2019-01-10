@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         public void TousleyBixlervColgate()
         {
             var testSubject =
-                new Contract<Goods> {SaleOf = new Order4EarthenClay(), Agreement = new PurchaseOrder50000CubicFeetClay()};
+                new UccContract<Goods> {SaleOf = new Order4EarthenClay(), Agreement = new PurchaseOrder50000CubicFeetClay()};
             var testResult = testSubject.IsValid(new Colgate(), new TousleyBixler());
             Assert.IsFalse(testResult);
             Console.WriteLine(testSubject.ToString());

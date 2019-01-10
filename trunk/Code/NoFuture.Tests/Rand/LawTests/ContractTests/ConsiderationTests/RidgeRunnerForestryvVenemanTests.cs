@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         [Test]
         public void RidgeRunnerForestryvVeneman()
         {
-            var testSubject = new LegalContract<DonativePromise>()
+            var testSubject = new ComLawContract<DonativePromise>()
             {
                 Offer = new OfferRequestForQuotations(),
                 Acceptance = o => o is OfferRequestForQuotations ? new AcceptanceInteragencyRental() : null,

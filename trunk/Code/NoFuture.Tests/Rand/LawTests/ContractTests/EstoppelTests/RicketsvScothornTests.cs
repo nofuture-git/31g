@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
         [Test]
         public void RicketvScothron()
         {
-            var testSubject = new LegalContract<DonativePromise>
+            var testSubject = new ComLawContract<DonativePromise>
             {
                 Offer = new OfferTwoThousandToGranddaughter(),
             };

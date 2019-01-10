@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         [Test]
         public void ComNetworkvPurcellTire()
         {
-            var testSubject = new Contract<Goods>{SaleOf = new IbmPersonalComputers(), Agreement = new LetterFromCBrown()};
+            var testSubject = new UccContract<Goods>{SaleOf = new IbmPersonalComputers(), Agreement = new LetterFromCBrown()};
             var testResult = testSubject.IsValid(new ComNetwork(), new PurcellTire());
             Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());

@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
         [Test]
         public void HoffmanvRedOwlStores()
         {
-            var testSubject = new LegalContract<Promise>()
+            var testSubject = new ComLawContract<Promise>()
             {
                 Offer = new OfferRedOwlFranchise(),
                 Acceptance = o => o is OfferRedOwlFranchise ? new AcceptanceRedOwlFranchise() : null,

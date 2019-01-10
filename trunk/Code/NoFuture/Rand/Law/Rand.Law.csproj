@@ -45,14 +45,14 @@
     <Compile Include="US\Contracts\BilateralContract.cs" />
     <Compile Include="US\Contracts\Consideration.cs" />
     <Compile Include="US\Contracts\IAssent.cs" />
-    <Compile Include="US\Contracts\LegalContract.cs" />
+    <Compile Include="US\Contracts\ComLawContract.cs" />
     <Compile Include="US\Contracts\MutualAssent.cs" />
     <Compile Include="US\Contracts\Performance.cs" />
     <Compile Include="US\Contracts\Promise.cs" />
     <Compile Include="US\Contracts\DonativePromise.cs" />
     <Compile Include="US\Contracts\PromissoryEstoppel.cs" />
     <Compile Include="US\Contracts\Ucc\Agreement.cs" />
-    <Compile Include="US\Contracts\Ucc\Contract.cs" />
+    <Compile Include="US\Contracts\Ucc\UccContract.cs" />
     <Compile Include="US\Contracts\Ucc\Goods.cs" />
     <Compile Include="US\Contracts\Ucc\GoodsInTerra.cs" />
     <Compile Include="US\Contracts\Ucc\IUccItem.cs" />

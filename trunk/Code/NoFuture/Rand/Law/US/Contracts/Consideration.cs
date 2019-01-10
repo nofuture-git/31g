@@ -11,10 +11,10 @@ namespace NoFuture.Rand.Law.US.Contracts
     [Aka("quid pro quo", "this for that")]
     public class Consideration<T> : ObjectiveLegalConcept where T : ObjectiveLegalConcept
     {
-        private readonly LegalContract<T> _contract;
+        private readonly ComLawContract<T> _contract;
         public override bool IsEnforceableInCourt => true;
 
-        public Consideration(LegalContract<T> contract)
+        public Consideration(ComLawContract<T> contract)
         {
             if (contract == null)
                 return;
