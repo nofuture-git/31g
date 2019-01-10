@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         }
     }
 
-    public class FowardContractForMillet : Agreement<Goods>
+    public class FowardContractForMillet : Agreement
     {
         public override Predicate<ILegalPerson> IsApprovalExpressed { get; set; } = lp =>
         {

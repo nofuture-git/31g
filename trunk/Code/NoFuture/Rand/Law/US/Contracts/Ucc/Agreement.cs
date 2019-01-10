@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
@@ -11,11 +13,17 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     /// course of performance, course of dealing, or usage of trade
     /// ]]>
     /// </summary>
-    public abstract class Agreement<T> : ObjectiveLegalConcept, IUccItem, IAssent where T : IUccItem
+    public abstract class Agreement : ObjectiveLegalConcept, IUccItem, IAssent
     {
         public override bool IsEnforceableInCourt => true;
 
         public virtual Predicate<ILegalPerson> IsApprovalExpressed { get; set; } = lp => true;
+
+        /// <summary>
+        /// Additional Terms in Acceptance or Confirmation.
+        /// </summary>
+        [Aka("UCC 2-207")]
+        public virtual Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {

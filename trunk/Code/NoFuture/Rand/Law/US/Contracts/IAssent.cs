@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
@@ -16,5 +17,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// ]]>
         /// </remarks>
         Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
+
+        Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
     }
 }

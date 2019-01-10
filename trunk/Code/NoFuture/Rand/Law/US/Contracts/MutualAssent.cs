@@ -22,10 +22,10 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// understanding.
         /// ]]>
         /// </remarks>
-        public Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
+        public virtual Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
 
         /// <inheritdoc />
-        public Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
+        public virtual Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {

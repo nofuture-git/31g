@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         }
     }
 
-    public class PurchaseOrder50000CubicFeetClay : Agreement<Goods>
+    public class PurchaseOrder50000CubicFeetClay : Agreement
     {
 
     }

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
 {
@@ -16,7 +12,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// Doctrine issue, merchant in UCC doesn't just mean any commerical enterprise
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -25,21 +21,20 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         [Test]
         public void FoleyvDaytonBank()
         {
+            var testSubject = new DaytonBank();
+            var testGoods = new InternationalTranstarTruck();
 
+            var testResult = testSubject.IsSkilledOrKnowledgeableOf(testGoods);
+            Assert.IsFalse(testResult);
+            Assert.IsTrue(testSubject.GetReasonEntries().Any());
+            Console.WriteLine(testSubject.ToString());
         }
-    }
-
-    public class PurchaseOfTruck : Agreement<Goods>
-    {
-        public override Predicate<ILegalPerson> IsApprovalExpressed { get; set; } = lp => true;
     }
 
     public class InternationalTranstarTruck : Goods
     {
         public int Year => 1977;
     }
-
-    public class SellTruck4Cash : InternationalTranstarTruck { }
 
     public class Foley : VocaBase, ILegalPerson
     {
@@ -53,10 +48,9 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         {
             if (goods is InternationalTranstarTruck)
             {
-                
-                return false;
+                AddReasonEntry("court found that 'are not merchants' - have no knowledge of big trucks.");
             }
-            return true;
+            return false;
         }
     }
 }

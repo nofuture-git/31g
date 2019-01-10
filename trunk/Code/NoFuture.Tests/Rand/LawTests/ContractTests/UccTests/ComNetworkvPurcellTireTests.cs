@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         }
     }
 
-    public class LetterFromCBrown : Agreement<Goods>
+    public class LetterFromCBrown : Agreement
     {
         /// <summary>
         /// The court finds that both parties manifest assent based on the written
