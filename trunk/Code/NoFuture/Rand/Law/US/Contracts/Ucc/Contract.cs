@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
@@ -10,18 +11,15 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     /// </summary>
     public class Contract<T> : ObjectiveLegalConcept, IUccItem where T : IUccItem
     {
-        private readonly Agreement _agreement;
-        public Contract(Agreement agreement)
-        {
-            _agreement = agreement;
-        }
+        [Note("the bargain of the parties")]
+        public virtual Agreement Agreement { get; set; }
 
-        public virtual Agreement Agreement => _agreement;
+        [Note("the scope of the commercial context")]
         public T SaleOf { get; set; }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            if (_agreement == null)
+            if (Agreement == null)
             {
                 AddAuditEntry("There is no agreement.");
                 return false;
@@ -34,10 +32,10 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
                 return false;
             }
 
-            if (!_agreement.IsValid(offeree, offeror))
+            if (!Agreement.IsValid(offeree, offeror))
             {
                 AddAuditEntry("The agreement is invalid");
-                AddAuditEntryRange(_agreement.GetAuditEntries());
+                AddAuditEntryRange(Agreement.GetAuditEntries());
                 return false;
             }
 
@@ -47,7 +45,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
                 return false;
             }
 
-            return _agreement?.IsValid(offeree, offeror) ?? false;
+            return Agreement?.IsValid(offeree, offeror) ?? false;
         }
 
         public override bool IsEnforceableInCourt => true;

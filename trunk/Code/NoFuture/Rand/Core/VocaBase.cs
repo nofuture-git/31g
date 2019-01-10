@@ -52,6 +52,9 @@ namespace NoFuture.Rand.Core
 
         public virtual string GetName(KindsOfNames k)
         {
+            if (!AnyNames())
+                return GetType().Name;
+
             var cname = Names.FirstOrDefault(x => x.Item1 == k);
             return cname?.Item2;
         }
