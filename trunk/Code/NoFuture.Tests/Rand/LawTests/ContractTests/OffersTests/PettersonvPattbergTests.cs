@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            AddAuditEntry("This offer got revoked when the mortgage was sold to another party");
+            AddReasonEntry("This offer got revoked when the mortgage was sold to another party");
             return false;
         }
 

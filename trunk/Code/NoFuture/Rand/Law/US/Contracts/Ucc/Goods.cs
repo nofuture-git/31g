@@ -11,19 +11,19 @@
         {
             if (!IsEnforceableInCourt)
             {
-                AddAuditEntry($"{GetType().Name} is not enforceable in court");
+                AddReasonEntry($"{GetType().Name} is not enforceable in court");
                 return false;
             }
 
             if (!IsMovable)
             {
-                AddAuditEntry($"{GetType().Name} is not movable");
+                AddReasonEntry($"{GetType().Name} is not movable");
                 return false;
             }
 
             if (!IsIdentified)
             {
-                AddAuditEntry($"{GetType().Name} has no identification");
+                AddReasonEntry($"{GetType().Name} has no identification");
                 return false;
             }
 

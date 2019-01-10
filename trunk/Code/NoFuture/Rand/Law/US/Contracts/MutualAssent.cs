@@ -31,25 +31,25 @@ namespace NoFuture.Rand.Law.US.Contracts
         {
             if (offeror == null)
             {
-                AddAuditEntry($"{nameof(offeror)} is null");
+                AddReasonEntry($"{nameof(offeror)} is null");
                 return false;
             }
 
             if (offeree == null)
             {
-                AddAuditEntry($"{nameof(offeree)} is null");
+                AddReasonEntry($"{nameof(offeree)} is null");
                 return false;
             }
 
             if (IsApprovalExpressed == null)
             {
-                AddAuditEntry($"{nameof(IsApprovalExpressed)} is null");
+                AddReasonEntry($"{nameof(IsApprovalExpressed)} is null");
                 return false;
             }
 
             if (TermsOfAgreement == null)
             {
-                AddAuditEntry($"{nameof(TermsOfAgreement)} is null");
+                AddReasonEntry($"{nameof(TermsOfAgreement)} is null");
                 return false;
             }
 
@@ -58,13 +58,13 @@ namespace NoFuture.Rand.Law.US.Contracts
 
             if (!IsApprovalExpressed(offeror))
             {
-                AddAuditEntry($"{offeror.Name} did not outwardly express approval");
+                AddReasonEntry($"{offeror.Name} did not outwardly express approval");
                 return false;
             }
 
             if (!IsApprovalExpressed(offeree))
             {
-                AddAuditEntry($"{offeree.Name} did not outwardly express approval");
+                AddReasonEntry($"{offeree.Name} did not outwardly express approval");
                 return false;
             }
 
@@ -76,14 +76,14 @@ namespace NoFuture.Rand.Law.US.Contracts
             var sorTerms = TermsOfAgreement?.Invoke(promisor);
             if (sorTerms == null || !sorTerms.Any())
             {
-                AddAuditEntry($"{promisor.Name} has no terms");
+                AddReasonEntry($"{promisor.Name} has no terms");
                 return false;
             }
 
             var seeTerms = TermsOfAgreement(promisee);
             if (seeTerms == null || !seeTerms.Any())
             {
-                AddAuditEntry($"{promisee.Name} has no terms");
+                AddReasonEntry($"{promisee.Name} has no terms");
                 return false;
             }
 
@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Law.US.Contracts
             var agreedTerms = sorTerms.Where(oo => seeTerms.Any(ee => ee.Equals(oo))).Select(v => v.Name);
             if (!agreedTerms.Any())
             {
-                AddAuditEntry($"there are no terms shared between {promisor.Name} and {promisee.Name}");
+                AddReasonEntry($"there are no terms shared between {promisor.Name} and {promisee.Name}");
                 return false;
             }
             foreach (var term in agreedTerms)
@@ -101,7 +101,7 @@ namespace NoFuture.Rand.Law.US.Contracts
 
                 if (!promiseeIdeaOfTerm?.EqualRefersTo(promisorIdeaOfTerm) ?? false)
                 {
-                    AddAuditEntry($"the term '{term}' does not have the same meaning between " +
+                    AddReasonEntry($"the term '{term}' does not have the same meaning between " +
                               $"{promisor.Name} and {promisee.Name}");
                     return false;
                 }

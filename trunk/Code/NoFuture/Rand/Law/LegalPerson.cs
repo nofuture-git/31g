@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Rand.Law
 {
-    public abstract class ObjectiveLegalConcept : IObjectiveLegalConcept, IReasonable
+    public class LegalPerson : VocaBase, ILegalPerson, IReasonable
     {
         private readonly List<string> _reasons = new List<string>();
 
-        public abstract bool IsValid(ILegalPerson offeror, ILegalPerson offeree);
+        public LegalPerson() { }
 
-        public abstract bool IsEnforceableInCourt { get; }
+        public LegalPerson(string name) : base(name) { }
+
+        public LegalPerson(string name, string groupName) : base(name, groupName) { }
 
         public virtual IEnumerable<string> GetReasonEntries()
         {
@@ -18,7 +21,7 @@ namespace NoFuture.Rand.Law.US
 
         public virtual void AddReasonEntry(string msg)
         {
-            if(!string.IsNullOrWhiteSpace(msg))
+            if (!string.IsNullOrWhiteSpace(msg))
                 _reasons.Add(msg);
         }
 
@@ -26,7 +29,7 @@ namespace NoFuture.Rand.Law.US
         {
             if (msgs == null)
                 return;
-            foreach(var msg in msgs)
+            foreach (var msg in msgs)
                 AddReasonEntry(msg);
         }
 

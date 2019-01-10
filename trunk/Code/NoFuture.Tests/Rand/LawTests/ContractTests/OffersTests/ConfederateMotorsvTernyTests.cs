@@ -104,7 +104,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         public override DateTime? Date { get; set; } = new DateTime(2010, 12, 28);
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            AddAuditEntry("court found this was too late, offer had expired.");
+            AddReasonEntry("court found this was too late, offer had expired.");
             return false;
         }
     }

@@ -14,7 +14,7 @@
                 return false;
             if (!IsSeveredBySeller)
             {
-                AddAuditEntry("sale of minerals or the like (including oil " +
+                AddReasonEntry("sale of minerals or the like (including oil " +
                               "and gas) [...] are to be severed by the seller");
                 return false;
             }

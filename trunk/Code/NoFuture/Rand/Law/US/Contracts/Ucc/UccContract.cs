@@ -23,27 +23,27 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         {
             if (Agreement == null)
             {
-                AddAuditEntry("There is no agreement.");
+                AddReasonEntry("There is no agreement.");
                 return false;
             }
 
             if (!Agreement.IsValid(offeree, offeror))
             {
-                AddAuditEntry("The agreement is invalid");
-                AddAuditEntryRange(Agreement.GetAuditEntries());
+                AddReasonEntry("The agreement is invalid");
+                AddReasonEntryRange(Agreement.GetReasonEntries());
                 return false;
             }
 
             if (!IsEnforceableInCourt)
             {
-                AddAuditEntry("The contract is not enforceable in court.");
+                AddReasonEntry("The contract is not enforceable in court.");
                 return false;
             }
 
             if (Offer != null && Offer.IsValid(offeror, offeree) == false)
             {
-                AddAuditEntry($"The {Offer.GetType().Name} is invalid");
-                AddAuditEntryRange(Offer.GetAuditEntries());
+                AddReasonEntry($"The {Offer.GetType().Name} is invalid");
+                AddReasonEntryRange(Offer.GetReasonEntries());
                 return false;
             }
             
@@ -53,8 +53,8 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
             var acceptance = Acceptance(Offer);
             if (acceptance != null && acceptance.IsValid(offeror, offeree) == false)
             {
-                AddAuditEntry($"The {acceptance.GetType().Name} is invalid");
-                AddAuditEntryRange(acceptance.GetAuditEntries());
+                AddReasonEntry($"The {acceptance.GetType().Name} is invalid");
+                AddReasonEntryRange(acceptance.GetReasonEntries());
                 return false;
             }
 

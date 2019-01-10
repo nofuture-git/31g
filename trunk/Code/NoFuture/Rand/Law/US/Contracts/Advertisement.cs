@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 var rslt = IsClear && IsDefinite && IsExplicit && IsNothingLeftToOpenNegotiation;
                 if (!rslt)
                 {
-                    AddAuditEntry($"This {nameof(Advertisement)} is not enforceable: " +
+                    AddReasonEntry($"This {nameof(Advertisement)} is not enforceable: " +
                                $"{nameof(IsClear)} = {IsClear} " +
                                $"{nameof(IsDefinite)} = {IsDefinite} " +
                                $"{nameof(IsExplicit)} = {IsExplicit} " +

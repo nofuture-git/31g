@@ -58,13 +58,13 @@ namespace NoFuture.Rand.Law.US.Contracts
         {
             if (IsSoughtByPromisor == null)
             {
-                AddAuditEntry($"{nameof(IsSoughtByPromisor)} is null");
+                AddReasonEntry($"{nameof(IsSoughtByPromisor)} is null");
                 return false;
             }
 
             if (IsGivenByPromisee == null)
             {
-                AddAuditEntry($"{nameof(IsGivenByPromisee)} is null");
+                AddReasonEntry($"{nameof(IsGivenByPromisee)} is null");
                 return false;
             }
 
@@ -72,19 +72,19 @@ namespace NoFuture.Rand.Law.US.Contracts
             var returnPromise = _contract.Acceptance(promise);
             if (returnPromise == null)
             {
-                AddAuditEntry($"{nameof(returnPromise)} is null");
+                AddReasonEntry($"{nameof(returnPromise)} is null");
                 return false;
             }
 
             if (!IsSoughtByPromisor(offeror, returnPromise))
             {
-                AddAuditEntry($"the return promise is not what {offeror.Name} wants");
+                AddReasonEntry($"the return promise is not what {offeror.Name} wants");
                 return false;
             }
 
             if (!IsGivenByPromisee(offeree, promise))
             {
-                AddAuditEntry($"the offer is not what the {offeree.Name} wants");
+                AddReasonEntry($"the offer is not what the {offeree.Name} wants");
                 return false;
             }
 
@@ -92,37 +92,37 @@ namespace NoFuture.Rand.Law.US.Contracts
 
             if (!valPredicate(promise))
             {
-                AddAuditEntry($"The promise given by {offeror.Name} has no value in the eyes-of-the-law.");
+                AddReasonEntry($"The promise given by {offeror.Name} has no value in the eyes-of-the-law.");
                 return false;
             }
 
             if (!valPredicate(returnPromise))
             {
-                AddAuditEntry($"The return promise given by {offeree.Name} has no value in the eyes-of-the-law.");
+                AddReasonEntry($"The return promise given by {offeree.Name} has no value in the eyes-of-the-law.");
                 return false;
             }
 
             var illusionPredicate = IsIllusionaryPromise ?? (o => false);
             if (illusionPredicate(promise))
             {
-                AddAuditEntry($"The promise given by {offeror.Name} is illusionary - it is not a promise at all.");
+                AddReasonEntry($"The promise given by {offeror.Name} is illusionary - it is not a promise at all.");
                 return false;
             }
             if (illusionPredicate(returnPromise))
             {
-                AddAuditEntry($"The return promise given by {offeree.Name} is illusionary - it is not a promise at all.");
+                AddReasonEntry($"The return promise given by {offeree.Name} is illusionary - it is not a promise at all.");
                 return false;
             }
 
             var existingDutyPredicate = IsExistingDuty ?? (o => false);
             if (existingDutyPredicate(promise))
             {
-                AddAuditEntry($"The promise given by {offeror.Name} is an existing duty and cannot be bargined with nor for.");
+                AddReasonEntry($"The promise given by {offeror.Name} is an existing duty and cannot be bargined with nor for.");
                 return false;
             }
             if (existingDutyPredicate(returnPromise))
             {
-                AddAuditEntry($"The return promise given by {offeree.Name} is an existing duty and cannot be bargined with nor for.");
+                AddReasonEntry($"The return promise given by {offeree.Name} is an existing duty and cannot be bargined with nor for.");
                 return false;
             }
 

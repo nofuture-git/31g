@@ -10,11 +10,11 @@ namespace NoFuture.Rand.Law.US
         /// </summary>
         bool IsValid(ILegalPerson offeror, ILegalPerson offeree);
 
-        void AddAuditEntry(string msg);
+        void AddReasonEntry(string msg);
 
-        void AddAuditEntryRange(IEnumerable<string> msgs);
+        void AddReasonEntryRange(IEnumerable<string> msgs);
 
-        IEnumerable<string> GetAuditEntries();
+        IEnumerable<string> GetReasonEntries();
 
         bool IsEnforceableInCourt { get; }
     }

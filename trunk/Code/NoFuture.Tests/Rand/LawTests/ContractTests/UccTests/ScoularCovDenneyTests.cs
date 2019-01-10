@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            AddAuditEntry("court found that this was ambiguous form of acceptance");
+            AddReasonEntry("court found that this was ambiguous form of acceptance");
             return false;
         }
     }

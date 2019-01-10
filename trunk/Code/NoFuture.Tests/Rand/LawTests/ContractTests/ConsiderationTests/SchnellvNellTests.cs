@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            AddAuditEntry("this fails consideration because one " +
+            AddReasonEntry("this fails consideration because one " +
                           "cent is not any real value in eyes of law");
             return false;
         }

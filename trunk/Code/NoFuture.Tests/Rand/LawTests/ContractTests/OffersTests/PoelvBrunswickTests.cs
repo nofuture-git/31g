@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         public override DateTime? Date { get; set; } = new DateTime(1911, 1, 7);
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            AddAuditEntry("Brunswick never agreed to the counter offer from Mr. Rogers on Apr. 6th ");
+            AddReasonEntry("Brunswick never agreed to the counter offer from Mr. Rogers on Apr. 6th ");
             return false;
         }
     }

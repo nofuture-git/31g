@@ -19,14 +19,14 @@ namespace NoFuture.Rand.Law.US.Contracts
             var isdependent = dependent(offeree);
             if (!isdependent)
             {
-                AddAuditEntry($"{nameof(PromissoryEstoppel<T>)} is not a " +
+                AddReasonEntry($"{nameof(PromissoryEstoppel<T>)} is not a " +
                               $"consideration substitute: {nameof(IsOffereeDependedOnPromise)} " +
                               $"for {offeree?.Name} is false");
             }
             var isWorse = worse(offeree);
             if (!isWorse)
             {
-                AddAuditEntry($"{nameof(PromissoryEstoppel<T>)} is not a " +
+                AddReasonEntry($"{nameof(PromissoryEstoppel<T>)} is not a " +
                               $"consideration substitute: {nameof(IsOffereePositionWorse)} " +
                               $"for {offeree?.Name} is false");
             }

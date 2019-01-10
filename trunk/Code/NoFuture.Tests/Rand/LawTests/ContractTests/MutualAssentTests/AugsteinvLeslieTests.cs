@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
                 //it has to be ryan leslie
                 if (!(offeror is RyanLeslie _))
                 {
-                    AddAuditEntry($"{offeror?.Name} is not Ryan Leslie");
+                    AddReasonEntry($"{offeror?.Name} is not Ryan Leslie");
                     return false;
                 }
 

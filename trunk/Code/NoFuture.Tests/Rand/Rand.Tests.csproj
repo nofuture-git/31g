@@ -89,6 +89,7 @@
     <Compile Include="LawTests\ContractTests\OffersTests\PettersonvPattbergTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\PoelvBrunswickTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\ComNetworkvPurcellTireTests.cs" />
+    <Compile Include="LawTests\ContractTests\UccTests\FoleyvDaytonBankTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\ScoularCovDenneyTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\TousleyBixlervColgateTests.cs" />
     <Compile Include="LawTests\TermTests.cs" />

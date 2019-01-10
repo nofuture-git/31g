@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
 
             var isHelenStillAlive = !helen.HasDied;
             if(!isHelenStillAlive)
-                AddAuditEntry($"{helen.Name} has died.");
+                AddReasonEntry($"{helen.Name} has died.");
             return isHelenStillAlive;
         }
 

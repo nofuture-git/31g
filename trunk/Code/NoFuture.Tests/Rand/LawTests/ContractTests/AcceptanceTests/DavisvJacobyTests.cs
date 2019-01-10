@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            AddAuditEntry("The offer for specific performance ended with Ruperts death");
+            AddReasonEntry("The offer for specific performance ended with Ruperts death");
             return false;
         }
 

@@ -122,7 +122,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            AddAuditEntry("All sold out");
+            AddReasonEntry("All sold out");
             return false;
         }
     }

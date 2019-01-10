@@ -31,8 +31,8 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
             };
 
             var testResult = testSubject.IsValid(new WOLucy(), new AHZehmer());
-            Console.WriteLine(string.Join(", ", testSubject.GetAuditEntries()));
-            Console.WriteLine(string.Join(", ", testSubject.MutualAssent.GetAuditEntries()));
+            Console.WriteLine(string.Join(", ", testSubject.GetReasonEntries()));
+            Console.WriteLine(string.Join(", ", testSubject.MutualAssent.GetReasonEntries()));
             Assert.IsTrue(testResult);
         }
     }

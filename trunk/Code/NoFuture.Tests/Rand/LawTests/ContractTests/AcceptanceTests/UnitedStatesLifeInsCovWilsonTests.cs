@@ -85,7 +85,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
         {
             if (!(offeror is UnitedStatesLifeInsCo) || !(offeree is Wilson))
             {
-                AddAuditEntry("incorrect person given");
+                AddReasonEntry("incorrect person given");
                 return false;
             }
 
@@ -96,8 +96,8 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
             var r = duePlusGraceAnd31 > DateOfPayment;
             if (!r)
             {
-                AddAuditEntry($"due date plus extended grace period {duePlusGrace.ToShortDateString()}");
-                AddAuditEntry($"the additional 31 days before written notice { duePlusGraceAnd31.ToShortDateString()}");
+                AddReasonEntry($"due date plus extended grace period {duePlusGrace.ToShortDateString()}");
+                AddReasonEntry($"the additional 31 days before written notice { duePlusGraceAnd31.ToShortDateString()}");
             }
 
             return r;

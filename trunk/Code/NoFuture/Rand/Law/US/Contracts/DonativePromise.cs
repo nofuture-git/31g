@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     {
         public DonativePromise()
         {
-            base.AddAuditEntry($"A {nameof(DonativePromise)} cannot be breached.");
+            base.AddReasonEntry($"A {nameof(DonativePromise)} cannot be breached.");
         }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)

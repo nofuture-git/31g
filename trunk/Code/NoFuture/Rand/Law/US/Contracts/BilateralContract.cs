@@ -22,13 +22,13 @@ namespace NoFuture.Rand.Law.US.Contracts
             //test mutual assent
             if (MutualAssent == null)
             {
-                AddAuditEntry($"{nameof(MutualAssent)} is null");
+                AddReasonEntry($"{nameof(MutualAssent)} is null");
                 return false;
             }
 
             if (!MutualAssent.IsValid(offeror, offeree))
             {
-                AddAuditEntry($"{nameof(MutualAssent)}.{nameof(IsValid)} returned false");
+                AddReasonEntry($"{nameof(MutualAssent)}.{nameof(IsValid)} returned false");
                 return false;
             }
 
@@ -37,11 +37,11 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         public override string ToString()
         {
-            var allEntries = GetAuditEntries() as List<string> ?? new List<string>();
+            var allEntries = GetReasonEntries() as List<string> ?? new List<string>();
             if(MutualAssent != null)
-                allEntries.AddRange(MutualAssent.GetAuditEntries());
+                allEntries.AddRange(MutualAssent.GetReasonEntries());
             if(Consideration != null)
-                allEntries.AddRange(Consideration.GetAuditEntries());
+                allEntries.AddRange(Consideration.GetReasonEntries());
             return string.Join(Environment.NewLine, allEntries);
         }
     }

@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
                          && (offeree is Jankowski || offeree is Jedz);
             if (isCopm)
             {
-                AddAuditEntry("The government is already obligated to render " +
+                AddReasonEntry("The government is already obligated to render " +
                               "these services, so it cannot be bargined for");
             }
             return false;

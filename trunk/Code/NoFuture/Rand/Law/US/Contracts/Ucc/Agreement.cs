@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
@@ -24,14 +23,14 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
 
             if (!intent2Contrx(offeror))
             {
-                AddAuditEntry($"{offeror?.Name} did not intend this " +
+                AddReasonEntry($"{offeror?.Name} did not intend this " +
                               "agreement as a binding contract.");
                 return false;
             }
 
             if (!intent2Contrx(offeree))
             {
-                AddAuditEntry($"{offeree?.Name} did not intend this " +
+                AddReasonEntry($"{offeree?.Name} did not intend this " +
                               "agreement as a binding contract.");
                 return false;
             }

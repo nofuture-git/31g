@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
         {
             public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
             {
-                AddAuditEntry("this was withdrawn before Beehee was aware of any acceptance");
+                AddReasonEntry("this was withdrawn before Beehee was aware of any acceptance");
                 return false;
             }
         }

@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
 
             var testResult = testSubject.IsValid(new MrsAllen(), new DrOswald());
             Assert.IsFalse(testResult);
-            Console.WriteLine("--" + string.Join(",", testSubject.GetAuditEntries()));
+            Console.WriteLine("--" + string.Join(",", testSubject.GetReasonEntries()));
         }
     }
 
