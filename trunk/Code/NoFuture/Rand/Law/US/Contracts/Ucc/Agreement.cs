@@ -49,15 +49,30 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         {
             var agreedTerms = base.GetAgreedTerms(offeror, offeree);
 
-            var offerorUqTerms = TermsOfAgreement(offeror).Where(t => agreedTerms.All(tt => !tt.Equals(t))).ToList();
-            var offereeUqTerms = TermsOfAgreement(offeree).Where(t => agreedTerms.All(tt => !tt.Equals(t))).ToList();
-
+            var offerorUqTerms = TermsOfAgreement(offeror).Where(t => agreedTerms.All(tt => !tt.EqualRefersTo(t))).ToList();
+            var offereeUqTerms = TermsOfAgreement(offeree).Where(t => agreedTerms.All(tt => !tt.EqualRefersTo(t))).ToList();
 
             if (!offereeUqTerms.Any() && !offerorUqTerms.Any())
                 return agreedTerms;
 
             var isEitherExpresslyCond = offereeUqTerms.Any(t => TermExpresslyConditional.Value.Equals(t)) ||
                                         offerorUqTerms.Any(t => TermExpresslyConditional.Value.Equals(t));
+
+            //terms of the same name but different meanings
+            var knockoutTerms = offerorUqTerms
+                .Where(t => offereeUqTerms.Any(tt => t.Equals(tt) && !t.EqualRefersTo(tt))).ToList();
+
+            if (knockoutTerms.Any())
+            {
+                foreach (var kn in knockoutTerms)
+                {
+                    AddReasonEntry($"the term-name '{kn.Name}' is used by both {offeror.Name} " +
+                                   $"and {offeree.Name} with different semantic meanings, " +
+                                   "so this term is 'knocked out'" );
+                }
+                offerorUqTerms = offerorUqTerms.Where(t => knockoutTerms.Any(tt => !tt.Equals(t))).ToList();
+                offereeUqTerms = offereeUqTerms.Where(t => knockoutTerms.Any(tt => !tt.Equals(t))).ToList();
+            }
 
             //per UCC 2-207(1) additional terms become part of the contract when not expressly forbidden
             if (!isEitherExpresslyCond)

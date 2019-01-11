@@ -65,45 +65,55 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (!IsTermsEqualInNameAndFact(offeror, offeree))
+            if (!GetAgreedTerms(offeror, offeree).Any())
                 return false;
 
             return true;
         }
 
         /// <summary>
-        /// Determines if there is a semantic gap in common names meaning two different things
+        /// Gets the subset of terms that have both the same name and meaning 
         /// </summary>
-        /// <param name="promisor"></param>
+        /// <param name="offeror"></param>
         /// <param name="offeree"></param>
         /// <returns></returns>
-        protected internal virtual bool IsTermsEqualInNameAndFact(ILegalPerson promisor, ILegalPerson offeree)
+        public virtual ISet<Term<object>> GetAgreedTerms(ILegalPerson offeror, ILegalPerson offeree)
         {
             //the shared terms between the two
-            var agreedTerms = GetAgreedTerms(promisor,offeree).Select(v => v.Name);
-            if (!agreedTerms.Any())
+            var agreedTerms = new HashSet<Term<object>>();
+            var agreedTermNames = GetInNameAgreedTerms(offeror, offeree).Select(v => v.Name);
+            if (!agreedTermNames.Any())
             {
-                AddReasonEntry($"there are no terms shared between {promisor.Name} and {offeree.Name}");
-                return false;
+                AddReasonEntry("there are no terms, with the same name," +
+                               $" shared between {offeror.Name} and {offeree.Name}");
+                return agreedTerms;
             }
-            var sorTerms = TermsOfAgreement(promisor);
+            var sorTerms = TermsOfAgreement(offeror);
             var seeTerms = TermsOfAgreement(offeree);
-            foreach (var term in agreedTerms)
+            foreach (var termName in agreedTermNames)
             {
-                var promisorIdeaOfTerm = sorTerms.First(v => v.Name == term);
-                var promiseeIdeaOfTerm = seeTerms.First(v => v.Name == term);
+                var offerorTerm = sorTerms.First(v => v.Name == termName);
+                var offereeTerm = seeTerms.First(v => v.Name == termName);
 
-                if (!promiseeIdeaOfTerm?.EqualRefersTo(promisorIdeaOfTerm) ?? false)
+                if (!offereeTerm?.EqualRefersTo(offerorTerm) ?? false)
                 {
-                    AddReasonEntry($"the term '{term}' does not have the same meaning between " +
-                              $"{promisor.Name} and {offeree.Name}");
-                    return false;
+                    AddReasonEntry($"the term '{termName}' does not have the same meaning between " +
+                                   $"{offeror.Name} and {offeree.Name}");
+                    continue;
                 }
+                agreedTerms.Add(offerorTerm);
             }
-            return true;
+
+            return agreedTerms;
         }
 
-        public virtual ISet<Term<object>> GetAgreedTerms(ILegalPerson offeror, ILegalPerson offeree)
+        /// <summary>
+        /// Gets the subset of terms which have the same name.
+        /// </summary>
+        /// <param name="offeror"></param>
+        /// <param name="offeree"></param>
+        /// <returns></returns>
+        protected internal virtual ISet<Term<object>> GetInNameAgreedTerms(ILegalPerson offeror, ILegalPerson offeree)
         {
             var sorTerms = TermsOfAgreement?.Invoke(offeror);
             if (sorTerms == null || !sorTerms.Any())
@@ -133,17 +143,6 @@ namespace NoFuture.Rand.Law.US.Contracts
             }
 
             return agreedTerms;
-        }
-
-        internal ISet<Term<object>> GetDistinctTerms(ILegalPerson ofThisPerson, ILegalPerson compared2ThisPerson)
-        {
-            var agreedTerms = GetAgreedTerms(ofThisPerson, compared2ThisPerson);
-            if (!agreedTerms.Any())
-                return new HashSet<Term<object>>();
-
-            var fromTheseTerms = TermsOfAgreement(ofThisPerson);
-            fromTheseTerms.ExceptWith(agreedTerms);
-            return fromTheseTerms;
         }
     }
 }

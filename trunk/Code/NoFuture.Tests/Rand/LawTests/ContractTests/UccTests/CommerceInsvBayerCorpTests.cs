@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
 {
@@ -15,7 +12,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// Doctrine issue, detailed break-down of UCC 2-207 contract formation 
+    /// Doctrine issue, detailed break-down of UCC 2-207 contract formation
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -24,29 +21,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         [Test]
         public void CommerceInsvBayerCorp()
         {
-            var testSubject = new Agreement();
-            testSubject.IsApprovalExpressed = lp => true;
-            testSubject.TermsOfAgreement = lp =>
-            {
-                var commerceIns = lp as CommerceIns;
-                if (commerceIns != null)
-                    return commerceIns.GetTerms();
-                var bayer = lp as BayerCorp;
-                if (bayer != null)
-                    return bayer.GetTerms();
-                return new HashSet<Term<object>>();
-            };
-            var testResult = testSubject.GetAgreedTerms(new CommerceIns(), new BayerCorp());
-            Assert.IsNotNull(testResult);
-            Assert.IsTrue(testResult.Count == 1);
-            Assert.IsTrue(testResult.Any(t => t.Name == "bulk nylon fiber"));
-        }
-
-        [Test]
-        public void TestGetDistinctTerms()
-        {
-            var lp00 = new CommerceIns();
-            var lp01 = new BayerCorp();
             var testSubject = new Agreement
             {
                 IsApprovalExpressed = lp => true,
@@ -61,8 +35,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
                     return new HashSet<Term<object>>();
                 }
             };
-            var testResult = testSubject.GetDistinctTerms(lp00, lp01);
+            var testResult = testSubject.GetAgreedTerms(new CommerceIns(), new BayerCorp());
             Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.Count == 1);
+            //Bayer wanted the "arbitration provision" but its gone
+            Assert.IsTrue(testResult.Any(t => t.Name == "bulk nylon fiber"));
         }
     }
 
