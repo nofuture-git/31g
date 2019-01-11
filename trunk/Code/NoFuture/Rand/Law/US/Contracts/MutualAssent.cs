@@ -47,15 +47,6 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            if (TermsOfAgreement == null)
-            {
-                AddReasonEntry($"{nameof(TermsOfAgreement)} is null");
-                return false;
-            }
-
-            if (!IsTermsOfAgreementValid(offeror, offeree))
-                return false;
-
             if (!IsApprovalExpressed(offeror))
             {
                 AddReasonEntry($"{offeror.Name} did not outwardly express approval");
@@ -68,32 +59,35 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
+            if (TermsOfAgreement == null)
+            {
+                AddReasonEntry("there is no terms defined on which to assent");
+                return false;
+            }
+
+            if (!IsTermsEqualInNameAndFact(offeror, offeree))
+                return false;
+
             return true;
         }
 
-        protected internal bool IsTermsOfAgreementValid(ILegalPerson promisor, ILegalPerson promisee)
+        /// <summary>
+        /// Determines if there is a semantic gap in common names meaning two different things
+        /// </summary>
+        /// <param name="promisor"></param>
+        /// <param name="offeree"></param>
+        /// <returns></returns>
+        protected internal virtual bool IsTermsEqualInNameAndFact(ILegalPerson promisor, ILegalPerson offeree)
         {
-            var sorTerms = TermsOfAgreement?.Invoke(promisor);
-            if (sorTerms == null || !sorTerms.Any())
-            {
-                AddReasonEntry($"{promisor.Name} has no terms");
-                return false;
-            }
-
-            var seeTerms = TermsOfAgreement(promisee);
-            if (seeTerms == null || !seeTerms.Any())
-            {
-                AddReasonEntry($"{promisee.Name} has no terms");
-                return false;
-            }
-
             //the shared terms between the two
-            var agreedTerms = sorTerms.Where(oo => seeTerms.Any(ee => ee.Equals(oo))).Select(v => v.Name);
+            var agreedTerms = GetAgreedTerms(promisor,offeree).Select(v => v.Name);
             if (!agreedTerms.Any())
             {
-                AddReasonEntry($"there are no terms shared between {promisor.Name} and {promisee.Name}");
+                AddReasonEntry($"there are no terms shared between {promisor.Name} and {offeree.Name}");
                 return false;
             }
+            var sorTerms = TermsOfAgreement(promisor);
+            var seeTerms = TermsOfAgreement(offeree);
             foreach (var term in agreedTerms)
             {
                 var promisorIdeaOfTerm = sorTerms.First(v => v.Name == term);
@@ -102,12 +96,54 @@ namespace NoFuture.Rand.Law.US.Contracts
                 if (!promiseeIdeaOfTerm?.EqualRefersTo(promisorIdeaOfTerm) ?? false)
                 {
                     AddReasonEntry($"the term '{term}' does not have the same meaning between " +
-                              $"{promisor.Name} and {promisee.Name}");
+                              $"{promisor.Name} and {offeree.Name}");
                     return false;
                 }
             }
-
             return true;
+        }
+
+        public virtual ISet<Term<object>> GetAgreedTerms(ILegalPerson offeror, ILegalPerson offeree)
+        {
+            var sorTerms = TermsOfAgreement?.Invoke(offeror);
+            if (sorTerms == null || !sorTerms.Any())
+            {
+                AddReasonEntry($"{offeror.Name} has no terms");
+                return new HashSet<Term<object>>();
+            }
+
+            var seeTerms = TermsOfAgreement(offeree);
+            if (seeTerms == null || !seeTerms.Any())
+            {
+                AddReasonEntry($"{offeree.Name} has no terms");
+                return new HashSet<Term<object>>();
+            }
+
+            //the shared terms between the two
+            var agreedList = sorTerms.Where(oo => seeTerms.Any(ee => ee.Equals(oo))).ToList();
+            if (!agreedList.Any())
+            {
+                AddReasonEntry($"there are no terms shared between {offeror.Name} and {offeree.Name}");
+                return new HashSet<Term<object>>();
+            }
+            var agreedTerms = new HashSet<Term<object>>();
+            foreach (var t in agreedList)
+            {
+                agreedTerms.Add(t);
+            }
+
+            return agreedTerms;
+        }
+
+        internal ISet<Term<object>> GetDistinctTerms(ILegalPerson ofThisPerson, ILegalPerson compared2ThisPerson)
+        {
+            var agreedTerms = GetAgreedTerms(ofThisPerson, compared2ThisPerson);
+            if (!agreedTerms.Any())
+                return new HashSet<Term<object>>();
+
+            var fromTheseTerms = TermsOfAgreement(ofThisPerson);
+            fromTheseTerms.ExceptWith(agreedTerms);
+            return fromTheseTerms;
         }
     }
 }

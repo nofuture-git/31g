@@ -57,7 +57,6 @@
     <Compile Include="US\Contracts\Ucc\Merchant.cs" />
     <Compile Include="US\Contracts\Ucc\Merchantable.cs" />
     <Compile Include="US\Contracts\Ucc\TermExpresslyConditional.cs" />
-    <Compile Include="US\Contracts\Ucc\TermInConductOnly.cs" />
     <Compile Include="US\Contracts\Ucc\UccContract.cs" />
     <Compile Include="US\Contracts\Ucc\Goods.cs" />
     <Compile Include="US\Contracts\Ucc\GoodsInTerra.cs" />

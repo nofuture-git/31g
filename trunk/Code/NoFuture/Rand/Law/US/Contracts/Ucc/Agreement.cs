@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
-    /// <inheritdoc cref="ObjectiveLegalConcept"/>
+    /// <inheritdoc cref="MutualAssent"/>
     /// <inheritdoc cref="IAssent"/>
     /// <summary>
     /// <![CDATA[
@@ -13,17 +14,15 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     /// course of performance, course of dealing, or usage of trade
     /// ]]>
     /// </summary>
-    public abstract class Agreement : ObjectiveLegalConcept, IUccItem, IAssent
+    public class Agreement : MutualAssent
     {
         public override bool IsEnforceableInCourt => true;
-
-        public virtual Predicate<ILegalPerson> IsApprovalExpressed { get; set; } = lp => true;
 
         /// <summary>
         /// Additional Terms in Acceptance or Confirmation.
         /// </summary>
         [Aka("UCC 2-207")]
-        public virtual Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
+        public override Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
@@ -44,6 +43,32 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
             }
 
             return true;
+        }
+
+        public override ISet<Term<object>> GetAgreedTerms(ILegalPerson offeror, ILegalPerson offeree)
+        {
+            var agreedTerms = base.GetAgreedTerms(offeror, offeree);
+
+            var offerorUqTerms = TermsOfAgreement(offeror).Where(t => agreedTerms.All(tt => !tt.Equals(t))).ToList();
+            var offereeUqTerms = TermsOfAgreement(offeree).Where(t => agreedTerms.All(tt => !tt.Equals(t))).ToList();
+
+
+            if (!offereeUqTerms.Any() && !offerorUqTerms.Any())
+                return agreedTerms;
+
+            var isEitherExpresslyCond = offereeUqTerms.Any(t => TermExpresslyConditional.Value.Equals(t)) ||
+                                        offerorUqTerms.Any(t => TermExpresslyConditional.Value.Equals(t));
+
+            //per UCC 2-207(1) additional terms become part of the contract when not expressly forbidden
+            if (!isEitherExpresslyCond)
+            {
+                foreach (var offerorUqTerm in offerorUqTerms)
+                    agreedTerms.Add(offerorUqTerm);
+
+                foreach (var offereeUqTerm in offereeUqTerms)
+                    agreedTerms.Add(offereeUqTerm);
+            }
+            return agreedTerms;
         }
     }
 }
