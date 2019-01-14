@@ -7,6 +7,14 @@ using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
 {
+    /// <summary>
+    /// EX PARTE ODEM Supreme Court of Alabama 537 So.2d 919 (Ala. 1988)
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// doctrine issue, capacity to contract limited when still a minor
+    /// ]]>
+    /// </remarks>
     [TestFixture]
     public class ExParteOdemTests
     {
