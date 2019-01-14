@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Rand.Law
 {
-    public abstract class ObjectiveLegalConcept : IObjectiveLegalConcept, IReasonable
+    public abstract class ObjectiveLegalConcept : IObjectiveLegalConcept
     {
         private readonly List<string> _reasons = new List<string>();
 
