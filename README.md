@@ -71,3 +71,6 @@ This project is both an API for generating timeline diagrams (in text format) an
 
 ### Summary
 The actual code is decorated with a lot of annotations, comments and examples.  Any external sources are cited in the function's annotation.  The tests in _NoFuture.Tests_ are dependent on files on the drive and would take some tinkering to get running green.  This was due to the odd nature of what some of the code does (like getting a method's MetadataToken off a .NET assembly by reading the IL bytes).   The kind of main() for the whole thing is the _start.ps1_ PowerShell script.  Its intended to basically setup the PowerShell console (prefer the ISE) with the contents of the entire namespace.  
+
+### History
+This project was originally hosted with Google Code as an SVN repo.  After Google stopped support I moved it to a Git repo in GitHub.  Its overall structure still displays remenants of its SVN roots.

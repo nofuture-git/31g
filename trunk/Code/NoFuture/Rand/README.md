@@ -1,7 +1,7 @@
 # NoFuture.Rand
 ---
 
-This is a collection projects for generating test data at random.
+This is a collection projects for generating test data at random.  Its features are intended to be easily accessed through static-factories.  The naming convention is such that a factory always starts with the name _Random_[such-and-such].  Furthermore, these factories are decorated with the attribute named _RandomFactory_.
 
 ---
 
@@ -28,6 +28,9 @@ A project for random data defined by external organizations.  Contains methods f
 
 ##### NoFuture.Rand.Gov
 A project for random data related to government entities along with other forms of data published by the government.  This project includes methods for random SSN's, Birth and Death certs, Driver's License, VIN numbers (vehicles), etc.
+
+##### NoFuture.Rand.Law
+A project concerning US Law - this project is really just my notes on Law.  See its unit tests for case-reading examples of its application.
 
 ##### NoFuture.Rand.Edu
 A project for random education data.  This project has methods to get random Universities and High Schools.
