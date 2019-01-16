@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense;
+using NoFuture.Rand.Law.US.Contracts.Defense.ToFormation;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
@@ -36,7 +37,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
                 IsGivenByPromisee = (lp, p) => true,
                 IsSoughtByPromisor = (lp, p) => true
             };
-            var testSubject = new Voidable<Promise>(testContract) {IsMentallyIncompetent = lp => lp is Ortelere};
+            var testSubject = new VoidableByMental<Promise>(testContract) {IsMentallyIncompetent = lp => lp is Ortelere};
             var testResult = testSubject.IsValid(new Ortelere(), new TeachersBoard());
             Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());

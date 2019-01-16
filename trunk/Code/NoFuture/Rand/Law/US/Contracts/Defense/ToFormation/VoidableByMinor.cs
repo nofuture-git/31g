@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law.US.Contracts.Defense
+namespace NoFuture.Rand.Law.US.Contracts.Defense.ToFormation
 {
-    /// <summary>
-    /// <![CDATA[
-    /// one of the "defenses to formation"
-    /// ]]>
-    /// </summary>
-    public class Voidable<T> : DefenseBase<T>
+    public class VoidableByMinor<T> : DefenseBase<T>
     {
-        public Voidable(IContract<T> contract) : base(contract)
+        public VoidableByMinor(IContract<T> contract) : base(contract)
         {
         }
 
@@ -29,11 +24,6 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
         public virtual Predicate<ILegalPerson> IsDeclareVoid { get; set; }
 
         /// <summary>
-        /// A person considered by the court to be without the capacity to contract
-        /// </summary>
-        public virtual Predicate<ILegalPerson> IsMentallyIncompetent { get; set; }
-
-        /// <summary>
         /// <![CDATA[
         /// where a minor has received "necessaries" under a contract, the 
         /// minor will be required to pay for the reasonable value of what 
@@ -46,21 +36,6 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
         {
             if (!base.IsValid(offeror, offeree))
                 return false;
-
-            var isMental = IsMentallyIncompetent ?? (lp => false);
-            if (isMental(offeror))
-            {
-                AddReasonEntry($"the {nameof(offeror)} named {offeror.Name} is " +
-                               "a mentally incompetent");
-                return true;
-            }
-
-            if (isMental(offeree))
-            {
-                AddReasonEntry($"the {nameof(offeree)} named {offeree.Name} is " +
-                               "a mentally incompetent");
-                return true;
-            }
 
             var isMinor = IsMinor ?? (lp => false);
             var isDeclareVoid = IsDeclareVoid ?? (lp => false);
