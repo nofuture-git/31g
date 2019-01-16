@@ -8,24 +8,23 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
 {
     /// <summary>
-    /// McINERNEY v. CHARTER GOLF, INC. Supreme Court of Illinois 176 Ill. 2d 482, 680 N.E.2d 1347 (1997)
+    /// STEVENS v. PUBLICIS S.A. Supreme Court of New York, Appellate Division, First Department 50 A.D.3d 253, 854 N.Y.S.2d 690 (Sup.Ct.App.Div. 2008)
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// Doctrine issue, once found to be within scope of statute then written 
-    /// and signed agreement is needed otherwise its a valid defense against enforcement
+    /// doctrine issue, with telecom tech, it is very easy to satisfy the two requirements of the statute of frauds
     /// ]]>
     /// </remarks>
-    [TestFixture]
-    public class McInerneyvCharterGolfTests
+    [TestFixture()]
+    public class StevensvPublicisTests
     {
         [Test]
-        public void McInerneyvCharterGolf()
+        public void StevensvPublicis()
         {
             var testContract = new BilateralContract
             {
-                Offer = new CharterGolfCounterOfferEmpl(),
-                Acceptance = o => o is CharterGolfCounterOfferEmpl ? new McInerneyContEmplAtCharter() : null,
+                Offer = new SomeEmail(),
+                Acceptance = o => o is SomeEmail ? new SomeEmailResponse() : null,
                 MutualAssent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
@@ -39,16 +38,18 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
                 IsSoughtByPromisor = (lp, p) => true
             };
 
+
             var testSubject = new StatuteOfFrauds<Promise>(testContract);
-            //court finds it is in scope to statute of frauds
             testSubject.Scope.IsYearsInPerformance = c => true;
+            testSubject.IsSufficientWriting = c => c.Offer is SomeEmail && c.Acceptance(c.Offer) is SomeEmailResponse;
+            testSubject.IsSigned = c => c.Offer is SomeEmail && c.Acceptance(c.Offer) is SomeEmailResponse;
+            var testResult = testSubject.IsValid(new Stevens(), new Publicis());
 
-            var testResult = testSubject.IsValid(new CharterGolf(), new McInerney());
-            //so it is a valid defense because it lacks sufficient writing (was oral agreement)
-            Assert.IsTrue(testResult);
+            //the statute of frauds written\signed bits are very easy with electronic emails and such
+            Assert.IsFalse(testResult);
             Console.WriteLine(testSubject.ToString());
-        }
 
+        }
         public static ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
@@ -58,37 +59,32 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
         }
     }
 
-    public class HickeyFreemanOfferEmpl : Promise
+    public class IgnoreContract : BilateralContract
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return offeree is McInerney;
+            return true;
         }
     }
 
-    public class McInerneyContEmplAtCharter : Promise
+    public class SomeEmail : Promise
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return offeror is CharterGolf && offeree is McInerney;
+            return (offeror is Stevens || offeror is Publicis)
+                   && (offeree is Stevens || offeree is Publicis);
         }
     }
 
-    public class CharterGolfCounterOfferEmpl : Promise
+    public class SomeEmailResponse : SomeEmail { }
+
+    public class Stevens : LegalPerson
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
-        {
-            return offeror is CharterGolf && offeree is McInerney;
-        }
+        public Stevens() : base("Lobsenz-Stevens (L-S)") { }
     }
 
-    public class McInerney : LegalPerson
+    public class Publicis : LegalPerson
     {
-        public McInerney() : base("Dennis McInerney") { }
-    }
-
-    public class CharterGolf : LegalPerson
-    {
-        public CharterGolf() : base("Charter Golf, Inc.") {}
+        public Publicis() : base("Publicis S.A.") {}
     }
 }
