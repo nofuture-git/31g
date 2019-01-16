@@ -10,13 +10,12 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
     /// <typeparam name="T"></typeparam>
     public class StatuteOfFrauds<T> : DefenseBase<T>
     {
-        private readonly StatuteOfFraudsScope<T> _scope;
         public StatuteOfFrauds(IContract<T> contract) : base(contract)
         {
-            _scope = new StatuteOfFraudsScope<T>(contract);
+            Scope = new StatuteOfFraudsScope<T>(contract);
         }
 
-        public virtual StatuteOfFraudsScope<T> Scope => _scope;
+        public StatuteOfFraudsScope<T> Scope { get; set; }
 
         public Predicate<IContract<T>> IsSufficientWriting { get; set; }
 
@@ -28,7 +27,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
                 return false;
 
             Predicate<IContract<T>> dfx = c => false;
-            if (!_scope.IsValid(offeror, offeree))
+            if (!Scope.IsValid(offeror, offeree))
             {
                 AddReasonEntry("Is not within Statute of Frauds");
                 //it is a valid defense

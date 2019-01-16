@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
             _contract = contract;
         }
 
-        protected internal virtual IContract<T> Contract => _contract;
+        public virtual IContract<T> Contract => _contract;
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
