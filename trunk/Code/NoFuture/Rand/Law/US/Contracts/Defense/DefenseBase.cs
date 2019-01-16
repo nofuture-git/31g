@@ -47,5 +47,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
 
             return true;
         }
+
+        public override bool IsEnforceableInCourt => true;
     }
 }

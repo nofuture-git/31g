@@ -88,7 +88,5 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
         /// </summary>
         [Aka("co-signer")]
         public Predicate<IContract<T>> IsSuretyshipRelated { get; set; }
-
-        public override bool IsEnforceableInCourt => true;
     }
 }

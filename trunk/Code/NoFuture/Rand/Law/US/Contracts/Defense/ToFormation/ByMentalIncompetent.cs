@@ -2,9 +2,9 @@
 
 namespace NoFuture.Rand.Law.US.Contracts.Defense.ToFormation
 {
-    public class VoidableByMental<T> : DefenseBase<T>
+    public class ByMentalIncompetent<T> : DefenseBase<T>, IVoidable
     {
-        public VoidableByMental(IContract<T> contract) : base(contract)
+        public ByMentalIncompetent(IContract<T> contract) : base(contract)
         {
         }
 
@@ -35,7 +35,5 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToFormation
 
             return false;
         }
-
-        public override bool IsEnforceableInCourt => true;
     }
 }

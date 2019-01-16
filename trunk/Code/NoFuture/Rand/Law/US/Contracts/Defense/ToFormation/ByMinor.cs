@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.US.Contracts.Defense.ToFormation
 {
-    public class VoidableByMinor<T> : DefenseBase<T>
+    public class ByMinor<T> : DefenseBase<T>, IVoidable
     {
-        public VoidableByMinor(IContract<T> contract) : base(contract)
+        public ByMinor(IContract<T> contract) : base(contract)
         {
         }
 
@@ -55,7 +55,5 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToFormation
 
             return false;
         }
-
-        public override bool IsEnforceableInCourt => true;
     }
 }

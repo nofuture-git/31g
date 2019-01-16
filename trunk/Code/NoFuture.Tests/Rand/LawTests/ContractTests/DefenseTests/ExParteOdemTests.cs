@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
                 IsGivenByPromisee = (lp, p) => true,
                 IsSoughtByPromisor = (lp, p) => true
             };
-            var testSubject = new VoidableByMinor<Promise>(testContract)
+            var testSubject = new ByMinor<Promise>(testContract)
             {
                 IsMinor = lp => lp is IrisOdem,
                 IsDeclareVoid = lp => lp is IrisOdem

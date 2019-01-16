@@ -46,10 +46,14 @@
     <Compile Include="US\Contracts\BilateralContract.cs" />
     <Compile Include="US\Contracts\Consideration.cs" />
     <Compile Include="US\Contracts\Defense\DefenseBase.cs" />
+    <Compile Include="US\Contracts\Defense\IVoidable.cs" />
     <Compile Include="US\Contracts\Defense\StatuteOfFrauds.cs" />
     <Compile Include="US\Contracts\Defense\StatuteOfFraudsScope.cs" />
-    <Compile Include="US\Contracts\Defense\ToFormation\VoidableByMental.cs" />
-    <Compile Include="US\Contracts\Defense\ToFormation\VoidableByMinor.cs" />
+    <Compile Include="US\Contracts\Defense\ToAssent\ByDuress.cs" />
+    <Compile Include="US\Contracts\Defense\ToAssent\ByFraud.cs" />
+    <Compile Include="US\Contracts\Defense\ToAssent\ByUndueInfluence.cs" />
+    <Compile Include="US\Contracts\Defense\ToFormation\ByMentalIncompetent.cs" />
+    <Compile Include="US\Contracts\Defense\ToFormation\ByMinor.cs" />
     <Compile Include="US\Contracts\IAssent.cs" />
     <Compile Include="US\Contracts\ComLawContract.cs" />
     <Compile Include="US\Contracts\IContract.cs" />

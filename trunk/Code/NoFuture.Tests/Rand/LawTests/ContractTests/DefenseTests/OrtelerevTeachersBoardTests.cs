@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
                 IsGivenByPromisee = (lp, p) => true,
                 IsSoughtByPromisor = (lp, p) => true
             };
-            var testSubject = new VoidableByMental<Promise>(testContract) {IsMentallyIncompetent = lp => lp is Ortelere};
+            var testSubject = new ByMentalIncompetent<Promise>(testContract) {IsMentallyIncompetent = lp => lp is Ortelere};
             var testResult = testSubject.IsValid(new Ortelere(), new TeachersBoard());
             Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
