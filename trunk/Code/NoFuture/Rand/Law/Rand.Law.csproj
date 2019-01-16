@@ -45,6 +45,9 @@
     <Compile Include="US\Contracts\Advertisement.cs" />
     <Compile Include="US\Contracts\BilateralContract.cs" />
     <Compile Include="US\Contracts\Consideration.cs" />
+    <Compile Include="US\Contracts\Defense\DefenseBase.cs" />
+    <Compile Include="US\Contracts\Defense\StatuteOfFrauds.cs" />
+    <Compile Include="US\Contracts\Defense\StatuteOfFraudsScope.cs" />
     <Compile Include="US\Contracts\Defense\Voidable.cs" />
     <Compile Include="US\Contracts\IAssent.cs" />
     <Compile Include="US\Contracts\ComLawContract.cs" />

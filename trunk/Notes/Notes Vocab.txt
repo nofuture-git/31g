@@ -532,6 +532,8 @@ first-class types: types with the fewest restrictions on the ways in
  - passed as args
  - returned as results
  - included in data structures
+series v. sequence [mathematics]: sequence, order matters, 
+ series is the sum of a sequence
 sets: mutable unordered collection of unique and immutable objects.
 tuples: immutable sequences of object references accessed by offset
 dictionaries: mutable mappings of object references accessed by key

@@ -8,13 +8,10 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
     /// one of the "defenses to formation"
     /// ]]>
     /// </summary>
-    public class Voidable<T> : ObjectiveLegalConcept
+    public class Voidable<T> : DefenseBase<T>
     {
-        private readonly IContract<T> _contract;
-
-        public Voidable(IContract<T> contract)
+        public Voidable(IContract<T> contract) : base(contract)
         {
-            _contract = contract;
         }
 
         /// <summary>
@@ -25,16 +22,16 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
         public virtual Predicate<ILegalPerson> IsMinor { get; set; }
 
         /// <summary>
-        /// A person considered by the court to be without the capacity to contract
-        /// </summary>
-        public virtual Predicate<ILegalPerson> IsMentallyIncompetent { get; set; }
-
-        /// <summary>
         /// <![CDATA[
         /// if the minor disaffirms the contract, the minor is not liable under it
         /// ]]>
         /// </summary>
         public virtual Predicate<ILegalPerson> IsDeclareVoid { get; set; }
+
+        /// <summary>
+        /// A person considered by the court to be without the capacity to contract
+        /// </summary>
+        public virtual Predicate<ILegalPerson> IsMentallyIncompetent { get; set; }
 
         /// <summary>
         /// <![CDATA[
@@ -47,32 +44,8 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            if (offeror == null)
-            {
-                AddReasonEntry($"The {nameof(offeror)} is unassigned");
+            if (!base.IsValid(offeror, offeree))
                 return false;
-            }
-
-            if (offeree == null)
-            {
-                AddReasonEntry($"The {nameof(offeree)} is unassigned");
-                return false;
-            }
-
-            if (_contract == null)
-            {
-                AddReasonEntry($"there was not contract between {offeror.Name} and {offeree.Name}");
-                return false;
-            }
-
-            var isValidContract = _contract.IsValid(offeror, offeree);
-            AddReasonEntryRange(_contract.GetReasonEntries());
-
-            if (!isValidContract)
-            {
-                AddReasonEntry("this defense is only applicable to valid contrax");
-                return false;
-            }
 
             var isMental = IsMentallyIncompetent ?? (lp => false);
             if (isMental(offeror))
