@@ -51,6 +51,7 @@
     <Compile Include="US\Contracts\Defense\StatuteOfFraudsScope.cs" />
     <Compile Include="US\Contracts\Defense\ToAssent\ByDuress.cs" />
     <Compile Include="US\Contracts\Defense\ToAssent\ByFraud.cs" />
+    <Compile Include="US\Contracts\Defense\ToAssent\ByMistake.cs" />
     <Compile Include="US\Contracts\Defense\ToAssent\ByUndueInfluence.cs" />
     <Compile Include="US\Contracts\Defense\ToFormation\ByMentalIncompetent.cs" />
     <Compile Include="US\Contracts\Defense\ToFormation\ByMinor.cs" />
