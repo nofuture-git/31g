@@ -8,13 +8,31 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// <typeparam name="T"></typeparam>
     public class Misrepresentation<T> : DefenseBase<T>
     {
-        public Misrepresentation(IContract<T> contract) : base(contract)
-        {
-        }
+        public Misrepresentation(IContract<T> contract) : base(contract) { }
+
+        /// <summary>
+        /// <![CDATA[A misrepresentation is fraudulent if the maker intends his assertion to induce a party to manifest his assent and the maker]]>
+        /// </summary>
+        public Predicate<ILegalPerson> IsAssertionToInduceAssent { get; set; } = llp => false;
+
+        /// <summary>
+        /// <![CDATA[(a) knows or believes that the assertion is not in accord with the facts]]>
+        /// </summary>
+        public Predicate<ILegalPerson> IsNotAssertionInAccord2Facts { get; set; } = llp => false;
+
+        /// <summary>
+        /// <![CDATA[(b) does not have the confidence that he states or implies in the truth of the assertion]]>
+        /// </summary>
+        public Predicate<ILegalPerson> IsNotAssertionInConfidence2Truth { get; set; } = llp => false;
+
+        /// <summary>
+        /// <![CDATA[(c) knows that he does not have the basis that he states or implies for the assertion]]>
+        /// </summary>
+        public Predicate<ILegalPerson> IsNotAssertionInBasis2ImpliedStatement { get; set; } = llp => false;
 
         public virtual bool IsFraudulent(ILegalPerson lp)
         {
-            if (!IsAssertionIntend2Assent(lp))
+            if (!IsAssertionToInduceAssent(lp))
                 return false;
 
             AddReasonEntry($"{lp?.Name} intends his/her assertion to " +
@@ -43,28 +61,13 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
 
         public virtual bool IsMaterial(ILegalPerson lp)
         {
-            //TODO - what does this even mean?
-            return false;
+            return IsAssertionToInduceAssent(lp);
         }
 
-        /// <summary>
-        /// <![CDATA[A misrepresentation is fraudulent if the maker intends his assertion to induce a party to manifest his assent and the maker]]>
-        /// </summary>
-        public Predicate<ILegalPerson> IsAssertionIntend2Assent { get; set; } = llp => false;
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        {
+            return IsFraudulent(offeror) || IsFraudulent(offeree) || IsMaterial(offeror) || IsMaterial(offeree);
+        }
 
-        /// <summary>
-        /// <![CDATA[(a) knows or believes that the assertion is not in accord with the facts]]>
-        /// </summary>
-        public Predicate<ILegalPerson> IsNotAssertionInAccord2Facts { get; set; } = llp => false;
-
-        /// <summary>
-        /// <![CDATA[(b) does not have the confidence that he states or implies in the truth of the assertion]]>
-        /// </summary>
-        public Predicate<ILegalPerson> IsNotAssertionInConfidence2Truth { get; set; } = llp => false;
-
-        /// <summary>
-        /// <![CDATA[(c) knows that he does not have the basis that he states or implies for the assertion]]>
-        /// </summary>
-        public Predicate<ILegalPerson> IsNotAssertionInBasis2ImpliedStatement { get; set; } = llp => false;
     }
 }

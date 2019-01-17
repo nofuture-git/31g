@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToAssent;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
 {
@@ -16,7 +12,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, objective tests to fraud defense against contract enforcement
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -44,11 +40,24 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
 
             var testSubject = new ByFraud<Promise>(testContract)
             {
-                IsMisrepresentationPresent = lp => (lp as Alabi)?.IsCashShippedAsSchoolBills ?? false,
+                Misrepresentation = new Misrepresentation<Promise>(testContract)
+                {
+                    /* plaintiff had reason to know DHL would not accept 
+                       cash and describing the shipment as otherwise, he 
+                       induced DHL to enter into a contract to which it 
+                       would not otherwise assent to */
+                    IsAssertionToInduceAssent = lp => lp is Alabi
+                },
+                /*the misrepresentation was a substantial factor in DHL's
+                 decision to enter into the contracts at issue*/
+                IsRecipientInduced = lp => lp is DhlAirways,
 
+                IsRecipientRelianceReasonable = lp => lp is DhlAirways
             };
 
             var testResult = testSubject.IsValid(new Alabi(), new DhlAirways());
+            Assert.IsTrue(testResult);
+            Console.WriteLine(testSubject.ToString());
 
         }
         public static ISet<Term<object>> GetTerms()

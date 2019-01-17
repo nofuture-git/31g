@@ -19,10 +19,16 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
         {
         }
 
+        /// <summary>
+        /// <![CDATA[
+        /// (1) that there was a misrepresentation
+        /// (2) that the misrepresentation was either fraudulent or material
+        /// ]]>
+        /// </summary>
         public Misrepresentation<T> Misrepresentation { get; set; }
 
         /// <summary>
-        /// <![CDATA[3) that the misrepresentation induced the recipient to enter into the contract]]>
+        /// <![CDATA[(3) that the misrepresentation induced the recipient to enter into the contract]]>
         /// </summary>
         public Predicate<ILegalPerson> IsRecipientInduced { get; set; }
 
