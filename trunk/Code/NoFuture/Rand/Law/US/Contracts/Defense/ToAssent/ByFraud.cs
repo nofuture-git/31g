@@ -15,15 +15,12 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     [Aka("misrepresentation")]
     public class ByFraud<T> : DefenseBase<T>, IVoidable
     {
-        public ByFraud(IContract<T> contract) : base(contract)
-        {
-        }
+        public ByFraud(IContract<T> contract) : base(contract) { }
 
         /// <summary>
-        /// <![CDATA[
-        /// (1) that there was a misrepresentation
-        /// (2) that the misrepresentation was either fraudulent or material
-        /// ]]>
+        /// <![CDATA[ (1) that there was a misrepresentation ]]>
+        /// <![CDATA[ (2) that the misrepresentation was either fraudulent or material ]]> 
+        /// <see cref="Misrepresentation"/>
         /// </summary>
         public Misrepresentation<T> Misrepresentation { get; set; }
 

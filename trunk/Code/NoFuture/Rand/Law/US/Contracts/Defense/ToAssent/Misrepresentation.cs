@@ -6,12 +6,22 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// <![CDATA[an assertion that is not in accordance with the facts]]>
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <remarks>
+    /// <![CDATA[ src: ALABI v. DHL AIRWAYS, INC. Superior Court of Delaware, New Castle 583 A.2d 1358 (Del. Super. 1990)]]>
+    /// </remarks>
     public class Misrepresentation<T> : DefenseBase<T>
     {
         public Misrepresentation(IContract<T> contract) : base(contract) { }
 
         /// <summary>
-        /// <![CDATA[A misrepresentation is fraudulent if the maker intends his assertion to induce a party to manifest his assent and the maker]]>
+        /// <![CDATA[
+        /// (1) A misrepresentation is fraudulent if the maker intends his assertion to 
+        /// induce a party to manifest his assent and the maker (a), (b) or (c)
+        /// 
+        /// (2) A misrepresentation is material if it would be likely to induce a 
+        /// reasonable person to manifest his assent, or if the maker knows that it 
+        /// would be likely to induce the recipient to do so
+        /// ]]>
         /// </summary>
         public Predicate<ILegalPerson> IsAssertionToInduceAssent { get; set; } = llp => false;
 
