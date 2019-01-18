@@ -27,12 +27,12 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
         /// <summary>
         /// <![CDATA[(3) that the misrepresentation induced the recipient to enter into the contract]]>
         /// </summary>
-        public Predicate<ILegalPerson> IsRecipientInduced { get; set; }
+        public Predicate<ILegalPerson> IsRecipientInduced { get; set; } = llp => false;
 
         /// <summary>
         /// <![CDATA[(4) that the recipient’s reliance on the misrepresentation was reasonable]]>
         /// </summary>
-        public Predicate<ILegalPerson> IsRecipientRelianceReasonable { get; set; }
+        public Predicate<ILegalPerson> IsRecipientRelianceReasonable { get; set; } = llp => false;
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {

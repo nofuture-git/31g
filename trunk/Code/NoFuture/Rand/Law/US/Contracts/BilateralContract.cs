@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     public class BilateralContract : ComLawContract<Promise>
     {
         [Note("assent: expression of approval or agreement")]
-        public virtual MutualAssent MutualAssent { get; set; }
+        public virtual IAssent MutualAssent { get; set; }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {

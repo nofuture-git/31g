@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
-    public interface IAssent
+    public interface IAssent : IObjectiveLegalConcept
     {
         /// <summary>
         /// A predicate when given either formative party of the contract

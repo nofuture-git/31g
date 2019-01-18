@@ -53,6 +53,7 @@
     <Compile Include="US\Contracts\Defense\ToAssent\ByFraud.cs" />
     <Compile Include="US\Contracts\Defense\ToAssent\ByMistake.cs" />
     <Compile Include="US\Contracts\Defense\ToAssent\ByUndueInfluence.cs" />
+    <Compile Include="US\Contracts\Defense\ToAssent\ImproperThreat.cs" />
     <Compile Include="US\Contracts\Defense\ToAssent\Misrepresentation.cs" />
     <Compile Include="US\Contracts\Defense\ToFormation\ByMentalIncompetent.cs" />
     <Compile Include="US\Contracts\Defense\ToFormation\ByMinor.cs" />
