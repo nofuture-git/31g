@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, the specific objective rules of physical and improper threat
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -39,6 +39,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
             };
 
             var testSubject = new ByDuress<Promise>(testContract);
+
+            //court found that there was not threat made
+            var testResult = testSubject.IsValid(new Ellis(), new StandardFinance());
+            Assert.IsFalse(testResult);
+            Console.WriteLine(testSubject.ToString());
 
         }
         public static ISet<Term<object>> GetTerms()

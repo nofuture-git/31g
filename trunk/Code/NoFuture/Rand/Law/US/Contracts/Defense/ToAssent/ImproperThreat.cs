@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// <![CDATA[leaves victim no reasonable alternative ]]>
     /// </summary>
     /// <remarks>
-    /// <![CDATA[Restatement (Second) of Contracts § 176(1)]]>
+    /// <![CDATA[Restatement (Second) of Contracts § 176]]>
     /// </remarks>    
     public class ImproperThreat<T> : DefenseBase<T>
     {
@@ -32,53 +32,97 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
         /// </summary>
         public Predicate<ILegalPerson> IsBreachOfGoodFaithDuty { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(1)]]>
+        /// </summary>
+        protected internal bool IsImproperByOne(ILegalPerson lp)
         {
-            if (IsCrimeOrTort(offeror))
+            if (IsCrimeOrTort(lp))
             {
-                AddReasonEntry($"{offeror?.Name} is threatened with a crime or tort");
-                return true;
-            }
-            if (IsCrimeOrTort(offeree))
-            {
-                AddReasonEntry($"{offeree?.Name} is threatened with a crime or tort");
+                AddReasonEntry($"{lp?.Name} is threatened with a crime or tort");
                 return true;
             }
 
-            if (IsProsecutionAsCriminal(offeror))
+            if (IsProsecutionAsCriminal(lp))
             {
-                AddReasonEntry($"{offeror?.Name} is threatened with criminal prosecution");
-                return true;
-            }
-            if (IsProsecutionAsCriminal(offeree))
-            {
-                AddReasonEntry($"{offeree?.Name} is threatened with criminal prosecution");
+                AddReasonEntry($"{lp?.Name} is threatened with criminal prosecution");
                 return true;
             }
 
-            if (IsUseCivilProcessInBadFaith(offeror))
+            if (IsUseCivilProcessInBadFaith(lp))
             {
-                AddReasonEntry($"{offeror?.Name} is threatened with use of civil process in bad faith");
-                return true;
-            }
-            if (IsUseCivilProcessInBadFaith(offeree))
-            {
-                AddReasonEntry($"{offeree?.Name} is threatened with use of civil process in bad faith");
+                AddReasonEntry($"{lp?.Name} is threatened with use of civil process in bad faith");
                 return true;
             }
 
-            if (IsBreachOfGoodFaithDuty(offeror))
+            if (IsBreachOfGoodFaithDuty(lp))
             {
-                AddReasonEntry($"{offeror?.Name} is threatened with breach of duty in good faith");
-                return true;
-            }
-            if (IsBreachOfGoodFaithDuty(offeree))
-            {
-                AddReasonEntry($"{offeree?.Name} is threatened with breach of duty in good faith");
+                AddReasonEntry($"{lp?.Name} is threatened with breach of duty in good faith");
                 return true;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(2)]]>
+        /// </summary>
+        protected internal bool IsImproperByTwo(ILegalPerson lp)
+        {
+            if (!IsUnfairTerms(lp))
+                return false;
+
+            AddReasonEntry("the resulting exchange is not on fair terms");
+
+            if (IsAllHarmNoBenefit(lp))
+            {
+                AddReasonEntry($"threatened act would harm the {lp?.Name} and " +
+                               "would not significantly benefit the party making the threat");
+                return true;
+            }
+
+            if (IsSignificantViaPriorUnfairDeal(lp))
+            {
+                AddReasonEntry($"the effectiveness of the threat in inducing {lp?.Name}'s " +
+                               "assent is significant by prior unfair dealing " +
+                               "with the party");
+                return true;
+            }
+
+            if (IsUsePowerIllegitimateEnds(lp))
+            {
+                AddReasonEntry($"{lp.Name} is threatened with a use of power for " +
+                               "illegitimate ends");
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(2)]]>
+        /// </summary>
+        public Predicate<ILegalPerson> IsUnfairTerms { get; set; } = lp => false;
+
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(2)(a)]]>
+        /// </summary>
+        public Predicate<ILegalPerson> IsAllHarmNoBenefit { get; set; } = lp => false;
+
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(2)(b)]]>
+        /// </summary>
+        public Predicate<ILegalPerson> IsSignificantViaPriorUnfairDeal { get; set; } = lp => false;
+
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(2)(c)]]>
+        /// </summary>
+        public Predicate<ILegalPerson> IsUsePowerIllegitimateEnds { get; set; } = lp => false;
+
+        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        {
+            return IsImproperByOne(offeror) || IsImproperByOne(offeree)
+                                            || IsImproperByTwo(offeror) || IsImproperByTwo(offeree);
         }
     }
 }
