@@ -81,8 +81,10 @@
     <Compile Include="LawTests\ContractTests\DefenseTests\McInerneyvCharterGolfTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\OdorizzivBloomfieldSchoolTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\OrtelerevTeachersBoardTests.cs" />
+    <Compile Include="LawTests\ContractTests\DefenseTests\SherwoodvWalkerTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\StandardFinancevEllisTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\StevensvPublicisTests.cs" />
+    <Compile Include="LawTests\ContractTests\DefenseTests\WoodvBoyntonTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\ConradvFieldsTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\HoffmanvRedOwlStoresTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\MayervKingColaTests.cs" />

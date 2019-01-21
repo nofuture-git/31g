@@ -33,8 +33,8 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
             };
 
             var testResult = testSubject.IsValid(new Webb(), new McGowin());
-            Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 

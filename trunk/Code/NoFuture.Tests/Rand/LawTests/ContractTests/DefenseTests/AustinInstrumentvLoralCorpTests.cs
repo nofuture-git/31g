@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToAssent;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
 {
@@ -19,7 +15,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
     /// doctrine issue, econ. duress using existing duty (lack of consideration) as leverage for duress in further contrax
     /// ]]>
     /// </remarks>
-    [TestFixture()]
+    [TestFixture]
     public class AustinInstrumentvLoralCorpTests
     {
         [Test]

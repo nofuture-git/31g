@@ -37,6 +37,11 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
+            if (!IsEnforceableInCourt)
+            {
+                AddReasonEntry("The contract is not enforceable in court and is therefore void.");
+                return false;
+            }
 
             if (Consideration == null)
             {

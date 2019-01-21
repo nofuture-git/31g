@@ -5,7 +5,6 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// <summary>
     /// <![CDATA[an assertion that is not in accordance with the facts]]>
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <remarks>
     /// <![CDATA[ src: ALABI v. DHL AIRWAYS, INC. Superior Court of Delaware, New Castle 583 A.2d 1358 (Del. Super. 1990)]]>
     /// </remarks>

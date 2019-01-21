@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
 
             if (!IsEnforceableInCourt)
             {
-                AddReasonEntry("The contract is not enforceable in court.");
+                AddReasonEntry("The contract is not enforceable in court and is therefore void.");
                 return false;
             }
 

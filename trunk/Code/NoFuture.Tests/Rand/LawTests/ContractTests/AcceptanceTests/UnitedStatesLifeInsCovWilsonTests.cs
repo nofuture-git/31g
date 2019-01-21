@@ -33,8 +33,8 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
             };
 
             var testResult = testSubject.IsValid(new UnitedStatesLifeInsCo(), new Wilson());
-            Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 

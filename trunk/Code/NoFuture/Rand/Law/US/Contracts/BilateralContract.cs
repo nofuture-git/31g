@@ -29,6 +29,7 @@ namespace NoFuture.Rand.Law.US.Contracts
             if (!MutualAssent.IsValid(offeror, offeree))
             {
                 AddReasonEntry($"{nameof(MutualAssent)}.{nameof(IsValid)} returned false");
+                AddReasonEntryRange(MutualAssent.GetReasonEntries());
                 return false;
             }
 

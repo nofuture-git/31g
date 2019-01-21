@@ -35,13 +35,13 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <summary>
         /// What is bargained for must have value
         /// </summary>
-        public virtual Predicate<T> IsValueInEyesOfLaw { get; set; } = o => true;
+        public virtual Predicate<IObjectiveLegalConcept> IsValueInEyesOfLaw { get; set; } = o => true;
 
         /// <summary>
         /// What is bargined for must not be a choice - it must be a duty
         /// </summary>
         [Note("is not just a choice")]
-        public virtual Predicate<T> IsIllusionaryPromise { get; set; } = o => false;
+        public virtual Predicate<IObjectiveLegalConcept> IsIllusionaryPromise { get; set; } = o => false;
 
         /// <summary>
         /// What is bargined for must not be an existing duty.  When it 
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <![CDATA[ e.g. cannot bargain that we promise not to steal from each other]]>
         /// </remarks>
         [Note("is not already obligated to be done")]
-        public virtual Predicate<T> IsExistingDuty { get; set; } = o => false;
+        public virtual Predicate<IObjectiveLegalConcept> IsExistingDuty { get; set; } = o => false;
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            var promise = _contract.Offer is T valueM ? valueM : default(T);
+            var promise = _contract.Offer; //is T valueM ? valueM : default(T);
             var returnPromise = _contract.Acceptance(promise);
             if (returnPromise == null)
             {
