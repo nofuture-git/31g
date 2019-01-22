@@ -21,11 +21,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         [Test]
         public void JankowskivJedz()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferRenderCustomaryGovSvc(),
                 Acceptance = o => o is OfferRenderCustomaryGovSvc ? new AcceptanceOneThirdOfTaxRev() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => new HashSet<Term<object>> {new Term<object>("undefined", DBNull.Value)}

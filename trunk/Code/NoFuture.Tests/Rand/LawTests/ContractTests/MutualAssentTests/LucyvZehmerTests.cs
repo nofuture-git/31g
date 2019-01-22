@@ -16,9 +16,9 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
         [Test]
         public void LucyvZehmer()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
-                MutualAssent = new BarTab(),
+                Assent = new BarTab(),
                 Offer = new FergusonFarm(),
                 Acceptance = theFarm => theFarm is FergusonFarm ? new FiftyThousandUsd() : null,
             };
@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
 
             var testResult = testSubject.IsValid(new WOLucy(), new AHZehmer());
             Console.WriteLine(string.Join(", ", testSubject.GetReasonEntries()));
-            Console.WriteLine(string.Join(", ", testSubject.MutualAssent.GetReasonEntries()));
+            Console.WriteLine(string.Join(", ", testSubject.Assent.GetReasonEntries()));
             Assert.IsTrue(testResult);
         }
     }

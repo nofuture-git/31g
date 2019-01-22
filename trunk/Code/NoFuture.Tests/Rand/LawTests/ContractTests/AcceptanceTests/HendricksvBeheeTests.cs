@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
         [Test]
         public void HendricksvBehee()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferFromBehee2Smiths(),
                 Acceptance = o => o is OfferFromBehee2Smiths ? new AcceptanceSmiths2Behee() : null,

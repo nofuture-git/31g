@@ -27,11 +27,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         [Test]
         public void InReEstateOfServertson()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferToPurchaseFarmsite(),
                 Acceptance = o => o is OfferToPurchaseFarmsite ? new AcceptancePriceInSignedDoc() : null,
-                MutualAssent = new TypedAndSignedDocument()
+                Assent = new TypedAndSignedDocument()
             };
 
             testSubject.Consideration = new Consideration<Promise>(testSubject)

@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         [Test]
         public void ConferateMotorsvTerny()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferDec28th(),
                 Acceptance = o => new AcceptanceTooLate(),

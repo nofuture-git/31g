@@ -28,11 +28,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
             var seller = new Fairmount();
             var getOrigOffer = buyer.GetCommunication();
 
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new TelegramQuote2CurdenMartin(),
                 Acceptance = initRequest => initRequest is TelegramQuote2CurdenMartin ? new TelegramAcceptance2Fairmount() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     TermsOfAgreement = lp =>
                     {

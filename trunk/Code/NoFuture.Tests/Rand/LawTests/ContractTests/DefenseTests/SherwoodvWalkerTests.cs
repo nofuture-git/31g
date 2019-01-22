@@ -21,11 +21,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
         [Test]
         public void SherwoodvWalker()
         {
-            var testContract = new BilateralContract
+            var testContract = new ComLawContract<Promise>
             {
                 Offer = new OfferSellCow(),
                 Acceptance = o => o is OfferSellCow ? new AcceptSellCow() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => (lp as Sherwood)?.GetTerms() ?? (lp as Walker)?.GetTerms()

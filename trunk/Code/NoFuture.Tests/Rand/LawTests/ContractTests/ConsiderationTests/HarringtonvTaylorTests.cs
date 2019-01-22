@@ -1,7 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 

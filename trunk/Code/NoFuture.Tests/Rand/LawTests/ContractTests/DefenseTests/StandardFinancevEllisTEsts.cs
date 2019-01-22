@@ -21,11 +21,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
         [Test]
         public void StandardFinancevEllis()
         {
-            var testContract = new BilateralContract
+            var testContract = new ComLawContract<Promise>
             {
                 Offer = new OfferOnPromissoryNote(),
                 Acceptance = o => o is OfferOnPromissoryNote ? new AcceptOnPromissoryNote() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => GetTerms()

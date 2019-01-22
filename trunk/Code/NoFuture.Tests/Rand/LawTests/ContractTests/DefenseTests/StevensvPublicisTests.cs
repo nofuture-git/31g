@@ -21,11 +21,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
         [Test]
         public void StevensvPublicis()
         {
-            var testContract = new BilateralContract
+            var testContract = new ComLawContract<Promise>
             {
                 Offer = new SomeEmail(),
                 Acceptance = o => o is SomeEmail ? new SomeEmailResponse() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => GetTerms()
@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
         }
     }
 
-    public class IgnoreContract : BilateralContract
+    public class IgnoreContract : ComLawContract<Promise>
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {

@@ -22,11 +22,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         [Test]
         public void AlaskaPackersAssocvDomenico()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferEmployedAsFishermen(),
                 Acceptance = o => o is OfferEmployedAsFishermen ? new AcceptanceOfEmployment() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => new HashSet<Term<object>> { new Term<object>("fishing", DBNull.Value) }

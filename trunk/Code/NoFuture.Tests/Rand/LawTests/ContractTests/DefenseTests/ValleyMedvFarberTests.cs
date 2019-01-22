@@ -21,11 +21,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
         [Test]
         public void ValleyMedvFarber()
         {
-            var testContract = new BilateralContract
+            var testContract = new ComLawContract<Promise>
             {
                 Offer = new OfferVmsEmployment(),
                 Acceptance = o => o is OfferVmsEmployment ? new AcceptVmsEmployment() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => GetTerms()

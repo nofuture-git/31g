@@ -23,11 +23,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
         [Test]
         public void HanksvPowderRidge()
         {
-            var testContract = new BilateralContract
+            var testContract = new ComLawContract<Promise>
             {
                 Offer = new OfferSnowTubing(),
                 Acceptance = o => o is OfferSnowTubing ? new AcceptSnowTubing() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => GetTerms()

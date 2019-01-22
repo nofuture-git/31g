@@ -24,11 +24,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         [Test]
         public void HamervSidway()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferPay5000On21stBday(),
                 Acceptance = o => o is OfferPay5000On21stBday ? new AcceptanceToRefrainFromVice() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => new HashSet<Term<object>> { new Term<object>("undefined", DBNull.Value) }

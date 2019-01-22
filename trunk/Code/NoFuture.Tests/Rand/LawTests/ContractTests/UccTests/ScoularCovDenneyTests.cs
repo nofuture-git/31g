@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         {
             var testSubject = new UccContract<Goods>
             {
-                Agreement = new FowardContractForMillet(),
+                Assent = new FowardContractForMillet(),
                 Offer = new BushelsOfMillet(),
                 Acceptance = o => new AcceptanceArranged2SellMillet()
             };

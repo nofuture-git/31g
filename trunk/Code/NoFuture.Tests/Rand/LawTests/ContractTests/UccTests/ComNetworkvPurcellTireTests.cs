@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         {
             var testSubject = new UccContract<Goods>
             {
-                Agreement = new LetterFromCBrown{ IsApprovalExpressed = lp => true},
+                Assent = new LetterFromCBrown{ IsApprovalExpressed = lp => true},
                 Offer = new IbmPersonalComputers(),
                 Acceptance = o => new IbmPersonalComputers()
             };

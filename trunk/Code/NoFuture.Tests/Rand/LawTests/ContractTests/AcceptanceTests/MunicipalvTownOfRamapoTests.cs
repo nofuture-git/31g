@@ -27,11 +27,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
         [Test]
         public void MunicipalvTownOfRamapo()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferEncodeTownLaws(),
                 Acceptance = o => o is OfferEncodeTownLaws ? new Acceptance2Municipal() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp =>
                     {

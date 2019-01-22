@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         [Test]
         public void PoelvBrunswick()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new Apr6Bruns2Poel(),
                 Acceptance = o => o is Apr6Bruns2Poel ? new Jan7Bruns2Poel() : null

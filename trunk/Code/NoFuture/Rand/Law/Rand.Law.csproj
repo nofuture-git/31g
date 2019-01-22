@@ -43,7 +43,6 @@
     <Compile Include="Term.cs" />
     <Compile Include="US\CaseReading\Citation.cs" />
     <Compile Include="US\Contracts\Advertisement.cs" />
-    <Compile Include="US\Contracts\BilateralContract.cs" />
     <Compile Include="US\Contracts\Consideration.cs" />
     <Compile Include="US\Contracts\Defense\DefenseBase.cs" />
     <Compile Include="US\Contracts\Defense\IVoidable.cs" />

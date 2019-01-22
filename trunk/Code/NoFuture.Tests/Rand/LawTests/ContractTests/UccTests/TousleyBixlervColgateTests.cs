@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
             var testSubject =
                 new UccContract<Goods>
                 {
-                    Agreement = new PurchaseOrder50000CubicFeetClay
+                    Assent = new PurchaseOrder50000CubicFeetClay
                     {
                         IsApprovalExpressed = lp => true
                     },

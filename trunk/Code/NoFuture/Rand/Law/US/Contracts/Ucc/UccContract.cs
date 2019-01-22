@@ -14,23 +14,23 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     public class UccContract<T> : ObjectiveLegalConcept, IUccItem, IContract<T> where T : IUccItem
     {
         [Note("the bargain of the parties")]
-        public virtual IAssent Agreement { get; set; }
+        public virtual IAssent Assent { get; set; }
 
         public IObjectiveLegalConcept Offer { get; set; }
         public Func<IObjectiveLegalConcept, T> Acceptance { get; set; }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            if (Agreement == null)
+            if (Assent == null)
             {
                 AddReasonEntry("There is no agreement.");
                 return false;
             }
 
-            if (!Agreement.IsValid(offeree, offeror))
+            if (!Assent.IsValid(offeree, offeror))
             {
                 AddReasonEntry("The agreement is invalid");
-                AddReasonEntryRange(Agreement.GetReasonEntries());
+                AddReasonEntryRange(Assent.GetReasonEntries());
                 return false;
             }
 

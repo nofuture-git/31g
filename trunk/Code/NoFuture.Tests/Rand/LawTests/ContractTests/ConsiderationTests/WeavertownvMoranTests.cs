@@ -22,11 +22,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         [Test]
         public void WeavertownvMoran()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferSellTicketLicx(),
                 Acceptance = o => o is OfferSellTicketLicx ? new AcceptanceBuyTicketLicx() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => new HashSet<Term<object>> { new Term<object>("undefined", DBNull.Value) }

@@ -16,9 +16,9 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         [Test]
         public void LeonardvPepsicoInc()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
-                MutualAssent = new PepsiStuffCatalogOrderForm(),
+                Assent = new PepsiStuffCatalogOrderForm(),
                 Offer = new PepsiStuffCommercial(),
                 Acceptance = orderForm => orderForm is PepsiPoints ? new PepsiStuff() : null,
             };

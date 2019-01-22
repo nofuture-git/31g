@@ -23,11 +23,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         [Test]
         public void SchnellvNell()
         {
-            var testSubject = new BilateralContract()
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferOneCent(),
                 Acceptance = o => o is OfferOneCent ? new AcceptancePaySixHundred() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => new HashSet<Term<object>> {new Term<object>("undefined", DBNull.Value)}

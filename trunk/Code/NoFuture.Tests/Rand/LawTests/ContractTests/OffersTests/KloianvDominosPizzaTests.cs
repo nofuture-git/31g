@@ -33,12 +33,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         [Test]
         public void KloianvDominosPizza()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferDefendantPay2SettleLawsuit(),
                 Acceptance = o =>
                     o is OfferDefendantPay2SettleLawsuit ? new AcceptanceEmailFromPlaintiffAttorney() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     TermsOfAgreement = lp =>
                     {

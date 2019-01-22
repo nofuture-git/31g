@@ -22,11 +22,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
         [Test]
         public void DavisvJacoby()
         {
-            var testSubject = new BilateralContract()
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferApr12(),
                 Acceptance = o => o is OfferApr12 ? new AcceptanceApr14() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => new HashSet<Term<object>>

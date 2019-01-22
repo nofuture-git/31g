@@ -21,11 +21,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
         [Test]
         public void CrabtreevElizabethSales()
         {
-            var testContract = new BilateralContract
+            var testContract = new ComLawContract<Promise>
             {
                 Offer = new ElizabethSalesOfferTelephoneMemorandum(),
                 Acceptance = o => o is ElizabethSalesOfferTelephoneMemorandum ? new AcceptElizabethOffer() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => GetTerms()

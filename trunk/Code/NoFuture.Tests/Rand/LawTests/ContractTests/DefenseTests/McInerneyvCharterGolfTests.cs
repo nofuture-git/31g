@@ -22,11 +22,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
         [Test]
         public void McInerneyvCharterGolf()
         {
-            var testContract = new BilateralContract
+            var testContract = new ComLawContract<Promise>
             {
                 Offer = new CharterGolfCounterOfferEmpl(),
                 Acceptance = o => o is CharterGolfCounterOfferEmpl ? new McInerneyContEmplAtCharter() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
                     TermsOfAgreement = lp => GetTerms()

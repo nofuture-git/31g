@@ -31,11 +31,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
         [Test]
         public void HobbsvMassasoitWhipCo()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferEelSkins(),
                 Acceptance = o => o is OfferEelSkins ? new AcceptanceByDoNothing() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp =>
                     {

@@ -22,11 +22,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         [Test]
         public void EverTiteRoofingCorpvGreen()
         {
-            var testSubject = new BilateralContract
+            var testSubject = new ComLawContract<Promise>
             {
                 Offer = new OfferReRoofResidence(),
                 Acceptance = o => o is OfferReRoofResidence ? new AcceptanceViaCredit() : null,
-                MutualAssent = new MutualAssent
+                Assent = new MutualAssent
                 {
                     TermsOfAgreement = lp => GetTerms,
                     IsApprovalExpressed = lp =>

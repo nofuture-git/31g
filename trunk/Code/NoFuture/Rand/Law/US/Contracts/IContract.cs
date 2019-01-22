@@ -11,5 +11,8 @@ namespace NoFuture.Rand.Law.US.Contracts
         IObjectiveLegalConcept Offer { get; set; }
 
         Func<IObjectiveLegalConcept, T> Acceptance { get; set; }
+
+        [Note("expression of approval or agreement")]
+        IAssent Assent { get; set; }
     }
 }

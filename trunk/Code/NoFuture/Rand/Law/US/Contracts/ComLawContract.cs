@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
@@ -10,6 +11,8 @@ namespace NoFuture.Rand.Law.US.Contracts
         [Note("bargained for: if it is sought by one and given by the other")]
         [Aka("mutuality of obligation")]
         public virtual Consideration<T> Consideration { get; set; }
+        
+        public virtual IAssent Assent { get; set; }
 
         [Note("this is what distinguishes a common (donative) promise from a legal one")]
         public override bool IsEnforceableInCourt => true;
@@ -111,8 +114,24 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
+            if (Assent != null && !Assent.IsValid(offeror, offeree))
+            {
+                AddReasonEntry($"{nameof(Assent)}.{nameof(IsValid)} returned false");
+                AddReasonEntryRange(Assent.GetReasonEntries());
+                return false;
+            }
 
             return true;
+        }
+
+        public override string ToString()
+        {
+            var allEntries = GetReasonEntries() as List<string> ?? new List<string>();
+            if (Assent != null)
+                allEntries.AddRange(Assent.GetReasonEntries());
+            if (Consideration != null)
+                allEntries.AddRange(Consideration.GetReasonEntries());
+            return string.Join(Environment.NewLine, allEntries);
         }
     }
 }
