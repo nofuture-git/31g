@@ -655,3 +655,4 @@ insouciant: showing a casual lack of concern; indifferent.
 defrock: deprive someone of professional status
 mesne: (law) intermediate
 comity: an association of nations for their mutual benefit
+oath -vs- vow: oath is to a court what vow is to a church, true statement given by one

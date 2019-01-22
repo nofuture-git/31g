@@ -8,6 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     public class ComLawContract<T> : ObjectiveLegalConcept, IContract<T> where T : IObjectiveLegalConcept
     {
         [Note("bargained for: if it is sought by one and given by the other")]
+        [Aka("mutuality of obligation")]
         public virtual Consideration<T> Consideration { get; set; }
 
         [Note("this is what distinguishes a common (donative) promise from a legal one")]
