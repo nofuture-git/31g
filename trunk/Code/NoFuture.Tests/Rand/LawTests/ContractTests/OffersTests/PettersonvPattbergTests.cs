@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         [Test]
         public void PettersonvPattberg()
         {
-            var testSubject = new UnilateralContract
+            var testSubject = new ComLawContract<Performance>
             {
                 Offer = new OfferEarlyMortgagePayment(),
                 //this is specific performance therefore any offer may be revoked up-until the last moment

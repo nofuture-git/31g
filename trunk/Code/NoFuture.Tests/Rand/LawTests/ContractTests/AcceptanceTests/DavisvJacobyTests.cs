@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
             Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
 
-            var testSubjectAsPerformance = new UnilateralContract
+            var testSubjectAsPerformance = new ComLawContract<Performance>
             {
                 Offer = new OfferApr12(),
                 Acceptance = o => o is OfferApr12 ? new AcceptanceAccording2TrialCourt() : null

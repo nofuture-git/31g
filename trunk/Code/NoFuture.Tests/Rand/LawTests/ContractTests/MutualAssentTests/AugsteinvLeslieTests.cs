@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
         [Test]
         public void AugsteinvLeslie()
         {
-            var testSubject = new UnilateralContract
+            var testSubject = new ComLawContract<Performance>
             {
                 Offer = new TwentyThousandUsdReward(),
                 //the court views acceptance occuring as soon as the equipment was turned over to the police in Germany

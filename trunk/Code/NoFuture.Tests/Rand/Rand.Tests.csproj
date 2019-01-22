@@ -75,6 +75,7 @@
     <Compile Include="LawTests\ContractTests\ConsiderationTests\WebbvMcGowinTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\AlabivDhlAirwaysTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\AustinInstrumentvLoralCorpTests.cs" />
+    <Compile Include="LawTests\ContractTests\DefenseTests\BatsakisvDemotsisTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\CrabtreevElizabethSalesTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\ExParteOdemTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\GuenthervAmerTexTests.cs" />
@@ -85,6 +86,8 @@
     <Compile Include="LawTests\ContractTests\DefenseTests\SherwoodvWalkerTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\StandardFinancevEllisTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\StevensvPublicisTests.cs" />
+    <Compile Include="LawTests\ContractTests\DefenseTests\ValleyMedvFarberTests.cs" />
+    <Compile Include="LawTests\ContractTests\DefenseTests\WilliamsvWalkerThomFurnitureTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\WoodvBoyntonTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\ConradvFieldsTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\HoffmanvRedOwlStoresTests.cs" />

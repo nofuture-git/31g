@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
 {
-    [TestFixture()]
+
+    /// <summary>
+    /// HANKS v. POWDER RIDGE RESTAURANT CORP. Supreme Court of Connecticut 885 A.2d 734 (Conn. 2005)
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// doctrine issue, exculpatory provisions undermine the policy considerations governing our 
+    /// tort system - with the public bearing the cost of the resulting injuries
+    /// ]]>
+    /// </remarks>
+    [TestFixture]
     public class HanksvPowderRidgeTests
     {
         [Test]
@@ -34,10 +40,18 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
                 IsSoughtByPromisor = (lp, p) => true
             };
 
-            var testSubject = new ByLimitTortLiability<Promise>(testContract);
+            var testSubject = new ByLimitTortLiability<Promise>(testContract)
+            {
+                IsOfferToAnyMemberOfPublic = lp => lp is PowderRidge,
+                IsStandardizedAdhesion = lp => lp is PowderRidge,
+                IsSubjectToSellerCarelessness = lp => lp is PowderRidge,
+                IsSuitableForPublicRegulation = lp => lp is PowderRidge,
+                IsAdvantageOverMemberOfPublic = lp => lp is PowderRidge
+            };
 
             var testResult = testSubject.IsValid(new PowderRidge(), new Hanks());
             Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
         }
         public static ISet<Term<object>> GetTerms()
         {

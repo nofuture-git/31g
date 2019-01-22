@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
 {
@@ -11,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
     /// tort system - with the public bearing the cost of the resulting injuries
     /// ]]>
     /// </remarks>
-    public class ByLimitTortLiability<T> : DefenseBase<T>, IVoidable
+    public class ByLimitTortLiability<T> : DefenseBase<T>
     {
         public ByLimitTortLiability(IContract<T> contract) : base(contract)
         {
@@ -21,8 +22,27 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
             if (!base.IsValid(offeror, offeree))
                 return false;
 
-            throw new NotImplementedException();
+            var cnt = 0;
+            foreach (var kvp in GetPredicate2ReasonString())
+            {
+                var p = kvp.Key;
+                if (p(offeror) || p(offeree))
+                {
+                    AddReasonEntry(kvp.Value);
+                    cnt += 1;
+                }
+            }
+
+            return cnt >= NumberNeededToTestTrue;
         }
+
+        /// <summary>
+        /// <![CDATA[
+        /// an exculpatory agreement may affect the public interest 
+        /// adversely even if some of the Tunkl factors are not satisfied
+        /// ]]>
+        /// </summary>
+        public int NumberNeededToTestTrue { get; set; } = 5;
 
         /// <summary>
         /// <![CDATA[
@@ -31,7 +51,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
         /// public regulation.
         /// ]]>
         /// </summary>
-        public Predicate<IContract<T>> IsSuitableForPublicRegulation { get; set; } = c => false;
+        public Predicate<ILegalPerson> IsSuitableForPublicRegulation { get; set; } = c => false;
 
         /// <summary>
         /// <![CDATA[
@@ -44,7 +64,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
         /// <remarks>
         /// e.g. medical services, child care, banking, real estate services, etc.
         /// </remarks>
-        public Predicate<IContract<T>> IsImportantPublicService { get; set; } = c => false;
+        public Predicate<ILegalPerson> IsImportantPublicService { get; set; } = c => false;
 
         /// <summary>
         /// <![CDATA[
@@ -54,7 +74,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
         /// within certain established standards.
         /// ]]>
         /// </summary>
-        public Predicate<IContract<T>> IsOfferToAnyMemberOfPublic { get; set; } = c => false;
+        public Predicate<ILegalPerson> IsOfferToAnyMemberOfPublic { get; set; } = c => false;
 
         /// <summary>
         /// <![CDATA[
@@ -65,7 +85,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
         /// seeks his services.
         /// ]]>
         /// </summary>
-        public Predicate<IContract<T>> IsAdvantageOverMemberOfPublic { get; set; } = c => false;
+        public Predicate<ILegalPerson> IsAdvantageOverMemberOfPublic { get; set; } = c => false;
 
         /// <summary>
         /// A preprinted form with a bunch paragraphs in legal-speak that is presented as 
@@ -78,7 +98,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
         /// obtain protection against negligence.
         /// ]]>
         /// </summary>
-        public Predicate<IContract<T>> IsStandardizedAdhesion { get; set; } = c => false;
+        public Predicate<ILegalPerson> IsStandardizedAdhesion { get; set; } = c => false;
 
         /// <summary>
         /// shifts the tort liability from tortfeasor to injured person
@@ -89,6 +109,19 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
         /// of carelessness by the seller or his agents.
         /// ]]>
         /// </summary>
-        public Predicate<IContract<T>> IsSubjectToSellerCarelessness { get; set; } = c => false;
+        public Predicate<ILegalPerson> IsSubjectToSellerCarelessness { get; set; } = c => false;
+
+        protected internal virtual Dictionary<Predicate<ILegalPerson>, string> GetPredicate2ReasonString()
+        {
+            return new Dictionary<Predicate<ILegalPerson>, string>
+            {
+                {IsSuitableForPublicRegulation, "the agreement suitable for public regulation"},
+                {IsImportantPublicService, "the service is of importance to the public"},
+                {IsOfferToAnyMemberOfPublic, "the offer is open to any memeber of public"},
+                {IsAdvantageOverMemberOfPublic, "there is a decisive advantage over any member of the public"},
+                {IsStandardizedAdhesion, "the agreement involves a standardized exculpation form"},
+                {IsSubjectToSellerCarelessness, "purchaser is subject to risk by seller carelessness"},
+            };
+        }
     }
 }

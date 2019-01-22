@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Law.US.Contracts.Defense.ToFormation
 {
-    public class ByMentalIncompetent<T> : DefenseBase<T>, IVoidable
+    public class ByMentalIncompetent<T> : DefenseBase<T>
     {
         public ByMentalIncompetent(IContract<T> contract) : base(contract)
         {

@@ -1,6 +1,6 @@
 ﻿namespace NoFuture.Rand.Law.US.Contracts.Defense
 {
-    public abstract class DefenseBase<T> : ObjectiveLegalConcept
+    public abstract class DefenseBase<T> : ObjectiveLegalConcept, IVoidable
     {
         private readonly IContract<T> _contract;
         protected DefenseBase(IContract<T> contract)
@@ -42,6 +42,12 @@
             return true;
         }
 
+        /// <summary>
+        /// <![CDATA[
+        /// Since all Defense are Voidable by definition, it implies 
+        /// they are legal since an illegal contract is just "Void" 
+        /// ]]>
+        /// </summary>
         public override bool IsEnforceableInCourt => true;
     }
 }

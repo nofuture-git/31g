@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// 246 Cal.App. 2d 123, 54 Cal.Rptr. 533 (2d Dist. 1966)    
     /// </remarks>
     [Aka("overpersuasion")]
-    public class ByUndueInfluence<T> : DefenseBase<T>, IVoidable
+    public class ByUndueInfluence<T> : DefenseBase<T>
     {
         public ByUndueInfluence(IContract<T> contract) : base(contract)
         {
@@ -118,7 +118,5 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
                 {IsInsistentOnNoTime4Advisors, "statements that there is no time to consult financial advisers or attorneys,"}
             };
         }
-
-
     }
 }

@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// <![CDATA[Restatement (Second) of Contracts § 164]]>
     /// </remarks>
     [Aka("misrepresentation")]
-    public class ByFraud<T> : DefenseBase<T>, IVoidable
+    public class ByFraud<T> : DefenseBase<T>
     {
         public ByFraud(IContract<T> contract) : base(contract) { }
 

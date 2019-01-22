@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
         [Test]
         public void UnitedStatesLifeInsCovWilson()
         {
-            var testSubject = new UnilateralContract
+            var testSubject = new ComLawContract<Performance>
             {
                 Offer = new OfferLifeInsPolicy(),
                 Acceptance = o => o is OfferLifeInsPolicy ? new AcceptanceByPayInsPremium() : null,
