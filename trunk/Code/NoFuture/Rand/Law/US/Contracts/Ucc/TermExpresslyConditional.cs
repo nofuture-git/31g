@@ -2,11 +2,12 @@
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
+    /// <inheritdoc />
     /// <summary>
     /// A kind of term which cancels out the typically UCC allowment for adding in new 
     /// terms to an agreement.
     /// </summary>
-    [Aka("UCC 2-207(2)(a)")]
+    [Aka("UCC 2-207(2)(a)", "merger clause")]
     public class TermExpresslyConditional : ContractTerm<object>
     {
         private const string REF_TO = "TermExpresslyConditional";

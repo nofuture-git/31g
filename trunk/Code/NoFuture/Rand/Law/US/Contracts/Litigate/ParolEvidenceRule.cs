@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US.Contracts.Ucc;
 
 namespace NoFuture.Rand.Law.US.Contracts.Litigate
 {
@@ -28,6 +29,16 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
             if (Contract?.Assent == null)
             {
                 AddReasonEntry("parol evidence rule requires a contract with assent");
+                return false;
+            }
+
+            var agreedTerms = Contract.Assent.GetAgreedTerms(offeror, offeree);
+            if (agreedTerms != null && agreedTerms.Any(t => t is TermExpresslyConditional))
+            {
+                AddReasonEntryRange(Contract.Assent.GetReasonEntries());
+                AddReasonEntry("oral terms cannot be included since one " +
+                               "of the written terms expressly states, " +
+                               "oral terms cannot be included.");
                 return false;
             }
 
