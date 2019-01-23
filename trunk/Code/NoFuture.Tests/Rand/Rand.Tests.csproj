@@ -94,6 +94,7 @@
     <Compile Include="LawTests\ContractTests\EstoppelTests\HoffmanvRedOwlStoresTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\MayervKingColaTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\RicketsvScothornTests.cs" />
+    <Compile Include="LawTests\ContractTests\LitigateTests\MastersonvSineTests.cs" />
     <Compile Include="LawTests\ContractTests\MutualAssentTests\AugsteinvLeslieTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\ConfederateMotorsvTernyTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\EverTiteRoofingCorpvGreenTests.cs" />
@@ -105,7 +106,7 @@
     <Compile Include="LawTests\ContractTests\MutualAssentTests\OswaldvAllenTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\PettersonvPattbergTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\PoelvBrunswickTests.cs" />
-    <Compile Include="LawTests\ContractTests\TermsTests\MitchillvLathTests.cs" />
+    <Compile Include="LawTests\ContractTests\LitigateTests\MitchillvLathTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\CommerceInsvBayerCorpTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\ComNetworkvPurcellTireTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\FlenderCorpvTippinsTests.cs" />

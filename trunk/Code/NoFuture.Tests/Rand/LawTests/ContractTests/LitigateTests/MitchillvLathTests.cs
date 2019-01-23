@@ -6,11 +6,16 @@ using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Litigate;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.TermsTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
 {
     /// <summary>
     /// MITCHILL v. LATH Court of Appeals of New York 247 N.Y. 377, 160 N.E. 646 (1928)
     /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// doctrine issue, the objective test of Parol Evidence Rule
+    /// ]]>
+    /// </remarks>
     [TestFixture]
     public class MitchillvLathTests
     {
