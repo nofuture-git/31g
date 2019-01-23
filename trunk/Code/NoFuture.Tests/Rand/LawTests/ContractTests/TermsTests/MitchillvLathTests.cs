@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
+using NoFuture.Rand.Law.US.Contracts.Litigate;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.TermsTests
 {
@@ -19,17 +17,51 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.TermsTests
         [Test]
         public void MitchillvLath()
         {
-
-        }
-
-        public ISet<Term<object>> GetTerms()
-        {
-            var terms = new HashSet<Term<object>>
+            var testContract = new ComLawContract<Promise>
             {
-                new ContractTerm<object>("purchase farm", 1) {Source = TermSource.Written},
-                new ContractTerm<object>("remove ice house", 2) {Source = TermSource.Oral}
+                Offer = new OfferPurchaseFarmRemIceHouse(),
+                Acceptance = o => o is OfferPurchaseFarmRemIceHouse ? new AcceptancePurchaseFarmRemIceHouse() : null,
+                Assent = new MutualAssent
+                {
+                    IsApprovalExpressed = lp => true,
+                    TermsOfAgreement = lp =>
+                    {
+                        switch (lp)
+                        {
+                            case Mitchill _:
+                                return ((Mitchill) lp).GetTerms();
+                            case Lath _:
+                                return ((Lath) lp).GetTerms();
+                            default:
+                                return null;
+                        }
+                    }
+                }
             };
-            return terms;
+
+            testContract.Consideration = new Consideration<Promise>(testContract)
+            {
+                IsGivenByPromisee = (lp, p) => true,
+                IsSoughtByPromisor = (lp, p) => true
+            };
+            var additonalTerms = testContract.Assent.GetAdditionalTerms(new Mitchill(), new Lath());
+
+            Assert.IsNotNull(additonalTerms);
+            Assert.AreEqual(1, additonalTerms.Count);
+            Assert.AreEqual("remove ice house", additonalTerms.First().Name);
+
+            var testSubject = new ParolEvidenceRule<Promise>(testContract)
+            {
+                IsCollateralInForm = t => t.Name == "remove ice house",
+                IsNotContradictWritten = t => t.Name == "remove ice house",
+                //the court finds "remove ice house" is closely related and should have been 
+                // present in the contract
+                IsNotExpectedWritten = t => false
+            };
+
+            var testResult = testSubject.IsValid(new Mitchill(), new Lath());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsFalse(testResult);
         }
     }
 
@@ -46,11 +78,26 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.TermsTests
 
     public class Mitchill : LegalPerson
     {
-
+        public ISet<Term<object>> GetTerms()
+        {
+            var terms = new HashSet<Term<object>>
+            {
+                new ContractTerm<object>("purchase farm", 1) {Source = TermSource.Written},
+                new ContractTerm<object>("remove ice house", 2) {Source = TermSource.Oral}
+            };
+            return terms;
+        }
     }
 
     public class Lath : LegalPerson
     {
-
+        public ISet<Term<object>> GetTerms()
+        {
+            var terms = new HashSet<Term<object>>
+            {
+                new ContractTerm<object>("purchase farm", 1) {Source = TermSource.Written},
+            };
+            return terms;
+        }
     }
 }

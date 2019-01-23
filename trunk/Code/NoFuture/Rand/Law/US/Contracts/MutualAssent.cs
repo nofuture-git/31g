@@ -108,6 +108,34 @@ namespace NoFuture.Rand.Law.US.Contracts
         }
 
         /// <summary>
+        /// Gets the symetric difference of the terms between offeror and offeree
+        /// </summary>
+        /// <param name="offeror"></param>
+        /// <param name="offeree"></param>
+        /// <returns></returns>
+        public virtual ISet<Term<object>> GetAdditionalTerms(ILegalPerson offeror, ILegalPerson offeree)
+        {
+            var additionalTerms = new HashSet<Term<object>>();
+            var agreedTermNames = GetInNameAgreedTerms(offeror, offeree);
+            var sorTerms = TermsOfAgreement(offeror);
+            sorTerms.ExceptWith(agreedTermNames);
+            var seeTerms = TermsOfAgreement(offeree);
+            seeTerms.ExceptWith(agreedTermNames);
+
+            foreach (var sorTerm in sorTerms)
+                additionalTerms.Add(sorTerm);
+            foreach (var seeTerm in seeTerms)
+                additionalTerms.Add(seeTerm);
+
+            if (!additionalTerms.Any())
+            {
+                AddReasonEntry($"there is not additonal terms present between {offeror?.Name} and {offeree?.Name}");
+            }
+
+            return additionalTerms;
+        }
+
+        /// <summary>
         /// Gets the subset of terms which have the same name.
         /// </summary>
         /// <param name="offeror"></param>
