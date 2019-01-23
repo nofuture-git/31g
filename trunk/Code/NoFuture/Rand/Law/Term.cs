@@ -29,10 +29,10 @@ namespace NoFuture.Rand.Law
             return RefersTo.GetHashCode();
         }
 
-        public int CompareTo(object obj)
+        public virtual int CompareTo(object obj)
         {
             var term = obj as Term<T>;
-            return term == null ? 1 : Name.CompareTo(term.Name);
+            return term == null ? 1 : string.Compare(Name, term.Name, StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Law
             return tt.Name.Equals(Name);
         }
 
-        public bool EqualRefersTo(object obj)
+        public virtual bool EqualRefersTo(object obj)
         {
             var tt = obj as Term<T>;
             if (tt == null)

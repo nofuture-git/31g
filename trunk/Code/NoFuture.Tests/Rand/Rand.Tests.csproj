@@ -73,6 +73,7 @@
     <Compile Include="LawTests\ContractTests\ConsiderationTests\SchnellvNellTests.cs" />
     <Compile Include="LawTests\ContractTests\ConsiderationTests\WeavertownvMoranTests.cs" />
     <Compile Include="LawTests\ContractTests\ConsiderationTests\WebbvMcGowinTests.cs" />
+    <Compile Include="LawTests\ContractTests\ContractTermTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\AlabivDhlAirwaysTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\AustinInstrumentvLoralCorpTests.cs" />
     <Compile Include="LawTests\ContractTests\DefenseTests\BatsakisvDemotsisTests.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="LawTests\ContractTests\MutualAssentTests\OswaldvAllenTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\PettersonvPattbergTests.cs" />
     <Compile Include="LawTests\ContractTests\OffersTests\PoelvBrunswickTests.cs" />
+    <Compile Include="LawTests\ContractTests\TermsTests\MitchillvLathTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\CommerceInsvBayerCorpTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\ComNetworkvPurcellTireTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\FlenderCorpvTippinsTests.cs" />

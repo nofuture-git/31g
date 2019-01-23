@@ -19,5 +19,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
 
         Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
+
+        ISet<Term<object>> GetAgreedTerms(ILegalPerson offeror, ILegalPerson offeree);
     }
 }

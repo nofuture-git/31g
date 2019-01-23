@@ -7,11 +7,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     /// terms to an agreement.
     /// </summary>
     [Aka("UCC 2-207(2)(a)")]
-    public class TermExpresslyConditional : Term<object>
+    public class TermExpresslyConditional : ContractTerm<object>
     {
         private const string REF_TO = "TermExpresslyConditional";
         private static TermExpresslyConditional _singleton;
-        private TermExpresslyConditional() : base("", REF_TO)
+        private TermExpresslyConditional() : base(REF_TO, REF_TO)
         {
         }
 
