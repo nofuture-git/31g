@@ -31,7 +31,32 @@
 
             var mySource = IsCategory(new WrittenTerm()) ? 1 : 0;
             var theirSource = contractTerm.IsCategory(new WrittenTerm()) ? 1 : 0;
-            return theirSource - mySource;
+            var diff = theirSource - mySource;
+            if (diff != 0)
+                return diff;
+
+            mySource = GetStandardInterpretationRank();
+            theirSource = contractTerm.GetStandardInterpretationRank();
+            diff = theirSource - mySource;
+            return diff;
+        }
+        /// <summary>
+        /// <![CDATA[
+        /// Restatement (Second) of Contracts § 203(b)
+        /// ]]>
+        /// </summary>
+        /// <returns></returns>
+        protected internal int GetStandardInterpretationRank()
+        {
+            if (IsCategory(new ExpressTerm()))
+                return 4;
+            if (IsCategory(new CourseOfPerformanceTerm()))
+                return 3;
+            if (IsCategory(new CourseOfDealingTerm()))
+                return 2;
+            if (IsCategory(new UsageOfTradeTerm()))
+                return 1;
+            return 0;
         }
     }
 }

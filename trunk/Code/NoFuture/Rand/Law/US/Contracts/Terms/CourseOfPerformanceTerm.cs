@@ -6,8 +6,8 @@
     /// Where the use of the word (i.e. its meaning) has been performed before without objection
     /// ]]>
     /// </summary>
-    public class RepeatedUseTerm : TermCategory
+    public class CourseOfPerformanceTerm : TermCategory
     {
-        protected override string CategoryName => "Repeated Use";
+        protected override string CategoryName => "Course of Performance";
     }
 }

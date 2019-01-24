@@ -41,6 +41,9 @@
     <Compile Include="ILegalPerson.cs" />
     <Compile Include="IReasonable.cs" />
     <Compile Include="ITermCategory.cs" />
+    <Compile Include="US\Contracts\Terms\CourseOfDealingTerm.cs" />
+    <Compile Include="US\Contracts\Terms\CourseOfPerformanceTerm.cs" />
+    <Compile Include="US\Contracts\Terms\ExpressTerm.cs" />
     <Compile Include="US\Contracts\Terms\TechnicalTerm.cs" />
     <Compile Include="US\Contracts\Terms\OralTerm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="US\Contracts\Promise.cs" />
     <Compile Include="US\Contracts\DonativePromise.cs" />
     <Compile Include="US\Contracts\PromissoryEstoppel.cs" />
+    <Compile Include="US\Contracts\Terms\UsageOfTradeTerm.cs" />
     <Compile Include="US\Contracts\Ucc\Agreement.cs" />
     <Compile Include="US\Contracts\Ucc\Merchant.cs" />
     <Compile Include="US\Contracts\Ucc\Merchantable.cs" />

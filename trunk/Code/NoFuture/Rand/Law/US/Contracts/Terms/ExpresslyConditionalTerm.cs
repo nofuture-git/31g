@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Terms
     {
         private const string REF_TO = "TermExpresslyConditional";
         private static ExpresslyConditionalTerm _singleton;
-        private ExpresslyConditionalTerm() : base(REF_TO, REF_TO)
+        private ExpresslyConditionalTerm() : base(REF_TO, REF_TO, new ExpressTerm())
         {
         }
 

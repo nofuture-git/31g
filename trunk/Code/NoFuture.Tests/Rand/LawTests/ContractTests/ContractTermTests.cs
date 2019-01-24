@@ -1,5 +1,4 @@
-﻿using NoFuture.Rand.Law.US.Contracts;
-using NoFuture.Rand.Law.US.Contracts.Terms;
+﻿using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests
@@ -25,6 +24,48 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests
 
             testResult = testSubject01.CompareTo(testSubject00);
             Assert.AreEqual(1, testResult);
+        }
+
+        [Test]
+        public void TestCompareTo_StdPrefInter()
+        {
+            var testSubject00 = new ContractTerm<object>("car parts", "car parts", new ExpressTerm());
+            var testSubject01 = new ContractTerm<object>("car parts", "car parts", new ExpressTerm());
+
+            var testResult = testSubject00.CompareTo(testSubject01);
+            Assert.AreEqual(0, testResult);
+
+            testSubject00 = new ContractTerm<object>("car parts", "car parts", new ExpressTerm());
+            testSubject01 = new ContractTerm<object>("car parts", "car parts", new CourseOfPerformanceTerm());
+
+            testResult = testSubject00.CompareTo(testSubject01);
+            Assert.IsTrue(testResult < 0);
+
+            testResult = testSubject01.CompareTo(testSubject00);
+            Assert.IsTrue(testResult > 0);
+
+
+            testSubject00 = new ContractTerm<object>("car parts", "car parts", new CourseOfPerformanceTerm());
+            testSubject01 = new ContractTerm<object>("car parts", "car parts", new CourseOfDealingTerm());
+
+            testResult = testSubject00.CompareTo(testSubject01);
+            Assert.IsTrue(testResult < 0);
+
+            testResult = testSubject01.CompareTo(testSubject00);
+            Assert.IsTrue(testResult > 0);
+
+            testSubject00 = new ContractTerm<object>("car parts", "car parts", new CourseOfDealingTerm());
+            testSubject01 = new ContractTerm<object>("car parts", "car parts", new UsageOfTradeTerm());
+
+            testResult = testSubject00.CompareTo(testSubject01);
+            Assert.IsTrue(testResult < 0);
+
+            testResult = testSubject01.CompareTo(testSubject00);
+            Assert.IsTrue(testResult > 0);
+
+
+
+
         }
     }
 }
