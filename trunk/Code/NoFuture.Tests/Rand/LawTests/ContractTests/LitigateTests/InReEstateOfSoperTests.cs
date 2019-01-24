@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Litigate;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
 {
@@ -60,7 +56,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
             //although legally his Gertrude is his legal wife - the contract's intend was obviously Adeline
             var testSubject = new SemanticDilemma<Promise>(testContract)
             {
-                IsPreferred = t => t.RefersTo is AdelineWestphal
+                IsIntendedMeaningAtTheTime = t => t.RefersTo is AdelineWestphal
             };
 
             var testResult = testSubject.IsValid(new IraSoper(), new GertrudeWhitby());

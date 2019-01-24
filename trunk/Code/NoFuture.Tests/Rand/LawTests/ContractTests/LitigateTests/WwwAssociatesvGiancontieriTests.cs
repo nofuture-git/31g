@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
             {
                 //since this was present
                 IsPrerequisite = t => t is ExpresslyConditionalTerm,
-                IsPreferred = t =>
+                IsIntendedMeaningAtTheTime = t =>
                 {
                     // and the contract clear said "either party can cancel" after a specific date
                     var isDateTime = t.RefersTo is DateTime;
