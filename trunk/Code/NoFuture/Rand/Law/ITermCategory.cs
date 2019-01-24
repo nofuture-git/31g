@@ -8,5 +8,6 @@ namespace NoFuture.Rand.Law
         bool IsCategory(ITermCategory category);
         ITermCategory As(ITermCategory category);
         bool IsCategory(Type category);
+        int GetCategoryRank();
     }
 }

@@ -16,8 +16,9 @@
         /// subsequent self-serving testimony
         /// ]]>
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// <![CDATA[ Restatement (Second) of Contracts § 203(b) ]]>
+        /// </remarks>
         public override int CompareTo(object obj)
         {
             var nameCompare = base.CompareTo(obj);
@@ -35,28 +36,10 @@
             if (diff != 0)
                 return diff;
 
-            mySource = GetStandardInterpretationRank();
-            theirSource = contractTerm.GetStandardInterpretationRank();
+            mySource = GetCategoryRank();
+            theirSource = contractTerm.GetCategoryRank();
             diff = theirSource - mySource;
             return diff;
-        }
-        /// <summary>
-        /// <![CDATA[
-        /// Restatement (Second) of Contracts § 203(b)
-        /// ]]>
-        /// </summary>
-        /// <returns></returns>
-        protected internal int GetStandardInterpretationRank()
-        {
-            if (IsCategory(new ExpressTerm()))
-                return 4;
-            if (IsCategory(new CourseOfPerformanceTerm()))
-                return 3;
-            if (IsCategory(new CourseOfDealingTerm()))
-                return 2;
-            if (IsCategory(new UsageOfTradeTerm()))
-                return 1;
-            return 0;
         }
     }
 }

@@ -5,8 +5,13 @@
     /// parties at the time the contract is made. They can either be oral 
     /// or in writing
     /// </summary>
-    public class ExpressTerm : TermCategory
+    public class ExpressTerm : CourseOfPerformanceTerm
     {
         protected override string CategoryName => "Express";
+
+        public override int GetCategoryRank()
+        {
+            return 1 + base.GetCategoryRank();
+        }
     }
 }

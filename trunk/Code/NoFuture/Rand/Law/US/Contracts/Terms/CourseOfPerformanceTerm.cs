@@ -6,8 +6,12 @@
     /// Where the use of the word (i.e. its meaning) has been performed before without objection
     /// ]]>
     /// </summary>
-    public class CourseOfPerformanceTerm : TermCategory
+    public class CourseOfPerformanceTerm : CourseOfDealingTerm
     {
         protected override string CategoryName => "Course of Performance";
+        public override int GetCategoryRank()
+        {
+            return 1 + base.GetCategoryRank();
+        }
     }
 }

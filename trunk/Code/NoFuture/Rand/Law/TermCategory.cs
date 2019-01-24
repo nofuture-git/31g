@@ -8,6 +8,11 @@ namespace NoFuture.Rand.Law
 
         protected abstract string CategoryName { get; }
 
+        public virtual int GetCategoryRank()
+        {
+            return Term2Decorate?.GetCategoryRank() ?? 0;
+        }
+
         public virtual string GetCategory()
         {
             if (Term2Decorate == null)

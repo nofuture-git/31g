@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Terms
     /// terms to an agreement.
     /// </summary>
     [Aka("UCC 2-207(2)(a)", "merger clause")]
-    public class ExpresslyConditionalTerm : ContractTerm<object>
+    public sealed class ExpresslyConditionalTerm : ContractTerm<object>
     {
         private const string REF_TO = "TermExpresslyConditional";
         private static ExpresslyConditionalTerm _singleton;

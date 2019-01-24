@@ -1,4 +1,6 @@
-﻿using NoFuture.Rand.Law.US.Contracts.Terms;
+﻿using System;
+using NoFuture.Rand.Law;
+using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests
@@ -62,10 +64,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests
 
             testResult = testSubject01.CompareTo(testSubject00);
             Assert.IsTrue(testResult > 0);
-
-
-
-
         }
     }
 }

@@ -9,5 +9,13 @@
     public class TechnicalTerm : TermCategory
     {
         protected override string CategoryName => "Technical";
+
+        public virtual  bool IsTechnicalContext { get; set; }
+
+        public override int GetCategoryRank()
+        {
+            var s = IsTechnicalContext ? new CommonUseTerm().GetCategoryRank() + 1 : 0;
+            return s + base.GetCategoryRank();
+        }
     }
 }

@@ -94,6 +94,7 @@
     <Compile Include="LawTests\ContractTests\EstoppelTests\HoffmanvRedOwlStoresTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\MayervKingColaTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\RicketsvScothornTests.cs" />
+    <Compile Include="LawTests\ContractTests\LitigateTests\InReEstateOfSoperTests.cs" />
     <Compile Include="LawTests\ContractTests\LitigateTests\MastersonvSineTests.cs" />
     <Compile Include="LawTests\ContractTests\LitigateTests\NelsonvElwayTests.cs" />
     <Compile Include="LawTests\ContractTests\LitigateTests\WwwAssociatesvGiancontieriTests.cs" />
