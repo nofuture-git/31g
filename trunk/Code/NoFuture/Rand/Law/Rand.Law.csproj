@@ -49,7 +49,7 @@
     <Compile Include="US\CaseReading\Citation.cs" />
     <Compile Include="US\Contracts\Advertisement.cs" />
     <Compile Include="US\Contracts\Consideration.cs" />
-    <Compile Include="US\Contracts\ContractTerm.cs" />
+    <Compile Include="US\Contracts\Terms\ContractTerm.cs" />
     <Compile Include="US\Contracts\Defense\DefenseBase.cs" />
     <Compile Include="US\Contracts\Defense\IVoidable.cs" />
     <Compile Include="US\Contracts\Defense\StatuteOfFrauds.cs" />
@@ -79,7 +79,7 @@
     <Compile Include="US\Contracts\Ucc\Agreement.cs" />
     <Compile Include="US\Contracts\Ucc\Merchant.cs" />
     <Compile Include="US\Contracts\Ucc\Merchantable.cs" />
-    <Compile Include="US\Contracts\Ucc\TermExpresslyConditional.cs" />
+    <Compile Include="US\Contracts\Terms\ExpresslyConditionalTerm.cs" />
     <Compile Include="US\Contracts\Ucc\UccContract.cs" />
     <Compile Include="US\Contracts\Ucc\Goods.cs" />
     <Compile Include="US\Contracts\Ucc\GoodsInTerra.cs" />

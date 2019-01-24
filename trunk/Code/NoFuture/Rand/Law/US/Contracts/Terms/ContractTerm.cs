@@ -1,11 +1,5 @@
-﻿namespace NoFuture.Rand.Law.US.Contracts
+﻿namespace NoFuture.Rand.Law.US.Contracts.Terms
 {
-    public enum TermSource
-    {
-        Oral,
-        Written
-    }
-
     /// <inheritdoc />
     public class ContractTerm<T> : Term<T>
     {
@@ -13,7 +7,7 @@
         {
         }
 
-        public virtual TermSource Source { get; set; }
+        public ContractTerm(string name, T reference, params ITermCategory[] categories) : base(name, reference, categories) { }
 
         /// <summary>
         /// <![CDATA[
@@ -35,8 +29,8 @@
             if (contractTerm == null)
                 return nameCompare;
 
-            var mySource = (int)Source;
-            var theirSource = (int)contractTerm.Source;
+            var mySource = IsCategory(new WrittenTerm()) ? 1 : 0;
+            var theirSource = contractTerm.IsCategory(new WrittenTerm()) ? 1 : 0;
             return theirSource - mySource;
         }
     }

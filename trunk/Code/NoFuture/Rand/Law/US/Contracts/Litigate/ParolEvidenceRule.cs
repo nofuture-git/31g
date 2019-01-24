@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US.Contracts.Terms;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 
 namespace NoFuture.Rand.Law.US.Contracts.Litigate
@@ -33,7 +34,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
             }
 
             var agreedTerms = Contract.Assent.GetAgreedTerms(offeror, offeree);
-            if (agreedTerms != null && agreedTerms.Any(t => t is TermExpresslyConditional))
+            if (agreedTerms != null && agreedTerms.Any(t => t is ExpresslyConditionalTerm))
             {
                 AddReasonEntryRange(Contract.Assent.GetReasonEntries());
                 AddReasonEntry("oral terms cannot be included since one " +
@@ -49,7 +50,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
                 return false;
             }
 
-            var oralAdditionalTerms = additionalTerms.Where(t => (t as ContractTerm<object>)?.Source == TermSource.Oral)
+            var oralAdditionalTerms = additionalTerms.Where(t => t.IsCategory(new OralTerm()))
                 .ToList();
 
             if (!oralAdditionalTerms.Any())

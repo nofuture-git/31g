@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US.Contracts.Terms;
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
@@ -55,8 +56,8 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
             if (!offereeUqTerms.Any() && !offerorUqTerms.Any())
                 return agreedTerms;
 
-            var isEitherExpresslyCond = offereeUqTerms.Any(t => TermExpresslyConditional.Value.Equals(t)) ||
-                                        offerorUqTerms.Any(t => TermExpresslyConditional.Value.Equals(t));
+            var isEitherExpresslyCond = offereeUqTerms.Any(t => ExpresslyConditionalTerm.Value.Equals(t)) ||
+                                        offerorUqTerms.Any(t => ExpresslyConditionalTerm.Value.Equals(t));
 
             //terms of the same name but different meanings
             var knockoutTerms = offerorUqTerms

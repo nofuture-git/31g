@@ -18,6 +18,14 @@ namespace NoFuture.Rand.Law
             Name = name;
         }
 
+        public Term(string name, T reference, params ITermCategory[] categories) : this(name, reference)
+        {
+            if (categories == null)
+                return;
+            foreach (var c in categories)
+                As(c);
+        }
+
         protected override string CategoryName => null;
 
         [Aka("denomination", "concept")]

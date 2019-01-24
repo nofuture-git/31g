@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Law
             return IsCategory(category.GetType());
         }
 
-        public virtual ITermCategory As(ITermCategory category)
+        public ITermCategory As(ITermCategory category)
         {
             if (category == null)
                 return this;

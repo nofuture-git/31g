@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Contracts.Ucc
+namespace NoFuture.Rand.Law.US.Contracts.Terms
 {
     /// <inheritdoc />
     /// <summary>
@@ -8,15 +8,15 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     /// terms to an agreement.
     /// </summary>
     [Aka("UCC 2-207(2)(a)", "merger clause")]
-    public class TermExpresslyConditional : ContractTerm<object>
+    public class ExpresslyConditionalTerm : ContractTerm<object>
     {
         private const string REF_TO = "TermExpresslyConditional";
-        private static TermExpresslyConditional _singleton;
-        private TermExpresslyConditional() : base(REF_TO, REF_TO)
+        private static ExpresslyConditionalTerm _singleton;
+        private ExpresslyConditionalTerm() : base(REF_TO, REF_TO)
         {
         }
 
-        public static TermExpresslyConditional Value => _singleton ?? (_singleton = new TermExpresslyConditional());
+        public static ExpresslyConditionalTerm Value => _singleton ?? (_singleton = new ExpresslyConditionalTerm());
 
         public override int GetHashCode()
         {
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
 
         public override bool Equals(object obj)
         {
-            return obj is TermExpresslyConditional;
+            return obj is ExpresslyConditionalTerm;
         }
     }
 }

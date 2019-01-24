@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Litigate;
+using NoFuture.Rand.Law.US.Contracts.Terms;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
@@ -86,9 +87,9 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("sell dealership", 1) {Source = TermSource.Written},
-                TermExpresslyConditional.Value,
-                new ContractTerm<object>("$50-per-car payment", 2) {Source = TermSource.Oral},
+                new ContractTerm<object>("sell dealership", 1, new WrittenTerm()),
+                ExpresslyConditionalTerm.Value,
+                new ContractTerm<object>("$50-per-car payment", 2, new OralTerm()),
             };
         }
     }
@@ -99,10 +100,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
 
         public ISet<Term<object>> GetTerms()
         {
+            var contractTerm = new ContractTerm<object>("sell dealership", 1);
+            contractTerm.As(new WrittenTerm());
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("sell dealership", 1) {Source = TermSource.Written},
-                TermExpresslyConditional.Value,
+                contractTerm,
+                ExpresslyConditionalTerm.Value,
             };
         }
     }

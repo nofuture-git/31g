@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Litigate;
+using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
@@ -81,8 +82,8 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("sell ranch", 0)  {Source = TermSource.Written},
-                new ContractTerm<object>("repurchase option", 1) {Source = TermSource.Oral}
+                new ContractTerm<object>("sell ranch", 0, new WrittenTerm()),
+                new ContractTerm<object>("repurchase option", 1, new OralTerm())
             };
         }
     }
@@ -95,7 +96,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("sell ranch", 0)  {Source = TermSource.Written},
+                new ContractTerm<object>("sell ranch", 0, new WrittenTerm()),
             };
         }
 

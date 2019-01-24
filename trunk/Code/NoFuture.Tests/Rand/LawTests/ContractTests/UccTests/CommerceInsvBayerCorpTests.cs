@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Law;
+using NoFuture.Rand.Law.US.Contracts.Terms;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
@@ -66,7 +67,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         {
             var terms = new HashSet<Term<object>>();
             terms.Add(new Term<object>("invoice", new object()));
-            terms.Add(TermExpresslyConditional.Value);
+            terms.Add(ExpresslyConditionalTerm.Value);
             terms.Add(new Term<object>("bulk nylon fiber", DBNull.Value));
 
             return terms;

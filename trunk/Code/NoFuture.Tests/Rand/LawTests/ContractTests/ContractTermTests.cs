@@ -1,4 +1,5 @@
 ﻿using NoFuture.Rand.Law.US.Contracts;
+using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests
@@ -18,7 +19,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests
             testResult = testSubject00.CompareTo(testSubject01);
             Assert.AreEqual(0, testResult);
 
-            testSubject00.Source = TermSource.Written;
+            testSubject00.As(new WrittenTerm());
             testResult = testSubject00.CompareTo(testSubject01);
             Assert.AreEqual(-1, testResult);
 
