@@ -23,5 +23,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         ISet<Term<object>> GetAgreedTerms(ILegalPerson offeror, ILegalPerson offeree);
 
         ISet<Term<object>> GetAdditionalTerms(ILegalPerson offeror, ILegalPerson offeree);
+
+        ISet<Term<object>> GetInNameAgreedTerms(ILegalPerson offeror, ILegalPerson offeree);
     }
 }

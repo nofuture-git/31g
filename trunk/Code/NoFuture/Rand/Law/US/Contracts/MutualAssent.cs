@@ -139,7 +139,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <param name="offeror"></param>
         /// <param name="offeree"></param>
         /// <returns></returns>
-        protected internal virtual ISet<Term<object>> GetInNameAgreedTerms(ILegalPerson offeror, ILegalPerson offeree)
+        public virtual ISet<Term<object>> GetInNameAgreedTerms(ILegalPerson offeror, ILegalPerson offeree)
         {
             var sorTerms = TermsOfAgreement?.Invoke(offeror);
             if (sorTerms == null || !sorTerms.Any())
