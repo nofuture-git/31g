@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            var promise = _contract.Offer; //is T valueM ? valueM : default(T);
+            var promise = _contract.Offer;
             var returnPromise = _contract.Acceptance(promise);
             if (returnPromise == null)
             {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law
@@ -71,6 +73,73 @@ namespace NoFuture.Rand.Law
         public override string ToString()
         {
             return Name;
+        }
+
+        public static ISet<Term<T>> GetAgreedTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IReasonable reasoning = null)
+        {
+            var agreedTerms = new HashSet<Term<T>>();
+            var agreedTermNames = GetInNameAgreedTerms(sorTerms, seeTerms, reasoning).Select(v => v.Name);
+            if (!agreedTermNames.Any())
+            {
+                return agreedTerms;
+            }
+            foreach (var termName in agreedTermNames)
+            {
+                var offerorTerm = sorTerms.First(v => v.Name == termName);
+                var offereeTerm = seeTerms.First(v => v.Name == termName);
+
+                if (!offereeTerm?.EqualRefersTo(offerorTerm) ?? false)
+                {
+                    reasoning?.AddReasonEntry($"the term '{termName}' does not have the same meaning");
+                    continue;
+                }
+                agreedTerms.Add(offerorTerm);
+            }
+
+            return agreedTerms;
+        }
+
+        public static ISet<Term<T>> GetInNameAgreedTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IReasonable reasoning = null)
+        {
+            if (sorTerms == null || seeTerms == null)
+            {
+                reasoning?.AddReasonEntry("one of the set of terms is missing.");
+                return new HashSet<Term<T>>();
+            }
+
+            var agreedList = sorTerms.Where(oo => seeTerms.Any(ee => ee.Equals(oo))).ToList();
+            if (!agreedList.Any())
+            {
+                reasoning?.AddReasonEntry("there are no terms shared");
+                return new HashSet<Term<T>>();
+            }
+            var agreedTerms = new HashSet<Term<T>>();
+            foreach (var t in agreedList)
+            {
+                agreedTerms.Add(t);
+            }
+
+            return agreedTerms;
+        }
+
+        public static ISet<Term<T>> GetAdditionalTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IReasonable reasoning = null)
+        {
+            var additionalTerms = new HashSet<Term<T>>();
+            var agreedTermNames = GetInNameAgreedTerms(sorTerms, sorTerms);
+            sorTerms.ExceptWith(agreedTermNames);
+            seeTerms.ExceptWith(agreedTermNames);
+
+            foreach (var sorTerm in sorTerms)
+                additionalTerms.Add(sorTerm);
+            foreach (var seeTerm in seeTerms)
+                additionalTerms.Add(seeTerm);
+
+            if (!additionalTerms.Any())
+            {
+                reasoning?.AddReasonEntry("there is not additonal terms present between");
+            }
+
+            return additionalTerms;
         }
     }
 }

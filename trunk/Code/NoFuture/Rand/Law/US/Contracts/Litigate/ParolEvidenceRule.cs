@@ -37,9 +37,9 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
             if (agreedTerms != null && agreedTerms.Any(t => t is ExpresslyConditionalTerm))
             {
                 AddReasonEntryRange(Contract.Assent.GetReasonEntries());
-                AddReasonEntry("oral terms cannot be included since one " +
+                AddReasonEntry("additional terms cannot be included since one " +
                                "of the written terms expressly states, " +
-                               "oral terms cannot be included.");
+                               "additional terms cannot be included.");
                 return false;
             }
 
