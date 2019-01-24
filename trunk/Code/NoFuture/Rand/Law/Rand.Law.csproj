@@ -37,10 +37,15 @@
   <ItemGroup>
     <Compile Include="Attributes\AkaAttribute.cs" />
     <Compile Include="Attributes\NoteAttribute.cs" />
+    <Compile Include="US\Contracts\Terms\CommonUseTerm.cs" />
     <Compile Include="ILegalPerson.cs" />
     <Compile Include="IReasonable.cs" />
+    <Compile Include="ITermCategory.cs" />
+    <Compile Include="US\Contracts\Terms\TechnicalTerm.cs" />
+    <Compile Include="US\Contracts\Terms\OralTerm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Term.cs" />
+    <Compile Include="TermCategory.cs" />
     <Compile Include="US\CaseReading\Citation.cs" />
     <Compile Include="US\Contracts\Advertisement.cs" />
     <Compile Include="US\Contracts\Consideration.cs" />
@@ -82,6 +87,7 @@
     <Compile Include="IObjectiveLegalConcept.cs" />
     <Compile Include="LegalPerson.cs" />
     <Compile Include="ObjectiveLegalConcept.cs" />
+    <Compile Include="US\Contracts\Terms\WrittenTerm.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -10,13 +10,15 @@ namespace NoFuture.Rand.Law
     /// <remarks>
     /// src [https://ac.els-cdn.com/S1877042816313283/1-s2.0-S1877042816313283-main.pdf?_tid=dbb6e307-e210-4d2f-bb6e-2c6e0c7e14f5&amp;acdnat=1545343418_43a6e6ffc058c5b95df8b9cf2a6e907f]
     /// </remarks>
-    public class Term<T> : IComparable
+    public class Term<T> : TermCategory, IComparable
     {
         public Term(string name, T reference)
         {
             RefersTo = reference;
             Name = name;
         }
+
+        protected override string CategoryName => null;
 
         [Aka("denomination", "concept")]
         public T RefersTo { get;}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Law;
+using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests
@@ -48,5 +49,23 @@ namespace NoFuture.Rand.Tests.LawTests
 
         }
 
+        [Test]
+        public void TestDecorator()
+        {
+            var testSubject = new Term<object>("test term", DBNull.Value);
+            testSubject.As(new OralTerm()).As(new TechnicalTerm());
+
+            var testResultName = testSubject.GetCategory();
+            Console.WriteLine(testResultName);
+
+            var testResult = testSubject.IsCategory(new OralTerm());
+            Assert.IsTrue(testResult);
+
+            testResult = testSubject.IsCategory(typeof(TechnicalTerm));
+            Assert.IsTrue(testResult);
+
+            testResult = testSubject.IsCategory(typeof(CommonUseTerm));
+            Assert.IsFalse(testResult);
+        }
     }
 }
