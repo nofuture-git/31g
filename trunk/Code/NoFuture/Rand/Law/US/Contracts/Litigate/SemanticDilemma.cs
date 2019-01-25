@@ -16,16 +16,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
     /// and that person, whose meaning the law is seeking, is the writer of the document.
     /// ]]>
     /// </remarks>
-    public class SemanticDilemma<T> : LitigateBase<T>
+    public class SemanticDilemma<T> : DilemmaBase<T>
     {
         public SemanticDilemma(IContract<T> contract) : base(contract)
         {
         }
-
-        /// <summary>
-        /// An option condition on any of the agreed terms which must be met.
-        /// </summary>
-        public Predicate<Term<object>> IsPrerequisite { get; set; } = t => true;
 
         /// <summary>
         /// The method in which one and only one of the dilemma terms is the one 
@@ -35,36 +30,17 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            if (Contract?.Assent == null)
-            {
-                AddReasonEntry("resolving ambiguous terms requires a contract with assent");
-                return false;
-            }
-
-            var agreedInNameTerms = Contract.Assent.GetInNameAgreedTerms(offeror, offeree);
-            AddReasonEntryRange(Contract.Assent.GetReasonEntries());
-            if (!agreedInNameTerms.Any())
+            if (!TryGetTerms(offeror, offeree))
             {
                 return false;
             }
-
-            var preque = IsPrerequisite ?? (t => true);
-            if (!agreedInNameTerms.Any(agreedTerm => preque(agreedTerm)))
-            {
-                AddReasonEntry($"none of the terms between {offeror?.Name} and {offeree?.Name} " +
-                               "satisfied the prerequisite condition.");
-                return false;
-            }
-
-            var sorTerms = Contract.Assent.TermsOfAgreement(offeror);
-            var seeTerms = Contract.Assent.TermsOfAgreement(offeree);
 
             var resolved = new List<bool>();
 
-            foreach (var term in agreedInNameTerms)
+            foreach (var term in AgreedTerms)
             {
-                var offerorTerm = sorTerms.First(v => v.Name == term.Name);
-                var offereeTerm = seeTerms.First(v => v.Name == term.Name);
+                var offerorTerm = OfferorTerms.First(v => v.Name == term.Name);
+                var offereeTerm = OffereeTerms.First(v => v.Name == term.Name);
 
                 var isSemanticConflict = !offereeTerm?.EqualRefersTo(offerorTerm) ?? false;
 
@@ -77,7 +53,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
                 if (!isOneOnlyOneValid)
                 {
                     AddReasonEntry($"the term '{offereeTerm.Name}' has two different " +
-                                   $"meanings andneither {offeror.Name}'s " +
+                                   $"meanings and neither {offeror.Name}'s " +
                                    $"nor {offeree.Name}'s is preferred ");
                 }
 
