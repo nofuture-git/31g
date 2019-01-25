@@ -656,3 +656,6 @@ defrock: deprive someone of professional status
 mesne: (law) intermediate
 comity: an association of nations for their mutual benefit
 oath -vs- vow: oath is to a court what vow is to a church, true statement given by one
+penumbra: partially shaded outer region of a shadow cast by and opaque object
+ineluctable: impossible to avoid, inescapable
+xerography: dry copying process using electrically charged parts of paper

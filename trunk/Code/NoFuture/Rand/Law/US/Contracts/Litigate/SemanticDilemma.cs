@@ -42,9 +42,14 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
                 var offerorTerm = OfferorTerms.First(v => v.Name == term.Name);
                 var offereeTerm = OffereeTerms.First(v => v.Name == term.Name);
 
-                var isSemanticConflict = !offereeTerm?.EqualRefersTo(offerorTerm) ?? false;
+                var isSemanticConflict = !offereeTerm.EqualRefersTo(offerorTerm);
 
+                //try it both ways 
                 if (!isSemanticConflict)
+                {
+                    isSemanticConflict = !offerorTerm.EqualRefersTo(offereeTerm);
+                }
+                if(!isSemanticConflict)
                     continue;
 
                 var isOfferorPreferred = IsIntendedMeaningAtTheTime(offerorTerm);
