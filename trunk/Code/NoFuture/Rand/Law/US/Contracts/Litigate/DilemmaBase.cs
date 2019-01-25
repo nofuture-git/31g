@@ -4,10 +4,6 @@ using System.Linq;
 
 namespace NoFuture.Rand.Law.US.Contracts.Litigate
 {
-    /// <summary>
-    /// base type for the various kinds of litigation dilemmas
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
     public abstract class DilemmaBase<T> : LitigateBase<T>
     {
         protected DilemmaBase(IContract<T> contract) : base(contract)
