@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// A term which may be oral or written but is only manifest in
-    /// something that is not the aknowledged central authority.
+    /// something which comes from or is operating from outside.
     /// </summary>
     public class ExtrinsicTerm : TermCategory
     {

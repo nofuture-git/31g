@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
         /// <summary>
         /// Predicate logic applied to each term to distinguish it as a conditional one
         /// </summary>
-        public Predicate<Term<object>> IsConditionalTerm { get; set; }
+        public Predicate<Term<object>> IsConditionalTerm { get; set; } = t => false;
 
         /// <summary>
         /// The implementation that person X failed to meet the conditional term Y

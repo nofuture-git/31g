@@ -49,6 +49,7 @@
     <Compile Include="US\Contracts\Terms\CourseOfPerformanceTerm.cs" />
     <Compile Include="US\Contracts\Terms\ExpressTerm.cs" />
     <Compile Include="US\Contracts\Terms\ExtrinsicTerm.cs" />
+    <Compile Include="US\Contracts\Terms\ImpliedTerm.cs" />
     <Compile Include="US\Contracts\Terms\TechnicalTerm.cs" />
     <Compile Include="US\Contracts\Terms\OralTerm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
