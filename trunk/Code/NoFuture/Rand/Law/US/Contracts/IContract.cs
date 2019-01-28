@@ -4,6 +4,13 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law.US.Contracts
 {
     /// <inheritdoc />
+    /// <remarks>
+    /// <![CDATA[
+    /// It is axiomatic in modern contracts law that all contracts 
+    /// are, in some fashion, "incomplete."  Meaning, no contract 
+    /// has addressed every possible contingency.
+    /// ]]>
+    /// </remarks>
     [Note("Latin assimilation of 'com' (with, together) + 'trahere' (to pull, drag)")]
     public interface IContract<T> : IObjectiveLegalConcept
     {

@@ -661,3 +661,5 @@ ineluctable: impossible to avoid, inescapable
 xerography: dry copying process using electrically charged parts of paper
 demurrer: objection to a point as irrelevant while granting the factual 
   basis of the point
+avoirdupois: system of weights based on pound of 16 ounces
+chary: cautiously or suspiciously reluctant to do something

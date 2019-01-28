@@ -47,6 +47,7 @@
     <Compile Include="ITermCategory.cs" />
     <Compile Include="US\Contracts\Terms\CourseOfDealingTerm.cs" />
     <Compile Include="US\Contracts\Terms\CourseOfPerformanceTerm.cs" />
+    <Compile Include="US\Contracts\Terms\DefaultTerm.cs" />
     <Compile Include="US\Contracts\Terms\ExpressTerm.cs" />
     <Compile Include="US\Contracts\Terms\ExtrinsicTerm.cs" />
     <Compile Include="US\Contracts\Terms\ImpliedTerm.cs" />

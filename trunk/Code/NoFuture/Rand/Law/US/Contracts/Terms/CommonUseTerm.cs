@@ -6,7 +6,7 @@
     /// where language has a generally prevailing meaning, it is interpreted in accordance with that meaning;
     /// ]]>
     /// </summary>
-    public class CommonUseTerm : TermCategory
+    public class CommonUseTerm : ImpliedTerm
     {
         protected override string CategoryName => "Common Use";
     }
