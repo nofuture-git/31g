@@ -69,8 +69,9 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
     public class Wood : LegalPerson
     {
         public Wood() : base("OTIS F. WOOD") { }
+        public Wood(string name) : base(name) { }
 
-        public ISet<Term<object>> GetTerms()
+        public virtual ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {

@@ -7,6 +7,11 @@
     /// </summary>
     public class Goods : ObjectiveLegalConcept, IUccItem
     {
+        public Goods()
+        {
+            Merchantability = new Merchantable(this);
+        }
+
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             if (!IsEnforceableInCourt)
@@ -27,11 +32,19 @@
                 return false;
             }
 
+            if (!Merchantability.IsValid(offeror, offeree))
+            {
+                AddReasonEntry($"{GetType().Name} is not merchantable");
+                AddReasonEntryRange(Merchantability.GetReasonEntries());
+                return false;
+            }
+
             return true;
         }
 
         public virtual bool IsMovable { get; set; } = true;
         public virtual bool IsIdentified { get; set; } = true;
         public override bool IsEnforceableInCourt => true;
+        public Merchantable Merchantability { get; }
     }
 }

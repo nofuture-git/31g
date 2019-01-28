@@ -68,19 +68,19 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         }
 
         [Aka("UCC 2-314(2)(a)")]
-        public bool IsPassWithoutObjection { get; set; }
+        public bool IsPassWithoutObjection { get; set; } = true;
 
         [Aka("UCC 2-314(2)(b)")]
-        public bool IsFairAvgQuality { get; set; }
+        public bool IsFairAvgQuality { get; set; } = true;
 
         [Aka("UCC 2-314(2)(c)")]
-        public bool IsFit4OrdinaryPurpose { get; set; }
+        public bool IsFit4OrdinaryPurpose { get; set; } = true;
 
         [Aka("UCC 2-314(2)(d)")]
-        public bool IsWithinPermittedVariations { get; set; }
+        public bool IsWithinPermittedVariations { get; set; } = true;
 
         [Aka("UCC 2-314(2)(e)")]
-        public bool IsPackagedAndLabeled { get; set; }
+        public bool IsPackagedAndLabeled { get; set; } = true;
 
         [Aka("UCC 2-314(2)(f)")]
         public bool? IsConformedAsLabeled { get; set; }
