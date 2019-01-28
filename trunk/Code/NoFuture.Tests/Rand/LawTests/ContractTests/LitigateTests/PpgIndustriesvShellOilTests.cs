@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
     public class ShellOil : LegalPerson
     {
         public ShellOil():base("SHELL OIL CO.") {}
-        public ISet<Term<object>> GetTerms()
+        public virtual ISet<Term<object>> GetTerms()
         {
             var trueConst = Expression.Constant(true);
             var falseConst = Expression.Constant(false);

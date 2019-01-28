@@ -100,6 +100,7 @@
     <Compile Include="LawTests\ContractTests\LitigateTests\InReEstateOfSoperTests.cs" />
     <Compile Include="LawTests\ContractTests\LitigateTests\MastersonvSineTests.cs" />
     <Compile Include="LawTests\ContractTests\LitigateTests\MendenhallvHanesbrandsTests.cs" />
+    <Compile Include="LawTests\ContractTests\LitigateTests\NanakulivShellOilTests.cs" />
     <Compile Include="LawTests\ContractTests\LitigateTests\NelsonvElwayTests.cs" />
     <Compile Include="LawTests\ContractTests\LitigateTests\NorthHoustonvPwRealEstateTests.cs" />
     <Compile Include="LawTests\ContractTests\LitigateTests\PpgIndustriesvShellOilTests.cs" />
