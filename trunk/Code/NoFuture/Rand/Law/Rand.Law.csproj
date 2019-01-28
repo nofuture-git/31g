@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Attributes\AkaAttribute.cs" />
     <Compile Include="Attributes\NoteAttribute.cs" />
+    <Compile Include="US\Contracts\Litigate\ConditionsPrecedent.cs" />
     <Compile Include="US\Contracts\Litigate\DilemmaBase.cs" />
     <Compile Include="US\Contracts\Litigate\SemanticDilemma.cs" />
     <Compile Include="US\Contracts\Litigate\SyntacticDilemma.cs" />

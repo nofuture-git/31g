@@ -67,5 +67,70 @@ namespace NoFuture.Rand.Tests.LawTests
             testResult = testSubject.IsCategory(typeof(CommonUseTerm));
             Assert.IsFalse(testResult);
         }
+
+        [Test]
+        public void TestGetAdditionalTerms()
+        {
+            var terms00 = new HashSet<Term<object>>
+            {
+                new ContractTerm<object>("sell ranch", 0, new WrittenTerm()),
+                new ContractTerm<object>("repurchase option", 1, new OralTerm())
+            };
+            var terms01 = new HashSet<Term<object>>
+            {
+                new ContractTerm<object>("sell ranch", 0, new WrittenTerm()),
+            };
+
+            var testResult = Term<object>.GetAdditionalTerms(terms00, terms01);
+
+            Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.Any());
+
+        }
+
+        [Test]
+        public void TestGetInNameAgreedTerms()
+        {
+            var terms00 = new HashSet<Term<object>>
+            {
+                new ContractTerm<object>("sell ranch", 0, new WrittenTerm()),
+                new ContractTerm<object>("repurchase option", 1, new OralTerm())
+            };
+            var terms01 = new HashSet<Term<object>>
+            {
+                new ContractTerm<object>("sell ranch", 0, new WrittenTerm()),
+            };
+
+            var testResult = Term<object>.GetInNameAgreedTerms(terms00, terms01);
+
+            Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.Any());
+            Assert.IsTrue(testResult.Count == 1);
+            Assert.AreEqual("sell ranch", testResult.First().Name);
+        }
+
+        [Test]
+        public void TestGetAgreedTerms()
+        {
+            var terms00 = new HashSet<Term<object>>
+            {
+                new ContractTerm<object>("sell ranch", 0, new WrittenTerm()),
+                new ContractTerm<object>("repurchase option", 1, new OralTerm()),
+                new ContractTerm<object>("wrong value", 12, new OralTerm()),
+            };
+            var terms01 = new HashSet<Term<object>>
+            {
+                new ContractTerm<object>("sell ranch", 0, new WrittenTerm()),
+                new ContractTerm<object>("wrong name", 1),
+                new ContractTerm<object>("wrong value", 11, new OralTerm()),
+            };
+
+            var testResult = Term<object>.GetAgreedTerms(terms00, terms01);
+
+            Assert.IsNotNull(testResult);
+            Assert.IsTrue(testResult.Any());
+            Assert.IsTrue(testResult.Count == 1);
+            Assert.AreEqual("sell ranch", testResult.First().Name);
+        }
     }
 }

@@ -659,3 +659,5 @@ oath -vs- vow: oath is to a court what vow is to a church, true statement given 
 penumbra: partially shaded outer region of a shadow cast by and opaque object
 ineluctable: impossible to avoid, inescapable
 xerography: dry copying process using electrically charged parts of paper
+demurrer: objection to a point as irrelevant while granting the factual 
+  basis of the point

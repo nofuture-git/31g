@@ -2,7 +2,6 @@
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Contracts.Terms;
-using NoFuture.Rand.Law.US.Contracts.Ucc;
 
 namespace NoFuture.Rand.Law.US.Contracts.Litigate
 {

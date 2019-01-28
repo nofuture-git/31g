@@ -125,14 +125,18 @@ namespace NoFuture.Rand.Law
         public static ISet<Term<T>> GetAdditionalTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IReasonable reasoning = null)
         {
             var additionalTerms = new HashSet<Term<T>>();
-            var agreedTermNames = GetInNameAgreedTerms(sorTerms, sorTerms);
+            var agreedTermNames = GetInNameAgreedTerms(sorTerms, seeTerms);
             sorTerms.ExceptWith(agreedTermNames);
             seeTerms.ExceptWith(agreedTermNames);
 
             foreach (var sorTerm in sorTerms)
+            {
                 additionalTerms.Add(sorTerm);
+            }
             foreach (var seeTerm in seeTerms)
+            {
                 additionalTerms.Add(seeTerm);
+            }
 
             if (!additionalTerms.Any())
             {
