@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Litigate
 {
@@ -10,10 +11,15 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
     /// a promise in the agreement arises
     /// ]]>
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    [Aka("modus pones", "if...then")]
     public class ConditionsPrecedent<T> : DilemmaBase<T>
     {
         public ConditionsPrecedent(IContract<T> contract) : base(contract) { }
+
+        /// <summary>
+        /// Predicate logic applied to each term to distinguish it as a conditional one
+        /// </summary>
+        public Predicate<Term<object>> IsConditionalTerm { get; set; }
 
         /// <summary>
         /// The implementation that person X failed to meet the conditional term Y
@@ -27,7 +33,14 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
                 return false;
             }
 
-            foreach (var ct in AgreedTerms)
+            var conditionalTerms = AgreedTerms.Where(t => IsConditionalTerm(t)).ToList();
+            if (!conditionalTerms.Any())
+            {
+                AddReasonEntry($"There are no conditional precedent terms between {offeror.Name} and {offeree.Name}");
+                return false;
+            }
+
+            foreach (var ct in conditionalTerms)
             {
                 var isNotMet = IsNotConditionMet(ct, offeror) || IsNotConditionMet(ct, offeree);
                 if (isNotMet)

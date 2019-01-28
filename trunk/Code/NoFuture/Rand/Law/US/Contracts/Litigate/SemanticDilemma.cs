@@ -23,6 +23,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
         }
 
         /// <summary>
+        /// An option condition on any of the agreed terms which must be met.
+        /// </summary>
+        public Predicate<Term<object>> IsPrerequisite { get; set; } = t => true;
+
+        /// <summary>
         /// The method in which one and only one of the dilemma terms is the one 
         /// the original parties intended.
         /// </summary>
@@ -32,6 +37,14 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
         {
             if (!TryGetTerms(offeror, offeree))
             {
+                return false;
+            }
+
+            var preque = IsPrerequisite ?? (t => true);
+            if (AgreedTerms.All(agreedTerm => !preque(agreedTerm)))
+            {
+                AddReasonEntry($"none of the terms between {offeror.Name} and {offeree.Name} " +
+                               "satisfied the prerequisite condition.");
                 return false;
             }
 

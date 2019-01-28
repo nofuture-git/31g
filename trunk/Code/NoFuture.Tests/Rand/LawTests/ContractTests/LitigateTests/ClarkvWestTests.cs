@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, separation of substance of consideration and ancillary conditionals which may be dismissed (waived)
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -52,6 +52,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
 
             var testSubject = new ConditionsPrecedent<Promise>(testContract)
             {
+                IsConditionalTerm = t => t.Name.StartsWith("abstain from"),
                 IsNotConditionMet = (t, lp) =>
                 {
                     var isParty = lp is West;

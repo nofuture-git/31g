@@ -10,10 +10,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
         {
         }
 
-        /// <summary>
-        /// An option condition on any of the agreed terms which must be met.
-        /// </summary>
-        public Predicate<Term<object>> IsPrerequisite { get; set; } = t => true;
+
 
         protected internal ISet<Term<object>> AgreedTerms { get; set; }
 
@@ -39,14 +36,6 @@ namespace NoFuture.Rand.Law.US.Contracts.Litigate
             AddReasonEntryRange(Contract.Assent.GetReasonEntries());
             if (!AgreedTerms.Any())
             {
-                return false;
-            }
-
-            var preque = IsPrerequisite ?? (t => true);
-            if (!AgreedTerms.Any(agreedTerm => preque(agreedTerm)))
-            {
-                AddReasonEntry($"none of the terms between {offeror.Name} and {offeree.Name} " +
-                               "satisfied the prerequisite condition.");
                 return false;
             }
             OfferorTerms = Contract.Assent.TermsOfAgreement(offeror);

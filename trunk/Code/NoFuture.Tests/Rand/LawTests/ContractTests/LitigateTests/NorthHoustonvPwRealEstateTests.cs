@@ -53,6 +53,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
 
             var testSubject = new ConditionsPrecedent<Promise>(testContract)
             {
+                IsConditionalTerm = t => t.Name == "estoppel certificate",
                 IsNotConditionMet = (t, lp) =>
                 {
                     var isParty = lp is NorthHouston;
