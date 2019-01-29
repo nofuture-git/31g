@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Breach
     /// ]]>
     /// </summary>
     [Aka("close-enough")]
-    public class SubstantialPerformance<T> : DilemmaBase<T>
+    public class SubstantialPerformance<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
     {
         public SubstantialPerformance(IContract<T> contract) : base(contract)
         {

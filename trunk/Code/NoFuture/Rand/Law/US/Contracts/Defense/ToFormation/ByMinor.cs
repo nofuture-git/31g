@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.US.Contracts.Defense.ToFormation
 {
-    public class ByMinor<T> : DefenseBase<T>
+    public class ByMinor<T> : DefenseBase<T> where T : IObjectiveLegalConcept
     {
         public ByMinor(IContract<T> contract) : base(contract)
         {

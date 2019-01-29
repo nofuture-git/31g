@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Defense
 {
-    public class StatuteOfFraudsScope<T> : DefenseBase<T>
+    public class StatuteOfFraudsScope<T> : DefenseBase<T> where T : IObjectiveLegalConcept
     {
         public StatuteOfFraudsScope(IContract<T> contract) : base(contract)
         {

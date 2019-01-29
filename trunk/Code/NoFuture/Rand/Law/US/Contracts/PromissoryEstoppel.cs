@@ -2,6 +2,7 @@
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
+    /// <inheritdoc />
     /// <summary>
     /// This is a substitute for Consideration
     /// </summary>

@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
     /// ]]>
     /// </summary>
     [Aka("modus pones", "if...then")]
-    public class ConditionsPrecedent<T> : DilemmaBase<T>
+    public class ConditionsPrecedent<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
     {
         public ConditionsPrecedent(IContract<T> contract) : base(contract) { }
 
@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
                 if (isNotMet)
                 {
                     AddReasonEntry($"there is a conditional precedent between {offeror.Name} " +
-                        $"and {offeree.Name}, '{ct.ToString()}', which has not been met.");
+                        $"and {offeree.Name}, '{ct}', which has not been met.");
                     return false;
                 }
             }

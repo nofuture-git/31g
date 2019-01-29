@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Contracts.Semiosis
+namespace NoFuture.Rand.Law.US.Contracts
 {
-    public abstract class DilemmaBase<T> : ObjectiveLegalConcept
+    /// <summary>
+    /// A contract in dispute
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class DilemmaBase<T> : ObjectiveLegalConcept where T : IObjectiveLegalConcept
     {
         public virtual IContract<T> Contract { get; }
 

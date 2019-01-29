@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
+using NoFuture.Rand.Law.US.Contracts.Breach;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
 {
@@ -51,6 +48,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
             {
                 IsGivenByPromisee = (lp, p) => true,
                 IsSoughtByPromisor = (lp, p) => true
+            };
+
+            var testSubject = new PerfectTender<Promise>(testContract)
+            {
+
             };
         }
     }

@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
     /// ]]>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class StatuteOfFrauds<T> : DefenseBase<T>
+    public class StatuteOfFrauds<T> : DefenseBase<T> where T : IObjectiveLegalConcept
     {
         public StatuteOfFrauds(IContract<T> contract) : base(contract)
         {

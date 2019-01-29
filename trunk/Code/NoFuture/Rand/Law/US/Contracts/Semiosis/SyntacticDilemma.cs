@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
     /// the syntactic composition of the contract terms (e.g. XOR, OR, AND, etc.)
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SyntacticDilemma<T> : DilemmaBase<T>
+    public class SyntacticDilemma<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
     {
         public SyntacticDilemma(IContract<T> contract) : base(contract)
         {
