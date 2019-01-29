@@ -14,13 +14,14 @@ namespace NoFuture.Rand.Law.US.Contracts.Breach
     /// ]]>
     /// </summary>
     [Aka("close-enough")]
-    public class SubstantialPerformance : ObjectiveLegalConcept
+    public class SubstantialPerformance<T> : StandardsBase<T>
     {
+        public SubstantialPerformance(IContract<T> contract) : base(contract)
+        {
+        }
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             throw new NotImplementedException();
         }
-
-        public override bool IsEnforceableInCourt => true;
     }
 }

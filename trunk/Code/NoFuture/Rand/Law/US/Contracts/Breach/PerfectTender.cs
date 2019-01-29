@@ -18,13 +18,16 @@ namespace NoFuture.Rand.Law.US.Contracts.Breach
     /// does not apply to UCC installment contracts
     /// </remarks>
     [Aka("UCC 2-601")]
-    public class PerfectTender : ObjectiveLegalConcept
+    public class PerfectTender<T> : StandardsBase<T>
     {
+        public  PerfectTender(IContract<T> contract) : base(contract)
+        {
+        }
+
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             throw new NotImplementedException();
         }
 
-        public override bool IsEnforceableInCourt => true;
     }
 }

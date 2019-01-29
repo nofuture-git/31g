@@ -39,6 +39,7 @@
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="US\Contracts\Breach\Excuse.cs" />
     <Compile Include="US\Contracts\Breach\PerfectTender.cs" />
+    <Compile Include="US\Contracts\Breach\StandardsBase.cs" />
     <Compile Include="US\Contracts\Breach\SubstantialPerformance.cs" />
     <Compile Include="US\Contracts\Semiosis\ConditionsPrecedent.cs" />
     <Compile Include="US\Contracts\Semiosis\DilemmaBase.cs" />
