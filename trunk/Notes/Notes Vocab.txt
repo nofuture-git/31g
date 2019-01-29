@@ -663,3 +663,5 @@ demurrer: objection to a point as irrelevant while granting the factual
   basis of the point
 avoirdupois: system of weights based on pound of 16 ounces
 chary: cautiously or suspiciously reluctant to do something
+confabulation: memory error of a person without intentation as such
+valence: emotional value of an event, object, or situation
