@@ -3,6 +3,7 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
+    /// <inheritdoc />
     /// <summary>
     /// A binding of a person to a expected performance
     /// </summary>

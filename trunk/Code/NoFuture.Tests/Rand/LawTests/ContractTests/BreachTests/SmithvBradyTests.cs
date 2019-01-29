@@ -13,7 +13,9 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, In other words, if you know what you are supposed to do, 
+    /// your failure to do what you know you are supposed to do cannot be 
+    /// "innocent" in the sense the court is using it.
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -50,10 +52,26 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
                 IsSoughtByPromisor = (lp, p) => true
             };
 
+            var testResult = testContract.IsValid(new Smith(), new Brady());
+            Assert.IsTrue(testResult);
+
             var testSubject = new PerfectTender<Promise>(testContract)
             {
-
+                ActualPerformance = lp =>
+                {
+                    if (lp is Smith)
+                    {
+                        return new AcceptanceBuildSomeCottages {InchesBetweenJoists = 16, InchesBetweenBeams = 24};
+                    }
+                    if(lp is Brady)
+                        return new OfferBuildSomeCottages();
+                    return null;
+                }
             };
+
+            testResult = testSubject.IsValid(new Smith(), new Brady());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 
@@ -64,9 +82,41 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
             return (offeror is Smith || offeror is Brady)
                    && (offeree is Smith || offeree is Brady);
         }
+
+        public decimal Price { get; } = 4900m;
+
+        public override bool Equals(object obj)
+        {
+            var o = obj as OfferBuildSomeCottages;
+            if (o == null)
+                return false;
+            return o.Price == Price;
+        }
+
+        public override int GetHashCode()
+        {
+            return Price.GetHashCode();
+        }
     }
 
-    public class AcceptanceBuildSomeCottages : OfferBuildSomeCottages { }
+    public class AcceptanceBuildSomeCottages : OfferBuildSomeCottages
+    {
+        public int InchesBetweenJoists { get; set; } = 12;
+        public int InchesBetweenBeams { get; set; } = 16;
+
+        public override bool Equals(object obj)
+        {
+            var o = obj as AcceptanceBuildSomeCottages;
+            if (o == null)
+                return false;
+            return o.InchesBetweenJoists == InchesBetweenJoists && o.InchesBetweenBeams == InchesBetweenBeams;
+        }
+
+        public override int GetHashCode()
+        {
+            return InchesBetweenBeams.GetHashCode() + InchesBetweenJoists.GetHashCode();
+        }
+    }
 
     public class Smith : LegalPerson
     {

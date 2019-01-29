@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Breach
 {
@@ -16,18 +14,15 @@ namespace NoFuture.Rand.Law.US.Contracts.Breach
     /// does not apply to UCC installment contracts
     /// </remarks>
     [Aka("UCC 2-601")]
-    public class PerfectTender<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
+    public class PerfectTender<T> : StandardsBase<T> where T : IObjectiveLegalConcept
     {
         public  PerfectTender(IContract<T> contract) : base(contract)
         {
         }
 
-        public Func<ILegalPerson, T> ActualPerformance { get; set; }
-
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        protected internal override bool StandardsTest(IObjectiveLegalConcept a, IObjectiveLegalConcept b)
         {
-            throw new NotImplementedException();
+            return a.Equals(b) || b.Equals(a);
         }
-
     }
 }

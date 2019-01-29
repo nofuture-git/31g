@@ -2,6 +2,7 @@
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
+    /// <inheritdoc />
     /// <summary>
     /// The fulfillment of an obligation
     /// </summary>

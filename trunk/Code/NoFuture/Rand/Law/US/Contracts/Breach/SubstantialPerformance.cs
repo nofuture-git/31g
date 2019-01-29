@@ -1,6 +1,4 @@
-﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US.Contracts.Semiosis;
+﻿using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Breach
 {
@@ -11,14 +9,15 @@ namespace NoFuture.Rand.Law.US.Contracts.Breach
     /// ]]>
     /// </summary>
     [Aka("close-enough")]
-    public class SubstantialPerformance<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
+    public class SubstantialPerformance<T> : PerfectTender<T> where T : IObjectiveLegalConcept
     {
         public SubstantialPerformance(IContract<T> contract) : base(contract)
         {
         }
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+
+        protected internal override bool StandardsTest(IObjectiveLegalConcept a, IObjectiveLegalConcept b)
         {
-            throw new NotImplementedException();
+            return a.EquivalentTo(b) || b.EquivalentTo(a);
         }
     }
 }

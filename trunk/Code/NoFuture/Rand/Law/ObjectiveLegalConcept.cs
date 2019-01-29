@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law
 {
+    /// <inheritdoc />
     public abstract class ObjectiveLegalConcept : IObjectiveLegalConcept
     {
         private readonly List<string> _reasons = new List<string>();
@@ -33,6 +34,11 @@ namespace NoFuture.Rand.Law
         public override string ToString()
         {
             return string.Join(Environment.NewLine, _reasons);
+        }
+
+        public virtual bool EquivalentTo(object obj)
+        {
+            return Equals(obj);
         }
     }
 }
