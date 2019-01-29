@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// MASTERSON v. SINE Supreme Court of California 68 Cal. 2d 222, 436 P.2d 561, 65 Cal.Rptr. 545 (1968)

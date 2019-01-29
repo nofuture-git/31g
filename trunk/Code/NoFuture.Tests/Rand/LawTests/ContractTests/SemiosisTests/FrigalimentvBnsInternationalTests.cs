@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// FRIGALIMENT IMPORTING CO. v. B.N.S. INTERNATIONAL SALES CORP. United States District Court for the Southern District of New York 190 F.Supp. 116 (S.D.N.Y. 1960)

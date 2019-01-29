@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// CLARK v. WEST Court of Appeals of New York 193 N.Y. 349, 86 N.E. 1 (1908)

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts.Terms;
-using NUnit.Framework;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// AMERICAN FERTILIZER SPECIALISTS, INC. v. WOOD Supreme Court of Oklahoma 1981 OK 116, 635 P.2d 592

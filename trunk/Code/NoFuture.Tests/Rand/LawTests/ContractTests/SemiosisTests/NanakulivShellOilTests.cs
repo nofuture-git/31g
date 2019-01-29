@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
-using NUnit.Framework;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// NANAKULI PAVING AND ROCK CO. v. SHELL OIL CO. United States Court of Appeals for the Ninth Circuit 664 F.2d 772 (9th Cir. 1981)

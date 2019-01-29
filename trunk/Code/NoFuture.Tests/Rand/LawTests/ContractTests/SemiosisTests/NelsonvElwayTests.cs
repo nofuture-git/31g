@@ -4,10 +4,9 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
-using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// NELSON v. ELWAY Supreme Court of Colorado 908 P.2d 102 (Colo. 1995)
