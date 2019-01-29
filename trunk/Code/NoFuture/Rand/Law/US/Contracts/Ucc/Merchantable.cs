@@ -101,5 +101,21 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         public bool? IsConformedAsLabeled { get; set; }
 
         public override bool IsEnforceableInCourt => true;
+
+        public override bool Equals(object obj)
+        {
+            var m = obj as Merchantable;
+            if (m == null)
+                return false;
+            return m.IsPassWithoutObjection == IsPassWithoutObjection
+                   && m.IsFairAvgQuality == IsFairAvgQuality
+                   && m.IsFit4OrdinaryPurpose == IsFit4OrdinaryPurpose
+                   && m.IsFit4ParticularPurpose == IsFit4ParticularPurpose
+                   && m.IsBuyerRelyingOnSellerJudgement == IsBuyerRelyingOnSellerJudgement
+                   && m.IsWithinPermittedVariations == IsWithinPermittedVariations
+                   && m.IsPackagedAndLabeled == IsPackagedAndLabeled
+                   && m.IsConformedAsLabeled == IsConformedAsLabeled
+                ;
+        }
     }
 }

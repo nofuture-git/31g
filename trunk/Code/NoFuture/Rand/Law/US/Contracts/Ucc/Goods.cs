@@ -1,5 +1,6 @@
 ﻿namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
+    /// <inheritdoc cref="ObjectiveLegalConcept"/>
     /// <summary>
     /// <![CDATA[
     /// all things which are movable at the time of identification
