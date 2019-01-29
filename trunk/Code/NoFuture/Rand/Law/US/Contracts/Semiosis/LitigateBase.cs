@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Contracts.Litigate
+﻿namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 {
     public abstract class LitigateBase<T> : ObjectiveLegalConcept
     {

@@ -3,7 +3,7 @@ using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 
-namespace NoFuture.Rand.Law.US.Contracts.Litigate
+namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 {
     /// <summary>
     /// <![CDATA[

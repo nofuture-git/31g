@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Contracts.Litigate
+namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 {
     public abstract class DilemmaBase<T> : LitigateBase<T>
     {
         protected DilemmaBase(IContract<T> contract) : base(contract)
         {
         }
-
-
 
         protected internal ISet<Term<object>> AgreedTerms { get; set; }
 

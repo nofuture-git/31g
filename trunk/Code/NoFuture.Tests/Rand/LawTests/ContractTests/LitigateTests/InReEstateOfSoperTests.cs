@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
-using NoFuture.Rand.Law.US.Contracts.Litigate;
+using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 

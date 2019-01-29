@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Contracts.Litigate
+namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 {
     /// <summary>
     /// A type to handle the problem of a court having to pick one of two
