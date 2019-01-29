@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         {
             if (!IsPassWithoutObjection)
             {
-                AddReasonEntry($"{GetType().Name} does not 'pass without " +
+                AddReasonEntry($"{_goods?.GetType().Name} does not 'pass without " +
                                "objection in the trade under " +
                                "the contract description'");
                 return false;
@@ -29,14 +29,14 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
 
             if (!IsFairAvgQuality)
             {
-                AddReasonEntry($"{GetType().Name} is not 'of fair " +
+                AddReasonEntry($"{_goods?.GetType().Name} is not 'of fair " +
                                "average quality within the description'");
                 return false;
             }
 
             if (!IsFit4OrdinaryPurpose)
             {
-                AddReasonEntry($"{GetType().Name} is not 'fit for the " +
+                AddReasonEntry($"{_goods?.GetType().Name} is not 'fit for the " +
                                "ordinary purposes for which such " +
                                "goods are used'");
                 return false;
@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
 
             if (!IsWithinPermittedVariations)
             {
-                AddReasonEntry($"{GetType().Name} is not 'within the variations " +
+                AddReasonEntry($"{_goods?.GetType().Name} is not 'within the variations " +
                                "permitted by the agreement, of even kind, " +
                                "quality and quantity within each unit and among " +
                                "all units involved'");
@@ -52,16 +52,25 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
             }
             if (!IsPackagedAndLabeled)
             {
-                AddReasonEntry($"{GetType().Name} is not 'adequately contained, " +
+                AddReasonEntry($"{_goods?.GetType().Name} is not 'adequately contained, " +
                                "packaged, and labeled as the agreement may require'");
                 return false;
             }
             if (!(IsConformedAsLabeled ?? true))
             {
-                AddReasonEntry($"{GetType().Name} does not 'conform to the promise or " +
+                AddReasonEntry($"{_goods?.GetType().Name} does not 'conform to the promise or " +
                                "affirmations of fact made on the container or " +
                                "label if any'");
                 return false;
+            }
+
+            if ((IsBuyerRelyingOnSellerJudgement ?? false) && !(IsFit4ParticularPurpose ?? true))
+            {
+                AddReasonEntry($"{offeror?.Name} has reason to know the particular purpose " +
+                               $"of {_goods?.GetType().Name} and the buyer {offeree?.Name} is " +
+                               "relying seller's judgement");
+                return false;
+
             }
 
             return true;
@@ -75,6 +84,12 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
 
         [Aka("UCC 2-314(2)(c)")]
         public bool IsFit4OrdinaryPurpose { get; set; } = true;
+
+        [Aka("UCC 2-315")]
+        public bool? IsFit4ParticularPurpose { get; set; }
+
+        [Aka("UCC 2-315")]
+        public bool? IsBuyerRelyingOnSellerJudgement { get; set; }
 
         [Aka("UCC 2-314(2)(d)")]
         public bool IsWithinPermittedVariations { get; set; } = true;

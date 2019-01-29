@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Contracts.Litigate;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
@@ -13,7 +12,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// doctrine issue, 
+    /// doctrine issue, implied terms as UCC 2-315 implied warrenty
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -47,7 +46,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
             var testResult = testContract.IsValid(new AmericanFertilizer(), new Wood2());
             Console.WriteLine(testContract.ToString());
             Assert.IsFalse(testResult);
-
         }
     }
 
@@ -65,7 +63,9 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.LitigateTests
     {
         public Triple19Fertilizer() : base()
         {
-            Merchantability.IsFit4OrdinaryPurpose = false;
+            Merchantability.IsBuyerRelyingOnSellerJudgement = true;
+            Merchantability.IsFit4ParticularPurpose = false;
+
         }
     }
 
