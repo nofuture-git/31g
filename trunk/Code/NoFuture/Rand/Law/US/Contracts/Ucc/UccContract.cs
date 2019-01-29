@@ -19,6 +19,12 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         public IObjectiveLegalConcept Offer { get; set; }
         public Func<IObjectiveLegalConcept, T> Acceptance { get; set; }
 
+        /// <summary>
+        /// the Perfect Tender rule does not apply to UCC installment contracts
+        /// </summary>
+        [Aka("UCC 2-612")]
+        public virtual bool IsInstallmentContract { get; set; }
+
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             if (Assent == null)
