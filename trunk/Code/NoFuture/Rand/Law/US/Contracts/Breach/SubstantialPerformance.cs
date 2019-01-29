@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US.Contracts.Semiosis;
 
 namespace NoFuture.Rand.Law.US.Contracts.Breach
 {
@@ -14,7 +11,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Breach
     /// ]]>
     /// </summary>
     [Aka("close-enough")]
-    public class SubstantialPerformance<T> : StandardsBase<T>
+    public class SubstantialPerformance<T> : DilemmaBase<T>
     {
         public SubstantialPerformance(IContract<T> contract) : base(contract)
         {

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US.Contracts.Semiosis;
 
 namespace NoFuture.Rand.Law.US.Contracts.Breach
 {
@@ -18,7 +15,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Breach
     /// does not apply to UCC installment contracts
     /// </remarks>
     [Aka("UCC 2-601")]
-    public class PerfectTender<T> : StandardsBase<T>
+    public class PerfectTender<T> : DilemmaBase<T>
     {
         public  PerfectTender(IContract<T> contract) : base(contract)
         {

@@ -3,10 +3,14 @@ using System.Linq;
 
 namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 {
-    public abstract class DilemmaBase<T> : LitigateBase<T>
+    public abstract class DilemmaBase<T> : ObjectiveLegalConcept
     {
-        protected DilemmaBase(IContract<T> contract) : base(contract)
+        public virtual IContract<T> Contract { get; }
+
+        public override bool IsEnforceableInCourt => true;
+        protected DilemmaBase(IContract<T> contract)
         {
+            Contract = contract;
         }
 
         protected internal ISet<Term<object>> AgreedTerms { get; set; }

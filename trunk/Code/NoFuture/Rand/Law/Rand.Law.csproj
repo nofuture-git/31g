@@ -39,10 +39,9 @@
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="US\Contracts\Breach\Excuse.cs" />
     <Compile Include="US\Contracts\Breach\PerfectTender.cs" />
-    <Compile Include="US\Contracts\Breach\StandardsBase.cs" />
     <Compile Include="US\Contracts\Breach\SubstantialPerformance.cs" />
     <Compile Include="US\Contracts\Semiosis\ConditionsPrecedent.cs" />
-    <Compile Include="US\Contracts\Semiosis\DilemmaBase.cs" />
+    <Compile Include="US\Contracts\DilemmaBase.cs" />
     <Compile Include="US\Contracts\Semiosis\SemanticDilemma.cs" />
     <Compile Include="US\Contracts\Semiosis\SyntacticDilemma.cs" />
     <Compile Include="US\Contracts\Terms\CommonUseTerm.cs" />
@@ -83,7 +82,6 @@
     <Compile Include="US\Contracts\IAssent.cs" />
     <Compile Include="US\Contracts\ComLawContract.cs" />
     <Compile Include="US\Contracts\IContract.cs" />
-    <Compile Include="US\Contracts\Semiosis\LitigateBase.cs" />
     <Compile Include="US\Contracts\Semiosis\ParolEvidenceRule.cs" />
     <Compile Include="US\Contracts\MutualAssent.cs" />
     <Compile Include="US\Contracts\Performance.cs" />

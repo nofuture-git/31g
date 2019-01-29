@@ -1,14 +1,12 @@
-﻿namespace NoFuture.Rand.Law.US.Contracts.Defense
-{
-    public abstract class DefenseBase<T> : ObjectiveLegalConcept, IVoidable
-    {
-        private readonly IContract<T> _contract;
-        protected DefenseBase(IContract<T> contract)
-        {
-            _contract = contract;
-        }
+﻿using NoFuture.Rand.Law.US.Contracts.Semiosis;
 
-        public virtual IContract<T> Contract => _contract;
+namespace NoFuture.Rand.Law.US.Contracts.Defense
+{
+    public abstract class DefenseBase<T> : DilemmaBase<T>, IVoidable
+    {
+        protected DefenseBase(IContract<T> contract) : base(contract)
+        {
+        }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {

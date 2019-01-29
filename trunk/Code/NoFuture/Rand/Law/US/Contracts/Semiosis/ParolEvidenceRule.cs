@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
     /// </summary>
     [Aka("oral evidence rule")]
     [Note("from Old French for 'oral'", "not the same criminal term applied to convicts - 'parole'")]
-    public class ParolEvidenceRule<T> : LitigateBase<T>
+    public class ParolEvidenceRule<T> : DilemmaBase<T>
     {
         public ParolEvidenceRule(IContract<T> contract) : base(contract)
         {
@@ -26,13 +26,13 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            if (Contract?.Assent == null)
+            if (TryGetTerms(offeror, offeree))
             {
                 AddReasonEntry("parol evidence rule requires a contract with assent");
                 return false;
             }
 
-            var agreedTerms = Contract.Assent.GetAgreedTerms(offeror, offeree);
+            var agreedTerms = AgreedTerms;
             if (agreedTerms != null && agreedTerms.Any(t => t is ExpresslyConditionalTerm))
             {
                 AddReasonEntryRange(Contract.Assent.GetReasonEntries());
