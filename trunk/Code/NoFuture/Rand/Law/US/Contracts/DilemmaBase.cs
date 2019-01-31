@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace NoFuture.Rand.Law.US.Contracts
 {
+    /// <inheritdoc />
     /// <summary>
     /// A contract in dispute
     /// </summary>

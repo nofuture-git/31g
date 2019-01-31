@@ -37,10 +37,12 @@
   <ItemGroup>
     <Compile Include="Attributes\AkaAttribute.cs" />
     <Compile Include="Attributes\NoteAttribute.cs" />
-    <Compile Include="US\Contracts\Breach\Excuse.cs" />
+    <Compile Include="US\Contracts\Excuse\ExcuseBase.cs" />
     <Compile Include="US\Contracts\Breach\PerfectTender.cs" />
     <Compile Include="US\Contracts\Breach\StandardsBase.cs" />
     <Compile Include="US\Contracts\Breach\SubstantialPerformance.cs" />
+    <Compile Include="US\Contracts\Excuse\FrustrationOfPurpose.cs" />
+    <Compile Include="US\Contracts\Excuse\ImpracticabilityOfPerformance.cs" />
     <Compile Include="US\Contracts\Semiosis\ConditionsPrecedent.cs" />
     <Compile Include="US\Contracts\DilemmaBase.cs" />
     <Compile Include="US\Contracts\Semiosis\SemanticDilemma.cs" />

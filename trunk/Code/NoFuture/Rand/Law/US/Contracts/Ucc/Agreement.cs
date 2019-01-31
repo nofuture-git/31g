@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         public override Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
 
         /// <summary>
-        /// One of various ways a buyer accepts accocding the the UCC
+        /// One of various ways a buyer accepts goods accocding the the UCC
         /// </summary>
         [Aka("UCC 2-606(1)(a)")]
         public Predicate<ILegalPerson> IsGoodsInspected { get; set; } = lp => true;
@@ -47,8 +47,8 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         {
             var intent2Contrx = IsApprovalExpressed ?? (lp => true);
 
-            Predicate<ILegalPerson> buyerAccepts = lp =>
-                intent2Contrx(lp) || IsGoodsInspected(lp) || !IsRejected(lp) || IsAnyActAsOwner(lp);
+            Predicate<ILegalPerson> buyerAcceptsGoods =
+                lp => IsGoodsInspected(lp) || !IsRejected(lp) || IsAnyActAsOwner(lp);
 
             if (!intent2Contrx(offeror))
             {
@@ -57,11 +57,16 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
                 return false;
             }
 
-            if (!buyerAccepts(offeree))
+            if (!intent2Contrx(offeree))
             {
                 AddReasonEntry($"{offeree?.Name} did not intend this " +
                               "agreement as a binding contract.");
                 return false;
+            }
+
+            if (!buyerAcceptsGoods(offeree))
+            {
+                AddReasonEntry($"the buyer, {offeree?.Name}, rejected the goods");
             }
 
             return true;

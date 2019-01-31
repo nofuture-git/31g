@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Breach;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
-using NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
@@ -15,7 +13,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// doctrine issue, limits to the UCC perfect tender rule
+    /// doctrine issue, limits to the UCC perfect tender rule, Assent to contract is not the same as acceptance of goods
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -31,7 +29,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
                 Assent = new Agreement
                 {
                     //although Fanok acts as though acceptance is false
-                    IsApprovalExpressed = lp => lp is CarverBoat,
+                    IsApprovalExpressed = lp => lp is CarverBoat || lp is Fanok,
                     TermsOfAgreement = lp =>
                     {
                         switch (lp)
