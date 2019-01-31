@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace NoFuture.Rand.Law.US.Contracts.Remedy
 {
     /// <inheritdoc />
@@ -16,5 +18,6 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy
         protected RemedyBase(IContract<T> contract) : base(contract)
         {
         }
+        
     }
 }

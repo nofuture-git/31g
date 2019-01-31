@@ -8,25 +8,23 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
 {
     /// <summary>
-    /// HAWKINS v. McGEE Supreme Court of New Hampshire 84 N.H. 114, 146 A. 641 (1929)
+    /// UNITED STATES NAVAL INSTITUTE v. CHARTER COMMUNICATIONS, INC. United States Court of Appeals for the Second Circuit 936 F.2d 692 (2d Cir. 1991)
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// doctrine issue, the calc of expected money dmg is about the 
-    /// diff in expected and actual value - calc of such a value is 
-    /// difficult when it was something like, "the value of a perfect hand..."
+    /// 
     /// ]]>
     /// </remarks>
     [TestFixture]
-    public class HawkinsvMcGeeTests
+    public class UsNavalInstitutevCharterCommTests
     {
         [Test]
-        public void HawkinsvMcGee()
+        public void UsNavalInstitutevCharterComm()
         {
             var testContract = new ComLawContract<Promise>
             {
-                Offer = new OfferSkinGraft(),
-                Acceptance = o => o is OfferSkinGraft ? new AcceptanctSkinGraft() : null,
+                Offer = new OfferSellPaperBack(),
+                Acceptance = o => o is OfferSellPaperBack ? new AcceptanctSellPaperBack() : null,
                 Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
@@ -34,10 +32,10 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
                     {
                         switch (lp)
                         {
-                            case Hawkins _:
-                                return ((Hawkins)lp).GetTerms();
-                            case McGee _:
-                                return ((McGee)lp).GetTerms();
+                            case UsNavalInstitute _:
+                                return ((UsNavalInstitute)lp).GetTerms();
+                            case CharterComm _:
+                                return ((CharterComm)lp).GetTerms();
                             default:
                                 return null;
                         }
@@ -50,60 +48,59 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
                 IsGivenByPromisee = (lp, p) => true,
                 IsSoughtByPromisor = (lp, p) => true
             };
-
-            var testResult = testContract.IsValid(new Hawkins(), new McGee());
-            Assert.IsTrue(testResult);
         }
     }
 
-    public class OfferSkinGraft : Promise
+    public class OfferSellPaperBack : Promise
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return (offeror is Hawkins || offeror is McGee)
-                   && (offeree is Hawkins || offeree is McGee);
+            return (offeror is UsNavalInstitute || offeror is CharterComm)
+                   && (offeree is UsNavalInstitute || offeree is CharterComm);
         }
 
         public override bool Equals(object obj)
         {
-            var o = obj as OfferSkinGraft;
+            var o = obj as OfferSellPaperBack;
             if (o == null)
                 return false;
             return true;
         }
     }
 
-    public class AcceptanctSkinGraft : OfferSkinGraft
+    public class AcceptanctSellPaperBack : OfferSellPaperBack
     {
         public override bool Equals(object obj)
         {
-            var o = obj as AcceptanctSkinGraft;
+            var o = obj as AcceptanctSellPaperBack;
             if (o == null)
                 return false;
             return true;
         }
     }
 
-    public class Hawkins : LegalPerson
+    public class UsNavalInstitute : LegalPerson
     {
-        public Hawkins(): base("GEORGE HAWKINS") { }
+        public UsNavalInstitute(): base("") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("hundred per cent good hand", DBNull.Value),
+                new ContractTerm<object>("hardcover", DBNull.Value),
+                new ContractTerm<object>("paperback", 2),
             };
         }
     }
 
-    public class McGee : LegalPerson
+    public class CharterComm : LegalPerson
     {
-        public McGee(): base("DR. MCGEE") { }
+        public CharterComm(): base("") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("hundred per cent good hand", DBNull.Value),
+                new ContractTerm<object>("hardcover", DBNull.Value),
+                new ContractTerm<object>("paperback", 2),
             };
         }
     }
