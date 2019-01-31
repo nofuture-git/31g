@@ -99,6 +99,7 @@
     <Compile Include="LawTests\ContractTests\EstoppelTests\HoffmanvRedOwlStoresTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\MayervKingColaTests.cs" />
     <Compile Include="LawTests\ContractTests\EstoppelTests\RicketsvScothornTests.cs" />
+    <Compile Include="LawTests\ContractTests\ExcuseTests\BushvProtravelIntlTests.cs" />
     <Compile Include="LawTests\ContractTests\ExcuseTests\KarlWendtvIntlHarvesterTests.cs" />
     <Compile Include="LawTests\ContractTests\SemiosisTests\AcmeMarketsvFedArmoredTests.cs" />
     <Compile Include="LawTests\ContractTests\SemiosisTests\AmericanFertilizervWoodTests.cs" />

@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ExcuseTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, impracticability and frustration mean more then just losing money
     /// ]]>
     /// </remarks>
     [TestFixture]
