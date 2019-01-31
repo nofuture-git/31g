@@ -43,6 +43,13 @@
     <Compile Include="US\Contracts\Breach\SubstantialPerformance.cs" />
     <Compile Include="US\Contracts\Excuse\FrustrationOfPurpose.cs" />
     <Compile Include="US\Contracts\Excuse\ImpracticabilityOfPerformance.cs" />
+    <Compile Include="US\Contracts\Remedy\LiquidatedDmg.cs" />
+    <Compile Include="US\Contracts\Remedy\MoneyDmg\Expectation.cs" />
+    <Compile Include="US\Contracts\Remedy\MoneyDmg\MoneyDmgBase.cs" />
+    <Compile Include="US\Contracts\Remedy\MoneyDmg\Reliance.cs" />
+    <Compile Include="US\Contracts\Remedy\MoneyDmg\Restitution.cs" />
+    <Compile Include="US\Contracts\Remedy\RemedyBase.cs" />
+    <Compile Include="US\Contracts\Remedy\SpecificPerformance.cs" />
     <Compile Include="US\Contracts\Semiosis\ConditionsPrecedent.cs" />
     <Compile Include="US\Contracts\DilemmaBase.cs" />
     <Compile Include="US\Contracts\Semiosis\SemanticDilemma.cs" />
