@@ -25,9 +25,30 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         [Aka("UCC 2-207")]
         public override Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
 
+        /// <summary>
+        /// One of various ways a buyer accepts accocding the the UCC
+        /// </summary>
+        [Aka("UCC 2-606(1)(a)")]
+        public Predicate<ILegalPerson> IsGoodsInspected { get; set; } = lp => true;
+
+        /// <summary>
+        /// One of various ways a buyer accepts accocding the the UCC
+        /// </summary>
+        [Aka("UCC 2-606(1)(b)")]
+        public Predicate<ILegalPerson> IsRejected { get; set; } = lp => false;
+
+        /// <summary>
+        /// One of various ways a buyer accepts accocding the the UCC
+        /// </summary>
+        [Aka("UCC 2-606(1)(c)")]
+        public Predicate<ILegalPerson> IsAnyActAsOwner { get; set; } = lp => true;
+
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             var intent2Contrx = IsApprovalExpressed ?? (lp => true);
+
+            Predicate<ILegalPerson> buyerAccepts = lp =>
+                intent2Contrx(lp) || IsGoodsInspected(lp) || !IsRejected(lp) || IsAnyActAsOwner(lp);
 
             if (!intent2Contrx(offeror))
             {
@@ -36,7 +57,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
                 return false;
             }
 
-            if (!intent2Contrx(offeree))
+            if (!buyerAccepts(offeree))
             {
                 AddReasonEntry($"{offeree?.Name} did not intend this " +
                               "agreement as a binding contract.");

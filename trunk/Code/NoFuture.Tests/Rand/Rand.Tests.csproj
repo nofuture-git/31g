@@ -63,6 +63,7 @@
     <Compile Include="LawTests\ContractTests\AcceptanceTests\HobbsvMassasoitWhipCoTests.cs" />
     <Compile Include="LawTests\ContractTests\AcceptanceTests\MunicipalvTownOfRamapoTests.cs" />
     <Compile Include="LawTests\ContractTests\AcceptanceTests\UnitedStatesLifeInsCovWilsonTests.cs" />
+    <Compile Include="LawTests\ContractTests\BreachTests\FanokvCarverBoatTests.cs" />
     <Compile Include="LawTests\ContractTests\BreachTests\JacobYoungsvKentTests.cs" />
     <Compile Include="LawTests\ContractTests\BreachTests\KcaElectronicsvLegacyElectronicsTests.cs" />
     <Compile Include="LawTests\ContractTests\BreachTests\OwGrunRoofingvCopeTests.cs" />

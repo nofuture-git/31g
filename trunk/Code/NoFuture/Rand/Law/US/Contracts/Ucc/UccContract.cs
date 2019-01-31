@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
                 return false;
             }
 
-            if (!Assent.IsValid(offeree, offeror))
+            if (!Assent.IsValid(offeror, offeree))
             {
                 AddReasonEntry("The agreement is invalid");
                 AddReasonEntryRange(Assent.GetReasonEntries());

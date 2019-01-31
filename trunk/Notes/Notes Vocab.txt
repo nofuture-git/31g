@@ -665,3 +665,4 @@ avoirdupois: system of weights based on pound of 16 ounces
 chary: cautiously or suspiciously reluctant to do something
 confabulation: memory error of a person without intentation as such
 valence: emotional value of an event, object, or situation
+lout: an uncouth and aggressive man or boy
