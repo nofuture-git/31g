@@ -668,3 +668,5 @@ valence: emotional value of an event, object, or situation
 lout: an uncouth and aggressive man or boy
 diminution: a reduction in the size, extent, or importance of something
 commodum ex injuria sua nemo habere debet: No one shall profit by his own wrong
+Ex rel.: ex relatione, out of relation with
+quantum meruit: money to be paid for services when the amount due is not given in a contract.

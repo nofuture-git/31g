@@ -8,7 +8,9 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// No one shall profit by his own wrong
     /// </summary>
     /// <remarks>
-    /// in contract law regards money remedy not from loss but from wrongful profit
+    /// In contract law regards money remedy not from loss but from wrongful profit.
+    /// This is available remedy for payment-in-kind contracts where one party fails to 
+    /// perform.
     /// </remarks>
     public class Restitution<T> : MoneyDmgBase<T> where T : IObjectiveLegalConcept
     {
@@ -17,11 +19,6 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         }
 
         protected internal override decimal CalcLoss(ILegalPerson lp)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             throw new NotImplementedException();
         }
