@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
 
             var testResult = testContract.IsValid(new Brandeis(), new CapitolCrane());
             Assert.IsTrue(testResult);
-            var testSubject = new Expectation<Goods>(testContract)
+            var testSubject = new UccExpectation(testContract)
             {
                 UccOrigContractPrice = lp =>
                 {

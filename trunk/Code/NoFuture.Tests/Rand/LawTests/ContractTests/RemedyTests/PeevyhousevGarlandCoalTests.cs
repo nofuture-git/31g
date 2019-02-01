@@ -54,9 +54,10 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
             var testResult = testContract.IsValid(new Peevyhouse(), new GarlandCoal());
             Assert.IsTrue(testResult);
 
-            var testSubject = new Expectation<Promise>(testContract)
+            var testSubject = new PropertyExpectation<Promise>(testContract)
             {
-                CalcLossToInjured = lp => (lp as Peevyhouse)?.DiminutionOfValue ?? 0m,
+                CalcDiminutionInValue = lp => (lp as Peevyhouse)?.DiminutionOfValue ?? 0m,
+                CalcPerformanceCost = lp => (lp as Peevyhouse)?.CostOfPerformance ?? 0m
             };
             testResult = testSubject.IsValid(new Peevyhouse(), new GarlandCoal());
             Console.WriteLine(testSubject.ToString());

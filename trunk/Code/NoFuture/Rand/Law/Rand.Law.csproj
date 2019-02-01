@@ -46,8 +46,10 @@
     <Compile Include="US\Contracts\Remedy\LiquidatedDmg.cs" />
     <Compile Include="US\Contracts\Remedy\MoneyDmg\Expectation.cs" />
     <Compile Include="US\Contracts\Remedy\MoneyDmg\MoneyDmgBase.cs" />
+    <Compile Include="US\Contracts\Remedy\MoneyDmg\PropertyExpectation.cs" />
     <Compile Include="US\Contracts\Remedy\MoneyDmg\Reliance.cs" />
     <Compile Include="US\Contracts\Remedy\MoneyDmg\Restitution.cs" />
+    <Compile Include="US\Contracts\Remedy\MoneyDmg\UccExpectation.cs" />
     <Compile Include="US\Contracts\Remedy\RemedyBase.cs" />
     <Compile Include="US\Contracts\Remedy\SpecificPerformance.cs" />
     <Compile Include="US\Contracts\Semiosis\ConditionsPrecedent.cs" />

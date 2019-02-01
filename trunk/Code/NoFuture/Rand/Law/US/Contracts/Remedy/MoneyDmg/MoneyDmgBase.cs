@@ -13,9 +13,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         }
 
         /// <summary>
-        /// <![CDATA[Restatement (Second) of Contracts § 347(a) ]]>
+        /// Where each child type will draw a composition of relevant functions
         /// </summary>
-        public Func<ILegalPerson, decimal> CalcLossToInjured { get; set; } = o => 0m;
+        /// <param name="lp"></param>
+        /// <returns></returns>
+        protected internal abstract decimal CalcLoss(ILegalPerson lp);
 
         /// <summary>
         /// <![CDATA[Restatement (Second) of Contracts § 347(b) ]]>
@@ -46,7 +48,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         /// <returns></returns>
         protected internal virtual decimal CalcMeasureOfDmg(ILegalPerson lp)
         {
-            var lpValue = CalcLossToInjured(lp) + CalcLossOther(lp) -
+            var lpValue = CalcLoss(lp) + CalcLossOther(lp) -
                                CalcLossAvoided(lp);
 
             lpValue = Rounding(lpValue);
