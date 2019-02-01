@@ -18,9 +18,13 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         {
         }
 
+        public Func<ILegalPerson, decimal> CalcUnjustImpoverishment { get; set; }
+
+        public Func<ILegalPerson, decimal> CalcUnjustGain { get; set; }
+
         protected internal override decimal CalcLoss(ILegalPerson lp)
         {
-            throw new NotImplementedException();
+            return CalcUnjustGain(lp) + CalcUnjustImpoverishment(lp);
         }
     }
 }

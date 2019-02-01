@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// <summary>
     /// <![CDATA[
     /// Restatement (Second) of Contracts § 349
-    /// idea that contracts rely on promises 
+    /// when restitution is too little and expectation is too big,
     /// ]]>
     /// </summary>
     public class Reliance<T> : MoneyDmgBase<T> where T : IObjectiveLegalConcept
@@ -15,14 +15,13 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         {
         }
 
+        public Func<ILegalPerson, decimal> CalcExpectedValue { get; set; } = o => 0m;
+
+        public Func<ILegalPerson, decimal> CalcExpectedLoss { get; set; } = o => 0m;
+
         protected internal override decimal CalcLoss(ILegalPerson lp)
         {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
-        {
-            throw new NotImplementedException();
+            return CalcExpectedValue(lp) - CalcExpectedLoss(lp);
         }
     }
 }
