@@ -666,3 +666,4 @@ chary: cautiously or suspiciously reluctant to do something
 confabulation: memory error of a person without intentation as such
 valence: emotional value of an event, object, or situation
 lout: an uncouth and aggressive man or boy
+diminution: a reduction in the size, extent, or importance of something
