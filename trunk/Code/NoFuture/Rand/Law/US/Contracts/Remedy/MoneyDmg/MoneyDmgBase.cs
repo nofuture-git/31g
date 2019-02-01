@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         /// </summary>
         /// <param name="lp"></param>
         /// <returns></returns>
-        protected internal decimal CalcMeasureOfDmg(ILegalPerson lp)
+        protected internal virtual decimal CalcMeasureOfDmg(ILegalPerson lp)
         {
             var lpValue = CalcLossToInjured(lp) + CalcLossOther(lp) -
                                CalcLossAvoided(lp);

@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
+using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
+using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
 {
     /// <summary>
-    /// 
+    /// BRANDEIS MACHINERY & SUPPLY CO., LLC v.CAPITOL CRANE RENTAL, INC. Court of Appeals of Indiana, Fifth District 765 N.E.2d 173 (Ind.Ct.App. 2002)
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, more parts to Calc of Loss to injured with UCC
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -21,10 +23,10 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
         [Test]
         public void BrandeisvCapitolCrane()
         {
-            var testContract = new ComLawContract<Promise>
+            var testContract = new UccContract<Goods>
             {
-                Offer = new Offer_RenameMe(),
-                Acceptance = o => o is Offer_RenameMe ? new Acceptanct_RenameMe() : null,
+                Offer = new OfferPurchaseCrane(),
+                Acceptance = o => o is OfferPurchaseCrane ? new AcceptanctPurchaseCrane() : null,
                 Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
@@ -43,15 +45,39 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
                 }
             };
 
-            testContract.Consideration = new Consideration<Promise>(testContract)
+            var testResult = testContract.IsValid(new Brandeis(), new CapitolCrane());
+            Assert.IsTrue(testResult);
+            var testSubject = new Expectation<Goods>(testContract)
             {
-                IsGivenByPromisee = (lp, p) => true,
-                IsSoughtByPromisor = (lp, p) => true
+                UccOrigContractPrice = lp =>
+                {
+                    var blp = lp as Brandeis;
+                    if(blp == null)
+                        return 0m;
+                    return blp.OrigPurchasePrice;
+                },
+                UccMarketPrice = lp =>
+                {
+                    var blp = lp as Brandeis;
+                    if (blp == null)
+                        return 0m;
+                    return blp.DepreciationMedianValue;
+                },
+                CalcLossOther = lp =>
+                {
+                    var blp = lp as Brandeis;
+                    if (blp == null)
+                        return 0m;
+                    return blp.CostInspectionAndRepair;
+                }
             };
+            testResult = testSubject.IsValid(new Brandeis(), new CapitolCrane());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 
-    public class Offer_RenameMe : Promise
+    public class OfferPurchaseCrane : Goods
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
@@ -61,18 +87,20 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
 
         public override bool Equals(object obj)
         {
-            var o = obj as Offer_RenameMe;
+            var o = obj as OfferPurchaseCrane;
             if (o == null)
                 return false;
             return true;
         }
+
+        
     }
 
-    public class Acceptanct_RenameMe : Offer_RenameMe
+    public class AcceptanctPurchaseCrane : OfferPurchaseCrane
     {
         public override bool Equals(object obj)
         {
-            var o = obj as Acceptanct_RenameMe;
+            var o = obj as AcceptanctPurchaseCrane;
             if (o == null)
                 return false;
             return true;
@@ -81,25 +109,34 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
 
     public class Brandeis : LegalPerson
     {
-        public Brandeis(): base("") { }
+        public Brandeis(): base("BRANDEIS MACHINERY & SUPPLY CO., LLC") { }
+
+        public decimal OrigPurchasePrice => 291773.46m;
+        public decimal AccumulatedSvcCharge => 159302.38m;
+        public decimal CostInspectionAndRepair => 9794.86m;
+        public decimal Total => OrigPurchasePrice + AccumulatedSvcCharge + CostInspectionAndRepair;
+        public decimal DepreciationMedianValue => 272500m;
+
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("", DBNull.Value),
+                new ContractTerm<object>("crane", DBNull.Value),
             };
         }
     }
 
     public class CapitolCrane : LegalPerson
     {
-        public CapitolCrane(): base("") { }
+        public CapitolCrane(): base("CAPITOL CRANE RENTAL, INC.") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("", DBNull.Value),
+                new ContractTerm<object>("crane", DBNull.Value),
             };
         }
+
+        
     }
 }
