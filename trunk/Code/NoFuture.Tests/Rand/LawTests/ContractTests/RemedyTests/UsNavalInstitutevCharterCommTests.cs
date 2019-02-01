@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
+using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
@@ -12,7 +13,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, manner of calc of loss in expectation
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -48,6 +49,17 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
                 IsGivenByPromisee = (lp, p) => true,
                 IsSoughtByPromisor = (lp, p) => true
             };
+            var testResult = testContract.IsValid(new UsNavalInstitute(), new CharterComm());
+            Assert.IsTrue(testResult);
+
+            var testSubject = new Expectation<Promise>(testContract)
+            {
+                CalcLossToInjured = lp => lp is UsNavalInstitute ? 15000m : 0m
+            };
+
+            testResult = testSubject.IsValid(new UsNavalInstitute(), new CharterComm());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 
@@ -81,7 +93,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
 
     public class UsNavalInstitute : LegalPerson
     {
-        public UsNavalInstitute(): base("") { }
+        public UsNavalInstitute(): base("UNITED STATES NAVAL INSTITUTE") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
@@ -94,7 +106,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
 
     public class CharterComm : LegalPerson
     {
-        public CharterComm(): base("") { }
+        public CharterComm(): base("CHARTER COMMUNICATIONS, INC.") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>

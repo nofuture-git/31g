@@ -13,63 +13,66 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         }
 
         /// <summary>
-        /// The way to take the object of the contract (either expected or actual) and turn it into a dollar amount
+        /// <![CDATA[Restatement (Second) of Contracts § 347(a) ]]>
         /// </summary>
-        public Func<IObjectiveLegalConcept, decimal> CalcValue { get; set; } = o => 0m;
+        public Func<ILegalPerson, decimal> CalcLossToInjured { get; set; } = o => 0m;
 
         /// <summary>
-        /// The mathematical convention for calculation of damages
+        /// <![CDATA[Restatement (Second) of Contracts § 347(b) ]]>
         /// </summary>
-        public Func<decimal, decimal, decimal> CalcDmg { get; set; } = (m1, m2) => m1 - m2;
+        public Func<ILegalPerson, decimal> CalcLossOther { get; set; } = o => 0m;
 
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 347(c) ]]>
+        /// </summary>
+        public Func<ILegalPerson, decimal> CalcLossAvoided { get; set; } = o => 0m;
+
+        /// <summary>
+        /// The method to round-off a decimal value
+        /// </summary>
         public Func<decimal, decimal> Rounding { get; set; } = Math.Round;
 
-        public decimal Equivalent2Zero { get; set; } = 0.01m;
+        /// <summary>
+        /// Allowable round-off
+        /// </summary>
+        public decimal Tolerance { get; set; } = 0.01m;
+
+        /// <summary>
+        /// <![CDATA[
+        /// Restatement (Second) of Contracts § 347 (a)+(b)-(c)
+        /// ]]>
+        /// </summary>
+        /// <param name="lp"></param>
+        /// <returns></returns>
+        protected internal decimal CalcMeasureOfDmg(ILegalPerson lp)
+        {
+            var lpValue = CalcLossToInjured(lp) + CalcLossOther(lp) -
+                               CalcLossAvoided(lp);
+
+            lpValue = Rounding(lpValue);
+
+            return lpValue;
+        }
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            if (!TryGetOfferAcceptance(offeror, offeree))
+            var offerorValue = CalcMeasureOfDmg(offeror);
+            if (offerorValue >= Tolerance)
             {
-                return false;
+                AddReasonEntry($"{offeror.Name} value {offerorValue}");
+                AddReasonEntryRange(Contract.GetReasonEntries());
+                return true;
             }
 
-            if (!TryGetActualOfferAcceptance(offeror, offeree))
+            var offereeValue = CalcMeasureOfDmg(offeree);
+            if (offereeValue >= Tolerance)
             {
-                return false;
+                AddReasonEntry($"{offeree.Name} value {offereeValue}");
+                AddReasonEntryRange(Contract.GetReasonEntries());
+                return true;
             }
 
-            if (CalcValue == null)
-            {
-                AddReasonEntry("there is no manner of calculation defined");
-                return false;
-            }
-
-            var offerValue = CalcValue(Offer);
-
-            AddReasonEntry($"{offeror.Name} {nameof(Offer)} value calculated as {offerValue}");
-
-            var accpetanceValue = CalcValue(Acceptance);
-            AddReasonEntry($"{offeree.Name} {nameof(Acceptance)} value calculated as {accpetanceValue}");
-
-            var offerActualValue = CalcValue(OfferActual);
-            AddReasonEntry($"{offeror.Name} {nameof(OfferActual)} value calculated as {offerActualValue}");
-
-            var acceptanceActualValue = CalcValue(AcceptanceActual);
-            AddReasonEntry($"{offeree.Name} {nameof(AcceptanceActual)} value calculated as {acceptanceActualValue}");
-
-            var offerDiff = CalcDmg(offerValue, offerActualValue);
-            offerDiff = Rounding(offerDiff);
-            AddReasonEntry($"{nameof(CalcDmg)} between {offerValue} and {offerActualValue} is {offerDiff}");
-
-            var acceptanceDiff = CalcDmg(accpetanceValue, acceptanceActualValue);
-            acceptanceDiff = Rounding(acceptanceDiff);
-            AddReasonEntry($"{nameof(CalcDmg)} between {accpetanceValue} and {acceptanceActualValue} is {acceptanceDiff}");
-
-            var balance = CalcDmg(offerDiff, acceptanceDiff);
-            balance = Rounding(balance);
-
-            return balance <= Equivalent2Zero;
-
+            return false;
         }
     }
 }
