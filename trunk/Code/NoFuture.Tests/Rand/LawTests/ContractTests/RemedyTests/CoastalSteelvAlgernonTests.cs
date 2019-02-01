@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
+using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
+namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
 {
     /// <summary>
-    /// 
-    /// </summary>
+    ///UNITED STATES ex rel. COASTAL STEEL ERECTORS, INC. v. ALGERNON BLAIR, INC. United States Court of Appeals for the Fourth Circuit 479 F.2d 638 (4th Cir. 1973)    /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, restitution as re-payment for work done
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -23,8 +23,8 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
         {
             var testContract = new ComLawContract<Promise>
             {
-                Offer = new Offer_RenameMe(),
-                Acceptance = o => o is Offer_RenameMe ? new Acceptanct_RenameMe() : null,
+                Offer = new OfferSubContractSteelWork(),
+                Acceptance = o => o is OfferSubContractSteelWork ? new AcceptanctSubContractSteelWork() : null,
                 Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
@@ -48,10 +48,22 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
                 IsGivenByPromisee = (lp, p) => true,
                 IsSoughtByPromisor = (lp, p) => true
             };
+
+            var testResult = testContract.IsValid(new CoastalSteel(), new Algernon());
+            Assert.IsTrue(testResult);
+
+            var testSubject = new QuantumMeruitRestitution<Promise>(testContract)
+            {
+                CalcPerformanceRenderedValue = lp => lp is CoastalSteel ? 256m : 0m,
+            };
+
+            testResult = testSubject.IsValid(new CoastalSteel(), new Algernon());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 
-    public class Offer_RenameMe : Promise
+    public class OfferSubContractSteelWork : Promise
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
@@ -61,18 +73,18 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
 
         public override bool Equals(object obj)
         {
-            var o = obj as Offer_RenameMe;
+            var o = obj as OfferSubContractSteelWork;
             if (o == null)
                 return false;
             return true;
         }
     }
 
-    public class Acceptanct_RenameMe : Offer_RenameMe
+    public class AcceptanctSubContractSteelWork : OfferSubContractSteelWork
     {
         public override bool Equals(object obj)
         {
-            var o = obj as Acceptanct_RenameMe;
+            var o = obj as AcceptanctSubContractSteelWork;
             if (o == null)
                 return false;
             return true;
@@ -81,24 +93,24 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
 
     public class CoastalSteel : LegalPerson
     {
-        public CoastalSteel(): base("") { }
+        public CoastalSteel(): base("COASTAL STEEL ERECTORS, INC.") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("", DBNull.Value),
+                new ContractTerm<object>("contract", DBNull.Value),
             };
         }
     }
 
     public class Algernon : LegalPerson
     {
-        public Algernon(): base("") { }
+        public Algernon(): base("ALGERNON BLAIR, INC.") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("", DBNull.Value),
+                new ContractTerm<object>("contract", DBNull.Value),
             };
         }
     }
