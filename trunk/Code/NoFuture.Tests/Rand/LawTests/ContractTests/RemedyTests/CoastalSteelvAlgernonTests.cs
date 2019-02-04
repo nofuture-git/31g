@@ -52,9 +52,9 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
             var testResult = testContract.IsValid(new CoastalSteel(), new Algernon());
             Assert.IsTrue(testResult);
 
-            var testSubject = new QuantumMeruitRestitution<Promise>(testContract)
+            var testSubject = new Restitution<Promise>(testContract)
             {
-                CalcPerformanceRenderedValue = lp => lp is CoastalSteel ? 256m : 0m,
+                CalcUnjustGain = lp => lp is CoastalSteel ? 256m : 0m,
             };
 
             testResult = testSubject.IsValid(new CoastalSteel(), new Algernon());

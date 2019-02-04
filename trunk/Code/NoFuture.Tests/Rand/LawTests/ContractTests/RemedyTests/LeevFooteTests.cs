@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, calc of some performance value when it was the consideration of a contract
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -53,9 +53,9 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
             var testResult = testContract.IsValid(new Lee(), new Foote());
             Assert.IsTrue(testResult);
 
-            var testSubject = new QuantumMeruitRestitution<Promise>(testContract)
+            var testSubject = new Restitution<Promise>(testContract)
             {
-                CalcPerformanceRenderedValue = lp => lp is Lee ? 1m : 0m,
+                CalcUnjustGain = lp => lp is Lee ? 1m : 0m,
             };
 
             testResult = testSubject.IsValid(new Lee(), new Foote());

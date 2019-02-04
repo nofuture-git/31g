@@ -16,7 +16,10 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         }
 
         /// <summary>
-        /// <![CDATA[Restatement (Second) of Contracts § 347(a) ]]>
+        /// <![CDATA[
+        /// Restatement (Second) of Contracts § 347(a) 
+        /// the loss in value incurred by failure to perform
+        /// ]]>
         /// </summary>
         public Func<ILegalPerson, decimal> CalcLossToInjured { get; set; } = o => 0m;
 

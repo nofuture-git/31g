@@ -15,12 +15,12 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         }
 
         /// <summary>
-        /// <![CDATA[Restatement (Second) of Contracts § 348(2)(a) ]]>
+        /// How much market value the said performance would add to the property
         /// </summary>
         public Func<ILegalPerson, decimal> CalcDiminutionInValue { get; set; } = lp => 0m;
 
         /// <summary>
-        /// <![CDATA[Restatement (Second) of Contracts § 348(2)(b) ]]>
+        /// How much it would cost to perform something on the property
         /// </summary>
         public Func<ILegalPerson, decimal> CalcPerformanceCost { get; set; } = lp => 0m;
 

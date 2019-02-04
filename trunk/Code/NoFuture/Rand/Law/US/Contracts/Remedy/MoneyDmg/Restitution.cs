@@ -20,6 +20,10 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
 
         public Func<ILegalPerson, decimal> CalcUnjustImpoverishment { get; set; }
 
+        /// <summary>
+        /// the injured party is entitled to restitution for any benefit that he 
+        /// has conferred on the other party by way of part performance or reliance.
+        /// </summary>
         public Func<ILegalPerson, decimal> CalcUnjustGain { get; set; }
 
         protected internal override decimal CalcMoneyRemedy(ILegalPerson lp)
