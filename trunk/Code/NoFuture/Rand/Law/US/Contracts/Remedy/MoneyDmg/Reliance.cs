@@ -15,13 +15,14 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         {
         }
 
-        public Func<ILegalPerson, decimal> CalcExpectedValue { get; set; } = o => 0m;
-
-        public Func<ILegalPerson, decimal> CalcExpectedLoss { get; set; } = o => 0m;
+        /// <summary>
+        /// damages based on reliance interest including expenditures made in preparation
+        /// </summary>
+        public Func<ILegalPerson, decimal> CalcPrepExpenditures { get; set; } = o => 0m;
 
         protected internal override decimal CalcLoss(ILegalPerson lp)
         {
-            return CalcExpectedValue(lp) - CalcExpectedLoss(lp);
+            return CalcPrepExpenditures(lp);
         }
     }
 }

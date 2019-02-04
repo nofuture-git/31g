@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
 {
     /// <summary>
-    /// SULLIVAN v. O’CONNOR Supreme Judicial Court of Massachusetts 363 Mass. 579, 296 N.E.2d 183 (1973)
+    /// MISTLETOE EXPRESS SERVICE OF OKLAHOMA CITY v. LOCKE Court of Appeals of Texas, Sixth District 762 S.W.2d 637 (Tex. App.—Texarkana 1988)
     /// </summary>
     /// <remarks>
     /// <![CDATA[
@@ -17,15 +17,15 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
     /// ]]>
     /// </remarks>
     [TestFixture]
-    public class SullivanvOconnorTests
+    public class MistletoevLockeTests
     {
         [Test]
-        public void SullivanvOconnor()
+        public void MistletoevLocke()
         {
             var testContract = new ComLawContract<Promise>
             {
-                Offer = new OfferNoseJob(),
-                Acceptance = o => o is OfferNoseJob ? new AcceptanctNoseJob() : null,
+                Offer = new OfferDeliveryService(),
+                Acceptance = o => o is OfferDeliveryService ? new AcceptanctDeliveryService() : null,
                 Assent = new MutualAssent
                 {
                     IsApprovalExpressed = lp => true,
@@ -33,10 +33,10 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
                     {
                         switch (lp)
                         {
-                            case Sullivan _:
-                                return ((Sullivan)lp).GetTerms();
-                            case Oconnor _:
-                                return ((Oconnor)lp).GetTerms();
+                            case Mistletoe _:
+                                return ((Mistletoe)lp).GetTerms();
+                            case Locke _:
+                                return ((Locke)lp).GetTerms();
                             default:
                                 return null;
                         }
@@ -49,71 +49,84 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
                 IsGivenByPromisee = (lp, p) => true,
                 IsSoughtByPromisor = (lp, p) => true
             };
-            var testResult = testContract.IsValid(new Sullivan(), new Oconnor());
+
+            var testResult = testContract.IsValid(new Mistletoe(), new Locke());
             Assert.IsTrue(testResult);
 
             var testSubject = new Reliance<Promise>(testContract)
             {
-                CalcPrepExpenditures = lp => lp is Sullivan ? 2m : 0m,
-                CalcLossAvoided = lp => lp is Sullivan ? 1m : 0m,
+                CalcPrepExpenditures = lp =>
+                {
+                    var locke = lp as Locke;
+                    if (locke == null)
+                        return 0m;
+
+                    return locke.AmountOfTheLoan - locke.AmountRecoveredFromVehicleSales + locke.CostOfDirtWork +
+                           locke.LossFromMaterialsOfRamp;
+                }
             };
-            testResult = testSubject.IsValid(new Sullivan(), new Oconnor());
+
+            testResult = testSubject.IsValid(new Mistletoe(), new Locke());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
+
         }
     }
 
-    public class OfferNoseJob : Promise
+    public class OfferDeliveryService : Promise
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return (offeror is Sullivan || offeror is Oconnor)
-                   && (offeree is Sullivan || offeree is Oconnor);
+            return (offeror is Mistletoe || offeror is Locke)
+                   && (offeree is Mistletoe || offeree is Locke);
         }
 
         public override bool Equals(object obj)
         {
-            var o = obj as OfferNoseJob;
+            var o = obj as OfferDeliveryService;
             if (o == null)
                 return false;
             return true;
         }
     }
 
-    public class AcceptanctNoseJob : OfferNoseJob
+    public class AcceptanctDeliveryService : OfferDeliveryService
     {
         public override bool Equals(object obj)
         {
-            var o = obj as AcceptanctNoseJob;
+            var o = obj as AcceptanctDeliveryService;
             if (o == null)
                 return false;
             return true;
         }
     }
 
-    public class Sullivan : LegalPerson
+    public class Mistletoe : LegalPerson
     {
-        public Sullivan(): base("SULLIVAN") { }
-
-        public decimal JuryVerdict => 13500m;
-
+        public Mistletoe(): base("MISTLETOE EXPRESS SERVICE OF OKLAHOMA CITY") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("operation", DBNull.Value),
+                new ContractTerm<object>("delivery", DBNull.Value),
             };
         }
     }
 
-    public class Oconnor : LegalPerson
+    public class Locke : LegalPerson
     {
-        public Oconnor(): base("O’CONNOR") { }
+        public Locke(): base("PHYLLIS LOCKE") { }
+
+        public decimal AmountOfTheLoan => 15000m;
+        public decimal AmountRecoveredFromVehicleSales => 6000m;
+        public decimal CostOfDirtWork => 1000m;
+        public decimal LossFromMaterialsOfRamp => 3000m;
+
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
             {
-                new ContractTerm<object>("operation", DBNull.Value),
+                new ContractTerm<object>("delivery", DBNull.Value),
             };
         }
     }
