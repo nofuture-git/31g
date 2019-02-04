@@ -83,6 +83,10 @@ namespace NoFuture.Rand.Law
             {
                 return agreedTerms;
             }
+
+            ThrowOnDupRefersTo(sorTerms);
+            ThrowOnDupRefersTo(seeTerms);
+
             foreach (var termName in agreedTermNames)
             {
                 var offerorTerm = sorTerms.First(v => v.Name == termName);
@@ -120,6 +124,23 @@ namespace NoFuture.Rand.Law
             }
 
             return agreedTerms;
+        }
+
+        internal static void ThrowOnDupRefersTo(ISet<Term<T>> terms)
+        {
+            if (terms == null || !terms.Any())
+                return;
+
+            var vals = terms.Select(t => t.RefersTo).ToList();
+            foreach (var v in vals)
+            {
+                var c = terms.Where(t => t.RefersTo.Equals(v)).ToList();
+                if (c.Count > 1)
+                {
+                    var msg = $"{string.Join(", ", c.Select(t => t.Name))} have the same {nameof(RefersTo)} value";
+                    throw new AggregateException(msg);
+                }
+            }
         }
 
         public static ISet<Term<T>> GetAdditionalTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IReasonable reasoning = null)

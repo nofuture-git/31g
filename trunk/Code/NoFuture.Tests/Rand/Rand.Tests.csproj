@@ -105,6 +105,7 @@
     <Compile Include="LawTests\ContractTests\RemedyTests\BrandeisvCapitolCraneTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\CoastalSteelvAlgernonTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\DoeringvJohnDeereTests.cs" />
+    <Compile Include="LawTests\ContractTests\RemedyTests\HarrahsvHnedakBoboTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\HawkinsvMcGeeTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\LeevFooteTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\LeingangvCityOfMandanTests.cs" />

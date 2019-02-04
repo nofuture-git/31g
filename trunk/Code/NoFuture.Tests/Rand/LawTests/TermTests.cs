@@ -132,5 +132,19 @@ namespace NoFuture.Rand.Tests.LawTests
             Assert.IsTrue(testResult.Count == 1);
             Assert.AreEqual("sell ranch", testResult.First().Name);
         }
+
+        [Test]
+        public void TestThrowOnDupRefersTo()
+        {
+            var terms01 = new HashSet<Term<object>>
+            {
+                new ContractTerm<object>("first name", 0, new WrittenTerm()),
+                new ContractTerm<object>("second name", 0),
+                new ContractTerm<object>("term 00", 11, new OralTerm()),
+                new ContractTerm<object>("term 01", 12, new OralTerm()),
+                new ContractTerm<object>("term 02", 13, new OralTerm()),
+            };
+            Assert.Throws<AggregateException>(() => Term<object>.ThrowOnDupRefersTo(terms01));
+        }
     }
 }

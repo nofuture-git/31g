@@ -8,16 +8,19 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// </summary>
     public abstract class MoneyDmgBase<T> : RemedyBase<T> where T : IObjectiveLegalConcept
     {
-        private readonly LimitsToDmg<T> _limits;
+        private LimitsToDmg<T> _limits;
         protected MoneyDmgBase(IContract<T> contract) : base(contract)
         {
-            _limits = new LimitsToDmg<T>(contract);
+            
         }
 
         public LimitsToDmg<T> Limits
         {
             get
             {
+                if(_limits == null)
+                    _limits = new LimitsToDmg<T>(Contract);
+
                 _limits.Rounding = Rounding;
                 _limits.Tolerance = Tolerance;
                 return _limits;
@@ -32,12 +35,18 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         protected internal abstract decimal CalcMoneyRemedy(ILegalPerson lp);
 
         /// <summary>
-        /// <![CDATA[Restatement (Second) of Contracts § 347(b) ]]>
+        /// <![CDATA[
+        /// Restatement (Second) of Contracts § 347(b) 
+        /// any other loss, including incidental or consequential 
+        /// ]]>
         /// </summary>
         public Func<ILegalPerson, decimal> CalcLossOther { get; set; } = o => 0m;
 
         /// <summary>
-        /// <![CDATA[Restatement (Second) of Contracts § 347(c) ]]>
+        /// <![CDATA[
+        /// Restatement (Second) of Contracts § 347(c) 
+        /// any cost or other loss that was avoided by the breach
+        /// ]]>
         /// </summary>
         public Func<ILegalPerson, decimal> CalcLossAvoided { get; set; } = o => 0m;
 
@@ -63,7 +72,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
             var lpValue = CalcMoneyRemedy(lp) 
                           + CalcLossOther(lp) 
                           - CalcLossAvoided(lp) 
-                          - Limits.CalcMoneyRemedy(lp)
+                          - _limits.CalcMoneyRemedy(lp)
                 ;
 
             lpValue = Rounding(lpValue);
