@@ -107,10 +107,14 @@
     <Compile Include="LawTests\ContractTests\RemedyTests\DoeringvJohnDeereTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\HarrahsvHnedakBoboTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\HawkinsvMcGeeTests.cs" />
+    <Compile Include="LawTests\ContractTests\RemedyTests\HollywoodFanvGaborTests.cs" />
+    <Compile Include="LawTests\ContractTests\RemedyTests\KayAndersonvAmeritechTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\LeevFooteTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\LeingangvCityOfMandanTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\MistletoevLockeTests.cs" />
+    <Compile Include="LawTests\ContractTests\RemedyTests\ParkervTwentiethFoxTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\PeevyhousevGarlandCoalTests.cs" />
+    <Compile Include="LawTests\ContractTests\RemedyTests\RockinghamvLutenBridgeTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\SullivanvOconnorTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\UsNavalInstitutevCharterCommTests.cs" />
     <Compile Include="LawTests\ContractTests\SemiosisTests\AcmeMarketsvFedArmoredTests.cs" />

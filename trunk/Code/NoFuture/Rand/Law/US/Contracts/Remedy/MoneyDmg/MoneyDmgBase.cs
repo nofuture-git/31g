@@ -62,17 +62,17 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
 
         /// <summary>
         /// <![CDATA[
-        /// Restatement (Second) of Contracts § 347 (a)+(b)-(c)
+        /// Restatement (Second) of Contracts § 347 (a)+(b)-(c)-(limits)
         /// ]]>
         /// </summary>
         /// <param name="lp"></param>
         /// <returns></returns>
-        private decimal CalcMeasureOfDmg(ILegalPerson lp)
+        private decimal GetSumByPerson(ILegalPerson lp)
         {
             var lpValue = CalcMoneyRemedy(lp) 
                           + CalcLossOther(lp) 
                           - CalcLossAvoided(lp) 
-                          - _limits.CalcMoneyRemedy(lp)
+                          - Limits.CalcMoneyRemedy(lp)
                 ;
 
             lpValue = Rounding(lpValue);
@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            var offerorValue = CalcMeasureOfDmg(offeror);
+            var offerorValue = GetSumByPerson(offeror);
             if (offerorValue >= Tolerance)
             {
                 AddReasonEntry($"{offeror.Name} value {offerorValue}");
@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
                 return true;
             }
 
-            var offereeValue = CalcMeasureOfDmg(offeree);
+            var offereeValue = GetSumByPerson(offeree);
             if (offereeValue >= Tolerance)
             {
                 AddReasonEntry($"{offeree.Name} value {offereeValue}");

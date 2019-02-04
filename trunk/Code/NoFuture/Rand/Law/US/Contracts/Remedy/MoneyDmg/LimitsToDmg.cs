@@ -21,8 +21,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         public Func<ILegalPerson, decimal> CalcUnforeseeable { get; set; } = o => 0m;
 
         /// <summary>
-        /// cannot award damages for breach-losses when they could have been avoided by
-        /// the plaintiff
+        /// a plaintiff cannot hold a defendant liable for damages which need not have been incurred
         /// </summary>
         public Func<ILegalPerson, decimal> CalcAvoidable { get; set; } = o => 0m;
 
@@ -30,6 +29,9 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         /// damages cannot be beyond what reasonably certain - meaning cannot stretch in
         /// speculation
         /// </summary>
+        /// <remarks>
+        /// speculative, unproven, uncertian, changing, chancy, untried are indicators of unreasonalbe
+        /// </remarks>
         public Func<ILegalPerson, decimal> CalcUncertianty { get; set; } = o => 0m;
 
         protected internal override decimal CalcMoneyRemedy(ILegalPerson lp)
