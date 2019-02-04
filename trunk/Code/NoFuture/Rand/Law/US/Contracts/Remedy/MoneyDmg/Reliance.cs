@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         /// </summary>
         public Func<ILegalPerson, decimal> CalcPrepExpenditures { get; set; } = o => 0m;
 
-        protected internal override decimal CalcLoss(ILegalPerson lp)
+        protected internal override decimal CalcMoneyRemedy(ILegalPerson lp)
         {
             return CalcPrepExpenditures(lp);
         }

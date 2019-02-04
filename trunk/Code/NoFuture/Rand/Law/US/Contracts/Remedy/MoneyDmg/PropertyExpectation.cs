@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         /// </summary>
         /// <param name="lp"></param>
         /// <returns></returns>
-        protected internal override decimal CalcLoss(ILegalPerson lp)
+        protected internal override decimal CalcMoneyRemedy(ILegalPerson lp)
         {
             var dimVal = CalcDiminutionInValue(lp);
             var perfVal = CalcPerformanceCost(lp);

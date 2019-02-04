@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         /// </summary>
         /// <param name="lp"></param>
         /// <returns></returns>
-        protected internal abstract decimal CalcLoss(ILegalPerson lp);
+        protected internal abstract decimal CalcMoneyRemedy(ILegalPerson lp);
 
         /// <summary>
         /// <![CDATA[Restatement (Second) of Contracts § 347(b) ]]>
@@ -46,9 +46,9 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         /// </summary>
         /// <param name="lp"></param>
         /// <returns></returns>
-        protected internal virtual decimal CalcMeasureOfDmg(ILegalPerson lp)
+        private decimal CalcMeasureOfDmg(ILegalPerson lp)
         {
-            var lpValue = CalcLoss(lp) + CalcLossOther(lp) -
+            var lpValue = CalcMoneyRemedy(lp) + CalcLossOther(lp) -
                                CalcLossAvoided(lp);
 
             lpValue = Rounding(lpValue);

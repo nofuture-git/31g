@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
 
         public Func<ILegalPerson, decimal> CalcUnjustGain { get; set; }
 
-        protected internal override decimal CalcLoss(ILegalPerson lp)
+        protected internal override decimal CalcMoneyRemedy(ILegalPerson lp)
         {
             return CalcUnjustGain(lp) + CalcUnjustImpoverishment(lp);
         }

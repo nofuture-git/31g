@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, recover damages based on reliance in terms of capital investments
     /// ]]>
     /// </remarks>
     [TestFixture]
