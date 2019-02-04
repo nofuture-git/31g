@@ -109,6 +109,8 @@
     <Compile Include="LawTests\ContractTests\RemedyTests\HawkinsvMcGeeTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\HollywoodFanvGaborTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\KayAndersonvAmeritechTests.cs" />
+    <Compile Include="LawTests\ContractTests\RemedyTests\LacledeGasvAmocoOilTests.cs" />
+    <Compile Include="LawTests\ContractTests\RemedyTests\LakeRivervCarborundumTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\LeevFooteTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\LeingangvCityOfMandanTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\MistletoevLockeTests.cs" />
@@ -116,7 +118,9 @@
     <Compile Include="LawTests\ContractTests\RemedyTests\PeevyhousevGarlandCoalTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\RockinghamvLutenBridgeTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\SullivanvOconnorTests.cs" />
+    <Compile Include="LawTests\ContractTests\RemedyTests\TruckRentvPuritanFarmsTests.cs" />
     <Compile Include="LawTests\ContractTests\RemedyTests\UsNavalInstitutevCharterCommTests.cs" />
+    <Compile Include="LawTests\ContractTests\RemedyTests\VanWagnervSmEnterprisesTests.cs" />
     <Compile Include="LawTests\ContractTests\SemiosisTests\AcmeMarketsvFedArmoredTests.cs" />
     <Compile Include="LawTests\ContractTests\SemiosisTests\AmericanFertilizervWoodTests.cs" />
     <Compile Include="LawTests\ContractTests\SemiosisTests\ClarkvWestTests.cs" />
