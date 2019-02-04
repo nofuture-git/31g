@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, liquidated damages which give the full price of the contract are not enforceable since the are just pure profit
     /// ]]>
     /// </remarks>
     [TestFixture]
