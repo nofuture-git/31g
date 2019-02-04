@@ -45,6 +45,7 @@
     <Compile Include="US\Contracts\Excuse\ImpracticabilityOfPerformance.cs" />
     <Compile Include="US\Contracts\Remedy\LiquidatedDmg.cs" />
     <Compile Include="US\Contracts\Remedy\MoneyDmg\Expectation.cs" />
+    <Compile Include="US\Contracts\Remedy\MoneyDmg\LimitsToDmg.cs" />
     <Compile Include="US\Contracts\Remedy\MoneyDmg\MoneyDmgBase.cs" />
     <Compile Include="US\Contracts\Remedy\MoneyDmg\PropertyExpectation.cs" />
     <Compile Include="US\Contracts\Remedy\MoneyDmg\Reliance.cs" />

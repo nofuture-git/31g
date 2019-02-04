@@ -6,7 +6,8 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// <summary>
     /// <![CDATA[
     /// Restatement (Second) of Contracts § 349
-    /// when restitution is too little and expectation is too big,
+    /// spending money in expectation of the contract then the other party breach's 
+    /// now the plaintiff has all this crap they only got because of this contract
     /// ]]>
     /// </summary>
     public class Reliance<T> : MoneyDmgBase<T> where T : IObjectiveLegalConcept

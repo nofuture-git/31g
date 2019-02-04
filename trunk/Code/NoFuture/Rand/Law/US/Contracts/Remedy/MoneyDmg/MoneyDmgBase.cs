@@ -8,8 +8,20 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// </summary>
     public abstract class MoneyDmgBase<T> : RemedyBase<T> where T : IObjectiveLegalConcept
     {
+        private readonly LimitsToDmg<T> _limits;
         protected MoneyDmgBase(IContract<T> contract) : base(contract)
         {
+            _limits = new LimitsToDmg<T>(contract);
+        }
+
+        public LimitsToDmg<T> Limits
+        {
+            get
+            {
+                _limits.Rounding = Rounding;
+                _limits.Tolerance = Tolerance;
+                return _limits;
+            }
         }
 
         /// <summary>
@@ -48,8 +60,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
         /// <returns></returns>
         private decimal CalcMeasureOfDmg(ILegalPerson lp)
         {
-            var lpValue = CalcMoneyRemedy(lp) + CalcLossOther(lp) -
-                               CalcLossAvoided(lp);
+            var lpValue = CalcMoneyRemedy(lp) 
+                          + CalcLossOther(lp) 
+                          - CalcLossAvoided(lp) 
+                          - Limits.CalcMoneyRemedy(lp)
+                ;
 
             lpValue = Rounding(lpValue);
 
