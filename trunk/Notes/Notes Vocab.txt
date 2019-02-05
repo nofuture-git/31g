@@ -673,3 +673,4 @@ quantum meruit: money to be paid for services when the amount due is not given i
 commensurable: measurable by the same standard
 inter alia: amoung other things.
 exigent: pressing, demanding
+surreptitiously: in a way that attempts to avoid notice

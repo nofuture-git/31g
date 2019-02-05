@@ -2,8 +2,10 @@
 namespace NoFuture.Rand.Law
 {
     /// <summary>
-    /// Subjective, inner thoughts, feelings, etc. 
-    /// Objective, outward actions, works, deeds, etc.
+    /// <![CDATA[
+    /// Objective: outward actions, works, deeds, etc.
+    /// Subjective: inner thoughts, feelings, etc. 
+    /// ]]>
     /// </summary>
     public interface IObjectiveLegalConcept :  IReasonable
     {
