@@ -114,6 +114,7 @@
     <Compile Include="LegalPerson.cs" />
     <Compile Include="ObjectiveLegalConcept.cs" />
     <Compile Include="US\Contracts\Terms\WrittenTerm.cs" />
+    <Compile Include="US\Criminal\ICrime.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

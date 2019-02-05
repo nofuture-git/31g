@@ -1,10 +1,20 @@
 $myScriptLocation = Split-Path $PSCommandPath -Parent
 $dependencies = @{
+    "Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849" = (Join-Path $myScriptLocation "Antlr4.Runtime.dll");
+    "NoFuture.Antlr.HTML, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Antlr.HTML.dll");
+    "NoFuture.Antlr.DotNetIlTypeName, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Antlr.DotNetIlTypeName.dll");
+    "NoFuture.Antlr.CSharp4, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Antlr.CSharp4.dll");
     "NoFuture.Shared.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Shared.Core.dll");
     "NoFuture.Shared.Cfg, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Shared.Cfg.dll");
     "NoFuture.Shared, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Shared.dll");
     "NoFuture.Util.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.Core.dll");
+    "NoFuture.Util.Binary, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.Binary.dll");
+    "NoFuture.Util.DotNetMeta, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.DotNetMeta.dll");
     "NoFuture.Util.Gia, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.Gia.dll");
+    "NoFuture.Util.NfConsole, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.NfConsole.dll");
+    "NoFuture.Util.NfType, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.NfType.dll");
+    "NoFuture.Tokens, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Tokens.dll");
+    "NoFuture.Gen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Gen.dll");
 }
 
 $loadedAsms = ([appdomain]::CurrentDomain.GetAssemblies() | % {$_.FullName}  | Sort-Object -Unique)
@@ -26,7 +36,7 @@ $dependencies.Keys | % {
 
 #=====================================
 #intialize paths from nfConfig.cfg.xml
-$dnd = [NoFuture.Shared.Cfg.NfConfig]::Init(([NoFuture.Shared.Cfg.NfConfig]::FindNfConfigFile($noFutureBin)))
+$dnd = [NoFuture.Shared.Cfg.NfConfig]::Init(([NoFuture.Shared.Cfg.NfConfig]::FindNfConfigFile($myScriptLocation)))
 #=====================================
 
 $Global:CodeGenAssignRandomValuesCompletedType = @()
@@ -1019,7 +1029,9 @@ function Get-DotGraphClassDiagram
         [Parameter(Mandatory=$true,position=0)]
         [string] $AssemblyPath,
         [Parameter(Mandatory=$true,position=1)]
-        [string] $TypeFullName
+        [string] $TypeFullName,
+        [Parameter(Mandatory=$false,position=2)]
+        [switch] $DisplayEnums
     )
     Process
     {
@@ -1030,12 +1042,13 @@ function Get-DotGraphClassDiagram
             Write-Host "Assign a directory to the global NoFuture.Shared.Core.NfConfig+TempDirectories.Graph variable" -ForegroundColor Yellow
             break;
         }
-
+        $blnDisplayEnums = $false
+        if($DisplayEnums){ $blnDisplayEnums = $true}
         Write-Progress -Activity "Getting type '$TypeFullName'" -Status "Working" -PercentComplete 34
 
         #compose all .gv files
 
-        $fileOutPath = [NoFuture.Gen.Etc]::RunIsolatedGetClassDiagram($AssemblyPath,$TypeFullName)
+        $fileOutPath = [NoFuture.Gen.Etc]::RunIsolatedGetClassDiagram($AssemblyPath,$TypeFullName, $blnDisplayEnums)
 
         Write-Progress -Activity "Creating graph for $TypeFullName" -Status "Working" -PercentComplete 88
 

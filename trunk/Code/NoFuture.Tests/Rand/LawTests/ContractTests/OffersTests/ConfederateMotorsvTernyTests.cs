@@ -68,7 +68,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     {
         public int ConsultingShared => 505000;
         public decimal Usd => 0m;
-        public override DateTime? Date { get; set; } = new DateTime(2010,12,15);
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
@@ -85,7 +84,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     {
         public int ConsultingShared => 505000;
         public decimal Usd => 100000m;
-        public override DateTime? Date { get; set; } = new DateTime(2010, 12, 22);
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return offeror is ConfedMotorsInc && offeree is Terny;
@@ -99,7 +97,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     /// </summary>
     public class OfferDec28th : OfferDec15th
     {
-        public override DateTime? Date { get; set; } = new DateTime(2010, 12, 28);
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             AddReasonEntry("court found this was too late, offer had expired.");
@@ -109,8 +106,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
 
     public class AcceptanceTooLate : Promise
     {
-        public override DateTime? Date { get; set; } = new DateTime(2011,1,24);
-
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return offeror is ConfedMotorsInc && offeree is Terny;

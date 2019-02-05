@@ -62,17 +62,16 @@ namespace NoFuture.Gen
         /// <summary>
         /// Run its counterpart <see cref="GetClassDiagram"/> in an isolated process
         /// </summary>
-        /// <param name="assemblyPath"></param>
-        /// <param name="typeFullName"></param>
-        /// <param name="maxWaitInSeconds"></param>
-        /// <returns></returns>
-        public static string RunIsolatedGetClassDiagram(string assemblyPath, string typeFullName, int maxWaitInSeconds = 60)
+        public static string RunIsolatedGetClassDiagram(string assemblyPath, string typeFullName, bool displayEnums, int maxWaitInSeconds = 60)
         {
             var argPath = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_ASM_PATH_SWITCH, assemblyPath);
             var argType = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_FULL_TYPE_NAME_SWITCH, typeFullName);
             var diagramType = ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_DIAGRAM_TYPE,
                 Settings.CLASS_DIAGRAM);
-            return RunGraphViz(argPath, argType, diagramType, maxWaitInSeconds);
+            var argEn = displayEnums
+                ? ConsoleCmd.ConstructCmdLineArgs(Settings.INVOKE_GRAPHVIZ_DISPLAY_ENUMS, null)
+                : null;
+            return RunGraphViz(argPath, argType, diagramType, maxWaitInSeconds, argEn);
         }
 
         /// <summary>

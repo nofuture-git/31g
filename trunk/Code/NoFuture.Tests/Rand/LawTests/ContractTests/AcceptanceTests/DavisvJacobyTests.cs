@@ -70,8 +70,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
                                        "Caro will inherit everything and you will make our lives happier and see " +
                                        "Blanche is provided for to the end.";
 
-        public override DateTime? Date { get; set; } = new DateTime(1931, 4, 12);
-
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return (offeror is RupertAndBlancheWhitehead) && (offeree is FrankAndCaroDavis);
@@ -91,7 +89,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
 
     public class AcceptanceApr14 : Promise
     {
-        public override DateTime? Date { get; set; } = new DateTime(1931, 4, 14);
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return (offeror is RupertAndBlancheWhitehead) && (offeree is FrankAndCaroDavis);

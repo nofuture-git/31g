@@ -37,7 +37,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     /// </summary>
     public class Apr2Poel2Bruns : Promise
     {
-        public override DateTime? Date { get; set; } =  new DateTime(1910,4,2);
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
@@ -51,7 +50,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     /// </summary>
     public class Apr4Poel2Bruns : Promise
     {
-        public override DateTime? Date { get; set; } = new DateTime(1910, 4, 4);
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return (offeror is Brunswick || offeror is Poel)
@@ -65,7 +63,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     /// </summary>
     public class Apr6Bruns2Poel : Promise
     {
-        public override DateTime? Date { get; set; } = new DateTime(1910, 4, 6);
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             return (offeror is Brunswick || offeror is Poel)
@@ -78,7 +75,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     /// </summary>
     public class Jan7Bruns2Poel : Promise
     {
-        public override DateTime? Date { get; set; } = new DateTime(1911, 1, 7);
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
             AddReasonEntry("Brunswick never agreed to the counter offer from Mr. Rogers on Apr. 6th ");
