@@ -4,6 +4,7 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Law
 {
+    /// <inheritdoc cref="ILegalPerson"/>
     public class LegalPerson : VocaBase, ILegalPerson, IReasonable
     {
         private readonly List<string> _reasons = new List<string>();

@@ -52,8 +52,6 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     {
         public int ConsultingShared => 505000;
         public decimal Usd => 150000m;
-        public override DateTime? Date { get; set; } = new DateTime(2010,12,9);
-        public DateTime? ExpiresAt => Date.Value.AddDays(14);
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
