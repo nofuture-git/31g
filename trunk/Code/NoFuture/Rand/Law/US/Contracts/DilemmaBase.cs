@@ -96,6 +96,8 @@ namespace NoFuture.Rand.Law.US.Contracts
             AddReasonEntryRange(Contract.Assent.GetReasonEntries());
             if (!AgreedTerms.Any())
             {
+
+                AddReasonEntry($"there are not agreed terms between {offeror.Name} and {offeree.Name}");
                 return false;
             }
             OfferorTerms = Contract.Assent.TermsOfAgreement(offeror);

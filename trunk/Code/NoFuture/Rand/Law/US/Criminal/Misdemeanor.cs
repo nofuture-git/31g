@@ -2,10 +2,14 @@
 
 namespace NoFuture.Rand.Law.US.Criminal
 {
-    public class Misdemeanor: Infraction
+    /// <inheritdoc cref="ICrime"/>
+    public class Misdemeanor: CrimeBase
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
+            if (!base.IsValid(offeror, offeree))
+                return false;
+
             throw new NotImplementedException();
         }
 
@@ -17,7 +21,5 @@ namespace NoFuture.Rand.Law.US.Criminal
                 return 1;
             return 0;
         }
-
-        public override bool IsEnforceableInCourt => true;
     }
 }

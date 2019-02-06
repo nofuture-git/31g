@@ -674,3 +674,5 @@ commensurable: measurable by the same standard
 inter alia: amoung other things.
 exigent: pressing, demanding
 surreptitiously: in a way that attempts to avoid notice
+germane: relevant to a subject under consideration
+inchoate: just begun and so not fully formed

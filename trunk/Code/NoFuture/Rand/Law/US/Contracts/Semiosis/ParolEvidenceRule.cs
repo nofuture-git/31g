@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            if (TryGetTerms(offeror, offeree))
+            if (!TryGetTerms(offeror, offeree))
             {
                 AddReasonEntry("parol evidence rule requires a contract with assent");
                 return false;

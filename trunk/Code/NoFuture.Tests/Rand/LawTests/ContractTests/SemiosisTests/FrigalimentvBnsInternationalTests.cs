@@ -128,11 +128,11 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
                 //the Frigaliment contents that "chicken" is used throughtout the 
                 // industry to mean "broiler fryer chickens" 
                 new ContractTerm<object>("chicken", new BroilerOrFryerChicken(), new WrittenTerm(), new UsageOfTradeTerm()),
-                new ContractTerm<object>("fowl", new StewingChicken(), new UsageOfTradeTerm()),
+                new ContractTerm<object>("fowl", 1, new UsageOfTradeTerm()),
 
-                new ContractTerm<object>("brathuhn",new BroilerOrFryerChicken()),
+                new ContractTerm<object>("brathuhn",2),
                 new ContractTerm<object>("suppenhuhn",new StewingChicken()),
-                new ContractTerm<object>("huhn",new Chicken()),
+                new ContractTerm<object>("huhn",3),
             };
         }
     }

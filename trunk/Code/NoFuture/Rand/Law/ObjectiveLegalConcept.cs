@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law
 
         public abstract bool IsValid(ILegalPerson offeror, ILegalPerson offeree);
 
-        public abstract bool IsEnforceableInCourt { get; }
+        public virtual bool IsEnforceableInCourt => true;
 
         public virtual IEnumerable<string> GetReasonEntries()
         {
