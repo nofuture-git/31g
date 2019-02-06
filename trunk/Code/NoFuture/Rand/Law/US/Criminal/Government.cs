@@ -8,18 +8,10 @@ namespace NoFuture.Rand.Law.US.Criminal
     public class Government : LegalPerson
     {
         private static readonly Guid _uid = Guid.NewGuid();
-        private Government() { }
+        protected Government() { }
 
         private static Government _value;
-        public static Government Value
-        {
-            get
-            {
-                if(_value ==null)
-                    _value = new Government();
-                return _value;
-            }
-        }
+        public static Government Value => _value ?? (_value = new Government());
 
         public override bool Equals(object obj)
         {
@@ -29,6 +21,23 @@ namespace NoFuture.Rand.Law.US.Criminal
         public override int GetHashCode()
         {
             return _uid.GetHashCode();
+        }
+
+        public static ILegalPerson GetDefendant(ILegalPerson ror, ILegalPerson ree, IRationale obj)
+        {
+            ree = ree ?? Government.Value;
+            ror = ror ?? Government.Value;
+            ILegalPerson defendant = null;
+            if (!ror.Equals(Government.Value) && ree.Equals(Government.Value))
+                defendant = ror;
+            if (ror.Equals(Government.Value) && !ree.Equals(Government.Value))
+                defendant = ree;
+            if (defendant == null)
+            {
+                obj?.AddReasonEntry($"it is not clear who the defendant is between {ror?.Name} and {ree?.Name}");
+            }
+
+            return defendant;
         }
     }
 }

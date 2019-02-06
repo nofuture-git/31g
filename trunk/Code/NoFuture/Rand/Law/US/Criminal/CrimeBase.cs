@@ -7,22 +7,9 @@ namespace NoFuture.Rand.Law.US.Criminal
     {
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
-            offeree = offeree ?? Government.Value;
-            offeror = offeror ?? Government.Value;
-            ILegalPerson defendant = null;
-            if (!offeror.Equals(Government.Value) && offeree.Equals(Government.Value))
-                defendant = offeror;
-            if (offeror.Equals(Government.Value) && !offeree.Equals(Government.Value))
-                defendant = offeree;
-
-
-            if (defendant == null)
-            {
-                AddReasonEntry($"it is not clear who the defendant is between {offeror.Name} and {offeree.Name}");
-            }
-
             if (!Concurrence.IsValid(offeror, offeree))
             {
+                AddReasonEntry($"{nameof(Concurrence)} is invalid");
                 AddReasonEntryRange(Concurrence.GetReasonEntries());
                 return false;
             }
@@ -41,7 +28,8 @@ namespace NoFuture.Rand.Law.US.Criminal
 
         public abstract int CompareTo(object obj);
 
-        public Concurrence Concurrence => new Concurrence();
-        public IList<IElement> AdditionalElements => new List<IElement>();
+        public Concurrence Concurrence { get; } = new Concurrence();
+
+        public IList<IElement> AdditionalElements { get; } = new List<IElement>();
     }
 }

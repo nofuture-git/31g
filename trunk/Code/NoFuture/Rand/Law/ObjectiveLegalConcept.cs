@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law
 
         public virtual IEnumerable<string> GetReasonEntries()
         {
-            return _reasons;
+            return _reasons.ToArray();
         }
 
         public virtual void AddReasonEntry(string msg)

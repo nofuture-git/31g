@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.US.Criminal
             if (!base.IsValid(offeror, offeree))
                 return false;
 
-            throw new NotImplementedException();
+            return true;
         }
 
         public override int CompareTo(object obj)

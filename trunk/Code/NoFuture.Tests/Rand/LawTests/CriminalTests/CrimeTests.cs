@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Criminal;
 using NUnit.Framework;
 
@@ -27,5 +28,18 @@ namespace NoFuture.Rand.Tests.LawTests.CriminalTests
             Assert.IsTrue(testSubjects.First() is Infraction);
             Assert.IsTrue(testSubjects.Last() is Felony);
         }
+
+        [Test]
+        public void TestGetDefendant()
+        {
+            var testResult = Government.GetDefendant(new TestPerson00(), null, null);
+            Assert.IsNotNull(testResult);
+            Console.WriteLine(testResult.Name);
+        }
+    }
+
+    public class TestPerson00 : LegalPerson
+    {
+        public TestPerson00() : base("TEST PERSON")  { }
     }
 }
