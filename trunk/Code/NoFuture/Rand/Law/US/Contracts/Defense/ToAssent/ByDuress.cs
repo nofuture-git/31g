@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     {
         public ByDuress(IContract<T> contract) : base(contract) { }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (!base.IsValid(offeror, offeree))
                 return false;

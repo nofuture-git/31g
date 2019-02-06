@@ -73,7 +73,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
             return IsAssertionToInduceAssent(lp);
         }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             return IsFraudulent(offeror) || IsFraudulent(offeree) || IsMaterial(offeror) || IsMaterial(offeree);
         }

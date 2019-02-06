@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         [Aka("UCC 2-612")]
         public virtual bool IsInstallmentContract { get; set; }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (Assent == null)
             {

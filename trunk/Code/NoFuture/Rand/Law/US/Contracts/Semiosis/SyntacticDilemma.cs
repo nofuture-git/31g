@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 
         public Predicate<IEnumerable<Term<object>>> IsIntendedComposition { get; set; } = et => false;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (!TryGetTerms(offeror, offeree))
             {

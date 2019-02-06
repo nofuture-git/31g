@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 
         public Predicate<Term<object>> IsNotExpectedWritten { get; set; } = r => false;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (!TryGetTerms(offeror, offeree))
             {

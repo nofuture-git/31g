@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law
     {
         private readonly List<string> _reasons = new List<string>();
 
-        public abstract bool IsValid(ILegalPerson offeror, ILegalPerson offeree);
+        public abstract bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null);
 
         public virtual bool IsEnforceableInCourt => true;
 

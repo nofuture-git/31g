@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// </remarks>
         public virtual Func<IObjectiveLegalConcept, T> Acceptance { get; set; }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (!IsEnforceableInCourt)
             {

@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
             return lpValue;
         }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             var offerorValue = GetSumByPerson(offeror);
             if (offerorValue >= Tolerance)

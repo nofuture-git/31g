@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToFormation
         /// </summary>
         public virtual Predicate<ILegalPerson> IsMentallyIncompetent { get; set; }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (!base.IsValid(offeror, offeree))
                 return false;

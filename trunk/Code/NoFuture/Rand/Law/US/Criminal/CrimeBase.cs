@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.US.Criminal
 {
     public abstract class CrimeBase : ObjectiveLegalConcept, ICrime
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             offeree = offeree ?? Government.Value;
             offeror = offeror ?? Government.Value;

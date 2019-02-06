@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         [Aka("UCC 2-606(1)(c)")]
         public Predicate<ILegalPerson> IsAnyActAsOwner { get; set; } = lp => true;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             var intent2Contrx = IsApprovalExpressed ?? (lp => true);
 

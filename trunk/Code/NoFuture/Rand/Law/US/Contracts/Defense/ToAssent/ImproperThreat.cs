@@ -119,7 +119,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
         /// </summary>
         public Predicate<ILegalPerson> IsUsePowerIllegitimateEnds { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             return IsImproperByOne(offeror) || IsImproperByOne(offeree)
                                             || IsImproperByTwo(offeror) || IsImproperByTwo(offeree);

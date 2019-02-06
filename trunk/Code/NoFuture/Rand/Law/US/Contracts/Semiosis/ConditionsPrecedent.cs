@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
         /// </summary>
         public Func<Term<object>, ILegalPerson, bool> IsNotConditionMet { get; set; } = (t, lp) => true;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (!TryGetTerms(offeror, offeree))
             {

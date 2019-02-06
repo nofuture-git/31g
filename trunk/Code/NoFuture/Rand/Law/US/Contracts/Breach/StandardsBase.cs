@@ -10,7 +10,7 @@
 
         protected internal abstract bool StandardsTest(IObjectiveLegalConcept a, IObjectiveLegalConcept b);
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (!TryGetTerms(offeror, offeree))
             {

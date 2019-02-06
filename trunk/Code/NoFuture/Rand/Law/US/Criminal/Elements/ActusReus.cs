@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
 
         public Predicate<ILegalPerson> IsVoluntary { get; set; }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             throw new NotImplementedException();
         }

@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
         public MensRea MensRea { get; set; }
         public ActusReus ActusReus { get; set; }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (MensRea == null)
             {

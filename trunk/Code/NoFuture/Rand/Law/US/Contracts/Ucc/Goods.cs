@@ -13,7 +13,7 @@
             Merchantability = new Merchantable(this);
         }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (!IsEnforceableInCourt)
             {

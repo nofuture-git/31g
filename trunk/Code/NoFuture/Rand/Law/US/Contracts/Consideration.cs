@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         [Note("is not already obligated to be done")]
         public virtual Predicate<IObjectiveLegalConcept> IsExistingDuty { get; set; } = o => false;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             if (IsSoughtByPromisor == null)
             {

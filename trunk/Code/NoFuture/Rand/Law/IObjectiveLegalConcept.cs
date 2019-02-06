@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law
         /// <summary>
         /// <![CDATA[valid: sufficiently supported by facts or authority (from Latin 'valere' "be strong") ]]>
         /// </summary>
-        bool IsValid(ILegalPerson offeror, ILegalPerson offeree);
+        bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null);
 
         bool IsEnforceableInCourt { get; }
 
