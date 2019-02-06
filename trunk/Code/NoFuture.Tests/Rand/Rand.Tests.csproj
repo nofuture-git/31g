@@ -155,6 +155,7 @@
     <Compile Include="LawTests\ContractTests\UccTests\GaredHoldingsvBestBoltTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\ScoularCovDenneyTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\TousleyBixlervColgateTests.cs" />
+    <Compile Include="LawTests\CriminalTests\CrimeTests.cs" />
     <Compile Include="LawTests\TermTests.cs" />
     <Compile Include="SpTests\BalanceTests.cs" />
     <Compile Include="SpTests\JournalTests.cs" />
