@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law.US.Criminal
+﻿using System;
+
+namespace NoFuture.Rand.Law.US.Criminal
 {
     /// <inheritdoc />
     /// <summary>
@@ -6,11 +8,12 @@
     /// </summary>
     /// <remarks>
     /// <![CDATA[
+    /// Nullum crimen sine lege, nulla poena sine crimen
     /// Criminal Law concerns the rights and duties of individuals in society.
     /// Criminal Procedure concerns individual's rights during the criminal process
     /// ]]>
     /// </remarks>
-    public interface ICrime : IObjectiveLegalConcept
+    public interface ICrime : IObjectiveLegalConcept, IComparable
     {
     }
 }

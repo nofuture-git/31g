@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Law
 {
-    public interface IReasonable
+    public interface IRationale
     {
         IEnumerable<string> GetReasonEntries();
         void AddReasonEntry(string msg);

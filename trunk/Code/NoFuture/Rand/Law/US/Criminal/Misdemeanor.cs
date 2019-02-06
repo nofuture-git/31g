@@ -9,6 +9,15 @@ namespace NoFuture.Rand.Law.US.Criminal
             throw new NotImplementedException();
         }
 
+        public override int CompareTo(object obj)
+        {
+            if (obj is Felony)
+                return -1;
+            if (obj is Infraction)
+                return 1;
+            return 0;
+        }
+
         public override bool IsEnforceableInCourt => true;
     }
 }

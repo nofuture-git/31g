@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law
     /// Subjective: inner thoughts, feelings, etc. 
     /// ]]>
     /// </summary>
-    public interface IObjectiveLegalConcept :  IReasonable
+    public interface IObjectiveLegalConcept :  IRationale
     {
         /// <summary>
         /// <![CDATA[valid: sufficiently supported by facts or authority (from Latin 'valere' "be strong") ]]>

@@ -59,7 +59,7 @@
     <Compile Include="US\Contracts\Semiosis\SyntacticDilemma.cs" />
     <Compile Include="US\Contracts\Terms\CommonUseTerm.cs" />
     <Compile Include="ILegalPerson.cs" />
-    <Compile Include="IReasonable.cs" />
+    <Compile Include="IRationale.cs" />
     <Compile Include="ITermCategory.cs" />
     <Compile Include="US\Contracts\Terms\CourseOfDealingTerm.cs" />
     <Compile Include="US\Contracts\Terms\CourseOfPerformanceTerm.cs" />

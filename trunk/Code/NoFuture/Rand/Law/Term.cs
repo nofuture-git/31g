@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Law
             return Name;
         }
 
-        public static ISet<Term<T>> GetAgreedTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IReasonable reasoning = null)
+        public static ISet<Term<T>> GetAgreedTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IRationale reasoning = null)
         {
             var agreedTerms = new HashSet<Term<T>>();
             var agreedTermNames = GetInNameAgreedTerms(sorTerms, seeTerms, reasoning).Select(v => v.Name);
@@ -103,7 +103,7 @@ namespace NoFuture.Rand.Law
             return agreedTerms;
         }
 
-        public static ISet<Term<T>> GetInNameAgreedTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IReasonable reasoning = null)
+        public static ISet<Term<T>> GetInNameAgreedTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IRationale reasoning = null)
         {
             if (sorTerms == null || seeTerms == null)
             {
@@ -143,7 +143,7 @@ namespace NoFuture.Rand.Law
             }
         }
 
-        public static ISet<Term<T>> GetAdditionalTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IReasonable reasoning = null)
+        public static ISet<Term<T>> GetAdditionalTerms(ISet<Term<T>> sorTerms, ISet<Term<T>> seeTerms, IRationale reasoning = null)
         {
             var additionalTerms = new HashSet<Term<T>>();
             var agreedTermNames = GetInNameAgreedTerms(sorTerms, seeTerms);

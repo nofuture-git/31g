@@ -10,30 +10,34 @@ CALI eLangdell Press 2018
 Overview:
  - Tort Law: is common law of civil wrongs not arising out of contract
 
-                       Law
-                        |
-             +----------+----------+
-             |                     | 
-        Civil Cases          Criminal Cases
-        - plantiff           - prosecutor
-        - liable             - guilty
-        - more-than-likely   - beyond-reasonable-doubt
-        - civil damages      - criminal penalties
-        - intent             - motive
-             |
-      +------+----------------+
-      |                       |
- Statutory Law            Common Law
- - Legislature made       - Judge made
-                              |
-                   +----------+----------+
-                   |                     |           
-                  Tort                Contract  
-                  - no agreement      - agreement creation
-                  - default agreement - agreement enforcement                            
-                   |      
-     +-------------+---+--------------------+
-     |                 |                    |
+Constitutional Law   Statutory Law        Common Law   Administrative Law
+- regulate all law   - Legislature made   - Judge made - City\County made
+  |                  - Agency given power     |        - like statues only
+  |                    from Legislature       |          called "ordinances"
+  |                       |                   |                 |
+  +---------------+-------+-------------------+-----------------+
+                  |
+                 Law
+                  |
+       +----------+----------+
+       |                     | 
+     Civil                Criminal
+  - plantiff           - prosecutor
+  - liable             - guilty
+  - more-than-likely   - beyond-reasonable-doubt
+  - civil damages      - criminal penalties
+  - compensate         - punish
+  - litigation         - prosecution
+  - intent             - motive
+       |
+  +----+----------------+
+  |                     |           
+ Tort                Contract  
+ - no agreement      - agreement creation
+ - default agreement - agreement enforcement                            
+        |
+   +----+------------+--------------------+
+   |                 |                    |
  Intentional         Negligence           Strict Liability
  - Battery           - unreasonable       - limited
  - Assault           & unintentionable    - accidental 
