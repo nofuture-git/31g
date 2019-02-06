@@ -1,0 +1,40 @@
+﻿using System;
+using NoFuture.Rand.Law;
+using NoFuture.Rand.Law.US.Criminal;
+using NUnit.Framework;
+
+namespace NoFuture.Rand.Tests.LawTests.CriminalTests
+{
+    /// <summary>
+    /// 392 U.S. 514 (1968) POWELL v. TEXAS. No. 405. Supreme Court of United States. Argued March 7, 1968. Decided June 17, 1968.
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// doctrine issue, there is a difference between being high or drunk and being an addict or alcoholic
+    /// ]]>
+    /// </remarks>
+    [TestFixture]
+    public class PowellvTexasTests
+    {
+        [Test]
+        public void PowellvTexas()
+        {
+            var testSubject = new Misdemeanor();
+
+            testSubject.ActusReus.IsVoluntary = lp => lp is Powell;
+            var testResult = testSubject.IsValid(new Powell());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
+        }
+    }
+
+    public class Powell : LegalPerson
+    {
+        public Powell() : base("POWELL") { }
+    }
+
+    public class Texas : Government
+    {
+
+    }
+}
