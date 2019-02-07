@@ -23,5 +23,7 @@ namespace NoFuture.Rand.Law.US.Criminal
         Concurrence Concurrence { get; }
 
         IList<IElement> AdditionalElements { get; }
+
+        Predicate<ILegalPerson> IsChargedWith { get; set; }
     }
 }

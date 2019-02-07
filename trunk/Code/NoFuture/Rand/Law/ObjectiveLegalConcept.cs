@@ -12,6 +12,11 @@ namespace NoFuture.Rand.Law
 
         public virtual bool IsEnforceableInCourt => true;
 
+        protected virtual void ClearReasons()
+        {
+            _reasons.Clear();
+        }
+
         public virtual IEnumerable<string> GetReasonEntries()
         {
             return _reasons.ToArray();
