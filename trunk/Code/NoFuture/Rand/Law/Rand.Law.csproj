@@ -122,8 +122,15 @@
     <Compile Include="US\Criminal\Elements\DutyToAct.cs" />
     <Compile Include="US\Criminal\Elements\Harm.cs" />
     <Compile Include="US\Criminal\Elements\IElement.cs" />
+    <Compile Include="US\Criminal\Elements\Intent\ComLaw\GeneralIntent.cs" />
+    <Compile Include="US\Criminal\Elements\Intent\ComLaw\MaliceAforethought.cs" />
     <Compile Include="US\Criminal\Elements\Intent\MensRea.cs" />
     <Compile Include="US\Criminal\Elements\Act\Possession.cs" />
+    <Compile Include="US\Criminal\Elements\Intent\ComLaw\SpecificIntent.cs" />
+    <Compile Include="US\Criminal\Elements\Intent\PenalCode\Negligently.cs" />
+    <Compile Include="US\Criminal\Elements\Intent\PenalCode\Recklessly.cs" />
+    <Compile Include="US\Criminal\Elements\Intent\PenalCode\Knowingly.cs" />
+    <Compile Include="US\Criminal\Elements\Intent\PenalCode\Purposely.cs" />
     <Compile Include="US\Criminal\Felony.cs" />
     <Compile Include="US\Criminal\Government.cs" />
     <Compile Include="US\Criminal\ICrime.cs" />

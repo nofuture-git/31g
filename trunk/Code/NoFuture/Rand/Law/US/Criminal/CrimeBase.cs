@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Law.US.Criminal.Elements;
+using NoFuture.Rand.Law.US.Criminal.Elements.Act;
+using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
 
 namespace NoFuture.Rand.Law.US.Criminal
 {

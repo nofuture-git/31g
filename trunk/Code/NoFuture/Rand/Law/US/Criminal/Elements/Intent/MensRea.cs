@@ -1,8 +1,11 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements
+namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent
 {
+    /// <summary>
+    /// is not the same as motive, 
+    /// </summary>
     [Aka("criminal intent", "guilty mind")]
     public class MensRea : ObjectiveLegalConcept, IElement
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements
+namespace NoFuture.Rand.Law.US.Criminal.Elements.Act
 {
     /// <summary>
     /// To be a crime there must have been an action which was voluntary

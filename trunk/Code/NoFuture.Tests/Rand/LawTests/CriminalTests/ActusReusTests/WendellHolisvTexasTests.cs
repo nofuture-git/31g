@@ -2,6 +2,7 @@
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Criminal;
 using NoFuture.Rand.Law.US.Criminal.Elements;
+using NoFuture.Rand.Law.US.Criminal.Elements.Act;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests.CriminalTests.ActusReusTests
