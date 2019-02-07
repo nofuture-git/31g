@@ -19,16 +19,16 @@ Constitutional Law   Statutory Law        Common Law   Administrative Law
                   |
                  Law
                   |
-       +----------+----------+
-       |                     | 
-     Civil                Criminal
-  - plantiff           - prosecutor
-  - liable             - guilty
-  - more-than-likely   - beyond-reasonable-doubt
-  - civil damages      - criminal penalties
-  - compensate         - punish
-  - litigation         - prosecution
-  - intent             - motive
+       +----------+---------------------------------------------+
+       |                                                        | 
+     Civil                                                   Criminal
+  - plantiff                                              - prosecutor
+  - liable                                                - guilty
+  - more-than-likely                                      - beyond-reasonable-doubt
+  - civil damages                                         - criminal penalties
+  - compensate                                            - punish
+  - litigation                                            - prosecution
+  - intent                                                - motive
        |
   +----+----------------+
   |                     |           

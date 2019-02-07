@@ -21,7 +21,10 @@ namespace NoFuture.Rand.Tests.LawTests.CriminalTests
         {
             var testSubject = new Misdemeanor();
 
+            //being an alchoholic is not actus rea, drinking too much and getting drunk is
             testSubject.ActusReus.IsVoluntary = lp => lp is Powell;
+            testSubject.ActusReus.IsAction = lp => lp is Powell;
+
             var testResult = testSubject.IsValid(new Powell());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);

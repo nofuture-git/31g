@@ -119,9 +119,11 @@
     <Compile Include="US\Criminal\Elements\AttendantCircumstances.cs" />
     <Compile Include="US\Criminal\Elements\Causation.cs" />
     <Compile Include="US\Criminal\Elements\Concurrence.cs" />
+    <Compile Include="US\Criminal\Elements\DutyToAct.cs" />
     <Compile Include="US\Criminal\Elements\Harm.cs" />
     <Compile Include="US\Criminal\Elements\IElement.cs" />
     <Compile Include="US\Criminal\Elements\MensRea.cs" />
+    <Compile Include="US\Criminal\Elements\Possession.cs" />
     <Compile Include="US\Criminal\Felony.cs" />
     <Compile Include="US\Criminal\Government.cs" />
     <Compile Include="US\Criminal\ICrime.cs" />

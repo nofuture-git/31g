@@ -7,6 +7,12 @@ namespace NoFuture.Rand.Law.US.Criminal
     {
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
+            if (Concurrence == null)
+            {
+                AddReasonEntry($"{nameof(Concurrence)} is missing");
+                return false;
+            }
+
             if (!Concurrence.IsValid(offeror, offeree))
             {
                 AddReasonEntry($"{nameof(Concurrence)} is invalid");
@@ -28,7 +34,7 @@ namespace NoFuture.Rand.Law.US.Criminal
 
         public abstract int CompareTo(object obj);
 
-        public Concurrence Concurrence { get; } = new Concurrence();
+        public Concurrence Concurrence { get; set; } = new Concurrence();
 
         /// <summary>
         /// A short hand property to the same stack-residing variable in <see cref="Concurrence"/>

@@ -676,3 +676,4 @@ exigent: pressing, demanding
 surreptitiously: in a way that attempts to avoid notice
 germane: relevant to a subject under consideration
 inchoate: just begun and so not fully formed
+fiduciary: a party in a position of trust 

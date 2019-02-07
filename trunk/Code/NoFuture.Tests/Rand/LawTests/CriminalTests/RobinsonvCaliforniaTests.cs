@@ -20,8 +20,9 @@ namespace NoFuture.Rand.Tests.LawTests.CriminalTests
         public void RobinsonvCalifornia()
         {
             var testSubject = new Felony();
-            //court found that simply having a status is not actus rea
-            testSubject.ActusReus.IsVoluntary = lp => false;
+            //court found defendant was indeed addict but hadn't actually done anything
+            testSubject.ActusReus.IsVoluntary = lp => true;
+            testSubject.ActusReus.IsAction = lp => false;
 
             var testResult = testSubject.IsValid(new Robinson());
             Console.WriteLine(testSubject.ToString());
