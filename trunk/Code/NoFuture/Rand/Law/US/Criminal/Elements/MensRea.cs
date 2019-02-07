@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements
 {
-    [Aka("criminal act", "guilty mind")]
+    [Aka("criminal intent", "guilty mind")]
     public class MensRea : ObjectiveLegalConcept, IElement
     {
         public Predicate<ILegalPerson> IsIntentOnWrongdoing { get; set; } = lp => false;

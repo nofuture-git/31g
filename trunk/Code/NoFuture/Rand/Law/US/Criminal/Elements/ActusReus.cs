@@ -6,12 +6,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
     /// <summary>
     /// To be a crime there must have been an action which was voluntary
     /// </summary>
-    /// <remarks>
-    /// <![CDATA[
-    /// there must always
-    /// ]]>
-    /// </remarks>
-    [Aka("criminal intent")]
+    [Aka("criminal act")]
     public class ActusReus : ObjectiveLegalConcept, IElement
     {
         /// <summary>
