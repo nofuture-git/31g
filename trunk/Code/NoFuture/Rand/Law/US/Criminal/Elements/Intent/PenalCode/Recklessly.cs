@@ -12,7 +12,6 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
     {
         /// <summary>
         /// Conduct that is short of purposeful intent to cause harm.
-        /// 
         /// </summary>
         public Predicate<ILegalPerson> IsDisregardOfRisk { get; set; } = lp => false;
 
@@ -29,13 +28,13 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
 
             if (!IsDisregardOfRisk(defendant))
             {
-                AddReasonEntry($"the defendant {defendant.Name} DID regard the risk");
+                AddReasonEntry($"the defendant {defendant.Name} {nameof(IsDisregardOfRisk)} is false");
                 return false;
             }
 
             if (!IsUnjustifiableRisk(defendant))
             {
-                AddReasonEntry($"the defendant {defendant.Name} took a justifiable risk");
+                AddReasonEntry($"the defendant {defendant.Name} {nameof(IsUnjustifiableRisk)} is false");
                 return false;
             }
 

@@ -679,3 +679,4 @@ inchoate: just begun and so not fully formed
 fiduciary: a party in a position of trust 
 untoward: unexpected and inappropriate
 incongruous: not in harmony or keeping with the surroundings
+purloin: to steal from someone who trusted you

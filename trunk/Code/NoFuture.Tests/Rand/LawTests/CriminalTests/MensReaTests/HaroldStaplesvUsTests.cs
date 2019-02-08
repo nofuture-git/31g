@@ -1,8 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Criminal;
-using NoFuture.Rand.Law.US.Criminal.Elements;
-using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
+using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
@@ -12,7 +11,7 @@ namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, not requiring mens rea is mostly for regulations with fines, not felonies
     /// ]]>
     /// </remarks>
     [TestFixture()]
@@ -41,7 +40,7 @@ namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
             Assert.IsTrue(testResult);
 
             //for this case, gun ownership is not the same thing
-            testSubject.MensRea = new MensRea();
+            testSubject.MensRea = new GeneralIntent();
             testResult = testSubject.IsValid(new HaroldStaples());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);

@@ -4,31 +4,23 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent
 {
     /// <summary>
-    /// is not the same as motive, 
+    /// the willful intent to do harm
     /// </summary>
-    [Aka("criminal intent", "guilty mind")]
-    public class MensRea : ObjectiveLegalConcept, IElement
+    /// <remarks>
+    /// <![CDATA[
+    /// This was always present in com law, but with industrial rev. 
+    /// it happened that, "velocities, volumes and varieties unheard 
+    /// of came to subject the wayfarer to intolerable casualty risks".  
+    /// Therefore, laws not requiring intent, "are in the nature of 
+    /// neglect where the law requires care, or inaction where it 
+    /// imposes a duty".  Thereby, breaking these laws "impairs the 
+    /// efficiency of controls deemed essential to the social order". 
+    /// (342 U.S. 246 (1952) MORISSETTE v. UNITED STATES.)
+    /// ]]>
+    /// </remarks>
+    [Aka("criminal intent", "guilty mind", "vicious will")]
+    public abstract class MensRea : ObjectiveLegalConcept, IElement
     {
-        public Predicate<ILegalPerson> IsIntentOnWrongdoing { get; set; } = lp => false;
-        public Predicate<ILegalPerson> IsKnowledgeOfWrongdoing { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
-        {
-            var defendant = Government.GetDefendant(offeror, offeree, this);
-            if (defendant == null)
-                return false;
-            var intent = IsIntentOnWrongdoing(defendant);
-            var knowledge = IsKnowledgeOfWrongdoing(defendant);
-
-            if (!intent && !knowledge)
-            {
-                AddReasonEntry($"defendant {defendant.Name} did not " +
-                               "have intent of wrong doing nor knowledge of wrong doing");
-                return false;
-            }
-
-
-            return true;
-        }
     }
 }

@@ -7,9 +7,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
     /// intent designated only for murder
     /// </summary>
     [Aka("intent to kill")]
-    public class MaliceAforethought : MensRea, IComparable
+    public class MaliceAforethought : GeneralIntent
     {
-        public virtual int CompareTo(object obj)
+        public override int CompareTo(object obj)
         {
             if (obj is SpecificIntent || obj is GeneralIntent)
                 return 1;

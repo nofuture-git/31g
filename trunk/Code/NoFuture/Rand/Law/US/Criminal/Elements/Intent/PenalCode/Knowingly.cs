@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
 {
@@ -8,11 +9,11 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
     /// see (Model Penal Code in § 2.02(2) (b))
     /// ]]>
     /// </summary>
-    public class Knowingly : MensRea, IComparable
+    public class Knowingly : GeneralIntent
     {
         public Predicate<ILegalPerson> IsCertainOfResultRisk { get; set; } = lp => false;
 
-        public virtual int CompareTo(object obj)
+        public override int CompareTo(object obj)
         {
             if (obj is Purposely)
                 return -1;

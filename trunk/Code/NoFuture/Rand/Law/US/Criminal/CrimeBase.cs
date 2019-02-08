@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Criminal.Elements;
 using NoFuture.Rand.Law.US.Criminal.Elements.Act;
 using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
@@ -67,6 +68,7 @@ namespace NoFuture.Rand.Law.US.Criminal
         /// <summary>
         /// A short hand property to the same stack-residing variable in <see cref="Concurrence"/>
         /// </summary>
+        [Aka("intent")]
         public MensRea MensRea
         {
             get => Concurrence.MensRea;

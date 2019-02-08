@@ -29,13 +29,13 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
 
             if (!IsUnawareOfRisk(defendant))
             {
-                AddReasonEntry($"the defendant {defendant.Name} was aware of the risk");
+                AddReasonEntry($"the defendant {defendant.Name} {nameof(IsUnawareOfRisk)} is false");
                 return false;
             }
 
             if (!IsUnjustifiableRisk(defendant))
             {
-                AddReasonEntry($"the defendant {defendant.Name} took a justifiable risk");
+                AddReasonEntry($"the defendant {defendant.Name} {nameof(IsUnjustifiableRisk)} is false");
                 return false;
             }
 

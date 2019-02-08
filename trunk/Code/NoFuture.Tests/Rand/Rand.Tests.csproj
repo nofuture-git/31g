@@ -160,6 +160,8 @@
     <Compile Include="LawTests\CriminalTests\CrimeTests.cs" />
     <Compile Include="LawTests\CriminalTests\ActusReusTests\PowellvTexasTests.cs" />
     <Compile Include="LawTests\CriminalTests\ActusReusTests\RobinsonvCaliforniaTests.cs" />
+    <Compile Include="LawTests\CriminalTests\MensReaTests\KarlaCrosbyvOregonTests.cs" />
+    <Compile Include="LawTests\CriminalTests\MensReaTests\MorissettevUsTests.cs" />
     <Compile Include="LawTests\TermTests.cs" />
     <Compile Include="SpTests\BalanceTests.cs" />
     <Compile Include="SpTests\JournalTests.cs" />

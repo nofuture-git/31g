@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
     /// <summary>
     /// A more sophisticated level of awareness
     /// </summary>
-    public class SpecificIntent : MensRea, IComparable
+    public class SpecificIntent : GeneralIntent
     {
         /// <summary>
         /// example being Mayhem v. Battery where Mayhem is specific intent to disfigure
@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
         /// </summary>
         public Predicate<ILegalPerson> IsScienter { get; set; } = lp => false;
 
-        public virtual int CompareTo(object obj)
+        public override int CompareTo(object obj)
         {
             if (obj is MaliceAforethought)
                 return -1;

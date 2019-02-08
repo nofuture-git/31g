@@ -4,17 +4,21 @@ using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements
 {
+    /// <summary>
+    /// concurrence (i.e. at-the-same-time) of an evil-meaning mind with an evil-doing hand
+    /// </summary>
     [Aka("conduct")]
     public class Concurrence : ObjectiveLegalConcept, IElement
     {
         private MensRea _mens;
 
         /// <summary>
-        /// see <![CDATA[
-        /// strict liability is a crime that requires no intent in which case this would be null
-        /// e.g. speeding requires no intent
-        /// ]]>
+        /// the willful intent to do harm
         /// </summary>
+        /// <remarks>
+        /// Setting this to null implies that intent is not required. 
+        /// </remarks>
+        [Aka("intent")]
         public MensRea MensRea
         {
             get => _mens;
@@ -31,14 +35,14 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
         {
             if (ActusReus != null && !ActusReus.IsValid(offeror, offeree))
             {
-                AddReasonEntry("actus rea is required for this crime");
+                AddReasonEntry("actus rea is invalid");
                 AddReasonEntryRange(ActusReus.GetReasonEntries());
                 return false;
             }
 
             if (MensRea != null && !MensRea.IsValid(offeror, offeree))
             {
-                AddReasonEntry("mens rea is required for this crime");
+                AddReasonEntry("mens rea is invalid");
                 AddReasonEntryRange(MensRea.GetReasonEntries());
                 return false;
             }
