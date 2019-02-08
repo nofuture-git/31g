@@ -11,8 +11,8 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
 
         /// <summary>
         /// see <![CDATA[
-        /// For some crimes this is not required.  Therefore it can be nulled out.  
-        /// see United States v. Freed, 401 U.S. 601 (1971) 
+        /// strict liability is a crime that requires no intent in which case this would be null
+        /// e.g. speeding requires no intent
         /// ]]>
         /// </summary>
         public MensRea MensRea

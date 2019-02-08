@@ -4,7 +4,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
 {
     /// <summary>
     /// <![CDATA[
-    /// engage in conduct of specific nature toward a specific result
+    /// intends to bring about harm
     /// see (Model Penal Code § 2.02 (2) (a)).
     /// ]]>
     /// </summary>

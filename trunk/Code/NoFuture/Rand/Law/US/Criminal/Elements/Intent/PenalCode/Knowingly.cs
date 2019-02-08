@@ -4,12 +4,14 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
 {
     /// <summary>
     /// <![CDATA[
-    /// engage in conduct being aware of the nature and a practically certain result
+    /// practically certain harm will result
     /// see (Model Penal Code in § 2.02(2) (b))
     /// ]]>
     /// </summary>
     public class Knowingly : MensRea, IComparable
     {
+        public Predicate<ILegalPerson> IsCertainOfResultRisk { get; set; } = lp => false;
+
         public virtual int CompareTo(object obj)
         {
             if (obj is Purposely)

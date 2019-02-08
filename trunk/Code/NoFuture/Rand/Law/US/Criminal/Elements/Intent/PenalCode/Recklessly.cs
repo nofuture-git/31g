@@ -4,14 +4,15 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
 {
     /// <summary>
     /// <![CDATA[
-    /// engage in conduct being aware of the nature and the substantial and unjustifiable risk
+    /// consciously disregard a substantial risk of harm
     /// see (Model Penal Code § 2.02(2)
     /// ]]>
     /// </summary>
     public class Recklessly: MensRea, IComparable
     {
         /// <summary>
-        /// consciously disregard a substantial risk of harm
+        /// Conduct that is short of purposeful intent to cause harm.
+        /// 
         /// </summary>
         public Predicate<ILegalPerson> IsDisregardOfRisk { get; set; } = lp => false;
 
