@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// The fulfillment of an obligation
     /// </summary>
     [Note("assimilation of Old French 'par' (completely) + 'fornir' (to provide)")]
-    public abstract class Performance : ObjectiveLegalConcept
+    public abstract class Performance : LegalConcept
     {
 
     }

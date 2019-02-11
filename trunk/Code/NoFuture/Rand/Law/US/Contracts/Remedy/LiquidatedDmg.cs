@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy
     /// <remarks>
     /// liquidate in law means transforming an unquantified legal right into a specific sum of money
     /// </remarks>
-    public class LiquidatedDmg<T> : RemedyBase<T> where T : IObjectiveLegalConcept
+    public class LiquidatedDmg<T> : RemedyBase<T> where T : ILegalConcept
     {
         public LiquidatedDmg(IContract<T> contract) : base(contract)
         {

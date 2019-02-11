@@ -1,14 +1,14 @@
 ﻿namespace NoFuture.Rand.Law.US.Contracts.Breach
 {
     /// <inheritdoc />
-    public abstract class StandardsBase<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
+    public abstract class StandardsBase<T> : DilemmaBase<T> where T : ILegalConcept
     {
         protected StandardsBase(IContract<T> contract) : base(contract)
         {
         }
 
 
-        protected internal abstract bool StandardsTest(IObjectiveLegalConcept a, IObjectiveLegalConcept b);
+        protected internal abstract bool StandardsTest(ILegalConcept a, ILegalConcept b);
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {

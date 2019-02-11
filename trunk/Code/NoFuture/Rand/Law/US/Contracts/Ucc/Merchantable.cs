@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     /// ]]>
     /// </summary>
     [Aka("UCC 2-314(2)")]
-    public class Merchantable : ObjectiveLegalConcept, IUccItem
+    public class Merchantable : LegalConcept, IUccItem
     {
         private readonly Goods _goods;
 

@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Excuse
     /// ]]>
     /// 
     /// </summary>
-    public class ImpracticabilityOfPerformance<T> : ExcuseBase<T> where T : IObjectiveLegalConcept
+    public class ImpracticabilityOfPerformance<T> : ExcuseBase<T> where T : ILegalConcept
     {
         public ImpracticabilityOfPerformance(IContract<T> contract) : base(contract)
         {

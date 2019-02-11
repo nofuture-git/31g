@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy
     /// <remarks>
     /// unique being when relevant information is difficult to obtain or unreliable
     /// </remarks>
-    public class SpecificPerformance<T> : RemedyBase<T> where T : IObjectiveLegalConcept
+    public class SpecificPerformance<T> : RemedyBase<T> where T : ILegalConcept
     {
         public SpecificPerformance(IContract<T> contract) : base(contract)
         {

@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
     /// <summary>
     /// contracts that restrict competition
     /// </summary>
-    public class ByRestrictCompetition<T> : DefenseBase<T> where T : IObjectiveLegalConcept
+    public class ByRestrictCompetition<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ByRestrictCompetition(IContract<T> contract) : base(contract)
         {

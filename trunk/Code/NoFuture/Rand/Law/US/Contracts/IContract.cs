@@ -12,12 +12,12 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// ]]>
     /// </remarks>
     [Note("Latin assimilation of 'com' (with, together) + 'trahere' (to pull, drag)")]
-    public interface IContract<T> : IObjectiveLegalConcept
+    public interface IContract<T> : ILegalConcept
     {
         [Note("Is the manifestation of willingness to enter into a bargain")]
-        IObjectiveLegalConcept Offer { get; set; }
+        ILegalConcept Offer { get; set; }
 
-        Func<IObjectiveLegalConcept, T> Acceptance { get; set; }
+        Func<ILegalConcept, T> Acceptance { get; set; }
 
         [Note("expression of approval or agreement")]
         IAssent Assent { get; set; }

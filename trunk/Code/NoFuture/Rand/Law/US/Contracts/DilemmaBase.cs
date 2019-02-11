@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// A contract in dispute
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class DilemmaBase<T> : ObjectiveLegalConcept where T : IObjectiveLegalConcept
+    public abstract class DilemmaBase<T> : LegalConcept where T : ILegalConcept
     {
         public virtual IContract<T> Contract { get; }
 
@@ -31,11 +31,11 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         protected internal ISet<Term<object>> OffereeTerms { get; private set; }
 
-        protected internal IObjectiveLegalConcept Offer { get; private set; }
+        protected internal ILegalConcept Offer { get; private set; }
 
         protected internal T Acceptance { get; private set; }
 
-        protected internal IObjectiveLegalConcept OfferActual { get; private set; }
+        protected internal ILegalConcept OfferActual { get; private set; }
 
         protected internal T AcceptanceActual { get; private set; }
 

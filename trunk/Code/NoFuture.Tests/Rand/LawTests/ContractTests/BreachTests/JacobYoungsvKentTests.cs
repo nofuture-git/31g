@@ -74,7 +74,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
         }
     }
 
-    public class PlumbingPipe : ObjectiveLegalConcept
+    public class PlumbingPipe : LegalConcept
     {
         public string Material { get; set; } = "iron pipe";
         public string Surface { get; set; } = "galvanized";

@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
     /// ]]>
     /// </summary>
     [Aka("modus pones", "if...then")]
-    public class ConditionsPrecedent<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
+    public class ConditionsPrecedent<T> : DilemmaBase<T> where T : ILegalConcept
     {
         public ConditionsPrecedent(IContract<T> contract) : base(contract) { }
 

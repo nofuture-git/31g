@@ -1,12 +1,12 @@
 ﻿namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
-    /// <inheritdoc cref="ObjectiveLegalConcept"/>
+    /// <inheritdoc cref="LegalConcept"/>
     /// <summary>
     /// <![CDATA[
     /// all things which are movable at the time of identification
     /// ]]>
     /// </summary>
-    public class Goods : ObjectiveLegalConcept, IUccItem
+    public class Goods : LegalConcept, IUccItem
     {
         public Goods()
         {

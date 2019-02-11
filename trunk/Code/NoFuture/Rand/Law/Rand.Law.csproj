@@ -110,9 +110,9 @@
     <Compile Include="US\Contracts\Ucc\Goods.cs" />
     <Compile Include="US\Contracts\Ucc\GoodsInTerra.cs" />
     <Compile Include="US\Contracts\Ucc\IUccItem.cs" />
-    <Compile Include="IObjectiveLegalConcept.cs" />
+    <Compile Include="ILegalConcept.cs" />
     <Compile Include="LegalPerson.cs" />
-    <Compile Include="ObjectiveLegalConcept.cs" />
+    <Compile Include="LegalConcept.cs" />
     <Compile Include="US\Contracts\Terms\WrittenTerm.cs" />
     <Compile Include="US\Criminal\CrimeBase.cs" />
     <Compile Include="US\Criminal\Elements\Act\ActusReus.cs" />

@@ -9,7 +9,7 @@
     /// are awarded only to correct a private wrong, no to vindicate a public interest - make the 
     /// non-breaching party whole.
     /// </remarks>
-    public abstract class RemedyBase<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
+    public abstract class RemedyBase<T> : DilemmaBase<T> where T : ILegalConcept
     {
         protected RemedyBase(IContract<T> contract) : base(contract)
         {

@@ -13,13 +13,13 @@ namespace NoFuture.Rand.Law.US.Contracts.Breach
     /// </summary>
     [Aka("UCC 2-601")]
     [Note("UCC 2-508 affords seller to right a cure of nonconformity")]
-    public class PerfectTender<T> : StandardsBase<T> where T : IObjectiveLegalConcept
+    public class PerfectTender<T> : StandardsBase<T> where T : ILegalConcept
     {
         public  PerfectTender(IContract<T> contract) : base(contract)
         {
         }
 
-        protected internal override bool StandardsTest(IObjectiveLegalConcept a, IObjectiveLegalConcept b)
+        protected internal override bool StandardsTest(ILegalConcept a, ILegalConcept b)
         {
             var uccContract = Contract as UccContract<Goods>;
             if (uccContract != null && uccContract.IsInstallmentContract)

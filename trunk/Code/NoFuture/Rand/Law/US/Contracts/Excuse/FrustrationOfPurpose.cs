@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Excuse
     /// a party's principal purpose is substantially frustrated
     /// ]]>
     /// </summary>
-    public class FrustrationOfPurpose<T> : ImpracticabilityOfPerformance<T> where T : IObjectiveLegalConcept
+    public class FrustrationOfPurpose<T> : ImpracticabilityOfPerformance<T> where T : ILegalConcept
     {
         public FrustrationOfPurpose(IContract<T> contract) : base(contract)
         {

@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// now the plaintiff has all this crap they only got because of this contract
     /// ]]>
     /// </summary>
-    public class Reliance<T> : MoneyDmgBase<T> where T : IObjectiveLegalConcept
+    public class Reliance<T> : MoneyDmgBase<T> where T : ILegalConcept
     {
         public Reliance(IContract<T> contract) : base(contract)
         {

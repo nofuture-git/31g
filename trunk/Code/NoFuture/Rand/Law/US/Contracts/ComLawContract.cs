@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.US.Contracts
 {
     /// <inheritdoc cref="IContract{T}"/>
     [Aka("Enforceable Promise")]
-    public class ComLawContract<T> : ObjectiveLegalConcept, IContract<T> where T : IObjectiveLegalConcept
+    public class ComLawContract<T> : LegalConcept, IContract<T> where T : ILegalConcept
     {
         [Note("bargained for: if it is sought by one and given by the other")]
         [Aka("mutuality of obligation")]
@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// (c) revocation by the offeror, or
         /// (d) death or incapacity of the offeror or offeree.
         /// </remarks>
-        public virtual IObjectiveLegalConcept Offer { get; set; }
+        public virtual ILegalConcept Offer { get; set; }
 
         /// <summary>
         /// A function which resolves what the offer gets in return.
@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// an acceptance in accordance with that mode or means is binding 
         /// on the offeror
         /// </remarks>
-        public virtual Func<IObjectiveLegalConcept, T> Acceptance { get; set; }
+        public virtual Func<ILegalConcept, T> Acceptance { get; set; }
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {

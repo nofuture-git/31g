@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// This is available remedy for payment-in-kind contracts where one party fails to 
     /// perform.
     /// </remarks>
-    public class Restitution<T> : MoneyDmgBase<T> where T : IObjectiveLegalConcept
+    public class Restitution<T> : MoneyDmgBase<T> where T : ILegalConcept
     {
         public Restitution(IContract<T> contract) : base(contract)
         {

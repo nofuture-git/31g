@@ -72,7 +72,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         }
     }
 
-    public class InitTelegram : ObjectiveLegalConcept
+    public class InitTelegram : LegalConcept
     {
         [Note("Nothing illegal about buying some glass jars")]
         public override bool IsEnforceableInCourt => true;
@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
             return TelegramQuote2CurdenMartin.GetTerms();
         }
 
-        public virtual ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
+        public virtual LegalConcept GetCommunication(LegalConcept inResponseTo = null)
         {
             if (inResponseTo == null)
                 return null;
@@ -151,12 +151,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     {
         public abstract ISet<Term<object>> GetTerms();
 
-        public abstract ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null);
+        public abstract LegalConcept GetCommunication(LegalConcept inResponseTo = null);
     }
 
     public class CrundenMartin : FairmountCustomer
     {
-        public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
+        public override LegalConcept GetCommunication(LegalConcept inResponseTo = null)
         {
             if (inResponseTo == null)
                 return new InitTelegram();

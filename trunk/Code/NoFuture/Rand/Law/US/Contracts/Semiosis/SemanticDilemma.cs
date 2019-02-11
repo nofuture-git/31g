@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
     /// and that person, whose meaning the law is seeking, is the writer of the document.
     /// ]]>
     /// </remarks>
-    public class SemanticDilemma<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
+    public class SemanticDilemma<T> : DilemmaBase<T> where T : ILegalConcept
     {
         public SemanticDilemma(IContract<T> contract) : base(contract)
         {

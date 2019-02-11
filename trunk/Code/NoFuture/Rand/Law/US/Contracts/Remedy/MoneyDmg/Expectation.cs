@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// The difference between the expected value and the actual value 
     /// ]]>
     /// </summary>
-    public class Expectation<T> : MoneyDmgBase<T> where T : IObjectiveLegalConcept
+    public class Expectation<T> : MoneyDmgBase<T> where T : ILegalConcept
     {
         public Expectation(IContract<T> contract) : base(contract)
         {

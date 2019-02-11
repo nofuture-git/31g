@@ -21,12 +21,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         [Test]
         public void HarringtonvTaylor()
         {
-            var testSubject = new ComLawContract<ObjectiveLegalConcept>
+            var testSubject = new ComLawContract<LegalConcept>
             {
                 Offer = new OfferSavedTaylorsLife(),
                 Acceptance = o => o is OfferSavedTaylorsLife ? new AcceptanceWillPayDamage() : null,
             };
-            testSubject.Consideration = new Consideration<ObjectiveLegalConcept>(testSubject)
+            testSubject.Consideration = new Consideration<LegalConcept>(testSubject)
             {
                 IsGivenByPromisee = (lp, p) => true,
                 IsSoughtByPromisor = (lp, p) => true

@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
     /// ]]>
     /// </remarks>
     [Aka("procedural unconscionability", "substantive unconscionability")]
-    public interface IVoidable : IObjectiveLegalConcept
+    public interface IVoidable : ILegalConcept
     {
     }
 }

@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// <typeparam name="T"></typeparam>
     [Note("is performance or return promise bargained for")]
     [Aka("quid pro quo", "this for that")]
-    public class Consideration<T> : ObjectiveLegalConcept where T : IObjectiveLegalConcept
+    public class Consideration<T> : LegalConcept where T : ILegalConcept
     {
         private readonly ComLawContract<T> _contract;
         public override bool IsEnforceableInCourt => true;
@@ -30,18 +30,18 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <summary>
         /// A test for if Offer is actually what the promisee wants in return.
         /// </summary>
-        public virtual Func<ILegalPerson, IObjectiveLegalConcept, bool> IsGivenByPromisee { get; set; }
+        public virtual Func<ILegalPerson, ILegalConcept, bool> IsGivenByPromisee { get; set; }
 
         /// <summary>
         /// What is bargained for must have value
         /// </summary>
-        public virtual Predicate<IObjectiveLegalConcept> IsValueInEyesOfLaw { get; set; } = o => true;
+        public virtual Predicate<ILegalConcept> IsValueInEyesOfLaw { get; set; } = o => true;
 
         /// <summary>
         /// What is bargined for must not be a choice - it must be a duty
         /// </summary>
         [Note("is not just a choice")]
-        public virtual Predicate<IObjectiveLegalConcept> IsIllusionaryPromise { get; set; } = o => false;
+        public virtual Predicate<ILegalConcept> IsIllusionaryPromise { get; set; } = o => false;
 
         /// <summary>
         /// What is bargined for must not be an existing duty.  When it 
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <![CDATA[ e.g. cannot bargain that we promise not to steal from each other]]>
         /// </remarks>
         [Note("is not already obligated to be done")]
-        public virtual Predicate<IObjectiveLegalConcept> IsExistingDuty { get; set; } = o => false;
+        public virtual Predicate<ILegalConcept> IsExistingDuty { get; set; } = o => false;
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {

@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// ]]>
     /// </summary>
     [Aka("offer (s)he couldn't refuse")]
-    public class ByDuress<T> : DefenseBase<T> where T : IObjectiveLegalConcept
+    public class ByDuress<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ByDuress(IContract<T> contract) : base(contract) { }
 

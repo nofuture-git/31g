@@ -138,7 +138,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     {
         protected PartiesInCase(string name) : base(name) { }
 
-        public abstract ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null);
+        public abstract LegalConcept GetCommunication(LegalConcept inResponseTo = null);
         public abstract bool IsApprovalExpressed { get; }
     }
 
@@ -146,7 +146,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     {
         public EdwardKloianAttorney() :base("Edward Kloian's Attorney") { }
 
-        public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
+        public override LegalConcept GetCommunication(LegalConcept inResponseTo = null)
         {
             if (inResponseTo == null)
                 return null;
@@ -167,7 +167,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
     {
         public DominosPizzaLlcAttorney(): base("Dominos Pizza LLC Attorney") { }
 
-        public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
+        public override LegalConcept GetCommunication(LegalConcept inResponseTo = null)
         {
             if(inResponseTo == null)
                 return new OfferDefendantPay2SettleLawsuit();
@@ -185,7 +185,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         public EdwardKloian(string name) : base (name ?? "Edward Kloian") { }
 
         public EdwardKloianAttorney Attorney => new EdwardKloianAttorney();
-        public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
+        public override LegalConcept GetCommunication(LegalConcept inResponseTo = null)
         {
             return Attorney.GetCommunication(inResponseTo);
         }
@@ -197,7 +197,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         public DominosPizzaLlc(string name)  : base(name ?? "Dominos Pizza LLC") { }
 
         public DominosPizzaLlcAttorney Attorney => new DominosPizzaLlcAttorney();
-        public override ObjectiveLegalConcept GetCommunication(ObjectiveLegalConcept inResponseTo = null)
+        public override LegalConcept GetCommunication(LegalConcept inResponseTo = null)
         {
             return Attorney.GetCommunication(inResponseTo);
         }

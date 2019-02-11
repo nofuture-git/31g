@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace NoFuture.Rand.Law
 {
     /// <inheritdoc />
-    public abstract class ObjectiveLegalConcept : IObjectiveLegalConcept
+    public abstract class LegalConcept : ILegalConcept
     {
         private readonly List<string> _reasons = new List<string>();
 

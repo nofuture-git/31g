@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
-    /// <inheritdoc cref="ObjectiveLegalConcept"/>
+    /// <inheritdoc cref="LegalConcept"/>
     /// <inheritdoc cref="IContract{T}"/>
     /// <summary>
     /// <![CDATA[
@@ -11,13 +11,13 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
     /// the parties' agreement as determined by the UCC
     /// ]]>
     /// </summary>
-    public class UccContract<T> : ObjectiveLegalConcept, IUccItem, IContract<T> where T : IUccItem
+    public class UccContract<T> : LegalConcept, IUccItem, IContract<T> where T : IUccItem
     {
         [Note("the bargain of the parties")]
         public virtual IAssent Assent { get; set; }
 
-        public IObjectiveLegalConcept Offer { get; set; }
-        public Func<IObjectiveLegalConcept, T> Acceptance { get; set; }
+        public ILegalConcept Offer { get; set; }
+        public Func<ILegalConcept, T> Acceptance { get; set; }
 
         /// <summary>
         /// the Perfect Tender rule does not apply to UCC installment contracts

@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
     /// tort system - with the public bearing the cost of the resulting injuries
     /// ]]>
     /// </remarks>
-    public class ByLimitTortLiability<T> : DefenseBase<T> where T : IObjectiveLegalConcept
+    public class ByLimitTortLiability<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ByLimitTortLiability(IContract<T> contract) : base(contract)
         {

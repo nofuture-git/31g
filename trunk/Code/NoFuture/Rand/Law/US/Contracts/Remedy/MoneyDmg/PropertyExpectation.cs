@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// with property it is possible that some performance may cost alot while it adds little value.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PropertyExpectation<T> : MoneyDmgBase<T> where T : IObjectiveLegalConcept
+    public class PropertyExpectation<T> : MoneyDmgBase<T> where T : ILegalConcept
     {
         public PropertyExpectation(IContract<T> contract) : base(contract)
         {

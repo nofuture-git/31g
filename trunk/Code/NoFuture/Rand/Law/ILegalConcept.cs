@@ -3,11 +3,11 @@ namespace NoFuture.Rand.Law
 {
     /// <summary>
     /// <![CDATA[
-    /// Objective: outward actions, works, deeds, etc.
-    /// Subjective: inner thoughts, feelings, etc. 
+    /// objective test: the object itself viewed from the prespective of a reasonable person
+    /// subjective test: the object viewed from the prespective of the subject
     /// ]]>
     /// </summary>
-    public interface IObjectiveLegalConcept :  IRationale
+    public interface ILegalConcept :  IRationale
     {
         /// <summary>
         /// <![CDATA[valid: sufficiently supported by facts or authority (from Latin 'valere' "be strong") ]]>

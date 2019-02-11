@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Law.US.Contracts.Excuse
 {
     /// <inheritdoc />
-    public abstract class ExcuseBase<T> : DilemmaBase<T> where T : IObjectiveLegalConcept
+    public abstract class ExcuseBase<T> : DilemmaBase<T> where T : ILegalConcept
     {
         protected internal ExcuseBase(IContract<T> contract) : base(contract)
         {

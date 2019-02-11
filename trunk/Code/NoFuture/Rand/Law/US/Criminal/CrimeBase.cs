@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
 
 namespace NoFuture.Rand.Law.US.Criminal
 {
-    public abstract class CrimeBase : ObjectiveLegalConcept, ICrime
+    public abstract class CrimeBase : LegalConcept, ICrime
     {
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {

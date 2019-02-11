@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements;
 
 namespace NoFuture.Rand.Law.US.Criminal
 {
-    /// <inheritdoc cref="IObjectiveLegalConcept"/>
+    /// <inheritdoc cref="ILegalConcept"/>
     /// <summary>
     /// an act committed in violation of a law prhibiting it, or omitted in violation of a law ordering it
     /// </summary>
@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.US.Criminal
     /// Criminal Procedure concerns individual's rights during the criminal process
     /// ]]>
     /// </remarks>
-    public interface ICrime : IObjectiveLegalConcept, IComparable
+    public interface ICrime : ILegalConcept, IComparable
     {
         /// <summary>
         /// operation of an act or omission to act and intention or criminal negligence

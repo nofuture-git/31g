@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// <remarks>
     /// <![CDATA[ src: ALABI v. DHL AIRWAYS, INC. Superior Court of Delaware, New Castle 583 A.2d 1358 (Del. Super. 1990)]]>
     /// </remarks>
-    public class Misrepresentation<T> : DefenseBase<T> where T : IObjectiveLegalConcept
+    public class Misrepresentation<T> : DefenseBase<T> where T : ILegalConcept
     {
         public Misrepresentation(IContract<T> contract) : base(contract) { }
 

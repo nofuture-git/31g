@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// ]]>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ByMistake<T> : DefenseBase<T> where T : IObjectiveLegalConcept
+    public class ByMistake<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ByMistake(IContract<T> contract) : base(contract)
         {

@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// <summary>
     /// is merely an invitation to negotiate for purchase of commercial goods
     /// </summary>
-    public class Advertisement : ObjectiveLegalConcept
+    public class Advertisement : LegalConcept
     {
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {

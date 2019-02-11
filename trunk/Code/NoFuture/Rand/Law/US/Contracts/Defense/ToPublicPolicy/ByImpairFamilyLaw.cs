@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
     /// <summary>
     /// contracts that impair family law obligations
     /// </summary>
-    public class ByImpairFamilyLaw<T> : DefenseBase<T> where T : IObjectiveLegalConcept
+    public class ByImpairFamilyLaw<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ByImpairFamilyLaw(IContract<T> contract) : base(contract)
         {

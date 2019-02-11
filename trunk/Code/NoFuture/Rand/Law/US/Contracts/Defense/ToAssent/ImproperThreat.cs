@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     /// <remarks>
     /// <![CDATA[Restatement (Second) of Contracts § 176]]>
     /// </remarks>    
-    public class ImproperThreat<T> : DefenseBase<T> where T : IObjectiveLegalConcept
+    public class ImproperThreat<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ImproperThreat(IContract<T> contract) : base(contract) { }
 

@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
     /// Limits on the means and methods by which parties can prove damages.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class LimitsToDmg<T> : MoneyDmgBase<T> where T : IObjectiveLegalConcept
+    public class LimitsToDmg<T> : MoneyDmgBase<T> where T : ILegalConcept
     {
         public LimitsToDmg(IContract<T> contract) : base(contract)
         {
