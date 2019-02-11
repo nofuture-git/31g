@@ -1,0 +1,52 @@
+﻿using System;
+using NoFuture.Rand.Law;
+using NoFuture.Rand.Law.US.Criminal;
+using NoFuture.Rand.Law.US.Criminal.Elements.Act;
+using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
+using NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode;
+using NUnit.Framework;
+
+namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
+{
+    /// <summary>
+    /// State v. Andrews, 572 S.E.2d 798 (2002)
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// doctrine issue, transferred intent is anyone else hurt by the intent and suffices as the intent element of the crime charged
+    /// ]]>
+    /// </remarks>
+    [TestFixture]
+    public class StatevAndrewsTests
+    {
+        [Test]
+        public void StatevAndrews()
+        {
+            var testIntent = new Knowingly
+            {
+                IsCertainOfResultRisk = lp => lp is Andrews,
+                IsKnowledgeOfWrongdoing = lp => lp is Andrews,
+                IsIntentOnWrongdoing = lp => lp is Andrews
+            };
+
+            var testSubject = new Felony
+            {
+                ActusReus = new ActusReus
+                {
+                    IsVoluntary = lp => lp is Andrews,
+                    IsAction = lp => lp is Andrews
+                },
+                MensRea = new Transferred(testIntent)
+            };
+
+            var testResult = testSubject.IsValid(new Andrews());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
+        }
+    }
+
+    public class Andrews : LegalPerson
+    {
+
+    }
+}

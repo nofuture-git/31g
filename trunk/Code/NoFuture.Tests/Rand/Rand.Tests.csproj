@@ -155,6 +155,8 @@
     <Compile Include="LawTests\ContractTests\UccTests\GaredHoldingsvBestBoltTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\ScoularCovDenneyTests.cs" />
     <Compile Include="LawTests\ContractTests\UccTests\TousleyBixlervColgateTests.cs" />
+    <Compile Include="LawTests\CriminalTests\ActusReusTests\RegaladovUsTests.cs" />
+    <Compile Include="LawTests\CriminalTests\ActusReusTests\StatevSowryTests.cs" />
     <Compile Include="LawTests\CriminalTests\CausationTests\BullockvDelawareTests.cs" />
     <Compile Include="LawTests\CriminalTests\MensReaTests\DeanvUsTests.cs" />
     <Compile Include="LawTests\CriminalTests\MensReaTests\HaroldStaplesvUsTests.cs" />
@@ -164,7 +166,9 @@
     <Compile Include="LawTests\CriminalTests\ActusReusTests\RobinsonvCaliforniaTests.cs" />
     <Compile Include="LawTests\CriminalTests\MensReaTests\KarlaCrosbyvOregonTests.cs" />
     <Compile Include="LawTests\CriminalTests\MensReaTests\MorissettevUsTests.cs" />
+    <Compile Include="LawTests\CriminalTests\MensReaTests\StatevAndrewsTests.cs" />
     <Compile Include="LawTests\CriminalTests\MensReaTests\StatevHornerTests.cs" />
+    <Compile Include="LawTests\CriminalTests\MensReaTests\StatevSlaytonTests.cs" />
     <Compile Include="LawTests\TermTests.cs" />
     <Compile Include="SpTests\BalanceTests.cs" />
     <Compile Include="SpTests\JournalTests.cs" />
