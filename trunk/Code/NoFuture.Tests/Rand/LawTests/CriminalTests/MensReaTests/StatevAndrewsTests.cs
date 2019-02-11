@@ -24,7 +24,6 @@ namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
         {
             var testIntent = new Knowingly
             {
-                IsCertainOfResultRisk = lp => lp is Andrews,
                 IsKnowledgeOfWrongdoing = lp => lp is Andrews,
                 IsIntentOnWrongdoing = lp => lp is Andrews
             };

@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
 {
     /// <summary>
@@ -7,21 +6,6 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
     /// </summary>
     public class SpecificIntent : GeneralIntent
     {
-        /// <summary>
-        /// example being Mayhem v. Battery where Mayhem is specific intent to disfigure
-        /// </summary>
-        public Predicate<ILegalPerson> IsTowardSpecificResult { get; set; } = lp => false;
-
-        /// <summary>
-        /// example being where the taking of property also needs to be met with intent to keep it
-        /// </summary>
-        public Predicate<ILegalPerson> IsMoreThanCriminalAct { get; set; } = lp => false;
-
-        /// <summary>
-        /// having knowledge that an act is illegal
-        /// </summary>
-        public Predicate<ILegalPerson> IsScienter { get; set; } = lp => false;
-
         public override int CompareTo(object obj)
         {
             if (obj is MaliceAforethought)
