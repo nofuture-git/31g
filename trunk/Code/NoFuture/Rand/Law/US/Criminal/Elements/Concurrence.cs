@@ -1,6 +1,7 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Criminal.Elements.Act;
 using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
+using NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements
 {
@@ -40,7 +41,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
                 return false;
             }
 
-            if (MensRea != null && !MensRea.IsValid(offeror, offeree))
+            if (MensRea != null && !(MensRea is StrictLiability) && !MensRea.IsValid(offeror, offeree))
             {
                 AddReasonEntry("mens rea is invalid");
                 AddReasonEntryRange(MensRea.GetReasonEntries());

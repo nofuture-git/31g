@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
     /// see (Model Penal Code § 2.02(2)
     /// ]]>
     /// </summary>
-    public class Recklessly: MensRea, IComparable
+    public class Recklessly: MensRea
     {
         /// <summary>
         /// Conduct that is short of purposeful intent to cause harm.
@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
             return true;
         }
 
-        public virtual int CompareTo(object obj)
+        public override int CompareTo(object obj)
         {
             if (obj is Purposely || obj is Knowingly)
                 return -1;

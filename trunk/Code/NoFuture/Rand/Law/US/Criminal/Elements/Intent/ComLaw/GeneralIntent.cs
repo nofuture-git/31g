@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
     /// <summary>
     /// without the additional desire to cause a result
     /// </summary>
-    public class GeneralIntent : MensRea, IComparable
+    public class GeneralIntent : MensRea
     {
         public Predicate<ILegalPerson> IsIntentOnWrongdoing { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsKnowledgeOfWrongdoing { get; set; } = lp => false;
@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
             return true;
         }
 
-        public virtual int CompareTo(object obj)
+        public override int CompareTo(object obj)
         {
             if (obj is MaliceAforethought || obj is SpecificIntent)
                 return -1;

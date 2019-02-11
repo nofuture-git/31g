@@ -19,8 +19,8 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent
     /// ]]>
     /// </remarks>
     [Aka("criminal intent", "guilty mind", "vicious will")]
-    public abstract class MensRea : ObjectiveLegalConcept, IElement
+    public abstract class MensRea : ObjectiveLegalConcept, IElement, IComparable
     {
-
+        public abstract int CompareTo(object obj);
     }
 }
