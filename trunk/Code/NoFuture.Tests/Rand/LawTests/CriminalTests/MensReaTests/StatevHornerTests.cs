@@ -1,0 +1,43 @@
+﻿using System;
+using NoFuture.Rand.Law;
+using NoFuture.Rand.Law.US.Criminal;
+using NoFuture.Rand.Law.US.Criminal.Elements.Act;
+using NUnit.Framework;
+
+namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
+{
+    /// <summary>
+    /// State v. Horner, 126 Ohio St.3d 466, 2010-Ohio-3830
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// doctrine issue, failure to object to defect (mens rea not said specifically) in indictment constitutes waiver of all but plain error.
+    /// ]]>
+    /// </remarks>
+    [TestFixture]
+    public class StatevHornerTests
+    {
+        [Test]
+        public void StatevHorner()
+        {
+            var testSubject = new Felony
+            {
+                ActusReus = new ActusReus
+                {
+                    IsAction = lp => lp is Horner,
+                    IsVoluntary = lp => lp is Horner
+                },
+                MensRea = null,
+            };
+
+            var testResult = testSubject.IsValid(new Horner());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
+        }
+    }
+
+    public class Horner : LegalPerson
+    {
+        //public Horner():base("HORNER") { }
+    }
+}

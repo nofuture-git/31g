@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Core.Enums;
 
 namespace NoFuture.Rand.Law
 {
@@ -9,9 +10,16 @@ namespace NoFuture.Rand.Law
     {
         private readonly List<string> _reasons = new List<string>();
 
-        public LegalPerson() { }
+        public LegalPerson()
+        {
+            base.AddName(KindsOfNames.Legal, GetType().Name.ToUpper());
+        }
 
-        public LegalPerson(string name) : base(name) { }
+        public LegalPerson(string name) : base(name)
+        {
+            if(string.IsNullOrWhiteSpace(name))
+                base.AddName(KindsOfNames.Legal, GetType().Name.ToUpper());
+        }
 
         public LegalPerson(string name, string groupName) : base(name, groupName) { }
 
