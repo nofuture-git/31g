@@ -64,12 +64,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         }
     }
 
-    public class AlaskaPackersAssoc : VocaBase, ILegalPerson
+    public class AlaskaPackersAssoc : LegalPerson
     {
         public AlaskaPackersAssoc(): base("ALASKA PACKERS’ ASSOCIATION") { }
     }
 
-    public class Domenico : VocaBase, ILegalPerson
+    public class Domenico : LegalPerson
     {
         public Domenico() : base("DOMENICO") { }
     }

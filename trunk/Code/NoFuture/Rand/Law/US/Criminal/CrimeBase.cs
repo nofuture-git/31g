@@ -19,12 +19,14 @@ namespace NoFuture.Rand.Law.US.Criminal
             if (!IsChargedWith(defendant))
             {
                 AddReasonEntry($"there are no charges against {defendant.Name}");
+                AddPersonsReasonEntries(offeror, offeree);
                 return false;
             }
 
             if (Concurrence == null)
             {
                 AddReasonEntry($"{nameof(Concurrence)} is missing");
+                AddPersonsReasonEntries(offeror, offeree);
                 return false;
             }
 
@@ -32,6 +34,8 @@ namespace NoFuture.Rand.Law.US.Criminal
             {
                 AddReasonEntry($"{nameof(Concurrence)} is invalid");
                 AddReasonEntryRange(Concurrence.GetReasonEntries());
+                AddPersonsReasonEntries(offeror, offeree);
+
                 return false;
             }
 
@@ -40,6 +44,7 @@ namespace NoFuture.Rand.Law.US.Criminal
                 if (!elem.IsValid(offeror, offeree))
                 {
                     AddReasonEntryRange(elem.GetReasonEntries());
+                    AddPersonsReasonEntries(offeror, offeree);
                     return false;
                 }
             }
@@ -76,5 +81,11 @@ namespace NoFuture.Rand.Law.US.Criminal
         }
 
         public IList<IElement> AdditionalElements { get; } = new List<IElement>();
+
+        protected internal void AddPersonsReasonEntries(ILegalPerson offeror, ILegalPerson offeree)
+        {
+            AddReasonEntryRange(offeror?.GetReasonEntries());
+            AddReasonEntryRange(offeree?.GetReasonEntries());
+        }
     }
 }

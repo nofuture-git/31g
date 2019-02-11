@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         public int Year => 1977;
     }
 
-    public class Foley : VocaBase, ILegalPerson
+    public class Foley : LegalPerson
     {
         public Foley() : base("Marvin A. Foley, William E. Ball, III, and Johanna M. Foley") { }
     }

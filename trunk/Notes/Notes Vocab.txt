@@ -680,3 +680,4 @@ fiduciary: a party in a position of trust
 untoward: unexpected and inappropriate
 incongruous: not in harmony or keeping with the surroundings
 purloin: to steal from someone who trusted you
+desiderata: something that is needed or wanted

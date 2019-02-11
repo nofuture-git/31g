@@ -95,12 +95,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
         }
     }
 
-    public class FrankAndCaroDavis : VocaBase, ILegalPerson
+    public class FrankAndCaroDavis : LegalPerson
     {
 
     }
 
-    public abstract class RupertAndBlancheWhitehead : VocaBase, ILegalPerson
+    public abstract class RupertAndBlancheWhitehead : LegalPerson
     {
         protected internal RupertAndBlancheWhitehead(string name) : base(name ){ }
     }

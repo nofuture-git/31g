@@ -57,12 +57,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         }
     }
 
-    public class Weavertown : VocaBase, ILegalPerson
+    public class Weavertown : LegalPerson
     {
         public Weavertown() : base("WEAVERTOWN TRANSPORT LEASING, INC.") { }
     }
 
-    public class Moran : VocaBase, ILegalPerson
+    public class Moran : LegalPerson
     {
         public Moran(): base("Daniel Moran") { }
     }

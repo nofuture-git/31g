@@ -75,13 +75,13 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         }
     }
 
-    public class Quigley : VocaBase, ILegalPerson
+    public class Quigley : LegalPerson
     {
         protected Quigley(string name) : base(name) { }
         public Quigley() : base("Lester Quigley, Sr.") { }
     }
 
-    public class Wilson : VocaBase, ILegalPerson
+    public class Wilson : LegalPerson
     {
         public Wilson() : base("Donald and Janis Wilson") { }
     }

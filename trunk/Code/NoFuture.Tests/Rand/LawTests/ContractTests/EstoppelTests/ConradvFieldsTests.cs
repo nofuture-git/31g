@@ -49,12 +49,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
         }
     }
 
-    public class Conrad : VocaBase, ILegalPerson
+    public class Conrad : LegalPerson
     {
         public Conrad() : base("Marjorie Conrad") { }
     }
 
-    public class Fields : VocaBase, ILegalPerson
+    public class Fields : LegalPerson
     {
         public Fields() : base("Walter R. Fields") { }
     }

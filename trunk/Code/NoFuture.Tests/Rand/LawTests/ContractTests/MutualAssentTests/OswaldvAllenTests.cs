@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
     }
 
 
-    public class DrOswald : VocaBase, ILegalPerson
+    public class DrOswald : LegalPerson
     {
         public DrOswald() : base("Dr. Oswald") { }
 
@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
 
     }
 
-    public class MrsAllen : VocaBase, ILegalPerson
+    public class MrsAllen : LegalPerson
     {
         public MrsAllen() : base("Mrs. Allen") { }
 

@@ -48,12 +48,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         public int CubicFeet => 50000;
     }
 
-    public class TousleyBixler : VocaBase, ILegalPerson
+    public class TousleyBixler : LegalPerson
     {
         public TousleyBixler() : base("TOUSLEY-BIXLER CONSTRUCTION CO.") { }
     }
 
-    public class Colgate : VocaBase, ILegalPerson
+    public class Colgate : LegalPerson
     {
         public Colgate() : base("COLGATE ENTERPRISES, INC.") { }
     }

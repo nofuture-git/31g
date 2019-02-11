@@ -157,7 +157,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
         }
     }
 
-    public class WOLucy : VocaBase, ILegalPerson
+    public class WOLucy : LegalPerson
     {
         public WOLucy() : base("W.O. Lucy") { }
 
@@ -167,7 +167,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
         }
     }
 
-    public class JCLucy : VocaBase, ILegalPerson
+    public class JCLucy : LegalPerson
     {
         public JCLucy() : base("J.C. Lucy") { }
 
@@ -177,7 +177,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
         }
     }
 
-    public class AHZehmer : VocaBase, ILegalPerson
+    public class AHZehmer : LegalPerson
     {
         public AHZehmer() : base("A.H. Zehmer") { }
 
@@ -187,7 +187,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
         }
     }
 
-    public class IdaSZehmer : VocaBase, ILegalPerson
+    public class IdaSZehmer : LegalPerson
     {
         public IdaSZehmer() : base ("Ida S. Zehmer") { }
 

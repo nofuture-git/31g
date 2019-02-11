@@ -6,7 +6,7 @@ using NoFuture.Rand.Core.Enums;
 namespace NoFuture.Rand.Law
 {
     /// <inheritdoc cref="ILegalPerson"/>
-    public class LegalPerson : VocaBase, ILegalPerson, IRationale
+    public class LegalPerson : VocaBase, ILegalPerson
     {
         private readonly List<string> _reasons = new List<string>();
 

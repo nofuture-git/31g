@@ -82,12 +82,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.MutualAssentTests
             public override bool IsEnforceableInCourt => true;
         }
 
-        public class ArminAugstein : VocaBase, ILegalPerson
+        public class ArminAugstein : LegalPerson
         {
             public ArminAugstein() : base("Armin Augstein"){ }
         }
 
-        public class RyanLeslie : VocaBase, ILegalPerson
+        public class RyanLeslie : LegalPerson
         {
             public RyanLeslie() : base("Ryan Leslie") { }
         }

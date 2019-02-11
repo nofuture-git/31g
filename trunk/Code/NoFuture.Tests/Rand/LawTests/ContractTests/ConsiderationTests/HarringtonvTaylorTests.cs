@@ -52,12 +52,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
 
     }
 
-    public class Harrington : VocaBase, ILegalPerson
+    public class Harrington : LegalPerson
     {
         public Harrington() : base(" ") { }
     }
 
-    public class Taylor : VocaBase, ILegalPerson
+    public class Taylor : LegalPerson
     {
         public Taylor(): base("") { }
     }

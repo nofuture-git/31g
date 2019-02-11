@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law
     /// or commercial entity."
     /// ]]>
     /// </summary>
-    public interface ILegalPerson : IVoca
+    public interface ILegalPerson : IVoca, IRationale
     {
     }
 }

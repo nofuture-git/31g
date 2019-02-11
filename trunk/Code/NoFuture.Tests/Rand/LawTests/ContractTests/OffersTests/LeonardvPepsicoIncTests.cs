@@ -152,7 +152,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         }
     }
 
-    public abstract class ConsumerOfPepsi : VocaBase, ILegalPerson
+    public abstract class ConsumerOfPepsi : LegalPerson
     {
         protected internal ConsumerOfPepsi(string name) : base(name) { }
 
@@ -172,7 +172,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         }
     }
 
-    public class PepsicoInc : VocaBase, ILegalPerson
+    public class PepsicoInc : LegalPerson
     {
         public PepsicoInc() : base("PEPSICO, INC.") { }
 

@@ -60,12 +60,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         public override bool IsEnforceableInCourt => true;
     }
 
-    public class Petterson : VocaBase, ILegalPerson
+    public class Petterson : LegalPerson
     {
         public Petterson() : base("PETTERSON") { }
     }
 
-    public class Pattberg : VocaBase, ILegalPerson
+    public class Pattberg : LegalPerson
     {
         public Pattberg() : base("PATTBERG") { }
     }

@@ -127,7 +127,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         }
     }
 
-    public class Fairmount : VocaBase, ILegalPerson
+    public class Fairmount : LegalPerson
     {
         public ISet<Term<object>> GetTerms()
         {
@@ -147,7 +147,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
         }
     }
 
-    public abstract class FairmountCustomer : VocaBase, ILegalPerson
+    public abstract class FairmountCustomer : LegalPerson
     {
         public abstract ISet<Term<object>> GetTerms();
 

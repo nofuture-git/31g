@@ -54,12 +54,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
             lp => lp is ComNetwork || lp is PurcellTire;
     }
 
-    public class ComNetwork : VocaBase, ILegalPerson
+    public class ComNetwork : LegalPerson
     {
         public ComNetwork(): base("COMPUTER NETWORK, LTD.") { }
     }
 
-    public class PurcellTire : VocaBase, ILegalPerson
+    public class PurcellTire : LegalPerson
     {
         public PurcellTire() : base("PURCELL TIRE & RUBBER COMPANY") { }
     }

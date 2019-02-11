@@ -43,12 +43,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
         }
     }
 
-    public class Mayer : VocaBase, ILegalPerson
+    public class Mayer : LegalPerson
     {
         public Mayer() : base("Theodore Mayer") { }
     }
 
-    public class KingCola : VocaBase, ILegalPerson
+    public class KingCola : LegalPerson
     {
         public KingCola() : base("King Cola Mid-America, Inc.") { }
     }

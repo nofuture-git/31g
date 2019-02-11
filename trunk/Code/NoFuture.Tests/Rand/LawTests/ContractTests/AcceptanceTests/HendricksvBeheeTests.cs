@@ -61,12 +61,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
             }
         }
 
-        public class Behee : VocaBase, ILegalPerson
+        public class Behee : LegalPerson
         {
             public Behee(): base("Behee") { }
         }
 
-        public class Smiths : VocaBase, ILegalPerson
+        public class Smiths : LegalPerson
         {
             public Smiths() : base("the Smiths") { }
         }

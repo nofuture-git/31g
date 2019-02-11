@@ -66,12 +66,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         }
     }
 
-    public class Hamer : VocaBase, ILegalPerson
+    public class Hamer : LegalPerson
     {
         public Hamer() : base("HAMER") { }
     }
 
-    public class Sidway : VocaBase, ILegalPerson
+    public class Sidway : LegalPerson
     {
         public Sidway() : base("SIDWAY") { }
     }

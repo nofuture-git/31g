@@ -4,7 +4,7 @@ namespace NoFuture.Rand.Law
     /// <summary>
     /// <![CDATA[
     /// objective test: the object itself viewed from the prespective of a reasonable person
-    /// subjective test: the object viewed from the prespective of the subject
+    /// subjective test: the object viewed from the perspective of the subject
     /// ]]>
     /// </summary>
     public interface ILegalConcept :  IRationale

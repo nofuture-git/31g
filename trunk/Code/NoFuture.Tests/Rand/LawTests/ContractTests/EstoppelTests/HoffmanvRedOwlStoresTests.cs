@@ -57,12 +57,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
         }
     }
 
-    public class Hoffman : VocaBase, ILegalPerson
+    public class Hoffman : LegalPerson
     {
         public Hoffman() : base("Joseph Hoffman") { }
     }
 
-    public class RedOwlStores : VocaBase, ILegalPerson
+    public class RedOwlStores : LegalPerson
     {
         public RedOwlStores() :base("Red Owl Stores") { }
     }

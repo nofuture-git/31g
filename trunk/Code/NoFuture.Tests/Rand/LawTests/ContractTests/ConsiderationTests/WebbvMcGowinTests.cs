@@ -60,12 +60,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         }
     }
 
-    public class Webb : VocaBase, ILegalPerson
+    public class Webb : LegalPerson
     {
         public Webb() : base("Joe Webb") { }
     }
 
-    public class McGowin : VocaBase, ILegalPerson
+    public class McGowin : LegalPerson
     {
         public McGowin() : base("J. Greeley McGowin") { }
     }

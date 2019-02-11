@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
 
     }
 
-    public abstract class PartiesInCase : VocaBase, ILegalPerson
+    public abstract class PartiesInCase : LegalPerson
     {
         protected PartiesInCase(string name) : base(name) { }
 

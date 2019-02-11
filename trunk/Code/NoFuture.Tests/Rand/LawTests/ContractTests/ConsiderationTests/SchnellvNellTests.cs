@@ -64,12 +64,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
         }
     }
 
-    public class Schnell : VocaBase, ILegalPerson
+    public class Schnell : LegalPerson
     {
         public Schnell() : base("Zacharias Schnell") { }
     }
 
-    public class Nell : VocaBase, ILegalPerson
+    public class Nell : LegalPerson
     {
         public Nell() : base("J. B. Nell") { }
     }

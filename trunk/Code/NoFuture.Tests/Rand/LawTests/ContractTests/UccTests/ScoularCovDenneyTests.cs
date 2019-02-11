@@ -62,12 +62,12 @@ namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
         };
     }
 
-    public class ScoularCo : VocaBase, ILegalPerson
+    public class ScoularCo : LegalPerson
     {
         public bool IsGrainCompany => true;
     }
 
-    public class Denney : VocaBase, ILegalPerson
+    public class Denney : LegalPerson
     {
         public bool IsGrowerOfMillet => true;
     }
