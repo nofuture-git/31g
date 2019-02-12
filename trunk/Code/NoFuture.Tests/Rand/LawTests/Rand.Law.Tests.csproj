@@ -146,6 +146,7 @@
     <Compile Include="CriminalTests\ActusReusTests\WendellHolisvTexasTests.cs" />
     <Compile Include="CriminalTests\CausationTests\BullockvDelawareTests.cs" />
     <Compile Include="CriminalTests\CrimeTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\ExampleExcessiveForceExceptionTest.cs" />
     <Compile Include="CriminalTests\MensReaTests\DeanvUsTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\HaroldStaplesvUsTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\KarlaCrosbyvOregonTests.cs" />
@@ -177,10 +178,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CaseExample00.txt" />
-    <Content Include="ContractTests\BreachTests\TestResult.xml" />
-    <Content Include="ContractTests\ExcuseTests\TestResult.xml" />
-    <Content Include="ContractTests\RemedyTests\TestResult.xml" />
-    <Content Include="CriminalTests\TestResult.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

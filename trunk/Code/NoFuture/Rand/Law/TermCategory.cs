@@ -53,5 +53,10 @@ namespace NoFuture.Rand.Law
 
             return Term2Decorate?.IsCategory(category) ?? false;
         }
+
+        public override string ToString()
+        {
+            return GetCategory();
+        }
     }
 }

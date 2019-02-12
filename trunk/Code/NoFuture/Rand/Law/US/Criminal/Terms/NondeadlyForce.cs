@@ -6,6 +6,6 @@
     /// </summary>
     public class NondeadlyForce : Force
     {
-        protected override string CategoryName { get; } = "nondeadly force";
+        protected override string CategoryName { get; } = "non-deadly force";
     }
 }

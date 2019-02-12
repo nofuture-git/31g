@@ -47,8 +47,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
                 if (!IsProportional(defendantContribution, otherPartyContribution)
                     || !IsProportional(otherPartyContribution, defendantContribution))
                 {
-                    AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsProportional)} is false " +
-                                   $"for defendant's {defendantContribution.ToString()} to {otherPartyContribution.ToString()}");
+                    AddReasonEntry($"{nameof(IsProportional)} is false " +
+                                   $"for {defendant.Name}'s {defendantContribution.ToString()} " +
+                                   $"to {otherParty.Name}'s {otherPartyContribution.ToString()}");
                     return false;
                 }
             }
