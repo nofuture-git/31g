@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
 {
     /// <summary>
     /// HAMER v. SIDWAY Court of Appeals of New York 79 Sickels 538, 124 N.Y. 538, 27 N.E. 256 (1891)

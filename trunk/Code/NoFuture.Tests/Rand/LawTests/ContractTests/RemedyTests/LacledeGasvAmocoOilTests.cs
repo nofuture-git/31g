@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// LACLEDE GAS CO. v. AMOCO OIL CO. United States Court of Appeals, Eighth Circuit 522 F.2d 33 (8th Cir. 1975)

@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// TOWN OF FAIRFIELD v. D’ADDARIO Supreme Court of Connecticut 149 Conn. 358, 179 A.2d 826 (1961)

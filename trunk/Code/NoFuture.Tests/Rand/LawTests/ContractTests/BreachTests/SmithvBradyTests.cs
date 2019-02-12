@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Breach;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
 {
     /// <summary>
     /// SMITH v. BRADY Court of Appeals of New York 17 N.Y. 173 (1858)

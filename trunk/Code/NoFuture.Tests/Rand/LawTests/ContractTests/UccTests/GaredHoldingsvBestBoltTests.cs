@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.UccTests
 {
     /// <summary>
     /// GARED HOLDINGS, LLC v. BEST BOLT PRODUCTS, INC. Court of Appeals of Indiana. 991 N.E.2d 1005 (Ind.Ct.App. 2013)

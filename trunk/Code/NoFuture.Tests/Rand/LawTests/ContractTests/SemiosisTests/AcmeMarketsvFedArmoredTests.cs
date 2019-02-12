@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// ACME MARKETS, INC. v. FEDERAL ARMORED EXPRESS, INC. Superior Court of Pennsylvania 437 Pa.Super. 41, 648 A.2d 1218 (1994)

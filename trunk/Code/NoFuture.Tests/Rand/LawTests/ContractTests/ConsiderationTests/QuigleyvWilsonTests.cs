@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
 {
     /// <summary>
     /// QUIGLEY v. WILSON Court of Appeals of Iowa 474 N.W.2d 277 (Iowa Ct. App. 1991)

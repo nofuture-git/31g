@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// DOERING EQUIPMENT CO. v. JOHN DEERE CO. Appeals Court of Massachusetts 61 Mass. App. Ct. 850, 815 N.E.2d 234 (Mass. Ct. App. 2004)

@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// ROCKINGHAM COUNTY v. LUTEN BRIDGE CO. Circuit Court of Appeals, Fourth Circuit 35 F.2d 301 (4th Cir. 1929)

@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToAssent;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 {
     /// <summary>
     /// WOOD v. BOYNTON Supreme Court of Wisconsin 64 Wis. 265, 25 N.W. 42 (1885)

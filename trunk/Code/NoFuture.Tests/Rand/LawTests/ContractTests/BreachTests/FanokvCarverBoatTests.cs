@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Terms;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
 {
     /// <summary>
     /// FANOK v. CARVER BOAT CORP. United States District Court for the Eastern District of New York 576 F.Supp. 2d 404 (E.D.N.Y. 2008)

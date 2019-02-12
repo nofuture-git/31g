@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Excuse;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.ExcuseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.ExcuseTests
 {
     /// <summary>
     /// BUSH v. PROTRAVEL INTERNATIONAL, INC. Civil Court of the City of New York 192 Misc. 2d 743, 746 N.Y.S.2d 790 (Civ.Ct. 2002)

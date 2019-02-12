@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Breach;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
 {
     /// <summary>
     /// JACOB & YOUNGS, INC. v. KENT  Court of Appeals of New York 230 N.Y. 239, 129 N.E. 889 (1921)

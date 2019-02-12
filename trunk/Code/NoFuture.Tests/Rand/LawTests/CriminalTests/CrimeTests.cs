@@ -4,7 +4,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Criminal;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.CriminalTests
+namespace NoFuture.Rand.Law.Tests.CriminalTests
 {
     [TestFixture]
     public class CrimeTests

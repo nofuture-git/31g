@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// MITCHILL v. LATH Court of Appeals of New York 247 N.Y. 377, 160 N.E. 646 (1928)

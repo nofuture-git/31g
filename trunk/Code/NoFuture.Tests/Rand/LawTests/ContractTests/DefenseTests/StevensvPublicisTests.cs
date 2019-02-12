@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 {
     /// <summary>
     /// STEVENS v. PUBLICIS S.A. Supreme Court of New York, Appellate Division, First Department 50 A.D.3d 253, 854 N.Y.S.2d 690 (Sup.Ct.App.Div. 2008)

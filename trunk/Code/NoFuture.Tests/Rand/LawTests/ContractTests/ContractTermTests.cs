@@ -3,7 +3,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests
+namespace NoFuture.Rand.Law.Tests.ContractTests
 {
     [TestFixture]
     public class ContractTermTests

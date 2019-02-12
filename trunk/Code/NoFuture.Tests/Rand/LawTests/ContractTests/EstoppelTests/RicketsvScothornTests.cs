@@ -4,7 +4,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.EstoppelTests
 {
 
     /// <summary>

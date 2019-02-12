@@ -4,7 +4,7 @@ using NoFuture.Rand.Law;
 using NUnit.Framework;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.UccTests
 {
     /// <summary>
     /// TOUSLEY-BIXLER CONSTRUCTION CO. v.COLGATE ENTERPRISES, INC. Court of Appeals of Indiana 429 N.E.2d 979 (Ind.Ct.App. 1982)

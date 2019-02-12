@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Contracts.Terms;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// BRANDEIS MACHINERY & SUPPLY CO., LLC v.CAPITOL CRANE RENTAL, INC. Court of Appeals of Indiana, Fifth District 765 N.E.2d 173 (Ind.Ct.App. 2002)

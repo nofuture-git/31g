@@ -4,7 +4,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.UccTests
 {
     /// <summary>
     /// COMPUTER NETWORK, LTD. v. PURCELL TIRE & RUBBER COMPANY Missouri Court of Appeals 747 S.W.2d 669 (Mo.App. 1988)

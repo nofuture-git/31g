@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     ///UNITED STATES ex rel. COASTAL STEEL ERECTORS, INC. v. ALGERNON BLAIR, INC. United States Court of Appeals for the Fourth Circuit 479 F.2d 638 (4th Cir. 1973)    /// </summary>

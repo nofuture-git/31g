@@ -10,6 +10,8 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
     {
         public ICrime Crime { get; }
 
+        public IEnumerable<ITermCategory> Terms { get; } = new List<ITermCategory>();
+
         protected DefenseBase(ICrime crime)
         {
             Crime = crime;

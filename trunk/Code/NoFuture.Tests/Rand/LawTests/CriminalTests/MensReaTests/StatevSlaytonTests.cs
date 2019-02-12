@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements.Act;
 using NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
+namespace NoFuture.Rand.Law.Tests.CriminalTests.MensReaTests
 {
     /// <summary>
     /// State v. Slayton, 154 P.3d 1057 (2007)

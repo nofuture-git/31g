@@ -16,13 +16,6 @@ namespace NoFuture.Rand.Law.US.Criminal
             if (defendant == null)
                 return false;
 
-            if (!IsChargedWith(defendant))
-            {
-                AddReasonEntry($"there are no charges against {defendant.Name}");
-                AddPersonsReasonEntries(offeror, offeree);
-                return false;
-            }
-
             if (Concurrence == null)
             {
                 AddReasonEntry($"{nameof(Concurrence)} is missing");
@@ -55,11 +48,6 @@ namespace NoFuture.Rand.Law.US.Criminal
         public abstract int CompareTo(object obj);
 
         public Concurrence Concurrence { get; set; } = new Concurrence();
-
-        /// <summary>
-        /// A enclosure to describe the specific charges
-        /// </summary>
-        public virtual Predicate<ILegalPerson> IsChargedWith { get; set; } = lp => true;
 
         /// <summary>
         /// A short hand property to the same stack-residing variable in <see cref="Concurrence"/>

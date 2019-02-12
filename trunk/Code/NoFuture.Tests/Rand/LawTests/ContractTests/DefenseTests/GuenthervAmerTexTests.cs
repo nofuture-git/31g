@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 {
     /// <summary>
     /// GUENTHER v. AMER-TEX CONSTRUCTION CO. Court of Civil Appeals of Texas, Third District, Austin 534 S.W.2d 396 (Tex.App.—Austin 1976)

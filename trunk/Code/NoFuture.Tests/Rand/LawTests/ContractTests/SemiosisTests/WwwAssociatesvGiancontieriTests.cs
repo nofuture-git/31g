@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// W.W.W. ASSOCIATES, INC. v. GIANCONTIERI Court of Appeals of New York 77 N.Y.2d 157, 566 N.E.2d 639, 565 N.Y.S.2d 440 (1990)

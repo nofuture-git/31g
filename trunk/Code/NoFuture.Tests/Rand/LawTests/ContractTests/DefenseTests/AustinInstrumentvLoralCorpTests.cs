@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToAssent;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 {
     /// <summary>
     /// AUSTIN INSTRUMENT, INC. v. LORAL CORP. Court of Appeals of New York 29 N.Y.2d 124, 272 N.E.2d 533, 324 N.Y.S.2d 22 (1971)

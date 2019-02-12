@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// UNITED STATES NAVAL INSTITUTE v. CHARTER COMMUNICATIONS, INC. United States Court of Appeals for the Second Circuit 936 F.2d 692 (2d Cir. 1991)

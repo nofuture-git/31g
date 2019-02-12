@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// TRUCK RENT-A-CENTER, INC. v. PURITAN FARMS 2nd, INC. Court of Appeals of New York 41 N.Y.2d 420, 393 N.Y.S.2d 365 (1977)

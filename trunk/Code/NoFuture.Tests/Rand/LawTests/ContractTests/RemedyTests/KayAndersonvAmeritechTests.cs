@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// KAY & ANDERSON, S.C. v. AMERITECH PUBLISHING, INC. Court of Appeals of Wisconsin 2005 Wisc.App.LEXIS 216

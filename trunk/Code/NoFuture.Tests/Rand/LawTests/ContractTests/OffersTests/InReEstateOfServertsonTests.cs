@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
 {
     /// <summary>
     /// IN RE ESTATE OF SEVERTSON Court of Appeals of Minnesota 1998 Minn.App.LEXIS 243 (March 3, 1998)

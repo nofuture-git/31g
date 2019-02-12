@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests
+namespace NoFuture.Rand.Law.Tests
 {
     [TestFixture]
     public class TermTests

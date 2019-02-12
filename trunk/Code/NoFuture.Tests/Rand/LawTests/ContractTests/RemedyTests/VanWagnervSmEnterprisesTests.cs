@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// VAN WAGNER ADVERTISING CORP. v. S&amp;M ENTERPRISES Court of Appeals of New York 67 N.Y.2d 186, 492 N.E.2d 756 (1986)

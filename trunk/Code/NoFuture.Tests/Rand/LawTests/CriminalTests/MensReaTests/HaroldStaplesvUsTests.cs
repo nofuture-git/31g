@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.US.Criminal;
 using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
+namespace NoFuture.Rand.Law.Tests.CriminalTests.MensReaTests
 {
     /// <summary>
     /// HAROLD E. STAPLES, III, PETITIONER v. UNITED STATES No. 92-1441
@@ -20,14 +20,7 @@ namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
         [Test]
         public void HaroldStaplesvUs()
         {
-            var testSubject = new Felony
-            {
-                IsChargedWith = lp =>
-                {
-                    var hs = lp as HaroldStaples;
-                    return (hs?.IsPossessionOfAr15Rifle ?? false) && (hs.IsAr15RifleFullyAutoFire);
-                }
-            };
+            var testSubject = new Felony();
 
             testSubject.ActusReus.IsAction = lp => lp is HaroldStaples;
             testSubject.ActusReus.IsVoluntary = lp => lp is HaroldStaples;

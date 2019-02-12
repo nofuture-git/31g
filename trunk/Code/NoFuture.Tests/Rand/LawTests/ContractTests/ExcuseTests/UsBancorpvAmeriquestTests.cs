@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Excuse;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.ExcuseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.ExcuseTests
 {
     /// <summary>
     /// U.S. BANCORP EQUIPMENT FINANCE, INC. v.AMERIQUEST HOLDINGS LLC United States District Court for the District of Minnesota 2004 U.S.Dist.LEXIS 24709, 55 U.C.C.Rep.Serv. 2d (Callaghan) 423 (2004)

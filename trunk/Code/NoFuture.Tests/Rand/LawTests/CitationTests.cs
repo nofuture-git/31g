@@ -6,7 +6,7 @@ using System.Reflection;
 using NoFuture.Rand.Law.US.CaseReading;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests
+namespace NoFuture.Rand.Law.Tests
 {
     [TestFixture]
     public class CitationTests

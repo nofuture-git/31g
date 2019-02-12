@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// WOOD v. LUCY, LADY DUFF-GORDON Court of Appeals of New York 222 N.Y. 88, 118 N.E. 214 (1917)

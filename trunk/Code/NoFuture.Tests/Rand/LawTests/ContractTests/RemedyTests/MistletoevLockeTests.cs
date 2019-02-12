@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// MISTLETOE EXPRESS SERVICE OF OKLAHOMA CITY v. LOCKE Court of Appeals of Texas, Sixth District 762 S.W.2d 637 (Tex. App.—Texarkana 1988)

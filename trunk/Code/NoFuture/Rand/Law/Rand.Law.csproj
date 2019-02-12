@@ -116,6 +116,17 @@
     <Compile Include="US\Contracts\Terms\WrittenTerm.cs" />
     <Compile Include="US\Criminal\CrimeBase.cs" />
     <Compile Include="US\Criminal\Defense\DefenseBase.cs" />
+    <Compile Include="US\Criminal\Defense\Excuse\Entrapment.cs" />
+    <Compile Include="US\Criminal\Defense\Excuse\Ignorance.cs" />
+    <Compile Include="US\Criminal\Defense\Excuse\Infancy.cs" />
+    <Compile Include="US\Criminal\Defense\Excuse\Insanity.cs" />
+    <Compile Include="US\Criminal\Defense\Imminence.cs" />
+    <Compile Include="US\Criminal\Defense\Justification\BatteredWomanSyndrome.cs" />
+    <Compile Include="US\Criminal\Defense\Justification\DefenseOfOthers.cs" />
+    <Compile Include="US\Criminal\Defense\Justification\DefenseOfProperty.cs" />
+    <Compile Include="US\Criminal\Defense\Justification\DefenseOfSelf.cs" />
+    <Compile Include="US\Criminal\Defense\Proportionality.cs" />
+    <Compile Include="US\Criminal\Defense\Provacation.cs" />
     <Compile Include="US\Criminal\Elements\Act\ActusReus.cs" />
     <Compile Include="US\Criminal\Elements\AttendantCircumstances.cs" />
     <Compile Include="US\Criminal\Elements\Causation.cs" />

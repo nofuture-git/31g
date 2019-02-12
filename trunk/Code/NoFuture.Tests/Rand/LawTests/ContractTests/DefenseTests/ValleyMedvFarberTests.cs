@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 {
     /// <summary>
     /// VALLEY MEDICAL SPECIALISTS v. FARBER Supreme Court of Arizona 194 Ariz. 363, 982 P.2d 1277 (en banc 1999)

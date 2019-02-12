@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Semiosis;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
 {
     /// <summary>
     /// RANDOM HOUSE, INC. v. ROSETTA BOOKS LLC United States District Court for the Southern District of New York 150 F.Supp. 2d 613 (S.D.N.Y. 2001)

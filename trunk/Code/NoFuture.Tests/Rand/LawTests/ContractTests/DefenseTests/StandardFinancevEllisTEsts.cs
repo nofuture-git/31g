@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToAssent;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 {
     /// <summary>
     /// STANDARD FINANCE CO. v. ELLIS Intermediate Court of Appeals of Hawaii 3 Haw.App. 614, 657 P.2d 1056 (Haw.Ct.App. 1983)

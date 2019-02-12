@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Defense;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToFormation;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 {
     /// <summary>
     /// ORTELERE v. TEACHERS’ RETIREMENT BOARD New York Court of Appeals 25 N.Y.2d 196, 250 N.E.2d 460, 303 N.Y.S.2d 362 (1969)

@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
         /// A reasonable person could have foreseen the outcome
         /// </summary>
         [Aka("legal cause")]
-        public Predicate<ILegalPerson> IsObjectiveForseeable { get; set; } = lp => false;
+        public ObjectivePredicate<ILegalPerson> IsForseeable { get; set; } = lp => false;
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
                 return false;
 
             var isButFor = IsButForCaused(defendant);
-            var isForesee = IsObjectiveForseeable(defendant);
+            var isForesee = IsForseeable(defendant);
 
             if (!isButFor)
             {
@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
 
             if (!isForesee)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsObjectiveForseeable)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsForseeable)} is false");
                 return false;
             }
 

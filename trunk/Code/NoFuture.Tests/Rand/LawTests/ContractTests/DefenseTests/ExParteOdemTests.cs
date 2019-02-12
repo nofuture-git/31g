@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Defense;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToFormation;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 {
     /// <summary>
     /// EX PARTE ODEM Supreme Court of Alabama 537 So.2d 919 (Ala. 1988)

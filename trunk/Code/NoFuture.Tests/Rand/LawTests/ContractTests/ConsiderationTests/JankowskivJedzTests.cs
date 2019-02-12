@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.ConsiderationTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
 {
     /// <summary>
     /// JANKOWSKI v. MONCLOVA-MAUMEE-TOLEDO JOINT ECONOMIC DEVELOPMENT ZONE Court of Appeals of Ohio 185 Ohio App. 3d 568, 924 N.E.2d 932 (2010)

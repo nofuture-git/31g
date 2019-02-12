@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
 {
     /// <summary>
     /// UNITED STATES LIFE INSURANCE CO. v. WILSON Court of Special Appeals of Maryland 198 Md.App. 452, 18 A.3d 110 (2011)

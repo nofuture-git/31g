@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Excuse;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.ExcuseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.ExcuseTests
 {
     /// <summary>
     /// KARL WENDT FARM EQUIPMENT CO. v. INT’L HARVESTER CO. United States Court of Appeals for the Sixth Circuit 931 F.2d 1112 (6th Cir. 1991)

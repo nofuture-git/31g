@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.UccTests
 {
     /// <summary>
     /// FLENDER CORPORATION v. TIPPINS INTERNATIONAL, INC. Superior Court of Pennsylvania 830 A.2d 1279 (Pa.Super. 2003)

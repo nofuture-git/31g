@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Contracts.Terms;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
 {
     /// <summary>
     /// KCA ELECTRONICS, INC. v. LEGACY ELECTRONICS, INC. Court of Appeal of California, Fourth Appellate District 2007 Cal.App.Unpub.LEXIS 6107 (Ct.App.)

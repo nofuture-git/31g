@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Terms;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.UccTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.UccTests
 {
     /// <summary>
     /// COMMERCE & INDUSTRY INS. CO. v. BAYER CORP. Supreme Judicial Court of Massachusetts 433 Mass. 388, 742 N.E.2d 567 (2001)

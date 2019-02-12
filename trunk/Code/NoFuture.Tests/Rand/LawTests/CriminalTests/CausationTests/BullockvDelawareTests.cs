@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements.Act;
 using NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.CriminalTests.CausationTests
+namespace NoFuture.Rand.Law.Tests.CriminalTests.CausationTests
 {
     /// <summary>
     /// Bullock v. State, 775 A.2d. 1043 (2001)

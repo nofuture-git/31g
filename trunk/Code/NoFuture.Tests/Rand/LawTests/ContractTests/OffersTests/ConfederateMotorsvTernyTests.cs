@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.OffersTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
 {
     /// <summary>
     /// CONFEDERATE MOTORS, INC. v. TERNY United States District Court for the District of Massachusetts 831 F.Supp. 2d 414 (D.Mass. 2011)

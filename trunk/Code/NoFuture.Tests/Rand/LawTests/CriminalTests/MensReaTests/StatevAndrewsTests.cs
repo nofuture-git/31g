@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
 using NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.CriminalTests.MensReaTests
+namespace NoFuture.Rand.Law.Tests.CriminalTests.MensReaTests
 {
     /// <summary>
     /// State v. Andrews, 572 S.E.2d 798 (2002)

@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Contracts.Terms;
 using NoFuture.Rand.Law.US.Contracts.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.BreachTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
 {
     /// <summary>
     /// O. W. GRUN ROOFING & CONSTRUCTION CO. v. COPE Court of Civil Appeals of Texas, Fourth District—San Antonio 529 S.W.2d 258 (Tex.Civ.App. 1975)

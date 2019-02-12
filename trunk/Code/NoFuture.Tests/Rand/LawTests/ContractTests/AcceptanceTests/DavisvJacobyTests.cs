@@ -5,7 +5,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.AcceptanceTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
 {
     /// <summary>
     /// DAVIS v. JACOBY Supreme Court of California 1 Cal. 2d 370, 34 P.2d 1026 (1934)

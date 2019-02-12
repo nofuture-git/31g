@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 {
     /// <summary>
     /// WILLIAMS v. WALKER-THOMAS FURNITURE CO. United States Court of Appeals for the District of Columbia Circuit 121 U.S.App.D.C. 315, 350 F.2d 445 (1965)

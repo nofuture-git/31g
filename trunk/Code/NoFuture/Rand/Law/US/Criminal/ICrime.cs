@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.US.Criminal
 {
     /// <inheritdoc cref="ILegalConcept"/>
     /// <summary>
-    /// an act committed in violation of a law prhibiting it, or omitted in violation of a law ordering it
+    /// an act committed in violation of a law prohibiting it, or omitted in violation of a law ordering it
     /// </summary>
     /// <remarks>
     /// <![CDATA[
@@ -24,6 +24,5 @@ namespace NoFuture.Rand.Law.US.Criminal
 
         IList<IElement> AdditionalElements { get; }
 
-        Predicate<ILegalPerson> IsChargedWith { get; set; }
     }
 }

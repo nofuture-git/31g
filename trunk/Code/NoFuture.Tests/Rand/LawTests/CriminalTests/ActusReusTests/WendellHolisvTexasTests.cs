@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements;
 using NoFuture.Rand.Law.US.Criminal.Elements.Act;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.CriminalTests.ActusReusTests
+namespace NoFuture.Rand.Law.Tests.CriminalTests.ActusReusTests
 {
     /// <summary>
     /// 998 S.W.2d 363 (1999) Wendell Hollis OLER, Appellant, v. The STATE of Texas, Appellee. No. 05-97-01229-CR. Court of Appeals of Texas, Dallas.
@@ -21,15 +21,7 @@ namespace NoFuture.Rand.Tests.LawTests.CriminalTests.ActusReusTests
         [Test]
         public void WendllHolisvTexas()
         {
-            var testSubject = new Felony()
-            {
-                IsChargedWith = lp =>
-                {
-                    var isPossessionOfCtrlSubstance = lp is WendellHollis;
-                    var isByObtainByMisrepresentation = lp is WendellHollis;
-                    return isPossessionOfCtrlSubstance && isByObtainByMisrepresentation;
-                }
-            };
+            var testSubject = new Felony();
             //court contents the actus reus is by possession, therefore omission is not applicable
             var testPossession = new Possession();
             testSubject.ActusReus = testPossession;

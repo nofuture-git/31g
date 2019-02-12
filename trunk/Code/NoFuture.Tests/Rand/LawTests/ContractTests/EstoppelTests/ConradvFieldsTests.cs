@@ -9,7 +9,7 @@ using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.EstoppelTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.EstoppelTests
 {
     /// <summary>
     /// CONRAD v. FIELDS Court of Appeals of Minnesota 2007 Minn.App.Unpub.LEXIS 744

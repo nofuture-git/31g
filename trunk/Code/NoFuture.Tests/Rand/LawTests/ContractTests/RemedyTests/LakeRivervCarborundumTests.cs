@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// LAKE RIVER CORPORATION v. CARBORUNDUM COMPANY United States Court of Appeals, Seventh Circuit 769 F.2d 1284 (7th Cir. 1985).

@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Tests.LawTests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
 {
     /// <summary>
     /// PARKER v. TWENTIETH CENTURY-FOX FILM CORP. Supreme Court of California 3 Cal. 3d 176, 474 P.2d 689, 89 Cal.Rptr. 737 (1970) (in bank)
