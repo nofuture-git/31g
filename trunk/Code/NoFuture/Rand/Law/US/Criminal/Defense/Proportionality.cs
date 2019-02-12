@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NoFuture.Rand.Law.US.Criminal.Defense
 {
+    /// <summary>
+    /// Template for the concept of reasonable proportionality
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Proportionality<T> : DefenseBase where T: ITermCategory
     {
         public Proportionality(ICrime crime) : base(crime)
@@ -15,7 +21,39 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
-            throw new NotImplementedException();
+            var defendant = Government.GetDefendant(offeror, offeree, this);
+            if (defendant == null)
+                return false;
+
+            var getOtherParties = Crime?.OtherParties ?? (() => new List<ILegalPerson>());
+            var otherParties = getOtherParties();
+
+
+            var defendantContribution = GetContribution(defendant);
+
+            if (otherParties == null || !otherParties.Any())
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, there are no other " +
+                               $"parties with which to compare {defendantContribution.ToString()}");
+                return false;
+            }
+
+            foreach (var otherParty in otherParties)
+            {
+                var otherPartyContribution = GetContribution(otherParty);
+                if(otherPartyContribution == null)
+                    continue;
+
+                if (!IsProportional(defendantContribution, otherPartyContribution)
+                    || !IsProportional(otherPartyContribution, defendantContribution))
+                {
+                    AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsProportional)} is false " +
+                                   $"for defendant's {defendantContribution.ToString()} to {otherPartyContribution.ToString()}");
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

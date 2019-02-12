@@ -24,5 +24,6 @@ namespace NoFuture.Rand.Law.US.Criminal
 
         IList<IElement> AdditionalElements { get; }
 
+        Func<IEnumerable<ILegalPerson>> OtherParties { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
+namespace NoFuture.Rand.Law.US.Criminal.Defense
 {
     public class Provacation : DefenseBase
     {

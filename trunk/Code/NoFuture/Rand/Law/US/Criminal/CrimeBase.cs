@@ -69,6 +69,7 @@ namespace NoFuture.Rand.Law.US.Criminal
         }
 
         public IList<IElement> AdditionalElements { get; } = new List<IElement>();
+        public Func<IEnumerable<ILegalPerson>> OtherParties { get; set; } = () => new List<ILegalPerson>();
 
         protected internal void AddPersonsReasonEntries(ILegalPerson offeror, ILegalPerson offeree)
         {

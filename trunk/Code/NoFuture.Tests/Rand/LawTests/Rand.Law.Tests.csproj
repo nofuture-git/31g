@@ -153,6 +153,7 @@
     <Compile Include="CriminalTests\MensReaTests\StatevAndrewsTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\StatevHornerTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\StatevSlaytonTests.cs" />
+    <Compile Include="CriminalTests\TermsTests\ForceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TermTests.cs" />
   </ItemGroup>
