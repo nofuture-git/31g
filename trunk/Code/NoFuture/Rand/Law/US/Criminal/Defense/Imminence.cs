@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         {
         }
 
-        public Func<ILegalPerson, TimeSpan> GetMinimumResponseTime { get; set; } = lp => TimeSpan.Zero;
+        public Func<ILegalPerson, TimeSpan> GetResponseTime { get; set; } = lp => TimeSpan.Zero;
 
         public Predicate<TimeSpan> IsImmediatePresent { get; set; } = ts => ts <= NormalReactionTimeToDanger;
 
@@ -34,10 +34,10 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
             if (defendant == null)
                 return false;
 
-            var ts = GetMinimumResponseTime(defendant);
+            var ts = GetResponseTime(defendant);
             if (!IsImmediatePresent(ts))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, with minimum " +
+                AddReasonEntry($"defendant, {defendant.Name}, with " +
                                $"response time of {ts} had {nameof(IsImmediatePresent)} as false");
                 return false;
             }

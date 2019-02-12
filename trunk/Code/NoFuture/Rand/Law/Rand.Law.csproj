@@ -152,10 +152,12 @@
     <Compile Include="US\Criminal\Infraction.cs" />
     <Compile Include="US\Criminal\Misdemeanor.cs" />
     <Compile Include="US\Criminal\Terms\DeadlyForce.cs" />
+    <Compile Include="US\Criminal\Terms\Death.cs" />
     <Compile Include="US\Criminal\Terms\Force.cs" />
     <Compile Include="US\Criminal\Terms\MalumInSe.cs" />
     <Compile Include="US\Criminal\Terms\MalumProhibitum.cs" />
     <Compile Include="US\Criminal\Terms\NondeadlyForce.cs" />
+    <Compile Include="US\Criminal\Terms\SeriousBodilyInjury.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

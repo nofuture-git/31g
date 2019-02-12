@@ -1,5 +1,4 @@
-﻿using System;
-using NoFuture.Rand.Law.US.Criminal.Terms;
+﻿using NoFuture.Rand.Law.US.Criminal.Terms;
 
 namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
 {
@@ -16,14 +15,14 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
         {
             Provacation = new Provacation(crime);
             Imminence = new Imminence(crime);
-            Proportionality = new Proportionality<Force>(crime);
+            Proportionality = new Proportionality<ITermCategory>(crime);
         }
 
         public Provacation Provacation { get; set; }
 
         public Imminence Imminence { get; set; }
 
-        public Proportionality<Force> Proportionality { get; set; }
+        public Proportionality<ITermCategory> Proportionality { get; set; }
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
@@ -48,6 +47,10 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
                 AddReasonEntryRange(Proportionality.GetReasonEntries());
                 return false;
             }
+
+            AddReasonEntryRange(Imminence?.GetReasonEntries());
+            AddReasonEntryRange(Provacation?.GetReasonEntries());
+            AddReasonEntryRange(Proportionality?.GetReasonEntries());
 
             return true;
         }

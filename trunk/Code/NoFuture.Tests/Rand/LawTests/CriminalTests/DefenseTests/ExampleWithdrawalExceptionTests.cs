@@ -9,11 +9,11 @@ using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
 {
-    [TestFixture]
-    public class ExampleExcessiveForceExceptionTest
+    [TestFixture()]
+    public class ExampleWithdrawalExceptionTests
     {
         [Test]
-        public void ExampleExcessiveForceException()
+        public void ExampleWithdrawalException()
         {
             var testCrime = new Felony
             {
@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
                     IsKnowledgeOfWrongdoing = lp => lp is PattyEg,
                     IsIntentOnWrongdoing = lp => lp is PattyEg
                 },
-                OtherParties = () => new []{new PaigeEg()}
+                OtherParties = () => new[] { new PaigeEg() }
             };
 
             var testResult = testCrime.IsValid(new PattyEg());
@@ -37,32 +37,23 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
             {
                 Imminence = new Imminence(testCrime)
                 {
-                    GetResponseTime = lp => lp is PattyEg ? Imminence.NormalReactionTimeToDanger : TimeSpan.Zero,
+                    GetResponseTime = lp => lp is PattyEg ? Imminence.NormalReactionTimeToDanger : TimeSpan.Zero
                 },
                 Provacation = new Provacation(testCrime)
                 {
-                    IsInitiatorOfAttack = lp => lp is PaigeEg,
-                    IsWithdraws = lp => false,
-                    IsResponseToExcessiveForce = lp => lp is PattyEg,
+                    //in example, patty slaps paige, paige pummels on patty, patty runs away, paige pursues, patty defends, paige loses
+                    IsInitiatorOfAttack = lp => lp is PattyEg,
+                    IsWithdraws = lp => lp is PattyEg,
+                    //in example, these are both non-deadly force responses
+                    IsResponseToExcessiveForce = lp => false
                 },
                 Proportionality = new Proportionality<ITermCategory>(testCrime)
                 {
-                    GetContribution = lp => lp is PaigeEg ? new DeadlyForce() : new NondeadlyForce(),
+                    GetContribution = lp => new NondeadlyForce()
                 }
             };
             testResult = testSubject.IsValid(new PattyEg());
             Console.WriteLine(testSubject.ToString());
-            Assert.IsFalse(testResult);
         }
-    }
-
-    public class PattyEg : LegalPerson
-    {
-        public PattyEg(): base("PATTY") { }
-    }
-
-    public class PaigeEg : LegalPerson
-    {
-        public PaigeEg(): base("PAIGE") { }
     }
 }
