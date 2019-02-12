@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\..\..\packages\NUnit.3.11.0\build\NUnit.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FA3739EA-5D75-46AA-B856-014DB3A5E017}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Rand.Law.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Rand.Law.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.11.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.3.11.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CitationTests.cs" />
+    <Compile Include="ContractTests\AcceptanceTests\DavisvJacobyTests.cs" />
+    <Compile Include="ContractTests\AcceptanceTests\HendricksvBeheeTests.cs" />
+    <Compile Include="ContractTests\AcceptanceTests\HobbsvMassasoitWhipCoTests.cs" />
+    <Compile Include="ContractTests\AcceptanceTests\MunicipalvTownOfRamapoTests.cs" />
+    <Compile Include="ContractTests\AcceptanceTests\UnitedStatesLifeInsCovWilsonTests.cs" />
+    <Compile Include="ContractTests\BreachTests\FanokvCarverBoatTests.cs" />
+    <Compile Include="ContractTests\BreachTests\JacobYoungsvKentTests.cs" />
+    <Compile Include="ContractTests\BreachTests\KcaElectronicsvLegacyElectronicsTests.cs" />
+    <Compile Include="ContractTests\BreachTests\OwGrunRoofingvCopeTests.cs" />
+    <Compile Include="ContractTests\BreachTests\SmithvBradyTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\AlaskaPackersAssocvDomenicoTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\HamervSidwayTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\HarringtonvTaylorTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\JankowskivJedzTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\MillsvWymanTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\QuigleyvWilsonTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\RidgeRunnerForestryvVenemanTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\SchnellvNellTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\WeavertownvMoranTests.cs" />
+    <Compile Include="ContractTests\ConsiderationTests\WebbvMcGowinTests.cs" />
+    <Compile Include="ContractTests\ContractTermTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\AlabivDhlAirwaysTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\AustinInstrumentvLoralCorpTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\BatsakisvDemotsisTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\CrabtreevElizabethSalesTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\ExParteOdemTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\GuenthervAmerTexTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\HanksvPowderRidgeTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\McInerneyvCharterGolfTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\OdorizzivBloomfieldSchoolTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\OrtelerevTeachersBoardTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\SherwoodvWalkerTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\StandardFinancevEllisTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\StevensvPublicisTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\ValleyMedvFarberTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\WilliamsvWalkerThomFurnitureTests.cs" />
+    <Compile Include="ContractTests\DefenseTests\WoodvBoyntonTests.cs" />
+    <Compile Include="ContractTests\EstoppelTests\ConradvFieldsTests.cs" />
+    <Compile Include="ContractTests\EstoppelTests\HoffmanvRedOwlStoresTests.cs" />
+    <Compile Include="ContractTests\EstoppelTests\MayervKingColaTests.cs" />
+    <Compile Include="ContractTests\EstoppelTests\RicketsvScothornTests.cs" />
+    <Compile Include="ContractTests\ExcuseTests\BushvProtravelIntlTests.cs" />
+    <Compile Include="ContractTests\ExcuseTests\KarlWendtvIntlHarvesterTests.cs" />
+    <Compile Include="ContractTests\ExcuseTests\UsBancorpvAmeriquestTests.cs" />
+    <Compile Include="ContractTests\MutualAssentTests\AugsteinvLeslieTests.cs" />
+    <Compile Include="ContractTests\MutualAssentTests\LucyvZehmerTests.cs" />
+    <Compile Include="ContractTests\MutualAssentTests\OswaldvAllenTests.cs" />
+    <Compile Include="ContractTests\OffersTests\ConfederateMotorsvTernyTests.cs" />
+    <Compile Include="ContractTests\OffersTests\EverTiteRoofingCorpvGreenTests.cs" />
+    <Compile Include="ContractTests\OffersTests\FairmountvCrundenMartinTests.cs" />
+    <Compile Include="ContractTests\OffersTests\InReEstateOfServertsonTests.cs" />
+    <Compile Include="ContractTests\OffersTests\KloianvDominosPizzaTests.cs" />
+    <Compile Include="ContractTests\OffersTests\LeonardvPepsicoIncTests.cs" />
+    <Compile Include="ContractTests\OffersTests\PettersonvPattbergTests.cs" />
+    <Compile Include="ContractTests\OffersTests\PoelvBrunswickTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\BrandeisvCapitolCraneTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\CoastalSteelvAlgernonTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\DoeringvJohnDeereTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\HarrahsvHnedakBoboTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\HawkinsvMcGeeTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\HollywoodFanvGaborTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\KayAndersonvAmeritechTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\LacledeGasvAmocoOilTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\LakeRivervCarborundumTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\LeevFooteTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\LeingangvCityOfMandanTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\MistletoevLockeTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\ParkervTwentiethFoxTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\PeevyhousevGarlandCoalTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\RockinghamvLutenBridgeTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\SullivanvOconnorTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\TruckRentvPuritanFarmsTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\UsNavalInstitutevCharterCommTests.cs" />
+    <Compile Include="ContractTests\RemedyTests\VanWagnervSmEnterprisesTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\AcmeMarketsvFedArmoredTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\AmericanFertilizervWoodTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\ClarkvWestTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\FrigalimentvBnsInternationalTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\InReEstateOfSoperTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\MastersonvSineTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\MendenhallvHanesbrandsTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\MitchillvLathTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\NanakulivShellOilTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\NelsonvElwayTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\NorthHoustonvPwRealEstateTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\PpgIndustriesvShellOilTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\RandomHousevRosettaBooksTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\TownFairfieldvDaddarioTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\WoodvLucyLadyTests.cs" />
+    <Compile Include="ContractTests\SemiosisTests\WwwAssociatesvGiancontieriTests.cs" />
+    <Compile Include="ContractTests\UccTests\CommerceInsvBayerCorpTests.cs" />
+    <Compile Include="ContractTests\UccTests\ComNetworkvPurcellTireTests.cs" />
+    <Compile Include="ContractTests\UccTests\FlenderCorpvTippinsTests.cs" />
+    <Compile Include="ContractTests\UccTests\FoleyvDaytonBankTests.cs" />
+    <Compile Include="ContractTests\UccTests\GaredHoldingsvBestBoltTests.cs" />
+    <Compile Include="ContractTests\UccTests\ScoularCovDenneyTests.cs" />
+    <Compile Include="ContractTests\UccTests\TousleyBixlervColgateTests.cs" />
+    <Compile Include="CriminalTests\ActusReusTests\PowellvTexasTests.cs" />
+    <Compile Include="CriminalTests\ActusReusTests\RegaladovUsTests.cs" />
+    <Compile Include="CriminalTests\ActusReusTests\RobinsonvCaliforniaTests.cs" />
+    <Compile Include="CriminalTests\ActusReusTests\StatevSowryTests.cs" />
+    <Compile Include="CriminalTests\ActusReusTests\WendellHolisvTexasTests.cs" />
+    <Compile Include="CriminalTests\CausationTests\BullockvDelawareTests.cs" />
+    <Compile Include="CriminalTests\CrimeTests.cs" />
+    <Compile Include="CriminalTests\MensReaTests\DeanvUsTests.cs" />
+    <Compile Include="CriminalTests\MensReaTests\HaroldStaplesvUsTests.cs" />
+    <Compile Include="CriminalTests\MensReaTests\KarlaCrosbyvOregonTests.cs" />
+    <Compile Include="CriminalTests\MensReaTests\MorissettevUsTests.cs" />
+    <Compile Include="CriminalTests\MensReaTests\StatevAndrewsTests.cs" />
+    <Compile Include="CriminalTests\MensReaTests\StatevHornerTests.cs" />
+    <Compile Include="CriminalTests\MensReaTests\StatevSlaytonTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TermTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ContractTests\Get-ContractsUnitTestTemplate.ps1" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NoFuture\Rand\Core\Rand.Core.csproj">
+      <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
+      <Name>Rand.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Rand\Law\Rand.Law.csproj">
+      <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
+      <Name>Rand.Law</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Util\Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CaseExample00.txt" />
+    <Content Include="ContractTests\BreachTests\TestResult.xml" />
+    <Content Include="ContractTests\ExcuseTests\TestResult.xml" />
+    <Content Include="ContractTests\RemedyTests\TestResult.xml" />
+    <Content Include="CriminalTests\TestResult.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit.3.11.0\build\NUnit.props'))" />
+  </Target>
+</Project>

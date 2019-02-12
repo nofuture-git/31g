@@ -57,119 +57,6 @@
     <Compile Include="GeoTests\PostalAddressTests.cs" />
     <Compile Include="GovTests\VitalRecordTests.cs" />
     <Compile Include="CoreTests\RandPortionsTests.cs" />
-    <Compile Include="LawTests\CitationTests.cs" />
-    <Compile Include="LawTests\ContractTests\AcceptanceTests\DavisvJacobyTests.cs" />
-    <Compile Include="LawTests\ContractTests\AcceptanceTests\HendricksvBeheeTests.cs" />
-    <Compile Include="LawTests\ContractTests\AcceptanceTests\HobbsvMassasoitWhipCoTests.cs" />
-    <Compile Include="LawTests\ContractTests\AcceptanceTests\MunicipalvTownOfRamapoTests.cs" />
-    <Compile Include="LawTests\ContractTests\AcceptanceTests\UnitedStatesLifeInsCovWilsonTests.cs" />
-    <Compile Include="LawTests\ContractTests\BreachTests\FanokvCarverBoatTests.cs" />
-    <Compile Include="LawTests\ContractTests\BreachTests\JacobYoungsvKentTests.cs" />
-    <Compile Include="LawTests\ContractTests\BreachTests\KcaElectronicsvLegacyElectronicsTests.cs" />
-    <Compile Include="LawTests\ContractTests\BreachTests\OwGrunRoofingvCopeTests.cs" />
-    <Compile Include="LawTests\ContractTests\BreachTests\SmithvBradyTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\AlaskaPackersAssocvDomenicoTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\HamervSidwayTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\HarringtonvTaylorTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\JankowskivJedzTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\MillsvWymanTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\QuigleyvWilsonTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\RidgeRunnerForestryvVenemanTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\SchnellvNellTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\WeavertownvMoranTests.cs" />
-    <Compile Include="LawTests\ContractTests\ConsiderationTests\WebbvMcGowinTests.cs" />
-    <Compile Include="LawTests\ContractTests\ContractTermTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\AlabivDhlAirwaysTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\AustinInstrumentvLoralCorpTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\BatsakisvDemotsisTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\CrabtreevElizabethSalesTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\ExParteOdemTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\GuenthervAmerTexTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\HanksvPowderRidgeTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\McInerneyvCharterGolfTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\OdorizzivBloomfieldSchoolTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\OrtelerevTeachersBoardTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\SherwoodvWalkerTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\StandardFinancevEllisTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\StevensvPublicisTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\ValleyMedvFarberTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\WilliamsvWalkerThomFurnitureTests.cs" />
-    <Compile Include="LawTests\ContractTests\DefenseTests\WoodvBoyntonTests.cs" />
-    <Compile Include="LawTests\ContractTests\EstoppelTests\ConradvFieldsTests.cs" />
-    <Compile Include="LawTests\ContractTests\EstoppelTests\HoffmanvRedOwlStoresTests.cs" />
-    <Compile Include="LawTests\ContractTests\EstoppelTests\MayervKingColaTests.cs" />
-    <Compile Include="LawTests\ContractTests\EstoppelTests\RicketsvScothornTests.cs" />
-    <Compile Include="LawTests\ContractTests\ExcuseTests\BushvProtravelIntlTests.cs" />
-    <Compile Include="LawTests\ContractTests\ExcuseTests\KarlWendtvIntlHarvesterTests.cs" />
-    <Compile Include="LawTests\ContractTests\ExcuseTests\UsBancorpvAmeriquestTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\BrandeisvCapitolCraneTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\CoastalSteelvAlgernonTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\DoeringvJohnDeereTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\HarrahsvHnedakBoboTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\HawkinsvMcGeeTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\HollywoodFanvGaborTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\KayAndersonvAmeritechTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\LacledeGasvAmocoOilTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\LakeRivervCarborundumTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\LeevFooteTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\LeingangvCityOfMandanTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\MistletoevLockeTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\ParkervTwentiethFoxTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\PeevyhousevGarlandCoalTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\RockinghamvLutenBridgeTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\SullivanvOconnorTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\TruckRentvPuritanFarmsTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\UsNavalInstitutevCharterCommTests.cs" />
-    <Compile Include="LawTests\ContractTests\RemedyTests\VanWagnervSmEnterprisesTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\AcmeMarketsvFedArmoredTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\AmericanFertilizervWoodTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\ClarkvWestTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\FrigalimentvBnsInternationalTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\InReEstateOfSoperTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\MastersonvSineTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\MendenhallvHanesbrandsTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\NanakulivShellOilTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\NelsonvElwayTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\NorthHoustonvPwRealEstateTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\PpgIndustriesvShellOilTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\RandomHousevRosettaBooksTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\TownFairfieldvDaddarioTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\WoodvLucyLadyTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\WwwAssociatesvGiancontieriTests.cs" />
-    <Compile Include="LawTests\ContractTests\MutualAssentTests\AugsteinvLeslieTests.cs" />
-    <Compile Include="LawTests\ContractTests\OffersTests\ConfederateMotorsvTernyTests.cs" />
-    <Compile Include="LawTests\ContractTests\OffersTests\EverTiteRoofingCorpvGreenTests.cs" />
-    <Compile Include="LawTests\ContractTests\OffersTests\FairmountvCrundenMartinTests.cs" />
-    <Compile Include="LawTests\ContractTests\OffersTests\InReEstateOfServertsonTests.cs" />
-    <Compile Include="LawTests\ContractTests\OffersTests\KloianvDominosPizzaTests.cs" />
-    <Compile Include="LawTests\ContractTests\OffersTests\LeonardvPepsicoIncTests.cs" />
-    <Compile Include="LawTests\ContractTests\MutualAssentTests\LucyvZehmerTests.cs" />
-    <Compile Include="LawTests\ContractTests\MutualAssentTests\OswaldvAllenTests.cs" />
-    <Compile Include="LawTests\ContractTests\OffersTests\PettersonvPattbergTests.cs" />
-    <Compile Include="LawTests\ContractTests\OffersTests\PoelvBrunswickTests.cs" />
-    <Compile Include="LawTests\ContractTests\SemiosisTests\MitchillvLathTests.cs" />
-    <Compile Include="LawTests\ContractTests\UccTests\CommerceInsvBayerCorpTests.cs" />
-    <Compile Include="LawTests\ContractTests\UccTests\ComNetworkvPurcellTireTests.cs" />
-    <Compile Include="LawTests\ContractTests\UccTests\FlenderCorpvTippinsTests.cs" />
-    <Compile Include="LawTests\ContractTests\UccTests\FoleyvDaytonBankTests.cs" />
-    <Compile Include="LawTests\ContractTests\UccTests\GaredHoldingsvBestBoltTests.cs" />
-    <Compile Include="LawTests\ContractTests\UccTests\ScoularCovDenneyTests.cs" />
-    <Compile Include="LawTests\ContractTests\UccTests\TousleyBixlervColgateTests.cs" />
-    <Compile Include="LawTests\CriminalTests\ActusReusTests\RegaladovUsTests.cs" />
-    <Compile Include="LawTests\CriminalTests\ActusReusTests\StatevSowryTests.cs" />
-    <Compile Include="LawTests\CriminalTests\CausationTests\BullockvDelawareTests.cs" />
-    <Compile Include="LawTests\CriminalTests\MensReaTests\DeanvUsTests.cs" />
-    <Compile Include="LawTests\CriminalTests\MensReaTests\HaroldStaplesvUsTests.cs" />
-    <Compile Include="LawTests\CriminalTests\ActusReusTests\WendellHolisvTexasTests.cs" />
-    <Compile Include="LawTests\CriminalTests\CrimeTests.cs" />
-    <Compile Include="LawTests\CriminalTests\ActusReusTests\PowellvTexasTests.cs" />
-    <Compile Include="LawTests\CriminalTests\ActusReusTests\RobinsonvCaliforniaTests.cs" />
-    <Compile Include="LawTests\CriminalTests\MensReaTests\KarlaCrosbyvOregonTests.cs" />
-    <Compile Include="LawTests\CriminalTests\MensReaTests\MorissettevUsTests.cs" />
-    <Compile Include="LawTests\CriminalTests\MensReaTests\StatevAndrewsTests.cs" />
-    <Compile Include="LawTests\CriminalTests\MensReaTests\StatevHornerTests.cs" />
-    <Compile Include="LawTests\CriminalTests\MensReaTests\StatevSlaytonTests.cs" />
-    <Compile Include="LawTests\TermTests.cs" />
     <Compile Include="SpTests\BalanceTests.cs" />
     <Compile Include="SpTests\JournalTests.cs" />
     <Compile Include="SpTests\LedgerTests.cs" />
@@ -258,10 +145,6 @@
       <Project>{bb60d20c-259f-4fb3-9ba3-58e859bd712d}</Project>
       <Name>Rand.Gov</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NoFuture\Rand\Law\Rand.Law.csproj">
-      <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
-      <Name>Rand.Law</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Rand\Opes\Rand.Opes.csproj">
       <Project>{195a7d49-9e70-4d99-b55d-ea15c4da2b62}</Project>
       <Name>Rand.Opes</Name>
@@ -294,9 +177,6 @@
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="LawTests\CaseExample00.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
