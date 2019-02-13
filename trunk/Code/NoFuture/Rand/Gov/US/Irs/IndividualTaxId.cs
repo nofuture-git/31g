@@ -2,6 +2,12 @@
 
 namespace NoFuture.Rand.Gov.US.Irs
 {
+    /// <summary>
+    /// id issued by IRS to individual tax payers
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[^(9\d{2})([ \-]?)(?!93|89)([789][0-9])([ \-]?)(\d{4})$]]>
+    /// </remarks>
     [Serializable]
     public class IndividualTaxId : TaxpayerIdentificationNumber
     {
