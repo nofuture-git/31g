@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US.Criminal.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
 {
     [TestFixture]
     public class ExampleAppropriateDeadlyForceTests
@@ -35,6 +35,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
 
             var testSubject = new DefenseOfSelf(testCrime)
             {
+                IsReasonableFearOfInjuryOrDeath = lp => true,
                 Imminence = new Imminence(testCrime)
                 {
                     GetResponseTime = lp => lp is WandaEg ? Imminence.NormalReactionTimeToDanger : TimeSpan.Zero

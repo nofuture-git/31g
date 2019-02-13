@@ -2,7 +2,7 @@
 namespace NoFuture.Rand.Law
 {
     /// <summary>
-    /// Subjective Test the object viewed from the perspective of the subject
+    /// Subjective Test: the object viewed from the perspective of the subject
     /// </summary>
     public delegate bool SubjectivePredicate<in T>(T obj);
 

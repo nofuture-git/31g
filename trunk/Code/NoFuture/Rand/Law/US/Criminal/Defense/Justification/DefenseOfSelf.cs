@@ -24,6 +24,8 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
 
         public Proportionality<ITermCategory> Proportionality { get; set; }
 
+        public ObjectivePredicate<ILegalPerson> IsReasonableFearOfInjuryOrDeath { get; set; } = lp => false;
+
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
             var defendant = Government.GetDefendant(offeror, offeree, this);
@@ -45,6 +47,12 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(Proportionality)} is false");
                 AddReasonEntryRange(Proportionality.GetReasonEntries());
+                return false;
+            }
+
+            if (!IsReasonableFearOfInjuryOrDeath(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsReasonableFearOfInjuryOrDeath)} is false");
                 return false;
             }
 

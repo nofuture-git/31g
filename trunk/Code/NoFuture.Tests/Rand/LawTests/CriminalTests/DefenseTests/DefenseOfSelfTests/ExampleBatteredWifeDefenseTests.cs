@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.US.Criminal.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
 {
     [TestFixture]
     public class ExampleBatteredWifeDefenseTests
@@ -34,6 +34,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
 
             var testSubject = new DefenseOfSelf(testCrime)
             {
+                IsReasonableFearOfInjuryOrDeath = lp => true,
                 Imminence = new BatteredWomanSyndrome(testCrime),
                 Proportionality = new Proportionality<ITermCategory>(testCrime)
                 {

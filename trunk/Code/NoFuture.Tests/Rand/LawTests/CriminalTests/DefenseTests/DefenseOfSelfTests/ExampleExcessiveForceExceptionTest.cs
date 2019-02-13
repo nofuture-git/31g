@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.US.Criminal.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
+namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
 {
     [TestFixture]
     public class ExampleExcessiveForceExceptionTest
@@ -35,6 +35,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
 
             var testSubject = new DefenseOfSelf(testCrime)
             {
+                IsReasonableFearOfInjuryOrDeath = lp => true,
                 Imminence = new Imminence(testCrime)
                 {
                     GetResponseTime = lp => lp is PattyEg ? Imminence.NormalReactionTimeToDanger : TimeSpan.Zero,
@@ -42,8 +43,8 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
                 Provacation = new Provacation(testCrime)
                 {
                     IsInitiatorOfAttack = lp => lp is PaigeEg,
-                    IsWithdraws = lp => false,
-                    IsResponseToExcessiveForce = lp => lp is PattyEg,
+                    IsInitiatorWithdraws = lp => false,
+                    IsInitiatorRespondingToExcessiveForce = lp => lp is PattyEg,
                 },
                 Proportionality = new Proportionality<ITermCategory>(testCrime)
                 {
