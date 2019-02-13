@@ -18,12 +18,24 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
             Proportionality = new Proportionality<ITermCategory>(crime);
         }
 
+        /// <summary>
+        /// (1) an unprovoked attack
+        /// </summary>
         public Provacation Provacation { get; set; }
 
+        /// <summary>
+        /// (2) an attack which threatens imminent injury or death
+        /// </summary>
         public Imminence Imminence { get; set; }
 
+        /// <summary>
+        /// (3) an objectively reasonable degree of force, used in response
+        /// </summary>
         public Proportionality<ITermCategory> Proportionality { get; set; }
 
+        /// <summary>
+        /// (4) an objectively reasonable fear of injury or death
+        /// </summary>
         public ObjectivePredicate<ILegalPerson> IsReasonableFearOfInjuryOrDeath { get; set; } = lp => false;
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)

@@ -2,6 +2,9 @@
 
 namespace NoFuture.Rand.Law.US.Criminal.Defense
 {
+    /// <summary>
+    /// means the attack is immediate and not something that will occur in the future or has occured in the past.
+    /// </summary>
     public class Imminence : DefenseBase
     {
         public static readonly TimeSpan OneSecond = new TimeSpan(0,0,0,1);
@@ -24,8 +27,14 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         {
         }
 
+        /// <summary>
+        /// The timespan of a persons response
+        /// </summary>
         public Func<ILegalPerson, TimeSpan> GetResponseTime { get; set; } = lp => TimeSpan.Zero;
 
+        /// <summary>
+        /// The test for which a timespan is considered immediate, default is <see cref="NormalReactionTimeToDanger"/>
+        /// </summary>
         public Predicate<TimeSpan> IsImmediatePresent { get; set; } = ts => ts <= NormalReactionTimeToDanger;
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)

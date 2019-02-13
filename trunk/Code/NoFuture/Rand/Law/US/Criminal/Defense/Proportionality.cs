@@ -14,8 +14,15 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         {
         }
 
+        /// <summary>
+        /// The enclosure to get a portion-per-person
+        /// </summary>
         public Func<ILegalPerson, T> GetContribution { get; set; } = lp => default(T);
 
+        /// <summary>
+        /// The test of each portion-per-person compared to the portion-per-defendant using 
+        /// the numerical value returned from <see cref="ITermCategory.GetCategoryRank"/>
+        /// </summary>
         public Func<ITermCategory, ITermCategory, bool> IsProportional { get; set; } = (t1, t2) =>
             (t1?.GetCategoryRank() ?? 0) == (t2?.GetCategoryRank() ?? -1);
 

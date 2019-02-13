@@ -146,6 +146,7 @@
     <Compile Include="CriminalTests\ActusReusTests\WendellHolisvTexasTests.cs" />
     <Compile Include="CriminalTests\CausationTests\BullockvDelawareTests.cs" />
     <Compile Include="CriminalTests\CrimeTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\DefenseOfOtherTests\CommonwealthvMirandaTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfSelfTests\ExampleAppropriateDeadlyForceTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfSelfTests\ExampleAttackIsRetaliatoryTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfSelfTests\ExampleAttackNotImminentTests.cs" />

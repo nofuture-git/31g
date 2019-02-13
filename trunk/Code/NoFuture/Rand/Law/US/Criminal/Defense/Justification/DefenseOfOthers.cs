@@ -2,15 +2,18 @@
 
 namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
 {
-    public class DefenseOfOthers : DefenseBase
+    /// <inheritdoc />
+    /// <summary>
+    /// <![CDATA[
+    /// under the circumstances as the actor believes them to be, the 
+    /// person whom he seeks to protect would be justified in using 
+    /// such protective force (Model Penal Code § 3.05(1) (b))
+    /// ]]>
+    /// </summary>
+    public class DefenseOfOthers : DefenseOfSelf
     {
         public DefenseOfOthers(ICrime crime) : base(crime)
         {
-        }
-
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
-        {
-            throw new NotImplementedException();
         }
     }
 }

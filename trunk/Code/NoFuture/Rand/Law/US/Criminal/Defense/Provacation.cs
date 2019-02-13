@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         public Predicate<ILegalPerson> IsInitiatorWithdraws { get; set; } = lp => false;
 
         /// <summary>
-        /// Asserts that the defendant was provoked
+        /// Asserts that the defendant was unprovoked
         /// </summary>
         /// <param name="offeror"></param>
         /// <param name="offeree"></param>
