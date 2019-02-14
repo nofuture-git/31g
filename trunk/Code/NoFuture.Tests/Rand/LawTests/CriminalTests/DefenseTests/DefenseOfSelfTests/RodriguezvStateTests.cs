@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 },
                 Proportionality = new Proportionality<ITermCategory>(testCrime)
                 {
-                    GetContribution = lp => new DeadlyForce(),
+                    GetChoice = lp => new DeadlyForce(),
                 },
                 Provacation = new Provacation(testCrime)
                 {

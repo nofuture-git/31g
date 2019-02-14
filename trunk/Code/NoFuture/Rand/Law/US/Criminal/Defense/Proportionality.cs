@@ -18,13 +18,15 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         /// <summary>
         /// The enclosure to get a portion-per-person
         /// </summary>
-        public Func<ILegalPerson, T> GetContribution { get; set; } = lp => default(T);
+        /// <remarks>
+        /// Use the <see cref="ICrime.OtherParties"/> to place other parties into scope
+        /// </remarks>
+        public Func<ILegalPerson, T> GetChoice { get; set; } = lp => default(T);
 
         /// <summary>
-        /// The test of each portion-per-person compared to the portion-per-defendant using 
-        /// the numerical value returned from <see cref="ITermCategory.GetCategoryRank"/>
+        /// The test of one <see cref="T"/> compared to another <see cref="T"/>
         /// </summary>
-        public Func<ITermCategory, ITermCategory, bool> IsProportional { get; set; } 
+        public Func<T, T, bool> IsProportional { get; set; }
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
@@ -35,8 +37,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
             var getOtherParties = Crime?.OtherParties ?? (() => new List<ILegalPerson>());
             var otherParties = getOtherParties();
 
-
-            var defendantContribution = GetContribution(defendant);
+            var defendantContribution = GetChoice(defendant);
 
             if (otherParties == null || !otherParties.Any())
             {
@@ -47,21 +48,29 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
 
             foreach (var otherParty in otherParties)
             {
-                var otherPartyContribution = GetContribution(otherParty);
+                var otherPartyContribution = GetChoice(otherParty);
                 if(otherPartyContribution == null)
                     continue;
 
-                if (!IsProportional(defendantContribution, otherPartyContribution)
-                    || !IsProportional(otherPartyContribution, defendantContribution))
-                {
-                    AddReasonEntry($"{nameof(IsProportional)} is false " +
-                                   $"for {defendant.Name}'s {defendantContribution.ToString()} " +
-                                   $"to {otherParty.Name}'s {otherPartyContribution.ToString()}");
-                    return false;
-                }
+                if (TestIsProportional(defendant, otherParty, defendantContribution, otherPartyContribution))
+                    continue;
+                return false;
             }
 
             return true;
+        }
+
+        protected internal bool TestIsProportional(ILegalPerson defendant, ILegalPerson otherParty, T defendantContribution, T otherPartyContribution)
+        {
+            if (IsProportional(defendantContribution, otherPartyContribution) &&
+                IsProportional(otherPartyContribution, defendantContribution))
+                return true;
+
+            AddReasonEntry($"{nameof(IsProportional)} is false " +
+                           $"for {defendant.Name}'s {defendantContribution.ToString()} " +
+                           $"to {otherParty.Name}'s {otherPartyContribution.ToString()}");
+            return false;
+
         }
     }
 }

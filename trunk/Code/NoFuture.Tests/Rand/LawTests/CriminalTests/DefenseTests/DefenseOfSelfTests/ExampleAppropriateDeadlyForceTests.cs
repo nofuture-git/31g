@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 Proportionality = new Proportionality<ITermCategory>(testCrime)
                 {
                     //deadly force is appropriate to serious bodily harm
-                    GetContribution = lp =>
+                    GetChoice = lp =>
                     {
                         if (lp is WandaEg)
                             return new DeadlyForce();

@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 },
                 Proportionality = new Proportionality<ITermCategory>(testCrime)
                 {
-                    GetContribution = lp => new NondeadlyForce()
+                    GetChoice = lp => new NondeadlyForce()
                 }
             };
 

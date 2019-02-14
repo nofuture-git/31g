@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 },
                 Proportionality = new Proportionality<ITermCategory>(testCrime)
                 {
-                    GetContribution = lp =>
+                    GetChoice = lp =>
                     {
                         if(lp is MichaelTEustler)
                             return new NondeadlyForce();

@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 Proportionality = new Proportionality<ITermCategory>(testCrime)
                 {
                     //example seems to assume that the fist fight is deadly
-                    GetContribution = lp => new DeadlyForce()
+                    GetChoice = lp => new DeadlyForce()
                 },
                 Provacation = new Provacation(testCrime)
                 {

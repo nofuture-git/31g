@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 },
                 Proportionality = new Proportionality<ITermCategory>(testCrime)
                 {
-                    GetContribution = lp => lp is PaigeEg ? new DeadlyForce() : new NondeadlyForce(),
+                    GetChoice = lp => lp is PaigeEg ? new DeadlyForce() : new NondeadlyForce(),
                 }
             };
             testResult = testSubject.IsValid(new PattyEg());

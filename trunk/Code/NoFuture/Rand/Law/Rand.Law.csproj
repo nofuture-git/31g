@@ -38,6 +38,7 @@
     <Compile Include="Attributes\AkaAttribute.cs" />
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="Exceptions\LawException.cs" />
+    <Compile Include="TermCategoryBoolOps.cs" />
     <Compile Include="US\Contracts\Excuse\ExcuseBase.cs" />
     <Compile Include="US\Contracts\Breach\PerfectTender.cs" />
     <Compile Include="US\Contracts\Breach\StandardsBase.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="LegalConcept.cs" />
     <Compile Include="US\Contracts\Terms\WrittenTerm.cs" />
     <Compile Include="US\Criminal\CrimeBase.cs" />
+    <Compile Include="US\Criminal\Defense\ChoiceThereof.cs" />
     <Compile Include="US\Criminal\Defense\DefenseBase.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Entrapment.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Ignorance.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="US\Criminal\Defense\Justification\DefenseOfOthers.cs" />
     <Compile Include="US\Criminal\Defense\Justification\DefenseOfProperty.cs" />
     <Compile Include="US\Criminal\Defense\Justification\DefenseOfSelf.cs" />
+    <Compile Include="US\Criminal\Defense\Justification\NecessityDefense.cs" />
     <Compile Include="US\Criminal\Defense\PolicePower.cs" />
     <Compile Include="US\Criminal\Defense\Proportionality.cs" />
     <Compile Include="US\Criminal\Defense\Provacation.cs" />
