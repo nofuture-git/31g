@@ -12,7 +12,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
     {
         public Proportionality(ICrime crime) : base(crime)
         {
-            IsProportional = (t1, t2) => TermCategory.IsRank(TermCategoryBoolOps.Eq, t1, t2);
+            IsProportional = (t1, t2) =>
+                TermCategory.IsRank(TermCategoryBoolOps.Eq, t1, t2) &&
+                TermCategory.IsRank(TermCategoryBoolOps.Eq, t2, t1);
         }
 
         /// <summary>
@@ -62,8 +64,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
 
         protected internal bool TestIsProportional(ILegalPerson defendant, ILegalPerson otherParty, T defendantContribution, T otherPartyContribution)
         {
-            if (IsProportional(defendantContribution, otherPartyContribution) &&
-                IsProportional(otherPartyContribution, defendantContribution))
+            if (IsProportional(defendantContribution, otherPartyContribution))
                 return true;
 
             AddReasonEntry($"{nameof(IsProportional)} is false " +

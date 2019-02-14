@@ -151,7 +151,11 @@
     <Compile Include="CriminalTests\DefenseTests\DefenseOfOtherTests\DuttonvHayesPupkoTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfOtherTests\ExampleDefenseOfHabitationTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfOtherTests\ExampleDefenseOfPropertyTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\DefenseOfOtherTests\ExampleDuressDefenseTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\DefenseOfOtherTests\ExampleNecessityDefenseTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfOtherTests\ExamplePolicePowerTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\DefenseOfOtherTests\PeoplevLovercampTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\DefenseOfOtherTests\StatevDaoudTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfSelfTests\ExampleAppropriateDeadlyForceTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfSelfTests\ExampleAttackIsRetaliatoryTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfSelfTests\ExampleAttackNotImminentTests.cs" />

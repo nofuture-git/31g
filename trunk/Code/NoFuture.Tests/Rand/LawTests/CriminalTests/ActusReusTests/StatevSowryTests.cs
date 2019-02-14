@@ -31,7 +31,6 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.ActusReusTests
                 MensRea = new Knowingly
                 {
                     IsKnowledgeOfWrongdoing = lp => lp is Sowry,
-                    IsIntentOnWrongdoing = lp => lp is Sowry
                 }
             };
 

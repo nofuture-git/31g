@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NoFuture.Rand.Law.US.Criminal.Defense
 {
@@ -11,7 +12,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
     {
         public ChoiceThereof(ICrime crime) : base(crime)
         {
-            IsProportional = (t1, t2) => TermCategory.IsRank(TermCategoryBoolOps.Ge, t1, t2);
+            IsProportional = (t1, t2) => TermCategory.IsRank(TermCategoryBoolOps.Lt, t1, t2);
         }
 
         /// <summary>
@@ -36,7 +37,11 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
                 return false;
             }
 
-            return true;
+            var getOtherParties = Crime?.OtherParties ?? (() => new List<ILegalPerson>());
+            var otherParties = getOtherParties();
+
+            //for duress the choice of the defendant is less than the choice of other parties
+            return !otherParties.Any() || base.IsValid(offeror, offeree);
         }
     }
 }
