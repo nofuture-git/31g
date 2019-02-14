@@ -12,6 +12,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
     {
         public Proportionality(ICrime crime) : base(crime)
         {
+            IsProportional = (t1, t2) => TermCategory.IsRank(TermCategoryBoolOps.Eq, t1, t2);
         }
 
         /// <summary>
@@ -23,8 +24,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         /// The test of each portion-per-person compared to the portion-per-defendant using 
         /// the numerical value returned from <see cref="ITermCategory.GetCategoryRank"/>
         /// </summary>
-        public Func<ITermCategory, ITermCategory, bool> IsProportional { get; set; } = (t1, t2) =>
-            (t1?.GetCategoryRank() ?? 0) == (t2?.GetCategoryRank() ?? -1);
+        public Func<ITermCategory, ITermCategory, bool> IsProportional { get; set; } 
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {

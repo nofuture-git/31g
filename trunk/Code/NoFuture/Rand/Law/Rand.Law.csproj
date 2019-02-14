@@ -123,9 +123,12 @@
     <Compile Include="US\Criminal\Defense\Excuse\Insanity.cs" />
     <Compile Include="US\Criminal\Defense\Imminence.cs" />
     <Compile Include="US\Criminal\Defense\Justification\BatteredWomanSyndrome.cs" />
+    <Compile Include="US\Criminal\Defense\Justification\DefenseOfBase.cs" />
+    <Compile Include="US\Criminal\Defense\Justification\DefenseOfHabitation.cs" />
     <Compile Include="US\Criminal\Defense\Justification\DefenseOfOthers.cs" />
     <Compile Include="US\Criminal\Defense\Justification\DefenseOfProperty.cs" />
     <Compile Include="US\Criminal\Defense\Justification\DefenseOfSelf.cs" />
+    <Compile Include="US\Criminal\Defense\PolicePower.cs" />
     <Compile Include="US\Criminal\Defense\Proportionality.cs" />
     <Compile Include="US\Criminal\Defense\Provacation.cs" />
     <Compile Include="US\Criminal\Elements\Act\ActusReus.cs" />

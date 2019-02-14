@@ -683,3 +683,4 @@ purloin: to steal from someone who trusted you
 desiderata: something that is needed or wanted
 deontology: the study of the nature of duty and obligation
 conjecture: a conclusion formed on incomplete information
+curtilage: the land immediately surrounding a dwelling

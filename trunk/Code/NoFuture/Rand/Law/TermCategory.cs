@@ -58,5 +58,27 @@ namespace NoFuture.Rand.Law
         {
             return GetCategory();
         }
+
+        /// <summary>
+        /// Helper method to perform boolean operations on two <see cref="ITermCategory"/>
+        /// </summary>
+        public static bool IsRank(TermCategoryBoolOps op, ITermCategory t1, ITermCategory t2)
+        {
+            switch (op)
+            {
+                case TermCategoryBoolOps.Ne:
+                    return (t1?.GetCategoryRank() ?? 0) != (t2?.GetCategoryRank() ?? 0);
+                case TermCategoryBoolOps.Gt:
+                    return (t1?.GetCategoryRank() ?? 0) > (t2?.GetCategoryRank() ?? 0);
+                case TermCategoryBoolOps.Lt:
+                    return (t1?.GetCategoryRank() ?? 0) < (t2?.GetCategoryRank() ?? 0);
+                case TermCategoryBoolOps.Ge:
+                    return (t1?.GetCategoryRank() ?? 0) >= (t2?.GetCategoryRank() ?? 0);
+                case TermCategoryBoolOps.Le:
+                    return (t1?.GetCategoryRank() ?? 0) <= (t2?.GetCategoryRank() ?? 0);
+                default:
+                    return (t1?.GetCategoryRank() ?? 0) == (t2?.GetCategoryRank() ?? -1);
+            }
+        }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NoFuture.Rand.Law.US.Criminal;
+using NoFuture.Rand.Law.US.Criminal.Defense;
+using NoFuture.Rand.Law.US.Criminal.Defense.Justification;
+using NoFuture.Rand.Law.US.Criminal.Elements.Act;
+using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.US.Criminal.Terms;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
 {
@@ -13,7 +14,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, defense of others is subjective test
     /// ]]>
     /// </remarks>
     [TestFixture()]
@@ -22,7 +23,45 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
         [Test]
         public void CommonwealthvMiranda()
         {
+            var testCrime = new Misdemeanor
+            {
+                ActusReus = new ActusReus
+                {
+                    IsAction = lp => lp is TrooperSweet,
+                    IsVoluntary = lp => lp is TrooperSweet
+                },
+                MensRea = new GeneralIntent
+                {
+                    IsKnowledgeOfWrongdoing = lp => lp is TrooperSweet,
+                    IsIntentOnWrongdoing = lp => lp is TrooperSweet
+                },
+                OtherParties = () => new ILegalPerson[]{new Miranda(), new DemetriaBattle(), },
+            };
 
+            var testResult = testCrime.IsValid(new Miranda());
+            Assert.IsFalse(testResult);
+
+            var testSubject = new DefenseOfOthers(testCrime)
+            {
+                //Maria attempted to defend Demetria based on the reasonably appearance that she was in danger from trooper Sweet
+                IsReasonablyAppearedInjuryOrDeath = lp => lp is Miranda,
+                Imminence = new Imminence(testCrime)
+                {
+                    GetResponseTime = lp => Imminence.NormalReactionTimeToDanger
+                },
+                Provacation = new Provacation(testCrime)
+                {
+                    IsInitiatorOfAttack = lp => lp is TrooperSweet,
+                },
+                Proportionality = new Proportionality<ITermCategory>(testCrime)
+                {
+                    GetContribution = lp => new NondeadlyForce()
+                }
+            };
+
+            testResult = testSubject.IsValid(new Miranda());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 
@@ -32,5 +71,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
     }
 
     public class DemetriaBattle : LegalPerson { }
+
+    public class TrooperSweet : LegalPerson { }
 
 }
