@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
     /// Insanity defense named after Daniel M'Naghten from England (1843).
     /// </summary>
     [Aka("right-wrong test")]
-    public class MNaghten : Insanity
+    public class MNaghten : InsanityBase
     {
         public MNaghten(ICrime crime) : base(crime)
         {
