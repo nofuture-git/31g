@@ -51,7 +51,6 @@
             AddReasonEntryRange(Imminence?.GetReasonEntries());
             AddReasonEntryRange(Provacation?.GetReasonEntries());
             AddReasonEntryRange(Proportionality?.GetReasonEntries());
-
             return true;
         }
     }

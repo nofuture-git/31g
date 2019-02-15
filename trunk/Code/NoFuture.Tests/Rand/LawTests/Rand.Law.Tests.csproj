@@ -164,6 +164,11 @@
     <Compile Include="CriminalTests\DefenseTests\DefenseOfSelfTests\ExampleWithdrawalExceptionTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfSelfTests\RodriguezvStateTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\DefenseOfSelfTests\ShulervBabbittTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\InsanityTests\ExampleIrrImpulseTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\InsanityTests\ExampleMNaghtenTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\InsanityTests\ExampleSubstanCapacityTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\InsanityTests\StatevGuidoTests.cs" />
+    <Compile Include="CriminalTests\DefenseTests\InsanityTests\StatevHornsbyTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\DeanvUsTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\HaroldStaplesvUsTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\KarlaCrosbyvOregonTests.cs" />

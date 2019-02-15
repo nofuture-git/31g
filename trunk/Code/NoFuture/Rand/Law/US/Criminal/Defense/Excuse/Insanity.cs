@@ -1,32 +1,41 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
 {
-    public class Insanity : DefenseBase
+    /// <summary>
+    /// <![CDATA[
+    /// Without the ability to control conduct, or the understanding that conduct is 
+    /// evil or wrong by society's standards, in insane defendant presumably will 
+    /// commit crimes again and again.  Thus no deterrent effect is served by punishment[...]
+    /// ]]>
+    /// </summary>
+    public abstract class Insanity : DefenseBase
     {
-        public Insanity(ICrime crime) : base(crime)
+        protected Insanity(ICrime crime) : base(crime)
         {
         }
 
         /// <summary>
-        /// (1) an unprovoked attack
+        /// congnitively impaired to the level of not knowing the nature and 
+        /// quality of the criminal act or that the act is wrong
         /// </summary>
-        public Provacation Provacation { get; set; }
-
-        /// <summary>
-        /// (2) an attack which threatens imminent injury or death 
-        ///     to a person or or damage, destruction, or theft to real or personal property
-        /// </summary>
-        public Imminence Imminence { get; set; }
-
-        /// <summary>
-        /// (3) an objectively reasonable degree of force, used in response
-        /// </summary>
-        public Proportionality<ITermCategory> Proportionality { get; set; }
+        [Aka("defect of reason", "disease of the mind")]
+        public Predicate<ILegalPerson> IsMentalDefect { get; set; } = lp => false;
 
         public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
         {
-            throw new NotImplementedException();
+            var defendant = Government.GetDefendant(offeror, offeree, this);
+            if (defendant == null)
+                return false;
+
+            if (!IsMentalDefect(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsMentalDefect)} is false");
+                return false;
+            }
+
+            return true;
         }
     }
 }
