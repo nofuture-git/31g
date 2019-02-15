@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
+namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse.Insanity
 {
     /// <summary>
     /// A combination of <see cref="MNaghten"/> and <see cref="IrresistibleImpluse"/> 
@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
     /// ]]>
     /// </remarks>
     [Aka("ALI defense")]
-    public class SubstantialCapacity : Insanity
+    public class SubstantialCapacity : InsanityBase
     {
         public SubstantialCapacity(ICrime crime) : base(crime)
         {

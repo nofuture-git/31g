@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
+namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse.Insanity
 {
 
     /// <summary>

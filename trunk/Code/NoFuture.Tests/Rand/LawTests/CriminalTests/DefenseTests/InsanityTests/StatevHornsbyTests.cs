@@ -1,6 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.US.Criminal;
-using NoFuture.Rand.Law.US.Criminal.Defense.Excuse;
+using NoFuture.Rand.Law.US.Criminal.Defense.Excuse.Insanity;
 using NoFuture.Rand.Law.US.Criminal.Elements.Act;
 using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
 using NUnit.Framework;

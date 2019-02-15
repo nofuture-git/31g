@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
+namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse.Insanity
 {
     /// <summary>
     /// <![CDATA[
@@ -10,9 +10,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
     /// commit crimes again and again.  Thus no deterrent effect is served by punishment[...]
     /// ]]>
     /// </summary>
-    public abstract class Insanity : DefenseBase
+    public abstract class InsanityBase : DefenseBase
     {
-        protected Insanity(ICrime crime) : base(crime)
+        protected InsanityBase(ICrime crime) : base(crime)
         {
         }
 
