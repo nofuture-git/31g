@@ -17,6 +17,12 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
         {
         }
 
+        /// <summary>
+        /// <![CDATA[
+        /// Involuntary intoxication could affect the defendant's ability to form 
+        /// criminal intent, thus negating specific intent
+        /// ]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsVoluntary { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsIntoxicated { get; set; } = lp => false;

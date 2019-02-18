@@ -120,13 +120,14 @@
     <Compile Include="US\Criminal\Defense\ChoiceThereof.cs" />
     <Compile Include="US\Criminal\Defense\DefenseBase.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Entrapment.cs" />
-    <Compile Include="US\Criminal\Defense\Excuse\Ignorance.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Infancy.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Insanity\InsanityBase.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Insanity\IrresistibleImpluse.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Insanity\MNaghten.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Insanity\SubstantialCapacity.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Intoxication.cs" />
+    <Compile Include="US\Criminal\Defense\Excuse\MistakeOfFact.cs" />
+    <Compile Include="US\Criminal\Defense\Excuse\MistakeOfLaw.cs" />
     <Compile Include="US\Criminal\Defense\Imminence.cs" />
     <Compile Include="US\Criminal\Defense\Justification\BatteredWomanSyndrome.cs" />
     <Compile Include="US\Criminal\Defense\Justification\DefenseOfBase.cs" />

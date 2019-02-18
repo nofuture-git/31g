@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, the intent was recklessness and voluntary intoxication brings such things to an end
     /// ]]>
     /// </remarks>
     [TestFixture()]
