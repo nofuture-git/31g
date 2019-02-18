@@ -117,6 +117,7 @@
     <Compile Include="LegalConcept.cs" />
     <Compile Include="US\Contracts\Terms\WrittenTerm.cs" />
     <Compile Include="US\Criminal\CrimeBase.cs" />
+    <Compile Include="US\Criminal\CriminalBase.cs" />
     <Compile Include="US\Criminal\Defense\ChoiceThereof.cs" />
     <Compile Include="US\Criminal\Defense\DefenseBase.cs" />
     <Compile Include="US\Criminal\Defense\Excuse\Entrapment.cs" />
@@ -146,6 +147,8 @@
     <Compile Include="US\Criminal\Elements\DutyToAct.cs" />
     <Compile Include="US\Criminal\Elements\Harm.cs" />
     <Compile Include="US\Criminal\Elements\IElement.cs" />
+    <Compile Include="US\Criminal\Elements\Intent\Accessory.cs" />
+    <Compile Include="US\Criminal\Elements\Intent\Accomplice.cs" />
     <Compile Include="US\Criminal\Elements\Intent\ComLaw\GeneralIntent.cs" />
     <Compile Include="US\Criminal\Elements\Intent\ComLaw\MaliceAforethought.cs" />
     <Compile Include="US\Criminal\Elements\Intent\MensRea.cs" />
@@ -161,6 +164,7 @@
     <Compile Include="US\Criminal\Government.cs" />
     <Compile Include="US\Criminal\ICrime.cs" />
     <Compile Include="US\Criminal\Infraction.cs" />
+    <Compile Include="US\Criminal\IProsecution.cs" />
     <Compile Include="US\Criminal\Misdemeanor.cs" />
     <Compile Include="US\Criminal\Terms\DeadlyForce.cs" />
     <Compile Include="US\Criminal\Terms\Death.cs" />

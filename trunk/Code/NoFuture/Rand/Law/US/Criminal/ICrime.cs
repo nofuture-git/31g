@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.US.Criminal
     /// Criminal Procedure concerns individual's rights during the criminal process
     /// ]]>
     /// </remarks>
-    public interface ICrime : ILegalConcept, IComparable
+    public interface ICrime : ILegalConcept, IProsecution, IComparable
     {
         /// <summary>
         /// operation of an act or omission to act and intention or criminal negligence
@@ -23,7 +23,5 @@ namespace NoFuture.Rand.Law.US.Criminal
         Concurrence Concurrence { get; }
 
         IList<IElement> AdditionalElements { get; }
-
-        ILegalPerson GetDefendant(ILegalPerson[] persons);
     }
 }

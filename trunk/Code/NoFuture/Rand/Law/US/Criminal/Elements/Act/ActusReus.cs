@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Act
     /// To be a crime there must have been an action which was voluntary
     /// </summary>
     [Aka("criminal act")]
-    public class ActusReus : LegalConcept, IElement
+    public class ActusReus : CriminalBase, IElement
     {
         /// <summary>
         /// There must always be something willfully
@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Act
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.FirstOrDefault();
+            var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
 

@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements
 {
-    public class Causation : LegalConcept, IElement
+    public class Causation : CriminalBase, IElement
     {
         /// <summary>
         /// The direct antecedent which caused the harm - the harm which exist only because of it.
@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.FirstOrDefault();
+            var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
 

@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.FirstOrDefault();
+            var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
             var intent = IsIntentOnWrongdoing(defendant);

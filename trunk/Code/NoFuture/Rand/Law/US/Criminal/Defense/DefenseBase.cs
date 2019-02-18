@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NoFuture.Rand.Law.US.Criminal.Defense
+﻿namespace NoFuture.Rand.Law.US.Criminal.Defense
 {
     public abstract class DefenseBase : LegalConcept
     {

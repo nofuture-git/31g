@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
     /// concurrence (i.e. at-the-same-time) of an evil-meaning mind with an evil-doing hand
     /// </summary>
     [Aka("conduct")]
-    public class Concurrence : LegalConcept, IElement
+    public class Concurrence : CriminalBase, IElement
     {
         private MensRea _mens;
 

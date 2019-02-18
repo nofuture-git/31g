@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Criminal.Elements;
 using NoFuture.Rand.Law.US.Criminal.Elements.Act;
@@ -8,7 +7,7 @@ using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
 
 namespace NoFuture.Rand.Law.US.Criminal
 {
-    public abstract class CrimeBase : LegalConcept, ICrime
+    public abstract class CrimeBase : CriminalBase, ICrime
     {
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -44,18 +43,6 @@ namespace NoFuture.Rand.Law.US.Criminal
             }
 
             return true;
-        }
-
-        public ILegalPerson GetDefendant(ILegalPerson[] persons)
-        {
-            var defendant = persons.FirstOrDefault();
-            if (defendant == null)
-            {
-                AddReasonEntry("it is not clear who the " +
-                               $"defendant is amoung {string.Join(", ", persons.Select(p => p.Name))}");
-            }
-
-            return defendant;
         }
 
         public abstract int CompareTo(object obj);

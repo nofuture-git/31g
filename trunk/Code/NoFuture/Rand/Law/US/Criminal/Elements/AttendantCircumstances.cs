@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements
 {
-    public class AttendantCircumstances: LegalConcept, IElement
+    public class AttendantCircumstances: CriminalBase, IElement
     {
         public override bool IsValid(params ILegalPerson[] persons)
         {
