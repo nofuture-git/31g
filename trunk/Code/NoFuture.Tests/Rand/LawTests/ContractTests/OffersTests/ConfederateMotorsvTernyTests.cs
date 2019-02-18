@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
@@ -53,8 +54,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
         public int ConsultingShared => 505000;
         public decimal Usd => 150000m;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return offeror is ConfedMotorsInc && offeree is Terny;
         }
 
@@ -69,8 +72,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
         public int ConsultingShared => 505000;
         public decimal Usd => 0m;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return offeror is ConfedMotorsInc && offeree is Terny;
         }
 
@@ -84,8 +89,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
     {
         public int ConsultingShared => 505000;
         public decimal Usd => 100000m;
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return offeror is ConfedMotorsInc && offeree is Terny;
         }
 
@@ -97,7 +104,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
     /// </summary>
     public class OfferDec28th : OfferDec15th
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             AddReasonEntry("court found this was too late, offer had expired.");
             return false;
@@ -106,8 +113,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
 
     public class AcceptanceTooLate : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return offeror is ConfedMotorsInc && offeree is Terny;
         }
 

@@ -22,12 +22,12 @@
         /// </summary>
         public SubjectivePredicate<ILegalPerson> IsReasonablyAppearedInjuryOrDeath { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Government.GetDefendant(offeror, offeree, this);
+            var defendant = Crime.GetDefendant(persons);
             if (defendant == null)
                 return false;
-            if (!base.IsValid(offeror, offeree))
+            if (!base.IsValid(persons))
                 return false;
 
             if (!IsReasonablyAppearedInjuryOrDeath(defendant))

@@ -10,8 +10,11 @@
 
         protected internal abstract bool StandardsTest(ILegalConcept a, ILegalConcept b);
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = Contract.GetOfferor(persons);
+            var offeree = Contract.GetOfferee(persons);
+
             if (!TryGetTerms(offeror, offeree))
             {
                 return false;

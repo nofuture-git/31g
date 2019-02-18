@@ -32,12 +32,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         /// <summary>
         /// Asserts that the defendant was unprovoked
         /// </summary>
-        /// <param name="offeror"></param>
-        /// <param name="offeree"></param>
-        /// <returns></returns>
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Government.GetDefendant(offeror, offeree, this);
+            var defendant = Crime.GetDefendant(persons);
             if (defendant == null)
                 return false;
 

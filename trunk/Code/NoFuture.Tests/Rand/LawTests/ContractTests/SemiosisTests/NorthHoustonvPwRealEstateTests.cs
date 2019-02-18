@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Semiosis;
@@ -78,8 +79,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
 
     public class OfferRefinMortgage : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is NorthHouston || offeror is PwRealEstate)
                 && (offeree is NorthHouston || offeree is PwRealEstate);
         }

@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
 
     public class OfferSavedMcGowinLife : Performance
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return true;
         }
@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
     /// </summary>
     public class AcceptancePayForWebbsInjuries : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return true;
         }

@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Core;
+﻿using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NUnit.Framework;
@@ -40,8 +41,9 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.MutualAssentTests
         public class TwentyThousandUsdReward : Promise
         {
 
-            public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+            public override bool IsValid(params ILegalPerson[] persons)
             {
+                var offeror = persons.FirstOrDefault();
                 //it has to be ryan leslie
                 if (!(offeror is RyanLeslie _))
                 {
@@ -69,7 +71,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.MutualAssentTests
             /// </summary>
             public bool IsIntellectualPropertyPresent { get; set; }
 
-            public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+            public override bool IsValid(params ILegalPerson[] persons)
             {
                 //this either is or isn't the equipment
                 return true;

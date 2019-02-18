@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
@@ -46,8 +47,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
 
         public class OfferFromBehee2Smiths : Promise
         {
-            public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+            public override bool IsValid(params ILegalPerson[] persons)
             {
+                var offeror = persons.FirstOrDefault();
+                var offeree = persons.Skip(1).Take(1).FirstOrDefault();
                 AddReasonEntry("this was withdrawn before Beehee was aware of any acceptance");
                 return false;
             }
@@ -55,8 +58,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
 
         public class AcceptanceSmiths2Behee : Promise
         {
-            public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+            public override bool IsValid(params ILegalPerson[] persons)
             {
+                var offeror = persons.FirstOrDefault();
+                var offeree = persons.Skip(1).Take(1).FirstOrDefault();
                 return offeror is Behee && offeree is Smiths;
             }
         }

@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law.US.Contracts.Ucc
+﻿using System.Linq;
+
+namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
     /// <inheritdoc cref="LegalConcept"/>
     /// <summary>
@@ -13,8 +15,11 @@
             Merchantability = new Merchantable(this);
         }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
+
             if (!IsEnforceableInCourt)
             {
                 AddReasonEntry($"{GetType().Name} is not enforceable in court");

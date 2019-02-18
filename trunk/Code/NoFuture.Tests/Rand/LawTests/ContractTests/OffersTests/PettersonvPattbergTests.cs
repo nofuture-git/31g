@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
 
     public class OfferEarlyMortgagePayment : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             AddReasonEntry("This offer got revoked when the mortgage was sold to another party");
             return false;
@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
 
     public class AcceptanceMoneyTendered : Performance
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return true;
         }

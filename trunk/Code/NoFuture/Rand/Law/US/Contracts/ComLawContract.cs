@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts
@@ -39,8 +40,20 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// </remarks>
         public virtual Func<ILegalConcept, T> Acceptance { get; set; }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public ILegalPerson GetOfferor(ILegalPerson[] persons)
         {
+            return persons.FirstOrDefault();
+        }
+
+        public ILegalPerson GetOfferee(ILegalPerson[] persons)
+        {
+            return persons.Skip(1).Take(1).FirstOrDefault();
+        }
+
+        public override bool IsValid(params ILegalPerson[] persons)
+        {
+            var offeror = GetOfferor(persons);
+            var offeree = GetOfferee(persons);
             if (!IsEnforceableInCourt)
             {
                 AddReasonEntry("The contract is not enforceable in court and is therefore void.");
@@ -123,6 +136,8 @@ namespace NoFuture.Rand.Law.US.Contracts
 
             return true;
         }
+
+        
 
         public override string ToString()
         {

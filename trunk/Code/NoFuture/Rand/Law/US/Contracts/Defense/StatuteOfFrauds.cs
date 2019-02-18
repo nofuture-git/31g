@@ -21,8 +21,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
 
         public Predicate<IContract<T>> IsSigned { get; set; }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = Contract.GetOfferor(persons);
+            var offeree = Contract.GetOfferee(persons);
+
             if (!base.IsValid(offeror, offeree))
                 return false;
 

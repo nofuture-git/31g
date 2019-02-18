@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements
 {
@@ -22,9 +23,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
         /// </summary>
         public Predicate<ILegalPerson> IsSpecialRelationshipOrigin { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Government.GetDefendant(offeror, offeree, this);
+            var defendant = persons.FirstOrDefault();
             if (defendant == null)
                 return false;
 

@@ -33,8 +33,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
         /// </summary>
         public Predicate<Term<object>> IsIntendedMeaningAtTheTime { get; set; } = t => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = Contract.GetOfferor(persons);
+            var offeree = Contract.GetOfferee(persons);
+
             if (!TryGetTerms(offeror, offeree))
             {
                 return false;

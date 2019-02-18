@@ -26,8 +26,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
         /// </remarks>
         public Predicate<ILegalPerson> IsUnreasonablyFavorableTerms { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = Contract.GetOfferor(persons);
+            var offeree = Contract.GetOfferee(persons);
+
             if (!base.IsValid(offeror, offeree))
                 return false;
 

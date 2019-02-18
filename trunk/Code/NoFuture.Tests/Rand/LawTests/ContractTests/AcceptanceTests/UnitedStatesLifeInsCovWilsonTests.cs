@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
@@ -44,8 +45,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
         public string CertNumber => "9500108167";
         public Tuple<string, int> Term => new Tuple<string, int>("years", 10);
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return offeror is UnitedStatesLifeInsCo && offeree is Wilson;
         }
 
@@ -81,8 +84,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
         /// </summary>
         public DateTime DateOfPayment { get; set; } = new DateTime(2007,7,25);
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             if (!(offeror is UnitedStatesLifeInsCo) || !(offeree is Wilson))
             {
                 AddReasonEntry("incorrect person given");

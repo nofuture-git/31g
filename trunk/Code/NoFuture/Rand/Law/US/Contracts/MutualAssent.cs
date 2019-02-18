@@ -27,8 +27,20 @@ namespace NoFuture.Rand.Law.US.Contracts
         /// <inheritdoc />
         public virtual Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public ILegalPerson GetOfferor(ILegalPerson[] persons)
         {
+            return persons.FirstOrDefault();
+        }
+
+        public ILegalPerson GetOfferee(ILegalPerson[] persons)
+        {
+            return persons.Skip(1).Take(1).FirstOrDefault();
+        }
+
+        public override bool IsValid(params ILegalPerson[] persons)
+        {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             if (offeror == null)
             {
                 AddReasonEntry($"{nameof(offeror)} is null");

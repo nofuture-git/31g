@@ -192,10 +192,11 @@ namespace NoFuture.Rand.Law.Tests
         {
             var asmName = Assembly.GetExecutingAssembly().GetName().Name;
             //need this to be another object each time and not just another reference
-            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{asmName}.LawTests.{embeddedFileName}");
+            var fullName = $"{asmName}.{embeddedFileName}";
+            var liSteam = Assembly.GetExecutingAssembly().GetManifestResourceStream(fullName);
             if (liSteam == null)
             {
-                Assert.Fail($"Cannot find the embedded file {embeddedFileName}");
+                Assert.Fail($"Cannot find the embedded file {fullName}");
             }
             var txtSr = new StreamReader(liSteam);
             var content = txtSr.ReadToEnd();

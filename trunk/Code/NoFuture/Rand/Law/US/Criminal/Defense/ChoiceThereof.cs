@@ -20,9 +20,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         /// </summary>
         public Func<ILegalPerson, IEnumerable<T>> GetOtherPossibleChoices { get; set; } = lp => new List<T>();
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Government.GetDefendant(offeror, offeree, this);
+            var defendant = Crime.GetDefendant(persons);
             if (defendant == null)
                 return false;
 
@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
             var otherParties = getOtherParties();
 
             //for duress the choice of the defendant is less than the choice of other parties
-            return !otherParties.Any() || base.IsValid(offeror, offeree);
+            return !otherParties.Any() || base.IsValid(persons);
         }
     }
 }

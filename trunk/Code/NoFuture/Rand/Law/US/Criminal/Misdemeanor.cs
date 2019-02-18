@@ -5,9 +5,9 @@ namespace NoFuture.Rand.Law.US.Criminal
     /// <inheritdoc cref="ICrime"/>
     public class Misdemeanor: CrimeBase
     {
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (!base.IsValid(offeror, offeree))
+            if (!base.IsValid(persons))
                 return false;
 
             return true;

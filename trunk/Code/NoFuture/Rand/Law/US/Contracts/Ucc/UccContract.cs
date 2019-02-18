@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
@@ -25,8 +26,22 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
         [Aka("UCC 2-612")]
         public virtual bool IsInstallmentContract { get; set; }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+
+        public ILegalPerson GetOfferor(ILegalPerson[] persons)
         {
+            return persons.FirstOrDefault();
+        }
+
+        public ILegalPerson GetOfferee(ILegalPerson[] persons)
+        {
+            return persons.Skip(1).Take(1).FirstOrDefault();
+        }
+
+        public override bool IsValid(params ILegalPerson[] persons)
+        {
+            var offeror = GetOfferor(persons);
+            var offeree = GetOfferee(persons);
+
             if (Assent == null)
             {
                 AddReasonEntry("There is no agreement.");

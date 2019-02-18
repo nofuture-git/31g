@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
 {
@@ -10,9 +11,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
         public Predicate<ILegalPerson> IsIntentOnWrongdoing { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsKnowledgeOfWrongdoing { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Government.GetDefendant(offeror, offeree, this);
+            var defendant = persons.FirstOrDefault();
             if (defendant == null)
                 return false;
             var intent = IsIntentOnWrongdoing(defendant);

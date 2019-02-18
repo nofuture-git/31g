@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
@@ -44,8 +45,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
 
     public class OfferRenderCustomaryGovSvc : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             var isCopm = (offeror is Jankowski || offeror is Jedz)
                          && (offeree is Jankowski || offeree is Jedz);
             if (isCopm)
@@ -59,8 +62,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
 
     public class AcceptanceOneThirdOfTaxRev : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is Jankowski || offeror is Jedz)
                    && (offeree is Jankowski || offeree is Jedz);
         }

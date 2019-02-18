@@ -31,8 +31,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy
         /// </summary>
         public Predicate<ILegalPerson> IsDifficultToSubstitute { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = Contract.GetOfferor(persons);
+            var offeree = Contract.GetOfferee(persons);
+
             if (IsDifficultToProveDmg(offeror) || IsDifficultToProveDmg(offeree))
             {
                 AddReasonEntry("the money value of the contract between " +

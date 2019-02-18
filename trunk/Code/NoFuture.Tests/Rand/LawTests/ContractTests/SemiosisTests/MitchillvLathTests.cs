@@ -73,8 +73,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
 
     public class OfferPurchaseFarmRemIceHouse : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is Mitchill || offeror is Lath)
                    && (offeree is Mitchill || offeree is Lath);
         }

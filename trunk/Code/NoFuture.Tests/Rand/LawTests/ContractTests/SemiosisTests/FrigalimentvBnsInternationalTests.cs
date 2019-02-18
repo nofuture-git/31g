@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Contracts;
@@ -80,8 +81,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
             "individually wrapped in cryovac", "acked in secured fiber cartons or wooden boxes", "suitable for export"
         };
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is Frigaliment || offeror is BnsInternational)
                    && (offeree is Frigaliment || offeree is BnsInternational);
         }

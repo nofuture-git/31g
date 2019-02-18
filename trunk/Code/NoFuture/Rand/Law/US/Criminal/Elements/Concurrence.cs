@@ -31,16 +31,16 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
         }
         public ActusReus ActusReus { get; set; } = new ActusReus();
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (ActusReus != null && !ActusReus.IsValid(offeror, offeree))
+            if (ActusReus != null && !ActusReus.IsValid(persons))
             {
                 AddReasonEntry("actus rea is invalid");
                 AddReasonEntryRange(ActusReus.GetReasonEntries());
                 return false;
             }
 
-            if (MensRea != null && !MensRea.IsValid(offeror, offeree))
+            if (MensRea != null && !MensRea.IsValid(persons))
             {
                 AddReasonEntry("mens rea is invalid");
                 AddReasonEntryRange(MensRea.GetReasonEntries());

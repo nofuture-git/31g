@@ -21,5 +21,9 @@ namespace NoFuture.Rand.Law.US.Contracts
 
         [Note("expression of approval or agreement")]
         IAssent Assent { get; set; }
+
+        ILegalPerson GetOfferor(ILegalPerson[] persons);
+
+        ILegalPerson GetOfferee(ILegalPerson[] persons);
     }
 }

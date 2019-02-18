@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Criminal.Elements;
 using NoFuture.Rand.Law.US.Criminal.Elements.Act;
@@ -9,40 +10,52 @@ namespace NoFuture.Rand.Law.US.Criminal
 {
     public abstract class CrimeBase : LegalConcept, ICrime
     {
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             ClearReasons();
-            var defendant = Government.GetDefendant(offeror, offeree, this);
+            var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
 
             if (Concurrence == null)
             {
                 AddReasonEntry($"{nameof(Concurrence)} is missing");
-                AddPersonsReasonEntries(offeror, offeree);
+                AddPersonsReasonEntries(persons);
                 return false;
             }
 
-            if (!Concurrence.IsValid(offeror, offeree))
+            if (!Concurrence.IsValid(persons))
             {
                 AddReasonEntry($"{nameof(Concurrence)} is invalid");
                 AddReasonEntryRange(Concurrence.GetReasonEntries());
-                AddPersonsReasonEntries(offeror, offeree);
+                AddPersonsReasonEntries(persons);
 
                 return false;
             }
 
             foreach (var elem in AdditionalElements)
             {
-                if (!elem.IsValid(offeror, offeree))
+                if (!elem.IsValid(persons))
                 {
                     AddReasonEntryRange(elem.GetReasonEntries());
-                    AddPersonsReasonEntries(offeror, offeree);
+                    AddPersonsReasonEntries(persons);
                     return false;
                 }
             }
 
             return true;
+        }
+
+        public ILegalPerson GetDefendant(ILegalPerson[] persons)
+        {
+            var defendant = persons.FirstOrDefault();
+            if (defendant == null)
+            {
+                AddReasonEntry("it is not clear who the " +
+                               $"defendant is amoung {string.Join(", ", persons.Select(p => p.Name))}");
+            }
+
+            return defendant;
         }
 
         public abstract int CompareTo(object obj);
@@ -71,10 +84,10 @@ namespace NoFuture.Rand.Law.US.Criminal
         public IList<IElement> AdditionalElements { get; } = new List<IElement>();
         public Func<IEnumerable<ILegalPerson>> OtherParties { get; set; } = () => new List<ILegalPerson>();
 
-        protected internal void AddPersonsReasonEntries(ILegalPerson offeror, ILegalPerson offeree)
+        protected internal void AddPersonsReasonEntries(params ILegalPerson[] persons)
         {
-            AddReasonEntryRange(offeror?.GetReasonEntries());
-            AddReasonEntryRange(offeree?.GetReasonEntries());
+            foreach(var person in persons)
+                AddReasonEntryRange(person.GetReasonEntries());
         }
     }
 }

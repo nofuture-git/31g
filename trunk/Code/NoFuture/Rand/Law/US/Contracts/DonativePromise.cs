@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.US.Contracts
             base.AddReasonEntry($"A {nameof(DonativePromise)} cannot be breached.");
         }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return true;
         }

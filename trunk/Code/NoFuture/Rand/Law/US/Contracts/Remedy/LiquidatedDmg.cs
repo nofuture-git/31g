@@ -21,8 +21,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Remedy
         /// </summary>
         public Predicate<ILegalPerson> IsDisproportionateToActual { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = Contract.GetOfferor(persons);
+            var offeree = Contract.GetOfferee(persons);
+
             if (IsDisproportionateToActual(offeror) || IsDisproportionateToActual(offeree))
             {
                 AddReasonEntry("liquidated damage clauses that are intended as a penalty are not enforceable");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
@@ -70,15 +71,18 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
                                        "Caro will inherit everything and you will make our lives happier and see " +
                                        "Blanche is provided for to the end.";
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
+
             return (offeror is RupertAndBlancheWhitehead) && (offeree is FrankAndCaroDavis);
         }
     }
 
     public class AcceptanceAccording2TrialCourt : Performance
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             AddReasonEntry("The offer for specific performance ended with Ruperts death");
             return false;
@@ -89,8 +93,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
 
     public class AcceptanceApr14 : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is RupertAndBlancheWhitehead) && (offeree is FrankAndCaroDavis);
         }
     }

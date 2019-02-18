@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
 
     public class OfferMedicalTreatment : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return true;
         }

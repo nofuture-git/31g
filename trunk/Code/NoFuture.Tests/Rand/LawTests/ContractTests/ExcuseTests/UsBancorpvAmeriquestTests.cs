@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Excuse;
@@ -68,8 +69,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.ExcuseTests
 
     public class OfferFinanceAirplanes : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is UsBancorp || offeror is Ameriquest)
                    && (offeree is UsBancorp || offeree is Ameriquest);
         }

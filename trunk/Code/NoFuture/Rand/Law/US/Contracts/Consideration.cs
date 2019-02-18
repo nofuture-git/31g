@@ -11,16 +11,18 @@ namespace NoFuture.Rand.Law.US.Contracts
     [Aka("quid pro quo", "this for that")]
     public class Consideration<T> : LegalConcept where T : ILegalConcept
     {
-        private readonly ComLawContract<T> _contract;
+        //private readonly ComLawContract<T> _contract;
         public override bool IsEnforceableInCourt => true;
 
         public Consideration(ComLawContract<T> contract)
         {
             if (contract == null)
                 return;
-            _contract = contract;
-            _contract.Consideration = this;
+            Contract = contract;
+            Contract.Consideration = this;
         }
+
+        protected internal ComLawContract<T> Contract { get; protected set; }
 
         /// <summary>
         /// A test for if Acceptance is actually what the promisor wants in return.
@@ -54,8 +56,11 @@ namespace NoFuture.Rand.Law.US.Contracts
         [Note("is not already obligated to be done")]
         public virtual Predicate<ILegalConcept> IsExistingDuty { get; set; } = o => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = Contract.GetOfferor(persons);
+            var offeree = Contract.GetOfferee(persons);
+
             if (IsSoughtByPromisor == null)
             {
                 AddReasonEntry($"{nameof(IsSoughtByPromisor)} is null");
@@ -68,8 +73,8 @@ namespace NoFuture.Rand.Law.US.Contracts
                 return false;
             }
 
-            var promise = _contract.Offer;
-            var returnPromise = _contract.Acceptance(promise);
+            var promise = Contract.Offer;
+            var returnPromise = Contract.Acceptance(promise);
             if (returnPromise == null)
             {
                 AddReasonEntry($"{nameof(returnPromise)} is null");

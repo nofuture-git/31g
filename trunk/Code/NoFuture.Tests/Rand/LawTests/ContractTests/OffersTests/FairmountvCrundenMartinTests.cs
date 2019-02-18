@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Attributes;
@@ -77,8 +78,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
         [Note("Nothing illegal about buying some glass jars")]
         public override bool IsEnforceableInCourt => true;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return offeror is CrundenMartin && offeree is Fairmount
                    || offeror is Fairmount && offeree is CrundenMartin;
         }
@@ -88,8 +91,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
     {
         public override bool IsEnforceableInCourt => true;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return offeror is CrundenMartin && offeree is Fairmount
                    || offeror is Fairmount && offeree is CrundenMartin;
         }
@@ -109,8 +114,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
     {
         public override bool IsEnforceableInCourt => true;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return offeror is CrundenMartin && offeree is Fairmount
                    || offeror is Fairmount && offeree is CrundenMartin;
         }
@@ -120,7 +127,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
     {
         public override bool IsEnforceableInCourt => true;
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             AddReasonEntry("All sold out");
             return false;

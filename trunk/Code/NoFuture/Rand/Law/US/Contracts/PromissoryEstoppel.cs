@@ -12,8 +12,10 @@ namespace NoFuture.Rand.Law.US.Contracts
         {
         }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeree = Contract.GetOfferee(persons);
+
             var dependent = IsOffereeDependedOnPromise ?? (o => true);
             var worse = IsOffereePositionWorse ?? (o => true);
 

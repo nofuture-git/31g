@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
@@ -50,8 +51,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
 
     public class OfferPay5000On21stBday : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is Hamer || offeree is Hamer)
                    && (offeree is Sidway || offeror is Sidway);
         }
@@ -59,8 +62,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
 
     public class AcceptanceToRefrainFromVice : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is Hamer || offeree is Hamer)
                    && (offeree is Sidway || offeror is Sidway);
         }

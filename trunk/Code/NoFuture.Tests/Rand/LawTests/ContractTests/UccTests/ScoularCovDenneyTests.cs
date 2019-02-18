@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.UccTests
 
     public class AcceptanceArranged2SellMillet : Goods
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             AddReasonEntry("court found that this was ambiguous form of acceptance");
             return false;

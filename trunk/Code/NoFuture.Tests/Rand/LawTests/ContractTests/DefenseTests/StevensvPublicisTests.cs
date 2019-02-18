@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Defense;
@@ -61,7 +62,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 
     public class IgnoreContract : ComLawContract<Promise>
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return true;
         }
@@ -69,8 +70,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 
     public class SomeEmail : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is Stevens || offeror is Publicis)
                    && (offeree is Stevens || offeree is Publicis);
         }

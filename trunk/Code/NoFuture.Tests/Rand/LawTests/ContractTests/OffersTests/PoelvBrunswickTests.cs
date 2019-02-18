@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
@@ -38,8 +39,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
     public class Apr2Poel2Bruns : Promise
     {
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is Brunswick || offeror is Poel)
                    && (offeree is Brunswick || offeree is Poel);
         }
@@ -50,8 +53,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
     /// </summary>
     public class Apr4Poel2Bruns : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is Brunswick || offeror is Poel)
                    && (offeree is Brunswick || offeree is Poel);
         }
@@ -63,8 +68,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
     /// </summary>
     public class Apr6Bruns2Poel : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is Brunswick || offeror is Poel)
                    && (offeree is Brunswick || offeree is Poel);
         }
@@ -75,7 +82,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
     /// </summary>
     public class Jan7Bruns2Poel : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             AddReasonEntry("Brunswick never agreed to the counter offer from Mr. Rogers on Apr. 6th ");
             return false;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements
@@ -17,9 +18,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
         [Aka("legal cause")]
         public ObjectivePredicate<ILegalPerson> IsForseeable { get; set; } = lp => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Government.GetDefendant(offeror, offeree, this);
+            var defendant = persons.FirstOrDefault();
             if (defendant == null)
                 return false;
 

@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
 
     public class MaxInLifetimeOption : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return true;
         }

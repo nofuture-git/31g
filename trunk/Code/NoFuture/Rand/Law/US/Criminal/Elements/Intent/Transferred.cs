@@ -13,9 +13,9 @@
             _intent = intent;
         }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            return _intent.IsValid(offeror, offeree);
+            return _intent.IsValid(persons);
         }
 
         public override int CompareTo(object obj)

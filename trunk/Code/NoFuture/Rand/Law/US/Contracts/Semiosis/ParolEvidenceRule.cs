@@ -24,8 +24,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Semiosis
 
         public Predicate<Term<object>> IsNotExpectedWritten { get; set; } = r => false;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = Contract.GetOfferor(persons);
+            var offeree = Contract.GetOfferee(persons);
+
             if (!TryGetTerms(offeror, offeree))
             {
                 AddReasonEntry("parol evidence rule requires a contract with assent");

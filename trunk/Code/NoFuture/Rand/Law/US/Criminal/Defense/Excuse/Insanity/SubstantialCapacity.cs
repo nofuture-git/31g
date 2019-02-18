@@ -36,11 +36,11 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse.Insanity
         /// </summary>
         public Predicate<ILegalPerson> IsMostlyVolitional { get; set; } = lp => true;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (!base.IsValid(offeror, offeree))
+            if (!base.IsValid(persons))
                 return false;
-            var defendant = Government.GetDefendant(offeror, offeree, this);
+            var defendant = Crime.GetDefendant(persons);
             if (defendant == null)
                 return false;
 

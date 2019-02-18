@@ -16,7 +16,7 @@
         private static StrictLiability _value;
         public static StrictLiability Value => _value ?? (_value = new StrictLiability());
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return true;
         }

@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.US.Contracts
     /// </summary>
     public class Advertisement : LegalConcept
     {
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return IsEnforceableInCourt;
         }

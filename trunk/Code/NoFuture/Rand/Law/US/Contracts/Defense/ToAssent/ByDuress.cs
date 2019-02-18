@@ -13,8 +13,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
     {
         public ByDuress(IContract<T> contract) : base(contract) { }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = Contract.GetOfferor(persons);
+            var offeree = Contract.GetOfferee(persons);
+
             if (!base.IsValid(offeror, offeree))
                 return false;
             if (IsAssentByPhysicalCompulsion(offeror))

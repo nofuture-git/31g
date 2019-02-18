@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Contracts.Ucc
 {
@@ -17,8 +18,11 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
             _goods = goods;
         }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
+
             if (!IsPassWithoutObjection)
             {
                 AddReasonEntry($"{_goods?.GetType().Name} does not 'pass without " +
@@ -116,6 +120,20 @@ namespace NoFuture.Rand.Law.US.Contracts.Ucc
                    && m.IsPackagedAndLabeled == IsPackagedAndLabeled
                    && m.IsConformedAsLabeled == IsConformedAsLabeled
                 ;
+        }
+
+        public override int GetHashCode()
+        {
+            return IsPassWithoutObjection.GetHashCode() +
+                   IsFairAvgQuality.GetHashCode() +
+                   IsFit4OrdinaryPurpose.GetHashCode() +
+                   IsFit4ParticularPurpose.GetHashCode() +
+                   IsBuyerRelyingOnSellerJudgement.GetHashCode() +
+                   IsWithinPermittedVariations.GetHashCode() +
+                   IsPackagedAndLabeled.GetHashCode()+ 
+                   IsConformedAsLabeled?.GetHashCode() ?? 0
+                ;
+
         }
     }
 }

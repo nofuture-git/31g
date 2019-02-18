@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.US.Contracts;
 using NoFuture.Rand.Law.US.Contracts.Breach;
@@ -100,7 +101,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
 
         }
 
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             return true;
         }
@@ -129,8 +130,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
 
     public class OfferBuildCountryResidence : Promise
     {
-        public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
+            var offeror = persons.FirstOrDefault();
+            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
             return (offeror is JacobYoung || offeror is Kent)
                    && (offeree is JacobYoung || offeree is Kent);
         }

@@ -18,9 +18,9 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse.Insanity
         [Aka("free choice")]
         public Predicate<ILegalPerson> IsVolitional { get; set; } = lp => true;
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Government.GetDefendant(offeror, offeree, this);
+            var defendant = Crime.GetDefendant(persons);
             if (defendant == null)
                 return false;
 
@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse.Insanity
                 return false;
             }
 
-            return base.IsValid(offeror, offeree);
+            return base.IsValid(persons);
         }
     }
 }

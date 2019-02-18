@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.US.Contracts.Defense
 
         }
 
-        public override bool IsValid(ILegalPerson offeror = null, ILegalPerson offeree = null)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             Predicate<IContract<T>> dfx = c => false;
             var m = IsMarriageRelated ?? dfx;
