@@ -20,9 +20,6 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         /// <summary>
         /// The enclosure to get a portion-per-person
         /// </summary>
-        /// <remarks>
-        /// Use the <see cref="ICrime.OtherParties"/> to place other parties into scope
-        /// </remarks>
         public Func<ILegalPerson, T> GetChoice { get; set; } = lp => default(T);
 
         /// <summary>
@@ -36,12 +33,11 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
             if (defendant == null)
                 return false;
 
-            var getOtherParties = Crime?.OtherParties ?? (() => new List<ILegalPerson>());
-            var otherParties = getOtherParties();
+            var otherParties = persons.Where(p => !ReferenceEquals(defendant, p)).ToList();
 
             var defendantContribution = GetChoice(defendant);
 
-            if (otherParties == null || !otherParties.Any())
+            if (!otherParties.Any())
             {
                 AddReasonEntry($"defendant, {defendant.Name}, there are no other " +
                                $"parties with which to compare {defendantContribution.ToString()}");

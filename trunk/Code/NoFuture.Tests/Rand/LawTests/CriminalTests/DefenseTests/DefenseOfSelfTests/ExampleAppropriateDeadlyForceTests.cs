@@ -26,8 +26,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 {
                     IsKnowledgeOfWrongdoing = lp => lp is WandaEg,
                     IsIntentOnWrongdoing = lp => lp is WandaEg
-                },
-                OtherParties = () => new[]{new NicholasEg(), }
+                }
             };
 
             var testResult = testCrime.IsValid(new WandaEg());
@@ -57,7 +56,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                     }
                 }
             };
-            testResult = testSubject.IsValid(new WandaEg());
+            testResult = testSubject.IsValid(new WandaEg(), new NicholasEg());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }

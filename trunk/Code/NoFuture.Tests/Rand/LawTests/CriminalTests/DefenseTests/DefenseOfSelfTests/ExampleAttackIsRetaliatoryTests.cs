@@ -26,8 +26,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 {
                     IsKnowledgeOfWrongdoing = lp => lp is DwightEg,
                     IsIntentOnWrongdoing = lp => lp is DwightEg
-                },
-                OtherParties = () => new []{new AbelEg(), }
+                }
             };
             var testResult = testCrime.IsValid(new DwightEg());
             Assert.IsTrue(testResult);
@@ -52,7 +51,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 }
             };
 
-            testResult = testSubject.IsValid(new DwightEg());
+            testResult = testSubject.IsValid(new DwightEg(), new AbelEg());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
         }

@@ -34,8 +34,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 {
                     IsKnowledgeOfWrongdoing = lp => lp is TrooperSweet,
                     IsIntentOnWrongdoing = lp => lp is TrooperSweet
-                },
-                OtherParties = () => new ILegalPerson[]{new Miranda(), new DemetriaBattle(), },
+                }
             };
 
             var testResult = testCrime.IsValid(new Miranda());
@@ -59,7 +58,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 }
             };
 
-            testResult = testSubject.IsValid(new Miranda());
+            testResult = testSubject.IsValid(new Miranda(), new DemetriaBattle());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }

@@ -26,8 +26,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 {
                     IsIntentOnWrongdoing = lp => lp is FionaEg,
                     IsKnowledgeOfWrongdoing = lp => lp is FionaEg
-                },
-                OtherParties = () => new []{new VinnyEg() }
+                }
             };
 
             var testResult = testCrime.IsValid(new FionaEg());
@@ -51,7 +50,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 }
             };
 
-            testResult = testSubject.IsValid(new FionaEg());
+            testResult = testSubject.IsValid(new FionaEg(), new VinnyEg());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
         }

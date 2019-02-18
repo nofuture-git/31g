@@ -30,19 +30,19 @@
             var defendant = Crime.GetDefendant(persons);
             if (defendant == null)
                 return false;
-            if (Imminence != null && !Imminence.IsValid(defendant))
+            if (Imminence != null && !Imminence.IsValid(persons))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(Imminence)} is false");
                 AddReasonEntryRange(Imminence.GetReasonEntries());
                 return false;
             }
-            if (Provacation != null && !Provacation.IsValid(defendant))
+            if (Provacation != null && !Provacation.IsValid(persons))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(Provacation)} is false");
                 AddReasonEntryRange(Provacation.GetReasonEntries());
                 return false;
             }
-            if (Proportionality != null && !Proportionality.IsValid(defendant))
+            if (Proportionality != null && !Proportionality.IsValid(persons))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(Proportionality)} is false");
                 AddReasonEntryRange(Proportionality.GetReasonEntries());

@@ -34,23 +34,20 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
             if (defendant == null)
                 return false;
 
-            var testAgainst = new List<ILegalPerson> {defendant};
-            if(Crime.OtherParties().Any())
-                testAgainst.AddRange(Crime.OtherParties());
-            if (testAgainst.All(lp => !IsIntruderEnterResidence(lp)))
+            if (persons.All(lp => !IsIntruderEnterResidence(lp)))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {IsIntruderEnterResidence} is false " +
                                "for defendant and all other parties");
                 return false;
             }
 
-            if (testAgainst.All(lp => !IsOccupiedResidence(lp)))
+            if (persons.All(lp => !IsOccupiedResidence(lp)))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {IsOccupiedResidence} is false " +
                                "for defendant and all other parties");
                 return false;
             }
-            if (testAgainst.All(lp => !IsIntruderThreatening(lp)))
+            if (persons.All(lp => !IsIntruderThreatening(lp)))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {IsIntruderThreatening} is false " +
                                "for defendant and all other parties");

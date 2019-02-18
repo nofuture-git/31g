@@ -20,8 +20,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                     IsAction = lp => true,
                     IsVoluntary = lp => true
                 },
-                MensRea = StrictLiability.Value,
-                OtherParties = () => new ILegalPerson[]{new Dutton(), new HayesPupko(), }
+                MensRea = StrictLiability.Value
             };
 
             var testResult = testSue.IsValid(new Dutton());
@@ -33,7 +32,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 IsReasonableUseOfForce = lp => false
             };
 
-            testResult = testSubject.IsValid(new Dutton());
+            testResult = testSubject.IsValid(new Dutton(), new HayesPupko());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
         }

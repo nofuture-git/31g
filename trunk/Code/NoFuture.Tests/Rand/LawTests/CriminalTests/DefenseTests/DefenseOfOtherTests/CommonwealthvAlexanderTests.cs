@@ -34,8 +34,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 {
                     IsVoluntary = lp => lp is Alexander,
                     IsAction = lp => lp is Alexander
-                },
-                OtherParties = () => new []{new MichaelTEustler(), }
+                }
             };
             var testResult = testCrime.IsValid(new Alexander());
             Assert.IsTrue(testResult);
@@ -63,7 +62,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                     }
                 }
             };
-            testResult = testSubject.IsValid(new Alexander());
+            testResult = testSubject.IsValid(new Alexander(), new MichaelTEustler());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
         }

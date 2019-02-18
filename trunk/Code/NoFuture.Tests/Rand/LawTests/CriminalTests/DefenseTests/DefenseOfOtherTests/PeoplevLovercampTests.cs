@@ -60,10 +60,9 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                     },
                     GetOtherPossibleChoices = lp => new List<ITermCategory> {new SeriousBodilyInjury(), new DeadlyForce()}
                 },
-                OtherParties = () => new List<ILegalPerson>{new LesbianInmates()}
             };
 
-            testResult = testSubject.IsValid(new Lovercamp());
+            testResult = testSubject.IsValid(new Lovercamp(), new LesbianInmates());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
 

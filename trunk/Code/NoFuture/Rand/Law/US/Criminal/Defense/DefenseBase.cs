@@ -11,11 +11,5 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
         {
             Crime = crime;
         }
-
-        public Func<IEnumerable<ILegalPerson>> OtherParties
-        {
-            get => Crime.OtherParties;
-            set => Crime.OtherParties = value;
-        }
     }
 }

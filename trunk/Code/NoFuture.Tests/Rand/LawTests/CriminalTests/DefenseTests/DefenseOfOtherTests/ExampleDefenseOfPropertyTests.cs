@@ -26,8 +26,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 {
                     IsKnowledgeOfWrongdoing = lp => lp is KelseyEg,
                     IsIntentOnWrongdoing = lp => lp is KelseyEg
-                },
-                OtherParties = () => new[] {new KeithEg(),}
+                }
             };
 
             var testResult = testCrime.IsValid(new KelseyEg());
@@ -50,7 +49,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 }
             };
 
-            testResult = testSubject.IsValid(new KelseyEg());
+            testResult = testSubject.IsValid(new KelseyEg(), new KeithEg());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }

@@ -37,11 +37,8 @@ namespace NoFuture.Rand.Law.US.Criminal.Defense
                 return false;
             }
 
-            var getOtherParties = Crime?.OtherParties ?? (() => new List<ILegalPerson>());
-            var otherParties = getOtherParties();
-
             //for duress the choice of the defendant is less than the choice of other parties
-            return !otherParties.Any() || base.IsValid(persons);
+            return persons.Length <= 1 || base.IsValid(persons);
         }
     }
 }

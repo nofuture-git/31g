@@ -40,10 +40,9 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
             {
                 GetChoice = lp => lp is Daoud ? new NondeadlyForce() : null,
                 GetOtherPossibleChoices = lp => new List<ITermCategory>() {new CallForTaxi(), new WalkedToNeighbor()},
-                OtherParties = () => new List<ILegalPerson>(){new JohnHilane()}
             };
 
-            testResult = testSubject.IsValid(new Daoud());
+            testResult = testSubject.IsValid(new Daoud(), new JohnHilane());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
 

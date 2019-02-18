@@ -26,8 +26,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 {
                     IsKnowledgeOfWrongdoing = lp => lp is PattyEg,
                     IsIntentOnWrongdoing = lp => lp is PattyEg
-                },
-                OtherParties = () => new []{new PaigeEg()}
+                }
             };
 
             var testResult = testCrime.IsValid(new PattyEg());
@@ -51,7 +50,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                     GetChoice = lp => lp is PaigeEg ? new DeadlyForce() : new NondeadlyForce(),
                 }
             };
-            testResult = testSubject.IsValid(new PattyEg());
+            testResult = testSubject.IsValid(new PattyEg(), new PaigeEg());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
         }

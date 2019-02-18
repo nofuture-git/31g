@@ -31,8 +31,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                     IsVoluntary = lp => lp is Shuler,
                     IsAction = lp => lp is Shuler,
                 },
-                MensRea = StrictLiability.Value,
-                OtherParties = () => new []{new GrizzlyBear(), }
+                MensRea = StrictLiability.Value
             };
 
             var testResult = testCrime.IsValid(new Shuler());
@@ -55,7 +54,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 }
             };
 
-            testResult = testSubject.IsValid(new Shuler());
+            testResult = testSubject.IsValid(new Shuler(), new GrizzlyBear());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }

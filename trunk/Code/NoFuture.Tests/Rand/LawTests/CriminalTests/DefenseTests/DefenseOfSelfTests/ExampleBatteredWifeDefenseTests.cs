@@ -26,8 +26,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 {
                     IsIntentOnWrongdoing = lp => lp is VeronicaEg,
                     IsKnowledgeOfWrongdoing = lp => lp is VeronicaEg
-                },
-                OtherParties = () => new []{new SpikeEg(), }
+                }
             };
             var testResult = testCrime.IsValid(new VeronicaEg());
             Assert.IsTrue(testResult);
@@ -46,7 +45,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 }
             };
 
-            testResult = testSubject.IsValid(new VeronicaEg());
+            testResult = testSubject.IsValid(new VeronicaEg(), new SpikeEg());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }

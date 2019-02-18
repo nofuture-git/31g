@@ -24,8 +24,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 {
                     IsKnowledgeOfWrongdoing = lp => lp is OfficerColinEg,
                     IsIntentOnWrongdoing = lp => lp is OfficerColinEg
-                },
-                OtherParties = () => new[] {new LindaEg(),}
+                }
             };
             var testResult = testCrime.IsValid(new OfficerColinEg());
             Assert.IsTrue(testResult);
@@ -37,7 +36,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 IsReasonableUseOfForce = lp => false
             };
 
-            testResult = testSubject.IsValid(new OfficerColinEg());
+            testResult = testSubject.IsValid(new OfficerColinEg(), new LindaEg());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
         }

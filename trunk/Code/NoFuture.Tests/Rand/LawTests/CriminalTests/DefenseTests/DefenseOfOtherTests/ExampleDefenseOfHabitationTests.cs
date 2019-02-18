@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
 {
-    [TestFixture()]
+    [TestFixture]
     public class ExampleDefenseOfHabitationTests
     {
         [Test]
@@ -24,8 +24,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 {
                     IsKnowledgeOfWrongdoing = lp => lp is BobEg,
                     IsIntentOnWrongdoing = lp => lp is BobEg
-                },
-                OtherParties = () => new ILegalPerson[] {new NateEg(),}
+                }
             };
             var testResult = testCrime.IsValid(new BobEg());
             Assert.IsTrue(testResult);
@@ -36,7 +35,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
                 IsOccupiedResidence = lp => true,
             };
 
-            testResult = testSubject.IsValid(new NateEg());
+            testResult = testSubject.IsValid(new NateEg(), new NateEg());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }

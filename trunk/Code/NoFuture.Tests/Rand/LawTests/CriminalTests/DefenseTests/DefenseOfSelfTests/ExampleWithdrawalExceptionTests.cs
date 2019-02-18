@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
 {
-    [TestFixture()]
+    [TestFixture]
     public class ExampleWithdrawalExceptionTests
     {
         [Test]
@@ -26,8 +26,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                 {
                     IsKnowledgeOfWrongdoing = lp => lp is PattyEg,
                     IsIntentOnWrongdoing = lp => lp is PattyEg
-                },
-                OtherParties = () => new[] { new PaigeEg() }
+                }
             };
 
             var testResult = testCrime.IsValid(new PattyEg());
@@ -53,8 +52,9 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
                     GetChoice = lp => new NondeadlyForce()
                 }
             };
-            testResult = testSubject.IsValid(new PattyEg());
+            testResult = testSubject.IsValid(new PattyEg(), new PaigeEg());
             Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 }
