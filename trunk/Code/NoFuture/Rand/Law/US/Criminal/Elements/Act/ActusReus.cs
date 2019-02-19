@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements.Act
 {
@@ -26,6 +26,15 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Act
         /// (thoughts, plans, labels, status are not actus reus).
         /// </summary>
         public DutyToAct Omission { get; set; } = new DutyToAct();
+
+        /// <summary>
+        /// Determines if this criminal act is valid 
+        /// when combined with the particular <see cref="criminalIntent"/>
+        /// </summary>
+        public virtual bool CompareTo(MensRea criminalIntent)
+        {
+            return true;
+        }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

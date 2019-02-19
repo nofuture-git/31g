@@ -1,6 +1,7 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Criminal.Elements.Act;
 using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
+using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements
 {
@@ -33,17 +34,34 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (ActusReus != null && !ActusReus.IsValid(persons))
+            var criminalAct = ActusReus ?? new ActusReus();
+            var criminalIntent = MensRea ?? new GeneralIntent();
+
+            if (!criminalAct.IsValid(persons))
             {
                 AddReasonEntry("actus rea is invalid");
-                AddReasonEntryRange(ActusReus.GetReasonEntries());
+                AddReasonEntryRange(criminalAct.GetReasonEntries());
                 return false;
             }
 
-            if (MensRea != null && !MensRea.IsValid(persons))
+            if (!criminalIntent.IsValid(persons))
             {
                 AddReasonEntry("mens rea is invalid");
-                AddReasonEntryRange(MensRea.GetReasonEntries());
+                AddReasonEntryRange(criminalIntent.GetReasonEntries());
+                return false;
+            }
+
+            //test if implementor has some kind of x-ref rules in place
+            if (!criminalIntent.CompareTo(criminalAct))
+            {
+                AddReasonEntry($"{nameof(MensRea)} {nameof(MensRea.CompareTo)} to this {nameof(ActusReus)} is false");
+                AddReasonEntryRange(criminalIntent.GetReasonEntries());
+                return false;
+            }
+            if (!criminalAct.CompareTo(criminalIntent))
+            {
+                AddReasonEntry($"{nameof(ActusReus)} {nameof(ActusReus.CompareTo)} to this {nameof(MensRea)} is false");
+                AddReasonEntryRange(criminalIntent.GetReasonEntries());
                 return false;
             }
 

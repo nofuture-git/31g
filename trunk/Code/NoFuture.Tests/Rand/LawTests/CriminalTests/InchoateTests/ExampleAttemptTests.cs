@@ -11,35 +11,6 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.InchoateTests
     [TestFixture]
     public class ExampleAttemptTests
     {
-        [Test(Description = "once a crime is completed it cannot be an attempt")]
-        public void ExampleCompletedTest()
-        {
-            var testCrime = new Misdemeanor()
-            {
-                MensRea = new GeneralIntent
-                {
-                    IsIntentOnWrongdoing = lp => lp is MelissaEg,
-                    IsKnowledgeOfWrongdoing = lp => lp is MelissaEg,
-                },
-                ActusReus = new ActusReus
-                {
-                    IsVoluntary = lp => lp is MelissaEg,
-                    IsAction = lp => lp is MelissaEg
-                }
-            };
-            var testResult = testCrime.IsValid(new MelissaEg());
-            Assert.IsTrue(testResult);
-
-            var testSubject = new Attempt(testCrime)
-            {
-                IsProximity = lp => lp is MelissaEg
-            };
-
-            testResult = testSubject.IsValid(new MelissaEg());
-            Console.WriteLine(testSubject.ToString());
-            Assert.IsFalse(testResult);
-        }
-
         [Test(Description = "test that having reckless intent is valid for an attempt")]
         public void ExampleRecklessIntent()
         {
@@ -50,22 +21,13 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.InchoateTests
                     IsDisregardOfRisk = lp => lp is MelissaEg,
                     IsUnjustifiableRisk = lp => lp is MelissaEg
                 },
-                ActusReus = new ActusReus
+                ActusReus = new Attempt
                 {
-                    IsVoluntary = lp => lp is MelissaEg,
-                    IsAction = lp => lp is MelissaEg
+                    IsProximity = lp => lp is MelissaEg
                 }
             };
             var testResult = testCrime.IsValid(new MelissaEg());
-            Assert.IsTrue(testResult);
-
-            var testSubject = new Attempt(testCrime)
-            {
-                IsProximity = lp => lp is MelissaEg
-            };
-
-            testResult = testSubject.IsValid(new MelissaEg());
-            Console.WriteLine(testSubject.ToString());
+            Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
         }
 
@@ -78,16 +40,12 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.InchoateTests
                 {
                     IsIntentOnWrongdoing = lp => lp is MelissaEg,
                     IsKnowledgeOfWrongdoing = lp => lp is MelissaEg,
-                }
+                },
+                ActusReus = new Attempt()
             };
 
             var testResult = testCrime.IsValid(new MelissaEg());
-            Assert.IsFalse(testResult);
-
-            var testSubject = new Attempt(testCrime);
-
-            testResult = testSubject.IsValid(new MelissaEg());
-            Console.WriteLine(testSubject.ToString());
+            Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
         }
 
@@ -103,19 +61,15 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.InchoateTests
                 {
                     IsIntentOnWrongdoing = lp => lp is MelissaEg,
                     IsKnowledgeOfWrongdoing = lp => lp is MelissaEg,
+                },
+                ActusReus = new Attempt
+                {
+                    IsProximity = lp => lp is MelissaEg
                 }
             };
 
             var testResult = testCrime.IsValid(new MelissaEg());
-            Assert.IsFalse(testResult);
-
-            var testSubject = new Attempt(testCrime)
-            {
-                IsProximity = lp => lp is MelissaEg
-            };
-
-            testResult = testSubject.IsValid(new MelissaEg());
-            Console.WriteLine(testSubject.ToString());
+            Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
 
@@ -128,20 +82,16 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.InchoateTests
                 {
                     IsIntentOnWrongdoing = lp => lp is HarryEg,
                     IsKnowledgeOfWrongdoing = lp => lp is HarryEg,
+                }, 
+                ActusReus = new Attempt
+                {
+                    IsResIpsaLoquitur = lp => ((lp as HarryEg)?.IsMeetWithHitman ?? false)
+                                               && (((HarryEg)lp).IsPayWithCash2Hitman)
                 }
             };
 
             var testResult = testCrime.IsValid(new HarryEg());
-            Assert.IsFalse(testResult);
-
-            var testSubject = new Attempt(testCrime)
-            {
-                IsResIpsaLoquitur = lp => ((lp as HarryEg)?.IsMeetWithHitman ?? false)
-                                           && (((HarryEg) lp).IsPayWithCash2Hitman)
-            };
-
-            testResult = testSubject.IsValid(new HarryEg());
-            Console.WriteLine(testSubject.ToString());
+            Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
 
@@ -154,19 +104,15 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.InchoateTests
                 {
                     IsIntentOnWrongdoing = lp => lp is JudyEg,
                     IsKnowledgeOfWrongdoing = lp => lp is JudyEg,
+                },
+                ActusReus = new Attempt
+                {
+                    IsProbableDesistance = JudyEg.IsJudyEgStealing
                 }
             };
 
             var testResult = testCrime.IsValid(new JudyEg());
-            Assert.IsFalse(testResult);
-
-            var testSubject = new Attempt(testCrime)
-            {
-                IsProbableDesistance = JudyEg.IsJudyEgStealing
-            };
-
-            testResult = testSubject.IsValid(new JudyEg());
-            Console.WriteLine(testSubject.ToString());
+            Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
 
@@ -179,19 +125,15 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.InchoateTests
                 {
                     IsIntentOnWrongdoing = lp => lp is KevinEg,
                     IsKnowledgeOfWrongdoing = lp => lp is KevinEg,
+                },
+                ActusReus = new Attempt
+                {
+                    IsSubstantial = KevinEg.IsKevinRobbingArmoredCar
                 }
             };
 
             var testResult = testCrime.IsValid(new KevinEg());
-            Assert.IsFalse(testResult);
-
-            var testSubject = new Attempt(testCrime)
-            {
-                IsSubstantial = KevinEg.IsKevinRobbingArmoredCar
-            };
-
-            testResult = testSubject.IsValid(new KevinEg());
-            Console.WriteLine(testSubject.ToString());
+            Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
     }
