@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\..\..\..\packages\NUnit.3.11.0\build\NUnit.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9EEB5AFE-106A-45E1-A587-CC4EB3AED2E8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Rand.Law.Criminal.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Rand.Law.Criminal.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.11.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\NUnit.3.11.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActusReusTests\PowellvTexasTests.cs" />
+    <Compile Include="ActusReusTests\RegaladovUsTests.cs" />
+    <Compile Include="ActusReusTests\RobinsonvCaliforniaTests.cs" />
+    <Compile Include="ActusReusTests\StatevSowryTests.cs" />
+    <Compile Include="ActusReusTests\WendellHolisvTexasTests.cs" />
+    <Compile Include="CausationTests\BullockvDelawareTests.cs" />
+    <Compile Include="CrimeTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\CommonwealthvAlexanderTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\CommonwealthvMirandaTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\DuttonvHayesPupkoTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\ExampleDefenseOfHabitationTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\ExampleDefenseOfPropertyTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\ExampleDuressDefenseTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\ExampleNecessityDefenseTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\ExamplePolicePowerTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\PeoplevLovercampTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfOtherTests\StatevDaoudTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfSelfTests\ExampleAppropriateDeadlyForceTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfSelfTests\ExampleAttackIsRetaliatoryTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfSelfTests\ExampleAttackNotImminentTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfSelfTests\ExampleBatteredWifeDefenseTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfSelfTests\ExampleExcessiveForceExceptionTest.cs" />
+    <Compile Include="DefenseTests\DefenseOfSelfTests\ExampleWithdrawalExceptionTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfSelfTests\RodriguezvStateTests.cs" />
+    <Compile Include="DefenseTests\DefenseOfSelfTests\ShulervBabbittTests.cs" />
+    <Compile Include="DefenseTests\ExampleEntrapmentTests.cs" />
+    <Compile Include="DefenseTests\ExampleInfancyDefenseTests.cs" />
+    <Compile Include="DefenseTests\ExampleIntoxicationTests.cs" />
+    <Compile Include="DefenseTests\ExampleMistakeOfFactTests.cs" />
+    <Compile Include="DefenseTests\ExampleMistakeOfLawTests.cs" />
+    <Compile Include="DefenseTests\GarnettvStateTests.cs" />
+    <Compile Include="DefenseTests\InsanityTests\ExampleIrrImpulseTests.cs" />
+    <Compile Include="DefenseTests\InsanityTests\ExampleMNaghtenTests.cs" />
+    <Compile Include="DefenseTests\InsanityTests\ExampleSubstanCapacityTests.cs" />
+    <Compile Include="DefenseTests\InsanityTests\StatevGuidoTests.cs" />
+    <Compile Include="DefenseTests\InsanityTests\StatevHornsbyTests.cs" />
+    <Compile Include="DefenseTests\PeoplevRegisterTests.cs" />
+    <Compile Include="InchoateTests\ExampleAttemptTests.cs" />
+    <Compile Include="MensReaTests\DeanvUsTests.cs" />
+    <Compile Include="MensReaTests\ExampleAccessoryIntentTests.cs" />
+    <Compile Include="MensReaTests\HaroldStaplesvUsTests.cs" />
+    <Compile Include="MensReaTests\KarlaCrosbyvOregonTests.cs" />
+    <Compile Include="MensReaTests\MorissettevUsTests.cs" />
+    <Compile Include="MensReaTests\StatevAndrewsTests.cs" />
+    <Compile Include="MensReaTests\StatevHornerTests.cs" />
+    <Compile Include="MensReaTests\StatevSlaytonTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TermsTests\ForceTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Core\Rand.Core.csproj">
+      <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
+      <Name>Rand.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Criminal\Rand.Law.Criminal.csproj">
+      <Project>{b034d93f-b140-40c0-a640-bba4fb8b85e3}</Project>
+      <Name>Rand.Law.Criminal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Rand.Law.csproj">
+      <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
+      <Name>Rand.Law</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\NUnit.3.11.0\build\NUnit.props'))" />
+  </Target>
+</Project>

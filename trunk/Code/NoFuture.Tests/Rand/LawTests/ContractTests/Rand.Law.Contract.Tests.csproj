@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\..\..\..\packages\NUnit.3.11.0\build\NUnit.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F074ECB5-6FE0-4AA7-B11D-92D23EEEB22A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NoFuture.Rand.Law.Contract.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Rand.Law.Contract.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.11.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\NUnit.3.11.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcceptanceTests\DavisvJacobyTests.cs" />
+    <Compile Include="AcceptanceTests\HendricksvBeheeTests.cs" />
+    <Compile Include="AcceptanceTests\HobbsvMassasoitWhipCoTests.cs" />
+    <Compile Include="AcceptanceTests\MunicipalvTownOfRamapoTests.cs" />
+    <Compile Include="AcceptanceTests\UnitedStatesLifeInsCovWilsonTests.cs" />
+    <Compile Include="BreachTests\FanokvCarverBoatTests.cs" />
+    <Compile Include="BreachTests\JacobYoungsvKentTests.cs" />
+    <Compile Include="BreachTests\KcaElectronicsvLegacyElectronicsTests.cs" />
+    <Compile Include="BreachTests\OwGrunRoofingvCopeTests.cs" />
+    <Compile Include="BreachTests\SmithvBradyTests.cs" />
+    <Compile Include="ConsiderationTests\AlaskaPackersAssocvDomenicoTests.cs" />
+    <Compile Include="ConsiderationTests\HamervSidwayTests.cs" />
+    <Compile Include="ConsiderationTests\HarringtonvTaylorTests.cs" />
+    <Compile Include="ConsiderationTests\JankowskivJedzTests.cs" />
+    <Compile Include="ConsiderationTests\MillsvWymanTests.cs" />
+    <Compile Include="ConsiderationTests\QuigleyvWilsonTests.cs" />
+    <Compile Include="ConsiderationTests\RidgeRunnerForestryvVenemanTests.cs" />
+    <Compile Include="ConsiderationTests\SchnellvNellTests.cs" />
+    <Compile Include="ConsiderationTests\WeavertownvMoranTests.cs" />
+    <Compile Include="ConsiderationTests\WebbvMcGowinTests.cs" />
+    <Compile Include="ContractTermTests.cs" />
+    <Compile Include="DefenseTests\AlabivDhlAirwaysTests.cs" />
+    <Compile Include="DefenseTests\AustinInstrumentvLoralCorpTests.cs" />
+    <Compile Include="DefenseTests\BatsakisvDemotsisTests.cs" />
+    <Compile Include="DefenseTests\CrabtreevElizabethSalesTests.cs" />
+    <Compile Include="DefenseTests\ExParteOdemTests.cs" />
+    <Compile Include="DefenseTests\GuenthervAmerTexTests.cs" />
+    <Compile Include="DefenseTests\HanksvPowderRidgeTests.cs" />
+    <Compile Include="DefenseTests\McInerneyvCharterGolfTests.cs" />
+    <Compile Include="DefenseTests\OdorizzivBloomfieldSchoolTests.cs" />
+    <Compile Include="DefenseTests\OrtelerevTeachersBoardTests.cs" />
+    <Compile Include="DefenseTests\SherwoodvWalkerTests.cs" />
+    <Compile Include="DefenseTests\StandardFinancevEllisTests.cs" />
+    <Compile Include="DefenseTests\StevensvPublicisTests.cs" />
+    <Compile Include="DefenseTests\ValleyMedvFarberTests.cs" />
+    <Compile Include="DefenseTests\WilliamsvWalkerThomFurnitureTests.cs" />
+    <Compile Include="DefenseTests\WoodvBoyntonTests.cs" />
+    <Compile Include="EstoppelTests\ConradvFieldsTests.cs" />
+    <Compile Include="EstoppelTests\HoffmanvRedOwlStoresTests.cs" />
+    <Compile Include="EstoppelTests\MayervKingColaTests.cs" />
+    <Compile Include="EstoppelTests\RicketsvScothornTests.cs" />
+    <Compile Include="ExcuseTests\BushvProtravelIntlTests.cs" />
+    <Compile Include="ExcuseTests\KarlWendtvIntlHarvesterTests.cs" />
+    <Compile Include="ExcuseTests\UsBancorpvAmeriquestTests.cs" />
+    <Compile Include="MutualAssentTests\AugsteinvLeslieTests.cs" />
+    <Compile Include="MutualAssentTests\LucyvZehmerTests.cs" />
+    <Compile Include="MutualAssentTests\OswaldvAllenTests.cs" />
+    <Compile Include="OffersTests\ConfederateMotorsvTernyTests.cs" />
+    <Compile Include="OffersTests\EverTiteRoofingCorpvGreenTests.cs" />
+    <Compile Include="OffersTests\FairmountvCrundenMartinTests.cs" />
+    <Compile Include="OffersTests\InReEstateOfServertsonTests.cs" />
+    <Compile Include="OffersTests\KloianvDominosPizzaTests.cs" />
+    <Compile Include="OffersTests\LeonardvPepsicoIncTests.cs" />
+    <Compile Include="OffersTests\PettersonvPattbergTests.cs" />
+    <Compile Include="OffersTests\PoelvBrunswickTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemedyTests\BrandeisvCapitolCraneTests.cs" />
+    <Compile Include="RemedyTests\CoastalSteelvAlgernonTests.cs" />
+    <Compile Include="RemedyTests\DoeringvJohnDeereTests.cs" />
+    <Compile Include="RemedyTests\HarrahsvHnedakBoboTests.cs" />
+    <Compile Include="RemedyTests\HawkinsvMcGeeTests.cs" />
+    <Compile Include="RemedyTests\HollywoodFanvGaborTests.cs" />
+    <Compile Include="RemedyTests\KayAndersonvAmeritechTests.cs" />
+    <Compile Include="RemedyTests\LacledeGasvAmocoOilTests.cs" />
+    <Compile Include="RemedyTests\LakeRivervCarborundumTests.cs" />
+    <Compile Include="RemedyTests\LeevFooteTests.cs" />
+    <Compile Include="RemedyTests\LeingangvCityOfMandanTests.cs" />
+    <Compile Include="RemedyTests\MistletoevLockeTests.cs" />
+    <Compile Include="RemedyTests\ParkervTwentiethFoxTests.cs" />
+    <Compile Include="RemedyTests\PeevyhousevGarlandCoalTests.cs" />
+    <Compile Include="RemedyTests\RockinghamvLutenBridgeTests.cs" />
+    <Compile Include="RemedyTests\SullivanvOconnorTests.cs" />
+    <Compile Include="RemedyTests\TruckRentvPuritanFarmsTests.cs" />
+    <Compile Include="RemedyTests\UsNavalInstitutevCharterCommTests.cs" />
+    <Compile Include="RemedyTests\VanWagnervSmEnterprisesTests.cs" />
+    <Compile Include="SemiosisTests\AcmeMarketsvFedArmoredTests.cs" />
+    <Compile Include="SemiosisTests\AmericanFertilizervWoodTests.cs" />
+    <Compile Include="SemiosisTests\ClarkvWestTests.cs" />
+    <Compile Include="SemiosisTests\FrigalimentvBnsInternationalTests.cs" />
+    <Compile Include="SemiosisTests\InReEstateOfSoperTests.cs" />
+    <Compile Include="SemiosisTests\MastersonvSineTests.cs" />
+    <Compile Include="SemiosisTests\MendenhallvHanesbrandsTests.cs" />
+    <Compile Include="SemiosisTests\MitchillvLathTests.cs" />
+    <Compile Include="SemiosisTests\NanakulivShellOilTests.cs" />
+    <Compile Include="SemiosisTests\NelsonvElwayTests.cs" />
+    <Compile Include="SemiosisTests\NorthHoustonvPwRealEstateTests.cs" />
+    <Compile Include="SemiosisTests\PpgIndustriesvShellOilTests.cs" />
+    <Compile Include="SemiosisTests\RandomHousevRosettaBooksTests.cs" />
+    <Compile Include="SemiosisTests\TownFairfieldvDaddarioTests.cs" />
+    <Compile Include="SemiosisTests\WoodvLucyLadyTests.cs" />
+    <Compile Include="SemiosisTests\WwwAssociatesvGiancontieriTests.cs" />
+    <Compile Include="UccTests\CommerceInsvBayerCorpTests.cs" />
+    <Compile Include="UccTests\ComNetworkvPurcellTireTests.cs" />
+    <Compile Include="UccTests\FlenderCorpvTippinsTests.cs" />
+    <Compile Include="UccTests\FoleyvDaytonBankTests.cs" />
+    <Compile Include="UccTests\GaredHoldingsvBestBoltTests.cs" />
+    <Compile Include="UccTests\ScoularCovDenneyTests.cs" />
+    <Compile Include="UccTests\TousleyBixlervColgateTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Core\Rand.Core.csproj">
+      <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
+      <Name>Rand.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Contract\Rand.Law.Contract.csproj">
+      <Project>{4510e186-a2de-46b4-a29c-c171ef17a690}</Project>
+      <Name>Rand.Law.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Rand.Law.csproj">
+      <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
+      <Name>Rand.Law</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\NUnit.3.11.0\build\NUnit.props'))" />
+  </Target>
+</Project>

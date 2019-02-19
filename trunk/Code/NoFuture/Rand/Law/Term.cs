@@ -126,7 +126,7 @@ namespace NoFuture.Rand.Law
             return agreedTerms;
         }
 
-        internal static void ThrowOnDupRefersTo(ISet<Term<T>> terms)
+        public static void ThrowOnDupRefersTo(ISet<Term<T>> terms)
         {
             if (terms == null || !terms.Any())
                 return;
