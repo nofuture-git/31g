@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 {
@@ -9,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
     /// actual possession: possession as item on very person or very near
     /// constructive possession: not on person but within an area of control
     /// </remarks>
-    public class Possession : ActusReus
+    public class Possession : CriminalBase, IActusReus
     {
         public Predicate<ILegalPerson> IsKnowinglyProcured { get; set; } = lp => false;
 
@@ -19,6 +20,12 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 
         public Predicate<ILegalPerson> IsSufficientTimeToGetRid { get; set; } = lp => false;
 
+        /// <inheritdoc cref="IActusReus"/>
+        public virtual bool CompareTo(IMensRea criminalIntent)
+        {
+            return true;
+        }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var defendant = GetDefendant(persons);
@@ -27,19 +34,20 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 
             if (IsKnowinglyProcured(defendant))
             {
-                AddReasonEntry($"the defendant, {defendant.Name}, is possession knowingly procured");
+                AddReasonEntry($"the defendant, {defendant.Name}, {nameof(IsKnowinglyProcured)} is true");
                 return true;
             }
 
             if (IsKnowinglyReceived(defendant))
             {
-                AddReasonEntry($"the defendant, {defendant.Name}, is possession knowingly received");
+                AddReasonEntry($"the defendant, {defendant.Name}, {nameof(IsKnowinglyReceived)} is true");
                 return true;
             }
 
             if (IsAwareOfControlThereof(defendant) && IsSufficientTimeToGetRid(defendant))
             {
-                AddReasonEntry($"the defendant, {defendant.Name}, is possession aware of control and given time to dispose");
+                AddReasonEntry($"the defendant, {defendant.Name}, {nameof(IsAwareOfControlThereof)} " +
+                               $"and {nameof(IsSufficientTimeToGetRid)} are both true");
                 return true;
             }
 

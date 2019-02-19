@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
@@ -18,10 +19,11 @@ namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
         [Test]
         public void RobinsonvCalifornia()
         {
-            var testSubject = new Felony();
+            var testSubject = new ActusReus();
+
             //court found defendant was indeed addict but hadn't actually done anything
-            testSubject.ActusReus.IsVoluntary = lp => true;
-            testSubject.ActusReus.IsAction = lp => false;
+            testSubject.IsVoluntary = lp => true;
+            testSubject.IsAction = lp => false;
 
             var testResult = testSubject.IsValid(new Robinson());
             Console.WriteLine(testSubject.ToString());

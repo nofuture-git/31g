@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
@@ -9,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
     /// <summary>
     /// a crime that has only just begun which may be defined by statute or common law
     /// </summary>
-    public class Attempt: ActusReus
+    public class Attempt : CriminalBase, IActusReus
     {
         /// <summary>
         /// A measure of criminal effort left to be done, not a measure of what is already done.
@@ -46,7 +47,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
         /// <summary>
         /// Attempt is not applicable to reckless or negligent intent
         /// </summary>
-        public override bool CompareTo(MensRea criminalIntent)
+        public bool CompareTo(IMensRea criminalIntent)
         {
             var isInvalid2Attempt = criminalIntent is Recklessly || criminalIntent is Negligently;
             if (isInvalid2Attempt)
@@ -55,7 +56,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
                 return false;
             }
 
-            return base.CompareTo(criminalIntent);
+            return true;
         }
 
         public override bool IsValid(params ILegalPerson[] persons)

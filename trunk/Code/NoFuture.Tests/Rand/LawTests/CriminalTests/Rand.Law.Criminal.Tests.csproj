@@ -81,6 +81,7 @@
     <Compile Include="InchoateTests\ExampleAbandonmentTests.cs" />
     <Compile Include="InchoateTests\ExampleAttemptTests.cs" />
     <Compile Include="InchoateTests\ExampleImpossibilityTests.cs" />
+    <Compile Include="InchoateTests\StatevWithrowTests.cs" />
     <Compile Include="MensReaTests\DeanvUsTests.cs" />
     <Compile Include="MensReaTests\ExampleAccessoryIntentTests.cs" />
     <Compile Include="MensReaTests\HaroldStaplesvUsTests.cs" />

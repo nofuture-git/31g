@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
@@ -13,20 +14,24 @@ namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
     /// doctrine issue, not requiring mens rea is mostly for regulations with fines, not felonies
     /// ]]>
     /// </remarks>
-    [TestFixture()]
+    [TestFixture]
     public class HaroldStaplesvUsTests
     {
         [Test]
         public void HaroldStaplesvUs()
         {
-            var testSubject = new Felony();
-
-            testSubject.ActusReus.IsAction = lp => lp is HaroldStaples;
-            testSubject.ActusReus.IsVoluntary = lp => lp is HaroldStaples;
+            var testSubject = new Felony
+            {
+                ActusReus = new ActusReus
+                {
+                    IsAction = lp => lp is HaroldStaples,
+                    IsVoluntary = lp => lp is HaroldStaples
+                },
+                MensRea = null
+            };
 
             //mens rea is not needed for Fed Statute intended to regulate
             //for example ownership of hand gernades was a crime without mens rea
-            testSubject.MensRea = null;
             var testResult = testSubject.IsValid(new HaroldStaples());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);

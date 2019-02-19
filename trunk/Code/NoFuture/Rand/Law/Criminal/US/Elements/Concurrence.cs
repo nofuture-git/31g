@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     [Aka("conduct")]
     public class Concurrence : CriminalBase, IElement
     {
-        private MensRea _mens;
+        private IMensRea _mens;
 
         /// <summary>
         /// the willful intent to do harm
@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
         /// Setting this to null implies that intent is not required. 
         /// </remarks>
         [Aka("intent")]
-        public MensRea MensRea
+        public IMensRea MensRea
         {
             get => _mens;
             set
@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
                     AddReasonEntry("mens rea is not required for this crime");
             }
         }
-        public ActusReus ActusReus { get; set; } = new ActusReus();
+        public IActusReus ActusReus { get; set; } = new ActusReus();
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

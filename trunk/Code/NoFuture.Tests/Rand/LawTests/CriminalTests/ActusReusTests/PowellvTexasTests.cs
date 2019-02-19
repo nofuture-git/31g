@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
@@ -18,13 +19,13 @@ namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
         [Test]
         public void PowellvTexas()
         {
-            var testSubject = new Misdemeanor();
+            var testSubject = new ActusReus();
 
             //being an alchoholic is not actus rea, drinking too much and getting drunk is
-            testSubject.ActusReus.IsVoluntary = lp => lp is Powell;
-            testSubject.ActusReus.IsAction = lp => lp is Powell;
+            testSubject.IsVoluntary = lp => lp is Powell;
+            testSubject.IsAction = lp => lp is Powell;
 
-            var testResult = testSubject.ActusReus.IsValid(new Powell());
+            var testResult = testSubject.IsValid(new Powell());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }

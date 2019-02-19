@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
             return _intent.CompareTo(obj);
         }
 
-        public override bool CompareTo(ActusReus criminalAct)
+        public override bool CompareTo(IActusReus criminalAct)
         {
             return _intent.CompareTo(criminalAct);
         }

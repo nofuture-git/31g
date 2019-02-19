@@ -61,6 +61,7 @@
     <Compile Include="US\Defense\Proportionality.cs" />
     <Compile Include="US\Defense\Provacation.cs" />
     <Compile Include="US\Elements\Act\ActusReus.cs" />
+    <Compile Include="US\Elements\Act\IActusReus.cs" />
     <Compile Include="US\Elements\Act\Possession.cs" />
     <Compile Include="US\Elements\AttendantCircumstances.cs" />
     <Compile Include="US\Elements\Causation.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="US\Elements\Intent\ComLaw\GeneralIntent.cs" />
     <Compile Include="US\Elements\Intent\ComLaw\MaliceAforethought.cs" />
     <Compile Include="US\Elements\Intent\ComLaw\SpecificIntent.cs" />
+    <Compile Include="US\Elements\Intent\IMensRea.cs" />
     <Compile Include="US\Elements\Intent\MensRea.cs" />
     <Compile Include="US\Elements\Intent\PenalCode\Knowingly.cs" />
     <Compile Include="US\Elements\Intent\PenalCode\Negligently.cs" />

@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Law.Criminal.US
         /// <summary>
         /// A short hand property to the same stack-residing variable in <see cref="Concurrence"/>
         /// </summary>
-        public virtual ActusReus ActusReus
+        public virtual IActusReus ActusReus
         {
             get => Concurrence.ActusReus;
             set => Concurrence.ActusReus = value;
@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Law.Criminal.US
         /// A short hand property to the same stack-residing variable in <see cref="Concurrence"/>
         /// </summary>
         [Aka("intent")]
-        public virtual MensRea MensRea
+        public virtual IMensRea MensRea
         {
             get => Concurrence.MensRea;
             set => Concurrence.MensRea = value;

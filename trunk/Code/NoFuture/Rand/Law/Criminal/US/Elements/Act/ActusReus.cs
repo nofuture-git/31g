@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
     /// To be a crime there must have been an action which was voluntary
     /// </summary>
     [Aka("criminal act")]
-    public class ActusReus : CriminalBase, IElement
+    public class ActusReus : CriminalBase, IActusReus
     {
         /// <summary>
         /// There must always be something willfully
@@ -27,11 +27,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
         /// </summary>
         public DutyToAct Omission { get; set; } = new DutyToAct();
 
-        /// <summary>
-        /// Determines if this criminal act is valid 
-        /// when combined with the particular <see cref="criminalIntent"/>
-        /// </summary>
-        public virtual bool CompareTo(MensRea criminalIntent)
+        /// <inheritdoc cref="IActusReus"/>
+        public virtual bool CompareTo(IMensRea criminalIntent)
         {
             return true;
         }
