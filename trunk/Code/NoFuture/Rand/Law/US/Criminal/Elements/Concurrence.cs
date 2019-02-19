@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
             if (!criminalAct.CompareTo(criminalIntent))
             {
                 AddReasonEntry($"{nameof(ActusReus)} {nameof(ActusReus.CompareTo)} to this {nameof(MensRea)} is false");
-                AddReasonEntryRange(criminalIntent.GetReasonEntries());
+                AddReasonEntryRange(criminalAct.GetReasonEntries());
                 return false;
             }
 
