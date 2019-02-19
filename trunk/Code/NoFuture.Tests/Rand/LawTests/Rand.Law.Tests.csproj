@@ -176,7 +176,9 @@
     <Compile Include="CriminalTests\DefenseTests\InsanityTests\StatevGuidoTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\InsanityTests\StatevHornsbyTests.cs" />
     <Compile Include="CriminalTests\DefenseTests\PeoplevRegisterTests.cs" />
+    <Compile Include="CriminalTests\InchoateTests\ExampleAttemptTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\DeanvUsTests.cs" />
+    <Compile Include="CriminalTests\MensReaTests\ExampleAccessoryIntentTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\HaroldStaplesvUsTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\KarlaCrosbyvOregonTests.cs" />
     <Compile Include="CriminalTests\MensReaTests\MorissettevUsTests.cs" />

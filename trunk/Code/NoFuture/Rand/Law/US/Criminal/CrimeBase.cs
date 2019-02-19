@@ -47,12 +47,12 @@ namespace NoFuture.Rand.Law.US.Criminal
 
         public abstract int CompareTo(object obj);
 
-        public Concurrence Concurrence { get; set; } = new Concurrence();
+        public virtual Concurrence Concurrence { get; set; } = new Concurrence();
 
         /// <summary>
         /// A short hand property to the same stack-residing variable in <see cref="Concurrence"/>
         /// </summary>
-        public ActusReus ActusReus
+        public virtual ActusReus ActusReus
         {
             get => Concurrence.ActusReus;
             set => Concurrence.ActusReus = value;
@@ -62,14 +62,13 @@ namespace NoFuture.Rand.Law.US.Criminal
         /// A short hand property to the same stack-residing variable in <see cref="Concurrence"/>
         /// </summary>
         [Aka("intent")]
-        public MensRea MensRea
+        public virtual MensRea MensRea
         {
             get => Concurrence.MensRea;
             set => Concurrence.MensRea = value;
         }
 
-        public IList<IElement> AdditionalElements { get; } = new List<IElement>();
-        public Func<IEnumerable<ILegalPerson>> OtherParties { get; set; } = () => new List<ILegalPerson>();
+        public virtual IList<IElement> AdditionalElements { get; } = new List<IElement>();
 
         protected internal void AddPersonsReasonEntries(params ILegalPerson[] persons)
         {

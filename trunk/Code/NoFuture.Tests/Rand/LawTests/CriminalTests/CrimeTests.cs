@@ -29,13 +29,6 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests
             Assert.IsTrue(testSubjects.Last() is Felony);
         }
 
-        [Test]
-        public void TestGetDefendant()
-        {
-            var testResult = Government.GetDefendant(new TestPerson00(), null, null);
-            Assert.IsNotNull(testResult);
-            Console.WriteLine(testResult.Name);
-        }
     }
 
     public class TestPerson00 : LegalPerson

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent
 {
@@ -24,8 +20,23 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            var defendant = GetDefendant(persons);
+            if (defendant == null)
+                return false;
 
-            throw new NotImplementedException();
+            if (!IsAwareOfCrime(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAwareOfCrime)} is false");
+                return false;
+            }
+
+            if (!IsAssistToEvadeProsecution(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAssistToEvadeProsecution)} is false");
+                return false;
+            }
+
+            return true;
         }
 
         public override int CompareTo(object obj)

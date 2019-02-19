@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.US.Criminal
 {
@@ -22,23 +21,6 @@ namespace NoFuture.Rand.Law.US.Criminal
         public override int GetHashCode()
         {
             return _uid.GetHashCode();
-        }
-
-        public static ILegalPerson GetDefendant(ILegalPerson ror, ILegalPerson ree, IRationale obj)
-        {
-            ree = ree ?? Government.Value;
-            ror = ror ?? Government.Value;
-            ILegalPerson defendant = null;
-            if (!ror.Equals(Government.Value) && ree.Equals(Government.Value))
-                defendant = ror;
-            if (ror.Equals(Government.Value) && !ree.Equals(Government.Value))
-                defendant = ree;
-            if (defendant == null)
-            {
-                obj?.AddReasonEntry($"it is not clear who the defendant is between {ror?.Name} and {ree?.Name}");
-            }
-
-            return defendant;
         }
     }
 }

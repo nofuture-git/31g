@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.US.Criminal
         /// <summary>
         /// operation of an act or omission to act and intention or criminal negligence
         /// </summary>
-        Concurrence Concurrence { get; }
+        Concurrence Concurrence { get; set; }
 
         IList<IElement> AdditionalElements { get; }
     }
