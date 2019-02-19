@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// DOERING EQUIPMENT CO. v. JOHN DEERE CO. Appeals Court of Massachusetts 61 Mass. App. Ct. 850, 815 N.E.2d 234 (Mass. Ct. App. 2004)

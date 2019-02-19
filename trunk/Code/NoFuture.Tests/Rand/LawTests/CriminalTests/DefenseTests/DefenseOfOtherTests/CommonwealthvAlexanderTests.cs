@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
 {
     /// <summary>
     /// Commonwealth v. Alexander, 531 S.E.2d 567 (2000)

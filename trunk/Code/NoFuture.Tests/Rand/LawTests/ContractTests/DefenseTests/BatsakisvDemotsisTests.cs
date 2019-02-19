@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// BATSAKIS v. DEMOTSIS Court of Civil Appeals of Texas—El Paso 226 S.W.2d 673 (Tex.Civ.App. 1949)

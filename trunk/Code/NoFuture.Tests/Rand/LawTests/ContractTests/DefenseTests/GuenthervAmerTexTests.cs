@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Defense;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// GUENTHER v. AMER-TEX CONSTRUCTION CO. Court of Civil Appeals of Texas, Third District, Austin 534 S.W.2d 396 (Tex.App.—Austin 1976)

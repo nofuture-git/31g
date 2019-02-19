@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Remedy;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// VAN WAGNER ADVERTISING CORP. v. S&amp;M ENTERPRISES Court of Appeals of New York 67 N.Y.2d 186, 492 N.E.2d 756 (1986)

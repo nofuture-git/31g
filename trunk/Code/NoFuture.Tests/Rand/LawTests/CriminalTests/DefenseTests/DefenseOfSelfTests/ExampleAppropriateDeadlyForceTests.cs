@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.Criminal.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
 {
     [TestFixture]
     public class ExampleAppropriateDeadlyForceTests

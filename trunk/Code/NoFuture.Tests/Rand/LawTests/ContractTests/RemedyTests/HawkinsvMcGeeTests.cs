@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// HAWKINS v. McGEE Supreme Court of New Hampshire 84 N.H. 114, 146 A. 641 (1929)

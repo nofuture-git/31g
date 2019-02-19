@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.MutualAssentTests
+namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
 {
     /// <summary>
     /// Dr. Werner OSWALD, Plaintiff-Appellant, v. Jane B. ALLEN, Defendant-Appellee 417 F.2d 43; 1969 U.S. App.

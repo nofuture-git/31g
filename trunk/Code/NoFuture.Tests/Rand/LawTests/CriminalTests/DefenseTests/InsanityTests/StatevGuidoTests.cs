@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.InsanityTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
 {
     /// <summary>
     /// State v. Guido, 191 A.2d 45 (1993)

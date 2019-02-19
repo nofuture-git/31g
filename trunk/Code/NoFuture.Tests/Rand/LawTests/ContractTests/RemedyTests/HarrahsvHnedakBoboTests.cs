@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// SOUTHERN ILLINOIS RIVERBOAT/CASINO CRUISES, INC. v.HNEDAK BOBO GROUP, INC. United States District Court for the Southern District of Illinois 2007 U.S.Dist.LEXIS 53776 (No. 03-CV-4215-JPG)

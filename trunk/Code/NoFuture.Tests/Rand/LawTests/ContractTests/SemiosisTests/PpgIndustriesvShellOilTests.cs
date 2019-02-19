@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Semiosis;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 {
     [TestFixture()]
     public class PpgIndustriesvShellOilTests

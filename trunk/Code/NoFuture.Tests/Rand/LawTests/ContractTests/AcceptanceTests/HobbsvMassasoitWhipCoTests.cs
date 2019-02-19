@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
+namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
 {
     /// <summary>
     /// HOBBS v. MASSASOIT WHIP CO. Supreme Judicial Court of Massachusetts 158 Mass. 194, 33 N.E. 495 (1893)

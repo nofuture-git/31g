@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 {
     /// <summary>
     /// WOOD v. LUCY, LADY DUFF-GORDON Court of Appeals of New York 222 N.Y. 88, 118 N.E. 214 (1917)

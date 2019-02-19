@@ -1,11 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.MensReaTests
+namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
 {
     /// <summary>
     /// 154 P.3d 97 (2007) 342 Or. 419 STATE of Oregon, Respondent on Review, v. Karla CROSBY, Petitioner on Review. (CC0112-38549; CA A120319; SC S53295). Supreme Court of Oregon.

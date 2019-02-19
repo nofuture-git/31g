@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Defense;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// McINERNEY v. CHARTER GOLF, INC. Supreme Court of Illinois 176 Ill. 2d 482, 680 N.E.2d 1347 (1997)

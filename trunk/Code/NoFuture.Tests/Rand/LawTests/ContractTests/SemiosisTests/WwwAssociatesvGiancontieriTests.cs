@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Semiosis;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 {
     /// <summary>
     /// W.W.W. ASSOCIATES, INC. v. GIANCONTIERI Court of Appeals of New York 77 N.Y.2d 157, 566 N.E.2d 639, 565 N.Y.S.2d 440 (1990)

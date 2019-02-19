@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.EstoppelTests
+namespace NoFuture.Rand.Law.Contract.Tests.EstoppelTests
 {
     /// <summary>
     /// MAYER v. KING COLA MID-AMERICA, INC. Court of Appeals of Missouri, Eastern District 660 S.W.2d 746 (Mo.Ct.App. 1983)

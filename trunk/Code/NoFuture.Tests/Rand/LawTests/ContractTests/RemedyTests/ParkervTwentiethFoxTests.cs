@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// PARKER v. TWENTIETH CENTURY-FOX FILM CORP. Supreme Court of California 3 Cal. 3d 176, 474 P.2d 689, 89 Cal.Rptr. 737 (1970) (in bank)

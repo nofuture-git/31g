@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.UccTests
+namespace NoFuture.Rand.Law.Contract.Tests.UccTests
 {
     /// <summary>
     /// FOLEY v. DAYTON BANK & TRUST  Court of Appeals of Tennessee 696 S.W.2d 356 (Tenn.Ct.App. 1985).

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.RemedyTests
+namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     ///UNITED STATES ex rel. COASTAL STEEL ERECTORS, INC. v. ALGERNON BLAIR, INC. United States Court of Appeals for the Fourth Circuit 479 F.2d 638 (4th Cir. 1973)    /// </summary>

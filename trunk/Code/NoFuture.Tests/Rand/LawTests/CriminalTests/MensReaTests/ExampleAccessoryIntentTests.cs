@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.MensReaTests
+namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
 {
     [TestFixture]
     public class ExampleAccessoryIntentTests

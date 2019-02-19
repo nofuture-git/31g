@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Semiosis;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.SemiosisTests
+namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 {
     /// <summary>
     /// IN RE ESTATE OF SOPER Supreme Court of Minnesota 196 Minn. 60, 264 N.W. 427 (1935)

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
+namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
 {
     /// <summary>
     /// POEL v. BRUNSWICK-BALKE-COLLENDER CO. Court of Appeals of New York 216 N.Y. 310, 110 N.E. 619 (1915)

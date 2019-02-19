@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
+namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
 {
     /// <summary>
     /// MUNICIPAL CONSULTANTS & PUBLISHERS, INC. v. TOWN OF RAMAPO Court of Appeals of New York 47 N.Y.2d 144, 390 N.E.2d 1143, 417 N.Y.S.2d 218 (1979)

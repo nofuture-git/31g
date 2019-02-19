@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
 {
     /// <summary>
     /// COMMONWEALTH v. Maria A. MIRANDA. No. 08-P-2094. Decided: June 21, 2010

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// VALLEY MEDICAL SPECIALISTS v. FARBER Supreme Court of Arizona 194 Ariz. 363, 982 P.2d 1277 (en banc 1999)

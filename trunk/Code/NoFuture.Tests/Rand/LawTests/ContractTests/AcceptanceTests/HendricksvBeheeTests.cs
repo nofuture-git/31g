@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
+namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
 {
     /// <summary>
     /// HENDRICKS v. BEHEE Court of Appeals of Missouri, Southern District 786 S.W.2d 610 (Mo.Ct.App. 1990)

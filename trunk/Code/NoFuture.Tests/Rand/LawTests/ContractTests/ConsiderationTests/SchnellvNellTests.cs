@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
+namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
 {
     /// <summary>
     /// SCHNELL v. NELL Supreme Court of Indiana 17 Ind. 29 (1861)

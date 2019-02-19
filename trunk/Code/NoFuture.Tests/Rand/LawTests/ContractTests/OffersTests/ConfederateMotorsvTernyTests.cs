@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.OffersTests
+namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
 {
     /// <summary>
     /// CONFEDERATE MOTORS, INC. v. TERNY United States District Court for the District of Massachusetts 831 F.Supp. 2d 414 (D.Mass. 2011)

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Excuse;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.ExcuseTests
+namespace NoFuture.Rand.Law.Contract.Tests.ExcuseTests
 {
     /// <summary>
     /// KARL WENDT FARM EQUIPMENT CO. v. INT’L HARVESTER CO. United States Court of Appeals for the Sixth Circuit 931 F.2d 1112 (6th Cir. 1991)

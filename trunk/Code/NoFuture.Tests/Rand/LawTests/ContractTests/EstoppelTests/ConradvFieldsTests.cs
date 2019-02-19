@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.EstoppelTests
+namespace NoFuture.Rand.Law.Contract.Tests.EstoppelTests
 {
     /// <summary>
     /// CONRAD v. FIELDS Court of Appeals of Minnesota 2007 Minn.App.Unpub.LEXIS 744

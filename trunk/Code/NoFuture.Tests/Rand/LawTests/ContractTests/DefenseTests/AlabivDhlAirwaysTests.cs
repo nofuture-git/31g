@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Defense.ToAssent;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// ALABI v. DHL AIRWAYS, INC. Superior Court of Delaware, New Castle 583 A.2d 1358 (Del. Super. 1990)

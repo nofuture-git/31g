@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.Criminal.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfSelfTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
 {
     /// <summary>
     /// Shuler v. Babbitt, 49 F.Supp.2d 1165 (1998)

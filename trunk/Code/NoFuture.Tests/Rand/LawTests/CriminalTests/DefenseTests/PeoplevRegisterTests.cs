@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
 {
     /// <summary>
     /// People v. Register, 60 N.Y.2d 270 (1983)

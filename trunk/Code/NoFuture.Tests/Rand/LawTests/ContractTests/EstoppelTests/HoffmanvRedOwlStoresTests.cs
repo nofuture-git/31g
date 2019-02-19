@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.EstoppelTests
+namespace NoFuture.Rand.Law.Contract.Tests.EstoppelTests
 {
     /// <summary>
     /// HOFFMAN v. RED OWL STORES, INC. Supreme Court of Wisconsin 26 Wis. 2d 683, 133 N.W.2d 267 (1965)

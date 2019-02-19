@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
+namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
 {
     /// <summary>
     /// ALASKA PACKERS’ ASSOCIATION v. DOMENICO Circuit Court of Appeals, Ninth Circuit 117 F. 99 (1902)

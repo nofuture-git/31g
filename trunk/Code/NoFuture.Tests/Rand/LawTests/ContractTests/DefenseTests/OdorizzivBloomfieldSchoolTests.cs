@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Defense.ToAssent;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests
+namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// ODORIZZI v. BLOOMFIELD SCHOOL DISTRICT Court of Appeal of California, Second Appellate District 246 Cal.App. 2d 123, 54 Cal.Rptr. 533 (2d Dist. 1966)    

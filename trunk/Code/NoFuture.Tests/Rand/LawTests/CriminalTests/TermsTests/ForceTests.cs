@@ -1,7 +1,7 @@
 ﻿using NoFuture.Rand.Law.Criminal.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.TermsTests
+namespace NoFuture.Rand.Law.Criminal.Tests.TermsTests
 {
     [TestFixture]
     public class ForceTests

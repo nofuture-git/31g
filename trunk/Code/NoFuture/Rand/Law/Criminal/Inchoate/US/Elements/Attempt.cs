@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
-namespace NoFuture.Rand.Law.Criminal.US.Inchoate
+namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
 {
     /// <summary>
     /// a crime that has only just begun which may be defined by statute or common law

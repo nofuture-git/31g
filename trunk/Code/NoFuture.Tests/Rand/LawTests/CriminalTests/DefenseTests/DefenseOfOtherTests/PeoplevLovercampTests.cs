@@ -8,7 +8,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
 {
     /// <summary>
     /// People v. Lovercamp, 43 Cal. App. 3d 823 (1974)

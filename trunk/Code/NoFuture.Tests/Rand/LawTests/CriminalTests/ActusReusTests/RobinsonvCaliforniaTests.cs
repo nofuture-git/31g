@@ -1,9 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Criminal.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.ActusReusTests
+namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
 {
     /// <summary>
     /// 370 U.S. 660 (1962) ROBINSON  v. CALIFORNIA. No. 554. Supreme Court of United States.  Argued April 17, 1962. Decided June 25, 1962.

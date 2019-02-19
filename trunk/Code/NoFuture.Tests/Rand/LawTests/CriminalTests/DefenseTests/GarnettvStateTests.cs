@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
 {
     /// <summary>
     /// Garnett v. State, 632 A.2d 797 (1993)

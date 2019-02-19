@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
+namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
 {
     /// <summary>
     /// QUIGLEY v. WILSON Court of Appeals of Iowa 474 N.W.2d 277 (Iowa Ct. App. 1991)

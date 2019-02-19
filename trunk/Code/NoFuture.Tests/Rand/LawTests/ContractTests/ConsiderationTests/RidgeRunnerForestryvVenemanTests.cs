@@ -1,10 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
+namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
 {
     /// <summary>
     /// RIDGE RUNNER FORESTRY v. VENEMAN United States Court of Appeals for the Federal Circuit 287 F.3d 1058 (Fed.Cir. 2002)

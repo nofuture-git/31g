@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests
+namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
 {
     /// <summary>
     /// HAMER v. SIDWAY Court of Appeals of New York 79 Sickels 538, 124 N.Y. 538, 27 N.E. 256 (1891)

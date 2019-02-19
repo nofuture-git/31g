@@ -1,10 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.MensReaTests
+namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
 {
     /// <summary>
     /// HAROLD E. STAPLES, III, PETITIONER v. UNITED STATES No. 92-1441

@@ -1,11 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.ActusReusTests
+namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
 {
     /// <summary>
     /// State v. Sowry, 155 Ohio App. 3d 742 (2004)

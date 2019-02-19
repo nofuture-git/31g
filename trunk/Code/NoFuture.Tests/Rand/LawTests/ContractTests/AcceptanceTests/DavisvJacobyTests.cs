@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
+namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
 {
     /// <summary>
     /// DAVIS v. JACOBY Supreme Court of California 1 Cal. 2d 370, 34 P.2d 1026 (1934)

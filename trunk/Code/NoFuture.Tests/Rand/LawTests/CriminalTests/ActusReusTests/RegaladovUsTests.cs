@@ -1,10 +1,9 @@
-﻿using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Criminal.US;
+﻿using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.ActusReusTests
+namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
 {
     /// <summary>
     /// Regalado v. U.S., 572 A.2d 416 (1990)

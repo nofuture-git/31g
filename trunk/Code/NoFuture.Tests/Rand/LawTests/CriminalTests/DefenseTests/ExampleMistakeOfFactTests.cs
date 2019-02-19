@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
 {
     [TestFixture]
     public class ExampleMistakeOfFactTests

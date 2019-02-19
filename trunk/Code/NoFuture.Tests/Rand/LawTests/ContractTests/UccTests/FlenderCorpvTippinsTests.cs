@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.UccTests
+namespace NoFuture.Rand.Law.Contract.Tests.UccTests
 {
     /// <summary>
     /// FLENDER CORPORATION v. TIPPINS INTERNATIONAL, INC. Superior Court of Pennsylvania 830 A.2d 1279 (Pa.Super. 2003)

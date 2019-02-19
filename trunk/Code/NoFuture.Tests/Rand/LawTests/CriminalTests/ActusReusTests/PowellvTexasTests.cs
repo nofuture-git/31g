@@ -1,9 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Criminal.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.ActusReusTests
+namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
 {
     /// <summary>
     /// 392 U.S. 514 (1968) POWELL v. TEXAS. No. 405. Supreme Court of United States. Argued March 7, 1968. Decided June 17, 1968.

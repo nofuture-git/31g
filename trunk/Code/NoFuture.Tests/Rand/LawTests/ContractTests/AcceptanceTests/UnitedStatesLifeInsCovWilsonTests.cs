@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.AcceptanceTests
+namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
 {
     /// <summary>
     /// UNITED STATES LIFE INSURANCE CO. v. WILSON Court of Special Appeals of Maryland 198 Md.App. 452, 18 A.3d 110 (2011)

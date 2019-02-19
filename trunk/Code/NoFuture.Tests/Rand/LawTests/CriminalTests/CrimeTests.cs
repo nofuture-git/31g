@@ -4,7 +4,7 @@ using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Criminal.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests
+namespace NoFuture.Rand.Law.Criminal.Tests
 {
     [TestFixture]
     public class CrimeTests
@@ -35,10 +35,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests
     {
         public TestPerson00() : base("TEST PERSON")  { }
     }
-}
 
-namespace We.Whatever
-{
     public class Classic00
     {
         public virtual object Example00(object something) { return new object(); }
@@ -69,10 +66,6 @@ namespace We.Whatever
         };
     }
 
-}
-
-namespace We.Whatever.Tests
-{
     public class TestOfClassic00 : Classic00
     {
         public override bool Example01(object something)
@@ -97,7 +90,4 @@ namespace We.Whatever.Tests
 
         }
     }
-
 }
-
-

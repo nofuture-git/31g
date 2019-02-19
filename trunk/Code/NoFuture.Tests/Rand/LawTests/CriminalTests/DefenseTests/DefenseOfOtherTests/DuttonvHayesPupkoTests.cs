@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests
+namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
 {
     [TestFixture]
     public class DuttonvHayesPupkoTests

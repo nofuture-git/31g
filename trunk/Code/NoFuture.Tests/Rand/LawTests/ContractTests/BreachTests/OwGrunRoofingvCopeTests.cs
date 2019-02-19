@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Breach;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
+namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
 {
     /// <summary>
     /// O. W. GRUN ROOFING & CONSTRUCTION CO. v. COPE Court of Civil Appeals of Texas, Fourth District—San Antonio 529 S.W.2d 258 (Tex.Civ.App. 1975)
