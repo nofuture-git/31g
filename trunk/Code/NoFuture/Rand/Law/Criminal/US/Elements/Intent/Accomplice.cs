@@ -5,7 +5,7 @@
     /// </summary>
     public class Accomplice : Transferred
     {
-        public Accomplice(MensRea intent) : base(intent)
+        public Accomplice(IMensRea intent) : base(intent)
         {
         }
     }

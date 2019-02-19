@@ -8,9 +8,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
     /// </summary>
     public class Transferred : MensRea
     {
-        private readonly MensRea _intent;
+        private readonly IMensRea _intent;
 
-        public Transferred(MensRea intent)
+        public Transferred(IMensRea intent)
         {
             _intent = intent;
         }
