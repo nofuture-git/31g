@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
+namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     /// <summary>
     /// protects defendant from criminal responsibility when the defendant commits a crime to avoid a greater, imminent harm

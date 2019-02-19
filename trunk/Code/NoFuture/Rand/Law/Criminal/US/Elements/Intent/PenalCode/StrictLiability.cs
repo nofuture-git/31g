@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
+﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
 {
     /// <summary>
     /// This is a null-object type for <see cref="MensRea"/>.  It abrogates the com-law 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law.US.Contracts.Defense.ToFormation
+namespace NoFuture.Rand.Law.Contract.US.Defense.ToFormation
 {
     public class ByMinor<T> : DefenseBase<T> where T : ILegalConcept
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Contracts;
+using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 

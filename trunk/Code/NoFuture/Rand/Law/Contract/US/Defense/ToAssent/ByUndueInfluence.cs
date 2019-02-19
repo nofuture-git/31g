@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Contracts.Defense.ToAssent
+namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
 {
     /// <summary>
     /// <![CDATA[

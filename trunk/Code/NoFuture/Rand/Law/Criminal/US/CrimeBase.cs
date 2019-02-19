@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US.Criminal.Elements;
-using NoFuture.Rand.Law.US.Criminal.Elements.Act;
-using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
+using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
-namespace NoFuture.Rand.Law.US.Criminal
+namespace NoFuture.Rand.Law.Criminal.US
 {
     public abstract class CrimeBase : CriminalBase, ICrime
     {

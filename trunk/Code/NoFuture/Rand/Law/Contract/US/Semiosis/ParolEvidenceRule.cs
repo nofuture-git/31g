@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US.Contracts.Terms;
+using NoFuture.Rand.Law.Contract.US.Terms;
 
-namespace NoFuture.Rand.Law.US.Contracts.Semiosis
+namespace NoFuture.Rand.Law.Contract.US.Semiosis
 {
     /// <summary>
     /// <![CDATA[

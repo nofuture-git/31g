@@ -1,6 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Criminal;
+using NoFuture.Rand.Law.Criminal.US;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.CriminalTests.ActusReusTests

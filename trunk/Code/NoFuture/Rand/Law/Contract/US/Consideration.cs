@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Contracts
+namespace NoFuture.Rand.Law.Contract.US
 {
     /// <summary>
     /// Is intended to determine what is an enforcable promise and what is a donative one.

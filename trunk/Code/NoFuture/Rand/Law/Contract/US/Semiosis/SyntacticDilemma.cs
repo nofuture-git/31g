@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law.US.Contracts.Semiosis
+namespace NoFuture.Rand.Law.Contract.US.Semiosis
 {
     /// <summary>
     /// A type to handle the problem of a court having to determine 

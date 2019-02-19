@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Contracts.Terms
+﻿namespace NoFuture.Rand.Law.Contract.US.Terms
 {
     public class CourseOfDealingTerm : UsageOfTradeTerm
     {

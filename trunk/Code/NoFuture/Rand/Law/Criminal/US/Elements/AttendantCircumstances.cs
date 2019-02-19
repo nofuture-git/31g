@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     public class AttendantCircumstances: CriminalBase, IElement
     {

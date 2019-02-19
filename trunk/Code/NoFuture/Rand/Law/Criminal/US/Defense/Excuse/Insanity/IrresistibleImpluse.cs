@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse.Insanity
+namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
 {
     /// <summary>
     /// similar to <see cref="MNaghten"/> only its considered simplier to prove and 

@@ -1,7 +1,6 @@
-﻿using System;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw
 {
     /// <summary>
     /// intent designated only for murder

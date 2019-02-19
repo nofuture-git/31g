@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Contracts.Breach;
-using NoFuture.Rand.Law.US.Contracts.Terms;
-using NoFuture.Rand.Law.US.Contracts.Ucc;
+using NoFuture.Rand.Law.Contract.US.Breach;
+using NoFuture.Rand.Law.Contract.US.Terms;
+using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests

@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Criminal.Terms
+﻿namespace NoFuture.Rand.Law.Criminal.US.Terms
 {
     /// <summary>
     /// <![CDATA[

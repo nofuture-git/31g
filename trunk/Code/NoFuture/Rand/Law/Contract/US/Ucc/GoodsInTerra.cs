@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Contracts.Ucc
+namespace NoFuture.Rand.Law.Contract.US.Ucc
 {
     /// <inheritdoc />
     /// <summary>

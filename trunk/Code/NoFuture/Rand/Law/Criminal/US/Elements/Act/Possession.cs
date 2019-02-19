@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements.Act
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 {
     /// <summary>
     /// <![CDATA[Model Penal Code states in § 2.01(4)]]>

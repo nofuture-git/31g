@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Contracts.Terms
+namespace NoFuture.Rand.Law.Contract.US.Terms
 {
     /// <summary>
     /// terms that have been specifically mentioned and agreed by both 

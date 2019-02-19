@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
+﻿using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
 {
     /// <summary>
     /// <![CDATA[

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
+namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
     /// <summary>
     /// when the criminal intent originated with government 

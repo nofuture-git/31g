@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Criminal;
-using NoFuture.Rand.Law.US.Criminal.Elements.Act;
+using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.CriminalTests.MensReaTests
@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.MensReaTests
                 },
             };
 
-            var testResult = testSubject.IsValid(new Dean());
+            var testResult = testSubject.ActusReus.IsValid(new Dean());
             Assert.IsTrue(testResult);
         }
     }

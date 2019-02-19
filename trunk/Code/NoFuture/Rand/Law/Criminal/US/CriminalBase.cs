@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Criminal
+namespace NoFuture.Rand.Law.Criminal.US
 {
     public abstract class CriminalBase : LegalConcept, IProsecution
     {

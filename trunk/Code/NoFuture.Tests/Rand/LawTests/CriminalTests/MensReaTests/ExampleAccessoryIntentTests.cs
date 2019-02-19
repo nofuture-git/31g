@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.US.Criminal;
-using NoFuture.Rand.Law.US.Criminal.Elements.Act;
-using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
+﻿using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.CriminalTests.MensReaTests

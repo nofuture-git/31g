@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Contracts;
+using NoFuture.Rand.Law.Contract.US;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.ContractTests.ConsiderationTests

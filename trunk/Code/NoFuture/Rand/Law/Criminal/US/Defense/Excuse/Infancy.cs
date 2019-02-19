@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
+namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
     /// <summary>
     /// Defendant is not subject to criminal prosecution because, being so young, they cannot form criminal intent

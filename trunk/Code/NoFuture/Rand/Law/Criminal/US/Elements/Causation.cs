@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     public class Causation : CriminalBase, IElement
     {

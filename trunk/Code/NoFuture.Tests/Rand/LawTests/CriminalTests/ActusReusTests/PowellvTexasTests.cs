@@ -1,6 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Criminal;
+using NoFuture.Rand.Law.Criminal.US;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.CriminalTests.ActusReusTests
@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.Tests.CriminalTests.ActusReusTests
             testSubject.ActusReus.IsVoluntary = lp => lp is Powell;
             testSubject.ActusReus.IsAction = lp => lp is Powell;
 
-            var testResult = testSubject.IsValid(new Powell());
+            var testResult = testSubject.ActusReus.IsValid(new Powell());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }

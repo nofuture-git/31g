@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
+namespace NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg
 {
     /// <inheritdoc />
     /// <summary>

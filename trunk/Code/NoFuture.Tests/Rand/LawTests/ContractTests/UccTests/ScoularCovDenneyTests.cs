@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Contracts.Ucc;
+using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.ContractTests.UccTests

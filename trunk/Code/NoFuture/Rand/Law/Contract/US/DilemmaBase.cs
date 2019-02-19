@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Contracts
+namespace NoFuture.Rand.Law.Contract.US
 {
     /// <inheritdoc />
     /// <summary>

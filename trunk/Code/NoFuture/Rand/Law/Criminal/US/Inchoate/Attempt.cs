@@ -1,10 +1,10 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US.Criminal.Elements.Act;
-using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
-using NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
-namespace NoFuture.Rand.Law.US.Criminal.Inchoate
+namespace NoFuture.Rand.Law.Criminal.US.Inchoate
 {
     /// <summary>
     /// a crime that has only just begun which may be defined by statute or common law

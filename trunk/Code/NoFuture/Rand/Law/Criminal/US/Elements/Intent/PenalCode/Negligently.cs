@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
 {
     /// <summary>
     /// <![CDATA[

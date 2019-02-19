@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Contracts;
-using NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy;
+using NoFuture.Rand.Law.Contract.US;
+using NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests

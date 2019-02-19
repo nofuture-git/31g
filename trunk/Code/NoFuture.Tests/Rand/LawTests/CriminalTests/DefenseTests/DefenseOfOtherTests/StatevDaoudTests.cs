@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.US.Criminal;
-using NoFuture.Rand.Law.US.Criminal.Defense;
-using NoFuture.Rand.Law.US.Criminal.Elements.Act;
-using NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.US.Criminal.Terms;
+using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Defense;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.Criminal.US.Terms;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.CriminalTests.DefenseTests.DefenseOfOtherTests

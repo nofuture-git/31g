@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Contracts.Breach
+namespace NoFuture.Rand.Law.Contract.US.Breach
 {
     /// <summary>
     /// <![CDATA[

@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
+﻿namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     /// <summary>
     /// A form of self defense where the <see cref="Imminence"/> is always valid in that 

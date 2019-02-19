@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Criminal.Defense
+﻿namespace NoFuture.Rand.Law.Criminal.US.Defense
 {
     public abstract class DefenseBase : LegalConcept
     {

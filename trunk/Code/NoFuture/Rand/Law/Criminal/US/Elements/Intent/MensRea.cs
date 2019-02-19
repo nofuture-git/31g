@@ -1,8 +1,8 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US.Criminal.Elements.Act;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
 {
     /// <summary>
     /// the willful intent to do harm

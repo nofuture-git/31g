@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.US.Criminal.Elements.Intent.PenalCode;
+﻿using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense.Excuse
+namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
     /// <summary>
     /// the facts as the defendant believes them to be negate the requisite intent for the crime at issue

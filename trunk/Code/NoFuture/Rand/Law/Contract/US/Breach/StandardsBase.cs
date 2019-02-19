@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Contracts.Breach
+﻿namespace NoFuture.Rand.Law.Contract.US.Breach
 {
     /// <inheritdoc />
     public abstract class StandardsBase<T> : DilemmaBase<T> where T : ILegalConcept

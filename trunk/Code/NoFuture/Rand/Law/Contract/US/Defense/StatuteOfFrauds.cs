@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Contracts.Defense
+namespace NoFuture.Rand.Law.Contract.US.Defense
 {
     /// <summary>
     /// <![CDATA[

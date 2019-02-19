@@ -1,9 +1,8 @@
 ﻿using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US.Criminal.Elements.Act;
-using NoFuture.Rand.Law.US.Criminal.Elements.Intent;
-using NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// concurrence (i.e. at-the-same-time) of an evil-meaning mind with an evil-doing hand
@@ -35,7 +34,6 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var criminalAct = ActusReus ?? new ActusReus();
-            var criminalIntent = MensRea ?? new GeneralIntent();
 
             if (!criminalAct.IsValid(persons))
             {
@@ -44,6 +42,10 @@ namespace NoFuture.Rand.Law.US.Criminal.Elements
                 return false;
             }
 
+            if (MensRea == null)
+                return true;
+
+            var criminalIntent = MensRea;
             if (!criminalIntent.IsValid(persons))
             {
                 AddReasonEntry("mens rea is invalid");

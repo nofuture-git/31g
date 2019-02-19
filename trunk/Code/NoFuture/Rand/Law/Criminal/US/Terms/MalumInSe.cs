@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Criminal.Terms
+namespace NoFuture.Rand.Law.Criminal.US.Terms
 {
     [Aka("evil in itself")]
     [Note("is inherently wrong independent of any regulations")]

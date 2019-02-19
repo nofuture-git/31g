@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NoFuture.Rand.Law.US.Criminal
+﻿namespace NoFuture.Rand.Law.Criminal.US
 {
     /// <inheritdoc cref="ICrime"/>
     public class Misdemeanor: CrimeBase

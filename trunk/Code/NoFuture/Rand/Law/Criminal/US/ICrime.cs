@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.US.Criminal.Elements;
+using NoFuture.Rand.Law.Criminal.US.Elements;
 
-namespace NoFuture.Rand.Law.US.Criminal
+namespace NoFuture.Rand.Law.Criminal.US
 {
     /// <inheritdoc cref="ILegalConcept"/>
     /// <summary>

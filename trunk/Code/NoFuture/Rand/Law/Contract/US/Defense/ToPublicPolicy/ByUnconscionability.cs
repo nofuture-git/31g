@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Contracts.Defense.ToPublicPolicy
+namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
 {
     [Aka("no honest man would offer and no sane man would sign")]
     public class ByUnconscionability<T> : DefenseBase<T> where T : ILegalConcept

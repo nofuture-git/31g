@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements.Intent.ComLaw
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw
 {
     /// <summary>
     /// without the additional desire to cause a result

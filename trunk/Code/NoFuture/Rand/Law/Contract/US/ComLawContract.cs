@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Contracts
+namespace NoFuture.Rand.Law.Contract.US
 {
     /// <inheritdoc cref="IContract{T}"/>
     [Aka("Enforceable Promise")]

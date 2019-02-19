@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Contracts;
-using NoFuture.Rand.Law.US.Contracts.Defense;
-using NoFuture.Rand.Law.US.Contracts.Defense.ToFormation;
+using NoFuture.Rand.Law.Contract.US;
+using NoFuture.Rand.Law.Contract.US.Defense.ToFormation;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests.ContractTests.DefenseTests

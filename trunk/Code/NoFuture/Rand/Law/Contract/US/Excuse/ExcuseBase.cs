@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Contracts.Excuse
+namespace NoFuture.Rand.Law.Contract.US.Excuse
 {
     /// <inheritdoc />
     public abstract class ExcuseBase<T> : DilemmaBase<T> where T : ILegalConcept

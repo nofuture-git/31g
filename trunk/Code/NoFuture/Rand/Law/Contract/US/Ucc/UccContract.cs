@@ -2,7 +2,7 @@
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Contracts.Ucc
+namespace NoFuture.Rand.Law.Contract.US.Ucc
 {
     /// <inheritdoc cref="LegalConcept"/>
     /// <inheritdoc cref="IContract{T}"/>

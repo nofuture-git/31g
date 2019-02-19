@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Criminal.Defense.Justification
+﻿namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     public abstract class DefenseOfBase : DefenseBase
     {

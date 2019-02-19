@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 
-namespace NoFuture.Rand.Law.US.Criminal.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// This can be used as the action part of actus reus

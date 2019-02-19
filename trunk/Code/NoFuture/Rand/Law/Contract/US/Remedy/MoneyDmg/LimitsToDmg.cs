@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Contracts.Remedy.MoneyDmg
+namespace NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg
 {
     /// <summary>
     /// Limits on the means and methods by which parties can prove damages.

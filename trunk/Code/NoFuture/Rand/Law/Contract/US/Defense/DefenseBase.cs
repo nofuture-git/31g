@@ -1,6 +1,4 @@
-﻿using NoFuture.Rand.Law.US.Contracts.Semiosis;
-
-namespace NoFuture.Rand.Law.US.Contracts.Defense
+﻿namespace NoFuture.Rand.Law.Contract.US.Defense
 {
     public abstract class DefenseBase<T> : DilemmaBase<T>, IVoidable where T : ILegalConcept
     {

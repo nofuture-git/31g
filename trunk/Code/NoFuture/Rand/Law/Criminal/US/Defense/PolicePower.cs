@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Criminal.Defense
+namespace NoFuture.Rand.Law.Criminal.US.Defense
 {
     /// <summary>
     /// The capacity of the states to regulate behavior and enforce order

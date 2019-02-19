@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Criminal
+namespace NoFuture.Rand.Law.Criminal.US
 {
     /// <summary>
     /// criminal prosecution is always instituted by the government
