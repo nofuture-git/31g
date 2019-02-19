@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
+﻿using NoFuture.Rand.Law.Criminal.US.Elements.Act;
+
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
 {
     /// <summary>
     /// A way to allow there to still be intent whenever the original 
@@ -21,6 +23,11 @@
         public override int CompareTo(object obj)
         {
             return _intent.CompareTo(obj);
+        }
+
+        public override bool CompareTo(ActusReus criminalAct)
+        {
+            return _intent.CompareTo(criminalAct);
         }
     }
 }
