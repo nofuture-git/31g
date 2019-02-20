@@ -80,6 +80,7 @@
     <Compile Include="DefenseTests\PeoplevRegisterTests.cs" />
     <Compile Include="InchoateTests\ExampleAbandonmentTests.cs" />
     <Compile Include="InchoateTests\ExampleAttemptTests.cs" />
+    <Compile Include="InchoateTests\ExampleConspiracyTests.cs" />
     <Compile Include="InchoateTests\ExampleImpossibilityTests.cs" />
     <Compile Include="InchoateTests\PeoplevStrandTests.cs" />
     <Compile Include="InchoateTests\StatevWithrowTests.cs" />

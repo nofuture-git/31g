@@ -39,6 +39,7 @@
     <Compile Include="US\Defense\Impossibility.cs" />
     <Compile Include="US\Elements\Attempt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="US\Elements\Conspiracy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">
