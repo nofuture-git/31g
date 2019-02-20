@@ -2,7 +2,6 @@
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Defense;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 
 namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
 {
@@ -27,12 +26,11 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-
             var defendant = Crime.GetDefendant(persons);
             if (defendant == null)
                 return false;
 
-            if (!TestIsActusReusAttemptType(this))
+            if (!TestIsActusReusAttemptType(typeof(Attempt)))
                 return false;
 
             if (IsFactualImpossibility(defendant))

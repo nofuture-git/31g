@@ -1,5 +1,6 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements.Act;
+using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
+using NoFuture.Rand.Law.Criminal.Tests.DefenseTests;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
@@ -57,5 +58,56 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
             Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
         }
+
+        [Test]
+        public void ExamplePinkertonRuleTest()
+        {
+            var testCrime = new Felony
+            {
+                ActusReus = new PinkertonRule(new Conspiracy
+                {
+                    IsAgreementToCommitCrime = lp => lp is ShellyDriverEg,
+                }),
+                MensRea = new SpecificIntent
+                {
+                    IsIntentOnWrongdoing = lp => lp is ShellyDriverEg || lp is SamRobberEg
+                },
+            };
+
+            var testResult = testCrime.IsValid(new ShellyDriverEg());
+            Console.WriteLine(testCrime.ToString());
+            Assert.IsTrue(testResult);
+        }
+
+        [Test]
+        public void TestWhartonRule()
+        {
+            var testCrime = new Felony
+            {
+                ActusReus = new Conspiracy
+                {
+                    IsAgreementToCommitCrime = lp => lp is ShellyDriverEg,
+                    IsConcertOfAction = true
+                },
+                MensRea = new SpecificIntent
+                {
+                    IsKnowledgeOfWrongdoing = lp => lp is ShellyDriverEg,
+                    IsIntentOnWrongdoing = lp => lp is ShellyDriverEg
+                }
+            };
+            var testResult = testCrime.IsValid(new ShellyDriverEg());
+            Console.WriteLine(testCrime.ToString());
+            Assert.IsFalse(testResult);
+        }
+    }
+
+    public class ShellyDriverEg : LegalPerson
+    {
+        public ShellyDriverEg() : base("SHELLY DRIVER") { }
+    }
+
+    public class SamRobberEg : LegalPerson
+    {
+        public SamRobberEg() : base("SAM ROBBER") { }
     }
 }

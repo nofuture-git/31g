@@ -37,9 +37,11 @@
   <ItemGroup>
     <Compile Include="US\Defense\Abandonment.cs" />
     <Compile Include="US\Defense\Impossibility.cs" />
+    <Compile Include="US\Defense\Renunciation.cs" />
     <Compile Include="US\Elements\Attempt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\Elements\Conspiracy.cs" />
+    <Compile Include="US\Elements\PinkertonRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">

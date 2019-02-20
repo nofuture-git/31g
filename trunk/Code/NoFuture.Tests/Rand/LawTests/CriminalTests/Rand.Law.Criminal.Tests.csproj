@@ -82,6 +82,7 @@
     <Compile Include="InchoateTests\ExampleAttemptTests.cs" />
     <Compile Include="InchoateTests\ExampleConspiracyTests.cs" />
     <Compile Include="InchoateTests\ExampleImpossibilityTests.cs" />
+    <Compile Include="InchoateTests\ExampleRenunciationTests.cs" />
     <Compile Include="InchoateTests\PeoplevStrandTests.cs" />
     <Compile Include="InchoateTests\StatevWithrowTests.cs" />
     <Compile Include="MensReaTests\DeanvUsTests.cs" />

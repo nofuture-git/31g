@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
             if (defendant == null)
                 return false;
 
-            if (!Impossibility.TestIsActusReusAttemptType(this))
+            if (!TestIsActusReusAttemptType(typeof(Attempt)))
                 return false;
 
             if (IsMotivatedByFearOfGettingCaught(defendant))

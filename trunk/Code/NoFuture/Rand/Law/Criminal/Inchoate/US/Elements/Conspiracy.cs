@@ -1,11 +1,12 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
-namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements.Act
+namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
 {
     /// <summary>
     /// an agreement to commit any criminal offense
@@ -20,8 +21,21 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements.Act
         /// </summary>
         public Predicate<ILegalPerson> IsOvertActRequired { get; set; }
 
+        /// <summary>
+        /// there cannot be a conspiracy for a crime which requires two people (e.g. prostitution)
+        /// </summary>
+        [Aka("Wharton's rule")]
+        public bool IsConcertOfAction { get; set; }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            if (IsConcertOfAction)
+            {
+                AddReasonEntry("there cannot be a conspiracy for a crime which " +
+                               "requires two people (e.g. prostitution)");
+                return false;
+            }
+
             var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
