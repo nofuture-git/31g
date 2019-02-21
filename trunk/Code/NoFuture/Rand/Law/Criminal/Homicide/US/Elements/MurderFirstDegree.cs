@@ -1,13 +1,14 @@
 ﻿using System;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
-    public class MurderFirstDegree : Murder
+    public class MurderFirstDegree : Murder, ICapitalOffense
     {
         /// <summary>
-        /// purposeful, planned, calculated
+        /// purposeful, planned, calculated, designed
         /// </summary>
         public Predicate<ILegalPerson> IsPremediated { get; set; } = lp => false;
 

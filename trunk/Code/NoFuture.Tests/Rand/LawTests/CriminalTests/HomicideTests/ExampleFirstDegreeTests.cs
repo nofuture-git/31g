@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Criminal.Homicide.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
 {

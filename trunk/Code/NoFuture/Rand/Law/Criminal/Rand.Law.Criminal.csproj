@@ -62,6 +62,7 @@
     <Compile Include="US\Defense\Provacation.cs" />
     <Compile Include="US\Elements\Act\ActusReus.cs" />
     <Compile Include="US\Elements\Act\IActusReus.cs" />
+    <Compile Include="US\Elements\Act\ICapitalOffense.cs" />
     <Compile Include="US\Elements\Act\Possession.cs" />
     <Compile Include="US\Elements\AttendantCircumstances.cs" />
     <Compile Include="US\Elements\Causation.cs" />

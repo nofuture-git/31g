@@ -7,8 +7,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
     /// </summary>
     public class Imminence : DefenseBase
     {
-        public static readonly TimeSpan OneSecond = new TimeSpan(0,0,0,1);
-        public static readonly TimeSpan OneMinute = new TimeSpan(0,0,1,0);
+        public static readonly TimeSpan OneSecond = new TimeSpan(0, 0, 0, 1);
+        public static readonly TimeSpan OneMinute = new TimeSpan(0, 0, 1, 0);
+        public static readonly TimeSpan OneMoment = new TimeSpan(0, 0, 0, 90);
 
         /// <summary>
         /// <![CDATA[
