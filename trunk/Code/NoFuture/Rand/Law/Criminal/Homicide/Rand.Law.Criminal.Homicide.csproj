@@ -40,6 +40,7 @@
     <Compile Include="US\Elements\FelonyMurder.cs" />
     <Compile Include="US\Elements\Murder.cs" />
     <Compile Include="US\Elements\MurderFirstDegree.cs" />
+    <Compile Include="US\Elements\MurderSecondDegree.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">

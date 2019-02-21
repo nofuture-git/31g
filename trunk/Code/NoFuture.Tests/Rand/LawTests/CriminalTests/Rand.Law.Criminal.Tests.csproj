@@ -80,6 +80,7 @@
     <Compile Include="DefenseTests\PeoplevRegisterTests.cs" />
     <Compile Include="HomicideTests\ExampleFelonyMurderTests.cs" />
     <Compile Include="HomicideTests\ExampleFirstDegreeTests.cs" />
+    <Compile Include="HomicideTests\ExampleSecondDegreeTests.cs" />
     <Compile Include="HomicideTests\StatevWestTests.cs" />
     <Compile Include="InchoateTests\ExampleAbandonmentTests.cs" />
     <Compile Include="InchoateTests\ExampleAttemptTests.cs" />

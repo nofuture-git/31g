@@ -17,9 +17,17 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
         }
 
         public DateTime Inception { get; set; }
+
+        /// <summary>
+        /// in criminal law, the crime ends when the defendant reaches a place of temporary safety
+        /// </summary>
         public DateTime? Terminus { get; set; }
+
         public Felony SourceFelony { get; }
 
+        /// <summary>
+        /// The time at which the person died as a result of the commission of the given <see cref="SourceFelony"/>
+        /// </summary>
         public DateTime? TimeOfTheDeath { get; set; }
 
         public bool IsInRange(DateTime dt)
