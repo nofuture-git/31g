@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
             Crime = crime;
         }
 
-        protected virtual bool TestIsActusReusAttemptType(params Type[] types)
+        protected virtual bool TestIsActusReusOfType(params Type[] types)
         {
             if (types == null || !types.Any())
                 return true;

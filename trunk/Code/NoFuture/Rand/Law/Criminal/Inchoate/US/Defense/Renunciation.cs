@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
             if (defendant == null)
                 return false;
 
-            if (!TestIsActusReusAttemptType(typeof(Conspiracy)))
+            if (!TestIsActusReusOfType(typeof(Conspiracy), typeof(Solicitation)))
                 return false;
 
             if (!IsCompletely(defendant))

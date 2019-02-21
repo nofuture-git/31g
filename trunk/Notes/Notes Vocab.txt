@@ -690,3 +690,5 @@ production: the process of manufacturing, fabrication or growing goods
 machining: the process of removing material of a workpeice
 components: are themselves manufactured products which are part of larger product
 raw materials: materials in minimally processed or unprocessed state
+surplusage: excessive or nonessential matter
+nugatory: of no value or importance

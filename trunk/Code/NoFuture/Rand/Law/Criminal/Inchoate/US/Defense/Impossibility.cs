@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
             if (defendant == null)
                 return false;
 
-            if (!TestIsActusReusAttemptType(typeof(Attempt)))
+            if (!TestIsActusReusOfType(typeof(Attempt)))
                 return false;
 
             if (IsFactualImpossibility(defendant))
