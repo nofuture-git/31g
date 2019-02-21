@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
     /// <summary>
     /// conduct that causes the victems death
     /// </summary>
-    public class Murder : CriminalBase, IActusReus
+    public abstract class Murder : CriminalBase, IActusReus
     {
         /// <summary>
         /// death of the victem caused by defendant in an unlawful manner
@@ -30,9 +30,6 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
             return true;
         }
 
-        public bool CompareTo(IMensRea criminalIntent)
-        {
-            return true;
-        }
+        public abstract bool CompareTo(IMensRea criminalIntent);
     }
 }

@@ -9,6 +9,18 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
     /// </summary>
     public class DeadlyWeapon : MensRea
     {
+        public string WeaponName { get; }
+
+        public DeadlyWeapon()
+        {
+            WeaponName = nameof(DeadlyWeapon);
+        }
+
+        public DeadlyWeapon(string name)
+        {
+            WeaponName = name;
+        }
+
         /// <summary>
         /// Would have to be some kind of noun - it cannot be a thought or evil-look, hex, etc.
         /// </summary>
