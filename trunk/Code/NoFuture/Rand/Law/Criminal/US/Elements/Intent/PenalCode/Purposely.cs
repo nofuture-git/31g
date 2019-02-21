@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+﻿using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
 {
@@ -8,6 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
     /// see (Model Penal Code § 2.02 (2) (a)).
     /// ]]>
     /// </summary>
+    [Aka("express malice")]
     public class Purposely : SpecificIntent
     {
         public override int CompareTo(object obj)

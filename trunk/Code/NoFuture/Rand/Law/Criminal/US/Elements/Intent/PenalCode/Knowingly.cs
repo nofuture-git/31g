@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+﻿using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
 {
@@ -8,6 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
     /// see (Model Penal Code in § 2.02(2) (b))
     /// ]]>
     /// </summary>
+    [Aka("implied malice", "depraved heart")]
     public class Knowingly : GeneralIntent
     {
         public override int CompareTo(object obj)

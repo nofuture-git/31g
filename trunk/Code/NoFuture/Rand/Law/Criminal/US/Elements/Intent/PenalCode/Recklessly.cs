@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
 {
@@ -8,6 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
     /// see (Model Penal Code § 2.02(2)
     /// ]]>
     /// </summary>
+    [Aka("implied malice", "depraved heart")]
     public class Recklessly: MensRea
     {
         /// <summary>

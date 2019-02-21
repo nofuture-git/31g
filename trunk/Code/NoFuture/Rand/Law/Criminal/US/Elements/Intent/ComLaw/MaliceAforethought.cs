@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw
 {
     /// <summary>
-    /// intent designated only for murder
+    /// intent designated only for murder - means premeditated
     /// </summary>
     [Aka("intent to kill")]
     public class MaliceAforethought : GeneralIntent
