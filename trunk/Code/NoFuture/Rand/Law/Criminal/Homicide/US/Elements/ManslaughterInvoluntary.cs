@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
@@ -11,9 +9,19 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
     /// </summary>
     public class ManslaughterInvoluntary : Manslaughter
     {
-        public override bool IsValid(params ILegalPerson[] persons)
+        public override bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            var isRequiredIntent = criminalIntent is Negligently 
+                                 || criminalIntent is Recklessly 
+                                 || criminalIntent is GeneralIntent;
+            if (!isRequiredIntent)
+            {
+                AddReasonEntry($"{nameof(ManslaughterInvoluntary)} is expected {nameof(Recklessly)} " +
+                               $"or {nameof(Negligently)} intent, not {criminalIntent?.GetType().Name}");
+                return false;
+            }
+
+            return true;
         }
     }
 }

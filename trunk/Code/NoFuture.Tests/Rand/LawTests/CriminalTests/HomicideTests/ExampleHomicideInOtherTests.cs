@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
 {
     [TestFixture()]
-    public class ExampleFelonyMurderTests
+    public class ExampleHomicideInOtherTests
     {
         [Test]
         public void ExampleFelonyMurder()
@@ -83,10 +83,50 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
             Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
         }
+
+        [Test]
+        public void ExampeMidemeanorManslaughter()
+        {
+            var testInputCrime = new Misdemeanor
+            {
+                ActusReus = new ActusReus
+                {
+                    IsVoluntary = lp => lp is RobertaBrandishEg,
+                    IsAction = lp => lp is RobertaBrandishEg
+                },
+                MensRea = new Negligently
+                {
+                    IsUnjustifiableRisk = lp => lp is RobertaBrandishEg,
+                    IsUnawareOfRisk = lp => lp is RobertaBrandishEg
+                }
+            };
+
+            var testResult = testInputCrime.IsValid(new RobertaBrandishEg());
+            Console.WriteLine(testInputCrime);
+            Assert.IsTrue(testResult);
+
+            var testCrime = new Felony
+            {
+                ActusReus = new HomicideInOther(testInputCrime)
+                {
+                    IsCorpusDelicti = lp => lp is RobertaBrandishEg
+                },
+                MensRea = testInputCrime.MensRea
+            };
+
+            testResult = testCrime.IsValid(new RobertaBrandishEg());
+            Console.WriteLine(testCrime.ToString());
+            Assert.IsTrue(testResult);
+        }
     }
 
     public class JouquinBurnerEg : LegalPerson
     {
         public JouquinBurnerEg() : base("JOUQUIN BURNER") { }
+    }
+
+    public class RobertaBrandishEg : LegalPerson
+    {
+        public RobertaBrandishEg(): base("ROBERTA BRANDISH") { }
     }
 }

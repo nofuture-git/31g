@@ -78,9 +78,10 @@
     <Compile Include="DefenseTests\InsanityTests\StatevGuidoTests.cs" />
     <Compile Include="DefenseTests\InsanityTests\StatevHornsbyTests.cs" />
     <Compile Include="DefenseTests\PeoplevRegisterTests.cs" />
-    <Compile Include="HomicideTests\ExampleFelonyMurderTests.cs" />
+    <Compile Include="HomicideTests\ExampleHomicideInOtherTests.cs" />
     <Compile Include="HomicideTests\ExampleFirstDegreeTests.cs" />
     <Compile Include="HomicideTests\ExampleAdequateProvocationTests.cs" />
+    <Compile Include="HomicideTests\ExampleNegligentInvolManslaughterTests.cs" />
     <Compile Include="HomicideTests\ExampleSecondDegreeTests.cs" />
     <Compile Include="HomicideTests\StatevWestTests.cs" />
     <Compile Include="InchoateTests\ExampleAbandonmentTests.cs" />
