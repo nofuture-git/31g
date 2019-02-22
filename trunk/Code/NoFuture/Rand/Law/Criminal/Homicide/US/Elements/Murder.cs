@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
@@ -6,12 +7,13 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
     /// <summary>
-    /// conduct that causes the victems death
+    /// unlawful conduct that causes the victims death
     /// </summary>
+    [Aka("criminal homicide")]
     public abstract class Murder : CriminalBase, IActusReus
     {
         /// <summary>
-        /// death of the victem caused by defendant in an unlawful manner
+        /// death of the victim caused by defendant in an unlawful manner
         /// </summary>
         public Predicate<ILegalPerson> IsCorpusDelicti { get; set; } = lp => false;
 

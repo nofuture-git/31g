@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
     /// sudden indignation.
     /// </summary>
     /// <remarks>
-    /// words alone are not enought to constitute adequate provocation 
+    /// words alone are not enougth to constitute adequate provocation 
     /// </remarks>
     [Aka("heat of passion")]
     public class AdequateProvocation : MensRea, IHomicideConcurrance
@@ -29,11 +29,22 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
         /// </summary>
         public SubjectivePredicate<ILegalPerson> IsDefendantActuallyProvoked { get; set; } = lp => false;
 
+        /// <summary>
+        /// The victim must be the source of the sudden heat of passion
+        /// </summary>
+        public Predicate<ILegalPerson> IsVictimSourceOfIncite { get; set; } = lp => false;
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
+
+            if (!IsDefendantActuallyProvoked(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsDefendantActuallyProvoked)} is false");
+                return false;
+            }
 
             if (!IsReasonableToInciteKilling(defendant))
             {
@@ -41,9 +52,9 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
                 return false;
             }
 
-            if (!IsDefendantActuallyProvoked(defendant))
+            if (!IsVictimSourceOfIncite(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsDefendantActuallyProvoked)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsVictimSourceOfIncite)} is false");
                 return false;
             }
 

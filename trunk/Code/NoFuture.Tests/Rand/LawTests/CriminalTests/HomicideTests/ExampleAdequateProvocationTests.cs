@@ -22,7 +22,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
                 {
                     //getting fired is not reason enough
                     IsReasonableToInciteKilling = lp => false,
-                    IsDefendantActuallyProvoked = lp => lp is DillonRager
+                    IsDefendantActuallyProvoked = lp => lp is DillonRager,
+                    IsVictimSourceOfIncite = lp => lp is DillonRager
                 }
             };
 
@@ -43,7 +44,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
                 MensRea = new AdequateProvocation
                 {
                     IsReasonableToInciteKilling = lp => lp is JoseRager,
-                    IsDefendantActuallyProvoked = lp => lp is JoseRager
+                    IsDefendantActuallyProvoked = lp => lp is JoseRager,
+                    IsVictimSourceOfIncite = lp => lp is JoseRager
                 }
             };
 
@@ -86,6 +88,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
                 {
                     IsReasonableToInciteKilling = lp => lp is JoseRager,
                     IsDefendantActuallyProvoked = lp => lp is JoseRager,
+                    IsVictimSourceOfIncite = lp => lp is JoseRager,
                     Inception = new DateTime(yyyy, 3, 15, 14,0,0),
                     Terminus = new DateTime(yyyy, 3,15, 14,5,0),
                     //heat of passion doesn't work over time
