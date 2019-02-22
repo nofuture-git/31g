@@ -19,10 +19,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => false;
 
-        /// <summary>
-        /// such as intoxicated, unconscious, too young, etc.
-        /// </summary>
-        public Predicate<ILegalPerson> IsVictimExtremeVulnerable { get; set; } = lp => false;
+        public Consent Consent { get; set; } = new Consent();
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -36,19 +33,18 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
                 return false;
             }
 
-            var ibf = !IsByForce(defendant);
-            var ibtof = !IsByThreatOfForce(defendant);
-            var ivev = !IsVictimExtremeVulnerable(defendant);
-
-            if (new []{ibf, ibtof, ivev}.All(p => p == false))
+            var isByForce = IsByForce(defendant);
+            var isByThreatOfForce = IsByThreatOfForce(defendant);
+            if (isByForce || isByThreatOfForce)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByForce)} is {ibf}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfForce)} is {ibtof}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsVictimExtremeVulnerable)} is {ivev}");
-                return false;
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByForce)} is {isByForce}");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfForce)} is {isByThreatOfForce}");
+                return true;
             }
+            var isConsented = Consent?.IsValid(persons) ?? false;
 
-            return true;
+            AddReasonEntryRange(Consent?.GetReasonEntries());
+            return !isConsented;
         }
 
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)

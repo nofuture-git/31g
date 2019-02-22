@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace NoFuture.Rand.Law.Criminal.US.Elements
+﻿namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
-    public class AttendantCircumstances: CriminalBase, IElement
+    /// <summary>
+    /// The facts surrounding an event
+    /// </summary>
+    public abstract class AttendantCircumstances: CriminalBase, IElement
     {
-        public override bool IsValid(params ILegalPerson[] persons)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
