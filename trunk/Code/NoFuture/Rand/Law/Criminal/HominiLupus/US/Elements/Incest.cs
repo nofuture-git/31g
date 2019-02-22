@@ -24,10 +24,17 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
+
             var victim = GetVictim(persons);
             if (victim == null)
             {
                 AddReasonEntry($"the {nameof(GetVictim)} returned null");
+                return false;
+            }
+
+            if (!IsSexualIntercourse(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsSexualIntercourse)} is false");
                 return false;
             }
 

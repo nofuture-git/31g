@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new Incest
                 {
+                    IsSexualIntercourse = lp => lp is HalIncestEg || lp is HarrietIncestEg,
                     GetVictim = lps => lps.FirstOrDefault(lp => lp.Name == "HARRIET INCEST"),
                     IsFamilyRelation = (lp1, lp2) => (lp1 is HalIncestEg || lp1 is HarrietIncestEg)
                                                      && (lp2 is HalIncestEg || lp2 is HarrietIncestEg)
@@ -39,6 +40,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new Incest
                 {
+                    IsSexualIntercourse = lp => lp is HalIncestEg || lp is HarrietIncestEg,
                     GetVictim = lps => lps.FirstOrDefault(lp => lp.Name == "HARRIET INCEST"),
                     IsFamilyRelation = (lp1, lp2) => (lp1 is HalIncestEg || lp1 is HarrietIncestEg)
                                                      && (lp2 is HalIncestEg || lp2 is HarrietIncestEg)
