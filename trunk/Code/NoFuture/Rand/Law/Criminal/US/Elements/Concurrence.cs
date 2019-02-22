@@ -55,17 +55,21 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
                 return false;
             }
 
+            var intent2ActCompare = criminalIntent.CompareTo(criminalAct, persons);
+            var act2IntentCompare = criminalAct.CompareTo(criminalIntent, persons);
+
+            AddReasonEntryRange(criminalIntent.GetReasonEntries());
+            AddReasonEntryRange(criminalAct.GetReasonEntries());
+
             //test if implementor has some kind of x-ref rules in place
-            if (!criminalIntent.CompareTo(criminalAct, persons))
+            if (!intent2ActCompare)
             {
                 AddReasonEntry($"{nameof(MensRea)} {nameof(MensRea.CompareTo)} to this {nameof(ActusReus)} is false");
-                AddReasonEntryRange(criminalIntent.GetReasonEntries());
                 return false;
             }
-            if (!criminalAct.CompareTo(criminalIntent, persons))
+            if (!act2IntentCompare)
             {
                 AddReasonEntry($"{nameof(ActusReus)} {nameof(ActusReus.CompareTo)} to this {nameof(MensRea)} is false");
-                AddReasonEntryRange(criminalAct.GetReasonEntries());
                 return false;
             }
 

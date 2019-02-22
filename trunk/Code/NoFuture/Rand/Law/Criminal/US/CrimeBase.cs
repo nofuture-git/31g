@@ -22,12 +22,13 @@ namespace NoFuture.Rand.Law.Criminal.US
                 return false;
             }
 
-            if (!Concurrence.IsValid(persons))
+            var isConcurranceValid = Concurrence.IsValid(persons);
+            AddReasonEntryRange(Concurrence.GetReasonEntries());
+            AddPersonsReasonEntries(persons);
+
+            if (!isConcurranceValid)
             {
                 AddReasonEntry($"{nameof(Concurrence)} is invalid");
-                AddReasonEntryRange(Concurrence.GetReasonEntries());
-                AddPersonsReasonEntries(persons);
-
                 return false;
             }
 

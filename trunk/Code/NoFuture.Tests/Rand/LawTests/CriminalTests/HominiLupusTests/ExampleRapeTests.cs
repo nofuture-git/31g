@@ -70,10 +70,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                         GetVictim = lps => lps.FirstOrDefault(lp => lp.Name == "BRANDY SISTER")
                     }
                 },
-                MensRea = new Purposely
-                {
-                    IsIntentOnWrongdoing = lp => lp is AlexGamerEg
-                }
+                MensRea = new StrictLiability()
             };
 
             var testResult = testCrime.IsValid(new AlexGamerEg(), new BrandySisterEg());
