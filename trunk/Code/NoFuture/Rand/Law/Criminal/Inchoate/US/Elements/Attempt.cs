@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
         /// <summary>
         /// Attempt is not applicable to reckless or negligent intent
         /// </summary>
-        public bool CompareTo(IMensRea criminalIntent)
+        public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             var isInvalid2Attempt = criminalIntent is Recklessly || criminalIntent is Negligently;
             if (isInvalid2Attempt)

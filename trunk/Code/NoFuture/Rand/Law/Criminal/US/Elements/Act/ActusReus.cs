@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
         public DutyToAct Omission { get; set; } = new DutyToAct();
 
         /// <inheritdoc cref="IActusReus"/>
-        public virtual bool CompareTo(IMensRea criminalIntent)
+        public virtual bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             return true;
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
@@ -22,11 +21,6 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
                 return false;
             }
             return base.IsValid(persons);
-        }
-
-        public override bool CompareTo(IMensRea criminalIntent)
-        {
-            return true;
         }
     }
 }

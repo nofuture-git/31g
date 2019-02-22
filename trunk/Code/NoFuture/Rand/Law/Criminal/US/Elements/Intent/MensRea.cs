@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
     {
         public abstract int CompareTo(object obj);
 
-        public virtual bool CompareTo(IActusReus criminalAct)
+        public virtual bool CompareTo(IActusReus criminalAct, params ILegalPerson[] persons)
         {
             return true;
         }

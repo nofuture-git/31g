@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
     /// <summary>
     /// A death or deaths that result from the commission of some other felony
     /// </summary>
-    public class FelonyMurder : Murder, ITempore
+    public class FelonyMurder : Murder, IHomicideConcurrance
     {
         public FelonyMurder(Felony felony)
         {
@@ -57,19 +57,13 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
                 return false;
             }
 
-            if (TimeOfTheDeath != null && !IsInRange(TimeOfTheDeath.Value))
-            {
-
-                AddReasonEntry($"defendant, {defendant.Name}, crime started " +
-                               $"at {Inception.ToString("O")} and ended at {Terminus?.ToString("O")}, " +
-                               $"{nameof(TimeOfTheDeath)} at {TimeOfTheDeath?.ToString("O")} is outside this range");
+            if (!IsHomicideConcurrance(this, this, defendant.Name))
                 return false;
-            }
 
             return base.IsValid(persons);
         }
 
-        public override bool CompareTo(IMensRea criminalIntent)
+        public override bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             if (criminalIntent is StrictLiability)
             {

@@ -56,13 +56,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
             }
 
             //test if implementor has some kind of x-ref rules in place
-            if (!criminalIntent.CompareTo(criminalAct))
+            if (!criminalIntent.CompareTo(criminalAct, persons))
             {
                 AddReasonEntry($"{nameof(MensRea)} {nameof(MensRea.CompareTo)} to this {nameof(ActusReus)} is false");
                 AddReasonEntryRange(criminalIntent.GetReasonEntries());
                 return false;
             }
-            if (!criminalAct.CompareTo(criminalIntent))
+            if (!criminalAct.CompareTo(criminalIntent, persons))
             {
                 AddReasonEntry($"{nameof(ActusReus)} {nameof(ActusReus.CompareTo)} to this {nameof(MensRea)} is false");
                 AddReasonEntryRange(criminalAct.GetReasonEntries());

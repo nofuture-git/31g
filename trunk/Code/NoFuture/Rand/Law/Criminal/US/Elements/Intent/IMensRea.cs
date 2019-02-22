@@ -30,6 +30,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
         /// Determines if this criminal intent is valid 
         /// when combined with the particular <see cref="criminalAct"/>
         /// </summary>
-        bool CompareTo(IActusReus criminalAct);
+        bool CompareTo(IActusReus criminalAct, params ILegalPerson[] persons);
     }
 }

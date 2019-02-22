@@ -36,8 +36,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="US\Elements\AdequateProvocation.cs" />
     <Compile Include="US\Elements\DeadlyWeapon.cs" />
     <Compile Include="US\Elements\FelonyMurder.cs" />
+    <Compile Include="US\Elements\IHomicideConcurrance.cs" />
+    <Compile Include="US\Elements\Manslaughter.cs" />
+    <Compile Include="US\Elements\ManslaughterInvoluntary.cs" />
+    <Compile Include="US\Elements\ManslaughterVoluntary.cs" />
     <Compile Include="US\Elements\Murder.cs" />
     <Compile Include="US\Elements\MurderFirstDegree.cs" />
     <Compile Include="US\Elements\MurderSecondDegree.cs" />

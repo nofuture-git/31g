@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
             return false;
         }
 
-        public bool CompareTo(IMensRea criminalIntent)
+        public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             var isRequiredForConspriacy = criminalIntent is Purposely || criminalIntent is SpecificIntent;
             if (!isRequiredForConspriacy)

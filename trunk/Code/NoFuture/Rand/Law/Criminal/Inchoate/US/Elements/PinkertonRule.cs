@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
             return isValid;
         }
 
-        public bool CompareTo(IMensRea criminalIntent)
+        public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             return Conspiracy?.CompareTo(criminalIntent) ?? false;
         }

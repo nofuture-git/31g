@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
         public Predicate<ILegalPerson> IsSufficientTimeToGetRid { get; set; } = lp => false;
 
         /// <inheritdoc cref="IActusReus"/>
-        public virtual bool CompareTo(IMensRea criminalIntent)
+        public virtual bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             return true;
         }

@@ -27,12 +27,12 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
             return base.IsValid(persons);
         }
 
-        public override bool CompareTo(IMensRea criminalIntent)
+        public override bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             var isRequiredIntent = criminalIntent is MaliceAforethought
                                    || criminalIntent is SpecificIntent
-                                   || criminalIntent is DeadlyWeapon
-                ;
+                                   || criminalIntent is DeadlyWeapon;
+                
             if (!isRequiredIntent)
             {
                 AddReasonEntry("first-degree means rationally, purposefully, taking " +
@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
                 return false;
             }
 
-            return true;
+            return base.CompareTo(criminalIntent, persons);
         }
     }
 }
