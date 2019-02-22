@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
+    /// <summary>
+    /// this is homicide which lacks intent
+    /// </summary>
     public class ManslaughterInvoluntary : Manslaughter
     {
         public override bool IsValid(params ILegalPerson[] persons)

@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
 
             var testCrime = new Felony
             {
-                ActusReus = new FelonyMurder(testFirstCrime)
+                ActusReus = new HomicideInOther(testFirstCrime)
                 {
                     IsCorpusDelicti = lp => lp is JouquinBurnerEg
                 },
@@ -69,7 +69,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
 
             var testCrime = new Felony
             {
-                ActusReus = new FelonyMurder(testFirstCrime)
+                ActusReus = new HomicideInOther(testFirstCrime)
                 {
                     IsCorpusDelicti = lp => lp is JouquinBurnerEg,
                     Inception = new DateTime(yyyy, 3, 15, 9, 0, 0),

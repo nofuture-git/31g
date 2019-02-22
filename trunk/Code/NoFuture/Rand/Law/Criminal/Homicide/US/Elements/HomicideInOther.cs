@@ -1,5 +1,5 @@
 ﻿using System;
-using NoFuture.Rand.Core;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
@@ -7,13 +7,14 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
     /// <summary>
-    /// A death or deaths that result from the commission of some other felony
+    /// A death or deaths that result from the commission of some other crime
     /// </summary>
-    public class FelonyMurder : Murder, IHomicideConcurrance
+    [Aka("felony murder", "misdemeanor manslaughter")]
+    public class HomicideInOther : Murder, IHomicideConcurrance
     {
-        public FelonyMurder(Felony felony)
+        public HomicideInOther(ICrime crime)
         {
-            SourceFelony = felony;
+            SourceCrime = crime;
         }
 
         public DateTime Inception { get; set; }
@@ -23,10 +24,10 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
         /// </summary>
         public DateTime? Terminus { get; set; }
 
-        public Felony SourceFelony { get; }
+        public ICrime SourceCrime { get; }
 
         /// <summary>
-        /// The time at which the person died as a result of the commission of the given <see cref="SourceFelony"/>
+        /// The time at which the person died as a result of the commission of the given <see cref="SourceCrime"/>
         /// </summary>
         public DateTime? TimeOfTheDeath { get; set; }
 
@@ -39,21 +40,21 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (SourceFelony == null)
+            if (SourceCrime == null)
             {
-                AddReasonEntry($"{nameof(FelonyMurder)} implies a death which " +
-                               "occurred during the commission of another felony");
+                AddReasonEntry($"{nameof(HomicideInOther)} implies a death which " +
+                               "occurred during the commission of another crime");
                 return false;
             }
 
-            var defendant = GetDefendant(persons) ?? SourceFelony.GetDefendant(persons);
+            var defendant = GetDefendant(persons) ?? SourceCrime.GetDefendant(persons);
             if (defendant == null)
                 return false;
 
-            if (!SourceFelony.IsValid(persons))
+            if (!SourceCrime.IsValid(persons))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(SourceFelony)} is invalid");
-                AddReasonEntryRange(SourceFelony.GetReasonEntries());
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(SourceCrime)} is invalid");
+                AddReasonEntryRange(SourceCrime.GetReasonEntries());
                 return false;
             }
 
@@ -67,7 +68,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
         {
             if (criminalIntent is StrictLiability)
             {
-                AddReasonEntry($"{nameof(FelonyMurder)} is not applicable to {nameof(StrictLiability)} intent");
+                AddReasonEntry($"{nameof(HomicideInOther)} is not applicable to {nameof(StrictLiability)} intent");
                 return false;
             }
 
