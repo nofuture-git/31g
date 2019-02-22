@@ -85,6 +85,7 @@
     <Compile Include="HomicideTests\ExampleSecondDegreeTests.cs" />
     <Compile Include="HomicideTests\StatevWestTests.cs" />
     <Compile Include="HomicideTests\StevensvStateTests.cs" />
+    <Compile Include="HominiLupusTests\ExampleRapeTests.cs" />
     <Compile Include="InchoateTests\ExampleAbandonmentTests.cs" />
     <Compile Include="InchoateTests\ExampleAttemptTests.cs" />
     <Compile Include="InchoateTests\ExampleConspiracyTests.cs" />
@@ -117,6 +118,10 @@
     <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Criminal\Homicide\Rand.Law.Criminal.Homicide.csproj">
       <Project>{29684fb6-c895-4826-a78a-39e5510327be}</Project>
       <Name>Rand.Law.Criminal.Homicide</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Criminal\HominiLupus\Rand.Law.Criminal.HominiLupus.csproj">
+      <Project>{3e52d729-1515-4b78-a49e-c17fe6eff440}</Project>
+      <Name>Rand.Law.Criminal.HominiLupus</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Criminal\Inchoate\Rand.Law.Criminal.Inchoate.csproj">
       <Project>{0355d529-ff1b-4ae7-a057-63ec34c37c0a}</Project>
