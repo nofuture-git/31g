@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IVictim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\CrimeBase.cs" />
     <Compile Include="US\CriminalBase.cs" />
