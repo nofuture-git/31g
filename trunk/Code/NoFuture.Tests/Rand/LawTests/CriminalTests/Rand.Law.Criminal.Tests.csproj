@@ -85,6 +85,7 @@
     <Compile Include="HomicideTests\ExampleSecondDegreeTests.cs" />
     <Compile Include="HomicideTests\StatevWestTests.cs" />
     <Compile Include="HomicideTests\StevensvStateTests.cs" />
+    <Compile Include="HominiLupusTests\ExampleBatteryTests.cs" />
     <Compile Include="HominiLupusTests\ExampleIncestTests.cs" />
     <Compile Include="HominiLupusTests\ExampleRapeTests.cs" />
     <Compile Include="InchoateTests\ExampleAbandonmentTests.cs" />
