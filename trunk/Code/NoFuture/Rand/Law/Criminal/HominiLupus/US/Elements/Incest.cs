@@ -5,11 +5,12 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
+    /// <inheritdoc cref="IBipartite"/>
+    /// <summary>
+    /// This seems to imply that the parties know they have some family relation
+    /// </summary>
     public class Incest : CriminalBase, IActusReus, IBipartite
     {
-        /// <summary>
-        /// loosely defined as vaginal, anal or oral penetration of by somebody else body part (penis, finger, etc.)
-        /// </summary>
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
 
         public Func<ILegalPerson[], ILegalPerson> GetVictim { get; set; } = lps => null;

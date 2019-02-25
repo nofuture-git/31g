@@ -1,27 +1,56 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
+    /// <inheritdoc cref="IDominionOfForce"/>
+    /// <inheritdoc cref="IAssault"/>
     /// <summary>
     /// Is not to cause physical contact; rather, it is to cause the 
     /// victim to fear physical contact
     /// </summary>
-    public class ThreatenedBatteryAssault : CriminalBase, IActusReus, IAssault
+    public class ThreatenedBatteryAssault : CriminalBase, IDominionOfForce, IAssault
     {
-        public Predicate<ILegalPerson> IsByThreatOfForce { get; set; }
-        public Predicate<ILegalPerson> IsPresentAbility { get; set; }
+        public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => false;
+
+        public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            var defendant = GetDefendant(persons);
+            if (defendant == null)
+                return false;
+
+            if (!IsByThreatOfForce(defendant))
+            {
+                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsByThreatOfForce)} is false");
+                return false;
+            }
+
+            if (!IsPresentAbility(defendant))
+            {
+                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsPresentAbility)} is false");
+                return false;
+            }
+
+            return true;
         }
 
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            var intent = (criminalIntent as DeadlyWeapon)?.UtilizedWith ?? criminalIntent;
+            var isValidIntent = intent is Purposely || intent is SpecificIntent;
+            if (!isValidIntent)
+            {
+                AddReasonEntry($"{nameof(ThreatenedBatteryAssault)} requires intent " +
+                               $"of {nameof(Purposely)} or {nameof(SpecificIntent)}");
+                return false;
+            }
+
+            return true;
         }
     }
 }

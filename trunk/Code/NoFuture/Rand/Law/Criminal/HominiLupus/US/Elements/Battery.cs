@@ -1,14 +1,14 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
+    /// <inheritdoc cref="IBattery"/>
     /// <summary>
     /// Same as <see cref="AttemptedBatteryAssault"/> except there is actual touch\contact of some kind
     /// </summary>
-    public class Battery : CriminalBase, IActusReus, IBattery
+    public class Battery : CriminalBase, IBattery
     {
         public Predicate<ILegalPerson> IsByForce { get; set; } = lp => false;
 
@@ -38,6 +38,5 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
         {
             return true;
         }
-
     }
 }

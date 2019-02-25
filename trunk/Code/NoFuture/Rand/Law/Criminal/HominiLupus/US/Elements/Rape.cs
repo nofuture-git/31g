@@ -1,26 +1,22 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
-
+    /// <inheritdoc cref="IBipartite"/>
+    /// <inheritdoc cref="IAssault"/>
+    /// <inheritdoc cref="IBattery"/>
     [Note("rapere, latin for steal or seize")]
-    public class Rape : CriminalBase, IActusReus, IBipartite, IAssault, IBattery
+    public class Rape : CriminalBase, IBipartite, IAssault, IBattery
     {
-        /// <summary>
-        /// loosely defined as vaginal, anal or oral penetration of by somebody else body part (penis, finger, etc.)
-        /// </summary>
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsByForce { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => false;
-
-        public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => true;
 
         public Consent Consent { get; set; } = new Consent();
 
@@ -37,7 +33,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             }
 
             var isByForce = IsByForce(defendant);
-            var isByThreatOfForce = IsByThreatOfForce(defendant) && IsPresentAbility(defendant);
+            var isByThreatOfForce = IsByThreatOfForce(defendant);
             if (isByForce || isByThreatOfForce)
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByForce)} is {isByForce}");
