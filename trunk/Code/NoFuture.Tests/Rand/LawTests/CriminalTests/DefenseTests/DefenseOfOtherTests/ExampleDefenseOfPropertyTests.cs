@@ -2,6 +2,7 @@
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Defense;
 using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
+using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Terms;
@@ -35,15 +36,15 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testSubject = new DefenseOfProperty(testCrime)
             {
                 IsBeliefProtectProperty = lp => lp is KelseyEg,
-                Imminence = new Imminence(testCrime)
+                Imminence = new Imminence
                 {
                     GetResponseTime = lp => Imminence.NormalReactionTimeToDanger
                 },
-                Provacation = new Provacation(testCrime)
+                Provacation = new Provacation()
                 {
                     IsInitiatorOfAttack = lp => lp is KeithEg
                 },
-                Proportionality = new Proportionality<ITermCategory>(testCrime)
+                Proportionality = new Proportionality<ITermCategory>()
                 {
                     GetChoice = lp => new NondeadlyForce()
                 }

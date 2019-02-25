@@ -1,18 +1,14 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// The nature of how a physical attack is provoked
     /// </summary>
     [Aka("unprovoked attack rule")]
-    public class Provacation : DefenseBase
+    public class Provacation : CriminalBase, IElement
     {
-        public Provacation(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// Preeminent test, when true all other tests are irrelevant.
         /// </summary>
@@ -34,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
         /// </summary>
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
 

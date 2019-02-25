@@ -38,7 +38,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\CrimeBase.cs" />
     <Compile Include="US\CriminalBase.cs" />
-    <Compile Include="US\Defense\ChoiceThereof.cs" />
+    <Compile Include="US\Elements\ChoiceThereof.cs" />
     <Compile Include="US\Defense\DefenseBase.cs" />
     <Compile Include="US\Defense\Excuse\Entrapment.cs" />
     <Compile Include="US\Defense\Excuse\Infancy.cs" />
@@ -49,7 +49,7 @@
     <Compile Include="US\Defense\Excuse\Intoxication.cs" />
     <Compile Include="US\Defense\Excuse\MistakeOfFact.cs" />
     <Compile Include="US\Defense\Excuse\MistakeOfLaw.cs" />
-    <Compile Include="US\Defense\Imminence.cs" />
+    <Compile Include="US\Elements\Imminence.cs" />
     <Compile Include="US\Defense\Justification\BatteredWomanSyndrome.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfBase.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfHabitation.cs" />
@@ -58,8 +58,8 @@
     <Compile Include="US\Defense\Justification\DefenseOfSelf.cs" />
     <Compile Include="US\Defense\Justification\NecessityDefense.cs" />
     <Compile Include="US\Defense\PolicePower.cs" />
-    <Compile Include="US\Defense\Proportionality.cs" />
-    <Compile Include="US\Defense\Provacation.cs" />
+    <Compile Include="US\Elements\Proportionality.cs" />
+    <Compile Include="US\Elements\Provacation.cs" />
     <Compile Include="US\Elements\Act\ActusReus.cs" />
     <Compile Include="US\Elements\Act\IActusReus.cs" />
     <Compile Include="US\Elements\Act\ICapitalOffense.cs" />

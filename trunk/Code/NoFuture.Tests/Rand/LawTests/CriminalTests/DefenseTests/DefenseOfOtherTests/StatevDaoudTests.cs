@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Defense;
+using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.Criminal.US.Terms;
@@ -36,7 +37,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new Daoud());
             Assert.IsTrue(testResult);
 
-            var testSubject = new ChoiceThereof<ITermCategory>(testCrime)
+            var testSubject = new ChoiceThereof<ITermCategory>()
             {
                 GetChoice = lp => lp is Daoud ? new NondeadlyForce() : null,
                 GetOtherPossibleChoices = lp => new List<ITermCategory>() {new CallForTaxi(), new WalkedToNeighbor()},

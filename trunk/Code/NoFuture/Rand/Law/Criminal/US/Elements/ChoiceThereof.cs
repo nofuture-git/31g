@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// Represents the concept of picking one <see cref="T"/> amoung many possible choices thereof
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class ChoiceThereof<T> : Proportionality<T> where T: ITermCategory
+    public class ChoiceThereof<T> : Proportionality<T>, IElement where T: ITermCategory
     {
-        public ChoiceThereof(ICrime crime) : base(crime)
+        public ChoiceThereof()
         {
             IsProportional = (t1, t2) => TermCategory.IsRank(TermCategoryBoolOps.Lt, t1, t2);
         }
@@ -21,7 +20,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
 

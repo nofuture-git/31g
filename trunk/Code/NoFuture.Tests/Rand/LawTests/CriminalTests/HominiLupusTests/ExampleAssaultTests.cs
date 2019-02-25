@@ -11,11 +11,11 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
     public class ExampleAssaultTests
     {
         [Test]
-        public void ExampleAssault()
+        public void ExampleAttemptedBatteryAssault()
         {
             var testCrime = new Felony
             {
-                ActusReus = new Assault
+                ActusReus = new AttemptedBatteryAssault
                 {
                     IsProbableDesistance = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                                  && ((DianaPistolEg) lp).IsPullTrigger,
@@ -30,11 +30,11 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
 
         [Test]
-        public void TestNegligentIntent()
+        public void TestNegligentAttemptBattery()
         {
             var testCrime = new Felony
             {
-                ActusReus = new Assault
+                ActusReus = new AttemptedBatteryAssault
                 {
                     IsProbableDesistance = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                                  && ((DianaPistolEg)lp).IsPullTrigger,

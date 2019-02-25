@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Defense;
+using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Terms;
@@ -31,7 +32,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new BrianEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new ChoiceThereof<ITermCategory>(testCrime)
+            var testSubject = new ChoiceThereof<ITermCategory>()
             {
                 GetChoice = lp =>
                 {

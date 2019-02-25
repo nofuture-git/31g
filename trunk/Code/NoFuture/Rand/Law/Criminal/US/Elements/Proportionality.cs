@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// Template for the concept of reasonable proportionality
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Proportionality<T> : DefenseBase where T: ITermCategory
+    public class Proportionality<T> : CriminalBase, IElement where T: ITermCategory
     {
-        public Proportionality(ICrime crime) : base(crime)
+        public Proportionality()
         {
             IsProportional = (t1, t2) =>
                 TermCategory.IsRank(TermCategoryBoolOps.Eq, t1, t2) &&
@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
 

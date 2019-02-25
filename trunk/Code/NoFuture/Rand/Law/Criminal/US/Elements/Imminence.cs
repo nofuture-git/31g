@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// means the attack is immediate and not something that will occur in the future or has occured in the past.
     /// </summary>
-    public class Imminence : DefenseBase
+    public class Imminence : CriminalBase, IElement
     {
         public static readonly TimeSpan OneSecond = new TimeSpan(0, 0, 0, 1);
         public static readonly TimeSpan OneMinute = new TimeSpan(0, 0, 1, 0);
@@ -24,10 +24,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
         /// </summary>
         public static readonly TimeSpan AvgDriverCrashAvoidanceTime = new TimeSpan(0, 0, 0, 2, 250);
 
-        public Imminence(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// The timespan of a persons response
         /// </summary>
@@ -40,7 +36,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
 

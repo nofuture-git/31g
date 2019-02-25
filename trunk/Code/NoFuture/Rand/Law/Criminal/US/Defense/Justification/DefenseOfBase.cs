@@ -1,12 +1,14 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
+﻿using NoFuture.Rand.Law.Criminal.US.Elements;
+
+namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     public abstract class DefenseOfBase : DefenseBase
     {
         protected DefenseOfBase(ICrime crime) : base(crime)
         {
-            Provacation = new Provacation(crime);
-            Imminence = new Imminence(crime);
-            Proportionality = new Proportionality<ITermCategory>(crime);
+            Provacation = new Provacation();
+            Imminence = new Imminence();
+            Proportionality = new Proportionality<ITermCategory>();
         }
 
         /// <summary>

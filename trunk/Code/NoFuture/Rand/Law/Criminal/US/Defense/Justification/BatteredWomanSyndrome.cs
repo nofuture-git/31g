@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
+﻿using NoFuture.Rand.Law.Criminal.US.Elements;
+
+namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     /// <summary>
     /// A form of self defense where the <see cref="Imminence"/> is always valid in that 
@@ -6,13 +8,15 @@
     /// </summary>
     public class BatteredWomanSyndrome : Imminence
     {
-        public BatteredWomanSyndrome(ICrime crime) : base(crime)
+        private readonly ICrime _crime;
+        public BatteredWomanSyndrome(ICrime crime)
         {
+            _crime = crime;
         }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = _crime.GetDefendant(persons) ?? GetDefendant(persons);
             if (defendant == null)
                 return false;
 

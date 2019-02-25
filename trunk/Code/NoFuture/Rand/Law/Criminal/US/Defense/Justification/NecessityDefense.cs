@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Criminal.US.Elements;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
@@ -7,12 +8,12 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     /// protects defendant from criminal responsibility when the defendant commits a crime to avoid a greater, imminent harm
     /// </summary>
     [Aka("choice of evils defense")]
-    public class NecessityDefense<T> : DefenseBase where T : ITermCategory
+    public class NecessityDefense : DefenseBase
     {
         public NecessityDefense(ICrime crime) : base(crime)
         {
-            Proportionality = new ChoiceThereof<ITermCategory>(crime);
-            Imminence = new Imminence(crime);
+            Proportionality = new ChoiceThereof<ITermCategory>();
+            Imminence = new Imminence();
         }
 
         /// <summary>

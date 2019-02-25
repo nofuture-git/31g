@@ -7,8 +7,8 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <summary>
     /// Attempting to make physical contact but does not 
     /// </summary>
-    [Aka("attempted battery", "threatened battery")]
-    public class Assault : Attempt
+    [Aka("attempted battery")]
+    public class AttemptedBatteryAssault : Attempt
     {
         /// <summary>
         /// the ability to cause harmful or offensive physical 

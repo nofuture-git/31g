@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
     /// <summary>
-    /// Same as <see cref="Assault"/> except there is actual touch\contact of some kind
+    /// Same as <see cref="AttemptedBatteryAssault"/> except there is actual touch\contact of some kind
     /// </summary>
     public class Battery : CriminalBase, IActusReus
     {

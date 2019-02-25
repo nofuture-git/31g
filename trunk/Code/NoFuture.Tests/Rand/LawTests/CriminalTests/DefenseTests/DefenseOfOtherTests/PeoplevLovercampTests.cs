@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Defense;
 using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
+using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Terms;
@@ -41,14 +42,14 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new Lovercamp());
             Assert.IsTrue(testResult);
 
-            var testSubject = new NecessityDefense<ITermCategory>(testCrime)
+            var testSubject = new NecessityDefense(testCrime)
             {
-                Imminence = new Imminence(testCrime)
+                Imminence = new Imminence
                 {
                     GetResponseTime = lp => Imminence.NormalReactionTimeToDanger
                 },
                 IsMultipleInHarm = lp => lp is Lovercamp || lp is MsWynashe,
-                Proportionality = new ChoiceThereof<ITermCategory>(testCrime)
+                Proportionality = new ChoiceThereof<ITermCategory>
                 {
                     GetChoice = lp =>
                     {
