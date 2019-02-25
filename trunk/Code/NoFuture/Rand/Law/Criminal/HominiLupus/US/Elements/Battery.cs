@@ -8,9 +8,9 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <summary>
     /// Same as <see cref="AttemptedBatteryAssault"/> except there is actual touch\contact of some kind
     /// </summary>
-    public class Battery : CriminalBase, IActusReus
+    public class Battery : CriminalBase, IActusReus, IBattery
     {
-        public Predicate<ILegalPerson> IsPhysicalContact { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsByForce { get; set; } = lp => false;
 
         /// <summary>
         /// If the victim entered into Mutual Combat then its not battery
@@ -23,9 +23,9 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             if (defendant == null)
                 return false;
 
-            if (!IsPhysicalContact(defendant))
+            if (!IsByForce(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsPhysicalContact)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByForce)} is false");
             }
 
             var isConsented = Consent?.IsValid(persons) ?? false;
@@ -38,5 +38,6 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
         {
             return true;
         }
+
     }
 }

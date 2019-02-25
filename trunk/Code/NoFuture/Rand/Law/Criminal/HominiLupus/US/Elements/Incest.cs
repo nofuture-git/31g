@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
-    public class Incest : CriminalBase, IActusReus, IVictim
+    public class Incest : CriminalBase, IActusReus, IBipartite
     {
         /// <summary>
         /// loosely defined as vaginal, anal or oral penetration of by somebody else body part (penis, finger, etc.)

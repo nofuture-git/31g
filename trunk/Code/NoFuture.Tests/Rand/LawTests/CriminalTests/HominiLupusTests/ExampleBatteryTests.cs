@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new Battery
                 {
-                    IsPhysicalContact = lp => lp is HarrietIncestEg
+                    IsByForce = lp => lp is HarrietIncestEg
                 },
                 MensRea = new GeneralIntent
                 {
@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new Battery
                 {
-                    IsPhysicalContact = lp => lp is HarrietIncestEg,
+                    IsByForce = lp => lp is HarrietIncestEg,
                     Consent = new Consent
                     {
                         GetVictim = lps => lps.FirstOrDefault(lp => lp.Name == new HalIncestEg().Name),

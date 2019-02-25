@@ -8,12 +8,10 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// Attempting to make physical contact but does not 
     /// </summary>
     [Aka("attempted battery")]
-    public class AttemptedBatteryAssault : Attempt
+    public class AttemptedBatteryAssault : Attempt, IAssault
     {
-        /// <summary>
-        /// the ability to cause harmful or offensive physical 
-        /// contact, even though the contact never takes place
-        /// </summary>
+        public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => true;
+
         public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

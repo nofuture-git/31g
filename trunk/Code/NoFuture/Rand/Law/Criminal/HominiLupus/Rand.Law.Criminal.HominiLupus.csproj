@@ -39,6 +39,9 @@
     <Compile Include="US\Elements\AttemptedBatteryAssault.cs" />
     <Compile Include="US\Elements\Battery.cs" />
     <Compile Include="US\Elements\Consent.cs" />
+    <Compile Include="US\Elements\IAssault.cs" />
+    <Compile Include="US\Elements\IBattery.cs" />
+    <Compile Include="US\Elements\IBipartite.cs" />
     <Compile Include="US\Elements\Incest.cs" />
     <Compile Include="US\Elements\Rape.cs" />
     <Compile Include="US\Elements\ThreatenedBatteryAssault.cs" />
