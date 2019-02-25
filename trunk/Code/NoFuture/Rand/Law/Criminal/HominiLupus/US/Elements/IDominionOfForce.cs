@@ -12,5 +12,6 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
         /// contact, even though the contact never takes place
         /// </summary>
         Predicate<ILegalPerson> IsPresentAbility { get; set; }
+
     }
 }

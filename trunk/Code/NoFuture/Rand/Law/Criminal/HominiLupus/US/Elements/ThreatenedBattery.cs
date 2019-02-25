@@ -12,11 +12,16 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// Is not to cause physical contact; rather, it is to cause the 
     /// victim to fear physical contact
     /// </summary>
-    public class ThreatenedBatteryAssault : CriminalBase, IDominionOfForce, IAssault
+    public class ThreatenedBattery : CriminalBase, IDominionOfForce, IAssault
     {
         public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => false;
+
+        /// <summary>
+        /// The threat appears real to the victim even if the defendant knows otherwise.
+        /// </summary>
+        public Predicate<ILegalPerson> IsApparentAbility { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -30,9 +35,13 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
                 return false;
             }
 
-            if (!IsPresentAbility(defendant))
+            var pAble = IsPresentAbility(defendant);
+            var aAble = IsApparentAbility(defendant);
+
+            if (!pAble && !aAble)
             {
                 AddReasonEntry($"defendant {defendant.Name}, {nameof(IsPresentAbility)} is false");
+                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsApparentAbility)} is false");
                 return false;
             }
 
@@ -45,7 +54,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             var isValidIntent = intent is Purposely || intent is SpecificIntent;
             if (!isValidIntent)
             {
-                AddReasonEntry($"{nameof(ThreatenedBatteryAssault)} requires intent " +
+                AddReasonEntry($"{nameof(ThreatenedBattery)} requires intent " +
                                $"of {nameof(Purposely)} or {nameof(SpecificIntent)}");
                 return false;
             }

@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         {
             var testCrime = new Felony
             {
-                ActusReus = new AttemptedBatteryAssault
+                ActusReus = new AttemptedBattery
                 {
                     IsProbableDesistance = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                                  && ((DianaPistolEg) lp).IsPullTrigger,
@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         {
             var testCrime = new Felony
             {
-                ActusReus = new AttemptedBatteryAssault
+                ActusReus = new AttemptedBattery
                 {
                     IsProbableDesistance = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                                  && ((DianaPistolEg)lp).IsPullTrigger,
@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         {
             var testCrime = new Felony
             {
-                ActusReus = new ThreatenedBatteryAssault
+                ActusReus = new ThreatenedBattery
                 {
                     IsByThreatOfForce = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                               && ((DianaPistolEg)lp).IsSheCockGunHammer,
@@ -73,7 +73,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         {
             var testCrime = new Felony
             {
-                ActusReus = new ThreatenedBatteryAssault
+                ActusReus = new ThreatenedBattery
                 {
                     IsByThreatOfForce = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                               && ((DianaPistolEg)lp).IsSheCockGunHammer,

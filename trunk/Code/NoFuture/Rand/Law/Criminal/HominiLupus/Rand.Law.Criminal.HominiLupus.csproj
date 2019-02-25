@@ -36,7 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="US\Elements\AttemptedBatteryAssault.cs" />
+    <Compile Include="US\Elements\AttemptedBattery.cs" />
     <Compile Include="US\Elements\Battery.cs" />
     <Compile Include="US\Elements\Consent.cs" />
     <Compile Include="US\Elements\IAssault.cs" />
@@ -45,7 +45,7 @@
     <Compile Include="US\Elements\IDominionOfForce.cs" />
     <Compile Include="US\Elements\Incest.cs" />
     <Compile Include="US\Elements\Rape.cs" />
-    <Compile Include="US\Elements\ThreatenedBatteryAssault.cs" />
+    <Compile Include="US\Elements\ThreatenedBattery.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">

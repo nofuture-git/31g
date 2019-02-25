@@ -85,10 +85,12 @@
     <Compile Include="HomicideTests\ExampleSecondDegreeTests.cs" />
     <Compile Include="HomicideTests\StatevWestTests.cs" />
     <Compile Include="HomicideTests\StevensvStateTests.cs" />
+    <Compile Include="HominiLupusTests\CommonwealthvHensonTests.cs" />
     <Compile Include="HominiLupusTests\ExampleAssaultTests.cs" />
     <Compile Include="HominiLupusTests\ExampleBatteryTests.cs" />
     <Compile Include="HominiLupusTests\ExampleIncestTests.cs" />
     <Compile Include="HominiLupusTests\ExampleRapeTests.cs" />
+    <Compile Include="HominiLupusTests\StatevHiggsTests.cs" />
     <Compile Include="InchoateTests\ExampleAbandonmentTests.cs" />
     <Compile Include="InchoateTests\ExampleAttemptTests.cs" />
     <Compile Include="InchoateTests\ExampleConspiracyTests.cs" />

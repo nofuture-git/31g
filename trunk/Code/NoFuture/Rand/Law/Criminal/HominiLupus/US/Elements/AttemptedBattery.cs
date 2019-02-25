@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// Attempting to make physical contact but does not 
     /// </summary>
     [Aka("attempted battery")]
-    public class AttemptedBatteryAssault : Attempt, IDominionOfForce
+    public class AttemptedBattery : Attempt, IDominionOfForce
     {
         public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => false;
 
@@ -17,6 +17,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
+
             return base.IsValid(persons) || IsPresentAbility(defendant);
         }
     }
