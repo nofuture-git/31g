@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
                 },
                 MensRea = new DeadlyWeapon("handgun")
                 {
-                    IsUtilized = lp => lp is JoanniePremedEg,
+                    IsUtilizable = lp => lp is JoanniePremedEg,
                     IsCanCauseDeath = lp => lp is JoanniePremedEg
                 }
             };

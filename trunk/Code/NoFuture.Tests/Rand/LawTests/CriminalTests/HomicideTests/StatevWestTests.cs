@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
                 },
                 MensRea = new DeadlyWeapon("gun")
                 {
-                    IsUtilized = lp => lp is West,
+                    IsUtilizable = lp => lp is West,
                     IsCanCauseDeath = lp => lp is West
                 }
             };

@@ -29,9 +29,10 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 
         public override bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            var isRequiredIntent = criminalIntent is MaliceAforethought
-                                   || criminalIntent is SpecificIntent
-                                   || criminalIntent is DeadlyWeapon;
+            var intent = (criminalIntent as DeadlyWeapon)?.UtilizedWith ?? criminalIntent;
+
+            var isRequiredIntent = intent is MaliceAforethought
+                                   || intent is SpecificIntent;
                 
             if (!isRequiredIntent)
             {
@@ -39,6 +40,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
                                "steps that culminate in victim's death");
                 return false;
             }
+
 
             return base.CompareTo(criminalIntent, persons);
         }

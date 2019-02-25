@@ -38,7 +38,8 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
         /// </summary>
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            var isInvalid2Attempt = criminalIntent is Recklessly || criminalIntent is Negligently;
+            var intent = (criminalIntent as DeadlyWeapon)?.UtilizedWith ?? criminalIntent;
+            var isInvalid2Attempt = intent is Recklessly || intent is Negligently;
             if (isInvalid2Attempt)
             {
                 AddReasonEntry("generally, no such thing exists as reckless or negligent attempt");
