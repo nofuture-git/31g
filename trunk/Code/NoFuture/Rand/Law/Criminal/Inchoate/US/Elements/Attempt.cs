@@ -31,18 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
         /// <summary>
         /// Some kind of action which corroborates a proposistion of intent - evidence of a suspicion
         /// </summary>
-        /// <remarks>
-        /// <![CDATA[
-        /// Model Penal Code examples: 
-        /// * lying in wait; 
-        /// * enticing victem to scene; 
-        /// * investigating potential scene; 
-        /// * unlawful entry; 
-        /// * possessing materials specially designed for unlawful use; 
-        /// * possessing, collecting, or fabricating materials to be used in crime
-        /// ]]>
-        /// </remarks>
-        public Predicate<ILegalPerson> IsSubstantial { get; set; } = lp => false;
+        public SubstantialSteps SubstantialSteps { get; set; }
 
         /// <summary>
         /// Attempt is not applicable to reckless or negligent intent
@@ -68,9 +57,11 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
             var ispx = IsProximity(defendant);
             var ispd = IsProbableDesistance(defendant);
             var isril = IsResIpsaLoquitur(defendant);
-            var issub = IsSubstantial(defendant);
 
-            var isAttempt = ispx || ispd || isril || issub;
+            var isssub = SubstantialSteps?.IsValid(persons) ?? false;
+            AddReasonEntryRange(SubstantialSteps?.GetReasonEntries());
+
+            var isAttempt = ispx || ispd || isril || isssub;
             if (!isAttempt)
             {
                 AddReasonEntry($"defendant, {defendant.Name}, is attempt false");

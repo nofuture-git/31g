@@ -51,6 +51,10 @@
       <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
       <Name>Rand.Law</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Inchoate\Rand.Law.Criminal.Inchoate.csproj">
+      <Project>{0355d529-ff1b-4ae7-a057-63ec34c37c0a}</Project>
+      <Name>Rand.Law.Criminal.Inchoate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rand.Law.Criminal.csproj">
       <Project>{b034d93f-b140-40c0-a640-bba4fb8b85e3}</Project>
       <Name>Rand.Law.Criminal</Name>

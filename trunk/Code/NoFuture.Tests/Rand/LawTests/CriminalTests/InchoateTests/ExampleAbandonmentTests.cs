@@ -2,6 +2,7 @@
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Defense;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
@@ -22,7 +23,10 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
                 },
                 ActusReus = new Attempt
                 {
-                    IsSubstantial = lp => lp is MelissaEg3
+                    SubstantialSteps = new SubstantialSteps
+                    {
+                        IsPossessCriminalMaterial = lp => lp is MelissaEg3
+                    }
                 }
             };
 

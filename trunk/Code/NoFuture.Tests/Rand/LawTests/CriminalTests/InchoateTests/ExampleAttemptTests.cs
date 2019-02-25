@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
@@ -127,7 +128,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
                 },
                 ActusReus = new Attempt
                 {
-                    IsSubstantial = KevinEg.IsKevinRobbingArmoredCar
+                    SubstantialSteps = new SubstantialSteps
+                    {
+                        IsInvestigatingPotentialScene = lp => (lp as KevinEg)?.IsCasingBank ?? false,
+                        IsLyingInWait = lp => (lp as KevinEg)?.IsWaitingInAlley ?? false,
+                        IsPossessCriminalMaterial = lp => (lp as KevinEg)?.IsWrittenPlan ?? false
+                    }
                 }
             };
 

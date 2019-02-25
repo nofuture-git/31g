@@ -56,7 +56,10 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
                 },
                 ActusReus = new Attempt
                 {
-                    IsSubstantial = lp => lp is MelissaEg2
+                    SubstantialSteps = new SubstantialSteps
+                    {
+                        IsPossessCriminalMaterial = lp => lp is MelissaEg2,
+                    }
                 }
             };
 
@@ -87,7 +90,11 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
                 },
                 ActusReus = new Attempt
                 {
-                    IsSubstantial = lp => lp is MelissaEg2
+                    SubstantialSteps = new SubstantialSteps
+                    {
+                        IsInvestigatingPotentialScene = lp => lp is MelissaEg2,
+                        IsPossessCriminalMaterial = lp => lp is MelissaEg2
+                    }
                 }
             };
 
