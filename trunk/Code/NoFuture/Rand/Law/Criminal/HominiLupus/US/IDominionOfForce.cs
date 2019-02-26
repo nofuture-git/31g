@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
+namespace NoFuture.Rand.Law.Criminal.HominiLupus.US
 {
     /// <summary>
     /// <![CDATA[ "Force" being physical acts [...] intentionally used [..] to crime ]]>

@@ -1,13 +1,12 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
     /// <summary>
     /// Attempting to make physical contact but does not 
     /// </summary>
-    public class AttemptedBattery : Attempt, IDominionOfForce, IActusReus
+    public class AttemptedBattery : Attempt, IDominionOfForce
     {
         public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => false;
 

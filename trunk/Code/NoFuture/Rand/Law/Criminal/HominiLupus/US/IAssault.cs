@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
+namespace NoFuture.Rand.Law.Criminal.HominiLupus.US
 {
     /// <summary>
     /// <![CDATA[ Threat of unlawful force with ability to do it. ]]>

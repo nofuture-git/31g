@@ -90,6 +90,7 @@
     <Compile Include="HominiLupusTests\ExampleBatteryTests.cs" />
     <Compile Include="HominiLupusTests\ExampleIncestTests.cs" />
     <Compile Include="HominiLupusTests\ExampleRapeTests.cs" />
+    <Compile Include="HominiLupusTests\ExampleStalkingTests.cs" />
     <Compile Include="HominiLupusTests\StatevHiggsTests.cs" />
     <Compile Include="InchoateTests\ExampleAbandonmentTests.cs" />
     <Compile Include="InchoateTests\ExampleAttemptTests.cs" />
