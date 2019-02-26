@@ -15,6 +15,14 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
         /// <summary>
         /// death of the victim caused by defendant in an unlawful manner
         /// </summary>
+        /// <remarks>
+        /// <![CDATA[
+        /// is designed to guard against the "hasty and unguarded character 
+        /// which is often attached to confessions and admissions and the 
+        /// consequent danger of a conviction where no crime has in fact 
+        /// been committed."
+        /// ]]>
+        /// </remarks>
         public Predicate<ILegalPerson> IsCorpusDelicti { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

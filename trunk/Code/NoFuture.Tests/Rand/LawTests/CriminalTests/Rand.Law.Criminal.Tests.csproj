@@ -89,7 +89,9 @@
     <Compile Include="HominiLupusTests\CommonwealthvHensonTests.cs" />
     <Compile Include="HominiLupusTests\ExampleAssaultTests.cs" />
     <Compile Include="HominiLupusTests\ExampleBatteryTests.cs" />
+    <Compile Include="HominiLupusTests\ExampleFalseImprisonmentTests.cs" />
     <Compile Include="HominiLupusTests\ExampleIncestTests.cs" />
+    <Compile Include="HominiLupusTests\ExampleKidnappingTests.cs" />
     <Compile Include="HominiLupusTests\ExampleRapeTests.cs" />
     <Compile Include="HominiLupusTests\ExampleStalkingTests.cs" />
     <Compile Include="HominiLupusTests\StatevHiggsTests.cs" />
