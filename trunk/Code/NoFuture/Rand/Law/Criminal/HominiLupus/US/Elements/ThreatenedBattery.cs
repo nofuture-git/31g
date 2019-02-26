@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
@@ -12,7 +13,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// Is not to cause physical contact; rather, it is to cause the 
     /// victim to fear physical contact
     /// </summary>
-    public class ThreatenedBattery : CriminalBase, IDominionOfForce, IAssault
+    public class ThreatenedBattery : CriminalBase, IDominionOfForce, IAssault, IActusReus
     {
         public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => false;
 

@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <summary>
     /// Unlawful application of force on another
     /// </summary>
-    public interface IBattery : IActusReus
+    public interface IBattery : ILegalConcept
     {
         Predicate<ILegalPerson> IsByForce { get; set; }
     }

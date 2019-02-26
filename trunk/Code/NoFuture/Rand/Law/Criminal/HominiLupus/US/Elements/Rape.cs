@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
@@ -10,7 +11,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <inheritdoc cref="IAssault"/>
     /// <inheritdoc cref="IBattery"/>
     [Note("rapere, latin for steal or seize")]
-    public class Rape : CriminalBase, IBipartite, IAssault, IBattery
+    public class Rape : CriminalBase, IBipartite, IAssault, IBattery, IActusReus
     {
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
 
