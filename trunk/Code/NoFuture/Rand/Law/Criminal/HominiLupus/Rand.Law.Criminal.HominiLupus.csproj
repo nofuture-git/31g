@@ -39,10 +39,10 @@
     <Compile Include="US\Elements\AttemptedBattery.cs" />
     <Compile Include="US\Elements\Battery.cs" />
     <Compile Include="US\Elements\Consent.cs" />
-    <Compile Include="US\Elements\IAssault.cs" />
-    <Compile Include="US\Elements\IBattery.cs" />
-    <Compile Include="US\Elements\IBipartite.cs" />
-    <Compile Include="US\Elements\IDominionOfForce.cs" />
+    <Compile Include="US\IAssault.cs" />
+    <Compile Include="US\IBattery.cs" />
+    <Compile Include="US\IBipartite.cs" />
+    <Compile Include="US\IDominionOfForce.cs" />
     <Compile Include="US\Elements\Incest.cs" />
     <Compile Include="US\Elements\Rape.cs" />
     <Compile Include="US\Elements\Stalking.cs" />
