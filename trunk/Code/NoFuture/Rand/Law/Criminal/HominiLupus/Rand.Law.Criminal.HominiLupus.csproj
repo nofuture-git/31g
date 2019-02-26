@@ -45,6 +45,7 @@
     <Compile Include="US\Elements\IDominionOfForce.cs" />
     <Compile Include="US\Elements\Incest.cs" />
     <Compile Include="US\Elements\Rape.cs" />
+    <Compile Include="US\Elements\Stalking.cs" />
     <Compile Include="US\Elements\ThreatenedBattery.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,9 +18,6 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => false;
 
-        /// <summary>
-        /// The threat appears real to the victim even if the defendant knows otherwise.
-        /// </summary>
         public Predicate<ILegalPerson> IsApparentAbility { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
