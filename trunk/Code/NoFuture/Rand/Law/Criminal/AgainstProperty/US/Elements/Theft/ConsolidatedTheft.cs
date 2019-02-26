@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
     public abstract class ConsolidatedTheft : CriminalBase, IActusReus
     {
         public virtual ILegalProperty SubjectOfTheft { get; set; }
-        public virtual decimal AmountOfTheft { get; set; }
+        public virtual decimal? AmountOfTheft { get; set; }
         public virtual bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             return true;

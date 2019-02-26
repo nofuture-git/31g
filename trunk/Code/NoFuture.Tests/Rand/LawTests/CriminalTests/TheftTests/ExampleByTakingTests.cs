@@ -30,6 +30,28 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
+
+        [Test]
+        public void ExampleEmbezzlementTheft()
+        {
+            var testCrime = new Misdemeanor
+            {
+                ActusReus = new ByTaking
+                {
+                    SubjectOfTheft =  new LegalProperty("payment for gas"),
+                    IsControlOverUnlawful = lp => lp is JeremyTheifEg,
+                    IsToBenefitUnentitled = lp => lp is JeremyTheifEg
+                },
+                MensRea = new Purposely
+                {
+                    IsKnowledgeOfWrongdoing = lp => lp is JeremyTheifEg
+                }
+            };
+            var testResult = testCrime.IsValid(new JeremyTheifEg());
+            Console.WriteLine(testCrime.ToString());
+            Assert.IsTrue(testResult);
+        }
+
     }
 
     public class ChewingGum : LegalProperty
