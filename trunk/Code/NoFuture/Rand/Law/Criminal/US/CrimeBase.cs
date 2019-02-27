@@ -32,9 +32,13 @@ namespace NoFuture.Rand.Law.Criminal.US
                 return false;
             }
 
-            foreach (var elem in AdditionalElements)
+            foreach (var elem in AttendantCircumstances)
             {
-                if (!elem.IsValid(persons))
+                var isValid = elem.IsValid(persons)
+                              || elem.IsValid(Concurrence.ActusReus, persons)
+                              || elem.IsValid(Concurrence.MensRea, persons);
+
+                if (!isValid)
                 {
                     AddReasonEntryRange(elem.GetReasonEntries());
                     AddPersonsReasonEntries(persons);
@@ -68,7 +72,7 @@ namespace NoFuture.Rand.Law.Criminal.US
             set => Concurrence.MensRea = value;
         }
 
-        public virtual IList<IElement> AdditionalElements { get; } = new List<IElement>();
+        public virtual IList<IAttendantElement> AttendantCircumstances { get; } = new List<IAttendantElement>();
 
         protected internal void AddPersonsReasonEntries(params ILegalPerson[] persons)
         {

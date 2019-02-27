@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
@@ -7,6 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
     /// <summary>
     /// Model Penal Code 223.4 Theft by Extortion
     /// </summary>
+    [Aka("blackmail")]
     public class ByExtortion : ConsolidatedTheft
     {
         /// <summary>

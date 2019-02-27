@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
 using NoFuture.Rand.Law.Criminal.Homicide.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
@@ -107,6 +108,35 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             var testResult = testCrime.IsValid(new JeremyTheifEg(), new CodyFriendEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
+        }
+
+        [Test]
+        public void ExampleTreacheryTest()
+        {
+            var testAttendantCircumstance = new Treachery
+            {
+                IsTrustBetween = (lp1, lp2) => (lp1 is JeremyTheifEg && lp2 is CodyFriendEg)
+                                               || (lp1 is CodyFriendEg && lp2 is JeremyTheifEg)
+            };
+
+            var testCrime = new Misdemeanor
+            {
+                ActusReus = new ByTaking
+                {
+                    AmountOfTheft = 1.25m,
+                    SubjectOfTheft = new ChewingGum(),
+                    IsTakenUnlawful = lp => lp is JeremyTheifEg,
+                    IsToBenefitUnentitled = lp => lp is JeremyTheifEg
+                },
+                MensRea = new Purposely
+                {
+                    IsKnowledgeOfWrongdoing = lp => lp is JeremyTheifEg
+                }
+            };
+            testCrime.AttendantCircumstances.Add(testAttendantCircumstance);
+            var testResult = testCrime.IsValid(new JeremyTheifEg(), new CodyFriendEg());
+            Console.WriteLine(testCrime.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 

@@ -36,11 +36,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="US\Elements\Reliance.cs" />
     <Compile Include="US\Elements\Theft\ByDeception.cs" />
     <Compile Include="US\Elements\Theft\ByExtortion.cs" />
     <Compile Include="US\Elements\Theft\ByReceiving.cs" />
     <Compile Include="US\Elements\Theft\ByTaking.cs" />
     <Compile Include="US\Elements\Theft\ConsolidatedTheft.cs" />
+    <Compile Include="US\Elements\Treachery.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">

@@ -1,25 +1,30 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
     /// <summary>
     /// Model Penal Code 223.3. Theft by Decption
     /// </summary>
+    [Aka("false pretense")]
     public class ByDeception : ConsolidatedTheft
     {
         /// <summary>
         /// Model Penal Code 223.3.(1)
         /// </summary>
         public Predicate<ILegalPerson> IsFalseImpression { get; set; } = lp => false;
+
         /// <summary>
         /// Model Penal Code 223.3.(2)
         /// </summary>
         public Predicate<ILegalPerson> IsPreventionOfTruth { get; set; } = lp => false;
+
         /// <summary>
         /// Model Penal Code 223.3.(3)
         /// </summary>
         public Predicate<ILegalPerson> IsFailureToCorrect { get; set; } = lp => false;
+
         /// <summary>
         /// Model Penal Code 223.3.(4)
         /// </summary>

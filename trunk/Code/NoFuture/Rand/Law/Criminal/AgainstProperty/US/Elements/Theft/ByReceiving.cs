@@ -1,10 +1,12 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
     /// <summary>
     /// Model Penal Code 223.6.
     /// </summary>
+    [Aka("receiving stolen property")]
     public class ByReceiving : ConsolidatedTheft
     {
         public Predicate<ILegalPerson> IsPresentStolen { get; set; } = lp => false;

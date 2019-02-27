@@ -22,6 +22,6 @@ namespace NoFuture.Rand.Law.Criminal.US
         /// </summary>
         Concurrence Concurrence { get; set; }
 
-        IList<IElement> AdditionalElements { get; }
+        IList<IAttendantElement> AttendantCircumstances { get; }
     }
 }

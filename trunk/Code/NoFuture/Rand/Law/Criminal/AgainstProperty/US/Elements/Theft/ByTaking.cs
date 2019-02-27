@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
     /// <summary>
     /// A union of the various ways of directly stealing;  Model Penal Code 223.2. and 223.7.
     /// </summary>
+    [Aka("larceny", "fraudulent conversion", "embezzlement")]
     public class ByTaking : ConsolidatedTheft
     {
         /// <summary>
