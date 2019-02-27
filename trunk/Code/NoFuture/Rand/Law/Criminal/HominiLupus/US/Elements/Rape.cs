@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => false;
 
-        public Consent Consent { get; set; } = new Consent();
+        public IConsent Consent { get; set; } = new Consent();
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -51,6 +51,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             var defendant = GetDefendant(persons);
+            var consent = Consent as Consent ?? new Consent();
 
             foreach (var person in persons)
             {
@@ -58,7 +59,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
                 if(victim == null)
                     continue;
 
-                var isCapable = Consent?.IsCapableThereof(victim) ?? false;
+                var isCapable = consent.IsCapableThereof(victim);
                 var isIntercourse = IsSexualIntercourse(defendant);
 
                 //the intent is irrelevant - sex with victim is illegal outright
@@ -70,7 +71,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
                 if (isSexWithIllegal)
                 {
                     AddReasonEntry($"{nameof(IsSexualIntercourse)} is true with victim, {victim.Name}, " +
-                                   $"who is {nameof(Consent.IsCapableThereof)} is false " +
+                                   $"who is {nameof(consent.IsCapableThereof)} is false " +
                                    $"for {nameof(Consent)} while intent is {nameof(StrictLiability)}");
                     AddReasonEntry($"sex between {victim.Name} and defendant, {defendant.Name} is illegal outright.");
                 }

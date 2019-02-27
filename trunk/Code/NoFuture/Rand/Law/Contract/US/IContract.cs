@@ -19,6 +19,16 @@ namespace NoFuture.Rand.Law.Contract.US
 
         Func<ILegalConcept, T> Acceptance { get; set; }
 
+        /// <summary>
+        /// An outward expression of approval that a reasonable person would understand
+        /// </summary>
+        /// <remarks>
+        /// src [LUCY v. ZEHMER Supreme Court of Virginia 196 Va. 493; 84 S.E.2d 516 (1954)]
+        /// <![CDATA[
+        /// If his words and acts, judged by a reasonable standard, manifest an intention 
+        /// to agree, it is immaterial what may be the real but unexpressed state of his mind.
+        /// ]]>
+        /// </remarks>
         [Note("expression of approval or agreement")]
         IContractTerms Assent { get; set; }
 

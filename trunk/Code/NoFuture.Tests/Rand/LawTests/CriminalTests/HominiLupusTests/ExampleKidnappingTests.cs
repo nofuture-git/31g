@@ -86,7 +86,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                     Consent = new Consent
                     {
                         IsCapableThereof = lp => lp is ShawnaHitchinhikenEg,
-                        IsFirmDenial = lp => false
+                        IsDenialExpressed = lp => false
                     }
                 },
                 MensRea = new Purposely

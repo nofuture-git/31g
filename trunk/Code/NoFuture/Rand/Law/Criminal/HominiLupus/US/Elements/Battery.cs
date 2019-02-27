@@ -1,6 +1,5 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
@@ -17,7 +16,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
         /// <summary>
         /// If the victim entered into Mutual Combat then its not battery
         /// </summary>
-        public Consent Consent { get; set; }
+        public IConsent Consent { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

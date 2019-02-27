@@ -1,7 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
@@ -12,7 +11,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     {
         public Predicate<ILegalPerson> IsConfineVictim { get; set; } = lp => false;
 
-        public Consent Consent { get; set; }
+        public IConsent Consent { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

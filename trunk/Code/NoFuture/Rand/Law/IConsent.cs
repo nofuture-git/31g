@@ -2,8 +2,11 @@
 
 namespace NoFuture.Rand.Law
 {
-    public interface IConsent
+    /// <summary>
+    /// To grant permission for some action often with reluctance
+    /// </summary>
+    public interface IConsent : ILegalConcept
     {
-        Predicate<ILegalPerson> IsFirmDenial { get; set; }
+        Predicate<ILegalPerson> IsDenialExpressed { get; set; }
     }
 }
