@@ -50,25 +50,30 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             var defendant = GetDefendant(persons);
-            var victim = Consent?.GetVictim(persons);
-            var isCapable = Consent?.IsCapableThereof(victim) ?? false;
-            var isIntercourse = IsSexualIntercourse(defendant);
 
-            //the intent is irrelevant - sex with victim is illegal outright
-            var isSexWithIllegal = defendant != null 
-                                   && criminalIntent is StrictLiability 
-                                   && victim != null 
-                                   && !isCapable
-                                   && isIntercourse;
-
-            if (isSexWithIllegal)
+            foreach (var person in persons)
             {
-                AddReasonEntry($"{nameof(IsSexualIntercourse)} is true with victim, {victim.Name}, " +
-                               $"who is {nameof(Consent.IsCapableThereof)} is false " +
-                               $"for {nameof(Consent)} while intent is {nameof(StrictLiability)}");
-                AddReasonEntry($"sex between {victim.Name} and defendant, {defendant.Name} is illegal outright.");
-            }
+                var victim = person as IVictim;
+                if(victim == null)
+                    continue;
 
+                var isCapable = Consent?.IsCapableThereof(victim) ?? false;
+                var isIntercourse = IsSexualIntercourse(defendant);
+
+                //the intent is irrelevant - sex with victim is illegal outright
+                var isSexWithIllegal = defendant != null
+                                       && criminalIntent is StrictLiability
+                                       && !isCapable
+                                       && isIntercourse;
+
+                if (isSexWithIllegal)
+                {
+                    AddReasonEntry($"{nameof(IsSexualIntercourse)} is true with victim, {victim.Name}, " +
+                                   $"who is {nameof(Consent.IsCapableThereof)} is false " +
+                                   $"for {nameof(Consent)} while intent is {nameof(StrictLiability)}");
+                    AddReasonEntry($"sex between {victim.Name} and defendant, {defendant.Name} is illegal outright.");
+                }
+            }
             return true;
         }
     }

@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace NoFuture.Rand.Law.Criminal
+﻿namespace NoFuture.Rand.Law.Criminal.US
 {
-    public interface IVictim
+    public interface IVictim : ILegalPerson
     {
-        Func<ILegalPerson[], ILegalPerson> GetVictim { get; set; }
+        
     }
 }

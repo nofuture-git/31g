@@ -84,7 +84,6 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                     IsAsportation = lp => lp is ThomasHitchhikerEg,
                     Consent = new Consent
                     {
-                        GetVictim = lps => lps.FirstOrDefault(lp => lp.Name == "SHAWNA HITCHINHIKEN"),
                         IsCapableThereof = lp => lp is ShawnaHitchinhikenEg,
                         IsFirmDenial = lp => false
                     }
@@ -113,7 +112,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         public ThomasHitchhikerEg() : base("THOMAS HITCHHIKER") { }
     }
 
-    public class ShawnaHitchinhikenEg : LegalPerson
+    public class ShawnaHitchinhikenEg : Victim
     {
         public ShawnaHitchinhikenEg() : base ("SHAWNA HITCHINHIKEN") { }
     }

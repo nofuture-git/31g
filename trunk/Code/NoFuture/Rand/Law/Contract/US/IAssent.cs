@@ -6,8 +6,8 @@ namespace NoFuture.Rand.Law.Contract.US
     public interface IAssent : ILegalConcept
     {
         /// <summary>
-        /// A predicate when given either formative party of the contract
-        /// will return some outward expression of approval.
+        /// Assent: to agree with proposition(s) often with enthusiasm
+        /// Consent: to grant permission for some action often with reluctance
         /// </summary>
         /// <remarks>
         /// src [LUCY v. ZEHMER Supreme Court of Virginia 196 Va. 493; 84 S.E.2d 516 (1954)]

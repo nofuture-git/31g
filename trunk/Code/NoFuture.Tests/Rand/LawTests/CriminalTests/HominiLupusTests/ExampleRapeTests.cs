@@ -42,7 +42,6 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                     Consent = new Consent
                     {
                         IsFirmDenial = lp => lp is BrandySisterEg,
-                        GetVictim = lps => lps.FirstOrDefault(lp => lp.Name == "BRANDY SISTER")
                     }
                 },
                 MensRea = new Purposely
@@ -67,7 +66,6 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                     Consent = new Consent
                     {
                         IsCapableThereof = lp => ((lp as BrandySisterEg)?.Age  ?? 18) >= 16,
-                        GetVictim = lps => lps.FirstOrDefault(lp => lp.Name == "BRANDY SISTER")
                     }
                 },
                 MensRea = new StrictLiability()
@@ -91,7 +89,6 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                         //assented 
                         IsFirmDenial = lp => false,
                         IsCapableThereof = lp => ((lp as BrandySisterEg)?.Age ?? 18) >= 16,
-                        GetVictim = lps => lps.FirstOrDefault(lp => lp.Name == "BRANDY SISTER")
                     }
                 },
                 MensRea = new Purposely
@@ -116,7 +113,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         public BradAlsogamerEg(): base("BRAD ALSOGAMER") { }
     }
 
-    public class BrandySisterEg : LegalPerson
+    public class BrandySisterEg : Victim
     {
         public BrandySisterEg() : base("BRANDY SISTER") { }
 

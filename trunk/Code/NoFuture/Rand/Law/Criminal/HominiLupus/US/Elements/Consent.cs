@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
@@ -6,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <summary>
     /// the inability or firm denial of willingness to engage in intercourse
     /// </summary>
-    public class Consent : AttendantCircumstances, IVictim
+    public class Consent : AttendantCircumstances
     {
         public Predicate<ILegalPerson> IsCapableThereof { get; set; } = lp => false;
 
@@ -15,30 +17,34 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
         /// </summary>
         public Predicate<ILegalPerson> IsFirmDenial { get; set; } = lp => true;
 
-        public Func<ILegalPerson[], ILegalPerson> GetVictim { get; set; } = lps => null;
-
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var victim = GetVictim(persons);
-            if (victim == null)
+            if (persons == null || !persons.Any())
             {
-                AddReasonEntry($"{nameof(GetVictim)} returned null");
+                AddReasonEntry($"{nameof(persons)} is null or empty");
                 return false;
             }
 
-            if (!IsCapableThereof(victim))
+            foreach (var person in persons)
             {
-                AddReasonEntry($"victim, {victim.Name}, {nameof(IsCapableThereof)} is false");
-                return false;
+                var victim = person as IVictim;
+                if(victim == null)
+                    continue;
+
+                if (!IsCapableThereof(victim))
+                {
+                    AddReasonEntry($"victim, {victim.Name}, {nameof(IsCapableThereof)} is false");
+                    return false;
+                }
+
+                if (IsFirmDenial(victim))
+                {
+                    AddReasonEntry($"victim, {victim.Name}, {nameof(IsFirmDenial)} is true");
+                    return false;
+                }
+                AddReasonEntry($"victim, {victim.Name}, {nameof(IsFirmDenial)} is false");
             }
 
-            if (IsFirmDenial(victim))
-            {
-                AddReasonEntry($"victim, {victim.Name}, {nameof(IsFirmDenial)} is true");
-                return false;
-            }
-
-            AddReasonEntry($"victim, {victim.Name}, {nameof(IsFirmDenial)} is false");
             return true;
         }
     }

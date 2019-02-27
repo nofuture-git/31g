@@ -37,22 +37,30 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new Battery
                 {
-                    IsByForce = lp => lp is HarrietIncestEg,
+                    IsByForce = lp => lp is Combatent00,
                     Consent = new Consent
                     {
-                        GetVictim = lps => lps.FirstOrDefault(lp => lp.Name == new HalIncestEg().Name),
                         IsCapableThereof = lp => true,
                         IsFirmDenial = lp => false,
                     }
                 },
                 MensRea = new GeneralIntent
                 {
-                    IsIntentOnWrongdoing = lp => lp is HarrietIncestEg
+                    IsIntentOnWrongdoing = lp => lp is Combatent00
                 },
             };
-            var testResult = testCrime.IsValid(new HarrietIncestEg(), new HalIncestEg());
+            var testResult = testCrime.IsValid(new Combatent00(), new Combatent01());
             Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
         }
+    }
+
+    public class Combatent00 : LegalPerson
+    {
+        public Combatent00() : base("COMBATENT 00") { }
+    }
+    public class Combatent01 : Victim
+    {
+        public Combatent01() : base("COMBATENT 01") { }
     }
 }
