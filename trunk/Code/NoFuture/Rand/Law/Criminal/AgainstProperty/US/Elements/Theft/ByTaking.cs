@@ -23,6 +23,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         /// <summary>
         /// The manner of stealing immovable property since it cannot be physically pocketed
         /// </summary>
+        [Aka("larceny by trick")]
         public Predicate<ILegalPerson> IsTransferUnlawful { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsToDepriveEntitled { get; set; } = lp => false;

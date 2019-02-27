@@ -37,13 +37,10 @@ namespace NoFuture.Rand.Law.Criminal.US
                 var isValid = elem.IsValid(persons)
                               || elem.IsValid(Concurrence.ActusReus, persons)
                               || elem.IsValid(Concurrence.MensRea, persons);
+                AddReasonEntryRange(elem.GetReasonEntries());
 
                 if (!isValid)
-                {
-                    AddReasonEntryRange(elem.GetReasonEntries());
-                    AddPersonsReasonEntries(persons);
                     return false;
-                }
             }
 
             return true;
