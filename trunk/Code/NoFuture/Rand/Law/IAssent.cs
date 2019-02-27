@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Contract.US
+namespace NoFuture.Rand.Law
 {
     public interface IAssent : ILegalConcept
     {
