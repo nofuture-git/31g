@@ -63,7 +63,6 @@
     <Compile Include="US\Excuse\ExcuseBase.cs" />
     <Compile Include="US\Excuse\FrustrationOfPurpose.cs" />
     <Compile Include="US\Excuse\ImpracticabilityOfPerformance.cs" />
-    <Compile Include="US\IAssent.cs" />
     <Compile Include="US\IContract.cs" />
     <Compile Include="US\IContractTerms.cs" />
     <Compile Include="US\MutualAssent.cs" />

@@ -38,6 +38,8 @@
     <Compile Include="Attributes\AkaAttribute.cs" />
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="Exceptions\LawException.cs" />
+    <Compile Include="IAssent.cs" />
+    <Compile Include="IConsent.cs" />
     <Compile Include="ILegalProperty.cs" />
     <Compile Include="LegalProperty.cs" />
     <Compile Include="TermCategoryBoolOps.cs" />
