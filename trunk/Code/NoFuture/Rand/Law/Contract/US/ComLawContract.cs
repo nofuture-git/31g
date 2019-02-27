@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Contract.US
         [Aka("mutuality of obligation")]
         public virtual Consideration<T> Consideration { get; set; }
         
-        public virtual IAssent Assent { get; set; }
+        public virtual IContractTerms Assent { get; set; }
 
         [Note("this is what distinguishes a common (donative) promise from a legal one")]
         public override bool IsEnforceableInCourt => true;

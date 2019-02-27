@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Law.Contract.US
 {
-    public interface IAssent : IContractTerms
+    public interface IAssent : ILegalConcept
     {
         /// <summary>
         /// Assent: to agree with proposition(s) often with enthusiasm

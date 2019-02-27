@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.Contract.US
         Func<ILegalConcept, T> Acceptance { get; set; }
 
         [Note("expression of approval or agreement")]
-        IAssent Assent { get; set; }
+        IContractTerms Assent { get; set; }
 
         ILegalPerson GetOfferor(ILegalPerson[] persons);
 

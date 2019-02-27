@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Contract.US.Ucc
     public class UccContract<T> : LegalConcept, IUccItem, IContract<T> where T : IUccItem
     {
         [Note("the bargain of the parties")]
-        public virtual IAssent Assent { get; set; }
+        public virtual IContractTerms Assent { get; set; }
 
         public ILegalConcept Offer { get; set; }
         public Func<ILegalConcept, T> Acceptance { get; set; }

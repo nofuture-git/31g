@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// <summary>
     /// the inability or firm denial of willingness to engage in intercourse
     /// </summary>
-    public class Consent : AttendantCircumstances
+    public class Consent : AttendantCircumstances, IConsent
     {
         public Predicate<ILegalPerson> IsCapableThereof { get; set; } = lp => false;
 

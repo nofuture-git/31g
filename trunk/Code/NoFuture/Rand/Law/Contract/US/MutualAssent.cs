@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace NoFuture.Rand.Law.Contract.US
 {
-    public class MutualAssent : LegalConcept, IAssent
+    public class MutualAssent : LegalConcept, IContractTerms
     {
         public override bool IsEnforceableInCourt => true;
 
