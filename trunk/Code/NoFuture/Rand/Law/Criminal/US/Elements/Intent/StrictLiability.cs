@@ -1,10 +1,22 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
+﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
 {
     /// <summary>
     /// This is a null-object type for <see cref="MensRea"/>.  It abrogates the com-law 
     /// approach that behavior is only criminal when the defendant commits acts 
     /// with a guilty mind.
     /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// This was always present in com law, but with industrial rev. 
+    /// it happened that, "velocities, volumes and varieties unheard 
+    /// of came to subject the wayfarer to intolerable casualty risks".  
+    /// Therefore, laws not requiring intent, "are in the nature of 
+    /// neglect where the law requires care, or inaction where it 
+    /// imposes a duty".  Thereby, breaking these laws "impairs the 
+    /// efficiency of controls deemed essential to the social order". 
+    /// (342 U.S. 246 (1952) MORISSETTE v. UNITED STATES.)
+    /// ]]>
+    /// </remarks>
     public class StrictLiability : MensRea
     {
         private const string _name = "StrictLiability";

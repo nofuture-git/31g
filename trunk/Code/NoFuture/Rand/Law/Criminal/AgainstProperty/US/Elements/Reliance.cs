@@ -32,10 +32,11 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
 
             foreach (var victim in victims)
             {
-                if (IsReliantOnFalseRepresentation(victim))
+                var isReliance = IsReliantOnFalseRepresentation(victim);
+                AddReasonEntry($"victim, {victim.Name}, had property {falsePretense.SubjectOfTheft} theft {nameof(ByDeception)}; " +
+                               $"furthermore, {nameof(IsReliantOnFalseRepresentation)} is {isReliance}");
+                if (isReliance)
                 {
-                    AddReasonEntry($"victim, {victim.Name}, had property {falsePretense.SubjectOfTheft} theft {nameof(ByDeception)}; " +
-                                   $"furthermore, {nameof(IsReliantOnFalseRepresentation)} is true");
                     return true;
                 }
             }

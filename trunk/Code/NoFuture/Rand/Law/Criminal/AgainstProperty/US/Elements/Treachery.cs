@@ -23,8 +23,11 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
         public override bool IsValid(IActusReus criminalAct, params ILegalPerson[] persons)
         {
             var steal = criminalAct as ByTaking;
-            if(steal == null)
+            if (steal == null)
+            {
+                AddReasonEntry($"{nameof(Treachery)} is an {nameof(IAttendantElement)} only upon type {nameof(ByTaking)}");
                 return base.IsValid(criminalAct, persons);
+            }
 
             var defendant = GetDefendant(persons);
             if (defendant == null)
@@ -36,17 +39,12 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
 
             foreach (var victim in victims)
             {
-                if (IsTrustBetween(defendant, victim))
-                {
-                    AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTrustBetween)} is true for victim {victim.Name}");
+                var isTrust = IsTrustBetween(defendant, victim);
+                var isConfident = IsConfidenceBetween(defendant, victim);
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTrustBetween)} is {isTrust} for victim {victim.Name}");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsConfidenceBetween)} is {isConfident} for victim {victim.Name}");
+                if (isTrust || isConfident)
                     return true;
-                }
-
-                if (IsConfidenceBetween(defendant, victim))
-                {
-                    AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsConfidenceBetween)} is true for victim {victim.Name}");
-                    return true;
-                }
             }
 
             return false;

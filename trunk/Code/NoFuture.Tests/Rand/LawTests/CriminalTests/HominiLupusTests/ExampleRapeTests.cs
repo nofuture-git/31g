@@ -3,6 +3,7 @@ using System.Linq;
 using NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
