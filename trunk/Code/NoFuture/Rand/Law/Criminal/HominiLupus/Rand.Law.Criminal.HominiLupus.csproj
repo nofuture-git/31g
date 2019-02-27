@@ -44,7 +44,6 @@
     <Compile Include="US\Credible\ThreateningWords.cs" />
     <Compile Include="US\Elements\AttemptedBattery.cs" />
     <Compile Include="US\Elements\Battery.cs" />
-    <Compile Include="US\Elements\Consent.cs" />
     <Compile Include="US\Elements\FalseImprisonment.cs" />
     <Compile Include="US\Elements\Kidnapping.cs" />
     <Compile Include="US\IAgitate.cs" />

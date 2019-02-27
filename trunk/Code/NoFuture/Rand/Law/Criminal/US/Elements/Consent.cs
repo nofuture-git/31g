@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements;
 
-namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// the inability or firm denial of willingness to engage in intercourse

@@ -65,6 +65,7 @@
     <Compile Include="US\Excuse\ImpracticabilityOfPerformance.cs" />
     <Compile Include="US\IAssent.cs" />
     <Compile Include="US\IContract.cs" />
+    <Compile Include="US\IContractTerms.cs" />
     <Compile Include="US\MutualAssent.cs" />
     <Compile Include="US\Performance.cs" />
     <Compile Include="US\Promise.cs" />

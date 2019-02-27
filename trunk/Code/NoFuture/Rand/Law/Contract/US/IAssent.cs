@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.Contract.US
 {
-    public interface IAssent : ILegalConcept
+    public interface IAssent : IContractTerms
     {
         /// <summary>
         /// Assent: to agree with proposition(s) often with enthusiasm
@@ -17,13 +16,5 @@ namespace NoFuture.Rand.Law.Contract.US
         /// ]]>
         /// </remarks>
         Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
-
-        Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
-
-        ISet<Term<object>> GetAgreedTerms(ILegalPerson offeror, ILegalPerson offeree);
-
-        ISet<Term<object>> GetAdditionalTerms(ILegalPerson offeror, ILegalPerson offeree);
-
-        ISet<Term<object>> GetInNameAgreedTerms(ILegalPerson offeror, ILegalPerson offeree);
     }
 }
