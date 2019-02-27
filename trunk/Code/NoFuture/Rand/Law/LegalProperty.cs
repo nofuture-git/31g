@@ -22,6 +22,8 @@ namespace NoFuture.Rand.Law
 
         public LegalProperty(string name, string groupName) : base(name, groupName) { }
 
+        public ILegalPerson BelongsTo { get; set; }
+
         public virtual IEnumerable<string> GetReasonEntries()
         {
             return _reasons;
@@ -43,7 +45,7 @@ namespace NoFuture.Rand.Law
 
         public override string ToString()
         {
-            return string.Join(Environment.NewLine, _reasons);
+            return Name;
         }
     }
 }

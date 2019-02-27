@@ -7,5 +7,6 @@ namespace NoFuture.Rand.Law
     /// </summary>
     public interface ILegalProperty : IVoca, IRationale
     {
+        ILegalPerson BelongsTo { get; set; }
     }
 }

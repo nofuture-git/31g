@@ -74,6 +74,9 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            if (!base.IsValid(persons))
+                return false;
+
             var threatening = Threatening ?? new ByThreatening();
 
             var defendant = GetDefendant(persons);

@@ -52,6 +52,29 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             Assert.IsTrue(testResult);
         }
 
+        [Test]
+        public void ExampleInvalidTheftWhenOwner()
+        {
+            var jermey = new JeremyTheifEg();
+            var property = new ChewingGum {BelongsTo = jermey};
+            var testCrime = new Misdemeanor
+            {
+                ActusReus = new ByTaking
+                {
+                    AmountOfTheft = 1.25m,
+                    SubjectOfTheft = property,
+                    IsTakenUnlawful = lp => lp is JeremyTheifEg,
+                    IsToBenefitUnentitled = lp => lp is JeremyTheifEg
+                },
+                MensRea = new Purposely
+                {
+                    IsKnowledgeOfWrongdoing = lp => lp is JeremyTheifEg
+                }
+            };
+            var testResult = testCrime.IsValid(new JeremyTheifEg());
+            Console.WriteLine(testCrime.ToString());
+            Assert.IsFalse(testResult);
+        }
     }
 
     public class ChewingGum : LegalProperty
