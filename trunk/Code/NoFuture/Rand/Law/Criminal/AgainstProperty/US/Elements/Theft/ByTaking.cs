@@ -20,11 +20,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         [Aka("movement", "carrying away")]
         public Predicate<ILegalPerson> IsAsportation { get; set; } = lp => false;
 
-        /// <summary>
-        /// The typical idea of theft as grab and run stealing, or, more 
-        /// generally as the idea that control of the property has been taken unlawfully
-        /// </summary>
-        public Predicate<ILegalPerson> IsTakenControlUnlawful { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -34,12 +29,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
-
-            if (!IsTakenControlUnlawful(defendant))
-            {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTakenControlUnlawful)} is false");
-                return false;
-            }
 
             if (!IsAsportation(defendant))
             {

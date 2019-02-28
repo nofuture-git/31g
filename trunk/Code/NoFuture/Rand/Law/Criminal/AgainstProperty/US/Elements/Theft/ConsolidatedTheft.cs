@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
@@ -14,7 +15,21 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         public virtual ILegalProperty SubjectOfTheft { get; set; }
         public virtual decimal? AmountOfTheft { get; set; }
 
+        /// <summary>
+        /// This is assumed false (i.e. the thief did not have consent to take such-and-such).
+        /// </summary>
         public virtual IConsent Consent { get; set; }
+
+        /// <summary>
+        /// The typical idea of theft as grab and run stealing, or, more 
+        /// generally as the idea that control of the property has been taken unlawfully
+        /// </summary>
+        public Predicate<ILegalPerson> IsTakenPossession { get; set; } = lp => false;
+
+        /// <summary>
+        /// When the thief has acquired some kind of legal entitlement over the property
+        /// </summary>
+        public Predicate<ILegalPerson> IsAcquiredTitle { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -28,13 +43,16 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return false;
             }
 
-            if (VocaBase.Equals(SubjectOfTheft.BelongsTo, defendant))
+            if (VocaBase.Equals(SubjectOfTheft.EntitledTo, defendant))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, is the owner of property {SubjectOfTheft}");
                 return false;
             }
 
-            if (!IsWithoutConsent(persons))
+            if (!WithoutConsent(persons))
+                return false;
+
+            if (!PossessOrEntitle(persons))
                 return false;
 
             return true;
@@ -45,15 +63,38 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             return true;
         }
 
+        protected internal bool PossessOrEntitle(ILegalPerson[] persons)
+        {
+            var defendant = GetDefendant(persons);
+            if (defendant == null)
+                return false;
+            var isPossess = IsTakenPossession(defendant);
+            if (isPossess)
+                SubjectOfTheft.InPossessionOf = defendant;
+
+            var isTitled = IsAcquiredTitle(defendant);
+            if (isTitled)
+                SubjectOfTheft.EntitledTo = defendant;
+
+            if (!isPossess && !isTitled)
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTakenPossession)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAcquiredTitle)} is false");
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Tests that <see cref="Consent"/> was not given by <see cref="SubjectOfTheft"/> owner
         /// </summary>
         /// <param name="persons"></param>
         /// <returns></returns>
-        protected virtual bool IsWithoutConsent(ILegalPerson[] persons)
+        protected virtual bool WithoutConsent(ILegalPerson[] persons)
         {
             //is all the dependencies present
-            if (SubjectOfTheft?.BelongsTo == null || Consent == null 
+            if (SubjectOfTheft?.EntitledTo == null || Consent == null 
                                                   || persons == null 
                                                   || !persons.Any())
                 return true;
@@ -64,7 +105,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return true;
 
             //is any of our victims also the owner of the property
-            var ownerVictims = victims.Where(v => VocaBase.Equals(v, SubjectOfTheft.BelongsTo)).ToList();
+            var ownerVictims = victims.Where(v => VocaBase.Equals(v, SubjectOfTheft.EntitledTo)).ToList();
             if (!ownerVictims.Any())
                 return true;
 

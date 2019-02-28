@@ -10,6 +10,9 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
     /// <summary>
     /// A relationship between <see cref="ILegalPerson"/> that is based on trust or confidence
     /// </summary>
+    /// <remarks>
+    /// lessor-lessee, debtor-creditor, pledgor-pledgee, settlor-trustee
+    /// </remarks>
     public class FiduciaryRelationship : AttendantCircumstances
     {
         public Func<ILegalPerson, ILegalPerson, bool> IsTrustBetween { get; set; } = (lp1, lp2) => false;

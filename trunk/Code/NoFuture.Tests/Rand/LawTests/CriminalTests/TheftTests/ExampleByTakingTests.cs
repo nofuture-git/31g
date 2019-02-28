@@ -2,10 +2,8 @@
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
-using NoFuture.Rand.Law.Criminal.Homicide.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
@@ -23,7 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 {
                     AmountOfTheft = 1.25m,
                     SubjectOfTheft = new ChewingGum(),
-                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },
                 MensRea = new Purposely
@@ -44,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 ActusReus = new ByTaking()
                 {
                     SubjectOfTheft =  new TangiblePersonalProperty("payment for gas"),
-                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },
                 MensRea = new Purposely
@@ -61,14 +59,14 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public void ExampleInvalidTheftWhenOwner()
         {
             var jermey = new JeremyTheifEg();
-            var property = new ChewingGum {BelongsTo = jermey};
+            var property = new ChewingGum {EntitledTo = jermey};
             var testCrime = new Misdemeanor
             {
                 ActusReus = new ByTaking()
                 {
                     AmountOfTheft = 1.25m,
                     SubjectOfTheft = property,
-                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },
                 MensRea = new Purposely
@@ -85,14 +83,14 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public void ExampleVictimConsentGiven()
         {
             var cody = new CodyFriendEg();
-            var property = new ChewingGum {BelongsTo = cody};
+            var property = new ChewingGum {EntitledTo = cody};
 
             var testCrime = new Misdemeanor
             {
                 ActusReus = new ByTaking()
                 {
                     SubjectOfTheft = property,
-                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg,
                     Consent = new Consent
                     {
@@ -126,7 +124,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 {
                     AmountOfTheft = 1.25m,
                     SubjectOfTheft = new ChewingGum(),
-                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },
                 MensRea = new Purposely

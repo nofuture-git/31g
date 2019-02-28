@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
@@ -12,7 +11,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         /// <summary>
         /// Model Penal Code 223.3.(1)
         /// </summary>
-        [Aka("false pretense")]
         public Predicate<ILegalPerson> IsFalseImpression { get; set; } = lp => false;
 
         /// <summary>
@@ -29,6 +27,16 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         /// Model Penal Code 223.3.(4)
         /// </summary>
         public Predicate<ILegalPerson> IsUndisclosedLegalImpediment { get; set; } = lp => false;
+
+        /// <summary>
+        /// When only possession has been gotten by deception, not legal entitlement
+        /// </summary>
+        public bool IsLarcenyByTrick { get; private set; }
+
+        /// <summary>
+        /// When both possession and legal entitlement have been gotten by deception
+        /// </summary>
+        public bool IsFalsePretense { get; private set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -52,6 +60,16 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return false;
             }
 
+            var isPossess = ReferenceEquals(SubjectOfTheft.InPossessionOf,defendant);
+            var isTitle = ReferenceEquals(SubjectOfTheft.EntitledTo,defendant);
+
+            IsLarcenyByTrick = isPossess && !isTitle;
+            IsFalsePretense = isPossess && isTitle;
+
+            if(IsLarcenyByTrick)
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsLarcenyByTrick)} is true");
+            if(IsFalsePretense)
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsFalsePretense)} is true");
             return true;
         }
     }

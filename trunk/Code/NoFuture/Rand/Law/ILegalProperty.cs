@@ -7,6 +7,14 @@ namespace NoFuture.Rand.Law
     /// </summary>
     public interface ILegalProperty : IVoca, IRationale
     {
-        ILegalPerson BelongsTo { get; set; }
+        /// <summary>
+        /// Who is lawfully entitled to the property
+        /// </summary>
+        ILegalPerson EntitledTo { get; set; }
+
+        /// <summary>
+        /// Who actually possess control over the property
+        /// </summary>
+        ILegalPerson InPossessionOf { get; set; }
     }
 }
