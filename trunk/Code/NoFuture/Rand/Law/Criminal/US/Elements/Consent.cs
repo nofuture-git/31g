@@ -4,7 +4,7 @@ using System.Linq;
 namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
-    /// the inability or firm denial of willingness to engage in intercourse
+    /// the inability or firm denial of willingness to engage
     /// </summary>
     public class Consent : AttendantCircumstances, IConsent
     {

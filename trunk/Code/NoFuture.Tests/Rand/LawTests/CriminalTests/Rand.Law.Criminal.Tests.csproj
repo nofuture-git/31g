@@ -118,6 +118,7 @@
     <Compile Include="TermsTests\ForceTests.cs" />
     <Compile Include="TheftTests\ExampleByDeceptionTest.cs" />
     <Compile Include="TheftTests\ExampleByTakingTests.cs" />
+    <Compile Include="TheftTests\ExampleExtortionTests.cs" />
     <Compile Include="TheftTests\PeoplevTrasterTests.cs" />
     <Compile Include="TheftTests\StatevLarsonTests.cs" />
   </ItemGroup>

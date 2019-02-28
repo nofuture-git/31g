@@ -2,6 +2,9 @@
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
@@ -70,30 +73,53 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             }
         }
 
-        public Predicate<ILegalPerson> IsPurposelyObtained { get; set; } = lp => false;
-
         public ByThreatening Threatening { get; set; } = new ByThreatening();
+
+        /// <summary>
+        /// For <see cref="ByExtortion"/>, consent is actually expected to have been given
+        /// for the crime to have proceeded to its commission
+        /// </summary>
+        protected override bool ConsentExpectedAs { get; set; } = true;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            var defendant = GetDefendant(persons);
+            if (defendant == null)
+                return false;
+
+            //threats for what is honestly owed is not illegal
+            if (defendant.Equals(SubjectOfTheft?.EntitledTo))
+            {
+                AddReasonEntry($"defendant {defendant.Name}, is entitled to " +
+                               $"{SubjectOfTheft?.GetType().Name} " +
+                               $"named '{SubjectOfTheft?.Name}'");
+                return false;
+            }
+            
             if (!base.IsValid(persons))
                 return false;
 
             var threatening = Threatening ?? new ByThreatening();
 
-            var defendant = GetDefendant(persons);
-            if (defendant == null)
-                return false;
-
-            if (!IsPurposelyObtained(defendant))
-            {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsPurposelyObtained)} is false");
-                return false;
-            }
-
             if (!threatening.IsValid(persons))
             {
                 AddReasonEntryRange(threatening.GetReasonEntries());
+                return false;
+            }
+
+            return true;
+        }
+
+        public override bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
+        {
+            var validIntend = criminalIntent is Purposely || criminalIntent is SpecificIntent ||
+                              criminalIntent is Knowingly || criminalIntent is GeneralIntent;
+
+            if (!validIntend)
+            {
+                AddReasonEntry($"{nameof(ByExtortion)} requires intent " +
+                               $"of {nameof(Purposely)}, {nameof(SpecificIntent)}, " +
+                               $"{nameof(Knowingly)}, {nameof(GeneralIntent)}");
                 return false;
             }
 

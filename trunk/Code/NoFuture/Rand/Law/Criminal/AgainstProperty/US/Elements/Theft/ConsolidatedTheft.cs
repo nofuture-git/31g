@@ -14,10 +14,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
     {
         public virtual ILegalProperty SubjectOfTheft { get; set; }
         public virtual decimal? AmountOfTheft { get; set; }
-
-        /// <summary>
-        /// This is assumed false (i.e. the thief did not have consent to take such-and-such).
-        /// </summary>
         public virtual IConsent Consent { get; set; }
 
         /// <summary>
@@ -49,7 +45,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return false;
             }
 
-            if (!WithoutConsent(persons))
+            if (!GetConsent(persons))
                 return false;
 
             if (!PossessOrEntitle(persons))
@@ -87,16 +83,22 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         }
 
         /// <summary>
+        /// The expected result of <see cref="Consent"/> - default
+        /// is false (i.e. the thief did not have consent to take such-and-such).
+        /// </summary>
+        protected virtual bool ConsentExpectedAs { get; set; } = false;
+
+        /// <summary>
         /// Tests that <see cref="Consent"/> was not given by <see cref="SubjectOfTheft"/> owner
         /// </summary>
         /// <param name="persons"></param>
         /// <returns></returns>
-        protected virtual bool WithoutConsent(ILegalPerson[] persons)
+        protected virtual bool GetConsent(ILegalPerson[] persons)
         {
             //is all the dependencies present
             if (SubjectOfTheft?.EntitledTo == null || Consent == null 
-                                                  || persons == null 
-                                                  || !persons.Any())
+                                                   || persons == null 
+                                                   || !persons.Any())
                 return true;
 
             //did the caller pass in any IVictim types
@@ -111,11 +113,13 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 
             foreach (var ownerVictim in ownerVictims)
             {
+                var validConsent = Consent.IsValid(ownerVictim);
                 //did the owner victim in fact give consent 
-                if (!Consent.IsDenialExpressed(ownerVictim))
+                if (validConsent != ConsentExpectedAs)
                 {
-                    AddReasonEntry($"owner-victim {ownerVictim.Name}, {nameof(Consent.IsDenialExpressed)} " +
-                                   $"is false for property {SubjectOfTheft}");
+                    AddReasonEntry($"owner-victim {ownerVictim.Name}, {nameof(Consent)} {nameof(IsValid)} " +
+                                   $"is {validConsent}, it was expected to be {ConsentExpectedAs} " +
+                                   $"for property {SubjectOfTheft}");
                     return false;
                 }
             }
