@@ -114,7 +114,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         [Test]
         public void ExampleTreacheryTest()
         {
-            var testAttendantCircumstance = new Treachery
+            var testAttendantCircumstance = new FiduciaryRelationship
             {
                 IsTrustBetween = (lp1, lp2) => (lp1 is JeremyTheifEg && lp2 is CodyFriendEg)
                                                || (lp1 is CodyFriendEg && lp2 is JeremyTheifEg)

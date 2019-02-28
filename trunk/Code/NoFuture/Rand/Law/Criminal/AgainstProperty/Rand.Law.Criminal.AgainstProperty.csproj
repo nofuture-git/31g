@@ -42,7 +42,7 @@
     <Compile Include="US\Elements\Theft\ByReceiving.cs" />
     <Compile Include="US\Elements\Theft\ByTaking.cs" />
     <Compile Include="US\Elements\Theft\ConsolidatedTheft.cs" />
-    <Compile Include="US\Elements\Treachery.cs" />
+    <Compile Include="US\Elements\FiduciaryRelationship.cs" />
     <Compile Include="US\PersonalProperty.cs" />
     <Compile Include="US\RealProperty.cs" />
     <Compile Include="US\ActOfService.cs" />

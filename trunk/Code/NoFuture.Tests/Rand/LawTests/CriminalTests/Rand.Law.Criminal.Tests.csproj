@@ -118,6 +118,7 @@
     <Compile Include="TermsTests\ForceTests.cs" />
     <Compile Include="TheftTests\ExampleByDeceptionTest.cs" />
     <Compile Include="TheftTests\ExampleByTakingTests.cs" />
+    <Compile Include="TheftTests\StatevLarsonTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
