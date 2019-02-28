@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Criminal.AgainstProperty.US;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
 using NoFuture.Rand.Law.Criminal.Homicide.US.Elements;
@@ -22,8 +23,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 {
                     AmountOfTheft = 1.25m,
                     SubjectOfTheft = new ChewingGum(),
-                    IsTakenUnlawful = lp => lp is JeremyTheifEg,
-                    IsToBenefitUnentitled = lp => lp is JeremyTheifEg
+                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsAsportation = lp => lp is JeremyTheifEg
                 },
                 MensRea = new Purposely
                 {
@@ -40,11 +41,11 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         {
             var testCrime = new Misdemeanor
             {
-                ActusReus = new ByTaking
+                ActusReus = new ByTaking()
                 {
-                    SubjectOfTheft =  new LegalProperty("payment for gas"),
-                    IsControlOverUnlawful = lp => lp is JeremyTheifEg,
-                    IsToBenefitUnentitled = lp => lp is JeremyTheifEg
+                    SubjectOfTheft =  new TangiblePersonalProperty("payment for gas"),
+                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsAsportation = lp => lp is JeremyTheifEg
                 },
                 MensRea = new Purposely
                 {
@@ -63,12 +64,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             var property = new ChewingGum {BelongsTo = jermey};
             var testCrime = new Misdemeanor
             {
-                ActusReus = new ByTaking
+                ActusReus = new ByTaking()
                 {
                     AmountOfTheft = 1.25m,
                     SubjectOfTheft = property,
-                    IsTakenUnlawful = lp => lp is JeremyTheifEg,
-                    IsToBenefitUnentitled = lp => lp is JeremyTheifEg
+                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsAsportation = lp => lp is JeremyTheifEg
                 },
                 MensRea = new Purposely
                 {
@@ -88,11 +89,11 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
 
             var testCrime = new Misdemeanor
             {
-                ActusReus = new ByTaking
+                ActusReus = new ByTaking()
                 {
                     SubjectOfTheft = property,
-                    IsTakenUnlawful = lp => lp is JeremyTheifEg,
-                    IsToDepriveEntitled = lp => lp is JeremyTheifEg,
+                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsAsportation = lp => lp is JeremyTheifEg,
                     Consent = new Consent
                     {
                         IsCapableThereof = lp => true,
@@ -121,12 +122,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
 
             var testCrime = new Misdemeanor
             {
-                ActusReus = new ByTaking
+                ActusReus = new ByTaking()
                 {
                     AmountOfTheft = 1.25m,
                     SubjectOfTheft = new ChewingGum(),
-                    IsTakenUnlawful = lp => lp is JeremyTheifEg,
-                    IsToBenefitUnentitled = lp => lp is JeremyTheifEg
+                    IsTakenControlUnlawful = lp => lp is JeremyTheifEg,
+                    IsAsportation = lp => lp is JeremyTheifEg
                 },
                 MensRea = new Purposely
                 {

@@ -5,14 +5,14 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
     /// <summary>
-    /// Model Penal Code 223.3. Theft by Decption
+    /// Model Penal Code 223.3. Theft by Deception
     /// </summary>
-    [Aka("false pretense")]
     public class ByDeception : ConsolidatedTheft
     {
         /// <summary>
         /// Model Penal Code 223.3.(1)
         /// </summary>
+        [Aka("false pretense")]
         public Predicate<ILegalPerson> IsFalseImpression { get; set; } = lp => false;
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         /// <summary>
         /// Model Penal Code 223.3.(4)
         /// </summary>
-        public Predicate<ILegalPerson> IsUndiscloseLegalImpediment { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsUndisclosedLegalImpediment { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -41,14 +41,14 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             var ifi = IsFalseImpression(defendant);
             var ipot = IsPreventionOfTruth(defendant);
             var iftc = IsFailureToCorrect(defendant);
-            var iuli = IsUndiscloseLegalImpediment(defendant);
+            var iuli = IsUndisclosedLegalImpediment(defendant);
 
             if (new[] {ifi, ipot, iftc, iuli}.All(p => p == false))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsFalseImpression)} is {ifi}");
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsPreventionOfTruth)} is {ipot}");
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsFailureToCorrect)} is {iftc}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsUndiscloseLegalImpediment)} is {iuli}");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsUndisclosedLegalImpediment)} is {iuli}");
                 return false;
             }
 

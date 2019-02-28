@@ -1,33 +1,30 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
     /// <summary>
     /// A union of the various ways of directly stealing;  Model Penal Code 223.2. and 223.7.
     /// </summary>
-    [Aka("larceny", "fraudulent conversion", "embezzlement")]
+    [Aka("larceny")]
     public class ByTaking : ConsolidatedTheft
     {
         /// <summary>
-        /// The typical idea of theft as grab and run stealing
+        /// The idea of, once having taken control over the property, the defendant attempts to move
+        /// it, even slightly.
         /// </summary>
-        public Predicate<ILegalPerson> IsTakenUnlawful { get; set; } = lp => false;
+        [Aka("movement", "carrying away")]
+        public Predicate<ILegalPerson> IsAsportation { get; set; } = lp => false;
 
         /// <summary>
-        /// The idea that control of the property has been taken unlawfully
+        /// The typical idea of theft as grab and run stealing, or, more 
+        /// generally as the idea that control of the property has been taken unlawfully
         /// </summary>
-        public Predicate<ILegalPerson> IsControlOverUnlawful { get; set; } = lp => false;
-
-        /// <summary>
-        /// The manner of stealing immovable property since it cannot be physically pocketed
-        /// </summary>
-        [Aka("larceny by trick")]
-        public Predicate<ILegalPerson> IsTransferUnlawful { get; set; } = lp => false;
-
-        public Predicate<ILegalPerson> IsToDepriveEntitled { get; set; } = lp => false;
-        public Predicate<ILegalPerson> IsToBenefitUnentitled { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsTakenControlUnlawful { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -38,25 +35,31 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             if (defendant == null)
                 return false;
 
-            var isTaken = IsTakenUnlawful(defendant);
-            var isTransfer = IsTransferUnlawful(defendant);
-            var isControl = IsControlOverUnlawful(defendant);
-
-            if (new[] {isTaken, isTransfer, isControl}.All(p => p == false))
+            if (!IsTakenControlUnlawful(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTakenUnlawful)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTransferUnlawful)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsControlOverUnlawful)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTakenControlUnlawful)} is false");
                 return false;
             }
 
-            var isDepriveOwner = IsToDepriveEntitled(defendant);
-            var isBenefitTheif = IsToBenefitUnentitled(defendant);
-
-            if (!isDepriveOwner && !isBenefitTheif)
+            if (!IsAsportation(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsToDepriveEntitled)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsToBenefitUnentitled)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAsportation)} is false");
+                return false;
+            }
+
+            return true;
+        }
+
+        public override bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
+        {
+            var validIntend = criminalIntent is Purposely || criminalIntent is SpecificIntent ||
+                              criminalIntent is Knowingly || criminalIntent is GeneralIntent;
+
+            if (!validIntend)
+            {
+                AddReasonEntry($"{nameof(ByTaking)} requires intent " +
+                               $"of {nameof(Purposely)}, {nameof(SpecificIntent)}, " +
+                               $"{nameof(Knowingly)}, {nameof(GeneralIntent)}");
                 return false;
             }
 

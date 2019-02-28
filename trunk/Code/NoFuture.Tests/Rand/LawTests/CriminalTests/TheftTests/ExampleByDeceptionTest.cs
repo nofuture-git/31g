@@ -78,7 +78,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     IsIntentOnWrongdoing = lp => lp is JeremyTheifEg
                 }
             };
-            //chuck was aware of the decption and attempted to use is for extortion
+            //chuck was aware of the deception and attempted to use is for extortion
             var testReliance = new Reliance
             {
                 IsReliantOnFalseRepresentation = lp => lp is ChuckUnrelianceEg
