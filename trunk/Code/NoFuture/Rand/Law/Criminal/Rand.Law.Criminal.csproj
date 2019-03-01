@@ -50,7 +50,9 @@
     <Compile Include="US\Defense\Excuse\MistakeOfFact.cs" />
     <Compile Include="US\Defense\Excuse\MistakeOfLaw.cs" />
     <Compile Include="US\Elements\Consent.cs" />
+    <Compile Include="US\Elements\IAssault.cs" />
     <Compile Include="US\Elements\IAttendantElement.cs" />
+    <Compile Include="US\Elements\IBattery.cs" />
     <Compile Include="US\Elements\Imminence.cs" />
     <Compile Include="US\Defense\Justification\BatteredWomanSyndrome.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfBase.cs" />
