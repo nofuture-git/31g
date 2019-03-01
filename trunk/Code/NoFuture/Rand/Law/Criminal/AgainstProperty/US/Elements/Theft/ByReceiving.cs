@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         public Predicate<ILegalPerson> IsPresentStolen { get; set; } = lp => false;
 
         /// <summary>
-        /// The person receiving it beleives its probably stolen
+        /// The person receiving it believes its probably stolen
         /// </summary>
         public Predicate<ILegalPerson> IsApparentStolen { get; set; } = lp => false;
 
@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         /// disposing, moving, controlling, titling, acquiring, etc.
         /// </summary>
         /// <remarks>
-        /// Preceiving, presuming, etc. are present participles whose subject has no
+        /// Perceiving, presuming, etc. are present participles whose subject has no
         /// material substance
         /// </remarks>
         public Predicate<ILegalPerson> IsAnySubstantiveParticiple { get; set; } = lp => false;

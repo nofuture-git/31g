@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
@@ -19,7 +18,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         /// </summary>
         [Aka("movement", "carrying away")]
         public Predicate<ILegalPerson> IsAsportation { get; set; } = lp => false;
-
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

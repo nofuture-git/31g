@@ -26,7 +26,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 IsTakenPossession = lp => lp is RodneyBlackmailEg,
                 IsAsportation = lp => lp is RodneyBlackmailEg,
                 IsByForce = lp => lp is RodneyBlackmailEg,
-                SubjectOfTheft = new LegalProperty("money"),
+                SubjectOfTheft = new LegalProperty("money")
+                    {EntitledTo = new LindseyDealinEg(), InPossessionOf = new LindseyDealinEg()},
                 AmountOfTheft = 15000m
             };
 
