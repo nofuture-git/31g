@@ -70,13 +70,8 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return false;
             }
 
-            if (SubjectOfTheft?.InPossessionOf == null)
-            {
-                AddReasonEntry($"the {nameof(SubjectOfTheft)}, {nameof(SubjectOfTheft.InPossessionOf)} is null");
+            if (!TryGetPossesorOfProperty(out var possess))
                 return false;
-            }
-
-            var possess = SubjectOfTheft.InPossessionOf;
 
             foreach (var victim in victims)
             {

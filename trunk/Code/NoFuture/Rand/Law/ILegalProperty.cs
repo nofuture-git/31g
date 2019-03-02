@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law
         ILegalPerson EntitledTo { get; set; }
 
         /// <summary>
-        /// Who actually possess control over the property
+        /// Who actually possess control over the property - more than just physical possession.
         /// </summary>
         ILegalPerson InPossessionOf { get; set; }
     }

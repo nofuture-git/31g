@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
@@ -15,16 +17,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         /// The person receiving it believes its probably stolen
         /// </summary>
         public Predicate<ILegalPerson> IsApparentStolen { get; set; } = lp => false;
-
-        /// <summary>
-        /// Regarding any substantive thing by any action of receiving, retaining, 
-        /// disposing, moving, controlling, titling, acquiring, etc.
-        /// </summary>
-        /// <remarks>
-        /// Perceiving, presuming, etc. are present participles whose subject has no
-        /// material substance
-        /// </remarks>
-        public Predicate<ILegalPerson> IsAnySubstantiveParticiple { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -45,9 +37,33 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return false;
             }
 
-            if (!IsAnySubstantiveParticiple(defendant))
+            if (!InPossessionOfDefendant(persons))
+                return false;
+
+            return true;
+        }
+
+        public override bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
+        {
+            return true;
+        }
+
+        protected virtual bool InPossessionOfDefendant(ILegalPerson[] persons)
+        {
+            var defendant = GetDefendant(persons);
+            if (defendant == null)
+                return false;
+
+            if (!TryGetPossesorOfProperty(out var possess))
+                return false;
+
+            if (!defendant.Equals(possess) && !ReferenceEquals(defendant, possess))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAnySubstantiveParticiple)} is false");
+                
+                AddReasonEntry($"defendant, {defendant.Name}, does not " +
+                               $"possess {SubjectOfTheft?.GetType().Name} " +
+                               $"named {SubjectOfTheft?.Name} - it is possessed " +
+                               $"by {SubjectOfTheft?.InPossessionOf.Name}");
                 return false;
             }
 

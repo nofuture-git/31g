@@ -126,5 +126,16 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 
             return true;
         }
+
+        protected virtual bool TryGetPossesorOfProperty(out ILegalPerson possessor)
+        {
+            possessor = SubjectOfTheft?.InPossessionOf;
+            if (possessor == null)
+            {
+                AddReasonEntry($"the {nameof(SubjectOfTheft)}, {nameof(SubjectOfTheft.InPossessionOf)} is null");
+                return false;
+            }
+            return true;
+        }
     }
 }

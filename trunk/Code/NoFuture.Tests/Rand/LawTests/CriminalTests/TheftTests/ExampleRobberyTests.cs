@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
 {
