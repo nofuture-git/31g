@@ -1,7 +1,6 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Elements;
 
-namespace NoFuture.Rand.Law.Criminal.HominiLupus.US
+namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// Unlawful application of force on another

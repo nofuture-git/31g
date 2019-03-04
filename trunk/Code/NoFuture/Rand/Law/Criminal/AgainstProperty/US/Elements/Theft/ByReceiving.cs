@@ -61,9 +61,9 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             {
                 
                 AddReasonEntry($"defendant, {defendant.Name}, does not " +
-                               $"possess {SubjectOfTheft?.GetType().Name} " +
-                               $"named {SubjectOfTheft?.Name} - it is possessed " +
-                               $"by {SubjectOfTheft?.InPossessionOf.Name}");
+                               $"possess {SubjectProperty?.GetType().Name} " +
+                               $"named {SubjectProperty?.Name} - it is possessed " +
+                               $"by {SubjectProperty?.InPossessionOf.Name}");
                 return false;
             }
 

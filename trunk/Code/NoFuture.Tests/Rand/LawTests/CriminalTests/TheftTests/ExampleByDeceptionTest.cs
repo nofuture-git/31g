@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByDeception
                 {
-                    SubjectOfTheft = new ActOfService("TUNE-UP SERVICE"),
+                    SubjectProperty = new ActOfService("TUNE-UP SERVICE"),
                     IsFalseImpression = lp => lp is JeremyTheifEg,
                     IsAcquiredTitle = lp => lp is JeremyTheifEg
                 },
@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByDeception
                 {
-                    SubjectOfTheft = new ActOfService("TUNE-UP SERVICE"),
+                    SubjectProperty = new ActOfService("TUNE-UP SERVICE"),
                     IsFalseImpression = lp => lp is JeremyTheifEg,
                     IsAcquiredTitle = lp => lp is JeremyTheifEg
                 },
@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByDeception
                 {
-                    SubjectOfTheft = new ActOfService("TUNE-UP SERVICE"),
+                    SubjectProperty = new ActOfService("TUNE-UP SERVICE"),
                     IsFalseImpression = lp => lp is JeremyTheifEg,
                     IsAcquiredTitle = lp => lp is JeremyTheifEg
                 },

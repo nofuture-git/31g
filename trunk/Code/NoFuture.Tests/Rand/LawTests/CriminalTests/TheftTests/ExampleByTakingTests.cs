@@ -19,8 +19,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByTaking
                 {
-                    AmountOfTheft = 1.25m,
-                    SubjectOfTheft = new ChewingGum(),
+                    PropretyValue = 1.25m,
+                    SubjectProperty = new ChewingGum(),
                     IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },
@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByTaking()
                 {
-                    SubjectOfTheft =  new TangiblePersonalProperty("payment for gas"),
+                    SubjectProperty =  new TangiblePersonalProperty("payment for gas"),
                     IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },
@@ -64,8 +64,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByTaking()
                 {
-                    AmountOfTheft = 1.25m,
-                    SubjectOfTheft = property,
+                    PropretyValue = 1.25m,
+                    SubjectProperty = property,
                     IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },
@@ -89,7 +89,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByTaking()
                 {
-                    SubjectOfTheft = property,
+                    SubjectProperty = property,
                     IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg,
                     Consent = new Consent
@@ -122,8 +122,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByTaking()
                 {
-                    AmountOfTheft = 1.25m,
-                    SubjectOfTheft = new ChewingGum(),
+                    PropretyValue = 1.25m,
+                    SubjectProperty = new ChewingGum(),
                     IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },

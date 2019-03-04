@@ -88,11 +88,11 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return false;
 
             //threats for what is honestly owed is not illegal
-            if (defendant.Equals(SubjectOfTheft?.EntitledTo))
+            if (defendant.Equals(SubjectProperty?.EntitledTo))
             {
                 AddReasonEntry($"defendant {defendant.Name}, is entitled to " +
-                               $"{SubjectOfTheft?.GetType().Name} " +
-                               $"named '{SubjectOfTheft?.Name}'");
+                               $"{SubjectProperty?.GetType().Name} " +
+                               $"named '{SubjectProperty?.Name}'");
                 return false;
             }
             

@@ -19,8 +19,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 {
                     IsToAccuseOfCrime = lp => lp is RodneyBlackmailEg
                 },
-                SubjectOfTheft = new LegalProperty("fifteen thousand dollars"),
-                AmountOfTheft = 15000m,
+                SubjectProperty = new LegalProperty("fifteen thousand dollars"),
+                PropretyValue = 15000m,
             };
 
             var testResult = testAct.IsValid(new RodneyBlackmailEg(), new LindseyDealinEg());
@@ -40,8 +40,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 {
                     IsToExposeHurtfulSecret = lp => lp is TrentThreatenEg
                 },
-                SubjectOfTheft = thousandDollars,
-                AmountOfTheft = 1000m,
+                SubjectProperty = thousandDollars,
+                PropretyValue = 1000m,
             };
 
             var testResult = testAct.IsValid(new TrentThreatenEg(), new TaraLyingEg());
@@ -59,8 +59,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 {
                     IsToAccuseOfCrime = lp => lp is RodneyBlackmailEg
                 },
-                SubjectOfTheft = new LegalProperty("fifteen thousand dollars"),
-                AmountOfTheft = 15000m,
+                SubjectProperty = new LegalProperty("fifteen thousand dollars"),
+                PropretyValue = 15000m,
                 Consent = new Consent
                 {
                     IsDenialExpressed = lp => false,

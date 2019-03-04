@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 IsFalseImpression = lp => lp is Traster,
                 IsTakenPossession = lp => lp is Traster,
-                SubjectOfTheft = new MsLicx()
+                SubjectProperty = new MsLicx()
             };
 
             var testCrime = new Felony

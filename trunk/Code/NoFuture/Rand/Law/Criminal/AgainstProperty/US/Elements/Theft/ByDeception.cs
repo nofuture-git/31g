@@ -60,8 +60,8 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return false;
             }
 
-            var isPossess = ReferenceEquals(SubjectOfTheft.InPossessionOf,defendant);
-            var isTitle = ReferenceEquals(SubjectOfTheft.EntitledTo,defendant);
+            var isPossess = ReferenceEquals(SubjectProperty.InPossessionOf,defendant);
+            var isTitle = ReferenceEquals(SubjectProperty.EntitledTo,defendant);
 
             IsLarcenyByTrick = isPossess && !isTitle;
             IsFalsePretense = isPossess && isTitle;

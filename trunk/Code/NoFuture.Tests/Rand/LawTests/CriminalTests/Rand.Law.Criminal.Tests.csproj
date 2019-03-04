@@ -116,13 +116,16 @@
     <Compile Include="MensReaTests\StatevSlaytonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TermsTests\ForceTests.cs" />
+    <Compile Include="TheftTests\ExampleBurglaryTests.cs" />
     <Compile Include="TheftTests\ExampleByDeceptionTest.cs" />
     <Compile Include="TheftTests\ExampleByReceivingTests.cs" />
     <Compile Include="TheftTests\ExampleByTakingTests.cs" />
     <Compile Include="TheftTests\ExampleExtortionTests.cs" />
     <Compile Include="TheftTests\ExampleRobberyTests.cs" />
+    <Compile Include="TheftTests\PeoplevPrattTests.cs" />
     <Compile Include="TheftTests\PeoplevTrasterTests.cs" />
     <Compile Include="TheftTests\StatevLarsonTests.cs" />
+    <Compile Include="TheftTests\StatevRobertsonTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

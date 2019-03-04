@@ -10,11 +10,8 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
     /// <summary>
     /// Explanatory Note for Sections 223.1-223.9 of Model Penal Code
     /// </summary>
-    public abstract class ConsolidatedTheft : CriminalBase, IActusReus
+    public abstract class ConsolidatedTheft : AgitPropertyBase, IActusReus
     {
-        public virtual ILegalProperty SubjectOfTheft { get; set; }
-        public virtual decimal? AmountOfTheft { get; set; }
-        public virtual IConsent Consent { get; set; }
 
         /// <summary>
         /// The typical idea of theft as grab and run stealing, or, more 
@@ -33,15 +30,15 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             if (defendant == null)
                 return false;
 
-            if (SubjectOfTheft == null)
+            if (SubjectProperty == null)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(SubjectOfTheft)} is null");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(SubjectProperty)} is null");
                 return false;
             }
 
-            if (VocaBase.Equals(SubjectOfTheft.EntitledTo, defendant))
+            if (VocaBase.Equals(SubjectProperty.EntitledTo, defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, is the owner of property {SubjectOfTheft}");
+                AddReasonEntry($"defendant, {defendant.Name}, is the owner of property {SubjectProperty}");
                 return false;
             }
 
@@ -66,11 +63,11 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return false;
             var isPossess = IsTakenPossession(defendant);
             if (isPossess)
-                SubjectOfTheft.InPossessionOf = defendant;
+                SubjectProperty.InPossessionOf = defendant;
 
             var isTitled = IsAcquiredTitle(defendant);
             if (isTitled)
-                SubjectOfTheft.EntitledTo = defendant;
+                SubjectProperty.EntitledTo = defendant;
 
             if (!isPossess && !isTitled)
             {
@@ -82,57 +79,12 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             return true;
         }
 
-        /// <summary>
-        /// The expected result of <see cref="Consent"/> - default
-        /// is false (i.e. the thief did not have consent to take such-and-such).
-        /// </summary>
-        protected virtual bool ConsentExpectedAs { get; set; } = false;
-
-        /// <summary>
-        /// Tests that <see cref="Consent"/> was not given by <see cref="SubjectOfTheft"/> owner
-        /// </summary>
-        /// <param name="persons"></param>
-        /// <returns></returns>
-        protected virtual bool GetConsent(ILegalPerson[] persons)
-        {
-            //is all the dependencies present
-            if (SubjectOfTheft?.EntitledTo == null || Consent == null 
-                                                   || persons == null 
-                                                   || !persons.Any())
-                return true;
-
-            //did the caller pass in any IVictim types
-            var victims = persons.Where(lp => lp is IVictim).ToList();
-            if (!victims.Any())
-                return true;
-
-            //is any of our victims also the owner of the property
-            var ownerVictims = victims.Where(v => VocaBase.Equals(v, SubjectOfTheft.EntitledTo)).ToList();
-            if (!ownerVictims.Any())
-                return true;
-
-            foreach (var ownerVictim in ownerVictims)
-            {
-                var validConsent = Consent.IsValid(ownerVictim);
-                //did the owner victim in fact give consent 
-                if (validConsent != ConsentExpectedAs)
-                {
-                    AddReasonEntry($"owner-victim {ownerVictim.Name}, {nameof(Consent)} {nameof(IsValid)} " +
-                                   $"is {validConsent}, it was expected to be {ConsentExpectedAs} " +
-                                   $"for property {SubjectOfTheft}");
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         protected virtual bool TryGetPossesorOfProperty(out ILegalPerson possessor)
         {
-            possessor = SubjectOfTheft?.InPossessionOf;
+            possessor = SubjectProperty?.InPossessionOf;
             if (possessor == null)
             {
-                AddReasonEntry($"the {nameof(SubjectOfTheft)}, {nameof(SubjectOfTheft.InPossessionOf)} is null");
+                AddReasonEntry($"the {nameof(SubjectProperty)}, {nameof(SubjectProperty.InPossessionOf)} is null");
                 return false;
             }
             return true;
