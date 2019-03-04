@@ -636,3 +636,31 @@ function ApplyPermsToExistingX509Cert(){
 	#apply this permission
 	invoke-expression "icacls $rpCertPath `/grant 'IIS APPPOOL\my-web-site`:RX'"
 }
+
+function Find-LnkFiles2Hotkeys($searchDir){
+    if([string]::IsNullOrWhiteSpace($searchDir)){
+        $searchDir = "C:\"
+    }
+    #locate every file of .lnk extension
+    $allLinkds = ls -Path $searchDir -Recurse -Filter *.lnk 
+
+    #need this to get an instance of Shortcut COM object
+    $objShell = New-Object -ComObject WScript.Shell
+
+    #array to contain results
+    $regHotKeys = @()
+
+    :nextlink foreach($linkFile in $allLinkds){
+        if(-not(Test-Path $linkFile.FullName)){
+            continue nextlink;
+        }
+        Write-Host $linkFile.Name -ForegroundColor Yellow
+        $lnk = $objShell.CreateShortcut($linkFile.FullName)
+
+        #pair the .lnk file's path to its hot key 
+        $regHotKeys += [System.Tuple]::Create($linkFile, $lnk.Hotkey)
+    }
+
+    #return the result
+    return $regHotKeys
+}
