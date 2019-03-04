@@ -43,8 +43,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
             var ts = GetResponseTime(defendant);
             if (!IsImmediatePresent(ts))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, with " +
-                               $"response time of {ts} had {nameof(IsImmediatePresent)} as false");
+                var tsPrint = ts.Equals(TimeSpan.Zero) ? "" : $"with response time of {ts} had ";
+                AddReasonEntry($"defendant, {defendant.Name}, {tsPrint}{nameof(IsImmediatePresent)} as false");
                 return false;
             }
 

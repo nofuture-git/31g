@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
+namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
 {
     [TestFixture]
     public class ExampleBurglaryTests

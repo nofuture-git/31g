@@ -31,11 +31,30 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
         /// </summary>
         public Imminence Imminence { get; set; }
 
+        /// <summary>
+        /// (4) [optional] the defendant did not intentionally or recklessly place himself in a
+        ///     situation in which it would be probable that he would be forced to
+        ///     choose the criminal conduct
+        /// </summary>
+        public Predicate<ILegalPerson> IsResponsibleForSituationArise { get; set; }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var defendant = Crime.GetDefendant(persons);
             if (defendant == null)
                 return false;
+            if (IsResponsibleForSituationArise != null && IsResponsibleForSituationArise(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsResponsibleForSituationArise)} is true");
+                return false;
+            }
+
+            if (!IsMultipleInHarm(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsMultipleInHarm)} is false");
+                return false;
+            }
+
             if (Imminence != null && !Imminence.IsValid(defendant))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(Imminence)} is false");
@@ -49,11 +68,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
                 return false;
             }
 
-            if (!IsMultipleInHarm(defendant))
-            {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsMultipleInHarm)} is false");
-                return false;
-            }
 
             AddReasonEntryRange(Imminence?.GetReasonEntries());
             AddReasonEntryRange(Proportionality?.GetReasonEntries());

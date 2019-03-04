@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.PropertyDestruction
 {
-    [TestFixture()]
+    [TestFixture]
     public class ExampleCrimMischiefTests
     {
         [Test]
