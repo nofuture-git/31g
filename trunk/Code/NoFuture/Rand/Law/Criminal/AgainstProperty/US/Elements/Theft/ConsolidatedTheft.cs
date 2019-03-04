@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
                 return false;
             }
 
-            if (!GetConsent(persons))
+            if (!WithoutConsent(persons))
                 return false;
 
             if (!PossessOrEntitle(persons))

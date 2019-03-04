@@ -60,14 +60,8 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
                 return false;
             }
 
-            if (IsPropertyOwnerDefendant(persons) && IsBurned(SubjectProperty))
-            {
-                AddReasonEntry(
-                    $"defendant, {GetDefendant(persons)?.Name}, is owner " +
-                    $"of {SubjectProperty?.GetType().Name} " +
-                    $"named '{SubjectProperty?.Name}' which was burned");
+            if (PropertyOwnerIsDefendant(persons) && IsBurned(SubjectProperty))
                 return false;
-            }
 
             return true;
         }

@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
         /// </summary>
         /// <param name="persons"></param>
         /// <returns></returns>
-        protected virtual bool GetConsent(ILegalPerson[] persons)
+        protected virtual bool WithoutConsent(ILegalPerson[] persons)
         {
             //is all the dependencies present
             if (SubjectProperty?.EntitledTo == null || Consent == null
@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
             return true;
         }
 
-        protected virtual bool IsPropertyOwnerDefendant(ILegalPerson[] persons)
+        protected virtual bool PropertyOwnerIsDefendant(ILegalPerson[] persons)
         {
             var defendant = GetDefendant(persons);
             if (defendant == null)
@@ -64,8 +64,15 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
             if (SubjectProperty?.EntitledTo == null)
                 return false;
 
-            return VocaBase.Equals(defendant, SubjectProperty.EntitledTo) ||
+            var isOwner = VocaBase.Equals(defendant, SubjectProperty.EntitledTo) ||
                    ReferenceEquals(defendant, SubjectProperty.EntitledTo);
+            if(isOwner)
+                AddReasonEntry(
+                    $"defendant, {defendant.Name}, is owner " +
+                    $"of {SubjectProperty.GetType().Name} " +
+                    $"named '{SubjectProperty.Name}'");
+
+            return isOwner;
         }
     }
 }

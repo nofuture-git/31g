@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Trespass
             if (defendant == null)
                 return false;
 
-            if (!GetConsent(persons))
+            if (!WithoutConsent(persons))
                 return false;
 
             if (!IsEntry(defendant))
