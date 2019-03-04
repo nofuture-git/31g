@@ -11,7 +11,8 @@ namespace NoFuture.Rand.Law.Contract.US.Semiosis
     /// ]]>
     /// </summary>
     [Aka("oral evidence rule")]
-    [Note("from Old French for 'oral'", "not the same criminal term applied to convicts - 'parole'")]
+    [Note("not the same criminal term applied to convicts - 'parole'")]
+    [EtymologyNote("Old French", "parol", "for 'oral'")]
     public class ParolEvidenceRule<T> : DilemmaBase<T> where T : ILegalConcept
     {
         public ParolEvidenceRule(IContract<T> contract) : base(contract)

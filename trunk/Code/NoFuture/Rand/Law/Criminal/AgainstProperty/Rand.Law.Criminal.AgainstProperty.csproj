@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\Elements\AgitPropertyBase.cs" />
+    <Compile Include="US\Elements\Arson.cs" />
     <Compile Include="US\Elements\Trespass\Burglary.cs" />
     <Compile Include="US\Elements\Reliance.cs" />
     <Compile Include="US\Elements\Theft\ByDeception.cs" />

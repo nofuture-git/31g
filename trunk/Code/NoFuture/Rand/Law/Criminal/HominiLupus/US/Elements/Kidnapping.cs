@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <summary>
     /// despite the name, the act is applicable to any person - minor or otherwise
     /// </summary>
-    [Note("join of 'kid' + 'nab'")]
+    [EtymologyNote("English", "'kid' + 'nab'", "join of")]
     public class Kidnapping : FalseImprisonment
     {
         [Aka("movement", "carrying away")]

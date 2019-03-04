@@ -115,6 +115,7 @@
     <Compile Include="MensReaTests\StatevHornerTests.cs" />
     <Compile Include="MensReaTests\StatevSlaytonTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyDestruction\ExampleArsonTests.cs" />
     <Compile Include="TermsTests\ForceTests.cs" />
     <Compile Include="TheftTests\ExampleBurglaryTests.cs" />
     <Compile Include="TheftTests\ExampleByDeceptionTest.cs" />

@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Law.Contract.US
     /// has addressed every possible contingency.
     /// ]]>
     /// </remarks>
-    [Note("Latin assimilation of 'com' (with, together) + 'trahere' (to pull, drag)")]
+    [EtymologyNote("Latin", "'com' + 'trahere'", "assimilation of (with, together) + (to pull, drag)")]
     public interface IContract<T> : ILegalConcept
     {
         [Note("Is the manifestation of willingness to enter into a bargain")]

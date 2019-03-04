@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Trespass
     /// <summary>
     /// unlawful entry into almost any structure or vehicle at any time
     /// </summary>
-    [Note("burg: german 'castle'", "baurgs: german 'city'")]
+    [EtymologyNote("Old German", "'burg', 'baurgs'", "castle, city")]
     public class Burglary : CriminalTrespass
     {
         public Predicate<ILegalProperty> IsStructuredEnclosure { get; set; } = lp => false;

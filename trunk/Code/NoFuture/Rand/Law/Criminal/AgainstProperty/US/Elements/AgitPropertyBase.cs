@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Criminal.US;
 
@@ -53,6 +54,18 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
             }
 
             return true;
+        }
+
+        protected virtual bool IsPropertyOwnerDefendant(ILegalPerson[] persons)
+        {
+            var defendant = GetDefendant(persons);
+            if (defendant == null)
+                return false;
+            if (SubjectProperty?.EntitledTo == null)
+                return false;
+
+            return VocaBase.Equals(defendant, SubjectProperty.EntitledTo) ||
+                   ReferenceEquals(defendant, SubjectProperty.EntitledTo);
         }
     }
 }
