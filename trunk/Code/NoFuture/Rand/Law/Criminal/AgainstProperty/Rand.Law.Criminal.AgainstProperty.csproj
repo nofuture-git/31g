@@ -46,6 +46,7 @@
     <Compile Include="US\Elements\Theft\ConsolidatedTheft.cs" />
     <Compile Include="US\Elements\FiduciaryRelationship.cs" />
     <Compile Include="US\Elements\Theft\Robbery.cs" />
+    <Compile Include="US\Elements\Trespass\CriminalTrespass.cs" />
     <Compile Include="US\PersonalProperty.cs" />
     <Compile Include="US\RealProperty.cs" />
     <Compile Include="US\ActOfService.cs" />

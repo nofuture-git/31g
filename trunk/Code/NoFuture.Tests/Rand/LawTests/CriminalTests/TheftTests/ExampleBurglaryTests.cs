@@ -1,17 +1,18 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements;
+using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Trespass;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
 {
-    [TestFixture()]
+    [TestFixture]
     public class ExampleBurglaryTests
     {
         [Test]
-        public void ExampleBurglaryIntentTest()
+        public void ExampleBurglaryActTest()
         {
             var testAct = new Burglary
             {
@@ -72,6 +73,22 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             var testResult = testCrime.IsValid(new ChristianShovesEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
+
+            testCrime = new Misdemeanor
+            {
+                ActusReus = new CriminalTrespass
+                {
+                    IsEntry = lp => lp is ChristianShovesEg,
+                },
+                MensRea = new GeneralIntent
+                {
+                    IsKnowledgeOfWrongdoing = lp => lp is ChristianShovesEg
+                }
+            };
+
+            testResult = testCrime.IsValid(new ChristianShovesEg());
+            Console.WriteLine(testCrime.ToString());
+            Assert.IsTrue(testResult);
         }
     }
 
