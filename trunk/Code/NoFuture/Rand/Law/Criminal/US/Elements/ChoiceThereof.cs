@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
-    /// Represents the concept of picking one <see cref="T"/> amoung many possible choices thereof
+    /// Represents the concept of picking one <see cref="T"/> among many possible choices thereof
     /// </summary>
-    public class ChoiceThereof<T> : Proportionality<T>, IElement where T: ITermCategory
+    public class ChoiceThereof<T> : Proportionality<T> where T: ITermCategory
     {
         public ChoiceThereof()
         {

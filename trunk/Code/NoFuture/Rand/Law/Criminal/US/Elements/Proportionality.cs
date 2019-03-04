@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// Template for the concept of reasonable proportionality
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Proportionality<T> : CriminalBase, IElement where T: ITermCategory
+    public class Proportionality<T> : TermCategoryChoice<T> where T: ITermCategory
     {
         public Proportionality()
         {
@@ -15,11 +15,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
                 TermCategory.IsRank(TermCategoryBoolOps.Eq, t1, t2) &&
                 TermCategory.IsRank(TermCategoryBoolOps.Eq, t2, t1);
         }
-
-        /// <summary>
-        /// The enclosure to get a portion-per-person
-        /// </summary>
-        public Func<ILegalPerson, T> GetChoice { get; set; } = lp => default(T);
 
         /// <summary>
         /// The test of one <see cref="T"/> compared to another <see cref="T"/>

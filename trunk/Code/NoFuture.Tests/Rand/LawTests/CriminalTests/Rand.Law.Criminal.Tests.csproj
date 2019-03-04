@@ -129,6 +129,7 @@
     <Compile Include="TheftTests\PeoplevTrasterTests.cs" />
     <Compile Include="TheftTests\StatevLarsonTests.cs" />
     <Compile Include="TheftTests\StatevRobertsonTests.cs" />
+    <Compile Include="TrespassTests\InTheMatterOfVvcTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
