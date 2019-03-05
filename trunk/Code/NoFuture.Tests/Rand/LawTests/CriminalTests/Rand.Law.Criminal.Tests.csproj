@@ -47,6 +47,7 @@
     <Compile Include="ActusReusTests\StatevSowryTests.cs" />
     <Compile Include="ActusReusTests\WendellHolisvTexasTests.cs" />
     <Compile Include="AgainstPublicTests\ExampleDisorderlyConductTests.cs" />
+    <Compile Include="AgainstPublicTests\ExampleLoiteringTests.cs" />
     <Compile Include="CausationTests\BullockvDelawareTests.cs" />
     <Compile Include="CrimeTests.cs" />
     <Compile Include="DefenseTests\DefenseOfOtherTests\CommonwealthvAlexanderTests.cs" />
