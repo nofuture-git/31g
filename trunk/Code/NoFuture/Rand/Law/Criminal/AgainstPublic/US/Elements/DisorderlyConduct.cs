@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 {
@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
     public class DisorderlyConduct: CriminalBase, IActusReus
     {
         /// <summary>
-        /// a loud and unreasonable noise
+        /// a loud and unreasonable noise given the context-setting (e.g. library v. city street)
         /// </summary>
         public Predicate<ILegalPerson> IsUnreasonablyLoud { get; set; } = lp => false;
 
@@ -39,12 +39,39 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            var defendant = GetDefendant(persons);
+            if (defendant == null)
+                return false;
+
+            var loud = IsUnreasonablyLoud(defendant);
+            var obscene = IsObscene(defendant);
+            var combative = IsCombative(defendant);
+            var hazard = IsIllegitimateHazardous(defendant);
+
+            if (new[] {loud, obscene, combative, hazard}.All(p => false))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsUnreasonablyLoud)}, " +
+                               $"{nameof(IsObscene)}, {nameof(IsCombative)} " +
+                               $"and {nameof(IsIllegitimateHazardous)} is false");
+                return false;
+            }
+
+            return true;
         }
 
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            var validIntent = criminalIntent is Recklessly || criminalIntent is Purposely ||
+                              criminalIntent is SpecificIntent;
+            if (!validIntent)
+            {
+                AddReasonEntry($"{nameof(DisorderlyConduct)} requires intent " +
+                               $"of {nameof(Recklessly)}, {nameof(Purposely)}, " +
+                               $"{nameof(SpecificIntent)}");
+                return false;
+            }
+
+            return true;
         }
     }
 }

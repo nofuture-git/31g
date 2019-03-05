@@ -47,21 +47,5 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
 
             return true;
         }
-
-        internal static bool TestIsActusReusAttemptType(DefenseBase defense)
-        {
-            if (defense == null)
-                return false;
-            var actusReus = defense.Crime?.Concurrence?.ActusReus;
-            
-            if (actusReus is Attempt)
-                return true;
-
-            var attemptType = actusReus?.GetType().Name;
-
-            defense.AddReasonEntry($"{nameof(Impossibility)} defense is for " +
-                                   $"{nameof(Attempt)} and not {attemptType}");
-            return false;
-        }
     }
 }

@@ -1,4 +1,6 @@
 $myScriptLocation = Split-Path $PSCommandPath -Parent
+$myScriptLocation = Resolve-Path $myScriptLocation
+
 $dependencies = @{
     "Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849" = (Join-Path $myScriptLocation "Antlr4.Runtime.dll");
     "NoFuture.Antlr.HTML, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Antlr.HTML.dll");

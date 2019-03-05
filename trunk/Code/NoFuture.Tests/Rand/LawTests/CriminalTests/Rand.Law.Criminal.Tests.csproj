@@ -46,6 +46,7 @@
     <Compile Include="ActusReusTests\RobinsonvCaliforniaTests.cs" />
     <Compile Include="ActusReusTests\StatevSowryTests.cs" />
     <Compile Include="ActusReusTests\WendellHolisvTexasTests.cs" />
+    <Compile Include="AgainstPublicTests\ExampleDisorderlyConductTests.cs" />
     <Compile Include="CausationTests\BullockvDelawareTests.cs" />
     <Compile Include="CrimeTests.cs" />
     <Compile Include="DefenseTests\DefenseOfOtherTests\CommonwealthvAlexanderTests.cs" />

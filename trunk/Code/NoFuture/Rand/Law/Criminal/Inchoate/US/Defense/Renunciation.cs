@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Defense;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;

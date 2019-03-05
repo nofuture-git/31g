@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Core
 {
     /// <inheritdoc />
     /// <summary>
-    /// Base implemenation of <see cref="T:NoFuture.Rand.Core.IVoca" />
+    /// Base implementation of <see cref="T:NoFuture.Rand.Core.IVoca" />
     /// </summary>
     [Serializable]
     public class VocaBase : IVoca
@@ -137,7 +137,7 @@ namespace NoFuture.Rand.Core
                     return false;
             }
 
-            return true;
+            return ReferenceEquals(obj1, obj2);
         }
 
         public override int GetHashCode()
