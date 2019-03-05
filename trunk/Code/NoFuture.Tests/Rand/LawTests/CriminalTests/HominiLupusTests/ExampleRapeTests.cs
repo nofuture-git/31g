@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new Rape
                 {
-                    IsByThreatOfForce = lp => lp is AlexGamerEg,
+                    IsByThreatOfViolence = lp => lp is AlexGamerEg,
                     IsSexualIntercourse = lp => lp is AlexGamerEg
                 },
                 MensRea = new Purposely

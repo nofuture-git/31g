@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// </summary>
     public class ThreatenedBattery : CriminalBase, IDominionOfForce, IAssault, IActusReus
     {
-        public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => false;
 
@@ -28,9 +28,9 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             if (defendant == null)
                 return false;
 
-            if (!IsByThreatOfForce(defendant))
+            if (!IsByThreatOfViolence(defendant))
             {
-                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsByThreatOfForce)} is false");
+                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
                 return false;
             }
 

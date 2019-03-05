@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// </summary>
     public class Battery : CriminalBase, IBattery, IActusReus
     {
-        public Predicate<ILegalPerson> IsByForce { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
 
         /// <summary>
         /// If the victim entered into Mutual Combat then its not battery
@@ -25,9 +25,9 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             if (defendant == null)
                 return false;
 
-            if (!IsByForce(defendant))
+            if (!IsByViolence(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByForce)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByViolence)} is false");
             }
 
             var isConsented = Consent?.IsValid(persons) ?? false;

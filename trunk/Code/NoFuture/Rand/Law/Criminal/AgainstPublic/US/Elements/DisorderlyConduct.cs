@@ -59,7 +59,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
             return true;
         }
 
-        public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
+        public virtual bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             var validIntent = criminalIntent is Recklessly || criminalIntent is Purposely ||
                               criminalIntent is SpecificIntent;

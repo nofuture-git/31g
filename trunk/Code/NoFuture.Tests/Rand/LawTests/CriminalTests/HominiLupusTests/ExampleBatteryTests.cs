@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new Battery
                 {
-                    IsByForce = lp => lp is HarrietIncestEg
+                    IsByViolence = lp => lp is HarrietIncestEg
                 },
                 MensRea = new GeneralIntent
                 {
@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new Battery
                 {
-                    IsByForce = lp => lp is Combatent00,
+                    IsByViolence = lp => lp is Combatent00,
                     Consent = new Consent
                     {
                         IsCapableThereof = lp => true,

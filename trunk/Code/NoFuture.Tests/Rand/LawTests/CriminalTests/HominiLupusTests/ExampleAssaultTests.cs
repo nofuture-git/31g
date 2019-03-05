@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new ThreatenedBattery
                 {
-                    IsByThreatOfForce = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
+                    IsByThreatOfViolence = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                               && ((DianaPistolEg)lp).IsSheCockGunHammer,
                     IsPresentAbility = lp => lp is DianaPistolEg
                 },
@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new ThreatenedBattery
                 {
-                    IsByThreatOfForce = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
+                    IsByThreatOfViolence = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                               && ((DianaPistolEg)lp).IsSheCockGunHammer,
                     IsPresentAbility = lp => lp is DianaPistolEg
                 },

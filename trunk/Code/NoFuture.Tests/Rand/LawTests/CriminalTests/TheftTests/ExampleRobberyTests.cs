@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 },
                 IsTakenPossession = lp => lp is RodneyBlackmailEg,
                 IsAsportation = lp => lp is RodneyBlackmailEg,
-                IsByForce = lp => lp is RodneyBlackmailEg,
+                IsByViolence = lp => lp is RodneyBlackmailEg,
                 SubjectProperty = new LegalProperty("money")
                     {EntitledTo = new LindseyDealinEg(), InPossessionOf = new LindseyDealinEg()},
                 PropretyValue = 15000m

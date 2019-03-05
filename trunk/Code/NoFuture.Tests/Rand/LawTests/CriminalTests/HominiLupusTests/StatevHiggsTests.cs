@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
             {
                 ActusReus = new Battery
                 {
-                    IsByForce = lp => (lp as Higgs)?.IsThrowCupInFace ?? false
+                    IsByViolence = lp => (lp as Higgs)?.IsThrowCupInFace ?? false
                 },
                 MensRea = new GeneralIntent
                 {

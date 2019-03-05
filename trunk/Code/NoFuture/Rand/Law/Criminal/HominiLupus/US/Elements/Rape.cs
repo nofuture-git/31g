@@ -16,9 +16,9 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     {
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
 
-        public Predicate<ILegalPerson> IsByForce { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
 
-        public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;
 
         public IConsent Consent { get; set; } = new Consent();
 
@@ -34,12 +34,12 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
                 return false;
             }
 
-            var isByForce = IsByForce(defendant);
-            var isByThreatOfForce = IsByThreatOfForce(defendant);
+            var isByForce = IsByViolence(defendant);
+            var isByThreatOfForce = IsByThreatOfViolence(defendant);
             if (isByForce || isByThreatOfForce)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByForce)} is {isByForce}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfForce)} is {isByThreatOfForce}");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByViolence)} is {isByForce}");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfViolence)} is {isByThreatOfForce}");
                 return true;
             }
             var isConsented = Consent?.IsValid(persons) ?? false;

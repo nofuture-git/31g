@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                     IsPresentAbility = lp => false,
                     //it looked and felt real to the victim
                     IsApparentAbility = lp => lp is Henson,
-                    IsByThreatOfForce = lp => lp is Henson
+                    IsByThreatOfViolence = lp => lp is Henson
                 },
                 MensRea = new Purposely
                 {

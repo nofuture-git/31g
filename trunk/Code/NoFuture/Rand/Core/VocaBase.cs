@@ -137,7 +137,7 @@ namespace NoFuture.Rand.Core
                     return false;
             }
 
-            return ReferenceEquals(obj1, obj2);
+            return true;
         }
 
         public override int GetHashCode()

@@ -10,8 +10,8 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
     public class Robbery : ByTaking, IBattery, IAssault
     {
-        public Predicate<ILegalPerson> IsByForce { get; set; } = lp => false;
-        public Predicate<ILegalPerson> IsByThreatOfForce { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -24,13 +24,13 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
-            var byForce = IsByForce(defendant);
-            var byThreat = IsByThreatOfForce(defendant);
+            var byForce = IsByViolence(defendant);
+            var byThreat = IsByThreatOfViolence(defendant);
 
             if (!byForce && !byThreat)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByForce)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfForce)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByViolence)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
                 return false;
             }
 

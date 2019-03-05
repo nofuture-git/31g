@@ -3,10 +3,10 @@
 namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
-    /// Unlawful application of force on another
+    /// Unlawful application of violent force
     /// </summary>
     public interface IBattery : IElement
     {
-        Predicate<ILegalPerson> IsByForce { get; set; }
+        Predicate<ILegalPerson> IsByViolence { get; set; }
     }
 }

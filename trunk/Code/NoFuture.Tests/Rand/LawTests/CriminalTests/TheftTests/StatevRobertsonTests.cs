@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     IsAsportation = lp => lp is Robertson,
                     IsTakenPossession = lp => lp is Robertson,
                     //court rules this is false, snatching is larceny not robbery 
-                    IsByForce = lp => false,
+                    IsByViolence = lp => false,
                 },
                 MensRea = new Purposely
                 {
