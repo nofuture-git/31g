@@ -143,6 +143,10 @@
       <Project>{61611cc5-1cc8-44cf-bd4f-8af556f7d30e}</Project>
       <Name>Rand.Law.Criminal.AgainstProperty</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Criminal\AgainstPublic\Rand.Law.Criminal.AgainstPublic.csproj">
+      <Project>{c564df7c-5fe7-4156-957d-dc141f3688fc}</Project>
+      <Name>Rand.Law.Criminal.AgainstPublic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Criminal\Homicide\Rand.Law.Criminal.Homicide.csproj">
       <Project>{29684fb6-c895-4826-a78a-39e5510327be}</Project>
       <Name>Rand.Law.Criminal.Homicide</Name>
