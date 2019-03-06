@@ -44,6 +44,7 @@
     <Compile Include="US\Elements\DrugUse.cs" />
     <Compile Include="US\Elements\FailureToDisperse.cs" />
     <Compile Include="US\Elements\Loitering.cs" />
+    <Compile Include="US\Elements\Prostitution.cs" />
     <Compile Include="US\Elements\PublicPlace.cs" />
     <Compile Include="US\Elements\Riot.cs" />
     <Compile Include="US\Elements\UnlawfulAssembly.cs" />

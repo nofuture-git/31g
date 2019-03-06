@@ -47,7 +47,6 @@
     <Compile Include="US\Elements\FalseImprisonment.cs" />
     <Compile Include="US\Elements\Kidnapping.cs" />
     <Compile Include="US\IAgitate.cs" />
-    <Compile Include="US\IBipartite.cs" />
     <Compile Include="US\IDominionOfForce.cs" />
     <Compile Include="US\Elements\Incest.cs" />
     <Compile Include="US\Elements\Rape.cs" />
