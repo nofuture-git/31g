@@ -2,6 +2,7 @@
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
@@ -31,6 +32,29 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
             var testResult = testCrime.IsValid(new MildredGillars());
             Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
+        }
+
+        [Test]
+        public void TestTreasonLevyGeneralIntent()
+        {
+            var testCrime = new Felony
+            {
+                ActusReus = new Treason
+                {
+                    //taken oath of allegiance to Hitler
+                    IsLevyingWar = lp => lp is MildredGillars,
+                    WitnessOne = new Recordings00(),
+                    WitnessTwo = new Recordings01()
+                },
+                MensRea = new GeneralIntent
+                {
+                    IsIntentOnWrongdoing = lp => lp is MildredGillars
+                }
+            };
+
+            var testResult = testCrime.IsValid(new MildredGillars());
+            Console.WriteLine(testCrime.ToString());
+            Assert.IsFalse(testResult);
         }
     }
 

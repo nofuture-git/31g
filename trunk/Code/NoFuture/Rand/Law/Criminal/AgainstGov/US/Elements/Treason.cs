@@ -68,11 +68,32 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            var isValid = criminalIntent is Purposely || criminalIntent is SpecificIntent;
+            var defendant = GetDefendant(persons);
+            if (defendant == null)
+                return false;
+            bool isValid = false;
+
+            //Cramer v. U.S., 1945, different intent based on which predicate
+            if (IsLevyingWar(defendant))
+            {
+                isValid = criminalIntent is Purposely || criminalIntent is SpecificIntent;
+
+                if (!isValid)
+                {
+                    AddReasonEntry($"{nameof(Treason)}, when {nameof(IsLevyingWar)} is true," +
+                                   $" requires intent of {nameof(Purposely)} or {nameof(SpecificIntent)}");
+                    return false;
+                }
+
+                return true;
+            }
+
+            isValid = criminalIntent is Knowingly || criminalIntent is GeneralIntent;
 
             if (!isValid)
             {
-                AddReasonEntry($"{nameof(Treason)} requires intent of {nameof(Purposely)} or {nameof(SpecificIntent)}");
+                AddReasonEntry($"{nameof(Treason)}, when {nameof(IsLevyingWar)} is false," +
+                               $" requires intent of {nameof(Knowingly)} or {nameof(GeneralIntent)}");
                 return false;
             }
 
