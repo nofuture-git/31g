@@ -38,7 +38,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\CriminalGang.cs" />
     <Compile Include="US\Elements\DisorderlyConduct.cs" />
-    <Compile Include="US\Elements\DrugDistribution.cs" />
     <Compile Include="US\Elements\DrugManufacture.cs" />
     <Compile Include="US\Elements\DrugPossession.cs" />
     <Compile Include="US\Elements\DrugSale.cs" />
