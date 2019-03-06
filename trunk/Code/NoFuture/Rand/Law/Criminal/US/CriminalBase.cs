@@ -6,10 +6,15 @@ namespace NoFuture.Rand.Law.Criminal.US
     {
         public ILegalPerson GetDefendant(ILegalPerson[] persons)
         {
+            return FirstOrDefault(this, persons);
+        }
+
+        public static ILegalPerson FirstOrDefault(IRationale item, ILegalPerson[] persons)
+        {
             var defendant = persons.FirstOrDefault();
             if (defendant == null)
             {
-                AddReasonEntry("it is not clear who the " +
+                item?.AddReasonEntry("it is not clear who the " +
                                $"defendant is amoung {string.Join(", ", persons.Select(p => p.Name))}");
             }
 

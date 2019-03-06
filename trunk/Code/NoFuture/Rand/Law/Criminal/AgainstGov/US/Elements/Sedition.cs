@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
@@ -59,29 +60,17 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
             var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
-            bool isValid = false;
 
             //Yates v. U.S., 354 U.S. 298 (1957), different intent based on which predicate
-            if (IsInWrittenForm(defendant))
+            var inWrittenForm = IsInWrittenForm(defendant);
+            var validIntent = inWrittenForm
+                ? new[] { typeof(Purposely), typeof(SpecificIntent) }
+                : new[] { typeof(Knowingly), typeof(GeneralIntent) };
+
+            if (validIntent.All(i => criminalIntent.GetType() != i))
             {
-                isValid = criminalIntent is Purposely || criminalIntent is SpecificIntent;
-
-                if (!isValid)
-                {
-                    AddReasonEntry($"{nameof(Sedition)}, when {nameof(IsInWrittenForm)} is true," +
-                                   $" requires intent of {nameof(Purposely)} or {nameof(SpecificIntent)}");
-                    return false;
-                }
-
-                return true;
-            }
-
-            isValid = criminalIntent is Knowingly || criminalIntent is GeneralIntent;
-
-            if (!isValid)
-            {
-                AddReasonEntry($"{nameof(Treason)}, when {nameof(IsInWrittenForm)} is false," +
-                               $" requires intent of {nameof(Knowingly)} or {nameof(GeneralIntent)}");
+                var nms = string.Join(", ", validIntent.Select(t => t.Name));
+                AddReasonEntry($"{nameof(Sedition)} for {nameof(IsInWrittenForm)} as {inWrittenForm} requires intent {nms}");
                 return false;
             }
 

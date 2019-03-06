@@ -3,7 +3,6 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
@@ -23,7 +22,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
                     WitnessOne = new Recordings00(),
                     WitnessTwo = new Recordings01()
                 },
-                MensRea = new Purposely
+                MensRea = new GeneralIntent
                 {
                     IsIntentOnWrongdoing = lp => lp is MildredGillars
                 }
@@ -41,11 +40,11 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
             {
                 ActusReus = new Treason
                 {
-                    //taken oath of allegiance to Hitler
                     IsByViolence = lp => lp is MildredGillars,
                     WitnessOne = new Recordings00(),
                     WitnessTwo = new Recordings01()
                 },
+
                 MensRea = new GeneralIntent
                 {
                     IsIntentOnWrongdoing = lp => lp is MildredGillars

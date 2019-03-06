@@ -72,29 +72,17 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
             var defendant = GetDefendant(persons);
             if (defendant == null)
                 return false;
-            bool isValid = false;
+
+            var isByViolence = IsByViolence(defendant);
+            var validIntent = isByViolence
+                ? new[] {typeof(Purposely), typeof(SpecificIntent)}
+                : new[] {typeof(Knowingly), typeof(GeneralIntent)};
 
             //Cramer v. U.S., 1945, different intent based on which predicate
-            if (IsByViolence(defendant))
+            if (validIntent.All(i => criminalIntent.GetType() != i))
             {
-                isValid = criminalIntent is Purposely || criminalIntent is SpecificIntent;
-
-                if (!isValid)
-                {
-                    AddReasonEntry($"{nameof(Treason)}, when {nameof(IsByViolence)} is true," +
-                                   $" requires intent of {nameof(Purposely)} or {nameof(SpecificIntent)}");
-                    return false;
-                }
-
-                return true;
-            }
-
-            isValid = criminalIntent is Knowingly || criminalIntent is GeneralIntent;
-
-            if (!isValid)
-            {
-                AddReasonEntry($"{nameof(Treason)}, when {nameof(IsByViolence)} is false," +
-                               $" requires intent of {nameof(Knowingly)} or {nameof(GeneralIntent)}");
+                var nms = string.Join(", ", validIntent.Select(t => t.Name));
+                AddReasonEntry($"{nameof(Treason)} for {nameof(IsByViolence)} as {isByViolence} requires intent {nms}");
                 return false;
             }
 
