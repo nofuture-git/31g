@@ -38,6 +38,9 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US
         }
         #endregion
 
+        /// <summary>
+        /// A legal value typically 5 or 3
+        /// </summary>
         protected virtual int MinNumber { get; } = FEDERAL_MINIMUM_MEMBERS;
 
         /// <summary>
