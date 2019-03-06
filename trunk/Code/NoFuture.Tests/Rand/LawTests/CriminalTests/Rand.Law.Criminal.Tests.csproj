@@ -49,6 +49,7 @@
     <Compile Include="AgainstGovTests\ExampleEspionageTests.cs" />
     <Compile Include="AgainstGovTests\ExampleSabotageTests.cs" />
     <Compile Include="AgainstGovTests\ExampleSeditionTests.cs" />
+    <Compile Include="AgainstGovTests\ExampleTerrorismTests.cs" />
     <Compile Include="AgainstGovTests\ExampleTreasonTests.cs" />
     <Compile Include="AgainstPublicTests\ExampleCriminalGangTests.cs" />
     <Compile Include="AgainstPublicTests\ExampleDisorderlyConductTests.cs" />
