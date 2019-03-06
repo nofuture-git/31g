@@ -9,6 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.US
     {
         private static readonly Guid _uid = Guid.NewGuid();
         protected Government() { }
+        protected Government(string name) : base(name) { }
 
         private static Government _value;
         public static Government Value => _value ?? (_value = new Government());

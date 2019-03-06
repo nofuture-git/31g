@@ -94,6 +94,7 @@
     <Compile Include="US\Felony.cs" />
     <Compile Include="US\Government.cs" />
     <Compile Include="US\Elements\IBipartite.cs" />
+    <Compile Include="US\GovernmentProperty.cs" />
     <Compile Include="US\ICrime.cs" />
     <Compile Include="US\Infraction.cs" />
     <Compile Include="US\IProsecution.cs" />

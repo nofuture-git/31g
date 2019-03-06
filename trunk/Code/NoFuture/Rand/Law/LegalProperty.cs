@@ -21,9 +21,9 @@ namespace NoFuture.Rand.Law
 
         public LegalProperty(string name, string groupName) : base(name, groupName) { }
 
-        public ILegalPerson EntitledTo { get; set; }
+        public virtual ILegalPerson EntitledTo { get; set; }
 
-        public ILegalPerson InPossessionOf { get; set; }
+        public virtual ILegalPerson InPossessionOf { get; set; }
 
         public virtual IEnumerable<string> GetReasonEntries()
         {

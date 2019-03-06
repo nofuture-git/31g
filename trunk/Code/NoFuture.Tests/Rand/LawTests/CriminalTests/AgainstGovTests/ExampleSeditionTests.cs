@@ -33,6 +33,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
 
     public class MoDisgruntledEg : LegalPerson
     {
+        public MoDisgruntledEg(string name) : base(name) {  }
         public MoDisgruntledEg(): base("MO DISGRUNTLED") {  }
     }
 }

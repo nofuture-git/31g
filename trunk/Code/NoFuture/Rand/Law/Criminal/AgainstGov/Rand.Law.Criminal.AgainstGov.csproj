@@ -36,8 +36,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="US\Elements\Sabotage.cs" />
     <Compile Include="US\Elements\Sedition.cs" />
     <Compile Include="US\Elements\Treason.cs" />
+    <Compile Include="US\NationalEmergency.cs" />
+    <Compile Include="US\TimeOfWar.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">
@@ -53,5 +56,6 @@
       <Name>Rand.Law.Criminal</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
