@@ -4,14 +4,13 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law.Contract.US
 {
     /// <summary>
-    /// Is intended to determine what is an enforcable promise and what is a donative one.
+    /// Is intended to determine what is an enforceable promise and what is a donative one.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Note("is performance or return promise bargained for")]
     [Aka("quid pro quo", "this for that")]
     public class Consideration<T> : LegalConcept where T : ILegalConcept
     {
-        //private readonly ComLawContract<T> _contract;
         public override bool IsEnforceableInCourt => true;
 
         public Consideration(ComLawContract<T> contract)
@@ -40,13 +39,13 @@ namespace NoFuture.Rand.Law.Contract.US
         public virtual Predicate<ILegalConcept> IsValueInEyesOfLaw { get; set; } = o => true;
 
         /// <summary>
-        /// What is bargined for must not be a choice - it must be a duty
+        /// What is bargained for must not be a choice - it must be a duty
         /// </summary>
         [Note("is not just a choice")]
         public virtual Predicate<ILegalConcept> IsIllusionaryPromise { get; set; } = o => false;
 
         /// <summary>
-        /// What is bargined for must not be an existing duty.  When it 
+        /// What is bargained for must not be an existing duty.  When it 
         /// is an existing duty there is no consideration and whatever the other side
         /// is bringing is a gift.
         /// </summary>

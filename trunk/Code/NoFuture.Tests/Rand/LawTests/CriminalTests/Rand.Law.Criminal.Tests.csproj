@@ -51,6 +51,7 @@
     <Compile Include="AgainstPublicTests\ExampleDrugCrimeTests.cs" />
     <Compile Include="AgainstPublicTests\ExampleFailureToDisperseTests.cs" />
     <Compile Include="AgainstPublicTests\ExampleLoiteringTests.cs" />
+    <Compile Include="AgainstPublicTests\ExampleProstitutionTests.cs" />
     <Compile Include="CausationTests\BullockvDelawareTests.cs" />
     <Compile Include="CrimeTests.cs" />
     <Compile Include="DefenseTests\DefenseOfOtherTests\CommonwealthvAlexanderTests.cs" />

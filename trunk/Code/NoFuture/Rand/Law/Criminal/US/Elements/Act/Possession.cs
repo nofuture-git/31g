@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
     /// actual possession: possession as item on very person or very near
     /// constructive possession: not on person but within an area of control
     /// </remarks>
-    public class Possession : CriminalBase, IActusReus
+    public class Possession : CriminalBase, IPossession
     {
         public Predicate<ILegalPerson> IsKnowinglyProcured { get; set; } = lp => false;
 

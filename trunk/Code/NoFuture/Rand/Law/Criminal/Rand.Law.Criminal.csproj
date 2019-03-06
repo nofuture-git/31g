@@ -39,6 +39,7 @@
     <Compile Include="US\CrimeBase.cs" />
     <Compile Include="US\CriminalBase.cs" />
     <Compile Include="US\Defense\Technicality.cs" />
+    <Compile Include="US\Elements\Act\IPossession.cs" />
     <Compile Include="US\Elements\ChoiceThereof.cs" />
     <Compile Include="US\Defense\DefenseBase.cs" />
     <Compile Include="US\Defense\Excuse\Entrapment.cs" />
