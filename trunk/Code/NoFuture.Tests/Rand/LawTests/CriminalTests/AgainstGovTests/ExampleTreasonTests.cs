@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
                 ActusReus = new Treason
                 {
                     //taken oath of allegiance to Hitler
-                    IsLevyingWar = lp => lp is MildredGillars,
+                    IsByViolence = lp => lp is MildredGillars,
                     WitnessOne = new Recordings00(),
                     WitnessTwo = new Recordings01()
                 },
