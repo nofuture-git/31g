@@ -3,6 +3,7 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Contract.US
 {
+    /// <inheritdoc cref="IConsideration{T}"/>
     /// <summary>
     /// Is intended to determine what is an enforceable promise and what is a donative one.
     /// </summary>
