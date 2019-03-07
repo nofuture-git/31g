@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
@@ -22,13 +19,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
         public Predicate<ILegalPerson> IsGambling { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsProstituting { get; set; } = lp => false;
-
-        //https://en.wikipedia.org/wiki/Loitering#United_States
-        //public ObjectivePredicate<ILegalPerson> IsGangGeographic { get; set; }
-
-        //public ObjectivePredicate<ILegalPerson> IsGangIntimidate { get; set; }
-
-        //public ObjectivePredicate<ILegalPerson> IsGangConcealment { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

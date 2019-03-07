@@ -55,6 +55,7 @@
     <Compile Include="US\Elements\IAssault.cs" />
     <Compile Include="US\Elements\IAttendantElement.cs" />
     <Compile Include="US\Elements\IBattery.cs" />
+    <Compile Include="US\Elements\IDominionOfForce.cs" />
     <Compile Include="US\Elements\Imminence.cs" />
     <Compile Include="US\Defense\Justification\BatteredWomanSyndrome.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfBase.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="US\Defense\Justification\DefenseOfSelf.cs" />
     <Compile Include="US\Defense\Justification\NecessityDefense.cs" />
     <Compile Include="US\Defense\PolicePower.cs" />
+    <Compile Include="US\Elements\ISexBipartitie.cs" />
     <Compile Include="US\Elements\Proportionality.cs" />
     <Compile Include="US\Elements\Provacation.cs" />
     <Compile Include="US\Elements\Act\ActusReus.cs" />

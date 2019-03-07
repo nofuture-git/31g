@@ -15,8 +15,23 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
     /// conferring, offering, agreeing to confer, or soliciting, accepting,
     /// or agreeing to accept any benefit upon a public official
     /// </summary>
-    public class Bribery : CriminalBase, IActusReus
+    public class Bribery : CriminalBase, IPossession
     {
+
+        public Predicate<ILegalPerson> IsPublicOfficial { get; set; } = lp => false;
+
+        /// <summary>
+        /// Public official&apos;s vote, opinion, judgment, action,
+        /// decision or exercise discretion will be influenced.
+        /// </summary>
+        public Predicate<ILegalPerson> IsKnowinglyProcured { get; set; }
+
+        /// <summary>
+        /// Public official&apos;s vote, opinion, judgment, action,
+        /// decision or exercise discretion will be influenced.
+        /// </summary>
+        public Predicate<ILegalPerson> IsKnowinglyReceived { get; set; }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             throw new NotImplementedException();
@@ -35,5 +50,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
             return true;
         }
+
     }
 }

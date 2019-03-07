@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 

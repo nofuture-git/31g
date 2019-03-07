@@ -10,6 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 {
     /// <inheritdoc cref="ISexBipartitie"/>
     /// <summary>
+    /// Offering, agreeing, or engaging in sexual conduct for money, property, or anything of value
     /// </summary>
     public class Prostitution : CriminalBase, IPossession, ISexBipartitie
     {

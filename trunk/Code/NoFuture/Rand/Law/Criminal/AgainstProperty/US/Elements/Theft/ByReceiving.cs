@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 

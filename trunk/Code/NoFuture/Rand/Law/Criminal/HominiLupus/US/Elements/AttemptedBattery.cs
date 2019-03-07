@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
+using NoFuture.Rand.Law.Criminal.US.Elements;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {

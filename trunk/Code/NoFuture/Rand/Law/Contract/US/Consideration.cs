@@ -8,8 +8,7 @@ namespace NoFuture.Rand.Law.Contract.US
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Note("is performance or return promise bargained for")]
-    [Aka("quid pro quo", "this for that")]
-    public class Consideration<T> : LegalConcept where T : ILegalConcept
+    public class Consideration<T> : LegalConcept, IConsideration<T> where T : ILegalConcept
     {
         public override bool IsEnforceableInCourt => true;
 
