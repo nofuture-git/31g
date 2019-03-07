@@ -6,6 +6,9 @@ using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
 {
+    /// <summary>
+    /// (U.S. v. Moussaoui, 2011)
+    /// </summary>
     [TestFixture]
     public class ExampleTerrorismTests
     {

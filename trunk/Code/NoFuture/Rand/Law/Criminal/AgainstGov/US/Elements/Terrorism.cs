@@ -15,9 +15,9 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
     /// </summary>
     public class Terrorism : CriminalBase, ICapitalOffense, IBattery
     {
-        public Predicate<ILegalPerson> IsByViolence { get; set; }
+        public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
 
-        public Predicate<ILegalPerson> IsSocioPoliticalObjective { get; set; }
+        public Predicate<ILegalPerson> IsSocioPoliticalObjective { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

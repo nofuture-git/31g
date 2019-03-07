@@ -36,7 +36,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="US\Elements\Bribery.cs" />
     <Compile Include="US\Elements\Espionage.cs" />
+    <Compile Include="US\Elements\Perjury.cs" />
     <Compile Include="US\Elements\Sabotage.cs" />
     <Compile Include="US\Elements\Sedition.cs" />
     <Compile Include="US\Elements\Terrorism.cs" />

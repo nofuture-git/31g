@@ -6,11 +6,11 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
-    /// <inheritdoc cref="IBipartite"/>
+    /// <inheritdoc cref="ISexBipartitie"/>
     /// <summary>
     /// This seems to imply that the parties know they have some family relation
     /// </summary>
-    public class Incest : CriminalBase, IActusReus, IBipartite
+    public class Incest : CriminalBase, IActusReus, ISexBipartitie
     {
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
 

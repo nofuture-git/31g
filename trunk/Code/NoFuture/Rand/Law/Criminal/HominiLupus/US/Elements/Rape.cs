@@ -8,11 +8,11 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
-    /// <inheritdoc cref="IBipartite"/>
+    /// <inheritdoc cref="ISexBipartitie"/>
     /// <inheritdoc cref="IAssault"/>
     /// <inheritdoc cref="IBattery"/>
     [EtymologyNote("Latin", "''rapere", "to steal or seize")]
-    public class Rape : CriminalBase, IBipartite, IAssault, IBattery, IActusReus
+    public class Rape : CriminalBase, ISexBipartitie, IAssault, IBattery, IActusReus
     {
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
 

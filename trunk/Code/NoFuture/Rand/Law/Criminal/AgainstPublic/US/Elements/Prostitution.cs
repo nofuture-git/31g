@@ -8,10 +8,10 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 {
-    /// <inheritdoc cref="IBipartite"/>
+    /// <inheritdoc cref="ISexBipartitie"/>
     /// <summary>
     /// </summary>
-    public class Prostitution : CriminalBase, IPossession, IBipartite
+    public class Prostitution : CriminalBase, IPossession, ISexBipartitie
     {
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsKnowinglyProcured { get; set; } = lp => false;
