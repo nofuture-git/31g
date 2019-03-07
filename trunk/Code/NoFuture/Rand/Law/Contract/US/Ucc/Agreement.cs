@@ -26,19 +26,19 @@ namespace NoFuture.Rand.Law.Contract.US.Ucc
         public override Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
 
         /// <summary>
-        /// One of various ways a buyer accepts goods accocding the the UCC
+        /// One of various ways a buyer accepts goods according the the UCC
         /// </summary>
         [Aka("UCC 2-606(1)(a)")]
         public Predicate<ILegalPerson> IsGoodsInspected { get; set; } = lp => true;
 
         /// <summary>
-        /// One of various ways a buyer accepts accocding the the UCC
+        /// One of various ways a buyer accepts according the the UCC
         /// </summary>
         [Aka("UCC 2-606(1)(b)")]
         public Predicate<ILegalPerson> IsRejected { get; set; } = lp => false;
 
         /// <summary>
-        /// One of various ways a buyer accepts accocding the the UCC
+        /// One of various ways a buyer accepts according the the UCC
         /// </summary>
         [Aka("UCC 2-606(1)(c)")]
         public Predicate<ILegalPerson> IsAnyActAsOwner { get; set; } = lp => true;

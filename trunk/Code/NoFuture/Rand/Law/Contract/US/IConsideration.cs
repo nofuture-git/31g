@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Rand.Law.Contract.US
 {
     /// <summary>
     /// A general form for the idea of some this-for-that exchange 

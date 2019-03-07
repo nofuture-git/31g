@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
@@ -24,17 +20,37 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
         /// Public official&apos;s vote, opinion, judgment, action,
         /// decision or exercise discretion will be influenced.
         /// </summary>
-        public Predicate<ILegalPerson> IsKnowinglyProcured { get; set; }
+        public Predicate<ILegalPerson> IsKnowinglyProcured { get; set; } = lp => false;
 
         /// <summary>
         /// Public official&apos;s vote, opinion, judgment, action,
         /// decision or exercise discretion will be influenced.
         /// </summary>
-        public Predicate<ILegalPerson> IsKnowinglyReceived { get; set; }
+        public Predicate<ILegalPerson> IsKnowinglyReceived { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            var defendant = GetDefendant(persons);
+            if (defendant == null)
+                return false;
+
+            var procured = IsKnowinglyProcured(defendant);
+            var received = IsKnowinglyReceived(defendant);
+
+            if (!procured && !received)
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsKnowinglyProcured)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsKnowinglyReceived)} is false");
+                return false;
+            }
+
+            if (!IsPublicOfficial(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsPublicOfficial)} is false");
+                return false;
+            }
+
+            return true;
         }
 
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
