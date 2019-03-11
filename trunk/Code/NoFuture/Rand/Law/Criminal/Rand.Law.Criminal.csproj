@@ -38,6 +38,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\CrimeBase.cs" />
     <Compile Include="US\CriminalBase.cs" />
+    <Compile Include="US\Deal.cs" />
     <Compile Include="US\Defense\Technicality.cs" />
     <Compile Include="US\Elements\Act\IPossession.cs" />
     <Compile Include="US\Elements\ChoiceThereof.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="US\Terms\MalumProhibitum.cs" />
     <Compile Include="US\Terms\NondeadlyForce.cs" />
     <Compile Include="US\Terms\SeriousBodilyInjury.cs" />
+    <Compile Include="US\SexBipartitie.cs" />
     <Compile Include="US\Victim.cs" />
   </ItemGroup>
   <ItemGroup>

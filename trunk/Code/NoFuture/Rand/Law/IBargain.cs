@@ -3,12 +3,12 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law
 {
-    public interface IBargain<T> : ILegalConcept
+    public interface IBargain<T, M> : ILegalConcept
     {
         [Note("Is the manifestation of willingness to enter into a bargain")]
-        ILegalConcept Offer { get; set; }
+        M Offer { get; set; }
 
-        Func<ILegalConcept, T> Acceptance { get; set; }
+        Func<M, T> Acceptance { get; set; }
 
         [Note("expression of approval or agreement")]
         IAssent Assent { get; set; }

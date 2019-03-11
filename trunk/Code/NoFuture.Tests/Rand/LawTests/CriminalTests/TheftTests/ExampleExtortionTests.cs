@@ -19,8 +19,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 {
                     IsToAccuseOfCrime = lp => lp is RodneyBlackmailEg
                 },
-                SubjectProperty = new LegalProperty("fifteen thousand dollars"),
-                PropretyValue = 15000m,
+                SubjectProperty = new LegalProperty("fifteen thousand dollars"){ PropretyValue = 15000m } ,
             };
 
             var testResult = testAct.IsValid(new RodneyBlackmailEg(), new LindseyDealinEg());
@@ -32,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public void ExampleThreatenHonestlyDue()
         {
             var trent = new TrentThreatenEg();
-            var thousandDollars = new LegalProperty("thousand dollars") {EntitledTo = trent};
+            var thousandDollars = new LegalProperty("thousand dollars") {EntitledTo = trent, PropretyValue = 10000m };
             var testAct = new ByExtortion
             {
                 IsTakenPossession = lp => lp is TrentThreatenEg,
@@ -41,7 +40,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     IsToExposeHurtfulSecret = lp => lp is TrentThreatenEg
                 },
                 SubjectProperty = thousandDollars,
-                PropretyValue = 1000m,
+                
             };
 
             var testResult = testAct.IsValid(new TrentThreatenEg(), new TaraLyingEg());
@@ -59,8 +58,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 {
                     IsToAccuseOfCrime = lp => lp is RodneyBlackmailEg
                 },
-                SubjectProperty = new LegalProperty("fifteen thousand dollars"),
-                PropretyValue = 15000m,
+                SubjectProperty = new LegalProperty("fifteen thousand dollars"){ PropretyValue = 15000m },
                 Consent = new Consent
                 {
                     IsDenialExpressed = lp => false,

@@ -14,8 +14,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 IsPresentStolen = lp => lp is ChanelFenceEg || lp is BurtThiefEg,
                 IsTakenPossession = lp => lp is ChanelFenceEg || lp is BurtThiefEg || lp is SandraVictimEg,
-                SubjectProperty = new LegalProperty("designer perfume"),
-                PropretyValue = 5000m
+                SubjectProperty = new LegalProperty("designer perfume"){ PropretyValue = 5000m },
             };
 
             var testResult = testAct.IsValid(new ChanelFenceEg(), new BurtThiefEg(), new SandraVictimEg());

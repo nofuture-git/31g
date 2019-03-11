@@ -24,6 +24,7 @@ namespace NoFuture.Rand.Law
         public virtual ILegalPerson EntitledTo { get; set; }
 
         public virtual ILegalPerson InPossessionOf { get; set; }
+        public decimal? PropretyValue { get; set; }
 
         public virtual IEnumerable<string> GetReasonEntries()
         {

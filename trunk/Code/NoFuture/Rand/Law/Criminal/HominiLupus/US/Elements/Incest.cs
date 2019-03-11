@@ -14,6 +14,8 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     {
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
 
+        public Predicate<ILegalPerson> IsOneOfTwo { get; set; } = lp => false;
+
         public Func<ILegalPerson[], ILegalPerson> GetVictim { get; set; } = lps => null;
 
         /// <summary>

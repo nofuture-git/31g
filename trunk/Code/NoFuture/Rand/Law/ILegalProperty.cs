@@ -16,5 +16,7 @@ namespace NoFuture.Rand.Law
         /// Who actually possess control over the property - more than just physical possession.
         /// </summary>
         ILegalPerson InPossessionOf { get; set; }
+
+        decimal? PropretyValue { get; set; }
     }
 }

@@ -9,7 +9,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
     {
         public virtual IConsent Consent { get; set; }
         public virtual ILegalProperty SubjectProperty { get; set; }
-        public virtual decimal? PropretyValue { get; set; }
 
         /// <summary>
         /// The expected result of <see cref="Consent"/> - default

@@ -44,6 +44,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 
         public ILegalPerson EntitledTo { get; set; }
         public ILegalPerson InPossessionOf { get; set; }
+        public decimal? PropretyValue { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

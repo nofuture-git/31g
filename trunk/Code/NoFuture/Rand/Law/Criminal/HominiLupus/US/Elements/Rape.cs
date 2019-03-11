@@ -22,6 +22,8 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public IConsent Consent { get; set; } = new Consent();
 
+        public Predicate<ILegalPerson> IsOneOfTwo { get; set; } = lp => false;
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var defendant = GetDefendant(persons);
@@ -34,6 +36,11 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
                 return false;
             }
 
+            if (!IsOneOfTwo(defendant))
+            {
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsOneOfTwo)} is false");
+            }
+
             var isByForce = IsByViolence(defendant);
             var isByThreatOfForce = IsByThreatOfViolence(defendant);
             if (isByForce || isByThreatOfForce)
@@ -42,6 +49,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfViolence)} is {isByThreatOfForce}");
                 return true;
             }
+
             var isConsented = Consent?.IsValid(persons) ?? false;
 
             AddReasonEntryRange(Consent?.GetReasonEntries());

@@ -2,7 +2,6 @@
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
-    /// <inheritdoc />
     public interface ISexBipartitie : IBipartite
     {
         /// <summary>

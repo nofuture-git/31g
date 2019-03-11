@@ -22,8 +22,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 IsAsportation = lp => lp is RodneyBlackmailEg,
                 IsByViolence = lp => lp is RodneyBlackmailEg,
                 SubjectProperty = new LegalProperty("money")
-                    {EntitledTo = new LindseyDealinEg(), InPossessionOf = new LindseyDealinEg()},
-                PropretyValue = 15000m
+                    {EntitledTo = new LindseyDealinEg(), InPossessionOf = new LindseyDealinEg(), PropretyValue = 15000m },
+                
             };
 
             var testResult = testAct.IsValid(new RodneyBlackmailEg(), new LindseyDealinEg());

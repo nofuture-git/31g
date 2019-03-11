@@ -106,6 +106,8 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
             set => _govProperty.InPossessionOf = value;
         }
 
+        public decimal? PropretyValue { get; set; }
+
         #region IVoca HAS-A IS-A
         public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {

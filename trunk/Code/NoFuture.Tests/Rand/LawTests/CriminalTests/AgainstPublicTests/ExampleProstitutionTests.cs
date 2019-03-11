@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Criminal.AgainstPublic.US;
 using NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
@@ -16,9 +17,16 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
             {
                 ActusReus = new Prostitution
                 {
-                    IsSexualIntercourse = lp => lp is JohnPayerEg || lp is SueProstitueEg,
-                    IsKnowinglyReceived = lp => lp is JohnPayerEg || lp is SueProstitueEg,
-                    IsKnowinglyProcured = lp => lp is JohnPayerEg || lp is SueProstitueEg,
+                    Acceptance = sex => new LegalProperty("money") { PropretyValue = 500m},
+                    Assent = new Deal
+                    {
+                        IsApprovalExpressed = lp => lp is JohnPayerEg || lp is SueProstitueEg
+                    },
+                    Offer = new SexBipartitie()
+                    {
+                        IsSexualIntercourse = lp => true,
+                        IsOneOfTwo = lp => lp is JohnPayerEg || lp is SueProstitueEg
+                    }
                 },
                 MensRea = new Purposely
                 {

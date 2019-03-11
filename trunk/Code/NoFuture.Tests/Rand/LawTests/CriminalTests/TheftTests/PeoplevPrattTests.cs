@@ -23,12 +23,13 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByReceiving
                 {
-                    PropretyValue = 1000.99m,
+                    
                     IsTakenPossession = lp => lp is Pratt,
                     SubjectProperty = new LegalProperty("1990 Buick Regal")
                     {
                         EntitledTo = new PrattFormerGirlfriend(),
-                        InPossessionOf = new PrattFormerGirlfriend()
+                        InPossessionOf = new PrattFormerGirlfriend(),
+                        PropretyValue = 1000.99m
                     },
                     //court finds its stolen, by statute, regardless of intent-to-return
                     IsPresentStolen = lp => lp is Pratt
