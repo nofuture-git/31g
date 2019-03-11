@@ -89,6 +89,11 @@ Add-Type -ReferencedAssemblies $references -TypeDefinition $getAppointmentSrc
 $memoryStream = New-Object System.IO.MemoryStream -ArgumentList (,[byte[]]$buffer)
 
 <#
+Creating a simple byte array is suprisingly complicated
+#>
+$myByteArray = [byte[]]::New(4)
+
+<#
     examples powershell function pointers
 #>
 function TFunction1($arg1, $arg2, $arg3)
