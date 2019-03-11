@@ -1,7 +1,6 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US
+namespace NoFuture.Rand.Law.Criminal.US
 {
     public class Deal : CriminalBase, IAssent
     {

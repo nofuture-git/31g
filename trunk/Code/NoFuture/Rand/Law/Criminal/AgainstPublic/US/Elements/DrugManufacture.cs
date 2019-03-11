@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
     /// </summary>
     public class DrugManufacture : CriminalBase, IControlledSubstance
     {
-        public IDrugSchedule SubjectDrug { get; set; } = new ScheduleI();
+        public IDrugSchedule Offer { get; set; } = new ScheduleI();
 
         public Predicate<ILegalPerson> IsManufacturer { get; set; } = lp => false;
 

@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
 {
-    [TestFixture()]
+    [TestFixture]
     public class ExampleDrugCrimeTests
     {
         [Test]
@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
                 ActusReus = new DrugManufacture
                 {
                     IsManufacturer = lp => true,
-                    SubjectDrug = new ScheduleI("bath salts")
+                    Offer = new ScheduleI("bath salts")
                 },
                 MensRea = new Purposely
                 {
@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
                 ActusReus = new DrugPossession
                 {
                     IsKnowinglyProcured = lp => true,
-                    SubjectDrug = new ScheduleI("pot")
+                    Offer = new ScheduleI("pot")
                 },
                 MensRea = new GeneralIntent
                 {
@@ -59,8 +59,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
             {
                 ActusReus = new DrugSale
                 {
-                    IsSeller = lp => true,
-                    SubjectDrug = new ScheduleI("pot")
+                    Acceptance = drug => drug is ScheduleI ? new LegalProperty("money"){PropretyValue = 150m} : null,
+                    Assent = new Deal
+                    {
+                        IsApprovalExpressed = lp => true
+                    },
+                    Offer = new ScheduleI("pot")
                 },
                 MensRea = new Purposely
                 {
@@ -80,7 +84,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
                 ActusReus = new DrugUse
                 {
                     IsUnderInfluence = lp => true,
-                    SubjectDrug = new ScheduleI("pot")
+                    Offer = new ScheduleI("pot")
                 },
                 MensRea = new Purposely
                 {

@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
     [Aka("under the influence of a controlled substance")]
     public class DrugUse : CriminalBase, IControlledSubstance
     {
-        public IDrugSchedule SubjectDrug { get; set; } = new ScheduleI();
+        public IDrugSchedule Offer { get; set; } = new ScheduleI();
 
         public Predicate<ILegalPerson> IsUnderInfluence { get; set; } = lp => false;
 

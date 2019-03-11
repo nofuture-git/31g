@@ -5,6 +5,6 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US
 {
     public interface IControlledSubstance : IActusReus
     {
-        IDrugSchedule SubjectDrug { get; set; }
+        IDrugSchedule Offer { get; set; }
     }
 }
