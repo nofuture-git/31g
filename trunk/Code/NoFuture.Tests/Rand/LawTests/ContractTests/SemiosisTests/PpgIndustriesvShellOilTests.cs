@@ -39,8 +39,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
             testContract.Consideration = new Consideration<Promise>(testContract)
             {
-                IsGivenByPromisee = (lp, p) => true,
-                IsSoughtByPromisor = (lp, p) => true
+                IsGivenByOfferee = (lp, p) => true,
+                IsSoughtByOfferor = (lp, p) => true
             };
 
             var testSubject = new SyntacticDilemma<Promise>(testContract)

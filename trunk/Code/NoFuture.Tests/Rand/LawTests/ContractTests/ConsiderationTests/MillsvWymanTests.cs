@@ -32,8 +32,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
 
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
-                IsSoughtByPromisor = (lp, p) => true,
-                IsGivenByPromisee = (lp, p) => true
+                IsSoughtByOfferor = (lp, p) => true,
+                IsGivenByOfferee = (lp, p) => true
             };
             var testResult = testSubject.IsValid(new Mills(), new Wyman());
             Assert.IsFalse(testResult);

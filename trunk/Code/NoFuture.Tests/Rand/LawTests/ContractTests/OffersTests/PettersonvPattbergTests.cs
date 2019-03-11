@@ -27,8 +27,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
 
             testSubject.Consideration = new Consideration<Performance>(testSubject)
             {
-                IsSoughtByPromisor = (lp, p) => lp is Petterson && p is AcceptanceMoneyTendered,
-                IsGivenByPromisee = (lp, p) => lp is Pattberg && p is OfferEarlyMortgagePayment
+                IsSoughtByOfferor = (lp, p) => lp is Petterson && p is AcceptanceMoneyTendered,
+                IsGivenByOfferee = (lp, p) => lp is Pattberg && p is OfferEarlyMortgagePayment
             };
 
             var testResult = testSubject.IsValid(new Petterson(), new Pattberg());

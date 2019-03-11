@@ -37,8 +37,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
             };
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
-                IsSoughtByPromisor = (lp, p) => lp is RupertAndBlancheWhitehead && p is AcceptanceApr14,
-                IsGivenByPromisee = (lp, p) => lp is FrankAndCaroDavis && p is OfferApr12
+                IsSoughtByOfferor = (lp, p) => lp is RupertAndBlancheWhitehead && p is AcceptanceApr14,
+                IsGivenByOfferee = (lp, p) => lp is FrankAndCaroDavis && p is OfferApr12
             };
 
             var testResult = testSubject.IsValid(new RupertWhitehead(), new FrankAndCaroDavis());
@@ -47,13 +47,13 @@ namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
 
             var testSubjectAsPerformance = new ComLawContract<Performance>
             {
-                Offer = new OfferApr12(),
+                Offer = new OfferApr12() as Promise,
                 Acceptance = o => o is OfferApr12 ? new AcceptanceAccording2TrialCourt() : null
             };
             testSubjectAsPerformance.Consideration = new Consideration<Performance>(testSubjectAsPerformance)
             {
-                IsSoughtByPromisor = (lp, p) => lp is RupertAndBlancheWhitehead && p is AcceptanceAccording2TrialCourt,
-                IsGivenByPromisee = (lp, p) => lp is FrankAndCaroDavis && p is OfferApr12
+                IsSoughtByOfferor = (lp, p) => lp is RupertAndBlancheWhitehead && p is AcceptanceAccording2TrialCourt,
+                IsGivenByOfferee = (lp, p) => lp is FrankAndCaroDavis && p is OfferApr12
             };
 
             testResult = testSubjectAsPerformance.IsValid(new RupertWhitehead(), new FrankAndCaroDavis());

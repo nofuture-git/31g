@@ -26,8 +26,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
             };
             testSubject.Consideration = new Consideration<DonativePromise>(testSubject)
             {
-                IsSoughtByPromisor = (lp, p) => lp is RidgeRunnerForestry && p is AcceptanceInteragencyRental,
-                IsGivenByPromisee = (lp, p) => lp is Veneman && p is OfferRequestForQuotations
+                IsSoughtByOfferor = (lp, p) => lp is RidgeRunnerForestry && p is AcceptanceInteragencyRental,
+                IsGivenByOfferee = (lp, p) => lp is Veneman && p is OfferRequestForQuotations
             };
             var testResult = testSubject.IsValid(new RidgeRunnerForestry(), new Veneman());
             Console.WriteLine(testResult);

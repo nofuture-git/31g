@@ -47,8 +47,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
 
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
-                IsSoughtByPromisor = (lp, promise) => lp is EverTiteRoofingCorp && promise is AcceptanceViaCredit,
-                IsGivenByPromisee = (lp, promise) => lp is Green && promise is OfferReRoofResidence
+                IsSoughtByOfferor = (lp, promise) => lp is EverTiteRoofingCorp && promise is AcceptanceViaCredit,
+                IsGivenByOfferee = (lp, promise) => lp is Green && promise is OfferReRoofResidence
             };
 
             var testResult = testSubject.IsValid(new EverTiteRoofingCorp(), new Green());

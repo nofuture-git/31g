@@ -60,8 +60,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
 
-                IsSoughtByPromisor = (lp, promise) => lp is CrundenMartin && promise is TelegramAcceptance2Fairmount,
-                IsGivenByPromisee = (lp, promise) => lp is Fairmount && promise is TelegramQuote2CurdenMartin ,
+                IsSoughtByOfferor = (lp, promise) => lp is CrundenMartin && promise is TelegramAcceptance2Fairmount,
+                IsGivenByOfferee = (lp, promise) => lp is Fairmount && promise is TelegramQuote2CurdenMartin ,
             };
 
             var testResult = testSubject.IsValid(new CrundenMartin(), new Fairmount());

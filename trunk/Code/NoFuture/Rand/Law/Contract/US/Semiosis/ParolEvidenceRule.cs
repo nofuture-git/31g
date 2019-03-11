@@ -46,7 +46,15 @@ namespace NoFuture.Rand.Law.Contract.US.Semiosis
                 return false;
             }
 
-            var additionalTerms = Contract.Assent.GetAdditionalTerms(offeror, offeree);
+            var contractTerms = Contract.Assent as IContractTerms;
+            if (contractTerms == null)
+            {
+                AddReasonEntry($"{nameof(Contract)} {nameof(Contract.Assent)} does " +
+                               $"not cast as {nameof(IContractTerms)}");
+                return false;
+            }
+
+            var additionalTerms = contractTerms.GetAdditionalTerms(offeror, offeree);
             if (additionalTerms == null || !additionalTerms.Any())
             {
                 AddReasonEntryRange(Contract.Assent.GetReasonEntries());

@@ -6,14 +6,31 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law.Contract.US
 {
     /// <inheritdoc cref="IContract{T}"/>
+    /// <remarks>
+    /// <![CDATA[
+    /// It is axiomatic in modern contracts law that all contracts 
+    /// are, in some fashion, "incomplete."  Meaning, no contract 
+    /// has addressed every possible contingency.
+    /// ]]>
+    /// </remarks>
     [Aka("Enforceable Promise")]
     public class ComLawContract<T> : LegalConcept, IContract<T> where T : ILegalConcept
     {
         [Note("bargained for: if it is sought by one and given by the other")]
         [Aka("mutuality of obligation")]
-        public virtual Consideration<T> Consideration { get; set; }
-        
-        public virtual IContractTerms Assent { get; set; }
+        public virtual IConsideration<T> Consideration { get; set; }
+
+        /// <summary>
+        /// An outward expression of approval that a reasonable person would understand
+        /// </summary>
+        /// <remarks>
+        /// src [LUCY v. ZEHMER Supreme Court of Virginia 196 Va. 493; 84 S.E.2d 516 (1954)]
+        /// <![CDATA[
+        /// If his words and acts, judged by a reasonable standard, manifest an intention 
+        /// to agree, it is immaterial what may be the real but unexpressed state of his mind.
+        /// ]]>
+        /// </remarks>
+        public virtual IAssent Assent { get; set; }
 
         [Note("this is what distinguishes a common (donative) promise from a legal one")]
         public override bool IsEnforceableInCourt => true;
@@ -136,8 +153,6 @@ namespace NoFuture.Rand.Law.Contract.US
 
             return true;
         }
-
-        
 
         public override string ToString()
         {

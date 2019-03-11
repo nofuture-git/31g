@@ -14,10 +14,10 @@ namespace NoFuture.Rand.Law.Contract.US.Ucc
     /// </summary>
     public class UccContract<T> : LegalConcept, IUccItem, IContract<T> where T : IUccItem
     {
-        [Note("the bargain of the parties")]
-        public virtual IContractTerms Assent { get; set; }
+        public virtual IAssent Assent { get; set; }
 
         public ILegalConcept Offer { get; set; }
+
         public Func<ILegalConcept, T> Acceptance { get; set; }
 
         /// <summary>
@@ -25,7 +25,6 @@ namespace NoFuture.Rand.Law.Contract.US.Ucc
         /// </summary>
         [Aka("UCC 2-612")]
         public virtual bool IsInstallmentContract { get; set; }
-
 
         public ILegalPerson GetOfferor(ILegalPerson[] persons)
         {

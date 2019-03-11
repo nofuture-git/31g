@@ -40,6 +40,7 @@
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="Exceptions\LawException.cs" />
     <Compile Include="IAssent.cs" />
+    <Compile Include="IBargain.cs" />
     <Compile Include="IConsent.cs" />
     <Compile Include="ILegalProperty.cs" />
     <Compile Include="LegalProperty.cs" />

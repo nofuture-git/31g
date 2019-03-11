@@ -48,8 +48,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
 
             testContract.Consideration = new Consideration<Promise>(testContract)
             {
-                IsGivenByPromisee = (lp, p) => true,
-                IsSoughtByPromisor = (lp, p) => true
+                IsGivenByOfferee = (lp, p) => true,
+                IsSoughtByOfferor = (lp, p) => true
             };
 
             var testResult = testContract.IsValid(new Hawkins(), new McGee());

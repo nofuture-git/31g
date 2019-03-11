@@ -49,8 +49,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
             testContract.Consideration = new Consideration<Promise>(testContract)
             {
-                IsGivenByPromisee = (lp, p) => true,
-                IsSoughtByPromisor = (lp, p) => true
+                IsGivenByOfferee = (lp, p) => true,
+                IsSoughtByOfferor = (lp, p) => true
             };
 
             //although legally his Gertrude is his legal wife - the contract's intend was obviously Adeline

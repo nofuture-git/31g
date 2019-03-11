@@ -32,8 +32,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
             };
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
-                IsGivenByPromisee = (lp, p) => true,
-                IsSoughtByPromisor = (lp, p) => true
+                IsGivenByOfferee = (lp, p) => true,
+                IsSoughtByOfferor = (lp, p) => true
             };
             var testResult = testSubject.IsValid(new Jankowski(), new Jedz());
             Assert.IsFalse(testResult);

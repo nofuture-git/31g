@@ -26,12 +26,12 @@ namespace NoFuture.Rand.Law.Contract.US
         /// <summary>
         /// A test for if Acceptance is actually what the promisor wants in return.
         /// </summary>
-        public virtual Func<ILegalPerson, T, bool> IsSoughtByPromisor { get; set; }
+        public virtual Func<ILegalPerson, T, bool> IsSoughtByOfferor { get; set; }
 
         /// <summary>
         /// A test for if Offer is actually what the promisee wants in return.
         /// </summary>
-        public virtual Func<ILegalPerson, ILegalConcept, bool> IsGivenByPromisee { get; set; }
+        public virtual Func<ILegalPerson, ILegalConcept, bool> IsGivenByOfferee { get; set; }
 
         /// <summary>
         /// What is bargained for must have value
@@ -60,15 +60,15 @@ namespace NoFuture.Rand.Law.Contract.US
             var offeror = Contract.GetOfferor(persons);
             var offeree = Contract.GetOfferee(persons);
 
-            if (IsSoughtByPromisor == null)
+            if (IsSoughtByOfferor == null)
             {
-                AddReasonEntry($"{nameof(IsSoughtByPromisor)} is null");
+                AddReasonEntry($"{nameof(IsSoughtByOfferor)} is null");
                 return false;
             }
 
-            if (IsGivenByPromisee == null)
+            if (IsGivenByOfferee == null)
             {
-                AddReasonEntry($"{nameof(IsGivenByPromisee)} is null");
+                AddReasonEntry($"{nameof(IsGivenByOfferee)} is null");
                 return false;
             }
 
@@ -80,13 +80,13 @@ namespace NoFuture.Rand.Law.Contract.US
                 return false;
             }
 
-            if (!IsSoughtByPromisor(offeror, returnPromise))
+            if (!IsSoughtByOfferor(offeror, returnPromise))
             {
                 AddReasonEntry($"the return promise is not what {offeror.Name} wants");
                 return false;
             }
 
-            if (!IsGivenByPromisee(offeree, promise))
+            if (!IsGivenByOfferee(offeree, promise))
             {
                 AddReasonEntry($"the offer is not what the {offeree.Name} wants");
                 return false;

@@ -92,7 +92,14 @@ namespace NoFuture.Rand.Law.Contract.US
                 return false;
             }
 
-            AgreedTerms = Contract.Assent.GetInNameAgreedTerms(offeror, offeree);
+            var contractTerms = Contract.Assent as IContractTerms;
+            if (contractTerms == null)
+            {
+                AddReasonEntry("resolving ambiguous terms requires a contract with assent");
+                return false;
+            }
+
+            AgreedTerms = contractTerms.GetInNameAgreedTerms(offeror, offeree);
             AddReasonEntryRange(Contract.Assent.GetReasonEntries());
             if (!AgreedTerms.Any())
             {
@@ -100,8 +107,8 @@ namespace NoFuture.Rand.Law.Contract.US
                 AddReasonEntry($"there are not agreed terms between {offeror.Name} and {offeree.Name}");
                 return false;
             }
-            OfferorTerms = Contract.Assent.TermsOfAgreement(offeror);
-            OffereeTerms = Contract.Assent.TermsOfAgreement(offeree);
+            OfferorTerms = contractTerms.TermsOfAgreement(offeror);
+            OffereeTerms = contractTerms.TermsOfAgreement(offeree);
 
             return true;
         }

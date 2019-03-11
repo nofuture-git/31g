@@ -23,9 +23,9 @@ namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
             };
             testSubject.Consideration = new Consideration<Performance>(testSubject)
             {
-                IsSoughtByPromisor = (ryan, equipment) =>
+                IsSoughtByOfferor = (ryan, equipment) =>
                     ryan is RyanLeslie && equipment is RyanLesliesLaptopComputerAndExternalHd,
-                IsGivenByPromisee = (augstein, reward) =>
+                IsGivenByOfferee = (augstein, reward) =>
                     augstein is ArminAugstein && reward is TwentyThousandUsdReward
             };
 

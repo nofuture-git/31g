@@ -23,8 +23,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
             };
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
-                IsSoughtByPromisor = (lp, promise) => lp is PepsicoInc && promise is PepsiStuff,
-                IsGivenByPromisee = (lp, promise) => lp is ConsumerOfPepsi && promise is PepsiPoints
+                IsSoughtByOfferor = (lp, promise) => lp is PepsicoInc && promise is PepsiStuff,
+                IsGivenByOfferee = (lp, promise) => lp is ConsumerOfPepsi && promise is PepsiPoints
             };
 
             var testResult = testSubject.IsValid(new PepsicoInc(), new Leonard());

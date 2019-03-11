@@ -35,8 +35,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
 
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
-                IsSoughtByPromisor = (lp, promise) => lp is HelenSevertson && promise is AcceptancePriceInSignedDoc,
-                IsGivenByPromisee = (lp, promise) => lp is MarkAndKellyThorson && promise is OfferToPurchaseFarmsite
+                IsSoughtByOfferor = (lp, promise) => lp is HelenSevertson && promise is AcceptancePriceInSignedDoc,
+                IsGivenByOfferee = (lp, promise) => lp is MarkAndKellyThorson && promise is OfferToPurchaseFarmsite
             };
 
             var helen = new HelenSevertson();

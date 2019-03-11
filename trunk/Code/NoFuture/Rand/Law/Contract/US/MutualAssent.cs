@@ -116,7 +116,7 @@ namespace NoFuture.Rand.Law.Contract.US
         }
 
         /// <summary>
-        /// Gets the symetric difference of the terms between offeror and offeree
+        /// Gets the symmetric difference of the terms between offeror and offeree
         /// </summary>
         /// <param name="offeror"></param>
         /// <param name="offeree"></param>

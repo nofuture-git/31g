@@ -24,8 +24,8 @@ namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
             testSubject.Consideration = new Consideration<Promise>(testSubject)
             {
                 //its here, whatever Mr. Lucy is 'thinking' is irrelevant 
-                IsSoughtByPromisor = (lp, promise) => lp is WOLucy && promise is FiftyThousandUsd,
-                IsGivenByPromisee = (lp, promise) => lp is AHZehmer && promise is FergusonFarm
+                IsSoughtByOfferor = (lp, promise) => lp is WOLucy && promise is FiftyThousandUsd,
+                IsGivenByOfferee = (lp, promise) => lp is AHZehmer && promise is FergusonFarm
             };
 
             var testResult = testSubject.IsValid(new WOLucy(), new AHZehmer());
