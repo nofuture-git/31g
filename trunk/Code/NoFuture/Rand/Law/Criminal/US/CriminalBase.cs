@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Criminal.US
     {
         public ILegalPerson GetDefendant(params ILegalPerson[] persons)
         {
-            var defendant = persons.FirstOrDefault();
+            var defendant = persons.FirstOrDefault(p => p is IDefendant);
             if (defendant == null)
             {
                 AddReasonEntry("it is not clear who the " +

@@ -83,12 +83,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         public LesbianInmates() : base("LESBIAN INMATES") { }
     }
 
-    public class Lovercamp : LegalPerson
+    public class Lovercamp : LegalPerson, IDefendant
     {
         public Lovercamp() : base("MARSHA LOVERCAMP") { }
     }
 
-    public class MsWynashe : LegalPerson
+    public class MsWynashe : LegalPerson, IDefendant
     {
         public MsWynashe() : base("MS. WYNASHE") { }
     }

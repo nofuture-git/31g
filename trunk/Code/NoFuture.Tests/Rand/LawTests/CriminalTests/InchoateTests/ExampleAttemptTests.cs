@@ -143,7 +143,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
         }
     }
 
-    public class KevinEg : LegalPerson
+    public class KevinEg : LegalPerson, IDefendant
     {
         public KevinEg() : base("KEVIN ROBBER") { }
 
