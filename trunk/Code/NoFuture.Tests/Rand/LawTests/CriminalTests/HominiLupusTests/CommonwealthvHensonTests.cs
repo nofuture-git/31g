@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class Henson : LegalPerson
+    public class Henson : LegalPerson, IDefendant
     {
         public Henson() : base("ALBERT J. HENSON") { }
     }

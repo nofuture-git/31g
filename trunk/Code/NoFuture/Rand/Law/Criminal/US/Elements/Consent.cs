@@ -23,12 +23,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
                 return false;
             }
 
-            foreach (var person in persons)
+            foreach (var victim in GetVictims(persons))
             {
-                var victim = person as IVictim;
-                if(victim == null)
-                    continue;
-
                 if (!IsCapableThereof(victim))
                 {
                     AddReasonEntry($"victim, {victim.Name}, {nameof(IsCapableThereof)} is false");

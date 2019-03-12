@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class Combatent00 : LegalPerson
+    public class Combatent00 : LegalPerson, IDefendant
     {
         public Combatent00() : base("COMBATENT 00") { }
     }

@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
             Assert.IsTrue(testResult);
         }
 
-        public class JimEg : LegalPerson
+        public class JimEg : LegalPerson, IDefendant
         {
             public JimEg() : base("JIM EVADER") { }
         }

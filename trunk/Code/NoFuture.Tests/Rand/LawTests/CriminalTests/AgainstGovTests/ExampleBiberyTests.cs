@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
         }
     }
 
-    public class IsabelBriberEg : LegalPerson
+    public class IsabelBriberEg : LegalPerson, IDefendant
     {
         public IsabelBriberEg(): base("ISABEL BRIBER") { }
     }

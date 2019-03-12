@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
         }
     }
 
-    public class Sowry : LegalPerson
+    public class Sowry : LegalPerson, IDefendant
     {
 
     }

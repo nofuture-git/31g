@@ -30,12 +30,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
         }
     }
 
-    public class EthelRosenberg : LegalPerson
+    public class EthelRosenberg : LegalPerson, IDefendant
     {
         public EthelRosenberg(): base ("ETHEL ROSENBERG") {  }
     }
 
-    public class JuliusRosenberg : LegalPerson
+    public class JuliusRosenberg : LegalPerson, IDefendant
     {
         public JuliusRosenberg():base("JULIUS ROSENBERG") { }
     }

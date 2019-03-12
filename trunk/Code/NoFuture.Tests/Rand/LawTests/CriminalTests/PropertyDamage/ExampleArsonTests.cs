@@ -49,17 +49,17 @@ namespace NoFuture.Rand.Law.Criminal.Tests.PropertyDestruction
         }
     }
 
-    public class ClarkBoredburnEg : LegalPerson
+    public class ClarkBoredburnEg : LegalPerson, IDefendant
     {
         public ClarkBoredburnEg() : base("CLARK BOREDBURN") { }
     }
 
-    public class MannyBoredtwobrunEg : LegalPerson
+    public class MannyBoredtwobrunEg : LegalPerson, IDefendant
     {
         public MannyBoredtwobrunEg() : base("MANNY BOREDTWOBRUN") { }
     }
 
-    public class TimBrokenheartEg : LegalPerson
+    public class TimBrokenheartEg : LegalPerson, IDefendant
     {
         public TimBrokenheartEg() : base("TIM BROKENHEART") { }
     }

@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
         }
     }
 
-    public class Horner : LegalPerson
+    public class Horner : LegalPerson, IDefendant
     {
         //public Horner():base("HORNER") { }
     }

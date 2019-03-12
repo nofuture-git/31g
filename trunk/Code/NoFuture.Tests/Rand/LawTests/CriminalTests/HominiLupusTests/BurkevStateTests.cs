@@ -8,6 +8,14 @@ using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
 {
+    /// <summary>
+    /// Burke v. State, 676 S.E.2d 766 (2009).
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// doctrine issue, stalking requires two or more violations 
+    /// ]]>
+    /// </remarks>
     [TestFixture()]
     public class BurkevStateTests
     {
@@ -25,6 +33,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                         {
                             IsSubstantialEmotionalDistress = lp => lp is Burke
                         },
+                        //this is not illegal
                         new DeclareLove
                         {
                             IsCauseToFearSafety = lp => lp is Burke
@@ -43,7 +52,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class Burke : LegalPerson
+    public class Burke : LegalPerson, IDefendant
     {
         public Burke() : base("SEAN M. BURKE") { }
     }

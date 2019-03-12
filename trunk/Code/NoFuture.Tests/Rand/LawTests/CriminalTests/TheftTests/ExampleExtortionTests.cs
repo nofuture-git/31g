@@ -72,7 +72,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         }
     }
 
-    public class RodneyBlackmailEg : LegalPerson
+    public class RodneyBlackmailEg : LegalPerson, IDefendant
     {
         public RodneyBlackmailEg() : base("RODNEY BLACKMAIL") { }
     }
@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public LindseyDealinEg() : base("LINDSEY DEALIN") { }
     }
 
-    public class TrentThreatenEg : LegalPerson
+    public class TrentThreatenEg : LegalPerson, IDefendant
     {
         public TrentThreatenEg() :base("TRENT THREATEN") {  }
     }

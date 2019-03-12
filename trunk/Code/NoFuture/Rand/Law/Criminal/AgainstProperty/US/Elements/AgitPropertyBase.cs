@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
                 return true;
 
             //did the caller pass in any IVictim types
-            var victims = persons.Where(lp => lp is IVictim).ToList();
+            var victims = GetVictims(persons);
             if (!victims.Any())
                 return true;
 

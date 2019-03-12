@@ -57,12 +57,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
         }
     }
 
-    public class PattyEg : LegalPerson
+    public class PattyEg : LegalPerson, IDefendant
     {
         public PattyEg(): base("PATTY") { }
     }
 
-    public class PaigeEg : LegalPerson
+    public class PaigeEg : LegalPerson, IVictim
     {
         public PaigeEg(): base("PAIGE") { }
     }

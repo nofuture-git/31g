@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class DianaPistolEg : LegalPerson
+    public class DianaPistolEg : LegalPerson, IDefendant
     {
         public DianaPistolEg() : base("DIANA PISTOL") {}
         public bool IsAimPistol { get; set; } = true;

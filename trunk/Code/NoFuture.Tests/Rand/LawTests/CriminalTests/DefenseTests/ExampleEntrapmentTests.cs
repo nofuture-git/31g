@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
         }
     }
 
-    public class WinifredEg : LegalPerson
+    public class WinifredEg : LegalPerson, IDefendant
     {
         public WinifredEg() : base("WINIFRED NA") { }
     }

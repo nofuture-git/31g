@@ -31,13 +31,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
         }
     }
 
-    public class Robinson : LegalPerson
+    public class Robinson : LegalPerson, IDefendant
     {
         public Robinson():base("ROBINSON") { }
-    }
-
-    public class California : Government
-    {
-
     }
 }

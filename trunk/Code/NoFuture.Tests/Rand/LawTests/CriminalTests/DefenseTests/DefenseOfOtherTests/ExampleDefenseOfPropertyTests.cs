@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         }
     }
 
-    public class KelseyEg : LegalPerson
+    public class KelseyEg : LegalPerson, IDefendant
     {
         public KelseyEg() : base("") { }
     }

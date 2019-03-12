@@ -52,12 +52,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
         }
     }
 
-    public class DavidInebriatedEg : LegalPerson
+    public class DavidInebriatedEg : LegalPerson, IDefendant
     {
         public DavidInebriatedEg() : base("DAVID INEBRIATED") { }
     }
 
-    public class DanielDrunkbuddyEg : LegalPerson
+    public class DanielDrunkbuddyEg : LegalPerson, IDefendant
     {
         public DanielDrunkbuddyEg() : base("DANIEL DRUNKBUDDY") { }
     }

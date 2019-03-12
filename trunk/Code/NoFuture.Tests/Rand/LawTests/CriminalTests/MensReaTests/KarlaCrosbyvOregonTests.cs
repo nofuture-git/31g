@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
         }
     }
 
-    public class KarlaCrosby : LegalPerson
+    public class KarlaCrosby : LegalPerson, IDefendant
     {
         public KarlaCrosby() : base("KARLA CROSBY") { }
     }

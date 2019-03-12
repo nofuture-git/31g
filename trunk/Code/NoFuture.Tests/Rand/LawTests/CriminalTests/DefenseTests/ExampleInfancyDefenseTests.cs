@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
         }
     }
 
-    public class MarioEg : LegalPerson
+    public class MarioEg : LegalPerson, IDefendant
     {
         public MarioEg() : base("MARIO CANDY") { }
     }

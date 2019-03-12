@@ -56,12 +56,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class HalIncestEg : LegalPerson
+    public class HalIncestEg : LegalPerson, IDefendant
     {
         public HalIncestEg() : base("HAL INCEST") { }
     }
 
-    public class HarrietIncestEg : LegalPerson
+    public class HarrietIncestEg : LegalPerson, IDefendant
     {
         public HarrietIncestEg() : base("HARRIET INCEST") { }
     }

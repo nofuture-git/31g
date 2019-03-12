@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
         }
     }
 
-    public class ZacariasMoussaoui : LegalPerson
+    public class ZacariasMoussaoui : LegalPerson, IDefendant
     {
         public ZacariasMoussaoui(): base("ZACARIAS MOUSSAOUI") { }
     }

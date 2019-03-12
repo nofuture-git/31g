@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
         }
     }
 
-    public class MarcusWitnessEg : LegalPerson
+    public class MarcusWitnessEg : LegalPerson, IDefendant
     {
         public MarcusWitnessEg() : base("MARCUS WITNESS") { }
     }

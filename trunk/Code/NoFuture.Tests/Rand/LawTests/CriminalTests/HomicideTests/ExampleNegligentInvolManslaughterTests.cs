@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
         }
     }
 
-    public class StevenSheriffEg : LegalPerson
+    public class StevenSheriffEg : LegalPerson, IDefendant
     {
         public StevenSheriffEg() : base("STEVEN SHERIFF") { }
     }

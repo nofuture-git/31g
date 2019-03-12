@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
         public NicholasEg() :base("NICHOLAS") {}
     }
 
-    public class WandaEg : LegalPerson
+    public class WandaEg : LegalPerson, IDefendant
     {
         public WandaEg() : base("WANDA") {}
     }

@@ -168,12 +168,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
         }
     }
 
-    public class MelissaEg : LegalPerson
+    public class MelissaEg : LegalPerson, IDefendant
     {
         public MelissaEg() : base("MELISSA POISON") { }
     }
 
-    public class HarryEg : LegalPerson
+    public class HarryEg : LegalPerson, IDefendant
     {
         public HarryEg() : base("HARRY HITMAN") { }
 
@@ -181,7 +181,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
         public bool IsPayWithCash2Hitman => true;
     }
 
-    public class JudyEg : LegalPerson
+    public class JudyEg : LegalPerson, IDefendant
     {
         public JudyEg() : base("") { }
 

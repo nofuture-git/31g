@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
         }
     }
 
-    public class Butler : LegalPerson
+    public class Butler : LegalPerson, IDefendant
     {
         public Butler(): base("CAS SIUS BUTLER") {  }
     }

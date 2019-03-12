@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public DemennoKerdoonCompany() : base("DEMENNO/KERDOON COMPANY") { }
     }
 
-    public class Traster : LegalPerson
+    public class Traster : LegalPerson, IDefendant
     {
         public Traster() : base("KEVIN D. TRASTER") {  }
     }

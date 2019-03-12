@@ -16,18 +16,18 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
             {
                 ActusReus = new ManslaughterVoluntary
                 {
-                    IsCorpusDelicti = DillonRager.IsKilledFrank
+                    IsCorpusDelicti = DillonRagerEg.IsKilledFrank
                 },
                 MensRea = new AdequateProvocation
                 {
                     //getting fired is not reason enough
                     IsReasonableToInciteKilling = lp => false,
-                    IsDefendantActuallyProvoked = lp => lp is DillonRager,
-                    IsVictimSourceOfIncite = lp => lp is DillonRager
+                    IsDefendantActuallyProvoked = lp => lp is DillonRagerEg,
+                    IsVictimSourceOfIncite = lp => lp is DillonRagerEg
                 }
             };
 
-            var testResult = testCrime.IsValid(new DillonRager());
+            var testResult = testCrime.IsValid(new DillonRagerEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
         }
@@ -39,17 +39,17 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
             {
                 ActusReus = new ManslaughterVoluntary
                 {
-                    IsCorpusDelicti = JoseRager.IsKilledWife
+                    IsCorpusDelicti = JoseRagerEg.IsKilledWife
                 },
                 MensRea = new AdequateProvocation
                 {
-                    IsReasonableToInciteKilling = lp => lp is JoseRager,
-                    IsDefendantActuallyProvoked = lp => lp is JoseRager,
-                    IsVictimSourceOfIncite = lp => lp is JoseRager
+                    IsReasonableToInciteKilling = lp => lp is JoseRagerEg,
+                    IsDefendantActuallyProvoked = lp => lp is JoseRagerEg,
+                    IsVictimSourceOfIncite = lp => lp is JoseRagerEg
                 }
             };
 
-            var testResult = testCrime.IsValid(new JoseRager());
+            var testResult = testCrime.IsValid(new JoseRagerEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
@@ -61,15 +61,15 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
             {
                 ActusReus = new ManslaughterVoluntary
                 {
-                    IsCorpusDelicti = JoseRager.IsKilledWife
+                    IsCorpusDelicti = JoseRagerEg.IsKilledWife
                 },
                 MensRea = new SpecificIntent
                 {
-                    IsIntentOnWrongdoing = lp => lp is JoseRager
+                    IsIntentOnWrongdoing = lp => lp is JoseRagerEg
                 }
             };
 
-            var testResult = testCrime.IsValid(new JoseRager());
+            var testResult = testCrime.IsValid(new JoseRagerEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
         }
@@ -82,13 +82,13 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
             {
                 ActusReus = new ManslaughterVoluntary
                 {
-                    IsCorpusDelicti = JoseRager.IsKilledWife
+                    IsCorpusDelicti = JoseRagerEg.IsKilledWife
                 },
                 MensRea = new AdequateProvocation
                 {
-                    IsReasonableToInciteKilling = lp => lp is JoseRager,
-                    IsDefendantActuallyProvoked = lp => lp is JoseRager,
-                    IsVictimSourceOfIncite = lp => lp is JoseRager,
+                    IsReasonableToInciteKilling = lp => lp is JoseRagerEg,
+                    IsDefendantActuallyProvoked = lp => lp is JoseRagerEg,
+                    IsVictimSourceOfIncite = lp => lp is JoseRagerEg,
                     Inception = new DateTime(yyyy, 3, 15, 14,0,0),
                     Terminus = new DateTime(yyyy, 3,15, 14,5,0),
                     //heat of passion doesn't work over time
@@ -96,29 +96,29 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
                 }
             };
 
-            var testResult = testCrime.IsValid(new JoseRager());
+            var testResult = testCrime.IsValid(new JoseRagerEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsFalse(testResult);
         }
     }
 
-    public class DillonRager : LegalPerson
+    public class DillonRagerEg : LegalPerson, IDefendant
     {
-        public DillonRager() : base("DILLON RAGER") { }
+        public DillonRagerEg() : base("DILLON RAGER") { }
 
         public static bool IsKilledFrank(ILegalPerson lp)
         {
-            return lp is DillonRager;
+            return lp is DillonRagerEg;
         }
     }
 
-    public class JoseRager : LegalPerson
+    public class JoseRagerEg : LegalPerson, IDefendant
     {
-        public JoseRager() : base("JOSE RAGER") { }
+        public JoseRagerEg() : base("JOSE RAGER") { }
 
         public static bool IsKilledWife(ILegalPerson lp)
         {
-            return lp is JoseRager;
+            return lp is JoseRagerEg;
         }
     }
 }

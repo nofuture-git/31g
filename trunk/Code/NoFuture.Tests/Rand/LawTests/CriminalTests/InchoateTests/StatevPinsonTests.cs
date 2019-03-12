@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
         }
     }
 
-    public class Pinson : LegalPerson
+    public class Pinson : LegalPerson, IDefendant
     {
         public Pinson() : base("JOHNNY PINSON") { }
         public bool IsBuyer { get; set; } = true;

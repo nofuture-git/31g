@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.CausationTests
         }
     }
 
-    public class Bullock : LegalPerson
+    public class Bullock : LegalPerson, IDefendant
     {
 
     }

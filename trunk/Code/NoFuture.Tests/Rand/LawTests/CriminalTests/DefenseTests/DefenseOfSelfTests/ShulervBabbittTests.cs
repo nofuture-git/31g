@@ -62,12 +62,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
         }
     }
 
-    public class GrizzlyBear : LegalPerson
+    public class GrizzlyBear : LegalPerson, IVictim
     {
         
     }
 
-    public class Shuler : LegalPerson
+    public class Shuler : LegalPerson, IDefendant
     {
         public Shuler() : base("JOHN E. SHULER") { }
     }

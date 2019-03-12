@@ -65,12 +65,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         }
     }
 
-    public class KeishaEg : LegalPerson
+    public class KeishaEg : LegalPerson, IDefendant
     {
         public KeishaEg() : base("KEISHA TELLER") { }
     }
 
-    public class BrianEg : LegalPerson
+    public class BrianEg : LegalPerson, IDefendant
     {
         public BrianEg() : base("BRIAN BANKROBBER") { }
     }

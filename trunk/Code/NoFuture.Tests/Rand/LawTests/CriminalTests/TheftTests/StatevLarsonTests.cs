@@ -79,7 +79,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public bool IsAllowedToCommingle { get; set; }
     }
 
-    public class Larson : LegalPerson
+    public class Larson : LegalPerson, IDefendant
     {
         public Larson() : base("FRANK DONALD LARSON") { }
 

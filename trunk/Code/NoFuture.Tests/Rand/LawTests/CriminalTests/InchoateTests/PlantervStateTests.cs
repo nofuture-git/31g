@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
         }
     }
 
-    public class Planter : LegalPerson
+    public class Planter : LegalPerson, IDefendant
     {
         public Planter(): base("WILLIAM EDWARD PLANTER") { }
 

@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
         }
     }
 
-    public class JedBurglarToolEg : LegalPerson
+    public class JedBurglarToolEg : LegalPerson, IDefendant
     {
         public JedBurglarToolEg() : base("JED BURGLARTOOL") {  }
     }
@@ -125,7 +125,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
         public HansDaresEg(): base("HANS DARES") {  }
     }
 
-    public class ChristianShovesEg : LegalPerson
+    public class ChristianShovesEg : LegalPerson, IDefendant
     {
         public ChristianShovesEg() : base("CHRISTIAN SHOVES") {  }
     }

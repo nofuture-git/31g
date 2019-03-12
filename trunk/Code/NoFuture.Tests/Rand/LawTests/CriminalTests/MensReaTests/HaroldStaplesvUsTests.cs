@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
         }
     }
 
-    public class HaroldStaples : LegalPerson
+    public class HaroldStaples : LegalPerson, IDefendant
     {
         public HaroldStaples(): base("HAROLD E. STAPLES") { }
         public bool IsPossessionOfAr15Rifle => true;

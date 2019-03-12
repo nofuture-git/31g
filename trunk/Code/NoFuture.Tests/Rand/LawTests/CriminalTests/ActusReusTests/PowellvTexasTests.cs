@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
         {
             var testSubject = new ActusReus();
 
-            //being an alchoholic is not actus rea, drinking too much and getting drunk is
+            //being an alcoholic is not actus rea, drinking too much and getting drunk is
             testSubject.IsVoluntary = lp => lp is Powell;
             testSubject.IsAction = lp => lp is Powell;
 
@@ -31,13 +31,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
         }
     }
 
-    public class Powell : LegalPerson
+    public class Powell : LegalPerson, IDefendant
     {
         public Powell() : base("POWELL") { }
-    }
-
-    public class Texas : Government
-    {
-
     }
 }

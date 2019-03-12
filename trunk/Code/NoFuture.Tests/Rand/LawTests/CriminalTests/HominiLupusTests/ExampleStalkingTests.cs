@@ -79,7 +79,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class ElliotStalkerEg : LegalPerson
+    public class ElliotStalkerEg : LegalPerson, IDefendant
     {
         public ElliotStalkerEg() : base("ELLIOT STALKER") { }
     }

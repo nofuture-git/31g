@@ -120,12 +120,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
         }
     }
 
-    public class JouquinBurnerEg : LegalPerson
+    public class JouquinBurnerEg : LegalPerson, IDefendant
     {
         public JouquinBurnerEg() : base("JOUQUIN BURNER") { }
     }
 
-    public class RobertaBrandishEg : LegalPerson
+    public class RobertaBrandishEg : LegalPerson, IDefendant
     {
         public RobertaBrandishEg(): base("ROBERTA BRANDISH") { }
     }

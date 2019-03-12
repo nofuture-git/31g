@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         protected override string CategoryName { get; } = "walked to a neighbor's apartment";
     }
 
-    public class Daoud : LegalPerson
+    public class Daoud : LegalPerson, IDefendant
     {
         public Daoud() : base("KARIN DAOUD") { }
     }

@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
         }
     }
 
-    public class Guido : LegalPerson
+    public class Guido : LegalPerson, IDefendant
     {
         public Guido(): base("ADELE GUIDO") {}
     }

@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
         protected override string CategoryName => "IN SAN ANTIONIO";
     }
 
-    public class MinorVvc : LegalPerson
+    public class MinorVvc : LegalPerson, IDefendant
     {
         public MinorVvc():base("V.V.C.") { }
     }

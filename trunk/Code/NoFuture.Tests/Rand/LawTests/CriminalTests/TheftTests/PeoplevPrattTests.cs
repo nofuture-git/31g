@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         }
     }
 
-    public class Pratt : LegalPerson
+    public class Pratt : LegalPerson, IDefendant
     {
         public Pratt(): base("EDDIE JUNIOR PRATT") { }
     }

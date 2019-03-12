@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
         }
     }
 
-    public class Andrews : LegalPerson
+    public class Andrews : LegalPerson, IDefendant
     {
 
     }

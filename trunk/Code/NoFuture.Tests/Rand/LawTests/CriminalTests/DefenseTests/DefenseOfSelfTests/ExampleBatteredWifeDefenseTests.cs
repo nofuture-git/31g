@@ -52,12 +52,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
         }
     }
 
-    public class SpikeEg : LegalPerson
+    public class SpikeEg : LegalPerson, IVictim
     {
         public SpikeEg() : base("SPIKE") { }
     }
 
-    public class VeronicaEg : LegalPerson
+    public class VeronicaEg : LegalPerson, IDefendant
     {
         public VeronicaEg() : base("VERONICA") { }
     }

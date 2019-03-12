@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
         }
     }
 
-    public class Strand : LegalPerson
+    public class Strand : LegalPerson, IDefendant
     {
         
     }

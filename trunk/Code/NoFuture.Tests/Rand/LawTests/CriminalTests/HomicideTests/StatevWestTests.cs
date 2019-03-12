@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
         }
     }
 
-    public class West : LegalPerson
+    public class West : LegalPerson, IDefendant
     {
         public West(): base("WILLIAM WEST, APPELLANT.") { }
 

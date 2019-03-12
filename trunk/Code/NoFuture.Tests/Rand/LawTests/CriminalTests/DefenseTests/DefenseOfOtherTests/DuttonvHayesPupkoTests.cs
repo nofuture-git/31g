@@ -8,6 +8,14 @@ using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
 {
+    /// <summary>
+    /// Dutton v. Hayes-Pupko, No. 03-06-00438 (2008).
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// doctrine issue, the use of police power must be reasonable
+    /// ]]>
+    /// </remarks>
     [TestFixture]
     public class DuttonvHayesPupkoTests
     {
@@ -39,12 +47,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         }
     }
 
-    public class Dutton : LegalPerson
+    public class Dutton : LegalPerson, IDefendant
     {
         public Dutton() : base("DERRICK DUTTON") { }
     }
 
-    public class HayesPupko : LegalPerson
+    public class HayesPupko : LegalPerson, IVictim
     {
         public HayesPupko() : base("SHERYL HAYES-PUPKO") {}
     }

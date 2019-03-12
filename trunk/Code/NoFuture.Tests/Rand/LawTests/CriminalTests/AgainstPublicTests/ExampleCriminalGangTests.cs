@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
         public NorthSideBoyEg() : base("NORTH SIDE BOY") { }
     }
 
-    public class MikeWannbeEg : LegalPerson
+    public class MikeWannbeEg : LegalPerson, IDefendant
     {
         public MikeWannbeEg() : base("MIKE WANNABE") { }
     }

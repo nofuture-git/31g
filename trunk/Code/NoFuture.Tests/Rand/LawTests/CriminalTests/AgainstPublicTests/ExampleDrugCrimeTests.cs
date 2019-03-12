@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
                     IsIntentOnWrongdoing = lp => true,
                 }
             };
-            var testResult = testCrime.IsValid(new LegalPerson("CRIMINAL NAME HERE"));
+            var testResult = testCrime.IsValid(new CriminalNameHereEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
                     IsKnowledgeOfWrongdoing = lp => true,
                 }
             };
-            var testResult = testCrime.IsValid(new LegalPerson("CRIMINAL NAME HERE"));
+            var testResult = testCrime.IsValid(new CriminalNameHereEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
                     IsKnowledgeOfWrongdoing = lp => true,
                 }
             };
-            var testResult = testCrime.IsValid(new LegalPerson("CRIMINAL NAME HERE"));
+            var testResult = testCrime.IsValid(new CriminalNameHereEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
@@ -91,9 +91,14 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
                     IsKnowledgeOfWrongdoing = lp => true,
                 }
             };
-            var testResult = testCrime.IsValid(new LegalPerson("CRIMINAL NAME HERE"));
+            var testResult = testCrime.IsValid(new CriminalNameHereEg());
             Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
         }
+    }
+
+    public class CriminalNameHereEg : LegalPerson, IDefendant
+    {
+        public CriminalNameHereEg(): base("CRIMINAL NAME HERE") {  }
     }
 }

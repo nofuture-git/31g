@@ -109,7 +109,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class AlexGamerEg : LegalPerson
+    public class AlexGamerEg : LegalPerson, IDefendant
     {
         public AlexGamerEg() : base("ALEX GAMER") { }
     }

@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
         }
     }
 
-    public class BarryBondsEg : LegalPerson
+    public class BarryBondsEg : LegalPerson, IDefendant
     {
         public BarryBondsEg() : base("BARRY BONDS") {  }
     }

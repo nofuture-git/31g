@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         }
     }
 
-    public class Miranda : LegalPerson
+    public class Miranda : LegalPerson, IDefendant
     {
         public Miranda() : base("MARIA A. MIRANDA") {}
     }

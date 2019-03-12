@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
         }
     }
 
-    public class Morrisette : LegalPerson
+    public class Morrisette : LegalPerson, IDefendant
     {
         public Morrisette(): base ("MORISSETTE")  { }
     }

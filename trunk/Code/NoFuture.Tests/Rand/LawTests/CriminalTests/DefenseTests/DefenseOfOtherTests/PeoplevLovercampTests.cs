@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Defense;
 using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
@@ -79,7 +78,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         }
     }
 
-    public class LesbianInmates : LegalPerson
+    public class LesbianInmates : LegalPerson, IDefendant
     {
         public LesbianInmates() : base("LESBIAN INMATES") { }
     }

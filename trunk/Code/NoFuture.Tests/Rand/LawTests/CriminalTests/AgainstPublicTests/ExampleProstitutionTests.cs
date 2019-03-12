@@ -63,17 +63,17 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
         }
     }
 
-    public class JohnPayerEg : LegalPerson
+    public class JohnPayerEg : LegalPerson, IDefendant
     {
         public JohnPayerEg() : base("THE JOHN") {  }
     }
 
-    public class SueProstitueEg : LegalPerson
+    public class SueProstitueEg : LegalPerson, IDefendant
     {
         public SueProstitueEg() : base("SUE PROSTITUE") {  }
     }
 
-    public class UpgraddPimpEg : LegalPerson
+    public class UpgraddPimpEg : LegalPerson, IDefendant
     {
         public UpgraddPimpEg() : base("UPGRADD$") { }
     }

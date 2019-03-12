@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         }
     }
 
-    public class ChuckUnrelianceEg : Victim
+    public class ChuckUnrelianceEg : Victim, IDefendant
     {
         public ChuckUnrelianceEg() : base("CHUCK UNRELIANCE") { }
     }

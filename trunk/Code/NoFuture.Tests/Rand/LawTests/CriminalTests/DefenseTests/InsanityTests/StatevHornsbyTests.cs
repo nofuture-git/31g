@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
         }
     }
 
-    public class Hornsby : LegalPerson
+    public class Hornsby : LegalPerson, IDefendant
     {
         public Hornsby() : base("BRENT HORNSBY") { }
     }

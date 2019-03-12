@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
         }
     }
 
-    public class ShelbyEg : LegalPerson
+    public class ShelbyEg : LegalPerson, IDefendant
     {
         public ShelbyEg() : base("SHELBY ATTORNEY") { }
     }

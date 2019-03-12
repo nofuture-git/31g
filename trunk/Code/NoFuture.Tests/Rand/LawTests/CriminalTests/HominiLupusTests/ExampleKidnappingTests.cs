@@ -103,12 +103,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class JosephAbbyraperEg : LegalPerson
+    public class JosephAbbyraperEg : LegalPerson, IDefendant
     {
         public JosephAbbyraperEg() : base("JOSEPH ABBYRAPER") { }
     }
 
-    public class ThomasHitchhikerEg : LegalPerson
+    public class ThomasHitchhikerEg : LegalPerson, IDefendant
     {
         public ThomasHitchhikerEg() : base("THOMAS HITCHHIKER") { }
     }

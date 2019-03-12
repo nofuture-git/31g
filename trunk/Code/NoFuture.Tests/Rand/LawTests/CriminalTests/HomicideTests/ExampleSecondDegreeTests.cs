@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
         }
     }
 
-    public class DougCrackheadEg : LegalPerson
+    public class DougCrackheadEg : LegalPerson, IDefendant
     {
         public DougCrackheadEg() : base("DOUG CRACKHEAD") { }
 

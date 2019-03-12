@@ -69,12 +69,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
         }
     }
 
-    public class TinaEg : LegalPerson
+    public class TinaEg : LegalPerson, IDefendant
     {
         public TinaEg() : base("TINA SPEEDER") {}
     }
 
-    public class MickieEg : LegalPerson
+    public class MickieEg : LegalPerson, IDefendant
     {
         public MickieEg() : base("MICKIE BIKE") {}
     }

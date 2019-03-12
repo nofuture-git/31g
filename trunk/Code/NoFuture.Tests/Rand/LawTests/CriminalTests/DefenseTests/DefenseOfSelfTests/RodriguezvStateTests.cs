@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
         }
     }
 
-    public class Rodriguez : LegalPerson
+    public class Rodriguez : LegalPerson, IDefendant
     {
         public Rodriguez() : base("JUAN ROBERTO RAMOS RODRIGUEZ") { }
     }

@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         }
     }
 
-    public class Robertson : LegalPerson
+    public class Robertson : LegalPerson, IDefendant
     {
         public Robertson() : base("WILLIE HERBERT ROBERTSON") {  }
 

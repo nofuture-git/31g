@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
         public VinnyEg() : base("VINNY") {}
     }
 
-    public class FionaEg : LegalPerson
+    public class FionaEg : LegalPerson, IDefendant
     {
         public FionaEg(): base("FIONA") { }
     }

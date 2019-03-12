@@ -7,7 +7,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
     /// <summary>
     /// the willful intent to do harm
     /// </summary>
-    [Aka("criminal intent", "guilty mind", "vicious will")]
+    [Aka("criminal intent", "vicious will")]
+    [EtymologyNote("Latin", "mens rea", "guilty mind")]
     public interface IMensRea : IProsecution, IElement, IComparable
     {
         /// <summary>

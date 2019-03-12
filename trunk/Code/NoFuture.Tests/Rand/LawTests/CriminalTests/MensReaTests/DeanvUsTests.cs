@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
         }
     }
 
-    public class Dean : LegalPerson
+    public class Dean : LegalPerson, IDefendant
     {
 
     }

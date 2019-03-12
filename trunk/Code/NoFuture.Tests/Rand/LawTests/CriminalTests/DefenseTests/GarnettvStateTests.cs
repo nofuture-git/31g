@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
         }
     }
 
-    public class Garnett : LegalPerson
+    public class Garnett : LegalPerson, IDefendant
     {
         public Garnett() : base("LENNARD GARNETT") { }
     }

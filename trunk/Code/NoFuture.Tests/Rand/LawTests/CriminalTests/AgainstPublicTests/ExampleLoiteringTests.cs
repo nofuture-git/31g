@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
         }
     }
 
-    public class SomeBumEg : LegalPerson
+    public class SomeBumEg : LegalPerson, IDefendant
     {
         public SomeBumEg() : base("ARRRAGHH! GRINPNKLOOP...") { }
     }

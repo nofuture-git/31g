@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
         }
     }
 
-    public class Stevens : LegalPerson
+    public class Stevens : LegalPerson, IDefendant
     {
         public Stevens() : base("CHRISTOPHER M. STEVENS") { }
     }

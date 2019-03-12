@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
         }
     }
 
-    public class WendellHollis : LegalPerson
+    public class WendellHollis : LegalPerson, IDefendant
     {
         public WendellHollis() : base("WENDELL HOLLIS") { }
     }

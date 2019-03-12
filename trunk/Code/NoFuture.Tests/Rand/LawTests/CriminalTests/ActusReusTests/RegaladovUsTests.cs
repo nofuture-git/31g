@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
         }
     }
 
-    public class Regalado : LegalPerson
+    public class Regalado : LegalPerson, IDefendant
     {
 
     }

@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
         }
     }
 
-    public class DelilahEg : LegalPerson
+    public class DelilahEg : LegalPerson, IDefendant
     {
         public DelilahEg() : base("DELILAH RUFFEE")
         {

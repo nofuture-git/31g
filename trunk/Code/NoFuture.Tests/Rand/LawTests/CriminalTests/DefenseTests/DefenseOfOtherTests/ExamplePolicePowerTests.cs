@@ -42,12 +42,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         }
     }
 
-    public class OfficerColinEg : LegalPerson
+    public class OfficerColinEg : LegalPerson, IDefendant
     {
         public OfficerColinEg() : base("OFFICER COLIN") { }
     }
 
-    public class LindaEg : LegalPerson
+    public class LindaEg : LegalPerson, IVictim
     {
         public LindaEg() : base("LINDA BRATHEIF") {}
     }

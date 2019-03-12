@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
+using NoFuture.Rand.Law.Criminal.US;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
@@ -23,17 +24,17 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         }
     }
 
-    public class ChanelFenceEg : LegalPerson
+    public class ChanelFenceEg : LegalPerson, IDefendant
     {
         public ChanelFenceEg(): base("CHANEL FENCE") {  }
     }
 
-    public class BurtThiefEg : LegalPerson
+    public class BurtThiefEg : LegalPerson, IDefendant
     {
         public BurtThiefEg() : base("BURT THIEF") { }
     }
 
-    public class SandraVictimEg : LegalPerson
+    public class SandraVictimEg : Victim
     {
         public SandraVictimEg() : base("SANDRA VICTIM") {  }
     }

@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
         }
     }
 
-    public class Register : LegalPerson
+    public class Register : LegalPerson, IDefendant
     {
         public Register() : base("BRUCE REGISTER") { }
     }

@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
         }
     }
 
-    public class JoanniePremedEg : LegalPerson
+    public class JoanniePremedEg : LegalPerson, IDefendant
     {
         public JoanniePremedEg() : base("JOANNIE PREMED") { }
 

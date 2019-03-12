@@ -61,12 +61,8 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             var defendant = GetDefendant(persons);
             var consent = Consent as Consent ?? new Consent();
 
-            foreach (var person in persons)
+            foreach (var victim in GetVictims(persons))
             {
-                var victim = person as IVictim;
-                if(victim == null)
-                    continue;
-
                 var isCapable = consent.IsCapableThereof(victim);
                 var isIntercourse = IsSexualIntercourse(defendant);
 

@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
         }
     }
 
-    public class DwightEg : LegalPerson
+    public class DwightEg : LegalPerson, IDefendant
     {
         public DwightEg() : base("DWIGHT") {}
     }

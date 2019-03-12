@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         }
     }
 
-    public class TamaraEg : LegalPerson
+    public class TamaraEg : LegalPerson, IDefendant
     {
         public TamaraEg() : base("TAMARA LOST") { }
     }

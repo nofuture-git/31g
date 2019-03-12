@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
         }
     }
 
-    public class JimmyRequestorEg : LegalPerson
+    public class JimmyRequestorEg : LegalPerson, IDefendant
     {
         public JimmyRequestorEg() : base("JIMMY REQUESTOR") {}
     }

@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class Holbach : LegalPerson
+    public class Holbach : LegalPerson, IDefendant
     {
         public Holbach() : base("SCOTT THOMAS BOYLE") { }
     }

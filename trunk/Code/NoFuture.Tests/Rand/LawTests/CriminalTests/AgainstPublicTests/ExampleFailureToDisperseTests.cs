@@ -78,7 +78,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
         }
     }
 
-    public class BuckShouterEg : LegalPerson
+    public class BuckShouterEg : LegalPerson, IDefendant
     {
         public BuckShouterEg(): base("BUCK SHOUTER") { }
     }

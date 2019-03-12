@@ -35,13 +35,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
         }
     }
 
-    public class Withrow : LegalPerson
+    public class Withrow : LegalPerson, IDefendant
     {
         public Withrow() : base("MICHAEL R. WITHROW") { }
-
-        public static bool IsSubstantial(ILegalPerson lp)
-        {
-            return true;
-        }
     }
 }

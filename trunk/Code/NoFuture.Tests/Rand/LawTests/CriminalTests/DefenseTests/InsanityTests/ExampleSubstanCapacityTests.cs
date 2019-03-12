@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
         }
     }
 
-    public class LoreenEg : LegalPerson
+    public class LoreenEg : LegalPerson, IDefendant
     {
         public LoreenEg() : base("LOREEN MADHOUSE") { }
     }

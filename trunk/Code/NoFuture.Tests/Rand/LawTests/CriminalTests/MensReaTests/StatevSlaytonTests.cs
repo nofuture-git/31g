@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
         }
     }
 
-    public class Slayton : LegalPerson
+    public class Slayton : LegalPerson, IDefendant
     {
 
     }

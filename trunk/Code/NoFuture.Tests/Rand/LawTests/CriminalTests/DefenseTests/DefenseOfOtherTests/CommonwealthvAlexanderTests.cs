@@ -69,12 +69,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         }
     }
 
-    public class Alexander : LegalPerson
+    public class Alexander : LegalPerson, IDefendant
     {
         public Alexander() : base("JON DOUGLAS ALEXANDER") { }
     }
 
-    public class MichaelTEustler : LegalPerson
+    public class MichaelTEustler : LegalPerson, IVictim
     {
         public MichaelTEustler() : base("MICHAEL T. EUSTLER") { }
     }

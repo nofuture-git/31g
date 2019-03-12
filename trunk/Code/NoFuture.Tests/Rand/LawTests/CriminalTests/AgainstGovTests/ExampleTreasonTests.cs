@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
 
     public class Recordings01 : LegalPerson { }
 
-    public class MildredGillars : LegalPerson
+    public class MildredGillars : LegalPerson, IDefendant
     {
         public MildredGillars() : base("MILDRED GILLARS")
         {

@@ -41,12 +41,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
         }
     }
 
-    public class NateEg : LegalPerson
+    public class NateEg : LegalPerson, IDefendant
     {
         public NateEg():base("NATE EXAMPLE") {}
     }
 
-    public class BobEg : LegalPerson
+    public class BobEg : LegalPerson, IDefendant
     {
         public BobEg() : base("BOB LOVERBOY") {}
     }

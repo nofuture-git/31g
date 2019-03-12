@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
        
     }
 
-    public class MoSabotageEg : MoDisgruntledEg
+    public class MoSabotageEg : MoDisgruntledEg, IDefendant
     {
         public MoSabotageEg() : base("MO SABOTAGE") { }
     }

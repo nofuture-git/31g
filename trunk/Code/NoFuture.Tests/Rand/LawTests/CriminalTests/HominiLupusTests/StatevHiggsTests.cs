@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         }
     }
 
-    public class Higgs : LegalPerson
+    public class Higgs : LegalPerson, IDefendant
     {
         public Higgs() : base("CHARLES DANTE HIGGS") { }
         public bool IsThrowCupInFace { get; set; } = true;

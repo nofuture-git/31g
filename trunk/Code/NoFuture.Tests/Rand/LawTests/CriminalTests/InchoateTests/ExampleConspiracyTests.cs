@@ -101,12 +101,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
         }
     }
 
-    public class ShellyDriverEg : LegalPerson
+    public class ShellyDriverEg : LegalPerson, IDefendant
     {
         public ShellyDriverEg() : base("SHELLY DRIVER") { }
     }
 
-    public class SamRobberEg : LegalPerson
+    public class SamRobberEg : LegalPerson, IDefendant
     {
         public SamRobberEg() : base("SAM ROBBER") { }
     }

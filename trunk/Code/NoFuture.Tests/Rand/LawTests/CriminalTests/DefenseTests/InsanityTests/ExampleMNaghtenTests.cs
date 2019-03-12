@@ -74,12 +74,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
         }
     }
 
-    public class AndreaEg : LegalPerson
+    public class AndreaEg : LegalPerson, IDefendant
     {
         public AndreaEg() : base("ANDREA SCHIZOPHRENIC") { }
     }
 
-    public class SusanEg : LegalPerson
+    public class SusanEg : LegalPerson, IDefendant
     {
         public SusanEg() : base("SUSAN INFANTCIDE") {}
     }
