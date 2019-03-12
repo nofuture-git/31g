@@ -4,7 +4,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
 {
     /// <summary>
     /// A way to allow there to still be intent whenever the original 
-    /// target is missed and lands upon some other victem
+    /// target is missed and lands upon some other victim
     /// </summary>
     public class Transferred : MensRea
     {

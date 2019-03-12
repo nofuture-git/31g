@@ -12,7 +12,7 @@ Aleksandr Solzhenitsyn
 
 ----
 Survival Signals
- - signs or behaviors that should indicate danger is eminent
+ - signs or behaviors that should indicate danger is imminent
  - typically with regards to strangers
  
  (1) Forced Teaming: an effective way to est. a premature trust 

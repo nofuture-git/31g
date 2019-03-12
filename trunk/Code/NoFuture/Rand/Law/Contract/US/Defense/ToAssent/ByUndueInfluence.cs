@@ -67,16 +67,11 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
         /// <summary>
         /// The objective test for the legal concept
         /// </summary>
-        /// <param name="offeror">
+        /// <param name="persons">
         /// <![CDATA[
-        /// a.k.a. "dominant" party, 
-        /// "fiduciaries" a party in a position of trust (e.g. lawyers, 
+        ///  "fiduciaries" a party in a position of trust (e.g. lawyers, 
         /// physicians, trustees, guardians, etc.)
-        /// ]]>
-        /// </param>
-        /// <param name="offeree">
-        /// <![CDATA[
-        /// a.k.a. "servient" party
+        /// the two sides are labelled as "dominant" party and the "servient" party 
         /// ]]>
         /// </param>
         /// <returns></returns>

@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
     /// sudden indignation.
     /// </summary>
     /// <remarks>
-    /// words alone are not enougth to constitute adequate provocation 
+    /// words alone are not enough to constitute adequate provocation 
     /// </remarks>
     [Aka("heat of passion")]
     public class AdequateProvocation : MensRea, IHomicideConcurrance
