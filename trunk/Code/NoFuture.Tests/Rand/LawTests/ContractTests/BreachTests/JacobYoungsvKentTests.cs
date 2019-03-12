@@ -164,7 +164,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class JacobYoung : LegalPerson
+    public class JacobYoung : LegalPerson, IOfferor
     {
         public JacobYoung(): base("") { }
         public ISet<Term<object>> GetTerms()
@@ -176,7 +176,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class Kent : LegalPerson
+    public class Kent : LegalPerson, IOfferee
     {
         public Kent(): base("") { }
         public ISet<Term<object>> GetTerms()

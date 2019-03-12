@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class CoastalSteel : LegalPerson
+    public class CoastalSteel : LegalPerson, IOfferor
     {
         public CoastalSteel(): base("COASTAL STEEL ERECTORS, INC.") { }
         public ISet<Term<object>> GetTerms()
@@ -105,7 +105,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Algernon : LegalPerson
+    public class Algernon : LegalPerson, IOfferee
     {
         public Algernon(): base("ALGERNON BLAIR, INC.") { }
         public ISet<Term<object>> GetTerms()

@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class Smith : LegalPerson
+    public class Smith : LegalPerson, IOfferor
     {
         public ISet<Term<object>> GetTerms()
         {
@@ -131,7 +131,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class Brady : LegalPerson
+    public class Brady : LegalPerson, IOfferee
     {
         public ISet<Term<object>> GetTerms()
         {

@@ -69,12 +69,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
         }
     }
 
-    public class Hamer : LegalPerson
+    public class Hamer : LegalPerson, IOfferor
     {
         public Hamer() : base("HAMER") { }
     }
 
-    public class Sidway : LegalPerson
+    public class Sidway : LegalPerson, IOfferee
     {
         public Sidway() : base("SIDWAY") { }
     }

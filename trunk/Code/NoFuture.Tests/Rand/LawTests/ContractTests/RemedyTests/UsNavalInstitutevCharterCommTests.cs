@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class UsNavalInstitute : LegalPerson
+    public class UsNavalInstitute : LegalPerson, IOfferor
     {
         public UsNavalInstitute(): base("UNITED STATES NAVAL INSTITUTE") { }
         public ISet<Term<object>> GetTerms()
@@ -106,7 +106,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class CharterComm : LegalPerson
+    public class CharterComm : LegalPerson, IOfferee
     {
         public CharterComm(): base("CHARTER COMMUNICATIONS, INC.") { }
         public ISet<Term<object>> GetTerms()

@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     public class AcceptanceSellEthylene : OfferSellEthylene { }
 
-    public class PpgIndustries : LegalPerson
+    public class PpgIndustries : LegalPerson, IOfferor
     {
         public PpgIndustries(): base("PPG INDUSTRIES, INC.") {}
 
@@ -85,7 +85,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class ShellOil : LegalPerson
+    public class ShellOil : LegalPerson, IOfferee
     {
         public ShellOil():base("SHELL OIL CO.") {}
         public virtual ISet<Term<object>> GetTerms()

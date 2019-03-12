@@ -79,12 +79,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptSnowTubing : OfferSnowTubing { }
 
-    public class Hanks : LegalPerson
+    public class Hanks : LegalPerson, IOfferee
     {
 
     }
 
-    public class PowderRidge : LegalPerson
+    public class PowderRidge : LegalPerson, IOfferor
     {
         public PowderRidge(): base("POWDER RIDGE RESTAURANT CORP.") { }
     }

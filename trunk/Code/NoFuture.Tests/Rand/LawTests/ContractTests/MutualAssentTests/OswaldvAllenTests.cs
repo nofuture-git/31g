@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
     }
 
 
-    public class DrOswald : LegalPerson
+    public class DrOswald : LegalPerson, IOfferee
     {
         public DrOswald() : base("Dr. Oswald") { }
 
@@ -55,7 +55,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
 
     }
 
-    public class MrsAllen : LegalPerson
+    public class MrsAllen : LegalPerson, IOfferor
     {
         public MrsAllen() : base("Mrs. Allen") { }
 

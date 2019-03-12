@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Breach;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NoFuture.Rand.Law.Contract.US.Ucc;
@@ -99,7 +100,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class Fanok : LegalPerson
+    public class Fanok : LegalPerson, IOfferee
     {
         public Fanok(): base("JEFFREY FANOK") { }
         public ISet<Term<object>> GetTerms()
@@ -111,7 +112,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class CarverBoat : LegalPerson
+    public class CarverBoat : LegalPerson, IOfferor
     {
         public CarverBoat(): base("CARVER BOAT CORP.") { }
         public ISet<Term<object>> GetTerms()

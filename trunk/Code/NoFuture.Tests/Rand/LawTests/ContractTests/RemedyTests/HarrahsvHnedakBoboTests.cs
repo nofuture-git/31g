@@ -98,7 +98,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Harrahs : LegalPerson
+    public class Harrahs : LegalPerson, IOfferor
     {
         public Harrahs(): base("SOUTHERN ILLINOIS RIVERBOAT/CASINO CRUISES, INC.") { }
 
@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class HnedakBobo : LegalPerson
+    public class HnedakBobo : LegalPerson, IOfferee
     {
         public HnedakBobo() : base("HNEDAK BOBO GROUP, INC.")
         {

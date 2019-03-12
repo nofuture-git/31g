@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     public class AcceptanceConstructSewerageSystem : OfferConstructSewerageSystem { }
 
-    public class TownFairfield : LegalPerson
+    public class TownFairfield : LegalPerson, IOfferor
     {
         public TownFairfield() : base("TOWN OF FAIRFIELD") { }
         public ISet<Term<object>> GetTerms()
@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class Daddario : LegalPerson
+    public class Daddario : LegalPerson, IOfferee
     {
         public Daddario() : base("F. FRANCIS D’ADDARIO") { }
         public ISet<Term<object>> GetTerms()

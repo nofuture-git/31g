@@ -87,12 +87,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
         }
     }
 
-    public class Poel : LegalPerson
+    public class Poel : LegalPerson, IOfferee
     {
         public Poel() : base("Poel & Arnold was a rubber importer") { }
     }
 
-    public class Brunswick : LegalPerson
+    public class Brunswick : LegalPerson, IOfferor
     {
         public Brunswick(): base("BRUNSWICK-BALKE-COLLENDER CO. manufacturer of various items made from rubber") { }
     }

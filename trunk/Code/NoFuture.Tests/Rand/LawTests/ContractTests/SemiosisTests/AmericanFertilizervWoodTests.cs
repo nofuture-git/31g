@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
@@ -71,7 +72,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class AmericanFertilizer : Merchant
+    public class AmericanFertilizer : Merchant, IOfferor
     {
         public AmericanFertilizer() : base("AMERICAN FERTILIZER SPECIALISTS, INC.") { }
         public virtual ISet<Term<object>> GetTerms()
@@ -87,7 +88,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class Wood2 : Wood
+    public class Wood2 : Wood, IOfferee
     {
         public Wood2() : base("WOOD") { }
 

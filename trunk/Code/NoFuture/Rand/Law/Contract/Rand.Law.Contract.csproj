@@ -66,6 +66,8 @@
     <Compile Include="US\IConsideration.cs" />
     <Compile Include="US\IContract.cs" />
     <Compile Include="US\IContractTerms.cs" />
+    <Compile Include="US\IOfferee.cs" />
+    <Compile Include="US\IOfferor.cs" />
     <Compile Include="US\MutualAssent.cs" />
     <Compile Include="US\Performance.cs" />
     <Compile Include="US\Promise.cs" />

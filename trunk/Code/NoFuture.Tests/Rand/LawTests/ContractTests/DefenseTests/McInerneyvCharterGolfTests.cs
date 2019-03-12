@@ -88,12 +88,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
         }
     }
 
-    public class McInerney : LegalPerson
+    public class McInerney : LegalPerson, IOfferee
     {
         public McInerney() : base("Dennis McInerney") { }
     }
 
-    public class CharterGolf : LegalPerson
+    public class CharterGolf : LegalPerson, IOfferor
     {
         public CharterGolf() : base("Charter Golf, Inc.") {}
     }

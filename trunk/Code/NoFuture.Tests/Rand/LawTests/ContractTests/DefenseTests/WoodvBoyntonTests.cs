@@ -70,12 +70,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptSmallStone : OfferSmallStone { }
 
-    public class Wood : LegalPerson
+    public class Wood : LegalPerson, IOfferee
     {
 
     }
 
-    public class Boynton : LegalPerson
+    public class Boynton : LegalPerson, IOfferor
     {
         public Boynton(): base("Mr. Samuel B. Boynton") { }
     }

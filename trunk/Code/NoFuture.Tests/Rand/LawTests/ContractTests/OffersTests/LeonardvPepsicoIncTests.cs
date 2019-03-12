@@ -165,7 +165,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
         }
     }
 
-    public class Leonard : ConsumerOfPepsi
+    public class Leonard : ConsumerOfPepsi, IOfferee
     {
         public Leonard() : base("LEONARD")
         {
@@ -173,7 +173,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
         }
     }
 
-    public class PepsicoInc : LegalPerson
+    public class PepsicoInc : LegalPerson, IOfferor
     {
         public PepsicoInc() : base("PEPSICO, INC.") { }
 

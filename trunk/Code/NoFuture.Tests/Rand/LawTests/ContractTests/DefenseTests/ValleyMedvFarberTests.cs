@@ -71,12 +71,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptVmsEmployment : OfferVmsEmployment { }
 
-    public class ValleyMed : LegalPerson
+    public class ValleyMed : LegalPerson, IOfferor
     {
         public ValleyMed(): base("VALLEY MEDICAL SPECIALISTS") { }
     }
 
-    public class Farber : LegalPerson
+    public class Farber : LegalPerson, IOfferee
     {
         public Farber() : base("Steven S. Farber, D.O.") { }
     }

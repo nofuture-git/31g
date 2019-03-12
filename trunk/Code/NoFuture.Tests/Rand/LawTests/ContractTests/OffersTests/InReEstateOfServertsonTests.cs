@@ -113,13 +113,13 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
         public bool IsSignedByBothParties => true;
     }
 
-    public class HelenSevertson : LegalPerson
+    public class HelenSevertson : LegalPerson, IOfferor
     {
         public HelenSevertson() : base("Helen Severtson") { }
         public bool HasDied { get; set; }
     }
 
-    public class MarkAndKellyThorson : LegalPerson
+    public class MarkAndKellyThorson : LegalPerson, IOfferee
     {
         public MarkAndKellyThorson() : base("Mark & KellyThorson") { }
     }

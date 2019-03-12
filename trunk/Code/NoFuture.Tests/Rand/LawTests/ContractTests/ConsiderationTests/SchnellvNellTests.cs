@@ -65,12 +65,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
         }
     }
 
-    public class Schnell : LegalPerson
+    public class Schnell : LegalPerson, IOfferor
     {
         public Schnell() : base("Zacharias Schnell") { }
     }
 
-    public class Nell : LegalPerson
+    public class Nell : LegalPerson, IOfferee
     {
         public Nell() : base("J. B. Nell") { }
     }

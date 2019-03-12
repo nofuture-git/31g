@@ -103,7 +103,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Mistletoe : LegalPerson
+    public class Mistletoe : LegalPerson, IOfferor
     {
         public Mistletoe(): base("MISTLETOE EXPRESS SERVICE OF OKLAHOMA CITY") { }
         public ISet<Term<object>> GetTerms()
@@ -115,7 +115,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Locke : LegalPerson
+    public class Locke : LegalPerson, IOfferee
     {
         public Locke(): base("PHYLLIS LOCKE") { }
 

@@ -94,7 +94,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Lee : LegalPerson
+    public class Lee : LegalPerson, IOfferor
     {
         public Lee(): base("") { }
         public ISet<Term<object>> GetTerms()
@@ -106,7 +106,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Foote : LegalPerson
+    public class Foote : LegalPerson, IOfferee
     {
         public Foote(): base("") { }
         public ISet<Term<object>> GetTerms()

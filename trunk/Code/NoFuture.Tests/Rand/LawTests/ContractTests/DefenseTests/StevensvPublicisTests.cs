@@ -80,12 +80,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class SomeEmailResponse : SomeEmail { }
 
-    public class Stevens : LegalPerson
+    public class Stevens : LegalPerson, IOfferor
     {
         public Stevens() : base("Lobsenz-Stevens (L-S)") { }
     }
 
-    public class Publicis : LegalPerson
+    public class Publicis : LegalPerson, IOfferee
     {
         public Publicis() : base("Publicis S.A.") {}
     }

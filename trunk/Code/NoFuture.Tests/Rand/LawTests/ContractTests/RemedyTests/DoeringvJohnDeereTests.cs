@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Doering : LegalPerson
+    public class Doering : LegalPerson, IOfferor
     {
         public Doering(): base("DOERING EQUIPMENT CO.") { }
         public ISet<Term<object>> GetTerms()
@@ -105,7 +105,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class JohnDeere : LegalPerson
+    public class JohnDeere : LegalPerson, IOfferee
     {
         public JohnDeere(): base("JOHN DEERE CO.") { }
         public ISet<Term<object>> GetTerms()

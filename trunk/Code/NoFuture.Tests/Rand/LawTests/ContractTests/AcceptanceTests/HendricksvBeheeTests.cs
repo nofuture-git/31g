@@ -64,12 +64,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
             }
         }
 
-        public class Behee : LegalPerson
+        public class Behee : LegalPerson, IOfferor
         {
             public Behee(): base("Behee") { }
         }
 
-        public class Smiths : LegalPerson
+        public class Smiths : LegalPerson, IOfferee
         {
             public Smiths() : base("the Smiths") { }
         }

@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Rockingham : LegalPerson
+    public class Rockingham : LegalPerson, IOfferor
     {
         public Rockingham(): base("ROCKINGHAM COUNTY") { }
         public ISet<Term<object>> GetTerms()
@@ -108,7 +108,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class LutenBridge : LegalPerson
+    public class LutenBridge : LegalPerson, IOfferee
     {
         public LutenBridge(): base("LUTEN BRIDGE CO.") { }
         public ISet<Term<object>> GetTerms()

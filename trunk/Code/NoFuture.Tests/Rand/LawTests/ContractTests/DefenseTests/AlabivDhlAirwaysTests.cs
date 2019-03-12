@@ -82,7 +82,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptShipCashUndeclared : OfferShipCashUndeclared { }
 
-    public class Alabi : LegalPerson
+    public class Alabi : LegalPerson, IOfferor
     {
         public Alabi():base("Mabayomije Alabi") { }
 
@@ -94,7 +94,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
         public bool IsCashShippedAsSchoolBills => true;
     }
 
-    public class DhlAirways : LegalPerson
+    public class DhlAirways : LegalPerson, IOfferee
     {
         public DhlAirways(): base("DHL AIRWAYS, INC.") {}
     }

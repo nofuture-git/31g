@@ -53,12 +53,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
     {
     }
 
-    public class Mills : LegalPerson
+    public class Mills : LegalPerson, IOfferor
     {
         public Mills() : base("MILLS") { }
     }
 
-    public class Wyman : LegalPerson
+    public class Wyman : LegalPerson, IOfferee
     {
         public Wyman() :base("Levi Wyman") { }
     }

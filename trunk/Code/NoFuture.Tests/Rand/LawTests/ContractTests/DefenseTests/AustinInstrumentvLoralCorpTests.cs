@@ -76,12 +76,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptanceSubcontractorComponents : OfferSubcontractorComponents { }
 
-    public class AustinInstruments : LegalPerson
+    public class AustinInstruments : LegalPerson, IOfferee
     {
         public AustinInstruments() : base("AUSTIN INSTRUMENT, INC.") {}
     }
 
-    public class LoralCorp : LegalPerson
+    public class LoralCorp : LegalPerson, IOfferor
     {
         public LoralCorp() : base("LORAL CORP.") {}
     }

@@ -94,7 +94,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class VanWagner : LegalPerson
+    public class VanWagner : LegalPerson, IOfferor
     {
         public VanWagner(): base("VAN WAGNER ADVERTISING CORP.") { }
         public ISet<Term<object>> GetTerms()
@@ -106,7 +106,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class SmEnterprises : LegalPerson
+    public class SmEnterprises : LegalPerson, IOfferee
     {
         public SmEnterprises(): base("S&M ENTERPRISES") { }
         public ISet<Term<object>> GetTerms()

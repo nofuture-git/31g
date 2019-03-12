@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
 
@@ -34,12 +35,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
         public int Year => 1977;
     }
 
-    public class Foley : LegalPerson
+    public class Foley : LegalPerson, IOfferee
     {
         public Foley() : base("Marvin A. Foley, William E. Ball, III, and Johanna M. Foley") { }
     }
 
-    public class DaytonBank : Merchant
+    public class DaytonBank : Merchant, IOfferor
     {
         public DaytonBank() : base("Dayton Bank and Trust") { }
         public override bool IsSkilledOrKnowledgeableOf(Goods goods)

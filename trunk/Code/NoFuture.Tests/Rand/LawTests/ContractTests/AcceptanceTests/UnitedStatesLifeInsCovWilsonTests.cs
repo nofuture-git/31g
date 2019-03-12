@@ -109,12 +109,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
         public override bool IsEnforceableInCourt => true;
     }
 
-    public class UnitedStatesLifeInsCo : LegalPerson
+    public class UnitedStatesLifeInsCo : LegalPerson, IOfferor
     {
         public UnitedStatesLifeInsCo() : base("United States Life Insurance Company") { }
     }
 
-    public class Wilson : LegalPerson
+    public class Wilson : LegalPerson, IOfferee
     {
         public Wilson() : base("Elizabeth Wilson") { }
     }

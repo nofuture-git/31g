@@ -71,12 +71,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptOnPromissoryNote : OfferOnPromissoryNote { }
 
-    public class StandardFinance : LegalPerson
+    public class StandardFinance : LegalPerson, IOfferee
     {
         public StandardFinance() : base("Standard Finance Company, Limited") { }
     }
 
-    public class Ellis : LegalPerson
+    public class Ellis : LegalPerson, IOfferor
     {
         public Ellis() : base("Betty Ellis") { }
     }

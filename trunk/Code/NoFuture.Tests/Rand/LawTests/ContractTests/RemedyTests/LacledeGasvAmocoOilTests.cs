@@ -94,7 +94,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class LacledeGas : LegalPerson
+    public class LacledeGas : LegalPerson, IOfferor
     {
         public LacledeGas(): base("LACLEDE GAS CO.") { }
         public ISet<Term<object>> GetTerms()
@@ -106,7 +106,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class AmocoOil : LegalPerson
+    public class AmocoOil : LegalPerson, IOfferee
     {
         public AmocoOil(): base("AMOCO OIL CO.") { }
         public ISet<Term<object>> GetTerms()

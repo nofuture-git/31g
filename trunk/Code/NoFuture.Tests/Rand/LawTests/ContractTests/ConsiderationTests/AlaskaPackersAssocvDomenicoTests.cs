@@ -67,12 +67,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
         }
     }
 
-    public class AlaskaPackersAssoc : LegalPerson
+    public class AlaskaPackersAssoc : LegalPerson, IOfferor
     {
         public AlaskaPackersAssoc(): base("ALASKA PACKERS’ ASSOCIATION") { }
     }
 
-    public class Domenico : LegalPerson
+    public class Domenico : LegalPerson, IOfferee
     {
         public Domenico() : base("DOMENICO") { }
     }

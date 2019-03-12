@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Sullivan : LegalPerson
+    public class Sullivan : LegalPerson, IOfferor
     {
         public Sullivan(): base("SULLIVAN") { }
 
@@ -108,7 +108,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Oconnor : LegalPerson
+    public class Oconnor : LegalPerson, IOfferee
     {
         public Oconnor(): base("O’CONNOR") { }
         public ISet<Term<object>> GetTerms()

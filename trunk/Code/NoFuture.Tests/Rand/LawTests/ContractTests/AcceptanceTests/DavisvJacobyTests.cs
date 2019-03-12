@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
         }
     }
 
-    public class FrankAndCaroDavis : LegalPerson
+    public class FrankAndCaroDavis : LegalPerson, IOfferee
     {
 
     }
@@ -109,7 +109,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
         protected internal RupertAndBlancheWhitehead(string name) : base(name ){ }
     }
 
-    public class RupertWhitehead : RupertAndBlancheWhitehead
+    public class RupertWhitehead : RupertAndBlancheWhitehead, IOfferor
     {
         
         public RupertWhitehead() : base("Rupert Whitehead") { }

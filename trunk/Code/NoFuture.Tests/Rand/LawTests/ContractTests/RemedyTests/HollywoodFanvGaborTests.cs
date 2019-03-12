@@ -94,7 +94,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class HollywoodFan : LegalPerson
+    public class HollywoodFan : LegalPerson, IOfferor
     {
         public HollywoodFan(): base("HOLLYWOOD FANTASY CORP.") { }
         public ISet<Term<object>> GetTerms()
@@ -114,7 +114,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         public decimal TotalExpense => PrintingCost + MarketingCost + MiscExpenses + TravelExpense + PrepExpense;
     }
 
-    public class Gabor : LegalPerson
+    public class Gabor : LegalPerson, IOfferee
     {
         public Gabor(): base("ZSA ZSA GABOR") { }
         public ISet<Term<object>> GetTerms()

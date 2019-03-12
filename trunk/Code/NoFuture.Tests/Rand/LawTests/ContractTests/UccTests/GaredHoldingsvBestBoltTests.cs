@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.Contract.US.Ucc;
+﻿using NoFuture.Rand.Law.Contract.US;
+using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Contract.Tests.UccTests
@@ -45,7 +46,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
         public GaredHoldings() : base("GARED HOLDINGS, LLC") { }
     }
 
-    public class BestBolt : Merchant
+    public class BestBolt : Merchant, IOfferor
     {
         public BestBolt() : base("BEST BOLT PRODUCTS, INC.") { }
         public override bool IsSkilledOrKnowledgeableOf(Goods goods)

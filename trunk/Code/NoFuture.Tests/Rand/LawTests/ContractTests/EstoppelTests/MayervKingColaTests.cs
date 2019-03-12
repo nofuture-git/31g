@@ -44,12 +44,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.EstoppelTests
         }
     }
 
-    public class Mayer : LegalPerson
+    public class Mayer : LegalPerson, IOfferee
     {
         public Mayer() : base("Theodore Mayer") { }
     }
 
-    public class KingCola : LegalPerson
+    public class KingCola : LegalPerson, IOfferor
     {
         public KingCola() : base("King Cola Mid-America, Inc.") { }
     }

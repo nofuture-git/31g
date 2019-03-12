@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class TruckRent : LegalPerson
+    public class TruckRent : LegalPerson, IOfferor
     {
         public TruckRent(): base("TRUCK RENT-A-CENTER, INC.") { }
         public ISet<Term<object>> GetTerms()
@@ -107,7 +107,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class PuritanFarms : LegalPerson
+    public class PuritanFarms : LegalPerson, IOfferee
     {
         public PuritanFarms(): base("PURITAN FARMS 2nd, INC.") { }
         public ISet<Term<object>> GetTerms()

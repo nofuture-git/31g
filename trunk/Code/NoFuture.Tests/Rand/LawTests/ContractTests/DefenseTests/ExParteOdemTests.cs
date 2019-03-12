@@ -76,12 +76,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
         public static object AttorneyFeesValue = new object();
     }
 
-    public class IrisOdem : LegalPerson
+    public class IrisOdem : LegalPerson, IOfferee
     {
         public IrisOdem(): base("Iris Odem") { }
     }
 
-    public class ChildrensHospital : LegalPerson
+    public class ChildrensHospital : LegalPerson, IOfferor
     {
         public ChildrensHospital():base("Children's Hospital of Birmingham") { }
     }

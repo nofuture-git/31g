@@ -50,12 +50,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
 
     }
 
-    public class Harrington : LegalPerson
+    public class Harrington : LegalPerson, IOfferor
     {
         public Harrington() : base(" ") { }
     }
 
-    public class Taylor : LegalPerson
+    public class Taylor : LegalPerson, IOfferee
     {
         public Taylor(): base("") { }
     }

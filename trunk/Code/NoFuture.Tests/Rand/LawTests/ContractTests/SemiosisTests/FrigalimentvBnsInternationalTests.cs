@@ -117,7 +117,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         };
     }
 
-    public class Frigaliment : LegalPerson
+    public class Frigaliment : LegalPerson, IOfferor
     {
         public Frigaliment(): base("FRIGALIMENT IMPORTING CO.") { }
 
@@ -139,7 +139,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class BnsInternational : LegalPerson
+    public class BnsInternational : LegalPerson, IOfferee
     {
         public BnsInternational() : base("B.N.S. INTERNATIONAL SALES CORP.") { }
 
@@ -159,7 +159,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
     public class MrStovicek : Frigaliment { }
 
     /// <summary>
-    /// This is the crux of the confusion; namely, the meaing of weight-to-age-to-cookingUse
+    /// This is the crux of the confusion; namely, the meaning of weight-to-age-to-cookingUse
     /// <![CDATA[
     /// 1.5-2.0     __> 2.5-3.0
     ///   ^   _____/     ^

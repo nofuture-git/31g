@@ -126,7 +126,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class KcaElectronics : Merchant
+    public class KcaElectronics : Merchant, IOfferor
     {
         public KcaElectronics(): base("KCA ELECTRONICS, INC.") { }
         public ISet<Term<object>> GetTerms()
@@ -143,7 +143,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class LegacyElectronics : Merchant
+    public class LegacyElectronics : Merchant, IOfferee
     {
         public LegacyElectronics(): base("LEGACY ELECTRONICS, INC.") { }
         public ISet<Term<object>> GetTerms()

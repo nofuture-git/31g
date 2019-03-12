@@ -121,7 +121,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.ExcuseTests
         }
     }
 
-    public class KarlWendt : LegalPerson
+    public class KarlWendt : LegalPerson, IOfferor
     {
         public KarlWendt(): base("KARL WENDT FARM EQUIPMENT CO.") { }
         public ISet<Term<object>> GetTerms()
@@ -133,7 +133,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.ExcuseTests
         }
     }
 
-    public class IntlHarvester : LegalPerson
+    public class IntlHarvester : LegalPerson, IOfferee
     {
         public IntlHarvester(): base("INT’L HARVESTER CO.") { }
         public ISet<Term<object>> GetTerms()

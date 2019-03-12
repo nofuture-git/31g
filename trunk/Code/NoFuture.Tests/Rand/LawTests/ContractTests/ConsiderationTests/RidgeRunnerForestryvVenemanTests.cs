@@ -45,12 +45,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
 
     }
 
-    public class RidgeRunnerForestry : LegalPerson
+    public class RidgeRunnerForestry : LegalPerson, IOfferor
     {
         public RidgeRunnerForestry() : base("RIDGE RUNNER FORESTRY") { }
     }
 
-    public class Veneman : LegalPerson
+    public class Veneman : LegalPerson, IOfferee
     {
         public Veneman() : base("VENEMAN") { }
     }

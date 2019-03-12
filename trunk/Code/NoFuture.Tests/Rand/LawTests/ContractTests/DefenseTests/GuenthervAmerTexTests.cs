@@ -91,14 +91,14 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
     }
 
 
-    public class Guenther : RosalieMcClure
+    public class Guenther : RosalieMcClure, IOfferor
     {
         public Guenther() : base("Jack Guenther") { }
         public override bool HasDied => false;
         public virtual bool IsExecutor => true;
     }
 
-    public class AmerTex : LegalPerson
+    public class AmerTex : LegalPerson, IOfferee
     {
         public AmerTex() : base("Amer-Tex Construction Company") { }
     }

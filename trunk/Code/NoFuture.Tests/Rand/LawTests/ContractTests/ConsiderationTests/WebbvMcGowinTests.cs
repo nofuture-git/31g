@@ -58,12 +58,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
         }
     }
 
-    public class Webb : LegalPerson
+    public class Webb : LegalPerson, IOfferor
     {
         public Webb() : base("Joe Webb") { }
     }
 
-    public class McGowin : LegalPerson
+    public class McGowin : LegalPerson, IOfferee
     {
         public McGowin() : base("J. Greeley McGowin") { }
     }

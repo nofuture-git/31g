@@ -71,12 +71,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptTwoThousandUsdDuringWar : OfferTwoThousandUsdDuringWar { }
 
-    public class Batsakis : LegalPerson
+    public class Batsakis : LegalPerson, IOfferor
     {
         public Batsakis():base("Mr. George Batsakis") { }
     }
 
-    public class Demotsis : LegalPerson
+    public class Demotsis : LegalPerson, IOfferee
     {
         public Demotsis(): base("Eugenia The. Demotsis.") { }
     }

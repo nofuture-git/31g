@@ -82,12 +82,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptElizabethOffer : ElizabethSalesOfferTelephoneMemorandum { }
 
-    public class Crabtree : LegalPerson
+    public class Crabtree : LegalPerson, IOfferee
     {
         public Crabtree(): base("Nate Crabtree") {}
     }
 
-    public class ElizabethSales : LegalPerson
+    public class ElizabethSales : LegalPerson, IOfferor
     {
         public ElizabethSales(): base("Elizabeth Arden Sales Corporation") {}
     }

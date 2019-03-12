@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
     }
     public class AcceptanceWriteLawDox : OfferWriteLawDox { }
 
-    public class Clark : LegalPerson
+    public class Clark : LegalPerson, IOfferor
     {
         public Clark() : base("WILLIAM LAWRENCE CLARK, JR.") { }
         public ISet<Term<object>> GetTerms()
@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class West : LegalPerson
+    public class West : LegalPerson, IOfferee
     {
         public West() : base("JOHN BRIGGS WEST") { }
         public ISet<Term<object>> GetTerms()

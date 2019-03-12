@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     public class AcceptanceSellRanch : OfferSellRanch { }
 
-    public class Masterson : LegalPerson
+    public class Masterson : LegalPerson, IOfferor
     {
         public Masterson(): base("Dallas Masterson") { }
 
@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class Sine : LegalPerson
+    public class Sine : LegalPerson, IOfferee
     {
         public Sine(): base("Lu Sine") { }
 

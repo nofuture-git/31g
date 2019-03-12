@@ -96,7 +96,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.ExcuseTests
         }
     }
 
-    public class UsBancorp : LegalPerson
+    public class UsBancorp : LegalPerson, IOfferor
     {
         public UsBancorp(): base("U.S. BANCORP EQUIPMENT FINANCE, INC.") { }
         public ISet<Term<object>> GetTerms()
@@ -109,7 +109,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.ExcuseTests
         }
     }
 
-    public class Ameriquest : LegalPerson
+    public class Ameriquest : LegalPerson, IOfferee
     {
         public Ameriquest(): base("AMERIQUEST HOLDINGS LL") { }
         public ISet<Term<object>> GetTerms()

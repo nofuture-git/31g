@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Peevyhouse : LegalPerson
+    public class Peevyhouse : LegalPerson, IOfferor
     {
         public Peevyhouse(): base("WILLIE AND LUCILLE PEEVYHOUSE") { }
         public ISet<Term<object>> GetTerms()
@@ -111,7 +111,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         public decimal DiminutionOfValue => 300m;
     }
 
-    public class GarlandCoal : LegalPerson
+    public class GarlandCoal : LegalPerson, IOfferee
     {
         public GarlandCoal(): base("GARLAND COAL & MINING CO.") { }
         public ISet<Term<object>> GetTerms()

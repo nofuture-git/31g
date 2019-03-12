@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Parker : LegalPerson
+    public class Parker : LegalPerson, IOfferor
     {
         public Parker(): base("SHIRLEY MAC LAINE") { }
         public ISet<Term<object>> GetTerms()
@@ -111,7 +111,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class TwentiethFox : LegalPerson
+    public class TwentiethFox : LegalPerson, IOfferee
     {
         public TwentiethFox(): base("TWENTIETH CENTURY-FOX FILM CORP.") { }
         public ISet<Term<object>> GetTerms()

@@ -85,7 +85,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     public class AcceptanceWwwAssociates : OfferWwwAssociates { }
 
-    public class WwwAssociates : LegalPerson
+    public class WwwAssociates : LegalPerson, IOfferor
     {
         public WwwAssociates(): base("W.W.W. ASSOCIATES, INC.") { }
         public ISet<Term<object>> GetTerms()
@@ -99,7 +99,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         public bool WantsToCancelContractAfterDate => false;
     }
 
-    public class Giancontieri : LegalPerson
+    public class Giancontieri : LegalPerson, IOfferee
     {
         public ISet<Term<object>> GetTerms()
         {

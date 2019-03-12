@@ -70,7 +70,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
     {
     }
 
-    public class Mendenhall : LegalPerson
+    public class Mendenhall : LegalPerson, IOfferor
     {
         public Mendenhall() : base("RASHARD MENDENHALL") { }
         public ISet<Term<object>> GetTerms()
@@ -83,7 +83,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class HanesBrands : LegalPerson
+    public class HanesBrands : LegalPerson, IOfferee
     {
         public HanesBrands() : base("HANESBRANDS, INC.") { }
         public ISet<Term<object>> GetTerms()

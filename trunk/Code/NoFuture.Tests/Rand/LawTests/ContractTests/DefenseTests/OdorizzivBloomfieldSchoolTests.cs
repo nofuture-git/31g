@@ -78,12 +78,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     }
 
-    public class Odorizzi : LegalPerson
+    public class Odorizzi : LegalPerson, IOfferee
     {
         public Odorizzi(): base("Donald Odorizzi") {}
     }
 
-    public class BloomfieldSchool : LegalPerson
+    public class BloomfieldSchool : LegalPerson, IOfferor
     {
         public BloomfieldSchool(): base("BLOOMFIELD SCHOOL DISTRICT") { }
     }

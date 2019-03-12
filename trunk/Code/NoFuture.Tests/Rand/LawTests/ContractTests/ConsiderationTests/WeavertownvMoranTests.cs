@@ -58,12 +58,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
         }
     }
 
-    public class Weavertown : LegalPerson
+    public class Weavertown : LegalPerson, IOfferor
     {
         public Weavertown() : base("WEAVERTOWN TRANSPORT LEASING, INC.") { }
     }
 
-    public class Moran : LegalPerson
+    public class Moran : LegalPerson, IOfferee
     {
         public Moran(): base("Daniel Moran") { }
     }

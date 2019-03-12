@@ -155,7 +155,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
         }
     }
 
-    public class WOLucy : LegalPerson
+    public class WOLucy : LegalPerson, IOfferor
     {
         public WOLucy() : base("W.O. Lucy") { }
 
@@ -165,7 +165,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
         }
     }
 
-    public class JCLucy : LegalPerson
+    public class JCLucy : LegalPerson, IOfferor
     {
         public JCLucy() : base("J.C. Lucy") { }
 
@@ -175,7 +175,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
         }
     }
 
-    public class AHZehmer : LegalPerson
+    public class AHZehmer : LegalPerson, IOfferee
     {
         public AHZehmer() : base("A.H. Zehmer") { }
 
@@ -185,7 +185,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
         }
     }
 
-    public class IdaSZehmer : LegalPerson
+    public class IdaSZehmer : LegalPerson, IOfferee
     {
         public IdaSZehmer() : base ("Ida S. Zehmer") { }
 

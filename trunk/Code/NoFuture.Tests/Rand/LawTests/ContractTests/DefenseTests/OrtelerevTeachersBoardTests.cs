@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
         }
     }
 
-    public class Ortelere : LegalPerson
+    public class Ortelere : LegalPerson, IOfferor
     {
         public static ISet<Term<object>> GetTerms()
         {
@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     }
 
-    public class TeachersBoard : LegalPerson
+    public class TeachersBoard : LegalPerson, IOfferee
     {
         public TeachersBoard() : base("TEACHERS’ RETIREMENT BOARD") { }
     }

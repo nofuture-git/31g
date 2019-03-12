@@ -97,7 +97,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class KayAnderson : LegalPerson
+    public class KayAnderson : LegalPerson, IOfferor
     {
         public KayAnderson(): base("KAY & ANDERSON, S.C.") { }
         public ISet<Term<object>> GetTerms()
@@ -109,7 +109,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Ameritech : LegalPerson
+    public class Ameritech : LegalPerson, IOfferee
     {
         public Ameritech(): base("AMERITECH PUBLISHING, INC.") { }
         public ISet<Term<object>> GetTerms()

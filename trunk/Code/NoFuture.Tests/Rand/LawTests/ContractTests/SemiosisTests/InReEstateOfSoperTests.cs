@@ -79,7 +79,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     public class GetsSoperEstate : InheritSoperEstate { }
 
-    public class IraSoper : LegalPerson
+    public class IraSoper : LegalPerson, IOfferor
     {
         public IraSoper() : base("John Young")
         {
@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     }
 
-    public class GertrudeWhitby : LegalPerson
+    public class GertrudeWhitby : LegalPerson, IOfferee
     {
         public GertrudeWhitby() : base("Gertrude Whitby") { }
         public ISet<Term<object>> GetTerms()
@@ -107,7 +107,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class AdelineWestphal : LegalPerson
+    public class AdelineWestphal : LegalPerson, IOfferee
     {
         public AdelineWestphal() : base("Adeline Westphal") { }
         public ISet<Term<object>> GetTerms()

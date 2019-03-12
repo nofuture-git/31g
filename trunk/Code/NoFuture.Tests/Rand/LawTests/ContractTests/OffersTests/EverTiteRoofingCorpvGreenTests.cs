@@ -92,7 +92,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
         public override bool IsEnforceableInCourt => true;
     }
 
-    public class EverTiteRoofingCorp : LegalPerson
+    public class EverTiteRoofingCorp : LegalPerson, IOfferor
     {
         public EverTiteRoofingCorp() : base("EVER-TITE ROOFING CORP.") { }
 
@@ -106,7 +106,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
         }
     }
 
-    public class Green : LegalPerson
+    public class Green : LegalPerson, IOfferee
     {
         public Green() : base("G. T. Green and Mrs. Jessie Fay Green") { }
 

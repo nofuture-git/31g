@@ -97,7 +97,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.ExcuseTests
         }
     }
 
-    public class Bush : LegalPerson
+    public class Bush : LegalPerson, IOfferor
     {
         public Bush(): base("ALEXANDRA BUSH") { }
         public ISet<Term<object>> GetTerms()
@@ -109,7 +109,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.ExcuseTests
         }
     }
 
-    public class ProtravelIntl : LegalPerson
+    public class ProtravelIntl : LegalPerson, IOfferee
     {
         public ProtravelIntl(): base("PROTRAVEL INTERNATIONAL, INC.") { }
         public ISet<Term<object>> GetTerms()

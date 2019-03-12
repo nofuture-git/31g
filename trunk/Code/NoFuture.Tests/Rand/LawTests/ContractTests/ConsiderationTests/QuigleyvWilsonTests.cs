@@ -78,13 +78,13 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
         }
     }
 
-    public class Quigley : LegalPerson
+    public class Quigley : LegalPerson, IOfferor
     {
         protected Quigley(string name) : base(name) { }
         public Quigley() : base("Lester Quigley, Sr.") { }
     }
 
-    public class Wilson : LegalPerson
+    public class Wilson : LegalPerson, IOfferee
     {
         public Wilson() : base("Donald and Janis Wilson") { }
     }

@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     public class AcceptanceTurnThisVogueIntoMoney : OfferTurnThisVogueIntoMoney { }
 
-    public class Wood : LegalPerson
+    public class Wood : LegalPerson, IOfferor
     {
         public Wood() : base("OTIS F. WOOD") { }
         public Wood(string name) : base(name) { }
@@ -83,7 +83,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class LucyLady : LegalPerson
+    public class LucyLady : LegalPerson, IOfferee
     {
         public LucyLady() : base("LUCY, LADY DUFF-GORDON") { }
         public ISet<Term<object>> GetTerms()

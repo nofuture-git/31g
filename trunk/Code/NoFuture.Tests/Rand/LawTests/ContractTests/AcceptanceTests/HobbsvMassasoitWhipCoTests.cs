@@ -81,11 +81,11 @@ namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
         }
     }
 
-    public class Hobbs : LegalPerson
+    public class Hobbs : LegalPerson, IOfferor
     {
 
     }
-    public class MassasoitWhipCo : LegalPerson
+    public class MassasoitWhipCo : LegalPerson, IOfferee
     {
         public bool IsStranger(ILegalPerson lp)
         {

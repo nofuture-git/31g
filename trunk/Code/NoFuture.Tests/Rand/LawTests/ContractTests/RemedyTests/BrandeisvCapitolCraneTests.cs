@@ -109,7 +109,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Brandeis : LegalPerson
+    public class Brandeis : LegalPerson, IOfferor
     {
         public Brandeis(): base("BRANDEIS MACHINERY & SUPPLY CO., LLC") { }
 
@@ -128,7 +128,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class CapitolCrane : LegalPerson
+    public class CapitolCrane : LegalPerson, IOfferee
     {
         public CapitolCrane(): base("CAPITOL CRANE RENTAL, INC.") { }
         public ISet<Term<object>> GetTerms()

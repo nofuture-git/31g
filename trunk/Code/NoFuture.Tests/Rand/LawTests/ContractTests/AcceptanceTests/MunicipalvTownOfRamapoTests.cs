@@ -79,12 +79,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.AcceptanceTests
         }
     }
 
-    public class Municipal : LegalPerson
+    public class Municipal : LegalPerson, IOfferor
     {
         public Municipal() : base("MUNICIPAL CONSULTANTS & PUBLISHERS, INC.") {}
     }
 
-    public class TownOfRamapo : LegalPerson
+    public class TownOfRamapo : LegalPerson, IOfferee
     {
         public TownOfRamapo() : base("TOWN OF RAMAPO") {}
         public bool IsAcceptedByTownAttorney => true;

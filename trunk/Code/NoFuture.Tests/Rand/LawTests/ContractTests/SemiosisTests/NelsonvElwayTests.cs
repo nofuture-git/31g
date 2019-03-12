@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     }
 
-    public class Nelson : LegalPerson
+    public class Nelson : LegalPerson, IOfferor
     {
         public Nelson(): base("Mel Nelson") { }
 
@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class Elway : LegalPerson
+    public class Elway : LegalPerson, IOfferee
     {
         public Elway(): base("John Elway") { }
 

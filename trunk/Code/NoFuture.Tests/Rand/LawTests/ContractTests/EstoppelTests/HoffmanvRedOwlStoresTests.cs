@@ -60,12 +60,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.EstoppelTests
         }
     }
 
-    public class Hoffman : LegalPerson
+    public class Hoffman : LegalPerson, IOfferee
     {
         public Hoffman() : base("Joseph Hoffman") { }
     }
 
-    public class RedOwlStores : LegalPerson
+    public class RedOwlStores : LegalPerson, IOfferor
     {
         public RedOwlStores() :base("Red Owl Stores") { }
     }

@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     public class AcceptanceSellBooks : OfferSellBooks { }
 
-    public class AnyAuthorOfBook : LegalPerson
+    public class AnyAuthorOfBook : LegalPerson, IOfferor
     {
         public AnyAuthorOfBook():base("BOOK AUTHOR") { }
 
@@ -109,7 +109,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class RandomHouse : LegalPerson
+    public class RandomHouse : LegalPerson, IOfferee
     {
         public RandomHouse(): base("RANDOM HOUSE, INC.") { }
 
@@ -123,7 +123,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class RosettaBooks : LegalPerson
+    public class RosettaBooks : LegalPerson, IOfferee
     {
         public RosettaBooks(): base("ROSETTA BOOKS LLC") { }
         public ISet<Term<object>> GetTerms()

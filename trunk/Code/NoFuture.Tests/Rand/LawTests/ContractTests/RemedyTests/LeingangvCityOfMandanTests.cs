@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Leingang : LegalPerson
+    public class Leingang : LegalPerson, IOfferor
     {
         public Leingang(): base("ROBERT LEINGANG") { }
         public ISet<Term<object>> GetTerms()
@@ -107,7 +107,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class CityOfMandan : LegalPerson
+    public class CityOfMandan : LegalPerson, IOfferee
     {
         public CityOfMandan(): base("CITY OF MANDAN WEED BOARD") { }
         public ISet<Term<object>> GetTerms()

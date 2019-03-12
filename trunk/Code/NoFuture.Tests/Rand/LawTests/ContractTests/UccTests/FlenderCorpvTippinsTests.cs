@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
 
@@ -42,7 +43,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
         }
     }
 
-    public class FlenderCorp : LegalPerson
+    public class FlenderCorp : LegalPerson, IOfferor
     {
         public FlenderCorp() : base("FLENDER CORPORATION") { }
         public ISet<Term<object>> GetTerms()
@@ -56,7 +57,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
         }
     }
 
-    public class Tippins : LegalPerson
+    public class Tippins : LegalPerson, IOfferee
     {
         public Tippins() :base("Tippins International, Inc.") {}
 

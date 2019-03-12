@@ -45,12 +45,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.EstoppelTests
         }
     }
 
-    public class Conrad : LegalPerson
+    public class Conrad : LegalPerson, IOfferee
     {
         public Conrad() : base("Marjorie Conrad") { }
     }
 
-    public class Fields : LegalPerson
+    public class Fields : LegalPerson, IOfferor
     {
         public Fields() : base("Walter R. Fields") { }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
 
@@ -46,12 +47,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
         public int CubicFeet => 50000;
     }
 
-    public class TousleyBixler : LegalPerson
+    public class TousleyBixler : LegalPerson, IOfferee
     {
         public TousleyBixler() : base("TOUSLEY-BIXLER CONSTRUCTION CO.") { }
     }
 
-    public class Colgate : LegalPerson
+    public class Colgate : LegalPerson, IOfferor
     {
         public Colgate() : base("COLGATE ENTERPRISES, INC.") { }
     }

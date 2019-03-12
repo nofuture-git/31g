@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
@@ -43,7 +44,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
         }
     }
 
-    public class CommerceIns : LegalPerson
+    public class CommerceIns : LegalPerson, IOfferor
     {
         public CommerceIns() : base("COMMERCE & INDUSTRY INS. CO.") { }
 
@@ -58,7 +59,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
         }
     }
 
-    public class BayerCorp : LegalPerson
+    public class BayerCorp : LegalPerson, IOfferee
     {
         public BayerCorp() : base("BAYER CORP.") { }
 

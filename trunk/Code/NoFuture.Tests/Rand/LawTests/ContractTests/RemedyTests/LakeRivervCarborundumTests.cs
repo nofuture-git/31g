@@ -95,7 +95,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class LakeRiver : LegalPerson
+    public class LakeRiver : LegalPerson, IOfferor
     {
         public LakeRiver(): base("LAKE RIVER CORPORATION") { }
         public ISet<Term<object>> GetTerms()
@@ -107,7 +107,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
         }
     }
 
-    public class Carborundum : LegalPerson
+    public class Carborundum : LegalPerson, IOfferee
     {
         public Carborundum(): base("CARBORUNDUM COMPANY") { }
         public ISet<Term<object>> GetTerms()

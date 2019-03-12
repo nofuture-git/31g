@@ -75,7 +75,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     public class AcceptanceTransportCashToBank : OfferTransportCashToBank { }
 
-    public class AcmeMarket : LegalPerson
+    public class AcmeMarket : LegalPerson, IOfferor
     {
         public AcmeMarket() : base("ACME MARKETS, INC.") { }
         public ISet<Term<object>> GetTerms()
@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class FedArmored : LegalPerson
+    public class FedArmored : LegalPerson, IOfferee
     {
         public FedArmored() : base("FEDERAL ARMORED EXPRESS, INC.") { }
         public ISet<Term<object>> GetTerms()

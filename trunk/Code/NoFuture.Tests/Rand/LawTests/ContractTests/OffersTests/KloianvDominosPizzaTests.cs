@@ -144,7 +144,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
         public abstract bool IsApprovalExpressed { get; }
     }
 
-    public class EdwardKloianAttorney : EdwardKloian
+    public class EdwardKloianAttorney : EdwardKloian, IOfferor
     {
         public EdwardKloianAttorney() :base("Edward Kloian's Attorney") { }
 
@@ -165,7 +165,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
         public override bool IsApprovalExpressed => true;
     }
 
-    public class DominosPizzaLlcAttorney : DominosPizzaLlc
+    public class DominosPizzaLlcAttorney : DominosPizzaLlc, IOfferee
     {
         public DominosPizzaLlcAttorney(): base("Dominos Pizza LLC Attorney") { }
 

@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
 
     public class AcceptancePurchaseFarmRemIceHouse : OfferPurchaseFarmRemIceHouse { }
 
-    public class Mitchill : LegalPerson
+    public class Mitchill : LegalPerson, IOfferor
     {
         public ISet<Term<object>> GetTerms()
         {
@@ -100,7 +100,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class Lath : LegalPerson
+    public class Lath : LegalPerson, IOfferee
     {
         public ISet<Term<object>> GetTerms()
         {

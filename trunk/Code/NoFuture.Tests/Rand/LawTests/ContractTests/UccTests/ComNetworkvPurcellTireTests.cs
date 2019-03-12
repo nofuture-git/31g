@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Ucc;
 using NUnit.Framework;
 
@@ -52,12 +53,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
             lp => lp is ComNetwork || lp is PurcellTire;
     }
 
-    public class ComNetwork : LegalPerson
+    public class ComNetwork : LegalPerson, IOfferor
     {
         public ComNetwork(): base("COMPUTER NETWORK, LTD.") { }
     }
 
-    public class PurcellTire : LegalPerson
+    public class PurcellTire : LegalPerson, IOfferee
     {
         public PurcellTire() : base("PURCELL TIRE & RUBBER COMPANY") { }
     }

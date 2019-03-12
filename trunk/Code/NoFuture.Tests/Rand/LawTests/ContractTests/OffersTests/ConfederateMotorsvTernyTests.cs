@@ -131,13 +131,13 @@ namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
         public AttorneyMcDuff() : base("Laurence McDuff (attorney for Terny)") { }
     }
 
-    public class ConfedMotorsInc : LegalPerson
+    public class ConfedMotorsInc : LegalPerson, IOfferor
     {
         public ConfedMotorsInc(string name) : base(name) { }
         public ConfedMotorsInc() : this("CONFEDERATE MOTORS, INC.") { }
     }
 
-    public class Terny : LegalPerson
+    public class Terny : LegalPerson, IOfferee
     {
         public Terny(string name) : base(name) { }
         public Terny() : this("Francois-Xavier Terny") { }

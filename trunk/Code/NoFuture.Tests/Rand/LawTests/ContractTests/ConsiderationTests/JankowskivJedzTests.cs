@@ -69,12 +69,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
         }
     }
 
-    public class Jedz : LegalPerson
+    public class Jedz : LegalPerson, IOfferee
     {
         public Jedz() :base("MONCLOVA-MAUMEE-TOLEDO JOINT ECONOMIC DEVELOPMENT ZONE") { }
     }
 
-    public class Jankowski : LegalPerson
+    public class Jankowski : LegalPerson, IOfferor
     {
         public Jankowski() : base("JANKOWSKI") { }
     }

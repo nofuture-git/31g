@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptSellCow : OfferSellCow { }
 
-    public class Sherwood : LegalPerson
+    public class Sherwood : LegalPerson, IOfferor
     {
         public ISet<Term<object>> GetTerms()
         {
@@ -69,7 +69,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
         }
     }
 
-    public class Walker : LegalPerson
+    public class Walker : LegalPerson, IOfferee
     {
         public ISet<Term<object>> GetTerms()
         {

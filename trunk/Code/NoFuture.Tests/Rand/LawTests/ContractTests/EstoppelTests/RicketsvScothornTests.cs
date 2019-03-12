@@ -44,12 +44,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.EstoppelTests
 
     }
 
-    public class Rickets : LegalPerson
+    public class Rickets : LegalPerson, IOfferor
     {
         public Rickets() : base("Andrew D. Ricketts") { }
     }
 
-    public class Scothorn : LegalPerson
+    public class Scothorn : LegalPerson, IOfferee
     {
         public Scothorn() : base("Katie Scothorn") { }
     }

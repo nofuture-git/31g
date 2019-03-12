@@ -74,12 +74,12 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
 
     public class AcceptPurchaseOnCredit : OfferPurchaseOnCredit { }
 
-    public class Williams : LegalPerson
+    public class Williams : LegalPerson, IOfferee
     {
         public Williams():base("WILLIAMS") {}
     }
 
-    public class WalkerThom : LegalPerson
+    public class WalkerThom : LegalPerson, IOfferor
     {
         public WalkerThom(): base("WALKER-THOMAS FURNITURE CO.") {}
     }

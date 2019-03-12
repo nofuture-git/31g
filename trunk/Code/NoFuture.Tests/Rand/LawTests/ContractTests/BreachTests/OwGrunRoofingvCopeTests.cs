@@ -105,7 +105,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class OwGrunRoofing : LegalPerson
+    public class OwGrunRoofing : LegalPerson, IOfferor
     {
         public OwGrunRoofing() : base("O. W. GRUN ROOFING & CONSTRUCTION CO.") { }
         public ISet<Term<object>> GetTerms()
@@ -118,7 +118,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
         }
     }
 
-    public class Cope : LegalPerson
+    public class Cope : LegalPerson, IOfferee
     {
         public Cope() : base("MRS. FRED M. COPE") { }
         public ISet<Term<object>> GetTerms()

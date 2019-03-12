@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
     {
     }
 
-    public class NorthHouston : LegalPerson
+    public class NorthHouston : LegalPerson, IOfferor
     {
         public NorthHouston() : base("NORTH HOUSTON INTERNATIONAL, L.L.C.") { }
         public ISet<Term<object>> GetTerms()
@@ -104,7 +104,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
         }
     }
 
-    public class PwRealEstate : LegalPerson
+    public class PwRealEstate : LegalPerson, IOfferee
     {
         public PwRealEstate() : base("PW REAL ESTATE INVESTMENTS, INC.") { }
         public ISet<Term<object>> GetTerms()
