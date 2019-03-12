@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     Consent = new Consent
                     {
                         IsCapableThereof = lp => true,
-                        IsDenialExpressed = lp => false
+                        IsApprovalExpressed = lp => true,
                     },
                     IsTakenPossession = lp => lp is Larson,
                     IsAsportation = lp => lp is Larson

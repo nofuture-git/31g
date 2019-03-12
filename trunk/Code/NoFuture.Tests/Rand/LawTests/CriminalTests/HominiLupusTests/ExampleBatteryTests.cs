@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                     Consent = new Consent
                     {
                         IsCapableThereof = lp => true,
-                        IsDenialExpressed = lp => false,
+                        IsApprovalExpressed = lp => true,
                     }
                 },
                 MensRea = new GeneralIntent

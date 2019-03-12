@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
         /// <summary>
         /// This is the typical place where prosecution\defense battle
         /// </summary>
-        public Predicate<ILegalPerson> IsDenialExpressed { get; set; } = lp => true;
+        public Predicate<ILegalPerson> IsApprovalExpressed { get; set; } = lp => true;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -35,12 +35,11 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
                     return false;
                 }
 
-                if (IsDenialExpressed(victim))
+                if (!IsApprovalExpressed(victim))
                 {
-                    AddReasonEntry($"victim, {victim.Name}, {nameof(IsDenialExpressed)} is true");
+                    AddReasonEntry($"victim, {victim.Name}, {nameof(IsApprovalExpressed)} is false");
                     return false;
                 }
-                AddReasonEntry($"victim, {victim.Name}, {nameof(IsDenialExpressed)} is false");
             }
 
             return true;

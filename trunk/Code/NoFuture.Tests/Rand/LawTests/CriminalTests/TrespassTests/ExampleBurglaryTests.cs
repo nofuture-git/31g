@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
                 SubjectProperty = new SomeonesApartment(),
                 Consent = new Consent
                 {
-                    IsDenialExpressed = lp => true,
+                    IsApprovalExpressed = lp => false,
                     IsCapableThereof = lp => true,
                 }
             };

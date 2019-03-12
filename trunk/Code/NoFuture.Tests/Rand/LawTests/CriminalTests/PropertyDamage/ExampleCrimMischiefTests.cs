@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.PropertyDestruction
             {
                 Consent = new Consent
                 {
-                    IsDenialExpressed = lp => lp is SueBrokenstuffEg,
+                    IsApprovalExpressed = lp => false,
                     IsCapableThereof = lp => lp is SueBrokenstuffEg
                 },
                 IsCauseOfDamage = lp => lp is JohnnyDestroyerEg,

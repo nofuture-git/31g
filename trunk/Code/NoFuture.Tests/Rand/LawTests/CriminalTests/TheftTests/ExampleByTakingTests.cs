@@ -94,7 +94,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     {
                         IsCapableThereof = lp => true,
                         //Cody said it was ok to take the property 
-                        IsDenialExpressed = lp => !(lp is CodyFriendEg)
+                        IsApprovalExpressed = lp => lp is CodyFriendEg,
                     }
                 },
                 MensRea = new Purposely
