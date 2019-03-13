@@ -72,7 +72,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
         public Butler(): base("CAS SIUS BUTLER") {  }
     }
 
-    public class ThelmaHarvey : Victim
+    public class ThelmaHarvey : LegalPerson, IVictim
     {
         public ThelmaHarvey() : base ("THELMA HARVEY") {  }
     }

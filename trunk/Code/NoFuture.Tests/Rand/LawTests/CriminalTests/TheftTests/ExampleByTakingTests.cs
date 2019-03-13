@@ -146,7 +146,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public JeremyTheifEg() : base("JEREMY THEIF") {}
     }
 
-    public class CodyFriendEg : Victim
+    public class CodyFriendEg : LegalPerson, IVictim
     {
         public CodyFriendEg() : base("CODY FRIEND") { }
     }

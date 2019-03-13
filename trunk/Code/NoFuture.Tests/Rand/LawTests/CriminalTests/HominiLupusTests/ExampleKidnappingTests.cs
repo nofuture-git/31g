@@ -113,7 +113,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         public ThomasHitchhikerEg() : base("THOMAS HITCHHIKER") { }
     }
 
-    public class ShawnaHitchinhikenEg : Victim
+    public class ShawnaHitchinhikenEg : LegalPerson, IVictim
     {
         public ShawnaHitchinhikenEg() : base ("SHAWNA HITCHINHIKEN") { }
     }

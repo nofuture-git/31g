@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public BurtThiefEg() : base("BURT THIEF") { }
     }
 
-    public class SandraVictimEg : Victim
+    public class SandraVictimEg : LegalPerson, IVictim
     {
         public SandraVictimEg() : base("SANDRA VICTIM") {  }
     }

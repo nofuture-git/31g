@@ -65,12 +65,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
 
     }
 
-    public class DemlerArmstrongAndRowlandLawFirm : Victim
+    public class DemlerArmstrongAndRowlandLawFirm : LegalPerson, IVictim
     {
         public DemlerArmstrongAndRowlandLawFirm() : base("DEMLER, ARMSTRONG AND ROWLAND") { }
     }
 
-    public class DemennoKerdoonCompany : Victim
+    public class DemennoKerdoonCompany : LegalPerson, IVictim
     {
         public DemennoKerdoonCompany() : base("DEMENNO/KERDOON COMPANY") { }
     }

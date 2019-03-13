@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.PropertyDestruction
         public JohnnyDestroyerEg() : base("JOHNNY DESTROYER") { }
     }
 
-    public class SueBrokenstuffEg : Victim
+    public class SueBrokenstuffEg : LegalPerson, IVictim
     {
         public SueBrokenstuffEg(): base("SUE BROKENSTUFF") {  }
     }

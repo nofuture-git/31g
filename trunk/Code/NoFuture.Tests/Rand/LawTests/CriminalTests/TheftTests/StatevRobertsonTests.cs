@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
 
     }
 
-    public class MsDover : Victim
+    public class MsDover : LegalPerson, IVictim
     {
         public MsDover() : base("MS. DOVER") {  }
     }

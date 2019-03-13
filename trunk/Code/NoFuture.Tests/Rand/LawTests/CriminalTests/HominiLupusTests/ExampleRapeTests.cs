@@ -119,7 +119,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
         public BradAlsogamerEg(): base("BRAD ALSOGAMER") { }
     }
 
-    public class BrandySisterEg : Victim
+    public class BrandySisterEg : LegalPerson, IVictim
     {
         public BrandySisterEg() : base("BRANDY SISTER") { }
 

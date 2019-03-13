@@ -112,7 +112,6 @@
     <Compile Include="US\Terms\NondeadlyForce.cs" />
     <Compile Include="US\Terms\SeriousBodilyInjury.cs" />
     <Compile Include="US\SexBipartitie.cs" />
-    <Compile Include="US\Victim.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Rand.Core.csproj">
