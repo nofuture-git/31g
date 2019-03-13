@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// Is not to cause physical contact; rather, it is to cause the 
     /// victim to fear physical contact
     /// </summary>
-    public class ThreatenedBattery : CriminalBase, IDominionOfForce, IAssault, IActusReus
+    public class ThreatenedBattery : CriminalBase, IDominionOfForce, IAssault, IActusReus, IElement
     {
         public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;
 

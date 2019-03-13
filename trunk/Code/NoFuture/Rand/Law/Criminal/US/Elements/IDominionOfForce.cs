@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// <summary>
     /// <![CDATA[ "Force" being physical acts [...] intentionally used [..] to crime ]]>
     /// </summary>
-    public interface IDominionOfForce : IElement
+    public interface IDominionOfForce : ILegalConcept
     {
         /// <summary>
         /// the ability to cause harmful or offensive physical 

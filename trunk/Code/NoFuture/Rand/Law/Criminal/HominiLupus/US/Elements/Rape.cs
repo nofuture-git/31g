@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <inheritdoc cref="IAssault"/>
     /// <inheritdoc cref="IBattery"/>
     [EtymologyNote("Latin", "''rapere", "to steal or seize")]
-    public class Rape : CriminalBase, ISexBipartitie, IAssault, IBattery, IActusReus
+    public class Rape : CriminalBase, ISexBipartitie, IAssault, IBattery, IActusReus, IElement
     {
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
 

@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <remarks>
     /// Examples include harassing, approaching, pursuing, making explicit or implicit threat
     /// </remarks>
-    public class Stalking : CriminalBase, IActusReus, IDominionOfForce
+    public class Stalking : CriminalBase, IActusReus, IDominionOfForce, IElement
     {
         /// <summary>
         /// is unique amoung criminal acts in that it must occur on more than one occasion or repeatedly

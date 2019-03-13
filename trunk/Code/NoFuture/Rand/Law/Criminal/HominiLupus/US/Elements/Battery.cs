@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <summary>
     /// Same as <see cref="AttemptedBattery"/> except there is actual touch\contact of some kind
     /// </summary>
-    public class Battery : CriminalBase, IBattery, IActusReus
+    public class Battery : CriminalBase, IBattery, IActusReus, IElement
     {
         public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
 

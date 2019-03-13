@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
     /// Where <see cref="UnlawfulAssembly"/> is <see cref="DisorderlyConduct"/>
     /// in a group - this is additive in that it includes violence 
     /// </summary>
-    public class Riot : UnlawfulAssembly, IBattery, IAssault
+    public class Riot : UnlawfulAssembly, IBattery, IAssault, IElement
     {
         public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;

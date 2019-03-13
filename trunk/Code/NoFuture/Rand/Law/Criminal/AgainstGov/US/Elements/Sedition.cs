@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
     /// the incitement of insurrection or revolution by seditious speech or
     /// writings, as such, is subject to the restrictions of the First Amendment
     /// </summary>
-    public class Sedition : CriminalBase, IActusReus, IAssault
+    public class Sedition : CriminalBase, IActusReus, IAssault, IElement
     {
         /// <summary>
         /// either advocating, aiding, teaching, organizing or printing, publishing,

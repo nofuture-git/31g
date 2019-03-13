@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
     /// <summary>
     /// Article III Section 3 of the US Constitution
     /// </summary>
-    public class Treason : CriminalBase, ICapitalOffense, IBattery
+    public class Treason : CriminalBase, ICapitalOffense, IBattery, IElement
     {
         /// <summary>
         /// Active belligerent or enemy-combative [levying War against them]

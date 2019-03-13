@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <summary>
     /// Attempting to make physical contact but does not 
     /// </summary>
-    public class AttemptedBattery : Attempt, IDominionOfForce
+    public class AttemptedBattery : Attempt, IDominionOfForce, IElement
     {
         public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => false;
 

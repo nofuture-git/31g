@@ -8,7 +8,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
-    public class Robbery : ByTaking, IBattery, IAssault
+    public class Robbery : ByTaking, IBattery, IAssault, IElement
     {
         public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;

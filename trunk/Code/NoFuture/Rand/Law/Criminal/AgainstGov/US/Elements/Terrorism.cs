@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
     /// in furtherance of political or social objectives" (28 C.F.R. Section 0.85).
     /// ]]>
     /// </summary>
-    public class Terrorism : CriminalBase, ICapitalOffense, IBattery
+    public class Terrorism : CriminalBase, ICapitalOffense, IBattery, IElement
     {
         public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
 
