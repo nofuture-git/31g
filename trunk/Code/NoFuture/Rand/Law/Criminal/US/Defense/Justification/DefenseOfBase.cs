@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {

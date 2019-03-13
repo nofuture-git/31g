@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements
+namespace NoFuture.Rand.Law.US
 {
     /// <summary>
     /// The nature of how a physical attack is provoked

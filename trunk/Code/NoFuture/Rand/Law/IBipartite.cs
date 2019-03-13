@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Criminal.US
+namespace NoFuture.Rand.Law
 {
     /// <summary>
     /// General type for crimes which require two people

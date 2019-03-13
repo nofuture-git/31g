@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements
+namespace NoFuture.Rand.Law.US
 {
     /// <summary>
     /// means the attack is immediate and not something that will occur in the future or has occured in the past.
