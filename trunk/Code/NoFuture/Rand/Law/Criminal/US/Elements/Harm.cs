@@ -7,13 +7,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// The legal idea of some kind of loss suffered
     /// </summary>
     /// <remarks>https://en.wikipedia.org/wiki/Harm</remarks>
-    public class Harm: CriminalBase, IElement
+    public class Harm: UnoHomine
     {
-        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
-
-        public Harm(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public Harm(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson;
         }
 
         public Predicate<ILegalPerson> IsPain { get; set; } = lp => false;

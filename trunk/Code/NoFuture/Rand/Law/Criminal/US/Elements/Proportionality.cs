@@ -7,13 +7,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// Template for the concept of reasonable proportionality
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Proportionality<T> : LegalConcept where T: ITermCategory
+    public class Proportionality<T> : UnoHomine where T: ITermCategory
     {
-        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
-
-        public Proportionality(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public Proportionality(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson;
             IsProportional = (t1, t2) =>
                 TermCategory.IsRank(TermCategoryBoolOps.Eq, t1, t2) &&
                 TermCategory.IsRank(TermCategoryBoolOps.Eq, t2, t1);

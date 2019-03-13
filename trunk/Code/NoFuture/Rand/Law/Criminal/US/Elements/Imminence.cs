@@ -5,13 +5,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// <summary>
     /// means the attack is immediate and not something that will occur in the future or has occured in the past.
     /// </summary>
-    public class Imminence : LegalConcept
+    public class Imminence : UnoHomine
     {
-        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
-
-        public Imminence(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public Imminence(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson;
         }
 
         public static readonly TimeSpan OneSecond = new TimeSpan(0, 0, 0, 1);

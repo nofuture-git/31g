@@ -7,13 +7,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// The nature of how a physical attack is provoked
     /// </summary>
     [Aka("unprovoked attack rule")]
-    public class Provacation : LegalConcept
+    public class Provacation : UnoHomine
     {
-        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
-
-        public Provacation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public Provacation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson;
         }
 
         /// <summary>

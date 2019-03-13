@@ -3,13 +3,10 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
-    public class Causation : LegalConcept
+    public class Causation : UnoHomine
     {
-        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
-
-        public Causation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public Causation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson;
         }
 
         /// <summary>

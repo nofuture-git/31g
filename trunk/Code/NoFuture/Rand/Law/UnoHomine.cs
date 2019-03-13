@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law
         protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
         protected UnoHomine(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson
+            GetSubjectPerson = getSubjectPerson;
         }
     }
 }
