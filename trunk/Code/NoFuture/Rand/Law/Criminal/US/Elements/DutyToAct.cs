@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
         public Predicate<ILegalPerson> IsContractOrigin { get; set; } = lp => false;
 
         /// <summary>
-        /// The duty to act orginates from any form of special relationship (e.g. spouse-spouse, parent-child, etc.)
+        /// The duty to act originates from any form of special relationship (e.g. spouse-spouse, parent-child, etc.)
         /// </summary>
         public Predicate<ILegalPerson> IsSpecialRelationshipOrigin { get; set; } = lp => false;
 

@@ -3,8 +3,15 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
-    public class Causation : CriminalBase, IElement
+    public class Causation : LegalConcept
     {
+        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
+
+        public Causation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        {
+            GetSubjectPerson = getSubjectPerson;
+        }
+
         /// <summary>
         /// The direct antecedent which caused the harm - the harm which exist only because of it.
         /// </summary>
@@ -19,7 +26,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
 

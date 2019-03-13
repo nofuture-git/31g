@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// Template for the concept of reasonable proportionality
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Proportionality<T> :CriminalBase where T: ITermCategory
+    public class Proportionality<T> : LegalConcept where T: ITermCategory
     {
         protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
 
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
 

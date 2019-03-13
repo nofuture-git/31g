@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
 

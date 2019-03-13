@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// The nature of how a physical attack is provoked
     /// </summary>
     [Aka("unprovoked attack rule")]
-    public class Provacation : CriminalBase, IElement
+    public class Provacation : LegalConcept
     {
         protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
 
@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
         /// </summary>
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
 

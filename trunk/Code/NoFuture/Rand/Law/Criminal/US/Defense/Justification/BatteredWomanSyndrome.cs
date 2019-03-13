@@ -9,14 +9,15 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     public class BatteredWomanSyndrome : Imminence
     {
         private readonly ICrime _crime;
-        public BatteredWomanSyndrome(ICrime crime) :base(crime)
+        public BatteredWomanSyndrome(ICrime crime) :base(null)
         {
             _crime = crime;
+            GetSubjectPerson = _crime.GetDefendant;
         }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = _crime.GetDefendant(persons) ?? GetDefendant(persons);
+            var defendant = _crime.GetDefendant(persons) ?? GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
 

@@ -5,15 +5,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// <summary>
     /// means the attack is immediate and not something that will occur in the future or has occured in the past.
     /// </summary>
-    public class Imminence : CriminalBase, IElement
+    public class Imminence : LegalConcept
     {
-        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; }
-
-        protected Imminence(ICrime crime)
-        {
-            var getSubjectPerson = crime == null ? LegalPerson.GetNullPerson : crime.GetDefendant;
-            GetSubjectPerson = getSubjectPerson;
-        }
+        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
 
         public Imminence(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
         {
@@ -49,7 +43,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
 
