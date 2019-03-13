@@ -131,7 +131,10 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
         </temps>
         <bins>
           <add id='binRootDir' value='$(myPsHome)\bin' />
-          <add id='net461SdkTools' value='$(%ProgramFiles(x86)%)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools' />
+          <add id='dotNetSdks' value='$(%ProgramFiles(x86)%)\Microsoft SDKs\Windows\v10.0A\bin' />
+          <add id='net461SdkTools' value='$(dotNetSdks)\NETFX 4.6.1 Tools' />
+          <add id='net470SdkTools' value='$(dotNetSdks)\NETFX 4.7 Tools' />
+          <add id='net472SdkTools' value='$(dotNetSdks)\NETFX 4.7.2 Tools' />
           <add id='binX64RootDir' value='$(binRootDir)\amd64' />
           <add id='binX86RootDir' value='$(binRootDir)\x86' />
           <add id='binJavaRootDir' value='$(binRootDir)\java' />

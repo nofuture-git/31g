@@ -9,6 +9,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     [Aka("unprovoked attack rule")]
     public class Provacation : CriminalBase, IElement
     {
+        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
+
+        public Provacation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        {
+            GetSubjectPerson = getSubjectPerson;
+        }
+
         /// <summary>
         /// Preeminent test, when true all other tests are irrelevant.
         /// </summary>

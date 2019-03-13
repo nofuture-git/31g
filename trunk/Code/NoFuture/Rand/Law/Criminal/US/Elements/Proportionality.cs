@@ -9,8 +9,11 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// <typeparam name="T"></typeparam>
     public class Proportionality<T> :CriminalBase where T: ITermCategory
     {
-        public Proportionality()
+        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
+
+        public Proportionality(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
         {
+            GetSubjectPerson = getSubjectPerson;
             IsProportional = (t1, t2) =>
                 TermCategory.IsRank(TermCategoryBoolOps.Eq, t1, t2) &&
                 TermCategory.IsRank(TermCategoryBoolOps.Eq, t2, t1);

@@ -36,16 +36,16 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
             {
                 IsReasonableFearOfInjuryOrDeath = lp => true,
 
-                Imminence = new Imminence
+                Imminence = new Imminence(testCrime.GetDefendant)
                 {
                     GetResponseTime = lp => lp is DwightEg ? new TimeSpan(0, 0, 2, 0) : TimeSpan.Zero
                 },
-                Proportionality = new Proportionality<ITermCategory>()
+                Proportionality = new Proportionality<ITermCategory>(testCrime.GetDefendant)
                 {
                     //example seems to assume that the fist fight is deadly
                     GetChoice = lp => new DeadlyForce()
                 },
-                Provacation = new Provacation()
+                Provacation = new Provacation(testCrime.GetDefendant)
                 {
                     //example doesn't say who started it
                     IsInitiatorOfAttack = lp => true

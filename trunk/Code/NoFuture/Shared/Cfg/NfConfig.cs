@@ -239,7 +239,7 @@ namespace NoFuture.Shared.Cfg
         /// <param name="value"></param>
         /// <returns></returns>
         /// <remarks>
-        /// See the xml commment atop of <see cref="FILE_NAME"/> for an explanation 
+        /// See the xml comment atop of <see cref="FILE_NAME"/> for an explanation 
         /// of what a placeholder is and how it works.
         /// </remarks>
         internal static string ExpandCfgValue(Dictionary<string, string> idValueHash, string value)

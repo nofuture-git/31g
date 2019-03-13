@@ -8,8 +8,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// </summary>
     public class ChoiceThereof<T> : Proportionality<T> where T: ITermCategory
     {
-        public ChoiceThereof()
+        public ChoiceThereof(Func<ILegalPerson[], ILegalPerson> getSubjectPerson): base(getSubjectPerson)
         {
+            GetSubjectPerson = getSubjectPerson;
             IsProportional = (t1, t2) => TermCategory.IsRank(TermCategoryBoolOps.Lt, t1, t2);
         }
 

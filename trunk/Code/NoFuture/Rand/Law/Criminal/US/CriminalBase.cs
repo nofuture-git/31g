@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NoFuture.Rand.Law.Criminal.US
@@ -36,5 +37,6 @@ namespace NoFuture.Rand.Law.Criminal.US
 
             return victims;
         }
+
     }
 }

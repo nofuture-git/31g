@@ -4,12 +4,12 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     /// <summary>
     /// A form of self defense where the <see cref="Imminence"/> is always valid in that 
-    /// the immediate threat is always and continously present
+    /// the immediate threat is always and continuously present
     /// </summary>
     public class BatteredWomanSyndrome : Imminence
     {
         private readonly ICrime _crime;
-        public BatteredWomanSyndrome(ICrime crime)
+        public BatteredWomanSyndrome(ICrime crime) :base(crime)
         {
             _crime = crime;
         }

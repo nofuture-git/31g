@@ -12,8 +12,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     {
         public NecessityDefense(ICrime crime) : base(crime)
         {
-            Proportionality = new ChoiceThereof<ITermCategory>();
-            Imminence = new Imminence();
+            var getDefendant = crime == null ? LegalPerson.GetNullPerson : crime.GetDefendant;
+            Proportionality = new ChoiceThereof<ITermCategory>(getDefendant);
+            Imminence = new Imminence(getDefendant);
         }
 
         /// <summary>

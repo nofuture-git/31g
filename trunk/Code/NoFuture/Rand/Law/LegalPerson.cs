@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law
 
         public LegalPerson(string name) : base(name)
         {
-            if(string.IsNullOrWhiteSpace(name))
+            if(String.IsNullOrWhiteSpace(name))
                 base.AddName(KindsOfNames.Legal, GetType().Name.ToUpper());
         }
 
@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Law
 
         public virtual void AddReasonEntry(string msg)
         {
-            if (!string.IsNullOrWhiteSpace(msg))
+            if (!String.IsNullOrWhiteSpace(msg))
                 _reasons.Add(msg);
         }
 
@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law
 
         public override string ToString()
         {
-            return string.Join(Environment.NewLine, _reasons);
+            return String.Join(Environment.NewLine, _reasons);
         }
 
         public static IEnumerable<string> GetNames(params ILegalPerson[] persons)
@@ -58,9 +58,9 @@ namespace NoFuture.Rand.Law
             foreach (var person in persons)
             {
                 var name = person?.Name;
-                if (string.IsNullOrWhiteSpace(name))
+                if (String.IsNullOrWhiteSpace(name))
                     continue;
-                if (names.Any(n => string.Equals(n, name)))
+                if (names.Any(n => String.Equals(n, name)))
                     continue;
 
                 names.Add(name);
@@ -68,5 +68,10 @@ namespace NoFuture.Rand.Law
 
             return names;
         }
+
+        /// <summary>
+        /// a fallback method to point at since the null-propagation op does not work with method groups
+        /// </summary>
+        public static Func<ILegalPerson[], ILegalPerson> GetNullPerson = (lps) => null;
     }
 }

@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements;
+﻿using System;
+using NoFuture.Rand.Law.Criminal.US.Elements;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
@@ -6,9 +7,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     {
         protected DefenseOfBase(ICrime crime) : base(crime)
         {
-            Provacation = new Provacation();
-            Imminence = new Imminence();
-            Proportionality = new Proportionality<ITermCategory>();
+            var getDefendant = crime == null ? LegalPerson.GetNullPerson : crime.GetDefendant;
+            Provacation = new Provacation(getDefendant);
+            Imminence = new Imminence(getDefendant);
+            Proportionality = new Proportionality<ITermCategory>(getDefendant);
         }
 
         /// <summary>

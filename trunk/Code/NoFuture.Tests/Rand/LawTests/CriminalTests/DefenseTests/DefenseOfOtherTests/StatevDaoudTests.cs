@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new Daoud());
             Assert.IsTrue(testResult);
 
-            var testSubject = new ChoiceThereof<ITermCategory>()
+            var testSubject = new ChoiceThereof<ITermCategory>(testCrime.GetDefendant)
             {
                 GetChoice = lp => lp is Daoud ? new NondeadlyForce() : null,
                 GetOtherPossibleChoices = lp => new List<ITermCategory>() {new CallForTaxi(), new WalkedToNeighbor()},

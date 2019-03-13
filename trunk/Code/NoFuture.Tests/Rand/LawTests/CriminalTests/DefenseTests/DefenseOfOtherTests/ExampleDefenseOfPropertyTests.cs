@@ -36,15 +36,15 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testSubject = new DefenseOfProperty(testCrime)
             {
                 IsBeliefProtectProperty = lp => lp is KelseyEg,
-                Imminence = new Imminence
+                Imminence = new Imminence(testCrime.GetDefendant)
                 {
                     GetResponseTime = lp => Imminence.NormalReactionTimeToDanger
                 },
-                Provacation = new Provacation()
+                Provacation = new Provacation(testCrime.GetDefendant)
                 {
                     IsInitiatorOfAttack = lp => lp is KeithEg
                 },
-                Proportionality = new Proportionality<ITermCategory>()
+                Proportionality = new Proportionality<ITermCategory>(testCrime.GetDefendant)
                 {
                     GetChoice = lp => new NondeadlyForce()
                 }

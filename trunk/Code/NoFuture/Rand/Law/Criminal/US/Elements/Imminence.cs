@@ -7,6 +7,19 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// </summary>
     public class Imminence : CriminalBase, IElement
     {
+        protected Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; }
+
+        protected Imminence(ICrime crime)
+        {
+            var getSubjectPerson = crime == null ? LegalPerson.GetNullPerson : crime.GetDefendant;
+            GetSubjectPerson = getSubjectPerson;
+        }
+
+        public Imminence(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        {
+            GetSubjectPerson = getSubjectPerson;
+        }
+
         public static readonly TimeSpan OneSecond = new TimeSpan(0, 0, 0, 1);
         public static readonly TimeSpan OneMinute = new TimeSpan(0, 0, 1, 0);
         public static readonly TimeSpan OneMoment = new TimeSpan(0, 0, 0, 90);
