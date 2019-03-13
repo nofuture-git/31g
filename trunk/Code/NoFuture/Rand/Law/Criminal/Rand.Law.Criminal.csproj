@@ -42,7 +42,6 @@
     <Compile Include="US\Deal.cs" />
     <Compile Include="US\Defense\Technicality.cs" />
     <Compile Include="US\Elements\Act\IPossession.cs" />
-    <Compile Include="US\Elements\ChoiceThereof.cs" />
     <Compile Include="US\Defense\DefenseBase.cs" />
     <Compile Include="US\Defense\Excuse\Entrapment.cs" />
     <Compile Include="US\Defense\Excuse\Infancy.cs" />
@@ -58,7 +57,6 @@
     <Compile Include="US\Elements\IAttendantElement.cs" />
     <Compile Include="US\Elements\IBattery.cs" />
     <Compile Include="US\Elements\IDominionOfForce.cs" />
-    <Compile Include="US\Elements\Imminence.cs" />
     <Compile Include="US\Defense\Justification\BatteredWomanSyndrome.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfBase.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfHabitation.cs" />
@@ -68,18 +66,14 @@
     <Compile Include="US\Defense\Justification\NecessityDefense.cs" />
     <Compile Include="US\Defense\PolicePower.cs" />
     <Compile Include="US\ISexBipartitie.cs" />
-    <Compile Include="US\Elements\Proportionality.cs" />
-    <Compile Include="US\Elements\Provacation.cs" />
     <Compile Include="US\Elements\Act\ActusReus.cs" />
     <Compile Include="US\Elements\Act\IActusReus.cs" />
     <Compile Include="US\Elements\Act\ICapitalOffense.cs" />
     <Compile Include="US\Elements\Act\Possession.cs" />
     <Compile Include="US\Elements\Act\SubstantialSteps.cs" />
     <Compile Include="US\Elements\AttendantCircumstances.cs" />
-    <Compile Include="US\Elements\Causation.cs" />
     <Compile Include="US\Elements\Concurrence.cs" />
     <Compile Include="US\Elements\DutyToAct.cs" />
-    <Compile Include="US\Elements\Harm.cs" />
     <Compile Include="US\Elements\IElement.cs" />
     <Compile Include="US\Elements\Intent\Accessory.cs" />
     <Compile Include="US\Elements\Intent\Accomplice.cs" />

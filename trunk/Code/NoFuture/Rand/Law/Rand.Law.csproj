@@ -56,6 +56,12 @@
     <Compile Include="ILegalConcept.cs" />
     <Compile Include="LegalPerson.cs" />
     <Compile Include="LegalConcept.cs" />
+    <Compile Include="US\Causation.cs" />
+    <Compile Include="US\ChoiceThereof.cs" />
+    <Compile Include="US\Harm.cs" />
+    <Compile Include="US\Imminence.cs" />
+    <Compile Include="US\Proportionality.cs" />
+    <Compile Include="US\Provacation.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
