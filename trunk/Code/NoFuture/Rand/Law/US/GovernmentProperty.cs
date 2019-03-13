@@ -1,7 +1,7 @@
 ﻿using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Exceptions;
 
-namespace NoFuture.Rand.Law.Criminal.US
+namespace NoFuture.Rand.Law.US
 {
     /// <summary>
     /// Property which belongs to the government
