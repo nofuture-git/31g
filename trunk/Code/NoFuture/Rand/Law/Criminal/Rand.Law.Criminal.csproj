@@ -53,10 +53,7 @@
     <Compile Include="US\Defense\Excuse\MistakeOfFact.cs" />
     <Compile Include="US\Defense\Excuse\MistakeOfLaw.cs" />
     <Compile Include="US\Elements\Consent.cs" />
-    <Compile Include="US\Elements\IAssault.cs" />
     <Compile Include="US\Elements\IAttendantElement.cs" />
-    <Compile Include="US\Elements\IBattery.cs" />
-    <Compile Include="US\Elements\IDominionOfForce.cs" />
     <Compile Include="US\Defense\Justification\BatteredWomanSyndrome.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfBase.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfHabitation.cs" />
@@ -91,7 +88,6 @@
     <Compile Include="US\Elements\Intent\Transferred.cs" />
     <Compile Include="US\Felony.cs" />
     <Compile Include="US\Government.cs" />
-    <Compile Include="US\IBipartite.cs" />
     <Compile Include="US\GovernmentProperty.cs" />
     <Compile Include="US\ICrime.cs" />
     <Compile Include="US\Infraction.cs" />

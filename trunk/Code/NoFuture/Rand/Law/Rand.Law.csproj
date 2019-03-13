@@ -39,9 +39,13 @@
     <Compile Include="Attributes\EtymologyNote.cs" />
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="Exceptions\LawException.cs" />
+    <Compile Include="IAssault.cs" />
     <Compile Include="IAssent.cs" />
     <Compile Include="IBargain.cs" />
+    <Compile Include="IBattery.cs" />
+    <Compile Include="IBipartite.cs" />
     <Compile Include="IConsent.cs" />
+    <Compile Include="IDominionOfForce.cs" />
     <Compile Include="ILegalProperty.cs" />
     <Compile Include="LegalProperty.cs" />
     <Compile Include="TermCategoryBoolOps.cs" />
