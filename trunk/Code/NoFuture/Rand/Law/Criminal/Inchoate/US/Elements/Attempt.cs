@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
         public Predicate<ILegalPerson> IsProbableDesistance { get; set; } = lp => false;
 
         /// <summary>
-        /// Some kind of action which corroborates a proposistion of intent - evidence of a suspicion
+        /// Some kind of action which corroborates a proposition of intent - evidence of a suspicion
         /// </summary>
         public SubstantialSteps SubstantialSteps { get; set; }
 

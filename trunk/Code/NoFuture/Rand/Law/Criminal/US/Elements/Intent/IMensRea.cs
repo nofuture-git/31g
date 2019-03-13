@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
     /// </summary>
     [Aka("criminal intent", "vicious will")]
     [EtymologyNote("Latin", "mens rea", "guilty mind")]
-    public interface IMensRea : IProsecution, IElement, IComparable
+    public interface IMensRea : ILegalConcept, IComparable
     {
         /// <summary>
         /// Determines if this criminal intent is valid 

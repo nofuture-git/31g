@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
     /// </summary>
     [Aka("criminal act", "volition")]
     [EtymologyNote("Latin", "actus reus", "guilty act")]
-    public interface IActusReus : IElement, IProsecution
+    public interface IActusReus : ILegalConcept
     {
         /// <summary>
         /// Determines if this criminal act is valid 
