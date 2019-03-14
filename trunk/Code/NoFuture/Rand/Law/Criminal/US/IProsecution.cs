@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.Criminal.US
 {
     public interface IProsecution : IRationale
     {
-        ILegalPerson GetDefendant(params ILegalPerson[] persons);
+        Func<ILegalPerson[], ILegalPerson> GetDefendant { get; set; }
 
         Predicate<ILegalPerson> IsVictim { get; set; }
     }

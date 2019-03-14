@@ -12,11 +12,10 @@ namespace NoFuture.Rand.Law.Criminal.US
             set => _presecution.IsVictim = value;
         }
 
-        public ILegalPerson GetDefendant(params ILegalPerson[] persons)
+        public Func<ILegalPerson[], ILegalPerson> GetDefendant
         {
-            var defendant = _presecution.GetDefendant(persons);
-            AddReasonEntryRange(_presecution.GetReasonEntries());
-            return defendant;
+            get => _presecution.GetDefendant;
+            set => _presecution.GetDefendant = value;
         }
     }
 }
