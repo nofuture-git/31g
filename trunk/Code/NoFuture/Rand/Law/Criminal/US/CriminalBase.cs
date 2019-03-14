@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Linq;
 
 namespace NoFuture.Rand.Law.Criminal.US
 {
     public abstract class CriminalBase : LegalConcept, IProsecution
     {
-        public Predicate<ILegalPerson> IsVictim { get; set; } = lp => lp is IVictim;
+        private readonly IProsecution _presecution = new Prosecution();
+
+        public Predicate<ILegalPerson> IsVictim
+        {
+            get => _presecution.IsVictim;
+            set => _presecution.IsVictim = value;
+        }
 
         public ILegalPerson GetDefendant(params ILegalPerson[] persons)
         {
-            var defendant = persons.FirstOrDefault(p => p is IDefendant);
-            if (defendant == null)
-            {
-                AddReasonEntry("it is not clear who the " +
-                               $"defendant is amoung {string.Join(", ", persons.Select(p => p.Name))}");
-            }
-
+            var defendant = _presecution.GetDefendant(persons);
+            AddReasonEntryRange(_presecution.GetReasonEntries());
             return defendant;
         }
     }

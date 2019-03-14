@@ -50,6 +50,7 @@
     <Compile Include="ILegalProperty.cs" />
     <Compile Include="IMensRea.cs" />
     <Compile Include="LegalProperty.cs" />
+    <Compile Include="Rationale.cs" />
     <Compile Include="TermCategoryBoolOps.cs" />
     <Compile Include="ILegalPerson.cs" />
     <Compile Include="IRationale.cs" />

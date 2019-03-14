@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.Criminal.US
 {
-    public interface IProsecution
+    public interface IProsecution : IRationale
     {
         ILegalPerson GetDefendant(params ILegalPerson[] persons);
 
