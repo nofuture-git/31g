@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
                 return false;
             }
 
-            foreach (var victim in GetVictims(persons))
+            foreach (var victim in persons.Where(p => IsVictim(p)))
             {
                 if (!IsCapableThereof(victim))
                 {

@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             if (persons == null || !persons.Any())
                 return false;
 
-            var victims = GetVictims(persons);
+            var victims = persons.Where(p => IsVictim(p));
             if (!victims.Any())
             {
                 AddReasonEntry(

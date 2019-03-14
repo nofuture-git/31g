@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
@@ -61,7 +62,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             var defendant = GetDefendant(persons);
             var consent = Consent as Consent ?? new Consent();
 
-            foreach (var victim in GetVictims(persons))
+            foreach (var victim in persons.Where(p => IsVictim(p)))
             {
                 var isCapable = consent.IsCapableThereof(victim);
                 var isIntercourse = IsSexualIntercourse(defendant);

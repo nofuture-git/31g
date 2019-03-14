@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.Criminal.US
 {
@@ -6,6 +7,6 @@ namespace NoFuture.Rand.Law.Criminal.US
     {
         ILegalPerson GetDefendant(params ILegalPerson[] persons);
 
-        IEnumerable<ILegalPerson> GetVictims(params ILegalPerson[] persons);
+        Predicate<ILegalPerson> IsVictim { get; set; }
     }
 }

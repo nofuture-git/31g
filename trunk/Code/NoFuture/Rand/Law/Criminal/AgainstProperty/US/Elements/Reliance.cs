@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
             if (defendant == null)
                 return false;
 
-            var victims = GetVictims(persons);
+            var victims = persons.Where(p => IsVictim(p));
             if (!victims.Any())
                 return false;
 
