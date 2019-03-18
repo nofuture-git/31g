@@ -1,7 +1,6 @@
 ﻿using NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US
+namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 {
     public interface IControlledSubstance : IActusReus
     {

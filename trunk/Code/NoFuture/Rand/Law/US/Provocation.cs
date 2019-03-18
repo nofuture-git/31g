@@ -7,9 +7,9 @@ namespace NoFuture.Rand.Law.US
     /// The nature of how a physical attack is provoked
     /// </summary>
     [Aka("unprovoked attack rule")]
-    public class Provacation : UnoHomine
+    public class Provocation : UnoHomine
     {
-        public Provacation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        public Provocation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
 

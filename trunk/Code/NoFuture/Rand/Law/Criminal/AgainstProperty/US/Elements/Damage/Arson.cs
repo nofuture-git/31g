@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Trespass;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
+namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Damage
 {
     /// <summary>
     /// starting a fire or causing an explosion which burns real or personal property

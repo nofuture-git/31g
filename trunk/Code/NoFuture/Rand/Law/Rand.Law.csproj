@@ -77,7 +77,7 @@
     <Compile Include="US\Harm.cs" />
     <Compile Include="US\Imminence.cs" />
     <Compile Include="US\Proportionality.cs" />
-    <Compile Include="US\Provacation.cs" />
+    <Compile Include="US\Provocation.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

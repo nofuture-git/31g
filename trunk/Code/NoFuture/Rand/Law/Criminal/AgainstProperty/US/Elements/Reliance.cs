@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.US;
 

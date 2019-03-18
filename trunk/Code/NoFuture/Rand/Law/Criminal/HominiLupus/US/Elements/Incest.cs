@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.US;
 
@@ -14,8 +15,6 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public Predicate<ILegalPerson> IsOneOfTwo { get; set; } = lp => false;
 
-        public Func<ILegalPerson[], ILegalPerson> GetVictim { get; set; } = lps => null;
-
         /// <summary>
         /// Typically being any family member one could not marry
         /// </summary>
@@ -27,10 +26,10 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             if (defendant == null)
                 return false;
 
-            var victim = GetVictim(persons);
+            var victim = persons.FirstOrDefault(p => IsOneOfTwo(p) && !ReferenceEquals(p, defendant));
             if (victim == null)
             {
-                AddReasonEntry($"the {nameof(GetVictim)} returned null");
+                AddReasonEntry($"the {nameof(IsOneOfTwo)} returned null for the other person");
                 return false;
             }
 

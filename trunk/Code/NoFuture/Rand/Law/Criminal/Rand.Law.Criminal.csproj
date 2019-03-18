@@ -35,10 +35,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="US\Prosecution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\CrimeBase.cs" />
-    <Compile Include="US\CriminalBase.cs" />
     <Compile Include="US\Deal.cs" />
     <Compile Include="US\Defense\Technicality.cs" />
     <Compile Include="US\Elements\Act\IPossession.cs" />
@@ -87,7 +85,6 @@
     <Compile Include="US\Felony.cs" />
     <Compile Include="US\ICrime.cs" />
     <Compile Include="US\Infraction.cs" />
-    <Compile Include="US\IProsecution.cs" />
     <Compile Include="US\Misdemeanor.cs" />
     <Compile Include="US\Terms\DeadlyForce.cs" />
     <Compile Include="US\Terms\Death.cs" />

@@ -1,5 +1,4 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
-using NoFuture.Rand.Law.US;
+﻿using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
