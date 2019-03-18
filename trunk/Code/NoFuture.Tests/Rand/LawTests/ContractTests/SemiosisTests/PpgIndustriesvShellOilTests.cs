@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Semiosis;
 using NoFuture.Rand.Law.Contract.US.Terms;
+using NoFuture.Rand.Law.US;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests

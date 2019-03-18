@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Tort.US
+﻿namespace NoFuture.Rand.Law.US
 {
     public interface ITortfeasor : ILegalPerson
     {

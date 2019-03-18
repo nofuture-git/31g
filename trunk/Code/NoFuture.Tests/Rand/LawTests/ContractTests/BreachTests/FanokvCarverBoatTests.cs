@@ -5,6 +5,7 @@ using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Breach;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NoFuture.Rand.Law.Contract.US.Ucc;
+using NoFuture.Rand.Law.US;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Contract.Tests.BreachTests

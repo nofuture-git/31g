@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.US;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 

@@ -3,6 +3,7 @@ using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.US;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests

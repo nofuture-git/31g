@@ -4,6 +4,7 @@ using NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.US;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests

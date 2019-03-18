@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Contract.US
+﻿namespace NoFuture.Rand.Law.US
 {
     public interface IOfferee : ILegalPerson
     {
