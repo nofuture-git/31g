@@ -13,9 +13,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     {
         public NecessityDefense(ICrime crime) : base(crime)
         {
-            var getDefendant = crime == null ? LegalPerson.GetNullPerson : crime.GetDefendant;
-            Proportionality = new ChoiceThereof<ITermCategory>(getDefendant);
-            Imminence = new Imminence(getDefendant);
+            Proportionality = new ChoiceThereof<ITermCategory>(ExtensionMethods.Defendant);
+            Imminence = new Imminence(ExtensionMethods.Defendant);
         }
 
         /// <summary>
@@ -42,7 +41,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
             if (IsResponsibleForSituationArise != null && IsResponsibleForSituationArise(defendant))

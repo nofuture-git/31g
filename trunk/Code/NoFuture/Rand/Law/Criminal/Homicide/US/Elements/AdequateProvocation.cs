@@ -2,6 +2,7 @@
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
@@ -36,7 +37,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

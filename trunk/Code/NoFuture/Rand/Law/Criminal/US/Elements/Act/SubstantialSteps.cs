@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 {
     /// <summary>
     /// The substantial steps toward the completion of a crime
     /// </summary>
-    public class SubstantialSteps : CriminalBase, IActusReus
+    public class SubstantialSteps : LegalConcept, IActusReus
     {
         public Predicate<ILegalPerson> IsLyingInWait { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsEnticingVictimToScene { get; set; } = lp => false;
@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

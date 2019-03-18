@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
@@ -14,7 +12,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <remarks>
     /// Examples include harassing, approaching, pursuing, making explicit or implicit threat
     /// </remarks>
-    public class Stalking : CriminalBase, IActusReus, IDominionOfForce, IElement
+    public class Stalking : LegalConcept, IActusReus, IDominionOfForce, IElement
     {
         /// <summary>
         /// is unique amoung criminal acts in that it must occur on more than one occasion or repeatedly
@@ -26,7 +24,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null || Occasions == null)
                 return false;
 

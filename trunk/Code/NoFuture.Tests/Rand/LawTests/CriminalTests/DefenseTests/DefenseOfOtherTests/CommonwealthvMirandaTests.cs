@@ -46,15 +46,15 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             {
                 //Maria attempted to defend Demetria based on the reasonably appearance that she was in danger from trooper Sweet
                 IsReasonablyAppearedInjuryOrDeath = lp => lp is Miranda,
-                Imminence = new Imminence(testCrime.GetDefendant)
+                Imminence = new Imminence(ExtensionMethods.Defendant)
                 {
                     GetResponseTime = lp => Imminence.NormalReactionTimeToDanger
                 },
-                Provacation = new Provacation(testCrime.GetDefendant)
+                Provacation = new Provacation(ExtensionMethods.Defendant)
                 {
                     IsInitiatorOfAttack = lp => lp is TrooperSweet,
                 },
-                Proportionality = new Proportionality<ITermCategory>(testCrime.GetDefendant)
+                Proportionality = new Proportionality<ITermCategory>(ExtensionMethods.Defendant)
                 {
                     GetChoice = lp => new NondeadlyForce()
                 }

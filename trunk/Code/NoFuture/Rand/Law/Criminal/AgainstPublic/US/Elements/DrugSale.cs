@@ -1,16 +1,15 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 {
     /// <summary>
     /// The illegal sale of drugs
     /// </summary>
-    public class DrugSale: CriminalBase, IControlledSubstance, IBargain<ILegalProperty, IDrugSchedule>
+    public class DrugSale: LegalConcept, IControlledSubstance, IBargain<ILegalProperty, IDrugSchedule>
     {
         public IDrugSchedule Offer { get; set; } = new ScheduleI();
         public Func<IDrugSchedule, ILegalProperty> Acceptance { get; set; }
@@ -18,7 +17,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
 {
@@ -20,7 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

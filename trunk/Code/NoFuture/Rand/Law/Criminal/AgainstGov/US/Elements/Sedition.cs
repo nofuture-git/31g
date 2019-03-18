@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 {
@@ -13,7 +11,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
     /// the incitement of insurrection or revolution by seditious speech or
     /// writings, as such, is subject to the restrictions of the First Amendment
     /// </summary>
-    public class Sedition : CriminalBase, IActusReus, IAssault, IElement
+    public class Sedition : LegalConcept, IActusReus, IAssault, IElement
     {
         /// <summary>
         /// either advocating, aiding, teaching, organizing or printing, publishing,
@@ -36,7 +34,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 
@@ -57,7 +55,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

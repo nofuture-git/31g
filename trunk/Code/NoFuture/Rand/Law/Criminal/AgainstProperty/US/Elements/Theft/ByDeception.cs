@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
@@ -43,7 +44,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             if (!base.IsValid(persons))
                 return false;
 
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
             var ifi = IsFalseImpression(defendant);

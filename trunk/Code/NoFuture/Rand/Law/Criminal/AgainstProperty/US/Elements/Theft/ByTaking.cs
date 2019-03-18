@@ -3,6 +3,7 @@ using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
@@ -24,7 +25,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             if (!base.IsValid(persons))
                 return false;
 
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

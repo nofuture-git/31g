@@ -37,11 +37,11 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
             var testSubject = new DefenseOfSelf(testCrime)
             {
                 IsReasonableFearOfInjuryOrDeath = lp => true,
-                Imminence = new Imminence(testCrime.GetDefendant)
+                Imminence = new Imminence(ExtensionMethods.Defendant)
                 {
                     GetResponseTime = lp => lp is PattyEg ? Imminence.NormalReactionTimeToDanger : TimeSpan.Zero
                 },
-                Provacation = new Provacation(testCrime.GetDefendant)
+                Provacation = new Provacation(ExtensionMethods.Defendant)
                 {
                     //in example, patty slaps paige, paige pummels on patty, patty runs away, paige pursues, patty defends, paige loses
                     IsInitiatorOfAttack = lp => lp is PattyEg,
@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
                     //in example, these are both non-deadly force responses
                     IsInitiatorRespondingToExcessiveForce = lp => false
                 },
-                Proportionality = new Proportionality<ITermCategory>(testCrime.GetDefendant)
+                Proportionality = new Proportionality<ITermCategory>(ExtensionMethods.Defendant)
                 {
                     GetChoice = lp => new NondeadlyForce()
                 }

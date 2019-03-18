@@ -1,10 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
@@ -14,7 +13,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// Is not to cause physical contact; rather, it is to cause the 
     /// victim to fear physical contact
     /// </summary>
-    public class ThreatenedBattery : CriminalBase, IDominionOfForce, IAssault, IActusReus, IElement
+    public class ThreatenedBattery : LegalConcept, IDominionOfForce, IAssault, IActusReus, IElement
     {
         public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;
 
@@ -24,7 +23,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

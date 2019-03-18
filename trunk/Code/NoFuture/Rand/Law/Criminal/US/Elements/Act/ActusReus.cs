@@ -1,6 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 {
@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
     /// To be a crime there must have been an action which was voluntary
     /// </summary>
     [Aka("criminal act")]
-    public class ActusReus : CriminalBase, IActusReus, IElement
+    public class ActusReus : LegalConcept, IActusReus, IElement
     {
         /// <summary>
         /// There must always be something willfully
@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
@@ -29,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

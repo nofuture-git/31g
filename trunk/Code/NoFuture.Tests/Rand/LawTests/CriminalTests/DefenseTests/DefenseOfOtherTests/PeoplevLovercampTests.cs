@@ -44,12 +44,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
 
             var testSubject = new NecessityDefense(testCrime)
             {
-                Imminence = new Imminence(testCrime.GetDefendant)
+                Imminence = new Imminence(ExtensionMethods.Defendant)
                 {
                     GetResponseTime = lp => Imminence.NormalReactionTimeToDanger
                 },
                 IsMultipleInHarm = lp => lp is Lovercamp || lp is MsWynashe,
-                Proportionality = new ChoiceThereof<ITermCategory>(testCrime.GetDefendant)
+                Proportionality = new ChoiceThereof<ITermCategory>(ExtensionMethods.Defendant)
                 {
                     GetChoice = lp =>
                     {

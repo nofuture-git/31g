@@ -1,12 +1,9 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
-
-namespace NoFuture.Rand.Law.Criminal.US.Elements
+﻿namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// The facts surrounding an event
     /// </summary>
-    public abstract class AttendantCircumstances: CriminalBase, IAttendantElement
+    public abstract class AttendantCircumstances: LegalConcept, IAttendantElement
     {
         public virtual bool IsValid(IMensRea intent, params ILegalPerson[] persons)
         {

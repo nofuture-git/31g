@@ -50,11 +50,11 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
                 IsMultipleInHarm = lp => lp is Butler,
 
                 //no one else saw the defendant being chased 
-                Imminence = new Imminence(testCrime.GetDefendant)
+                Imminence = new Imminence(ExtensionMethods.Defendant)
                 {
                     IsImmediatePresent = ts => false,
                 },
-                Proportionality = new ChoiceThereof<ITermCategory>(testCrime.GetDefendant)
+                Proportionality = new ChoiceThereof<ITermCategory>(ExtensionMethods.Defendant)
                 {
                     IsProportional = (t1, t2) => false
                 },

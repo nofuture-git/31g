@@ -8,10 +8,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     {
         protected DefenseOfBase(ICrime crime) : base(crime)
         {
-            var getDefendant = crime == null ? LegalPerson.GetNullPerson : crime.GetDefendant;
-            Provacation = new Provacation(getDefendant);
-            Imminence = new Imminence(getDefendant);
-            Proportionality = new Proportionality<ITermCategory>(getDefendant);
+            Provacation = new Provacation(ExtensionMethods.Defendant);
+            Imminence = new Imminence(ExtensionMethods.Defendant);
+            Proportionality = new Proportionality<ITermCategory>(ExtensionMethods.Defendant);
         }
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
             if (Imminence != null && !Imminence.IsValid(persons))

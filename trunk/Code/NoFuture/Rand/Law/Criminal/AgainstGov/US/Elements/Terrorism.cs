@@ -1,8 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 {
@@ -13,7 +12,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
     /// in furtherance of political or social objectives" (28 C.F.R. Section 0.85).
     /// ]]>
     /// </summary>
-    public class Terrorism : CriminalBase, ICapitalOffense, IBattery, IElement
+    public class Terrorism : LegalConcept, ICapitalOffense, IBattery, IElement
     {
         public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
 
@@ -21,7 +20,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

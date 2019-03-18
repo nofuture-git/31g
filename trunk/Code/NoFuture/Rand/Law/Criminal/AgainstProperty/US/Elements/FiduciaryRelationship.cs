@@ -2,6 +2,7 @@
 using System.Linq;
 using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
 using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
 {
@@ -30,11 +31,11 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
                 return base.IsValid(criminalAct, persons);
             }
 
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 
-            var victims = persons.Where(p => IsVictim(p)).ToList();
+            var victims = persons.Victims().ToList();
             if (!victims.Any())
                 return false;
 

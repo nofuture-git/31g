@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
@@ -23,7 +24,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
                 return false;
             }
 
-            foreach (var victim in persons.Where(p => IsVictim(p)))
+            foreach (var victim in persons.Victims())
             {
                 if (!IsCapableThereof(victim))
                 {

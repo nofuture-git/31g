@@ -4,9 +4,6 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
@@ -18,7 +15,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
     /// destroy, damaging or defective harbor/national defense property, war material, premises, utilities
     /// </summary>
     [Note("listen all'yll itz'a")]
-    public class Sabotage : CriminalBase, IActusReus, ILegalProperty
+    public class Sabotage : LegalConcept, IActusReus, ILegalProperty
     {
         private readonly ILegalProperty _govProperty;
 
@@ -54,7 +51,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

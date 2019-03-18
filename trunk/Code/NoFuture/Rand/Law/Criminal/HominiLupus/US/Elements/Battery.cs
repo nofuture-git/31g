@@ -1,8 +1,6 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
@@ -10,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <summary>
     /// Same as <see cref="AttemptedBattery"/> except there is actual touch\contact of some kind
     /// </summary>
-    public class Battery : CriminalBase, IBattery, IActusReus, IElement
+    public class Battery : LegalConcept, IBattery, IActusReus, IElement
     {
         public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
 
@@ -21,7 +19,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

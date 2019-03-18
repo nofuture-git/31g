@@ -3,6 +3,7 @@ using System.Linq;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
@@ -19,7 +20,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             if (!base.IsValid(persons))
                 return false;
 
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
             var byForce = IsByViolence(defendant);
@@ -60,7 +61,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             if (persons == null || !persons.Any())
                 return false;
 
-            var victims = persons.Where(p => IsVictim(p)).ToList();
+            var victims = persons.Victims().ToList();
             if (!victims.Any())
             {
                 AddReasonEntry(

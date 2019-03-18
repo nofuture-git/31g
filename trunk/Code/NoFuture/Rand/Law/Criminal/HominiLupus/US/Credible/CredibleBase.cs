@@ -1,13 +1,13 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Credible
 {
-    public abstract class CredibleBase : CriminalBase, IAgitate
+    public abstract class CredibleBase : LegalConcept, IAgitate
     {
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

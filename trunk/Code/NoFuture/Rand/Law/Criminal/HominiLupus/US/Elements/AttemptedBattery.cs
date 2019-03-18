@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
@@ -15,7 +16,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

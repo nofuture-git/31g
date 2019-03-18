@@ -1,8 +1,5 @@
-﻿using System;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
@@ -10,7 +7,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// concurrence (i.e. at-the-same-time) of an evil-meaning mind with an evil-doing hand
     /// </summary>
     [Aka("conduct")]
-    public class Concurrence : CriminalBase, IElement
+    public class Concurrence : LegalConcept, IElement
     {
         private IMensRea _mens;
 

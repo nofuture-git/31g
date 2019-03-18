@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 {
     /// <summary>
     /// Article III Section 3 of the US Constitution
     /// </summary>
-    public class Treason : CriminalBase, ICapitalOffense, IBattery, IElement
+    public class Treason : LegalConcept, ICapitalOffense, IBattery, IElement
     {
         /// <summary>
         /// Active belligerent or enemy-combative [levying War against them]
@@ -36,7 +35,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 
@@ -69,7 +68,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

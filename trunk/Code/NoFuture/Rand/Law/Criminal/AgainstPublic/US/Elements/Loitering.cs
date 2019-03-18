@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 {
     /// <summary>
     /// wandering or remaining at some location with intent to gamble, beg or prostitute
     /// </summary>
-    public class Loitering : CriminalBase, IActusReus
+    public class Loitering : LegalConcept, IActusReus
     {
         [Aka("panhandling")] public Predicate<ILegalPerson> IsBegging { get; set; } = lp => false;
 
@@ -22,7 +20,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

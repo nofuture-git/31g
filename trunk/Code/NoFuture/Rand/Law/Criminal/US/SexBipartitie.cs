@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US
 {
     /// <inheritdoc cref="ISexBipartitie"/>
-    public class SexBipartitie : CriminalBase, ISexBipartitie
+    public class SexBipartitie : LegalConcept, ISexBipartitie
     {
         public Predicate<ILegalPerson> IsOneOfTwo { get; set; } = lp => false;
 
@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Criminal.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

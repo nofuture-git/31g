@@ -3,6 +3,7 @@ using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
@@ -47,7 +48,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
                 return false;
             }
 
-            var defendant = GetDefendant(persons) ?? SourceCrime.GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

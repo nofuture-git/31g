@@ -1,13 +1,11 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
     [Aka("felonious restraint")]
-    public class FalseImprisonment : CriminalBase, IActusReus
+    public class FalseImprisonment : LegalConcept, IActusReus
     {
         public Predicate<ILegalPerson> IsConfineVictim { get; set; } = lp => false;
 
@@ -15,7 +13,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
             if (!IsConfineVictim(defendant))

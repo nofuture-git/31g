@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements;
+﻿using System;
+using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
@@ -9,16 +10,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     /// </summary>
     public class BatteredWomanSyndrome : Imminence
     {
-        private readonly ICrime _crime;
-        public BatteredWomanSyndrome(ICrime crime) :base(null)
+        public BatteredWomanSyndrome(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) :base(getSubjectPerson)
         {
-            _crime = crime;
-            GetSubjectPerson = _crime.GetDefendant;
         }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = _crime.GetDefendant(persons) ?? GetSubjectPerson(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

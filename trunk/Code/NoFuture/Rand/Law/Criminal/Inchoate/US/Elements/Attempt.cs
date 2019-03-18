@@ -1,16 +1,16 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
 {
     /// <summary>
     /// a crime that has only just begun which may be defined by statute or common law
     /// </summary>
-    public class Attempt : CriminalBase, IActusReus
+    public class Attempt : LegalConcept, IActusReus
     {
         /// <summary>
         /// A measure of criminal effort left to be done, not a measure of what is already done.
@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
         /// <summary>
         /// <![CDATA[ "thing itself speaks," meaning its clear that there is not other purpose but criminal ]]>
         /// </summary>
-        [Aka("unequivocality test")]
+        [Aka("unequivocal test")]
         public Predicate<ILegalPerson> IsResIpsaLoquitur { get; set; } = lp => false;
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

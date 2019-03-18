@@ -1,13 +1,12 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 {
-    public class Pimping : CriminalBase, IPossession
+    public class Pimping : LegalConcept, IPossession
     {
         public Predicate<ILegalPerson> IsKnowinglyProcured { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsKnowinglyReceived { get; set; } = lp => false;
@@ -15,7 +14,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

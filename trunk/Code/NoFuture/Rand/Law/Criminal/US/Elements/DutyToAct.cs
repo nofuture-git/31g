@@ -1,11 +1,12 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements
 {
     /// <summary>
     /// This can be used as the action part of actus reus
     /// </summary>
-    public class DutyToAct : CriminalBase, IElement
+    public class DutyToAct : LegalConcept, IElement
     {
         /// <summary>
         /// The duty to act originates from a statute
@@ -24,7 +25,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

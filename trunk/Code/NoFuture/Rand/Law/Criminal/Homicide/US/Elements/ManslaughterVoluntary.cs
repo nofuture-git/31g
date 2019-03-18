@@ -1,4 +1,5 @@
 ﻿using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
@@ -10,7 +11,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
         public override bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             var adequateProvation = criminalIntent as AdequateProvocation;
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (adequateProvation != null && defendant != null && adequateProvation.IsValid(defendant))
             {
                 return true;

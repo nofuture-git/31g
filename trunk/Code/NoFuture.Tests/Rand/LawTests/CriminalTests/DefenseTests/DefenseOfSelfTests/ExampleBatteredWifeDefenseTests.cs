@@ -36,12 +36,12 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
             var testSubject = new DefenseOfSelf(testCrime)
             {
                 IsReasonableFearOfInjuryOrDeath = lp => true,
-                Imminence = new BatteredWomanSyndrome(testCrime),
-                Proportionality = new Proportionality<ITermCategory>(testCrime.GetDefendant)
+                Imminence = new BatteredWomanSyndrome(ExtensionMethods.Defendant),
+                Proportionality = new Proportionality<ITermCategory>(ExtensionMethods.Defendant)
                 {
                     GetChoice = lp => new DeadlyForce(),
                 },
-                Provacation = new Provacation(testCrime.GetDefendant)
+                Provacation = new Provacation(ExtensionMethods.Defendant)
                 {
                     IsInitiatorOfAttack = lp => lp is SpikeEg
                 }

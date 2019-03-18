@@ -26,11 +26,11 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
             if(theft == null || persons == null || !persons.Any())
                 return base.IsValid(criminalAct, persons);
 
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 
-            var victims = persons.Where(p => IsVictim(p)).ToList();
+            var victims = persons.Victims().ToList();
             if (!victims.Any())
                 return false;
 

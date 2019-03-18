@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
 {
-    public abstract class AgitPropertyBase : CriminalBase
+    public abstract class AgitPropertyBase : LegalConcept
     {
         public virtual IConsent Consent { get; set; }
         public virtual ILegalProperty SubjectProperty { get; set; }
@@ -30,7 +29,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
                 return true;
 
             //did the caller pass in any IVictim types
-            var victims = persons.Where(p => IsVictim(p)).ToList();
+            var victims = persons.Victims().ToList();
             if (!victims.Any())
                 return true;
 
@@ -57,7 +56,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
 
         protected virtual bool PropertyOwnerIsDefendant(ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
             if (SubjectProperty?.EntitledTo == null)

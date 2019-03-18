@@ -1,8 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 {
@@ -10,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
     /// unlawful conduct that causes the victims death
     /// </summary>
     [Aka("criminal homicide")]
-    public abstract class Murder : CriminalBase, IActusReus
+    public abstract class Murder : LegalConcept, IActusReus
     {
         /// <summary>
         /// death of the victim caused by defendant in an unlawful manner
@@ -27,7 +25,7 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 
@@ -42,9 +40,9 @@ namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
 
         public virtual bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            var adequateProvation = criminalIntent as AdequateProvocation;
-            var defendant = GetDefendant(persons);
-            if (adequateProvation != null && defendant != null && adequateProvation.IsValid(defendant))
+            var adequateProvocation = criminalIntent as AdequateProvocation;
+            var defendant = persons.Defendant();
+            if (adequateProvocation != null && defendant != null && adequateProvocation.IsValid(defendant))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, is criminal intent {nameof(AdequateProvocation)} " +
                                "which is only applicable to manslaughter");

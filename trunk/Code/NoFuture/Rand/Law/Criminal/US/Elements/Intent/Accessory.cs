@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
 {
@@ -20,7 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

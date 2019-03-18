@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
+﻿using NoFuture.Rand.Law.US;
+
+namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     /// <summary>
     /// <![CDATA[
@@ -20,7 +22,7 @@
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = Crime.GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
             if (!base.IsValid(persons))

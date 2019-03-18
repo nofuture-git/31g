@@ -58,11 +58,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Term.cs" />
     <Compile Include="TermCategory.cs" />
+    <Compile Include="US\ExtensionMethods.cs" />
     <Compile Include="US\Government.cs" />
     <Compile Include="US\GovernmentProperty.cs" />
     <Compile Include="US\IDefendant.cs" />
     <Compile Include="US\IOfferee.cs" />
     <Compile Include="US\IOfferor.cs" />
+    <Compile Include="US\IPlaintiff.cs" />
     <Compile Include="US\ITortfeasor.cs" />
     <Compile Include="US\IVictim.cs" />
     <Compile Include="US\UnoHomine.cs" />

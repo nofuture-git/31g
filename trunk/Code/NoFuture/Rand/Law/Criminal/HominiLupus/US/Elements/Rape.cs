@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
     /// <inheritdoc cref="ISexBipartitie"/>
     /// <inheritdoc cref="IAssault"/>
     /// <inheritdoc cref="IBattery"/>
-    [EtymologyNote("Latin", "''rapere", "to steal or seize")]
-    public class Rape : CriminalBase, ISexBipartitie, IAssault, IBattery, IActusReus, IElement
+    [EtymologyNote("Latin", "'rapere'", "to steal or seize")]
+    public class Rape : LegalConcept, ISexBipartitie, IAssault, IBattery, IActusReus, IElement
     {
         public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
 
@@ -27,7 +25,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 
@@ -59,10 +57,10 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             var consent = Consent as Consent ?? new Consent();
 
-            foreach (var victim in persons.Where(p => IsVictim(p)))
+            foreach (var victim in persons.Victims())
             {
                 var isCapable = consent.IsCapableThereof(victim);
                 var isIntercourse = IsSexualIntercourse(defendant);

@@ -1,9 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 {
@@ -11,7 +10,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
     /// conferring, offering, agreeing to confer, or soliciting, accepting,
     /// or agreeing to accept any benefit upon a public official
     /// </summary>
-    public class Bribery : CriminalBase, IPossession
+    public class Bribery : LegalConcept, IPossession
     {
 
         public Predicate<ILegalPerson> IsPublicOfficial { get; set; } = lp => false;
@@ -30,7 +29,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

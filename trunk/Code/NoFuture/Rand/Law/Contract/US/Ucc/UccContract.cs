@@ -29,12 +29,12 @@ namespace NoFuture.Rand.Law.Contract.US.Ucc
 
         public ILegalPerson GetOfferor(ILegalPerson[] persons)
         {
-            return persons.FirstOrDefault(p => p is IOfferor);
+            return persons.Offeror();
         }
 
         public ILegalPerson GetOfferee(ILegalPerson[] persons)
         {
-            return persons.FirstOrDefault(p => p is IOfferee);
+            return persons.Offeree();
         }
 
         public override bool IsValid(params ILegalPerson[] persons)

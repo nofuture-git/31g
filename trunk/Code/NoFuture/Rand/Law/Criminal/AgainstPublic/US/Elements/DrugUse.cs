@@ -1,8 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 {
@@ -10,7 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
     /// The use of a drug illegally
     /// </summary>
     [Aka("under the influence of a controlled substance")]
-    public class DrugUse : CriminalBase, IControlledSubstance
+    public class DrugUse : LegalConcept, IControlledSubstance
     {
         public IDrugSchedule Offer { get; set; } = new ScheduleI();
 
@@ -18,7 +17,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

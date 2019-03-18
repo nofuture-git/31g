@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new BrianEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new ChoiceThereof<ITermCategory>(testCrime.GetDefendant)
+            var testSubject = new ChoiceThereof<ITermCategory>(ExtensionMethods.Defendant)
             {
                 GetChoice = lp =>
                 {

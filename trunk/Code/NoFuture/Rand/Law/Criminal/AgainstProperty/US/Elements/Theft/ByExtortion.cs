@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {
@@ -17,7 +16,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
         /// <summary>
         /// Model Penal Code 223.4.(1)-(7)
         /// </summary>
-        public class ByThreatening : CriminalBase
+        public class ByThreatening : LegalConcept
         {
             public Predicate<ILegalPerson> IsToInjury { get; set; } = lp => false;
 
@@ -44,7 +43,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 
             public override bool IsValid(params ILegalPerson[] persons)
             {
-                var defendant = GetDefendant(persons);
+                var defendant = persons.Defendant();
                 if (defendant == null)
                     return false;
 
@@ -83,7 +82,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

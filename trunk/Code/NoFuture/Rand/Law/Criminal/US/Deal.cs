@@ -1,12 +1,13 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US
 {
-    public class Deal : CriminalBase, IAssent
+    public class Deal : LegalConcept, IAssent
     {
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

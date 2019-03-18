@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US
 {
-    public abstract class CrimeBase : CriminalBase, ICrime
+    public abstract class CrimeBase : LegalConcept, ICrime
     {
         public override bool IsValid(params ILegalPerson[] persons)
         {
             ClearReasons();
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

@@ -1,17 +1,16 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 {
     /// <summary>
     /// Offering, agreeing, or engaging in sexual conduct for money, property, or anything of value
     /// </summary>
-    public class Prostitution : CriminalBase, IActusReus, IBargain<ILegalProperty, ISexBipartitie>
+    public class Prostitution : LegalConcept, IActusReus, IBargain<ILegalProperty, ISexBipartitie>
     {
         public ISexBipartitie Offer { get; set; }
         public Func<ISexBipartitie, ILegalProperty> Acceptance { get; set; }
@@ -19,7 +18,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 

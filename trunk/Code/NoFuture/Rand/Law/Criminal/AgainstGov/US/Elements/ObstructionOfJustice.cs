@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 {
     /// <summary>
     /// the interference with any aspect of lay enforcement procedure, prosecution or conviction
     /// </summary>
-    public class ObstructionOfJustice : CriminalBase, IActusReus
+    public class ObstructionOfJustice : LegalConcept, IActusReus
     {
         /// <summary>
         /// giving false identification to a law enforcement officer
@@ -50,7 +48,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetDefendant(persons);
+            var defendant = persons.Defendant();
             if (defendant == null)
                 return false;
 
