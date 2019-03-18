@@ -60,6 +60,11 @@
     <Compile Include="TermCategory.cs" />
     <Compile Include="US\Government.cs" />
     <Compile Include="US\GovernmentProperty.cs" />
+    <Compile Include="US\IDefendant.cs" />
+    <Compile Include="US\IOfferee.cs" />
+    <Compile Include="US\IOfferor.cs" />
+    <Compile Include="US\ITortfeasor.cs" />
+    <Compile Include="US\IVictim.cs" />
     <Compile Include="US\UnoHomine.cs" />
     <Compile Include="US\CaseReading\Citation.cs" />
     <Compile Include="ILegalConcept.cs" />
