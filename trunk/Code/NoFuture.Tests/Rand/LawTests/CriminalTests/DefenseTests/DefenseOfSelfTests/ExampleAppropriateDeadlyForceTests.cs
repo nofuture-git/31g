@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
                 {
                     GetResponseTime = lp => lp is WandaEg ? Imminence.NormalReactionTimeToDanger : TimeSpan.Zero
                 },
-                Provacation = new Provacation(ExtensionMethods.Defendant)
+                Provocation = new Provocation(ExtensionMethods.Defendant)
                 {
                     IsInitiatorOfAttack = lp => lp is NicholasEg
                 },

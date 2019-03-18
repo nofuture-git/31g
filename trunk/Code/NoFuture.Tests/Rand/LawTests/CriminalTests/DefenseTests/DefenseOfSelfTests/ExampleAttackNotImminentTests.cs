@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
                 {
                     GetChoice = lp => new DeadlyForce(),
                 },
-                Provacation = new Provacation(ExtensionMethods.Defendant)
+                Provocation = new Provocation(ExtensionMethods.Defendant)
                 {
                     IsInitiatorOfAttack = lp => lp is VinnyEg,
                 }

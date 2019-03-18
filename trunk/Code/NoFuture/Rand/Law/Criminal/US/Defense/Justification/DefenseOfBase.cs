@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     {
         protected DefenseOfBase(ICrime crime) : base(crime)
         {
-            Provacation = new Provacation(ExtensionMethods.Defendant);
+            Provocation = new Provocation(ExtensionMethods.Defendant);
             Imminence = new Imminence(ExtensionMethods.Defendant);
             Proportionality = new Proportionality<ITermCategory>(ExtensionMethods.Defendant);
         }
@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
         /// <summary>
         /// (1) an unprovoked attack
         /// </summary>
-        public Provacation Provacation { get; set; }
+        public Provocation Provocation { get; set; }
 
         /// <summary>
         /// (2) an attack which threatens imminent injury or death 
@@ -40,10 +40,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
                 AddReasonEntryRange(Imminence.GetReasonEntries());
                 return false;
             }
-            if (Provacation != null && !Provacation.IsValid(persons))
+            if (Provocation != null && !Provocation.IsValid(persons))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Provacation)} is false");
-                AddReasonEntryRange(Provacation.GetReasonEntries());
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Provocation)} is false");
+                AddReasonEntryRange(Provocation.GetReasonEntries());
                 return false;
             }
             if (Proportionality != null && !Proportionality.IsValid(persons))
@@ -53,7 +53,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
                 return false;
             }
             AddReasonEntryRange(Imminence?.GetReasonEntries());
-            AddReasonEntryRange(Provacation?.GetReasonEntries());
+            AddReasonEntryRange(Provocation?.GetReasonEntries());
             AddReasonEntryRange(Proportionality?.GetReasonEntries());
             return true;
         }

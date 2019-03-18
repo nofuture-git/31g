@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
                     //example seems to assume that the fist fight is deadly
                     GetChoice = lp => new DeadlyForce()
                 },
-                Provacation = new Provacation(ExtensionMethods.Defendant)
+                Provocation = new Provocation(ExtensionMethods.Defendant)
                 {
                     //example doesn't say who started it
                     IsInitiatorOfAttack = lp => true
