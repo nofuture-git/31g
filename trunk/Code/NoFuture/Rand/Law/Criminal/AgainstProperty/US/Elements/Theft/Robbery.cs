@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 
@@ -62,11 +60,11 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
             if (persons == null || !persons.Any())
                 return false;
 
-            var victims = persons.Where(p => IsVictim(p));
+            var victims = persons.Where(p => IsVictim(p)).ToList();
             if (!victims.Any())
             {
                 AddReasonEntry(
-                    $"there are not victims amound persons {string.Join(",", LegalPerson.GetNames(persons))}");
+                    $"there are not victims among persons {string.Join(",", LegalPerson.GetNames(persons))}");
                 return false;
             }
 

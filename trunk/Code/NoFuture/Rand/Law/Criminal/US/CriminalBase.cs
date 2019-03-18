@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Law.Criminal.US
 {
-    public abstract class CriminalBase : LegalConcept, IProsecution
+    public abstract class CriminalBase : LegalConcept
     {
         private readonly IProsecution _presecution = new Prosecution();
 
