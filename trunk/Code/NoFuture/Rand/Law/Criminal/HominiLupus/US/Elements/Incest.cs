@@ -5,16 +5,12 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 {
-    /// <inheritdoc cref="ISexBipartitie"/>
+    /// <inheritdoc cref="SexBipartitie"/>
     /// <summary>
     /// This seems to imply that the parties know they have some family relation
     /// </summary>
-    public class Incest : LegalConcept, IActusReus, ISexBipartitie
+    public class Incest : SexBipartitie, IActusReus
     {
-        public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
-
-        public Predicate<ILegalPerson> IsOneOfTwo { get; set; } = lp => false;
-
         /// <summary>
         /// Typically being any family member one could not marry
         /// </summary>
@@ -26,22 +22,25 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             if (defendant == null)
                 return false;
 
-            var victim = persons.FirstOrDefault(p => IsOneOfTwo(p) && !ReferenceEquals(p, defendant));
-            if (victim == null)
+            if (!base.IsValid(persons))
+                return false;
+
+            var otherPerson = persons.FirstOrDefault(p => IsOneOfTwo(p) && !ReferenceEquals(p, defendant));
+            if (otherPerson == null)
             {
                 AddReasonEntry($"the {nameof(IsOneOfTwo)} returned null for the other person");
                 return false;
             }
 
-            if (!IsSexualIntercourse(defendant))
+            if (!IsSexualIntercourse(otherPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsSexualIntercourse)} is false");
+                AddReasonEntry($"other person, {otherPerson.Name}, {nameof(IsSexualIntercourse)} is false");
                 return false;
             }
 
-            var isFamily = IsFamilyRelation(defendant, victim);
+            var isFamily = IsFamilyRelation(defendant, otherPerson);
 
-            AddReasonEntry($"{nameof(IsFamilyRelation)} is {isFamily} for {defendant.Name} and {victim.Name}");
+            AddReasonEntry($"{nameof(IsFamilyRelation)} is {isFamily} for {defendant.Name} and {otherPerson.Name}");
             return isFamily;
         }
 

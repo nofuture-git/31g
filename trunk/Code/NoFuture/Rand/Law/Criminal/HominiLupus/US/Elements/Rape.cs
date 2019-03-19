@@ -11,17 +11,13 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
     /// <inheritdoc cref="IAssault"/>
     /// <inheritdoc cref="IBattery"/>
     [EtymologyNote("Latin", "'rapere'", "to steal or seize")]
-    public class Rape : LegalConcept, ISexBipartitie, IAssault, IBattery, IActusReus, IElement
+    public class Rape : SexBipartitie, IAssault, IBattery, IActusReus, IElement
     {
-        public Predicate<ILegalPerson> IsSexualIntercourse { get; set; } = lp => false;
-
         public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;
 
         public IConsent Consent { get; set; } = new Consent();
-
-        public Predicate<ILegalPerson> IsOneOfTwo { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -29,16 +25,8 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
             if (defendant == null)
                 return false;
 
-            if (!IsSexualIntercourse(defendant))
-            {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsSexualIntercourse)} is false");
+            if (!base.IsValid(persons))
                 return false;
-            }
-
-            if (!IsOneOfTwo(defendant))
-            {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsOneOfTwo)} is false");
-            }
 
             var isByForce = IsByViolence(defendant);
             var isByThreatOfForce = IsByThreatOfViolence(defendant);
