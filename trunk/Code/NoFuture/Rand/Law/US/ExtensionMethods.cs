@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IOfferee);
         }
 
-        public static ILegalPerson Tortfeasor(IEnumerable<ILegalPerson> persons)
+        public static ILegalPerson Tortfeasor(this IEnumerable<ILegalPerson> persons)
         {
             return persons.FirstOrDefault(p => p is ITortfeasor);
         }
