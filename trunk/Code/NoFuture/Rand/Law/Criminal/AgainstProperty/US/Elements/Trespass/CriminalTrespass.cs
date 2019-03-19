@@ -6,13 +6,8 @@ using NoFuture.Rand.Law.US.Elements;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Trespass
 {
-    public class CriminalTrespass : AgitPropertyBase, IActusReus
+    public class CriminalTrespass : TrespassBase, IActusReus
     {
-        /// <summary>
-        /// partial or complete intrusion of either the defendant, the defendant&apos;s body part or a tool or instrument
-        /// </summary>
-        public Predicate<ILegalPerson> IsEntry { get; set; } = lp => false;
-
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var defendant = persons.Defendant();

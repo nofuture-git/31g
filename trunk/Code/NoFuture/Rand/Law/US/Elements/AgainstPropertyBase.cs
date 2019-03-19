@@ -3,7 +3,7 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Law.US.Elements
 {
-    public abstract class AgitPropertyBase : LegalConcept
+    public abstract class AgainstPropertyBase : LegalConcept
     {
         public virtual IConsent Consent { get; set; }
         public virtual ILegalProperty SubjectProperty { get; set; }
