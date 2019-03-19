@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Core.Enums
     public enum Classification
     {
         /// <summary>
-        /// Activity which may or may not be done.
+        /// Activity which must be done.
         /// </summary>
         Mandatory,
 
@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Core.Enums
         Prohibitory,
 
         /// <summary>
-        /// Activity which must be done.
+        /// Activity which may or may not be done.
         /// </summary>
         Permissive,
     }
