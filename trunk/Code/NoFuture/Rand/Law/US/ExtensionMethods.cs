@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace NoFuture.Rand.Law.US
 {
+    /// <summary>
+    /// https://www.cali.org/
+    /// </summary>
     public static class ExtensionMethods
     {
         public static ILegalPerson Defendant(this IEnumerable<ILegalPerson> persons)

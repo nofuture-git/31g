@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="US\Elements\AgitPropertyBase.cs" />
     <Compile Include="US\Elements\Damage\Arson.cs" />
     <Compile Include="US\Elements\Damage\CriminalMischief.cs" />
     <Compile Include="US\Elements\Trespass\Burglary.cs" />
@@ -49,9 +48,6 @@
     <Compile Include="US\Elements\FiduciaryRelationship.cs" />
     <Compile Include="US\Elements\Theft\Robbery.cs" />
     <Compile Include="US\Elements\Trespass\CriminalTrespass.cs" />
-    <Compile Include="US\PersonalProperty.cs" />
-    <Compile Include="US\RealProperty.cs" />
-    <Compile Include="US\ActOfService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">
