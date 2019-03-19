@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Elements;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
 {

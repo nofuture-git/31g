@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US
+﻿namespace NoFuture.Rand.Law.US.Persons
 {
     public interface IVictim : ILegalPerson
     {

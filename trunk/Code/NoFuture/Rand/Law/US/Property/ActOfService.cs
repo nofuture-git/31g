@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Core.Enums;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US
+namespace NoFuture.Rand.Law.US.Property
 {
     public class ActOfService : LegalProperty
     {

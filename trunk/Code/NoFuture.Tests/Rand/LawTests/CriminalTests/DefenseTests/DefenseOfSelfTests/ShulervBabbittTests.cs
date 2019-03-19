@@ -8,6 +8,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.Criminal.US.Terms;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests

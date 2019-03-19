@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US
+﻿namespace NoFuture.Rand.Law.US.Persons
 {
     /// <summary>
     /// Type to cast legal person as the

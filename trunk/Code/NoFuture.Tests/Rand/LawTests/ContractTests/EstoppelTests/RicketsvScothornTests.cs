@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Contract.Tests.EstoppelTests

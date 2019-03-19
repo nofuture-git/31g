@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
+namespace NoFuture.Rand.Law.US.Elements
 {
     public abstract class AgitPropertyBase : LegalConcept
     {

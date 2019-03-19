@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.US
 {

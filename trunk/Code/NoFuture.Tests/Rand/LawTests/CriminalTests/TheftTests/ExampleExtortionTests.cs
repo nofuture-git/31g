@@ -3,6 +3,7 @@ using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests

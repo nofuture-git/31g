@@ -6,6 +6,7 @@ using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Semiosis;
 using NoFuture.Rand.Law.Contract.US.Terms;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests

@@ -2,6 +2,7 @@
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Elements;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Trespass
 {
