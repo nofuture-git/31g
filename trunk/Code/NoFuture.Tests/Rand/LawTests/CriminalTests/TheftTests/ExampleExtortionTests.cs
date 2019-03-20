@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     IsToAccuseOfCrime = lp => lp is RodneyBlackmailEg
                 },
                 SubjectProperty = new LegalProperty("fifteen thousand dollars"){ PropretyValue = 15000m },
-                Consent = new Consent
+                Consent = new VictimConsent
                 {
                     IsApprovalExpressed = lp => true,
                     IsCapableThereof = lp => lp is LindseyDealinEg

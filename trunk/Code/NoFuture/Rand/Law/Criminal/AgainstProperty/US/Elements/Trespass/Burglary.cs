@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Trespass
 
             if (IsBreakingForce != null && !IsBreakingForce(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsEntry)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTangibleEntry)} is false");
                 return false;
             }
 

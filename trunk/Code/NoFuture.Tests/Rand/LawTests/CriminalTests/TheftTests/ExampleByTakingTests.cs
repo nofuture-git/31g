@@ -93,7 +93,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     SubjectProperty = property,
                     IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg,
-                    Consent = new Consent
+                    Consent = new VictimConsent
                     {
                         IsCapableThereof = lp => true,
                         //Cody said it was ok to take the property 

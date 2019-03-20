@@ -31,7 +31,12 @@ namespace NoFuture.Rand.Law.US
 
         public static ILegalPerson Tortfeasor(this IEnumerable<ILegalPerson> persons)
         {
-            return persons.FirstOrDefault(p => p is ITortfeasor);
+            return persons.FirstOrDefault(p => p is ITortfeasor || p is IDefendant);
+        }
+
+        public static ILegalPerson Plaintiff(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is IPlaintiff);
         }
     }
 }

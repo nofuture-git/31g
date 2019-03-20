@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         {
             var testAct = new Robbery
             {
-                Consent = new Consent
+                Consent = new VictimConsent
                 {
                     IsApprovalExpressed = lp => false,
                     IsCapableThereof = lp => lp is LindseyDealinEg

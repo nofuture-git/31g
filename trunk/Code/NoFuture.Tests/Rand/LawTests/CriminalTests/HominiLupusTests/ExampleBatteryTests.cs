@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                 ActusReus = new Battery
                 {
                     IsByViolence = lp => lp is Combatent00,
-                    Consent = new Consent
+                    Consent = new VictimConsent
                     {
                         IsCapableThereof = lp => true,
                         IsApprovalExpressed = lp => true,

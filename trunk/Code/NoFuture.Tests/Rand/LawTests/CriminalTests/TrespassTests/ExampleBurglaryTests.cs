@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
             {
                 //removing a simple barrier and placing hands beyond threshold is sufficient
                 IsBreakingForce = lp => lp is JedBurglarToolEg,
-                IsEntry = lp => lp is JedBurglarToolEg,
+                IsTangibleEntry = lp => lp is JedBurglarToolEg,
                 IsStructuredEnclosure = lp => lp is SomeonesApartment,
                 SubjectProperty = new SomeonesApartment()
             };
@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
 
             testAct = new Burglary
             {
-                IsEntry = lp => lp is JedBurglarToolEg,
+                IsTangibleEntry = lp => lp is JedBurglarToolEg,
                 IsStructuredEnclosure = lp => lp is SomeonesApartment,
                 SubjectProperty = new SomeonesApartment()
             };
@@ -43,10 +43,10 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
             testAct = new Burglary
             {
                 IsBreakingForce = lp => lp is JedBurglarToolEg,
-                IsEntry = lp => lp is JedBurglarToolEg,
+                IsTangibleEntry = lp => lp is JedBurglarToolEg,
                 IsStructuredEnclosure = lp => lp is SomeonesApartment,
                 SubjectProperty = new SomeonesApartment(),
-                Consent = new Consent
+                Consent = new VictimConsent
                 {
                     IsApprovalExpressed = lp => false,
                     IsCapableThereof = lp => true,
@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
                 ActusReus = new Burglary
                 {
                     IsBreakingForce = lp => lp is ChristianShovesEg,
-                    IsEntry = lp => lp is ChristianShovesEg,
+                    IsTangibleEntry = lp => lp is ChristianShovesEg,
                     IsStructuredEnclosure = lp => lp is SupposedHauntedHouse
                 },
                 MensRea = new IsHouseHaunted()
@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
             {
                 ActusReus = new CriminalTrespass
                 {
-                    IsEntry = lp => lp is ChristianShovesEg,
+                    IsTangibleEntry = lp => lp is ChristianShovesEg,
                 },
                 MensRea = new GeneralIntent
                 {

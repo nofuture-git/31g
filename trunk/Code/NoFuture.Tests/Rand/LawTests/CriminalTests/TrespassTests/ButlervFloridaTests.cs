@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
             {
                 ActusReus = new CriminalTrespass
                 {
-                    IsEntry = lp => lp is Butler,
+                    IsTangibleEntry = lp => lp is Butler,
                     SubjectProperty = new LegalProperty("Thelma Harvey house")
                     {
                         EntitledTo = new ThelmaHarvey(),

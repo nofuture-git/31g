@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 ActusReus = new ByTaking
                 {
                     SubjectProperty = securityDeposit,
-                    Consent = new Consent
+                    Consent = new VictimConsent
                     {
                         IsCapableThereof = lp => true,
                         IsApprovalExpressed = lp => true,

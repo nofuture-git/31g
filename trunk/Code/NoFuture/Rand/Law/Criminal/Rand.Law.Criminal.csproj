@@ -52,7 +52,7 @@
     <Compile Include="US\Defense\Excuse\Intoxication.cs" />
     <Compile Include="US\Defense\Excuse\MistakeOfFact.cs" />
     <Compile Include="US\Defense\Excuse\MistakeOfLaw.cs" />
-    <Compile Include="US\Elements\Consent.cs" />
+    <Compile Include="US\Elements\VictimConsent.cs" />
     <Compile Include="US\Elements\IAttendantElement.cs" />
     <Compile Include="US\Defense\Justification\BatteredWomanSyndrome.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfBase.cs" />

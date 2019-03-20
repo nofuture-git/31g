@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.PropertyDestruction
         {
             var testAct = new CriminalMischief
             {
-                Consent = new Consent
+                Consent = new VictimConsent
                 {
                     IsApprovalExpressed = lp => false,
                     IsCapableThereof = lp => lp is SueBrokenstuffEg

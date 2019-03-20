@@ -7,6 +7,9 @@ namespace NoFuture.Rand.Law.US.Elements
         /// <summary>
         /// partial or complete intrusion of either the defendant, the defendant&apos;s body part or a tool or instrument
         /// </summary>
-        public Predicate<ILegalPerson> IsEntry { get; set; } = lp => false;
+        /// <remarks>
+        /// dust, noise, vibrations, etc. are not trespass unless you can prove damages
+        /// </remarks>
+        public Predicate<ILegalPerson> IsTangibleEntry { get; set; } = lp => false;
     }
 }

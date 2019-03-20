@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
 
         public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;
 
-        public IConsent Consent { get; set; } = new Consent();
+        public IConsent Consent { get; set; } = new VictimConsent();
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
         public bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             var defendant = persons.Defendant();
-            var consent = Consent as Consent ?? new Consent();
+            var consent = Consent as VictimConsent ?? new VictimConsent();
 
             foreach (var victim in persons.Victims())
             {

@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                 {
                     IsSexualIntercourse = lp => lp is AlexGamerEg,
                     IsOneOfTwo = lp => lp is AlexGamerEg,
-                    Consent = new Consent
+                    Consent = new VictimConsent
                     {
                         IsApprovalExpressed = lp => false,
                     }
@@ -70,7 +70,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                 {
                     IsSexualIntercourse = lp => lp is AlexGamerEg,
                     IsOneOfTwo = lp => lp is AlexGamerEg,
-                    Consent = new Consent
+                    Consent = new VictimConsent
                     {
                         IsCapableThereof = lp => ((lp as BrandySisterEg)?.Age  ?? 18) >= 16,
                     }
@@ -92,7 +92,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                 {
                     IsSexualIntercourse = lp => lp is AlexGamerEg,
                     IsOneOfTwo = lp => lp is AlexGamerEg,
-                    Consent = new Consent
+                    Consent = new VictimConsent
                     {
                         //assented 
                         IsApprovalExpressed = lp => true,

@@ -85,7 +85,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                 {
                     IsConfineVictim = lp => lp is ThomasHitchhikerEg,
                     IsAsportation = lp => lp is ThomasHitchhikerEg,
-                    Consent = new Consent
+                    Consent = new VictimConsent
                     {
                         IsCapableThereof = lp => lp is ShawnaHitchinhikenEg,
                         IsApprovalExpressed = lp => false,
