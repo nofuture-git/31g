@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\Elements\PlaintiffConsent.cs" />
+    <Compile Include="US\Elements\TrespassToChattels.cs" />
     <Compile Include="US\Elements\TrespassToLand.cs" />
     <Compile Include="US\ILitigation.cs" />
     <Compile Include="US\IntentionalTort.cs" />
