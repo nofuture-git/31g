@@ -4,7 +4,7 @@ using System.Linq;
 namespace NoFuture.Rand.Law.US
 {
     /// <summary>
-    /// The legal idea of some kind of loss suffered
+    /// The legal idea of some kind of loss suffered by a <see cref="ILegalPerson"/>
     /// </summary>
     /// <remarks>https://en.wikipedia.org/wiki/Harm</remarks>
     public class Harm: UnoHomine

@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law
     {
         private readonly List<string> _reasons = new List<string>();
 
-        protected virtual void ClearReasons()
+        public virtual void ClearReasons()
         {
             _reasons.Clear();
         }

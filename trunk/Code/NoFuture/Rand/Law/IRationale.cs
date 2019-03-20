@@ -10,5 +10,6 @@ namespace NoFuture.Rand.Law
         IEnumerable<string> GetReasonEntries();
         void AddReasonEntry(string msg);
         void AddReasonEntryRange(IEnumerable<string> msgs);
+        void ClearReasons();
     }
 }

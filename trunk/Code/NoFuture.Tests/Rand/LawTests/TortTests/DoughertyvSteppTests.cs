@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NoFuture.Rand.Law.US.Persons;
 using NoFuture.Rand.Law.Tort.US.Elements;
 using NoFuture.Rand.Law.US.Property;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.Tests
 {
@@ -63,8 +64,13 @@ namespace NoFuture.Rand.Law.Tort.Tests
             var testResult = testSubject.IsValid(new Dougherty(), new Stepp());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
+            testSubject.ClearReasons();
 
-            testSubject.IsPhysicalDamage = lp => true;
+            testSubject.PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)
+            {
+                IsImpair = lp => lp is Stepp,
+                ToUsefulness = p => true
+            };
             testResult = testSubject.IsValid(new Dougherty(), new Stepp());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);

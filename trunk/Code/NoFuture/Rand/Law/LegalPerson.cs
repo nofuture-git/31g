@@ -43,6 +43,11 @@ namespace NoFuture.Rand.Law
                 AddReasonEntry(msg);
         }
 
+        public virtual void ClearReasons()
+        {
+            _reasons.Clear();
+        }
+
         public override string ToString()
         {
             return String.Join(Environment.NewLine, _reasons);
