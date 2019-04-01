@@ -10,6 +10,11 @@ namespace NoFuture.Rand.Law.US
         public Damage(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
+
+        /// <summary>
+        /// The predicate for &quot;something bad&quot; 
+        /// which may take form in usefulness, function or value
+        /// </summary>
         public Predicate<ILegalPerson> IsImpair { get; set; } = lp => false;
 
         public ILegalProperty SubjectProperty { get; set; }

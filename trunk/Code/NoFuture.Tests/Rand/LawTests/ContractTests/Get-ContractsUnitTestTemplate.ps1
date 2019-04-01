@@ -92,7 +92,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
         }
     }
 
-    public class ${Plaintiff} : LegalPerson
+    public class ${Plaintiff} : LegalPerson, IOfferor
     {
         public ${Plaintiff}(): base("") { }
         public ISet<Term<object>> GetTerms()
@@ -104,7 +104,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
         }
     }
 
-    public class ${Defendant} : LegalPerson
+    public class ${Defendant} : LegalPerson, IOfferee
     {
         public ${Defendant}(): base("") { }
         public ISet<Term<object>> GetTerms()

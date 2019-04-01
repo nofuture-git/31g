@@ -1,23 +1,14 @@
 ﻿using System;
-using NoFuture.Rand.Law.US.Elements;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
-    public class TrespassToLand : TrespassBase
+    public class TrespassToLand : TortTrespass
     {
         /// <summary>
         /// E.G. dust, noise, vibrations, sound waves, electromagnetic radiation, etc
         /// </summary>
         public Predicate<ILegalPerson> IsIntangibleEntry { get; set; } = lp => false;
-
-        public Damage PropertyDamage { get; set; }
-
-        public override void ClearReasons()
-        {
-            PropertyDamage?.ClearReasons();
-            base.ClearReasons();
-        }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -43,15 +34,5 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
             return true;
         }
 
-        protected virtual bool IsPhysicalDamage(ILegalPerson[] persons)
-        {
-            if (PropertyDamage == null)
-                return false;
-            PropertyDamage.GetSubjectPerson = PropertyDamage.GetSubjectPerson ?? ExtensionMethods.Tortfeasor;
-            PropertyDamage.SubjectProperty = PropertyDamage.SubjectProperty ?? SubjectProperty;
-            var rslt = PropertyDamage.IsValid(persons);
-            AddReasonEntryRange(PropertyDamage.GetReasonEntries());
-            return rslt;
-        }
     }
 }
