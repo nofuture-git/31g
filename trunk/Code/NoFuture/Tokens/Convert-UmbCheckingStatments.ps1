@@ -1,6 +1,12 @@
 ﻿$myScriptLocation = Split-Path $PSCommandPath -Parent
 
+$Script:loadedDependencies = $false
+
 function Add-AdHocDependencies(){
+    
+    #this is alot of work so only do it if really needed
+    $Script:loadedDependencies = $true
+    
     <#-----------
     ITEXTSHARP 
     -------------#>
@@ -216,6 +222,24 @@ namespace NoFuture.Tokens
     }
 }
 
+<#
+    .SYNOPSIS
+    Converts a UMB Checking Account PDF statement into a text document
+    
+    .DESCRIPTION
+    Converst the UMB PDF into a text document by first pulling all the 
+    line items, which are images, from the PDF then applies OCR to read
+    each image into text data.
+    
+    .PARAMETER UmbStatement
+    The full file-path to a UMB PDF file.
+    
+    .EXAMPLE
+    C:\PS> $myTxtStatement = Convert-UmbCheckingStatement "C:\Temp\MyScripts\Checking_Statement_20180108.pdf"
+    
+    .OUTPUTS
+    String
+#>
 function Convert-UmbCheckingStatement
 {
     [CmdletBinding()]
@@ -229,6 +253,16 @@ function Convert-UmbCheckingStatement
         if(-not (Test-Path $UmbStatement)){
             throw "no statement found at '$UmbStatement'"
             break;
+        }
+
+        if([System.IO.Path]::GetExtension($UmbStatement).ToLower() -ne ".pdf"){
+            throw "statement expected as a PDF '$UmbStatement'"
+            break;
+        }
+
+        #run the cmdlet to load all the dependencies
+        if($Script:loadedDependencies -eq $false){
+            Add-AdHocDependencies
         }
 
         #get a local copy in this working directory
@@ -245,6 +279,7 @@ function Convert-UmbCheckingStatement
         [NoFuture.Tokens.AdHoc]::GetPdfImages($UmbStatement)
 
         $umbImagesDir = Join-Path $myScriptLocation ([System.IO.Path]::GetFileNameWithoutExtension($UmbStatement))
+        $txtStatement = $umbImagesDir + ".txt"
 
         $images = ls -Path $umbImagesDir | ? {$_.Extension -eq ".bmp"} | % {$_.FullName} | Sort-Object
 
@@ -266,12 +301,134 @@ function Convert-UmbCheckingStatement
 
             #read image into text data
             try{ Invoke-Expression -Command "tesseract $imgFile $txtFile" 2>&1 | out-null} catch [System.Exception] {    }
+
+            $txtFileFullName = Join-Path $umbImagesDir ("$txtFile.txt")
+            if(-not (Test-Path $txtFileFullName)){
+                continue nextImage;
+            }
+
+            $txtFileContent = [System.IO.File]::ReadAllText($txtFileFullName)
+            $ffStr = ([char]0xC).ToString()
+            $lfStr = ([char]0xA).ToString()
+            $txtFileContent = $txtFileContent.Replace($ffStr, "").Replace($lfStr, "")
+            if([string]::IsNullOrWhiteSpace($txtFileContent)){
+                continue nextImage;
+            }
+            $txtFileContent = $txtFileContent + [System.Environment]::NewLine
+
+            [System.IO.File]::AppendAllText($txtStatement, $txtFileContent)
+
             $counter += 1
         }
 
-        #TODO
-        #put text back together in order
-
+        Pop-Location
+        return $txtStatement
     }
 }
 
+<#
+    .SYNOPSIS
+    Formats the text data from Convert-UmbCheckingStatement
+    
+    .DESCRIPTION
+    This cmdlet takes the results Convert-UmbCheckingStatement and
+    filters and parses them into structured data.
+    
+    .PARAMETER UmbStatement
+    The full file-path the Convert-UmbCheckingStatement text file.
+    
+    .EXAMPLE
+    C:\PS> $myStatementData = Format-UmbStatement "C:\Temp\MyScripts\Checking_Statement_20180108.txt"
+    C:\PS> ConvertTo-Json $myStatementData >> C:\Temp\MyData.json
+    
+    .OUTPUTS
+    Hashtable
+#>
+function Format-UmbStatement
+{
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory=$true,position=0)]
+        [String] $UmbStatement
+    )
+    Process
+    {
+        if(-not (Test-Path $UmbStatement)){
+            throw "no statement found at '$UmbStatement'"
+            break;
+        }
+
+        #need to deal with the dates being just MM-DD 
+        $fileName = [System.IO.Path]::GetFileNameWithoutExtension($UmbStatement)
+        $year = (Get-Date).Year
+
+        $isYearCrossover = $false
+
+        if($fileName -match "20[0-9][0-9]([0-1][0-9])[0-3][0-9]"){
+            $fileDate = $Matches[0]
+            $isYearCrossover = $Matches[1] -eq "01"
+            $dnd = [System.Int32]::TryParse($fileDate.Substring(0,4), [ref] $year)
+        }
+
+        $lines = [System.IO.File]::ReadAllLines($UmbStatement)
+
+        $linesFiltered = @()
+        $flag = $false
+        :nextLine foreach($line in $lines){
+            if([string]::IsNullOrWhiteSpace($line)){
+                continue nextLine;
+            }
+            
+            #a marker for the end of account transaction section
+            $flag = $flag -or $line.StartsWith("DATE REF CHECK NO")
+
+            if($flag){
+                continue nextLine;
+            }
+
+            #first four chars are expected MM-DD
+            if($line -notmatch "^[0-1][0-9]\-[0-3][0-9]\s[0-9].*"){
+                continue nextLine;
+            }
+
+            #where to split transaction description from amount
+            if($line -notmatch "\.[0-9][0-9][\+\-]\s"){
+                continue nextLine;
+            }
+
+            $transactionDelimiter = $Matches[0]
+            $transactionStartsAt = $line.IndexOf($transactionDelimiter) + $transactionDelimiter.Length
+            $description = $line.Substring($transactionStartsAt)
+
+            $lineDate = $line.Substring(0,5)
+            if($isYearCrossover -and $line.Substring(0,2) -eq "12"){
+                $lineDate = ("$lineDate-{0}" -f ($year-1))
+            }
+            else{
+                $lineDate = "$lineDate-$year"
+            }
+
+            #amount being whatever is between date and description
+            $amount = $line.Substring(5).Replace($description, "").Trim().Replace(" ","")
+
+            #the integer-sign is on the wrong side...
+            $intSign = $amount.Substring($amount.Length-1)
+
+            $amount = "{0}{1}" -f $intSign, $amount.Substring(0,$amount.Length-1)
+            
+            $dblAmount = 0.0
+            if(-not ([double]::TryParse($amount, [ref] $dblAmount))){
+                Write-Host "[WARNING] Could not parse line '$line'" -ForegroundColor Yellow
+                continue nextLine;
+            }
+
+            $linesFiltered += @{
+                Date = $lineDate;
+                Amount = $dblAmount;
+                Description = $description;
+            }
+        }
+
+        return $linesFiltered
+    }
+}
