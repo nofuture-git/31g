@@ -2,7 +2,7 @@
 This script is very specific in purpose; namely, it is to parse monthly banking statements 
 from UMB (United Missouri Bank).  I suspect the bank's backend is still some kind of 
 mainframe tech from the 20th century.  The statements are pdf's in extension only - the 
-actually line data is embedded images where each line is one image.  See the annotations
+actual line data is embedded images where each line is one image.  See the annotations
 of the cmdlets below for more information.
 
 The expectation is that this script can stand all on its own and will attempt to resolve
@@ -354,8 +354,8 @@ function Convert-UmbCheckingStatement
     by that cmdlet, this cmdlet will get each transaction line and 
     parse it into its three components (i.e. Date, Amount and Description).
     UMB's item-dates are without a year, so this cmdlet also figures
-    that out based on the input file's name.  Lastly the format will
-    attempt to case the amount into a System.Double and will print 
+    out the year based on the input file's name.  Lastly the format will
+    attempt to cast the amount into a System.Double and will print 
     a warning message on any line it fails.
     
     .PARAMETER UmbStatement
@@ -472,9 +472,6 @@ function Format-UmbStatementTransactions
     
     .EXAMPLE
     C:\PS> ConvertTo-UmbStatementJson "C:\Temp\MyScripts\Checking_Statement_20180108.pdf"
-    
-    .OUTPUTS
-    Hashtable
 #>
 function ConvertTo-UmbStatementJson
 {
@@ -503,6 +500,11 @@ function ConvertTo-UmbStatementJson
         $statementName = [System.IO.Path]::GetFileNameWithoutExtension($UmbStatement)
 
         $jsonOutput = Join-Path $statementDir "$statementName.json"
+
+        if(Test-Path $jsonOutput){
+            Remove-Item -Path $jsonOutput -Force
+            [System.Threading.Thread]::Sleep(50)
+        }
 
         ConvertTo-Json $tableData >> $jsonOutput
     }
