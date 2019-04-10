@@ -1,4 +1,15 @@
-﻿$myScriptLocation = Split-Path $PSCommandPath -Parent
+﻿<#
+This script is very specific in purpose; namely, it is to parse monthly banking statements 
+from UMB (United Missouri Bank).  I suspect the bank's backend is still some kind of 
+mainframe tech from the 20th century.  The statements are pdf's in extension only - the 
+actually line data is embedded images where each line is one image.  See the annotations
+of the cmdlets below for more information.
+
+The expectation is that this script can stand all on its own and will attempt to resolve
+every dependency it has likewise.
+#>
+
+$myScriptLocation = $(pwd).Path
 
 $Script:loadedDependencies = $false
 
@@ -227,9 +238,17 @@ namespace NoFuture.Tokens
     Converts a UMB Checking Account PDF statement into a text document
     
     .DESCRIPTION
-    Converst the UMB PDF into a text document by first pulling all the 
-    line items, which are images, from the PDF then applies OCR to read
-    each image into text data.
+    In order to get this data out into some structured form (e.g. csv, xml, json, etc.), 
+    multiple problems needed to be dealt with.  First was getting the images out of the pdf
+    as their own files on the drive. To do this the script has a dependency on the itextsharp 
+    NuGet package.  Next, the images needed to be padded with whitespace on all four-sides.
+    This is required because the OCR engine couldn't read them.  This is accomplished using
+    .NET's System.Drawing assembly. Next was the OCR engine, the script uses Tesseract and 
+    will attempt to download and install (with user's help) if its not detected on this 
+    machine's PATH variable.  Last, after having read the image data into text data - all 
+    the lines needed to be put back together in their original order - a trival task in 
+    PowerShell. The final result being a text file whose meaningful lines match the 
+    "lines" in the original PDF.
     
     .PARAMETER UmbStatement
     The full file-path to a UMB PDF file.
@@ -292,6 +311,7 @@ function Convert-UmbCheckingStatement
 
             $percentComplete = [NoFuture.Tokens.AdHoc]::CalcProgressCounter($counter, $images.Count)
             Write-Progress -Activity "$img" -Status "Reading images..." -PercentComplete $percentComplete
+            $counter += 1
 
             $newImage = [NoFuture.Tokens.AdHoc]::PadBitmap($img)
 
@@ -317,8 +337,6 @@ function Convert-UmbCheckingStatement
             $txtFileContent = $txtFileContent + [System.Environment]::NewLine
 
             [System.IO.File]::AppendAllText($txtStatement, $txtFileContent)
-
-            $counter += 1
         }
 
         Pop-Location
@@ -331,20 +349,26 @@ function Convert-UmbCheckingStatement
     Formats the text data from Convert-UmbCheckingStatement
     
     .DESCRIPTION
-    This cmdlet takes the results Convert-UmbCheckingStatement and
-    filters and parses them into structured data.
+    This is a subsequent step which follows after a call to 
+    Convert-UmbCheckingStatement.  Taking the text file generated 
+    by that cmdlet, this cmdlet will get each transaction line and 
+    parse it into its three components (i.e. Date, Amount and Description).
+    UMB's item-dates are without a year, so this cmdlet also figures
+    that out based on the input file's name.  Lastly the format will
+    attempt to case the amount into a System.Double and will print 
+    a warning message on any line it fails.
     
     .PARAMETER UmbStatement
     The full file-path the Convert-UmbCheckingStatement text file.
     
     .EXAMPLE
-    C:\PS> $myStatementData = Format-UmbStatement "C:\Temp\MyScripts\Checking_Statement_20180108.txt"
+    C:\PS> $myStatementData = Format-UmbStatementTransactions "C:\Temp\MyScripts\Checking_Statement_20180108.txt"
     C:\PS> ConvertTo-Json $myStatementData >> C:\Temp\MyData.json
     
     .OUTPUTS
     Hashtable
 #>
-function Format-UmbStatement
+function Format-UmbStatementTransactions
 {
     [CmdletBinding()]
     Param(
@@ -380,7 +404,9 @@ function Format-UmbStatement
             }
             
             #a marker for the end of account transaction section
-            $flag = $flag -or $line.StartsWith("DATE REF CHECK NO")
+            $flag = $flag `
+                    -or $line.StartsWith("DATE REF CHECK NO") `
+                    -or $line.StartsWith("DATE BALANCE DATE BALANCE")
 
             if($flag){
                 continue nextLine;
@@ -430,5 +456,54 @@ function Format-UmbStatement
         }
 
         return $linesFiltered
+    }
+}
+
+<#
+    .SYNOPSIS
+    Converts the transaction data embedded in a UMB pdf statement file into JSON
+    
+    .DESCRIPTION
+    Helper method to compose the other functionality into one place 
+    so callers can avoid boilerplate code.
+    
+    .PARAMETER UmbStatement
+    The full file-path to the UMB PDF file.
+    
+    .EXAMPLE
+    C:\PS> ConvertTo-UmbStatementJson "C:\Temp\MyScripts\Checking_Statement_20180108.pdf"
+    
+    .OUTPUTS
+    Hashtable
+#>
+function ConvertTo-UmbStatementJson
+{
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory=$true,position=0)]
+        [String] $UmbStatement
+    )
+    Process
+    {
+        $textFile = Convert-UmbCheckingStatement $UmbStatement
+        if([string]::IsNullOrWhiteSpace($textFile) -or -not (Test-Path $textFile)){
+            throw "Convert-UmbCheckingStatement failed"
+            break;
+        }
+
+        $tableData = Format-UmbStatementTransactions -UmbStatement $textFile
+
+        if($tableData -eq $null){
+            throw "Format-UmbStatementTransactions failed"
+            break;
+        }
+
+        $statementDir = [System.IO.Path]::GetDirectoryName($UmbStatement);
+
+        $statementName = [System.IO.Path]::GetFileNameWithoutExtension($UmbStatement)
+
+        $jsonOutput = Join-Path $statementDir "$statementName.json"
+
+        ConvertTo-Json $tableData >> $jsonOutput
     }
 }
