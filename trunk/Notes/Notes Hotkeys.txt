@@ -71,6 +71,11 @@
      "alt + d" : "go to address bar",
      "f6" : "toggle address bar, toolbar, navigation pane, file list, column heading",
      "alt + enter" : "display file properties"
+     "<any thing>" : [
+                      "create a Shortcut from the context menu",
+                      "move the shortcut to C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\",
+                      "open shortcut's context menu and assign a hotkey"
+                     ]
 },
 "visual studio" : {
      "ctrl + alt + L" : "go to solution explorer",
