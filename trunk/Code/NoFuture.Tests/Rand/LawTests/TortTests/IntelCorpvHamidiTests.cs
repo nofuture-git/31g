@@ -34,9 +34,16 @@ namespace NoFuture.Rand.Law.Tort.Tests
                     EntitledTo = new IntelCorp(),
                     InPossessionOf = new IntelCorp()
                 },
+                Causation =  new Causation(ExtensionMethods.Tortfeasor)
+                {
+                    IsButForCaused = lp => lp is Hamidi,
+                    IsForeseeable = lp => lp is Hamidi
+                },
                 PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)
                 {
-                    IsImpair = lp => false,
+                    ToNormalFunction = p => false,
+                    ToUsefulness =  p => false,
+                    ToValue = p => false
                 },
                 IsCauseDispossession = lp => false
             };

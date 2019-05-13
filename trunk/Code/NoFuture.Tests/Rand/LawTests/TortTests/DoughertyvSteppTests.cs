@@ -58,7 +58,12 @@ namespace NoFuture.Rand.Law.Tort.Tests
                     EntitledTo = new Dougherty(),
                     InPossessionOf = new Dougherty()
                 },
-                IsIntangibleEntry = lp => lp is Stepp
+                IsIntangibleEntry = lp => lp is Stepp,
+                Causation = new Causation(ExtensionMethods.Tortfeasor)
+                {
+                    IsButForCaused = lp => lp is Stepp,
+                    IsForeseeable = lp => lp is Stepp
+                },
             };
 
             var testResult = testSubject.IsValid(new Dougherty(), new Stepp());
@@ -68,9 +73,9 @@ namespace NoFuture.Rand.Law.Tort.Tests
 
             testSubject.PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)
             {
-                IsImpair = lp => lp is Stepp,
                 ToUsefulness = p => true
             };
+
             testResult = testSubject.IsValid(new Dougherty(), new Stepp());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);

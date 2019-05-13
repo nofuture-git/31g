@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.US
         }
 
         /// <summary>
-        /// The direct antecedent which caused the harm - the harm which exist only because of it.
+        /// The direct antecedent which caused the harm\damage - the harm\damage which exist only because of it.
         /// </summary>
         [Aka("factual cause")]
         public Predicate<ILegalPerson> IsButForCaused { get; set; } = lp => false;
@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law.US
         /// A reasonable person could have foreseen the outcome
         /// </summary>
         [Aka("legal cause")]
-        public ObjectivePredicate<ILegalPerson> IsForseeable { get; set; } = lp => false;
+        public ObjectivePredicate<ILegalPerson> IsForeseeable { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Law.US
                 return false;
 
             var isButFor = IsButForCaused(defendant);
-            var isForesee = IsForseeable(defendant);
+            var isForesee = IsForeseeable(defendant);
 
             if (!isButFor)
             {
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Law.US
 
             if (!isForesee)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsForseeable)} is false");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsForeseeable)} is false");
                 return false;
             }
 

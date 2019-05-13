@@ -11,15 +11,12 @@ namespace NoFuture.Rand.Law.US
         {
         }
 
-        /// <summary>
-        /// The predicate for &quot;something bad&quot; 
-        /// which may take form in usefulness, function or value
-        /// </summary>
-        public Predicate<ILegalPerson> IsImpair { get; set; } = lp => false;
-
         public ILegalProperty SubjectProperty { get; set; }
+
         public Predicate<ILegalProperty> ToValue { get; set; } = lo => false;
+
         public Predicate<ILegalProperty> ToUsefulness { get; set; } = lo => false;
+
         public Predicate<ILegalProperty> ToNormalFunction { get; set; } = lo => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
@@ -29,11 +26,6 @@ namespace NoFuture.Rand.Law.US
             var subjectPerson = GetSubjectPerson(persons);
             if (subjectPerson == null)
                 return false;
-
-            if (!IsImpair(subjectPerson))
-            {
-                AddReasonEntry($"defendant, {subjectPerson.Name}, {nameof(IsImpair)} is false");
-            }
 
             var diminished = ToValue(SubjectProperty)
                              || ToUsefulness(SubjectProperty)
