@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
             var testResult = testCrime.IsValid(new JoleneEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new IrresistibleImpluse
+            var testSubject = new IrresistibleImpulse
             {
                 IsMentalDefect = lp => lp is JoleneEg,
                 //having not acted on in one case is obvious is volitional

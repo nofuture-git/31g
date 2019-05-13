@@ -46,7 +46,7 @@
     <Compile Include="US\Defense\Excuse\Entrapment.cs" />
     <Compile Include="US\Defense\Excuse\Infancy.cs" />
     <Compile Include="US\Defense\Excuse\Insanity\InsanityBase.cs" />
-    <Compile Include="US\Defense\Excuse\Insanity\IrresistibleImpluse.cs" />
+    <Compile Include="US\Defense\Excuse\Insanity\IrresistibleImpulse.cs" />
     <Compile Include="US\Defense\Excuse\Insanity\MNaghten.cs" />
     <Compile Include="US\Defense\Excuse\Insanity\SubstantialCapacity.cs" />
     <Compile Include="US\Defense\Excuse\Intoxication.cs" />

@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
     /// similar to <see cref="MNaghten"/> only its considered simpler to prove and 
     /// is rejected in most jurisdictions
     /// </summary>
-    public class IrresistibleImpluse : MNaghten
+    public class IrresistibleImpulse : MNaghten
     {
         /// <summary>
         /// Idea that the defendant can not control their conduct because of the mental defect

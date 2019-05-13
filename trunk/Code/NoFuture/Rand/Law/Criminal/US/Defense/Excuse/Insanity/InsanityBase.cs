@@ -13,14 +13,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
     /// </summary>
     public abstract class InsanityBase : DefenseBase
     {
-        protected InsanityBase() : base()
-        {
-
-        }
-        protected InsanityBase(ICrime crime) : base()
-        {
-        }
-
         /// <summary>
         /// cognitively impaired to the level of not knowing the nature and 
         /// quality of the criminal act or that the act is wrong

@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US;
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
 {
     /// <summary>
-    /// A combination of <see cref="MNaghten"/> and <see cref="IrresistibleImpluse"/> 
+    /// A combination of <see cref="MNaghten"/> and <see cref="IrresistibleImpulse"/> 
     /// where each predicate is scaled down to only be substantial capacity instead of 
     /// total capacity see (Model Penal Code § 4.01(1)) 
     /// </summary>
