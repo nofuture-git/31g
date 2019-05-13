@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new OfficerColinEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new PolicePower(testCrime)
+            var testSubject = new PolicePower
             {
                 IsAgentOfTheState = lp => lp is OfficerColinEg,
                 //example has officer shooting out window drive-by stlye on a fleeing person

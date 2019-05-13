@@ -5,14 +5,11 @@ using NoFuture.Rand.Law.US;
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
 {
     /// <summary>
-    /// similar to <see cref="MNaghten"/> only its considered simplier to prove and 
+    /// similar to <see cref="MNaghten"/> only its considered simpler to prove and 
     /// is rejected in most jurisdictions
     /// </summary>
     public class IrresistibleImpluse : MNaghten
     {
-        public IrresistibleImpluse(ICrime crime) : base(crime)
-        {
-        }
         /// <summary>
         /// Idea that the defendant can not control their conduct because of the mental defect
         /// </summary>

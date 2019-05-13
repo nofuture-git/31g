@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NoFuture.Rand.Law.Tort.US
+﻿namespace NoFuture.Rand.Law.Tort.US
 {
     /// <summary>
     /// The process of taking legal action

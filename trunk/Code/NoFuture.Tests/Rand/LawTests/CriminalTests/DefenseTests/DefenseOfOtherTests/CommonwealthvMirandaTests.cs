@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new Miranda());
             Assert.IsFalse(testResult);
 
-            var testSubject = new DefenseOfOthers(testCrime)
+            var testSubject = new DefenseOfOthers
             {
                 //Maria attempted to defend Demetria based on the reasonably appearance that she was in danger from trooper Sweet
                 IsReasonablyAppearedInjuryOrDeath = lp => lp is Miranda,

@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     [Aka("choice of evils defense")]
     public class NecessityDefense : DefenseBase
     {
-        public NecessityDefense(ICrime crime) : base(crime)
+        public NecessityDefense()
         {
             Proportionality = new ChoiceThereof<ITermCategory>(ExtensionMethods.Defendant);
             Imminence = new Imminence(ExtensionMethods.Defendant);

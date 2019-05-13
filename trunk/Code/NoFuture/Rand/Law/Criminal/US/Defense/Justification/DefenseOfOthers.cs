@@ -12,10 +12,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     /// </summary>
     public class DefenseOfOthers : DefenseOfBase
     {
-        public DefenseOfOthers(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// <![CDATA[
         /// The subjective test where it reasonably appeared that the victim had a right to self-defense 

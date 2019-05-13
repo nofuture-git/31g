@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
             var testResult = testCrime.IsValid(new Guido());
             Assert.IsTrue(testResult);
 
-            var testSubject = new MNaghten(testCrime)
+            var testSubject = new MNaghten
             {
                 IsMentalDefect = lp => lp is Guido,
                 IsWrongnessOfAware = lp => !(lp is Guido),

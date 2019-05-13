@@ -4,8 +4,6 @@ using NoFuture.Rand.Law.Criminal.US.Defense.Excuse;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -34,9 +32,10 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testResult = testCrime.IsValid(new MickieEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new MistakeOfFact(testCrime)
+            var testSubject = new MistakeOfFact
             {
-                IsBeliefNegateIntent = lp => lp is MickieEg
+                IsBeliefNegateIntent = lp => lp is MickieEg,
+                IsStrictLiability = testCrime.MensRea is StrictLiability
             };
 
             testResult = testSubject.IsValid(new MickieEg());
@@ -60,9 +59,10 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testResult = testCrime.IsValid(new TinaEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new MistakeOfFact(testCrime)
+            var testSubject = new MistakeOfFact
             {
-                IsBeliefNegateIntent = lp => lp is TinaEg
+                IsBeliefNegateIntent = lp => lp is TinaEg,
+                IsStrictLiability = testCrime.MensRea is StrictLiability
             };
 
             testResult = testSubject.IsValid(new TinaEg());

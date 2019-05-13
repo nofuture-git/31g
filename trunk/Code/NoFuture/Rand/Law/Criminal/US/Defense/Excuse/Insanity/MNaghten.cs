@@ -11,10 +11,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
     [Aka("right-wrong test")]
     public class MNaghten : InsanityBase
     {
-        public MNaghten(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// Having a basic level of awareness under the attendant circumstances
         /// </summary>

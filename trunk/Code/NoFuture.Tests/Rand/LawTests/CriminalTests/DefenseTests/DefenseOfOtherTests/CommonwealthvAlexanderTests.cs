@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new Alexander());
             Assert.IsTrue(testResult);
 
-            var testSubject = new DefenseOfProperty(testCrime)
+            var testSubject = new DefenseOfProperty
             {
                 Imminence = new Imminence(ExtensionMethods.Defendant)
                 {

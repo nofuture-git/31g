@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     public abstract class DefenseOfBase : DefenseBase
     {
-        protected DefenseOfBase(ICrime crime) : base(crime)
+        protected DefenseOfBase()
         {
             Provocation = new Provocation(ExtensionMethods.Defendant);
             Imminence = new Imminence(ExtensionMethods.Defendant);

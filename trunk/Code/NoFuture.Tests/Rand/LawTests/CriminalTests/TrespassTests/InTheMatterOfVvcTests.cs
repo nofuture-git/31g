@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
             Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
 
-            var testDefense = new Technicality(testCrime)
+            var testDefense = new Technicality
             {
                 GovernmentAsserted = new InSanAntonio(),
                 ActualFact = new NotInSanAntoino(),

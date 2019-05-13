@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testResult = testCrime.IsValid(new DelilahEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new Intoxication(testCrime)
+            var testSubject = new Intoxication
             {
                 //the ruffee is taken unknowingly
                 IsVoluntary = lp => !(lp is DelilahEg),

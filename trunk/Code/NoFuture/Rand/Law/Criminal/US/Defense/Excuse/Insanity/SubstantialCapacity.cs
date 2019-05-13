@@ -18,10 +18,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
     [Aka("ALI defense")]
     public class SubstantialCapacity : InsanityBase
     {
-        public SubstantialCapacity(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// Must lack substantial, not total, capacity to know the difference between right and wrong.
         /// <![CDATA[

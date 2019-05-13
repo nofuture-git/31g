@@ -1,6 +1,4 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.US;
+﻿using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
@@ -9,11 +7,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
     /// </summary>
     public class MistakeOfFact : DefenseBase
     {
-        public MistakeOfFact(ICrime crime) : base(crime)
-        {
-        }
-
         public SubjectivePredicate<ILegalPerson> IsBeliefNegateIntent { get; set; } = lp => false;
+
+        public bool IsStrictLiability { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -21,9 +17,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
             if (defendant == null)
                 return false;
 
-            if (Crime.Concurrence.MensRea is StrictLiability)
+            if (IsStrictLiability)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, mens rea is {nameof(StrictLiability)}");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsStrictLiability)} is true");
                 return false;
             }
 

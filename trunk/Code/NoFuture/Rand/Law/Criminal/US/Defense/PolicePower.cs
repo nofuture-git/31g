@@ -8,10 +8,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
     /// </summary>
     public class PolicePower : DefenseBase
     {
-        public PolicePower(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// <![CDATA[
         /// since the nation-state is the single holder of legitimate 

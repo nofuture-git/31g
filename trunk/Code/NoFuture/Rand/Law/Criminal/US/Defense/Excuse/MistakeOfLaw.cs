@@ -11,10 +11,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
     /// </remarks>
     public class MistakeOfLaw : DefenseBase
     {
-        public MistakeOfLaw(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// <![CDATA[
         /// conduct when…the actor...acts in reasonable reliance upon an official statement of the law

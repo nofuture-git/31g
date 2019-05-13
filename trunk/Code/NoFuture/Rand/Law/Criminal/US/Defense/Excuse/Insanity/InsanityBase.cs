@@ -13,7 +13,11 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
     /// </summary>
     public abstract class InsanityBase : DefenseBase
     {
-        protected InsanityBase(ICrime crime) : base(crime)
+        protected InsanityBase() : base()
+        {
+
+        }
+        protected InsanityBase(ICrime crime) : base()
         {
         }
 

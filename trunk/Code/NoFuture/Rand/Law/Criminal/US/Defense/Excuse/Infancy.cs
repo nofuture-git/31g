@@ -8,10 +8,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
     /// </summary>
     public class Infancy: DefenseBase
     {
-        public Infancy(ICrime crime) : base(crime)
-        {
-        }
-
         public Predicate<ILegalPerson> IsUnderage { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

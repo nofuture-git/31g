@@ -37,7 +37,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testSue.IsValid(new Dutton());
             Assert.IsTrue(testResult);
 
-            var testSubject = new PolicePower(testSue)
+            var testSubject = new PolicePower
             {
                 IsAgentOfTheState = lp => lp is Dutton,
                 IsReasonableUseOfForce = lp => false

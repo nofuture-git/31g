@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new KelseyEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new DefenseOfProperty(testCrime)
+            var testSubject = new DefenseOfProperty
             {
                 IsBeliefProtectProperty = lp => lp is KelseyEg,
                 Imminence = new Imminence(ExtensionMethods.Defendant)

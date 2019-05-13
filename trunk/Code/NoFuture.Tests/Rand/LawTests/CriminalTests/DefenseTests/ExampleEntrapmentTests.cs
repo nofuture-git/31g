@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testResult = testCrime.IsValid(new WinifredEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new Entrapment(testCrime)
+            var testSubject = new Entrapment
             {
                 IsIntentOriginFromLawEnforcement = lp => lp is WinifredEg
             };

@@ -1,7 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Defense;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
@@ -9,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
     /// <summary>
     /// A defense against <see cref="Attempt"/> which was motivated by goodness
     /// </summary>
-    public class Abandonment : DefenseBase
+    public class Abandonment : InchoateDefenseBase
     {
         public Abandonment(ICrime crime) : base(crime)
         {

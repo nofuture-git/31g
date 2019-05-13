@@ -7,10 +7,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
     /// </summary>
     public class Technicality : DefenseBase
     {
-        public Technicality(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// What the government asserted
         /// </summary>

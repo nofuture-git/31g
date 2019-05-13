@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testResult = testCrime.IsValid(new ShelbyEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new MistakeOfLaw(testCrime)
+            var testSubject = new MistakeOfLaw
             {
                 IsRelianceOnStatementOfLaw = lp => lp is ShelbyEg,
                 IsStatementOfLawNowInvalid = lp => lp is ShelbyEg

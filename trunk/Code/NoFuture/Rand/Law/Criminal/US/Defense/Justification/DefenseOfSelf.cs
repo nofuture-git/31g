@@ -11,10 +11,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     /// </summary>
     public class DefenseOfSelf : DefenseOfBase
     {
-        public DefenseOfSelf(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// (4) an objectively reasonable fear of injury or death
         /// </summary>

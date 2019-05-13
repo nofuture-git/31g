@@ -1,6 +1,5 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Defense;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.US;
 
@@ -9,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
     /// <summary>
     /// an affirmative defense for <see cref="Conspiracy"/>
     /// </summary>
-    public class Renunciation : DefenseBase
+    public class Renunciation : InchoateDefenseBase
     {
         public Renunciation(ICrime crime) : base(crime)
         {

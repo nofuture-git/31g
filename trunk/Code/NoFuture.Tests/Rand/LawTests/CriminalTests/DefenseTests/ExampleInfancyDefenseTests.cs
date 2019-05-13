@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testResult = testCrime.IsValid(new MarioEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new Infancy(testCrime)
+            var testSubject = new Infancy
             {
                 IsUnderage = lp => lp is MarioEg
             };

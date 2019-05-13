@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new BobEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new DefenseOfHabitation(testCrime)
+            var testSubject = new DefenseOfHabitation
             {
                 IsIntruderEnterResidence = lp => true,
                 IsOccupiedResidence = lp => true,

@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
             var testResult = testCrime.IsValid(new LoreenEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new SubstantialCapacity(testCrime)
+            var testSubject = new SubstantialCapacity
             {
                 IsMentalDefect = lp => lp is LoreenEg,
                 IsMostlyWrongnessOfAware = lp => !(lp is LoreenEg),

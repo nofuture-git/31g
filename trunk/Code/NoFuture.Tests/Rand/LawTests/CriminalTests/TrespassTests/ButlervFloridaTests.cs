@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
             Console.WriteLine(testCrime.ToString());
             Assert.IsTrue(testResult);
 
-            var testDefense = new NecessityDefense(testCrime)
+            var testDefense = new NecessityDefense
             {
                 //according to Butler - was being chased
                 IsMultipleInHarm = lp => lp is Butler,

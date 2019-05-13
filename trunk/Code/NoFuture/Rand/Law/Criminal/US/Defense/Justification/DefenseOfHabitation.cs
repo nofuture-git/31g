@@ -6,10 +6,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     public class DefenseOfHabitation : DefenseBase
     {
-        public DefenseOfHabitation(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// (1) the intruder must have entered or be entering a residence.  Neither outside nor in curtilage counts as entering.
         /// </summary>

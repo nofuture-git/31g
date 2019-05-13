@@ -14,10 +14,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
     /// </summary>
     public class Intoxication : DefenseBase
     {
-        public Intoxication(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// <![CDATA[
         /// Involuntary intoxication could affect the defendant's ability to form 

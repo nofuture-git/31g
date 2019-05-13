@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
             var testResult = testCrime.IsValid(new DwightEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new DefenseOfSelf(testCrime)
+            var testSubject = new DefenseOfSelf
             {
                 IsReasonableFearOfInjuryOrDeath = lp => true,
 

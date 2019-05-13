@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoFuture.Rand.Law.US;
+﻿using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US
 {

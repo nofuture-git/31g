@@ -5,10 +5,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     public class DefenseOfProperty : DefenseOfBase
     {
-        public DefenseOfProperty(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// This is objective OR subjective based on jurisdiction
         /// </summary>

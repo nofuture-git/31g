@@ -35,7 +35,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
             var testResult = testCrime.IsValid(new FionaEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new DefenseOfSelf(testCrime)
+            var testSubject = new DefenseOfSelf
             {
                 IsReasonableFearOfInjuryOrDeath = lp => true,
                 Imminence = new Imminence(ExtensionMethods.Defendant)

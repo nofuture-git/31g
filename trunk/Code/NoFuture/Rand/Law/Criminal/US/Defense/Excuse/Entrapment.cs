@@ -8,10 +8,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
     /// </summary>
     public class Entrapment : DefenseBase
     {
-        public Entrapment(ICrime crime) : base(crime)
-        {
-        }
-
         /// <summary>
         /// this may be subjective or objective depending on the jurisdiction 
         /// </summary>

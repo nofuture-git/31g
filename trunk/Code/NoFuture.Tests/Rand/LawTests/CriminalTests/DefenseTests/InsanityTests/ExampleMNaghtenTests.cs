@@ -31,7 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
             var testResult = testCrime.IsValid(new SusanEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new MNaghten(testCrime)
+            var testSubject = new MNaghten
             {
                 IsMentalDefect = lp => true,
                 //by attempting to coverup action, insanity fails
@@ -63,7 +63,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
             var testResult = testCrime.IsValid(new AndreaEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new MNaghten(testCrime)
+            var testSubject = new MNaghten
             {
                 IsMentalDefect = lp => true,
                 IsNatureQualityOfAware = lp => false,

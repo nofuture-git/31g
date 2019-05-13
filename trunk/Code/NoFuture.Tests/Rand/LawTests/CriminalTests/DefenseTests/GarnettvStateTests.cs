@@ -3,8 +3,6 @@ using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Defense.Excuse;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -37,9 +35,10 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testResult = testCrime.IsValid(new Garnett());
             Assert.IsTrue(testResult);
 
-            var testSubject = new MistakeOfFact(testCrime)
+            var testSubject = new MistakeOfFact
             {
-                IsBeliefNegateIntent = lp => lp is Garnett
+                IsBeliefNegateIntent = lp => lp is Garnett,
+                IsStrictLiability = testCrime.MensRea is StrictLiability
             };
 
             testResult = testSubject.IsValid(new Garnett());
