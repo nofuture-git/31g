@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law.Contract.US.Defense
+﻿using NoFuture.Rand.Law.US;
+
+namespace NoFuture.Rand.Law.Contract.US.Defense
 {
     public abstract class DefenseBase<T> : DilemmaBase<T>, IVoidable where T : ILegalConcept
     {
@@ -8,8 +10,8 @@
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = Contract.GetOfferor(persons);
-            var offeree = Contract.GetOfferee(persons);
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
 
             if (offeror == null)
             {

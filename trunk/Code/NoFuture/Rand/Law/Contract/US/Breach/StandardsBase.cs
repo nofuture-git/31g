@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law.Contract.US.Breach
+﻿using NoFuture.Rand.Law.US;
+
+namespace NoFuture.Rand.Law.Contract.US.Breach
 {
     /// <inheritdoc />
     public abstract class StandardsBase<T> : DilemmaBase<T> where T : ILegalConcept
@@ -12,8 +14,8 @@
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = Contract.GetOfferor(persons);
-            var offeree = Contract.GetOfferee(persons);
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
 
             if (!TryGetTerms(offeror, offeree))
             {

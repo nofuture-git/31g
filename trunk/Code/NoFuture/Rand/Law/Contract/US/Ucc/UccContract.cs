@@ -27,20 +27,10 @@ namespace NoFuture.Rand.Law.Contract.US.Ucc
         [Aka("UCC 2-612")]
         public virtual bool IsInstallmentContract { get; set; }
 
-        public ILegalPerson GetOfferor(ILegalPerson[] persons)
-        {
-            return persons.Offeror();
-        }
-
-        public ILegalPerson GetOfferee(ILegalPerson[] persons)
-        {
-            return persons.Offeree();
-        }
-
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = GetOfferor(persons);
-            var offeree = GetOfferee(persons);
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
 
             if (Assent == null)
             {

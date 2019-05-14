@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US.Remedy
 {
@@ -23,8 +24,8 @@ namespace NoFuture.Rand.Law.Contract.US.Remedy
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = Contract.GetOfferor(persons);
-            var offeree = Contract.GetOfferee(persons);
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
 
             if (IsDisproportionateToActual(offeror) || IsDisproportionateToActual(offeree))
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US.Semiosis
 {
@@ -18,8 +19,8 @@ namespace NoFuture.Rand.Law.Contract.US.Semiosis
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = Contract.GetOfferor(persons);
-            var offeree = Contract.GetOfferee(persons);
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
 
             if (!TryGetTerms(offeror, offeree))
             {

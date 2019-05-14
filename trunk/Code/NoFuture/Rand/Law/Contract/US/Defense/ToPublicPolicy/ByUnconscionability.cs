@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
 {
@@ -28,8 +29,8 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = Contract.GetOfferor(persons);
-            var offeree = Contract.GetOfferee(persons);
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
 
             if (!base.IsValid(offeror, offeree))
                 return false;

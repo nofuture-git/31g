@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
     /// <summary>
     /// This can be used as the action part of actus reus
     /// </summary>
-    public class DutyToAct : LegalConcept, IElement
+    public class DutyToAct : LegalConcept
     {
         /// <summary>
         /// The duty to act originates from a statute

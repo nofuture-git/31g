@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US
 {
@@ -14,7 +15,7 @@ namespace NoFuture.Rand.Law.Contract.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeree = Contract.GetOfferee(persons);
+            var offeree = persons.Offeree();
 
             var dependent = IsOffereeDependedOnPromise ?? (o => true);
             var worse = IsOffereePositionWorse ?? (o => true);

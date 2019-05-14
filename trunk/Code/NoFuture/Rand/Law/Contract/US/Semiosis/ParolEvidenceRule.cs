@@ -2,6 +2,7 @@
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Contract.US.Terms;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US.Semiosis
 {
@@ -27,8 +28,8 @@ namespace NoFuture.Rand.Law.Contract.US.Semiosis
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = Contract.GetOfferor(persons);
-            var offeree = Contract.GetOfferee(persons);
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
 
             if (!TryGetTerms(offeror, offeree))
             {

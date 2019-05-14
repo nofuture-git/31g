@@ -58,20 +58,10 @@ namespace NoFuture.Rand.Law.Contract.US
         /// </remarks>
         public virtual Func<ILegalConcept, T> Acceptance { get; set; }
 
-        public ILegalPerson GetOfferor(ILegalPerson[] persons)
-        {
-            return persons.Offeror();
-        }
-
-        public ILegalPerson GetOfferee(ILegalPerson[] persons)
-        {
-            return persons.Offeree();
-        }
-
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = GetOfferor(persons);
-            var offeree = GetOfferee(persons);
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
             if (!IsEnforceableInCourt)
             {
                 AddReasonEntry("The contract is not enforceable in court and is therefore void.");
