@@ -28,6 +28,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements
                     AddReasonEntry("mens rea is not required for this crime");
             }
         }
+
         public IActusReus ActusReus { get; set; } = new ActusReus();
 
         public override bool IsValid(params ILegalPerson[] persons)

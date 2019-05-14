@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US
@@ -9,7 +8,6 @@ namespace NoFuture.Rand.Law.Contract.US
     /// Is intended to determine what is an enforceable promise and what is a donative one.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [Note("is performance or return promise bargained for")]
     public class Consideration<T> : LegalConcept, IConsideration<T> where T : ILegalConcept
     {
         public override bool IsEnforceableInCourt => true;
@@ -24,36 +22,14 @@ namespace NoFuture.Rand.Law.Contract.US
 
         protected internal ComLawContract<T> Contract { get; protected set; }
 
-        /// <summary>
-        /// A test for if Acceptance is actually what the promisor wants in return.
-        /// </summary>
         public virtual Func<ILegalPerson, T, bool> IsSoughtByOfferor { get; set; }
 
-        /// <summary>
-        /// A test for if Offer is actually what the promisee wants in return.
-        /// </summary>
         public virtual Func<ILegalPerson, ILegalConcept, bool> IsGivenByOfferee { get; set; }
 
-        /// <summary>
-        /// What is bargained for must have value
-        /// </summary>
         public virtual Predicate<ILegalConcept> IsValueInEyesOfLaw { get; set; } = o => true;
 
-        /// <summary>
-        /// What is bargained for must not be a choice - it must be a duty
-        /// </summary>
-        [Note("is not just a choice")]
         public virtual Predicate<ILegalConcept> IsIllusionaryPromise { get; set; } = o => false;
 
-        /// <summary>
-        /// What is bargained for must not be an existing duty.  When it 
-        /// is an existing duty there is no consideration and whatever the other side
-        /// is bringing is a gift.
-        /// </summary>
-        /// <remarks>
-        /// <![CDATA[ e.g. cannot bargain that we promise not to steal from each other]]>
-        /// </remarks>
-        [Note("is not already obligated to be done")]
         public virtual Predicate<ILegalConcept> IsExistingDuty { get; set; } = o => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

@@ -27,16 +27,6 @@ namespace NoFuture.Rand.Law.Contract.US
         /// <inheritdoc />
         public virtual Predicate<ILegalPerson> IsApprovalExpressed { get; set; }
 
-        public ILegalPerson GetOfferor(ILegalPerson[] persons)
-        {
-            return persons.FirstOrDefault();
-        }
-
-        public ILegalPerson GetOfferee(ILegalPerson[] persons)
-        {
-            return persons.Skip(1).Take(1).FirstOrDefault();
-        }
-
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var offeror = persons.FirstOrDefault();

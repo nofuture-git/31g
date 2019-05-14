@@ -18,44 +18,15 @@ namespace NoFuture.Rand.Law.Contract.US
     public class ComLawContract<T> : LegalConcept, IContract<T> where T : ILegalConcept
     {
         [Note("bargained for: if it is sought by one and given by the other")]
-        [Aka("mutuality of obligation")]
         public virtual IConsideration<T> Consideration { get; set; }
 
-        /// <summary>
-        /// An outward expression of approval that a reasonable person would understand
-        /// </summary>
-        /// <remarks>
-        /// src [LUCY v. ZEHMER Supreme Court of Virginia 196 Va. 493; 84 S.E.2d 516 (1954)]
-        /// <![CDATA[
-        /// If his words and acts, judged by a reasonable standard, manifest an intention 
-        /// to agree, it is immaterial what may be the real but unexpressed state of his mind.
-        /// ]]>
-        /// </remarks>
         public virtual IAssent Assent { get; set; }
 
         [Note("this is what distinguishes a common (donative) promise from a legal one")]
         public override bool IsEnforceableInCourt => true;
 
-        /// <summary>
-        /// What the promisor is putting out there.
-        /// </summary>
-        /// <remarks>
-        /// May be terminated by
-        /// (a) rejection or counter-offer by the offeree, or
-        /// (b) lapse of time, or
-        /// (c) revocation by the offeror, or
-        /// (d) death or incapacity of the offeror or offeree.
-        /// </remarks>
         public virtual ILegalConcept Offer { get; set; }
 
-        /// <summary>
-        /// A function which resolves what the offer gets in return.
-        /// </summary>
-        /// <remarks>
-        /// when an offer has indicated the mode and means of acceptance, 
-        /// an acceptance in accordance with that mode or means is binding 
-        /// on the offeror
-        /// </remarks>
         public virtual Func<ILegalConcept, T> Acceptance { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)

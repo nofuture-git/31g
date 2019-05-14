@@ -8,6 +8,7 @@ namespace NoFuture.Rand.Law.US.Defense
     public interface IAbandonment : ILegalConcept
     {
         Predicate<ILegalPerson> IsMotivatedByFearOfGettingCaught { get; set; }
+
         Predicate<ILegalPerson> IsMotivatedByNewDifficulty { get; set; }
     }
 }

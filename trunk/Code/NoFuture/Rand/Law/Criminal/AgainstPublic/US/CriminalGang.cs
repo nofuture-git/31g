@@ -5,7 +5,6 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 
 namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US
 {

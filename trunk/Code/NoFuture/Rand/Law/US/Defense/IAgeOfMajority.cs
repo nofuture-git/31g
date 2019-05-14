@@ -7,11 +7,7 @@ namespace NoFuture.Rand.Law.US.Defense
     /// </summary>
     public interface IAgeOfMajority : ILegalConcept
     {
-        /// <summary>
-        /// <![CDATA[
-        /// contracts of minors are voidable
-        /// ]]>
-        /// </summary>
+        /// <summary> Contracts of minors are voidable </summary>
         Predicate<ILegalPerson> IsUnderage { get; set; }
     }
 }
