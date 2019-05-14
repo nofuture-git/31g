@@ -1,16 +1,12 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
-    /// <summary>
-    /// when the criminal intent originated with government 
-    /// </summary>
-    public class Entrapment : DefenseBase
+    /// <inheritdoc cref="IEntrapment"/>
+    public class Entrapment : DefenseBase, IEntrapment
     {
-        /// <summary>
-        /// this may be subjective or objective depending on the jurisdiction 
-        /// </summary>
         public Predicate<ILegalPerson> IsIntentOriginFromLawEnforcement { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

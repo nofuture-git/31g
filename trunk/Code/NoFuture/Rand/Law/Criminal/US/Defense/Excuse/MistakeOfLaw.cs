@@ -1,31 +1,14 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
-    /// <summary>
-    /// whenever a person believes their conduct is, in fact, legal.
-    /// </summary>
-    /// <remarks>
-    /// <![CDATA[ (Model Penal Code § 2.04(3) (b)) ]]>
-    /// </remarks>
-    public class MistakeOfLaw : DefenseBase
+    /// <inheritdoc cref="IMistakeOfLaw"/>
+    public class MistakeOfLaw : DefenseBase, IMistakeOfLaw
     {
-        /// <summary>
-        /// <![CDATA[
-        /// conduct when…the actor...acts in reasonable reliance upon an official statement of the law
-        /// ]]>
-        /// </summary>
-        /// <remarks>
-        /// reliance on the statement of an attorney-at-law is not sufficient
-        /// </remarks>
         public Predicate<ILegalPerson> IsRelianceOnStatementOfLaw { get; set; } = lp => false;
 
-        /// <summary>
-        /// <![CDATA[
-        /// afterward determined to be invalid…contained in...a statute or...judicial decision
-        /// ]]>
-        /// </summary>
         public Predicate<ILegalPerson> IsStatementOfLawNowInvalid { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

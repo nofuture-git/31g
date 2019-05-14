@@ -7,6 +7,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Terms;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 

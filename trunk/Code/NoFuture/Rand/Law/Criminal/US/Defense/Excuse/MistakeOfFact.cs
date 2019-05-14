@@ -1,11 +1,10 @@
 ﻿using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
-    /// <summary>
-    /// the facts as the defendant believes them to be negate the requisite intent for the crime at issue
-    /// </summary>
-    public class MistakeOfFact : DefenseBase
+    /// <inheritdoc cref="IMistakeOfFact"/>
+    public class MistakeOfFact : DefenseBase, IMistakeOfFact
     {
         public SubjectivePredicate<ILegalPerson> IsBeliefNegateIntent { get; set; } = lp => false;
 

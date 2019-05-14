@@ -1,38 +1,19 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
 {
-    /// <summary>
-    /// <![CDATA[
-    /// false statement with intent to mislead and damages result
-    /// ]]>
-    /// </summary>
-    /// <remarks>
-    /// <![CDATA[Restatement (Second) of Contracts § 164]]>
-    /// </remarks>
-    [Aka("misrepresentation")]
-    public class ByFraud<T> : DefenseBase<T> where T : ILegalConcept
+    /// <inheritdoc cref="IFraud"/>
+    public class ByFraud<T> : DefenseBase<T>, IFraud where T : ILegalConcept
     {
         public ByFraud(IContract<T> contract) : base(contract) { }
 
-        /// <summary>
-        /// <![CDATA[ (1) that there was a misrepresentation ]]>
-        /// <![CDATA[ (2) that the misrepresentation was either fraudulent or material ]]> 
-        /// <see cref="Misrepresentation"/>
-        /// </summary>
-        public Misrepresentation<T> Misrepresentation { get; set; }
+        public IMisrepresentation Misrepresentation { get; set; }
 
-        /// <summary>
-        /// <![CDATA[(3) that the misrepresentation induced the recipient to enter into the contract]]>
-        /// </summary>
         public Predicate<ILegalPerson> IsRecipientInduced { get; set; } = llp => false;
 
-        /// <summary>
-        /// <![CDATA[(4) that the recipient’s reliance on the misrepresentation was reasonable]]>
-        /// </summary>
         public Predicate<ILegalPerson> IsRecipientRelianceReasonable { get; set; } = llp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

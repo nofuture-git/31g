@@ -1,26 +1,13 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
-    /// <summary>
-    /// <![CDATA[
-    /// intoxication which (a) is not self-induced ... is an affirmative defense if 
-    /// by reason of such intoxication 211 Criminal Law the actor at the time of his 
-    /// conduct lacks substantial capacity either to appreciate its criminality 
-    /// [wrongfulness] or  to conform his conduct to the requirements of law 
-    /// (Model Penal Code § 2.08 (4)).
-    /// ]]>
-    /// </summary>
-    public class Intoxication : DefenseBase
+    /// <inheritdoc cref="IIntoxication"/>
+    public class Intoxication : DefenseBase, IIntoxication
     {
-        /// <summary>
-        /// <![CDATA[
-        /// Involuntary intoxication could affect the defendant's ability to form 
-        /// criminal intent, thus negating specific intent
-        /// ]]>
-        /// </summary>
-        public Predicate<ILegalPerson> IsVoluntary { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsInvoluntary { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsIntoxicated { get; set; } = lp => false;
 
@@ -36,9 +23,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
                 return false;
             }
 
-            if (IsVoluntary != null && IsVoluntary(defendant))
+            if (!IsInvoluntary(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsVoluntary)} is true");
+                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsInvoluntary)} is true");
                 return false;
             }
 

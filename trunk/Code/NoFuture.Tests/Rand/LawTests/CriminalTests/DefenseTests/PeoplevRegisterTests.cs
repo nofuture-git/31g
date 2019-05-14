@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testSubject = new Intoxication
             {
                 IsIntoxicated = lp => lp is Register,
-                IsVoluntary = lp => lp is Register,
+                IsInvoluntary = lp => !(lp is Register),
             };
 
             testResult = testSubject.IsValid(new Register());

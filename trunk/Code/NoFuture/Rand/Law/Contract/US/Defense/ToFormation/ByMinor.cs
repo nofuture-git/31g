@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Contract.US.Defense.ToFormation
 {
-    public class ByMinor<T> : DefenseBase<T> where T : ILegalConcept
+    /// <inheritdoc cref="IAgeOfMajority"/>
+    public class ByMinor<T> : DefenseBase<T>, IAgeOfMajority where T : ILegalConcept
     {
         public ByMinor(IContract<T> contract) : base(contract)
         {
         }
 
-        /// <summary>
-        /// <![CDATA[
-        /// contracts of minors are voidable
-        /// ]]>
-        /// </summary>
-        public virtual Predicate<ILegalPerson> IsMinor { get; set; }
+        public virtual Predicate<ILegalPerson> IsUnderage { get; set; }
 
         /// <summary>
         /// <![CDATA[
@@ -41,7 +38,7 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToFormation
             if (!base.IsValid(offeror, offeree))
                 return false;
 
-            var isMinor = IsMinor ?? (lp => false);
+            var isMinor = IsUnderage ?? (lp => false);
             var isDeclareVoid = IsDeclareVoid ?? (lp => false);
 
             if (isMinor(offeror) && isDeclareVoid(offeror))

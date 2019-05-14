@@ -1,32 +1,22 @@
 ﻿using System;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense
 {
-    /// <summary>
-    /// Assumes the government asserted some incorrect fact in their paperwork submitted to the court
-    /// </summary>
-    public class Technicality : DefenseBase
+    /// <inheritdoc cref="ITechnicality"/>
+    public class Technicality : DefenseBase, ITechnicality
     {
-        /// <summary>
-        /// What the government asserted
-        /// </summary>
-        public ITermCategory GovernmentAsserted { get; set; }
+        public ITermCategory AssertedFact { get; set; }
 
-        /// <summary>
-        /// What the actual fact-of-the-matter turned out to be.
-        /// </summary>
         public ITermCategory ActualFact { get; set; }
 
-        /// <summary>
-        /// The enclosure that determines if what the <see cref="GovernmentAsserted"/> equals <see cref="ActualFact"/>
-        /// </summary>
         public Func<ITermCategory, ITermCategory, bool> IsMistaken { get; set; } = (t0, t1) => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (GovernmentAsserted == null)
+            if (AssertedFact == null)
             {
-                AddReasonEntry($"{nameof(GovernmentAsserted)} returned null");
+                AddReasonEntry($"{nameof(AssertedFact)} returned null");
                 return false;
             }
 
@@ -36,10 +26,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
                 return false;
             }
 
-            var isMistaken = IsMistaken(GovernmentAsserted, ActualFact);
+            var isMistaken = IsMistaken(AssertedFact, ActualFact);
 
             AddReasonEntry($"{nameof(IsMistaken)} returned {isMistaken} for " +
-                           $"{nameof(GovernmentAsserted)} '{GovernmentAsserted}' " +
+                           $"{nameof(AssertedFact)} '{AssertedFact}' " +
                            $"to {nameof(ActualFact)} '{ActualFact}'");
             return isMistaken;
         }

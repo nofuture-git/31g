@@ -1,12 +1,11 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
-    /// <summary>
-    /// Defendant is not subject to criminal prosecution because, being so young, they cannot form criminal intent
-    /// </summary>
-    public class Infancy: DefenseBase
+    /// <inheritdoc cref="IAgeOfMajority"/>
+    public class Infancy: DefenseBase, IAgeOfMajority
     {
         public Predicate<ILegalPerson> IsUnderage { get; set; } = lp => false;
 

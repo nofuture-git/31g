@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
             };
             var testSubject = new ByMinor<Promise>(testContract)
             {
-                IsMinor = lp => lp is IrisOdem,
+                IsUnderage = lp => lp is IrisOdem,
                 IsDeclareVoid = lp => lp is IrisOdem
             };
 

@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testSubject = new Intoxication
             {
                 //the ruffee is taken unknowingly
-                IsVoluntary = lp => !(lp is DelilahEg),
+                IsInvoluntary = lp => lp is DelilahEg,
                 IsIntoxicated = lp => lp is DelilahEg
             };
 

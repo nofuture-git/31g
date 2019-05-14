@@ -54,7 +54,6 @@
     <Compile Include="US\Defense\Excuse\MistakeOfLaw.cs" />
     <Compile Include="US\Elements\VictimConsent.cs" />
     <Compile Include="US\Elements\IAttendantElement.cs" />
-    <Compile Include="US\Defense\Justification\BatteredWomanSyndrome.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfBase.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfHabitation.cs" />
     <Compile Include="US\Defense\Justification\DefenseOfOthers.cs" />

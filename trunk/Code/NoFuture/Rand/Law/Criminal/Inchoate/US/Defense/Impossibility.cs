@@ -2,26 +2,19 @@
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
 {
-    /// <summary>
-    /// A defense to <see cref="Attempt"/>
-    /// </summary>
-    public class Impossibility : InchoateDefenseBase
+    /// <inheritdoc cref="IImpossibility"/>
+    public class Impossibility : InchoateDefenseBase, IImpossibility
     {
         public Impossibility(ICrime crime) : base(crime)
         {
         }
 
-        /// <summary>
-        /// the defendant believes what they are doing is illegal but its not
-        /// </summary>
         public Predicate<ILegalPerson> IsLegalImpossibility { get; set; } = lp => false;
 
-        /// <summary>
-        /// the crime failed because the facts are not as he or she believes them to be
-        /// </summary>
         public virtual Predicate<ILegalPerson> IsFactualImpossibility { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

@@ -2,26 +2,21 @@
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
 {
-    /// <summary>
-    /// an affirmative defense for <see cref="Conspiracy"/>
-    /// </summary>
-    public class Renunciation : InchoateDefenseBase
+    /// <inheritdoc cref="IRenunciation"/>
+    public class Renunciation : InchoateDefenseBase, IRenunciation
     {
         public Renunciation(ICrime crime) : base(crime)
         {
         }
 
         public Predicate<ILegalPerson> IsVoluntarily { get; set; } = lp => false;
+
         public Predicate<ILegalPerson> IsCompletely { get; set; } = lp => false;
 
-        /// <summary>
-        /// The conspiracy is a plan to commit some crime which 
-        /// is called the object of the conspiracy.  It is this 
-        /// crime that must have been thwarted.
-        /// </summary>
         public Predicate<ILegalPerson> IsResultCrimeThwarted { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

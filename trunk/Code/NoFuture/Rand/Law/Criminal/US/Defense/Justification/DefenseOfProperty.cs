@@ -1,13 +1,12 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
-    public class DefenseOfProperty : DefenseOfBase
+    /// <inheritdoc cref="IDefenseOfProperty"/>
+    public class DefenseOfProperty : DefenseOfBase, IDefenseOfProperty
     {
-        /// <summary>
-        /// This is objective OR subjective based on jurisdiction
-        /// </summary>
         public Predicate<ILegalPerson> IsBeliefProtectProperty { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

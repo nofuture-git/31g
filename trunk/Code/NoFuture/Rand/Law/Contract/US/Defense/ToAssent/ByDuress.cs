@@ -1,16 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
 {
-    /// <summary>
-    /// <![CDATA[
-    /// threat of force or other unlawful action to induce to consent
-    /// ]]>
-    /// </summary>
-    [Aka("offer (s)he couldn't refuse")]
-    public class ByDuress<T> : DefenseBase<T> where T : ILegalConcept
+    /// <inheritdoc cref="IDuress"/>
+    public class ByDuress<T> : DefenseBase<T>, IDuress where T : ILegalConcept
     {
         public ByDuress(IContract<T> contract) : base(contract) { }
 
@@ -48,6 +43,6 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
 
         public Predicate<ILegalPerson> IsAssentByPhysicalCompulsion { get; set; } = llp => false;
 
-        public ImproperThreat<T> ImproperThreat { get; set; }
+        public IImproperThreat ImproperThreat { get; set; }
     }
 }

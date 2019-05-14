@@ -1,17 +1,16 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Contract.US.Defense.ToFormation
 {
-    public class ByMentalIncompetent<T> : DefenseBase<T> where T : ILegalConcept
+    /// <inheritdoc cref="IMentalIncompetent"/>
+    public class ByMentalIncompetent<T> : DefenseBase<T>, IMentalIncompetent where T : ILegalConcept
     {
         public ByMentalIncompetent(IContract<T> contract) : base(contract)
         {
         }
 
-        /// <summary>
-        /// A person considered by the court to be without the capacity to contract
-        /// </summary>
         public virtual Predicate<ILegalPerson> IsMentallyIncompetent { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)

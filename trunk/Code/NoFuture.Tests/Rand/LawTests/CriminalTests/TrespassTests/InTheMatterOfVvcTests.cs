@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
 
             var testDefense = new Technicality
             {
-                GovernmentAsserted = new InSanAntonio(),
+                AssertedFact = new InSanAntonio(),
                 ActualFact = new NotInSanAntoino(),
                 IsMistaken = (t1, t2) => true
             };
