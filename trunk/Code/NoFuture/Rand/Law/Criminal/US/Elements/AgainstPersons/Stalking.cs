@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons.Credible;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 {
     /// <summary>
     /// Intended to punish conduct that is a precursor to assault, battery, or other crimes

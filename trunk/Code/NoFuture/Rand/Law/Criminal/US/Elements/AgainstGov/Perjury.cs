@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 {
     /// <summary>
     /// Lying under oath

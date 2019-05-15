@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
 {
     /// <summary>
     /// <![CDATA[

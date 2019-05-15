@@ -1,8 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 {
     /// <summary>
     /// Where <see cref="UnlawfulAssembly"/> is <see cref="DisorderlyConduct"/>

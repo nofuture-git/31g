@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms;
+using NoFuture.Rand.Law.Criminal.US.Terms;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US
+namespace NoFuture.Rand.Law.Criminal.US
 {
     /// <summary>
     /// An ongoing group, club, organization, or association of five or more

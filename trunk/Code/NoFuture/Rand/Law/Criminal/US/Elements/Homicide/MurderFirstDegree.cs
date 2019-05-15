@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
 {
     public class MurderFirstDegree : Murder, ICapitalOffense
     {

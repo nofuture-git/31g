@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Credible
+﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons.Credible
 {
     /// <summary>
     /// come near or nearer to someone in distance

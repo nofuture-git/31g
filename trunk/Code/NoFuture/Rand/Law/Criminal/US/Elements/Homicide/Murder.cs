@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
 {
     /// <summary>
     /// unlawful conduct that causes the victims death

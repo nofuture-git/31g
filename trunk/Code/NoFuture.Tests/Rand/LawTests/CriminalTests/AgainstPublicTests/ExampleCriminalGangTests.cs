@@ -1,9 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.AgainstPublic.US;
-using NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.Criminal.US.Terms;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 

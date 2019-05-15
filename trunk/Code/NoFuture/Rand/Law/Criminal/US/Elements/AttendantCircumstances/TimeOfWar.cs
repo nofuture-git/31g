@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.AgainstGov.US
+﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
 {
     /// <summary>
     /// <![CDATA[

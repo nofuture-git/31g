@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Inchoate;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.InchoateTests
 {

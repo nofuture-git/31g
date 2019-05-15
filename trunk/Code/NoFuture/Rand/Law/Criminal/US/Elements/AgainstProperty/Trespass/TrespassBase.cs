@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass
 {
     public abstract class TrespassBase : AgainstPropertyBase
     {

@@ -1,6 +1,7 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.US.Defense
+namespace NoFuture.Rand.Law.Criminal.US
 {
     /// <summary>
     /// A form of self defense where the <see cref="Imminence"/> is always valid in that 

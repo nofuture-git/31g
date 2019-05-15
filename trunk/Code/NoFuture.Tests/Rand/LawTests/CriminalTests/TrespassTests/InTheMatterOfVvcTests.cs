@@ -1,10 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements;
-using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Damage;
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Defense;
+using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 

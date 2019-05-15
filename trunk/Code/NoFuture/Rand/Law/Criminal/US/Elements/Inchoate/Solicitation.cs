@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
 {
     /// <summary>
     /// precursor to <see cref="Conspiracy"/> that instigates an agreement to commit a crime.

@@ -9,7 +9,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Property;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 {
     /// <summary>
     /// <![CDATA[ 18 U.S.C. § 2151 et seq., ]]> 

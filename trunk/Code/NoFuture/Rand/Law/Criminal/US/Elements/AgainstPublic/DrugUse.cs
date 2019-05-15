@@ -1,9 +1,9 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms;
+using NoFuture.Rand.Law.Criminal.US.Terms;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 {
     /// <summary>
     /// The use of a drug illegally

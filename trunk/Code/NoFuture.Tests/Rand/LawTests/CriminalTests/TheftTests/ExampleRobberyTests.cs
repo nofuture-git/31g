@@ -1,6 +1,6 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
-using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
+using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests

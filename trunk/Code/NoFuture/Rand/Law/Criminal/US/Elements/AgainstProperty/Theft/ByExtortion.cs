@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
 {
     /// <summary>
     /// Model Penal Code 223.4 Theft by Extortion

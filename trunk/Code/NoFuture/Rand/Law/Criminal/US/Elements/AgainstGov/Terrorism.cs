@@ -1,9 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 {
     /// <summary>
     /// <![CDATA[

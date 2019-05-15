@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 {
     /// <summary>
     /// criminal conduct that negatively impacts the quality of

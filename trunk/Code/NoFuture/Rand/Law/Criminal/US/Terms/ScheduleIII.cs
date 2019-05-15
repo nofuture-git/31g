@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms
+﻿namespace NoFuture.Rand.Law.Criminal.US.Terms
 {
     /// <summary>
     /// Medium potential for abuse with some medical use (e.g. steroids)

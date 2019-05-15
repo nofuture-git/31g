@@ -2,7 +2,7 @@
 using System.Linq;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
 {
     /// <summary>
     /// the inability or firm denial of willingness to engage

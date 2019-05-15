@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Trespass
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass
 {
     /// <summary>
     /// unlawful entry into almost any structure or vehicle at any time

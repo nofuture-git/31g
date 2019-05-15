@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Terms
+﻿namespace NoFuture.Rand.Law.Criminal.US.Terms
 {
     /// <summary>
     /// Information which, if gathered and/or transmitted is considered espionage.

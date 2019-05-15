@@ -2,7 +2,7 @@
 using System.Linq;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
 {
     /// <summary>
     /// Model Penal Code 223.3. Theft by Deception

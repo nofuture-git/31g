@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 {
     /// <summary>
     /// a place which a substantial group has access like highways,

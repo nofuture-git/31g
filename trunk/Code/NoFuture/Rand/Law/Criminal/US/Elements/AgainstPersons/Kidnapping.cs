@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 {
     /// <summary>
     /// despite the name, the act is applicable to any person - minor or otherwise

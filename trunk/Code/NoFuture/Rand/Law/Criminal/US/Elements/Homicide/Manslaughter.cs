@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
 {
     /// <summary>
     /// the state will assume any intentional homicide is <see cref="Murder"/>

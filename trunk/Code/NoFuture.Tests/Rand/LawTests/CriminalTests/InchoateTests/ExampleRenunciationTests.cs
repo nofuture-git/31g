@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.Inchoate.US.Defense;
-using NoFuture.Rand.Law.Criminal.Inchoate.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Rand.Law.Criminal.US.Defense.Excuse;
+using NoFuture.Rand.Law.Criminal.US.Elements.Inchoate;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 

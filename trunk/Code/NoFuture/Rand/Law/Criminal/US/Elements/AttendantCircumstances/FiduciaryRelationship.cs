@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements.Theft;
-using NoFuture.Rand.Law.Criminal.US.Elements;
+using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstProperty.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
 {
     /// <summary>
     /// A relationship between <see cref="ILegalPerson"/> that is based on trust or confidence

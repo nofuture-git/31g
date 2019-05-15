@@ -1,7 +1,6 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.Homicide.US.Elements;
 using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.Criminal.US.Elements.Homicide;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 

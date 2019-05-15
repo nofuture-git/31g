@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Defense;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.Inchoate.US.Defense
+namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
     public abstract class InchoateDefenseBase : DefenseBase
     {

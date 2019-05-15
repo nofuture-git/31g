@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms
+﻿namespace NoFuture.Rand.Law.Criminal.US.Terms
 {
     /// <summary>
     /// Typically these are street drugs (e.g. crack-cocaine)

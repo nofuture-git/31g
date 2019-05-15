@@ -1,9 +1,9 @@
-﻿using NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
+﻿using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.Criminal.US.Terms;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 {
     /// <inheritdoc cref="Possession"/>
     public class DrugPossession : Possession, IControlledSubstance

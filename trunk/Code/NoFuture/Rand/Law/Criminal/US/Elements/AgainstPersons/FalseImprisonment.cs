@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 {
     [Aka("felonious restraint")]
     public class FalseImprisonment : LegalConcept, IActusReus

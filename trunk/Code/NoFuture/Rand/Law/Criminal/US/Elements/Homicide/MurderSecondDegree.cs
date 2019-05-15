@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.Homicide.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
 {
     /// <summary>
     /// often defined as any murder that is not <see cref="MurderFirstDegree"/>

@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Elements
+﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
 {
     /// <summary>
     /// The facts surrounding an event

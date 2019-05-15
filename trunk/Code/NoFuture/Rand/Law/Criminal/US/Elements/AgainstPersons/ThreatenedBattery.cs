@@ -1,11 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.HominiLupus.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 {
     /// <inheritdoc cref="IDominionOfForce"/>
     /// <inheritdoc cref="IAssault"/>

@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.AgainstPublic.US.Terms
+﻿namespace NoFuture.Rand.Law.Criminal.US.Terms
 {
     /// <summary>
     /// Lowest potential for abuse with medical use

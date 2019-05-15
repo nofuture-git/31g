@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.AgainstGov.US.Elements
+namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 {
     /// <summary>
     /// Article III Section 3 of the US Constitution

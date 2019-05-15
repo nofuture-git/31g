@@ -1,4 +1,4 @@
-﻿using NoFuture.Rand.Law.US.Elements;
+﻿using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements
