@@ -1,16 +1,26 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Contract.US.Excuse
 {
-    /// <inheritdoc cref="IImpracticabilityOfPerformance"/>
-    public class ImpracticabilityOfPerformance<T> : ExcuseBase<T>, IImpracticabilityOfPerformance where T : ILegalConcept
+    /// <summary>
+    /// <![CDATA[ 
+    /// Restatement (Second) of Contracts § 261 
+    /// "Impracticability" means more than "impracticality"
+    /// ]]>
+    /// </summary>
+    public class ImpracticabilityOfPerformance<T> : ExcuseBase<T> where T : ILegalConcept
     {
         public ImpracticabilityOfPerformance(IContract<T> contract) : base(contract)
         {
         }
 
+        /// <summary>
+        /// occurrence of an event the non-occurrence of which was a basic assumption on which the contract was made.
+        /// </summary>
+        /// <remarks>
+        /// economic circumstances would need to be economic shocks or the like.
+        /// </remarks>
         public Predicate<ILegalPerson> IsBasicAssumptionGone { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

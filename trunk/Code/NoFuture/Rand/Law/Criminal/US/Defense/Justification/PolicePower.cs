@@ -1,18 +1,31 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense
 {
-    /// <inheritdoc cref="IPolicePower"/>
-    public class PolicePower : DefenseBase, IPolicePower
+    /// <summary>
+    /// The capacity of the states to regulate behavior and enforce order
+    /// </summary>
+    public class PolicePower : DefenseBase
     {
         public PolicePower() : base(ExtensionMethods.Defendant) { }
 
         public PolicePower(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
 
+        /// <summary>
+        /// <![CDATA[
+        /// since the nation-state is the single holder of legitimate 
+        /// use of physical violence - an agent is an extension of that power.
+        /// ]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsAgentOfTheState { get; set; } = lp => false;
 
+        /// <summary>
+        /// <![CDATA[
+        /// It is much easier to perceive and realize the existence and sources 
+        /// of [the police power] than to mark its boundaries, or prescribe limits to exercise.
+        /// ]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsReasonableUseOfForce { get; set; } = lp => true;
 
         public override bool IsValid(params ILegalPerson[] persons)

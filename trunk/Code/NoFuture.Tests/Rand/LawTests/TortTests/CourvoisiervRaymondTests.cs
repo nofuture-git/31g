@@ -1,5 +1,5 @@
 ﻿using System;
-using NoFuture.Rand.Law.Tort.US.Defense;
+using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
 using NUnit.Framework;
 using NoFuture.Rand.Law.US.Persons;
 using NoFuture.Rand.Law.US;

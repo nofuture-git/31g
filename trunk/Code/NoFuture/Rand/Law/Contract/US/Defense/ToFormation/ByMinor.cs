@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Contract.US.Defense.ToFormation
 {
-    /// <inheritdoc cref="IAgeOfMajority"/>
-    public class ByMinor<T> : DefenseBase<T>, IAgeOfMajority where T : ILegalConcept
+    public class ByMinor<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ByMinor(IContract<T> contract) : base(contract)
         {
         }
 
+        /// <summary> Contracts of minors are voidable </summary>
         public virtual Predicate<ILegalPerson> IsUnderage { get; set; }
 
         /// <summary>

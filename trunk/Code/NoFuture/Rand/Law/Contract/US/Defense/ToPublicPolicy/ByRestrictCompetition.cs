@@ -1,18 +1,28 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
 {
-    /// <inheritdoc cref="IRestrictCompetition"/>
-    public class ByRestrictCompetition<T> : DefenseBase<T>, IRestrictCompetition where T : ILegalConcept
+    /// <summary>
+    /// contracts that restrict competition
+    /// </summary>
+    public class ByRestrictCompetition<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ByRestrictCompetition(IContract<T> contract) : base(contract)
         {
         }
 
+        /// <summary>
+        /// <![CDATA[
+        /// A covenant not to compete is invalid unless it protects some legitimate 
+        /// interest beyond the employer's desire to protect itself from competition.
+        /// ]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsRestraintSelfServing { get; set; } = lp => false;
 
+        /// <summary>
+        /// restriction against choice of fiduciaries outweights commercial interest
+        /// </summary>
         public Predicate<ILegalPerson> IsInjuriousToPublic { get; set; } = lp => false;
             
         public override bool IsValid(params ILegalPerson[] persons)

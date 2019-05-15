@@ -1,21 +1,36 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
 {
-    /// <inheritdoc cref="IImproperThreatByOne"/>
-    /// <inheritdoc cref="IImproperThreatByTwo"/>
-    public class ImproperThreat<T> : DefenseBase<T>, IImproperThreatByOne, IImproperThreatByTwo where T : ILegalConcept
+    /// <summary>
+    /// <![CDATA[leaves victim no reasonable alternative ]]>
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[Restatement (Second) of Contracts § 176]]>
+    /// </remarks> 
+    public class ImproperThreat<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ImproperThreat(IContract<T> contract) : base(contract) { }
 
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(1)(a)]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsCrimeOrTort { get; set; } = lp => false;
 
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(1)(b)]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsProsecutionAsCriminal { get; set; } = lp => false;
 
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(1)(c)]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsUseCivilProcessInBadFaith { get; set; } = lp => false;
 
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(1)(d)]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsBreachOfGoodFaithDuty { get; set; } = lp => false;
 
         protected internal bool IsImproperByOne(ILegalPerson lp)
@@ -82,12 +97,24 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
             return false;
         }
 
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(2)]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsUnfairTerms { get; set; } = lp => false;
 
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(2)(a)]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsAllHarmNoBenefit { get; set; } = lp => false;
 
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(2)(b)]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsSignificantViaPriorUnfairDeal { get; set; } = lp => false;
 
+        /// <summary>
+        /// <![CDATA[Restatement (Second) of Contracts § 176(2)(c)]]>
+        /// </summary>
         public Predicate<ILegalPerson> IsUsePowerIllegitimateEnds { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

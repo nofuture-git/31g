@@ -1,11 +1,12 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
-    /// <inheritdoc cref="IMistakeOfFact"/>
-    public class MistakeOfFact : DefenseBase, IMistakeOfFact
+    /// <summary>
+    /// the facts as the defendant believes them to be negate the requisite intent for the crime at issue
+    /// </summary>
+    public class MistakeOfFact : DefenseBase
     {
         public MistakeOfFact() : base(ExtensionMethods.Defendant) { }
 

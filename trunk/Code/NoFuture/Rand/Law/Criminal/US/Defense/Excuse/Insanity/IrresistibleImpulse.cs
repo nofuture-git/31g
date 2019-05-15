@@ -1,17 +1,24 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Defense.Insanity;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
 {
     /// <inheritdoc cref="MNaghten" />
-    /// <inheritdoc cref="IIrresistibleImpulse" />
-    public class IrresistibleImpulse : MNaghten, IIrresistibleImpulse
+    /// <summary>
+    /// similar to <see cref="MNaghten"/> only its considered simpler to prove and 
+    /// is rejected in most jurisdictions
+    /// </summary>
+    public class IrresistibleImpulse : MNaghten
     {
         public IrresistibleImpulse(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
 
         public IrresistibleImpulse() : this(ExtensionMethods.Defendant) { }
 
+        /// <summary>
+        /// Idea that the defendant can not control their conduct because of the mental defect
+        /// </summary>
+        [Aka("free choice")]
         public Predicate<ILegalPerson> IsVolitional { get; set; } = lp => true;
 
         public override bool IsValid(params ILegalPerson[] persons)
