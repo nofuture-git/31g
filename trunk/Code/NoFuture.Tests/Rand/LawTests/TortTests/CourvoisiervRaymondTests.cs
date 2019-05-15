@@ -2,8 +2,6 @@
 using NoFuture.Rand.Law.Tort.US.Defense;
 using NUnit.Framework;
 using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.Elements;
-using NoFuture.Rand.Law.US.Property;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.Tests
