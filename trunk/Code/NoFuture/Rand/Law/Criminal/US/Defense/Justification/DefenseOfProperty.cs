@@ -7,18 +7,25 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     /// <inheritdoc cref="IDefenseOfProperty"/>
     public class DefenseOfProperty : DefenseOfBase, IDefenseOfProperty
     {
+        public DefenseOfProperty() : base(ExtensionMethods.Defendant) { }
+
+        public DefenseOfProperty(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        {
+
+        }
+
         public Predicate<ILegalPerson> IsBeliefProtectProperty { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
             if (!base.IsValid(persons))
                 return false;
-            if (!IsBeliefProtectProperty(defendant))
+            if (!IsBeliefProtectProperty(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsBeliefProtectProperty)} is false");
+                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, {nameof(IsBeliefProtectProperty)} is false");
                 return false;
             }
 

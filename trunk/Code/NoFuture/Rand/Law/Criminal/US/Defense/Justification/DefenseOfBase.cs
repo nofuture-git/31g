@@ -1,14 +1,15 @@
-﻿using NoFuture.Rand.Law.US;
+﻿using System;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 {
     public abstract class DefenseOfBase : DefenseBase
     {
-        protected DefenseOfBase()
+        protected DefenseOfBase(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            Provocation = new Provocation(ExtensionMethods.Defendant);
-            Imminence = new Imminence(ExtensionMethods.Defendant);
-            Proportionality = new Proportionality<ITermCategory>(ExtensionMethods.Defendant);
+            Provocation = new Provocation(GetSubjectPerson);
+            Imminence = new Imminence(GetSubjectPerson);
+            Proportionality = new Proportionality<ITermCategory>(GetSubjectPerson);
         }
 
         /// <summary>
@@ -29,24 +30,25 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
+            var lpTypeName = legalPerson.GetLegalPersonTypeName();
             if (Imminence != null && !Imminence.IsValid(persons))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Imminence)} is false");
+                AddReasonEntry($"{lpTypeName}, {legalPerson.Name}, {nameof(Imminence)} is false");
                 AddReasonEntryRange(Imminence.GetReasonEntries());
                 return false;
             }
             if (Provocation != null && !Provocation.IsValid(persons))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Provocation)} is false");
+                AddReasonEntry($"{lpTypeName}, {legalPerson.Name}, {nameof(Provocation)} is false");
                 AddReasonEntryRange(Provocation.GetReasonEntries());
                 return false;
             }
             if (Proportionality != null && !Proportionality.IsValid(persons))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Proportionality)} is false");
+                AddReasonEntry($"{lpTypeName}, {legalPerson.Name}, {nameof(Proportionality)} is false");
                 AddReasonEntryRange(Proportionality.GetReasonEntries());
                 return false;
             }

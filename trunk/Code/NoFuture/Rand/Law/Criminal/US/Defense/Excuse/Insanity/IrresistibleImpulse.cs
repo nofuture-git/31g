@@ -8,17 +8,21 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
     /// <inheritdoc cref="IIrresistibleImpulse" />
     public class IrresistibleImpulse : MNaghten, IIrresistibleImpulse
     {
+        public IrresistibleImpulse(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
+
+        public IrresistibleImpulse() : this(ExtensionMethods.Defendant) { }
+
         public Predicate<ILegalPerson> IsVolitional { get; set; } = lp => true;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
 
-            if (IsVolitional(defendant))
+            if (IsVolitional(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsVolitional)} is true");
+                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, {nameof(IsVolitional)} is true");
                 return false;
             }
 

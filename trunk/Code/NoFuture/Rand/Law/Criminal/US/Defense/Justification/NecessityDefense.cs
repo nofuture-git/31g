@@ -7,7 +7,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     /// <inheritdoc cref="INecessity"/>
     public class NecessityDefense : DefenseBase, INecessity
     {
-        public NecessityDefense()
+        public NecessityDefense(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        {
+            Proportionality = new ChoiceThereof<ITermCategory>(getSubjectPerson);
+            Imminence = new Imminence(getSubjectPerson);
+        }
+
+        public NecessityDefense() : base(ExtensionMethods.Defendant)
         {
             Proportionality = new ChoiceThereof<ITermCategory>(ExtensionMethods.Defendant);
             Imminence = new Imminence(ExtensionMethods.Defendant);
@@ -23,34 +29,34 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
-            if (IsResponsibleForSituationArise != null && IsResponsibleForSituationArise(defendant))
+            var lpPersonType = legalPerson.GetLegalPersonTypeName();
+            if (IsResponsibleForSituationArise != null && IsResponsibleForSituationArise(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsResponsibleForSituationArise)} is true");
-                return false;
-            }
-
-            if (!IsMultipleInHarm(defendant))
-            {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsMultipleInHarm)} is false");
+                AddReasonEntry($"{lpPersonType}, {legalPerson.Name}, {nameof(IsResponsibleForSituationArise)} is true");
                 return false;
             }
 
-            if (Imminence != null && !Imminence.IsValid(defendant))
+            if (!IsMultipleInHarm(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Imminence)} is false");
+                AddReasonEntry($"{lpPersonType}, {legalPerson.Name}, {nameof(IsMultipleInHarm)} is false");
+                return false;
+            }
+
+            if (Imminence != null && !Imminence.IsValid(legalPerson))
+            {
+                AddReasonEntry($"{lpPersonType}, {legalPerson.Name}, {nameof(Imminence)} is false");
                 AddReasonEntryRange(Imminence.GetReasonEntries());
                 return false;
             }
-            if (Proportionality != null && !Proportionality.IsValid(defendant))
+            if (Proportionality != null && !Proportionality.IsValid(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Proportionality)} is false");
+                AddReasonEntry($"{lpPersonType}, {legalPerson.Name}, {nameof(Proportionality)} is false");
                 AddReasonEntryRange(Proportionality.GetReasonEntries());
                 return false;
             }
-
 
             AddReasonEntryRange(Imminence?.GetReasonEntries());
             AddReasonEntryRange(Proportionality?.GetReasonEntries());

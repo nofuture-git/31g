@@ -7,6 +7,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
     /// <inheritdoc cref="IMNaghten" />
     public class MNaghten : InsanityBase, IMNaghten
     {
+        public MNaghten(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
+
+        public MNaghten() : this(ExtensionMethods.Defendant) { }
+
         public Predicate<ILegalPerson> IsNatureQualityOfAware { get; set; } = lp => true;
 
         public Predicate<ILegalPerson> IsWrongnessOfAware { get; set; } = lp => true;
@@ -15,16 +19,16 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
         {
             if (!base.IsValid(persons))
                 return false;
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
 
-            var isKnowNatureOf = IsNatureQualityOfAware(defendant);
-            var isWrongnessOf = IsWrongnessOfAware(defendant);
+            var isKnowNatureOf = IsNatureQualityOfAware(legalPerson);
+            var isWrongnessOf = IsWrongnessOfAware(legalPerson);
 
             if (isKnowNatureOf && isWrongnessOf)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsNatureQualityOfAware)} is {isKnowNatureOf} " +
+                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, {nameof(IsNatureQualityOfAware)} is {isKnowNatureOf} " +
                                $"and {nameof(IsWrongnessOfAware)} is {isWrongnessOf}");
                 return false;
             }

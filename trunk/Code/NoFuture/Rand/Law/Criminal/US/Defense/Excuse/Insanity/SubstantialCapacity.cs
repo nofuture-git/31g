@@ -7,6 +7,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
     /// <inheritdoc cref="ISubstantialCapacity"/>
     public class SubstantialCapacity : InsanityBase, ISubstantialCapacity
     {
+        public SubstantialCapacity(Func<ILegalPerson[], ILegalPerson> getSubjectPerson): base(getSubjectPerson) { }
+
+        public SubstantialCapacity() : this(ExtensionMethods.Defendant) { }
+
         public Predicate<ILegalPerson> IsMostlyWrongnessOfAware { get; set; } = lp => true;
 
         public Predicate<ILegalPerson> IsMostlyVolitional { get; set; } = lp => true;
@@ -15,19 +19,19 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
         {
             if (!base.IsValid(persons))
                 return false;
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
 
-            if (IsMostlyVolitional(defendant))
+            if (IsMostlyVolitional(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsMostlyVolitional)} is true");
+                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, {nameof(IsMostlyVolitional)} is true");
                 return false;
             }
 
-            if (IsMostlyWrongnessOfAware(defendant))
+            if (IsMostlyWrongnessOfAware(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsMostlyWrongnessOfAware)} is true");
+                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, {nameof(IsMostlyWrongnessOfAware)} is true");
                 return false;
             }
 

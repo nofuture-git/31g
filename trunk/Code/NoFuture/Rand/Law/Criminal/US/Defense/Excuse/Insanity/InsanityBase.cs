@@ -13,6 +13,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
     /// </summary>
     public abstract class InsanityBase : DefenseBase
     {
+        protected InsanityBase() : base(ExtensionMethods.Defendant) { }
+
+        protected InsanityBase(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
+
         /// <summary>
         /// cognitively impaired to the level of not knowing the nature and 
         /// quality of the criminal act or that the act is wrong
@@ -22,13 +26,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
 
-            if (!IsMentalDefect(defendant))
+            if (!IsMentalDefect(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsMentalDefect)} is false");
+                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, {nameof(IsMentalDefect)} is false");
                 return false;
             }
 

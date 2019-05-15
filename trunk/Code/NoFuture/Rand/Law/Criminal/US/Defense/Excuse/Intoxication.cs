@@ -7,25 +7,29 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
     /// <inheritdoc cref="IIntoxication"/>
     public class Intoxication : DefenseBase, IIntoxication
     {
+        public Intoxication() : base(ExtensionMethods.Defendant) { }
+
+        public Intoxication(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
+
         public Predicate<ILegalPerson> IsInvoluntary { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsIntoxicated { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
-
-            if (!IsIntoxicated(defendant))
+            var lpTypeName = legalPerson.GetLegalPersonTypeName();
+            if (!IsIntoxicated(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsIntoxicated)} is false");
+                AddReasonEntry($"{lpTypeName}, {legalPerson.Name}, {nameof(IsIntoxicated)} is false");
                 return false;
             }
 
-            if (!IsInvoluntary(defendant))
+            if (!IsInvoluntary(legalPerson))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsInvoluntary)} is true");
+                AddReasonEntry($"{lpTypeName}, {legalPerson.Name}, {nameof(IsInvoluntary)} is true");
                 return false;
             }
 

@@ -8,6 +8,12 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     /// <inheritdoc cref="IDefenseOfHabitation"/>
     public class DefenseOfHabitation : DefenseBase, IDefenseOfHabitation
     {
+        public DefenseOfHabitation() : base(ExtensionMethods.Defendant) { }
+
+        public DefenseOfHabitation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        {
+        }
+
         public ObjectivePredicate<ILegalPerson> IsIntruderEnterResidence { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsOccupiedResidence { get; set; } = lp => false;
@@ -16,27 +22,27 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
-
+            var lpTypeName = legalPerson.GetLegalPersonTypeName();
             if (persons.All(lp => !IsIntruderEnterResidence(lp)))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {IsIntruderEnterResidence} is false " +
-                               "for defendant and all other parties");
+                AddReasonEntry($"{lpTypeName}, {legalPerson.Name}, {IsIntruderEnterResidence} is false " +
+                               $"for {lpTypeName} and all other parties");
                 return false;
             }
 
             if (persons.All(lp => !IsOccupiedResidence(lp)))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {IsOccupiedResidence} is false " +
-                               "for defendant and all other parties");
+                AddReasonEntry($"{lpTypeName}, {legalPerson.Name}, {IsOccupiedResidence} is false " +
+                               $"for {lpTypeName} and all other parties");
                 return false;
             }
             if (persons.All(lp => !IsIntruderThreatening(lp)))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {IsIntruderThreatening} is false " +
-                               "for defendant and all other parties");
+                AddReasonEntry($"{lpTypeName}, {legalPerson.Name}, {IsIntruderThreatening} is false " +
+                               $"for {lpTypeName} and all other parties");
                 return false;
             }
 

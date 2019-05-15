@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Linq;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense
 {
     public abstract class DefenseBase : LegalConcept
     {
-        protected DefenseBase()
-        {
+        protected internal Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
 
+        protected DefenseBase(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        {
+            GetSubjectPerson = getSubjectPerson ?? ExtensionMethods.Defendant;
         }
     }
 }

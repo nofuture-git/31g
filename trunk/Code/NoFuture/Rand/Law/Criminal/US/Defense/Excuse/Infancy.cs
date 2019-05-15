@@ -7,19 +7,23 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
     /// <inheritdoc cref="IAgeOfMajority"/>
     public class Infancy: DefenseBase, IAgeOfMajority
     {
+        public Infancy() : base(ExtensionMethods.Defendant) { }
+
+        public Infancy(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
+
         public Predicate<ILegalPerson> IsUnderage { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            var legalPerson = persons.Defendant();
+            if (legalPerson == null)
                 return false;
 
-            var isAdult = !IsUnderage(defendant);
+            var isAdult = !IsUnderage(legalPerson);
 
             if (isAdult)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsUnderage)} is false");
+                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, {nameof(IsUnderage)} is false");
                 return false;
             }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Defense;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense
@@ -6,6 +7,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense
     /// <inheritdoc cref="ITechnicality"/>
     public class Technicality : DefenseBase, ITechnicality
     {
+        public Technicality() : base(ExtensionMethods.Defendant) { }
+
+        public Technicality(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
+
         public ITermCategory AssertedFact { get; set; }
 
         public ITermCategory ActualFact { get; set; }
