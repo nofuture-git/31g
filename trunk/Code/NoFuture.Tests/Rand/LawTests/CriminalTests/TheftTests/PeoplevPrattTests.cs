@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     {
                         EntitledTo = new PrattFormerGirlfriend(),
                         InPossessionOf = new PrattFormerGirlfriend(),
-                        PropretyValue = 1000.99m
+                        PropertyValue = 1000.99m
                     },
                     //court finds its stolen, by statute, regardless of intent-to-return
                     IsPresentStolen = lp => lp is Pratt

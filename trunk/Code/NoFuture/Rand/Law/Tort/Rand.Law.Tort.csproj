@@ -43,6 +43,7 @@
     <Compile Include="US\ILitigation.cs" />
     <Compile Include="US\IntentionalTort.cs" />
     <Compile Include="US\NegligenceTort.cs" />
+    <Compile Include="US\Terms\ShopkeeperPrivilege.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Rand.Core.csproj">

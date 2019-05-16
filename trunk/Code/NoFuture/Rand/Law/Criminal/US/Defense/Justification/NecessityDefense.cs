@@ -46,7 +46,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var legalPerson = persons.Defendant();
+            var legalPerson = GetSubjectPerson(persons);
             if (legalPerson == null)
                 return false;
             var lpPersonType = legalPerson.GetLegalPersonTypeName();

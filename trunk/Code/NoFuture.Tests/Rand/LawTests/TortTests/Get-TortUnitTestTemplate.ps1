@@ -54,3 +54,6 @@ namespace NoFuture.Rand.Law.Tort.Tests
         [System.IO.File]::WriteAllText($filename, $someCode, [System.Text.Encoding]::UTF8)
     }
 }
+
+$testDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Tort.Tests.dll")).Path
+$nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe"))

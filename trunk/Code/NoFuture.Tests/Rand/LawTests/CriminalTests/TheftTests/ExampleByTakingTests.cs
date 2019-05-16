@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByTaking
                 {
-                    SubjectProperty = new ChewingGum(){ PropretyValue = 1.25m },
+                    SubjectProperty = new ChewingGum(){ PropertyValue = 1.25m },
                     IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },
@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public void ExampleInvalidTheftWhenOwner()
         {
             var jermey = new JeremyTheifEg();
-            var property = new ChewingGum {EntitledTo = jermey, PropretyValue = 1.25m };
+            var property = new ChewingGum {EntitledTo = jermey, PropertyValue = 1.25m };
             var testCrime = new Misdemeanor
             {
                 ActusReus = new ByTaking()
@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
             {
                 ActusReus = new ByTaking()
                 {
-                    SubjectProperty = new ChewingGum(){ PropretyValue = 1.25m },
+                    SubjectProperty = new ChewingGum(){ PropertyValue = 1.25m },
                     IsTakenPossession = lp => lp is JeremyTheifEg,
                     IsAsportation = lp => lp is JeremyTheifEg
                 },

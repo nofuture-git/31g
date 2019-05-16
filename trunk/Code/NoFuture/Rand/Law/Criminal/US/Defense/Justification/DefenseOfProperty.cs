@@ -11,6 +11,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
         {
 
         }
+
+        public LegalProperty Property { get; set; }
+
         /// <summary>
         /// This is objective OR subjective based on jurisdiction
         /// </summary>
@@ -18,7 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var legalPerson = persons.Defendant();
+            var legalPerson = GetSubjectPerson(persons);
             if (legalPerson == null)
                 return false;
             if (!base.IsValid(persons))

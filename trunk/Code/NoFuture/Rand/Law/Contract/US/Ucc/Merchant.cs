@@ -1,11 +1,12 @@
-﻿namespace NoFuture.Rand.Law.Contract.US.Ucc
+﻿using NoFuture.Rand.Law.US.Persons;
+
+namespace NoFuture.Rand.Law.Contract.US.Ucc
 {
     /// <summary>
-    /// <![CDATA[
-    /// Per UCC 2-104(1) "deals in goods [...] knowledge or skill peculiar to [...] goods"
-    /// ]]>
+    /// 
     /// </summary>
-    public abstract class Merchant : LegalPerson
+    /// <inheritdoc cref="IMerchant"/>
+    public abstract class Merchant : LegalPerson, IMerchant
     {
         protected Merchant() { }
 

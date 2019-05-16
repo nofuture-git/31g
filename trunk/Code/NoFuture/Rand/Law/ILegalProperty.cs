@@ -17,6 +17,6 @@ namespace NoFuture.Rand.Law
         /// </summary>
         ILegalPerson InPossessionOf { get; set; }
 
-        decimal? PropretyValue { get; set; }
+        decimal? PropertyValue { get; set; }
     }
 }

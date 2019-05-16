@@ -41,9 +41,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BirdvHolbrookTests.cs" />
     <Compile Include="CourvoisiervRaymondTests.cs" />
     <Compile Include="DoughertyvSteppTests.cs" />
+    <Compile Include="GortarezvSmittysSuperValuTests.cs" />
     <Compile Include="IntelCorpvHamidiTests.cs" />
+    <Compile Include="KatkovBrineyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
