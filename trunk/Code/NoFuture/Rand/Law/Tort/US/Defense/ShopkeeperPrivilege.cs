@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty;
 using NoFuture.Rand.Law.US;
@@ -12,11 +11,16 @@ namespace NoFuture.Rand.Law.Tort.US.Defense
     /// has cause to believe that the person detained in fact committed, or
     /// attempted to commit, theft 
     /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// defense is the immediate thwarting of a wrong
+    /// redress is the restoration after a wrong
+    /// replevin is a redress particular to property
+    /// ]]>
+    /// </remarks>
     [Aka("claims of right", "recapture privilege")]
     public class ShopkeeperPrivilege : AgainstPropertyBase
     {
-        private readonly Rationale _rationale = new Rationale();
-
         public ShopkeeperPrivilege() : this (ExtensionMethods.Tortfeasor) {  }
 
         public ShopkeeperPrivilege(Func<ILegalPerson[], ILegalPerson> getSubjectPerson): base(getSubjectPerson)
@@ -40,59 +44,23 @@ namespace NoFuture.Rand.Law.Tort.US.Defense
 
             if (!IsReasonableCause(person))
             {
-                AddReasonEntry($"{personType} {person.Name}, {nameof(IsReasonableCause)} is false");
+                AddReasonEntry($"{personType} {person.Name}, {nameof(ShopkeeperPrivilege)} {nameof(IsReasonableCause)} is false");
                 rslt = false;
             }
 
             if (!IsReasonableManner(person))
             {
-                AddReasonEntry($"{personType} {person.Name}, {nameof(IsReasonableManner)} is false");
+                AddReasonEntry($"{personType} {person.Name}, {nameof(ShopkeeperPrivilege)} {nameof(IsReasonableManner)} is false");
                 rslt = false; ;
             }
 
             if (!IsReasonableTime(person))
             {
-                AddReasonEntry($"{personType} {person.Name}, {nameof(IsReasonableTime)} is false");
+                AddReasonEntry($"{personType} {person.Name}, {nameof(ShopkeeperPrivilege)} {nameof(IsReasonableTime)} is false");
                 rslt = false; ;
             }
 
             return rslt;
         }
-
-        #region LegalConcept IS-A HAS-A
-
-        public bool IsEnforceableInCourt { get; } = true;
-
-        public IEnumerable<string> GetReasonEntries()
-        {
-            return _rationale.GetReasonEntries();
-        }
-
-        public void AddReasonEntry(string msg)
-        {
-            _rationale.AddReasonEntry(msg);
-        }
-
-        public void AddReasonEntryRange(IEnumerable<string> msgs)
-        {
-            _rationale.AddReasonEntryRange(msgs);
-        }
-
-        public void ClearReasons()
-        {
-            _rationale.ClearReasons();
-        }
-
-        public bool EquivalentTo(object obj)
-        {
-            return _rationale.EquivalentTo(obj);
-        }
-
-        public override string ToString()
-        {
-            return _rationale.ToString();
-        }
-
-        #endregion
     }
 }

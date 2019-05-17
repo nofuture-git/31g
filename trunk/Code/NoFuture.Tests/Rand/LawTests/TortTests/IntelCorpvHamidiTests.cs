@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var testSubject = new TrespassToChattels
             {
-                Consent = new PlaintiffConsent
+                Consent = new Consent
                 {
                     IsApprovalExpressed = lp => false,
                     IsCapableThereof = lp => lp is IntelCorp

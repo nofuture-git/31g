@@ -2,6 +2,7 @@
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty
 {
@@ -33,23 +34,33 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty
         {
             //is all the dependencies present
             if (SubjectProperty?.EntitledTo == null || Consent == null
-                                                   || persons == null
-                                                   || !persons.Any())
+                                                    || persons == null
+                                                    || !persons.Any())
                 return true;
 
             //did the caller pass in any IVictim types
             var victims = persons.Victims().ToList();
             if (!victims.Any())
+            {
+                AddReasonEntry("to test consent at least " +
+                               $"one person must extent {nameof(IVictim)} interface type");
                 return true;
+            }
 
             //is any of our victims also the owner of the property
             var ownerVictims = victims.Where(v => VocaBase.Equals(v, SubjectProperty.EntitledTo)).ToList();
             if (!ownerVictims.Any())
+            {
+                AddReasonEntry($"of {nameof(IVictim)}s named " +
+                               $"{string.Join(",", victims.Select(v => v.Name))}, " +
+                               $"none are {SubjectProperty.EntitledTo.Name}");
                 return true;
+            }
 
             foreach (var ownerVictim in ownerVictims)
             {
                 var validConsent = Consent.IsValid(ownerVictim);
+                AddReasonEntryRange(Consent.GetReasonEntries());
                 //did the owner victim in fact give consent 
                 if (validConsent != ConsentExpectedAs)
                 {

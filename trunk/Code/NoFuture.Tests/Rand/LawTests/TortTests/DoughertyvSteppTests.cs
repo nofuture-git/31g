@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var testSubject = new TrespassToLand
             {
-                Consent = new PlaintiffConsent
+                Consent = new Consent
                 {
                     IsApprovalExpressed = lp => false,
                     IsCapableThereof = lp => lp is Dougherty
@@ -47,7 +47,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var testSubject = new TrespassToLand
             {
-                Consent = new PlaintiffConsent
+                Consent = new Consent
                 {
                     IsApprovalExpressed = lp => false,
                     IsCapableThereof = lp => lp is Dougherty

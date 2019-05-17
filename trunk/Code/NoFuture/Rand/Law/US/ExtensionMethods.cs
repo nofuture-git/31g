@@ -47,16 +47,16 @@ namespace NoFuture.Rand.Law.US
 
             if (person is IDefendant)
                 return "defendant";
-            if (person is IVictim)
-                return "victim";
             if (person is IPlaintiff)
                 return "plaintiff";
             if (person is ITortfeasor)
-                return "Tortfeasor";
+                return "tortfeasor";
             if (person is IOfferee)
                 return "offeree";
             if (person is IOfferor)
                 return "offeror";
+            if (person is IVictim)
+                return "victim";
             if (person.Equals(Government.Value))
                 return "the government";
             return "legal person";

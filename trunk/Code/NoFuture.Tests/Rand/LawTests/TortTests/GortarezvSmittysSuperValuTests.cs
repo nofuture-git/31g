@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue: shopkeeper's privilege
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -27,7 +27,12 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 IsReasonableCause = lp => !(lp is SmittysSuperValu),
                 IsReasonableManner = lp => !(lp is SmittysSuperValu),
                 IsReasonableTime = lp => true,
-                SubjectProperty = new AirFreshener()
+                SubjectProperty = new AirFreshener(),
+                Consent =  new Consent(ExtensionMethods.Tortfeasor)
+                {
+                    IsCapableThereof = lp => lp is SmittysSuperValu,
+                    IsApprovalExpressed = lp => false
+                }
             };
             var testResult = test.IsValid(new SmittysSuperValu(), new Gortarez());
             Console.WriteLine(test.ToString());
@@ -48,7 +53,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
         public Gortarez(): base("") { }
     }
 
-    public class SmittysSuperValu : LegalPerson, IMerchant, ITortfeasor
+    public class SmittysSuperValu : LegalPerson, IMerchant, ITortfeasor, IVictim
     {
         public SmittysSuperValu(): base("") { }
     }
