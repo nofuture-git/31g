@@ -167,13 +167,12 @@
     <Compile Include="US\ICrime.cs" />
     <Compile Include="US\Infraction.cs" />
     <Compile Include="US\Misdemeanor.cs" />
-    <Compile Include="US\Terms\DeadlyForce.cs" />
-    <Compile Include="US\Terms\Death.cs" />
-    <Compile Include="US\Terms\Force.cs" />
-    <Compile Include="US\Terms\MalumInSe.cs" />
-    <Compile Include="US\Terms\MalumProhibitum.cs" />
-    <Compile Include="US\Terms\NondeadlyForce.cs" />
-    <Compile Include="US\Terms\SeriousBodilyInjury.cs" />
+    <Compile Include="US\Terms\Violence\DeadlyForce.cs" />
+    <Compile Include="US\Terms\Violence\Death.cs" />
+    <Compile Include="US\Terms\Malice\MalumInSe.cs" />
+    <Compile Include="US\Terms\Malice\MalumProhibitum.cs" />
+    <Compile Include="US\Terms\Violence\NondeadlyForce.cs" />
+    <Compile Include="US\Terms\Violence\SeriousBodilyInjury.cs" />
     <Compile Include="US\SexBipartitie.cs" />
   </ItemGroup>
   <ItemGroup>

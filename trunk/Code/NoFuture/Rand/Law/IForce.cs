@@ -6,5 +6,5 @@
     /// For the state itself it is lawful compulsion of the state's monopoly on violence.
     /// ]]>
     /// </summary>
-    public abstract class Force : TermCategory { }
+    public interface IForce : ITermCategory { }
 }

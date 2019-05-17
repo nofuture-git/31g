@@ -5,12 +5,8 @@
     /// Any force which could potentially kill.
     /// This is appropriate in self-defense when the attacker threatens <see cref="Death"/> or <see cref="SeriousBodilyInjury"/>
     /// </summary>
-    public class DeadlyForce : NondeadlyForce
+    public class DeadlyForce : SeriousBodilyInjury
     {
         protected override string CategoryName { get; } = "deadly force";
-        public override int GetCategoryRank()
-        {
-            return base.GetCategoryRank() + 1;
-        }
     }
 }
