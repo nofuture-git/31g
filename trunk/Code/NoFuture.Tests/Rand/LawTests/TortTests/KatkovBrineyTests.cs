@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NoFuture.Rand.Law.US.Persons;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.Criminal.US.Terms;
+using NoFuture.Rand.Law.Criminal.US.Terms.Violence;
 
 namespace NoFuture.Rand.Law.Tort.Tests
 {

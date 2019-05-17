@@ -6,6 +6,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements;
 using NoFuture.Rand.Law.Criminal.US.Elements.Act;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Terms;
+using NoFuture.Rand.Law.Criminal.US.Terms.Violence;
 using NoFuture.Rand.Law.US;
 using NUnit.Framework;
 

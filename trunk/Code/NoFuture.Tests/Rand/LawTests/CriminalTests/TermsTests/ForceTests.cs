@@ -1,4 +1,5 @@
 ﻿using NoFuture.Rand.Law.Criminal.US.Terms;
+using NoFuture.Rand.Law.Criminal.US.Terms.Violence;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Criminal.Tests.TermsTests
