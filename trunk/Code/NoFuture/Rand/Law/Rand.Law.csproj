@@ -50,6 +50,7 @@
     <Compile Include="IDefense.cs" />
     <Compile Include="IDominionOfForce.cs" />
     <Compile Include="IForce.cs" />
+    <Compile Include="IIntent.cs" />
     <Compile Include="ILegalProperty.cs" />
     <Compile Include="IMensRea.cs" />
     <Compile Include="LegalProperty.cs" />

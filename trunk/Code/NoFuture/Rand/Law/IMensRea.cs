@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law
     /// </summary>
     [Aka("criminal intent", "vicious will")]
     [EtymologyNote("Latin", "mens rea", "guilty mind")]
-    public interface IMensRea : ILegalConcept, IComparable
+    public interface IMensRea : IIntent, IComparable
     {
         /// <summary>
         /// Determines if this criminal intent is valid 

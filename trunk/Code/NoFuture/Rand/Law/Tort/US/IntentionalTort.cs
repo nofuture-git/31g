@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Tort.US
     {
         public IAct Act { get; set; }
 
-        public ILegalConcept Intent { get; set; }
+        public IIntent Intent { get; set; }
 
         public Causation Causation { get; set; }
 

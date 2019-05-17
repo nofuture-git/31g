@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.Tort.US
 {
     public class NegligenceTort : LegalConcept
     {
-        public Duty Duty { get; set; }
+        public IAct Act { get; set; }
 
         public ILegalConcept Breach { get; set; }
 
@@ -23,9 +23,9 @@ namespace NoFuture.Rand.Law.Tort.US
             if (tortfeasor == null)
                 return false;
 
-            if (!Duty.IsValid(persons))
+            if (!Act.IsValid(persons))
             {
-                AddReasonEntry($"tortfeasor, {tortfeasor.Name}, {nameof(Duty)} {nameof(IsValid)} is false");
+                AddReasonEntry($"tortfeasor, {tortfeasor.Name}, {nameof(Act)} {nameof(IsValid)} is false");
                 return false;
             }
             if (!Breach.IsValid(persons))
