@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Tort.US.Defense;
 using NUnit.Framework;
 using NoFuture.Rand.Law.US.Persons;
 using NoFuture.Rand.Law.Tort.US.Elements;
@@ -21,7 +22,17 @@ namespace NoFuture.Rand.Law.Tort.Tests
         [Test]
         public void GortarezvSmittysSuperValu()
         {
-            
+            var test = new ShopkeeperPrivilege
+            {
+                IsReasonableCause = lp => !(lp is SmittysSuperValu),
+                IsReasonableManner = lp => !(lp is SmittysSuperValu),
+                IsReasonableTime = lp => true,
+                SubjectProperty = new AirFreshener()
+            };
+            var testResult = test.IsValid(new SmittysSuperValu(), new Gortarez());
+            Console.WriteLine(test.ToString());
+            Assert.IsFalse(testResult);
+
         }
     }
 

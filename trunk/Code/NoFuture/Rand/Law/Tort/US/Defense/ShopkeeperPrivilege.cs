@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Terms
+namespace NoFuture.Rand.Law.Tort.US.Defense
 {
     /// <summary>
     /// a shopkeeper is allowed to detain a suspected shoplifter on store
@@ -10,19 +12,16 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
     /// has cause to believe that the person detained in fact committed, or
     /// attempted to commit, theft 
     /// </summary>
-    public class ShopkeeperPrivilege : TermCategory, ILegalConcept, IForce
+    [Aka("claims of right", "recapture privilege")]
+    public class ShopkeeperPrivilege : AgainstPropertyBase
     {
         private readonly Rationale _rationale = new Rationale();
-        private Func<ILegalPerson[], ILegalPerson> _getSubjectPerson;
 
-        public ShopkeeperPrivilege() : this (null) {  }
+        public ShopkeeperPrivilege() : this (ExtensionMethods.Tortfeasor) {  }
 
-        public ShopkeeperPrivilege(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public ShopkeeperPrivilege(Func<ILegalPerson[], ILegalPerson> getSubjectPerson): base(getSubjectPerson)
         {
-            _getSubjectPerson = getSubjectPerson ?? ExtensionMethods.Tortfeasor;
         }
-
-        protected override string CategoryName { get; } = "shopkeeper’s privilege";
 
         public Predicate<ILegalPerson> IsReasonableCause { get; set; } = lp => false;
 
@@ -30,31 +29,34 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
 
         public Predicate<ILegalPerson> IsReasonableTime { get; set; } = lp => false;
 
-        public bool IsValid(params ILegalPerson[] persons)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
-            var person = _getSubjectPerson(persons);
+            var person = GetSubjectPerson(persons);
             if (person == null)
                 return false;
             var personType = person.GetLegalPersonTypeName();
+
+            var rslt = WithoutConsent(persons);
+
             if (!IsReasonableCause(person))
             {
                 AddReasonEntry($"{personType} {person.Name}, {nameof(IsReasonableCause)} is false");
-                return false;
+                rslt = false;
             }
 
             if (!IsReasonableManner(person))
             {
                 AddReasonEntry($"{personType} {person.Name}, {nameof(IsReasonableManner)} is false");
-                return false;
+                rslt = false; ;
             }
 
             if (!IsReasonableTime(person))
             {
                 AddReasonEntry($"{personType} {person.Name}, {nameof(IsReasonableTime)} is false");
-                return false;
+                rslt = false; ;
             }
 
-            return true;
+            return rslt;
         }
 
         #region LegalConcept IS-A HAS-A
@@ -85,6 +87,12 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
         {
             return _rationale.EquivalentTo(obj);
         }
+
+        public override string ToString()
+        {
+            return _rationale.ToString();
+        }
+
         #endregion
     }
 }

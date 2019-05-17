@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.US;
 
@@ -6,6 +7,14 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty
 {
     public abstract class AgainstPropertyBase : LegalConcept
     {
+        protected internal Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
+        protected AgainstPropertyBase(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        {
+            GetSubjectPerson = getSubjectPerson ?? ExtensionMethods.Defendant;
+        }
+
+        protected AgainstPropertyBase() : this(null) { }
+
         public virtual IConsent Consent { get; set; }
         public virtual ILegalProperty SubjectProperty { get; set; }
 
@@ -56,17 +65,17 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty
 
         protected virtual bool PropertyOwnerIsDefendant(ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
             if (SubjectProperty?.EntitledTo == null)
                 return false;
-
+            var personTitle = defendant.GetLegalPersonTypeName();
             var isOwner = VocaBase.Equals(defendant, SubjectProperty.EntitledTo) ||
                    ReferenceEquals(defendant, SubjectProperty.EntitledTo);
             if(isOwner)
                 AddReasonEntry(
-                    $"defendant, {defendant.Name}, is owner " +
+                    $"{personTitle}, {defendant.Name}, is owner " +
                     $"of {SubjectProperty.GetType().Name} " +
                     $"named '{SubjectProperty.Name}'");
 
