@@ -4,13 +4,13 @@ namespace NoFuture.Rand.Law.Tort.US
 {
     public class IntentionalTort : LegalConcept
     {
-        public ILegalConcept Act { get; set; }
+        public IAct Act { get; set; }
 
         public ILegalConcept Intent { get; set; }
 
         public Causation Causation { get; set; }
 
-        public ILegalConcept Contact { get; set; }
+        public IAssault Contact { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

@@ -35,10 +35,10 @@ namespace NoFuture.Rand.Law.US
             var otherParties = persons.Where(p => !ReferenceEquals(defendant, p)).ToList();
 
             var defendantContribution = GetChoice(defendant);
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!otherParties.Any())
             {
-                AddReasonEntry($"defendant, {defendant.Name}, there are no other " +
+                AddReasonEntry($"{title}, {defendant.Name}, there are no other " +
                                $"parties with which to compare {defendantContribution.ToString()}");
                 return false;
             }

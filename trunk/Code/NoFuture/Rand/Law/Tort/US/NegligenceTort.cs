@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Tort.US
 
         public Causation Causation { get; set; }
 
-        public ILegalConcept Contact { get; set; }
+        public IAssault Contact { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

@@ -3,13 +3,10 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense
 {
-    public abstract class DefenseBase : LegalConcept, IDefense
+    public abstract class DefenseBase : UnoHomine, IDefense
     {
-        protected internal Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
-
-        protected DefenseBase(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        protected DefenseBase(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) :base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson ?? ExtensionMethods.Defendant;
         }
     }
 }

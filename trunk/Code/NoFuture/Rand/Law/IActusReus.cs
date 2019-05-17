@@ -5,6 +5,7 @@ namespace NoFuture.Rand.Law
     /// <summary>
     /// Action or conduct which is constituent element of a crime
     /// </summary>
+    /// <inheritdoc cref="IAct"/>
     [Aka("criminal act", "volition")]
     [EtymologyNote("Latin", "actus reus", "guilty act")]
     public interface IActusReus : ILegalConcept

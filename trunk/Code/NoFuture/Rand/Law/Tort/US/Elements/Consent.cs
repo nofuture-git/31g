@@ -4,15 +4,12 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
-    public class Consent : LegalConcept, IConsent
+    public class Consent : UnoHomine, IConsent
     {
-        protected internal Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
+        public Consent() :this(ExtensionMethods.Plaintiff) { } 
 
-        public Consent() :this(null) { }
-
-        public Consent(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public Consent(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson ?? ExtensionMethods.Plaintiff;
         }
 
         public Predicate<ILegalPerson> IsCapableThereof { get; set; } = lp => false;

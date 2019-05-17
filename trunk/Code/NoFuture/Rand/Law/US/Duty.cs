@@ -3,10 +3,17 @@
 namespace NoFuture.Rand.Law.US
 {
     /// <summary>
-    /// This can be used as the action part of actus reus
+    /// Something a person was legally required to do
     /// </summary>
-    public class Duty : LegalConcept
+    public class Duty : UnoHomine
     {
+        public Duty(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        {
+
+        }
+
+        public Duty() : this(ExtensionMethods.Defendant) { }
+
         /// <summary>
         /// The duty to act originates from a statute
         /// </summary>
@@ -24,25 +31,25 @@ namespace NoFuture.Rand.Law.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (IsStatuteOrigin(defendant))
             {
-                AddReasonEntry($"the defendant, {defendant.Name} did not act according to statute");
+                AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsStatuteOrigin)} is true");
                 return true;
             }
 
             if (IsContractOrigin(defendant))
             {
-                AddReasonEntry($"the defendant, {defendant.Name} did not act according to contract");
+                AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsContractOrigin)} is true");
                 return true;
             }
 
             if (IsSpecialRelationshipOrigin(defendant))
             {
-                AddReasonEntry($"the defendant, {defendant.Name} did not act according to special relationship");
+                AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsSpecialRelationshipOrigin)} is true");
                 return true;
             }
 

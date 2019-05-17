@@ -5,17 +5,16 @@ using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.US.Property
 {
-    public abstract class PropertyConsent : LegalConcept
+    public abstract class PropertyConsent : UnoHomine
     {
-        protected internal Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
-        protected PropertyConsent(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        protected PropertyConsent(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson ?? ExtensionMethods.Defendant;
         }
 
-        protected PropertyConsent() : this(null) { }
+        protected PropertyConsent() : this(ExtensionMethods.Defendant) { }
 
         public virtual IConsent Consent { get; set; }
+
         public virtual ILegalProperty SubjectProperty { get; set; }
 
         /// <summary>
