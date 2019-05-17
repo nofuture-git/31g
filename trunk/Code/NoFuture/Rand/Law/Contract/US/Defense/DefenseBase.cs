@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Law.Contract.US.Defense
 {
-    public abstract class DefenseBase<T> : DilemmaBase<T>, IVoidable where T : ILegalConcept
+    public abstract class DefenseBase<T> : DilemmaBase<T>, IVoidable, IDefense where T : ILegalConcept
     {
         protected DefenseBase(IContract<T> contract) : base(contract)
         {

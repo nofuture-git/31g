@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense
 {
-    public abstract class DefenseBase : LegalConcept
+    public abstract class DefenseBase : LegalConcept, IDefense
     {
         protected internal Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
 

@@ -46,6 +46,7 @@
     <Compile Include="IBattery.cs" />
     <Compile Include="IBipartite.cs" />
     <Compile Include="IConsent.cs" />
+    <Compile Include="IDefense.cs" />
     <Compile Include="IDominionOfForce.cs" />
     <Compile Include="IForce.cs" />
     <Compile Include="ILegalProperty.cs" />
