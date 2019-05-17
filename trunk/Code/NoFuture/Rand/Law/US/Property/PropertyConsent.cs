@@ -6,15 +6,15 @@ using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty
 {
-    public abstract class AgainstPropertyBase : LegalConcept
+    public abstract class PropertyConsent : LegalConcept
     {
         protected internal Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
-        protected AgainstPropertyBase(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        protected PropertyConsent(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
         {
             GetSubjectPerson = getSubjectPerson ?? ExtensionMethods.Defendant;
         }
 
-        protected AgainstPropertyBase() : this(null) { }
+        protected PropertyConsent() : this(null) { }
 
         public virtual IConsent Consent { get; set; }
         public virtual ILegalProperty SubjectProperty { get; set; }

@@ -64,6 +64,7 @@
     <Compile Include="US\Property\ActOfService.cs" />
     <Compile Include="US\ExtensionMethods.cs" />
     <Compile Include="US\Persons\Government.cs" />
+    <Compile Include="US\Property\PropertyConsent.cs" />
     <Compile Include="US\Property\GovernmentProperty.cs" />
     <Compile Include="US\Persons\IDefendant.cs" />
     <Compile Include="US\Persons\IOfferee.cs" />

@@ -45,7 +45,6 @@
     <Compile Include="US\Elements\AgainstGov\Sedition.cs" />
     <Compile Include="US\Elements\AgainstGov\Terrorism.cs" />
     <Compile Include="US\Elements\AgainstGov\Treason.cs" />
-    <Compile Include="US\Elements\AgainstProperty\AgainstPropertyBase.cs" />
     <Compile Include="US\Elements\AttendantCircumstances\NationalEmergency.cs" />
     <Compile Include="US\Elements\AgainstProperty\Trespass\TrespassBase.cs" />
     <Compile Include="US\Terms\MilitaryActivities.cs" />

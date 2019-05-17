@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage
     /// starting a fire or causing an explosion which burns real or personal property
     /// </summary>
     [EtymologyNote("Latin", "'ardere'", "to burn")]
-    public class Arson : AgainstPropertyBase, IActusReus
+    public class Arson : PropertyConsent, IActusReus
     {
         public Predicate<ILegalPerson> IsFireStarter { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsCauseOfExplosion { get; set; } = lp => false;

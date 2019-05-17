@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law.Tort.US.Defense
     /// ]]>
     /// </remarks>
     [Aka("claims of right", "recapture privilege")]
-    public class ShopkeeperPrivilege : AgainstPropertyBase
+    public class ShopkeeperPrivilege : PropertyConsent
     {
         public ShopkeeperPrivilege() : this (ExtensionMethods.Tortfeasor) {  }
 

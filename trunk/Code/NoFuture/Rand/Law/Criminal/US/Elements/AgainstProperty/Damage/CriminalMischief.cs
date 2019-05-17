@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage
     /// general case for damaging other property being less heinous than <see cref="Arson"/>
     /// </summary>
     [Aka("vandalism")]
-    public class CriminalMischief : AgainstPropertyBase, IActusReus
+    public class CriminalMischief : PropertyConsent, IActusReus
     {
         public Predicate<ILegalPerson> IsCauseOfDamage { get; set; } = lp => false;
 

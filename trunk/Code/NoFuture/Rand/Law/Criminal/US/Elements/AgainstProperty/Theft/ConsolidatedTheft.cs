@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
     /// <summary>
     /// Explanatory Note for Sections 223.1-223.9 of Model Penal Code
     /// </summary>
-    public abstract class ConsolidatedTheft : AgainstPropertyBase, IActusReus
+    public abstract class ConsolidatedTheft : PropertyConsent, IActusReus
     {
 
         /// <summary>
