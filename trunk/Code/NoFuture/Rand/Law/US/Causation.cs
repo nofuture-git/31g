@@ -26,20 +26,20 @@ namespace NoFuture.Rand.Law.US
             var defendant = GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var isButFor = IsButForCaused(defendant);
             var isForesee = IsForeseeable(defendant);
 
             if (!isButFor)
             {
                 
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsButForCaused)} is false");
+                AddReasonEntry($"{title}, {defendant.Name}, {nameof(IsButForCaused)} is false");
                 return false;
             }
 
             if (!isForesee)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsForeseeable)} is false");
+                AddReasonEntry($"{title}, {defendant.Name}, {nameof(IsForeseeable)} is false");
                 return false;
             }
 

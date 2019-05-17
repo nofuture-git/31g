@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
             Assert.IsTrue(testResult);
 
             //defendant contents no statute duty to report multiple prescriptions
-            var testOmission = new DutyToAct {IsStatuteOrigin = lp => false};
+            var testOmission = new Duty {IsStatuteOrigin = lp => false};
             testResult = testOmission.IsValid(new WendellHollis());
             Assert.IsFalse(testResult);
         }

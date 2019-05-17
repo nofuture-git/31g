@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Law.Contract.US.Breach
             var uccContract = Contract as UccContract<Goods>;
             if (uccContract != null && uccContract.IsInstallmentContract)
             {
-                AddReasonEntry("the Pefect Tender rule does not apply to UCC installment contracts-(see UCC 2-612)");
+                AddReasonEntry("the perfect tender rule does not apply to UCC installment contracts-(see UCC 2-612)");
                 return a.EquivalentTo(b) || b.EquivalentTo(a);
             }
 

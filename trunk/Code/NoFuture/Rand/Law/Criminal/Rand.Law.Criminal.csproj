@@ -147,7 +147,6 @@
     <Compile Include="US\Elements\Act\SubstantialSteps.cs" />
     <Compile Include="US\Elements\AttendantCircumstances\AttendantCircumstanceBase.cs" />
     <Compile Include="US\Elements\Concurrence.cs" />
-    <Compile Include="US\Elements\DutyToAct.cs" />
     <Compile Include="US\Elements\IElement.cs" />
     <Compile Include="US\Elements\Intent\Accessory.cs" />
     <Compile Include="US\Elements\Intent\Accomplice.cs" />

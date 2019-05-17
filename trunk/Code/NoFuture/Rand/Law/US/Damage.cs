@@ -26,14 +26,14 @@ namespace NoFuture.Rand.Law.US
             var subjectPerson = GetSubjectPerson(persons);
             if (subjectPerson == null)
                 return false;
-
+            var title = subjectPerson.GetLegalPersonTypeName();
             var diminished = ToValue(SubjectProperty)
                              || ToUsefulness(SubjectProperty)
                              || ToNormalFunction(SubjectProperty)
                              ;
             if (!diminished)
             {
-                AddReasonEntry($"defendant, {subjectPerson.Name}, {nameof(ToValue)}, " +
+                AddReasonEntry($"{title}, {subjectPerson.Name}, {nameof(ToValue)}, " +
                     $"{nameof(ToUsefulness)}, {nameof(ToNormalFunction)} are all false");
             }
 

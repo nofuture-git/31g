@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Tort.US
 
         public ILegalConcept Intent { get; set; }
 
-        public ILegalConcept Causation { get; set; }
+        public Causation Causation { get; set; }
 
         public ILegalConcept Contact { get; set; }
 

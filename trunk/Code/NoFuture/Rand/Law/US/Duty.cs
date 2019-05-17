@@ -1,12 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements
+namespace NoFuture.Rand.Law.US
 {
     /// <summary>
     /// This can be used as the action part of actus reus
     /// </summary>
-    public class DutyToAct : LegalConcept
+    public class Duty : LegalConcept
     {
         /// <summary>
         /// The duty to act originates from a statute

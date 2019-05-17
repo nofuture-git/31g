@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
         /// There must be some outward act or failure to act 
         /// (thoughts, plans, labels, status are not actus reus).
         /// </summary>
-        public DutyToAct Omission { get; set; } = new DutyToAct();
+        public Duty Omission { get; set; } = new Duty();
 
         /// <inheritdoc cref="IActusReus"/>
         public virtual bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)

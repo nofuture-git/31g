@@ -47,6 +47,7 @@
     <Compile Include="GortarezvSmittysSuperValuTests.cs" />
     <Compile Include="IntelCorpvHamidiTests.cs" />
     <Compile Include="KatkovBrineyTests.cs" />
+    <Compile Include="MohrvWilliamsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

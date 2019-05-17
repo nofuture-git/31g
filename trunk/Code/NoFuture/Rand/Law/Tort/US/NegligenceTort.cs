@@ -9,11 +9,11 @@ namespace NoFuture.Rand.Law.Tort.US
 {
     public class NegligenceTort : LegalConcept
     {
-        public ILegalConcept Duty { get; set; }
+        public Duty Duty { get; set; }
 
         public ILegalConcept Breach { get; set; }
 
-        public ILegalConcept Causation { get; set; }
+        public Causation Causation { get; set; }
 
         public ILegalConcept Contact { get; set; }
 
