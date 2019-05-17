@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty
+namespace NoFuture.Rand.Law.US.Property
 {
     public abstract class PropertyConsent : LegalConcept
     {
