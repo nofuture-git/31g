@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
@@ -87,7 +88,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
                 return false;
 
             //threats for what is honestly owed is not illegal
-            if (defendant.Equals(SubjectProperty?.EntitledTo))
+            if (VocaBase.Equals(defendant,SubjectProperty?.EntitledTo))
             {
                 AddReasonEntry($"defendant {defendant.Name}, is entitled to " +
                                $"{SubjectProperty?.GetType().Name} " +

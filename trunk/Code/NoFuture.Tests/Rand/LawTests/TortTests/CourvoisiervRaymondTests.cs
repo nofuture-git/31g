@@ -20,21 +20,14 @@ namespace NoFuture.Rand.Law.Tort.Tests
         [Test]
         public void CourvoisiervRaymond()
         {
-            var test = new DefenseOfSelf
+            var test = new DefenseOfSelf(ExtensionMethods.Tortfeasor)
             {
-                Imminence = new Imminence(ExtensionMethods.Tortfeasor),
                 IsReasonableFearOfInjuryOrDeath = lp => lp is Courvoisier,
                 Proportionality = new Proportionality<ITermCategory>(ExtensionMethods.Tortfeasor)
                 {
                     GetChoice = lp => new PullRevolverShoot(),
                     IsProportional = (t1, t2) => t1.Equals(t2),
                 },
-                Provocation = new Provocation(ExtensionMethods.Tortfeasor)
-                {
-                    IsInitiatorOfAttack = lp => false,
-                    IsInitiatorRespondingToExcessiveForce = lp => false,
-                    IsInitiatorWithdraws = lp => false
-                }
             };
 
             var testResult = test.IsValid(new Courvoisier(), new Raymond());
