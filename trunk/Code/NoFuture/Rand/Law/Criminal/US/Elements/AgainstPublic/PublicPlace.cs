@@ -46,7 +46,11 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
         public ILegalPerson EntitledTo { get; set; }
         public ILegalPerson InPossessionOf { get; set; }
         public decimal? PropertyValue { get; set; }
-
+        public int GetRank()
+        {
+            var val = PropertyValue.GetValueOrDefault(0m);
+            return Convert.ToInt32(Math.Round(val, 0));
+        }
         public override bool IsValid(params ILegalPerson[] persons)
         {
 

@@ -8,9 +8,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Terms.Malice
     {
         protected override string CategoryName => "malum in se";
 
-        public override int GetCategoryRank()
+        public override int GetRank()
         {
-            return base.GetCategoryRank() + 1;
+            return base.GetRank() + 1;
         }
     }
 }

@@ -57,9 +57,9 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
     public class CallForTaxi : TermCategory
     {
         protected override string CategoryName { get; } = "called a friend or a taxi";
-        public override int GetCategoryRank()
+        public override int GetRank()
         {
-            return new NondeadlyForce().GetCategoryRank() - 1;
+            return new NondeadlyForce().GetRank() - 1;
         }
     }
 

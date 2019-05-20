@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.US
     /// <summary>
     /// Represents the concept of picking one <see cref="T"/> among many possible choices thereof
     /// </summary>
-    public class ChoiceThereof<T> : Proportionality<T> where T: ITermCategory
+    public class ChoiceThereof<T> : Proportionality<T> where T: IRankable
     {
         public ChoiceThereof(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

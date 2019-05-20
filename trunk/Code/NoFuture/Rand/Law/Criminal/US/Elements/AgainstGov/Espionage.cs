@@ -97,9 +97,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
             return _information.IsCategory(category);
         }
 
-        public int GetCategoryRank()
+        public int GetRank()
         {
-            return _information.GetCategoryRank();
+            return _information.GetRank();
         }
         #endregion
     }

@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new Lovercamp());
             Assert.IsTrue(testResult);
 
-            var testSubject = new NecessityDefense
+            var testSubject = new NecessityDefense<ITermCategory>
             {
                 Imminence = new Imminence(ExtensionMethods.Defendant)
                 {
@@ -75,9 +75,9 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
     public class EscCamp : TermCategory
     {
         protected override string CategoryName { get; } = " escape from the California Rehabilitation Center";
-        public override int GetCategoryRank()
+        public override int GetRank()
         {
-            return new NondeadlyForce().GetCategoryRank() - 1;
+            return new NondeadlyForce().GetRank() - 1;
         }
     }
 

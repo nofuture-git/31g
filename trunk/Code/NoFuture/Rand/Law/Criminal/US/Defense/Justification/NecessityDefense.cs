@@ -8,17 +8,17 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
     /// protects defendant from criminal responsibility when the defendant commits a crime to avoid a greater, imminent harm
     /// </summary>
     [Aka("choice of evils defense")]
-    public class NecessityDefense : DefenseBase
+    public class NecessityDefense<T> : DefenseBase where T: IRankable
     {
         public NecessityDefense(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            Proportionality = new ChoiceThereof<ITermCategory>(getSubjectPerson);
+            Proportionality = new ChoiceThereof<T>(getSubjectPerson);
             Imminence = new Imminence(getSubjectPerson);
         }
 
         public NecessityDefense() : base(ExtensionMethods.Defendant)
         {
-            Proportionality = new ChoiceThereof<ITermCategory>(ExtensionMethods.Defendant);
+            Proportionality = new ChoiceThereof<T>(ExtensionMethods.Defendant);
             Imminence = new Imminence(ExtensionMethods.Defendant);
         }
 
@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
         /// <summary>
         /// (2) the harms must be ranked, with one of the harms ranked more severe than the other
         /// </summary>
-        public ChoiceThereof<ITermCategory> Proportionality { get; set; }
+        public ChoiceThereof<T> Proportionality { get; set; }
 
         /// <summary>
         /// (3) the defendant must have objectively reasonable belief that the greater harm is imminent

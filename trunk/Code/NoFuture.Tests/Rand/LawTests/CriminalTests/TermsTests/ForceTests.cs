@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TermsTests
             var testSubject00 = new DeadlyForce();
             var testSubject01 = new NondeadlyForce();
 
-            Assert.IsTrue(testSubject00.GetCategoryRank() > testSubject01.GetCategoryRank());
+            Assert.IsTrue(testSubject00.GetRank() > testSubject01.GetRank());
         }
     }
 }

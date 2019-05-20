@@ -12,9 +12,9 @@ namespace NoFuture.Rand.Law.Contract.US.Terms
     {
         protected override string CategoryName => "Express";
 
-        public override int GetCategoryRank()
+        public override int GetRank()
         {
-            return 1 + base.GetCategoryRank();
+            return 1 + base.GetRank();
         }
     }
 }

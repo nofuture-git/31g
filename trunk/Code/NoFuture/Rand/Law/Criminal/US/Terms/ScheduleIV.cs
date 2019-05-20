@@ -8,9 +8,9 @@
         public ScheduleIV() :this("Schedule IV") { }
         public ScheduleIV(string name) : base(name) { }
 
-        public override int GetCategoryRank()
+        public override int GetRank()
         {
-            return base.GetCategoryRank() - 1;
+            return base.GetRank() - 1;
         }
     }
 }

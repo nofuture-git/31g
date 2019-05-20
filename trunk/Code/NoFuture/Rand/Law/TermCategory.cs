@@ -8,9 +8,9 @@ namespace NoFuture.Rand.Law
 
         protected abstract string CategoryName { get; }
 
-        public virtual int GetCategoryRank()
+        public virtual int GetRank()
         {
-            return Term2Decorate?.GetCategoryRank() ?? 0;
+            return Term2Decorate?.GetRank() ?? 0;
         }
 
         public virtual string GetCategory()
@@ -60,24 +60,24 @@ namespace NoFuture.Rand.Law
         }
 
         /// <summary>
-        /// Helper method to perform boolean operations on two <see cref="ITermCategory"/>
+        /// Helper method to perform boolean operations on two <see cref="IRankable"/>
         /// </summary>
-        public static bool IsRank(TermCategoryBoolOps op, ITermCategory t1, ITermCategory t2)
+        public static bool IsRank(TermCategoryBoolOps op, IRankable t1, IRankable t2)
         {
             switch (op)
             {
                 case TermCategoryBoolOps.Ne:
-                    return (t1?.GetCategoryRank() ?? 0) != (t2?.GetCategoryRank() ?? 0);
+                    return (t1?.GetRank() ?? 0) != (t2?.GetRank() ?? 0);
                 case TermCategoryBoolOps.Gt:
-                    return (t1?.GetCategoryRank() ?? 0) > (t2?.GetCategoryRank() ?? 0);
+                    return (t1?.GetRank() ?? 0) > (t2?.GetRank() ?? 0);
                 case TermCategoryBoolOps.Lt:
-                    return (t1?.GetCategoryRank() ?? 0) < (t2?.GetCategoryRank() ?? 0);
+                    return (t1?.GetRank() ?? 0) < (t2?.GetRank() ?? 0);
                 case TermCategoryBoolOps.Ge:
-                    return (t1?.GetCategoryRank() ?? 0) >= (t2?.GetCategoryRank() ?? 0);
+                    return (t1?.GetRank() ?? 0) >= (t2?.GetRank() ?? 0);
                 case TermCategoryBoolOps.Le:
-                    return (t1?.GetCategoryRank() ?? 0) <= (t2?.GetCategoryRank() ?? 0);
+                    return (t1?.GetRank() ?? 0) <= (t2?.GetRank() ?? 0);
                 default:
-                    return (t1?.GetCategoryRank() ?? 0) == (t2?.GetCategoryRank() ?? -1);
+                    return (t1?.GetRank() ?? 0) == (t2?.GetRank() ?? -1);
             }
         }
     }

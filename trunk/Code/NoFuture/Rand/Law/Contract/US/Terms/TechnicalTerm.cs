@@ -12,10 +12,10 @@
 
         public virtual  bool IsTechnicalContext { get; set; }
 
-        public override int GetCategoryRank()
+        public override int GetRank()
         {
-            var s = IsTechnicalContext ? new CommonUseTerm().GetCategoryRank() + 1 : 0;
-            return s + base.GetCategoryRank();
+            var s = IsTechnicalContext ? new CommonUseTerm().GetRank() + 1 : 0;
+            return s + base.GetRank();
         }
     }
 }

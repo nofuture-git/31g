@@ -62,9 +62,9 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
     public class Embezzled : TermCategory
     {
         protected override string CategoryName { get; } = "embezzled";
-        public override int GetCategoryRank()
+        public override int GetRank()
         {
-            return new SeriousBodilyInjury().GetCategoryRank() - 1;
+            return new SeriousBodilyInjury().GetRank() - 1;
         }
     }
 

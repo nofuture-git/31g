@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 
@@ -53,6 +54,12 @@ namespace NoFuture.Rand.Law
         public override string ToString()
         {
             return Name;
+        }
+
+        public int GetRank()
+        {
+            var val = PropertyValue.GetValueOrDefault(0m);
+            return Convert.ToInt32(Math.Round(val, 0));
         }
     }
 }

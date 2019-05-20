@@ -53,6 +53,7 @@
     <Compile Include="IIntent.cs" />
     <Compile Include="ILegalProperty.cs" />
     <Compile Include="IMensRea.cs" />
+    <Compile Include="IRankable.cs" />
     <Compile Include="LegalProperty.cs" />
     <Compile Include="Rationale.cs" />
     <Compile Include="TermCategoryBoolOps.cs" />

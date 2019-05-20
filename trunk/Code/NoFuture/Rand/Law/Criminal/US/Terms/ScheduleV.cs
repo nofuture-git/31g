@@ -16,7 +16,7 @@
         protected override string CategoryName => _categoryName;
 
         public virtual bool IsAcceptedMedicalUse { get; } = true;
-        public override int GetCategoryRank()
+        public override int GetRank()
         {
             return 5;
         }

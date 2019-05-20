@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfOtherTests
             var testResult = testCrime.IsValid(new TamaraEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new NecessityDefense
+            var testSubject = new NecessityDefense<ITermCategory>
             {
                 Imminence = new Imminence(ExtensionMethods.Defendant)
                 {

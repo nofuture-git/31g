@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.US
     /// Template for the concept of reasonable proportionality
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Proportionality<T> : UnoHomine where T: ITermCategory
+    public class Proportionality<T> : UnoHomine where T: IRankable
     {
         public Proportionality(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

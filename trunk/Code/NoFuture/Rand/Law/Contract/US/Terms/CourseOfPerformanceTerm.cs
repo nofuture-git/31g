@@ -9,9 +9,9 @@
     public class CourseOfPerformanceTerm : CourseOfDealingTerm
     {
         protected override string CategoryName => "Course of Performance";
-        public override int GetCategoryRank()
+        public override int GetRank()
         {
-            return 1 + base.GetCategoryRank();
+            return 1 + base.GetRank();
         }
     }
 }

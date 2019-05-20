@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law
     /// <summary>
     /// General interface to represent the concept of property (real, personal or otherwise)
     /// </summary>
-    public interface ILegalProperty : IVoca, IRationale
+    public interface ILegalProperty : IVoca, IRationale, IRankable
     {
         /// <summary>
         /// Who is lawfully entitled to the property

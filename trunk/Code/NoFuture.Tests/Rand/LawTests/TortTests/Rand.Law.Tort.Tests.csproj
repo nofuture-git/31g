@@ -49,6 +49,7 @@
     <Compile Include="KatkovBrineyTests.cs" />
     <Compile Include="MohrvWilliamsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PutnamvPloofTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

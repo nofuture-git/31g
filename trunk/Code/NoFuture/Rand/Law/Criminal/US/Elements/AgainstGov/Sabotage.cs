@@ -107,6 +107,12 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 
         public decimal? PropertyValue { get; set; }
 
+        public int GetRank()
+        {
+            var val = PropertyValue.GetValueOrDefault(0m);
+            return Convert.ToInt32(Math.Round(val, 0));
+        }
+
         #region IVoca HAS-A IS-A
         public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
         {

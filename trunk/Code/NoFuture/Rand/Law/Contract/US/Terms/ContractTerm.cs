@@ -36,8 +36,8 @@
             if (diff != 0)
                 return diff;
 
-            mySource = GetCategoryRank();
-            theirSource = contractTerm.GetCategoryRank();
+            mySource = GetRank();
+            theirSource = contractTerm.GetRank();
             diff = theirSource - mySource;
             return diff;
         }
