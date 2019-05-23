@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
             base.ClearReasons();
         }
 
-        protected virtual bool IsPhysicalDamage(ILegalPerson[] persons)
+        protected internal virtual bool IsPhysicalDamage(ILegalPerson[] persons)
         {
             if (PropertyDamage == null)
             {

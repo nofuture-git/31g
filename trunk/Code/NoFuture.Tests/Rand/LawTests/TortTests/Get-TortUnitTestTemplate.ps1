@@ -10,6 +10,9 @@
     )
     Process
     {
+        $safeNamePlaintiff = New-Object System.String(,[char[]]($Plaintiff.ToCharArray() | ? {[char]::IsLetterOrDigit($_)}))
+        $safeNameDefendant = New-Object System.String(,[char[]]($Defendant.ToCharArray() | ? {[char]::IsLetterOrDigit($_)}))
+        
 $someCode = @"
 using System;
 using NUnit.Framework;
@@ -29,28 +32,28 @@ namespace NoFuture.Rand.Law.Tort.Tests
     /// ]]>
     /// </remarks>
     [TestFixture]
-    public class ${Plaintiff}v${Defendant}Tests
+    public class ${safeNamePlaintiff}v${safeNameDefendant}Tests
     {
         [Test]
-        public void ${Plaintiff}v${Defendant}()
+        public void ${safeNamePlaintiff}v${safeNameDefendant}()
         {
 
         }
     }
 
-    public class ${Plaintiff} : LegalPerson, IPlaintiff
+    public class ${safeNamePlaintiff} : LegalPerson, IPlaintiff
     {
-        public ${Plaintiff}(): base("") { }
+        public ${safeNamePlaintiff}(): base("$Plaintiff") { }
     }
 
-    public class ${Defendant} : LegalPerson, ITortfeasor
+    public class ${safeNameDefendant} : LegalPerson, ITortfeasor
     {
-        public ${Defendant}(): base("") { }
+        public ${safeNameDefendant}(): base("$Defendant") { }
     }
 }
 
 "@
-        $filename = Join-Path (Get-Location).Path  ".\${Plaintiff}v${Defendant}Tests.cs"
+        $filename = Join-Path (Get-Location).Path  ".\${safeNamePlaintiff}v${safeNameDefendant}Tests.cs"
         [System.IO.File]::WriteAllText($filename, $someCode, [System.Text.Encoding]::UTF8)
     }
 }

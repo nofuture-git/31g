@@ -5,8 +5,10 @@ namespace NoFuture.Rand.Law.US
     /// <summary>
     /// The idea of some <see cref="ILegalProperty"/> being impaired in value, usefulness or function
     /// </summary>
-    public class Damage : UnoHomine
+    public class Damage : UnoHomine, ITermCategory
     {
+        private readonly ITermCategory _termCategory = new TermCategory(nameof(Damage));
+        public Damage(): this(ExtensionMethods.Defendant) { }
         public Damage(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
@@ -38,6 +40,31 @@ namespace NoFuture.Rand.Law.US
             }
 
             return diminished;
+        }
+
+        public virtual int GetRank()
+        {
+            return _termCategory.GetRank();
+        }
+
+        public virtual string GetCategory()
+        {
+            return _termCategory.GetCategory();
+        }
+
+        public virtual bool IsCategory(ITermCategory category)
+        {
+            return _termCategory.IsCategory(category);
+        }
+
+        public virtual ITermCategory As(ITermCategory category)
+        {
+            return _termCategory.As(category);
+        }
+
+        public virtual bool IsCategory(Type category)
+        {
+            return _termCategory.IsCategory(category);
         }
     }
 }

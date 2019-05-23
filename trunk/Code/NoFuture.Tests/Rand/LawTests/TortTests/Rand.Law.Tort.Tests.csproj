@@ -50,6 +50,7 @@
     <Compile Include="MohrvWilliamsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PutnamvPloofTests.cs" />
+    <Compile Include="VincentvLakeErieTranspCoTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

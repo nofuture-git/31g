@@ -7,8 +7,10 @@ namespace NoFuture.Rand.Law.US
     /// The legal idea of some kind of loss suffered by a <see cref="ILegalPerson"/>
     /// </summary>
     /// <remarks>https://en.wikipedia.org/wiki/Harm</remarks>
-    public class Harm: UnoHomine
+    public class Harm: UnoHomine, ITermCategory
     {
+        private readonly ITermCategory _termCategory = new TermCategory(nameof(Harm));
+        public Harm() : this(ExtensionMethods.Defendant) { }
         public Harm(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
@@ -42,6 +44,30 @@ namespace NoFuture.Rand.Law.US
             }
 
             return true;
+        }
+        public virtual int GetRank()
+        {
+            return _termCategory.GetRank();
+        }
+
+        public virtual string GetCategory()
+        {
+            return _termCategory.GetCategory();
+        }
+
+        public virtual bool IsCategory(ITermCategory category)
+        {
+            return _termCategory.IsCategory(category);
+        }
+
+        public virtual ITermCategory As(ITermCategory category)
+        {
+            return _termCategory.As(category);
+        }
+
+        public virtual bool IsCategory(Type category)
+        {
+            return _termCategory.IsCategory(category);
         }
     }
 }

@@ -2,11 +2,18 @@
 
 namespace NoFuture.Rand.Law
 {
-    public abstract class TermCategory : ITermCategory
+    public class TermCategory : ITermCategory
     {
+        public TermCategory(): this(string.Empty) { }
+
+        public TermCategory(string categoryName)
+        {
+            CategoryName = categoryName;
+        }
+
         protected internal ITermCategory Term2Decorate { get; private set; }
 
-        protected abstract string CategoryName { get; }
+        protected virtual string CategoryName { get; }
 
         public virtual int GetRank()
         {
