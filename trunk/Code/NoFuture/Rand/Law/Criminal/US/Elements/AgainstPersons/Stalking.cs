@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
     public class Stalking : LegalConcept, IActusReus, IDominionOfForce, IElement
     {
         /// <summary>
-        /// is unique amoung criminal acts in that it must occur on more than one occasion or repeatedly
+        /// is unique among criminal acts in that it must occur on more than one occasion or repeatedly
         /// </summary>
         public IEnumerable<IAgitate> Occasions { get; set; } = new List<IAgitate>();
 

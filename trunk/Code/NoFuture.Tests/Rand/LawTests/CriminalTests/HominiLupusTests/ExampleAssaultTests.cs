@@ -4,6 +4,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -59,7 +60,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                 {
                     IsByThreatOfViolence = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                               && ((DianaPistolEg)lp).IsSheCockGunHammer,
-                    IsPresentAbility = lp => lp is DianaPistolEg
+                    IsApparentAbility = lp => lp is DianaPistolEg,
+                    Imminence = new Imminence { IsImmediatePresent = ts => true}
                 },
                 MensRea = new DeadlyWeapon("pistol", new Purposely())
             };
@@ -78,7 +80,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                 {
                     IsByThreatOfViolence = lp => ((lp as DianaPistolEg)?.IsAimPistol ?? false)
                                               && ((DianaPistolEg)lp).IsSheCockGunHammer,
-                    IsPresentAbility = lp => lp is DianaPistolEg
+                    IsApparentAbility = lp => lp is DianaPistolEg,
+                    Imminence = new Imminence { IsImmediatePresent = ts => true }
                 },
                 MensRea = new DeadlyWeapon("pistol", new GeneralIntent())
             };

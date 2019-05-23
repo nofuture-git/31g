@@ -7,6 +7,8 @@ namespace NoFuture.Rand.Law.US
     /// </summary>
     public class Imminence : UnoHomine
     {
+        public Imminence() : this(ExtensionMethods.Defendant) { }
+
         public Imminence(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
@@ -29,6 +31,12 @@ namespace NoFuture.Rand.Law.US
         public static readonly TimeSpan AvgDriverCrashAvoidanceTime = new TimeSpan(0, 0, 0, 2, 250);
 
         /// <summary>
+        /// src https://en.wikipedia.org/wiki/Nerve_conduction_velocity
+        /// for Extrafusal muscle fibers as mean between 80-120 m/s
+        /// </summary>
+        public static readonly TimeSpan NerveConductionVelocity = new TimeSpan(0,0,0,0,100);
+
+        /// <summary>
         /// The timespan of a persons response
         /// </summary>
         public Func<ILegalPerson, TimeSpan> GetResponseTime { get; set; } = lp => TimeSpan.Zero;
@@ -45,10 +53,11 @@ namespace NoFuture.Rand.Law.US
                 return false;
 
             var ts = GetResponseTime(defendant);
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsImmediatePresent(ts))
             {
                 var tsPrint = ts.Equals(TimeSpan.Zero) ? "" : $"with response time of {ts} had ";
-                AddReasonEntry($"defendant, {defendant.Name}, {tsPrint}{nameof(IsImmediatePresent)} as false");
+                AddReasonEntry($"{title}, {defendant.Name}, {tsPrint}{nameof(IsImmediatePresent)} as false");
                 return false;
             }
 

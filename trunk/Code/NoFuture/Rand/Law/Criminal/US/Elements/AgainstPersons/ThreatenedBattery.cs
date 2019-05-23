@@ -12,23 +12,31 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
     /// Is not to cause physical contact; rather, it is to cause the 
     /// victim to fear physical contact
     /// </summary>
-    public class ThreatenedBattery : LegalConcept, IDominionOfForce, IAssault, IActusReus, IElement
+    public class ThreatenedBattery : UnoHomine, IDominionOfForce, IAssault, IActusReus, IElement
     {
+        public ThreatenedBattery(): this(ExtensionMethods.Defendant) { }
+
+        public ThreatenedBattery(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        {
+            Imminence = new Imminence(getSubjectPerson);
+        }
         public Predicate<ILegalPerson> IsByThreatOfViolence { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsPresentAbility { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsApparentAbility { get; set; } = lp => false;
 
+        public Imminence Imminence { get; set; }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = GetSubjectPerson(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsByThreatOfViolence(defendant))
             {
-                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
                 return false;
             }
 
@@ -37,8 +45,20 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 
             if (!pAble && !aAble)
             {
-                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsPresentAbility)} is false");
-                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsApparentAbility)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsPresentAbility)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsApparentAbility)} is false");
+                return false;
+            }
+
+            if (Imminence == null)
+            {
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(Imminence)} is unassigned");
+                return false;
+            }
+
+            if (!Imminence.IsValid(persons))
+            {
+                AddReasonEntryRange(Imminence.GetReasonEntries());
                 return false;
             }
 

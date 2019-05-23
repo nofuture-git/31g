@@ -2,6 +2,7 @@
 using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -29,7 +30,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
                     IsPresentAbility = lp => false,
                     //it looked and felt real to the victim
                     IsApparentAbility = lp => lp is Henson,
-                    IsByThreatOfViolence = lp => lp is Henson
+                    IsByThreatOfViolence = lp => lp is Henson,
+                    Imminence = new Imminence { IsImmediatePresent = ts => true}
                 },
                 MensRea = new Purposely
                 {
