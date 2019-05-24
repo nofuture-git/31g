@@ -695,3 +695,5 @@ nugatory: of no value or importance
 gravamen: the essence or most serious part of a complaint or accusation
 eleemosynary: relating to or dependent on charity
 ersatz: made or used as a substitute, typically inferior
+pettifogging: placing undue emphasis on petty details
+capricious: given to sudden and unaccountable changes in mood and behavior

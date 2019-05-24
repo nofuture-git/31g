@@ -19,7 +19,7 @@
     /// </remarks>
     public class StrictLiability : MensRea
     {
-        private const string _name = "StrictLiability";
+        private const string _name = nameof(StrictLiability);
         protected internal StrictLiability()
         {
 

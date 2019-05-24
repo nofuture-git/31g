@@ -1,8 +1,10 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
+    [EtymologyNote("Latin", "quare clausum fregit", "wherefore he broke the close")]
     public class TrespassToLand : TortTrespass
     {
         /// <summary>
