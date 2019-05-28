@@ -84,10 +84,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
                 new ContractTerm<object>("", 1),
             };
         }
-        public override bool IsSkilledOrKnowledgeableOf(Goods goods)
-        {
-            return goods is Fertilizer;
-        }
+        public override Predicate<Goods> IsSkilledOrKnowledgeableOf { get; set; }=  goods => goods is Fertilizer;
     }
 
     public class Wood2 : Wood, IOfferee

@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.Contract.US;
+﻿using System;
+using NoFuture.Rand.Law.Contract.US;
 using NoFuture.Rand.Law.Contract.US.Ucc;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
@@ -51,23 +52,25 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
     public class BestBolt : Merchant, IOfferor
     {
         public BestBolt() : base("BEST BOLT PRODUCTS, INC.") { }
-        public override bool IsSkilledOrKnowledgeableOf(Goods goods)
+
+        public override Predicate<Goods> IsSkilledOrKnowledgeableOf { get; set; } = goods =>
         {
             if (goods is BoltsNutsScrewsAndOtherHardwareItems)
             {
-                AddReasonEntry("bolts, nuts, screws and other hardware " +
+                goods.AddReasonEntry("bolts, nuts, screws and other hardware " +
                                $"items is the core business of {nameof(BestBolt)}");
                 return true;
             }
 
             if (goods is Pulleys)
             {
-                AddReasonEntry($"the court found that {nameof(BestBolt)} is" +
+                goods.AddReasonEntry($"the court found that {nameof(BestBolt)} is" +
                                " a merchant of pulleys.");
                 return true;
             }
 
             return false;
-        }
+        };
+
     }
 }

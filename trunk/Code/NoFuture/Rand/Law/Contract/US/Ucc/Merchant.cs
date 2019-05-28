@@ -1,12 +1,10 @@
-﻿using NoFuture.Rand.Law.US.Persons;
+﻿using System;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Contract.US.Ucc
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <inheritdoc cref="IMerchant"/>
-    public abstract class Merchant : LegalPerson, IMerchant
+    /// <inheritdoc cref="IMerchant{T}"/>
+    public abstract class Merchant : LegalPerson, IMerchant<Goods>
     {
         protected Merchant() { }
 
@@ -17,8 +15,6 @@ namespace NoFuture.Rand.Law.Contract.US.Ucc
         /// <summary>
         /// To assert if the given merchant has knowledge or skills concerning the particular good.
         /// </summary>
-        /// <param name="goods"></param>
-        /// <returns></returns>
-        public abstract bool IsSkilledOrKnowledgeableOf(Goods goods);
+        public virtual Predicate<Goods> IsSkilledOrKnowledgeableOf { get; set; } = lp => false;
     }
 }

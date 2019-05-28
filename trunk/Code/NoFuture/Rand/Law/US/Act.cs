@@ -7,13 +7,13 @@ namespace NoFuture.Rand.Law.US
     {
         public Act(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            Omission = new Duty(getSubjectPerson);
+            
         }
         public Act() : this(ExtensionMethods.Defendant) { }
 
         public Predicate<ILegalPerson> IsVoluntary { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsAction { get; set; } = lp => false;
-        public Duty Omission { get; set; }
+        public virtual Duty Duty { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -28,10 +28,14 @@ namespace NoFuture.Rand.Law.US
                 return false;
             }
 
-            if (Omission != null && Omission.IsValid(persons))
+            //test for lack-of-action first, if its expected
+            if (Duty != null)
             {
-                AddReasonEntryRange(Omission.GetReasonEntries());
-                return true;
+                var didAct = IsAction(defendant);
+                var duty = Duty.IsValid(persons) && didAct;
+                AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsAction)} is {didAct}");
+                AddReasonEntryRange(Duty.GetReasonEntries());
+                return duty;
             }
 
             if (!IsAction(defendant))

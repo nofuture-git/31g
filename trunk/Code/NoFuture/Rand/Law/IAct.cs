@@ -20,6 +20,6 @@ namespace NoFuture.Rand.Law
         /// There must be some outward act or failure to act 
         /// (thoughts, plans, labels, status are not actions).
         /// </summary>
-        Duty Omission { get; set; }
+        Duty Duty { get; set; }
     }
 }

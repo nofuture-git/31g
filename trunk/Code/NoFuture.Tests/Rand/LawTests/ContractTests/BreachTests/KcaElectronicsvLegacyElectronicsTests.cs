@@ -139,10 +139,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
             };
         }
 
-        public override bool IsSkilledOrKnowledgeableOf(Goods goods)
-        {
-            return true;
-        }
+        public override Predicate<Goods> IsSkilledOrKnowledgeableOf { get; set; } = lp => true;
     }
 
     public class LegacyElectronics : Merchant, IOfferee
@@ -156,9 +153,6 @@ namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
             };
         }
 
-        public override bool IsSkilledOrKnowledgeableOf(Goods goods)
-        {
-            return true;
-        }
+        public override Predicate<Goods> IsSkilledOrKnowledgeableOf { get; set; } = lp => true;
     }
 }

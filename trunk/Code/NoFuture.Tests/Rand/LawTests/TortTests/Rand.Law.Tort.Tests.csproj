@@ -44,6 +44,7 @@
     <Compile Include="BirdvHolbrookTests.cs" />
     <Compile Include="CourvoisiervRaymondTests.cs" />
     <Compile Include="DavisvFeinsteinTests.cs" />
+    <Compile Include="DellwovPearsonTests.cs" />
     <Compile Include="DoughertyvSteppTests.cs" />
     <Compile Include="GortarezvSmittysSuperValuTests.cs" />
     <Compile Include="IntelCorpvHamidiTests.cs" />

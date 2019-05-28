@@ -40,11 +40,15 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IPlaintiff);
         }
 
+        public static ILegalPerson Expert<T>(this IEnumerable<ILegalPerson> persons) where T : ILegalConcept
+        {
+            return persons.FirstOrDefault(p => p is IExpert<T>);
+        }
+
         public static string GetLegalPersonTypeName(this ILegalPerson person)
         {
             if (person == null)
                 return string.Empty;
-
             if (person is IDefendant)
                 return "defendant";
             if (person is IPlaintiff)

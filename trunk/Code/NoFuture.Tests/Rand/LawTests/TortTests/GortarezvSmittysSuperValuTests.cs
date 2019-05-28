@@ -53,8 +53,9 @@ namespace NoFuture.Rand.Law.Tort.Tests
         public Gortarez(): base("") { }
     }
 
-    public class SmittysSuperValu : LegalPerson, IMerchant, ITortfeasor, IVictim
+    public class SmittysSuperValu : LegalPerson, IMerchant<ILegalConcept>, ITortfeasor, IVictim
     {
         public SmittysSuperValu(): base("") { }
+        public Predicate<ILegalConcept> IsSkilledOrKnowledgeableOf { get; set; } = g => true;
     }
 }

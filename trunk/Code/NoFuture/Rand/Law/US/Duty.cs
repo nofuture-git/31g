@@ -37,19 +37,19 @@ namespace NoFuture.Rand.Law.US
             var title = defendant.GetLegalPersonTypeName();
             if (IsStatuteOrigin(defendant))
             {
-                AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsStatuteOrigin)} is true");
+                AddReasonEntry($"the {title} {defendant.Name}, {nameof(Duty)} {nameof(IsStatuteOrigin)} is true");
                 return true;
             }
 
             if (IsContractOrigin(defendant))
             {
-                AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsContractOrigin)} is true");
+                AddReasonEntry($"the {title} {defendant.Name}, {nameof(Duty)} {nameof(IsContractOrigin)} is true");
                 return true;
             }
 
             if (IsSpecialRelationshipOrigin(defendant))
             {
-                AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsSpecialRelationshipOrigin)} is true");
+                AddReasonEntry($"the {title} {defendant.Name}, {nameof(Duty)} {nameof(IsSpecialRelationshipOrigin)} is true");
                 return true;
             }
 

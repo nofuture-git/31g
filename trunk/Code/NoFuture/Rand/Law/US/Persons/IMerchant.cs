@@ -5,7 +5,7 @@
     /// Per UCC 2-104(1) "deals in goods [...] knowledge or skill peculiar to [...] goods"
     /// ]]>
     /// </summary>
-    public interface IMerchant : ILegalPerson
+    public interface IMerchant<T> : IExpert<T> where T : ILegalConcept
     {
     }
 }

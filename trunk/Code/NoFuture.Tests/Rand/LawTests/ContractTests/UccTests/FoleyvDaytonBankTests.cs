@@ -26,6 +26,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
             var testGoods = new InternationalTranstarTruck();
 
             var testResult = testSubject.IsSkilledOrKnowledgeableOf(testGoods);
+            testSubject.AddReasonEntryRange(testGoods.GetReasonEntries());
             Assert.IsFalse(testResult);
             Assert.IsTrue(testSubject.GetReasonEntries().Any());
             Console.WriteLine(testSubject.ToString());
@@ -45,13 +46,15 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
     public class DaytonBank : Merchant, IOfferor
     {
         public DaytonBank() : base("Dayton Bank and Trust") { }
-        public override bool IsSkilledOrKnowledgeableOf(Goods goods)
+
+        public override Predicate<Goods> IsSkilledOrKnowledgeableOf { get; set; } = goods =>
         {
             if (goods is InternationalTranstarTruck)
             {
-                AddReasonEntry("court found that 'are not merchants' - have no knowledge of big trucks.");
+                goods.AddReasonEntry("court found that 'are not merchants' - have no knowledge of big trucks.");
             }
+
             return false;
-        }
+        };
     }
 }
