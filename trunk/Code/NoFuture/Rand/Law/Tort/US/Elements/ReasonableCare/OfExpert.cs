@@ -4,18 +4,27 @@ using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
 {
-    public class OfExpert<T> : ReasonableCareBase where T: ILegalConcept
+    /// <summary>
+    /// A higher standard of reasonable care, beyond fortuity, when one is an expert of said thing.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class OfExpert<T> : ReasonableCareBase where T: IRationale
     {
-        public OfExpert(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public OfExpert(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson;
         }
 
-        public OfExpert() : this(ExtensionMethods.Expert<ILegalConcept>) { }
-
+        /// <summary>
+        /// One of two reasons, &quot;beyond fortuity&quot; the reasonable care standard is raised.
+        /// </summary>
         public Predicate<ILegalPerson> IsSignificantDanger { get; set; } = lp => false;
 
+        /// <summary>
+        /// One of two reasons, &quot;beyond fortuity&quot; the reasonable care standard is raised.
+        /// </summary>
         public Predicate<ILegalPerson> IsReliedUpon { get; set; } = lp => false;
+
+        public Predicate<ILegalPerson> IsExercisedExpertCare { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -30,7 +39,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
             if (!isExpert)
             {
                 AddReasonEntry($"{title} {subj.Name}, is not an {nameof(IExpert<T>)}");
-                return base.IsValid(persons);
+                return false;
             }
 
             var significant = IsSignificantDanger(subj);
@@ -43,7 +52,13 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
                 return false;
             }
 
-            return base.IsValid(persons);
+            if (!IsExercisedExpertCare(subj))
+            {
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsExercisedExpertCare)} is false");
+                return false;
+            }
+
+            return true;
         }
     }
 }

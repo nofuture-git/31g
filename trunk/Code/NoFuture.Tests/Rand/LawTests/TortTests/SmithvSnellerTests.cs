@@ -22,8 +22,6 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var test = new OfPhysicalDeficiency(ExtensionMethods.Plaintiff)
             {
-                IsAction = lp => lp is Smith,
-                IsVoluntary = lp => lp is Smith,
                 IsUsingCompensatoryDevice = lp => !(lp is Smith),
                 IsAfflictedWith = lp => lp is Smith
             };

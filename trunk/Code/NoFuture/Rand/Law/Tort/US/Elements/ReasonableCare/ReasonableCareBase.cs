@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.US;
+﻿using System;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
 {
@@ -18,7 +19,10 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
     /// OLIVER WENDELL HOLMES, JR., THE COMMON LAW 107-09 (1881)
     /// ]]>
     /// </remarks>
-    public abstract class ReasonableCareBase : Act
+    public abstract class ReasonableCareBase : UnoHomine, IIntent
     {
+        protected ReasonableCareBase(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        {
+        }
     }
 }

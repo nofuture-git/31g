@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, liability for children is typically not applicable unless they are performing some adult activity
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -24,16 +24,27 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var test = new OfChildren(ExtensionMethods.Tortfeasor)
             {
-                //failed to hold adult standard of care which was required
-                IsAction = lp => !(lp is Pearson), 
-                IsVoluntary = lp => lp is Pearson,
                 IsUnderage = lp => lp is Pearson,
-                Duty = new Duty(ExtensionMethods.Tortfeasor) {IsStatuteOrigin = lp => true}
+                GetActionOfPerson = lp => lp is Pearson ? new OperateMotorBoat() : null,
+                IsDangerousAdultActivity = act => act is OperateMotorBoat,
+                IsExercisedAdultCare = lp => !(lp is Pearson)
             };
             var testResult = test.IsValid(new Dellwo(), new Pearson());
             Assert.IsFalse(testResult);
             Console.WriteLine(test.ToString());
         }
+    }
+
+    public class OperateMotorBoat : LegalConcept, IAct
+    {
+        public override bool IsValid(params ILegalPerson[] persons)
+        {
+            return true;
+        }
+
+        public Predicate<ILegalPerson> IsVoluntary { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsAction { get; set; } = lp => false;
+        public Duty Duty { get; set; }
     }
 
     public class Dellwo : LegalPerson, IPlaintiff

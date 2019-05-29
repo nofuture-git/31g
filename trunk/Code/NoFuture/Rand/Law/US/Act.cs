@@ -28,17 +28,24 @@ namespace NoFuture.Rand.Law.US
                 return false;
             }
 
+            var isAction = IsAction(defendant);
+
             //test for lack-of-action first, if its expected
             if (Duty != null)
             {
-                var didAct = IsAction(defendant);
-                var duty = Duty.IsValid(persons) && didAct;
-                AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsAction)} is {didAct}");
-                AddReasonEntryRange(Duty.GetReasonEntries());
-                return duty;
+                var isDuty = Duty.IsValid(persons);
+
+                if (isDuty && !isAction)
+                {
+                    AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsAction)} is false");
+                    AddReasonEntryRange(Duty.GetReasonEntries());
+                    return false;
+                }
+
+                return true;
             }
 
-            if (!IsAction(defendant))
+            if (!isAction)
             {
                 AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsAction)} is false");
                 return false;

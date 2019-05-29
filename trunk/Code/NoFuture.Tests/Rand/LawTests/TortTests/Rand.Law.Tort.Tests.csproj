@@ -49,6 +49,7 @@
     <Compile Include="GortarezvSmittysSuperValuTests.cs" />
     <Compile Include="IntelCorpvHamidiTests.cs" />
     <Compile Include="KatkovBrineyTests.cs" />
+    <Compile Include="LevivSWLaElecMembershipCoOpTests.cs" />
     <Compile Include="MohrvWilliamsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PutnamvPloofTests.cs" />

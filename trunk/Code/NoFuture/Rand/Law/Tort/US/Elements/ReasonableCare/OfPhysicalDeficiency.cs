@@ -11,12 +11,9 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
     /// </summary>
     public class OfPhysicalDeficiency : ReasonableCareBase
     {
-        public OfPhysicalDeficiency(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public OfPhysicalDeficiency(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson;
         }
-
-        public OfPhysicalDeficiency() : this(ExtensionMethods.Tortfeasor) { }
 
         /// <summary>
         /// E.g. a cane, wheelchair, seeing-eye dog, etc.
@@ -33,12 +30,10 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
                 return false;
             var title = subjPerson.GetLegalPersonTypeName();
 
-            var isAct = base.IsValid(persons);
-
             if (!IsAfflictedWith(subjPerson))
             {
                 AddReasonEntry($"{title} {subjPerson.Name}, {nameof(IsAfflictedWith)} is false");
-                return isAct;
+                return false;
             }
 
             if (!IsUsingCompensatoryDevice(subjPerson))
@@ -47,7 +42,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
                 return false;
             }
 
-            return isAct;
+            return true;
         }
     }
 }
