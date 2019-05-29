@@ -40,7 +40,6 @@
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="Exceptions\LawException.cs" />
     <Compile Include="IAct.cs" />
-    <Compile Include="IActusReus.cs" />
     <Compile Include="IAssault.cs" />
     <Compile Include="IAssent.cs" />
     <Compile Include="IBargain.cs" />
@@ -52,7 +51,6 @@
     <Compile Include="IForce.cs" />
     <Compile Include="IIntent.cs" />
     <Compile Include="ILegalProperty.cs" />
-    <Compile Include="IMensRea.cs" />
     <Compile Include="IRankable.cs" />
     <Compile Include="LegalProperty.cs" />
     <Compile Include="Rationale.cs" />
