@@ -11,6 +11,9 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
 
         public Predicate<ILegalPerson> IsMentallyIncapacitated { get; set; } = lp => false;
 
+        /// <summary>
+        /// Implied is that the incapacity is sudden - if its gradual then that would mean its foreseeable
+        /// </summary>
         public Predicate<ILegalPerson> IsIncapacityForeseeable { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsExercisedMentalCare { get; set; } = lp => false;
