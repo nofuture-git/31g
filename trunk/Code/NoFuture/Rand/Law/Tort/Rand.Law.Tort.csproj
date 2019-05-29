@@ -40,6 +40,7 @@
     <Compile Include="US\Elements\Consent.cs" />
     <Compile Include="US\Elements\ReasonableCare\OfChildren.cs" />
     <Compile Include="US\Elements\ReasonableCare\OfExpert.cs" />
+    <Compile Include="US\Elements\ReasonableCare\OfMentalCapacity.cs" />
     <Compile Include="US\Elements\ReasonableCare\OfPhysicalDeficiency.cs" />
     <Compile Include="US\Elements\ReasonableCare\ReasonableCareBase.cs" />
     <Compile Include="US\Elements\TortTrespass.cs" />
