@@ -477,7 +477,8 @@ defamation - statements which damage reputation
 subterfuge - deceit used in order to achieve one's goal
 disingenuous - unsincere pretender in knowledge being less than actual
 diminutive - extremely small
-ex ante - based on forcasts rather than actual results
+ex ante - before the fact, based on forcasts rather than actual results
+ex post - after the fact
 tripartite - shared by or involving three parties
 ex cathedra - with full authority of office
 casus belli - an act or event that provokes or is used to justify war
@@ -697,3 +698,18 @@ eleemosynary: relating to or dependent on charity
 ersatz: made or used as a substitute, typically inferior
 pettifogging: placing undue emphasis on petty details
 capricious: given to sudden and unaccountable changes in mood and behavior
+pulsate: regular expand and contract movement
+undulate: regular up-and-down movement
+fluctuate: irregular up-and-down movement
+wobble: irregular side-to-side movement
+oscilate: regular side-to-side movement
+whirl: full circular round movement
+swing: partial circular round movement
+sway: regular back and forth movement
+teeter: irregular back and forth movement
+billow: air mass which undulates
+subjective [legal]: a particular subject person's perspective of the facts
+objective [legal]: a general rational person's perspective of the facts
+relativity [physics]: facts are subjective to a particular person's perspective
+adumbrate: report or represent in outline
+incommensurable: not able to be judged by the same standard (apples to oranges)
