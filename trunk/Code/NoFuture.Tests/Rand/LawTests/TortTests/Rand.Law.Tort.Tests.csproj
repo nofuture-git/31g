@@ -44,6 +44,7 @@
     <Compile Include="AndrewsvUnitedAirlinesTests.cs" />
     <Compile Include="BirdvHolbrookTests.cs" />
     <Compile Include="BreunigvAmericanFamilyInsCoTests.cs" />
+    <Compile Include="BrunevBelinkoffTests.cs" />
     <Compile Include="CooleyvPublicServiceCoTests.cs" />
     <Compile Include="CourvoisiervRaymondTests.cs" />
     <Compile Include="DavisvFeinsteinTests.cs" />
