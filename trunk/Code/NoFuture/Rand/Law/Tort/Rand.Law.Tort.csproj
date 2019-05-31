@@ -53,6 +53,9 @@
     <Compile Include="US\Elements\LearnedHandsFormula.cs" />
     <Compile Include="US\NegligenceTort.cs" />
     <Compile Include="US\Defense\ShopkeeperPrivilege.cs" />
+    <Compile Include="US\Terms\CustomsTerm.cs" />
+    <Compile Include="US\Terms\RulesTerm.cs" />
+    <Compile Include="US\Terms\StandardsTerm.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Rand.Core.csproj">

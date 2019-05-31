@@ -713,3 +713,5 @@ objective [legal]: a general rational person's perspective of the facts
 relativity [physics]: facts are subjective to a particular person's perspective
 adumbrate: report or represent in outline
 incommensurable: not able to be judged by the same standard (apples to oranges)
+excrescence: an unattractive or superfluous addition or feature
+gamut: the complete range or scope of something

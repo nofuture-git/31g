@@ -7,6 +7,10 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
     /// <summary>
     /// Critics objections to the utilitarian philosophy of the formula.
     /// </summary>
+    /// <remarks>
+    /// Adjustors and lawyers, on both sides, become experts in the value-of-claims so it
+    /// becomes almost a market and has little to do with careful cost analysis
+    /// </remarks>
     public class CritiqueLearnedHandsFormula : LearnedHandsFormula
     {
         public CritiqueLearnedHandsFormula(Func<IEnumerable<ILegalPerson>, ILegalPerson> getSubjectPerson) : base(
