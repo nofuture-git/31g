@@ -8,6 +8,39 @@ ISBN: 0-201-30980-7
 
 ----
 general terms
+ vulnerability
+  - weakness in an application
+  
+ exploit
+  - the manner by which a vulnerability is used
+  
+ threat
+  -  a possible event of exploitation of vulnerability
+  
+ attack 
+  - the use of vulnerabilities to realize a threat
+
+ countermeasure
+  - the manner of limiting a vulnerability
+  
+ asset
+  - the general idea of what is valuable in an application
+
+ risk
+  - potential loss or damage to an asset
+
+ accepted-risk
+  - ignore risk, typical for cost of countermeasure greater-than risk
+  
+ avoided-risk 
+  - remove the asset entirely
+  
+ transfered-risk
+  - pay another to take on risk 
+  
+ mitigated-risk
+  - what mgmt and dev.s put within application to reduce risk
+ 
  end-to-end
   - from the source all the way to the dest
  
@@ -31,7 +64,7 @@ general terms
  
  computationally secure
   - means, in theory, with enough processing power and storage space
-    as system could eventually be broken 
+    a system could eventually be broken 
   - the eventual may be many times the age of the universe.
 
  unconditionally secure
@@ -101,7 +134,14 @@ authentication
     something-you-know
   - to be easily memorized have a vowel at 
     every three letters
-	
+ 
+ white-list
+  - discrete model of all allowed values mostly by use
+    of type, range, format and length
+    
+ black-list
+  - model of all invalid values, considered weaker
+
  challenge-response authentication protocol
   - authentication system presents some random value
   - claiment must hash this value with a secert-key
