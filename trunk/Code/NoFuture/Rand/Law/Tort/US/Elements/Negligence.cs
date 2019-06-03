@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Tort.US.Terms;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
@@ -22,23 +25,15 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         public Predicate<ILegalPerson> IsConductMorallyWrong { get; set; } = lp => false;
 
         /// <summary>
-        /// individuals in the jury, upon placing themselves in the defendant&apos;s
-        /// shoes along with prudence and carefulness, would have acted as the
-        /// defendant actually did
-        /// </summary>
-        public Predicate<ILegalPerson> IsWithoutReasonablePrudence { get; set; } = lp => false;
-
-        /// <summary>
         /// whether the defendant breached a safety convention commonly understood
         /// in the community to protect the kinds of people like the plaintiff
         /// </summary>
         public CustomsTerm SafetyConvention { get; set; }
 
         /// <summary>
-        /// whether an ordinary, reasonable person would have foreseen
-        /// danger to others under known circumstances
+        /// The connection of a person to the cause in both fact and law
         /// </summary>
-        public Predicate<ILegalPerson> IsForeseeableDangerToOthers { get; set; } = lp => false;
+        public Causation Causation { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -53,9 +48,29 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
                 return true;
             }
 
-            if (IsWithoutReasonablePrudence(subj))
+            if (Causation != null)
             {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(IsWithoutReasonablePrudence)} is true");
+                if (!Causation.IsForeseeable(subj))
+                {
+                    AddReasonEntryRange(Causation.GetReasonEntries());
+                    return false;
+                }
+
+                //it must not be due to any voluntary action on the part of plaintiff.
+                var plaintiff = persons.Plaintiff() as IPlaintiff;
+                if (plaintiff == null)
+                {
+                    var nameTitles = persons.Select(p => Tuple.Create(p.GetLegalPersonTypeName(), p.Name));
+                    AddReasonEntry($"No one is the {nameof(IPlaintiff)} in {nameTitles}");
+                    return false;
+                }
+
+                if (Causation.IsButForCaused(plaintiff))
+                {
+                    AddReasonEntryRange(Causation.GetReasonEntries());
+                    return false;
+                }
+
                 return true;
             }
 
@@ -63,12 +78,6 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
             {
                 AddReasonEntryRange(SafetyConvention.GetReasonEntries());
                 AddReasonEntry($"{title} {subj.Name}, {nameof(SafetyConvention)} {nameof(IsValid)} is false");
-                return true;
-            }
-
-            if (IsForeseeableDangerToOthers(subj))
-            {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(IsForeseeableDangerToOthers)} is true");
                 return true;
             }
 

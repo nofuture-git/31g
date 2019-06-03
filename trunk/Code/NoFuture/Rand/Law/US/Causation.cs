@@ -19,7 +19,7 @@ namespace NoFuture.Rand.Law.US
         /// A reasonable person could have foreseen the outcome
         /// </summary>
         [Aka("legal cause")]
-        public ObjectivePredicate<ILegalPerson> IsForeseeable { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsForeseeable { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -32,7 +32,6 @@ namespace NoFuture.Rand.Law.US
 
             if (!isButFor)
             {
-                
                 AddReasonEntry($"{title}, {defendant.Name}, {nameof(IsButForCaused)} is false");
                 return false;
             }

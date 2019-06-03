@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.US
@@ -10,6 +11,12 @@ namespace NoFuture.Rand.Law.US
     /// </summary>
     public static class ExtensionMethods
     {
+        [EtymologyNote("Latin", "res ipsa loquitur", "thing itself speaks")]
+        public static bool ResIpsaLoquitur(this ILegalPerson person)
+        {
+            return true;
+        }
+
         public static ILegalPerson Defendant(this IEnumerable<ILegalPerson> persons)
         {
             return persons.FirstOrDefault(p => p is IDefendant);

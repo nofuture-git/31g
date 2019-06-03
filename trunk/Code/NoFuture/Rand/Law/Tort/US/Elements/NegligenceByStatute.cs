@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         /// Idea that private parties can sue based on negligence of a
         /// statute - Legislature may intend to directly avoid this.
         /// </summary>
-        public Predicate<ILegalPerson> IsDisobedienceCauseForAction { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsDisobedienceCauseForAction { get; set; } = lp => true;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

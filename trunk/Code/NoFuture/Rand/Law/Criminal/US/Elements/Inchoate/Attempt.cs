@@ -21,6 +21,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
         /// <![CDATA[ "thing itself speaks," meaning its clear that there is not other purpose but criminal ]]>
         /// </summary>
         [Aka("unequivocal test")]
+        [EtymologyNote("Latin", "res ipsa loquitur", "thing itself speaks")]
         public Predicate<ILegalPerson> IsResIpsaLoquitur { get; set; } = lp => false;
 
         /// <summary>
