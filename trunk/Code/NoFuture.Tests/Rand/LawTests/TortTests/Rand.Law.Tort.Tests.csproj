@@ -46,6 +46,7 @@
     <Compile Include="BreunigvAmericanFamilyInsCoTests.cs" />
     <Compile Include="BrunevBelinkoffTests.cs" />
     <Compile Include="ByrnevBoadleTests.cs" />
+    <Compile Include="ColemanvSoccerAssnofColumbiaTests.cs" />
     <Compile Include="CooleyvPublicServiceCoTests.cs" />
     <Compile Include="CourvoisiervRaymondTests.cs" />
     <Compile Include="DavisvFeinsteinTests.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="LevivSWLaElecMembershipCoOpTests.cs" />
     <Compile Include="MartinvHerzogTests.cs" />
     <Compile Include="MohrvWilliamsTests.cs" />
+    <Compile Include="NgaLivYellowCabCompanyofCaliforniaTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PutnamvPloofTests.cs" />
     <Compile Include="SmithvSnellerTests.cs" />
