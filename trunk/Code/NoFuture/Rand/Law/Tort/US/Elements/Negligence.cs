@@ -25,13 +25,6 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         public Predicate<ILegalPerson> IsConductMorallyWrong { get; set; } = lp => false;
 
         /// <summary>
-        /// Where the plaintiff assumed the risk therefore the defendant has no duty otherwise
-        /// </summary>
-        [EtymologyNote("Latin", "volenti non fit injuria", "willing No injury is")]
-        [Aka("primary assumption of risk")]
-        public Predicate<ILegalPerson> IsNoDuty { get; set; } = lp => false;
-
-        /// <summary>
         /// whether the defendant breached a safety convention commonly understood
         /// in the community to protect the kinds of people like the plaintiff
         /// </summary>
@@ -53,12 +46,6 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
             {
                 AddReasonEntry($"{title} {subj.Name}, {nameof(IsConductMorallyWrong)} is true");
                 return true;
-            }
-
-            if (IsNoDuty(subj))
-            {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(IsNoDuty)} is true");
-                return false;
             }
 
             if (Causation != null)

@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// doctrine issue, plaintiff clearly understood risk therefore no negligence
+    /// doctrine issue, plaintiff understood risk, to continue means they contributed 
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -21,10 +21,18 @@ namespace NoFuture.Rand.Law.Tort.Tests
         [Test]
         public void MurphyvSteeplechaseAmusementCo()
         {
-            var test = new Negligence(ExtensionMethods.Tortfeasor)
+            var test = new ContributoryNegligence<AmusementRide>(ExtensionMethods.Tortfeasor)
             {
-                IsNoDuty = lp => lp is SteeplechaseAmusementCo
+                GetContribution = lp =>
+                {
+                    if (lp is SteeplechaseAmusementCo)
+                        return new AmusementRide(1);
+                    if (lp is Murphy)
+                        return new AmusementRide(1);
+                    return new AmusementRide(0);
+                }
             };
+
             var testResult = test.IsValid(new Murphy(), new SteeplechaseAmusementCo());
             Assert.IsFalse(testResult);
 
@@ -40,5 +48,20 @@ namespace NoFuture.Rand.Law.Tort.Tests
     public class SteeplechaseAmusementCo : LegalPerson, ITortfeasor
     {
         public SteeplechaseAmusementCo(): base("Steeplechase Amusement Co.") { }
+    }
+
+    public class AmusementRide : IRankable
+    {
+        private readonly int _rank;
+
+        public AmusementRide(int rank)
+        {
+            _rank = rank;
+        }
+
+        public int GetRank()
+        {
+            return _rank;
+        }
     }
 }

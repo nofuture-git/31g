@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
@@ -8,15 +9,22 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
     /// <summary>
     /// is founded upon the [...] impossibility of assigning all effects to their respective causes
     /// </summary>
-    /// <remarks>
-    /// source: CHARLES FISK BEACH, JR., THE LAW OF CONTRIBUTORY NEGLIGENCE 11-13 (1885).
-    /// </remarks>
+    [EtymologyNote("Latin", "volenti non fit injuria", "willing no injury is")]
     public class ContributoryNegligence<T> : UnoHomine where T : IRankable
     {
         public ContributoryNegligence(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
 
+        /// <summary>
+        /// The value such-and-such person produced which
+        /// is comparable to the value everyone else produced
+        /// </summary>
+        /// <remarks>
+        /// Tautological use of: assuming-risk, negligence,
+        /// fault and responsibility - all get used in language in the similar ways.
+        /// </remarks>
+        [Aka("primary assumption of risk", "secondary assumption of risk", "causal responsibility", "fault")]
         public Func<ILegalPerson, T> GetContribution { get; set; } = lp => default(T);
 
         public override bool IsValid(params ILegalPerson[] persons)
