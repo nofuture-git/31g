@@ -41,6 +41,7 @@
     <Compile Include="US\Elements\Consent.cs" />
     <Compile Include="US\Elements\ContributoryNegligence.cs" />
     <Compile Include="US\Elements\CritiqueLearnedHandsFormula.cs" />
+    <Compile Include="US\Elements\LostChanceApproach.cs" />
     <Compile Include="US\Elements\Negligence.cs" />
     <Compile Include="US\Elements\NegligenceByStatute.cs" />
     <Compile Include="US\Elements\ReasonableCare\OfChildren.cs" />

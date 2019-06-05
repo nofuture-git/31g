@@ -54,6 +54,7 @@
     <Compile Include="DoughertyvSteppTests.cs" />
     <Compile Include="GorrisvScottTests.cs" />
     <Compile Include="GortarezvSmittysSuperValuTests.cs" />
+    <Compile Include="HerskovitsvGroupHealthCoopTests.cs" />
     <Compile Include="IntelCorpvHamidiTests.cs" />
     <Compile Include="KatkovBrineyTests.cs" />
     <Compile Include="LandingsAssociationIncvGwynethWilliamsTests.cs" />
