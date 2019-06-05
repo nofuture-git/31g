@@ -47,6 +47,11 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IPlaintiff);
         }
 
+        public static ILegalPerson ThirdParty(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is IThirdParty);
+        }
+
         public static ILegalPerson Expert<T>(this IEnumerable<ILegalPerson> persons) where T : ILegalConcept
         {
             return persons.FirstOrDefault(p => p is IExpert<T>);
@@ -70,6 +75,24 @@ namespace NoFuture.Rand.Law.US
             return plaintiff;
         }
 
+        public static IThirdParty ThirdParty(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var thirdParty = ppersons.ThirdParty() as IThirdParty;
+            if (thirdParty == null)
+            {
+                var nameTitles = ppersons.Select(p => Tuple.Create(p.GetLegalPersonTypeName(), p.Name));
+                lc.AddReasonEntry($"No one is the {nameof(IThirdParty)} in {nameTitles}");
+                return null;
+            }
+
+            return thirdParty;
+        }
+
         public static string GetLegalPersonTypeName(this ILegalPerson person)
         {
             if (person == null)
@@ -86,6 +109,8 @@ namespace NoFuture.Rand.Law.US
                 return "offeror";
             if (person is IVictim)
                 return "victim";
+            if (person is IThirdParty)
+                return "third party";
             if (person.Equals(Government.Value))
                 return "the government";
             return "legal person";

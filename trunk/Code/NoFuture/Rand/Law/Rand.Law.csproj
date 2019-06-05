@@ -68,6 +68,7 @@
     <Compile Include="US\FactualCause.cs" />
     <Compile Include="US\Persons\IExpert.cs" />
     <Compile Include="US\Persons\IMerchant.cs" />
+    <Compile Include="US\Persons\IThirdParty.cs" />
     <Compile Include="US\Property\ActOfService.cs" />
     <Compile Include="US\ExtensionMethods.cs" />
     <Compile Include="US\Persons\Government.cs" />
