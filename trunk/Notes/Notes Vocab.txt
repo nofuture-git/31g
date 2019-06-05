@@ -715,3 +715,4 @@ adumbrate: report or represent in outline
 incommensurable: not able to be judged by the same standard (apples to oranges)
 excrescence: an unattractive or superfluous addition or feature
 gamut: the complete range or scope of something
+solecism: a grammatical mistake in speech or writing

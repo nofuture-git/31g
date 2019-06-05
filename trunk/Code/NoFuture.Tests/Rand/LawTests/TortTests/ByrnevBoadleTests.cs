@@ -25,7 +25,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
             {
                 Causation = new Causation(ExtensionMethods.Tortfeasor)
                 {
-                    IsButForCaused = lp => lp is Boadle,
+                    FactualCause = new FactualCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsButForCaused = lp => lp is Boadle
+                    },
                     IsForeseeable = lp => lp.ResIpsaLoquitur()
                 }
             };

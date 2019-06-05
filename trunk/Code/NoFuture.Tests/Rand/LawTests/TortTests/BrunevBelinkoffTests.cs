@@ -28,7 +28,16 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 {
                     //Belinkoff contents among his locality, court denies 
                     IsPracticedByManyAmongGroup = false,
-                    IsConformedTo = lp => lp is Belinkoff
+                    IsConformedTo = lp => lp is Belinkoff,
+                },
+                Causation = new Causation(ExtensionMethods.Tortfeasor)
+                {
+                    IsForeseeable = lp => true,
+                    FactualCause = new FactualCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsButForCaused = lp => lp is Belinkoff
+                    }
+
                 }
             };
 

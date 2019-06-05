@@ -69,6 +69,7 @@
     <Compile Include="TrimarcovKleinTests.cs" />
     <Compile Include="UhrvEastGreenbushCentralSchoolDistrictTests.cs" />
     <Compile Include="VincentvLakeErieTranspCoTests.cs" />
+    <Compile Include="ZuchowiczvUnitedStatesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

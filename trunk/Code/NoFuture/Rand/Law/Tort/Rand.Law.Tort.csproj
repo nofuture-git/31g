@@ -48,6 +48,7 @@
     <Compile Include="US\Elements\ReasonableCare\OfMentalCapacity.cs" />
     <Compile Include="US\Elements\ReasonableCare\OfPhysicalDeficiency.cs" />
     <Compile Include="US\Elements\ReasonableCare\ReasonableCareBase.cs" />
+    <Compile Include="US\Elements\StrongCasualConnection.cs" />
     <Compile Include="US\Elements\TortTrespass.cs" />
     <Compile Include="US\Elements\TrespassToChattels.cs" />
     <Compile Include="US\Elements\TrespassToLand.cs" />

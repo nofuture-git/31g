@@ -27,6 +27,14 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 SafetyConvention = new ReplaceWithShatterproofGlass()
                 {
                     IsConformedTo = lp => !(lp is Klein)
+                },
+                Causation = new Causation(ExtensionMethods.Tortfeasor)
+                {
+                    FactualCause = new FactualCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsButForCaused = lp => lp is Klein
+                    },
+                    IsForeseeable = lp => true
                 }
             };
 

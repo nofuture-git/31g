@@ -24,7 +24,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
             {
                 Causation = new Causation(ExtensionMethods.Tortfeasor)
                 {
-                    IsButForCaused = lp => lp is Mohr,
+                    FactualCause = new FactualCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsButForCaused = lp => lp is Mohr
+                    },
                     IsForeseeable = lp => true
                 },
                 //the consent was for the other ear 

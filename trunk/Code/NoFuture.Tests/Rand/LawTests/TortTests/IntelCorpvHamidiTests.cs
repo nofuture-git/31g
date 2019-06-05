@@ -36,7 +36,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 },
                 Causation =  new Causation(ExtensionMethods.Tortfeasor)
                 {
-                    IsButForCaused = lp => lp is Hamidi,
+                    FactualCause = new FactualCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsButForCaused = lp => lp is Hamidi
+                    },
                     IsForeseeable = lp => lp is Hamidi
                 },
                 PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)

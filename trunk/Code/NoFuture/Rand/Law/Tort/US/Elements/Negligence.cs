@@ -50,26 +50,23 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
 
             if (Causation != null)
             {
-                if (!Causation.IsForeseeable(subj))
+                Causation.GetSubjectPerson = GetSubjectPerson;
+
+                if (!Causation.IsValid(persons))
                 {
-                    AddReasonEntry($"{title} {subj.Name}, {nameof(Causation)} " +
-                                   $"{nameof(Causation.IsForeseeable)} is false");
+                    AddReasonEntryRange(Causation.GetReasonEntries());
                     return false;
                 }
 
                 //it must not be due to any voluntary action on the part of plaintiff.
-                var plaintiff = persons.Plaintiff() as IPlaintiff;
+                var plaintiff = this.Plaintiff(persons);
                 if (plaintiff == null)
-                {
-                    var nameTitles = persons.Select(p => Tuple.Create(p.GetLegalPersonTypeName(), p.Name));
-                    AddReasonEntry($"No one is the {nameof(IPlaintiff)} in {nameTitles}");
                     return false;
-                }
 
-                if (Causation.IsButForCaused(plaintiff))
+                if (Causation.IsValid(plaintiff))
                 {
                     AddReasonEntry($"{plaintiff.GetLegalPersonTypeName()} {plaintiff.Name}, " +
-                                   $"{nameof(Causation)} {nameof(Causation.IsButForCaused)} is true");
+                                   $"{nameof(Causation)} {nameof(IsValid)} is true");
                     return false;
                 }
 

@@ -61,7 +61,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 IsIntangibleEntry = lp => lp is Stepp,
                 Causation = new Causation(ExtensionMethods.Tortfeasor)
                 {
-                    IsButForCaused = lp => lp is Stepp,
+                    FactualCause = new FactualCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsButForCaused = lp => lp is Stepp
+                    },
                     IsForeseeable = lp => lp is Stepp
                 },
             };

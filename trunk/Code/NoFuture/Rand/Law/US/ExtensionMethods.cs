@@ -52,6 +52,24 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IExpert<T>);
         }
 
+        public static IPlaintiff Plaintiff(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var plaintiff = ppersons.Plaintiff() as IPlaintiff;
+            if (plaintiff == null)
+            {
+                var nameTitles = ppersons.Select(p => Tuple.Create(p.GetLegalPersonTypeName(), p.Name));
+                lc.AddReasonEntry($"No one is the {nameof(IPlaintiff)} in {nameTitles}");
+                return null;
+            }
+
+            return plaintiff;
+        }
+
         public static string GetLegalPersonTypeName(this ILegalPerson person)
         {
             if (person == null)

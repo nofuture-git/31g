@@ -12,8 +12,8 @@ namespace NoFuture.Rand.Law.US
         /// <summary>
         /// The direct antecedent which caused the harm\damage - the harm\damage which exist only because of it.
         /// </summary>
-        [Aka("factual cause")]
-        public Predicate<ILegalPerson> IsButForCaused { get; set; } = lp => false;
+        [Aka("loss causation", "causal connection")]
+        public IFactualCause FactualCause { get; set; }
 
         /// <summary>
         /// A reasonable person could have foreseen the outcome
@@ -27,18 +27,23 @@ namespace NoFuture.Rand.Law.US
             if (defendant == null)
                 return false;
             var title = defendant.GetLegalPersonTypeName();
-            var isButFor = IsButForCaused(defendant);
             var isForesee = IsForeseeable(defendant);
 
-            if (!isButFor)
+            if (FactualCause == null)
             {
-                AddReasonEntry($"{title}, {defendant.Name}, {nameof(IsButForCaused)} is false");
+                AddReasonEntry($"{title}, {defendant.Name}, {nameof(FactualCause)} is unassigned");
                 return false;
             }
-
+            
             if (!isForesee)
             {
                 AddReasonEntry($"{title}, {defendant.Name}, {nameof(IsForeseeable)} is false");
+                return false;
+            }
+
+            if (!FactualCause.IsValid(persons))
+            {
+                AddReasonEntryRange(FactualCause.GetReasonEntries());
                 return false;
             }
 

@@ -45,6 +45,7 @@
     <Compile Include="IBargain.cs" />
     <Compile Include="IBattery.cs" />
     <Compile Include="IBipartite.cs" />
+    <Compile Include="IFactualCause.cs" />
     <Compile Include="IConsent.cs" />
     <Compile Include="IDefense.cs" />
     <Compile Include="IDominionOfForce.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="US\Act.cs" />
     <Compile Include="US\Damage.cs" />
     <Compile Include="US\Duty.cs" />
+    <Compile Include="US\FactualCause.cs" />
     <Compile Include="US\Persons\IExpert.cs" />
     <Compile Include="US\Persons\IMerchant.cs" />
     <Compile Include="US\Property\ActOfService.cs" />
