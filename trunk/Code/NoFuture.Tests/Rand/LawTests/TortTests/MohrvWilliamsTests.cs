@@ -28,7 +28,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
                     {
                         IsButForCaused = lp => lp is Mohr
                     },
-                    IsForeseeable = lp => true
+                    ProximateCause = new ProximateCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsForeseeable = lp => true
+                    }
                 },
                 //the consent was for the other ear 
                 Consent = new Consent(ExtensionMethods.Tortfeasor)

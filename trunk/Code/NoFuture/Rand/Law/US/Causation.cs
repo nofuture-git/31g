@@ -15,11 +15,8 @@ namespace NoFuture.Rand.Law.US
         [Aka("loss causation", "causal connection")]
         public IFactualCause FactualCause { get; set; }
 
-        /// <summary>
-        /// A reasonable person could have foreseen the outcome
-        /// </summary>
         [Aka("legal cause")]
-        public Predicate<ILegalPerson> IsForeseeable { get; set; } = lp => false;
+        public IProximateCause ProximateCause { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -27,17 +24,22 @@ namespace NoFuture.Rand.Law.US
             if (defendant == null)
                 return false;
             var title = defendant.GetLegalPersonTypeName();
-            var isForesee = IsForeseeable(defendant);
 
             if (FactualCause == null)
             {
                 AddReasonEntry($"{title}, {defendant.Name}, {nameof(FactualCause)} is unassigned");
                 return false;
             }
-            
-            if (!isForesee)
+
+            if (ProximateCause == null)
             {
-                AddReasonEntry($"{title}, {defendant.Name}, {nameof(IsForeseeable)} is false");
+                AddReasonEntry($"{title}, {defendant.Name}, {nameof(ProximateCause)} is unassigned");
+                return false;
+            }
+
+            if (!ProximateCause.IsValid(persons))
+            {
+                AddReasonEntryRange(FactualCause.GetReasonEntries());
                 return false;
             }
 

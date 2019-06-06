@@ -30,7 +30,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
                         IsIncreasedChancesOfEffect = lp => lp is UnitedStates,
                         IsEffectIndeedPresent = lp => lp is Zuchowicz
                     },
-                    IsForeseeable = lp => true
+                    ProximateCause = new ProximateCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsForeseeable = lp => true
+                    }
                 }
             };
 

@@ -32,7 +32,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 },
                 Causation = new Causation(ExtensionMethods.Tortfeasor)
                 {
-                    IsForeseeable = lp => true,
+                    ProximateCause = new ProximateCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsForeseeable = lp => true,
+                    },
                     FactualCause = new FactualCause(ExtensionMethods.Tortfeasor)
                     {
                         IsButForCaused = lp => lp is Belinkoff

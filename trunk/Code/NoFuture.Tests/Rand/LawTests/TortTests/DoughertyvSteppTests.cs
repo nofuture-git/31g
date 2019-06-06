@@ -65,7 +65,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
                     {
                         IsButForCaused = lp => lp is Stepp
                     },
-                    IsForeseeable = lp => lp is Stepp
+                    ProximateCause =  new ProximateCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsForeseeable = lp => lp is Stepp
+                    }
                 },
             };
 

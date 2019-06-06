@@ -29,7 +29,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
                     {
                         IsButForCaused = lp => lp is Boadle
                     },
-                    IsForeseeable = lp => lp.ResIpsaLoquitur()
+                    ProximateCause = new ProximateCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsForeseeable = lp => lp.ResIpsaLoquitur()
+                    }
                 }
             };
             var testResult = test.IsValid(new Byrne(), new Boadle());

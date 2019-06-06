@@ -40,7 +40,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
                     {
                         IsButForCaused = lp => lp is Hamidi
                     },
-                    IsForeseeable = lp => lp is Hamidi
+                    ProximateCause = new ProximateCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsForeseeable = lp => lp is Hamidi
+                    }
                 },
                 PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)
                 {

@@ -51,6 +51,7 @@
     <Compile Include="IDominionOfForce.cs" />
     <Compile Include="IForce.cs" />
     <Compile Include="IIntent.cs" />
+    <Compile Include="IProximateCause.cs" />
     <Compile Include="ILegalProperty.cs" />
     <Compile Include="IRankable.cs" />
     <Compile Include="LegalProperty.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="US\Persons\IVictim.cs" />
     <Compile Include="US\Property\PersonalProperty.cs" />
     <Compile Include="US\Property\RealProperty.cs" />
+    <Compile Include="US\ProximateCause.cs" />
     <Compile Include="US\UnoHomine.cs" />
     <Compile Include="US\CaseReading\Citation.cs" />
     <Compile Include="ILegalConcept.cs" />
