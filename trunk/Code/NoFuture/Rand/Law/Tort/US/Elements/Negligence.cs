@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Linq;
-using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Tort.US.Terms;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
     /// <summary>
-    /// liabilities in tort arise from failure to comply with fixed and
-    /// uniform standards of external conduct, which every man is presumed
-    /// and required to know
-    /// [OLIVER WENDELL HOLMES, JR., THE COMMON LAW 111, 123-4 (1881)]
+    /// involves the invasion of a legally protected interest, the violation of a right
     /// </summary>
     public class Negligence : UnoHomine
     {
@@ -31,7 +25,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         public CustomsTerm SafetyConvention { get; set; }
 
         /// <summary>
-        /// The connection of a person to the cause in both fact and law
+        /// The connection of a person to the cause in both fact and law.
         /// </summary>
         public Causation Causation { get; set; }
 

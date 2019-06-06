@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US
 {
@@ -9,6 +10,7 @@ namespace NoFuture.Rand.Law.US
         {
         }
 
+        [EtymologyNote("latin", "sine qua non", "without which nothing")]
         public Predicate<ILegalPerson> IsButForCaused { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
