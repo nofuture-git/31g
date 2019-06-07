@@ -31,10 +31,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testResult = testCrime.IsValid(new MarioEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new Infancy
-            {
-                IsUnderage = lp => lp is MarioEg
-            };
+            var testSubject = new Infancy();
 
             testResult = testSubject.IsValid(new MarioEg());
             Console.WriteLine(testSubject.ToString());
@@ -42,7 +39,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
         }
     }
 
-    public class MarioEg : LegalPerson, IDefendant
+    public class MarioEg : LegalPerson, IDefendant, IChild
     {
         public MarioEg() : base("MARIO CANDY") { }
     }

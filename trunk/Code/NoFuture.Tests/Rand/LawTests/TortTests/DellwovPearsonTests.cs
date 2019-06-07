@@ -24,7 +24,6 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var test = new OfChildren(ExtensionMethods.Tortfeasor)
             {
-                IsUnderage = lp => lp is Pearson,
                 GetActionOfPerson = lp => lp is Pearson ? new OperateMotorBoat() : null,
                 IsDangerousAdultActivity = act => act is OperateMotorBoat,
                 IsExercisedAdultCare = lp => !(lp is Pearson)
@@ -52,7 +51,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
         public Dellwo(): base("Jeanette E. Dellwo") { }
     }
 
-    public class Pearson : LegalPerson, ITortfeasor
+    public class Pearson : LegalPerson, ITortfeasor, IChild
     {
         public Pearson(): base("Pearson") { }
     }

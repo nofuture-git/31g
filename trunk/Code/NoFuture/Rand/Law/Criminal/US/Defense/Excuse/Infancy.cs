@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
@@ -12,20 +13,17 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 
         public Infancy(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
 
-        /// <summary> Contracts of minors are voidable </summary>
-        public Predicate<ILegalPerson> IsUnderage { get; set; } = lp => false;
-
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var legalPerson = persons.Defendant();
             if (legalPerson == null)
                 return false;
-
-            var isAdult = !IsUnderage(legalPerson);
+            Predicate<ILegalPerson> isUnderage = lp => lp is IChild;
+            var isAdult = !isUnderage(legalPerson);
 
             if (isAdult)
             {
-                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, {nameof(IsUnderage)} is false");
+                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, is {nameof(IChild)} is false");
                 return false;
             }
 

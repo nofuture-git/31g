@@ -68,6 +68,7 @@
     <Compile Include="US\Damage.cs" />
     <Compile Include="US\Duty.cs" />
     <Compile Include="US\FactualCause.cs" />
+    <Compile Include="US\Persons\IChild.cs" />
     <Compile Include="US\Persons\IExpert.cs" />
     <Compile Include="US\Persons\IInvitee.cs" />
     <Compile Include="US\Persons\ILicensee.cs" />

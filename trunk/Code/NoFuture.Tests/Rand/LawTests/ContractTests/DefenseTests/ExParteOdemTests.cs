@@ -40,7 +40,6 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
             };
             var testSubject = new ByMinor<Promise>(testContract)
             {
-                IsUnderage = lp => lp is IrisOdem,
                 IsDeclareVoid = lp => lp is IrisOdem
             };
 
@@ -78,7 +77,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
         public static object AttorneyFeesValue = new object();
     }
 
-    public class IrisOdem : LegalPerson, IOfferee
+    public class IrisOdem : LegalPerson, IOfferee, IChild
     {
         public IrisOdem(): base("Iris Odem") { }
     }

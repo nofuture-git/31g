@@ -113,6 +113,8 @@ namespace NoFuture.Rand.Law.US
                 return "offeree";
             if (person is IOfferor)
                 return "offeror";
+            if (person is IChild)
+                return "child";
             if (person is IVictim)
                 return "victim";
             if (person is IInvitee)

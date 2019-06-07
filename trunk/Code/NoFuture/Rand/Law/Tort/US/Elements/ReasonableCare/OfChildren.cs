@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
 {
@@ -11,8 +12,6 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
         public OfChildren(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
-
-        public Predicate<ILegalPerson> IsUnderage { get; set; } = lp => false;
 
         /// <summary>
         /// child not being held to the same standard of conduct as an adult
@@ -35,10 +34,10 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
             if (subj == null)
                 return false;
             var title = subj.GetLegalPersonTypeName();
-
-            if (!IsUnderage(subj))
+            Predicate<ILegalPerson> isUnderage = lp => lp is IChild;
+            if (!isUnderage(subj))
             {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(IsUnderage)} is false");
+                AddReasonEntry($"{title} {subj.Name}, is {nameof(IChild)} is false");
                 return false;
             }
 
