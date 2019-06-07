@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
     /// is founded upon the [...] impossibility of assigning all effects to their respective causes
     /// </summary>
     [EtymologyNote("Latin", "volenti non fit injuria", "willing no injury is")]
-    public class ContributoryNegligence<T> : UnoHomine where T : IRankable
+    public class ContributoryNegligence<T> : UnoHomine, INegligence where T : IRankable
     {
         public ContributoryNegligence(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

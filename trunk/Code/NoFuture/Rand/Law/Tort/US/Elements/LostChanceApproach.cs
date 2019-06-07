@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US;
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
     [Aka("loss-of-chance")]
-    public class LostChanceApproach : UnoHomine
+    public class LostChanceApproach : UnoHomine, INegligence
     {
         public LostChanceApproach(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

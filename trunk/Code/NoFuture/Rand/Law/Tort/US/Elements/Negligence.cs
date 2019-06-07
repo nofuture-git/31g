@@ -4,10 +4,8 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
-    /// <summary>
-    /// involves the invasion of a legally protected interest, the violation of a right
-    /// </summary>
-    public class Negligence : UnoHomine
+    /// <inheritdoc cref="INegligence"/>
+    public class Negligence : UnoHomine, INegligence
     {
         public Negligence(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

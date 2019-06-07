@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
-    public class ConcertOfAction : UnoHomine
+    public class ConcertOfAction : UnoHomine, INegligence
     {
         public ConcertOfAction(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

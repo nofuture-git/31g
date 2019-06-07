@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
     /// <summary>
     /// Negligence by the explicit standard laid down by the Legislature
     /// </summary>
-    public class NegligenceByStatute : UnoHomine
+    public class NegligenceByStatute : UnoHomine, INegligence
     {
         public NegligenceByStatute(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
