@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndrewsvUnitedAirlinesTests.cs" />
+    <Compile Include="BankervMcLaughlinTests.cs" />
     <Compile Include="BirdvHolbrookTests.cs" />
     <Compile Include="BreunigvAmericanFamilyInsCoTests.cs" />
     <Compile Include="BrunevBelinkoffTests.cs" />

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 using NoFuture.Rand.Law.US.Property;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
@@ -12,6 +14,8 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
         public OfLandOwner(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
+
+        public Predicate<ILegalProperty> IsAttractiveToChildren { get; set; } = p => false;
 
         /// <summary>
         /// Determines if all whose visitors among <see cref="persons"/> are owed a duty for standard of care 
@@ -30,7 +34,20 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
 
             var areGivenPermission = !WithoutConsent(persons);
 
-            return areGivenPermission;
+            if (areGivenPermission)
+                return true;
+
+            var allChildren = persons.Where(v => !v.IsSamePerson(SubjectProperty.EntitledTo)).All(p => p is IChild);
+
+            if (allChildren && IsAttractiveToChildren(SubjectProperty))
+            {
+                AddReasonEntry($"{title} {subj.Name} property '{SubjectProperty.Name}', " +
+                               $"{nameof(IsAttractiveToChildren)} and all persons are " +
+                               $"{nameof(IChild)} interface type");
+                return true;
+            }
+
+            return false;
         }
     }
 }
