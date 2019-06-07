@@ -9,14 +9,13 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
     /// <summary>
     /// <![CDATA[ Section 339 of the Restatement (Second) of Torts (1965). ]]>
     /// </summary>
-    public class AttractiveNuisanceTerm : TermCategory, ILegalConcept
+    public class AttractiveNuisanceTerm : TermLegalConcept
     {
         protected override string CategoryName => "attractive nuisance";
-        public Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
         public ILegalProperty SubjectProperty { get; set; }
-        public AttractiveNuisanceTerm(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+
+        public AttractiveNuisanceTerm(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson;
         }
 
         public Predicate<ILegalProperty> IsLocatedWhereChildrenLikelyAre { get; set; } = lp => false;
@@ -31,7 +30,7 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
 
         public Predicate<ILegalPerson> IsOwnerFailMitigateDanger { get; set; } = lp => true;
 
-        public bool IsValid(params ILegalPerson[] persons)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             if (SubjectProperty?.EntitledTo == null)
             {
@@ -96,36 +95,5 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
 
             return true;
         }
-
-        #region IRationale IS-A HAS-A
-
-        private readonly IRationale _rationale = new Rationale();
-        public IEnumerable<string> GetReasonEntries()
-        {
-            return _rationale.GetReasonEntries();
-        }
-
-        public void AddReasonEntry(string msg)
-        {
-            _rationale.AddReasonEntry(msg);
-        }
-
-        public void AddReasonEntryRange(IEnumerable<string> msgs)
-        {
-            _rationale.AddReasonEntryRange(msgs);
-        }
-
-        public void ClearReasons()
-        {
-            _rationale.ClearReasons();
-        }
-        public bool IsEnforceableInCourt { get; } = true;
-        public bool EquivalentTo(object obj)
-        {
-            return Equals(obj);
-        }
-
-        #endregion
-
     }
 }

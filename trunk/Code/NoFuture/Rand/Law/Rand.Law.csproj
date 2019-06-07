@@ -88,6 +88,7 @@
     <Compile Include="US\Property\PersonalProperty.cs" />
     <Compile Include="US\Property\RealProperty.cs" />
     <Compile Include="US\ProximateCause.cs" />
+    <Compile Include="US\TermLegalConcept.cs" />
     <Compile Include="US\UnoHomine.cs" />
     <Compile Include="US\CaseReading\Citation.cs" />
     <Compile Include="ILegalConcept.cs" />

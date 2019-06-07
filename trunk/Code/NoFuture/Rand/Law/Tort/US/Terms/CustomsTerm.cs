@@ -9,20 +9,15 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
     /// a manner or procedure which reflects the judgment, experience and conduct of many
     /// </summary>
     [Aka("convention","mores")]
-    public class CustomsTerm : RulesTerm, ILegalConcept
+    public class CustomsTerm : TermLegalConcept
     {
-        private readonly IRationale _rationale = new Rationale();
-
-        public CustomsTerm(Func<ILegalPerson[], ILegalPerson> getSubjectPerson)
+        public CustomsTerm(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
-            GetSubjectPerson = getSubjectPerson;
         }
 
-        public CustomsTerm() : this(ExtensionMethods.Tortfeasor) {  }
+        public CustomsTerm():this(ExtensionMethods.Tortfeasor) { }
 
         protected override string CategoryName => "Customs";
-
-        public Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
 
         /// <summary>
         /// Wise &amp; Co. v. Wecoline Products, 36 N.E.2d 623 (N.Y. 1941)
@@ -89,7 +84,7 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
             return result;
         }
 
-        public virtual bool IsValid(params ILegalPerson[] persons)
+        public override bool IsValid(params ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
             if (subj == null)
@@ -111,34 +106,9 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
             return true;
         }
 
-        #region IRationale IS-A HAS-A
-
-        public IEnumerable<string> GetReasonEntries()
+        public override int GetRank()
         {
-            return _rationale.GetReasonEntries();
+            return new RulesTerm().GetRank();
         }
-
-        public void AddReasonEntry(string msg)
-        {
-            _rationale.AddReasonEntry(msg);
-        }
-
-        public void AddReasonEntryRange(IEnumerable<string> msgs)
-        {
-            _rationale.AddReasonEntryRange(msgs);
-        }
-
-        public void ClearReasons()
-        {
-            _rationale.ClearReasons();
-        }
-
-        public bool IsEnforceableInCourt { get; } = true;
-        public bool EquivalentTo(object obj)
-        {
-            return Equals(obj);
-        }
-
-        #endregion
     }
 }
