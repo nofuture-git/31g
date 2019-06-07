@@ -36,17 +36,23 @@ namespace NoFuture.Rand.Law.US.Property
                                                     || !persons.Any())
                 return true;
 
+            //if all the people are licensed or invited then consent is implied by the use of type (label)
+            if (persons.Where(v => !v.IsSamePerson(SubjectProperty.EntitledTo)).All(p => p is ILicensee))
+            {
+                AddReasonEntry($"all non-owner persons implement {nameof(ILicensee)} interface type");
+                return false;
+            }
+
             //did the caller pass in any IVictim types
             var victims = persons.Victims().ToList();
             if (!victims.Any())
             {
-                AddReasonEntry("to test consent at least " +
-                               $"one person must extent {nameof(IVictim)} interface type");
+                AddReasonEntry($"no one is of {nameof(IVictim)} interface type");
                 return true;
             }
 
             //is any of our victims also the owner of the property
-            var ownerVictims = victims.Where(v => VocaBase.Equals(v, SubjectProperty.EntitledTo)).ToList();
+            var ownerVictims = victims.Where(v => v.IsSamePerson(SubjectProperty.EntitledTo)).ToList();
             if (!ownerVictims.Any())
             {
                 AddReasonEntry($"of {nameof(IVictim)}s named " +
@@ -72,7 +78,7 @@ namespace NoFuture.Rand.Law.US.Property
             return true;
         }
 
-        protected virtual bool PropertyOwnerIsDefendant(ILegalPerson[] persons)
+        protected virtual bool PropertyOwnerIsSubjectPerson(ILegalPerson[] persons)
         {
             var defendant = GetSubjectPerson(persons);
             if (defendant == null)
@@ -80,8 +86,7 @@ namespace NoFuture.Rand.Law.US.Property
             if (SubjectProperty?.EntitledTo == null)
                 return false;
             var personTitle = defendant.GetLegalPersonTypeName();
-            var isOwner = VocaBase.Equals(defendant, SubjectProperty.EntitledTo) ||
-                   ReferenceEquals(defendant, SubjectProperty.EntitledTo);
+            var isOwner = defendant.IsSamePerson(SubjectProperty.EntitledTo);
             if(isOwner)
                 AddReasonEntry(
                     $"{personTitle}, {defendant.Name}, is owner " +
@@ -90,5 +95,6 @@ namespace NoFuture.Rand.Law.US.Property
 
             return isOwner;
         }
+
     }
 }

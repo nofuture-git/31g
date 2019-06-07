@@ -13,7 +13,6 @@ namespace NoFuture.Rand.Law.US
 
         public Predicate<ILegalPerson> IsVoluntary { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsAction { get; set; } = lp => false;
-        public virtual Duty Duty { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -29,21 +28,6 @@ namespace NoFuture.Rand.Law.US
             }
 
             var isAction = IsAction(defendant);
-
-            //test for lack-of-action first, if its expected
-            if (Duty != null)
-            {
-                var isDuty = Duty.IsValid(persons);
-
-                if (isDuty && !isAction)
-                {
-                    AddReasonEntry($"the {title} {defendant.Name}, {nameof(IsAction)} is false");
-                    AddReasonEntryRange(Duty.GetReasonEntries());
-                    return false;
-                }
-
-                return true;
-            }
 
             if (!isAction)
             {

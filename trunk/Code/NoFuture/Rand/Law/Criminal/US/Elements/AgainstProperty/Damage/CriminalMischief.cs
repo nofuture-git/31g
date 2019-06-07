@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage
             if (!WithoutConsent(persons))
                 return false;
 
-            if (PropertyOwnerIsDefendant(persons))
+            if (PropertyOwnerIsSubjectPerson(persons))
                 return false;
 
             if (!IsCauseOfDamage(defendant))

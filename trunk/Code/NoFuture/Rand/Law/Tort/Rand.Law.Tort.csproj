@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INegligence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\Elements\ComparativeNegligence.cs" />
     <Compile Include="US\Defense\NecessityPrivilege.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="US\Elements\NegligenceByStatute.cs" />
     <Compile Include="US\Elements\ReasonableCare\OfChildren.cs" />
     <Compile Include="US\Elements\ReasonableCare\OfExpert.cs" />
+    <Compile Include="US\Elements\ReasonableCare\OfLandOwner.cs" />
     <Compile Include="US\Elements\ReasonableCare\OfMentalCapacity.cs" />
     <Compile Include="US\Elements\ReasonableCare\OfPhysicalDeficiency.cs" />
     <Compile Include="US\Elements\ReasonableCare\ReasonableCareBase.cs" />

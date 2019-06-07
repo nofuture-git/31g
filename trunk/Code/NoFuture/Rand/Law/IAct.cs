@@ -1,8 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law
 {
+    /// <summary>
+    /// a duty in acting to behave reasonably in the actions one does undertake
+    /// </summary>
     public interface IAct : ILegalConcept
     {
         /// <summary>
@@ -15,11 +17,5 @@ namespace NoFuture.Rand.Law
         /// (thoughts, plans, labels, status are not actions).
         /// </summary>
         Predicate<ILegalPerson> IsAction { get; set; }
-
-        /// <summary>
-        /// There must be some outward act or failure to act 
-        /// (thoughts, plans, labels, status are not actions).
-        /// </summary>
-        Duty Duty { get; set; }
     }
 }

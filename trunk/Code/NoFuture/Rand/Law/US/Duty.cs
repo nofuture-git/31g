@@ -2,10 +2,8 @@
 
 namespace NoFuture.Rand.Law.US
 {
-    /// <summary>
-    /// Something a person was legally required to do
-    /// </summary>
-    public class Duty : UnoHomine
+
+    public class Duty : UnoHomine, IDuty
     {
         public Duty(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

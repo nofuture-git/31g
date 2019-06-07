@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage
                 return false;
             }
 
-            if (PropertyOwnerIsDefendant(persons) && IsBurned(SubjectProperty))
+            if (PropertyOwnerIsSubjectPerson(persons) && IsBurned(SubjectProperty))
                 return false;
 
             return true;

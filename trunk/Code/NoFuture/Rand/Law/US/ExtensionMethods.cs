@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Persons;
 
@@ -15,6 +16,11 @@ namespace NoFuture.Rand.Law.US
         public static bool ResIpsaLoquitur(this ILegalPerson person)
         {
             return true;
+        }
+
+        public static bool IsSamePerson(this ILegalPerson p0, ILegalPerson p1)
+        {
+            return VocaBase.Equals(p0, p1) || ReferenceEquals(p0, p1);
         }
 
         public static ILegalPerson Defendant(this IEnumerable<ILegalPerson> persons)
@@ -109,6 +115,10 @@ namespace NoFuture.Rand.Law.US
                 return "offeror";
             if (person is IVictim)
                 return "victim";
+            if (person is IInvitee)
+                return "invitee";
+            if (person is ILicensee)
+                return "licensee";
             if (person is IThirdParty)
                 return "third party";
             if (person.Equals(Government.Value))
