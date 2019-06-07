@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Tort.US.Terms;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NoFuture.Rand.Law.US.Property;
@@ -16,6 +17,8 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
         }
 
         public Predicate<ILegalProperty> IsAttractiveToChildren { get; set; } = p => false;
+
+        public AttractiveNuisanceTerm AttractiveNuisance { get; set; }
 
         /// <summary>
         /// Determines if all whose visitors among <see cref="persons"/> are owed a duty for standard of care 
@@ -34,16 +37,15 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
 
             var areGivenPermission = !WithoutConsent(persons);
 
-            if (areGivenPermission)
+            if (areGivenPermission || AttractiveNuisance == null)
                 return true;
 
-            var allChildren = persons.Where(v => !v.IsSamePerson(SubjectProperty.EntitledTo)).All(p => p is IChild);
+            AttractiveNuisance.GetSubjectPerson = GetSubjectPerson;
+            AttractiveNuisance.SubjectProperty = SubjectProperty;
 
-            if (allChildren && IsAttractiveToChildren(SubjectProperty))
+            if (AttractiveNuisance.IsValid(persons))
             {
-                AddReasonEntry($"{title} {subj.Name} property '{SubjectProperty.Name}', " +
-                               $"{nameof(IsAttractiveToChildren)} and all persons are " +
-                               $"{nameof(IChild)} interface type");
+                AddReasonEntryRange(AttractiveNuisance.GetReasonEntries());
                 return true;
             }
 

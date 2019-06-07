@@ -3,7 +3,7 @@ using NUnit.Framework;
 using NoFuture.Rand.Law.US.Persons;
 using NoFuture.Rand.Law.Tort.US.Elements;
 using NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare;
-using NoFuture.Rand.Law.US.Property;
+using NoFuture.Rand.Law.Tort.US.Terms;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.Tests
@@ -36,7 +36,14 @@ namespace NoFuture.Rand.Law.Tort.Tests
                     IsCapableThereof = lp => true,
                     IsApprovalExpressed = lp => false
                 },
-                IsAttractiveToChildren = p => p.Equals(property)
+                AttractiveNuisance = new AttractiveNuisanceTerm(ExtensionMethods.Tortfeasor)
+                {
+                    IsLocatedWhereChildrenLikelyAre = p => p.Equals(property),
+                    IsArtificialCondition = p => p.Equals(property),
+                    IsDangerOutweighUse = p => p.Equals(property),
+                    IsDangerToChildren = p => p.Equals(property),
+                    IsOwnerFailMitigateDanger = lp => true,
+                }
             };
 
             var testResult = test.IsValid(new Banker(), new McLaughlin());
