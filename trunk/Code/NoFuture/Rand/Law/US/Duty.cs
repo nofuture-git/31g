@@ -2,7 +2,9 @@
 
 namespace NoFuture.Rand.Law.US
 {
-
+    /// <summary>
+    /// The risk reasonably to be perceived defines the duty to be obeyed
+    /// </summary>
     public class Duty : UnoHomine, IDuty
     {
         public Duty(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
