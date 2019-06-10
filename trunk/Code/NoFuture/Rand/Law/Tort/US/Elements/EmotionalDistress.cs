@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
     /// <summary>
-    /// Emotional trauma from being a witness to violence against loved ones
+    /// Emotional trauma from being a witness to violence against loved ones.
+    /// Not considered a matter of fear and stress in the mind,
+    /// but the immediate visceral horrors presented from the senses whose
+    /// mind-shattering affect is feared by all.
     /// </summary>
     /// <remarks>
     /// Dillon v. Legg, 441 P.2d 912 (Cal. 1968)
     /// </remarks>
+    [Aka("bystander proximity test")]
     public class EmotionalDistress : UnoHomine, INegligence, IBattery
     {
         public EmotionalDistress(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
