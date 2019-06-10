@@ -184,12 +184,12 @@ namespace NoFuture.Util.Core
 
         /// <summary>
         /// Get a list of action, string distance measurement, destination object path in dot-notation, and additional info for logging
-        /// for the properties on <see cref="toObj"/> which have the shortest distanct from the <see cref="fromPi"/> by name.  
+        /// for the properties on <see cref="toObj"/> which have the shortest distant from the <see cref="fromPi"/> by name.  
         /// The return value is a list incase of a tie in which the calling assembly must decide which ones to execute.
         /// </summary>
         /// <param name="fromPi">The property whose value is to be copied over somewhere onto <see cref="toObj"/></param>
         /// <param name="fromObj">The source object of <see cref="fromPi"/> which is able to resolve it to an actual value.</param>
-        /// <param name="toPis">The list of possiable canidate properties on <see cref="toObj"/>.</param>
+        /// <param name="toPis">The list of possible candidate properties on <see cref="toObj"/>.</param>
         /// <param name="toObj">The destination object which is receiving property assignment.</param>
         /// <param name="namePrefix">Optional, used internally with <see cref="minLen"/></param>
         /// <param name="minLen">
@@ -450,7 +450,7 @@ namespace NoFuture.Util.Core
         /// <param name="pi"></param>
         /// <param name="newInstance"></param>
         /// <param name="takeCtorWithHighestNumOfArgs">
-        /// When a type has multiple ctor&apos;s - this switch controls the behaviour of takeing the 
+        /// When a type has multiple ctor&apos;s - this switch controls the behaviour of taking the 
         /// one with the hightest number of args.  Set to false to take the least number of args.
         /// </param>
         /// <returns></returns>

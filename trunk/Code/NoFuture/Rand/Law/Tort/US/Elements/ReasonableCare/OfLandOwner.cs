@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NoFuture.Rand.Law.Tort.US.Terms;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
@@ -16,7 +15,11 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
         {
         }
 
-        public Predicate<ILegalProperty> IsAttractiveToChildren { get; set; } = p => false;
+        /// <summary>
+        /// that since the ability of one ... to provide ... own protection has been limited ... by his
+        /// submission to the control of the other, a duty should be imposed upon the one possessing control
+        /// </summary>
+        public Func<ILegalPerson, IPlaintiff, bool> IsProtectionOwed { get; set; } = (lp0, lp1) => false;
 
         public AttractiveNuisanceTerm AttractiveNuisance { get; set; }
 
@@ -39,6 +42,13 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
 
             if (areGivenPermission || AttractiveNuisance == null)
                 return true;
+
+            if (persons.Plaintiff() is IPlaintiff plaintiff && IsProtectionOwed(subj, plaintiff))
+            {
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsProtectionOwed)} is true " +
+                               $"for {plaintiff.GetLegalPersonTypeName()} {plaintiff.Name}");
+                return true;
+            }
 
             AttractiveNuisance.GetSubjectPerson = GetSubjectPerson;
             AttractiveNuisance.SubjectProperty = SubjectProperty;

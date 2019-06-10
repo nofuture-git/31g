@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
     /// <summary>
     /// A higher standard of reasonable care, beyond fortuity, when one is an expert of said thing.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T"> An expert of what </typeparam>
     public class OfExpert<T> : ReasonableCareBase where T: IRationale
     {
         public OfExpert(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
