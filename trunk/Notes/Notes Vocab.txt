@@ -719,3 +719,4 @@ solecism: a grammatical mistake in speech or writing
 subrogation: substitution of a person or group by another with regard to rights and duties
 attenuated: having been reduced in force, effect or value
 turpitude: depravity, wickedness
+panoply: a complete and impressive collection of things

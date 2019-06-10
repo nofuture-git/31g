@@ -1,7 +1,9 @@
 ﻿namespace NoFuture.Rand.Law.Tort
 {
     /// <summary>
-    /// involves the invasion of a legally protected interest, the violation of a right
+    /// there should be a recourse for a definite injury to a
+    /// legitimate interest due to a lack of the prudence or
+    /// care appropriate to the occasion
     /// </summary>
     public interface INegligence : ILegalConcept
     {
