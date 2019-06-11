@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Law.Tort.US.Elements;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// Critics objections to the utilitarian philosophy of the formula.
@@ -18,8 +19,6 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         {
 
         }
-
-        public CritiqueLearnedHandsFormula() : this(ExtensionMethods.Tortfeasor) { }
 
         /// <summary>
         /// Idea that the cost-benefit analysis may lead to obvious morally wrong decisions.

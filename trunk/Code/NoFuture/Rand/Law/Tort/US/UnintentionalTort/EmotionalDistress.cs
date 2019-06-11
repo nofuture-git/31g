@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// Emotional trauma from being a witness to violence against loved ones.

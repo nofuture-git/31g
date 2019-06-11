@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
 {
     public class ConcertOfAction : UnoHomine, INegligence
     {

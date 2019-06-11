@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare;
+using NoFuture.Rand.Law.Tort.US.ReasonableCare;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.Tests

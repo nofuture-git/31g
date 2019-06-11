@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
+namespace NoFuture.Rand.Law.Tort.US.ReasonableCare
 {
     /// <summary>
     /// What is reasonable is based on age unless a duty otherwise.

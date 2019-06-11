@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.Tort.US.Terms;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
 {
     /// <inheritdoc cref="INegligence"/>
     public class Negligence : UnoHomine, INegligence

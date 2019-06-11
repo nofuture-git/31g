@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Tort.US.Elements;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// allocated liability &quot;in direct proportion to the extent of

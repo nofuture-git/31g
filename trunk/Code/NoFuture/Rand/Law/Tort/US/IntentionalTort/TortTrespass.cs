@@ -1,7 +1,7 @@
 ﻿using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 {
     public abstract class TortTrespass : TrespassBase
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 {
     /// <summary>
     /// <![CDATA[ RESTATEMENT (SECOND) OF TORTS § 218 (1965). ]]>

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Tort.US.Elements;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// the Learned Hand test is an ex ante, reasonable person formula for evaluating by
@@ -15,8 +16,6 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         public LearnedHandsFormula(Func<IEnumerable<ILegalPerson>, ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
-
-        public LearnedHandsFormula() : this(ExtensionMethods.Tortfeasor) { }
 
         /// <summary>
         /// a reasonable person&apos;s forecast estimation of the social cost of precautions

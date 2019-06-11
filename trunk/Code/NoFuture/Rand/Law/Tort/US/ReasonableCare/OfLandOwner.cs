@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NoFuture.Rand.Law.US.Property;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
+namespace NoFuture.Rand.Law.Tort.US.ReasonableCare
 {
     /// <summary>
     /// The common law rules regarding if a duty of care is required of a land owner towards visitors

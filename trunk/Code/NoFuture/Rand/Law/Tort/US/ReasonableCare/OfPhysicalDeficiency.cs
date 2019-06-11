@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
+namespace NoFuture.Rand.Law.Tort.US.ReasonableCare
 {
     /// <inheritdoc />
     /// <summary>

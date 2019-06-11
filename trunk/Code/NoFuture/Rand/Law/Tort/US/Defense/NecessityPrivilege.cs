@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
 using NoFuture.Rand.Law.Tort.US.Elements;
+using NoFuture.Rand.Law.Tort.US.IntentionalTort;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US.Defense

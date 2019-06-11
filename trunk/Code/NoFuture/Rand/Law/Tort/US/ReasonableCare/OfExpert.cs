@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements.ReasonableCare
+namespace NoFuture.Rand.Law.Tort.US.ReasonableCare
 {
     /// <summary>
     /// A higher standard of reasonable care, beyond fortuity, when one is an expert of said thing.
