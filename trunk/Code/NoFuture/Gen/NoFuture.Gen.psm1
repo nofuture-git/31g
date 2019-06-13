@@ -766,7 +766,88 @@ function Write-CsCodeAssignRand
             }
         }
     }
-}#end Write-CsCodeAssignRand
+}
+
+<#
+    .SYNOPSIS
+    Both invokes Write-CsCodeAssignRand and Add-Type for
+    random type factory.
+   
+    .DESCRIPTION
+    A composition cmdlet which handles the generating random
+    code factory (as .cs code), writes it to file and then
+    adds it to this appdomain using Add-Type
+
+    This is expected to be invoked from some build's \bin directory
+    since that folder will contain all the targeted assemblies dependencies
+
+    .PARAMETER AssemblyFullPath
+    The full file-path to the assembly from which contain the type.
+
+    .PARAMETER TypeFullName
+    The full name (namespace plus typename) for the 
+    type within the source assembly.
+
+#>
+function Add-CsCodeAssignRand
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=0)]
+        [string] $AssemblyFullPath,
+        [Parameter(Mandatory=$true,position=1)]
+        [string] $TypeFullName
+    )
+    Process
+    {
+        if(-not (Test-Path $AssemblyFullPath)){
+            throw "cannot find and assembly at $AssemblyFullPath"
+            break;
+        }
+
+        #get generated code for the given type\assembly
+        $asm = [NoFuture.Util.Binary.Asm]::NfLoadFrom($AssemblyFullPath)
+        $genCode = Write-CsCodeAssignRand -Assembly $asm -TypeFullName $TypeFullName -RandMethods -Recursion
+
+        if($genCode -eq $null -or $genCode.Count -eq 0){
+            throw "Write-CsCodeAssignRand generated nothing for type $TypeFullName"
+            break;
+        }
+
+        #compose the gen'ed code into a full .NET C# class
+        $genCode = [string]::Join([System.Environment]::NewLine, $genCode)
+        $className = "CodeGen{0}" -f [NoFuture.Util.Core.NfString]::SafeDotNetIdentifier($TypeFullName)
+        $fullClassCodeGen = @"
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NoFuture.Temp.Code
+{
+    public class $className
+    {
+$genCode
+    }
+}
+"@
+
+        #write the full class to file
+        $tempCodeDir = [NoFuture.Shared.Cfg.NfConfig+TempDirectories]::Code
+        if(-not (Test-Path $tempCodeDir)){
+            $tempCodeDir = [NoFuture.Shared.Core.NfSettings]::AppData
+        }
+        $csCodeFile = Join-Path $tempCodeDir "$className.cs"
+        [System.IO.File]::WriteAllText($csCodeFile, $fullClassCodeGen)
+
+        #use ps builtin Add-Type to compile and add full .cs class file
+        $assemblyFolder = Split-Path -Path $AssemblyFullPath -Parent
+        $refs = ls -Path $assemblyFolder | ? {$_.Extension -eq ".dll"} | % {$_.FullName}
+        Add-Type -Path $csCodeFile -ReferencedAssemblies $refs
+    }
+}
 
 <#
     .SYNOPSIS

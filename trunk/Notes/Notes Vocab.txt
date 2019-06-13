@@ -720,3 +720,6 @@ subrogation: substitution of a person or group by another with regard to rights 
 attenuated: having been reduced in force, effect or value
 turpitude: depravity, wickedness
 panoply: a complete and impressive collection of things
+promulgate: promote or make widely known
+invidious: an action likely to cause anger in others
+contravention: an action which violates a law, treaty, or other ruling
