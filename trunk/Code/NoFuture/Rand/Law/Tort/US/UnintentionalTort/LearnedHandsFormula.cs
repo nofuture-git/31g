@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
     /// reference to precautions identified by the parties the social advisability of risky conduct
     /// </summary>
     [Aka("cost-benefit formula")]
-    public class LearnedHandsFormula : Negligence
+    public class LearnedHandsFormula : UnoHomine, INegligence
     {
         public LearnedHandsFormula(Func<IEnumerable<ILegalPerson>, ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
         public Func<ILegalPerson, decimal> GetCostOfPrecaution { get; set; } = lp => 0m;
 
         /// <summary>
-        /// a reasonable person&apos;s forecast estimation of the risk of loss
+        /// a reasonable person&apos;s forecast estimation of the risk (probability) of loss
         /// </summary>
         public Func<ILegalPerson, double> GetRiskOfLoss { get; set; } = lp => 0d;
 

@@ -723,3 +723,4 @@ panoply: a complete and impressive collection of things
 promulgate: promote or make widely known
 invidious: an action likely to cause anger in others
 contravention: an action which violates a law, treaty, or other ruling
+quixotically: exceedingly idealistic, unrealistic and impractical
