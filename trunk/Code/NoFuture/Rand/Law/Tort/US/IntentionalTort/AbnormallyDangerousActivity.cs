@@ -43,6 +43,7 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 
             if (!IsPhysicalDamage(persons))
             {
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsPhysicalDamage)} is false");
                 return false;
             }
 
