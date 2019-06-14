@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="US\Elements\VicariousLiability.cs" />
     <Compile Include="US\UnintentionalTort\INegligence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\UnintentionalTort\EconomicLoss.cs" />

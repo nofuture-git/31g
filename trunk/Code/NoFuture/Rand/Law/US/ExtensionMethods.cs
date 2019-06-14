@@ -58,6 +58,16 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IThirdParty);
         }
 
+        public static ILegalPerson Employer(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is IEmployer);
+        }
+
+        public static ILegalPerson Employee(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is IEmployee);
+        }
+
         public static ILegalPerson Expert<T>(this IEnumerable<ILegalPerson> persons) where T : ILegalConcept
         {
             return persons.FirstOrDefault(p => p is IExpert<T>);
@@ -73,7 +83,7 @@ namespace NoFuture.Rand.Law.US
             var plaintiff = ppersons.Plaintiff() as IPlaintiff;
             if (plaintiff == null)
             {
-                var nameTitles = ppersons.Select(p => Tuple.Create(p.GetLegalPersonTypeName(), p.Name));
+                var nameTitles = ppersons.GetTitleNamePairs();
                 lc.AddReasonEntry($"No one is the {nameof(IPlaintiff)} in {nameTitles}");
                 return null;
             }
@@ -91,12 +101,54 @@ namespace NoFuture.Rand.Law.US
             var thirdParty = ppersons.ThirdParty() as IThirdParty;
             if (thirdParty == null)
             {
-                var nameTitles = ppersons.Select(p => Tuple.Create(p.GetLegalPersonTypeName(), p.Name));
+                var nameTitles = ppersons.GetTitleNamePairs();
                 lc.AddReasonEntry($"No one is the {nameof(IThirdParty)} in {nameTitles}");
                 return null;
             }
 
             return thirdParty;
+        }
+
+        public static IEmployer Employer(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var employer = ppersons.Employer() as IEmployer;
+            if (employer == null)
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(IEmployer)} in {nameTitles}");
+                return null;
+            }
+
+            return employer;
+        }
+
+        public static IEnumerable<ILegalPerson> Employees(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+            if (lc == null || !ppersons.Any())
+                return new List<ILegalPerson>();
+
+            var employees = ppersons.Where(p => p is IEmployee).ToList();
+
+            if (!employees.Any())
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(IEmployee)} in {nameTitles}");
+            }
+
+            return employees;
+        }
+
+        public static string GetTitleNamePairs(this IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+            var titleNamePairs = ppersons.Select(p => Tuple.Create(p.GetLegalPersonTypeName(), p.Name));
+            return string.Join(" ", titleNamePairs);
         }
 
         public static string GetLegalPersonTypeName(this ILegalPerson person)
@@ -123,6 +175,10 @@ namespace NoFuture.Rand.Law.US
                 return "licensee";
             if (person is IThirdParty)
                 return "third party";
+            if (person is IEmployee)
+                return "employee";
+            if (person is IEmployer)
+                return "employer";
             if (person.Equals(Government.Value))
                 return "the government";
             return "legal person";

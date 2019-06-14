@@ -69,6 +69,8 @@
     <Compile Include="US\Duty.cs" />
     <Compile Include="US\FactualCause.cs" />
     <Compile Include="US\Persons\IChild.cs" />
+    <Compile Include="US\Persons\IEmployee.cs" />
+    <Compile Include="US\Persons\IEmployer.cs" />
     <Compile Include="US\Persons\IExpert.cs" />
     <Compile Include="US\Persons\IInvitee.cs" />
     <Compile Include="US\Persons\ILicensee.cs" />
