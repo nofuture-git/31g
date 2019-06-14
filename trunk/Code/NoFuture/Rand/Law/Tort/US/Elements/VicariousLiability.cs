@@ -14,13 +14,13 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         {
         }
 
-        public Func<IEmployer, IEmployee, bool> IsEmployment { get; set; }
+        public Func<IEmployer, IEmployee, bool> IsEmployment { get; set; } = (er, ee) => false;
 
-        public Predicate<ILegalPerson> IsActInScopeOfEmployment { get; set; }
+        public Predicate<ILegalPerson> IsActInScopeOfEmployment { get; set; } = lp => false;
 
-        public Predicate<ILegalPerson> IsVoluntary { get; set; }
+        public Predicate<ILegalPerson> IsVoluntary { get; set; } = lp => false;
 
-        public Predicate<ILegalPerson> IsAction { get; set; }
+        public Predicate<ILegalPerson> IsAction { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

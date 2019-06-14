@@ -71,6 +71,7 @@
     <Compile Include="PutnamvPloofTests.cs" />
     <Compile Include="SindellvAbbottLaboratoriesTests.cs" />
     <Compile Include="SmithvSnellerTests.cs" />
+    <Compile Include="SpanovPeriniCorpTests.cs" />
     <Compile Include="TedlavEllmanTests.cs" />
     <Compile Include="TrimarcovKleinTests.cs" />
     <Compile Include="UhrvEastGreenbushCentralSchoolDistrictTests.cs" />
