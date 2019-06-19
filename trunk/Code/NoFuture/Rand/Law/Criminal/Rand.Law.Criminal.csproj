@@ -36,6 +36,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IActusReus.cs" />
+    <Compile Include="IAssault.cs" />
+    <Compile Include="IBattery.cs" />
+    <Compile Include="IDominionOfForce.cs" />
     <Compile Include="IMensRea.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\BatteredWomanSyndrome.cs" />

@@ -40,16 +40,13 @@
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="Exceptions\LawException.cs" />
     <Compile Include="IAct.cs" />
-    <Compile Include="IAssault.cs" />
     <Compile Include="IAssent.cs" />
     <Compile Include="IBargain.cs" />
-    <Compile Include="IBattery.cs" />
     <Compile Include="IBipartite.cs" />
     <Compile Include="IDuty.cs" />
     <Compile Include="IFactualCause.cs" />
     <Compile Include="IConsent.cs" />
     <Compile Include="IDefense.cs" />
-    <Compile Include="IDominionOfForce.cs" />
     <Compile Include="IForce.cs" />
     <Compile Include="IInjury.cs" />
     <Compile Include="IIntent.cs" />
