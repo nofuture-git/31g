@@ -63,6 +63,7 @@
     <Compile Include="IraSBusheySonsIncvUnitedStatesTests.cs" />
     <Compile Include="KatkovBrineyTests.cs" />
     <Compile Include="LandingsAssociationIncvGwynethWilliamsTests.cs" />
+    <Compile Include="LeovGeneralElectricCoTests.cs" />
     <Compile Include="LevivSWLaElecMembershipCoOpTests.cs" />
     <Compile Include="MadsenvEastJordanIrrigationCoTests.cs" />
     <Compile Include="MartinvHerzogTests.cs" />
