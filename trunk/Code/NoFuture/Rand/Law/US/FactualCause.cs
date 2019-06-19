@@ -3,8 +3,8 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US
 {
-    /// <inheritdoc cref="IFactualCause" />
-    public class FactualCause : UnoHomine, IFactualCause
+    /// <inheritdoc cref="IFactualCause{T}" />
+    public class FactualCause : UnoHomine, IFactualCause<ILegalPerson>
     {
         public FactualCause(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

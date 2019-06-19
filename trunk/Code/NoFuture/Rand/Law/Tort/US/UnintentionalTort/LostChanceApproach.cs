@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
 
         public Func<ILegalPerson, double> GetActualProbability { get; set; } = lp => 1D;
 
-        public IFactualCause FactualCause { get; set; }
+        public IFactualCause<ILegalPerson> FactualCause { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

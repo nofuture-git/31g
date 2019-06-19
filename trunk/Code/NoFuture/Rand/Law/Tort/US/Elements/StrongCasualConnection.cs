@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
     /// <remarks>
     /// Zuchowicz v. United States, 140 F.3d 381 (2d Cir. 1998)
     /// </remarks>
-    public class StrongCasualConnection : UnoHomine, IFactualCause
+    public class StrongCasualConnection : UnoHomine, IFactualCause<ILegalPerson>
     {
         public StrongCasualConnection(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law
+﻿using System;
+
+namespace NoFuture.Rand.Law
 {
     /// <summary>
     /// The direct antecedent which caused the harm\damage - the harm\damage which exist only because of it.
@@ -10,7 +12,7 @@
     /// died because of the rocks at the bottom..."
     /// ]]>
     /// </remarks>
-    public interface IFactualCause : ILegalConcept
+    public interface IFactualCause<T> : ILegalConcept where T: IRationale
     {
     }
 }

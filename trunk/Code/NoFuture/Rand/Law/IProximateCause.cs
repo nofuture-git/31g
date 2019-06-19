@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law
+﻿using System;
+
+namespace NoFuture.Rand.Law
 {
     /// <summary>
     /// Test the logical relationship between the act and the charged\complained harm
@@ -15,7 +17,10 @@
     /// Palsgraf v. Long Island R. Co., 248 N.Y. 339 (N.Y. 1928)
     /// ]]>
     /// </remarks>
-    public interface IProximateCause : ILegalConcept
+    public interface IProximateCause<T> : ILegalConcept where T: IRationale
     {
+        Predicate<T> IsDirectCause { get; set; }
+
+        Predicate<T> IsForeseeable { get; set; }
     }
 }

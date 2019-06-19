@@ -13,10 +13,10 @@ namespace NoFuture.Rand.Law.US
         /// The direct antecedent which caused the harm\damage - the harm\damage which exist only because of it.
         /// </summary>
         [Aka("loss causation", "causal connection")]
-        public IFactualCause FactualCause { get; set; }
+        public IFactualCause<ILegalPerson> FactualCause { get; set; }
 
         [Aka("legal cause")]
-        public IProximateCause ProximateCause { get; set; }
+        public IProximateCause<ILegalPerson> ProximateCause { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
