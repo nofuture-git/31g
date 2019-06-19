@@ -20,7 +20,5 @@ namespace NoFuture.Rand.Law
     public interface IProximateCause<T> : ILegalConcept where T: IRationale
     {
         Predicate<T> IsDirectCause { get; set; }
-
-        Predicate<T> IsForeseeable { get; set; }
     }
 }

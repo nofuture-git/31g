@@ -14,7 +14,10 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         /// <summary>
         /// As measured by the reasonable expectations of the user - consumer&apos;s expectations
         /// </summary>
-        [Aka("unreasonably dangerous to the user")]
+        /// <remarks>
+        /// The defect or defectiveness concept has embraced a great variety of injury-producing deficiencies,
+        /// </remarks>
+        [Aka("unreasonably dangerous to the user", "design defect", "warning defect", "manufacturing defect")]
         public Predicate<ILegalProperty> IsDefectiveAtTimeOfSale { get; set; } = p => false;
 
         /// <summary>
@@ -23,7 +26,6 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         public Predicate<ILegalProperty> IsDeprecatedDesign { get; set; } = p => false;
 
         public Predicate<ILegalProperty> IsDirectCause { get; set; } = p => false;
-        public Predicate<ILegalProperty> IsForeseeable { get; set; } = p => false;
 
         public IInjury Injury { get; set; }
 
@@ -51,13 +53,6 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
             if (!IsDirectCause(SubjectProperty))
             {
                 AddReasonEntry($"{title} {subj.Name}, {nameof(IsDirectCause)} is false " +
-                               $"for the property {SubjectProperty.Name}");
-                return false;
-            }
-
-            if (!IsForeseeable(SubjectProperty))
-            {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(IsForeseeable)} is false " +
                                $"for the property {SubjectProperty.Name}");
                 return false;
             }

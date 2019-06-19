@@ -29,7 +29,6 @@ namespace NoFuture.Rand.Law.Tort.Tests
                     IsOfFreedomLost = lp => lp is Temple,
                     IsOfPleasureLost = lp => lp is Temple
                 },
-                IsForeseeable = p => p is Warco75TonPowerPunchPress,
                 IsDirectCause = p => p is Warco75TonPowerPunchPress,
                 //was modified which caused harm
                 IsDefectiveAtTimeOfSale = p => false,

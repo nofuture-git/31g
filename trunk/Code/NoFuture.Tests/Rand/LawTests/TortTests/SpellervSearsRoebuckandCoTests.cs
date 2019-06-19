@@ -28,7 +28,6 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 {
                     IsDeath = lp => lp is Speller
                 },
-                IsForeseeable = p => p is Refrigerator,
                 //case doesn't specify this 
                 IsDirectCause = p => p is Refrigerator,
                 //only that circumstances are enough to proof this 
