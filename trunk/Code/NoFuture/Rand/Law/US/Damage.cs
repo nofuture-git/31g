@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.US
     /// <summary>
     /// The idea of some <see cref="ILegalProperty"/> being impaired in value, usefulness or function
     /// </summary>
-    public class Damage : UnoHomine, ITermCategory
+    public class Damage : UnoHomine, ITermCategory, IInjury
     {
         private readonly ITermCategory _termCategory = new TermCategory(nameof(Damage));
         public Damage(): this(ExtensionMethods.Defendant) { }

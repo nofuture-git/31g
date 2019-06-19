@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="US\Elements\StrictLiability.cs" />
     <Compile Include="US\IntentionalTort\PrivateNuisance.cs" />
     <Compile Include="US\IntentionalTort\PublicNuisance.cs" />
     <Compile Include="US\ReasonableCare\UnavoidableRisk.cs" />

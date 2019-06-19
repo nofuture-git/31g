@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.US
     /// The legal idea of some kind of loss suffered by a <see cref="ILegalPerson"/>
     /// </summary>
     /// <remarks>https://en.wikipedia.org/wiki/Harm</remarks>
-    public class Harm: UnoHomine, ITermCategory
+    public class Harm: UnoHomine, ITermCategory, IInjury
     {
         private readonly ITermCategory _termCategory = new TermCategory(nameof(Harm));
         public Harm() : this(ExtensionMethods.Defendant) { }

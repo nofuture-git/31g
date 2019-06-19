@@ -51,6 +51,7 @@
     <Compile Include="IDefense.cs" />
     <Compile Include="IDominionOfForce.cs" />
     <Compile Include="IForce.cs" />
+    <Compile Include="IInjury.cs" />
     <Compile Include="IIntent.cs" />
     <Compile Include="IProximateCause.cs" />
     <Compile Include="ILegalProperty.cs" />
