@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Criminal;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 

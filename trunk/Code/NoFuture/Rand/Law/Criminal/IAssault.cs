@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Rand.Law.Criminal
 {
     /// <summary>
     /// Threat of unlawful violent force with ability to do it.
