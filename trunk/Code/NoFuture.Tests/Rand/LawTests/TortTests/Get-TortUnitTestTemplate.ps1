@@ -12,7 +12,16 @@
     {
         $safeNamePlaintiff = New-Object System.String(,[char[]]($Plaintiff.ToCharArray() | ? {[char]::IsLetterOrDigit($_)}))
         $safeNameDefendant = New-Object System.String(,[char[]]($Defendant.ToCharArray() | ? {[char]::IsLetterOrDigit($_)}))
+
+        if([char]::IsDigit($safeNamePlaintiff.ToCharArray()[0])){
+            $safeNamePlaintiff = "_$safeNamePlaintiff"
+        }
         
+        if([char]::IsDigit($safeNameDefendant.ToCharArray()[0])){
+            $safeNameDefendant = "_$safeNameDefendant"
+        }
+
+
 $someCode = @"
 using System;
 using NUnit.Framework;

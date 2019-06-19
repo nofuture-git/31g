@@ -1,40 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Rand.Law.US.Property;
 
 namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 {
     /// <summary>
     /// an unreasonable interference with a right common to the general public
     /// </summary>
-    public class PublicNuisance : TrespassBase
+    public class PublicNuisance : PropertyConsent
     {
         public PublicNuisance(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
 
-        public Predicate<ILegalPerson> IsPublicInterference { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsUnreasonableInterference { get; set; } = lp => false;
 
-        public Predicate<ILegalPerson> IsHealth { get; set; } = lp => false;
-        public Predicate<ILegalPerson> IsSafety { get; set; } = lp => false;
-        public Predicate<ILegalPerson> IsPeace { get; set; } = lp => false;
-        public Predicate<ILegalPerson> IsComfort { get; set; } = lp => false;
-        public Predicate<ILegalPerson> IsConvenience { get; set; } = lp => false;
+        /// <summary>
+        /// reserved [...] for those indivisible resources shared by the public at large, such as air, water, or public rights of way
+        /// </summary>
+        public Predicate<ILegalProperty> IsRightCommonToPublic { get; set; } = lp => false;
 
         /// <summary>
         /// proscribed by a statute, ordinance or administrative regulation
         /// </summary>
         public Predicate<ILegalPerson> IsProscribedByGovernment { get; set; } = lp => false;
-
-        /// <summary>
-        /// of a continuing nature or has produced a permanent or long-lasting effect.
-        /// </summary>
-        public Predicate<ILegalPerson> IsOfPermanentEffect { get; set; } = lp => false;
 
         /// <summary>
         /// for a private individual they must have suffered harm of a kind different from that
@@ -53,13 +43,9 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
             if (IsProscribedByGovernment(subj))
                 return true;
 
-            var interferesWithSomething = new[]
-                {IsHealth(subj), IsSafety(subj), IsPeace(subj), IsComfort(subj), IsConvenience(subj)};
-
-            if (IsPublicInterference(subj) && !interferesWithSomething.Any())
+            if (IsUnreasonableInterference(subj) && !IsRightCommonToPublic(SubjectProperty))
             {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(IsHealth)}, {nameof(IsSafety)}, {nameof(IsPeace)}, " +
-                               $"{nameof(IsPeace)}, {nameof(IsConvenience)} are all false.");
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsRightCommonToPublic)} is false for the property {SubjectProperty?.Name}");
                 return false;
             }
 

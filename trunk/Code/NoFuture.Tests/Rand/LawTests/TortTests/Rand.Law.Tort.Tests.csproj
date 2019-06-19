@@ -73,6 +73,7 @@
     <Compile Include="PeopleExpressAirlinesvConsolidatedRailTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PutnamvPloofTests.cs" />
+    <Compile Include="RhodeIslandvLeadIndustriesAssociationTests.cs" />
     <Compile Include="SindellvAbbottLaboratoriesTests.cs" />
     <Compile Include="SmithvSnellerTests.cs" />
     <Compile Include="SpanovPeriniCorpTests.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="UhrvEastGreenbushCentralSchoolDistrictTests.cs" />
     <Compile Include="VincentvLakeErieTranspCoTests.cs" />
     <Compile Include="ZuchowiczvUnitedStatesTests.cs" />
+    <Compile Include="_532MadisonAveGourmetFoodsIncvFinlandiaCenterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

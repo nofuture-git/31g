@@ -4,13 +4,14 @@ using System.Linq;
 using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Rand.Law.US.Property;
 
 namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 {
     /// <summary>
     /// unreasonable interferences with the use and enjoyment of land
     /// </summary>
-    public class PrivateNuisance : TrespassBase
+    public class PrivateNuisance : PropertyConsent
     {
         public PrivateNuisance(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
