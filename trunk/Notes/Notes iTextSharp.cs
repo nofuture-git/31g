@@ -1,9 +1,69 @@
 ﻿using System.IO;
+using iTextSharp;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace Notes
 {
     public class MyITextSharpNotes
     {
+        public static void CreatePdf()
+        {
+            var document = new Document(PageSize.LETTER.Rotate());
+            PdfWriter.GetInstance(document, new FileStream(@"C:\Projects\31g\trunk\temp\pdf\myPdf.pdf", FileMode.OpenOrCreate));
+            document.Open();
+            document.Add(new Paragraph("Hello World"));
+            document.Close();
+        }
+        
+        public static void CreatePdfTable()
+        {
+            //first column is 3 times longer than the others
+            var widths = new[] { 3f, 1f, 1f, 1f, 1f, 1f };
+            var table = new PdfPTable(widths);
+            table.DefaultCell.Border = PdfPCell.NO_BORDER;
+            table.DefaultCell.VerticalAlignment = Element.ALIGN_CENTER;
+
+            var hdr = new PdfPHeaderCell();
+            hdr.Colspan = widths.Length;
+            hdr.AddElement(new Paragraph("SUMMARY REPORT"));
+            table.AddCell(hdr);
+            
+            table.AddCell("");
+            
+            var cell = new PdfPCell();
+            cell.Border = PdfPCell.NO_BORDER;
+            
+            var p1 = new Paragraph("Mar");
+            p1.Alignment = Element.ALIGN_CENTER;
+            cell.AddElement(p1);
+
+            var p2 = new Paragraph("2018");
+            p1.Alignment = Element.ALIGN_CENTER;
+            cell.AddElement(p2);
+            
+            table.AddCell(cell);
+            
+            table.AddCell("Apr 2017");
+            table.AddCell("May 2016");
+            table.AddCell("Mar 2015");
+            table.AddCell("Jul 2014");
+            
+            table.AddCell("Some row name");
+            table.AddCell("1.1");
+            table.AddCell("1.2");
+            table.AddCell("1.3");
+            table.AddCell("1.4");
+            table.AddCell("1.5");
+            
+            var document = new Document(PageSize.LETTER);
+            var pdfWriter = PdfWriter.GetInstance(document, new FileStream(@"C:\Projects\31g\trunk\temp\pdf\myPdfTable.pdf", FileMode.OpenOrCreate));
+            document.Open();
+            document.Add(table);
+            document.Close();
+            pdfWriter.Close();
+        }
+        
         public static void CropPdf()
         {
             var xll = 200;

@@ -19,6 +19,13 @@ namespace NoFuture.Rand.Law.US
 
         public Predicate<ILegalPerson> IsDeath { get; set; } = lp => false;
 
+        /// <summary>
+        /// significantly limit your ability to do basic work such as lifting,
+        /// standing, walking, sitting, and remembering – for at least 12 months
+        /// </summary>
+        /// <remarks>
+        /// https://www.ssa.gov/planners/disability/qualify.html#anchor3
+        /// </remarks>
         public Predicate<ILegalPerson> IsDisability { get; set; } = lp => false;
 
         public Predicate<ILegalPerson> IsOfFreedomLost { get; set; } = lp => false;

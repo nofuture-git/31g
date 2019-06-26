@@ -724,3 +724,6 @@ promulgate: promote or make widely known
 invidious: an action likely to cause anger in others
 contravention: an action which violates a law, treaty, or other ruling
 quixotically: exceedingly idealistic, unrealistic and impractical
+peroration: the concluding part of a speech to inspire
+oenophile: connoisseur of wines
+vade mecum: a handbook or guide that is kept constantly at hand for consultation

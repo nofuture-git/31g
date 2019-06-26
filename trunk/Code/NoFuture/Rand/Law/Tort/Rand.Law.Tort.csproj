@@ -41,6 +41,10 @@
     <Compile Include="US\ReasonableCare\UnavoidableRisk.cs" />
     <Compile Include="US\IntentionalTort\AbnormallyDangerousActivity.cs" />
     <Compile Include="US\Elements\VicariousLiability.cs" />
+    <Compile Include="US\Remedy\CompensatoryDmg.cs" />
+    <Compile Include="US\Remedy\MoneyDmgBase.cs" />
+    <Compile Include="US\Remedy\NonpecuniaryDmg.cs" />
+    <Compile Include="US\Remedy\PecuniaryDmg.cs" />
     <Compile Include="US\UnintentionalTort\INegligence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\UnintentionalTort\EconomicLoss.cs" />
