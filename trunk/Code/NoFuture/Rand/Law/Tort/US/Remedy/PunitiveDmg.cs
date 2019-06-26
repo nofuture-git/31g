@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US.Remedy
@@ -16,6 +12,7 @@ namespace NoFuture.Rand.Law.Tort.US.Remedy
     /// 2. Compensatory damages may be too low to provide a deterrent.
     ///  - e.g. steal a car then advise owner to sue for the value in court
     ///  - e.g. perv pays lightly for some nasty act
+    ///  - e.g. tortfeaser is very rich and compensation is easy to pay
     /// 3. Compensatory damages only regard personal costs, not social costs.
     /// 4. Punitive damages relieve some burdan of the criminal justice system.
     /// Kemezy v. Peters, 79 F.3d 33 (7th Cir. 1996)

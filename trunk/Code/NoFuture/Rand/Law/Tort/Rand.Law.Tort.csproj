@@ -45,6 +45,7 @@
     <Compile Include="US\Remedy\MoneyDmgBase.cs" />
     <Compile Include="US\Remedy\NonpecuniaryDmg.cs" />
     <Compile Include="US\Remedy\PecuniaryDmg.cs" />
+    <Compile Include="US\Remedy\PunitiveDmg.cs" />
     <Compile Include="US\UnintentionalTort\INegligence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\UnintentionalTort\EconomicLoss.cs" />
