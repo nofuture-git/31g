@@ -261,6 +261,10 @@ Images:
   height="50" width="50"            -in pixils, set with % also
   align="center"/>                  -also: left, right, top and bottom
 
+<!-- embed the image directly as binary content -->
+<img src="data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNWWFMmUAAAF2SURBVFhH7Za9ccMwDIW1SSbJGt4iQ2SFjOAJ0qd3nTat61S2ksLSwcHzgTLEEBRkg00u7w5nHx9AfST0w+5fXh1O9NWP5zOC/+9lOEbHgZ7T5DpwUUkBwF57x5GexKqK8za6LgXm/iZ6SEmvpSTEJYHVD/Six7lmJ1ZVANV1OqZFWAB6B0BreTXx3MUdQJgAk5HpMNL7LI9bJ5ZL5nW8ALe2IelugFIbphvJobsBIPZ2Ohe7ItaiYgCyRxb3hViLCgGAsPU639uGMAD2b2pDHED+5hzoQ6yqwgCg/kSfuobb8iiWqViAkd50DQNsxTIVCsA5s1csAyx+IUMBoLVtCAfI69AWsYoKB8CKdR12RKyiwgEg9D6r3Yj1S60Atrq21oZWAO42NAGA8Cac1RsHlZYAroNKMwDvebEZAOQ5L7oBUlgrKclqA/+uPxXruCQ4hDYAWNdiDBfRYzquAPn3XWLNDkD5FxKrR+ixFJh7zYH2r6rrfgDnX37DTYwo6gAAAABJRU5ErkJggg==" 
+     alt="Flyby text of the image"/>
+
 <object data="myImageLocation" type="image/gif"> text 
         image description </object>  -possiable replacement for img tag
 ----
