@@ -4,22 +4,22 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law.Property.US
 {
     /// <summary>
-    /// any moveable item which could be designated with ownership
+    /// personal property which has value but cannot be touched or held
     /// </summary>
-    [Aka("chattel")]
-    public class PersonalProperty : LegalProperty
+    [Eg("stocks", "bonds", "trusts", "escrow")]
+    public class IntangiblePersonalProperty : PersonalProperty
     {
-        public PersonalProperty()
+        public IntangiblePersonalProperty()
         {
             base.AddName(KindsOfNames.Legal, GetType().Name.ToUpper());
         }
 
-        public PersonalProperty(string name) : base(name)
+        public IntangiblePersonalProperty(string name) : base(name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 base.AddName(KindsOfNames.Legal, GetType().Name.ToUpper());
         }
 
-        public PersonalProperty(string name, string groupName) : base(name, groupName) { }
+        public IntangiblePersonalProperty(string name, string groupName) : base(name, groupName) { }
     }
 }

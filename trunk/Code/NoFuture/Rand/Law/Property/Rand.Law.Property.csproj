@@ -39,9 +39,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\ActOfService.cs" />
     <Compile Include="US\GovernmentProperty.cs" />
+    <Compile Include="US\IntangiblePersonalProperty.cs" />
     <Compile Include="US\PersonalProperty.cs" />
     <Compile Include="US\PropertyConsent.cs" />
     <Compile Include="US\RealProperty.cs" />
+    <Compile Include="US\TangiblePersonalProperty.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Rand.Core.csproj">

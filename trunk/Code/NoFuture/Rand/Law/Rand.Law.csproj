@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\AkaAttribute.cs" />
+    <Compile Include="Attributes\EgAttribute.cs" />
     <Compile Include="Attributes\EtymologyNote.cs" />
     <Compile Include="Attributes\NoteAttribute.cs" />
     <Compile Include="Exceptions\LawException.cs" />
