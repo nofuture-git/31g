@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Core.Enums;
 
-namespace NoFuture.Rand.Law.US.Property
+namespace NoFuture.Rand.Law.Property.US
 {
     /// <summary>
     /// any moveable item which could be designated with ownership

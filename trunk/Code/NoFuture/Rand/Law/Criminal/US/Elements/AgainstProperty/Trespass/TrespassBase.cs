@@ -1,6 +1,6 @@
 ﻿using System;
+using NoFuture.Rand.Law.Property.US;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Property;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass
 {

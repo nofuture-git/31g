@@ -1,8 +1,8 @@
 ﻿using System;
+using NoFuture.Rand.Law.Property.US;
 using NoFuture.Rand.Law.Tort.US.Terms;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.US.Property;
 
 namespace NoFuture.Rand.Law.Tort.US.ReasonableCare
 {

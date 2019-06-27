@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.Exceptions;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.US.Property
+namespace NoFuture.Rand.Law.Property.US
 {
     /// <summary>
     /// Property which belongs to the government

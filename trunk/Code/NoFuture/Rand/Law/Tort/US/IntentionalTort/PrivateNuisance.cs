@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass;
+using NoFuture.Rand.Law.Property.US;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.US.Property;
 
 namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 {
