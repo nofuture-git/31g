@@ -11,6 +11,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage
     [Aka("vandalism")]
     public class CriminalMischief : PropertyConsent, IActusReus
     {
+        public CriminalMischief() : base(ExtensionMethods.Defendant) { }
+
         public Predicate<ILegalPerson> IsCauseOfDamage { get; set; } = lp => false;
 
         /// <summary>

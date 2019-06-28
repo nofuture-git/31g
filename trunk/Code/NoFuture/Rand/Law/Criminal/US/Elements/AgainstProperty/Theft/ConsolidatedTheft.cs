@@ -10,6 +10,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
     /// </summary>
     public abstract class ConsolidatedTheft : PropertyConsent, IActusReus
     {
+        public ConsolidatedTheft() : base(ExtensionMethods.Defendant) { }
+
         /// <summary>
         /// The typical idea of theft as grab and run stealing, or, more 
         /// generally as the idea that control of the property has been taken unlawfully

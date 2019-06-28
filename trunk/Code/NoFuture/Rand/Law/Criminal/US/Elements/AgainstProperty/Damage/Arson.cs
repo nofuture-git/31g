@@ -14,6 +14,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage
     [EtymologyNote("Latin", "'ardere'", "to burn")]
     public class Arson : PropertyConsent, IActusReus
     {
+        public Arson() : base(ExtensionMethods.Defendant) { }
+
         public Predicate<ILegalPerson> IsFireStarter { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsCauseOfExplosion { get; set; } = lp => false;
 

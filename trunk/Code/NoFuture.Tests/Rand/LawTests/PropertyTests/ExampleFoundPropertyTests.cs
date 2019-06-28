@@ -61,8 +61,33 @@ namespace NoFuture.Rand.Law.Property.Tests
         {
             var test = new MislaidProperty(PropertyOwner)
             {
-
+                OwnersAction = new Act(PropertyOwner)
+                {
+                    IsVoluntary = lp => lp.IsSamePerson(_propertyOwner),
+                    IsAction = lp => lp.IsSamePerson(_propertyOwner)
+                },
+                SubjectProperty = _property,
+                IsPropertyLocationKnown = lp => lp.IsSamePerson(_propertyOwner)
             };
+
+            var testResult = test.IsValid(_propertyOwner);
+            Assert.IsFalse(testResult);
+            Console.WriteLine(test.ToString());
+        }
+
+        [Test]
+        public void TestTreasureTrove()
+        {
+            var test = new TreasureTrove(PropertyOwner)
+            {
+                IsConcealedLocation = p => true,
+                IsGoldSilverOrCurrency = p => true,
+                SubjectProperty =  _property
+            };
+
+            var testResult = test.IsValid(_propertyOwner);
+            Assert.IsTrue(testResult);
+            Console.Write(test.ToString());
         }
     }
 }
