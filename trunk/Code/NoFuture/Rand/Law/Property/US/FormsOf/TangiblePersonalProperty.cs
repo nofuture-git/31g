@@ -1,7 +1,7 @@
 ﻿using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US
+namespace NoFuture.Rand.Law.Property.US.FormsOf
 {
     /// <summary>
     /// personal property which can, typically, be physically handled 

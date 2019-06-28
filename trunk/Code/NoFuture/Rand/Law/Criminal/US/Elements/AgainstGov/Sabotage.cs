@@ -6,7 +6,7 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.Property.US;
+using NoFuture.Rand.Law.Property.US.FormsOf;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov

@@ -1,9 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US;
+using NoFuture.Rand.Law.Property.US.FormsOf;
 using NoFuture.Rand.Law.Tort.US.Defense;
 using NUnit.Framework;
 using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.Elements;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.Tests

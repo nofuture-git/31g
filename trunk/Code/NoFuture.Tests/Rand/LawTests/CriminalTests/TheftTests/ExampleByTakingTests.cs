@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.Criminal.US;
 using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
 using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.Property.US;
+using NoFuture.Rand.Law.Property.US.FormsOf;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
