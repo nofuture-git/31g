@@ -5,17 +5,13 @@ using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Property.US
 {
-    public abstract class PropertyConsent : UnoHomine
+    public abstract class PropertyConsent : PropertyBase
     {
         protected PropertyConsent(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
 
-        protected PropertyConsent() : this(ExtensionMethods.Defendant) { }
-
         public virtual IConsent Consent { get; set; }
-
-        public virtual ILegalProperty SubjectProperty { get; set; }
 
         /// <summary>
         /// The expected result of <see cref="Consent"/> - default
@@ -75,64 +71,6 @@ namespace NoFuture.Rand.Law.Property.US
             }
 
             return true;
-        }
-
-        protected virtual bool PropertyOwnerIsSubjectPerson(ILegalPerson[] persons)
-        {
-            var subj = GetSubjectPerson(persons);
-            if (subj == null)
-                return false;
-            var title = subj.GetLegalPersonTypeName();
-            if (SubjectProperty == null)
-            {
-                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} is unassigned");
-                return false;
-            }
-
-            if (SubjectProperty.EntitledTo == null)
-            {
-                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} named " +
-                               $"{SubjectProperty.Name}, {nameof(SubjectProperty.EntitledTo)} is unassigned");
-                return false;
-            }
-
-            var isOwner = subj.IsSamePerson(SubjectProperty.EntitledTo);
-            var isIsNot = isOwner ? " is owner " : " is not owner ";
-            AddReasonEntry(
-                $"{title}, {subj.Name}, {isIsNot} " +
-                $"of {SubjectProperty.GetType().Name} " +
-                $"named '{SubjectProperty.Name}'");
-
-            return isOwner;
-        }
-
-        protected virtual bool PropertyOwnerIsInPossession(ILegalPerson[] persons)
-        {
-            var subj = GetSubjectPerson(persons);
-            if (subj == null)
-                return false;
-            var title = subj.GetLegalPersonTypeName();
-            if (SubjectProperty == null)
-            {
-                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} is unassigned");
-                return false;
-            }
-
-            if (SubjectProperty.InPossessionOf == null)
-            {
-                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} named " +
-                               $"{SubjectProperty.Name}, {nameof(SubjectProperty.InPossessionOf)} is unassigned");
-                return false;
-            }
-
-            var hasPossession = subj.IsSamePerson(SubjectProperty.InPossessionOf);
-            var isIsNot = hasPossession ? " is in possession " : " is not in possession ";
-            AddReasonEntry(
-                $"{title}, {subj.Name}, {isIsNot} " +
-                $"of {SubjectProperty.GetType().Name} " +
-                $"named '{SubjectProperty.Name}'");
-
-            return hasPossession;
         }
     }
 }

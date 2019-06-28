@@ -21,9 +21,6 @@ namespace NoFuture.Rand.Law.Property.US.Found
                 return false;
             var title = subj.GetLegalPersonTypeName();
 
-            if (!WithoutConsent(persons))
-                return false;
-
             if (base.PropertyOwnerIsInPossession(persons))
                 return false;
             if (OwnersAction == null)

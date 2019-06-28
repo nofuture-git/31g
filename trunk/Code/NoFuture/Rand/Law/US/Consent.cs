@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.US
 {
     public class Consent : UnoHomine, IConsent
     {

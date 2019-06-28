@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Property.US.Found
     /// <summary>
     /// When possession is voluntarily forsaken by the owner
     /// </summary>
-    public class AbandonedProperty : PropertyConsent
+    public class AbandonedProperty : PropertyBase
     {
         public AbandonedProperty(Func<IEnumerable<ILegalPerson>, ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
 
@@ -19,9 +19,6 @@ namespace NoFuture.Rand.Law.Property.US.Found
             if (subj == null)
                 return false;
             var title = subj.GetLegalPersonTypeName();
-
-            if (!WithoutConsent(persons))
-                return false;
 
             if (base.PropertyOwnerIsInPossession(persons))
                 return false;

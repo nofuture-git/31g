@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Property.US.Found;
 using NoFuture.Rand.Law.US;
 using NUnit.Framework;
@@ -14,10 +12,54 @@ namespace NoFuture.Rand.Law.Property.Tests
     {
         private ILegalPerson _propertyOwner = new LegalPerson("Jim Owner");
 
+        private ILegalProperty _property = new LegalProperty("something");
+
+        internal ILegalPerson PropertyOwner(IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p.IsSamePerson(_propertyOwner));
+        }
+
         [Test]
         public void TestAbandonedProperty()
         {
-            var test = new AbandonedProperty(ps => ps.FirstOrDefault(p => p.IsSamePerson(_propertyOwner)))
+            var test = new AbandonedProperty(PropertyOwner)
+            {
+                //willingly walks away from property
+                OwnersAction = new Act(PropertyOwner)
+                {
+                    IsVoluntary = lp => lp.IsSamePerson(_propertyOwner),
+                    IsAction = lp => lp.IsSamePerson(_propertyOwner)
+                },
+                SubjectProperty = _property
+            };
+
+            var testResult = test.IsValid(_propertyOwner);
+            Assert.IsTrue(testResult);
+            Console.Write(test.ToString());
+        }
+
+        [Test]
+        public void TestLostProperty()
+        {
+            var test = new LostProperty(PropertyOwner)
+            {
+                OwnersAction = new Act(PropertyOwner)
+                {
+                    IsVoluntary = lp => true
+                },
+                IsPropertyLocationKnown = lp => false,
+                SubjectProperty = _property
+            };
+
+            var testResult = test.IsValid(_propertyOwner);
+            Assert.IsFalse(testResult);
+            Console.Write(test.ToString());
+        }
+
+        [Test]
+        public void TestMislaidProperty()
+        {
+            var test = new MislaidProperty(PropertyOwner)
             {
 
             };

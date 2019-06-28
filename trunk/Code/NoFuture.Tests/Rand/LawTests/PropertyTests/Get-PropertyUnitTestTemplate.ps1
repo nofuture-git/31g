@@ -1,4 +1,4 @@
-﻿function Get-TortUnitTestTemplate
+﻿function Get-PropertyUnitTestTemplate
 {
     [CmdletBinding()]
     Param
@@ -24,12 +24,13 @@
 
 $someCode = @"
 using System;
-using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
+using NoFuture.Rand.Law.Property.US.Found;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.US.Persons;
+using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Rand.Law.Property.Tests
 {
     /// <summary>
     /// 
@@ -54,7 +55,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
         public ${safeNamePlaintiff}(): base("$Plaintiff") { }
     }
 
-    public class ${safeNameDefendant} : LegalPerson, ITortfeasor
+    public class ${safeNameDefendant} : LegalPerson, IDefendant
     {
         public ${safeNameDefendant}(): base("$Defendant") { }
     }
@@ -66,9 +67,9 @@ namespace NoFuture.Rand.Law.Tort.Tests
     }
 }
 
-$testDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Tort.Tests.dll")).Path
+$testDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Property.Tests.dll")).Path
 $nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe"))
 
-function Test-NfRandLawTortMethod($MethodName){
+function Test-NfRandLawPropertyMethod($MethodName){
     Invoke-Expression "$nunit $testDll --where `"method == $MethodName`""
 }

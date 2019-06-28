@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US.Found
 {
-    public class TreasureTrove : PropertyConsent
+    public class TreasureTrove : PropertyBase
     {
         public TreasureTrove(Func<IEnumerable<ILegalPerson>, ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
 
@@ -14,9 +14,6 @@ namespace NoFuture.Rand.Law.Property.US.Found
             if (subj == null)
                 return false;
             var title = subj.GetLegalPersonTypeName();
-
-            if (!WithoutConsent(persons))
-                return false;
 
             if (base.PropertyOwnerIsInPossession(persons))
                 return false;

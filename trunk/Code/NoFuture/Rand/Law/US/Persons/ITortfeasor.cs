@@ -3,7 +3,7 @@
     /// <summary>
     /// person or entity that committed the tort
     /// </summary>
-    public interface ITortfeasor : ILegalPerson
+    public interface ITortfeasor : IDefendant
     {
     }
 }
