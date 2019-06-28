@@ -47,7 +47,6 @@ namespace NoFuture.Rand.Law.Property.US
             var victims = persons.Victims().ToList();
             if (!victims.Any())
             {
-                AddReasonEntry($"no one is of {nameof(IVictim)} interface type");
                 return true;
             }
 
@@ -80,21 +79,60 @@ namespace NoFuture.Rand.Law.Property.US
 
         protected virtual bool PropertyOwnerIsSubjectPerson(ILegalPerson[] persons)
         {
-            var defendant = GetSubjectPerson(persons);
-            if (defendant == null)
+            var subj = GetSubjectPerson(persons);
+            if (subj == null)
                 return false;
-            if (SubjectProperty?.EntitledTo == null)
+            var title = subj.GetLegalPersonTypeName();
+            if (SubjectProperty == null)
+            {
+                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} is unassigned");
                 return false;
-            var personTitle = defendant.GetLegalPersonTypeName();
-            var isOwner = defendant.IsSamePerson(SubjectProperty.EntitledTo);
-            if(isOwner)
-                AddReasonEntry(
-                    $"{personTitle}, {defendant.Name}, is owner " +
-                    $"of {SubjectProperty.GetType().Name} " +
-                    $"named '{SubjectProperty.Name}'");
+            }
+
+            if (SubjectProperty.EntitledTo == null)
+            {
+                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} named " +
+                               $"{SubjectProperty.Name}, {nameof(SubjectProperty.EntitledTo)} is unassigned");
+                return false;
+            }
+
+            var isOwner = subj.IsSamePerson(SubjectProperty.EntitledTo);
+            var isIsNot = isOwner ? " is owner " : " is not owner ";
+            AddReasonEntry(
+                $"{title}, {subj.Name}, {isIsNot} " +
+                $"of {SubjectProperty.GetType().Name} " +
+                $"named '{SubjectProperty.Name}'");
 
             return isOwner;
         }
 
+        protected virtual bool PropertyOwnerIsInPossession(ILegalPerson[] persons)
+        {
+            var subj = GetSubjectPerson(persons);
+            if (subj == null)
+                return false;
+            var title = subj.GetLegalPersonTypeName();
+            if (SubjectProperty == null)
+            {
+                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} is unassigned");
+                return false;
+            }
+
+            if (SubjectProperty.InPossessionOf == null)
+            {
+                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} named " +
+                               $"{SubjectProperty.Name}, {nameof(SubjectProperty.InPossessionOf)} is unassigned");
+                return false;
+            }
+
+            var hasPossession = subj.IsSamePerson(SubjectProperty.InPossessionOf);
+            var isIsNot = hasPossession ? " is in possession " : " is not in possession ";
+            AddReasonEntry(
+                $"{title}, {subj.Name}, {isIsNot} " +
+                $"of {SubjectProperty.GetType().Name} " +
+                $"named '{SubjectProperty.Name}'");
+
+            return hasPossession;
+        }
     }
 }

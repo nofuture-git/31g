@@ -52,7 +52,6 @@
     <Compile Include="US\UnintentionalTort\ComparativeNegligence.cs" />
     <Compile Include="US\Defense\NecessityPrivilege.cs" />
     <Compile Include="US\UnintentionalTort\ConcertOfAction.cs" />
-    <Compile Include="US\Elements\Consent.cs" />
     <Compile Include="US\UnintentionalTort\ContributoryNegligence.cs" />
     <Compile Include="US\UnintentionalTort\CritiqueLearnedHandsFormula.cs" />
     <Compile Include="US\UnintentionalTort\EmotionalDistress.cs" />
