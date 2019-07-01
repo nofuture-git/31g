@@ -36,8 +36,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="US\Elements\ProductStrictLiability.cs" />
+    <Compile Include="US\Elements\Defamation.cs" />
     <Compile Include="US\IntentionalTort\PrivateNuisance.cs" />
     <Compile Include="US\IntentionalTort\PublicNuisance.cs" />
+    <Compile Include="US\IntentionalTort\TrespassToPerson.cs" />
     <Compile Include="US\IntentionalTort\TrespassToProperty.cs" />
     <Compile Include="US\ReasonableCare\UnavoidableRisk.cs" />
     <Compile Include="US\IntentionalTort\AbnormallyDangerousActivity.cs" />

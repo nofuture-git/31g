@@ -13,17 +13,11 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 
         protected internal Damage PropertyDamage => Injury as Damage;
 
-        public override void ClearReasons()
-        {
-            PropertyDamage?.ClearReasons();
-            base.ClearReasons();
-        }
-
         protected internal virtual bool IsPhysicalDamage(ILegalPerson[] persons)
         {
             if (PropertyDamage == null)
             {
-                AddReasonEntry($"{nameof(PropertyDamage)} is unassigned");
+                AddReasonEntry($"The {nameof(Injury)} is not of type {nameof(Damage)}");
                 return false;
             }
 

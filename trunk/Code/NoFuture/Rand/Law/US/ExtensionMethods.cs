@@ -28,9 +28,9 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IDefendant);
         }
 
-        public static IEnumerable<ILegalPerson> Victims(this IEnumerable<ILegalPerson> persons)
+        public static IEnumerable<IVictim> Victims(this IEnumerable<ILegalPerson> persons)
         {
-            return persons.Where(p => p is IVictim).ToList();
+            return persons.Where(p => p is IVictim).Cast<IVictim>().ToList();
         }
 
         public static ILegalPerson Offeror(this IEnumerable<ILegalPerson> persons)
@@ -89,6 +89,24 @@ namespace NoFuture.Rand.Law.US
             }
 
             return plaintiff;
+        }
+
+        public static IVictim Victim(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var victim = ppersons.Victims().ToList();
+            if (!victim.Any())
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(IVictim)} in {nameTitles}");
+                return null;
+            }
+
+            return victim.FirstOrDefault();
         }
 
         public static IThirdParty ThirdParty(this IRationale lc, IEnumerable<ILegalPerson> persons)

@@ -66,6 +66,7 @@
     <Compile Include="US\Act.cs" />
     <Compile Include="US\Consent.cs" />
     <Compile Include="US\Damage.cs" />
+    <Compile Include="US\Defamation.cs" />
     <Compile Include="US\Duty.cs" />
     <Compile Include="US\FactualCause.cs" />
     <Compile Include="US\Persons\IBailee.cs" />

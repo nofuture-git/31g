@@ -52,6 +52,7 @@ namespace NoFuture.Rand.Law.US
 
             return true;
         }
+
         public virtual int GetRank()
         {
             return _termCategory.GetRank();
