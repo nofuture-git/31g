@@ -43,6 +43,7 @@
     <Compile Include="US\Elements\VicariousLiability.cs" />
     <Compile Include="US\Remedy\CompensatoryDmg.cs" />
     <Compile Include="US\Remedy\MoneyDmgBase.cs" />
+    <Compile Include="US\Remedy\NominalDmg.cs" />
     <Compile Include="US\Remedy\NonpecuniaryDmg.cs" />
     <Compile Include="US\Remedy\PecuniaryDmg.cs" />
     <Compile Include="US\Remedy\PunitiveDmg.cs" />
