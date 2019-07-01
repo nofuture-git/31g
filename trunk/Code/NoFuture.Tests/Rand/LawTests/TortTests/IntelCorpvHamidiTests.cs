@@ -45,7 +45,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
                         IsForeseeable = lp => lp is Hamidi
                     }
                 },
-                PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)
+                Injury = new Damage(ExtensionMethods.Tortfeasor)
                 {
                     ToNormalFunction = p => false,
                     ToUsefulness =  p => false,

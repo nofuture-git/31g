@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
             {
                 IsExplosives = p => p.Equals(property),
                 SubjectProperty = property,
-                PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)
+                Injury = new Damage(ExtensionMethods.Tortfeasor)
                 {
                     SubjectProperty = property,
                     ToValue = p => true,

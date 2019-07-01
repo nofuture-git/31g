@@ -7,8 +7,8 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
     /// <summary>
     /// A kind of trespass where the cause does not require much, if any, proof.
     /// </summary>
-    [Aka("absolute liability")]
-    public class AbnormallyDangerousActivity : TortTrespass
+    [Aka("absolute liability", "ultrahazardous activity")]
+    public class AbnormallyDangerousActivity : TrespassToProperty
     {
         public AbnormallyDangerousActivity(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {

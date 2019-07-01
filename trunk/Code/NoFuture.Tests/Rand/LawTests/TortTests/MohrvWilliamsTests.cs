@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 },
                 IsCauseDispossession = lp => true,
                 IsTangibleEntry = lp => true,
-                PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)
+                Injury = new Damage(ExtensionMethods.Tortfeasor)
                 {
                     SubjectProperty = new LegalProperty("Williams hearing")
                     {

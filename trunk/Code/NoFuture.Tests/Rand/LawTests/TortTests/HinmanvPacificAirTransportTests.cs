@@ -25,8 +25,20 @@ namespace NoFuture.Rand.Law.Tort.Tests
             {
                 IsTangibleEntry = lp => false,
                 IsIntangibleEntry = lp => false,
-                PropertyDamage = new NoDamage(),
-                SubjectProperty = new LegalProperty("some land")
+                Injury = new NoDamage(),
+                SubjectProperty = new LegalProperty("some land"),
+                Causation = new Causation(ExtensionMethods.Tortfeasor)
+                {
+                    FactualCause = new FactualCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsButForCaused = lp => lp is PacificAirTransport
+                    },
+                    ProximateCause = new ProximateCause(ExtensionMethods.Tortfeasor)
+                    {
+                        IsDirectCause = lp => lp is PacificAirTransport,
+                        IsForeseeable = lp => lp is PacificAirTransport
+                    }
+                }
             };
 
             var testResult = test.IsValid(new Hinman(), new PacificAirTransport());

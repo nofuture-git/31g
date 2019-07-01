@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 },
                 SubjectProperty = theDock,
                 IsTangibleEntry = lp => lp is Vincent,
-                PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)
+                Injury = new Damage(ExtensionMethods.Tortfeasor)
                 {
                     SubjectProperty = theDock,
                     ToValue = pr => pr is DockInDuluth

@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
     /// claim of air above land: owns at least as much of the space above the 
     /// ground as he can occupy or use in connection with the land
     /// </remarks>
-    [Aka("land")]
+    [Aka("land", "realty")]
     public class RealProperty : LegalProperty
     {
         public RealProperty()

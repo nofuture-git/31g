@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Law.Tort.US.Defense
         {
             
         }
-        public TortTrespass Trespass { get; set; }
+        public TrespassToProperty Trespass { get; set; }
         public Predicate<ILegalProperty> IsPublicInterest { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

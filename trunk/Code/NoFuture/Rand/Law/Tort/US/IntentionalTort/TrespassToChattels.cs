@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
     /// <![CDATA[ RESTATEMENT (SECOND) OF TORTS § 218 (1965). ]]>
     /// </summary>
     [Aka("trespass to personal property")]
-    public class TrespassToChattels : TortTrespass
+    public class TrespassToChattels : TrespassToProperty
     {
         /// <summary>
         /// dispossession alone, without further damages, is actionable

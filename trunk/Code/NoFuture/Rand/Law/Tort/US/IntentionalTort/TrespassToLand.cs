@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US;
 namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 {
     [EtymologyNote("Latin", "quare clausum fregit", "wherefore he broke the close")]
-    public class TrespassToLand : TortTrespass
+    public class TrespassToLand : TrespassToProperty
     {
         public TrespassToLand(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
 

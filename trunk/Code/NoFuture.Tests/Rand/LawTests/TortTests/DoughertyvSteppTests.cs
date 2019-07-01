@@ -77,7 +77,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
             Assert.IsFalse(testResult);
             testSubject.ClearReasons();
 
-            testSubject.PropertyDamage = new Damage(ExtensionMethods.Tortfeasor)
+            testSubject.Injury = new Damage(ExtensionMethods.Tortfeasor)
             {
                 ToUsefulness = p => true
             };
