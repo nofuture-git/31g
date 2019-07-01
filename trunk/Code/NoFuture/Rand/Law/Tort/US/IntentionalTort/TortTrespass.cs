@@ -32,6 +32,9 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 
             var title = subj.GetLegalPersonTypeName();
 
+            if (PropertyOwnerIsSubjectPerson(persons))
+                return false;
+
             if (!WithoutConsent(persons))
                 return false;
 

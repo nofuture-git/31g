@@ -72,3 +72,7 @@ $nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.9.0\tools\nu
 function Test-NfRandLawTortMethod($MethodName){
     Invoke-Expression "$nunit $testDll --where `"method == $MethodName`""
 }
+
+function Test-NfRandLawTort(){
+    Invoke-Expression "$nunit $testDll"
+}
