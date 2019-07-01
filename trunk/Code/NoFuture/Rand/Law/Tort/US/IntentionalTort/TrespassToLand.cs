@@ -7,6 +7,10 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
     [EtymologyNote("Latin", "quare clausum fregit", "wherefore he broke the close")]
     public class TrespassToLand : TortTrespass
     {
+        public TrespassToLand(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
+
+        public TrespassToLand() : base(ExtensionMethods.Tortfeasor) { }
+
         /// <summary>
         /// E.G. dust, noise, vibrations, sound waves, electromagnetic radiation, etc
         /// </summary>
