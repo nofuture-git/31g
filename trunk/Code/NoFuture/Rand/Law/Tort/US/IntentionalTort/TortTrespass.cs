@@ -32,6 +32,9 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 
             var title = subj.GetLegalPersonTypeName();
 
+            if (!WithoutConsent(persons))
+                return false;
+
             if (Injury == null)
             {
                 AddReasonEntry($"{title} {subj.Name}, {nameof(Injury)} is unassigned");

@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Law.Property.Tests
         {
             var test = new TreasureTrove(PropertyOwner)
             {
-                IsConcealedLocation = p => true,
+                IsConcealed = p => true,
                 IsGoldSilverOrCurrency = p => true,
                 SubjectProperty =  _property
             };

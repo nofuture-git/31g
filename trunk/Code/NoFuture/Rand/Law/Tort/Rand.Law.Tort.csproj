@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="US\Elements\InvasionOfPrivacy.cs" />
     <Compile Include="US\Elements\ProductStrictLiability.cs" />
     <Compile Include="US\Elements\Defamation.cs" />
     <Compile Include="US\IntentionalTort\PrivateNuisance.cs" />

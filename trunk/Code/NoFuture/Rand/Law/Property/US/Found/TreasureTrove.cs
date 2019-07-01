@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Law.Property.US.Found
     {
         public TreasureTrove(Func<IEnumerable<ILegalPerson>, ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
 
-        public Predicate<ILegalProperty> IsConcealedLocation { get; set; } = p => false;
+        public Predicate<ILegalProperty> IsConcealed { get; set; } = p => false;
 
         public Predicate<ILegalProperty> IsGoldSilverOrCurrency { get; set; } = p => false;
 
@@ -20,9 +20,9 @@ namespace NoFuture.Rand.Law.Property.US.Found
             if (base.PropertyOwnerIsInPossession(persons))
                 return false;
 
-            if (!IsConcealedLocation(SubjectProperty))
+            if (!IsConcealed(SubjectProperty))
             {
-                AddReasonEntry($"{nameof(SubjectProperty)} named '{SubjectProperty.Name}', {nameof(IsConcealedLocation)} is false");
+                AddReasonEntry($"{nameof(SubjectProperty)} named '{SubjectProperty.Name}', {nameof(IsConcealed)} is false");
                 return false;
             }
 

@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
+namespace NoFuture.Rand.Law.Tort.US.Elements
 {
     /// <summary>
     /// An injury to one&apos;s social standing.
@@ -64,9 +64,10 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
             if (!IsUnwantedStatement(defamed))
             {
                 AddReasonEntry($"{defamed.GetLegalPersonTypeName()} {defamed.Name}, {nameof(IsUnwantedStatement)} is false");
+                return false;
             }
 
-            throw new NotImplementedException();
+            return true;
         }
 
         public virtual int GetRank()
