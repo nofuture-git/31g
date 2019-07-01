@@ -15,7 +15,6 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         public Defamation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
-        public Defamation() : base(ExtensionMethods.Defendant) { }
 
         /// <summary>
         /// The statement must be false

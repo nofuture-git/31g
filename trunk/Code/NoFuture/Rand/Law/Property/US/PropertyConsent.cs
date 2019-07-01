@@ -63,7 +63,8 @@ namespace NoFuture.Rand.Law.Property.US
                 //did the owner victim in fact give consent 
                 if (validConsent != ConsentExpectedAs)
                 {
-                    AddReasonEntry($"owner-victim {ownerVictim.Name}, {nameof(Consent)} {nameof(IsValid)} " +
+                    AddReasonEntry($"owner-{ownerVictim.GetLegalPersonTypeName()} {ownerVictim.Name}, " +
+                                   $"{nameof(Consent)} {nameof(IsValid)} " +
                                    $"is {validConsent}, it was expected to be {ConsentExpectedAs} " +
                                    $"for property {SubjectProperty}");
                     return false;

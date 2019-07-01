@@ -9,6 +9,18 @@ namespace NoFuture.Rand.Law.US
         {
         }
 
+        public Causation() : base(ExtensionMethods.Defendant) { }
+
+        public static Causation ItsObvious() { return new Yes();}
+
+        private class Yes : Causation
+        {
+            public override bool IsValid(params ILegalPerson[] persons)
+            {
+                return true;
+            }
+        }
+
         /// <summary>
         /// The direct antecedent which caused the harm\damage - the harm\damage which exist only because of it.
         /// </summary>

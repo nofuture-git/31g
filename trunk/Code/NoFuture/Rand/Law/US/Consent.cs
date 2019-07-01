@@ -11,6 +11,19 @@ namespace NoFuture.Rand.Law.US
         {
         }
 
+        public static IConsent NotGiven()
+        {
+            return new No();
+        }
+
+        private class No : Consent
+        {
+            public override bool IsValid(params ILegalPerson[] persons)
+            {
+                return false;
+            }
+        }
+
         public Predicate<ILegalPerson> IsCapableThereof { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsApprovalExpressed { get; set; } = lp => false;
 

@@ -52,6 +52,7 @@
     <Compile Include="CourvoisiervRaymondTests.cs" />
     <Compile Include="DavisvFeinsteinTests.cs" />
     <Compile Include="DellwovPearsonTests.cs" />
+    <Compile Include="DesnickvAmericanBroadcastingCompaniesIncTests.cs" />
     <Compile Include="DillonvLeggTests.cs" />
     <Compile Include="DoughertyvSteppTests.cs" />
     <Compile Include="EnsignvWallsTests.cs" />

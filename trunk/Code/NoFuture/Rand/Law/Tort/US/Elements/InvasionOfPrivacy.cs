@@ -16,10 +16,9 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         }
 
         /// <summary>
-        /// Is some effort made to conceal property 
+        /// When given in plain sight of all then privacy cannot be expected
         /// </summary>
-        [Aka("not in plain view")]
-        public Predicate<ILegalPerson> IsConcealed { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsInPlainSight { get; set; } = lp => false;
 
         /// <summary>
         /// Would a reasonable person expect privacy in the given circumstances
@@ -34,13 +33,13 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
                 return false;
             var title = subj.GetLegalPersonTypeName();
 
-            if (!IsConcealed(subj))
+            if (IsInPlainSight(subj))
             {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(IsConcealed)} is false");
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsInPlainSight)} is true");
                 return false;
             }
 
-            if (IsExpectationOfPrivacy(subj))
+            if (!IsExpectationOfPrivacy(subj))
             {
                 AddReasonEntry($"{title} {subj.Name}, {nameof(IsExpectationOfPrivacy)} is false");
                 return false;
