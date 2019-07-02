@@ -16,11 +16,24 @@ namespace NoFuture.Rand.Law.US
             return new No();
         }
 
+        public static IConsent IsGiven()
+        {
+            return new Yes();
+        }
+
         private class No : Consent
         {
             public override bool IsValid(params ILegalPerson[] persons)
             {
                 return false;
+            }
+        }
+
+        private class Yes : Consent
+        {
+            public override bool IsValid(params ILegalPerson[] persons)
+            {
+                return true;
             }
         }
 

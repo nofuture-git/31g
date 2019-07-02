@@ -32,6 +32,9 @@ namespace NoFuture.Rand.Law.Property.US.Found
                 return false;
             }
 
+            SubjectProperty.EntitledTo = null;
+            SubjectProperty.InPossessionOf = null;
+
             return true;
         }
     }

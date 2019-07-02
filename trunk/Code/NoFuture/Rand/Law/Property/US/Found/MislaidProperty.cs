@@ -26,15 +26,15 @@ namespace NoFuture.Rand.Law.Property.US.Found
             if (base.PropertyOwnerIsInPossession(persons))
                 return false;
 
-            if (OwnersAction == null)
+            if (Relinquishment == null)
             {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(OwnersAction)} is unassigned");
+                AddReasonEntry($"{title} {subj.Name}, {nameof(Relinquishment)} is unassigned");
                 return false;
             }
 
-            if (!OwnersAction.IsValid(persons))
+            if (!Relinquishment.IsValid(persons))
             {
-                AddReasonEntryRange(OwnersAction.GetReasonEntries());
+                AddReasonEntryRange(Relinquishment.GetReasonEntries());
                 AddReasonEntry($"{title} {subj.Name}, {nameof(MislaidProperty)} requires property was " +
                                "voluntarily placed somewhere but later forgotten");
                 return false;
@@ -45,6 +45,9 @@ namespace NoFuture.Rand.Law.Property.US.Found
                 AddReasonEntry($"{title} {subj.Name}, {nameof(IsPropertyLocationKnown)} is true");
                 return false;
             }
+
+            SubjectProperty.EntitledTo = null;
+            SubjectProperty.InPossessionOf = null;
 
             return true;
         }

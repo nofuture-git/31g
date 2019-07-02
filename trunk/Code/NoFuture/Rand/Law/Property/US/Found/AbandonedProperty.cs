@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US.Found
@@ -11,7 +12,8 @@ namespace NoFuture.Rand.Law.Property.US.Found
     {
         public AbandonedProperty(Func<IEnumerable<ILegalPerson>, ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
 
-        public virtual IAct OwnersAction { get; set; }
+        [EtymologyNote("Latin", "'re' + 'linquere'", "back + to leave")]
+        public virtual IAct Relinquishment { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -23,17 +25,20 @@ namespace NoFuture.Rand.Law.Property.US.Found
             if (base.PropertyOwnerIsInPossession(persons))
                 return false;
 
-            if (OwnersAction == null)
+            if (Relinquishment == null)
             {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(OwnersAction)} is unassigned");
+                AddReasonEntry($"{title} {subj.Name}, {nameof(Relinquishment)} is unassigned");
                 return false;
             }
 
-            if (!OwnersAction.IsValid(persons))
+            if (!Relinquishment.IsValid(persons))
             {
-                AddReasonEntryRange(OwnersAction.GetReasonEntries());
+                AddReasonEntryRange(Relinquishment.GetReasonEntries());
                 return false;
             }
+
+            SubjectProperty.EntitledTo = null;
+            SubjectProperty.InPossessionOf = null;
 
             return true;
         }

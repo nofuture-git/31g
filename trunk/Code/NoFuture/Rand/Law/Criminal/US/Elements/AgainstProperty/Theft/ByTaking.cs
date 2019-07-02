@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
     /// <summary>
     /// A union of the various ways of directly stealing;  Model Penal Code 223.2. and 223.7.
     /// </summary>
-    [Aka("larceny")]
+    [Aka("larceny", "conversion")]
     public class ByTaking : ConsolidatedTheft
     {
         /// <summary>

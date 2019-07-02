@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.Property.Tests
             var test = new AbandonedProperty(PropertyOwner)
             {
                 //willingly walks away from property
-                OwnersAction = new Act(PropertyOwner)
+                Relinquishment = new Act(PropertyOwner)
                 {
                     IsVoluntary = lp => lp.IsSamePerson(_propertyOwner),
                     IsAction = lp => lp.IsSamePerson(_propertyOwner)
@@ -43,7 +43,7 @@ namespace NoFuture.Rand.Law.Property.Tests
         {
             var test = new LostProperty(PropertyOwner)
             {
-                OwnersAction = new Act(PropertyOwner)
+                Relinquishment = new Act(PropertyOwner)
                 {
                     IsVoluntary = lp => true
                 },
@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Law.Property.Tests
         {
             var test = new MislaidProperty(PropertyOwner)
             {
-                OwnersAction = new Act(PropertyOwner)
+                Relinquishment = new Act(PropertyOwner)
                 {
                     IsVoluntary = lp => lp.IsSamePerson(_propertyOwner),
                     IsAction = lp => lp.IsSamePerson(_propertyOwner)

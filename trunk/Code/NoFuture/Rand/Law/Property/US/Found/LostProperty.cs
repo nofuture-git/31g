@@ -23,13 +23,13 @@ namespace NoFuture.Rand.Law.Property.US.Found
 
             if (base.PropertyOwnerIsInPossession(persons))
                 return false;
-            if (OwnersAction == null)
+            if (Relinquishment == null)
             {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(OwnersAction)} is unassigned");
+                AddReasonEntry($"{title} {subj.Name}, {nameof(Relinquishment)} is unassigned");
                 return false;
             }
 
-            if (OwnersAction.IsVoluntary(subj))
+            if (Relinquishment.IsVoluntary(subj))
             {
                 AddReasonEntry($"{title} {subj.Name}, {nameof(LostProperty)} " +
                                "requires the owner to have acted involuntarily");
@@ -41,6 +41,9 @@ namespace NoFuture.Rand.Law.Property.US.Found
                 AddReasonEntry($"{title} {subj.Name}, {nameof(IsPropertyLocationKnown)} is true");
                 return false;
             }
+
+            SubjectProperty.EntitledTo = null;
+            SubjectProperty.InPossessionOf = null;
 
             return true;
         }
