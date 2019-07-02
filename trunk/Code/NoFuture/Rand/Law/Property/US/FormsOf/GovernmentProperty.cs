@@ -1,4 +1,5 @@
 ﻿using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Exceptions;
 using NoFuture.Rand.Law.US.Persons;
 
@@ -7,6 +8,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
     /// <summary>
     /// Property which belongs to the government
     /// </summary>
+    [EtymologyNote("Latin", "res publicae", "things owned by the state")]
     public class GovernmentProperty : LegalProperty
     {
         private ILegalPerson _gov = Government.Value;
