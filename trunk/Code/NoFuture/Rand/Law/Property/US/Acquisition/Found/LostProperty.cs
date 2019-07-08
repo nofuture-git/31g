@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Law.Property.US.FormsOf;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.Found
+namespace NoFuture.Rand.Law.Property.US.Acquisition.Found
 {
     /// <summary>
     /// pass out of possession involuntarily through neglect, carelessness or

@@ -4,7 +4,7 @@ using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Property.US.FormsOf;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.Found
+namespace NoFuture.Rand.Law.Property.US.Acquisition.Found
 {
     /// <summary>
     /// When possession is voluntarily forsaken by the owner

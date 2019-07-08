@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US
+namespace NoFuture.Rand.Law.Property.US.Acquisition
 {
     /// <summary>
     /// the moment in time when possession is achieved ... includes acts and thoughts of the would be possessor

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Law.Property.US.FormsOf;
 
-namespace NoFuture.Rand.Law.Property.US.Found
+namespace NoFuture.Rand.Law.Property.US.Acquisition.Found
 {
     /// <summary>
     /// Currency of some kind hidden in something, typically walls or the earth.
