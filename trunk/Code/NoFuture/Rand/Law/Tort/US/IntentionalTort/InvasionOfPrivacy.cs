@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 {
     /// <summary>
     /// Injury to one&apos;s expectation of privacy
