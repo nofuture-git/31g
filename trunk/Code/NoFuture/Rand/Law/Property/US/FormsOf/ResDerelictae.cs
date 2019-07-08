@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoFuture.Rand.Core.Enums;
+﻿using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf
 {
+    /// <summary>
+    /// things voluntarily abandoned by their owner with the intention
+    /// to have them go to the first person taking possession.
+    /// </summary>
     [EtymologyNote("Latin", "res derelictae", "things abandoned")]
     public class ResDerelictae : LegalProperty
     {
