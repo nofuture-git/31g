@@ -41,10 +41,10 @@
     <Compile Include="US\FormsOf\IntellectualProperty.cs" />
     <Compile Include="US\FormsOf\ResDerelictae.cs" />
     <Compile Include="US\FormsOf\ResNullius.cs" />
-    <Compile Include="US\Found\AbandonedProperty.cs" />
-    <Compile Include="US\Found\LostProperty.cs" />
-    <Compile Include="US\Found\MislaidProperty.cs" />
-    <Compile Include="US\Found\TreasureTrove.cs" />
+    <Compile Include="US\Acquisition\Found\AbandonedProperty.cs" />
+    <Compile Include="US\Acquisition\Found\LostProperty.cs" />
+    <Compile Include="US\Acquisition\Found\MislaidProperty.cs" />
+    <Compile Include="US\Acquisition\Found\TreasureTrove.cs" />
     <Compile Include="US\FormsOf\GovernmentProperty.cs" />
     <Compile Include="US\FormsOf\IntangiblePersonalProperty.cs" />
     <Compile Include="US\FormsOf\PersonalProperty.cs" />
@@ -52,7 +52,7 @@
     <Compile Include="US\PropertyConsent.cs" />
     <Compile Include="US\FormsOf\RealProperty.cs" />
     <Compile Include="US\FormsOf\TangiblePersonalProperty.cs" />
-    <Compile Include="US\TakePossession.cs" />
+    <Compile Include="US\Acquisition\TakePossession.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Rand.Core.csproj">
