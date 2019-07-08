@@ -26,5 +26,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         }
 
         public ResNullius(string name, string groupName) : base(name, groupName) { }
+
+        public ResNullius(ILegalProperty property) : base(property) { }
+
     }
 }

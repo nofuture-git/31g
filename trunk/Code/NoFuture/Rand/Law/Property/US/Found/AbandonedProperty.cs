@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Property.US.FormsOf;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US.Found
@@ -37,8 +38,7 @@ namespace NoFuture.Rand.Law.Property.US.Found
                 return false;
             }
 
-            SubjectProperty.EntitledTo = null;
-            SubjectProperty.InPossessionOf = null;
+            SubjectProperty = new ResDerelictae(SubjectProperty) {EntitledTo = null, InPossessionOf = null};
 
             return true;
         }

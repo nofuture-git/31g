@@ -24,6 +24,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
                 base.AddName(KindsOfNames.Legal, GetType().Name.ToUpper());
         }
 
+        public GovernmentProperty(ILegalProperty property) : base(property) { }
+
         public override ILegalPerson EntitledTo
         {
             get => _gov;

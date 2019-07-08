@@ -16,5 +16,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         }
 
         public ActOfService(string name, string groupName) : base(name, groupName) { }
+
+        public ActOfService(ILegalProperty property) : base(property) { }
     }
 }

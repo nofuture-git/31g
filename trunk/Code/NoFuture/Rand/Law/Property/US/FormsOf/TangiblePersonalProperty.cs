@@ -21,5 +21,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         }
 
         public TangiblePersonalProperty(string name, string groupName) : base(name, groupName) { }
+
+        public TangiblePersonalProperty(ILegalProperty property) : base(property) { }
     }
 }

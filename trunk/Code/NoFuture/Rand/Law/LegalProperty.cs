@@ -7,6 +7,10 @@ namespace NoFuture.Rand.Law
 {
     public class LegalProperty : VocaBase, ILegalProperty
     {
+        private ILegalPerson _entitledTo;
+        private ILegalPerson _inPossessionOf;
+        private decimal? _propertyValue;
+
         private readonly List<string> _reasons = new List<string>();
 
         public LegalProperty()
@@ -22,11 +26,38 @@ namespace NoFuture.Rand.Law
 
         public LegalProperty(string name, string groupName) : base(name, groupName) { }
 
-        public virtual ILegalPerson EntitledTo { get; set; }
+        public LegalProperty(ILegalProperty property)
+        {
+            if (property == null)
+                return;
 
-        public virtual ILegalPerson InPossessionOf { get; set; }
+            CopyNamesFrom(property);
+            _entitledTo = property.EntitledTo;
+            _inPossessionOf = property.InPossessionOf;
+            _propertyValue = property.PropertyValue;
+            foreach (var msg in property.GetReasonEntries())
+            {
+                _reasons.Add(msg);
+            }
+        }
 
-        public virtual decimal? PropertyValue { get; set; }
+        public virtual ILegalPerson EntitledTo
+        {
+            get => _entitledTo;
+            set => _entitledTo = value;
+        }
+
+        public virtual ILegalPerson InPossessionOf
+        {
+            get => _inPossessionOf;
+            set => _inPossessionOf = value;
+        }
+
+        public virtual decimal? PropertyValue
+        {
+            get => _propertyValue;
+            set => _propertyValue = value;
+        }
 
         public virtual IEnumerable<string> GetReasonEntries()
         {

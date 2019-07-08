@@ -21,5 +21,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         }
 
         public IntangiblePersonalProperty(string name, string groupName) : base(name, groupName) { }
+
+        public IntangiblePersonalProperty(ILegalProperty property) : base(property) { }
     }
 }
