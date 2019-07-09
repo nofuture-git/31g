@@ -72,6 +72,7 @@
     <Compile Include="MartinvHerzogTests.cs" />
     <Compile Include="MohrvWilliamsTests.cs" />
     <Compile Include="MurphyvSteeplechaseAmusementCoTests.cs" />
+    <Compile Include="NationalBasketballAssociationvMotorolaIncTests.cs" />
     <Compile Include="NgaLivYellowCabCompanyofCaliforniaTests.cs" />
     <Compile Include="PeopleExpressAirlinesvConsolidatedRailTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

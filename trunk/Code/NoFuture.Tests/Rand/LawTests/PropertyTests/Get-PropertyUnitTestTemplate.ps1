@@ -26,7 +26,6 @@ $someCode = @"
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Property.US.Found;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;

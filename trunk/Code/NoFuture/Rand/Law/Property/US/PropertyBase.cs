@@ -19,14 +19,14 @@ namespace NoFuture.Rand.Law.Property.US
             var title = subj.GetLegalPersonTypeName();
             if (SubjectProperty == null)
             {
-                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} is unassigned");
+                AddReasonEntry($"{title} {subj.Name}, {nameof(SubjectProperty)} is unassigned");
                 return false;
             }
 
             var isOwner = SubjectProperty.EntitledTo != null && subj.IsSamePerson(SubjectProperty.EntitledTo);
             var isIsNot = isOwner ? "is owner" : "is not owner";
             AddReasonEntry(
-                $"{title}, {subj.Name}, {isIsNot} " +
+                $"{title} {subj.Name}, {isIsNot} " +
                 $"of {SubjectProperty.GetType().Name} " +
                 $"named '{SubjectProperty.Name}'");
 
@@ -41,14 +41,14 @@ namespace NoFuture.Rand.Law.Property.US
             var title = subj.GetLegalPersonTypeName();
             if (SubjectProperty == null)
             {
-                AddReasonEntry($"{title}, {subj.Name}, {nameof(SubjectProperty)} is unassigned");
+                AddReasonEntry($"{title} {subj.Name}, {nameof(SubjectProperty)} is unassigned");
                 return false;
             }
 
             var hasPossession = SubjectProperty.InPossessionOf != null && subj.IsSamePerson(SubjectProperty.InPossessionOf);
             var isIsNot = hasPossession ? "is in possession" : "is not in possession";
             AddReasonEntry(
-                $"{title}, {subj.Name}, {isIsNot} " +
+                $"{title} {subj.Name}, {isIsNot} " +
                 $"of {SubjectProperty.GetType().Name} " +
                 $"named '{SubjectProperty.Name}'");
 
