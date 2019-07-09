@@ -56,6 +56,7 @@
     <Compile Include="DillonvLeggTests.cs" />
     <Compile Include="DoughertyvSteppTests.cs" />
     <Compile Include="EnsignvWallsTests.cs" />
+    <Compile Include="ExampleUnjustEnrichmentTests.cs" />
     <Compile Include="FortyFiveTwentyFiveIncvFontainebleauHotelCorpTests.cs" />
     <Compile Include="GorrisvScottTests.cs" />
     <Compile Include="GortarezvSmittysSuperValuTests.cs" />
