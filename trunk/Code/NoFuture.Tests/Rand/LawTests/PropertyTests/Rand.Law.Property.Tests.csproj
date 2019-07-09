@@ -45,6 +45,7 @@
     <Compile Include="ExampleFoundPropertyTests.cs" />
     <Compile Include="PopovvHayashiTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QualitexCovJacobsonProductsCoTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

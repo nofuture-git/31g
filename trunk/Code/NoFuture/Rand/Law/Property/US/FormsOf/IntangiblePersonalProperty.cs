@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
     /// <summary>
     /// personal property which has value but cannot be touched or held
     /// </summary>
-    [Eg("patents", "copyrights", "stocks", "bonds", "trusts", "escrow")]
+    [Eg("stocks", "bonds", "trusts", "escrow")]
     public class IntangiblePersonalProperty : PersonalProperty
     {
         public IntangiblePersonalProperty()

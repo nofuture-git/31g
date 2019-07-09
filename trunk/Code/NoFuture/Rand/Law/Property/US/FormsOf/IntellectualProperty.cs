@@ -1,10 +1,12 @@
 ﻿using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf
 {
     /// <summary>
     /// a property interest in creations of human intellect
     /// </summary>
+    [Eg("patents", "copyrights", "trademarks")]
     public class IntellectualProperty : IntangiblePersonalProperty
     {
         public IntellectualProperty()
