@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf
@@ -10,6 +11,23 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
     /// </summary>
     public class Patent : IntellectualProperty, ILegalConcept
     {
+        #region ctors
+        public Patent()
+        {
+            base.AddName(KindsOfNames.Legal, GetType().Name.ToUpper());
+        }
+
+        public Patent(string name) : base(name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                base.AddName(KindsOfNames.Legal, GetType().Name.ToUpper());
+        }
+
+        public Patent(string name, string groupName) : base(name, groupName) { }
+
+        public Patent(ILegalProperty property) : base(property) { }
+        #endregion
+
         [Aka("new art")]
         public bool IsNewProcess { get; set; }
         public bool IsNewMachine { get; set; }

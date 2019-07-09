@@ -12,6 +12,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
     /// </summary>
     public class Trademark : IntellectualProperty, ILegalConcept
     {
+        #region ctors
         public Trademark()
         {
             base.AddName(KindsOfNames.Legal, GetType().Name.ToUpper());
@@ -26,6 +27,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         public Trademark(string name, string groupName) : base(name, groupName) { }
 
         public Trademark(ILegalProperty property) : base(property) { }
+        #endregion
 
         /// <summary>15 U.S.C. Section 1052 (a) </summary>
         [Aka("immoral", "deceptive", "scandalous", "contemptible")]
