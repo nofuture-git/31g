@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharriervBellTests.cs" />
+    <Compile Include="DiamondvChakrabartyTests.cs" />
     <Compile Include="ExampleFoundPropertyTests.cs" />
     <Compile Include="PopovvHayashiTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
