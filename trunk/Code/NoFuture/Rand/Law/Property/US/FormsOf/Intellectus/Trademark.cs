@@ -2,7 +2,7 @@
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf
+namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
 {
     /// <summary>
     /// to identify and distinguish his or her goods, including a unique product, from those

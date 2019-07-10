@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core.Enums;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf
+namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
 {
     /// <summary>
     /// Like patent only dealing with works of artistic creation

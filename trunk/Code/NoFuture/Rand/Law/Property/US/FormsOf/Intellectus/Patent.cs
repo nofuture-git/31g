@@ -4,7 +4,7 @@ using System.Linq;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf
+namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
 {
     /// <summary>
     /// 35 U.S.C. Section 101, promoting &quot;the Progress of Science and the useful Arts&quot;

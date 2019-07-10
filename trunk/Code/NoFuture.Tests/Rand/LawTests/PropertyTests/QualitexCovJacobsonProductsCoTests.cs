@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NoFuture.Rand.Law.Property.US.FormsOf;
-using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.Property.US.FormsOf.Intellectus;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
