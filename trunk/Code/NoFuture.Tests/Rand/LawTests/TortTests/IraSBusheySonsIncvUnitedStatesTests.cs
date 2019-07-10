@@ -20,9 +20,9 @@ namespace NoFuture.Rand.Law.Tort.Tests
         [Test]
         public void IraSBusheySonsIncvUnitedStates()
         {
-            var test = new VicariousLiability(ExtensionMethods.Tortfeasor)
+            var test = new EmployeeVicariousLiability(ExtensionMethods.Tortfeasor)
             {
-                IsEmployment = (er, ee) => er is UnitedStatesAgain && ee is SeamanLane,
+                IsMutuallyBeneficialRelationship = (er, ee) => er is UnitedStatesAgain && ee is SeamanLane,
                 IsActInScopeOfEmployment = lp => lp is SeamanLane,
                 IsVoluntary = lp => lp is SeamanLane,
                 IsAction = lp => lp is SeamanLane

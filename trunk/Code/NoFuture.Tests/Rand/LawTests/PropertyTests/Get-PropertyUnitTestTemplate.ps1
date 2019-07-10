@@ -67,9 +67,13 @@ namespace NoFuture.Rand.Law.Property.Tests
     }
 }
 
-$testDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Property.Tests.dll")).Path
+$testPropertyDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Property.Tests.dll")).Path
 $nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe"))
 
 function Test-NfRandLawPropertyMethod($MethodName){
-    Invoke-Expression "$nunit $testDll --where `"method == $MethodName`""
+    Invoke-Expression "$nunit $testPropertyDll --where `"method == $MethodName`""
+}
+
+function Test-NfRandLawProperty(){
+    Invoke-Expression "$nunit $testPropertyDll"
 }

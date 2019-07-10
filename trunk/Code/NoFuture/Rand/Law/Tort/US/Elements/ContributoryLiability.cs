@@ -4,22 +4,18 @@ using NoFuture.Rand.Law.US;
 namespace NoFuture.Rand.Law.Tort.US.Elements
 {
     /// <summary>
-    /// Liability received through association to some other wrongdoer.
+    /// by intentionally inducing or encouraging direct infringement,
+    /// see Gershwin Pub. Corp. v. Columbia Artists Management, Inc., 443 F.2d 1159, 1162 (C.A.2 1971)
     /// </summary>
-    /// <remarks>
-    /// <![CDATA[
-    /// infringes vicariously by profiting from direct infringement while declining to
-    /// exercise a right to stop or limit it. 
-    /// Shapiro, Bernstein & Co. v. H.L. Green Co., 316 F.2d 304, 307 (C.A.2 1963)
-    /// ]]>
-    /// </remarks>
-    public class  VicariousLiability : AdiunctusLiability
+    public class ContributoryLiability : AdiunctusLiability
     {
-        public VicariousLiability(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        public ContributoryLiability(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
 
-        public Predicate<ILegalPerson> IsAttempt2LimitOthersAct { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsInduceOthersAct { get; set; } = lp => false;
+
+        public Predicate<ILegalPerson> IsEncourageOthersAct { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -31,9 +27,10 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
             if (!Is3rdPartyBeneficialRelationship(persons))
                 return false;
 
-            if (IsAttempt2LimitOthersAct(subj))
+            if (!IsInduceOthersAct(subj) && !IsEncourageOthersAct(subj))
             {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(IsAttempt2LimitOthersAct)} is true");
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsInduceOthersAct)} " +
+                               $"and {IsEncourageOthersAct} are both false");
                 return false;
             }
 
@@ -50,6 +47,8 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
             }
 
             return true;
+
+            throw new NotImplementedException();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
     public class ExampleUnjustEnrichmentTests
     {
         [Test]
-        public void TestIsValid()
+        public void TestUnjustEnrichmentIsValid()
         {
             var test = new UnjustEnrichment(ExtensionMethods.Tortfeasor)
             {
