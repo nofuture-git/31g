@@ -11,6 +11,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
     /// </summary>
     public class Patent : IntellectualProperty, ILegalConcept
     {
+        private readonly HashSet<Tuple<bool, string>> _truePropositions = new HashSet<Tuple<bool, string>>();
+
         #region ctors
         public Patent()
         {
@@ -32,8 +34,6 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
             "new composition of matter", "existing improvement")]
         public bool IsSubjectToPatent { get; set; }
 
-        [Aka("utility", "entertainment")]
-        public bool IsUseful { get; set; }
 
         /// <summary>
         /// Has a written description of design and spec so that it
@@ -45,15 +45,9 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
         [Aka("enablement")]
         public bool IsImplementable { get; set; }
 
-        [Aka("new art")]
-        public bool IsNewProcess { get; set; }
-        public bool IsNewMachine { get; set; }
-        public bool IsNewManufacture { get; set; }
-        public bool IsNewCompositionOfMatter { get; set; }
-        public bool IsExistingImprovement { get; set; }
-
         [Eg("law of gravity", "E=mc^2")]
         public bool IsLawOfNature { get; set; }
+
         [Eg("mathematical relationships", "commercial practices")]
         public bool IsAbstractIdea { get; set; }
 
@@ -63,23 +57,19 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
         /// </summary>
         public bool IsObviousIdea { get; set; }
 
-        public bool IsValid(params ILegalPerson[] persons)
+        public virtual bool IsValid(params ILegalPerson[] persons)
         {
-            var trueProperties = new List<Tuple<bool, string>>
+            Add2TruePropositions(IsSubjectToPatent, nameof(IsSubjectToPatent));
+            Add2TruePropositions(IsImplementable, nameof(IsImplementable));
+            
+            foreach (var tp in _truePropositions)
             {
-                Tuple.Create(IsNewProcess, nameof(IsNewProcess)),
-                Tuple.Create(IsNewMachine, nameof(IsNewMachine)),
-                Tuple.Create(IsNewManufacture, nameof(IsNewManufacture)),
-                Tuple.Create(IsNewCompositionOfMatter, nameof(IsNewCompositionOfMatter)),
-                Tuple.Create(IsExistingImprovement, nameof(IsExistingImprovement)),
-            };
-
-            if (trueProperties.All(p => p.Item1 == false))
-            {
-                var trueNames = string.Join(" ", trueProperties.Select(t => t.Item2));
-                AddReasonEntry($"{nameof(Patent)} named '{Name}', {trueNames} are all false");
-                return false;
+                if(tp.Item1 == false)
+                    AddReasonEntry($"{nameof(Patent)} named '{Name}', {tp.Item2} is false");
             }
+
+            if (_truePropositions.Any(p => p.Item1 == false))
+                return false;
 
             if (IsAbstractIdea)
             {
@@ -90,6 +80,12 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
             if (IsLawOfNature)
             {
                 AddReasonEntry($"{nameof(Patent)} named '{Name}', {nameof(IsLawOfNature)} is true");
+                return false;
+            }
+
+            if (IsObviousIdea)
+            {
+                AddReasonEntry($"{nameof(Patent)} named '{Name}', {nameof(IsObviousIdea)} is true");
                 return false;
             }
 
@@ -104,6 +100,11 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
         public override string ToString()
         {
             return string.Join(Environment.NewLine, GetReasonEntries());
+        }
+
+        protected internal void Add2TruePropositions(bool tv, string name)
+        {
+            _truePropositions.Add(Tuple.Create(tv, name));
         }
     }
 }

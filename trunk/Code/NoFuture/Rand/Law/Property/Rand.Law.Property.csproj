@@ -39,8 +39,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\FormsOf\ActOfService.cs" />
     <Compile Include="US\FormsOf\Intellectus\Copyright.cs" />
+    <Compile Include="US\FormsOf\Intellectus\DesignPatent.cs" />
     <Compile Include="US\FormsOf\Intellectus\IntellectualProperty.cs" />
     <Compile Include="US\FormsOf\Intellectus\Patent.cs" />
+    <Compile Include="US\FormsOf\Intellectus\UtilityPatent.cs" />
     <Compile Include="US\FormsOf\ResDerelictae.cs" />
     <Compile Include="US\FormsOf\ResNullius.cs" />
     <Compile Include="US\Acquisition\Found\AbandonedProperty.cs" />

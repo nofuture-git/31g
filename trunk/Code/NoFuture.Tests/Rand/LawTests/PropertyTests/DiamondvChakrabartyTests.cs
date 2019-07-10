@@ -21,9 +21,12 @@ namespace NoFuture.Rand.Law.Property.Tests
         {
             var test = new PseudomonasBacterium()
             {
-                IsNewCompositionOfMatter = true,
+                IsSubjectToPatent = true,
+                IsUseful = true,
+                IsImplementable = true,
                 IsAbstractIdea = false,
                 IsLawOfNature = false,
+                IsObviousIdea = false
             };
             var testResult = test.IsValid(new Diamond(), new Chakrabarty());
             Assert.IsTrue(testResult);
@@ -31,7 +34,7 @@ namespace NoFuture.Rand.Law.Property.Tests
         }
     }
 
-    public class PseudomonasBacterium : Patent
+    public class PseudomonasBacterium : UtilityPatent
     {
 
     }
