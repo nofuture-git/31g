@@ -7,13 +7,18 @@ namespace NoFuture.Rand.Law.Attributes
         public string Lang { get; }
         public string Original { get; }
         public string Definition { get; }
-        public Tuple<string, string, string> Note { get; }
+        public string AsInExample { get; set; }
 
         public EtymologyNote(string lang, string original, string definition)
         {
             Lang = lang;
             Original = original;
             Definition = definition;
+        }
+
+        public EtymologyNote(string lang, string original, string definition, string asIn) : this(lang, original, definition)
+        {
+            AsInExample = asIn;
         }
     }
 }

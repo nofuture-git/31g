@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\CfAttribute.cs" />
     <Compile Include="Attributes\AkaAttribute.cs" />
     <Compile Include="Attributes\EgAttribute.cs" />
     <Compile Include="Attributes\EtymologyNote.cs" />

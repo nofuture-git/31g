@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
             foreach (var tp in _truePropositions)
             {
                 if(tp.Item1 == false)
-                    AddReasonEntry($"{nameof(Patent)} named '{Name}', {tp.Item2} is false");
+                    AddReasonEntry($"{nameof(Patent)} '{Name}', {tp.Item2} is false");
             }
 
             if (_truePropositions.Any(p => p.Item1 == false))
@@ -73,19 +73,19 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
 
             if (IsAbstractIdea)
             {
-                AddReasonEntry($"{nameof(Patent)} named '{Name}', {nameof(IsAbstractIdea)} is true");
+                AddReasonEntry($"{nameof(Patent)} '{Name}', {nameof(IsAbstractIdea)} is true");
                 return false;
             }
 
             if (IsLawOfNature)
             {
-                AddReasonEntry($"{nameof(Patent)} named '{Name}', {nameof(IsLawOfNature)} is true");
+                AddReasonEntry($"{nameof(Patent)} '{Name}', {nameof(IsLawOfNature)} is true");
                 return false;
             }
 
             if (IsObviousIdea)
             {
-                AddReasonEntry($"{nameof(Patent)} named '{Name}', {nameof(IsObviousIdea)} is true");
+                AddReasonEntry($"{nameof(Patent)} '{Name}', {nameof(IsObviousIdea)} is true");
                 return false;
             }
 
@@ -97,11 +97,6 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
         {
             return Equals(obj);
         }
-        public override string ToString()
-        {
-            return string.Join(Environment.NewLine, GetReasonEntries());
-        }
-
         protected internal void Add2TruePropositions(bool tv, string name)
         {
             _truePropositions.Add(Tuple.Create(tv, name));

@@ -61,37 +61,37 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
         {
             if (IsInjurious)
             {
-                AddReasonEntry($"{nameof(Trademark)} named '{Name}', {nameof(IsInjurious)} is true");
+                AddReasonEntry($"{nameof(Trademark)} '{Name}', {nameof(IsInjurious)} is true");
                 return false;
             }
 
             if (IsExistingInsignia)
             {
-                AddReasonEntry($"{nameof(Trademark)} named '{Name}', {nameof(IsExistingInsignia)} is true");
+                AddReasonEntry($"{nameof(Trademark)} '{Name}', {nameof(IsExistingInsignia)} is true");
                 return false;
             }
 
             if (IsExistingPerson)
             {
-                AddReasonEntry($"{nameof(Trademark)} named '{Name}', {nameof(IsExistingPerson)} is true");
+                AddReasonEntry($"{nameof(Trademark)} '{Name}', {nameof(IsExistingPerson)} is true");
                 return false;
             }
 
             if (IsCopyOfExisting)
             {
-                AddReasonEntry($"{nameof(Trademark)} named '{Name}', {nameof(IsCopyOfExisting)} is true");
+                AddReasonEntry($"{nameof(Trademark)} '{Name}', {nameof(IsCopyOfExisting)} is true");
                 return false;
             }
 
             if (IsFunctionalFeature)
             {
-                AddReasonEntry($"{nameof(Trademark)} named '{Name}', {nameof(IsFunctionalFeature)} is true");
+                AddReasonEntry($"{nameof(Trademark)} '{Name}', {nameof(IsFunctionalFeature)} is true");
                 return false;
             }
 
             if (IsSecondaryMeaning)
             {
-                AddReasonEntry($"{nameof(Trademark)} named '{Name}', {nameof(IsSecondaryMeaning)} is true");
+                AddReasonEntry($"{nameof(Trademark)} '{Name}', {nameof(IsSecondaryMeaning)} is true");
                 return true;
             }
 
@@ -103,11 +103,6 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
         public bool EquivalentTo(object obj)
         {
             return Equals(obj);
-        }
-
-        public override string ToString()
-        {
-            return string.Join(Environment.NewLine, GetReasonEntries());
         }
     }
 }

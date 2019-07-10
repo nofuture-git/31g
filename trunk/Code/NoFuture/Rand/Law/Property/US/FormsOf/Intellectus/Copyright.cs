@@ -1,11 +1,19 @@
 ﻿using System;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
 {
     /// <summary>
     /// Like patent only dealing with works of artistic creation
     /// </summary>
+    /// <remarks>
+    /// Is intended to diminish &quot;private censorship&quot;.
+    /// Where &quot;private censorship&quot; is when an author
+    /// does not record creations to some medium because such
+    /// creations will be immediately stolen.
+    /// </remarks>
+    [EtymologyNote("Latin","copia", "abundance", "cornucopia (aka horn-of-plenty)")]
     public class Copyright : IntellectualProperty, ILegalConcept
     {
         #region ctors
@@ -43,13 +51,13 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
         {
             if (!IsOriginalExpression)
             {
-                AddReasonEntry($"{nameof(Copyright)} named '{Name}', {nameof(IsOriginalExpression)} is false");
+                AddReasonEntry($"{nameof(Copyright)} '{Name}', {nameof(IsOriginalExpression)} is false");
                 return false;
             }
 
             if (!IsMinimalCreative)
             {
-                AddReasonEntry($"{nameof(Copyright)} named '{Name}', {nameof(IsMinimalCreative)} is false");
+                AddReasonEntry($"{nameof(Copyright)} '{Name}', {nameof(IsMinimalCreative)} is false");
                 return false;
             }
 
@@ -61,9 +69,6 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
         {
             return Equals(obj);
         }
-        public override string ToString()
-        {
-            return string.Join(Environment.NewLine, GetReasonEntries());
-        }
+
     }
 }
