@@ -38,9 +38,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\FormsOf\ActOfService.cs" />
-    <Compile Include="US\FormsOf\Copyright.cs" />
-    <Compile Include="US\FormsOf\IntellectualProperty.cs" />
-    <Compile Include="US\FormsOf\Patent.cs" />
+    <Compile Include="US\FormsOf\Intellectus\Copyright.cs" />
+    <Compile Include="US\FormsOf\Intellectus\IntellectualProperty.cs" />
+    <Compile Include="US\FormsOf\Intellectus\Patent.cs" />
     <Compile Include="US\FormsOf\ResDerelictae.cs" />
     <Compile Include="US\FormsOf\ResNullius.cs" />
     <Compile Include="US\Acquisition\Found\AbandonedProperty.cs" />
@@ -50,7 +50,7 @@
     <Compile Include="US\FormsOf\GovernmentProperty.cs" />
     <Compile Include="US\FormsOf\IntangiblePersonalProperty.cs" />
     <Compile Include="US\FormsOf\PersonalProperty.cs" />
-    <Compile Include="US\FormsOf\Trademark.cs" />
+    <Compile Include="US\FormsOf\Intellectus\Trademark.cs" />
     <Compile Include="US\PropertyBase.cs" />
     <Compile Include="US\PropertyConsent.cs" />
     <Compile Include="US\FormsOf\RealProperty.cs" />
