@@ -28,6 +28,23 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         public Patent(ILegalProperty property) : base(property) { }
         #endregion
 
+        [Aka("new process", "new machine", "new manufacture", 
+            "new composition of matter", "existing improvement")]
+        public bool IsSubjectToPatent { get; set; }
+
+        [Aka("utility", "entertainment")]
+        public bool IsUseful { get; set; }
+
+        /// <summary>
+        /// Has a written description of design and spec so that it
+        /// could be produced by one in such skill-domain
+        /// </summary>
+        /// <remarks>
+        /// Having docx of design is the benefit to the public 
+        /// </remarks>
+        [Aka("enablement")]
+        public bool IsImplementable { get; set; }
+
         [Aka("new art")]
         public bool IsNewProcess { get; set; }
         public bool IsNewMachine { get; set; }
@@ -39,6 +56,12 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         public bool IsLawOfNature { get; set; }
         [Eg("mathematical relationships", "commercial practices")]
         public bool IsAbstractIdea { get; set; }
+
+        /// <summary>
+        /// Objective test of one skilled in particular
+        /// art of the patent&apos;s domain would not find obvious
+        /// </summary>
+        public bool IsObviousIdea { get; set; }
 
         public bool IsValid(params ILegalPerson[] persons)
         {
