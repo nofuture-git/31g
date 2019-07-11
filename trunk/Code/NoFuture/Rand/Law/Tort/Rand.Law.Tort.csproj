@@ -42,7 +42,7 @@
     <Compile Include="US\IntentionalTort\InvasionOfPrivacy.cs" />
     <Compile Include="US\Elements\ProductStrictLiability.cs" />
     <Compile Include="US\IntentionalTort\Defamation.cs" />
-    <Compile Include="US\IntentionalTort\Misappropriation.cs" />
+    <Compile Include="US\IntentionalTort\InfoMisappropriation.cs" />
     <Compile Include="US\IntentionalTort\PrivateNuisance.cs" />
     <Compile Include="US\IntentionalTort\PublicNuisance.cs" />
     <Compile Include="US\IntentionalTort\TrespassToPerson.cs" />

@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
         [Test]
         public void NationalBasketballAssociationvMotorolaInc()
         {
-            var test = new Misappropriation(ExtensionMethods.Tortfeasor)
+            var test = new InfoMisappropriation(ExtensionMethods.Tortfeasor)
             {
                 SubjectProperty = new NbaGameScores(),
                 CalcInformationCost = lp => lp is NationalBasketballAssociation ? 1000m : 0m,

@@ -8,9 +8,9 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
     /// <summary>
     /// Similar to unjust enrichment except concerns time-sensitive information 
     /// </summary>
-    public class Misappropriation : PropertyBase
+    public class InfoMisappropriation : PropertyBase
     {
-        public Misappropriation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        public InfoMisappropriation(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
 
