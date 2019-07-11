@@ -57,6 +57,7 @@
     <Compile Include="DoughertyvSteppTests.cs" />
     <Compile Include="EnsignvWallsTests.cs" />
     <Compile Include="ExampleContributoryLiabilityTests.cs" />
+    <Compile Include="ExampleTrademarkInfringementTests.cs" />
     <Compile Include="ExampleUnjustEnrichmentTests.cs" />
     <Compile Include="ExampleVicariousLiabilityTests.cs" />
     <Compile Include="FortyFiveTwentyFiveIncvFontainebleauHotelCorpTests.cs" />

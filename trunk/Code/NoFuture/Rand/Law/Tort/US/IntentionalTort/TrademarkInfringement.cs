@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.Property.US.FormsOf;
 using NoFuture.Rand.Law.Property.US.FormsOf.Intellectus;
 using NoFuture.Rand.Law.Property.US.Terms;
 using NoFuture.Rand.Law.US;
@@ -54,7 +48,7 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
         public bool? IsPurchaserSophisticated { get; set; }
 
         /// <summary>
-        /// Defendant's intent in adopting the mark
+        /// Defendant&apos;s intent in adopting the mark
         /// </summary>
         public IIntent Intent { get; set; }
 
@@ -76,7 +70,7 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
                 return false;
             }
 
-            var plaintiffProperty = GetChoice(subj);
+            var plaintiffProperty = GetChoice(plaintiff);
             if (plaintiffProperty == null)
             {
                 AddReasonEntry($"{pTitle} {plaintiff.Name}, {nameof(GetChoice)}  did not return a {nameof(Trademark)}");
