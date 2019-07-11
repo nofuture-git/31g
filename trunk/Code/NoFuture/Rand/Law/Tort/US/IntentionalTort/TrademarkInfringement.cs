@@ -20,7 +20,6 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
     /// - Quality of the defendant's goods or services;
     /// ]]>
     /// </remarks>
-    [Aka("false endorsement")]
     public class TrademarkInfringement : Proportionality<Trademark>
     {
         public TrademarkInfringement(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
