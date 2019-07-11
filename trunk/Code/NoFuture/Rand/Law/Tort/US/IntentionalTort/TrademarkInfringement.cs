@@ -27,31 +27,9 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
         }
 
         /// <summary>
-        /// If consumers are actually being confused
+        /// strength of the plaintiff’s mark;
         /// </summary>
-        public bool? IsActualConfusionExist { get; set; }
-
-        /// <summary>
-        /// Similarity of the goods and services at issue
-        /// </summary>
-        public bool? IsProximityOfProducts { get; set; }
-
-        /// <summary>
-        /// Quality of the defendant's goods or services
-        /// </summary>
-        public bool? IsDefendantProductsPoorQuality { get; set; }
-
-        /// <summary>
-        /// Purchaser sophistication
-        /// </summary>
-        public bool? IsPurchaserSophisticated { get; set; }
-
-        /// <summary>
-        /// Defendant&apos;s intent in adopting the mark
-        /// </summary>
-        public IIntent Intent { get; set; }
-
-        public override bool IsValid(params ILegalPerson[] persons)
+        public bool IsPlaintiffMarkStronger(ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
             if (subj == null)
@@ -62,19 +40,13 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
                 return false;
             var pTitle = plaintiff.GetLegalPersonTypeName();
 
-            var defendantProperty = GetChoice(subj);
+            var defendantProperty = GetDefendantProperty(subj);
             if (defendantProperty == null)
-            {
-                AddReasonEntry($"{title} {subj.Name}, {nameof(GetChoice)} did not return a {nameof(Trademark)}");
                 return false;
-            }
 
-            var plaintiffProperty = GetChoice(plaintiff);
+            var plaintiffProperty = GetPlaintiffProperty(plaintiff);
             if (plaintiffProperty == null)
-            {
-                AddReasonEntry($"{pTitle} {plaintiff.Name}, {nameof(GetChoice)}  did not return a {nameof(Trademark)}");
                 return false;
-            }
 
             // first test 'the strength of his make'
             var defendantMarkStrength = defendantProperty.GetStrengthOfMark() ?? new GenericMark();
@@ -90,6 +62,33 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
                 return false;
             }
 
+            return true;
+        }
+
+        /// <summary>
+        /// similarity of the marks;
+        /// </summary>
+        /// <remarks>
+        /// Based on the implementation of <see cref="Proportionality{T}.IsProportional"/>
+        /// </remarks>
+        public bool IsSimilarityOfTheMarks(ILegalPerson[] persons)
+        {
+            var subj = GetSubjectPerson(persons);
+            if (subj == null)
+                return false;
+            var title = subj.GetLegalPersonTypeName();
+            var plaintiff = this.Plaintiff(persons);
+            if (plaintiff == null)
+                return false;
+
+            var defendantProperty = GetDefendantProperty(subj);
+            if (defendantProperty == null)
+                return false;
+
+            var plaintiffProperty = GetPlaintiffProperty(plaintiff);
+            if (plaintiffProperty == null)
+                return false;
+
             //second test 'the degree of similarity between the two marks'
             if (!IsProportional(defendantProperty, plaintiffProperty))
             {
@@ -99,6 +98,51 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
                     $"{nameof(Trademark)} '{plaintiffProperty.Name}' is false");
                 return false;
             }
+
+            return true;
+        }
+
+        /// <summary>
+        /// If consumers are actually being confused
+        /// </summary>
+        [Aka("evidence of actual confusion")]
+        public bool? IsActualConfusionExist { get; set; }
+
+        /// <summary>
+        /// Similarity of the goods and services at issue
+        /// </summary>
+        [Aka("relatedness of the goods")]
+        public bool? IsProximityOfProducts { get; set; }
+
+        /// <summary>
+        /// Quality of the defendant's goods or services
+        /// </summary>
+        public bool? IsDefendantProductsPoorQuality { get; set; }
+
+        /// <summary>
+        /// Purchaser sophistication
+        /// </summary>
+        [Aka("likely degree of purchaser care")]
+        public bool? IsPurchaserSophisticated { get; set; }
+
+        /// <summary>
+        /// Defendant&apos;s intent in adopting the mark
+        /// </summary>
+        [Aka("defendant’s intent in selecting the mark")]
+        public IIntent Intent { get; set; }
+
+        public override bool IsValid(params ILegalPerson[] persons)
+        {
+            var subj = GetSubjectPerson(persons);
+            if (subj == null)
+                return false;
+            var title = subj.GetLegalPersonTypeName();
+
+            if (!IsPlaintiffMarkStronger(persons))
+                return false;
+
+            if (!IsSimilarityOfTheMarks(persons))
+                return false;
 
             if (IsActualConfusionExist != null && IsActualConfusionExist.Value == false)
             {
@@ -131,5 +175,30 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
             return true;
         }
 
+        protected Trademark GetDefendantProperty(ILegalPerson subj)
+        {
+            var title = subj.GetLegalPersonTypeName();
+            var defendantProperty = GetChoice(subj);
+            if (defendantProperty == null)
+            {
+                AddReasonEntry($"{title} {subj.Name}, {nameof(GetChoice)} did not return a {nameof(Trademark)}");
+                return null;
+            }
+
+            return defendantProperty;
+        }
+
+        protected virtual Trademark GetPlaintiffProperty(ILegalPerson plaintiff)
+        {
+            var pTitle = plaintiff.GetLegalPersonTypeName();
+            var plaintiffProperty = GetChoice(plaintiff);
+            if (plaintiffProperty == null)
+            {
+                AddReasonEntry($"{pTitle} {plaintiff.Name}, {nameof(GetChoice)}  did not return a {nameof(Trademark)}");
+                return null;
+            }
+
+            return plaintiffProperty;
+        }
     }
 }
