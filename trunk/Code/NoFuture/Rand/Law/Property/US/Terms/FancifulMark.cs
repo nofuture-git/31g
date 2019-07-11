@@ -9,6 +9,7 @@ namespace NoFuture.Rand.Law.Property.US.Terms
     [Eg("Pepsi", "Exxon")]
     public class FancifulMark : ArbitraryMark
     {
+        protected override string CategoryName => "fanciful mark";
         public override int GetRank()
         {
             return base.GetRank() + 1;

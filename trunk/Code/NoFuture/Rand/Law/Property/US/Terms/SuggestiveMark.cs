@@ -5,6 +5,8 @@
     /// </summary>
     public class SuggestiveMark : DescriptiveMark
     {
+        protected override string CategoryName => "suggestive mark";
+
         public override int GetRank()
         {
             return base.GetRank() + 1;

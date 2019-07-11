@@ -8,6 +8,8 @@ namespace NoFuture.Rand.Law.Property.US.Terms
     [Eg("Apple", "Google", "Amazon")]
     public class ArbitraryMark : SuggestiveMark
     {
+        protected override string CategoryName => "arbitrary mark";
+
         public override int GetRank()
         {
             return base.GetRank() + 1;

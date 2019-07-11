@@ -5,6 +5,8 @@
     /// </summary>
     public class DescriptiveMark : GenericMark
     {
+        protected override string CategoryName => "descriptive mark";
+
         public override int GetRank()
         {
             return base.GetRank() + 1;
