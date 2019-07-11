@@ -66,6 +66,19 @@ namespace NoFuture.Rand.Law
             return GetCategory();
         }
 
+        public override bool Equals(object obj)
+        {
+            var r2 = obj as IRankable;
+            if (r2 == null)
+                return false;
+            return GetRank() == r2.GetRank();
+        }
+
+        public override int GetHashCode()
+        {
+            return GetRank();
+        }
+
         /// <summary>
         /// Helper method to perform boolean operations on two <see cref="IRankable"/>
         /// </summary>
@@ -86,6 +99,36 @@ namespace NoFuture.Rand.Law
                 default:
                     return (t1?.GetRank() ?? 0) == (t2?.GetRank() ?? -1);
             }
+        }
+
+        public static bool operator ==(TermCategory r1, IRankable r2)
+        {
+            return IsRank(TermCategoryBoolOps.Eq, r1, r2);
+        }
+
+        public static bool operator !=(TermCategory r1, IRankable r2)
+        {
+            return IsRank(TermCategoryBoolOps.Ne, r1, r2);
+        }
+
+        public static bool operator >(TermCategory r1, IRankable r2)
+        {
+            return IsRank(TermCategoryBoolOps.Gt, r1, r2);
+        }
+
+        public static bool operator <(TermCategory r1, IRankable r2)
+        {
+            return IsRank(TermCategoryBoolOps.Lt, r1, r2);
+        }
+
+        public static bool operator >=(TermCategory r1, IRankable r2)
+        {
+            return IsRank(TermCategoryBoolOps.Ge, r1, r2);
+        }
+
+        public static bool operator <=(TermCategory r1, IRankable r2)
+        {
+            return IsRank(TermCategoryBoolOps.Le, r1, r2);
         }
     }
 }

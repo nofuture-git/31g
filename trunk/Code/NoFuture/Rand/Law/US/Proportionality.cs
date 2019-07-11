@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Law.US
             if (defendant == null)
                 return false;
 
-            var otherParties = persons.Where(p => !ReferenceEquals(defendant, p)).ToList();
+            var otherParties = persons.Where(p => !defendant.IsSamePerson(p)).ToList();
 
             var defendantContribution = GetChoice(defendant);
             var title = defendant.GetLegalPersonTypeName();

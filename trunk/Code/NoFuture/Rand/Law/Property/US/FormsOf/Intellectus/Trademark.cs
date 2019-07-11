@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.Property.US.Terms;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
 {
@@ -103,6 +104,11 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
         public bool EquivalentTo(object obj)
         {
             return Equals(obj);
+        }
+
+        public virtual StrengthOfMark GetStrengthOfMark()
+        {
+            return new GenericMark();
         }
     }
 }
