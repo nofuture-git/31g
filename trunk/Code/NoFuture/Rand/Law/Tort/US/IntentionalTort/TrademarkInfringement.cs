@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Property.US;
 using NoFuture.Rand.Law.Property.US.FormsOf;
 using NoFuture.Rand.Law.Property.US.FormsOf.Intellectus;
@@ -25,26 +26,27 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
     /// - Quality of the defendant's goods or services;
     /// ]]>
     /// </remarks>
-    public class FalseEndorsement : Proportionality<Trademark>
+    [Aka("false endorsement")]
+    public class TrademarkInfringement : Proportionality<Trademark>
     {
-        public FalseEndorsement(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        public TrademarkInfringement(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
 
         /// <summary>
         /// If consumers are actually being confused
         /// </summary>
-        public bool IsActualConfusionExist { get; set; }
+        public bool? IsActualConfusionExist { get; set; }
 
         /// <summary>
         /// Similarity of the goods and services at issue
         /// </summary>
-        public Func<ILegalProperty, IRankable> GetEconomicMarketSimilarity { get; set; }
+        public bool? IsProximityOfProducts { get; set; }
 
         /// <summary>
         /// Quality of the defendant's goods or services
         /// </summary>
-        public Func<ILegalProperty, IRankable> GetProductQuality { get; set; }
+        public bool? IsDefendantProductsPoorQuality { get; set; }
 
         /// <summary>
         /// Purchaser sophistication
@@ -105,9 +107,35 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
                 return false;
             }
 
+            if (IsActualConfusionExist != null && IsActualConfusionExist.Value == false)
+            {
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsActualConfusionExist)} is false");
+                return false;
+            }
 
+            if (IsProximityOfProducts != null && IsProximityOfProducts.Value == false)
+            {
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsProximityOfProducts)} is false");
+                return false;
+            }
+            if (IsDefendantProductsPoorQuality != null && IsDefendantProductsPoorQuality.Value == false)
+            {
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsDefendantProductsPoorQuality)} is false");
+                return false;
+            }
+            if (IsPurchaserSophisticated != null && IsPurchaserSophisticated.Value == false)
+            {
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsPurchaserSophisticated)} is false");
+                return false;
+            }
 
-            throw new NotImplementedException();
+            if (Intent != null && !Intent.IsValid(persons))
+            {
+                AddReasonEntryRange(Intent.GetReasonEntries());
+                return false;
+            }
+
+            return true;
         }
 
     }
