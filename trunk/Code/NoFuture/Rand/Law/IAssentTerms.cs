@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law.Contract.US
+namespace NoFuture.Rand.Law
 {
     public interface IAssentTerms : IAssent
     {
