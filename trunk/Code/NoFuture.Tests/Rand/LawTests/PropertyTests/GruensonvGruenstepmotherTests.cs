@@ -26,14 +26,21 @@ namespace NoFuture.Rand.Law.Property.Tests
             var painting = new SchlossKammerAmAtterseeII()
             {
                 EntitledTo = new GruenFather(),
+                InPossessionOf = new GruenStepmother()
             };
+            var theSon = new GruenSon();
+
             var test = new InterVivos()
             {
                 Offer = painting,
                 Acceptance = p =>
                 {
-                    p.EntitledTo = new GruenSon();
-                    return p;
+                    if (p is SchlossKammerAmAtterseeII)
+                    {
+                        p.EntitledTo = theSon;
+                        return new InstrumentsOfGift {EntitledTo = theSon, InPossessionOf = theSon };
+                    }
+                    return null;
                 }
             };
 
@@ -43,17 +50,23 @@ namespace NoFuture.Rand.Law.Property.Tests
         }
     }
 
+    public class InstrumentsOfGift : TangiblePersonalProperty
+    {
+        public InstrumentsOfGift() : base("Victor Gruen’s letters") { }
+    }
+
     public class SchlossKammerAmAtterseeII : TangiblePersonalProperty
     {
         public SchlossKammerAmAtterseeII():base("“Schloss Kammer am Attersee II” by Gustav Klimt") { }
     }
 
-    public class GruenSon : LegalPerson, IPlaintiff, IOfferee
+    public class GruenSon : LegalPerson, IPlaintiff, IDonee, IDescendant
     {
         public GruenSon(): base("Gruen (son)") { }
+        public Predicate<ILegalPerson> IsDescendantOf { get; set; } = lp => lp is GruenFather;
     }
 
-    public class GruenFather : LegalPerson, IDefendant, IOfferor
+    public class GruenFather : LegalPerson, IDefendant, IDonor
     {
         public GruenFather() : base("Gruen (father) [DECEASED]") { }
     }

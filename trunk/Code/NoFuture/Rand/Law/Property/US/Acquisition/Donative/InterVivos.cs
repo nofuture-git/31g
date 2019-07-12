@@ -12,8 +12,11 @@ namespace NoFuture.Rand.Law.Property.US.Acquisition.Donative
     public class InterVivos : LegalConcept, IBargain<ILegalProperty, ILegalProperty>
     {
         public ILegalProperty Offer { get; set; }
+
+        [Aka("delivery")]
         public Func<ILegalProperty, ILegalProperty> Acceptance { get; set; }
-        public IAssent Assent { get; set; }
+
+        public IAssent Assent { get; set; } = Consent.IsGiven();
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -61,6 +64,13 @@ namespace NoFuture.Rand.Law.Property.US.Acquisition.Donative
             //only care that the offeree is the owner of it
             var isOffereeOwnerOfExchangeResult = this.PropertyOwnerIsSubjectPerson(performExchange, offeree);
             if (!isOffereeOwnerOfExchangeResult)
+            {
+                return false;
+            }
+
+            //and the offeror is not the owner of the Offer
+            isOfferorCurrentOwner = this.PropertyOwnerIsSubjectPerson(Offer, offeror);
+            if (isOfferorCurrentOwner)
             {
                 return false;
             }
