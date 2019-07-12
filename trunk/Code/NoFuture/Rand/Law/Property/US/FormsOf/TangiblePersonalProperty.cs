@@ -6,6 +6,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
     /// <summary>
     /// personal property which can, typically, be physically handled 
     /// </summary>
+    [Aka("chattel")]
     [Eg("money", "jewelry", "vehicles", "electronics", "cellular telephones", "clothing")]
     public class TangiblePersonalProperty : PersonalProperty
     {

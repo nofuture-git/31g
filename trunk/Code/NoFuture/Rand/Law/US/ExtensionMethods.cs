@@ -162,6 +162,48 @@ namespace NoFuture.Rand.Law.US
             return employees;
         }
 
+        public static bool PropertyOwnerIsSubjectPerson(this IRationale lc, ILegalProperty property, ILegalPerson person)
+        {
+            if (person == null)
+                return false;
+            var title = person.GetLegalPersonTypeName();
+            if (property == null)
+            {
+                lc.AddReasonEntry($"{title} {person.Name}, {nameof(property)} is unassigned");
+                return false;
+            }
+
+            var isOwner = property.EntitledTo != null && person.IsSamePerson(property.EntitledTo);
+            var isIsNot = isOwner ? "is owner" : "is not owner";
+            lc.AddReasonEntry(
+                $"{title} {person.Name}, {isIsNot} " +
+                $"of {property.GetType().Name} " +
+                $"named '{property.Name}'");
+
+            return isOwner;
+        }
+
+        public static bool PropertyOwnerIsInPossession(this IRationale lc, ILegalProperty SubjectProperty, ILegalPerson subj)
+        {
+            if (subj == null)
+                return false;
+            var title = subj.GetLegalPersonTypeName();
+            if (SubjectProperty == null)
+            {
+                lc.AddReasonEntry($"{title} {subj.Name}, {nameof(SubjectProperty)} is unassigned");
+                return false;
+            }
+
+            var hasPossession = SubjectProperty.InPossessionOf != null && subj.IsSamePerson(SubjectProperty.InPossessionOf);
+            var isIsNot = hasPossession ? "is in possession" : "is not in possession";
+            lc.AddReasonEntry(
+                $"{title} {subj.Name}, {isIsNot} " +
+                $"of {SubjectProperty.GetType().Name} " +
+                $"named '{SubjectProperty.Name}'");
+
+            return hasPossession;
+        }
+
         public static string GetTitleNamePairs(this IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
@@ -173,12 +215,12 @@ namespace NoFuture.Rand.Law.US
         {
             if (person == null)
                 return string.Empty;
+            if (person is ITortfeasor)
+                return "tortfeasor";
             if (person is IDefendant)
                 return "defendant";
             if (person is IPlaintiff)
                 return "plaintiff";
-            if (person is ITortfeasor)
-                return "tortfeasor";
             if (person is IOfferee)
                 return "offeree";
             if (person is IOfferor)
