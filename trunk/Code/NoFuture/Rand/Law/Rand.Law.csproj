@@ -43,6 +43,7 @@
     <Compile Include="Exceptions\LawException.cs" />
     <Compile Include="IAct.cs" />
     <Compile Include="IAssent.cs" />
+    <Compile Include="IAssentTerms.cs" />
     <Compile Include="IBargain.cs" />
     <Compile Include="IBipartite.cs" />
     <Compile Include="IDuty.cs" />
