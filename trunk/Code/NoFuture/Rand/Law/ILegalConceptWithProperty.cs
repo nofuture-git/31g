@@ -3,8 +3,8 @@
     /// <summary>
     /// Simple interface to bind a legal concept to some form of legal property
     /// </summary>
-    public interface ILegalConceptWithProperty  : ILegalConcept
+    public interface ILegalConceptWithProperty<T>  : ILegalConcept where T : ILegalProperty
     {
-        ILegalProperty SubjectProperty { get; set; }
+        T SubjectProperty { get; set; }
     }
 }

@@ -728,3 +728,9 @@ peroration: the concluding part of a speech to inspire
 oenophile: connoisseur of wines
 vade mecum: a handbook or guide that is kept constantly at hand for consultation
 pastiche: an artistic style that imitates another period
+parapsychic: mental phenomena with no scientific explanation
+psychogenic: psychological origin, not a physical one.
+caveat emptor: buyer beware, buyer alone is responsible for checking quality 
+moribund: terminal decline, lacking vitality, at-death's-door
+misfeasance: wrongful exercise of lawful authority
+nonfeasance: failure to act required by law

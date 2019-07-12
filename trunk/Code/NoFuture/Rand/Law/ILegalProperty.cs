@@ -1,4 +1,5 @@
 ﻿using NoFuture.Rand.Core;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law
 {
@@ -22,6 +23,7 @@ namespace NoFuture.Rand.Law
         /// Meaning of possession differs by context where it ranges between communicated intent
         /// to a physical act.  However, once established (by whatever means) it becomes a legally protected interest.
         /// </remarks>
+        [Aka("seisin")]
         ILegalPerson InPossessionOf { get; set; }
 
         decimal? PropertyValue { get; set; }

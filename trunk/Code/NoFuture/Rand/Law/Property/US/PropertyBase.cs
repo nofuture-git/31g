@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US
 {
-    public abstract class PropertyBase : UnoHomine, ILegalConceptWithProperty
+    public abstract class PropertyBase : UnoHomine, ILegalConceptWithProperty<ILegalProperty>
     {
         protected PropertyBase(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
