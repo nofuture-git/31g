@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Property.US.FormsOf;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US.InTerra
 {
@@ -12,5 +13,24 @@ namespace NoFuture.Rand.Law.Property.US.InTerra
         public virtual Func<RealProperty, RealProperty> Acceptance { get; set; }
         public virtual IAssent Assent { get; set; }
 
+        public override bool IsValid(params ILegalPerson[] persons)
+        {
+            if (Assent == null)
+            {
+                AddReasonEntry($"{nameof(Assent)} is unassigned");
+                return false;
+            }
+
+            var mutualAssent = Assent as IAssentTerms;
+            if (mutualAssent == null)
+            {
+                AddReasonEntry($"{nameof(Assent)} cannot be cast as {nameof(IAssentTerms)}");
+                return false;
+            }
+            
+            //TODO - deal with strict kind of terms present in all deeds
+
+            throw new NotImplementedException();
+        }
     }
 }

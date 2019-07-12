@@ -31,10 +31,10 @@ namespace NoFuture.Rand.Law
         protected override string CategoryName => null;
 
         [Aka("denomination", "concept")]
-        public T RefersTo { get;}
+        public T RefersTo { get; }
 
         [Aka("label", "notion")]
-        public string Name { get;}
+        public string Name { get; }
 
         public override int GetHashCode()
         {
@@ -163,7 +163,7 @@ namespace NoFuture.Rand.Law
 
             if (!additionalTerms.Any())
             {
-                reasoning?.AddReasonEntry("there is not additonal terms present between");
+                reasoning?.AddReasonEntry("there is not additional terms present between");
             }
 
             return additionalTerms;

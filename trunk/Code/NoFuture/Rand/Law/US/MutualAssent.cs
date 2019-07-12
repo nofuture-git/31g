@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.US
         public override bool IsEnforceableInCourt => true;
 
         /// <summary>
-        /// Is invoked twice, once for promisor and again for promisee.
+        /// Is invoked twice, once for offeror and again for offeree.
         /// The resulting pair of terms must equal each other in both 
         /// name and reference for a contract to exist.
         /// </summary>
