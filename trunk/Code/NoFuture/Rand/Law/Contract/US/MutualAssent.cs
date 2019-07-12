@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US
 {
@@ -29,8 +30,8 @@ namespace NoFuture.Rand.Law.Contract.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.FirstOrDefault();
-            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
             if (offeror == null)
             {
                 AddReasonEntry($"{nameof(offeror)} is null");

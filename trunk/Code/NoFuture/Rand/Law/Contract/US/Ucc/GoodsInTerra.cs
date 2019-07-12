@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US.Ucc
 {
@@ -12,8 +13,8 @@ namespace NoFuture.Rand.Law.Contract.US.Ucc
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.FirstOrDefault();
-            var offeree = persons.Skip(1).Take(1).FirstOrDefault();
+            var offeror = persons.Offeror();
+            var offeree = persons.Offeree();
 
             if (!base.IsValid(offeror, offeree))
                 return false;

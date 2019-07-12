@@ -44,7 +44,9 @@ namespace NoFuture.Rand.Law
         public virtual int CompareTo(object obj)
         {
             var term = obj as Term<T>;
-            return term == null ? 1 : string.Compare(Name, term.Name, StringComparison.Ordinal);
+            if (term?.Name == null)
+                return 1;
+            return string.Compare(Name, term.Name, StringComparison.Ordinal);
         }
 
         /// <summary>

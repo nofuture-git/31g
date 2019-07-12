@@ -10,6 +10,17 @@
     )
     Process
     {
+        $safeNamePlaintiff = New-Object System.String(,[char[]]($Plaintiff.ToCharArray() | ? {[char]::IsLetterOrDigit($_)}))
+        $safeNameDefendant = New-Object System.String(,[char[]]($Defendant.ToCharArray() | ? {[char]::IsLetterOrDigit($_)}))
+
+        if([char]::IsDigit($safeNamePlaintiff.ToCharArray()[0])){
+            $safeNamePlaintiff = "_$safeNamePlaintiff"
+        }
+        
+        if([char]::IsDigit($safeNameDefendant.ToCharArray()[0])){
+            $safeNameDefendant = "_$safeNameDefendant"
+        }
+
 $someCode = @"
 using System;
 using System.Collections.Generic;
@@ -29,10 +40,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
     /// ]]>
     /// </remarks>
     [TestFixture]
-    public class ${Plaintiff}v${Defendant}Tests
+    public class ${safeNamePlaintiff}v${safeNameDefendant}Tests
     {
         [Test]
-        public void ${Plaintiff}v${Defendant}()
+        public void ${safeNamePlaintiff}v${safeNameDefendant}()
         {
             var testContract = new ComLawContract<Promise>
             {
@@ -45,10 +56,10 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
                     {
                         switch (lp)
                         {
-                            case ${Plaintiff} _:
-                                return ((${Plaintiff})lp).GetTerms();
-                            case ${Defendant} _:
-                                return ((${Defendant})lp).GetTerms();
+                            case ${safeNamePlaintiff} _:
+                                return ((${safeNamePlaintiff})lp).GetTerms();
+                            case ${safeNameDefendant} _:
+                                return ((${safeNameDefendant})lp).GetTerms();
                             default:
                                 return null;
                         }
@@ -68,8 +79,8 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
     {
         public override bool IsValid(ILegalPerson offeror, ILegalPerson offeree)
         {
-            return (offeror is ${Plaintiff} || offeror is ${Defendant})
-                   && (offeree is ${Plaintiff} || offeree is ${Defendant});
+            return (offeror is ${safeNamePlaintiff} || offeror is ${safeNameDefendant})
+                   && (offeree is ${safeNamePlaintiff} || offeree is ${safeNameDefendant});
         }
 
         public override bool Equals(object obj)
@@ -92,9 +103,9 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
         }
     }
 
-    public class ${Plaintiff} : LegalPerson, IOfferor
+    public class ${safeNamePlaintiff} : LegalPerson, IOfferor
     {
-        public ${Plaintiff}(): base("") { }
+        public ${safeNamePlaintiff}(): base("") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
@@ -104,9 +115,9 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
         }
     }
 
-    public class ${Defendant} : LegalPerson, IOfferee
+    public class ${safeNameDefendant} : LegalPerson, IOfferee
     {
-        public ${Defendant}(): base("") { }
+        public ${safeNameDefendant}(): base("") { }
         public ISet<Term<object>> GetTerms()
         {
             return new HashSet<Term<object>>
@@ -118,7 +129,18 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
 }
 
 "@
-        $filename = Join-Path (Get-Location).Path  ".\${Plaintiff}v${Defendant}Tests.cs"
+        $filename = Join-Path (Get-Location).Path  ".\${safeNamePlaintiff}v${safeNameDefendant}Tests.cs"
         [System.IO.File]::WriteAllText($filename, $someCode, [System.Text.Encoding]::UTF8)
     }
+}
+
+$testContractDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Contract.Tests.dll")).Path
+$nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe"))
+
+function Test-NfRandLawContractMethod($MethodName){
+    Invoke-Expression "$nunit $testContractDll --where `"method == $MethodName`""
+}
+
+function Test-NfRandLawContract(){
+    Invoke-Expression "$nunit $testContractDll"
 }
