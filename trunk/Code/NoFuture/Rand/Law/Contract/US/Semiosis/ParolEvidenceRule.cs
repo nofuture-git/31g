@@ -47,11 +47,11 @@ namespace NoFuture.Rand.Law.Contract.US.Semiosis
                 return false;
             }
 
-            var contractTerms = Contract.Assent as IContractTerms;
+            var contractTerms = Contract.Assent as IAssentTerms;
             if (contractTerms == null)
             {
                 AddReasonEntry($"{nameof(Contract)} {nameof(Contract.Assent)} does " +
-                               $"not cast as {nameof(IContractTerms)}");
+                               $"not cast as {nameof(IAssentTerms)}");
                 return false;
             }
 

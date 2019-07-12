@@ -223,10 +223,14 @@ namespace NoFuture.Rand.Law.US
                 return "plaintiff";
             if (person is IDonee)
                 return "donee";
+            if (person is IGrantee)
+                return "grantee";
             if (person is IOfferee)
                 return "offeree";
             if (person is IDonor)
                 return "donor";
+            if (person is IGrantor)
+                return "grantor";
             if (person is IOfferor)
                 return "offeror";
             if (person is IChild)

@@ -52,7 +52,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
                 IsSoughtByOfferor = (lp, p) => true
             };
 
-            var contractTerms = testContract.Assent as IContractTerms;
+            var contractTerms = testContract.Assent as IAssentTerms;
             Assert.IsNotNull(contractTerms);
 
             var additonalTerms = contractTerms.GetAdditionalTerms(new Mitchill(), new Lath());

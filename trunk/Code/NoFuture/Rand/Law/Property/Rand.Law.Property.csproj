@@ -56,6 +56,7 @@
     <Compile Include="US\FormsOf\IntangiblePersonalProperty.cs" />
     <Compile Include="US\FormsOf\PersonalProperty.cs" />
     <Compile Include="US\FormsOf\Intellectus\Trademark.cs" />
+    <Compile Include="US\InTerra\Deed.cs" />
     <Compile Include="US\PropertyBase.cs" />
     <Compile Include="US\PropertyConsent.cs" />
     <Compile Include="US\FormsOf\RealProperty.cs" />
@@ -78,5 +79,6 @@
       <Name>Rand.Law</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

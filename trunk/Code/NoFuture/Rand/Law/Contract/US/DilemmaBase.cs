@@ -92,7 +92,7 @@ namespace NoFuture.Rand.Law.Contract.US
                 return false;
             }
 
-            var contractTerms = Contract.Assent as IContractTerms;
+            var contractTerms = Contract.Assent as IAssentTerms;
             if (contractTerms == null)
             {
                 AddReasonEntry("resolving ambiguous terms requires a contract with assent");
