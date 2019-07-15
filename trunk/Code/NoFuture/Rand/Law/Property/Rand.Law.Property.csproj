@@ -62,12 +62,13 @@
     <Compile Include="US\FormsOf\RealProperty.cs" />
     <Compile Include="US\FormsOf\TangiblePersonalProperty.cs" />
     <Compile Include="US\Acquisition\TakePossession.cs" />
-    <Compile Include="US\Terms\ArbitraryMark.cs" />
-    <Compile Include="US\Terms\DescriptiveMark.cs" />
-    <Compile Include="US\Terms\FancifulMark.cs" />
-    <Compile Include="US\Terms\GenericMark.cs" />
-    <Compile Include="US\Terms\StrengthOfMark.cs" />
-    <Compile Include="US\Terms\SuggestiveMark.cs" />
+    <Compile Include="US\Terms\Tm\ArbitraryMark.cs" />
+    <Compile Include="US\Terms\CovenantOfSeisin.cs" />
+    <Compile Include="US\Terms\Tm\DescriptiveMark.cs" />
+    <Compile Include="US\Terms\Tm\FancifulMark.cs" />
+    <Compile Include="US\Terms\Tm\GenericMark.cs" />
+    <Compile Include="US\Terms\Tm\StrengthOfMark.cs" />
+    <Compile Include="US\Terms\Tm\SuggestiveMark.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Rand.Core.csproj">
@@ -79,6 +80,8 @@
       <Name>Rand.Law</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="US\Terms\Convenants\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
