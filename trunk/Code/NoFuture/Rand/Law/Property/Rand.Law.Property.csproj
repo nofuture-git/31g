@@ -61,10 +61,7 @@
     <Compile Include="US\FormsOf\RealProperty.cs" />
     <Compile Include="US\FormsOf\TangiblePersonalProperty.cs" />
     <Compile Include="US\Acquisition\TakePossession.cs" />
-    <Compile Include="US\Terms\Convenants\AgainstEncumbrances.cs" />
-    <Compile Include="US\Terms\Convenants\QuietEnjoyment.cs" />
     <Compile Include="US\Terms\Tm\ArbitraryMark.cs" />
-    <Compile Include="US\Terms\Convenants\Seisin.cs" />
     <Compile Include="US\Terms\Tm\DescriptiveMark.cs" />
     <Compile Include="US\Terms\Tm\FancifulMark.cs" />
     <Compile Include="US\Terms\Tm\GenericMark.cs" />

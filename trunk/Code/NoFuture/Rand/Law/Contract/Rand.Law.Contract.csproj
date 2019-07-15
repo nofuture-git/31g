@@ -85,6 +85,9 @@
     <Compile Include="US\Semiosis\SyntacticDilemma.cs" />
     <Compile Include="US\Terms\CommonUseTerm.cs" />
     <Compile Include="US\Terms\ContractTerm.cs" />
+    <Compile Include="US\Terms\Convenants\AgainstEncumbrancesTerm.cs" />
+    <Compile Include="US\Terms\Convenants\QuietEnjoymentTerm.cs" />
+    <Compile Include="US\Terms\Convenants\SeisinTerm.cs" />
     <Compile Include="US\Terms\CourseOfDealingTerm.cs" />
     <Compile Include="US\Terms\CourseOfPerformanceTerm.cs" />
     <Compile Include="US\Terms\DefaultTerm.cs" />
