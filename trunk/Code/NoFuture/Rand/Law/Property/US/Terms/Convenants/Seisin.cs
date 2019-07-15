@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.Terms
+namespace NoFuture.Rand.Law.Property.US.Terms.Convenants
 {
     /// <summary>
     /// a promise that the offeree has legal possession of the property
