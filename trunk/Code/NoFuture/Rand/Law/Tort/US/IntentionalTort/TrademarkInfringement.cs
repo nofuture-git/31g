@@ -2,6 +2,7 @@
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Property.US.FormsOf.Intellectus;
 using NoFuture.Rand.Law.Property.US.Terms;
+using NoFuture.Rand.Law.Property.US.Terms.Tm;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Tort.US.IntentionalTort

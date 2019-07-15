@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.Terms
+namespace NoFuture.Rand.Law.Property.US.Terms.Tm
 {
     /// <summary>
     /// A neologism whose only existence is due to being a brand.

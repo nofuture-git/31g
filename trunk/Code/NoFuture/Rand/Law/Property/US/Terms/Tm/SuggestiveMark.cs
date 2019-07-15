@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Property.US.Terms
+﻿namespace NoFuture.Rand.Law.Property.US.Terms.Tm
 {
     /// <summary>
     /// Descriptive words that require imagination, thought or perception to be recognize meaning.

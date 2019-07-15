@@ -2,6 +2,7 @@
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Property.US.Terms;
+using NoFuture.Rand.Law.Property.US.Terms.Tm;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
 {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Rand.Law.Property.US.FormsOf.Intellectus;
 using NoFuture.Rand.Law.Property.US.Terms;
+using NoFuture.Rand.Law.Property.US.Terms.Tm;
 using NoFuture.Rand.Law.Tort.US.IntentionalTort;
 using NoFuture.Rand.Law.US;
 using NUnit.Framework;

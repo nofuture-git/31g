@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.Terms
+namespace NoFuture.Rand.Law.Property.US.Terms.Tm
 {
     /// <summary>
     /// Words that have some common usage but also operate as a particular brand-mark.

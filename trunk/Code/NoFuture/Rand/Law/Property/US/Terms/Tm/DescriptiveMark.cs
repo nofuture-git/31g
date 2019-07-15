@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Property.US.Terms
+﻿namespace NoFuture.Rand.Law.Property.US.Terms.Tm
 {
     /// <summary>
     /// Typically nothing more than dressing generic words with declension.
