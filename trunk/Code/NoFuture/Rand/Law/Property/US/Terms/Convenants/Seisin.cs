@@ -7,13 +7,13 @@ namespace NoFuture.Rand.Law.Property.US.Terms.Convenants
     /// </summary>
     [Aka("warranty of possession")]
     [EtymologyNote("old french", "seisine", "completion of the ceremony of feudal investiture")]
-    public class CovenantOfSeisin : Term<ILegalPerson>
+    public class CovenantOfSeisin : Term<ILegalProperty>
     {
-        public CovenantOfSeisin(string name, ILegalPerson reference) : base(name, reference)
+        public CovenantOfSeisin(string name, ILegalProperty reference) : base(name, reference)
         {
         }
 
-        public CovenantOfSeisin(string name, ILegalPerson reference, params ITermCategory[] categories) : base(name, reference, categories)
+        public CovenantOfSeisin(string name, ILegalProperty reference, params ITermCategory[] categories) : base(name, reference, categories)
         {
         }
     }

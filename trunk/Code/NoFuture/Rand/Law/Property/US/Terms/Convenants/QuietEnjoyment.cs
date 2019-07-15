@@ -9,13 +9,13 @@ namespace NoFuture.Rand.Law.Property.US.Terms.Convenants
     /// applicable only when someone disturbs the grantee&apos;s ownership
     /// </remarks>
     [Aka("warranty of quiet enjoyment")]
-    public class QuietEnjoyment : Term<ILegalPerson>
+    public class QuietEnjoyment : Term<ILegalProperty>
     {
-        public QuietEnjoyment(string name, ILegalPerson reference) : base(name, reference)
+        public QuietEnjoyment(string name, ILegalProperty reference) : base(name, reference)
         {
         }
 
-        public QuietEnjoyment(string name, ILegalPerson reference, params ITermCategory[] categories) : base(name, reference, categories)
+        public QuietEnjoyment(string name, ILegalProperty reference, params ITermCategory[] categories) : base(name, reference, categories)
         {
         }
     }
