@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Rand.Law.Contract.US
 {
     public class MutualAssent : LegalConcept, IAssentTerms
     {
