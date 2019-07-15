@@ -1,6 +1,6 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.Terms.Convenants
+namespace NoFuture.Rand.Law.Contract.US.Terms.Convenants
 {
     /// <summary>
     /// promise that you have disclosed all other peoples lawful rights over the property

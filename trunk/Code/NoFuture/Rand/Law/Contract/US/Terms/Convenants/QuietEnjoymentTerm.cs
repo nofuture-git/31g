@@ -1,9 +1,9 @@
 ﻿using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.Terms.Convenants
+namespace NoFuture.Rand.Law.Contract.US.Terms.Convenants
 {
     /// <summary>
-    /// promise that you will defend against someone who claims title.
+    /// promise that you grantor will defend against eviction and\or squatters.
     /// </summary>
     /// <remarks>
     /// applicable only when someone disturbs the grantee&apos;s ownership
