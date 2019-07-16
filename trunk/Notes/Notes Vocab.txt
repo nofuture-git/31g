@@ -734,3 +734,4 @@ caveat emptor: buyer beware, buyer alone is responsible for checking quality
 moribund: terminal decline, lacking vitality, at-death's-door
 misfeasance: wrongful exercise of lawful authority
 nonfeasance: failure to act required by law
+equipoise: blanace of forces or interests

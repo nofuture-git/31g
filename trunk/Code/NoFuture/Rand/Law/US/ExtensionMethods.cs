@@ -78,6 +78,11 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IExpert<T>);
         }
 
+        public static ILegalPerson Disseisor(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is IDisseisor);
+        }
+
         public static IPlaintiff Plaintiff(this IRationale lc, IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
@@ -256,6 +261,8 @@ namespace NoFuture.Rand.Law.US
         {
             if (person == null)
                 return string.Empty;
+            if (person is IDisseisor)
+                return "disseisor";
             if (person is ITortfeasor)
                 return "tortfeasor";
             if (person is IDefendant)
