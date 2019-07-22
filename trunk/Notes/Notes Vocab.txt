@@ -735,3 +735,6 @@ moribund: terminal decline, lacking vitality, at-death's-door
 misfeasance: wrongful exercise of lawful authority
 nonfeasance: failure to act required by law
 equipoise: blanace of forces or interests
+imbricate: arrange with an overlap (like roof tiles)
+ramify: form branches or offshoots, branch out
+scintilla: a tiny trace or spark of some quality or feeling

@@ -97,6 +97,11 @@
     <Compile Include="US\Persons\IVictim.cs" />
     <Compile Include="US\ProximateCause.cs" />
     <Compile Include="US\TermLegalConcept.cs" />
+    <Compile Include="US\Terms\BeyondReasonableDoubtTerm.cs" />
+    <Compile Include="US\Terms\ClearAndConvincingTerm.cs" />
+    <Compile Include="US\Terms\ClearErrorTerm.cs" />
+    <Compile Include="US\Terms\PreponderanceTerm.cs" />
+    <Compile Include="US\Terms\ScintillaTerm.cs" />
     <Compile Include="US\UnoHomine.cs" />
     <Compile Include="US\CaseReading\Citation.cs" />
     <Compile Include="ILegalConcept.cs" />

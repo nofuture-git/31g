@@ -41,6 +41,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrownvGobbleTests.cs" />
     <Compile Include="CharriervBellTests.cs" />
     <Compile Include="DiamondvChakrabartyTests.cs" />
     <Compile Include="ExampleFoundPropertyTests.cs" />

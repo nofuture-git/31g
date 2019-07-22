@@ -12,11 +12,6 @@ namespace NoFuture.Rand.Law.Property.US.Acquisition
         }
 
         /// <summary>
-        /// must physically use the land as a property owner would  with some form of physical change upon the it
-        /// </summary>
-        public IAct ActualPossession { get; set; }
-
-        /// <summary>
         /// the use of the property is visible and apparent so the true owner is aware of potential conflict
         /// </summary>
         /// <remarks>
@@ -46,19 +41,14 @@ namespace NoFuture.Rand.Law.Property.US.Acquisition
             {
                 return false;
             }
-            if (PropertyOwnerIsInPossession(persons))
+            //actual possession
+            if (!PropertyOwnerIsInPossession(persons))
             {
                 return false;
             }
 
             if (!WithoutConsent(persons))
                 return false;
-
-            if (ActualPossession == null || !ActualPossession.IsValid(persons))
-            {
-                AddReasonEntryRange(ActualPossession?.GetReasonEntries());
-                return false;
-            }
 
             if (OpenNotoriousUse == null || !OpenNotoriousUse.IsValid(persons))
             {
@@ -80,7 +70,6 @@ namespace NoFuture.Rand.Law.Property.US.Acquisition
                 return false;
             }
 
-            //TODO - add unit test for this from text (at page 691)
             return true;
         }
     }

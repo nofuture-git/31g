@@ -11,6 +11,16 @@ namespace NoFuture.Rand.Law.US
         }
         public Act() : this(ExtensionMethods.Defendant) { }
 
+        public static IAct ItsClearAndObvious() { return new Yes();}
+
+        private class Yes : Act
+        {
+            public override bool IsValid(params ILegalPerson[] persons)
+            {
+                return true;
+            }
+        }
+
         public Predicate<ILegalPerson> IsVoluntary { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsAction { get; set; } = lp => false;
 
