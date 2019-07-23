@@ -86,6 +86,7 @@
     <Compile Include="RhodeIslandvLeadIndustriesAssociationTests.cs" />
     <Compile Include="SindellvAbbottLaboratoriesTests.cs" />
     <Compile Include="SmithvSnellerTests.cs" />
+    <Compile Include="SomervillevJacobsTests.cs" />
     <Compile Include="SpanovPeriniCorpTests.cs" />
     <Compile Include="SpellervSearsRoebuckandCoTests.cs" />
     <Compile Include="TedlavEllmanTests.cs" />

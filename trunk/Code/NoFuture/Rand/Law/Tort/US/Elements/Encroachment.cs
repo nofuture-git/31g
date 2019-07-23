@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
     /// </summary>
     public class Encroachment : PropertyConsent
     {
-        public Encroachment(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        public Encroachment() : base(ExtensionMethods.Defendant)
         {
         }
 

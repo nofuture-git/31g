@@ -39,6 +39,7 @@
     <Compile Include="US\Elements\ContributoryLiability.cs" />
     <Compile Include="US\Elements\EmployeeVicariousLiability.cs" />
     <Compile Include="US\Elements\Encroachment.cs" />
+    <Compile Include="US\Elements\ImprovingTrespassers.cs" />
     <Compile Include="US\IntentionalTort\FalseEndorsement.cs" />
     <Compile Include="US\IntentionalTort\TrademarkInfringement.cs" />
     <Compile Include="US\IntentionalTort\InvasionOfPrivacy.cs" />

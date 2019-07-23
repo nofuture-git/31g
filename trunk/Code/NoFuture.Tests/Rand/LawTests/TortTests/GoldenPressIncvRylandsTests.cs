@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
         [Test]
         public void GoldenPressIncvRylands()
         {
-            var test = new Encroachment(ExtensionMethods.Defendant)
+            var test = new Encroachment
             {
                 Consent = Consent.NotGiven(),
                 SubjectProperty = new LegalProperty("some building")
