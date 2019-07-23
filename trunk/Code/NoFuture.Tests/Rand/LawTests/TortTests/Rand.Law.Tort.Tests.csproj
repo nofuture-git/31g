@@ -61,6 +61,7 @@
     <Compile Include="ExampleUnjustEnrichmentTests.cs" />
     <Compile Include="ExampleVicariousLiabilityTests.cs" />
     <Compile Include="FortyFiveTwentyFiveIncvFontainebleauHotelCorpTests.cs" />
+    <Compile Include="GoldenPressIncvRylandsTests.cs" />
     <Compile Include="GorrisvScottTests.cs" />
     <Compile Include="GortarezvSmittysSuperValuTests.cs" />
     <Compile Include="HerskovitsvGroupHealthCoopTests.cs" />

@@ -101,6 +101,24 @@ namespace NoFuture.Rand.Law.US
             return plaintiff;
         }
 
+        public static IDefendant Defendant(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var defendant = ppersons.Defendant() as IDefendant;
+            if (defendant == null)
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(IDefendant)} in {nameTitles}");
+                return null;
+            }
+
+            return defendant;
+        }
+
         public static IVictim Victim(this IRationale lc, IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
