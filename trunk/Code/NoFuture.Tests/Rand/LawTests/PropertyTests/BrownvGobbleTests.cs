@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Law.Property.US.Acquisition;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
@@ -13,7 +11,7 @@ namespace NoFuture.Rand.Law.Property.Tests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// doctrine issue, example of adverse possession with the concept of "tracking" (where prior owners already satisfied adverse possession)
+    /// doctrine issue, example of adverse possession with the concept of "tacking" (where prior owners already satisfied adverse possession)
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -30,9 +28,10 @@ namespace NoFuture.Rand.Law.Property.Tests
                     InPossessionOf = new Brown(),
                 },
                 Consent = Consent.NotGiven(),
-                OpenNotoriousUse = Act.ItsClearAndObvious(),
-                IsExclusiveUse = p => p is TwoFeetWideTract,
-                IsContinuousUse = p => p is TwoFeetWideTract,
+                IsOpenNotoriousPossession = p => p is Brown,
+                IsExclusivePossession = p => p is Brown,
+                IsContinuousPossession = p => p is Brown,
+                Inception = new DateTime(1931,1,1)
             };
 
             var testResult = test.IsValid(new Brown(), new Gobble());

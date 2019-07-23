@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Law.US
         }
         public Act() : this(ExtensionMethods.Defendant) { }
 
-        public static IAct ItsClearAndObvious() { return new Yes();}
+        public static IAct DueDiligence() { return new Yes();}
 
         private class Yes : Act
         {
