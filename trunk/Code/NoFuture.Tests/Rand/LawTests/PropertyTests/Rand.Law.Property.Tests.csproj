@@ -47,6 +47,7 @@
     <Compile Include="ExampleFoundPropertyTests.cs" />
     <Compile Include="FeistPublicationsIncvRuralTelephoneServiceCoTests.cs" />
     <Compile Include="GruensonvGruenstepmotherTests.cs" />
+    <Compile Include="MarengoCaveCovRossTests.cs" />
     <Compile Include="OKeeffevSnyderTests.cs" />
     <Compile Include="PopovvHayashiTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
