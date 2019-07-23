@@ -27,13 +27,13 @@ namespace NoFuture.Rand.Law.Property.US
         protected virtual bool WithoutConsent(ILegalPerson[] persons)
         {
             //is all the dependencies present
-            if (SubjectProperty?.EntitledTo == null || Consent == null
-                                                    || persons == null
-                                                    || !persons.Any())
+            if (SubjectProperty?.IsEntitledTo == null || Consent == null
+                                                      || persons == null
+                                                      || !persons.Any())
                 return true;
 
             //if all the people are licensed or invited then consent is implied by the use of type (label)
-            if (persons.Where(v => !v.IsSamePerson(SubjectProperty.EntitledTo)).All(p => p is ILicensee))
+            if (persons.Where(v => !SubjectProperty.IsEntitledTo(v)).All(p => p is ILicensee))
             {
                 AddReasonEntry($"all non-owner persons implement {nameof(ILicensee)} interface type");
                 return false;
@@ -47,12 +47,12 @@ namespace NoFuture.Rand.Law.Property.US
             }
 
             //is any of our victims also the owner of the property
-            var ownerVictims = victims.Where(v => v.IsSamePerson(SubjectProperty.EntitledTo)).ToList();
+            var ownerVictims = victims.Where(v => SubjectProperty.IsEntitledTo(v)).ToList();
             if (!ownerVictims.Any())
             {
                 AddReasonEntry($"of {nameof(IVictim)}s named " +
                                $"{string.Join(",", victims.Select(v => v.Name))}, " +
-                               $"none are {SubjectProperty.EntitledTo.Name}");
+                               $"none are found {nameof(SubjectProperty.IsEntitledTo)} as true");
                 return true;
             }
 
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Law.Property.US
                     AddReasonEntry($"owner-{ownerVictim.GetLegalPersonTypeName()} {ownerVictim.Name}, " +
                                    $"{nameof(Consent)} {nameof(IsValid)} " +
                                    $"is {validConsent}, it was expected to be {ConsentExpectedAs} " +
-                                   $"for property {SubjectProperty}");
+                                   $"for property {SubjectProperty.Name}");
                     return false;
                 }
             }

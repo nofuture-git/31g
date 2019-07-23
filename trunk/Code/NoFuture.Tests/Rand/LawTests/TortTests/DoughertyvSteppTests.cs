@@ -31,8 +31,8 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 SubjectProperty = new RealProperty
                 {
                     Name = "unenclosed land of plaintiff",
-                    EntitledTo = new Dougherty(),
-                    InPossessionOf = new Dougherty()
+                    IsEntitledTo = lp => lp is Dougherty,
+                    IsInPossessionOf = lp => lp is Dougherty
                 },
                 IsTangibleEntry = lp => lp is Stepp
             };
@@ -55,8 +55,8 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 SubjectProperty = new RealProperty
                 {
                     Name = "unenclosed land of plaintiff",
-                    EntitledTo = new Dougherty(),
-                    InPossessionOf = new Dougherty()
+                    IsEntitledTo = lp => lp is Dougherty,
+                    IsInPossessionOf = lp => lp is Dougherty
                 },
                 IsIntangibleEntry = lp => lp is Stepp,
                 Causation = new Causation(ExtensionMethods.Tortfeasor)

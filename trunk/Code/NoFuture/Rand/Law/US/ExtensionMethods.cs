@@ -237,7 +237,7 @@ namespace NoFuture.Rand.Law.US
                 return false;
             }
 
-            var isOwner = property.EntitledTo != null && person.IsSamePerson(property.EntitledTo);
+            var isOwner = property.IsEntitledTo != null && property.IsEntitledTo(person);
             var isIsNot = isOwner ? "is owner" : "is not owner";
             lc.AddReasonEntry(
                 $"{title} {person.Name}, {isIsNot} " +
@@ -258,7 +258,7 @@ namespace NoFuture.Rand.Law.US
                 return false;
             }
 
-            var hasPossession = SubjectProperty.InPossessionOf != null && subj.IsSamePerson(SubjectProperty.InPossessionOf);
+            var hasPossession = SubjectProperty.IsInPossessionOf != null && SubjectProperty.IsInPossessionOf(subj);
             var isIsNot = hasPossession ? "is in possession" : "is not in possession";
             lc.AddReasonEntry(
                 $"{title} {subj.Name}, {isIsNot} " +

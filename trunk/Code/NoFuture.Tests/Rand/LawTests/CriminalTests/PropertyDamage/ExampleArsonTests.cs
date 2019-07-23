@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.PropertyDestruction
                 {
                     SubjectProperty = new LegalProperty("ex's stuff")
                     {
-                        EntitledTo = new TimBrokenheartEg()
+                        IsEntitledTo = lp => lp is TimBrokenheartEg
                     },
                     IsBurned = lp => lp?.Name == "ex's stuff",
                     IsFireStarter = lp => lp is TimBrokenheartEg

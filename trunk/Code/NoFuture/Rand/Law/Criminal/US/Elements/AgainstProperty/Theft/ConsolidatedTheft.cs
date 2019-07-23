@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Property.US;
 using NoFuture.Rand.Law.US;
 
@@ -35,7 +34,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
                 return false;
             }
 
-            if (VocaBase.Equals(SubjectProperty.EntitledTo, defendant))
+            if (SubjectProperty.IsEntitledTo(defendant))
             {
                 AddReasonEntry($"defendant, {defendant.Name}, is the owner of property {SubjectProperty}");
                 return false;
@@ -62,11 +61,11 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
                 return false;
             var isPossess = IsTakenPossession(defendant);
             if (isPossess)
-                SubjectProperty.InPossessionOf = defendant;
+                SubjectProperty.IsInPossessionOf = lp => lp.IsSamePerson(defendant);
 
             var isTitled = IsAcquiredTitle(defendant);
             if (isTitled)
-                SubjectProperty.EntitledTo = defendant;
+                SubjectProperty.IsEntitledTo = lp => lp.IsSamePerson(defendant);
 
             if (!isPossess && !isTitled)
             {
@@ -75,17 +74,6 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
                 return false;
             }
 
-            return true;
-        }
-
-        protected virtual bool TryGetPossesorOfProperty(out ILegalPerson possessor)
-        {
-            possessor = SubjectProperty?.InPossessionOf;
-            if (possessor == null)
-            {
-                AddReasonEntry($"the {nameof(SubjectProperty)}, {nameof(SubjectProperty.InPossessionOf)} is null");
-                return false;
-            }
             return true;
         }
     }

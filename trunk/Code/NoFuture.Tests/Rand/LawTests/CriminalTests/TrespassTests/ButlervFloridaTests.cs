@@ -30,8 +30,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
                     IsTangibleEntry = lp => lp is Butler,
                     SubjectProperty = new LegalProperty("Thelma Harvey house")
                     {
-                        EntitledTo = new ThelmaHarvey(),
-                        InPossessionOf = new ThelmaHarvey()
+                        IsEntitledTo = lp => lp is  ThelmaHarvey,
+                        IsInPossessionOf = lp => lp is ThelmaHarvey
                     }
                 },
                 MensRea = new GeneralIntent

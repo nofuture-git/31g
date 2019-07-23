@@ -4,6 +4,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
 using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Property.US.FormsOf;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -32,15 +33,15 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 //the deposit is a debt 
                 case "debtor-creditor":
                     securityDeposit.IsAllowedToCommingle = true;
-                    securityDeposit.EntitledTo = larson;
+                    securityDeposit.IsEntitledTo = lp => lp.IsSamePerson(larson);
                     break;
                 case "pledgor-pledgee":
                     securityDeposit.IsAllowedToCommingle = true;
-                    securityDeposit.EntitledTo = lessee;
+                    securityDeposit.IsEntitledTo = lp => lp.IsSamePerson(lessee);
                     break;
                 case "settlor-trustee":
                     securityDeposit.IsAllowedToCommingle = false;
-                    securityDeposit.EntitledTo = lessee;
+                    securityDeposit.IsEntitledTo = lp => lp.IsSamePerson(lessee);
                     break;
             }
 

@@ -27,8 +27,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 {
                     SubjectProperty = new LegalProperty("purse")
                     {
-                        EntitledTo = new MsDover(),
-                        InPossessionOf = new MsDover()
+                        IsEntitledTo = lp => lp is MsDover,
+                        IsInPossessionOf = lp => lp is MsDover
                     },
                     IsAsportation = lp => lp is Robertson,
                     IsTakenPossession = lp => lp is Robertson,

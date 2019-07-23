@@ -24,8 +24,8 @@ namespace NoFuture.Rand.Law.Property.Tests
             {
                 SubjectProperty = new TwoFeetWideTract
                 {
-                    EntitledTo = new Gobble(),
-                    InPossessionOf = new Brown(),
+                    IsEntitledTo = lp => lp is Gobble,
+                    IsInPossessionOf = lp => lp is Brown,
                 },
                 Consent = Consent.NotGiven(),
                 IsOpenNotoriousPossession = p => p is Brown,

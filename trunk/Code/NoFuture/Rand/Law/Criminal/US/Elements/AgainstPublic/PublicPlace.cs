@@ -43,8 +43,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 
         public Predicate<ILegalPerson> IsWithin { get; set; } = lp => false;
 
-        public ILegalPerson EntitledTo { get; set; }
-        public ILegalPerson InPossessionOf { get; set; }
+        public Predicate<ILegalPerson> IsEntitledTo { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsInPossessionOf { get; set; } = lp => false;
         public decimal? PropertyValue { get; set; }
         public int GetRank()
         {
@@ -63,9 +63,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
                 AddReasonEntry($"property {this.Name}, is {nameof(IsAccessibleToPublic)} is false");
                 return false;
             }
-            if (VocaBase.Equals(defendant, EntitledTo))
+            if (IsEntitledTo(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, is {nameof(EntitledTo)} is true");
+                AddReasonEntry($"defendant, {defendant.Name}, is {nameof(IsEntitledTo)} is true");
                 return false;
             }
 

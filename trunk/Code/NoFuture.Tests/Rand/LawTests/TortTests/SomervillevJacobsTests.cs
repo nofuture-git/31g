@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var test = new ImprovingTrespassers
             {
-                SubjectProperty = new LegalProperty("Lot 47") {EntitledTo = new Somerville()},
+                SubjectProperty = new LegalProperty("Lot 47") {IsEntitledTo = lp => lp is Somerville},
                 Consent = Consent.NotGiven(),
                 IsOwnerGoodFaithOblivious = lp => lp is Somerville,
                 IsTrespasserGoodFaithIntent = lp => lp is Jacobs

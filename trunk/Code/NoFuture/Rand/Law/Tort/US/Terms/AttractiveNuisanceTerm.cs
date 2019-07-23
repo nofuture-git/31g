@@ -32,9 +32,9 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (SubjectProperty?.EntitledTo == null)
+            if (SubjectProperty?.IsEntitledTo == null)
             {
-                AddReasonEntry($"{nameof(SubjectProperty)} {nameof(SubjectProperty.EntitledTo)} is unassigned");
+                AddReasonEntry($"{nameof(SubjectProperty)} {nameof(SubjectProperty.IsEntitledTo)} is unassigned");
                 return false;
             }
 
@@ -43,10 +43,10 @@ namespace NoFuture.Rand.Law.Tort.US.Terms
                 return false;
             var title = subj.GetLegalPersonTypeName();
 
-            if (SubjectProperty.EntitledTo != null && !SubjectProperty.EntitledTo.IsSamePerson(subj))
+            if (SubjectProperty.IsEntitledTo != null && !SubjectProperty.IsEntitledTo(subj))
             {
                 AddReasonEntry($"property named '{SubjectProperty.Name}' is " +
-                               $"not {nameof(SubjectProperty.EntitledTo)} {title} {subj.Name} ");
+                               $"not {nameof(SubjectProperty.IsEntitledTo)} {title} {subj.Name} ");
                 return false;
             }
 

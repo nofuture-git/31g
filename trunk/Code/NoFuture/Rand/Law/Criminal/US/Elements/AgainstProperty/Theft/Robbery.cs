@@ -68,12 +68,11 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
                 return false;
             }
 
-            if (!TryGetPossesorOfProperty(out var possess))
-                return false;
+            var possess = persons.FirstOrDefault(p => SubjectProperty.IsInPossessionOf(p));
 
             foreach (var victim in victims)
             {
-                if (possess.Equals(victim) || ReferenceEquals(possess, victim))
+                if (possess == null || possess.Equals(victim) || ReferenceEquals(possess, victim))
                     return true;
                 AddReasonEntry($"victim, {victim.Name}, is not in possession of {possess.GetType().Name} '{possess.Name}'");
             }

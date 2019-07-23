@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
@@ -53,8 +54,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
             if (defendant == null)
                 return false;
 
-            if (!TryGetPossesorOfProperty(out var possess))
-                return false;
+            var possess = persons.FirstOrDefault(p => SubjectProperty.IsInPossessionOf(p));
 
             if (!defendant.Equals(possess) && !ReferenceEquals(defendant, possess))
             {
@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
                 AddReasonEntry($"defendant, {defendant.Name}, does not " +
                                $"possess {SubjectProperty?.GetType().Name} " +
                                $"named {SubjectProperty?.Name} - it is possessed " +
-                               $"by {SubjectProperty?.InPossessionOf.Name}");
+                               $"by {possess?.Name}");
                 return false;
             }
 

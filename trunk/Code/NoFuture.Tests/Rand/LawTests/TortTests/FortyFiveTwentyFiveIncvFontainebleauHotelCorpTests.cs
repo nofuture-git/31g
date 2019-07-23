@@ -23,8 +23,8 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var rocHotel = new LegalProperty("Roc Hotel")
             {
-                EntitledTo = new FortyFiveTwentyFiveInc(),
-                InPossessionOf = new FortyFiveTwentyFiveInc()
+                IsEntitledTo = lp => lp is FortyFiveTwentyFiveInc,
+                IsInPossessionOf = lp => lp is FortyFiveTwentyFiveInc
             };
             var test = new PrivateNuisance(ExtensionMethods.Tortfeasor)
             {

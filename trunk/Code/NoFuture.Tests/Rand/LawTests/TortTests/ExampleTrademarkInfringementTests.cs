@@ -22,14 +22,14 @@ namespace NoFuture.Rand.Law.Tort.Tests
             var defendant = new SomeDefendant();
             var strongTrademark = new StrongTrademark()
             {
-                EntitledTo = plaintiff,
-                InPossessionOf = plaintiff,
+                IsEntitledTo = lp => lp.IsSamePerson(plaintiff),
+                IsInPossessionOf = lp => lp.IsSamePerson(plaintiff),
                 Name = "STRONG MARK"
             };
             var weakTrademark = new WeakTrademark()
             {
-                EntitledTo = defendant,
-                InPossessionOf = defendant,
+                IsEntitledTo = lp => lp.IsSamePerson(defendant),
+                IsInPossessionOf = lp => lp.IsSamePerson(defendant),
                 Name = "WEAK MARK"
             };
             var test = new TrademarkInfringement(ExtensionMethods.Defendant)

@@ -24,8 +24,8 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var property = new LegalProperty("some hole")
             {
-                EntitledTo = new Banker(),
-                InPossessionOf = new Banker()
+                IsEntitledTo = lp => lp is Banker,
+                IsInPossessionOf = lp => lp is Banker
             };
 
             var test = new OfLandOwner(ExtensionMethods.Tortfeasor)

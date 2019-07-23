@@ -23,8 +23,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.PropertyDestruction
                 IsDamaged = prop => prop?.Name == "sue's stuff",
                 SubjectProperty = new LegalProperty("sue's stuff")
                 {
-                    InPossessionOf = new SueBrokenstuffEg(),
-                    EntitledTo = new SueBrokenstuffEg()
+                    IsInPossessionOf = lp => lp is SueBrokenstuffEg,
+                    IsEntitledTo = lp => lp is SueBrokenstuffEg
                 }
             };
             var testResult = testAct.IsValid(new JohnnyDestroyerEg(), new SueBrokenstuffEg());

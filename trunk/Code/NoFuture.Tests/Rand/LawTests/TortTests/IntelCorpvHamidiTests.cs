@@ -31,8 +31,8 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 SubjectProperty = new PersonalProperty
                 {
                     Name = "Intel Corp computer system",
-                    EntitledTo = new IntelCorp(),
-                    InPossessionOf = new IntelCorp()
+                    IsEntitledTo = lp => lp is IntelCorp,
+                    IsInPossessionOf = lp => lp is IntelCorp
                 },
                 Causation =  new Causation(ExtensionMethods.Tortfeasor)
                 {

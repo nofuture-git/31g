@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
 using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -31,7 +32,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public void ExampleThreatenHonestlyDue()
         {
             var trent = new TrentThreatenEg();
-            var thousandDollars = new LegalProperty("thousand dollars") {EntitledTo = trent, PropertyValue = 10000m };
+            var thousandDollars = new LegalProperty("thousand dollars") {IsEntitledTo = lp => lp.IsSamePerson(trent), PropertyValue = 10000m };
             var testAct = new ByExtortion
             {
                 IsTakenPossession = lp => lp is TrentThreatenEg,

@@ -88,7 +88,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
                 return false;
 
             //threats for what is honestly owed is not illegal
-            if (VocaBase.Equals(defendant,SubjectProperty?.EntitledTo))
+            if (SubjectProperty?.IsEntitledTo(defendant) ?? false)
             {
                 AddReasonEntry($"defendant {defendant.Name}, is entitled to " +
                                $"{SubjectProperty?.GetType().Name} " +

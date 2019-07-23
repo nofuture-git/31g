@@ -24,8 +24,8 @@ namespace NoFuture.Rand.Law.Property.Tests
             {
                 SubjectProperty = new LegalProperty("part of 'Marengo Cave'")
                 {
-                    EntitledTo = new Ross(),
-                    InPossessionOf = new MarengoCaveCo()
+                    IsEntitledTo = lp => lp is Ross,
+                    IsInPossessionOf = lp => lp is MarengoCaveCo
                 },
                 Consent = Consent.NotGiven(),
                 EntitledOwnersAction = Act.DueDiligence(),

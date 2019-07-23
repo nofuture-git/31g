@@ -55,8 +55,8 @@ namespace NoFuture.Rand.Law.Property.US.Acquisition
                 return false;
             }
 
-            SubjectProperty.EntitledTo = subj;
-            SubjectProperty.InPossessionOf = subj;
+            SubjectProperty.IsEntitledTo = lp => lp.IsSamePerson(subj);
+            SubjectProperty.IsInPossessionOf = lp => lp.IsSamePerson(subj);
 
             return true;
         }

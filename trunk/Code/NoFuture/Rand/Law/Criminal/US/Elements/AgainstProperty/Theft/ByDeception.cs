@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
@@ -62,8 +61,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
                 return false;
             }
 
-            var isPossess = VocaBase.Equals(SubjectProperty.InPossessionOf,defendant);
-            var isTitle = VocaBase.Equals(SubjectProperty.EntitledTo,defendant);
+            var isPossess = SubjectProperty.IsInPossessionOf(defendant);
+            var isTitle =  SubjectProperty.IsEntitledTo(defendant);
 
             IsLarcenyByTrick = isPossess && !isTitle;
             IsFalsePretense = isPossess && isTitle;

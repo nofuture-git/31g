@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 Consent = Consent.NotGiven(),
                 SubjectProperty = new LegalProperty("some building")
                 {
-                    EntitledTo = new Rylands()
+                    IsEntitledTo = lp => lp is Rylands
                 },
                 IsGoodFaithIntent = lp => true,
                 IsUseAffected = lp => false,

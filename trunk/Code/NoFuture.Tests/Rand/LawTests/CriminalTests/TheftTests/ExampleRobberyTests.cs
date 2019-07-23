@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                 IsAsportation = lp => lp is RodneyBlackmailEg,
                 IsByViolence = lp => lp is RodneyBlackmailEg,
                 SubjectProperty = new LegalProperty("money")
-                    {EntitledTo = new LindseyDealinEg(), InPossessionOf = new LindseyDealinEg(), PropertyValue = 15000m },
+                    {IsEntitledTo = lp => lp is LindseyDealinEg, IsInPossessionOf = lp => lp is LindseyDealinEg, PropertyValue = 15000m },
                 
             };
 

@@ -10,6 +10,8 @@ namespace NoFuture.Rand.Law
         private ILegalPerson _entitledTo;
         private ILegalPerson _inPossessionOf;
         private decimal? _propertyValue;
+        private Predicate<ILegalPerson> _isEntitledTo = lp => false;
+        private Predicate<ILegalPerson> _isInPossessionOf = lp => false;
 
         private readonly List<string> _reasons = new List<string>();
 
@@ -32,8 +34,8 @@ namespace NoFuture.Rand.Law
                 return;
 
             CopyNamesFrom(property);
-            _entitledTo = property.EntitledTo;
-            _inPossessionOf = property.InPossessionOf;
+            _isEntitledTo = property.IsEntitledTo ?? (lp => false);
+            _isInPossessionOf = property.IsInPossessionOf ?? (lp => false);
             _propertyValue = property.PropertyValue;
             foreach (var msg in property.GetReasonEntries())
             {
@@ -41,16 +43,16 @@ namespace NoFuture.Rand.Law
             }
         }
 
-        public virtual ILegalPerson EntitledTo
+        public virtual Predicate<ILegalPerson> IsEntitledTo
         {
-            get => _entitledTo;
-            set => _entitledTo = value;
+            get => _isEntitledTo;
+            set => _isEntitledTo = value;
         }
 
-        public virtual ILegalPerson InPossessionOf
+        public virtual Predicate<ILegalPerson> IsInPossessionOf
         {
-            get => _inPossessionOf;
-            set => _inPossessionOf = value;
+            get => _isInPossessionOf;
+            set => _isInPossessionOf = value;
         }
 
         public virtual decimal? PropertyValue

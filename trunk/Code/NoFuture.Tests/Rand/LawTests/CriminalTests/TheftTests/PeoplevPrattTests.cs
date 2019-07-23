@@ -28,8 +28,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     IsTakenPossession = lp => lp is Pratt,
                     SubjectProperty = new LegalProperty("1990 Buick Regal")
                     {
-                        EntitledTo = new PrattFormerGirlfriend(),
-                        InPossessionOf = new PrattFormerGirlfriend(),
+                        IsEntitledTo = lp => lp is PrattFormerGirlfriend,
+                        IsInPossessionOf = lp => lp is PrattFormerGirlfriend,
                         PropertyValue = 1000.99m
                     },
                     //court finds its stolen, by statute, regardless of intent-to-return

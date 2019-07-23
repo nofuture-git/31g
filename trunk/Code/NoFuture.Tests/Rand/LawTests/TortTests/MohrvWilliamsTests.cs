@@ -46,8 +46,8 @@ namespace NoFuture.Rand.Law.Tort.Tests
                 {
                     SubjectProperty = new LegalProperty("Williams hearing")
                     {
-                        EntitledTo = new Williams(),
-                        InPossessionOf = new Williams(),
+                        IsEntitledTo = lp => lp is Williams,
+                        IsInPossessionOf = lp => lp is Williams,
                     },
                     ToNormalFunction = lp => true
                 },

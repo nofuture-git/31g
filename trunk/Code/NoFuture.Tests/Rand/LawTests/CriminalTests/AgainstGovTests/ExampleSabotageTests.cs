@@ -20,8 +20,8 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
                 {
                     IsDamagerOf = lp => lp is MoSabotageEg,
                     IsDefenseProperty = true,
-                    EntitledTo = new UsDeptDefense(),
-                    InPossessionOf = new UsDeptDefense()
+                    IsEntitledTo = lp => lp is UsDeptDefense,
+                    IsInPossessionOf = lp => lp is UsDeptDefense
                 },
                 MensRea = new Purposely
                 {

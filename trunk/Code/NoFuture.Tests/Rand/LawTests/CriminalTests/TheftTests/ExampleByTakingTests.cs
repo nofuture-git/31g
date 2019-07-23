@@ -4,6 +4,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
 using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
 using NoFuture.Rand.Law.Property.US.FormsOf;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -58,7 +59,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public void ExampleInvalidTheftWhenOwner()
         {
             var jermey = new JeremyTheifEg();
-            var property = new ChewingGum {EntitledTo = jermey, PropertyValue = 1.25m };
+            var property = new ChewingGum {IsEntitledTo = lp => lp.IsSamePerson(jermey), PropertyValue = 1.25m };
             var testCrime = new Misdemeanor
             {
                 ActusReus = new ByTaking()
@@ -81,7 +82,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
         public void ExampleVictimConsentGiven()
         {
             var cody = new CodyFriendEg();
-            var property = new ChewingGum {EntitledTo = cody};
+            var property = new ChewingGum {IsEntitledTo = lp => lp.IsSamePerson(cody)};
 
             var testCrime = new Misdemeanor
             {

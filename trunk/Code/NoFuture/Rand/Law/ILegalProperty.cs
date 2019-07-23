@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Core;
+﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law
@@ -14,7 +15,7 @@ namespace NoFuture.Rand.Law
         /// <summary>
         /// Who is lawfully entitled to the property
         /// </summary>
-        ILegalPerson EntitledTo { get; set; }
+        Predicate<ILegalPerson> IsEntitledTo { get; set; }
 
         /// <summary>
         /// Who actually possess control over the property - more than just physical possession.
@@ -24,7 +25,7 @@ namespace NoFuture.Rand.Law
         /// to a physical act.  However, once established (by whatever means) it becomes a legally protected interest.
         /// </remarks>
         [Aka("seisin")]
-        ILegalPerson InPossessionOf { get; set; }
+        Predicate<ILegalPerson> IsInPossessionOf { get; set; }
 
         decimal? PropertyValue { get; set; }
     }

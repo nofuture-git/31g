@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Property.US.Acquisition.Found
                 return false;
             }
 
-            SubjectProperty = new ResDerelictae(SubjectProperty) {EntitledTo = null, InPossessionOf = null};
+            SubjectProperty = new ResDerelictae(SubjectProperty) {IsEntitledTo = lp => false, IsInPossessionOf = lp => false};
 
             return true;
         }

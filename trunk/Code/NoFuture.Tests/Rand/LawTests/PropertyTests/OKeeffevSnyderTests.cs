@@ -28,8 +28,8 @@ namespace NoFuture.Rand.Law.Property.Tests
                 IsOpenNotoriousPossession = lp => false,
                 SubjectProperty = new OKeeffePaintings()
                 {
-                    EntitledTo = new OKeeffe(),
-                    InPossessionOf = new Snyder()
+                    IsEntitledTo = lp => lp is OKeeffe,
+                    IsInPossessionOf = lp => lp is Snyder
                 },
                 Inception = new DateTime(1972,6,1)
             };

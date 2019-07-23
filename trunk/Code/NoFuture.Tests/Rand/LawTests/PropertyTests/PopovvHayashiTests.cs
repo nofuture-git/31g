@@ -25,8 +25,8 @@ namespace NoFuture.Rand.Law.Property.Tests
         {
             var baseball = new HistoricBaseball();
             var mlb = new MajorLeagueBaseball();
-            baseball.EntitledTo = mlb;
-            baseball.InPossessionOf = mlb;
+            baseball.IsEntitledTo = lp => lp.IsSamePerson(mlb);
+            baseball.IsInPossessionOf = lp => lp.IsSamePerson(mlb);
 
             var hitBall = new AbandonedProperty(ExtensionMethods.Defendant)
             {
@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Property.Tests
             var testResult = hitBall.IsValid(new Popov(), new Hayashi(), new MajorLeagueBaseball());
             Assert.IsTrue(testResult);
             
-            baseball.InPossessionOf = new Hayashi();
+            baseball.IsInPossessionOf = lp => lp is Hayashi;
 
             var test = new TakePossession(ExtensionMethods.Plaintiff)
             {

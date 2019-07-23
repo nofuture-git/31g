@@ -24,8 +24,8 @@ namespace NoFuture.Rand.Law.Tort.Tests
         {
             var property = new LegalProperty("13949 Dacosta Street")
             {
-                InPossessionOf = new Walls(),
-                EntitledTo = new Walls()
+                IsInPossessionOf = lp => lp is Walls,
+                IsEntitledTo = lp => lp is Walls
             };
             var test = new PrivateNuisance(ExtensionMethods.Tortfeasor)
             {

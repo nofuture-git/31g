@@ -26,8 +26,8 @@ namespace NoFuture.Rand.Law.Property.Tests
                 IsParody = lp => lp is HoughtonMifflinCo,
                 SubjectProperty = new GWTW
                 {
-                    EntitledTo = new SuntrustBank(),
-                    InPossessionOf = new SuntrustBank(),
+                    IsEntitledTo = lp => lp is SuntrustBank,
+                    IsInPossessionOf = lp => lp is SuntrustBank,
                     IsOriginalExpression = true,
                     IsMinimalCreative = true
                 }

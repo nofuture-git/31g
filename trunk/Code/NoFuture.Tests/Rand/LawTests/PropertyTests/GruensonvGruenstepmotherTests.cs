@@ -25,8 +25,8 @@ namespace NoFuture.Rand.Law.Property.Tests
         {
             var painting = new SchlossKammerAmAtterseeII()
             {
-                EntitledTo = new GruenFather(),
-                InPossessionOf = new GruenStepmother()
+                IsEntitledTo = lp => lp is GruenFather,
+                IsInPossessionOf = lp => lp is GruenStepmother
             };
             var theSon = new GruenSon();
 
@@ -37,8 +37,8 @@ namespace NoFuture.Rand.Law.Property.Tests
                 {
                     if (p is SchlossKammerAmAtterseeII)
                     {
-                        p.EntitledTo = theSon;
-                        return new InstrumentsOfGift {EntitledTo = theSon, InPossessionOf = theSon };
+                        p.IsEntitledTo = lp => lp.IsSamePerson(theSon);
+                        return new InstrumentsOfGift {IsEntitledTo = lp => lp.IsSamePerson(theSon), IsInPossessionOf = lp => lp.IsSamePerson(theSon) };
                     }
                     return null;
                 }

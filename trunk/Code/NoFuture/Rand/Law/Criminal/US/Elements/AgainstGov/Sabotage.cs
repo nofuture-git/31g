@@ -94,15 +94,16 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
             return true;
         }
 
-        public ILegalPerson EntitledTo
+        public Predicate<ILegalPerson> IsEntitledTo
         {
-            get => _govProperty.EntitledTo;
-            set => _govProperty.EntitledTo = value;
+            get => _govProperty.IsEntitledTo;
+            set => _govProperty.IsEntitledTo = value;
         }
-        public ILegalPerson InPossessionOf
+
+        public Predicate<ILegalPerson> IsInPossessionOf
         {
-            get => _govProperty.InPossessionOf;
-            set => _govProperty.InPossessionOf = value;
+            get => _govProperty.IsInPossessionOf;
+            set => _govProperty.IsInPossessionOf = value;
         }
 
         public decimal? PropertyValue { get; set; }
