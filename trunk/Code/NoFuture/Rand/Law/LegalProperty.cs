@@ -7,8 +7,6 @@ namespace NoFuture.Rand.Law
 {
     public class LegalProperty : VocaBase, ILegalProperty
     {
-        private ILegalPerson _entitledTo;
-        private ILegalPerson _inPossessionOf;
         private decimal? _propertyValue;
         private Predicate<ILegalPerson> _isEntitledTo = lp => false;
         private Predicate<ILegalPerson> _isInPossessionOf = lp => false;
