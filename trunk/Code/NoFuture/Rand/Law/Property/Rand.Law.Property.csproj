@@ -47,6 +47,9 @@
     <Compile Include="US\FormsOf\Intellectus\IntellectualProperty.cs" />
     <Compile Include="US\FormsOf\Intellectus\Patent.cs" />
     <Compile Include="US\FormsOf\Intellectus\UtilityPatent.cs" />
+    <Compile Include="US\FormsOf\InTerra\FeeSimpleInterest.cs" />
+    <Compile Include="US\FormsOf\InTerra\ILandPropertyInterest.cs" />
+    <Compile Include="US\FormsOf\InTerra\PropertyInterestFactory.cs" />
     <Compile Include="US\FormsOf\ResDerelictae.cs" />
     <Compile Include="US\FormsOf\ResNullius.cs" />
     <Compile Include="US\Acquisition\Found\AbandonedProperty.cs" />
@@ -59,7 +62,7 @@
     <Compile Include="US\FormsOf\Intellectus\Trademark.cs" />
     <Compile Include="US\PropertyBase.cs" />
     <Compile Include="US\PropertyConsent.cs" />
-    <Compile Include="US\FormsOf\RealProperty.cs" />
+    <Compile Include="US\FormsOf\InTerra\RealProperty.cs" />
     <Compile Include="US\FormsOf\TangiblePersonalProperty.cs" />
     <Compile Include="US\Acquisition\TakePossession.cs" />
     <Compile Include="US\Terms\Tm\ArbitraryMark.cs" />
