@@ -12,6 +12,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
+        protected DefeasibleFee() : base(null) { }
+
         public new RealProperty SubjectProperty { get; set; }
 
     }
@@ -21,6 +23,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         public FeeSimpleSubject2ExecutoryInterest(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
+
+        public FeeSimpleSubject2ExecutoryInterest() : base(null) { }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -34,6 +38,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
+        public FeeSimpleDeterminable() : base(null) { }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             throw new NotImplementedException();
@@ -45,6 +51,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         public FeeSimpleSubject2ConditionSubsequent(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
+
+        public FeeSimpleSubject2ConditionSubsequent() : base(null) { }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

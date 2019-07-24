@@ -13,6 +13,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
+        public Leasehold() : base(null) { }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             throw new NotImplementedException();

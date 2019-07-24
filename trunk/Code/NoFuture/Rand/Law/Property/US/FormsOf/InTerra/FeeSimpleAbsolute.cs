@@ -11,6 +11,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
+        public FeeSimpleAbsolute() : base(null) { }
+
         public new RealProperty SubjectProperty { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)

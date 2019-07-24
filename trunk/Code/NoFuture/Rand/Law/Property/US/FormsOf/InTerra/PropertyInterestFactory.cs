@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
 
         public T GetValue()
         {
-            var val = new T {SubjectProperty = SubjectProperty};
+            var val = new T {SubjectProperty = SubjectProperty, GetSubjectPerson = GetSubjectPerson};
             return val;
         }
     }
@@ -46,23 +46,21 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         /// <summary>
         /// otherwise DefinitelyFinite
         /// </summary>
-        public Predicate<ILegalPerson> IsPresentInterestPossibleInfinite { get; set; } = lp => false;
-
-        public ILandPropertyInterest GetPropertyInterest(params ILegalPerson[] persons)
+        public IPropertyInterestFactory IsPresentInterestPossibleInfiniteRR(Predicate<ILegalPerson> predicate, params ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
 
             if (subj == null)
                 return null;
 
-            if (IsPresentInterestPossibleInfinite(subj))
+            predicate = predicate ?? (lp => false);
+
+            if (predicate(subj))
             {
-                var feeSimpleFactory = new FeeSimpleFactory(SubjectProperty, GetSubjectPerson);
-                return feeSimpleFactory.GetPropertyInterest(persons);
+                return new FeeSimpleFactory(SubjectProperty, GetSubjectPerson);
             }
 
-            var llf = new LeaseLifeEstateFactory(SubjectProperty, GetSubjectPerson);
-            return llf.GetPropertyInterest(persons);
+            return new LeaseLifeEstateFactory(SubjectProperty, GetSubjectPerson);
         }
     }
 
@@ -74,20 +72,22 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         /// <summary>
         /// Or possibly finite
         /// </summary>
-        public Predicate<ILegalPerson> IsPresentInterestDefinitelyInfinite { get; set; } = lp => false;
-
-        public ILandPropertyInterest GetPropertyInterest(params ILegalPerson[] persons)
+        public IPropertyInterestFactory IsPresentInterestDefinitelyInfiniteRR(Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
 
             if (subj == null)
                 return null;
 
-            if (IsPresentInterestDefinitelyInfinite(subj))
-                return new FeeSimpleAbsolute(GetSubjectPerson) {SubjectProperty = SubjectProperty};
+            predicate = predicate ?? (lp => false);
 
-            var defeasibleFactory = new DefeasibleFeeFactory(SubjectProperty, GetSubjectPerson);
-            return defeasibleFactory.GetPropertyInterest(persons);
+            if (predicate(subj))
+            {
+                return new PropertyInterestFactoryValue<FeeSimpleAbsolute>(SubjectProperty, GetSubjectPerson);
+            }
+
+            return new DefeasibleFeeFactory(SubjectProperty, GetSubjectPerson);
         }
     }
 
@@ -99,20 +99,20 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         /// <summary>
         /// or someone else
         /// </summary>
-        public Predicate<ILegalPerson> IsFutureInterestInGrantor { get; set; } = lp => false;
-
-        public ILandPropertyInterest GetPropertyInterest(params ILegalPerson[] persons)
+        public IPropertyInterestFactory IsFutureInterestInGrantorRR(Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
 
             if (subj == null)
                 return null;
 
-            if (IsFutureInterestInGrantor(subj))
-                return new FeeSimpleSubject2ExecutoryInterest(GetSubjectPerson) {SubjectProperty = SubjectProperty};
+            predicate = predicate ?? (lp => false);
 
-            var factory = new DefeasibleFeeFutureInterestIsGrantor(SubjectProperty, GetSubjectPerson);
-            return factory.GetPropertyInterest(persons);
+            if (predicate(subj))
+                return new PropertyInterestFactoryValue<FeeSimpleSubject2ExecutoryInterest>(SubjectProperty, GetSubjectPerson);
+
+            return new DefeasibleFeeFutureInterestIsGrantor(SubjectProperty, GetSubjectPerson);
         }
     }
 
@@ -124,21 +124,22 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         /// <summary>
         /// or require an assertion of ownership 
         /// </summary>
-        public Predicate<ILegalPerson> IsVestOwnershipAutomatic { get; set; } = lp => false;
-
-        public ILandPropertyInterest GetPropertyInterest(params ILegalPerson[] persons)
+        public IPropertyInterestFactory IsVestOwnershipAutomaticRR(Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
 
             if (subj == null)
                 return null;
 
-            if (IsVestOwnershipAutomatic(subj))
+            predicate = predicate ?? (lp => false);
+
+            if (predicate(subj))
             {
-                return new FeeSimpleDeterminable(GetSubjectPerson) {SubjectProperty = SubjectProperty};
+                return new PropertyInterestFactoryValue<FeeSimpleDeterminable>( SubjectProperty, GetSubjectPerson);
             }
 
-            return new FeeSimpleSubject2ConditionSubsequent(GetSubjectPerson) {SubjectProperty = SubjectProperty};
+            return new PropertyInterestFactoryValue<FeeSimpleSubject2ConditionSubsequent>( SubjectProperty, GetSubjectPerson);
         }
     }
 
@@ -151,20 +152,20 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         /// <summary>
         /// or someone else
         /// </summary>
-        public Predicate<ILegalPerson> IsFutureInterestInGrantor { get; set; } = lp => false;
-
-        public ILandPropertyInterest GetPropertyInterest(params ILegalPerson[] persons)
+        public IPropertyInterestFactory IsFutureInterestInGrantorRR(Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
 
             if (subj == null)
                 return null;
 
-            if (IsFutureInterestInGrantor(subj))
-                return new Reversion(GetSubjectPerson) {SubjectProperty = SubjectProperty};
+            predicate = predicate ?? (lp => false);
 
-            var factory = new RemainderFactory(SubjectProperty, GetSubjectPerson);
-            return factory.GetPropertyInterest(persons);
+            if (predicate(subj))
+                return new PropertyInterestFactoryValue<Reversion>(SubjectProperty, GetSubjectPerson);
+
+            return new RemainderFactory(SubjectProperty, GetSubjectPerson);
         }
     }
 
@@ -173,31 +174,40 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         public RemainderFactory(RealProperty property, 
             Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(property, getSubjectPerson) { }
 
-        public Predicate<ILegalPerson> IsAnyUncertaintyInWhoHasRemainderInterest { get; set; } = lp => false;
-        public Predicate<ILegalPerson> IsAnyConditionsOnRemainderInterest { get; set; } = lp => false;
-
-        public ILandPropertyInterest GetPropertyInterest(params ILegalPerson[] persons)
+        public IPropertyInterestFactory IsAnyUncertaintyInWhoHasRemainderInterestRR(Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
 
             if (subj == null)
                 return null;
 
-            var condOn = IsAnyConditionsOnRemainderInterest(subj);
-            var uncertain = IsAnyUncertaintyInWhoHasRemainderInterest(subj);
+            predicate = predicate ?? (lp => false);
 
-            //TODO what if they are both true?
-            if (!condOn && !uncertain)
-                return new AbsolutelyVestedRemainder(GetSubjectPerson) {SubjectProperty = SubjectProperty};
-
-            if (uncertain)
+            if (predicate(subj))
             {
-                var factory00 = new OtherRemainderFactory(SubjectProperty, GetSubjectPerson);
-                return factory00.GetPropertyInterest(persons);
+                return new OtherRemainderFactory(SubjectProperty, GetSubjectPerson);
             }
 
-            var factory = new ConditionalOtherRemainderFactory(SubjectProperty, GetSubjectPerson);
-            return factory.GetPropertyInterest(persons);
+            return new PropertyInterestFactoryValue<AbsolutelyVestedRemainder>(SubjectProperty, GetSubjectPerson);
+        }
+
+        public IPropertyInterestFactory IsAnyConditionsOnRemainderInterestRR(Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons)
+        {
+            var subj = GetSubjectPerson(persons);
+
+            if (subj == null)
+                return null;
+
+            predicate = predicate ?? (lp => false);
+
+            if (predicate(subj))
+            {
+                return new OtherRemainderFactory(SubjectProperty, GetSubjectPerson);
+            }
+
+            return new PropertyInterestFactoryValue<AbsolutelyVestedRemainder>(SubjectProperty, GetSubjectPerson);
         }
     }
 
@@ -206,19 +216,21 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         public OtherRemainderFactory(RealProperty property, 
             Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(property, getSubjectPerson) { }
 
-        public Predicate<ILegalPerson> IsAtLeastOneMemberIdentifiedAndCertain { get; set; } = lp => false;
-
-        public ILandPropertyInterest GetPropertyInterest(params ILegalPerson[] persons)
+        public IPropertyInterestFactory IsAtLeastOneMemberIdentifiedAndCertainRR(Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
 
             if (subj == null)
                 return null;
 
-            if (IsAtLeastOneMemberIdentifiedAndCertain(subj))
-                return new VestedRemainderSubjectToOpen(GetSubjectPerson) {SubjectProperty = SubjectProperty};
+            predicate = predicate ?? (lp => false);
 
-            return new ContingentRemainder(GetSubjectPerson) {SubjectProperty = SubjectProperty};
+            if (predicate(subj))
+                return new PropertyInterestFactoryValue<VestedRemainderSubjectToOpen>(SubjectProperty,
+                    GetSubjectPerson);
+
+            return new PropertyInterestFactoryValue<ContingentRemainder>(SubjectProperty, GetSubjectPerson);
         }
     }
 
@@ -227,20 +239,21 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         public ConditionalOtherRemainderFactory(RealProperty property, 
             Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(property, getSubjectPerson) { }
 
-        public Predicate<ILegalPerson> IsConditionToGetItOrLoseIt { get; set; } =
-            lp => false;
-
-        public ILandPropertyInterest GetPropertyInterest(params ILegalPerson[] persons)
+        public IPropertyInterestFactory IsConditionToGetItOrLoseItRR(Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons)
         {
             var subj = GetSubjectPerson(persons);
 
             if (subj == null)
                 return null;
 
-            if (IsConditionToGetItOrLoseIt(subj))
-                return new ContingentRemainder(GetSubjectPerson) {SubjectProperty = SubjectProperty};
+            predicate = predicate ?? (lp => false);
 
-            return new VestedRemainderSubjectToDivestment(GetSubjectPerson) {SubjectProperty = SubjectProperty};
+            if (predicate(subj))
+                return new PropertyInterestFactoryValue<ContingentRemainder>(SubjectProperty, GetSubjectPerson);
+
+            return new PropertyInterestFactoryValue<VestedRemainderSubjectToDivestment>(SubjectProperty,
+                GetSubjectPerson);
         }
     }
 }

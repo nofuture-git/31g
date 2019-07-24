@@ -1,4 +1,6 @@
-﻿namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
+﻿using System;
+
+namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
 {
     /// <summary>
     /// Base interface for the various legal concepts around having an &quot;interest&quot; in land 
@@ -6,5 +8,6 @@
     public interface ILandPropertyInterest : ILegalConceptWithProperty<RealProperty>
     {
         new RealProperty SubjectProperty { get; set; }
+        Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
     }
 }

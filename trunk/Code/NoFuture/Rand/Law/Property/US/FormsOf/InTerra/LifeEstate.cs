@@ -10,6 +10,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
+        protected LifeEstate() : base(null) { }
+
         public new RealProperty SubjectProperty { get; set; }
         public DateTime Inception { get; set; }
         public DateTime? Terminus { get; set; }
@@ -27,6 +29,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
+        public Reversion() : base(null) { }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             throw new NotImplementedException();
@@ -39,6 +43,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
+        protected Remainder() : base(null) { }
+
     }
 
     [Aka("indefeasibly vested remainder")]
@@ -47,6 +53,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         public AbsolutelyVestedRemainder(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
+
+        public AbsolutelyVestedRemainder() : base(null) { }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -60,6 +68,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
+        public ContingentRemainder() : base(null) { }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             throw new NotImplementedException();
@@ -71,6 +81,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         public VestedRemainderSubjectToDivestment(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
+
+        public VestedRemainderSubjectToDivestment() : base(null) { }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -87,6 +99,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         public VestedRemainderSubjectToOpen(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
+
+        public VestedRemainderSubjectToOpen() : base(null) { }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
