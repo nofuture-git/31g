@@ -7,6 +7,9 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
 {
     public interface IPropertyInterestFactory : IRationale
     {
+        IPropertyInterestFactory GetNextFactory(string predicateName, Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons);
+        bool IsEnd { get; }
     }
 
     public abstract class PropertyInterestFactoryBase : Rationale, IPropertyInterestFactory
@@ -44,8 +47,17 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
             var predicateResult = predicate(subj);
 
             var result = predicateResult ? WhenTrue : WhenFalse;
-            AddReasonEntry($"{title} {subj.Name}, {predicateName} " +
-                           $"returning {result.GetType().Name}");
+
+            var resultTypeName = result.GetType().Name;
+
+            if (result.IsEnd)
+            {
+                var interestType = result.GetType().GenericTypeArguments.FirstOrDefault();
+                resultTypeName = interestType != null ? interestType.Name : resultTypeName;
+            }
+
+            AddReasonEntry($"{title} {subj.Name}, {predicateName} is {predicateResult} returning {resultTypeName}");
+            result.AddReasonEntryRange(GetReasonEntries());
             return result;
         }
 

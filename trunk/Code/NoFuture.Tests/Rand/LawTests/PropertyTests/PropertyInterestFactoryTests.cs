@@ -35,6 +35,8 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             Assert.IsInstanceOf<FeeSimpleSubject2ExecutoryInterest>(testResult);
 
+            Console.WriteLine(test02.ToString());
+
         }
 
         public class CurtisLandholder : LegalPerson, IDefendant
