@@ -5,5 +5,6 @@
     /// </summary>
     public interface ILandPropertyInterest : ILegalConceptWithProperty<RealProperty>
     {
+        new RealProperty SubjectProperty { get; set; }
     }
 }

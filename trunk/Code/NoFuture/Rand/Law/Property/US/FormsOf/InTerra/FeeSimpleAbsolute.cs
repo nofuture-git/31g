@@ -5,9 +5,9 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
     /// <summary>
     /// The simplest form of property interest - a kind of default which is assumed unless otherwise stated
     /// </summary>
-    public class FeeSimple : PropertyBase, ILandPropertyInterest
+    public class FeeSimpleAbsolute : PropertyBase, ILandPropertyInterest
     {
-        public FeeSimple(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
+        public FeeSimpleAbsolute(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
         {
         }
 

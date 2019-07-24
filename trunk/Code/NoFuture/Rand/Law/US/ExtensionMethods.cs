@@ -43,9 +43,9 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IOfferee);
         }
 
-        public static ILegalPerson Grantee(this IEnumerable<ILegalPerson> persons)
+        public static ILegalPerson Grantor(this IEnumerable<ILegalPerson> persons)
         {
-            return persons.FirstOrDefault(p => p is IGrantee);
+            return persons.FirstOrDefault(p => p is IGrantor);
         }
 
         public static ILegalPerson Tortfeasor(this IEnumerable<ILegalPerson> persons)
@@ -224,6 +224,24 @@ namespace NoFuture.Rand.Law.US
             }
 
             return offeror;
+        }
+
+        public static IGrantor Grantor(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var grantor = ppersons.Grantor() as IGrantor;
+            if (grantor == null)
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(IGrantor)} in {nameTitles}");
+                return Government.Value;
+            }
+
+            return grantor;
         }
 
         public static bool PropertyOwnerIsSubjectPerson(this IRationale lc, ILegalProperty property, ILegalPerson person)
