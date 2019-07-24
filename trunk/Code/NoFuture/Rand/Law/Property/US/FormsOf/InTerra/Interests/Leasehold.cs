@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Core;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
+namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 {
     public class Leasehold : PropertyBase, ILandPropertyInterest, ITempore
     {

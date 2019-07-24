@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
+namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 {
     /// <summary>
     /// The simplest form of property interest - a kind of default which is assumed unless otherwise stated
