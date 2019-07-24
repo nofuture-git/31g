@@ -47,8 +47,9 @@
     <Compile Include="US\FormsOf\Intellectus\IntellectualProperty.cs" />
     <Compile Include="US\FormsOf\Intellectus\Patent.cs" />
     <Compile Include="US\FormsOf\Intellectus\UtilityPatent.cs" />
-    <Compile Include="US\FormsOf\InTerra\FeeSimpleInterest.cs" />
+    <Compile Include="US\FormsOf\InTerra\FeeSimple.cs" />
     <Compile Include="US\FormsOf\InTerra\ILandPropertyInterest.cs" />
+    <Compile Include="US\FormsOf\InTerra\Leasehold.cs" />
     <Compile Include="US\FormsOf\InTerra\PropertyInterestFactory.cs" />
     <Compile Include="US\FormsOf\ResDerelictae.cs" />
     <Compile Include="US\FormsOf\ResNullius.cs" />
