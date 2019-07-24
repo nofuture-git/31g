@@ -158,12 +158,12 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
             new PropertyInterestFactoryValue<FeeSimpleSubject2ExecutoryInterest>(SubjectProperty, GetSubjectPerson);
 
         protected override IPropertyInterestFactory WhenFalse =>
-            new DefeasibleFeeFutureInterestIsGrantor(SubjectProperty, GetSubjectPerson);
+            new DefeasibleFeeFutureInterestIsGrantorFactory(SubjectProperty, GetSubjectPerson);
     }
 
-    internal class DefeasibleFeeFutureInterestIsGrantor : PropertyInterestFactoryBase
+    internal class DefeasibleFeeFutureInterestIsGrantorFactory : PropertyInterestFactoryBase
     {
-        public DefeasibleFeeFutureInterestIsGrantor(RealProperty property,
+        public DefeasibleFeeFutureInterestIsGrantorFactory(RealProperty property,
             Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(property, getSubjectPerson)
         {
         }
