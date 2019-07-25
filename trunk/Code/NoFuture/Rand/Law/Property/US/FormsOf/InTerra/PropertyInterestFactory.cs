@@ -191,6 +191,26 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
+        public IPropertyInterestFactory IsSpecifyFixedTimespan(Predicate<ILegalPerson> predicate,
+            params ILegalPerson[] persons)
+        {
+            return GetNextFactory(nameof(IsSpecifyFixedTimespan), predicate, persons);
+        }
+
+        protected override IPropertyInterestFactory WhenTrue =>
+            new PropertyInterestFactoryValue<Leasehold>(SubjectProperty, GetSubjectPerson);
+
+        protected override IPropertyInterestFactory WhenFalse =>
+            new LifeEstateFactory(SubjectProperty, GetSubjectPerson);
+    }
+
+    internal class LifeEstateFactory : PropertyInterestFactoryBase
+    {
+        public LifeEstateFactory(RealProperty property,
+            Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(property, getSubjectPerson)
+        {
+        }
+
         /// <summary>
         /// or someone else
         /// </summary>
@@ -264,7 +284,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
             new PropertyInterestFactoryValue<VestedRemainderSubjectToOpen>(SubjectProperty, GetSubjectPerson);
 
         protected override IPropertyInterestFactory WhenFalse =>
-            new PropertyInterestFactoryValue<ContingentRemainder>(SubjectProperty, GetSubjectPerson);
+            new ConditionalOtherRemainderFactory(SubjectProperty, GetSubjectPerson);
     }
 
     internal class ConditionalOtherRemainderFactory : PropertyInterestFactoryBase
@@ -274,10 +294,13 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         {
         }
 
-        public IPropertyInterestFactory IsConditionToGetItOrLoseIt(Predicate<ILegalPerson> predicate,
+        /// <summary>
+        /// Or lose it
+        /// </summary>
+        public IPropertyInterestFactory IsConditionToGetIt(Predicate<ILegalPerson> predicate,
             params ILegalPerson[] persons)
         {
-            return GetNextFactory(nameof(IsConditionToGetItOrLoseIt), predicate, persons);
+            return GetNextFactory(nameof(IsConditionToGetIt), predicate, persons);
         }
 
         protected override IPropertyInterestFactory WhenTrue =>

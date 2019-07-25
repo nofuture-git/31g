@@ -176,6 +176,32 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             Assert.IsInstanceOf<AbsolutelyVestedRemainder>(testResultFactory09.GetValue());
 
+            count = 0;
+            test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
+            foreach (var p in VestedRemainderSubjectToDivestment.FactoryPaths[0])
+            {
+                test = test.GetNextFactory(count.ToString(), lp => p, curtis);
+                count += 1;
+            }
+
+            var testResultFactory0A = test as PropertyInterestFactoryValue<VestedRemainderSubjectToDivestment>;
+            Assert.IsNotNull(testResultFactory0A);
+
+            Assert.IsInstanceOf<VestedRemainderSubjectToDivestment>(testResultFactory0A.GetValue());
+
+            count = 0;
+            test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
+            foreach (var p in VestedRemainderSubjectToDivestment.FactoryPaths[1])
+            {
+                test = test.GetNextFactory(count.ToString(), lp => p, curtis);
+                count += 1;
+            }
+
+            var testResultFactory0B = test as PropertyInterestFactoryValue<VestedRemainderSubjectToDivestment>;
+            Assert.IsNotNull(testResultFactory0B);
+
+            Assert.IsInstanceOf<VestedRemainderSubjectToDivestment>(testResultFactory0B.GetValue());
+
         }
 
         public class CurtisLandholder : LegalPerson, IDefendant

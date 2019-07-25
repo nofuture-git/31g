@@ -3,6 +3,9 @@ using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 {
+    /// <summary>
+    /// Are in many places are not considered interest in land at all but are a contract 
+    /// </summary>
     public class Leasehold : PropertyBase, ILandPropertyInterest, ITempore
     {
         public Leasehold(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)

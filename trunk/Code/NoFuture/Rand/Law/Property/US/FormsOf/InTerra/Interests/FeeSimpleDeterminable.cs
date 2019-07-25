@@ -22,6 +22,9 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
         /// <summary>
         /// The existence of an estate in fee simple determinable requires the presence of special limitations
         /// </summary>
+        /// <remarks>
+        /// often as &quot;durational language&quot; with words like, &quot;so long as&quot;, &quot;while&quot;, &quot;until&quot;, etc.
+        /// </remarks>
         public Predicate<ILegalPerson> IsSpecialLimitationPresent { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)

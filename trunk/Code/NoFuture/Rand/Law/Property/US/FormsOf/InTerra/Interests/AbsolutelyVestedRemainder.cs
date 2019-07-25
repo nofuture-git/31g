@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 
         public AbsolutelyVestedRemainder() : base(null) { }
 
-        public static IList<bool[]> FactoryPaths = new List<bool[]> { new[] { false, false, false, false } };
+        public static IList<bool[]> FactoryPaths = new List<bool[]> { new[] { false, false, false, false, false } };
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 
         public VestedRemainderSubjectToOpen() : base(null) {  }
 
-        public static IList<bool[]> FactoryPaths = new List<bool[]> { new[] { false, false, true, true }, new[] { false, false, false, true, true } };
+        public static IList<bool[]> FactoryPaths = new List<bool[]> { new[] { false, false, false, true, true }, new[] { false, false, false, false, true, true } };
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
