@@ -42,7 +42,8 @@
      "mstsc" : "Remote Desktop",
      "msinfo32" : "Windows Info",
      "cleanmgr.exe" : "Disk Cleanup",
-     "mmc" : "add remove snap ins"
+     "mmc" : "add remove snap ins",
+     "osk" : "on screen keyboard"
 },
 "windowsKey" : {
      "win + [left|right] arrow" : "move window over",
@@ -56,7 +57,8 @@
      "win + p" : "projector display",
      "win + d" : "instant minimize all",
      "win + f" : "find",
-     "win + x" : "Windows Mobility Center"
+     "win + x" : "Windows Mobility Center",
+     "win + space" : "toggle next keyboard lang"
 },
 "nav" : {
      "ctrl + tab" : "open programs",
@@ -95,5 +97,25 @@
      "ctrl + r" : "toggle results grid",
      "f6" : "toggle between results and text editor",
      "ctrl + tab" : "go to text editor"
+},
+"notepad++" : {
+    "ctrl+alt+L" : "write text left-to-right",
+    "ctrl+alt+R" : "write text right-to-left"
+},
+"hebrew diacritics" : {
+    "caps-lock + shift + -" : "cholem [one-dot-top-right] (sho-mo)",
+    "caps-lock + shift + 8" : "kamatz [T-at-bottom] (sho-ma)",
+    "caps-lock + shift + 7" : "patach [dash-at-bottom] (sho-ma)",
+    "caps-lock + shift + 5" : "tsere [two-horizontal-dot-bottom] (sho-may)",
+    "caps-lock + shift + 6" : "segol [three-dot-triangle-bottom] (sho-meh)",
+    "caps-lock + shift + `" : "shva [two-dot-vertical-bottom] (sho-meh)",
+    "caps-lock + shift + 4" : "chirik [one-dot-bottom] (sho-me)",
+    "caps-lock + shift + \" : "kubbutz [three-diagonal-dot-bottom] (sho-moo)",
+    "caps-lock + shift + 9" : "sin (the W char with dot on top left)",
+    "caps-lock + shift + 0" : "shin (the W char with dot on top right)",
+    "caps-lock + shift + =" : "kaf (backwards C with dot in middle)",
+    "caps-lock + shift + 1" : "segol + shva",
+    "caps-lock + shift + 2" : "patach + shva",
+    "caps-lock + shift + 3" : "kamatz + shva",
 }
 }}
