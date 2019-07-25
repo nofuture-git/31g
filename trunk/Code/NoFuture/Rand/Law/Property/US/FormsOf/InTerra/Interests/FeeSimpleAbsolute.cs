@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 {
@@ -14,6 +15,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
         public FeeSimpleAbsolute() : base(null) { }
 
         public new RealProperty SubjectProperty { get; set; }
+
+        public static IList<bool[]> FactoryPaths = new List<bool[]> {new[] {true, true}};
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

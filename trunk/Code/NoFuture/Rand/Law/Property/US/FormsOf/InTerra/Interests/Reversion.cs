@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 {
@@ -9,6 +10,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
         }
 
         public Reversion() : base(null) { }
+
+        public static IList<bool[]> FactoryPaths = new List<bool[]> { new[] { false, true } };
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

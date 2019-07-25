@@ -184,7 +184,6 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
             new PropertyInterestFactoryValue<FeeSimpleSubject2ConditionSubsequent>(SubjectProperty, GetSubjectPerson);
     }
 
-
     internal class LeaseLifeEstateFactory : PropertyInterestFactoryBase
     {
         public LeaseLifeEstateFactory(RealProperty property,

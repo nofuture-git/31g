@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
@@ -13,7 +14,9 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
         {
         }
 
-        public VestedRemainderSubjectToOpen() : base(null) { }
+        public VestedRemainderSubjectToOpen() : base(null) {  }
+
+        public static IList<bool[]> FactoryPaths = new List<bool[]> { new[] { false, false, true, true }, new[] { false, false, false, true, true } };
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

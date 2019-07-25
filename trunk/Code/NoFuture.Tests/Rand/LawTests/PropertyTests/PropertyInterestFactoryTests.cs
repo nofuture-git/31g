@@ -47,9 +47,8 @@ namespace NoFuture.Rand.Law.Property.Tests
                 new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
             var curtis = new CurtisLandholder();
             var count = 0;
-            var test2FeeSimpleAbs = new[] {true, true};
 
-            foreach (var p in test2FeeSimpleAbs)
+            foreach (var p in FeeSimpleAbsolute.FactoryPaths[0])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;
@@ -62,8 +61,7 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             count = 0;
             test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
-            var test2FeeSimpleSubj2ExecInterest = new[] {true, false, true};
-            foreach (var p in test2FeeSimpleSubj2ExecInterest)
+            foreach (var p in FeeSimpleSubject2ExecutoryInterest.FactoryPaths[0])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;
@@ -76,8 +74,7 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             count = 0;
             test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
-            var test2FeeSimpleDeterminable = new[] { true, false, false, true };
-            foreach (var p in test2FeeSimpleDeterminable)
+            foreach (var p in FeeSimpleDeterminable.FactoryPaths[0])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;
@@ -90,8 +87,7 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             count = 0;
             test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
-            var test2FeeSubj2CondSubseq = new[] {true, false, false, false};
-            foreach (var p in test2FeeSubj2CondSubseq)
+            foreach (var p in FeeSimpleSubject2ConditionSubsequent.FactoryPaths[0])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;
@@ -104,8 +100,7 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             count = 0;
             test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
-            var test2Reversion = new[] {false, true};
-            foreach (var p in test2Reversion)
+            foreach (var p in Reversion.FactoryPaths[0])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;
@@ -118,8 +113,7 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             count = 0;
             test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
-            var test2VestRemainSubjToOpen00 = new[] {false, false, true, true};
-            foreach (var p in test2VestRemainSubjToOpen00)
+            foreach (var p in VestedRemainderSubjectToOpen.FactoryPaths[0])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;
@@ -132,8 +126,7 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             count = 0;
             test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
-            var test2VestRemainSubjToOpen01 = new[] { false, false, false, true, true };
-            foreach (var p in test2VestRemainSubjToOpen01)
+            foreach (var p in VestedRemainderSubjectToOpen.FactoryPaths[1])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;
@@ -146,8 +139,7 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             count = 0;
             test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
-            var test2ContingentRemainder00 = new[] {false, false, true, false};
-            foreach (var p in test2ContingentRemainder00)
+            foreach (var p in ContingentRemainder.FactoryPaths[0])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;
@@ -160,8 +152,7 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             count = 0;
             test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
-            var test2ContingentRemainder01 = new[] {false, false, false, true, false};
-            foreach (var p in test2ContingentRemainder01)
+            foreach (var p in ContingentRemainder.FactoryPaths[1])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;
@@ -174,8 +165,7 @@ namespace NoFuture.Rand.Law.Property.Tests
 
             count = 0;
             test = new PropertyInterestFactory(new RealProperty("some land"), ExtensionMethods.Defendant);
-            var test2AbsVestedRemainder = new[] {false, false, false, false};
-            foreach (var p in test2AbsVestedRemainder)
+            foreach (var p in AbsolutelyVestedRemainder.FactoryPaths[0])
             {
                 test = test.GetNextFactory(count.ToString(), lp => p, curtis);
                 count += 1;

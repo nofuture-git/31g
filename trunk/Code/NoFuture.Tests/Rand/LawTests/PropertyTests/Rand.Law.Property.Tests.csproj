@@ -54,6 +54,7 @@
     <Compile Include="PropertyInterestFactoryTests.cs" />
     <Compile Include="QualitexCovJacobsonProductsCoTests.cs" />
     <Compile Include="SuntrustBankvHoughtonMifflinCoTests.cs" />
+    <Compile Include="WoodvFremontCountyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
