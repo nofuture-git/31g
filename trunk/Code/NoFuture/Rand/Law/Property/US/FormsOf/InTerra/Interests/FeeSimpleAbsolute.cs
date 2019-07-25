@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 {
@@ -18,10 +19,23 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 
         public static IList<bool[]> FactoryPaths = new List<bool[]> {new[] {true, true}};
 
+        public Predicate<ILegalPerson> IsExactlyThisPerson { get; set; }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
-        }
+            var subj = GetSubjectPerson(persons);
+            if (subj == null)
+                return false;
 
+            var title = subj.GetLegalPersonTypeName();
+
+            if (!IsExactlyThisPerson(subj))
+            {
+                AddReasonEntry($"{title} {subj.Name}, {nameof(IsExactlyThisPerson)} is false");
+                return false;
+            }
+
+            return true;
+        }
     }
 }

@@ -11,7 +11,11 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 
         public VestedRemainderSubjectToDivestment() : base(null) { }
 
-        public static IList<bool[]> FactoryPaths = new List<bool[]> { new[] { false, false, false, true, false, false }, new[] { false, false, false, false, true, false, false } };
+        public static IList<bool[]> FactoryPaths = new List<bool[]>
+        {
+            new[] {false, false, false, true, false, false},
+            new[] {false, false, false, false, true, false, false}
+        };
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

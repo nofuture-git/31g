@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 {
+    /// <summary>
+    /// The grant which allows for the grantor to revoke if they so choose
+    /// </summary>
     public class FeeSimpleSubject2ConditionSubsequent : DefeasibleFee
     {
         public FeeSimpleSubject2ConditionSubsequent(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)
@@ -18,7 +22,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
         /// </summary>
         /// <remarks>
         /// often as &quot;non-durational language&quot; with words
-        /// like, &quot;but if&quot;, &quot;upon condition that&quot;, or
+        /// like, &quot;but if&quot;, &quot;upon condition that&quot;, &quot;provided that&quot;, or
         /// explicitly saying, &quot;right of entry&quot;, &quot;right to enter
         /// and retake&quot;
         /// </remarks>
@@ -26,7 +30,19 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            var subj = GetSubjectPerson(persons);
+            if (subj == null)
+                return false;
+
+            var title = subj.GetLegalPersonTypeName();
+
+            if (!IsRightOfEntry(subj))
+            {
+                AddReasonEntry($"{title} {subj}, {nameof(IsRightOfEntry)} is false");
+                return false;
+            }
+
+            return true;
         }
     }
 }

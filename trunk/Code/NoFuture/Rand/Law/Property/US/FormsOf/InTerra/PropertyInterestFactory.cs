@@ -295,7 +295,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         }
 
         /// <summary>
-        /// Or lose it
+        /// as apposed to &quot;lose it&quot;
         /// </summary>
         public IPropertyInterestFactory IsConditionToGetIt(Predicate<ILegalPerson> predicate,
             params ILegalPerson[] persons)
