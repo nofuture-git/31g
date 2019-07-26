@@ -149,7 +149,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Reduces all repeating sequeence of 
+        /// Reduces all repeating sequence of 
         /// space-characters (x20) to a single space.
         /// </summary>
         /// <param name="value"></param>
