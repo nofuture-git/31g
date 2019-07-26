@@ -336,5 +336,23 @@ namespace NoFuture.Rand.Law.US
             return "legal person";
 
         }
+
+        #region REPL ease
+
+        public static Func<ILegalPerson[], ILegalPerson> FirstOne => (lps => lps.FirstOrDefault());
+        public static Func<ILegalPerson[], ILegalPerson> DefendantFx => Defendant;
+        public static Func<ILegalPerson[], ILegalPerson> OfferorFx => Offeror;
+        public static Func<ILegalPerson[], ILegalPerson> OffereeFx => Offeree;
+        public static Func<ILegalPerson[], ILegalPerson> GrantorFx => Grantor;
+        public static Func<ILegalPerson[], ILegalPerson> TortfeasorFx => Tortfeasor;
+        public static Func<ILegalPerson[], ILegalPerson> PlaintiffFx => Plaintiff;
+        public static Func<ILegalPerson[], ILegalPerson> ThirdPartyFx => ThirdParty;
+        public static Func<ILegalPerson[], ILegalPerson> EmployerFx => Employer;
+        public static Func<ILegalPerson[], ILegalPerson> DisseisorFx => Disseisor;
+
+        public static Predicate<ILegalPerson> TruePredicateFx = lp => true;
+        public static Predicate<ILegalPerson> FalsePredicateFx = lp => false;
+
+        #endregion
     }
 }

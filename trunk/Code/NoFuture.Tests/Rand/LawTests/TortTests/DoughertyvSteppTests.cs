@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.Property.US.FormsOf;
+using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
 using NUnit.Framework;
 using NoFuture.Rand.Law.US.Persons;
 using NoFuture.Rand.Law.Tort.US.IntentionalTort;
