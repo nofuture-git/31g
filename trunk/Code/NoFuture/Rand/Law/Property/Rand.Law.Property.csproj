@@ -55,6 +55,7 @@
     <Compile Include="US\FormsOf\InTerra\Interests\FeeSimpleSubject2ConditionSubsequent.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\FeeSimpleSubject2ExecutoryInterest.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\ILandPropertyInterest.cs" />
+    <Compile Include="US\FormsOf\InTerra\Interests\LandPropertyInterestBase.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\Leasehold.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\LifeEstate.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\Remainder.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="US\FormsOf\InTerra\RealProperty.cs" />
     <Compile Include="US\FormsOf\TangiblePersonalProperty.cs" />
     <Compile Include="US\Acquisition\TakePossession.cs" />
+    <Compile Include="US\Terms\OptionTerm.cs" />
+    <Compile Include="US\Terms\RightOfFirstRefusalTerm.cs" />
     <Compile Include="US\Terms\Tm\ArbitraryMark.cs" />
     <Compile Include="US\Terms\Tm\DescriptiveMark.cs" />
     <Compile Include="US\Terms\Tm\FancifulMark.cs" />
