@@ -78,6 +78,9 @@
     <Compile Include="US\FormsOf\InTerra\RealProperty.cs" />
     <Compile Include="US\FormsOf\TangiblePersonalProperty.cs" />
     <Compile Include="US\Acquisition\TakePossession.cs" />
+    <Compile Include="US\Terms\Convenants\AgainstEncumbrancesTerm.cs" />
+    <Compile Include="US\Terms\Convenants\QuietEnjoymentTerm.cs" />
+    <Compile Include="US\Terms\Convenants\SeisinTerm.cs" />
     <Compile Include="US\Terms\OptionTerm.cs" />
     <Compile Include="US\Terms\RightOfFirstRefusalTerm.cs" />
     <Compile Include="US\Terms\Tm\ArbitraryMark.cs" />
