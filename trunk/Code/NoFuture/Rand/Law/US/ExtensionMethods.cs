@@ -297,44 +297,50 @@ namespace NoFuture.Rand.Law.US
         {
             if (person == null)
                 return string.Empty;
-            if (person is IDisseisor)
-                return "disseisor";
-            if (person is ITortfeasor)
-                return "tortfeasor";
-            if (person is IDefendant)
-                return "defendant";
-            if (person is IPlaintiff)
-                return "plaintiff";
-            if (person is IDonee)
-                return "donee";
-            if (person is IGrantee)
-                return "grantee";
-            if (person is IOfferee)
-                return "offeree";
-            if (person is IDonor)
-                return "donor";
-            if (person is IGrantor)
-                return "grantor";
-            if (person is IOfferor)
-                return "offeror";
-            if (person is IChild)
-                return "child";
-            if (person is IVictim)
-                return "victim";
-            if (person is IInvitee)
-                return "invitee";
-            if (person is ILicensee)
-                return "licensee";
-            if (person is IThirdParty)
-                return "third party";
-            if (person is IEmployee)
-                return "employee";
-            if (person is IEmployer)
-                return "employer";
-            if (person.Equals(Government.Value))
-                return "the government";
-            return "legal person";
+            var titles = new List<string>();
 
+            if(person is ILessee)
+                titles.Add("lessee");
+            if (person is IDonee)
+                titles.Add("donee");
+            if (person is IGrantee)
+                titles.Add("grantee");
+            if (person is IOfferee)
+                titles.Add("offeree");
+            if(person is ILessor)
+                titles.Add("lessor");
+            if (person is IDonor)
+                titles.Add("donor");
+            if (person is IGrantor)
+                titles.Add("grantor");
+            if (person is IOfferor)
+                titles.Add("offeror");
+            if (person is IDisseisor)
+                titles.Add("disseisor");
+            if (person is ITortfeasor)
+                titles.Add("tortfeasor");
+            if (person is IDefendant)
+                titles.Add("defendant");
+            if (person is IPlaintiff)
+                titles.Add("plaintiff");
+            if (person is IChild)
+                titles.Add("child");
+            if (person is IVictim)
+                titles.Add("victim");
+            if (person is IInvitee)
+                titles.Add("invitee");
+            if (person is ILicensee)
+                titles.Add("licensee");
+            if (person is IThirdParty)
+                titles.Add("third party");
+            if (person is IEmployee)
+                titles.Add("employee");
+            if (person is IEmployer)
+                titles.Add("employer");
+            if (person.Equals(Government.Value))
+                titles.Add("the government");
+
+            return string.Join("|", titles);
         }
 
         #region REPL ease
