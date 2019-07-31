@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
 using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -14,7 +11,7 @@ namespace NoFuture.Rand.Law.Property.Tests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// doctrine issue, eviction requires peaceful repossession 
     /// ]]>
     /// </remarks>
     [TestFixture]
@@ -23,15 +20,28 @@ namespace NoFuture.Rand.Law.Property.Tests
         [Test]
         public void BergvWiley()
         {
-            var test = new Leasehold()
+            var testLease = new Leasehold()
             {
                 Inception = new DateTime(1970, 12, 1),
-                SubjectProperty = new RealProperty("building in Osseo, Minnesota"),
+                SubjectProperty = new RealProperty("building in Osseo, Minnesota")
+                    {IsInPossessionOf = lp => lp is Berg, IsEntitledTo = lp => lp is Wiley},
                 Terminus = new DateTime(1975, 12, 1)
             };
 
-            var testResult = test.IsValid(new Berg(), new Wiley());
+            var testResult = testLease.IsValid(new Berg(), new Wiley());
             Assert.IsTrue(testResult);
+
+            var test = new Eviction(testLease)
+            {
+                CurrentDateTime = new DateTime(1973, 7, 16),
+                IsBreachLeaseCondition = lp => false,
+                //court concludes changing locks in secret is not peaceable
+                IsPeaceableReentry = lp => !(lp is Wiley)
+            };
+
+            testResult = test.IsValid(new Berg(), new Wiley());
+            Assert.IsFalse(testResult);
+            Console.WriteLine(test.ToString());
         }
     }
 

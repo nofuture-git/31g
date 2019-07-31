@@ -43,6 +43,16 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IOfferee);
         }
 
+        public static ILegalPerson Lessee(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is ILessee);
+        }
+
+        public static ILegalPerson Lessor(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is ILessor);
+        }
+
         public static ILegalPerson Grantor(this IEnumerable<ILegalPerson> persons)
         {
             return persons.FirstOrDefault(p => p is IGrantor);
@@ -220,6 +230,42 @@ namespace NoFuture.Rand.Law.US
             {
                 var nameTitles = ppersons.GetTitleNamePairs();
                 lc.AddReasonEntry($"No one is the {nameof(IOfferor)} in {nameTitles}");
+                return null;
+            }
+
+            return offeror;
+        }
+
+        public static ILessee Lessee(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var offeree = ppersons.Lessee() as ILessee;
+            if (offeree == null)
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(ILessee)} in {nameTitles}");
+                return null;
+            }
+
+            return offeree;
+        }
+
+        public static ILessor Lessor(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var offeror = ppersons.Lessor() as ILessor;
+            if (offeror == null)
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(ILessor)} in {nameTitles}");
                 return null;
             }
 

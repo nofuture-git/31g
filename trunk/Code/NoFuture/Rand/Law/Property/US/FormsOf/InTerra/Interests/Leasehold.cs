@@ -16,8 +16,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var lessor = this.Offeror(persons);
-            var lessee = this.Offeree(persons);
+            var lessor = this.Lessor(persons);
+            var lessee = this.Lessee(persons);
 
             if (lessor == null || lessee == null)
                 return false;
@@ -27,13 +27,13 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
 
             if (Inception == DateTime.MinValue)
             {
-                AddReasonEntry($"{orTitle} {lessor} and {eeTitle} {lessee}, {nameof(Inception)} is unassigned");
+                AddReasonEntry($"{orTitle} {lessor.Name} and {eeTitle} {lessee.Name}, {nameof(Inception)} is unassigned");
                 return false;
             }
 
             if (Terminus != null && Terminus.Value <= Inception)
             {
-                AddReasonEntry($"{orTitle} {lessor} and {eeTitle} {lessee}, {nameof(Terminus)} " +
+                AddReasonEntry($"{orTitle} {lessor.Name} and {eeTitle} {lessee.Name}, {nameof(Terminus)} " +
                                $"date of {Terminus.Value.ToShortDateString()} is less-than-equal-to " +
                                $"the {nameof(Inception)} date of {Inception.ToShortDateString()}");
                 return false;
@@ -45,17 +45,17 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
                 return false;
             }
 
-            if (SubjectProperty == null || Offer == null || !SubjectProperty.Equals(Offer))
+            if (SubjectProperty == null || Offer == null)
             {
-                AddReasonEntry($"{orTitle} {lessor} and {eeTitle} {lessee}, " +
+                AddReasonEntry($"{orTitle} {lessor.Name} and {eeTitle} {lessee.Name}, " +
                                $"{nameof(SubjectProperty)} '{SubjectProperty?.Name}' " +
-                               $"is not the same as {nameof(Offer)} '{Offer?.Name}'");
+                               $"or {nameof(Offer)} '{Offer?.Name}' is unassigned");
                 return false;
             }
 
             if (Acceptance?.Invoke(Offer) == null )
             {
-                AddReasonEntry($"{orTitle} {lessor} and {eeTitle} {lessee}, {nameof(Acceptance)} " +
+                AddReasonEntry($"{orTitle} {lessor.Name} and {eeTitle} {lessee.Name}, {nameof(Acceptance)} " +
                                $"using {nameof(Offer)} '{Offer.Name}' returned nothing" );
                 return false;
             }

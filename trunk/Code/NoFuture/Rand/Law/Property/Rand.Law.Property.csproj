@@ -47,6 +47,7 @@
     <Compile Include="US\FormsOf\Intellectus\IntellectualProperty.cs" />
     <Compile Include="US\FormsOf\Intellectus\Patent.cs" />
     <Compile Include="US\FormsOf\Intellectus\UtilityPatent.cs" />
+    <Compile Include="US\FormsOf\InTerra\Eviction.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\AbsolutelyVestedRemainder.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\ContingentRemainder.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\DefeasibleFee.cs" />
