@@ -30,8 +30,6 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
             Assent = lease.Assent;
         }
 
-        public DateTime CurrentDateTime { get; set; } = DateTime.UtcNow;
-
         [Aka("abandoned", "surrendered")]
         public Predicate<ILessee> IsVacated { get; set; } = ee => false;
 
@@ -45,10 +43,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         [Aka("dispossessory proceedings")]
         public Predicate<ILessor> IsJudicialProcessReentry { get; set; } = rr => false;
 
-        /// <summary>
-        /// Eval&apos; <see cref="CurrentDateTime"/> <see cref="Leasehold.IsInRange"/>
-        /// </summary>
-        public bool IsLeaseExpired => IsInRange(CurrentDateTime);
+
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

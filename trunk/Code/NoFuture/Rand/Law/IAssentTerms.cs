@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NoFuture.Rand.Law
 {
-    public interface IAssentTerms : IAssent
+    public interface IAssentTerms : IIntent
     {
         Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
 

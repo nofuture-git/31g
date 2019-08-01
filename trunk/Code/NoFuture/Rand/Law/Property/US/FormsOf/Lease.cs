@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf
 {
+    /// <inheritdoc cref="ILease{T}"/>
     public abstract class Lease<T> : PropertyBase, ILease<T> where T : ILegalProperty
     {
         private Func<T, ILease<T>> _acceptance;
@@ -11,6 +13,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         {
             _acceptance = GetAcceptance;
         }
+
+        public DateTime CurrentDateTime { get; set; } = DateTime.UtcNow;
 
         public new T SubjectProperty { get; set; }
 
@@ -66,6 +70,8 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
 
         }
 
+        public bool IsLeaseExpired => IsInRange(CurrentDateTime);
+
         public virtual DateTime Inception { get; set; }
         public virtual DateTime? Terminus { get; set; }
         public virtual bool IsInRange(DateTime dt)
@@ -82,7 +88,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         }
 
         /// <summary>
-        /// Optional, defaults to SubjectProperty return this
+        /// Optional, defaults to SubjectProperty, returns this instance
         /// </summary>
         public virtual Func<T, ILease<T>> Acceptance
         {
@@ -95,10 +101,35 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
         /// </summary>
         public virtual IAssent Assent { get; set; } = Consent.IsGiven();
 
+        /// <summary>
+        /// This is default implementation of <see cref="Acceptance"/>
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
         protected virtual ILease<T> GetAcceptance(T property)
         {
             var isSameProperty = SubjectProperty?.Equals(property) ?? false;
             return isSameProperty ? this : null;
+        }
+
+        /// <summary>
+        /// Optional details concerning the exact terms present in a lease agreement
+        /// </summary>
+        public virtual Func<ILegalPerson, ISet<Term<object>>> TermsOfAgreement { get; set; }
+
+        public virtual ISet<Term<object>> GetAgreedTerms(ILegalPerson lessor, ILegalPerson lessee)
+        {
+            return ExtensionMethods.GetAgreedTerms(this, lessor, lessee);
+        }
+
+        public virtual ISet<Term<object>> GetAdditionalTerms(ILegalPerson lessor, ILegalPerson lessee)
+        {
+            return ExtensionMethods.GetAdditionalTerms(this, lessor, lessee);
+        }
+
+        public virtual ISet<Term<object>> GetInNameAgreedTerms(ILegalPerson lessor, ILegalPerson lessee)
+        {
+            return ExtensionMethods.GetInNameAgreedTerms(this, lessor, lessee);
         }
     }
 }

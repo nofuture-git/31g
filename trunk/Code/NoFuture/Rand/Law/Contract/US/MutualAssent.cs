@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US
 {
-    public class MutualAssent : LegalConcept, IAssentTerms
+    public class MutualAssent : LegalConcept, IAssentTerms, IAssent
     {
         public override bool IsEnforceableInCourt => true;
 
@@ -77,33 +77,9 @@ namespace NoFuture.Rand.Law.Contract.US
         /// <summary>
         /// Gets the subset of terms that have both the same name and meaning 
         /// </summary>
-        /// <param name="offeror"></param>
-        /// <param name="offeree"></param>
-        /// <returns></returns>
         public virtual ISet<Term<object>> GetAgreedTerms(ILegalPerson offeror, ILegalPerson offeree)
         {
-            //the shared terms between the two
-            var sorTerms = TermsOfAgreement?.Invoke(offeror);
-            if (sorTerms == null || !sorTerms.Any())
-            {
-                AddReasonEntry($"{offeror.Name} has no terms");
-                return new HashSet<Term<object>>();
-            }
-
-            var seeTerms = TermsOfAgreement(offeree);
-            if (seeTerms == null || !seeTerms.Any())
-            {
-                AddReasonEntry($"{offeree.Name} has no terms");
-                return new HashSet<Term<object>>();
-            }
-            var agreedTerms = Term<object>.GetAgreedTerms(sorTerms, seeTerms);
-            if (!agreedTerms.Any())
-            {
-                AddReasonEntry("there are no terms, with the same name," +
-                               $" shared between {offeror.Name} and {offeree.Name}");
-            }
-
-            return agreedTerms;
+            return ExtensionMethods.GetAgreedTerms(this, offeror, offeree);
         }
 
         /// <summary>
@@ -114,26 +90,7 @@ namespace NoFuture.Rand.Law.Contract.US
         /// <returns></returns>
         public virtual ISet<Term<object>> GetAdditionalTerms(ILegalPerson offeror, ILegalPerson offeree)
         {
-            var sorTerms = TermsOfAgreement?.Invoke(offeror);
-            if (sorTerms == null || !sorTerms.Any())
-            {
-                AddReasonEntry($"{offeror.Name} has no terms");
-                return new HashSet<Term<object>>();
-            }
-
-            var seeTerms = TermsOfAgreement(offeree);
-            if (seeTerms == null || !seeTerms.Any())
-            {
-                AddReasonEntry($"{offeree.Name} has no terms");
-                return new HashSet<Term<object>>();
-            }
-            var additionalTerms = Term<object>.GetAdditionalTerms(sorTerms, seeTerms);
-            if (!additionalTerms.Any())
-            {
-                AddReasonEntry("there are no additional terms between " +
-                               $" {offeror.Name} and {offeree.Name}");
-            }
-            return additionalTerms;
+            return ExtensionMethods.GetAdditionalTerms(this, offeror, offeree);
         }
 
         /// <summary>
@@ -144,27 +101,7 @@ namespace NoFuture.Rand.Law.Contract.US
         /// <returns></returns>
         public virtual ISet<Term<object>> GetInNameAgreedTerms(ILegalPerson offeror, ILegalPerson offeree)
         {
-            var sorTerms = TermsOfAgreement?.Invoke(offeror);
-            if (sorTerms == null || !sorTerms.Any())
-            {
-                AddReasonEntry($"{offeror.Name} has no terms");
-                return new HashSet<Term<object>>();
-            }
-
-            var seeTerms = TermsOfAgreement(offeree);
-            if (seeTerms == null || !seeTerms.Any())
-            {
-                AddReasonEntry($"{offeree.Name} has no terms");
-                return new HashSet<Term<object>>();
-            }
-
-            var agreedTerms = Term<object>.GetInNameAgreedTerms(sorTerms, seeTerms);
-            if (!agreedTerms.Any())
-            {
-                AddReasonEntry($"there are no terms shared between {offeror.Name} and {offeree.Name}");
-                return new HashSet<Term<object>>();
-            }
-            return agreedTerms;
+            return ExtensionMethods.GetInNameAgreedTerms(this, offeror, offeree);
         }
     }
 }

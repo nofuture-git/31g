@@ -311,6 +311,101 @@ namespace NoFuture.Rand.Law.US
             return isOwner;
         }
 
+        /// <summary>
+        /// Gets the subset of terms that have both the same name and meaning 
+        /// </summary>
+        public static ISet<Term<object>> GetAgreedTerms(this IAssentTerms lc, ILegalPerson offeror,
+            ILegalPerson offeree)
+        {
+            if(lc == null)
+                return new HashSet<Term<object>>();
+
+            //the shared terms between the two
+            var sorTerms = lc.TermsOfAgreement?.Invoke(offeror);
+            if (sorTerms == null || !sorTerms.Any())
+            {
+                lc.AddReasonEntry($"{offeror.Name} has no terms");
+                return new HashSet<Term<object>>();
+            }
+
+            var seeTerms = lc.TermsOfAgreement(offeree);
+            if (seeTerms == null || !seeTerms.Any())
+            {
+                lc.AddReasonEntry($"{offeree.Name} has no terms");
+                return new HashSet<Term<object>>();
+            }
+            var agreedTerms = Term<object>.GetAgreedTerms(sorTerms, seeTerms);
+            if (!agreedTerms.Any())
+            {
+                lc.AddReasonEntry("there are no terms, with the same name," +
+                               $" shared between {offeror.Name} and {offeree.Name}");
+            }
+
+            return agreedTerms;
+        }
+
+        /// <summary>
+        /// Gets the symmetric difference of the terms between offeror and offeree
+        /// </summary>
+        public static ISet<Term<object>> GetAdditionalTerms(this IAssentTerms lc, ILegalPerson offeror,
+            ILegalPerson offeree)
+        {
+            if (lc == null)
+                return new HashSet<Term<object>>();
+
+            var sorTerms = lc.TermsOfAgreement?.Invoke(offeror);
+            if (sorTerms == null || !sorTerms.Any())
+            {
+                lc.AddReasonEntry($"{offeror.Name} has no terms");
+                return new HashSet<Term<object>>();
+            }
+
+            var seeTerms = lc.TermsOfAgreement(offeree);
+            if (seeTerms == null || !seeTerms.Any())
+            {
+                lc.AddReasonEntry($"{offeree.Name} has no terms");
+                return new HashSet<Term<object>>();
+            }
+            var additionalTerms = Term<object>.GetAdditionalTerms(sorTerms, seeTerms);
+            if (!additionalTerms.Any())
+            {
+                lc.AddReasonEntry("there are no additional terms between " +
+                               $" {offeror.Name} and {offeree.Name}");
+            }
+            return additionalTerms;
+        }
+
+        /// <summary>
+        /// Gets the subset of terms which have the same name.
+        /// </summary>
+        public static ISet<Term<object>> GetInNameAgreedTerms(this IAssentTerms lc, ILegalPerson offeror, ILegalPerson offeree)
+        {
+            if (lc == null)
+                return new HashSet<Term<object>>();
+
+            var sorTerms = lc.TermsOfAgreement?.Invoke(offeror);
+            if (sorTerms == null || !sorTerms.Any())
+            {
+                lc.AddReasonEntry($"{offeror.Name} has no terms");
+                return new HashSet<Term<object>>();
+            }
+
+            var seeTerms = lc.TermsOfAgreement(offeree);
+            if (seeTerms == null || !seeTerms.Any())
+            {
+                lc.AddReasonEntry($"{offeree.Name} has no terms");
+                return new HashSet<Term<object>>();
+            }
+
+            var agreedTerms = Term<object>.GetInNameAgreedTerms(sorTerms, seeTerms);
+            if (!agreedTerms.Any())
+            {
+                lc.AddReasonEntry($"there are no terms shared between {offeror.Name} and {offeree.Name}");
+                return new HashSet<Term<object>>();
+            }
+            return agreedTerms;
+        }
+
         public static bool PropertyOwnerIsInPossession(this IRationale lc, ILegalProperty SubjectProperty, ILegalPerson subj)
         {
             if (subj == null)
