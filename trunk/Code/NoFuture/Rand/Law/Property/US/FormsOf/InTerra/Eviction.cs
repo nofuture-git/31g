@@ -32,7 +32,17 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
 
         public DateTime CurrentDateTime { get; set; } = DateTime.UtcNow;
         public Predicate<ILessee> IsBreachLeaseCondition { get; set; } = ee => false;
-        public Predicate<ILessor> IsPeaceableReentry { get; set; } = rr => false;
+
+        /// <summary>
+        /// Typically only allowed for non-residential property (i.e. commercial).
+        /// </summary>
+        public Predicate<ILessor> IsPeaceableSelfHelpReentry { get; set; } = rr => false;
+
+        [Aka("dwelling-place")]
+        public Predicate<RealProperty> IsResidenceHome { get; set; } = rr => false;
+
+        [Aka("dispossessory proceedings")]
+        public Predicate<ILessor> IsJudicialProcessReentry { get; set; } = rr => false;
 
         /// <summary>
         /// Eval&apos; <see cref="CurrentDateTime"/> <see cref="Leasehold.IsInRange"/>
@@ -50,26 +60,32 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
             var orTitle = lessor.GetLegalPersonTypeName();
             var eeTitle = lessee.GetLegalPersonTypeName();
 
-            if (!SubjectProperty.IsEntitledTo(lessor))
-            {
-                AddReasonEntry($"{orTitle} {lessor.Name}, {nameof(SubjectProperty)} {nameof(SubjectProperty.IsEntitledTo)} is false");
-                return false;
-            }
-
-            var isPeaceful = IsPeaceableReentry(lessor);
-
-            if (!isPeaceful)
-            {
-                AddReasonEntry($"{orTitle} {lessor.Name}, {nameof(IsPeaceableReentry)} is false");
-                return false;
-            }
-
+            //landlord has no right to evict
             if (!IsLeaseExpired && !IsBreachLeaseCondition(lessee))
             {
                 AddReasonEntry($"{orTitle} {lessor.Name} and {eeTitle} {lessee.Name}, both {nameof(IsLeaseExpired)} " +
                                $"and {nameof(IsBreachLeaseCondition)} are false");
                 return false;
             }
+
+            //lessor isn't the landlord
+            if (!SubjectProperty.IsEntitledTo(lessor))
+            {
+                AddReasonEntry($"{orTitle} {lessor.Name}, {nameof(SubjectProperty)} {nameof(SubjectProperty.IsEntitledTo)} is false");
+                return false;
+            }
+
+            var isHome = IsResidenceHome(SubjectProperty);
+
+            var isPeaceful = !isHome ? IsPeaceableSelfHelpReentry(lessor) : IsJudicialProcessReentry(lessor);
+
+            if (!isPeaceful)
+            {
+                var kindOfReentry = !isHome ? nameof(IsPeaceableSelfHelpReentry) : nameof(IsJudicialProcessReentry);
+                AddReasonEntry($"{orTitle} {lessor.Name}, {kindOfReentry} is false");
+                return false;
+            }
+
 
             return base.IsValid(persons);
         }

@@ -36,7 +36,7 @@ namespace NoFuture.Rand.Law.Property.Tests
                 CurrentDateTime = new DateTime(1973, 7, 16),
                 IsBreachLeaseCondition = lp => false,
                 //court concludes changing locks in secret is not peaceable
-                IsPeaceableReentry = lp => !(lp is Wiley)
+                IsPeaceableSelfHelpReentry = lp => !(lp is Wiley)
             };
 
             testResult = test.IsValid(new Berg(), new Wiley());
