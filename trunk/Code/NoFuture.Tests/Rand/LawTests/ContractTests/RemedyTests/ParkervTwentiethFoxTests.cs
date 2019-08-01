@@ -62,7 +62,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
 
             //this is what the dissenting judge noted, 
             // seems like speculation to apply value judgements about anything other than money
-            testSubject.Limits.CalcUncertianty = lp => lp is Parker ? 749999m : 0;
+            testSubject.Limits.CalcUncertainty = lp => lp is Parker ? 749999m : 0;
 
             testResult = testSubject.IsValid(new Parker(), new TwentiethFox());
             Console.WriteLine(testSubject.ToString());

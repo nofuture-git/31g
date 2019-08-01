@@ -31,15 +31,16 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         }
 
         public DateTime CurrentDateTime { get; set; } = DateTime.UtcNow;
+
+        [Aka("abandoned", "surrendered")]
+        public Predicate<ILessee> IsVacated { get; set; } = ee => false;
+
         public Predicate<ILessee> IsBreachLeaseCondition { get; set; } = ee => false;
 
         /// <summary>
         /// Typically only allowed for non-residential property (i.e. commercial).
         /// </summary>
         public Predicate<ILessor> IsPeaceableSelfHelpReentry { get; set; } = rr => false;
-
-        [Aka("dwelling-place")]
-        public Predicate<RealProperty> IsResidenceHome { get; set; } = rr => false;
 
         [Aka("dispossessory proceedings")]
         public Predicate<ILessor> IsJudicialProcessReentry { get; set; } = rr => false;
@@ -61,10 +62,10 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
             var eeTitle = lessee.GetLegalPersonTypeName();
 
             //landlord has no right to evict
-            if (!IsLeaseExpired && !IsBreachLeaseCondition(lessee))
+            if (!IsLeaseExpired && !IsBreachLeaseCondition(lessee) && !IsVacated(lessee))
             {
-                AddReasonEntry($"{orTitle} {lessor.Name} and {eeTitle} {lessee.Name}, both {nameof(IsLeaseExpired)} " +
-                               $"and {nameof(IsBreachLeaseCondition)} are false");
+                AddReasonEntry($"{orTitle} {lessor.Name} and {eeTitle} {lessee.Name}, {nameof(IsLeaseExpired)}, " +
+                               $"{nameof(IsBreachLeaseCondition)} and {nameof(IsVacated)} are all false");
                 return false;
             }
 

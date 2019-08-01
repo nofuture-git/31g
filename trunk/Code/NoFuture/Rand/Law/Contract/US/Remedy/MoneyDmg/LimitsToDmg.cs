@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg
 
         /// <summary>
         /// <![CDATA[Restatement (Second) of Contracts § 351, Article 74 CISG ]]>
-        /// American law prohibts awarding damages that were not foreseeable to both 
+        /// American law prohibits awarding damages that were not foreseeable to both 
         /// parties at the time of contracting
         /// </summary>
         public Func<ILegalPerson, decimal> CalcUnforeseeable { get; set; } = o => 0m;
@@ -30,13 +30,13 @@ namespace NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg
         /// speculation
         /// </summary>
         /// <remarks>
-        /// speculative, unproven, uncertian, changing, chancy, untried are indicators of unreasonalbe
+        /// speculative, unproven, uncertain, changing, chancy, untried are indicators of unreasonable
         /// </remarks>
-        public Func<ILegalPerson, decimal> CalcUncertianty { get; set; } = o => 0m;
+        public Func<ILegalPerson, decimal> CalcUncertainty { get; set; } = o => 0m;
 
         protected internal override decimal CalcMoneyRemedy(ILegalPerson lp)
         {
-            return CalcUnforeseeable(lp) + CalcAvoidable(lp) + CalcUncertianty(lp);
+            return CalcUnforeseeable(lp) + CalcAvoidable(lp) + CalcUncertainty(lp);
         }
     }
 }

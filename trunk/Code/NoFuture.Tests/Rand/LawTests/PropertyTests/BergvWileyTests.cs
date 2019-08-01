@@ -40,8 +40,8 @@ namespace NoFuture.Rand.Law.Property.Tests
             };
 
             testResult = test.IsValid(new Berg(), new Wiley());
-            Assert.IsFalse(testResult);
             Console.WriteLine(test.ToString());
+            Assert.IsFalse(testResult);
         }
     }
 

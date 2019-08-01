@@ -61,7 +61,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
             };
 
             //the defendant wanted something like this - they failed
-            testSubject.Limits.CalcUncertianty = lp => lp is KayAnderson ? 165000 : 0m;
+            testSubject.Limits.CalcUncertainty = lp => lp is KayAnderson ? 165000 : 0m;
 
             testResult = testSubject.IsValid(new KayAnderson(), new Ameritech());
             Console.WriteLine(testSubject.ToString());

@@ -56,7 +56,9 @@
     <Compile Include="US\FormsOf\InTerra\Interests\FeeSimpleSubject2ConditionSubsequent.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\FeeSimpleSubject2ExecutoryInterest.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\ILandPropertyInterest.cs" />
+    <Compile Include="US\FormsOf\ILease.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\LandPropertyInterestBase.cs" />
+    <Compile Include="US\FormsOf\Lease.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\Leasehold.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\LifeEstate.cs" />
     <Compile Include="US\FormsOf\InTerra\Interests\Remainder.cs" />
