@@ -88,277 +88,274 @@
 דִּי,1768,that|which
 דָּם,1818,blood
 דֶרֶךְ,1870,way|road|journey
-דרשׁ,
-ה,
-הֲ,
-הוּא,
-הִיא,
-היה,
-הלך,
-הָלַל,
-הֵם,
-הִנֵה,
-הַר,
-הרא,
-ו,
-זֹאת,
-זבח,
-זֶבַח,
-זֶה,
-זָהָב,
-זכר,
-זָקֵך,
-זֶרַא,
-חֹדֶשׁ,
-חוח,
-חוֹמַה,
-חוּץ,
-חזק,
-חטא,
-חַטָּאת,
-חי,
-חיח,
-חיִים,
-חיִל,
-חַכָם,
-חָכְמָה,
-חלל,
-חֵמָה,
-חָמֵשׁ,
-חֲמִשׁה,
-חמשים,
-חָנָה,
-חֶסֶד,
-חֲצֵי,
-חָצֵר,
-חֹק,
-חשׁב,
-חֶרֶב,
-טוֹב,
-יָד,
-ידע,
-יְהוּדה,
-יהוה,
-יְהוֹשׁוּע,
-חוֹאב,
-יוֹם,
-יוֹסף,
-יַיִן,
-יכל,
-ילד,
-יָם,
-יָמין,
-יסף,
-יעֲקֹב,
-יצא,
-ירא,
-יָרַד,
-יַרִדֵּן,
-יְרוּשָׁלִם,
-יִרמְיהן,
-ירשׁ,
-יֵשׁ,
-ישׁב,
-ישׁב,
-יָשׁר,
-כ,
-כָּבוד,
-כֹּה,
-כֹּהֵן,
-כון,
-כִּח,
-כִּי,
-כֹּל,
-כלר,
-כֶלִי,
-כֵּן,
-כִּסֵא,
-כִסֵה,
-כֶּסף,
-כַּף,
-כרת,
-כתב,
-ל,
-לֹא,
-לֵב,
-לֵבָב,
-לֵוִי,
-לחם,
-לֶחֶם,
-לַיְלָה,
-לָמָּה,
-לְמַעַן,
-לכד,
-לקח,
-מִאֹד,
-מֵאָה,
-מִדִבָר,
-מָה,
-מוֹאָב,
-מוֹעֵד,
-מוּת,
-מָוֶת,
-מִזִבֵּח,
-מַחֲנֶה,
-מַטֶה,
-מי,
-מַיִם,
-מלא,
-מַלְאָךְ,
-מְלָאכָה,
-מִלְחָמָה,
-מֶלֶךְ,
-מלך,
-מִן,
-מִנְחָּה,
-מְנַשׁה,
-מִסְפָּר,
-מַעַל,
-מַעֲשֶׂה,
-מצא,
-מִצְרַיִם,
-מקוֹם,
-מֹשׁה,
-מִשְׁכָּן,
-מַשְׁפָּחָה,
-מִשׁפּט,
-נָא,
-נָאֻם,
-נָבִיא,
-נֶגֶד,
-נגד,
-נגע,
-נגשׁ,
-נוּח,
-נוס,
-נַחַל,
-נַחֲלה,
-נְחשֶׁת,
-נטה,
-נכה,
-נסע,
-נַעַר,
-נפל,
-נֶפֶשׁ,
-נצל,
-נְשָׂא,
-נָשִׂיא,
-נתן,
-סבב,
-סָבִיב,
-סוּס,
-סור,
-סֵפֶר,
-עבד,
-עֶבד,
-עֲבוֹדָה,
-עבר,
-עַד,
-עֵדָה,
-עוֹד,
-עוֹלָם,
-עָוֹן,
-עזב,
-עין,
-עִיר,
-עַל,
-עלה,
-עֹלָה,
-עַם,
-עִם,
-עמד,
-ענה,
-עֶץ,
-עֶצֶם,
-עֶרֶב,
-עשׂה,
-עֲשָׂרח,
-עָשָׂר,
-עֶשְׂרִים,
-עֵת,
-עַתִּה,
-פֶה,
-פְּלִשְׁתִי,
-פֶּן,
-פנה,
-פּנים,
-פקד,
-פַּר,
-פַּרִעֹה,
-פתח,
-פֶּתח,
-צֹאן,
-צָבָא,
-צַדִּיק,
-צְדָקָה,
-צוה,
-צִיִוֹן,
-צָפוֹן,
-קבּץ,
-קבר,
-קדשׁ,
-קֹדֶשׁ,
-קָהָל,
-קוֹל,
-קום,
-קָרָא,
-קרב,
-קֶרֶב,
-ראה,
-רֹאשׁ,
-רִאשׁוֹן,
-רַב,
-רֹב,
-רבה,
-רֶגֶל,
-רדפ,
-רוּח,
-רום,
-רֶכֶב,
-רַע,
-רֵעַ,
-רָעָה,
-רשׁע,
-שֶׁ,
-שׁאוּל,
-שׁאל,
-שׁאר,
-שׁכב,
-שֵׁבֶט,
-שׁבַע,
-שָׁבַע,
-שׂדֶה,
-שׁוב,
-שׂום,
-שׁחת,
-שׁכן,
-שׁלוֹם,
-שְׁלשִׁים,
-שָׁלַח,
-שָׁלך,
-שׁלֹמֹה,
-שָׁלשׁ,
-שָׁם,
-שֵׁם,
-שְׁמוּאֵל,
-שָׂמַח,
-שׁמַיִם,
-שֶׁמֶן,
-שׁמע,
-שָׁמַר,
-שֶׁמֶשׁ,
-שׂנא,
-שְׁנָה,
-שֵׁנִי,
-שׁעַר,
-שָׂפָה,
-שָׁפַט,
-שַׂר,
-שֵׁשׁ,
-שׁתה,
-תָוֶךְ,
-תּוֹרָה,
-תַּחת,
-,
-,
-,
+דרשׁ,1875,to seek|inquire
+ה,0,the
+הֲ,0,(interrogative particle)
+הוּא,1931,he|it|that
+הִיא,1958,she|it|that
+היה,1961,to come to pass|become
+הלך,1980,to go|walk
+הָלַל,1984,to praise
+הֵם,1992,they
+הִנֵה,2009,behold
+הַר,2022,mountain
+הרג,2026,to kill|slay
+ו,0,and|but|then|or
+זֹאת,2063,this
+זבח,2077,to slaughter|sacrifice
+זֶבַח,2078,sacrifice
+זֶה,2088,this
+זָהָב,2091,gold
+זכר,2142,to remember
+זָקֵך,2207,old|old man
+זֶרַא,2214,seed|offspring
+חֹדֶשׁ,2320,new moon|month
+חוח,2331,to bow down
+חוֹמַה,2346,wall
+חוּץ,2351,outside|street
+חזק,2388,to be strong
+חטא,2398,to sin
+חַטָּאת,2402,sin|sin-offering
+חי,2416,living|alive
+חיח,2418,to be alive
+חיִים,2425,life
+חיִל,2428,wealth|army
+חַכָם,2450,wise|skillful
+חָכְמָה,2452,wisdom
+חלל,2490,to be defiled|profane
+חֵמָה,2534,heat|rage
+חָמֵשׁ,2568,five (m.)
+חֲמִשׁה,2568,five
+חמשים,2572,fifty
+חָנָה,2583,to encamp
+חֶסֶד,2618,goodness|kindness
+חֲצֵי,2680,half
+חָצֵר,2691,court|enclosure|village
+חֹק,2706,statute|ordinance
+חשׁב,2803,to think
+חֶרֶב,2919,sword
+טוֹב,2897,good|pleasant|agreeable
+יָד,3027,hand|power
+ידע,3045,to know
+יְהוּדה,3063,Judah
+יהוה,3068,Yahweh
+יְהוֹשׁוּע,3091,Joshua
+יוֹאב,3097,Joab
+יוֹם,3118,day
+יוֹסף,3130,Joseph
+יַיִן,3196,wine
+יכל,3201,to be able to
+ילד,3205,give birth|beget
+יָם,3220,sea|west
+יָמין,3225,right hand|south side
+יסף,3254,to add|continue to do
+יעֲקֹב,3290,Jacob
+יצא,3318,to go out
+ירא,3373,to fear
+יָרַד,3381,to go down
+יַרִדֵּן,3387,Jordon
+יְרוּשָׁלִם,3389,Jerusalem
+יִרמְיהן,3414,Jeremiah
+ירשׁ,3423,to inherit
+יֵשׁ,3426,there is|there are
+ישׁב,3427,to sit|dwell
+ישׁב,3467,to save
+יָשׁר,3474,right|just
+כ,0,like|as|according to
+כָּבוד,3519,abundance|honor|glory
+כֹּה,3541,thus
+כֹּהֵן,3548,priest
+כון,3559,to be established
+כֹּח,3581,power
+כִּי,3587,because|since|that|when|if
+כֹּל,3606,all|whole|every
+כלר,3615,to come to an end|to be completed
+כֶלִי,3627,vessel|implement
+כֵּן,3651,so|therefore|right
+כִּסֵא,3678,throne|chair
+כִסֵה,3680,to cover
+כֶּסף,3701,silver|money
+כַּף,3709,hallow|palm|sole of the foot
+כרת,3772,to cut off
+כתב,3789,to write
+ל,0,to|for
+לֹא,3808,no|not
+לֵב,3821,heart
+לֵבָב,3824,heart
+לֵוִי,3881,Levi
+לחם,3898,to fight
+לֶחֶם,3899,bread
+לַיְלָה,3915,night
+לָמָּה,0,why
+לְמַעַן,0,on account of|for the sake of
+לכד,3920,to catch|capture
+לקח,3947,to take
+מִאֹד,3966,very
+מֵאָה,3967,hundred
+מִדִבָר,4057,wilderness|desert
+מָה,4101,what
+מוֹאָב,4124,Moab
+מוֹעֵד,4150,meeting|appointed time
+מוּת,4191,to die
+מָוֶת,4194,death
+מִזִבֵּח,4196,alter
+מַחֲנֶה,4264,camp
+מַטֶה,4297,staff|tribe
+מי,4310,who
+מַיִם,4325,water
+מלא,4390,to be full
+מַלְאָךְ,4397,messenger|angel
+מְלָאכָה,4399,work|occup.|business
+מִלְחָמָה,4421,war
+מֶלֶךְ,4429,king|ruler
+מלך,4431,to become king|reign
+מִן,4480,more than|from|out of
+מִנְחָּה,4504,gift|offering
+מְנַשׁה,4519,Manasseh
+מִסְפָּר,4557,number|tales
+מַעַל,4605,above|on top of
+מַעֲשֶׂה,4639,deed|work
+מצא,4672,to find
+מִצְרַיִם,4714,Egypt|Egyptians
+מקוֹם,4725,place
+מֹשׁה,4872,Moses
+מִשְׁכָּן,4908,dwelling-place|tabernacle
+מַשְׁפָּחָה,4940,family
+מִשׁפּט,4941,justice|judgement
+נָא,4994,now|oh please
+נָאֻם,5002,utterance|oracle|declaration
+נָבִיא,5030,prophet
+נֶגֶד,5049,in front of|in sight of|opposite of
+נגד,5046,to declare|tell
+נגע,5060,to touch|to strike
+נגשׁ,5066,to come|draw near|approach
+נוּח,5117,to rest
+נוס,5127,to flee
+נַחַל,5157,river|wadi
+נַחֲלה,5169,possession|property|inheritance
+נְחשֶׁת,5178,bronze|brass
+נטה,5186,to stretch out
+נכה,5221,to strike|smite
+נסע,5265,to journey
+נַעַר,5288,young man
+נפל,5308,to fall
+נֶפֶשׁ,5315,breath|living being|soul
+נצל,5337,to be saved
+נְשָׂא,5376,to carry|lift up
+נָשִׂיא,5387,leader|prince
+נתן,5414,to give|set|place
+סבב,5437,to go around|surround
+סָבִיב,5439,surrounding
+סוּס,5483,horse
+סור,5493,to turn aside
+סֵפֶר,5612,book|scroll
+עבד,5647,to work|serve
+עֶבד,5650,slave|servant
+עֲבוֹדָה,5656,work|service
+עבר,5674,to pass over|go over
+עַד,5704,as far as|until
+עֵדָה,5712,community|assembly
+עוֹד,5750,still|again
+עוֹלָם,5769,long time|duration
+עָוֹן,5771,guilt|punishment
+עזב,5800,to leave
+עַיִן,5867,eye|spring of water
+עִיר,5892,city
+עַל,5921,on|over|concerning|against
+עלה,5927,to ascend|go up
+עֹלָה,5930,burnt-offering
+עַם,5971,people
+עִם,5973,with|towards|against
+עמד,5975,to stand
+ענה,6030,to answer
+עֶץ,6086,tree|wood
+עֶצֶם,6106,bone
+עֶרֶב,6153,evening
+עשׂה,6213,to do|make
+עֲשָׂרח,6235,ten (f.)
+עָשָׂר,6240,ten
+עֶשְׂרִים,6242,twenty
+עֵת,6256,time
+עַתִּה,6258,now
+פֶה,6310,mouth
+פְּלִשְׁתִי,6430,mouth
+פֶּן,6434,otherwise|or|lest
+פנה,6437,to turn
+פּנים,6440,face
+פקד,6485,to attend to|visit|muster|appoint
+פַּר,6499,bull
+פַּרִעֹה,6547,Pharaoh
+פתח,6607,to open
+פֶּתח,6607,opening|entrance|doorway
+צֹאן,6629,flocks
+צָבָא,6633,military|heavenly bodies
+צַדִּיק,6662,righteous
+צְדָקָה,6666,righteousness
+צוה,6680,to give an order|command
+צִיִוֹן,6724,Zion
+צָפוֹן,6828,north
+קבּץ,6908,to gather|assemble
+קבר,6912,to bury
+קדשׁ,6942,to be set apart|consecrated
+קֹדֶשׁ,6944,holy
+קָהָל,6951,crowd|community
+קוֹל,6963,noise|human voice
+קום,6965,to rise
+קָרָא,7121,to name|call
+קרב,7126,to approach|draw near
+קֶרֶב,7130,inward part|midst
+ראה,7200,to see
+רֹאשׁ,7218,head
+רִאשׁוֹן,7223,first|earlier
+רַב,7227,many|great
+רֹב,7230,multitude|abundance|greatness
+רבה,7235,to become numerous|become great
+רֶגֶל,7272,foot|leg
+רדפ,7291,to persecute|pursue
+רוּח,7307,wind|spirit
+רום,7311,to rise|be high
+רֶכֶב,7393,chariotry|chariot
+רַע,7451,evil
+רֵעַ,7423,friend
+רָעָה,7462,evil|to feed|graze
+רשׁע,7561,guilty|wicked person
+שֶׁ,0,who|that|which
+שׁאוּל,7586,Saul
+שׁאל,7593,to ask
+שׁאר,7604,to remain
+שׁכב,7616,to lie down
+שֵׁבֶט,7626,rod|tribe
+שׁבַע,7650,seven
+שָׁבַע,0,to swear
+שׂדֶה,7704,field
+שׁוב,7725,to return
+שׂום,7761,to set|put
+שׁחת,7845,to ruin|destroy
+שׁכן,7931,to dwell, settle down
+שׁלוֹם,7965,health|peace
+שְׁלשִׁים,7930,thirty
+שָׁלַח,7971,to send
+שָׁלך,7993,to throw
+שׁלֹמֹה,8010,Solomon
+שָׁלשׁ,8027,three
+שָׁם,8033,there
+שֵׁם,8034,name
+שְׁמוּאֵל,8050,Samuel
+שָׂמַח,8055,to rejoice|be merry
+שׁמַיִם,8064,heaven|sky
+שֶׁמֶן,8081,fat|oil
+שׁמע,8085,to hear
+שָׁמַר,8104,to keep watch
+שֶׁמֶשׁ,8122,sun
+שׂנא,8131,to hate
+שְׁנָה,8140,year
+שֵׁנִי,8145,second
+שׁעַר,8147,gate
+שָׂפָה,8193,lip|bank of river
+שָׁפַט,8199,to judge
+שַׂר,8269,official
+שֵׁשׁ,8337,six
+שׁתה,8355,to drink
+תָוֶךְ,8432,midst|in the middle
+תּוֹרָה,8451,instruction
+תַּחת,8479,underneath|below|instead of
