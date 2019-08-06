@@ -54,8 +54,6 @@ namespace NoFuture.Rand.Law
         /// Its up to the caller to then determine if the underlying <see cref="RefersTo"/>
         /// are the same thing.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
         public override bool Equals(object obj)
         {
             var tt = obj as Term<T>;
@@ -64,6 +62,10 @@ namespace NoFuture.Rand.Law
             return tt.Name.Equals(Name);
         }
 
+        /// <summary>
+        /// Two terms are considered to be two representations of the same thing
+        /// when their <see cref="RefersTo"/> equals our <see cref="RefersTo"/>
+        /// </summary>
         public virtual bool EqualRefersTo(object obj)
         {
             var tt = obj as Term<T>;
@@ -72,6 +74,9 @@ namespace NoFuture.Rand.Law
             return tt.RefersTo.Equals(RefersTo);
         }
 
+        /// <summary>
+        /// The same thing as calling <see cref="Name"/>
+        /// </summary>
         public override string ToString()
         {
             return Name;

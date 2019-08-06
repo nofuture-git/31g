@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Law;
-//using NoFuture.Rand.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Tests
@@ -11,6 +10,26 @@ namespace NoFuture.Rand.Law.Tests
     public class TermTests
     {
         private static object something = new object();
+
+        [Test]
+        public void TestExample()
+        {
+            var myTerm = new Term<object>("something's name", DBNull.Value);
+            myTerm.As(new ColorGreen());
+            myTerm.As(new SmoothSurface());
+            myTerm.As(new HardSurface());
+            myTerm.As(new SmallSize());
+            myTerm.As(new RoundShape());
+
+            Assert.IsTrue(myTerm.IsCategory(new SmallSize()));
+            Console.WriteLine(myTerm.ToString()); //something's name
+            Console.WriteLine(myTerm.GetCategory());
+
+            var myTerm2 = new Term<object>("another name for same thing", DBNull.Value);
+            Assert.IsFalse(myTerm2.Equals(myTerm));
+            Assert.IsTrue(myTerm2.EqualRefersTo(myTerm));
+
+        }
 
         [Test]
         public void TestEquals()
@@ -48,6 +67,30 @@ namespace NoFuture.Rand.Law.Tests
             Console.WriteLine(intersect.Count);
 
         }
+    }
 
+    public class ColorGreen : TermCategory
+    {
+        protected override string CategoryName => "green";
+    }
+
+    public class SmoothSurface : TermCategory
+    {
+        protected override string CategoryName => "smooth";
+    }
+
+    public class HardSurface : TermCategory
+    {
+        protected override string CategoryName => "hard";
+    }
+
+    public class SmallSize : TermCategory
+    {
+        protected override string CategoryName => "small";
+    }
+
+    public class RoundShape : TermCategory
+    {
+        protected override string CategoryName => "round";
     }
 }
