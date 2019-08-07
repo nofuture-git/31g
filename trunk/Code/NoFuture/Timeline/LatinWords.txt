@@ -1,0 +1,357 @@
+a|ab,from
+aberat,was out|was absent
+abest,is out|is absent
+abit,goes away
+accipit,accepts
+ad,to
+adest,is here
+adsunt,are here
+advenio|advenire|adveni,arrive
+aedificium,building
+aedifico,build
+aeger,sick
+agit,does
+agitat,chases|hunts
+agmen,column of men|army
+agnoscit,recognises
+agricola,farmer
+aliquid,something
+alius,other|another
+alter,the other|the second
+ambulat,walks
+amicus,friend
+amittit,lose
+ancilla,slave-girl|maid
+animus|anime,spirit|soul|mind
+anulus,ring
+appropinquo,approach
+apud,among|at the house of
+aqua,water
+are|arae,alter
+attonitus,astonished
+audit,hears
+aula,palace
+auxilium,help
+bene,well
+benignus,kind
+bibit,drinks
+bonus,good
+callidus,clever|cunning
+canis,dog
+canto|cantare|cantavi,sing
+capit,takes
+celeriter,quickly
+cena,dinner
+cenat,dines
+ceteri,the rest|the other
+cibus,food
+circumspectat,looks around
+civis,citizen
+clamat,shouts
+clamor,shout|uproar
+claudo|claudere|clausi,shut|block
+commodus,convenient
+complet,fills
+consentio,agree
+consilium,plan|idea
+conspicit,catches sight of
+consumit,eats
+contendit,hurries
+contentus,satisfied
+convenit,gathers|meets
+conquit,cooks
+coquus,cook
+cotidie,everyday
+credit,trusts|believes
+cubiculum,bedroom
+cum,with
+cupit,wants
+cur,why
+currit,runs
+custodit,guards
+custos,guard
+dat,gives
+de,about
+debeo,owe|ought
+decorus,right|proper
+deinde,then
+delecto,delight
+deleo|delere|delevi,destroy
+deus,god
+dico|decere|dixi,say
+dies,day
+difficilis,difficult
+diligenter,carefully
+diu,for a long time
+domina,mistress
+dominus,master
+donum,gift|present
+dormit,sleeps
+ducit,leads|takes
+duo,two
+e,from|out of
+ecce,look
+effugio,escape
+ego,I
+eheu,oh dear!|oh no!
+emit,buys
+emittit,throws|sends out
+epistula,letter
+equus,horse
+est,is
+et,and
+etiam,even
+eum,him
+excito|excitara|excitavi,arouse
+exclamat,exclaims
+exit,goes out
+exspectat,waits for
+faber|fabri,craftsman
+fabula,play|story
+facile,easily
+facilis,easy
+facit,makes|does
+favet,supports
+femina,woman
+ferociter,fiercely
+ferox,fierce
+fert,brings|carries
+fessus,tired
+festinat,hurries
+fidelis,faithful|loyal
+filius,son
+flamma,flame
+flos,flower
+fortis,brave
+fortiter,bravely
+frater,brother
+frustra,in vain
+fugit,runs
+fundus,farm
+fur,theif
+gladius,sword
+graviter,seriously
+habet,has
+habitat,lives
+heri,yesterday
+hic,this
+hodie,today
+homo,human being|man
+hortus,garden
+huc,here|to this place
+iacet,lies
+iam,now
+ianua,door
+igitur,therefore
+ignavus,cowardly
+ille,that
+impedio,delay|hinder
+imperator,emperor
+imperium,empire
+in,in
+ingens,huge
+inquit,says
+inspicit,looks at|examines
+insula,island
+intellegit,understands
+intente,intently|carefully
+inter,amoung
+interficio,kill
+intrat,enters
+invenit,finds
+ipse|ipsa,himself|herself
+iratus,angry
+iste,that
+it,goes
+ita,in this way
+ita vero,yes
+itaque,and so
+interum,again
+iudex,judge
+iuvenis,young man
+laborat,works|is working
+lacrimat,weeps|cries
+laetus,happy
+laudat,praises
+lectus,couch
+legit,reads
+lente,slowly
+leo,lion
+liber,book
+liberalis,freedman|ex-slave
+libertus,generous
+litus,sea-shore
+magnus,big
+manet,remains|stays
+mare,sea
+maritus,husband
+mater,mother
+maximus,very big
+medius,middle
+melior,better
+mendax,liar
+mercator,merchant
+meus,my|mine
+minime,no
+mirabilis,strange|extra-ordinary
+miser,miserable|wretched
+mittit,sends
+mons,mountain
+mortuus,dead
+mox,soon
+multi,many
+multus,much
+narrat,tells|relates
+nauta,sailor
+navigo,sail
+navis,ship
+necat,kills
+necesse,necessary
+negotium,business
+nihil,nothing
+nolo,don't want
+non,not
+nonne,surely
+nos,we
+noster,our
+novus,new|fresh|recent
+nullus,no|none|not any
+num,surely not
+numquam,never
+nunc,now
+nuntiat,announces
+nuntius,messenger
+offert,offers
+olim,once|sometime ago
+omnis,all
+optime,very well
+optimus,very good|excellent
+ostendit,shows
+paene,almost|nearly
+parat,prepares
+parvus,small
+pater,father
+pauci,few|a few
+pax,peace
+pecunia,money
+per,through
+pereo|perire|peri,die|perish
+perterritus,terrified
+pervenio,reach|arrive at
+pes,foot
+petit,makes for,attacks
+placet,it pleases
+plaudit,applauds
+poeta,poet
+pono|ponere|posui,place|put
+porta,gate
+portat,carries
+portus,harbour
+possum,can|be able
+post,after the
+postquam,after
+postridie,on the next day
+postulat,demands
+primus,first
+princeps,emperor|cheif
+procedit,proceeds|advances
+promittit,promises
+prope,near
+puella,girl
+puer,boy
+pugna,fight
+pugnat,fights
+pulcher,beautiful
+pulsat,hits|thumps
+punio|punire|punivi,punish
+quaerit,looks for|searches for
+quam,than|how
+quamquam,although
+que,and
+qui,who
+quis,who
+quod,because
+quondam,one day|once
+recipio,recover|take back
+reddit,gives back
+redeo,return|go back|come back
+res,thing
+resisto,resist
+respondet,replies
+revenit,come back|returns
+rex,king
+ridet,laughs|smiles
+rogat,asks
+ruo|ruere|rui,rush
+sacerdos,priest
+saepe,often
+salutat,greets
+salve,hello
+sanguis,blood
+satis,enough
+scribit,writes
+se,himself
+sed,but
+sedet,sits|is sitting
+senator,senator
+senex,old man
+sentit,feels
+servat,saves|looks after
+servus,slave
+signum,sign|seal
+silva,wood
+simulac|simulatque,as soon as
+sollicitus,worried|anxious
+solus,alone
+spectaculum,show|watches
+spectat,looks at|watches
+stat,stands
+statim,at once
+stultus,stupid
+subito,suddenly
+summus,highest|greatest|top
+superat,overcomes|overpowers
+surgit,gets up|stands up
+suus,his|her|their
+taberna,shop|inn
+tacet,is silent|is quiet
+tacite,quietly
+tamen,however
+tandem,at last
+templum,temple
+teneo,hold
+terra,ground|land
+terret,frightens
+timet,is afraid|fears
+tollo|tollere|sustuli,raise|lift up
+totus,whole
+tradit,hand over
+traho|trahere|traxi,drag
+tres,three
+tu,you(singular)
+tum,then
+turba,crowd
+tuus,your|yours
+ubi,where|when
+unda,wave
+unus,one
+urbs,city
+uxor,wife
+valde,very much
+vale,goodbye
+vehementar,violently
+vendit,sells
+venit,comes
+verberat,strikes|beats
+verto|vertere|verti,turn
+via,steet
+videt,sees
+vinco,win
+vinum,wine
+vir,man
+vita,life
+vituperat,blames|curses
+vocat,calls
+volo,I want
+vos,you (plural)
+vulnero|vulnerare|vulneravi,wound
