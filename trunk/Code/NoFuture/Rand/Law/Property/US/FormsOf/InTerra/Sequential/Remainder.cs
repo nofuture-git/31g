@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
+namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential
 {
     [Aka("future interest")]
     public abstract class Remainder : LifeEstate

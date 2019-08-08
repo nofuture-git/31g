@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
+namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential
 {
     /// <summary>
     /// estate in land that automatically expires upon the happening of stated even, not certain to occur

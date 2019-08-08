@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
+namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential
 {
     /// <summary>
     /// The grant which allows for the grantor to revoke if they so choose

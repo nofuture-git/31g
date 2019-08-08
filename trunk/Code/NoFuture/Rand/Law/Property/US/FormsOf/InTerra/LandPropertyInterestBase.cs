@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
+namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
 {
     public abstract class LandPropertyInterestBase : PropertyBase, ILandPropertyInterest
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests;
+using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests
+namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential
 {
     /// <summary>
     /// The Rule of Convenience is the idea the a future interest becomes actual upon any one qualified to make a claim and does so.

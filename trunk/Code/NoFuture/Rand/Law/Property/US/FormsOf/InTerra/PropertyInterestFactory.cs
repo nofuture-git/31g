@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests;
+using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra

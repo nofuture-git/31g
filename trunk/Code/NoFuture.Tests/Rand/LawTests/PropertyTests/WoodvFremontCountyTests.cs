@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Law.Property.US.FormsOf;
 using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests;
+using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
