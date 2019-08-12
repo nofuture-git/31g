@@ -1,3 +1,4 @@
+Words,Translations
 a|ab,from
 aberat,was out|was absent
 abest,is out|is absent
