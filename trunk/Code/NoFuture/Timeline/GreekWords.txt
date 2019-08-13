@@ -1,4 +1,4 @@
-Words,StrongsIndex,Translation
+Words,StrongsIndex,Translations
 αβρααμ,11,Abraham
 αγαθος,18,good
 αγαπω,25,I love

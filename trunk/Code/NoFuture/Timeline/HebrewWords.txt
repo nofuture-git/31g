@@ -1,4 +1,4 @@
-StrongIndex,Words,Translations
+StrongsIndex,Words,Translations
 אַב,2,father
 אבד,6,to become lost
 אֶבֶן,69,stone
