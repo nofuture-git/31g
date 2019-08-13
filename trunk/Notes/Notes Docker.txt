@@ -1,0 +1,134 @@
+Notes Docker
+----
+
+----
+Docker on Windows
+By: Elton Stoneman
+Publisher: Packt Publishing
+Pub. Date: July 13, 2017
+Print ISBN-13: 978-1-78528-165-5
+Web ISBN-13: 978-1-78528-842-5
+Pages in Print Edition: 358
+https://github.com/PacktPublishing/Docker-on-Windows
+----
+
+----
+Arch basics
+ - is additive since its being built atop whole OS images
+ - logical division is hosts, containers and images
+  - hosts run containers
+  - containers are created from images
+  - image is single, complete and self-containted
+ - there are base images which are like full OS .iso
+  - what is built upon it is a sequence of changes 
+    (e.g. installs, commands, etc.)
+ - images are then avail on various web hosts
+ - Docker Hub is large repo for Linux distros and Microsoft Windows
+ - Docker Cloud is a pub\priv repo with auth control
+ - Docker Store is a commercial repo to purchase images    
+----
+
+----
+Various Windows Paths
+C:\Users\{username}\AppData\Roaming\Docker
+C:\ProgramData\Docker
+ - this is the location of the built images
+C:\ProgramData\DockerDesktop
+C:\Users\{username}\AppData\Local\Docker
+
+ - settings file at
+ C:\Users\{username}\AppData\Roaming\Docker\settings.json
+
+ - corp proxy server syntax as:
+ username:password@proxy.host.com:8080
+ 
+ - to print the current settings
+ docker info
+----
+
+----
+CLI basics
+ - is a Windows Service in Windows (Daemon otherwise)
+ - the Docker CLI issues its commands to this local win service
+ - obviously these can be separated across diff machines
+ - typically two task are to package an image and to run an image
+ - using Windows or Linux containers is a global setting
+  - can be set from the context menu of the tray icon
+ 
+ C:\> docker image build --file myCustomDockerFile --tag myuser/my-app .
+  - notice the "." at the end - this is the output directory
+  - tag convention is {user}/{app}
+  - the "--file" switch allows for override implied "Dockerfile" filename 
+    with some custom docker file name
+ 
+ C:\> docker container run --interactive --tty --name myalias myuser/my-app powershell
+  - the "powershell" at the end is actually run in the container
+  - the "--name" is to assign some name other than the very long hex value
+  
+ C:\> docker container run --interactive --tty --volume C:\MyHostMachine:C:\MyDockerImg myuser/my-app powershell 
+  - "--volume" is to share some directory with the container while its running
+   - takes the form of {source}:{target}
+----
+
+----
+Swarm basics
+ - a composition of two or more running docker images
+ - there exist some form of interprocess comm between individual containers
+  - the over-the-wire comm is encrypted using digital certs
+----
+
+----
+Docker files
+ - are the composition of images as a declarative and procedural 
+   sequence of statements
+ - is a token-word kind of lang
+  (e.g. FROM, COPY, RUN, CMD, WORKDIR)
+ - require some base images\OS either locally or from Docker Hub
+ - statement delimiter is LF 
+ - files are in UTF-8
+ 
+ FROM microsoft/dotnet
+ - example of most basic possible dockerfile - is just the base image itself
+ - escape-sequence is the C-style backslash so Windows file paths
+   need the double-slash "\\"
+ - octothrop (\x23) is to define a directive 
+ 
+ # escape=`
+  - "escape=`" would redefine esc-char to match powershell, allow for
+    less double-slash in windows paths
+
+ ARG MY_CUST_ARG=FOO
+ - allow for variable def's in docker file with default values
+ - use the variable as
+  C:\> docker image build --build-arg MY_CUST_ARG=BAR --tag myuser/my-image
+
+ EXPOSE 80
+ - has port 80 exposed to receive
+ - to link it to a running image
+  
+  C:\> docker container run --detach --publish 80 --name myalias myuser/my-image
+  
+  C:\> docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' myalias
+
+ SHELL ["powershell"] 
+ - has the default shell changed from CMD.exe to PowerShell.exe
+ 
+ VOLUME C:\\app\\logs
+ - defines a persisted directory within an image
+ - what is written\changed within it will remain
+  - differs from typicaly image-as-an-ISO where everything is always
+    read-only
+  - useful for containers to keeps logs
+  
+  C:\> docker container run --interactive --tty --name myalias myuser/my-app
+   - first have to assign some alias to a container
+  
+  C:\> docker container run --interactive --tty --volumes-from myalias myuser/my-other-app
+   - can also be written as "myalias:ro" for "read-only" 
+   - will be present on the host machine, 
+   
+  C:\> docker container inspect --format '{{ json .Mounts }}' myalias | ConvertFrom-Json
+
+----
+
+----
