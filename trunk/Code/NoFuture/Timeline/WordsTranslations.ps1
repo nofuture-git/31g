@@ -17,21 +17,32 @@ $WordTranslations = @{
     }
 }
 
-:nextLang foreach($lang in $WordTranslations.Keys){
+function Load-WordTranslations
+{
+    [CmdletBinding()]
+    Param
+    (
+    )
+    Process
+    {
+        :nextLang foreach($lang in $WordTranslations.Keys){
      
-     $fn = $WordTranslations[$lang].FileName
-     if([string]::IsNullOrWhiteSpace($fn)){
-        continue nextLang;
-     }
+             $fn = $WordTranslations[$lang].FileName
+             if([string]::IsNullOrWhiteSpace($fn)){
+                continue nextLang;
+             }
 
-     $ffn = Join-Path $myScriptLocation $fn
-     if(-not (Test-Path $ffn)){
-        continue nextLang;
-     }
+             $ffn = Join-Path $myScriptLocation $fn
+             if(-not (Test-Path $ffn)){
+                continue nextLang;
+             }
 
-     $WordTranslations[$lang].Content = Import-Csv -Path $ffn
-
+             $WordTranslations[$lang].Content = (Import-Csv -Path $ffn | Sort-Object -Property Words)
+        }
+    }
 }
+
+Load-WordTranslations
 
 <#
     .SYNOPSIS
@@ -51,7 +62,10 @@ function Get-WordTranslations
     Param
     (
         [Parameter(Mandatory=$true,position=0)]
-        [string] $EnglishWord
+        [string] $EnglishWord,
+        [Parameter(Mandatory=$false,position=1)]
+        [switch] $WholeWord
+
     )
     Process
     {

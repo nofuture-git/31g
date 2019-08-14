@@ -356,3 +356,8 @@ vocat,calls
 volo,I want
 vos,you (plural)
 vulnero|vulnerare|vulneravi,wound
+oculus,eye
+panem,bread
+custodi,keep
+soror,sister
+manibus,hand
