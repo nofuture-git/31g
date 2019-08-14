@@ -18,6 +18,7 @@ Arch basics
  - logical division is hosts, containers and images
   - hosts run containers
   - containers are created from images
+   - a container is a running image
   - image is single, complete and self-containted
  - there are base images which are like full OS .iso
   - what is built upon it is a sequence of changes 
@@ -30,11 +31,12 @@ Arch basics
 
 ----
 Various Windows Paths
-C:\Users\{username}\AppData\Roaming\Docker
-C:\ProgramData\Docker
+ C:\Users\{username}\AppData\Roaming\Docker
+ C:\ProgramData\Docker
  - this is the location of the built images
-C:\ProgramData\DockerDesktop
-C:\Users\{username}\AppData\Local\Docker
+ 
+ C:\ProgramData\DockerDesktop
+ C:\Users\{username}\AppData\Local\Docker
 
  - settings file at
  C:\Users\{username}\AppData\Roaming\Docker\settings.json
@@ -43,7 +45,19 @@ C:\Users\{username}\AppData\Local\Docker
  username:password@proxy.host.com:8080
  
  - to print the current settings
- docker info
+ C:\> docker info
+ 
+ - service name 
+ C:\> Restart-Service com.docker.service
+ 
+ - Docker Engine
+ C:\Program Files\Docker\Docker\Resources\dockerd.exe
+ 
+ - Docker Service 
+ C:\Program Files\Docker\Docker\com.docker.service
+ 
+ - Docker Desktop
+ C:\Program Files\Docker\Docker\Docker Desktop.exe
 ----
 
 ----
@@ -68,6 +82,18 @@ CLI basics
  C:\> docker container run --interactive --tty --volume C:\MyHostMachine:C:\MyDockerImg myuser/my-app powershell 
   - "--volume" is to share some directory with the container while its running
    - takes the form of {source}:{target}
+   
+ C:\> docker search microsoft
+  - list the avail. images from microsoft
+  
+ C:\> docker pull microsoft/dotnet
+  - downloads the image to the local machine
+  
+ C:\> docker image ls 
+ - prints all the built\pulled images you have on your machine
+
+ C:\> docker image rm {REPOSITORY}:{TAG}
+  - where REPOSITORY and TAG is from the output of docker image ls
 ----
 
 ----
@@ -86,16 +112,34 @@ Docker files
  - require some base images\OS either locally or from Docker Hub
  - statement delimiter is LF 
  - files are in UTF-8
- 
- FROM microsoft/dotnet
- - example of most basic possible dockerfile - is just the base image itself
  - escape-sequence is the C-style backslash so Windows file paths
    need the double-slash "\\"
  - octothrop (\x23) is to define a directive 
  
+ FROM microsoft/dotnet AS myalias
+ - example of most basic possible dockerfile - is just the base image itself
+ - the "myalias" is a file-scoped reference back to this image
+   using the "--from" switch
+ 
+ COPY --from myalias C:\somewhere\on\microsoft\dotnet\drive C:\to\location\on\microsoft\aspnet\drive
+ - example of using COPY where the source is actually another image scoped within the 
+   Dockerfile 
+ 
  # escape=`
-  - "escape=`" would redefine esc-char to match powershell, allow for
+ - "escape=`" would redefine esc-char to match powershell, allow for
     less double-slash in windows paths
+
+ WORKDIR C:\myapp
+ - sets the current directory within the file system of the given image
+ - like invoking "Push-Location C:\myapp" or its like
+
+ RUN msbuild .\mySln.sln
+ - is scoped to the current image's drive 
+ - is exec'ed within the docker build command
+ 
+ CMD ["powershell.exe", "c:\\scriptFile.ps1"]
+ - is scoped to the current container's drive (a.k.a. running-image)
+ - is exec'ed within the docker container run command
 
  ARG MY_CUST_ARG=FOO
  - allow for variable def's in docker file with default values
