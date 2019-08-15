@@ -669,3 +669,14 @@ function Find-LnkFiles2Hotkeys($searchDir){
     #return the result
     return $regHotKeys
 }
+
+function Write-IisLogsToConsole($iisLogFileFullPath){
+    #get IIS up an running if its not already
+    Start-Service W3SVC;
+    #for it to respond at least once
+    Invoke-WebRequest http://localhost -UseBasicParsing | Out-Null; 
+    #flush IIS logs to disk
+    netsh http flush logbuffer | Out-Null; 
+    #put the console in "Tail-Mode" so it streams last line
+    Get-Content -path $iisLogFileFullPath -Tail 1 -Wait
+}

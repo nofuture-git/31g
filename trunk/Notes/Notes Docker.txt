@@ -23,6 +23,12 @@ Arch basics
  - there are base images which are like full OS .iso
   - what is built upon it is a sequence of changes 
     (e.g. installs, commands, etc.)
+ - a container only assumes the basics of a machine
+  - file system
+  - env variables
+  - networking
+  - console w\ std out and std err streams
+ - Console output is where Docker looks for log entries
  - images are then avail on various web hosts
  - Docker Hub is large repo for Linux distros and Microsoft Windows
  - Docker Cloud is a pub\priv repo with auth control
@@ -75,25 +81,35 @@ CLI basics
   - the "--file" switch allows for override implied "Dockerfile" filename 
     with some custom docker file name
  
- C:\> docker container run --interactive --tty --name myalias myuser/my-app powershell
+ C:\> docker container run --interactive --tty --name myalias `
+      --volume C:\MyHostMachine:C:\MyDockerImg myuser/my-app powershell
   - the "powershell" at the end is actually run in the container
   - the "--name" is to assign some name other than the very long hex value
-  
- C:\> docker container run --interactive --tty --volume C:\MyHostMachine:C:\MyDockerImg myuser/my-app powershell 
   - "--volume" is to share some directory with the container while its running
    - takes the form of {source}:{target}
+  - "--name" is useful in that its a handle from CLI but its also 
+    a kind of DNS host name now in scope to any other container on the host
+ 
+ C:\> docker container inspect myuser/my-image
+  - gets JSON data about the given container
+ 
+ C:\> docker image inspect myuser/my-image
+  - likewise, JSON about the given image
    
  C:\> docker search microsoft
   - list the avail. images from microsoft
   
- C:\> docker pull microsoft/dotnet
+ C:\> docker pull mcr.microsoft.com/dotnet/framework/sdk:4.7.1
   - downloads the image to the local machine
   
  C:\> docker image ls 
- - prints all the built\pulled images you have on your machine
+  - prints all the built\pulled images you have on your machine
 
  C:\> docker image rm {REPOSITORY}:{TAG}
   - where REPOSITORY and TAG is from the output of docker image ls
+  
+ C:\> docker container logs
+  - prints all the logs of all containers
 ----
 
 ----
@@ -146,12 +162,19 @@ Docker files
  - use the variable as
   C:\> docker image build --build-arg MY_CUST_ARG=BAR --tag myuser/my-image
 
+ ENV MY_ENV_VAR="default value"
+ - sets the machine environment variables
+ - can scope this using ${MY_ENV_VAR} within the dockerfile
+ - use the variable as 
+  C:\> docker container run --env MY_ENV_VAR='new value' myuser/my-image
+
  EXPOSE 80
  - has port 80 exposed to receive
  - to link it to a running image
   
-  C:\> docker container run --detach --publish 80 --name myalias myuser/my-image
-  
+  C:\> docker container run --detach --publish 6618:80 --name myalias myuser/my-image
+   - read from host port 6618 and write it to container port 80
+   
   C:\> docker container inspect --format '{{ .NetworkSettings.Networks.nat.IPAddress }}' myalias
 
  SHELL ["powershell"] 
@@ -172,7 +195,26 @@ Docker files
    - will be present on the host machine, 
    
   C:\> docker container inspect --format '{{ json .Mounts }}' myalias | ConvertFrom-Json
+  
+ HEALTHCHECK --interval=5s --retries=5 CMD powershell -command "Get-HeathOfWebsite"
+ - repeated command to tell Docker how to check the container
+ - the results of the CMD needs to be '0' for healthy, '1' otherwise
+ - upon a return value of '1', Docker will reattempt 5 times (3 is default)
+ - important to use of Docker swarm
 
 ----
 
+----
+Use Docker with existing .NET Framework apps
+ - .NET core is new
+ - .NET framework is the name for what used to be known as just ".NET"
+ - classic ASP.NET, along with many NuGet pkgs, require .NET framework
+ - Microsoft Nanoserver hosts .NET core
+  - it will not host .NET framework
+ - Microsoft Windows Server Core hosts .NET framework
+  - it is substantially larger
+  - it has many services and un-needed features which must run in background
+  - its size causes everything to take longer
+  - need to add custom code to write IIS logs to console as a stream
+  - need to switch web.config settings to use environment variables
 ----

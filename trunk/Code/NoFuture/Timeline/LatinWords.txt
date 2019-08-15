@@ -361,3 +361,4 @@ panem,bread
 custodi,keep
 soror,sister
 manibus,hand
+mandatum,command

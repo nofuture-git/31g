@@ -335,3 +335,4 @@ Words,StrongsIndex,Translations
 ωρα,5610,an hour
 ως,5613,as
 ωστε,5620,so that|as a result
+γινωσκω,1097,to know
