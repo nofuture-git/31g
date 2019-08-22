@@ -166,11 +166,13 @@ Docker files
  - is exec'ed within the docker container run command
 
  ARG MY_CUST_ARG=FOO
+ - for assigning values at build-time
  - allow for variable def's in docker file with default values
  - use the variable as
   C:\> docker image build --build-arg MY_CUST_ARG=BAR --tag myuser/my-image
 
  ENV MY_ENV_VAR="default value"
+ - for assigning values at run-time
  - sets the machine environment variables
  - can scope this using ${MY_ENV_VAR} within the dockerfile
  - use the variable as 
@@ -226,3 +228,38 @@ Use Docker with existing .NET Framework apps
   - need to add custom code to write IIS logs to console as a stream
   - need to switch web.config settings to use environment variables
 ----
+
+----
+Examples
+ - Ubuntu for building Word2Vec
+ - switch to Linux containers from the Docker Desktop settings
+ - get the ubuntu image from docker hub
+ C:\> docker pull ubuntu:latest
+ 
+ - run the docker image
+ C:\> docker container run --interactive --tty ubuntu base
+ 
+ - need to set proxy server for "apt-get", "wget" and "git"
+ - the 'dd00' is made up to look like a bash shell hosted inside of docker 
+ - the use of single-quote for verbatim strings
+ root@dd00:/# httpsProxy='Acquire::https::Proxy "http://myusername:Pas$w0rd@proxy.domain.com:9090/";'
+ root@dd00:/# httpProxy='Acquire::http::Proxy "http://myusername:Pas$w0rd@proxy.domain.com:9090/";'
+ root@dd00:/# echo $httpProxy > /etc/apt/apt.conf.d/proxy.conf
+ root@dd00:/# echo $httpsProxy >> /etc/apt/apt.conf.d/proxy.conf
+ root@dd00:/# apt update
+ root@dd00:/# apt-get install build-essential
+ root@dd00:/# apt-get install wget
+ root@dd00:/# httpProxy='http_proxy=http://myusername:Pas$w0rd@proxy.domain.com:9090'
+ root@dd00:/# httpsProxy='https_proxy=http://myusername:Pas$w0rd@proxy.domain.com:9090'
+ root@dd00:/# echo $httpProxy > /etc/wgetrc
+ root@dd00:/# echo $httpsProxy >> /etc/wgetrc
+ root@dd00:/# apt-get install git-core
+ root@dd00:/# git config --global http.proxy 'http://myusername:Pas$w0rd@proxy.domain.com:9090/'
+ root@dd00:/# git clone https://github.com/tmikolov/word2vec.git
+ root@dd00:/# cd word2vec
+ root@dd00:/# make
+ root@dd00:/# bash demo-word.sh
+ 
+----
+ 
+ 
