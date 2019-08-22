@@ -271,7 +271,7 @@ quamquam,although
 que,and
 qui,who
 quis,who
-quod,because
+quod|quia,because
 quondam,one day|once
 recipio,recover|take back
 reddit,gives back
