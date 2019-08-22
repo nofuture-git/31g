@@ -80,6 +80,9 @@ CLI basics
   - tag convention is {user}/{app}
   - the "--file" switch allows for override implied "Dockerfile" filename 
     with some custom docker file name
+  - the general form of a image name is:  
+   {registry-domain}/{account-id}/{repository-name}:{tag}
+   - docker will use "docker.io" as a default registry-domain (like localhost)
  
  C:\> docker container run --interactive --tty --name myalias `
       --volume C:\MyHostMachine:C:\MyDockerImg myuser/my-app powershell
@@ -110,6 +113,11 @@ CLI basics
   
  C:\> docker container logs
   - prints all the logs of all containers
+  
+ C:\> docker image tag myuser/my-image:latest myuser/my-image:5.5.1
+  - give an alias to an image 
+  - alias-to-image is many-to-one, same image may have many alias
+  - does not create another copy, just another ref
 ----
 
 ----

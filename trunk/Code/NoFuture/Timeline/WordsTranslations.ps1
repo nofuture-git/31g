@@ -87,8 +87,18 @@ function Get-WordTranslations
                 }
 
                 $lowerTranslations = $line.Translations.ToLower();
-                if($lowerTranslations.Contains($EnglishWord.ToLower())){
-                    $results += $line
+                $englishWordLower = $EnglishWord.ToLower()
+                if($WholeWord){
+                    $lowerTranslations.Split("|") | ? {
+                        $_ -match "\b$englishWordLower\b"
+                    } | % {
+                        $results += $line
+                    }
+                }
+                else{
+                    if($lowerTranslations.Contains($englishWordLower)){
+                        $results += $line
+                    }
                 }
             }
         }
