@@ -17,6 +17,7 @@ Arch basics
  - is additive since its being built atop whole OS images
  - logical division is hosts, containers and images
   - hosts run containers
+   - as a developer - the host is your machine
   - containers are created from images
    - a container is a running image
   - image is single, complete and self-containted
@@ -75,8 +76,8 @@ CLI basics
  - using Windows or Linux containers is a global setting
   - can be set from the context menu of the tray icon
  
- C:\> docker image build --file myCustomDockerFile --tag myuser/my-app .
-  - notice the "." at the end - this is the output directory
+ C:\> docker image build . --file myCustomDockerFile --tag myuser/my-app
+  - notice the "." in the middle - this is the output directory
   - tag convention is {user}/{app}
   - the "--file" switch allows for override implied "Dockerfile" filename 
     with some custom docker file name
@@ -108,8 +109,9 @@ CLI basics
  C:\> docker image ls 
   - prints all the built\pulled images you have on your machine
 
- C:\> docker image rm {REPOSITORY}:{TAG}
+ C:\> docker image rm --force {REPOSITORY}:{TAG}
   - where REPOSITORY and TAG is from the output of docker image ls
+  - can also use the IMAGE ID 
   
  C:\> docker container logs
   - prints all the logs of all containers
@@ -211,7 +213,6 @@ Docker files
  - the results of the CMD needs to be '0' for healthy, '1' otherwise
  - upon a return value of '1', Docker will reattempt 5 times (3 is default)
  - important to use of Docker swarm
-
 ----
 
 ----
@@ -231,35 +232,46 @@ Use Docker with existing .NET Framework apps
 
 ----
 Examples
- - Ubuntu for building Word2Vec
+ - Ubuntu for building and running Word2Vec
  - switch to Linux containers from the Docker Desktop settings
- - get the ubuntu image from docker hub
- C:\> docker pull ubuntu:latest
+ - example assumes downloaded and decompressed very large GoogleNews-vectors-negative300.bin.gz
+  - up the allowed memory in Docker Desktop > Settings > Advanced to at least 4GB since
+  - the vectors bin file is 3.5 GB and its fully read into memory with "alloc"
+  - volume is on sub-directory since on Windows merged volumes doesn't work
+  - its from news articles so its got alot of macabre relations - try the word "near"
  
- - run the docker image
- C:\> docker container run --interactive --tty ubuntu base
- 
- - need to set proxy server for "apt-get", "wget" and "git"
- - the 'dd00' is made up to look like a bash shell hosted inside of docker 
- - the use of single-quote for verbatim strings
- root@dd00:/# httpsProxy='Acquire::https::Proxy "http://myusername:Pas$w0rd@proxy.domain.com:9090/";'
- root@dd00:/# httpProxy='Acquire::http::Proxy "http://myusername:Pas$w0rd@proxy.domain.com:9090/";'
- root@dd00:/# echo $httpProxy > /etc/apt/apt.conf.d/proxy.conf
- root@dd00:/# echo $httpsProxy >> /etc/apt/apt.conf.d/proxy.conf
- root@dd00:/# apt update
- root@dd00:/# apt-get install build-essential
- root@dd00:/# apt-get install wget
- root@dd00:/# httpProxy='http_proxy=http://myusername:Pas$w0rd@proxy.domain.com:9090'
- root@dd00:/# httpsProxy='https_proxy=http://myusername:Pas$w0rd@proxy.domain.com:9090'
- root@dd00:/# echo $httpProxy > /etc/wgetrc
- root@dd00:/# echo $httpsProxy >> /etc/wgetrc
- root@dd00:/# apt-get install git-core
- root@dd00:/# git config --global http.proxy 'http://myusername:Pas$w0rd@proxy.domain.com:9090/'
- root@dd00:/# git clone https://github.com/tmikolov/word2vec.git
- root@dd00:/# cd word2vec
- root@dd00:/# make
- root@dd00:/# bash demo-word.sh
- 
+PS C:\> docker pull ubuntu:latest
+PS C:\> $dockerfileContent = @'
+FROM ubuntu
+ARG proxy_server
+
+RUN echo "Acquire::http::Proxy \"$proxy_server/\";" > /etc/apt/apt.conf.d/proxy.conf
+RUN echo "Acquire::https::Proxy \"$proxy_server/\";" >> /etc/apt/apt.conf.d/proxy.conf
+
+RUN apt update
+RUN apt-get --yes install build-essential
+RUN apt-get --yes install wget
+RUN echo "http_proxy=$proxy_server" > /etc/wgetrc
+RUN echo "https_proxy=$proxy_server" >> /etc/wgetrc
+
+RUN apt-get --yes install git-core
+RUN git config --global http.proxy "$proxy_server"
+
+RUN git clone https://github.com/tmikolov/word2vec.git
+WORKDIR /word2vec
+RUN make
+
+# shared location for the 3.5G GoogleNews-vectors-negative300.bin file
+VOLUME /word2vec/corpus 
+'@
+PS C:\> $pwd = $(pwd).Path; $dockerFileFullName = Join-Path $pwd "Dockerfile"; 
+PS C:\> [System.IO.File]::WriteAllText($dockerFileFullName, $dockerfileContent, [System.Text.Encoding]::UTF8)
+PS C:\> $myPassword = 'Pa$sW0rd'
+PS C:\> $proxyServer = "http://myusername:$myPassword@proxy.domain.com:9090"
+PS C:\> docker image build . --build-arg proxy_server=$proxyServer --tag nofuture/word2vec:v0.0.1
+PS C:\> docker container run --interactive --tty --volume C:\Temp\corpus:/word2vec/corpus nofuture/word2vec:v0.0.1
+root@56ac8f9d4d46:/word2vec# ./distance /word2vec/corpus/GoogleNews-vectors-negative300.bin
+
+ - from here the program is running and you enter a word and its does its thing
 ----
- 
  
