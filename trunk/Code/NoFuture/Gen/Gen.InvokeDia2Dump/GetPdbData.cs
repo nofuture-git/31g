@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Shared.DiaSdk;
@@ -21,9 +20,9 @@ namespace NoFuture.Gen.InvokeDia2Dump
     /// <summary>
     /// Represents structured calls to the the Dia2Dump.exe in which 
     /// the standard output is written to the respective file of whichever implementation of 
-    /// <see cref="NoFuture.Shared.DiaSdk.IPdbJsonDataFile"/> and then likewise that data is
+    /// <see cref="IPdbJsonDataFile"/> and then likewise that data is
     /// read and deserialized from the file.  The object that is returned from each structured 
-    /// call contains both its File's name and direct access to the derserialized object therein.
+    /// call contains both its File's name and direct access to the deserialized object therein.
     /// </summary>
     public class GetPdbData
     {
@@ -92,12 +91,15 @@ namespace NoFuture.Gen.InvokeDia2Dump
         #endregion
 
         #region Invoke API
+
+        public string PdbAssemblyFilePath => _assemblyFilePath;
+
         public const int DEFAULT_WAIT_FOR_EXIT_SECONDS = 60;
 
         /// <summary>
         /// The amount of time the invocation to Dia2Dump.exe will wait 
-        /// before sending the <see cref="System.Diagnostics.Process.Kill"/> 
-        /// command to the running <see cref="System.Diagnostics.Process"/>.
+        /// before sending the <see cref="Process.Kill"/> 
+        /// command to the running <see cref="Process"/>.
         /// </summary>
         /// <remarks>
         /// Any value assigned to 0 or less will be set to the <see cref="DEFAULT_WAIT_FOR_EXIT_SECONDS"/>.
@@ -107,7 +109,7 @@ namespace NoFuture.Gen.InvokeDia2Dump
         /// <summary>
         /// This is intended to get the line data of one symbol at 
         /// a time very quickly, and, as such, does not have all 
-        /// the dependecies on data being written to disk.
+        /// the dependencies on data being written to disk.
         /// </summary>
         /// <param name="typeFullName"></param>
         /// <returns></returns>
@@ -116,7 +118,10 @@ namespace NoFuture.Gen.InvokeDia2Dump
             _stdOut.Clear();
             _stdErr.Clear();
 
-            var switchValue = string.Format("{0} {1}", Dia2DumpSingleSwitches.TypeFullName, typeFullName);
+            //PDB will have inner classes with "." which differs from IL's "+"
+            typeFullName = typeFullName.Replace("+", ".");
+
+            var switchValue = $"{Dia2DumpSingleSwitches.TypeFullName} {typeFullName}";
             var invocationResult = InvokeProcessExe(switchValue);
             if (!invocationResult)
                 throw new ItsDeadJim(
@@ -129,6 +134,16 @@ namespace NoFuture.Gen.InvokeDia2Dump
             var dblSlash = new string(new[] { (char)0x5C, (char)0x5C });
 
             var jsonResult = _stdOut.ToString().Replace(singleSlash, dblSlash);
+
+            //https://stackoverflow.com/questions/46654548/dia2dump-cocreateinstance-failed-hresult-80040154
+            if (jsonResult.EndsWith("HRESULT = 80040154"))
+            {
+                var nl = Environment.NewLine;
+                throw new ItsDeadJim($"'{NfConfig.CustomTools.Dia2Dump}'failed with:{nl}" +
+                                     $"{jsonResult}{nl} for type '{typeFullName}' on assembly '{_assemblyFilePath}' " +
+                                     $"try running the following command:{nl}" +
+                                     @"regsvr32 C:\Program Files\Common Files\Microsoft Shared\VC\msdia100.dll");
+            }
             return CompilandJsonData.Parse(jsonResult, PdbJsonDataFormat.BackslashDoubled);
         }
 

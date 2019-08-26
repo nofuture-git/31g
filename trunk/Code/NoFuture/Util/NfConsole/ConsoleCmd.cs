@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
@@ -91,12 +90,39 @@ namespace NoFuture.Util.NfConsole
 
         public static void SetConsoleAsTransparent(bool setOnParentProc = false)
         {
+            if (!IsAeroGlassEnabled())
+                return;
             var myproc = System.Diagnostics.Process.GetCurrentProcess();
             if (setOnParentProc)
                 myproc = GetParentProcessById(myproc.Id);
             var hwnd = myproc.MainWindowHandle;
             var margin = new Aero.MARGINS { top = -1, left = -1 };
             Aero.DwmExtendFrameIntoClientArea(hwnd, ref margin);
+        }
+
+        /// <summary>
+        /// ref [https://www.askvg.com/how-to-enable-aero-glass-transparency-with-blur-in-windows-10/]
+        /// </summary>
+        public static bool IsAeroGlassEnabled()
+        {
+            var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE");
+            if (key == null)
+                return false;
+            key = key.OpenSubKey("Windows");
+            if (key == null)
+                return false;
+            key = key.OpenSubKey("CurrentVersion");
+            if (key == null)
+                return false;
+            key = key.OpenSubKey("Themes");
+            if (key == null)
+                return false;
+            key = key.OpenSubKey("Personalize");
+            if (key == null)
+                return false;
+            var keyValue = key.GetValue("EnableBlurBehind") ?? 0;
+
+            return keyValue is int value && value == 1;
         }
 
         /// <summary>

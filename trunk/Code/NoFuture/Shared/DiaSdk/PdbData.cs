@@ -64,7 +64,7 @@ namespace NoFuture.Shared.DiaSdk
     }
 
     /// <summary>
-    /// Base implementation to immediately derserialize data from Dia2Dump.exe's standard output.
+    /// Base implementation to immediately deserialize data from Dia2Dump.exe's standard output.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class PdbJsonDataString<T> : IPdbJsonDataString
@@ -118,7 +118,7 @@ namespace NoFuture.Shared.DiaSdk
 
     /// <summary>
     /// Represents the basic API for any type which 
-    /// derserializes data from files which where written
+    /// deserializes data from files which where written
     /// to disk by an invocation to Dia2Dump.exe
     /// </summary>
     public interface IPdbJsonDataFile
@@ -129,11 +129,11 @@ namespace NoFuture.Shared.DiaSdk
     }
 
     /// <summary>
-    /// Base implementation of derserialized data from Dia2Dump.exe 
+    /// Base implementation of deserialized data from Dia2Dump.exe 
     /// whose content is written to file.
     /// </summary>
     /// <typeparam name="T">
-    /// One of the various implementation of the <see cref="DataContract"/>
+    /// One of the various implementation of the DataContract
     /// decorated types which act as the class containers for json data.
     /// </typeparam>
     public abstract class PdbJsonDataFileBase<T> : IPdbJsonDataFile
@@ -157,12 +157,12 @@ namespace NoFuture.Shared.DiaSdk
         protected PdbJsonDataFileBase() { }
 
         /// <summary>
-        /// This receives a default value based on the concrete implemenation.
+        /// This receives a default value based on the concrete implementation.
         /// </summary>
         public virtual string FileName
         {
-            get { return fileName; }
-            set { fileName = value; }
+            get => fileName;
+            set => fileName = value;
         }
 
         /// <summary>
@@ -170,23 +170,22 @@ namespace NoFuture.Shared.DiaSdk
         /// </summary>
         public virtual string DirectoryPath
         {
-            get { return directoryPath; }
-            set { directoryPath = value; }
+            get => directoryPath;
+            set => directoryPath = value;
         }
 
         /// <summary>
         /// This is a <see cref="Path.Combine(string, string)"/> of 
         /// <see cref="DirectoryPath"/> and <see cref="FileName"/>
-        /// An exception occurs if the <see cref="DirectoryPath"/> is null or empty.
         /// </summary>
         public virtual string FullFileName
         {
             get
             {
-                if(string.IsNullOrWhiteSpace(DirectoryPath))
-                    throw new ItsDeadJim("The DirectoryPath has no default value set.");
-
-                return Path.Combine(NfConfig.TempDirectories.Code, FileName);
+                DirectoryPath = DirectoryPath ?? NfConfig.TempDirectories.Code;
+                FileName = FileName ?? Path.GetRandomFileName();
+                
+                return Path.Combine(DirectoryPath, FileName);
             }
         }
 

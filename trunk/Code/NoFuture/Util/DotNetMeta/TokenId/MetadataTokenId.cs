@@ -55,7 +55,7 @@ namespace NoFuture.Util.DotNetMeta.TokenId
         }
 
         /// <summary>
-        /// Returns a list of distinct <see cref="MetadataTokenId"/> having only thier
+        /// Returns a list of distinct <see cref="MetadataTokenId"/> having only their
         /// <see cref="RslvAsmIdx"/> and <see cref="Id"/> assigned.
         /// </summary>
         /// <param name="token"></param>

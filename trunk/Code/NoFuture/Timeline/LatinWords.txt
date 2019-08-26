@@ -224,7 +224,7 @@ nuntiat,announces
 nuntius,messenger
 offert,offers
 olim,once|sometime ago
-omnis,all
+omnis|universos,all
 optime,very well
 optimus,very good|excellent
 ostendit,shows
