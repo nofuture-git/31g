@@ -10,5 +10,6 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         public MetadataTokenName ForeignTokenNames;
         public MetadataTokenType SubjectTokenTypes;
         public MetadataTokenType ForeignTokenTypes;
+        public string AsmName { get; set; }
     }
 }

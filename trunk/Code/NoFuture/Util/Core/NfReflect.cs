@@ -397,7 +397,7 @@ namespace NoFuture.Util.Core
         /// <param name="returnTypeToString"></param>
         /// <returns></returns>
         /// <remarks>
-        /// While it seems that one should inspect the implmentaion stack 
+        /// While it seems that one should inspect the implementation stack 
         /// for the type for IEnumerable - this actually tested out better.
         /// </remarks>
         public static bool IsEnumerableReturnType(string returnTypeToString)

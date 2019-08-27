@@ -846,7 +846,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// </summary>
         /// <param name="regexPattern"></param>
         /// <param name="keepMatchChildItems">
-        /// Will perserve the the child Items array of the token name which matches 
+        /// Will preserve the the child Items array of the token name which matches 
         /// the pattern
         /// </param>
         /// <returns></returns>

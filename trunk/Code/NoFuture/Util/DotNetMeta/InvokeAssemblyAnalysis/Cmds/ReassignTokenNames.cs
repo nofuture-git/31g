@@ -30,7 +30,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 var subj = rqst.SubjectTokenNames;
 
                 //assign this for writing the output to file
-                _reassignAssemblySubjectName = subj?.Items.FirstOrDefault()?.GetNamespaceName();
+                _reassignAssemblySubjectName = rqst.AsmName;
                 var frgn = rqst.ForeignTokenNames;
                 var typs = rqst.ForeignTokenTypes;
                 if (subj == null || typs == null)
@@ -60,7 +60,37 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
         public override void WriteOutputToDisk(byte[] bytes, string fileName = null, string fileExt = ".json")
         {
             if (string.IsNullOrWhiteSpace(_reassignAssemblySubjectName))
+            {
                 base.WriteOutputToDisk(bytes, fileName, fileExt);
+                return;
+            }
+
+            var isFullAssemblyName = NfReflect.IsAssemblyFullName(_reassignAssemblySubjectName);
+            var isFullPath = Path.IsPathRooted(_reassignAssemblySubjectName);
+            var isFileName = _reassignAssemblySubjectName.EndsWith(".dll") ||
+                             _reassignAssemblySubjectName.EndsWith(".exe");
+
+            if (isFullAssemblyName)
+            {
+                var assemblyName = new System.Reflection.AssemblyName(_reassignAssemblySubjectName);
+                _reassignAssemblySubjectName = assemblyName.Name;
+            }
+
+            if (isFullPath)
+            {
+                var dirName  = Path.GetDirectoryName(_reassignAssemblySubjectName);
+                if (!string.IsNullOrWhiteSpace(dirName))
+                {
+                    _reassignAssemblySubjectName = _reassignAssemblySubjectName.Replace(dirName, "");
+                }
+            }
+
+            if (isFileName)
+            {
+                var flname = Path.GetFileNameWithoutExtension(_reassignAssemblySubjectName);
+                if (!string.IsNullOrWhiteSpace(flname))
+                    _reassignAssemblySubjectName = flname;
+            }
 
             var tn = fileName ?? GetType().Name;
             tn = NfPath.SafeFilename(tn);

@@ -363,18 +363,16 @@ namespace NoFuture.Util.DotNetMeta
         /// on the <see cref="subjectNames"/>; however, for some assemblies this takes a long time.
         /// This option does the same thing only on a remote process with a progress indicator.
         /// </summary>
-        /// <param name="subjectNames"></param>
-        /// <param name="foreignNames"></param>
-        /// <param name="foreignTokenTypes"></param>
-        /// <returns></returns>
         public TokenReassignResponse ReassignTokenNames(MetadataTokenName subjectNames, MetadataTokenName foreignNames,
-            MetadataTokenType foreignTokenTypes)
+            MetadataTokenType foreignTokenTypes, string rootAssemblyName = "")
         {
             _reassignTokenNamesCmd.Request = new TokenReassignRequest
             {
                 SubjectTokenNames = subjectNames,
                 ForeignTokenNames = foreignNames,
-                ForeignTokenTypes = foreignTokenTypes
+                ForeignTokenTypes = foreignTokenTypes,
+                AsmName = rootAssemblyName
+
             };
             return _reassignTokenNamesCmd.Receive(null);
         }
