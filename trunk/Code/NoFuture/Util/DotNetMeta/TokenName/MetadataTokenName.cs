@@ -72,7 +72,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// <summary>
         /// A flag to indicate this is one of many concrete implementations
         /// of some abstract member defined elsewhere or it 
-        /// is itself abstract (i.e. an inteface token)
+        /// is itself abstract (i.e. an interface token)
         /// </summary>
         public bool IsAmbiguous { get; set; }
         #endregion

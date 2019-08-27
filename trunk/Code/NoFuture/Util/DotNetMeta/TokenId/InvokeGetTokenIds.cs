@@ -23,13 +23,13 @@ namespace NoFuture.Util.DotNetMeta.TokenId
                 throw new RahRowRagee($"The process by id [{ProcessId}] has exited");
 
             if (!NfNet.IsValidPortNumber(SocketPort))
-                throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
+                throw new ItsDeadJim("The assigned socket port is not valid " + SocketPort);
 
             if(!int.TryParse(anything.ToString(), out asmIdx))
                 throw new ArgumentException("Was expected an Assembly index Id");
 
             if(AsmIndices == null)
-                throw new RahRowRagee("In a chain of responsiability - this type requires " +
+                throw new RahRowRagee("In a chain of responsibility - this type requires " +
                                       "an instance of AsmIndices.");
 
             if (AsmIndices.Asms.All(x => x.IndexId != asmIdx))

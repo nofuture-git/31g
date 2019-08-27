@@ -48,7 +48,7 @@ namespace NoFuture.Util.Core
             var wordBldr = new StringBuilder();
             foreach (var c in text.ToCharArray())
             {
-                //perserve any existing new lines
+                //preserve any existing new lines
                 if (c == Constants.LF)
                 {
                     lineBldr.Append(wordBldr);
@@ -92,7 +92,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Distills the continous spaces into a single space and 
+        /// Distills the continuous spaces into a single space and 
         /// replaces Cr [0x0D] and Lf [0x0A] characters with a single space.
         /// </summary>
         /// <param name="value"></param>
@@ -213,7 +213,7 @@ namespace NoFuture.Util.Core
             if (value.Length <= 1)
                 return new[] { value };
 
-            value = ToPascelCase(value);
+            value = ToPascalCase(value);
             value = TransformCaseToSeparator(value, NfSettings.DefaultCharSeparator);
             return value.Split(NfSettings.DefaultCharSeparator).Distinct().ToArray();
         }
@@ -590,17 +590,17 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Transforms <see cref="name"/> into Pascel case
+        /// Transforms <see cref="name"/> into Pascal case
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="perserveSep">Optional, set to true to have punctuation marks perserved</param>a
+        /// <param name="preserveSep">Optional, set to true to have punctuation marks preserved</param>a
         /// <returns></returns>
-        public static string ToPascelCase(this string name, bool perserveSep = false)
+        public static string ToPascalCase(this string name, bool preserveSep = false)
         {
             if (String.IsNullOrWhiteSpace(name))
                 return String.Empty;
             var toCamelCase = new StringBuilder();
-            var charArray = ToCamelCase(name, perserveSep).ToCharArray();
+            var charArray = ToCamelCase(name, preserveSep).ToCharArray();
             toCamelCase.Append(Char.ToUpper(charArray[0]));
             for (var i = 1; i < charArray.Length; i++)
             {
@@ -919,7 +919,7 @@ namespace NoFuture.Util.Core
         /// <param name="t"></param>
         /// <param name="asRatioOfMax">
         /// Optional, returns, as a ratio, as the difference from 1 the quotient 
-        /// of the distance over the max possiable distance.
+        /// of the distance over the max possible distance.
         /// </param>
         /// <returns></returns>
         /// <remarks>
@@ -985,7 +985,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Of the possiable <see cref="candidates"/> returns those with the 
+        /// Of the possible <see cref="candidates"/> returns those with the 
         /// shortest distance from <see cref="s"/> using the <see cref="LevenshteinDistance"/>
         /// algo.
         /// </summary>

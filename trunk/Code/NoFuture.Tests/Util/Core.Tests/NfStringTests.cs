@@ -262,17 +262,17 @@ namespace NoFuture.Util.Core.Tests
         [Test]
         public void TestToPascelCase()
         {
-            var testResult = NfString.ToPascelCase("dbo.DELETED_LookupDetails");
+            var testResult = NfString.ToPascalCase("dbo.DELETED_LookupDetails");
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
             Assert.AreEqual("DboDeletedLookupDetails", testResult);
 
-            testResult = NfString.ToPascelCase("dbo.DELETED_LookupDetails", true);
+            testResult = NfString.ToPascalCase("dbo.DELETED_LookupDetails", true);
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
             Assert.AreEqual("Dbo.Deleted_LookupDetails", testResult);
 
-            testResult = NfString.ToPascelCase("Test.dbo.SET_OP_lli", true);
+            testResult = NfString.ToPascalCase("Test.dbo.SET_OP_lli", true);
             Assert.AreEqual("Test.dbo.Set_Op_lli", testResult);
         }
 

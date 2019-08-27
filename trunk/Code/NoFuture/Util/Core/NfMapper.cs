@@ -14,7 +14,7 @@ namespace NoFuture.Util.Core
         private const string ERROR_PREFIX = "[ERROR]";
 
         /// <summary>
-        /// Reassignable flags for selecting properties
+        /// Re-assignable flags for selecting properties
         /// </summary>
         public static BindingFlags DefaultFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance |
                                                   BindingFlags.Public;
@@ -159,7 +159,7 @@ namespace NoFuture.Util.Core
                         //exec the assignment on the target
                         cm.Item1();
 
-                        //get this distance as a ratio to the possiable max distance
+                        //get this distance as a ratio to the possible max distance
                         rScores.Add(new Tuple<int, int>(cm.Item2, pn.Length));
 
                         //add this to the log 
@@ -185,7 +185,7 @@ namespace NoFuture.Util.Core
         /// <summary>
         /// Get a list of action, string distance measurement, destination object path in dot-notation, and additional info for logging
         /// for the properties on <see cref="toObj"/> which have the shortest distant from the <see cref="fromPi"/> by name.  
-        /// The return value is a list incase of a tie in which the calling assembly must decide which ones to execute.
+        /// The return value is a list in case of a tie in which the calling assembly must decide which ones to execute.
         /// </summary>
         /// <param name="fromPi">The property whose value is to be copied over somewhere onto <see cref="toObj"/></param>
         /// <param name="fromObj">The source object of <see cref="fromPi"/> which is able to resolve it to an actual value.</param>

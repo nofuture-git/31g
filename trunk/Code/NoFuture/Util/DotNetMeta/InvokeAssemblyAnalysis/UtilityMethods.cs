@@ -26,7 +26,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         }
 
         /// <summary>
-        /// Get a list of Assemby names from the <see cref="AppDomain.CurrentDomain"/>
+        /// Get a list of Assembly names from the <see cref="AppDomain.CurrentDomain"/>
         /// which are flagged as <see cref="System.Reflection.Assembly.GlobalAssemblyCache"/>
         /// </summary>
         /// <remarks>
@@ -107,7 +107,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         /// </summary>
         /// <param name="tokenId"></param>
         /// <param name="tokenName"></param>
-        /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
+        /// <param name="msgOut">Intended for debug trace from the Console.</param>
         /// <returns></returns>
         internal bool ResolveSingleTokenName(MetadataTokenId tokenId, out MetadataTokenName tokenName, StringBuilder msgOut = null)
         {
@@ -121,7 +121,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         /// <param name="resolvesWith"></param>
         /// <param name="tokenId"></param>
         /// <param name="tokenName"></param>
-        /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
+        /// <param name="msgOut">Intended for debug trace from the Console.</param>
         /// <returns></returns>
         internal bool ResolveSingleTokenName(Assembly resolvesWith, MetadataTokenId tokenId,
             out MetadataTokenName tokenName, StringBuilder msgOut = null)
@@ -183,7 +183,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         /// <param name="manifestModule"></param>
         /// <param name="tokenId"></param>
         /// <param name="mi"></param>
-        /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
+        /// <param name="msgOut">Intended for debug trace from the Console.</param>
         /// <returns></returns>
         internal bool TryResolveRtMemberInfo(Module manifestModule, MetadataTokenId tokenId, out MemberInfo mi, StringBuilder msgOut)
         {
@@ -210,7 +210,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
         /// <param name="owningAsm"></param>
         /// <param name="tokenName">The name as drafted from <see cref="AssemblyAnalysis.ConvertToMetadataTokenName"/></param>
         /// <param name="mi"></param>
-        /// <param name="msgOut">Inteneded for debug trace from the Console.</param>
+        /// <param name="msgOut">Intended for debug trace from the Console.</param>
         /// <returns></returns>
         internal bool TryResolveRtMemberInfo(Assembly owningAsm, string tokenName, out MemberInfo mi, StringBuilder msgOut = null)
         {
@@ -298,7 +298,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
                         false, _myProgram.LogFile);
             }
 
-            //try it the very slow but certian way
+            //try it the very slow but certain way
             if (methodInfo == null)
             {
                 var methodInfos = asmType.NfGetMethods(NfSettings.DefaultFlags, false, _myProgram.LogFile);

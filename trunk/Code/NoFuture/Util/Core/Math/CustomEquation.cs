@@ -9,9 +9,9 @@ namespace NoFuture.Util.Core.Math
     public class CustomEquation : IEquation
     {
         private readonly Func<double, double> _equation;
-        public CustomEquation(Func<double, double> myImplementaion)
+        public CustomEquation(Func<double, double> myImplementation)
         {
-            _equation = myImplementaion ?? throw new ArgumentNullException(nameof(myImplementaion));
+            _equation = myImplementation ?? throw new ArgumentNullException(nameof(myImplementation));
         }
 
         public double SolveForY(double x)

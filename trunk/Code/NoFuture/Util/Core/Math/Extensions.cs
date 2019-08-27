@@ -6,9 +6,9 @@ namespace NoFuture.Util.Core.Math
     public static class Extensions
     {
         /// <summary>
-        /// Dictionary for Roman Numerial (e.g. MCXX) to its integer value
+        /// Dictionary for Roman Numeral (e.g. MCXX) to its integer value
         /// </summary>
-        public static Dictionary<char, short> RomanNumerial2ArabicDigit
+        public static Dictionary<char, short> RomanNumeral2ArabicDigit
         {
             get
             {
@@ -46,7 +46,7 @@ namespace NoFuture.Util.Core.Math
                 return 0;
             
             var roman = someRomanNumerials.Trim().ToCharArray();
-            var lookup = RomanNumerial2ArabicDigit;
+            var lookup = RomanNumeral2ArabicDigit;
 
             var arabic = 0;
 

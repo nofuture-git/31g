@@ -19,11 +19,11 @@ namespace NoFuture.Util.DotNetMeta.TokenName
                 throw new RahRowRagee($"The process by id [{ProcessId}] has exited");
 
             if (!NfNet.IsValidPortNumber(SocketPort))
-                throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
+                throw new ItsDeadJim("The assigned socket port is not valid " + SocketPort);
 
             var metadataTokenIds = anything as MetadataTokenId[];
             if(metadataTokenIds == null)
-                throw new InvalidCastException("Was expecting the 'anything' arg to be castable " +
+                throw new InvalidCastException("Was expecting the 'anything' arg to be cast-able " +
                                                "to an array of " + typeof(MetadataTokenId).FullName);
             var rqst = new TokenNameRequest {Tokens = metadataTokenIds, MapFullCallStack = this.MapFullCallStack};
             var json = JsonConvert.SerializeObject(rqst);

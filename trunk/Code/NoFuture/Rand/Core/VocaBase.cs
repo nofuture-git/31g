@@ -186,7 +186,7 @@ namespace NoFuture.Rand.Core
                 case KindsOfTextCase.Camel:
                     return NfString.ToCamelCase(x);
                 case KindsOfTextCase.Pascel:
-                    return NfString.ToPascelCase(x);
+                    return NfString.ToPascalCase(x);
                 case KindsOfTextCase.Kabab:
                     return NfString.TransformCaseToSeparator(NfString.ToCamelCase(x), '-')?.ToLower();
                 case KindsOfTextCase.Snake:

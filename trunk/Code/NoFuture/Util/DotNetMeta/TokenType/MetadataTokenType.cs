@@ -37,7 +37,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         public string Name { get; set; }
 
         /// <summary>
-        /// The metadata token ids of all interfaces this type impelments
+        /// The metadata token ids of all interfaces this type implements
         /// </summary>
         public MetadataTokenType[] Items { get; set; }
 
@@ -147,7 +147,7 @@ namespace NoFuture.Util.DotNetMeta.TokenType
 
         /// <summary>
         /// Gets all token interface types, at all depths, which have only
-        /// one concrete impelemntation
+        /// one concrete implementation
         /// </summary>
         /// <returns></returns>
         public MetadataTokenType[] GetAllInterfacesWithSingleImplementor(Action<ProgressMessage> reportProgress = null)

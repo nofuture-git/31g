@@ -17,7 +17,7 @@ using NoFuture.Util.NfConsole;
 namespace NoFuture.Util.DotNetMeta
 {
     /// <summary>
-    /// Acts a a wrapper around the independet process of similar name.
+    /// Acts a a wrapper around the independent process of similar name.
     /// </summary>
     public class AssemblyAnalysis : InvokeConsoleBase
     {
@@ -54,8 +54,7 @@ namespace NoFuture.Util.DotNetMeta
 
         #region ctors
         /// <summary>
-        /// Launches the NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe and calls 
-        /// GetAsmIndicies command.
+        /// Launches the NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe 
         /// </summary>
         /// <param name="resolveGacAsmNames"></param>
         /// <param name="ports">
@@ -320,7 +319,7 @@ namespace NoFuture.Util.DotNetMeta
         }
 
         /// <summary>
-        /// Resolves the given Metadata Token Ids to thier names & types.
+        /// Resolves the given Metadata Token Ids to their names &amp; types.
         /// </summary>
         /// <param name="metadataTokenIds"></param>
         /// <param name="mapFullCallStack">
@@ -346,7 +345,7 @@ namespace NoFuture.Util.DotNetMeta
         /// </summary>
         /// <param name="recurseAnyAsmNamedLike">
         /// A regex pattern on which to match type names.  The pattern used in <see cref="GetTokenIds"/>
-        /// will be used if its available and the caller doesn't specifiy a value.
+        /// will be used if its available and the caller doesn't specify a value.
         /// </param>
         /// <returns></returns>
         /// <remarks>
@@ -385,7 +384,7 @@ namespace NoFuture.Util.DotNetMeta
 
         /// <summary>
         /// Transforms a <see cref="MemberInfo"/> into a <see cref="MetadataTokenName"/>
-        /// getting as much info as possiable depending on which 
+        /// getting as much info as possible depending on which 
         /// child-type the <see cref="mi"/> resolves to.
         /// </summary>
         /// <param name="mi"></param>

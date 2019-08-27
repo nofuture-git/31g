@@ -15,7 +15,7 @@ namespace NoFuture.Util.Core.Math
             return CalcFactorial(n) / (CalcFactorial(k) * CalcFactorial(n - k));
         }
 
-        public static List<long[]> PossiableCombos(int n, int k)
+        public static List<long[]> PossibleCombos(int n, int k)
         {
             _combinationMatchs = new List<long[]>();
             var v = new long[n + 1];

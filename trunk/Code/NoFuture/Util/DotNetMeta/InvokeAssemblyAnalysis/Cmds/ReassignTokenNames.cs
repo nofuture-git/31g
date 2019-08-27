@@ -1,6 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.DotNetMeta.TokenName;
 using NoFuture.Util.NfConsole;
@@ -9,6 +13,7 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public class ReassignTokenNames : IaaProgramBaseCmd<TokenReassignResponse>
     {
+        private string _reassignAssemblySubjectName;
         public ReassignTokenNames(Program myProgram) : base(myProgram)
         {
         }
@@ -23,6 +28,9 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 var json = Encoding.UTF8.GetString(arg);
                 var rqst = JsonConvert.DeserializeObject<TokenReassignRequest>(json);
                 var subj = rqst.SubjectTokenNames;
+
+                //assign this for writing the output to file
+                _reassignAssemblySubjectName = subj?.Items.FirstOrDefault()?.GetNamespaceName();
                 var frgn = rqst.ForeignTokenNames;
                 var typs = rqst.ForeignTokenTypes;
                 if (subj == null || typs == null)
@@ -47,6 +55,24 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                     St = MetadataTokenStatus.Error
                 });
             }
+        }
+
+        public override void WriteOutputToDisk(byte[] bytes, string fileName = null, string fileExt = ".json")
+        {
+            if (string.IsNullOrWhiteSpace(_reassignAssemblySubjectName))
+                base.WriteOutputToDisk(bytes, fileName, fileExt);
+
+            var tn = fileName ?? GetType().Name;
+            tn = NfPath.SafeFilename(tn);
+            var dir = MyProgram == null ? NfSettings.AppData : MyProgram.LogDirectory;
+
+            var rootAsmName = NfPath.SafeDirectoryName(_reassignAssemblySubjectName);
+
+            dir = Path.Combine(dir, rootAsmName);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            File.WriteAllBytes(Path.Combine(dir, tn + fileExt), bytes);
         }
     }
 }

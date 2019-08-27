@@ -24,7 +24,7 @@ namespace NoFuture.Util
         private static Dictionary<Tuple<string, string>, int> _udpPorts;
 
         /// <summary>
-        /// Concat's the enviornment variables 'COMPUTERNAME' with 'USERDNSDOMAIN' 
+        /// Concat's the environment variables 'COMPUTERNAME' with 'USERDNSDOMAIN' 
         /// with which local DNS could resolve to an IP
         /// </summary>
         /// <returns></returns>
@@ -223,7 +223,7 @@ namespace NoFuture.Util
 
             if(String.IsNullOrWhiteSpace(username))
                 throw new RahRowRagee("Could not determine your username from either the " +
-                                      "current Windows Id nor the enviornment variable 'USERNAME'.");
+                                      "current Windows Id nor the environment variable 'USERNAME'.");
             //remove the domain part of the name
             if (username.Contains("\\"))
                 username = username.Split((char) 0x5C)[1];
@@ -530,7 +530,7 @@ namespace NoFuture.Util
 
         /// <summary>
         /// Returns the the various schema types associated to socket ports
-        /// for the TCP protocal.
+        /// for the TCP protocol.
         /// The inventory was a one time parse from 
         /// %SYSTEM_ROOT%\System32\drivers\etc\services
         /// </summary>
@@ -706,7 +706,7 @@ namespace NoFuture.Util
 
         /// <summary>
         /// Returns the the various schema types associated to socket ports
-        /// for the UDP protocal.
+        /// for the UDP protocol.
         /// The inventory was a one time parse from 
         /// %SYSTEM_ROOT%\System32\drivers\etc\services
         /// </summary>

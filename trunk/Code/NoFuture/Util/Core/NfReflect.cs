@@ -7,8 +7,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using NoFuture.Shared.Core;
-using NfString = NoFuture.Util.Core.NfString;
-
 
 namespace NoFuture.Util.Core
 {
@@ -515,7 +513,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// For the given <see cref="PropertyInfo"/> the corrosponding <see cref="MethodInfo"/>
+        /// For the given <see cref="PropertyInfo"/> the corresponding <see cref="MethodInfo"/>
         /// is returned being matched on name.
         /// </summary>
         /// <param name="pi"></param>

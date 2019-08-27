@@ -59,22 +59,22 @@ namespace NoFuture.Util.DotNetMeta.TokenId
         /// <see cref="RslvAsmIdx"/> and <see cref="Id"/> assigned.
         /// </summary>
         /// <param name="token"></param>
-        /// <param name="perserveDirectChildItems">Retains the the direct children Items</param>
+        /// <param name="preserveDirectChildItems">Retains the the direct children Items</param>
         /// <returns></returns>
-        public static MetadataTokenId[] SelectDistinct(MetadataTokenId token, bool perserveDirectChildItems = false)
+        public static MetadataTokenId[] SelectDistinct(MetadataTokenId token, bool preserveDirectChildItems = false)
         {
             var list = new HashSet<MetadataTokenId>();
 
             if (token == null)
                 return list.ToArray();
 
-            SelectDistinct(token, list, perserveDirectChildItems);
+            SelectDistinct(token, list, preserveDirectChildItems);
             return list.ToArray();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         internal static void SelectDistinct(MetadataTokenId token, HashSet<MetadataTokenId> list,
-            bool perserveDirectChildItems = false)
+            bool preserveDirectChildItems = false)
         {
             if (token == null)
                 return;
@@ -87,7 +87,7 @@ namespace NoFuture.Util.DotNetMeta.TokenId
             if (token.Items == null)
                 return;
 
-            if (perserveDirectChildItems)
+            if (preserveDirectChildItems)
             {
                 var i2j = new HashSet<MetadataTokenId>();
                 if (iToken.Items != null)
@@ -112,7 +112,7 @@ namespace NoFuture.Util.DotNetMeta.TokenId
 
             foreach (var jToken in token.Items)
             {
-                SelectDistinct(jToken, list, perserveDirectChildItems);
+                SelectDistinct(jToken, list, preserveDirectChildItems);
             }
         }
 
@@ -141,7 +141,7 @@ namespace NoFuture.Util.DotNetMeta.TokenId
         /// Helper method to get all distinct token ids from the current instance.
         /// </summary>
         /// <returns></returns>
-        public MetadataTokenId[] SelectDistinct(bool perserveDirectChildItems = false)
+        public MetadataTokenId[] SelectDistinct(bool preserveDirectChildItems = false)
         {
             var tokenHashset = new HashSet<MetadataTokenId>();
             if (Items == null || Items.Length <= 0)
@@ -151,7 +151,7 @@ namespace NoFuture.Util.DotNetMeta.TokenId
             }
             foreach (var t in Items)
             {
-                SelectDistinct(t, tokenHashset, perserveDirectChildItems);
+                SelectDistinct(t, tokenHashset, preserveDirectChildItems);
             }
 
             return tokenHashset.ToArray();

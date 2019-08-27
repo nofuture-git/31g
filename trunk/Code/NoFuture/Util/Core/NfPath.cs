@@ -8,7 +8,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using NoFuture.Shared.Core;
-using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Util.Core
 {
@@ -321,7 +320,7 @@ namespace NoFuture.Util.Core
                 {
                     fileBreakCounter += breakCountIncrement;
 
-                    //we want file names to match thier order
+                    //we want file names to match their order
                     if (fileBreakCounter == -1)
                     {
                         //we should only flip this once
@@ -339,7 +338,7 @@ namespace NoFuture.Util.Core
                     fileStream.Position = loopEntryPosition - maxLength;
                     var markerBuffer = new byte[marker.Length];
 
-                    //begin read foward until you find a match
+                    //begin read forward until you find a match
                     while (Encoding.UTF8.GetString(markerBuffer) != marker)
                     {
                         //did we reach the end of the file or go all the way back to the last marker?
@@ -739,22 +738,6 @@ namespace NoFuture.Util.Core
                 }
             }
             File.WriteAllLines(fileFullName, output);
-        }
-
-        /// <summary>
-        /// Removes the <see cref="Path.GetInvalidPathChars"/> from <see cref="outFile"/>
-        /// </summary>
-        /// <param name="outFile"></param>
-        /// <returns></returns>
-        public static string RemoveInvalidPathChars(string outFile)
-        {
-            if (String.IsNullOrWhiteSpace(outFile))
-                return outFile;
-
-            return Path.GetInvalidPathChars().Aggregate(outFile,
-                (current, invalidChar) =>
-                    current.Replace(invalidChar.ToString(CultureInfo.InvariantCulture), String.Empty));
-
         }
 
         /// <summary>

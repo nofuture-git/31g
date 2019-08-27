@@ -21,7 +21,7 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
                 throw new RahRowRagee($"The process by id [{ProcessId}] has exited");
 
             if (!NfNet.IsValidPortNumber(SocketPort))
-                throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);
+                throw new ItsDeadJim("The assigned socket port is not valid " + SocketPort);
 
             var rqst = new AsmIndexRequest {AssemblyFilePath = anything.ToString()};
             var json = JsonConvert.SerializeObject(rqst);

@@ -108,7 +108,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Gets the three char month abbrevation for the <see cref="d"/>
+        /// Gets the three char month abbreviation for the <see cref="d"/>
         /// similar to VB.NET DateAndTime.MonthName and R&apos;s month.abb constant
         /// </summary>
         /// <param name="d"></param>
@@ -306,7 +306,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Reuseable method to get the diffence, in years, between
+        /// Reusable method to get the difference, in years, between
         /// <see cref="dob"/> and <see cref="atTime"/>
         /// </summary>
         /// <param name="dob"></param>
