@@ -18,7 +18,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
-    public class GetTokenTypes : CmdBase<TokenTypeResponse>, ICmd
+    public class GetTokenTypes : IaaProgramBaseCmd<TokenTypeResponse>
     {
         private AsmIndexResponse _asmIndices;
         private string _rootDir;

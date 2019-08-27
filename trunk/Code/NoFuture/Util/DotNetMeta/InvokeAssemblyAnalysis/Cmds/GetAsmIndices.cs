@@ -9,7 +9,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
-    public class GetAsmIndices : CmdBase<AsmIndexResponse>, ICmd
+    public class GetAsmIndices : IaaProgramBaseCmd<AsmIndexResponse>
     {
         internal static string WAK_WAK = new string(new[] { (char)0x5C, (char)0x5C });
         public GetAsmIndices(Program myProgram)

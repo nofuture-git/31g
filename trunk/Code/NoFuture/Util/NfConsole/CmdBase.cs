@@ -53,9 +53,11 @@ namespace NoFuture.Util.NfConsole
         }
         public abstract byte[] Execute(byte[] arg);
 
-        public void WriteOutputToDisk(byte[] bytes, string fileExt = ".json")
+        public virtual void WriteOutputToDisk(byte[] bytes, string fileName = null, string fileExt = ".json")
         {
-            var tn = GetType().Name;
+            
+            var tn = fileName ?? GetType().Name;
+            tn = Core.NfPath.SafeFilename(tn);
             var dir = MyProgram == null ? NfSettings.AppData : MyProgram.LogDirectory;
             File.WriteAllBytes(Path.Combine(dir, tn + fileExt), bytes);
         }

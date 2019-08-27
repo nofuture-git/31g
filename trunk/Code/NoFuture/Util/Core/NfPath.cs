@@ -181,19 +181,41 @@ namespace NoFuture.Util.Core
         /// Simple method to eliminate any chars in <see cref="intendedFileName"/>
         /// of all of those found at <see cref="System.IO.Path.GetInvalidFileNameChars"/>
         /// </summary>
-        /// <param name="intendedFileName"></param>
-        /// <returns></returns>
         public static string SafeFilename(string intendedFileName)
         {
-            if (String.IsNullOrWhiteSpace(intendedFileName))
-                return String.Empty;
+            var fileName = Safename(intendedFileName, Path.GetInvalidFileNameChars);
+            return string.IsNullOrWhiteSpace(fileName) ? Path.GetRandomFileName() : fileName;
+        }
+
+        /// <summary>
+        /// Simple method to eliminate any chars in <see cref="intendedDirName"/>
+        /// of all of those found at <see cref="System.IO.Path.GetInvalidPathChars"/>
+        /// </summary>
+        public static string SafeDirectoryName(string intendedDirName)
+        {
+            var dirName = Safename(intendedDirName, Path.GetInvalidPathChars);
+            return string.IsNullOrWhiteSpace(dirName) ? string.Empty : dirName;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal static string Safename(string intendedFileName, Func<char[]> getInvalidChars)
+        {
+            if (string.IsNullOrWhiteSpace(intendedFileName))
+                return string.Empty;
+
+            getInvalidChars = getInvalidChars ?? Path.GetInvalidFileNameChars;
+
+            var invalidChars = getInvalidChars();
+
+            if(invalidChars == null || !invalidChars.Any())
+                return string.Empty;
 
             intendedFileName = intendedFileName.Trim();
 
             return
-                new String(
+                new string(
                     intendedFileName.ToCharArray()
-                        .Where(i => !(Path.GetInvalidFileNameChars().Any(ic => ic == i)))
+                        .Where(i => !(invalidChars.Any(ic => ic == i)))
                         .ToArray());
         }
 
@@ -573,15 +595,15 @@ namespace NoFuture.Util.Core
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static bool IsExtensionType(string somePath, string[] possiableExtensions)
+        internal static bool IsExtensionType(string somePath, string[] possibleExtensions)
         {
-            if (String.IsNullOrWhiteSpace(somePath) || possiableExtensions == null)
+            if (String.IsNullOrWhiteSpace(somePath) || possibleExtensions == null)
                 return false;
             if(somePath.StartsWith("."))
-                return possiableExtensions.Any(x => Regex.IsMatch(somePath, x, RegexOptions.IgnoreCase));
+                return possibleExtensions.Any(x => Regex.IsMatch(somePath, x, RegexOptions.IgnoreCase));
             var ext = Path.GetExtension(somePath);
             return !String.IsNullOrWhiteSpace(ext) &&
-                   possiableExtensions.Any(x => Regex.IsMatch(ext, x, RegexOptions.IgnoreCase));
+                   possibleExtensions.Any(x => Regex.IsMatch(ext, x, RegexOptions.IgnoreCase));
         }
 
         /// <summary>

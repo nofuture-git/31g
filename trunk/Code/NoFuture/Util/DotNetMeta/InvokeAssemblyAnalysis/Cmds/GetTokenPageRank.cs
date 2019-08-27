@@ -8,7 +8,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
-    public class GetTokenPageRank : CmdBase<TokenPageRankResponse>, ICmd
+    public class GetTokenPageRank : IaaProgramBaseCmd<TokenPageRankResponse>
     {
         public GetTokenPageRank(Program myProgram) : base(myProgram) { }
         public override byte[] Execute(byte[] arg)

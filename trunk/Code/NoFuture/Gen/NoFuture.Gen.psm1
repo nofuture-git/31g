@@ -18,8 +18,8 @@ $dependencies = @{
     "NoFuture.Tokens, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Tokens.dll");
     "NoFuture.Gen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Gen.dll");
     "NoFuture.Gen.InvokeDia2Dump, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Gen.InvokeDia2Dump.dll");
-    "NoFuture.Gen.InvokeGetCgOfType, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Gen.InvokeGetCgOfType.dll");
-    "NoFuture.Gen.InvokeGraphViz, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Gen.InvokeGraphViz.dll");
+    "NoFuture.Gen.InvokeGetCgOfType, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Gen.InvokeGetCgOfType.exe");
+    "NoFuture.Gen.InvokeGraphViz, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Gen.InvokeGraphViz.exe");
 }
 
 $loadedAsms = ([appdomain]::CurrentDomain.GetAssemblies() | % {$_.FullName}  | Sort-Object -Unique)

@@ -78,6 +78,15 @@ namespace NoFuture.Util.Core.Tests
         }
 
         [Test]
+        public void TestSafeDirectoryName()
+        {
+            var testInput = "\"<A name in quotes>\"";
+            var testResult = NfPath.SafeFilename(testInput);
+
+            Assert.AreEqual("A name in quotes", testResult);
+        }
+
+        [Test]
         public void TestTryResolveEnvVar()
         {
             var testEnvVar = "windir";

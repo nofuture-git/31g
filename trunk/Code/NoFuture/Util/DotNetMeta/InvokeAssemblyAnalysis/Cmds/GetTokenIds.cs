@@ -16,7 +16,7 @@ using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
-    public class GetTokenIds : CmdBase<TokenIdResponse>, ICmd
+    public class GetTokenIds : IaaProgramBaseCmd<TokenIdResponse>
     {
         public GetTokenIds(Program myProgram)
             : base(myProgram)
