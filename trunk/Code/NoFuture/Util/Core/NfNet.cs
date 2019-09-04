@@ -24,7 +24,7 @@ namespace NoFuture.Util
         private static Dictionary<Tuple<string, string>, int> _udpPorts;
 
         /// <summary>
-        /// Concat's the environment variables 'COMPUTERNAME' with 'USERDNSDOMAIN' 
+        /// Concat&apos;s the environment variables &quot;COMPUTERNAME&quot; with &quot;USERDNSDOMAIN&quot; 
         /// with which local DNS could resolve to an IP
         /// </summary>
         /// <returns></returns>
@@ -413,7 +413,7 @@ namespace NoFuture.Util
         /// This is also intended, but not limited, to be used with the data returned from
         /// calls to netstat.exe.  The <see cref="protocol"/> is required and must be 
         /// either TCP or UDP.  Given a protocol the port number is pulled off the <see cref="netStatAddress"/>
-        /// and cross-ref'ed against either the <see cref="CommonTcpPorts"/> or <see cref="CommonUdpPorts"/>.
+        /// and cross-ref&apos;ed against either the <see cref="CommonTcpPorts"/> or <see cref="CommonUdpPorts"/>.
         /// </summary>
         /// <param name="protocol"></param>
         /// <param name="netStatAddress"></param>
@@ -457,12 +457,14 @@ namespace NoFuture.Util
         /// <summary>
         /// Finds and returns the Uri of a web request according to 
         /// the definition @
+        /// <![CDATA[
         ///   1.  "Message Syntax and Routing" [https://tools.ietf.org/html/rfc7231]
         ///   2.  "Semantics and Content" [https://tools.ietf.org/html/rfc7231]
         ///   3.  "Conditional Requests" [https://tools.ietf.org/html/rfc7232]
         ///   4.  "Range Requests" [https://tools.ietf.org/html/rfc7233]
         ///   5.  "Caching" [https://tools.ietf.org/html/rfc7234]
         ///   6.  "Authentication" [https://tools.ietf.org/html/rfc7235]
+        /// ]]>
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>

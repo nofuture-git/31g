@@ -72,6 +72,8 @@ CLI basics
  - is a Windows Service in Windows (Daemon otherwise)
  - the Docker CLI issues its commands to this local win service
  - obviously these can be separated across diff machines
+ - Docker will add a virtual Ethernet connection 
+  - see Control Panel > Network and Internet > Network and Sharing Center
  - typically two task are to package an image and to run an image
  - using Windows or Linux containers is a global setting
   - can be set from the context menu of the tray icon
@@ -93,6 +95,8 @@ CLI basics
    - takes the form of {source}:{target}
   - "--name" is useful in that its a handle from CLI but its also 
     a kind of DNS host name now in scope to any other container on the host
+  - "--env-file" is another option where the environment variables 
+     are defined in a separate file using {env var name}={env var value}{\n}
  
  C:\> docker container inspect myuser/my-image
   - gets JSON data about the given container
@@ -231,7 +235,7 @@ Use Docker with existing .NET Framework apps
 ----
 
 ----
-Examples
+Example Word2Vec
  - Ubuntu for building and running Word2Vec
  - switch to Linux containers from the Docker Desktop settings
  - example assumes downloaded and decompressed very large GoogleNews-vectors-negative300.bin.gz
@@ -274,4 +278,9 @@ root@56ac8f9d4d46:/word2vec# ./distance /word2vec/corpus/GoogleNews-vectors-nega
 
  - from here the program is running and you enter a word and its does its thing
 ----
- 
+
+----
+Example Youtube-Dl
+ - Ubuntu for building and running Word2Vec
+ - switch to Linux containers from the Docker Desktop settings
+

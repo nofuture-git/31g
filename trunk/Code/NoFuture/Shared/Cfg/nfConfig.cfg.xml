@@ -101,7 +101,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           </custom>
           <python>
             <add id='pythonExe' value='$(python36)\python.exe' />
-            <add id='ffmpegTool' value='$(binRootDir)\ffmpeg.exe' />
+            <add id='ffmpegTool' value='$(binRootDir)\ffmpeg-4.2-win64-static\bin\ffmpeg.exe' />
             <add id='youtubeDlTool' value='$(binRootDir)\youtube-dl.exe' />
           </python>
         </tools>
@@ -138,9 +138,8 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
           <add id='binX64RootDir' value='$(binRootDir)\amd64' />
           <add id='binX86RootDir' value='$(binRootDir)\x86' />
           <add id='binJavaRootDir' value='$(binRootDir)\java' />
-          <add id='python36' value='C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64' />
-          <add id='python35' value='C:\Anaconda3' />
-          <add id='anaconda5_2_0' value='C:\Program Files (x86)\Microsoft Visual Studio\Shared\Anaconda3_64' />
+          <add id='python36' value='C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64\' />
+          <add id='anaconda5_2_0' value='C:\Program Files (x86)\Microsoft Visual Studio\Shared\Anaconda3_64\' />
         </bins>
       </directories>
     </config>

@@ -437,29 +437,29 @@ namespace NoFuture.Shared.Cfg
         }
 
         /// <summary>
-        /// A reference class used to store the names of NoFuture powershell functions.
+        /// A reference class used to store the names of NoFuture PowerShell functions.
         /// </summary>
         public class MyFunctions
         {
             /// <summary>
-            /// At the top of most NoFuture powershell scripts a try\catch used to map the 
-            /// powershell function to the file in which its defined.  All of the NoFuture powershell 
+            /// At the top of most NoFuture PowerShell scripts a try\catch used to map the 
+            /// PowerShell function to the file in which its defined.  All of the NoFuture PowerShell 
             /// script files are expected to be loaded into a console from a single call to the start.ps1
             /// </summary>
             public static Dictionary<string, string> FunctionFiles = new Dictionary<string, string>();
         }
 
         /// <summary>
-        /// Resuable temp file paths used by various NoFuture powershell scripts.
+        /// Reusable temp file paths used by various NoFuture PowerShell scripts.
         /// </summary>
         public class TempFiles
         {
             public static string NetStat { get; set; }
         }
         /// <summary>
-        /// Paths to specific directories used by powershell scripts, 
-        /// <see cref="Root"/> is expected to be in a 'bin' folder directly 
-        /// below the location of the powershell scripts themselves.
+        /// Paths to specific directories used by PowerShell scripts, 
+        /// <see cref="Root"/> is expected to be in a &quot;bin&quot; folder directly 
+        /// below the location of the PowerShell scripts themselves.
         /// </summary>
         public class BinDirectories
         {
@@ -471,7 +471,7 @@ namespace NoFuture.Shared.Cfg
         }
 
         /// <summary>
-        /// The file path to exe's referenced by NoFuture powershell scripts
+        /// The file path to exe&apos;s referenced by NoFuture PowerShell scripts
         /// </summary>
         public class X64
         {
@@ -482,7 +482,7 @@ namespace NoFuture.Shared.Cfg
             public static string XsdExe { get; set; }
         }
         /// <summary>
-        /// The file path to exe's referenced by NoFuture powershell scripts
+        /// The file path to exe&apos;s referenced by NoFuture PowerShell scripts
         /// </summary>
         public class X86
         {
@@ -499,7 +499,7 @@ namespace NoFuture.Shared.Cfg
         }
 
         /// <summary>
-        /// The file path to exe's, and java JAR files referenced by NoFuture powershell scripts
+        /// The file path to exe&apos;s, and java JAR files referenced by NoFuture PowerShell scripts
         /// </summary>
         public class JavaTools
         {
@@ -511,7 +511,7 @@ namespace NoFuture.Shared.Cfg
             public static string StanfordPostTaggerModels { get; set; }
         }
         /// <summary>
-        /// The file path to exe's and dll's produced by this solution.
+        /// The file path to exe&apos;s and dll&apos;s produced by this solution.
         /// </summary>
         public class CustomTools
         {
@@ -563,7 +563,7 @@ namespace NoFuture.Shared.Cfg
 
         /// <summary>
         /// Various keys, those which are not assigned a value would be real keys externally defined -
-        /// the rest is just for flippin' bits.
+        /// the rest is just for flippin&apos; bits.
         /// </summary>
         public class SecurityKeys
         {
