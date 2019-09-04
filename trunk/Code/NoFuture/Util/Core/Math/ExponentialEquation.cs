@@ -3,12 +3,12 @@
     public class ExponentialEquation : IEquation
     {
         /// <summary>
-        /// In the form of f(x) = a * x^n this is 'a'
+        /// In the form of f(x) = a * x^n this is &quot;a&quot;
         /// </summary>
         public double ConstantValue { get; set; }
 
         /// <summary>
-        /// In the form of f(x) = a * x^n this is 'n'
+        /// In the form of f(x) = a * x^n this is &quot;n&quot;
         /// </summary>
         public double Power { get; set; }
 

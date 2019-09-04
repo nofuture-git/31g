@@ -154,10 +154,13 @@ namespace NoFuture.Util.DotNetMeta
         /// <![CDATA[
         ///  # example using analysis results
         ///  # say, some app with three layers: web, logic and data
+        ///  # have already run the analysis and have all the results on file as JSON
         ///  $myAsmAly = New-Object NoFuture.Util.DotNetMeta.AssemblyAnalysis($false)
         /// 
         ///  # web layer uses types from logic layer as interfaces
         ///  $myWebTokens = ([NoFuture.Util.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($webTokensFile)).GetAsRoot()
+        ///  $myWebTypes = ([NoFuture.Util.DotNetMeta.TokenType.TokenTypeResponse]::ReadFromFile($webTypesFile)).GetAsRoot()
+        ///  $myWebAssemblies = [NoFuture.Util.DotNetMeta.TokenAsm.TAsmIndexResponse]::ReadFromFile($webAssemblyFile)
         ///  
         ///  #logic layer uses types from data layer, likewise, as interfaces
         ///  $myLogicTokens = ([NoFuture.Util.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($logicTokensFile)).GetAsRoot()
@@ -191,13 +194,21 @@ namespace NoFuture.Util.DotNetMeta
         ///      "C:\Projects\MyProj\Web\bin", 
         ///      "C:\Projects\MyProj\Logic\debug\bin", 
         ///      "C:\Projects\MyProj\Data\debug\bin")
+        ///
         /// 
         ///  #(in actual practice, you would want to perform null-checks, skipped here for brevity)
         ///  $orphanedTypes | % {
         ///     $typeName = $_
-        ///     
-        ///     #given this typename and these search paths find the full-path to the assembly that defined it
-        ///     $asmPath = [NoFuture.Util.DotNetMeta.TokenAsm.AsmIndexResponse]::GetAssemblyPathFromRoot(([string[]]$searchDirs), $typeName)
+        ///
+        ///     $tokenType = $myWebTypes.Items | ? {$_.Name -eq $typeName}
+        ///
+        ///     #PDB data will not be found for interface type def's
+        ///     if($tokenType.IsInterfaceType()){
+        ///         $tokenType = $tokenTypes.GetFirstInterfaceImplementor($tokenType)
+        ///     }
+        /// 
+        ///     #need to go backwards from a type name to some path to some assembly on the drive
+        ///     $asmPath = [NoFuture.Util.DotNetMeta.TokenAsm.AsmIndexResponse]::GetAssemblyPathFromRoot($typeName, $myWebAssemblies, $tokenType, $searchDirs)
         /// 
         ///     #now get this as a NoFuture.Gen code-gen type (assuming .NET code file was C#)
         ///     $nfCgType = New-Object NoFuture.Gen.CgTypeCsSrcCode($asmPath,$typeName)

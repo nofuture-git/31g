@@ -560,7 +560,8 @@ function Convert-SqlToHashtable
             break;
         }
 
-        $selectColumnsRawStr = $Matches.Values | ? {-not [string]::IsNullOrWhiteSpace($_.Trim()) -and -not $_.Trim().ToLower().StartsWith("select")} | Select-Object -First 1
+        $selectColumnsRawStr = $Matches.Values | ? {-not [string]::IsNullOrWhiteSpace($_.Trim()) -and 
+                                                    -not $_.Trim().ToLower().StartsWith("select")} | Select-Object -First 1
 
         if($selectColumnsRawStr -eq $null -or $selectColumnsRawStr.Length -eq 0){
             Write-Host "Could not parse the SELECT portion of the Expression" -ForegroundColor Yellow
@@ -1058,8 +1059,11 @@ function Get-DatabaseDll
     Process
     {
     
-        if(-not(Test-Path ([NoFuture.Shared.Cfg.NfConfig+X86]::SqlMetal))){throw ("SqlMetal.exe is not found at '{0}'" -f ([NoFuture.Shared.Cfg.NfConfig+X86]::SqlMetal))}
-        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Cfg.NfConfig]::SqlServer) -or [string]::IsNullOrWhiteSpace([NoFuture.Shared.Cfg.NfConfig]::SqlCatalog)) {
+        if(-not(Test-Path ([NoFuture.Shared.Cfg.NfConfig+X86]::SqlMetal))){
+            throw ("SqlMetal.exe is not found at '{0}'" -f ([NoFuture.Shared.Cfg.NfConfig+X86]::SqlMetal))
+        }
+        if([string]::IsNullOrWhiteSpace([NoFuture.Shared.Cfg.NfConfig]::SqlServer) -or 
+           [string]::IsNullOrWhiteSpace([NoFuture.Shared.Cfg.NfConfig]::SqlCatalog)) {
             Write-Host "The global sqlServer and sqlCatalog variables are not set, assign them and try again."
         }
         $errCount = $Error.Count;
@@ -1069,7 +1073,11 @@ function Get-DatabaseDll
         [System.IO.Path]::InvalidPathChars | % { $codeFile = $codeFile.Replace($_.ToString(),"")}
         $codeFile = (Join-Path ([NoFuture.Shared.Cfg.NfConfig+TempDirectories]::Code) $codeFile)
 
-        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.Shared.Cfg.NfConfig+X86]::SqlMetal),([NoFuture.Shared.Cfg.NfConfig]::SqlServer),([NoFuture.Shared.Cfg.NfConfig]::SqlCatalog),$codeFile,$namespace)
+        $cmd = ("& '{0}' /server:{1} /database:{2} /code:{3} /namespace:{4}" -f ([NoFuture.Shared.Cfg.NfConfig+X86]::SqlMetal),
+                                                                                ([NoFuture.Shared.Cfg.NfConfig]::SqlServer),
+                                                                                ([NoFuture.Shared.Cfg.NfConfig]::SqlCatalog),
+                                                                                $codeFile,
+                                                                                $namespace)
         Invoke-Expression -Command $cmd
         if($Error.Count -gt $errCount) {break;}
 

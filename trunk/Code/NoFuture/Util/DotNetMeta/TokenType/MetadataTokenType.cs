@@ -198,6 +198,24 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         }
 
         /// <summary>
+        /// Finds the first token type which implements and interface named <see cref="interfaceTypeName"/>
+        /// which is not itself an interface
+        /// </summary>
+        /// <param name="interfaceTypeName"></param>
+        /// <param name="immediateOnly">
+        /// Optional, indicates to only match on a type which directly implements the given interface
+        /// </param>
+        /// <returns></returns>
+        public MetadataTokenType GetFirstInterfaceImplementor(string interfaceTypeName, bool immediateOnly = false)
+        {
+            var interfaceType = Items.FirstOrDefault(t =>
+                string.Equals(t.Name, interfaceTypeName, StringComparison.OrdinalIgnoreCase));
+            if (interfaceType == null)
+                return null;
+            return GetFirstInterfaceImplementor(interfaceType, immediateOnly);
+        }
+
+        /// <summary>
         /// Finds the first token type which implements <see cref="interfaceType"/> and is 
         /// not itself an interface
         /// </summary>

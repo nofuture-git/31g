@@ -9,7 +9,7 @@ namespace NoFuture.Util.Core.Math
 
         public static TimeSpan TropicalYear = new TimeSpan(365, 5, 49, 16, 320);
         /// <summary>
-        /// Calc's value after compound, per diem, interest.
+        /// Calc&apos;s value after compound, per diem, interest.
         /// </summary>
         /// <param name="balance"></param>
         /// <param name="annualInterestRate"></param>
@@ -23,7 +23,7 @@ namespace NoFuture.Util.Core.Math
         }
 
         /// <summary>
-        /// Calc's value after compound, per diem, interest.
+        /// Calc&apos;s value after compound, per diem, interest.
         /// </summary>
         /// <param name="balance"></param>
         /// <param name="annualInterestRate"></param>

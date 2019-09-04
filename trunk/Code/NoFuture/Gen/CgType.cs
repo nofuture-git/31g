@@ -118,6 +118,33 @@ namespace NoFuture.Gen
 
         #region methods
 
+        /// <summary>
+        /// Gets all the file paths found on all the members PDB data
+        /// </summary>
+        public string[] GetMySrcCodeFiles()
+        {
+            var allMembers = new List<CgMember>();
+            if(Properties != null && Properties.Any())
+                allMembers.AddRange(Properties);
+            if(Events != null && Events.Any())
+                allMembers.AddRange(Events);
+            if(Methods != null && Methods.Any())
+                allMembers.AddRange(Methods);
+            if(Fields != null && Fields.Any())
+                allMembers.AddRange(Fields);
+
+            var srcCodeFiles = new HashSet<string>();
+            foreach (var cgMem in allMembers)
+            {
+                if (cgMem?.PdbModuleSymbols?.file == null)
+                    continue;
+
+                srcCodeFiles.Add(cgMem.PdbModuleSymbols.file);
+            }
+
+            return srcCodeFiles.ToArray();
+        }
+
         public Tuple<int, int> GetMyStartEnclosure(string[] srcFile, bool isClean = false)
         {
             return _myStartEnclosure;

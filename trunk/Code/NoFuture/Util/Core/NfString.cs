@@ -593,7 +593,7 @@ namespace NoFuture.Util.Core
         /// Transforms <see cref="name"/> into Pascal case
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="preserveSep">Optional, set to true to have punctuation marks preserved</param>a
+        /// <param name="preserveSep">Optional, set to true to have punctuation marks preserved</param>
         /// <returns></returns>
         public static string ToPascalCase(this string name, bool preserveSep = false)
         {
@@ -740,8 +740,8 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Uses <see cref="name"/> allowing for only '.', '_', numbers and letters where the 
-        /// first char must be '_' or a letter.
+        /// Uses <see cref="name"/> allowing for only &quot;.&quot;, &quot;_&quot;, numbers and letters where the 
+        /// first char must be &quot;_&quot; or a letter.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -772,13 +772,13 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Uses <see cref="someString"/> allowing for only '_', numbers and letters where the 
-        /// first char must be or a letter (the prefix 'nf' is used should that not be the case).
+        /// Uses <see cref="someString"/> allowing for only &quot;_&quot;, numbers and letters where the 
+        /// first char must be or a letter (the prefix &quot;nf&quot; is used should that not be the case).
         /// </summary>
         /// <param name="someString"></param>
         /// <param name="replaceInvalidsWithUnicodeEsc">
         /// Set this to true if you want, for example, the <see cref="someString"/> 
-        /// with a value of say 'Personal Ph #' to be returned as 'Personal_u0020Ph_u0020_u0023'
+        /// with a value of say &quot;Personal Ph #&quot; to be returned as 'Personal_u0020Ph_u0020_u0023'
         /// </param>
         /// <param name="maxLen">
         /// A max length of the output, if the input string will 

@@ -62,101 +62,61 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
             return null;
         }
 
-        public string GetAssemblyPathFromRoot(string folderPath, int idx)
+        /// <summary>
+        /// Performs a lookup going from Type name to Owning Assembly Index to Assembly Name to Assembly path
+        /// </summary>
+        /// <param name="binFolders">
+        /// The \bin folder(s) containing all the various assemblies 
+        /// </param>
+        /// <param name="typeName">
+        /// The full name of the type whose assembly path is being sought
+        /// </param>
+        /// <param name="asmIndexResponse">
+        /// The loaded Assembly Index response typically loaded form file
+        /// </param>
+        /// <param name="tokenType">
+        /// The token type found elsewhere typically by loading the TokenTypeResponse from file
+        /// </param>
+        /// <returns>
+        /// The full path to the assembly which defines the given type
+        /// </returns>
+        public static string GetAssemblyPathFromRoot(
+            string typeName, 
+            AsmIndexResponse asmIndexResponse,
+            TokenType.MetadataTokenType tokenType,
+            params string[] binFolders)
         {
-            if (string.IsNullOrWhiteSpace(folderPath) || !Directory.Exists(folderPath))
+            if (binFolders.Length <= 0 
+                || asmIndexResponse == null
+                || tokenType == null)
                 return null;
-            if (Asms == null || !Asms.Any())
-                return null;
-            var owningAsmName = Asms.FirstOrDefault(x => x.IndexId == idx);
-            if (string.IsNullOrWhiteSpace(owningAsmName?.AssemblyName))
+            
+            //from index to full assembly name
+            var assemblyIdx = asmIndexResponse.Asms.FirstOrDefault(a => a.IndexId == tokenType.OwnAsmIdx);
+            if (assemblyIdx == null)
                 return null;
 
-            var di = new DirectoryInfo(folderPath);
-            foreach (var d in di.EnumerateFileSystemInfos())
+            var assemblyName = new AssemblyName(assemblyIdx.AssemblyName);
+
+            foreach (var binFolder in binFolders)
             {
-                if (!new[] {".dll", ".exe"}.Contains(d.Extension))
+                if(string.IsNullOrWhiteSpace(binFolder) || !Directory.Exists(binFolder))
                     continue;
-                var dAsmName = AssemblyName.GetAssemblyName(d.FullName);
-                var eAsmName = new AssemblyName(owningAsmName.AssemblyName);
-                if (AssemblyName.ReferenceMatchesDefinition(dAsmName, eAsmName))
-                    return d.FullName;
-            }
-
-            return null;
-        }
-
-        public static Tuple<string,int> GetAssemblyPathFromRoot(string folderPath, string typeName)
-        {
-            if (string.IsNullOrWhiteSpace(folderPath) || !Directory.Exists(folderPath))
-                return null;
-
-            var di = new DirectoryInfo(folderPath);
-            var name2Score = new Dictionary<string, int>();
-            foreach (var d in di.EnumerateFileSystemInfos())
-            {
-                if (!new[] { ".dll", ".exe" }.Contains(d.Extension))
-                    continue;
-                var dAsmName = AssemblyName.GetAssemblyName(d.FullName);
-                //length of the name less this assembly as a namespace
-                var dSimpleAsmName = dAsmName.Name;
-                var lenLessAsmName = typeName.Replace(dSimpleAsmName, "").Length;
-                if (name2Score.ContainsKey(d.FullName))
+                var di = new DirectoryInfo(binFolder);
+                foreach (var d in di.EnumerateFileSystemInfos())
                 {
-                    if(name2Score[d.FullName] < lenLessAsmName)
-                        name2Score[d.FullName] = lenLessAsmName;
-                }
-                else
-                {
-                    name2Score.Add(d .FullName, lenLessAsmName);
-                }
-            }
+                    if (!new[] { ".dll", ".exe" }.Contains(d.Extension))
+                        continue;
+                    var dAsmName = AssemblyName.GetAssemblyName(d.FullName);
 
-            var minLen = name2Score.Select(kv => kv.Value).Min();
-            var path = name2Score.FirstOrDefault(kv => kv.Value == minLen).Key;
-            return new Tuple<string, int>(path, minLen);
-        }
-
-        public string GetAssemblyPathFromRoot(string[] folders, int idx)
-        {
-            if (folders == null || !folders.Any())
-                return null;
-
-            foreach (var f in folders)
-            {
-                var m = GetAssemblyPathFromRoot(f, idx);
-                if (m != null)
-                    return m;
-            }
-
-            return null;
-        }
-
-        public static string GetAssemblyPathFromRoot(string[] folders, string typeName)
-        {
-            if (folders == null || !folders.Any())
-                return null;
-
-            var name2Score = new Dictionary<string, int>();
-            foreach (var f in folders)
-            {
-                var m = GetAssemblyPathFromRoot(f, typeName);
-                if (m != null)
-                {
-                    if (name2Score.ContainsKey(m.Item1))
+                    if (AssemblyName.ReferenceMatchesDefinition(dAsmName, assemblyName))
                     {
-                        if (name2Score[m.Item1] < m.Item2)
-                            name2Score[m.Item1] = m.Item2;
-                    }
-                    else
-                    {
-                        name2Score.Add(m.Item1, m.Item2);
+                        return d.FullName;
                     }
                 }
             }
 
-            var minLen = name2Score.Select(kv => kv.Value).Min();
-            return name2Score.FirstOrDefault(kv => kv.Value == minLen).Key;
+            return null;
         }
     }
 }

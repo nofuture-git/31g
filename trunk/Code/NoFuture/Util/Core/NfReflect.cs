@@ -112,7 +112,7 @@ namespace NoFuture.Util.Core
 
         /// <summary>
         /// Returns everything except the last entry after <see cref="NfSettings.DefaultTypeSeparator"/>
-        /// or in the case where <see cref="NfSettings.DefaultTypeSeparator"/> isn't present -
+        /// or in the case where <see cref="NfSettings.DefaultTypeSeparator"/> isn&apos;t present -
         /// just returns <see cref="name"/>
         /// </summary>
         /// <param name="name"></param>
@@ -163,7 +163,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Gets a type's name less the namespace
+        /// Gets a type&apos;s name less the namespace
         /// </summary>
         /// <param name="simplePropType"></param>
         /// <returns></returns>
@@ -185,8 +185,8 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Finds the typename without array qualifiers '[]' and without 
-        /// the IL generic qualifier '`['
+        /// Finds the typename without array qualifiers &quot;[]&quot; and without 
+        /// the IL generic qualifier &quot;`[&quot;
         /// </summary>
         /// <param name="returnType"></param>
         /// <returns></returns>
@@ -196,8 +196,8 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Finds the first typename without array qualifiers '[]' and without 
-        /// the IL generic qualifier '`['
+        /// Finds the first typename without array qualifiers &quot;[]&quot; and without 
+        /// the IL generic qualifier &quot;`[&quot;
         /// </summary>
         /// <param name="returnTypeToString"></param>
         /// <param name="typeDelimiter">Optional, defaults to IL style but may be assigned to the C# 0x3C</param>
@@ -351,7 +351,7 @@ namespace NoFuture.Util.Core
 
         /// <summary>
         /// Simply asserts the <see cref="typeName"/> does not 
-        /// contain '=' nor '{'
+        /// contain &quot;=&quot; nor &quot;{&quot;
         /// </summary>
         /// <param name="typeName"></param>
         /// <returns></returns>
@@ -362,7 +362,7 @@ namespace NoFuture.Util.Core
 
         /// <summary>
         /// Simply asserts the <see cref="type"/> does not 
-        /// contain '=' nor '{'
+        /// contain &quot;=&quot; nor &quot;{&quot;
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -373,14 +373,14 @@ namespace NoFuture.Util.Core
 
         /// <summary>
         /// Simply asserts that <see cref="returnType"/>
-        /// either contains the array declarator '[]' or 
-        /// contains the namespace name 'System.Collections.Generic' at the 
-        /// same time as having simply the '[' somewhere.
+        /// either contains the array declarator &quot;[]&quot; or 
+        /// contains the namespace name &quot;System.Collections.Generic&quot; at the 
+        /// same time as having simply the &quot;[&quot; somewhere.
         /// </summary>
         /// <param name="returnType"></param>
         /// <returns></returns>
         /// <remarks>
-        /// While it seems that one should inspect the implmentaion stack 
+        /// While it seems that one should inspect the implementation stack 
         /// for the type for IEnumerable - this actually tested out better.
         /// </remarks>
         public static bool IsEnumerableReturnType(Type returnType)
@@ -390,9 +390,9 @@ namespace NoFuture.Util.Core
 
         /// <summary>
         /// Simply asserts that <see cref="returnTypeToString"/>
-        /// either contains the array declarator '[]' or 
-        /// contains the namespace name 'System.Collections.Generic' at the 
-        /// same time as having simply the '[' somewhere.
+        /// either contains the array declarator &quot;[]&quot; or 
+        /// contains the namespace name &quot;System.Collections.Generic&quot; at the 
+        /// same time as having simply the &quot;[&quot; somewhere.
         /// </summary>
         /// <param name="returnTypeToString"></param>
         /// <returns></returns>
@@ -412,7 +412,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Asserts that <see cref="type"/> doesn't contain
+        /// Asserts that <see cref="type"/> doesn&apos;t contain
         /// the greater-than char nor the open curly brace char
         /// </summary>
         /// <param name="type"></param>
@@ -423,7 +423,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Asserts that <see cref="typeToString"/> doesn't contain
+        /// Asserts that <see cref="typeToString"/> doesn&apos;t contain
         /// the greater-than char nor the open curly brace char
         /// </summary>
         /// <param name="typeToString"></param>
@@ -434,7 +434,7 @@ namespace NoFuture.Util.Core
         }
 
         /// <summary>
-        /// Asserts that <see cref="type"/> doesn't match 
+        /// Asserts that <see cref="type"/> doesn&apos;t match 
         /// a handful of patterns common to compile-time generated
         /// method names (e.g. MyProp {get;set;} becomes 'get_MyProp()' 
         /// and 'set_MyProp(value)')
@@ -450,12 +450,12 @@ namespace NoFuture.Util.Core
         /// <summary>
         /// Asserts if <see cref="memberName"/> is a match 
         /// a handful of patterns common to compile-time generated
-        /// method names for properties (e.g. MyProp {get;set;} becomes 'get_MyProp()' 
-        /// and 'set_MyProp(value)').
+        /// method names for properties (e.g. MyProp {get;set;} becomes &quot;get_MyProp()&quot; 
+        /// and &quot;set_MyProp(value)&quot;).
         /// </summary>
         /// <param name="memberName"></param>
         /// <param name="matchedOnOut">
-        /// When matched, gets the part of the name after the compiler gen'ed prefix
+        /// When matched, gets the part of the name after the compiler gen&apos;ed prefix
         /// </param>
         /// <returns></returns>
         public static bool IsClrMethodForProperty(string memberName, out string matchedOnOut)
