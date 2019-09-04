@@ -2,6 +2,7 @@
 using System.Text;
 using NoFuture.Shared;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Pos

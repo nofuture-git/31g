@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta.TokenAsm;
 using NoFuture.Util.NfConsole;
 

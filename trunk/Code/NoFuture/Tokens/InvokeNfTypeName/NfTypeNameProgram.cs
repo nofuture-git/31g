@@ -6,6 +6,7 @@ using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Tokens.InvokeNfTypeName.Cmds;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.NfType;
 

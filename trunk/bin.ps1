@@ -48,7 +48,9 @@ function Get-BinaryDump
         }
         
         #test for dumpbin.exe being installed
-        if(-not(Test-Path ([NoFuture.Shared.Cfg.NfConfig+X64]::Dumpbin))){throw ("Expected to find 'dumpbin.exe' at '{0}'." -f ([NoFuture.Shared.Cfg.NfConfig+X64]::Dumpbin)) }
+        if(-not(Test-Path ([NoFuture.Shared.Cfg.NfConfig+X64]::Dumpbin))){
+            throw ("Expected to find 'dumpbin.exe' at '{0}'." -f ([NoFuture.Shared.Cfg.NfConfig+X64]::Dumpbin)) 
+        }
         
         #construct command expression
         $dumpbin = ("`"{0}`"" -f ([NoFuture.Shared.Cfg.NfConfig+X64]::Dumpbin))
@@ -183,7 +185,9 @@ function Invoke-JavaCompiler
         $ClassPath = Get-JavaClassPath $ClassPath
 
         #compile
-        $javacCmd = '. {0} -d {1} -cp {2} {3}' -f ([NoFuture.Shared.Cfg.NfConfig+JavaTools]::Javac),$javaBuild,$ClassPath,(Join-Path $javaSrc ("$TypeName.java"))
+        $javacCmd = '. {0} -d {1} -cp {2} {3}' -f `
+                        ([NoFuture.Shared.Cfg.NfConfig+JavaTools]::Javac),`
+                         $javaBuild,$ClassPath,(Join-Path $javaSrc ("$TypeName.java"))
         $javacCmd >> (Join-Path $javaRoot "cmd.log")
         Invoke-Expression -Command $javacCmd
 

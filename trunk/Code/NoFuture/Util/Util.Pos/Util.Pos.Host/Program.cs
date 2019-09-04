@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.Pos.Host.Cmds;
 using Cfg = System.Configuration.ConfigurationManager;

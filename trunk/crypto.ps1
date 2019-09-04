@@ -97,7 +97,8 @@ function Protect-File
         $nfx509CertPath = [NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::NoFutureX509Cert
 
         if([string]::IsNullOrWhiteSpace($nfx509CertPath) -or -not (Test-Path $nfx509CertPath)){
-            Write-Host "Don't know where to find the NoFuture x509 cert at.  Set the shared var at SecurityKeys NoFutureX509Cert"
+            Write-Host ("Don't know where to find the NoFuture x509 cert at.  " + 
+                         "Set the shared var at SecurityKeys NoFutureX509Cert")
             break
         }
 
@@ -164,7 +165,8 @@ function Unprotect-File
         $nfx509CertPath = [NoFuture.Shared.Cfg.NfConfig+SecurityKeys]::NoFutureX509Cert
 
         if([string]::IsNullOrWhiteSpace($nfx509CertPath)){
-            Write-Host "Don't know where to find the NoFuture x509 cert at.  Set the shared var at SecurityKeys NoFutureX509Cert"
+            Write-Host ("Don't know where to find the NoFuture x509 cert at. " + 
+                        " Set the shared var at SecurityKeys NoFutureX509Cert")
             break
         }
 
@@ -172,11 +174,12 @@ function Unprotect-File
 
         $nfx509CertDir = Split-Path $nfx509CertPath -Parent
 
-        $nfx509CertPath =  Join-Path $nfx509CertDir (([System.IO.Path]::GetFileNameWithoutExtension($nfx509CertPath)) + ".pfx")
+        $nfx509CertPath =  Join-Path $nfx509CertDir `
+                           (([System.IO.Path]::GetFileNameWithoutExtension($nfx509CertPath)) + ".pfx")
 
         if(-not (Test-Path $nfx509CertPath)){
-            throw "A .pfx copy of the NoFuture X509 certificate is required " + 
-                        "and is expected to be placed next to the SecurityKeys.NoFutureX509Cert"
+            throw ("A .pfx copy of the NoFuture X509 certificate is required " + 
+                        "and is expected to be placed next to the SecurityKeys.NoFutureX509Cert")
             break;
         }
 

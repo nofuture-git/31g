@@ -10,6 +10,7 @@ using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util;
+using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Host.Encryption
@@ -24,9 +25,9 @@ namespace NoFuture.Host.Encryption
 
         internal bool IsValid()
         {
-            return Util.NfNet.IsValidPortNumber(SjclBulkKeyToCipherTextPort) 
-                && Util.NfNet.IsValidPortNumber(SjclBulkKeyToPlainTextPort) 
-                && Util.NfNet.IsValidPortNumber(SjclSha256HashPort);
+            return NfNet.IsValidPortNumber(SjclBulkKeyToCipherTextPort) 
+                && NfNet.IsValidPortNumber(SjclBulkKeyToPlainTextPort) 
+                && NfNet.IsValidPortNumber(SjclSha256HashPort);
         }
     }
     internal struct FileParameters
@@ -221,7 +222,7 @@ namespace NoFuture.Host.Encryption
             _taskFactory = new TaskFactory();
             _tasks = new List<Task>();
 
-            if (Util.NfNet.IsValidPortNumber(MyHostParameters.SjclBulkKeyToPlainTextPort))
+            if (NfNet.IsValidPortNumber(MyHostParameters.SjclBulkKeyToPlainTextPort))
             {
                 _tasks.Add(_taskFactory.StartNew(
                     () =>
@@ -232,7 +233,7 @@ namespace NoFuture.Host.Encryption
 
             }
 
-            if (Util.NfNet.IsValidPortNumber(MyHostParameters.SjclBulkKeyToCipherTextPort))
+            if (NfNet.IsValidPortNumber(MyHostParameters.SjclBulkKeyToCipherTextPort))
             {
                 _tasks.Add(_taskFactory.StartNew(
                     () =>
@@ -243,7 +244,7 @@ namespace NoFuture.Host.Encryption
 
             }
 
-            if (Util.NfNet.IsValidPortNumber(MyHostParameters.SjclSha256HashPort))
+            if (NfNet.IsValidPortNumber(MyHostParameters.SjclSha256HashPort))
             {
                 _tasks.Add(_taskFactory.StartNew(
                     () =>

@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using System.Text.RegularExpressions;
-using System.Text;
-using System.Threading;
 using System.ComponentModel;
+using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Net.Sockets;
 using System.Security.Principal;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Util
+namespace NoFuture.Util.Core
 {
     public class NfNet
     {

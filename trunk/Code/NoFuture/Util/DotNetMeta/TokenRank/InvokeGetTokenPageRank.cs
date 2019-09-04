@@ -2,6 +2,7 @@
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Core;
 using NoFuture.Util.DotNetMeta.TokenId;
 using NoFuture.Util.NfConsole;
 
