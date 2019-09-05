@@ -145,12 +145,12 @@ namespace NoFuture.Gen
             return srcCodeFiles.ToArray();
         }
 
-        public Tuple<int, int> GetMyStartEnclosure(string[] srcFile, bool isClean = false)
+        public virtual Tuple<int, int> GetMyStartEnclosure(string[] srcFile = null, bool isClean = false)
         {
             return _myStartEnclosure;
         }
 
-        public Tuple<int, int> GetMyEndEnclosure(string[] srcFile, bool isClean = false)
+        public virtual Tuple<int, int> GetMyEndEnclosure(string[] srcFile = null, bool isClean = false)
         {
             return _myEndEnclosure;
         }

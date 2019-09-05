@@ -98,11 +98,12 @@ namespace NoFuture.Util.Binary
         {
             var rqstAsmName = args.Name;
 
-            //no obvious way to resolve the dependency so first check around the assembly making the request
-            var locationOfAsmInNeed = args.RequestingAssembly?.Location;
             lock (AppDomainSearchLock)
             {
-                return Asm.SearchAppDomainForAssembly(rqstAsmName, locationOfAsmInNeed);
+                //no obvious way to resolve the dependency so first check around the assembly making the request
+                return (args.RequestingAssembly?.IsDynamic ?? true)
+                    ? Asm.SearchAppDomainForAssembly(rqstAsmName)
+                    : Asm.SearchAppDomainForAssembly(rqstAsmName, args.RequestingAssembly.Location);
             }
         }
 

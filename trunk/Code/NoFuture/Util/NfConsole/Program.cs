@@ -242,7 +242,7 @@ namespace NoFuture.Util.NfConsole
         /// <summary>
         /// Performs boilerplate code settings
         /// </summary>
-        protected internal void StartConsole()
+        protected internal void StartConsole(string title = null)
         {
             //set app domain cfg
             _startTime = DateTime.Now;
@@ -250,10 +250,11 @@ namespace NoFuture.Util.NfConsole
             {
                 try
                 {
+                    title = title ?? Assembly.GetEntryAssembly().GetName().Name;
                     Console.WindowWidth = 100;
                     ConsoleCmd.SetConsoleAsTransparent();
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Title = Assembly.GetEntryAssembly().GetName().Name;
+                    Console.Title = title;
                     PrintToConsole($"{Console.Title} started");
 
                 }

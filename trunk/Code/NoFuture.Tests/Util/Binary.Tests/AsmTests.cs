@@ -66,5 +66,13 @@ namespace NoFuture.Util.Binary.Tests
             foreach (var t in testResult)
                 Console.WriteLine(t.ToString("X4"));
         }
+
+        [Test]
+        public void TestGetOpCodeOperandByteSize()
+        {
+            var testOpCode = OpCodes.Ldtoken;
+            var testResult = NoFuture.Util.Binary.Asm.GetOpCodeOperandByteSize(testOpCode);
+            Console.WriteLine(testResult);
+        }
     }
 }

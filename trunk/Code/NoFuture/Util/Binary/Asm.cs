@@ -143,7 +143,7 @@ namespace NoFuture.Util.Binary
 
         /// <summary>
         /// The actual search functionality used by the 
-        /// <see cref="FxPointers.ResolveReflectionOnlyAssembly"/> - in itself reuseable.
+        /// <see cref="FxPointers.ResolveReflectionOnlyAssembly"/> - in itself reusable.
         /// </summary>
         /// <param name="asmFullName">This is expected as the fully qualified assembly name.</param>
         /// <param name="searchDirectory"></param>
@@ -183,7 +183,7 @@ namespace NoFuture.Util.Binary
             //if requesting assembly has a location then start there
             if (!String.IsNullOrWhiteSpace(searchDirectory))
             {
-                //expect dependecies from the GAC to be resolved using the GAC
+                //expect dependencies from the GAC to be resolved using the GAC
                 if (searchDirectory.Contains("\\GAC_MSIL\\") || searchDirectory.Contains("\\GAC_64\\") ||
                     searchDirectory.StartsWith(@"C:\Windows\Microsoft.NET\Framework"))
                     return reflectionOnly ? Assembly.ReflectionOnlyLoad(asmFullName) : Assembly.Load(asmFullName);
@@ -193,7 +193,7 @@ namespace NoFuture.Util.Binary
                     return foundOne;
             }
 
-            //search the directory explicity set
+            //search the directory explicitly set
             if (NfConfig.AssemblySearchPaths.Any())
             {
                 if (
@@ -226,10 +226,8 @@ namespace NoFuture.Util.Binary
         /// Gets the length of a <see cref="OpCode.OperandType"/>
         /// as the number of bytes.
         /// </summary>
-        /// <param name="op"></param>
-        /// <returns></returns>
         /// <remarks>
-        /// https://msdn.microsoft.com/en-us/library/system.reflection.emit.operandtype(v=vs.110).aspx
+        /// https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit.operandtype
         /// </remarks>
         public static int GetOpCodeOperandByteSize(OpCode op)
         {
@@ -254,8 +252,6 @@ namespace NoFuture.Util.Binary
         /// <summary>
         /// Gets the <see cref="OpCode"/> whose <see cref="OpCode.Value"/> equals <see cref="opCodeValue"/>
         /// </summary>
-        /// <param name="opCodeValue"></param>
-        /// <returns></returns>
         /// <remarks>
         /// partially generated using the following PowerShell:
         /// <![CDATA[
@@ -511,14 +507,12 @@ namespace NoFuture.Util.Binary
         }
 
         /// <summary>
-        /// Given the <see cref="rawIlByteStream"/> the occurance of 
+        /// Given the <see cref="rawIlByteStream"/> the occurence of 
         /// </summary>
-        /// <param name="rawIlByteStream"></param>
-        /// <param name="opCodes"></param>
-        /// <returns></returns>
         /// <remarks>
-        /// Pass the metadata token into an assembly's manifest module's <see cref="System.Reflection.Module.ResolveMember(int)"/>
-        /// to get the <see cref="MethodInfo"/>
+        /// Pass the metadata token into an assembly&apos;s manifest module&apos;s
+        /// <see cref="System.Reflection.Module.ResolveMember(int)"/> to get the
+        /// <see cref="MethodInfo"/>
         /// </remarks>
         public static int[] GetOpCodesArgs(byte[] rawIlByteStream, OpCode[] opCodes)
         {
@@ -576,10 +570,8 @@ namespace NoFuture.Util.Binary
         }
 
         /// <summary>
-        /// Gets a method's body as a list of IL <see cref="OpCode"/> 
+        /// Gets a method&apos;s body as a list of IL <see cref="OpCode"/> 
         /// </summary>
-        /// <param name="mb"></param>
-        /// <returns></returns>
         public static OpCode[] GetOpCodesList(MethodBase mb)
         {
             var codesOut = new List<OpCode>();
@@ -605,8 +597,6 @@ namespace NoFuture.Util.Binary
         /// <summary>
         /// Gets the IL byte array of the method.
         /// </summary>
-        /// <param name="mb"></param>
-        /// <returns></returns>
         public static byte[] GetMethodBody(MethodBase mb)
         {
             var emptyArray = new byte[0];
@@ -627,9 +617,6 @@ namespace NoFuture.Util.Binary
         /// Helper method for its overload checking 
         /// for nulls down to the <see cref="System.Reflection.MethodBody"/>
         /// </summary>
-        /// <param name="mb"></param>
-        /// <param name="opCodes"></param>
-        /// <returns></returns>
         public static int[] GetOpCodesArgs(MethodBase mb, OpCode[] opCodes)
         {
             var il = GetMethodBody(mb);
@@ -637,28 +624,24 @@ namespace NoFuture.Util.Binary
         }
 
         /// <summary>
-        /// Uses the <see cref="OpCodes.Callvirt"/> and <see cref="OpCodes.Call"/>
+        /// Gets the token values being passed to the select op codes
         /// </summary>
-        /// <param name="mb"></param>
-        /// <returns></returns>
         public static int[] GetCallsMetadataTokens(MethodBase mb)
         {
-            return GetOpCodesArgs(mb, new[] { OpCodes.Callvirt, OpCodes.Call, OpCodes.Ldftn });
+            return GetOpCodesArgs(mb, new[] { OpCodes.Callvirt, OpCodes.Call, OpCodes.Ldftn, OpCodes.Ldtoken });
         }
         #endregion
 
         #region reflection api wrappers
         /// <summary>
         /// Intended when an assembly is only recognizable by its location and therefore must 
-        /// be loaded as such.  The reflection only load-from assemblies are 
-        /// loaded from <see cref="NfConfig.TempDirectories.Binary"/>.
+        /// be loaded as such. 
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <param name="rethrow">
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Assembly NfReflectionOnlyLoadFrom(string assemblyPath, bool rethrow = true, string logFile = "")
         {
             if(String.IsNullOrWhiteSpace(assemblyPath))
@@ -712,7 +695,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Assembly NfLoadFrom(string assemblyPath, bool rethrow = true, string logFile = "")
         {
             if (String.IsNullOrWhiteSpace(assemblyPath))
@@ -766,7 +748,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Type[] NfGetTypes(this Assembly assembly, bool rethrow = true, string logFile = "")
         {
             if (assembly == null)
@@ -811,10 +792,6 @@ namespace NoFuture.Util.Binary
         /// <summary>
         /// Wrapper around static GetAssemblyName with logging and rethrow options
         /// </summary>
-        /// <param name="assemblyFile"></param>
-        /// <param name="rethrow"></param>
-        /// <param name="logFile"></param>
-        /// <returns></returns>
         public static AssemblyName GetAssemblyName(string assemblyFile, bool rethrow = true, string logFile = "")
         {
             try
@@ -904,7 +881,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Type NfGetType(this Assembly assembly, string typeFullName, bool rethrow = true, string logFile = "")
         {
             if (assembly == null || String.IsNullOrWhiteSpace(typeFullName))
@@ -956,7 +932,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static MethodInfo NfGetMethod(this Type t, string name, bool rethrow = true, string logFile = "")
         {
             if (t == null)
@@ -1010,7 +985,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static MethodInfo NfGetMethod(this Type t, string name, BindingFlags bindingAttr, bool rethrow = true, string logFile = "")
         {
             if (t == null)
@@ -1064,7 +1038,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static MethodInfo NfGetMethod(this Type t, string name, Type[] types, bool rethrow = true,
             string logFile = "")
         {
@@ -1122,7 +1095,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static MethodInfo NfGetMethod(this Type t, string name, BindingFlags bindingAttr, Binder binder,
             Type[] types, ParameterModifier[] modifiers, bool rethrow = true,
             string logFile = "")
@@ -1177,7 +1149,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static MethodInfo[] NfGetMethods(this Type t, BindingFlags bindingAttr, bool rethrow = true,
             string logFile = "")
         {
@@ -1231,7 +1202,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static PropertyInfo[] NfGetProperties(this Type t, BindingFlags bindingAttr, bool rethrow = true,
             string logFile = "")
         {
@@ -1284,7 +1254,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Type NfPropertyType(this PropertyInfo pi, bool rethrow = true, string logFile = "")
         {
             if (pi == null)
@@ -1336,7 +1305,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Type NfFieldType(this FieldInfo fi, bool rethrow = true, string logFile = "")
         {
             if (fi == null)
@@ -1389,7 +1357,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Type NfReturnType(this MethodInfo mi, bool rethrow = true, string logFile = "")
         {
             if (mi == null)
@@ -1441,7 +1408,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Type NfParameterType(this ParameterInfo pi, bool rethrow = true, string logFile = "")
         {
             if (pi == null)
@@ -1494,7 +1460,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Type NfEventHandlerType(this EventInfo ei, bool rethrow = true, string logFile = "")
         {
             if (ei == null)
@@ -1548,7 +1513,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static Type NfBaseType(this Type t, bool rethrow = true, string logFile = "")
         {
             if (t == null)
@@ -1601,7 +1565,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static MethodInfo NfGetGetMethod(this PropertyInfo pi, bool rethrow = true, string logFile = "")
         {
             if (pi == null)
@@ -1654,7 +1617,6 @@ namespace NoFuture.Util.Binary
         /// optional ability to suppress the exception form being rethrown - default is true.
         /// </param>
         /// <param name="logFile">optional override of the default log file at <see cref="ResolveAsmLog"/> </param>
-        /// <returns></returns>
         public static MethodInfo NfGetSetMethod(this PropertyInfo pi, bool rethrow = true, string logFile = "")
         {
             if (pi == null)
@@ -1702,10 +1664,6 @@ namespace NoFuture.Util.Binary
         /// Wraps the call to <see cref="Type.GetFields()"/> adding logging 
         /// of typical loader exceptions.
         /// </summary>
-        /// <param name="t"></param>
-        /// <param name="rethrow"></param>
-        /// <param name="logFile"></param>
-        /// <returns></returns>
         public static FieldInfo[] NfGetFields(this Type t, bool rethrow = true, string logFile = "")
         {
             if (t == null)
@@ -1754,10 +1712,6 @@ namespace NoFuture.Util.Binary
         /// Wraps the call to <see cref="MethodInfo.GetParameters()"/> adding logging 
         /// of typical loader exceptions.
         /// </summary>
-        /// <param name="mi"></param>
-        /// <param name="rethrow"></param>
-        /// <param name="logFile"></param>
-        /// <returns></returns>
         public static ParameterInfo[] NfGetParameters(this MethodInfo mi, bool rethrow = true, string logFile = "")
         {
             if (mi == null)
@@ -1812,10 +1766,6 @@ namespace NoFuture.Util.Binary
         /// Wraps a call to <see cref="Type.GetGenericArguments()"/> adding logging 
         /// of typical loader exceptions.
         /// </summary>
-        /// <param name="t"></param>
-        /// <param name="rethrow"></param>
-        /// <param name="logFile"></param>
-        /// <returns></returns>
         public static Type[] NfGetGenericArguments(this Type t, bool rethrow = true, string logFile = "")
         {
             if (t == null)
@@ -1863,11 +1813,6 @@ namespace NoFuture.Util.Binary
         /// Wraps call to <see cref="Type.GetMembers(BindingFlags)"/> adding logging 
         /// of typical loader exceptions.
         /// </summary>
-        /// <param name="t"></param>
-        /// <param name="bindingAttr"></param>
-        /// <param name="rethrow"></param>
-        /// <param name="logFile"></param>
-        /// <returns></returns>
         public static MemberInfo[] NfGetMembers(this Type t, BindingFlags bindingAttr, bool rethrow = true,
             string logFile = "")
         {
@@ -1910,6 +1855,10 @@ namespace NoFuture.Util.Binary
             return new MemberInfo[] { };
         }
 
+        /// <summary>
+        /// Wraps call to <see cref="MethodInfo.GetBaseDefinition()"/> adding logging 
+        /// of typical loader exceptions.
+        /// </summary>
         public static MethodInfo NfGetBaseDefinition(this MethodInfo mi, bool rethrow = true,
             string logFile = "")
         {
@@ -1961,11 +1910,6 @@ namespace NoFuture.Util.Binary
         /// ending in *.dll extension and checks that <see cref="rqstAsmFullName"/>
         /// equals the full assembly name of the given dll file.
         /// </summary>
-        /// <param name="directoryLocation"></param>
-        /// <param name="rqstAsmFullName"></param>
-        /// <param name="foundOne"></param>
-        /// <param name="reflectionOnly"></param>
-        /// <returns></returns>
         internal static bool SearchDirectoriesForAssembly(string directoryLocation, string rqstAsmFullName,
             out Assembly foundOne, bool reflectionOnly = true)
         {

@@ -117,6 +117,55 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
+        /// Moves the given code-gen source code definition to another file 
+        /// </summary>
+        /// <returns>The full paths to the created source code files </returns>
+        public static string[] MoveType(CgType cgType, string outputDirectory = null)
+        {
+            if(cgType?.GetMyStartEnclosure() == null || cgType.GetMyEndEnclosure() == null)
+                return new string[0];
+
+            var srcCodeFiles = cgType.GetMySrcCodeFiles();
+            if(srcCodeFiles == null)
+                return new string[0];
+
+            //TODO - this is inconsistent where enclosure is one but src files are many
+            var srcCodeFile = srcCodeFiles.FirstOrDefault();
+            outputDirectory = outputDirectory ?? NfSettings.AppData;
+            if (srcCodeFile == null || !File.Exists(srcCodeFile))
+                return new string[0];
+
+            //since this will be just a mess anyway - keep it simple as lines only
+            var start = cgType.GetMyStartEnclosure().Item1;
+            var end = cgType.GetMyEndEnclosure().Item1;
+
+            var fileName = Path.GetFileNameWithoutExtension(srcCodeFile);
+            var fileExtension = Path.GetExtension(srcCodeFile);
+
+            //have file name match the type's name
+            if (!string.Equals(fileName, cgType.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                fileName = cgType.Name;
+            }
+            
+            var outFilePath = Path.Combine(outputDirectory, fileName + fileExtension);
+
+            //don't overwrite whatever is already there
+            if (File.Exists(outFilePath))
+            {
+                outFilePath = Path.Combine(outputDirectory, NfString.GetNfRandomName() + fileExtension);
+            }
+
+            var srcLines = File.ReadAllLines(srcCodeFile);
+            var newLines = srcLines.Skip(start - 1).Take(end + 1 - start);
+
+            //write the type def to file
+            File.WriteAllLines(outFilePath, newLines, Encoding.UTF8);
+
+            return new[] {outFilePath};
+        }
+
+        /// <summary>
         /// Replaces the implementation of each <see cref="CgMember"/>, including signature, with whitespace.
         /// The implementation is resolved on the <see cref="CgMember.PdbModuleSymbols"/>
         /// </summary>
@@ -135,7 +184,7 @@ namespace NoFuture.Gen
             if (byFile.Count <= 0)
                 return new string[0];
             var modifiedFiles = new List<string>();
-            foreach (var fl in byFile.Select(x => x.PdbModuleSymbols.file.ToLower()).Distinct())
+            foreach (var fl in byFile.Select(x => x.PdbModuleSymbols.file).Distinct())
             {
                 var srcLines = File.ReadAllLines(fl);
                 var cgMems =
@@ -184,13 +233,13 @@ namespace NoFuture.Gen
         /// <summary>
         /// Performs dual operation of, one, moving <see cref="MoveMethodsArgs.MoveMembers"/> 
         /// out of <see cref="MoveMethodsArgs.SrcFile"/> and into the new 
-        /// <see cref="MoveMethodsArgs.OutFilePath"/> (adjusting thier signatures as needed to 
+        /// <see cref="MoveMethodsArgs.OutFilePath"/> (adjusting their signatures as needed to 
         /// accommodate dependencies), and, two, modifying the <see cref="MoveMethodsArgs.SrcFile"/> 
         /// file to call the new.
         /// </summary>
         /// <param name="cgType"></param>
         /// <param name="args"></param>
-        public static void MoveMethods(this CgType cgType, MoveMethodsArgs args)
+        public static void MoveMembers(this CgType cgType, MoveMethodsArgs args)
         {
             var srcFile = args.SrcFile;
             var moveMembers = args.MoveMembers;
