@@ -63,6 +63,14 @@ namespace NoFuture.Gen.LangRules
         string ToClass(CgType cgType, CgAccessModifier cgClsAccess, CgClassModifier typeModifier, string[] nsImports);
 
         /// <summary>
+        /// Renders the <see cref="cgType"/> as a public interface
+        /// </summary>
+        /// <param name="cgType"></param>
+        /// <param name="nsImports"></param>
+        /// <returns></returns>
+        string ToInterface(CgType cgType, string[] nsImports = null);
+
+        /// <summary>
         /// Transforms the <see cref="cgMem"/> into a useable parameter by another <see cref="CgMember"/>
         /// </summary>
         /// <param name="cgMem"></param>

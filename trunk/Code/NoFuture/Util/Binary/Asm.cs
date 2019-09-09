@@ -153,7 +153,7 @@ namespace NoFuture.Util.Binary
         /// <returns></returns>
         /// <remarks>
         /// see
-        /// [https://msdn.microsoft.com/en-us/library/k8xx4k69(v=vs.110).aspx]
+        /// [https://docs.microsoft.com/en-us/dotnet/framework/app-domains/assembly-names]
         /// NOTE: attempting to send both the ReflectionOnlyAssemblyResolve and the AssemblyResolve
         /// to this same method has caused the entire process to crash.
         /// </remarks>

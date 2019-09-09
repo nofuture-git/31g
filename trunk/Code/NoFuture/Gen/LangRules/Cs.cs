@@ -131,6 +131,36 @@ namespace NoFuture.Gen.LangRules
             return splitFileContent.ToString();
         }
 
+        public string ToInterface(CgType cgType, string[] nsImports = null)
+        {
+            var hasNs = !string.IsNullOrWhiteSpace(cgType.Namespace);
+            var splitFileContent = new StringBuilder();
+            if (nsImports != null && nsImports.Length > 0)
+            {
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, nsImports));
+            }
+
+            if (hasNs)
+            {
+                splitFileContent.AppendFormat("namespace {0}{1}", cgType.Namespace, Environment.NewLine);
+                splitFileContent.AppendLine(C_OPEN_CURLY.ToString());
+            }
+
+            var accessMod = Settings.LangStyle.TransposeCgAccessModToString(CgAccessModifier.Public);
+            splitFileContent.AppendLine($"    {accessMod} interface {cgType.Name}");
+            splitFileContent.AppendLine("    " + C_OPEN_CURLY);
+            foreach (var cg in cgType.Properties)
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.GetMyCgLines()));
+            foreach (var cg in cgType.Methods)
+                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.GetMyCgLines()));
+            splitFileContent.AppendLine("    " + C_CLOSE_CURLY);
+
+            if (hasNs)
+                splitFileContent.AppendLine(C_CLOSE_CURLY.ToString());
+
+            return splitFileContent.ToString();
+        }
+
         public CgArg ToParam(CgMember cgMem, bool asFunctionPtr)
         {
             if (!asFunctionPtr)
