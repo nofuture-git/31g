@@ -41,7 +41,8 @@ namespace NoFuture.Gen
             var invokeDia2Dump = new InvokeDia2Dump.GetPdbData(assemblyPath);
             var pdbLines = invokeDia2Dump.SingleTypeNamed(typeFullName);
             if(pdbLines == null)
-                throw new ItsDeadJim($"Dia2Dump.exe did not return anything for the type named '{typeFullName}'");
+                throw new ItsDeadJim("Dia2Dump.exe did not return anything for the type " +
+                                     $"named '{typeFullName}' from '{invokeDia2Dump.PdbAssemblyFilePath}'");
             
             //but we don't want the type in our appDomain, so we shell it out as a code-gen type
             _cgType = Etc.GetIsolatedCgOfType(assemblyPath, typeFullName, true);
@@ -71,7 +72,8 @@ namespace NoFuture.Gen
             var invokeDia2Dump = new InvokeDia2Dump.GetPdbData(AssemblyPath);
             var pdbLines = invokeDia2Dump.SingleTypeNamed(typeFullName);
             if (pdbLines == null)
-                throw new ItsDeadJim($"Dia2Dump.exe did not return anything for the type named '{typeFullName}'");
+                throw new ItsDeadJim("Dia2Dump.exe did not return anything for the type " +
+                                     $"named '{typeFullName}' from '{invokeDia2Dump.PdbAssemblyFilePath}'");
 
             _cgType = Etc.GetCgOfType(asm, typeFullName, true);
 

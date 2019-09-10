@@ -99,14 +99,11 @@ namespace NoFuture.Gen.LangRules
 
         public string ToClass(CgType cgType, CgAccessModifier cgClsAccess = CgAccessModifier.Public, CgClassModifier typeModifier = CgClassModifier.AsIs, string[] nsImports = null)
         {
-            var hasNs = !string.IsNullOrWhiteSpace(cgType.Namespace);
             var splitFileContent = new StringBuilder();
             if (nsImports != null && nsImports.Length > 0)
             {
                 splitFileContent.AppendLine(string.Join(Environment.NewLine, nsImports));
             }
-
-            splitFileContent.Append(ToNamespaceDecl(cgType));
 
             var otherModifer = typeModifier == CgClassModifier.AsIs
                 ? string.Empty
@@ -122,9 +119,6 @@ namespace NoFuture.Gen.LangRules
             foreach (var cg in cgType.Methods)
                 splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.GetMyCgLines()));
             splitFileContent.AppendLine("    " + C_CLOSE_CURLY);
-
-            if (hasNs)
-                splitFileContent.AppendLine(C_CLOSE_CURLY.ToString());
 
             return splitFileContent.ToString();
         }

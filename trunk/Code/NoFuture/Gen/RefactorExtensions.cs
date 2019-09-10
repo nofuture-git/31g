@@ -299,8 +299,12 @@ namespace NoFuture.Gen
                     excludeUsingStmts);
             }
 
+            File.AppendAllLines(outFilePath,new []{ Settings.LangStyle.ToNamespaceDecl(newCgType)});
+
             File.AppendAllText(outFilePath,
                 Settings.LangStyle.ToClass(newCgType, CgAccessModifier.Public, CgClassModifier.AsIs, nsImports), Encoding.UTF8);
+
+            File.AppendAllLines(outFilePath, new[] { Settings.LangStyle.GetEnclosureCloseToken(null)});
 
             //now must modify existing file
             var k = 0;
