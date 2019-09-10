@@ -133,10 +133,10 @@ namespace NoFuture.Gen
             if (PdbModuleSymbols == null || string.IsNullOrWhiteSpace(PdbModuleSymbols.file) ||
                 !File.Exists(PdbModuleSymbols.file))
             {
-                myImplementation.Add(string.Format("        {0}", Settings.LangStyle.ToDecl(this, true)));
-                myImplementation.Add(string.Format("        {0}", Settings.LangStyle.GetEnclosureOpenToken(this)));
-                myImplementation.Add(Settings.NoImplementationDefault);
-                myImplementation.Add(string.Format("        {0}", Settings.LangStyle.GetEnclosureCloseToken(this)));
+                myImplementation.Add($"        {Settings.LangStyle.ToDecl(this, true)}");
+                myImplementation.Add($"        {Settings.LangStyle.GetEnclosureOpenToken(this)}");
+                myImplementation.Add($"        {Settings.NoImplementationDefault}");
+                myImplementation.Add($"        {Settings.LangStyle.GetEnclosureCloseToken(this)}");
                 return myImplementation.ToArray();
 
             }

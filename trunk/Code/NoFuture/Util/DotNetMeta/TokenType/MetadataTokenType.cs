@@ -92,10 +92,17 @@ namespace NoFuture.Util.DotNetMeta.TokenType
         /// <summary>
         /// Helper method to avoid having to check the int value of <see cref="IsIntfc"/>
         /// </summary>
-        /// <returns></returns>
         public bool IsInterfaceType()
         {
             return IsIntfc > 0;
+        }
+
+        /// <summary>
+        /// Helper method to avoid having to check the int value of <see cref="IsAbsct"/>
+        /// </summary>
+        public bool IsAbstractType()
+        {
+            return IsAbsct > 0;
         }
 
         /// <summary>

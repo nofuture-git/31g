@@ -28,6 +28,8 @@ namespace NoFuture.Gen.LangRules
         public string DeclareConstantKeyword => CONST;
         public Dictionary<string, string> ValueTypeToLangAlias => NfReflect.ValueType2Cs;
 
+        public string FileExtension { get; } = ".cs";
+
         public string GetEnclosureOpenToken(CgMember cgMem)
         {
             return C_OPEN_CURLY.ToString();
@@ -95,7 +97,7 @@ namespace NoFuture.Gen.LangRules
             return cgMem.TypeName == "void" ? stmtBldr.ToString() : string.Format("return {0}", stmtBldr);
         }
 
-        public string ToClass(CgType cgType, CgAccessModifier cgClsAccess, CgClassModifier typeModifier, string[] nsImports)
+        public string ToClass(CgType cgType, CgAccessModifier cgClsAccess = CgAccessModifier.Public, CgClassModifier typeModifier = CgClassModifier.AsIs, string[] nsImports = null)
         {
             var hasNs = !string.IsNullOrWhiteSpace(cgType.Namespace);
             var splitFileContent = new StringBuilder();
@@ -104,12 +106,8 @@ namespace NoFuture.Gen.LangRules
                 splitFileContent.AppendLine(string.Join(Environment.NewLine, nsImports));
             }
 
-            if (hasNs)
-            {
-                splitFileContent.AppendFormat("namespace {0}{1}", cgType.Namespace, Environment.NewLine);
-                splitFileContent.AppendLine(C_OPEN_CURLY.ToString());
+            splitFileContent.Append(ToNamespaceDecl(cgType));
 
-            }
             var otherModifer = typeModifier == CgClassModifier.AsIs
                 ? string.Empty
                 : string.Format(" {0}", Settings.LangStyle.TransposeCgClassModToString(typeModifier));
@@ -133,30 +131,33 @@ namespace NoFuture.Gen.LangRules
 
         public string ToInterface(CgType cgType, string[] nsImports = null)
         {
-            var hasNs = !string.IsNullOrWhiteSpace(cgType.Namespace);
             var splitFileContent = new StringBuilder();
             if (nsImports != null && nsImports.Length > 0)
             {
                 splitFileContent.AppendLine(string.Join(Environment.NewLine, nsImports));
             }
 
+            var accessMod = Settings.LangStyle.TransposeCgAccessModToString(CgAccessModifier.Public);
+            splitFileContent.AppendLine($"    {accessMod} interface {cgType.Name}");
+            splitFileContent.AppendLine("    " + C_OPEN_CURLY);
+            foreach (var cg in cgType.Properties)
+                splitFileContent.AppendLine($"        {Settings.LangStyle.ToDecl(cg)};");
+            foreach (var cg in cgType.Methods)
+                splitFileContent.AppendLine($"        {Settings.LangStyle.ToDecl(cg)};");
+            splitFileContent.AppendLine("    " + C_CLOSE_CURLY);
+
+            return splitFileContent.ToString();
+        }
+
+        public string ToNamespaceDecl(CgType cgType)
+        {
+            var hasNs = !string.IsNullOrWhiteSpace(cgType.Namespace);
+            var splitFileContent = new StringBuilder();
             if (hasNs)
             {
                 splitFileContent.AppendFormat("namespace {0}{1}", cgType.Namespace, Environment.NewLine);
                 splitFileContent.AppendLine(C_OPEN_CURLY.ToString());
             }
-
-            var accessMod = Settings.LangStyle.TransposeCgAccessModToString(CgAccessModifier.Public);
-            splitFileContent.AppendLine($"    {accessMod} interface {cgType.Name}");
-            splitFileContent.AppendLine("    " + C_OPEN_CURLY);
-            foreach (var cg in cgType.Properties)
-                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.GetMyCgLines()));
-            foreach (var cg in cgType.Methods)
-                splitFileContent.AppendLine(string.Join(Environment.NewLine, cg.GetMyCgLines()));
-            splitFileContent.AppendLine("    " + C_CLOSE_CURLY);
-
-            if (hasNs)
-                splitFileContent.AppendLine(C_CLOSE_CURLY.ToString());
 
             return splitFileContent.ToString();
         }
@@ -291,7 +292,7 @@ namespace NoFuture.Gen.LangRules
 
         public string NoImplementationDefault
         {
-            get { return "//could not parse method body \nthrow new NotImplementedException();"; }
+            get { return "//could not parse method body \n        throw new NotImplementedException();"; }
         }
 
         public string[] RemovePreprocessorCmds(string[] fileMembers)

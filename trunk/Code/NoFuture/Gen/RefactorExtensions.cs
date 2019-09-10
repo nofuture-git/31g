@@ -120,47 +120,51 @@ namespace NoFuture.Gen
         /// Moves the given code-gen source code definition to another file 
         /// </summary>
         /// <returns>The full paths to the created source code files </returns>
-        public static string[] MoveType(CgType cgType, string outputDirectory = null)
+        public static string[] MoveType(CgType cgType, string outputDirectory = null, CgClassModifier typeModifier = CgClassModifier.AsIs)
         {
-            if(cgType?.GetMyStartEnclosure() == null || cgType.GetMyEndEnclosure() == null)
+            if(cgType == null)
                 return new string[0];
 
-            var srcCodeFiles = cgType.GetMySrcCodeFiles();
-            if(srcCodeFiles == null)
-                return new string[0];
+            outputDirectory = outputDirectory ?? NfSettings.AppData;
 
             //TODO - this is inconsistent where enclosure is one but src files are many
-            var srcCodeFile = srcCodeFiles.FirstOrDefault();
-            outputDirectory = outputDirectory ?? NfSettings.AppData;
-            if (srcCodeFile == null || !File.Exists(srcCodeFile))
-                return new string[0];
+            var srcCodeFile = cgType.GetMySrcCodeFiles()?.FirstOrDefault() ??
+                              Path.Combine(NfSettings.AppData, cgType.Name + Settings.LangStyle.FileExtension);
 
-            //since this will be just a mess anyway - keep it simple as lines only
-            var start = cgType.GetMyStartEnclosure().Item1;
-            var end = cgType.GetMyEndEnclosure().Item1;
-
-            var fileName = Path.GetFileNameWithoutExtension(srcCodeFile);
+            var fileName = cgType.Name;
             var fileExtension = Path.GetExtension(srcCodeFile);
-
-            //have file name match the type's name
-            if (!string.Equals(fileName, cgType.Name, StringComparison.OrdinalIgnoreCase))
-            {
-                fileName = cgType.Name;
-            }
-            
             var outFilePath = Path.Combine(outputDirectory, fileName + fileExtension);
 
             //don't overwrite whatever is already there
             if (File.Exists(outFilePath))
             {
-                outFilePath = Path.Combine(outputDirectory, NfString.GetNfRandomName() + fileExtension);
+                outFilePath = Path.Combine(outputDirectory, fileName + NfString.GetNfRandomName() + fileExtension);
             }
 
-            var srcLines = File.ReadAllLines(srcCodeFile);
-            var newLines = srcLines.Skip(start - 1).Take(end + 1 - start);
+            var newlines = new List<string>();
+            var hasNs = !string.IsNullOrWhiteSpace(cgType.Namespace);
+            if (hasNs)
+                newlines.AddRange(Settings.LangStyle.ToNamespaceDecl(cgType).ConvertToLf().Split('\n'));
+
+            if (File.Exists(srcCodeFile))
+            {
+                var start = cgType.GetMyStartEnclosure().Item1;
+                var end = cgType.GetMyEndEnclosure().Item1;
+                var srcLines = File.ReadAllLines(srcCodeFile);
+                newlines.AddRange(srcLines.Skip(start - 1).Take(end + 1 - start));
+            }
+            else
+            {
+                var genLines = typeModifier == CgClassModifier.AsInterface
+                    ? Settings.LangStyle.ToInterface(cgType)
+                    : Settings.LangStyle.ToClass(cgType, CgAccessModifier.Public, typeModifier);
+                newlines.AddRange(genLines.ConvertToLf().Split('\n'));
+            }
+            if(hasNs)
+                newlines.Add(Settings.LangStyle.GetEnclosureCloseToken(null));
 
             //write the type def to file
-            File.WriteAllLines(outFilePath, newLines, Encoding.UTF8);
+            File.WriteAllLines(outFilePath, newlines, Encoding.UTF8);
 
             return new[] {outFilePath};
         }

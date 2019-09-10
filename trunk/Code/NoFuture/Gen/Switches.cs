@@ -8,7 +8,8 @@ namespace NoFuture.Gen
         AsIs = 0,
         AsPartial = 1,
         AsAbstract = 2,
-        AsStatic = 4
+        AsStatic = 4,
+        AsInterface = 8
     }
 
     [Serializable]

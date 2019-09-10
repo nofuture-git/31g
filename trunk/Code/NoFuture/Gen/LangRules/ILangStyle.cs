@@ -7,6 +7,7 @@ namespace NoFuture.Gen.LangRules
 {
     public interface ILangStyle
     {
+        string FileExtension { get; }
         string LineComment { get; }
         string GetEnclosureOpenToken(CgMember cgMem);
         string GetEnclosureCloseToken(CgMember cgMem);
@@ -60,7 +61,7 @@ namespace NoFuture.Gen.LangRules
         /// <param name="typeModifier"></param>
         /// <param name="nsImports"></param>
         /// <returns></returns>
-        string ToClass(CgType cgType, CgAccessModifier cgClsAccess, CgClassModifier typeModifier, string[] nsImports);
+        string ToClass(CgType cgType, CgAccessModifier cgClsAccess = CgAccessModifier.Public, CgClassModifier typeModifier = CgClassModifier.AsIs, string[] nsImports = null);
 
         /// <summary>
         /// Renders the <see cref="cgType"/> as a public interface
@@ -69,6 +70,13 @@ namespace NoFuture.Gen.LangRules
         /// <param name="nsImports"></param>
         /// <returns></returns>
         string ToInterface(CgType cgType, string[] nsImports = null);
+
+        /// <summary>
+        /// Renders the name space declaration of the given type
+        /// </summary>
+        /// <param name="cgType"></param>
+        /// <returns></returns>
+        string ToNamespaceDecl(CgType cgType);
 
         /// <summary>
         /// Transforms the <see cref="cgMem"/> into a useable parameter by another <see cref="CgMember"/>
@@ -82,7 +90,7 @@ namespace NoFuture.Gen.LangRules
         /// Renders the invocation of <see cref="cgMem"/> as a regex pattern.
         /// </summary>
         /// <param name="cgMem"></param>
-        /// <param name="varNames">The variables which may preceed the member invocation (e.g. myVariable.MyMethod)</param>
+        /// <param name="varNames">The variables which may precede the member invocation (e.g. myVariable.MyMethod)</param>
         /// <returns></returns>
         string ToInvokeRegex(CgMember cgMem, params string[] varNames);
 

@@ -86,6 +86,22 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
+        /// Convenience method to add another item to the <see cref="Items"/> array with equality checks
+        /// </summary>
+        public void AddItem(MetadataTokenName item)
+        {
+            if (item == null)
+                return;
+            if (Items.Any(i => _comparer.Equals(item, i)))
+                return;
+
+            var buffer = new MetadataTokenName[Items.Length + 1];
+            Array.Copy(Items, buffer, Items.Length);
+            buffer[Items.Length] = item;
+            Items = buffer;
+        }
+
+        /// <summary>
         /// Indicates if this instance is a list or tree data structure
         /// </summary>
         /// <returns></returns>
@@ -200,7 +216,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         /// This represents the call-token tree, but it has no names.
         /// </param>
         /// <param name="asmIndices">
-        /// This is needed since the names are all partial (to save space on the transfered json).
+        /// This is needed since the names are all partial (to save space on the transferred json).
         /// </param>
         /// <param name="tokenTypes">
         /// Optional, passing this in will signal that all interfaces with only one implementation
@@ -380,7 +396,7 @@ namespace NoFuture.Util.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Gets the cound of leaf nodes at all depths
+        /// Gets the count of leaf nodes at all depths
         /// </summary>
         /// <returns></returns>
         public int GetFullDepthCount()
