@@ -434,10 +434,22 @@ namespace NoFuture.Util.DotNetMeta.TokenName
             const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
             if (String.IsNullOrWhiteSpace(Name))
                 return String.Empty;
+            //split the member name from the type name
             var idxOut = Name.IndexOf(SPLT);
             if (idxOut <= 0)
                 return Name;
-            return Name.Substring(0, Name.IndexOf(SPLT));
+            var nm = Name.Substring(0, idxOut);
+
+            //have types with generic args match the name-style found in MetadataTokenName
+            if (nm.Contains("[["))
+            {
+                idxOut = nm.IndexOf("[[");
+                if (idxOut <= 0)
+                    return nm;
+                nm = Name.Substring(0, idxOut);
+            }
+
+            return nm;
         }
 
         /// <summary>
