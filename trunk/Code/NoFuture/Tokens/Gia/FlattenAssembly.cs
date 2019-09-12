@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NoFuture.Util.Gia
+namespace NoFuture.Tokens.Gia
 {
     public class FlattenAssembly
     {

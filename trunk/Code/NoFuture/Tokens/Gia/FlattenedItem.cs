@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoFuture.Tokens.Gia.GraphViz;
 using NoFuture.Util.Core;
-using NoFuture.Util.Gia.GraphViz;
 
-namespace NoFuture.Util.Gia
+namespace NoFuture.Tokens.Gia
 {
     /// <summary>
     /// Represents the individual entries of a <see cref="FlattenedLine"/>

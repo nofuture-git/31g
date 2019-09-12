@@ -5,7 +5,7 @@ using System.Text;
 using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Gia.Args;
+using NoFuture.Tokens.Gia;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.Gia.InvokeFlatten.Cmds

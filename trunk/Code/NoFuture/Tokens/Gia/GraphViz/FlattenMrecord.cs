@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
-namespace NoFuture.Util.Gia.GraphViz
+namespace NoFuture.Tokens.Gia.GraphViz
 {
     /// <summary>
     /// Specific to graph-viz (ver. 2.38+)

@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using NoFuture.Tokens.Gia.GraphViz;
 using NUnit.Framework;
 
-namespace NoFuture.Util.Gia.Tests
+namespace NoFuture.Tokens.Gia.Tests
 {
     [TestFixture]
     public class AsmDiagramTests
@@ -79,7 +79,7 @@ namespace NoFuture.Util.Gia.Tests
 
             var testAsm = GetTestAsm();
             Assert.IsNotNull(testAsm);
-            var testSubject = new NoFuture.Util.Gia.GraphViz.AsmDiagram(testAsm);
+            var testSubject = new AsmDiagram(testAsm);
             
             var testResult = testSubject.ToGraphVizString();
 

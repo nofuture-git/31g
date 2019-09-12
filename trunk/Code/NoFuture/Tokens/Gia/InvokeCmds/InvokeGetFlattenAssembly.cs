@@ -6,7 +6,7 @@ using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeCmds
+namespace NoFuture.Tokens.Gia.InvokeCmds
 {
     public class InvokeGetFlattenAssembly : InvokeGetCmdBase<FlattenAssembly>
     {

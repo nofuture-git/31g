@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util;
+using NoFuture.Tokens.Gia;
+using NoFuture.Tokens.Gia.GraphViz;
 using NoFuture.Util.Binary;
-using NoFuture.Util.Gia;
-using NoFuture.Util.Gia.Args;
-using NoFuture.Util.Gia.GraphViz;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Gen.InvokeGraphViz

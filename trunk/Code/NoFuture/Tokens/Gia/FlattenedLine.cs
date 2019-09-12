@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NoFuture.Util.Gia
+namespace NoFuture.Tokens.Gia
 {
     /// <summary>
     /// Represents a single fully expanded and flattened property of <see cref="FlattenedType"/>

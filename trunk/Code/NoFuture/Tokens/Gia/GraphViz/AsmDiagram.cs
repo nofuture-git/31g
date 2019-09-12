@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using NoFuture.Shared;
-using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
-namespace NoFuture.Util.Gia.GraphViz
+namespace NoFuture.Tokens.Gia.GraphViz
 {
     [Serializable]
     public class AsmDiagram

@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.Gia.InvokeCmds;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.Gia.Args;
-using NoFuture.Util.Gia.InvokeCmds;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia
+namespace NoFuture.Tokens.Gia
 {
     public class Flatten : InvokeConsoleBase
     {
@@ -154,14 +151,14 @@ namespace NoFuture.Util.Gia
 
         /// <summary>
         /// Takes the given type and recurses that type's properties 
-        /// down to the <see cref="Gia.Args.FlattenTypeArgs.Depth"/> until a terminating property
+        /// down to the <see cref="FlattenTypeArgs.Depth"/> until a terminating property
         /// is a value type (both <see cref="System.ValueType"/> 
         /// and <see cref="System.String"/>)
         /// </summary>
         /// <param name="fta"></param>
         /// <returns>
-        /// A list of strings where the item after the last <see cref="Gia.Args.FlattenTypeArgs.Separator"/> is the 
-        /// terminating, value type, property and each item between the other <see cref="Gia.Args.FlattenTypeArgs.Separator"/>
+        /// A list of strings where the item after the last <see cref="FlattenTypeArgs.Separator"/> is the 
+        /// terminating, value type, property and each item between the other <see cref="FlattenTypeArgs.Separator"/>
         /// is either the property name or the type name.  The entries may be thought of 
         /// like dot-notation (e.g. MyObject.MyProperty.ItsProperty.ThenItsProperty). 
         /// The item before the first space (0x20) is the particular value type.

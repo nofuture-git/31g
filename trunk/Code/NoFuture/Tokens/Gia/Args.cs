@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Util.Gia.Args
+﻿namespace NoFuture.Tokens.Gia
 {
     /// <summary>
     /// Represent the args needed when flattening.
@@ -38,7 +38,7 @@
     }
 
     /// <summary>
-    /// Command arg for <see cref="NoFuture.Util.Gia.Flatten"/>
+    /// Command arg for <see cref="Flatten"/>
     /// </summary>
     public class FlattenTypeArgs : FlattenLineArgs
     {

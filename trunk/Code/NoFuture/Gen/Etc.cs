@@ -9,13 +9,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util;
+using NoFuture.Tokens.Gia;
+using NoFuture.Tokens.Gia.GraphViz;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.Gia.Args;
 using NoFuture.Util.NfConsole;
 using NoFuture.Util.NfType;
 
@@ -75,7 +74,7 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Runs <see cref="NoFuture.Util.Gia.Flatten"/>
+        /// Runs <see cref="Flatten"/>
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <param name="typeFullName"></param>
@@ -103,7 +102,7 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Runs <see cref="NoFuture.Util.Gia.GraphViz.AsmDiagram"/> to generate a diagram 
+        /// Runs <see cref="AsmDiagram"/> to generate a diagram 
         /// on another process to keep the loaded assemblies isolated from the invoking app domain.
         /// </summary>
         /// <param name="assemblyPath"></param>
@@ -124,7 +123,7 @@ namespace NoFuture.Gen
         }
 
         /// <summary>
-        /// Runs <see cref="NoFuture.Util.Gia.GraphViz.AsmDiagram"/> to generate a diagram 
+        /// Runs <see cref="AsmDiagram"/> to generate a diagram 
         /// on another process to keep the loaded assemblies isolated from the invoking app domain.
         /// </summary>
         /// <param name="assemblyPath"></param>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace NoFuture.Util.Gia.Tests
+namespace NoFuture.Tokens.Gia.Tests
 {
     [TestFixture]
     public class FlattenTests
@@ -37,7 +37,7 @@ namespace NoFuture.Util.Gia.Tests
 
             Assert.IsNotNull(testAsm);
 
-            var testGia = new NoFuture.Util.Gia.Args.FlattenTypeArgs()
+            var testGia = new FlattenTypeArgs()
             {
                 Assembly = testAsm,
                 UseTypeNames = false,
@@ -45,7 +45,7 @@ namespace NoFuture.Util.Gia.Tests
                 TypeFullName = "AdventureWorks.Person.Person",
                 Depth = 16
             };
-            var testPrint = NoFuture.Util.Gia.Flatten.FlattenType(testGia);
+            var testPrint = Flatten.FlattenType(testGia);
             Assert.IsNotNull(testPrint);
             var printLines = testPrint.PrintLines();
             Assert.IsNotNull(printLines);
@@ -62,7 +62,7 @@ namespace NoFuture.Util.Gia.Tests
 
             Assert.IsNotNull(testAsm);
             
-            var testGia = new NoFuture.Util.Gia.Args.FlattenTypeArgs()
+            var testGia = new FlattenTypeArgs()
             {
                 Assembly = testAsm,
                 UseTypeNames = false,
@@ -71,7 +71,7 @@ namespace NoFuture.Util.Gia.Tests
                 Depth = 16,
                 LimitOnThisType = limitOn
             };
-            var testPrint = NoFuture.Util.Gia.Flatten.FlattenType(testGia);
+            var testPrint = Flatten.FlattenType(testGia);
             Assert.IsNotNull(testPrint);
             var printLines = testPrint.PrintLines();
             Assert.IsNotNull(printLines);
@@ -87,7 +87,7 @@ namespace NoFuture.Util.Gia.Tests
 
             Assert.IsNotNull(testAsm);
 
-            var testGia = new NoFuture.Util.Gia.Args.FlattenTypeArgs()
+            var testGia = new FlattenTypeArgs()
             {
                 Assembly = testAsm,
                 UseTypeNames = false,
@@ -95,7 +95,7 @@ namespace NoFuture.Util.Gia.Tests
                 TypeFullName = "AdventureWorks.Person.Person",
                 Depth = 16
             };
-            var flattenedType = NoFuture.Util.Gia.Flatten.FlattenType(testGia);
+            var flattenedType = Flatten.FlattenType(testGia);
 
             var testResult = flattenedType.GetGraphVizMrecords;
 
@@ -112,7 +112,7 @@ namespace NoFuture.Util.Gia.Tests
 
             Assert.IsNotNull(testAsm);
 
-            var testGia = new NoFuture.Util.Gia.Args.FlattenTypeArgs()
+            var testGia = new FlattenTypeArgs()
             {
                 Assembly = testAsm,
                 UseTypeNames = false,
@@ -120,7 +120,7 @@ namespace NoFuture.Util.Gia.Tests
                 TypeFullName = "AdventureWorks.Person.Person",
                 Depth = 16
             };
-            var flattenedType = NoFuture.Util.Gia.Flatten.FlattenType(testGia);
+            var flattenedType = Flatten.FlattenType(testGia);
 
             var testResult = flattenedType.GetGraphVizEdges;
             Assert.IsNotNull(testResult);
@@ -135,7 +135,7 @@ namespace NoFuture.Util.Gia.Tests
             var testAsm = GetTestAsm();
             Assert.IsNotNull(testAsm);
 
-            var testGia = new NoFuture.Util.Gia.Args.FlattenTypeArgs()
+            var testGia = new FlattenTypeArgs()
             {
                 Assembly = testAsm,
                 UseTypeNames = false,
@@ -143,7 +143,7 @@ namespace NoFuture.Util.Gia.Tests
                 TypeFullName = "AdventureWorks.Person.Person",
                 Depth = 16
             };
-            var flattenedType = NoFuture.Util.Gia.Flatten.FlattenType(testGia);
+            var flattenedType = Flatten.FlattenType(testGia);
 
             var testResult = flattenedType.ToGraphVizString();
 

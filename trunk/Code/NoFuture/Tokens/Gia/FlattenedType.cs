@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NoFuture.Tokens.Gia.GraphViz;
 using NoFuture.Util.Core;
-using NoFuture.Util.Gia.GraphViz;
 
-namespace NoFuture.Util.Gia
+namespace NoFuture.Tokens.Gia
 {
     /// <summary>
     /// Represents the targeted type of <see cref="Flatten"/>

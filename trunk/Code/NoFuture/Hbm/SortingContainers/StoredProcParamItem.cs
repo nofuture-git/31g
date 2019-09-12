@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using NoFuture.Tokens.Gia;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfType;
@@ -58,7 +59,7 @@ namespace NoFuture.Hbm.SortingContainers
                 }
 
                 if (IsNullable && !string.IsNullOrWhiteSpace(dotNetType) && !string.Equals("System.String", dotNetType) &&
-                    Util.Gia.FlattenedItem.ValueTypesList.Contains(dotNetType))
+                    FlattenedItem.ValueTypesList.Contains(dotNetType))
                 {
                     dotNetType = string.Format("System.Nullable<{0}>", dotNetType);
                 }
