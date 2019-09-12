@@ -49,7 +49,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.IaaProgram</StartupObject>
+    <StartupObject>NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.IaaProgram</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

@@ -12,7 +12,6 @@ using NoFuture.Tokens.DotNetMeta.TokenId;
 using NoFuture.Tokens.DotNetMeta.TokenName;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.Cmds

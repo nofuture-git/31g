@@ -10,7 +10,6 @@ using NoFuture.Tokens.DotNetMeta.TokenName;
 using NoFuture.Util;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta;
 
 namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis
 {
