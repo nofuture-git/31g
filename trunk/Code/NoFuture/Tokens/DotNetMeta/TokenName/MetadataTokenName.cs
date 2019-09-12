@@ -422,7 +422,35 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         public string GetMemberName()
         {
             const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
-            return IsMethodName() ? Name.Substring(Name.IndexOf(SPLT) + SPLT.Length) : String.Empty;
+            if (!IsMethodName())
+                return string.Empty;
+
+            var idx = Name.IndexOf(SPLT);
+
+            if (idx <= 0)
+            {
+                return string.Empty;
+            }
+
+            return Name.Substring(idx + SPLT.Length);
+        }
+
+        /// <summary>
+        /// Gets just the member name without its args
+        /// </summary>
+        /// <returns></returns>
+        public string GetMemberNameWithoutArgs()
+        {
+
+            if (!IsMethodName())
+                return string.Empty;
+            var memberName = GetMemberName();
+            if (memberName.Contains("("))
+            {
+                memberName = memberName.Split('(')[0];
+            }
+
+            return memberName;
         }
 
         /// <summary>
@@ -938,22 +966,40 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Selectively gets the flatten call stack for the given type-method pair as a Set
+        /// Selectively gets the flatten call stack for the given type-member pair as a Set
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="memberName"></param>
+        /// <param name="useMemberArgs">
+        /// when true will match <see cref="memberName"/> to <see cref="GetMemberName"/> and
+        /// when false will match <see cref="memberName"/> to <see cref="GetMemberNameWithoutArgs"/> and
+        /// </param>
         /// <returns>
         /// A single token name whose Items represent the full extent of its call stack. 
         /// </returns>
-        public MetadataTokenName SelectDistinct(string typeName, string memberName)
+        public MetadataTokenName SelectByTypeAndMemberName(string typeName, string memberName, bool useMemberArgs)
         {
             var allItems = new List<MetadataTokenName>();
-            Func<MetadataTokenName, bool> selector = (v) =>
+            Func<MetadataTokenName, bool> selector = null;
+            if (useMemberArgs)
             {
-                var matchedTypeName = string.Equals(v.GetTypeName(), typeName);
-                var matchedMethodName = string.Equals(v.GetMemberName(), memberName);
-                return matchedTypeName && matchedMethodName;
-            };
+                selector = (v) =>
+                {
+                    var matchedTypeName = string.Equals(v.GetTypeName(), typeName);
+                    var matchedMethodName = string.Equals(v.GetMemberName(), memberName);
+                    return matchedTypeName && matchedMethodName;
+                };
+            }
+            else
+            {
+                selector = (v) =>
+                {
+                    var matchedTypeName = string.Equals(v.GetTypeName(), typeName);
+                    var matchedMethodName = string.Equals(v.GetMemberNameWithoutArgs(), memberName);
+                    return matchedTypeName && matchedMethodName;
+                };
+            }
+
             Func<MetadataTokenName, MetadataTokenName> addIt = (v) =>
             {
                 if (v == null)
@@ -987,7 +1033,7 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         /// </summary>
         /// <param name="typenames"></param>
         /// <returns></returns>
-        public MetadataTokenName SelectTheseTypeNames(params string[] typenames)
+        public MetadataTokenName SelectTypeNamesThatEndWith(params string[] typenames)
         {
             return SelectByFunc(n => n.GetTypeName(), (s, f) => s.Any(f.EndsWith), true, typenames);
         }
@@ -998,31 +1044,9 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         /// </summary>
         /// <param name="namespaceNames"></param>
         /// <returns></returns>
-        public MetadataTokenName SelectTheseNamespaceNames(params string[] namespaceNames)
+        public MetadataTokenName SelectNamespaceNamesStartWith(params string[] namespaceNames)
         {
             return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.Any(f.StartsWith), true, namespaceNames);
-        }
-
-        /// <summary>
-        /// Selects the all token names whose type is anything but one of the <see cref="typenames"/> as a
-        /// shallow copy at all depths.
-        /// </summary>
-        /// <param name="typenames"></param>
-        /// <returns></returns>
-        public MetadataTokenName SelectNotTheseTypeNames(params string[] typenames)
-        {
-            return SelectByFunc(n => n.GetTypeName(), (s, f) => s.All(v => !f.EndsWith(v)), true, typenames);
-        }
-
-        /// <summary>
-        /// Selects the all token names whose namespace is anything but one of the <see cref="namespaceNames"/> as a
-        /// shallow copy at all depths.
-        /// </summary>
-        /// <param name="namespaceNames"></param>
-        /// <returns></returns>
-        public MetadataTokenName SelectNotTheseNamespaceNames(params string[] namespaceNames)
-        {
-            return SelectByFunc(n => n.GetNamespaceName(), (s, f) => s.All(v => !f.StartsWith(v)), true, namespaceNames);
         }
 
         /// <summary>

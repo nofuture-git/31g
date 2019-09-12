@@ -9,5 +9,6 @@
         int GetFullDepthCount();
         int GetNameHashCode();
         bool IsFlattened();
+        string GetTypeName();
     }
 }

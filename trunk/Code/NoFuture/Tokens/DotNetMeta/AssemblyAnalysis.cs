@@ -215,7 +215,7 @@ namespace NoFuture.Tokens.DotNetMeta
         /// 
         ///     #collect up all the orphaned members now as NoFuture.Gen.CgMember's
         ///     $nfCgMems = New-Object "System.Collections.Generic.List[NoFuture.Gen.CgMember]"
-        ///     $orphanedMembersByType = $myOrphanedLogicTokens.SelectTheseTypeNames(([string[]]@($typeName)))
+        ///     $orphanedMembersByType = $myOrphanedLogicTokens.SelectTypeNamesThatEndWith(([string[]]@($typeName)))
         ///     $orphanedMembersByType | % {
         /// 
         ///         #NoFuture.Gen directly transforms a MetadataTokenName into a CgMember

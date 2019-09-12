@@ -293,8 +293,8 @@ namespace NoFuture.Tokens.DotNetMeta.TokenType
                     Status = "Getting all ambiguous types"
                 });
                 var temp = GetImplementorsOf(ifc);
-                if (temp.Length > 1)
-                    impls.AddRange(temp);
+                if (temp.Count() > 1)
+                    impls.AddRange(temp.Items);
             }
 
             return impls.Distinct(_comparer).Cast<MetadataTokenType>().ToArray().ToArray();
@@ -448,7 +448,7 @@ namespace NoFuture.Tokens.DotNetMeta.TokenType
 
             var impls = GetImplementorsOf(typeName);
 
-            countOf = impls.Length;
+            countOf = impls.Count();
         }
 
         /// <summary>
@@ -456,11 +456,17 @@ namespace NoFuture.Tokens.DotNetMeta.TokenType
         /// </summary>
         /// <param name="typeName"></param>
         /// <returns></returns>
-        public MetadataTokenType[] GetImplementorsOf(MetadataTokenType typeName)
+        public MetadataTokenType GetImplementorsOf(MetadataTokenType typeName)
         {
             var impls = new List<MetadataTokenType>();
             if (typeName == null)
-                return impls.ToArray();
+            {
+                return new MetadataTokenType
+                {
+                    Items = impls.ToArray(),
+                    Name = NfSettings.DefaultTypeSeparator.ToString()
+                };
+            }
 
             Func<MetadataTokenType, bool> selector = (v) =>
                 v?.Items != null && v.Items.Any(vi => _comparer.Equals(vi, typeName));
@@ -469,11 +475,69 @@ namespace NoFuture.Tokens.DotNetMeta.TokenType
                 if (v == null)
                     return null;
                 impls.Add(v);
+                
                 return v;
             };
 
             IterateTree(selector, addIt);
-            return impls.ToArray();
+            return new MetadataTokenType
+            {
+                Items = impls.Distinct(_comparer).Cast<MetadataTokenType>().Where(t => !t.Equals(typeName)).ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
+        }
+
+        /// <summary>
+        /// Gets a flat, distinct, shallow root-level token types as a Set.
+        /// </summary>
+        /// <returns></returns>
+        public MetadataTokenType SelectDistinct()
+        {
+            var allItems = new List<MetadataTokenType>();
+            Func<MetadataTokenType, bool> selector = (v) => true;
+            Func<MetadataTokenType, MetadataTokenType> addIt = (v) =>
+            {
+                if (v == null)
+                    return null;
+                allItems.Add(v.GetShallowCopy());
+                return v;
+            };
+
+            IterateTree(selector, addIt);
+            return new MetadataTokenType
+            {
+                Items = allItems.Distinct(_comparer).Cast<MetadataTokenType>().ToArray(),
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
+        }
+
+        /// <summary>
+        /// Gets an copy of this instance less its <see cref="Items"/>
+        /// </summary>
+        /// <returns></returns>
+        public MetadataTokenType GetShallowCopy()
+        {
+            var mdtCopy = new MetadataTokenType
+            {
+                Name = Name,
+                Id = Id,
+                OwnAsmIdx = OwnAsmIdx,
+                IsAbsct = IsAbsct,
+                IsIntfc = IsIntfc,
+            };
+
+            if(AbstractMemberNames != null && AbstractMemberNames.Any())
+            {
+                var amnames = new List<MetadataTokenName>();
+                foreach (var amn in AbstractMemberNames)
+                {
+                    amnames.Add(amn.GetShallowCopy());
+                }
+
+                mdtCopy.AbstractMemberNames = amnames.ToArray();
+            }
+
+            return mdtCopy;
         }
 
         /// <summary>
