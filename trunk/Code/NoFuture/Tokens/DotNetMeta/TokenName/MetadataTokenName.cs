@@ -291,7 +291,7 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Final analysis to merge the token Ids to thier names in a hierarchy.
+        /// Final analysis to merge the token Ids to their names in a hierarchy.
         /// </summary>
         /// <param name="tokenIds"></param>
         /// <param name="reportProgress">
@@ -426,30 +426,12 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Gets the full namespace qual. type name
+        /// Gets the full namespace qual. type name without any generic parameters
         /// </summary>
         /// <returns></returns>
         public string GetTypeName()
         {
-            const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
-            if (String.IsNullOrWhiteSpace(Name))
-                return String.Empty;
-            //split the member name from the type name
-            var idxOut = Name.IndexOf(SPLT);
-            if (idxOut <= 0)
-                return Name;
-            var nm = Name.Substring(0, idxOut);
-
-            //have types with generic args match the name-style found in MetadataTokenName
-            if (nm.Contains("[["))
-            {
-                idxOut = nm.IndexOf("[[");
-                if (idxOut <= 0)
-                    return nm;
-                nm = Name.Substring(0, idxOut);
-            }
-
-            return nm;
+            return AssemblyAnalysis.GetTypeName(Name);
         }
 
         /// <summary>
@@ -959,46 +941,33 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         /// Selectively gets the flatten call stack for the given type-method pair as a Set
         /// </summary>
         /// <param name="typeName"></param>
-        /// <param name="methodName"></param>
+        /// <param name="memberName"></param>
         /// <returns>
         /// A single token name whose Items represent the full extent of its call stack. 
         /// </returns>
-        public MetadataTokenName SelectDistinct(string typeName, string methodName, bool getDistinct = true)
+        public MetadataTokenName SelectDistinct(string typeName, string memberName)
         {
-            var df = new MetadataTokenName
+            var allItems = new List<MetadataTokenName>();
+            Func<MetadataTokenName, bool> selector = (v) =>
             {
-                Items = new MetadataTokenName[] { },
+                var matchedTypeName = string.Equals(v.GetTypeName(), typeName);
+                var matchedMethodName = string.Equals(v.GetMemberName(), memberName);
+                return matchedTypeName && matchedMethodName;
+            };
+            Func<MetadataTokenName, MetadataTokenName> addIt = (v) =>
+            {
+                if (v == null)
+                    return null;
+                allItems.Add(v.GetShallowCopy());
+                return v;
+            };
+
+            IterateTree(selector, addIt);
+            return new MetadataTokenName
+            {
+                Items = allItems.Distinct(_comparer).Cast<MetadataTokenName>().ToArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
-            if (string.IsNullOrWhiteSpace(typeName))
-                return df;
-            methodName = methodName ?? "";
-            if (methodName.Contains("("))
-                methodName = methodName.Substring(0, methodName.IndexOf('('));
-
-            //want to avoid an interface type 
-            var tokenName = SelectTheseTypeNames(typeName);
-
-            if (tokenName == null)
-                return df;
-
-            var names = new List<MetadataTokenName>();
-            if (string.IsNullOrWhiteSpace(methodName) || tokenName.Items == null || !tokenName.Items.Any())
-            {
-                names.Add(this);
-                df.Items = names.ToArray();
-                return df;
-            }
-
-            foreach (var t in tokenName.Items)
-            {
-                //match on overloads
-                if (t.Name.Contains($"{typeName}{Constants.TYPE_METHOD_NAME_SPLIT_ON}{methodName}("))
-                    names.Add(t);
-            }
-
-            df.Items = names.Distinct(_comparer).Cast<MetadataTokenName>().ToArray();
-            return df.SelectDistinct();
         }
 
         /// <summary>

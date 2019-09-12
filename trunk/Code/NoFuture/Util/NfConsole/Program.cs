@@ -21,6 +21,7 @@ namespace NoFuture.Util.NfConsole
         protected internal const string TEMP_DIR_DEBUG = "NoFuture.TempDirectories.Debug";
         protected internal const string ROOT_BIN_DIR = "NoFuture.BinDirectories.Root";
         protected internal const string USE_REFLX_LOAD = "NoFuture.Shared.Constants.UseReflectionOnlyLoad";
+        protected internal const string DEFAULT_FLAGS = "NoFuture.Shared.Core.NfSettings.DefaultFlags";
         #endregion
 
         #region fields
@@ -93,7 +94,7 @@ namespace NoFuture.Util.NfConsole
 
         #region methods
         /// <summary>
-        /// Helper method to get a possiable int from some string the the config.
+        /// Helper method to get a possible int from some string the the config.
         /// </summary>
         /// <param name="cval"></param>
         /// <returns></returns>
@@ -106,7 +107,7 @@ namespace NoFuture.Util.NfConsole
         }
 
         /// <summary>
-        /// Helper method to get a possiable bool from some string in the config.
+        /// Helper method to get a possible bool from some string in the config.
         /// </summary>
         /// <param name="cval"></param>
         /// <returns></returns>
@@ -265,6 +266,7 @@ namespace NoFuture.Util.NfConsole
                 }
             }
             SetReflectionOnly();
+            SetDefaultReflectionFlags();
             FxPointers.AddResolveAsmEventHandlerToDomain();            
         }
 
@@ -294,6 +296,57 @@ namespace NoFuture.Util.NfConsole
             var useReflectionOnly =
                 ResolveBool(SysCfg.GetAppCfgSetting(USE_REFLX_LOAD));
             NfConfig.UseReflectionOnlyLoad = useReflectionOnly != null && useReflectionOnly.Value;
+        }
+
+        /// <summary>
+        /// Assignable from config file.  Allows for control over the default <see cref="BindingFlags"/>
+        /// used in .NET reflection
+        /// </summary>
+        protected internal void SetDefaultReflectionFlags()
+        {
+            var strDfFlagsRaw = SysCfg.GetAppCfgSetting(DEFAULT_FLAGS);
+            if (string.IsNullOrWhiteSpace(strDfFlagsRaw))
+                return;
+            var hasFlags = false;
+            var dfFlag = BindingFlags.Public;
+            var splitOn = strDfFlagsRaw.Contains(",") ? ',' : '|';
+            foreach (var strDfFlag in strDfFlagsRaw.Split(splitOn))
+            {
+                if(string.IsNullOrWhiteSpace(strDfFlag))
+                    continue;
+
+                if (Enum.TryParse(strDfFlag.Trim(), true, out BindingFlags flag))
+                {
+                    dfFlag |= flag;
+                    hasFlags = true;
+                }
+            }
+
+            if (hasFlags)
+                NfSettings.DefaultFlags = dfFlag;
+        }
+
+        internal static BindingFlags? GetBindingFlags(string strDfFlagsRaw)
+        {
+            var dfFlag = BindingFlags.Public;
+            if (string.IsNullOrWhiteSpace(strDfFlagsRaw))
+                return null;
+            var hasFlags = false;
+            var splitOn = strDfFlagsRaw.Contains(",") ? ',' : '|';
+            foreach (var strDfFlag in strDfFlagsRaw.Split(splitOn))
+            {
+                if (string.IsNullOrWhiteSpace(strDfFlag))
+                    continue;
+
+                if (Enum.TryParse(strDfFlag.Trim(), true, out BindingFlags flag))
+                {
+                    dfFlag |= flag;
+                    hasFlags = true;
+                }
+            }
+
+            
+            return hasFlags ? new BindingFlags?(dfFlag) : null;
         }
 
         /// <summary>

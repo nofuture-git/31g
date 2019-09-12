@@ -116,6 +116,15 @@ namespace NoFuture.Tokens.DotNetMeta.TokenType
         }
 
         /// <summary>
+        /// Gets the full namespace qual. type name without any generic parameters
+        /// </summary>
+        /// <returns></returns>
+        public string GetTypeName()
+        {
+            return AssemblyAnalysis.GetTypeName(Name);
+        }
+
+        /// <summary>
         /// Gets the first token type in <see cref="Items"/> which is not an interface.
         /// Since its .NET, there should only be one.
         /// </summary>
@@ -186,9 +195,6 @@ namespace NoFuture.Tokens.DotNetMeta.TokenType
                 GetCountOfImplementors(ai, ref cnt);
                 if (cnt == 1)
                     sInfcs.Add(ai);
-            }
-            foreach (var ai in allInfcs)
-            {
             }
 
             _singleImplementors = sInfcs.ToArray();

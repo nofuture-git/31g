@@ -68,9 +68,6 @@ namespace NoFuture.Tokens.DotNetMeta.TokenAsm
         /// <param name="binFolders">
         /// The \bin folder(s) containing all the various assemblies 
         /// </param>
-        /// <param name="typeName">
-        /// The full name of the type whose assembly path is being sought
-        /// </param>
         /// <param name="asmIndexResponse">
         /// The loaded Assembly Index response typically loaded form file
         /// </param>
@@ -81,7 +78,6 @@ namespace NoFuture.Tokens.DotNetMeta.TokenAsm
         /// The full path to the assembly which defines the given type
         /// </returns>
         public static string GetAssemblyPathFromRoot(
-            string typeName, 
             AsmIndexResponse asmIndexResponse,
             MetadataTokenType tokenType,
             params string[] binFolders)

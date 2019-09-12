@@ -529,6 +529,27 @@ namespace NoFuture.Tokens.DotNetMeta
 
         #region static analysis
 
+        public static string GetTypeName(string name)
+        {
+            const string SPLT = Constants.TYPE_METHOD_NAME_SPLIT_ON;
+            if (string.IsNullOrWhiteSpace(name))
+                return string.Empty;
+
+            var rems = new[] {SPLT, "[["};
+            foreach (var rem in rems)
+            {
+                if (!name.Contains(rem))
+                    continue;
+
+                var idxOut = name.IndexOf(rem);
+                if (idxOut <= 0)
+                    return name;
+                name = name.Substring(0, idxOut);
+            }
+
+            return name;
+        }
+
         /// <summary>
         /// Get the <see cref="System.Reflection.MetadataToken"/> for the <see cref="asmType"/>
         /// and for all its members.

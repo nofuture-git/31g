@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Threading;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util;
 using NoFuture.Util.Binary;
 using NoFuture.Util.NfConsole;
 
