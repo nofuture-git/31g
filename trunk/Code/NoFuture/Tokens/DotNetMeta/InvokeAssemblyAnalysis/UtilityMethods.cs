@@ -7,9 +7,9 @@ using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Tokens.DotNetMeta.TokenId;
 using NoFuture.Tokens.DotNetMeta.TokenName;
-using NoFuture.Util;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
+using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis
 {

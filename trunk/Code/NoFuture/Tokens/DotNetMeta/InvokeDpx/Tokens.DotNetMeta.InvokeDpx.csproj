@@ -7,8 +7,8 @@
     <ProjectGuid>{EEB8AF89-3195-499C-8F17-DAECEF94FEC2}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Util.DotNetMeta.InvokeDpx</RootNamespace>
-    <AssemblyName>NoFuture.Util.DotNetMeta.InvokeDpx</AssemblyName>
+    <RootNamespace>NoFuture.Tokens.DotNetMeta.InvokeDpx</RootNamespace>
+    <AssemblyName>NoFuture.Tokens.DotNetMeta.InvokeDpx</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -36,7 +36,7 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>NoFuture.Util.DotNetMeta.InvokeDpx.DpxProgram</StartupObject>
+    <StartupObject>NoFuture.Tokens.DotNetMeta.InvokeDpx.DpxProgram</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pkg|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>

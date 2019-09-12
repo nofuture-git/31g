@@ -3,8 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Xml;
 
-
-namespace NoFuture.Util
+namespace NoFuture.Util.NfConsole
 {
     public class SysCfg
     {

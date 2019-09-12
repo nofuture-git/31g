@@ -7,12 +7,12 @@ using System.Threading;
 using Newtonsoft.Json;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Tokens.DotNetMeta;
 using NoFuture.Tokens.DotNetMeta.TokenId;
 using NoFuture.Tokens.DotNetMeta.TokenRank;
 using NoFuture.Util.NfConsole;
+using NoFuture.Util.Re;
 
-namespace NoFuture.Util.DotNetMeta.InvokeDpx
+namespace NoFuture.Tokens.DotNetMeta.InvokeDpx
 {
     public class DpxProgram : Program
     {
@@ -99,8 +99,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeDpx
             if (g.Graph == null)
                 return;
             var keepTemp = ResolveBool(SysCfg.GetAppCfgSetting(APP_SET_KEY_KEEP_TEMP)) ?? false;
-            Re.Efx.RTempDir = LogDirectory;
-            var pageRank = Re.Efx.GetPageRank(g.Graph, keepTemp);
+            Efx.RTempDir = LogDirectory;
+            var pageRank = Efx.GetPageRank(g.Graph, keepTemp);
             if (pageRank == null || !pageRank.Any())
                 return;
             for (var i = 0; i < g.Asms.Length; i++)
