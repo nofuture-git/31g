@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.DotNetMeta.InvokeDpx")]
+[assembly: AssemblyTitle("NoFuture.Tokens.DotNetMeta.InvokeDpx")]
 [assembly: AssemblyDescription("Gets a directed assembly dependency graph")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Util.DotNetMeta.InvokeDpx")]
+[assembly: AssemblyProduct("NoFuture.Tokens.DotNetMeta.InvokeDpx")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("eeb8af89-3195-499c-8f17-daecef94fec2")]
 [assembly:InternalsVisibleTo("NoFuture.Tests")]
-[assembly: InternalsVisibleTo("NoFuture.Util.DotNetMeta.Tests")]
+[assembly: InternalsVisibleTo("NoFuture.Tokens.DotNetMeta.Tests")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

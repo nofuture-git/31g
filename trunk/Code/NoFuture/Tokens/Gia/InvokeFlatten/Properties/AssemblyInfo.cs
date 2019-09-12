@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.Gia.InvokeFlatten")]
+[assembly: AssemblyTitle("NoFuture.Tokens.Gia.InvokeFlatten")]
 [assembly: AssemblyDescription("Host sockets to flatten an assembly")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Util.Gia.InvokeFlatten")]
+[assembly: AssemblyProduct("NoFuture.Tokens.Gia.InvokeFlatten")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

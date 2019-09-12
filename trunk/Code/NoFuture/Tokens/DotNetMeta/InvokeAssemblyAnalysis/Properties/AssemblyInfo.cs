@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis")]
+[assembly: AssemblyTitle("NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis")]
 [assembly: AssemblyDescription("Host sockets to dump all metadata tokens and resolve any token on demand.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis")]
+[assembly: AssemblyProduct("NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("475d6098-68f6-4933-97ab-2b2f376f1769")]
 [assembly: InternalsVisibleTo("NoFuture.Tests")]
-[assembly: InternalsVisibleTo("NoFuture.Util.DotNetMeta.Tests")]
+[assembly: InternalsVisibleTo("NoFuture.Tokens.DotNetMeta.Tests")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

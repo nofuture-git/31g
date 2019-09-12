@@ -8,8 +8,8 @@
     <ProjectGuid>{D1C86174-63C8-4E3A-A762-16FFF32C3F7E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Util.Gia.Tests</RootNamespace>
-    <AssemblyName>NoFuture.Util.Gia.Tests</AssemblyName>
+    <RootNamespace>NoFuture.Tokens.Gia.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Tokens.Gia.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

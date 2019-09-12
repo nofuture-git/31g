@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.DotNetMeta")]
+[assembly: AssemblyTitle("NoFuture.Tokens.DotNetMeta")]
 [assembly: AssemblyDescription("Container for Nf .NET Assembly Analysis")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
@@ -21,8 +21,8 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("88a7a90f-4836-40ce-99d8-65bfe7c4cac8")]
-[assembly:InternalsVisibleTo("NoFuture.Util.DotNetMeta.Tests")]
-[assembly:InternalsVisibleTo("NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis")]
+[assembly:InternalsVisibleTo("NoFuture.Tokens.DotNetMeta.Tests")]
+[assembly:InternalsVisibleTo("NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
