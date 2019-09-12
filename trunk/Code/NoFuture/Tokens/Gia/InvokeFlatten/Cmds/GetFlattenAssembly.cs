@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Tokens.Gia;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeFlatten.Cmds
+namespace NoFuture.Tokens.Gia.InvokeFlatten.Cmds
 {
     public class GetFlattenAssembly : CmdBase<FlattenAssembly>, ICmd
     {
@@ -39,8 +37,8 @@ namespace NoFuture.Util.Gia.InvokeFlatten.Cmds
                 NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
 
                 var asm = NfConfig.UseReflectionOnlyLoad
-                    ? Binary.Asm.NfReflectionOnlyLoadFrom(asmPath)
-                    : Binary.Asm.NfLoadFrom(asmPath);
+                    ? Util.Binary.Asm.NfReflectionOnlyLoadFrom(asmPath)
+                    : Util.Binary.Asm.NfLoadFrom(asmPath);
                 Action<ProgressMessage> myProgress = message => MyProgram.PrintToConsole(message);
                 var flatAsm = Flatten.GetFlattenedAssembly(new FlattenLineArgs {Assembly = asm, Depth = _maxDepth}, myProgress);
                 flatAsm.Path = asmPath;

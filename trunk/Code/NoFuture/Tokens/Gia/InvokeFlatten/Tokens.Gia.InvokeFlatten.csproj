@@ -38,7 +38,7 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>NoFuture.Util.Gia.InvokeFlatten.FlattenProgram</StartupObject>
+    <StartupObject>NoFuture.Tokens.Gia.InvokeFlatten.FlattenProgram</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pkg|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>

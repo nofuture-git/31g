@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Configuration;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Tokens.Gia;
+using NoFuture.Tokens.Gia.InvokeFlatten.Cmds;
 using NoFuture.Util.Core;
-using NoFuture.Util.Gia.InvokeFlatten.Cmds;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Gia.InvokeFlatten
+namespace NoFuture.Tokens.Gia.InvokeFlatten
 {
     public class FlattenProgram  : SocketConsole
     {
