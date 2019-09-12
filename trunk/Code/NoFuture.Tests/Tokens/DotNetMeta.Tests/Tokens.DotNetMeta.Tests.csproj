@@ -48,6 +48,9 @@
     <Compile Include="TokenNameTest\TestMetadataTokenNameComparer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\..\NoFuture\Tokens\DotNetMeta\Tokens.DotNetMeta.csproj">
       <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
       <Name>Tokens.DotNetMeta</Name>
@@ -56,9 +59,6 @@
       <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>
       <Name>Util.NfConsole</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
