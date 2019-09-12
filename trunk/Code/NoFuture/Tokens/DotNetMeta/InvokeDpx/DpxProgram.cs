@@ -7,8 +7,9 @@ using System.Threading;
 using Newtonsoft.Json;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenRank;
+using NoFuture.Tokens.DotNetMeta;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenRank;
 using NoFuture.Util.NfConsole;
 
 namespace NoFuture.Util.DotNetMeta.InvokeDpx
