@@ -8,13 +8,14 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenName;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenName;
+using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
+namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public class GetTokenIds : IaaProgramBaseCmd<TokenIdResponse>
     {

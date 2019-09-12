@@ -3,11 +3,11 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using NoFuture.Shared.Cfg;
-using NoFuture.Util.DotNetMeta.TokenAsm;
-using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenAsm;
+using NoFuture.Tokens.DotNetMeta.TokenId;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
+namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public class GetAsmIndices : IaaProgramBaseCmd<AsmIndexResponse>
     {
@@ -60,8 +60,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
                 NfConfig.AssemblySearchPaths.Add(Path.GetDirectoryName(asmPath));
 
                 var asm = NfConfig.UseReflectionOnlyLoad
-                    ? Binary.Asm.NfReflectionOnlyLoadFrom(asmPath)
-                    : Binary.Asm.NfLoadFrom(asmPath);
+                    ? Util.Binary.Asm.NfReflectionOnlyLoadFrom(asmPath)
+                    : Util.Binary.Asm.NfLoadFrom(asmPath);
 
                 if (asm == null)
                 {

@@ -6,15 +6,15 @@ using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.DotNetMeta.TokenAsm;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenName;
+using NoFuture.Tokens.DotNetMeta.TokenRank;
+using NoFuture.Tokens.DotNetMeta.TokenType;
 using NoFuture.Util.Binary;
-using NoFuture.Util.DotNetMeta.TokenAsm;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenName;
-using NoFuture.Util.DotNetMeta.TokenRank;
-using NoFuture.Util.DotNetMeta.TokenType;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta
+namespace NoFuture.Tokens.DotNetMeta
 {
     /// <summary>
     /// Acts a a wrapper around the independent process of similar name.
@@ -122,8 +122,8 @@ namespace NoFuture.Util.DotNetMeta
         ///  ||+------------------------+|+------------------------+|+------------------------+|+------------------------+|
         /// 
         /// (1) assume PowerShell
-        /// (2) new instance of NoFuture.Util.DotNetMeta.AssemblyAnalysis
-        /// (3) new process NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.exe
+        /// (2) new instance of NoFuture.Tokens.DotNetMeta.AssemblyAnalysis
+        /// (3) new process NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.exe
         /// (4) the assembly whose tokens we want
         /// 
         /// (a)  The top-level types already had all thier members resolved to tokens and every virtcall found within the body of those members.
@@ -135,7 +135,7 @@ namespace NoFuture.Util.DotNetMeta
         /// <example>
         /// <![CDATA[
         ///  # will launch a console
-        ///  $myAsmAly = New-Object NoFuture.Util.DotNetMeta.AssemblyAnalysis($false)
+        ///  $myAsmAly = New-Object NoFuture.Tokens.DotNetMeta.AssemblyAnalysis($false)
         ///  
         ///  # this is assembly-name-to-index used to reduce the size of socket payloads
         ///  $myAsmIndices = $myAsmAly.GetAsmIndices($AssemblyPath)
@@ -155,20 +155,20 @@ namespace NoFuture.Util.DotNetMeta
         ///  # example using analysis results
         ///  # say, some app with three layers: web, logic and data
         ///  # have already run the analysis and have all the results on file as JSON
-        ///  $myAsmAly = New-Object NoFuture.Util.DotNetMeta.AssemblyAnalysis($false)
+        ///  $myAsmAly = New-Object NoFuture.Tokens.DotNetMeta.AssemblyAnalysis($false)
         /// 
         ///  # web layer uses types from logic layer as interfaces
-        ///  $myWebTokens = ([NoFuture.Util.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($webTokensFile)).GetAsRoot()
-        ///  $myWebTypes = ([NoFuture.Util.DotNetMeta.TokenType.TokenTypeResponse]::ReadFromFile($webTypesFile)).GetAsRoot()
-        ///  $myWebAssemblies = [NoFuture.Util.DotNetMeta.TokenAsm.TAsmIndexResponse]::ReadFromFile($webAssemblyFile)
+        ///  $myWebTokens = ([NoFuture.Tokens.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($webTokensFile)).GetAsRoot()
+        ///  $myWebTypes = ([NoFuture.Tokens.DotNetMeta.TokenType.TokenTypeResponse]::ReadFromFile($webTypesFile)).GetAsRoot()
+        ///  $myWebAssemblies = [NoFuture.Tokens.DotNetMeta.TokenAsm.TAsmIndexResponse]::ReadFromFile($webAssemblyFile)
         ///  
         ///  #logic layer uses types from data layer, likewise, as interfaces
-        ///  $myLogicTokens = ([NoFuture.Util.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($logicTokensFile)).GetAsRoot()
-        ///  $myLogicTypes = ([NoFuture.Util.DotNetMeta.TokenType.TokenTypeResponse]::ReadFromFile($logicTypesFile)).GetAsRoot()
+        ///  $myLogicTokens = ([NoFuture.Tokens.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($logicTokensFile)).GetAsRoot()
+        ///  $myLogicTypes = ([NoFuture.Tokens.DotNetMeta.TokenType.TokenTypeResponse]::ReadFromFile($logicTypesFile)).GetAsRoot()
         /// 
         ///  #data layer is as far down as we want to go
-        ///  $myDataTokens = ([NoFuture.Util.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($dataTokensFile)).GetAsRoot()
-        ///  $myDataTypes = ([NoFuture.Util.DotNetMeta.TokenType.TokenTypeResponse]::ReadFromFile($dataTypesFile)).GetAsRoot()
+        ///  $myDataTokens = ([NoFuture.Tokens.DotNetMeta.TokenName.TokenNameResponse]::ReadFromFile($dataTokensFile)).GetAsRoot()
+        ///  $myDataTypes = ([NoFuture.Tokens.DotNetMeta.TokenType.TokenTypeResponse]::ReadFromFile($dataTypesFile)).GetAsRoot()
         /// 
         ///  #expand logic layer with data layer's concrete types
         ///  $myLogicTokens = $myAsmAly.ReassignTokenNames($myLogicTokens, $myDataTokens, $myDataTypes).GetAsRoot()
@@ -208,7 +208,7 @@ namespace NoFuture.Util.DotNetMeta
         ///     }
         /// 
         ///     #need to go backwards from a type name to some path to some assembly on the drive
-        ///     $asmPath = [NoFuture.Util.DotNetMeta.TokenAsm.AsmIndexResponse]::GetAssemblyPathFromRoot($typeName, $myWebAssemblies, $tokenType, $searchDirs)
+        ///     $asmPath = [NoFuture.Tokens.DotNetMeta.TokenAsm.AsmIndexResponse]::GetAssemblyPathFromRoot($typeName, $myWebAssemblies, $tokenType, $searchDirs)
         /// 
         ///     #now get this as a NoFuture.Gen code-gen type (assuming .NET code file was C#)
         ///     $nfCgType = New-Object NoFuture.Gen.CgTypeCsSrcCode($asmPath,$typeName)
@@ -230,7 +230,7 @@ namespace NoFuture.Util.DotNetMeta
         public AssemblyAnalysis(bool resolveGacAsmNames, params int[] ports)
         {
             if (string.IsNullOrWhiteSpace(NfConfig.CustomTools.InvokeAssemblyAnalysis) || !File.Exists(NfConfig.CustomTools.InvokeAssemblyAnalysis))
-                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis, assign " +
+                throw new ItsDeadJim("Don't know where to locate the NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis, assign " +
                                      "the global variable at NoFuture.Shared.Cfg.NfConfig.CustomTools.InvokeAssemblyAnalysis.");
 
             var np = DefaultPort;

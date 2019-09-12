@@ -5,12 +5,14 @@ using System.Reflection;
 using System.Text;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenName;
+using NoFuture.Util;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenName;
+using NoFuture.Util.DotNetMeta;
 
-namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
+namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis
 {
     /// <summary>
     /// Utility methods specific to this console app.
@@ -403,8 +405,8 @@ namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
             if (tokens == null)
                 return null;
             var adjGraph = tokens.GetAsRoot().GetAdjancencyMatrix(true);
-            Re.Efx.RTempDir = _myProgram.LogDirectory;
-            var pageRank = Re.Efx.GetPageRank(adjGraph.Item2);
+            Util.Re.Efx.RTempDir = _myProgram.LogDirectory;
+            var pageRank = Util.Re.Efx.GetPageRank(adjGraph.Item2);
             var idx = adjGraph.Item1;
             var valsOut = new List<Tuple<int, int, double>>();
             for (var i = 0; i < idx.Count; i++)

@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Util.DotNetMeta.TokenAsm;
-using NoFuture.Util.DotNetMeta.TokenType;
+using NoFuture.Tokens.DotNetMeta.TokenAsm;
+using NoFuture.Tokens.DotNetMeta.TokenType;
 
-namespace NoFuture.Util.DotNetMeta.TokenId
+namespace NoFuture.Tokens.DotNetMeta.TokenId
 {
     /// <summary>
     /// A criteria type to send across the wire to a listening socket.

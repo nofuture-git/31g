@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Util.DotNetMeta.TokenAsm
+namespace NoFuture.Tokens.DotNetMeta.TokenAsm
 {
     [Serializable]
     public class AsmIndexRequest

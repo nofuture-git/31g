@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenType;
 
-namespace NoFuture.Util.DotNetMeta.TokenAsm
+namespace NoFuture.Tokens.DotNetMeta.TokenAsm
 {
     /// <summary>
     /// Bundler type for <see cref="MetadataTokenAsm"/>
@@ -83,7 +83,7 @@ namespace NoFuture.Util.DotNetMeta.TokenAsm
         public static string GetAssemblyPathFromRoot(
             string typeName, 
             AsmIndexResponse asmIndexResponse,
-            TokenType.MetadataTokenType tokenType,
+            MetadataTokenType tokenType,
             params string[] binFolders)
         {
             if (binFolders.Length <= 0 

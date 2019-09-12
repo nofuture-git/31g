@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.DotNetMeta.TokenName;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta.TokenName;
 
-namespace NoFuture.Util.DotNetMeta.TokenType
+namespace NoFuture.Tokens.DotNetMeta.TokenType
 {
     /// <summary>
     /// The specific resolved name of a single metadata token which refers to a type.

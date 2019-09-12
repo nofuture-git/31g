@@ -6,7 +6,7 @@ using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.TokenAsm
+namespace NoFuture.Tokens.DotNetMeta.TokenAsm
 {
     public class InvokeGetAsmIndicies : InvokeGetCmdBase<AsmIndexResponse>
     {

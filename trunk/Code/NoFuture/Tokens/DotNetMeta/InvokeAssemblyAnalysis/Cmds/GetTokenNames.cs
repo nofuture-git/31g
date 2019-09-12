@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
 using Newtonsoft.Json;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenName;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenName;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
+namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public class GetTokenNames : IaaProgramBaseCmd<TokenNameResponse>
     {

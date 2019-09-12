@@ -9,14 +9,15 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.DotNetMeta.TokenAsm;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenType;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta.TokenAsm;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenType;
+using NoFuture.Util.DotNetMeta;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
+namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public class GetTokenTypes : IaaProgramBaseCmd<TokenTypeResponse>
     {

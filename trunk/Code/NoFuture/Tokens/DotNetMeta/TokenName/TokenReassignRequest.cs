@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Util.DotNetMeta.TokenType;
+using NoFuture.Tokens.DotNetMeta.TokenType;
 
-namespace NoFuture.Util.DotNetMeta.TokenName
+namespace NoFuture.Tokens.DotNetMeta.TokenName
 {
     [Serializable]
     public class TokenReassignRequest

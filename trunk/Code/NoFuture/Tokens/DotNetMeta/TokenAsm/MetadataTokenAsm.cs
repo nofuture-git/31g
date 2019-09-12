@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace NoFuture.Util.DotNetMeta.TokenAsm
+namespace NoFuture.Tokens.DotNetMeta.TokenAsm
 {
     /// <summary>
     /// A dictionary for assembly names.

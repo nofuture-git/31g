@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenId;
 
-namespace NoFuture.Util.DotNetMeta.TokenType
+namespace NoFuture.Tokens.DotNetMeta.TokenType
 {
     [Serializable]
     public class TokenTypeResponse

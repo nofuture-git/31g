@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenId;
 using NUnit.Framework;
 
 namespace NoFuture.Util.DotNetMeta.Tests.InvokeAsmTests

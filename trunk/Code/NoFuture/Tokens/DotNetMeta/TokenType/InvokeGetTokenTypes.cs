@@ -5,7 +5,7 @@ using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.TokenType
+namespace NoFuture.Tokens.DotNetMeta.TokenType
 {
     [Serializable]
     public class InvokeGetTokenTypes : InvokeGetCmdBase<TokenTypeResponse>

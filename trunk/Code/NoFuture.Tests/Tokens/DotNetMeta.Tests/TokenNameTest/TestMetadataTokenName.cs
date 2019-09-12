@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Util.DotNetMeta.TokenName;
-using NoFuture.Util.DotNetMeta.TokenType;
+using NoFuture.Tokens.DotNetMeta.TokenName;
+using NoFuture.Tokens.DotNetMeta.TokenType;
 using NUnit.Framework;
 
 namespace NoFuture.Util.DotNetMeta.Tests.TokenNameTest

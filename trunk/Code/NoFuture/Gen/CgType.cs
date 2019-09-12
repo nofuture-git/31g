@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using NoFuture.Shared.Core;
 using NoFuture.Shared.DiaSdk.LinesSwitch;
+using NoFuture.Tokens.DotNetMeta.TokenName;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta;
-using NoFuture.Util.DotNetMeta.TokenName;
-using NoFuture.Util.Gia;
+
 
 namespace NoFuture.Gen
 {

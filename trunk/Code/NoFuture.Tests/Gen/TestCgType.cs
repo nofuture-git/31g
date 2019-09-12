@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NoFuture.Shared.Cfg;
+using NoFuture.Tokens.DotNetMeta;
+using NoFuture.Tokens.DotNetMeta.TokenAsm;
 using NoFuture.Util.Binary;
-using NoFuture.Util.DotNetMeta;
-using NoFuture.Util.DotNetMeta.TokenAsm;
 using NUnit.Framework;
 
 namespace NoFuture.Gen.Tests

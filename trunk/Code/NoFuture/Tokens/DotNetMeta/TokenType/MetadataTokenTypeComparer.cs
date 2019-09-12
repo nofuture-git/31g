@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Util.DotNetMeta.TokenType
+namespace NoFuture.Tokens.DotNetMeta.TokenType
 {
     [Serializable]
     public class MetadataTokenTypeComparer : IEqualityComparer<INfToken>,

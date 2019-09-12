@@ -7,15 +7,16 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.Cmds;
+using NoFuture.Tokens.DotNetMeta.TokenAsm;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenName;
+using NoFuture.Tokens.DotNetMeta.TokenType;
+using NoFuture.Util;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds;
-using NoFuture.Util.DotNetMeta.TokenAsm;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenName;
-using NoFuture.Util.DotNetMeta.TokenType;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis
+namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis
 {
     /// <summary>
     /// A console program to host assembly-token resolutions as a separate process.

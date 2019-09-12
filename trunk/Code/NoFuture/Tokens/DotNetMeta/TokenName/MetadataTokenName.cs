@@ -7,12 +7,12 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.DotNetMeta.TokenAsm;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenType;
 using NoFuture.Util.Core;
-using NoFuture.Util.DotNetMeta.TokenAsm;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenType;
 
-namespace NoFuture.Util.DotNetMeta.TokenName
+namespace NoFuture.Tokens.DotNetMeta.TokenName
 {
     /// <summary>
     /// The resolved name of a single metadata token

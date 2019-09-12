@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Util.DotNetMeta.TokenName
+namespace NoFuture.Tokens.DotNetMeta.TokenName
 {
     [Serializable]
     public class TokenReassignResponse : TokenNameResponse

@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenId;
 
-namespace NoFuture.Util.DotNetMeta.TokenRank
+namespace NoFuture.Tokens.DotNetMeta.TokenRank
 {
     [Serializable]
     public class TokenPageRankResponse

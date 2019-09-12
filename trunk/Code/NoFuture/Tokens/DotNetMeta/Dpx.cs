@@ -7,12 +7,12 @@ using System.Reflection;
 using Newtonsoft.Json;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenRank;
 using NoFuture.Util.Binary;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenRank;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta
+namespace NoFuture.Tokens.DotNetMeta
 {
     /// <summary>
     /// Wrapper class to invoke the <see cref="NfConfig.CustomTools.InvokeDpx"/> exe.
@@ -36,7 +36,7 @@ namespace NoFuture.Util.DotNetMeta
             if(string.IsNullOrWhiteSpace(binDir) || !Directory.Exists(binDir))
                 throw new ItsDeadJim($"The {binDir} directory was not found");
             if (string.IsNullOrWhiteSpace(NfConfig.CustomTools.InvokeDpx) || !File.Exists(NfConfig.CustomTools.InvokeDpx))
-                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.DotNetMeta.InvokeDpx, assign " +
+                throw new ItsDeadJim("Don't know where to locate the NoFuture.Tokens.DotNetMeta.InvokeDpx, assign " +
                                      "the global variable at NoFuture.CustomTools.InvokeDpx.");
             var args = string.Join(" ", ConsoleCmd.ConstructCmdLineArgs(BIN_DIR, binDir));
             _si = new ProcessStartInfo

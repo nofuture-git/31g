@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Util.DotNetMeta.TokenId
+namespace NoFuture.Tokens.DotNetMeta.TokenId
 {
     /// <summary>
     /// Bundler type's status

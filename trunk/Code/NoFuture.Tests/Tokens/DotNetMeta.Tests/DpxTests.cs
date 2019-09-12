@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Util.DotNetMeta.TokenId;
-using NoFuture.Util.DotNetMeta.TokenRank;
+using NoFuture.Tokens.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenRank;
 using NUnit.Framework;
 
-namespace NoFuture.Util.DotNetMeta.Tests
+namespace NoFuture.Tokens.DotNetMeta.Tests
 {
     [TestFixture()]
     public class DpxTests

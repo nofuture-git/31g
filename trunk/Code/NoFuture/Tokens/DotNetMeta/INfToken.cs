@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Util.DotNetMeta
+﻿namespace NoFuture.Tokens.DotNetMeta
 {
     public interface INfToken
     {

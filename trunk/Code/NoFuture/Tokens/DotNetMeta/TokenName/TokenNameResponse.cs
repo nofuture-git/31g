@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using NoFuture.Shared.Core;
-using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenId;
 
-namespace NoFuture.Util.DotNetMeta.TokenName
+namespace NoFuture.Tokens.DotNetMeta.TokenName
 {
     /// <summary>
     /// Bundler type for <see cref="MetadataTokenName"/>

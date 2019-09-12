@@ -3,7 +3,7 @@ using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.Cmds
+namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.Cmds
 {
     public abstract class IaaProgramBaseCmd<T> : CmdBase<T>, ICmd
     {

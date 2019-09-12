@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
-using NoFuture.Util.DotNetMeta.TokenId;
+using NoFuture.Tokens.DotNetMeta.TokenId;
 
-namespace NoFuture.Util.DotNetMeta.TokenType
+namespace NoFuture.Tokens.DotNetMeta.TokenType
 {
     [Serializable]
     public class TokenTypeRequest

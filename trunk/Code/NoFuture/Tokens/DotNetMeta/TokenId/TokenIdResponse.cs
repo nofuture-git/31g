@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace NoFuture.Util.DotNetMeta.TokenId
+namespace NoFuture.Tokens.DotNetMeta.TokenId
 {
     /// <summary>
     /// Bundler type for <see cref="MetadataTokenId"/>
