@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EEB8AF89-3195-499C-8F17-DAECEF94FEC2}</ProjectGuid>
+    <ProjectGuid>{F6ABA325-A116-4649-AC88-E372477779C9}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Util.DotNetMeta.InvokeDpx</RootNamespace>
-    <AssemblyName>NoFuture.Util.DotNetMeta.InvokeDpx</AssemblyName>
+    <RootNamespace>NoFuture.Tokens.Gia.InvokeFlatten</RootNamespace>
+    <AssemblyName>NoFuture.Tokens.Gia.InvokeFlatten</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,12 +32,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>NoFuture.Util.DotNetMeta.InvokeDpx.DpxProgram</StartupObject>
+    <StartupObject>NoFuture.Util.Gia.InvokeFlatten.FlattenProgram</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pkg|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -46,24 +48,18 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DpxProgram.cs" />
+    <Compile Include="Cmds\GetFlattenAssembly.cs" />
+    <Compile Include="FlattenProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -77,17 +73,21 @@
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotNetMeta\Util.DotNetMeta.csproj">
-      <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
-      <Name>Util.DotNetMeta</Name>
+    <ProjectReference Include="..\..\..\Util\Binary\Util.Binary.csproj">
+      <Project>{c02e6247-e99f-4ef2-b275-12f8bb27acc7}</Project>
+      <Name>Util.Binary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NfConsole\Util.NfConsole.csproj">
+    <ProjectReference Include="..\..\..\Util\Core\Util.Core.csproj">
+      <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
+      <Name>Util.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Util\NfConsole\Util.NfConsole.csproj">
       <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>
       <Name>Util.NfConsole</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Util.Re\Util.Re.csproj">
-      <Project>{d572d6a3-0b77-451f-a1fe-efee1767bf9c}</Project>
-      <Name>Util.Re</Name>
+    <ProjectReference Include="..\Tokens.Gia.csproj">
+      <Project>{280000ce-bc04-4a97-ba73-c978439ef280}</Project>
+      <Name>Tokens.Gia</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

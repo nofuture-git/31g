@@ -98,6 +98,26 @@
       <Project>{4b77029a-6f3e-48ae-b8e2-c4dd06dce627}</Project>
       <Name>Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tokens\DotNetMeta\InvokeAssemblyAnalysis\Tokens.DotNetMeta.InvokeAssemblyAnalysis.csproj">
+      <Project>{f2b8ca61-2257-44f4-b921-ff35b5f10146}</Project>
+      <Name>Tokens.DotNetMeta.InvokeAssemblyAnalysis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tokens\DotNetMeta\InvokeDpx\Tokens.DotNetMeta.InvokeDpx.csproj">
+      <Project>{eeb8af89-3195-499c-8f17-daecef94fec2}</Project>
+      <Name>Tokens.DotNetMeta.InvokeDpx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tokens\DotNetMeta\Tokens.DotNetMeta.csproj">
+      <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
+      <Name>Tokens.DotNetMeta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tokens\Gia\InvokeFlatten\Tokens.Gia.InvokeFlatten.csproj">
+      <Project>{f6aba325-a116-4649-ac88-e372477779c9}</Project>
+      <Name>Tokens.Gia.InvokeFlatten</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tokens\Gia\Tokens.Gia.csproj">
+      <Project>{280000ce-bc04-4a97-ba73-c978439ef280}</Project>
+      <Name>Tokens.Gia</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tokens\Tokens.csproj">
       <Project>{4e81340f-409b-4ada-b038-bf3f76ffa81e}</Project>
       <Name>Tokens</Name>
@@ -109,14 +129,6 @@
     <ProjectReference Include="..\Util\Core\Util.Core.csproj">
       <Project>{349a1c91-ca14-4d04-946d-8b257a863ce0}</Project>
       <Name>Util.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Util\DotNetMeta\Util.DotNetMeta.csproj">
-      <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
-      <Name>Util.DotNetMeta</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Util\Gia\Util.Gia.csproj">
-      <Project>{280000ce-bc04-4a97-ba73-c978439ef280}</Project>
-      <Name>Util.Gia</Name>
     </ProjectReference>
     <ProjectReference Include="..\Util\NfConsole\Util.NfConsole.csproj">
       <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>

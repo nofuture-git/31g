@@ -50,13 +50,13 @@
       <Project>{65af1f95-360b-44ba-b52a-b52369f98942}</Project>
       <Name>Shared.Cfg</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\NoFuture\Tokens\Gia\Tokens.Gia.csproj">
+      <Project>{280000ce-bc04-4a97-ba73-c978439ef280}</Project>
+      <Name>Tokens.Gia</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Util\Binary\Util.Binary.csproj">
       <Project>{c02e6247-e99f-4ef2-b275-12f8bb27acc7}</Project>
       <Name>Util.Binary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NoFuture\Util\Gia\Util.Gia.csproj">
-      <Project>{280000ce-bc04-4a97-ba73-c978439ef280}</Project>
-      <Name>Util.Gia</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\NoFuture\Util\NfConsole\Util.NfConsole.csproj">
       <Project>{8884496a-369c-4ac3-9f98-c7fb4313d3ac}</Project>
