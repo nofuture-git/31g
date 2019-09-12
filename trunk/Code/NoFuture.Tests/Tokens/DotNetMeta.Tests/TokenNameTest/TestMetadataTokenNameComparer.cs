@@ -3,7 +3,7 @@ using System.Linq;
 using NoFuture.Tokens.DotNetMeta.TokenName;
 using NUnit.Framework;
 
-namespace NoFuture.Util.DotNetMeta.Tests.TokenNameTest
+namespace NoFuture.Tokens.DotNetMeta.Tests.TokenNameTest
 {
     [TestFixture()]
     public class TestMetadataTokenNameComparer

@@ -75,10 +75,10 @@ namespace NoFuture.Core.Cfg.Tests
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\Dia2Dump.exe", NfConfig.CustomTools.Dia2Dump);
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Gen.InvokeGetCgOfType.exe", NfConfig.CustomTools.InvokeGetCgType);
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Gen.InvokeGraphViz.exe", NfConfig.CustomTools.InvokeGraphViz);
-            Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.exe", NfConfig.CustomTools.InvokeAssemblyAnalysis);
-            Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Util.Gia.InvokeFlatten.exe", NfConfig.CustomTools.InvokeFlatten);
+            Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.exe", NfConfig.CustomTools.InvokeAssemblyAnalysis);
+            Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Tokens.Gia.InvokeFlatten.exe", NfConfig.CustomTools.InvokeFlatten);
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Util.Pos.Host\NoFuture.Util.Pos.Host.exe", NfConfig.CustomTools.UtilPosHost);
-            Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Util.DotNetMeta.InvokeDpx.exe", NfConfig.CustomTools.InvokeDpx);
+            Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Tokens.DotNetMeta.InvokeDpx.exe", NfConfig.CustomTools.InvokeDpx);
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Tokens.InvokeNfTypeName.exe", NfConfig.CustomTools.InvokeNfTypeName);
 
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\ffmpeg.exe", NfConfig.PythonTools.Ffmpeg);
@@ -167,8 +167,8 @@ namespace NoFuture.Core.Cfg.Tests
                 {"customDia2DumpTool", @"$(binRootDir)\Dia2Dump.exe"},
                 {"customInvokeGetCgTypeTool", @"$(binRootDir)\NoFuture.Gen.InvokeGetCgOfType.exe"},
                 {"customInvokeGraphVizTool", @"$(binRootDir)\NoFuture.Gen.InvokeGraphViz.exe"},
-                {"customInvokeAssemblyAnalysisTool", @"$(binRootDir)\NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe"},
-                {"customInvokeFlattenTool", @"$(binRootDir)\NoFuture.Util.Gia.InvokeFlatten.exe"},
+                {"customInvokeAssemblyAnalysisTool", @"$(binRootDir)\NoFuture.Tokens.Gia.InvokeAssemblyAnalysis.exe"},
+                {"customInvokeFlattenTool", @"$(binRootDir)\NoFuture.Tokens.Gia.InvokeFlatten.exe"},
                 {"customUtilPosHostTool", @"$(binRootDir)\NoFuture.Util.Pos.Host.exe"},
                 {"customInvokeDpxTool", @"$(binRootDir)\NoFuture.Util.Binary.InvokeDpx.exe"},
                 {"customInvokeNfTypeNameTool", @"$(binRootDir)\NoFuture.Tokens.InvokeNfTypeName.exe"},
@@ -325,10 +325,10 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='customDia2DumpTool' value='$(binRootDir)\Dia2Dump.exe' />
             <add id='customInvokeGetCgTypeTool' value='$(binRootDir)\NoFuture.Gen.InvokeGetCgOfType.exe' />
             <add id='customInvokeGraphVizTool' value='$(binRootDir)\NoFuture.Gen.InvokeGraphViz.exe' />
-            <add id='customInvokeAssemblyAnalysisTool' value='$(binRootDir)\NoFuture.Util.DotNetMeta.InvokeAssemblyAnalysis.exe' />
-            <add id='customInvokeFlattenTool' value='$(binRootDir)\NoFuture.Util.Gia.InvokeFlatten.exe' />
+            <add id='customInvokeAssemblyAnalysisTool' value='$(binRootDir)\NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.exe' />
+            <add id='customInvokeFlattenTool' value='$(binRootDir)\NoFuture.Tokens.Gia.InvokeFlatten.exe' />
             <add id='customUtilPosHostTool' value='$(binRootDir)\NoFuture.Util.Pos.Host\NoFuture.Util.Pos.Host.exe' />
-            <add id='customInvokeDpxTool' value='$(binRootDir)\NoFuture.Util.DotNetMeta.InvokeDpx.exe' />
+            <add id='customInvokeDpxTool' value='$(binRootDir)\NoFuture.Tokens.DotNetMeta.InvokeDpx.exe' />
             <add id='customInvokeNfTypeNameTool' value='$(binRootDir)\NoFuture.Tokens.InvokeNfTypeName.exe' />
           </custom>
           <python>

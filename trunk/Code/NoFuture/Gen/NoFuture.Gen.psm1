@@ -11,8 +11,8 @@ $dependencies = @{
     "NoFuture.Shared, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Shared.dll");
     "NoFuture.Util.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.Core.dll");
     "NoFuture.Util.Binary, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.Binary.dll");
-    "NoFuture.Util.DotNetMeta, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.DotNetMeta.dll");
-    "NoFuture.Util.Gia, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.Gia.dll");
+    "NoFuture.Tokens.DotNetMeta, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Tokens.DotNetMeta.dll");
+    "NoFuture.Tokens.Gia, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Tokens.Gia.dll");
     "NoFuture.Util.NfConsole, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.NfConsole.dll");
     "NoFuture.Util.NfType, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.NfType.dll");
     "NoFuture.Tokens, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Tokens.dll");
@@ -896,14 +896,14 @@ function Get-FlattenedType
     Process
     {
         if(-not [string]::IsNullOrWhiteSpace($LimitOnPrimitive)){
-            $isValidPrimitive = [NoFuture.Util.Gia.FlattenedItem]::ValueTypesList -contains $LimitOnPrimitive
+            $isValidPrimitive = [NoFuture.Tokens.Gia.FlattenedItem]::ValueTypesList -contains $LimitOnPrimitive
 
             if(-not $isValidPrimitive){
-                Write-Host "The LimitOnPrimitive must be a one of the key's values set in NoFuture.Util.Gia.FlattenedItem.ValueTypesList." -ForegroundColor Yellow
+                Write-Host "The LimitOnPrimitive must be a one of the key's values set in NoFuture.Tokens.Gia.FlattenedItem.ValueTypesList." -ForegroundColor Yellow
                 break;
             }
         }
-        $ftaArg = New-Object NoFuture.Util.Gia.Args.FlattenTypeArgs -Property @{
+        $ftaArg = New-Object NoFuture.Tokens.Gia.Args.FlattenTypeArgs -Property @{
                                  Assembly = $Assembly; 
                                  Depth = 16; 
                                  Separator = $Separator; 
@@ -911,7 +911,7 @@ function Get-FlattenedType
                                  UseTypeNames = $false;
                                  LimitOnThisType = $LimitOnPrimitive}
 
-        return ([NoFuture.Util.Gia.Flatten]::FlattenType($ftaArg))
+        return ([NoFuture.Tokens.Gia.Flatten]::FlattenType($ftaArg))
         
     }#end Process
 }#end Get-FlattenedType

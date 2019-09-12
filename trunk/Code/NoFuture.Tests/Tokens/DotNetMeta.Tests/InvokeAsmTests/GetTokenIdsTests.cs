@@ -2,7 +2,7 @@
 using NoFuture.Tokens.DotNetMeta.TokenId;
 using NUnit.Framework;
 
-namespace NoFuture.Util.DotNetMeta.Tests.InvokeAsmTests
+namespace NoFuture.Tokens.DotNetMeta.Tests.InvokeAsmTests
 {
     [TestFixture]
     public class GetTokenIdsTests

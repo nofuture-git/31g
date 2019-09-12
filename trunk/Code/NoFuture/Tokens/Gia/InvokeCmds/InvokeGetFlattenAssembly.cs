@@ -19,7 +19,7 @@ namespace NoFuture.Tokens.Gia.InvokeCmds
                 throw new ItsDeadJim("This isn't a valid assembly path " + anything);
 
             if (!IsMyProcessRunning(ProcessId))
-                throw new ItsDeadJim("The NoFuture.Util.Gia.InvokeFlatten.exe is either dead or was never started.");
+                throw new ItsDeadJim("The NoFuture.Tokens.Gia.InvokeFlatten.exe is either dead or was never started.");
 
             if(!NfNet.IsValidPortNumber(SocketPort))
                 throw new ItsDeadJim("The assigned socket port is not valids " + SocketPort);

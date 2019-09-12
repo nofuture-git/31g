@@ -39,7 +39,7 @@ namespace NoFuture.Tokens.Gia
         public Flatten(params int[] ports)
         {
             if (string.IsNullOrWhiteSpace(NfConfig.CustomTools.InvokeFlatten) || !File.Exists(NfConfig.CustomTools.InvokeFlatten))
-                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Gia.InvokeFlatten.exe, assign " +
+                throw new ItsDeadJim("Don't know where to locate the NoFuture.Util.Tokens.InvokeFlatten.exe, assign " +
                                      "the global variable at NoFuture.Tools.CustomTools.InvokeFlatten.");
             var args = string.Empty;
             var getFlatAsmPort = DefaultPort;
@@ -69,7 +69,7 @@ namespace NoFuture.Tokens.Gia
         /// <returns></returns>
         /// <example>
         /// <![CDATA[ 
-        /// $flAsm = New-Object NoFuture.Util.Gia.Flatten
+        /// $flAsm = New-Object NoFuture.Tokens.Gia.Flatten
         /// $flAsm.GetFlattenAssembly($AssemblyPath)
         /// ]]>
         /// </example>

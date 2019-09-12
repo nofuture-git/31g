@@ -54,7 +54,7 @@ namespace NoFuture.Tokens.DotNetMeta
 
         #region ctors
         /// <summary>
-        /// Launches the NoFuture.Util.Gia.InvokeAssemblyAnalysis.exe 
+        /// Launches the NoFuture.Tokens.Gia.InvokeAssemblyAnalysis.exe 
         /// </summary>
         /// <param name="resolveGacAsmNames"></param>
         /// <param name="ports">
