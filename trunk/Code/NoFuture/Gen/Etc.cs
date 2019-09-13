@@ -840,8 +840,7 @@ namespace NoFuture.Gen
         {
             if (mti == null)
                 return null;
-            string propName;
-            if (NfReflect.IsClrMethodForProperty(mti.Name, out propName))
+            if (NfReflect.IsClrMethodForProperty(mti.Name, out _))
                 return null;
             if (NfReflect.IsClrGeneratedType(mti.Name))
                 //these appear as '<SomeNameOfMethodAlreadyAdded>b__kifkj(...)'

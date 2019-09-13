@@ -53,6 +53,14 @@ namespace NoFuture.Gen
 
             foreach (var src in sourceCodeFiles)
             {
+                if (!File.Exists(src))
+                    continue;
+
+                //ANTLR CSharp parser seems to have problems with Preprocessor cmd\directives\macros
+                var srcLines = File.ReadAllLines(src);
+                srcLines = Settings.LangStyle.RemovePreprocessorCmds(srcLines);
+                File.WriteAllLines(src, srcLines);
+
                 var antlrParseRslts = CsharpParseTree.InvokeParse(src);
                 _cgType.AssignAntlrParseItems(GetAntlrParseItems(antlrParseRslts));
             }

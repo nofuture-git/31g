@@ -125,18 +125,38 @@ namespace NoFuture.Tokens.DotNetMeta.TokenType
         }
 
         /// <summary>
-        /// Gets the first token type in <see cref="Items"/> which is not an interface.
-        /// Since its .NET, there should only be one.
+        /// Gets the distinct, flattened, list of types, from __this__ given instance, of abstract and interface types
+        /// which are inherited. 
         /// </summary>
         /// <returns></returns>
-        public MetadataTokenType GetBaseType()
+        public MetadataTokenType GetBaseTypes()
         {
             if (Items == null || !Items.Any())
                 return null;
-            var basemtt = Items.FirstOrDefault(i => !i.IsInterfaceType());
+
+            Func<MetadataTokenType, bool> selector = (v) => v.IsAbstractType() || v.IsInterfaceType();
+
+            var basemtt = new List<MetadataTokenType>();
+            Func<MetadataTokenType, MetadataTokenType> addIt = (v) =>
+            {
+                if (v == null || string.Equals(v.Name, NfSettings.DefaultTypeSeparator.ToString()))
+                    return null;
+                basemtt.Add(v.GetShallowCopy());
+                return v;
+            };
+
+            //to avoid including this instance 
+            var mtt = new MetadataTokenType
+            {
+                Items = Items,
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
+
+            mtt.IterateTree(selector, addIt);
+
             return new MetadataTokenType
             {
-                Items = new [] { basemtt },
+                Items = basemtt.Distinct(_comparer).Cast<MetadataTokenType>().ToArray(),
                 Name = NfSettings.DefaultTypeSeparator.ToString()
             };
         }
@@ -536,6 +556,8 @@ namespace NoFuture.Tokens.DotNetMeta.TokenType
                 var amnames = new List<MetadataTokenName>();
                 foreach (var amn in AbstractMemberNames)
                 {
+                    if (amn == null)
+                        continue;
                     amnames.Add(amn.GetShallowCopy());
                 }
 

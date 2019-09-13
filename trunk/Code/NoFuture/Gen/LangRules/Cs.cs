@@ -52,7 +52,7 @@ namespace NoFuture.Gen.LangRules
 
         public string ToDecl(CgMember cgMem, bool includesAccessModifier = false)
         {
-            var cgArgs = cgMem.Args.Select(cgArg => String.Format("{0} {1}", cgArg.ArgType, cgArg.ArgName)).ToList();
+            var cgArgs = cgMem.Args.Select(cgArg => $"{cgArg.ArgType} {cgArg.ArgName}").ToList();
 
             var cgSig = string.Join(",", cgArgs);
             var tn = cgMem.IsCtor ? string.Empty : cgMem.TypeName;
@@ -60,10 +60,17 @@ namespace NoFuture.Gen.LangRules
                 ? NfReflect.GetTypeNameWithoutNamespace(cgMem.TypeName)
                 : string.Format(" {0}", cgMem.Name);
 
-            cgSig = cgSig.Length > 0 || cgMem.IsCtor || cgMem.IsMethod
-                ? string.Format("{0}{1}({2})", tn, n, cgSig)
-                : string.Format("{0}{1}", tn, n);
-
+            if (cgSig.Length > 0 || cgMem.IsCtor || cgMem.IsMethod)
+            {
+                //TODO - this is only going to work for when there is only one generic arg
+                cgSig = cgMem.IsGeneric && !cgMem.IsCtor
+                    ? $"{tn}{n}<{tn}>({cgSig})"
+                    : $"{tn}{n}({cgSig})";
+            }
+            else
+            {
+                cgSig = $"{tn}{n}";
+            }
             return includesAccessModifier
                 ? string.Format("{0} {1}", TransposeCgAccessModToString(cgMem.AccessModifier), cgSig)
                 : cgSig;
@@ -134,9 +141,9 @@ namespace NoFuture.Gen.LangRules
             var accessMod = Settings.LangStyle.TransposeCgAccessModToString(CgAccessModifier.Public);
             splitFileContent.AppendLine($"    {accessMod} interface {cgType.Name}");
             splitFileContent.AppendLine("    " + C_OPEN_CURLY);
-            foreach (var cg in cgType.Properties)
+            foreach (var cg in cgType.Properties.Where( p => p.AccessModifier == CgAccessModifier.Public))
                 splitFileContent.AppendLine($"        {Settings.LangStyle.ToDecl(cg)};");
-            foreach (var cg in cgType.Methods)
+            foreach (var cg in cgType.Methods.Where(p => p.AccessModifier == CgAccessModifier.Public))
                 splitFileContent.AppendLine($"        {Settings.LangStyle.ToDecl(cg)};");
             splitFileContent.AppendLine("    " + C_CLOSE_CURLY);
 
