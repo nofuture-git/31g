@@ -49,13 +49,13 @@
     <EmbeddedResource Include="SimpleExample.eg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NoFuture\Antlr\CSharp4\Antlr.CSharp.csproj">
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NoFuture\Antlr\CSharp\Antlr.CSharp.csproj">
       <Project>{a6737375-69b5-4771-8666-9ad8355f99fc}</Project>
       <Name>Antlr.CSharp</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

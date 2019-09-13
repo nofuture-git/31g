@@ -1,6 +1,6 @@
 ﻿$myScriptLocation = Split-Path $PSCommandPath -Parent
 
-$antlrCsharpJar =  Resolve-Path (Join-Path $myScriptLocation "..\antlr4-csharp-4.6.4-complete.jar")
+$antlrCsharpJar =  Resolve-Path (Join-Path $myScriptLocation "..\antlr4-csharp-4.6.6-complete.jar")
 
 $namespace = "NoFuture.Antlr.HTML"
 
