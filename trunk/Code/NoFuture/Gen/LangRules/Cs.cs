@@ -52,28 +52,40 @@ namespace NoFuture.Gen.LangRules
 
         public string ToDecl(CgMember cgMem, bool includesAccessModifier = false)
         {
+            if (cgMem == null)
+                return string.Empty;
+
             var cgArgs = cgMem.Args.Select(cgArg => $"{cgArg.ArgType} {cgArg.ArgName}").ToList();
+            var accessMod = includesAccessModifier ? TransposeCgAccessModToString(cgMem.AccessModifier) + " " : string.Empty;
+            var args = string.Join(", ", cgArgs);
 
-            var cgSig = string.Join(",", cgArgs);
-            var tn = cgMem.IsCtor ? string.Empty : cgMem.TypeName;
-            var n = cgMem.IsCtor
-                ? NfReflect.GetTypeNameWithoutNamespace(cgMem.TypeName)
-                : string.Format(" {0}", cgMem.Name);
+            if (cgMem.IsCtor)
+            {
+                var ctorName = NfReflect.GetTypeNameWithoutNamespace(cgMem.TypeName);
+                return $"{accessMod}{ctorName}({args})";
+            }
 
-            if (cgSig.Length > 0 || cgMem.IsCtor || cgMem.IsMethod)
+            if (cgArgs.Any() || cgMem.IsMethod)
             {
                 //TODO - this is only going to work for when there is only one generic arg
-                cgSig = cgMem.IsGeneric && !cgMem.IsCtor
-                    ? $"{tn}{n}<{tn}>({cgSig})"
-                    : $"{tn}{n}({cgSig})";
+                return cgMem.IsGeneric && !cgMem.IsCtor
+                    ? $"{accessMod}{cgMem.TypeName} {cgMem.Name}<{cgMem.TypeName}>({args})"
+                    : $"{accessMod}{cgMem.TypeName} {cgMem.Name}({args})";
             }
-            else
+            var propSyntax = "";
+            if (cgMem.HasSetter || cgMem.HasGetter)
             {
-                cgSig = $"{tn}{n}";
+                propSyntax += " { ";
+                if (cgMem.HasGetter)
+                    propSyntax += "get; ";
+
+                if (cgMem.HasSetter)
+                    propSyntax += "set; ";
+
+                propSyntax += "}";
             }
-            return includesAccessModifier
-                ? string.Format("{0} {1}", TransposeCgAccessModToString(cgMem.AccessModifier), cgSig)
-                : cgSig;
+
+            return $"{accessMod}{cgMem.TypeName} {cgMem.Name}{propSyntax}";
         }
 
         public string ToDecl(CgType cgType, string variableName, CgAccessModifier accessMod)
@@ -142,8 +154,8 @@ namespace NoFuture.Gen.LangRules
             splitFileContent.AppendLine($"    {accessMod} interface {cgType.Name}");
             splitFileContent.AppendLine("    " + C_OPEN_CURLY);
             foreach (var cg in cgType.Properties.Where( p => p.AccessModifier == CgAccessModifier.Public))
-                splitFileContent.AppendLine($"        {Settings.LangStyle.ToDecl(cg)};");
-            foreach (var cg in cgType.Methods.Where(p => p.AccessModifier == CgAccessModifier.Public))
+                splitFileContent.AppendLine($"        {Settings.LangStyle.ToDecl(cg)}");
+            foreach (var cg in cgType.Methods.Where(p => p.AccessModifier == CgAccessModifier.Public && !p.IsCtor))
                 splitFileContent.AppendLine($"        {Settings.LangStyle.ToDecl(cg)};");
             splitFileContent.AppendLine("    " + C_CLOSE_CURLY);
 

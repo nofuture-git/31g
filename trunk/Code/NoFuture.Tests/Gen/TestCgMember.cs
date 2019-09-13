@@ -22,7 +22,8 @@ namespace NoFuture.Gen.Tests
                         new CgArg {ArgName = "param3", ArgType = "bool"}
                     },
                 Name = "MyMethodName",
-                TypeName =  "System.String"
+                TypeName =  "System.String",
+                AccessModifier = CgAccessModifier.Public
             };
 
             var testResult = NoFuture.Gen.Settings.LangStyle.ToDecl(testSubject);
@@ -31,13 +32,34 @@ namespace NoFuture.Gen.Tests
             Assert.IsTrue(testResult.StartsWith(testSubject.TypeName));
             Console.WriteLine(testResult);
 
+            testResult = NoFuture.Gen.Settings.LangStyle.ToDecl(testSubject, true);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(string.Empty, testResult);
+            Assert.IsTrue(testResult.StartsWith($"public {testSubject.TypeName}" ));
+            Console.WriteLine(testResult);
+
             testSubject.TypeName = "MyNamespace.Here.MyTypeName";
             testSubject.Name = ".ctor";
             testSubject.IsCtor = true;
             testResult = NoFuture.Gen.Settings.LangStyle.ToDecl(testSubject);
             Assert.IsNotNull(testResult);
             Console.WriteLine(testResult);
-        
+
+            testSubject = new CgMember()
+            {
+                Name = "SomeProperty",
+                TypeName = "System.String",
+                AccessModifier = CgAccessModifier.Public,
+                HasGetter =  true,
+                HasSetter = true,
+            };
+
+            testResult = NoFuture.Gen.Settings.LangStyle.ToDecl(testSubject, true);
+            Assert.IsNotNull(testResult);
+            Assert.AreNotEqual(string.Empty, testResult);
+            Assert.IsTrue(testResult.Contains("get;"));
+            Assert.IsTrue(testResult.Contains("set;"));
+            Console.WriteLine(testResult);
         }
 
         [Test]

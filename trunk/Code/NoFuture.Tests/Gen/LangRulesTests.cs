@@ -4,7 +4,9 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Util.Binary;
 using NUnit.Framework;
 
 namespace NoFuture.Gen.Tests
@@ -1938,6 +1940,34 @@ namespace NoFuture.Gen.Tests
             Console.WriteLine(testInput);
 
             Assert.IsTrue(Regex.IsMatch("             protected string AProperty",testInput));
+        }
+
+        [Test]
+        public void TestToInterface()
+        {
+            NfConfig.UseReflectionOnlyLoad = false;
+            FxPointers.AddResolveAsmEventHandlerToDomain();
+            var testAsm = TestCgType.GetAdventureWorks2012();
+
+            var cgType = NoFuture.Gen.Etc.GetCgOfType(testAsm, "AdventureWorks.VeryBadCode.Registry`2", false);
+
+            Assert.IsNotNull(cgType);
+
+            var testResults = Settings.LangStyle.ToInterface(cgType);
+
+            Assert.IsNotNull(testResults);
+            Console.WriteLine(testResults);
+            Assert.IsTrue(testResults.StartsWith("    public interface Registry"));
+
+            cgType = NoFuture.Gen.Etc.GetCgOfType(testAsm, "AdventureWorks.VeryBadCode.BasicGenerics", false);
+            Assert.IsNotNull(cgType);
+
+            testResults = Settings.LangStyle.ToInterface(cgType);
+
+            Assert.IsNotNull(testResults);
+            Console.WriteLine(testResults);
+
+
         }
 
         public static string PutTestFileOnDisk(string embeddedFileName)
