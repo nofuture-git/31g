@@ -7,8 +7,8 @@
     <ProjectGuid>{A6737375-69B5-4771-8666-9AD8355F99FC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Antlr.CSharp4</RootNamespace>
-    <AssemblyName>NoFuture.Antlr.CSharp4</AssemblyName>
+    <RootNamespace>NoFuture.Antlr.CSharp</RootNamespace>
+    <AssemblyName>NoFuture.Antlr.CSharp</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -38,18 +38,21 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSharp4BaseListener.cs" />
-    <Compile Include="CSharp4Lexer.cs" />
-    <Compile Include="CSharp4Listener.cs" />
-    <Compile Include="CSharp4Parser.cs" />
-    <Compile Include="CSharp4PreProcessor.cs" />
+    <Compile Include="CSharpLexer.cs" />
+    <Compile Include="CSharpParser.cs" />
+    <Compile Include="CSharpParserBaseListener.cs" />
     <Compile Include="CsharpParseResults.cs" />
+    <Compile Include="CSharpParserListener.cs" />
     <Compile Include="CsharpParseTree.cs" />
+    <Compile Include="CSharpPreprocessorParser.cs" />
+    <Compile Include="CSharpPreprocessorParserBaseListener.cs" />
+    <Compile Include="CSharpPreprocessorParserListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CSharp4.g4" />
-    <None Include="CSharp4PreProcessor.g4" />
+    <None Include="CSharpLexer.g4" />
+    <None Include="CSharpParser.g4" />
+    <None Include="CSharpPreprocessorParser.g4" />
     <None Include="GetAntlrCodeFiles.ps1" />
     <None Include="packages.config" />
   </ItemGroup>

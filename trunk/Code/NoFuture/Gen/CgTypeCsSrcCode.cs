@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using NoFuture.Antlr.CSharp4;
+using NoFuture.Antlr.CSharp;
 using NoFuture.Shared.Core;
 
 namespace NoFuture.Gen

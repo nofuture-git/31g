@@ -77,9 +77,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Antlr\CSharp4\Antlr.CSharp4.csproj">
+    <ProjectReference Include="..\Antlr\CSharp4\Antlr.CSharp.csproj">
       <Project>{a6737375-69b5-4771-8666-9ad8355f99fc}</Project>
-      <Name>Antlr.CSharp4</Name>
+      <Name>Antlr.CSharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Antlr\DotNetIlTypeName\Antlr.DotNetIlTypeName.csproj">
       <Project>{c5c8202a-b474-48fa-974a-74c79511a80f}</Project>

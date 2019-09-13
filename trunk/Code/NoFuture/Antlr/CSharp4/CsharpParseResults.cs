@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Antlr.CSharp4
+namespace NoFuture.Antlr.CSharp
 {
     public class CsharpParseResults
     {

@@ -5,9 +5,9 @@ using System.Text;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 
-namespace NoFuture.Antlr.CSharp4
+namespace NoFuture.Antlr.CSharp
 {
-    public class CsharpParseTree : CSharp4BaseListener
+    public class CsharpParseTree : CSharpParserBaseListener
     {
         public CsharpParseResults Results { get; } = new CsharpParseResults();
         private string _typeNameCurrent;
@@ -19,12 +19,12 @@ namespace NoFuture.Antlr.CSharp4
         private Tuple<int, int> _typeEndCurrent;
         private Tuple<int, int> _namespaceEndCurrent;
 
-        public override void EnterMethod_member_name(CSharp4Parser.Method_member_nameContext context)
+        public override void EnterMethod_member_name(CSharpParser.Method_member_nameContext context)
         {
             Results.MethodNames.Add(context.GetText());
         }
 
-        public override void EnterNamespace_declaration(CSharp4Parser.Namespace_declarationContext context)
+        public override void EnterNamespace_declaration(CSharpParser.Namespace_declarationContext context)
         {
             _namespaceNameCurrent = context.qualified_identifier().GetText();
 
@@ -34,7 +34,7 @@ namespace NoFuture.Antlr.CSharp4
             _namespaceEndCurrent = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
         }
 
-        public override void ExitNamespace_declaration(CSharp4Parser.Namespace_declarationContext context)
+        public override void ExitNamespace_declaration(CSharpParser.Namespace_declarationContext context)
         {
             _namespaceNameCurrent = null;
             _namespaceStartCurrent = null;
@@ -42,12 +42,12 @@ namespace NoFuture.Antlr.CSharp4
             _namespaceEndCurrent = null;
         }
 
-        public override void EnterNamespace_name(CSharp4Parser.Namespace_nameContext context)
+        public override void EnterUsing_directive(CSharpParser.Using_directiveContext context)
         {
             Results.NamespaceNames.Add(context.GetText());
         }
 
-        public override void EnterType_declaration(CSharp4Parser.Type_declarationContext context)
+        public override void EnterType_declaration(CSharpParser.Type_declarationContext context)
         {
             string nm = null;
             foreach (var td in new ParserRuleContext[]
@@ -71,7 +71,7 @@ namespace NoFuture.Antlr.CSharp4
             _typeEndCurrent = new Tuple<int, int>(context.Stop.Line, context.Stop.Column);
         }
 
-        public override void ExitType_declaration(CSharp4Parser.Type_declarationContext context)
+        public override void ExitType_declaration(CSharpParser.Type_declarationContext context)
         {
             _typeNameCurrent = null;
             _typeStartCurrent = null;
@@ -79,7 +79,7 @@ namespace NoFuture.Antlr.CSharp4
             _typeEndCurrent = null;
         }
 
-        public override void EnterInterface_member_declaration(CSharp4Parser.Interface_member_declarationContext context)
+        public override void EnterInterface_member_declaration(CSharpParser.Interface_member_declarationContext context)
         {
             var nm = context.identifier().GetText();
             var parseItem = new CsharpParseItem { Name = nm };
@@ -90,7 +90,7 @@ namespace NoFuture.Antlr.CSharp4
             Results.TypeMemberBodies.Add(parseItem);
         }
 
-        public override void EnterStruct_member_declaration(CSharp4Parser.Struct_member_declarationContext context)
+        public override void EnterStruct_member_declaration(CSharpParser.Struct_member_declarationContext context)
         {
             var cmdecl = context.common_member_declaration();
 
@@ -106,7 +106,7 @@ namespace NoFuture.Antlr.CSharp4
             AssignNsAndTypeValues(parseItem);
         }
 
-        public override void EnterEnum_member_declaration(CSharp4Parser.Enum_member_declarationContext context)
+        public override void EnterEnum_member_declaration(CSharpParser.Enum_member_declarationContext context)
         {
             var nm = context.identifier().GetText();
             var parseItem = new CsharpParseItem { Name = nm };
@@ -116,7 +116,7 @@ namespace NoFuture.Antlr.CSharp4
             Results.TypeMemberBodies.Add(parseItem);
         }
 
-        public override void EnterClass_member_declaration(CSharp4Parser.Class_member_declarationContext context)
+        public override void EnterClass_member_declaration(CSharpParser.Class_member_declarationContext context)
         {
             var cmdecl = context.common_member_declaration();
 
@@ -144,7 +144,7 @@ namespace NoFuture.Antlr.CSharp4
         }
 
         protected internal void AssignAccessMods(CsharpParseItem parseItem,
-            CSharp4Parser.All_member_modifiersContext acMods)
+            CSharpParser.All_member_modifiersContext acMods)
         {
             if (parseItem == null)
                 return;
@@ -155,7 +155,7 @@ namespace NoFuture.Antlr.CSharp4
                 parseItem.AccessModifiers.Add(m.GetText());
         }
 
-        protected internal void AssignAttributes(CsharpParseItem parseItem, CSharp4Parser.AttributesContext attrs)
+        protected internal void AssignAttributes(CsharpParseItem parseItem, CSharpParser.AttributesContext attrs)
         {
             if (parseItem == null)
                 return;
@@ -192,37 +192,37 @@ namespace NoFuture.Antlr.CSharp4
         {
             if (context == null)
                 return null;
-            if (context is CSharp4Parser.Member_nameContext)
+            if (context is CSharpParser.Member_nameContext)
             {
                 return context.GetText();
             }
-            if (context is CSharp4Parser.Method_member_nameContext)
+            if (context is CSharpParser.Method_member_nameContext)
             {
                 return context.GetText();
             }
-            if (context is CSharp4Parser.Field_declaration2Context flCtx && flCtx.variable_declarators() != null)
+            if (context is CSharpParser.Field_declarationContext flCtx && flCtx.variable_declarators() != null)
             {
                 return flCtx.variable_declarators().GetText();
             }
-            if (context is CSharp4Parser.Class_definitionContext)
+            if (context is CSharpParser.Class_definitionContext)
             {
-                return ((CSharp4Parser.Class_definitionContext) context).identifier().GetText();
+                return ((CSharpParser.Class_definitionContext) context).identifier().GetText();
             }
-            if (context is CSharp4Parser.Delegate_definitionContext)
+            if (context is CSharpParser.Delegate_definitionContext)
             {
-                return ((CSharp4Parser.Delegate_definitionContext)context).identifier().GetText();
+                return ((CSharpParser.Delegate_definitionContext)context).identifier().GetText();
             }
-            if (context is CSharp4Parser.Enum_definitionContext)
+            if (context is CSharpParser.Enum_definitionContext)
             {
-                return ((CSharp4Parser.Enum_definitionContext)context).identifier().GetText();
+                return ((CSharpParser.Enum_definitionContext)context).identifier().GetText();
             }
-            if (context is CSharp4Parser.Interface_definitionContext)
+            if (context is CSharpParser.Interface_definitionContext)
             {
-                return ((CSharp4Parser.Interface_definitionContext)context).identifier().GetText();
+                return ((CSharpParser.Interface_definitionContext)context).identifier().GetText();
             }
-            if (context is CSharp4Parser.Struct_definitionContext)
+            if (context is CSharpParser.Struct_definitionContext)
             {
-                return ((CSharp4Parser.Struct_definitionContext)context).identifier().GetText();
+                return ((CSharpParser.Struct_definitionContext)context).identifier().GetText();
             }
 
             if (context.ChildCount <= 0)
@@ -240,13 +240,13 @@ namespace NoFuture.Antlr.CSharp4
 
         public Tuple<int, int> GetBodyStart(IParseTree context)
         {
-            if (context is CSharp4Parser.BodyContext
-                || context is CSharp4Parser.Method_bodyContext
-                || context is CSharp4Parser.Namespace_bodyContext
-                || context is CSharp4Parser.Class_bodyContext
-                || context is CSharp4Parser.Interface_bodyContext
-                || context is CSharp4Parser.Enum_bodyContext
-                || context is CSharp4Parser.Struct_bodyContext)
+            if (context is CSharpParser.BodyContext
+                || context is CSharpParser.Method_bodyContext
+                || context is CSharpParser.Namespace_bodyContext
+                || context is CSharpParser.Class_bodyContext
+                || context is CSharpParser.Interface_bodyContext
+                || context is CSharpParser.Enum_bodyContext
+                || context is CSharpParser.Struct_bodyContext)
             {
                 var plCtx = (ParserRuleContext) context;
                 return new Tuple<int, int>(plCtx.Start.Line, plCtx.Start.Column);
@@ -269,11 +269,11 @@ namespace NoFuture.Antlr.CSharp4
         {
             if (context == null)
                 return null;
-            if (context is CSharp4Parser.Formal_parameter_listContext plCtx)
+            if (context is CSharpParser.Formal_parameter_listContext plCtx)
             {
                 var sl = new List<string>();
 
-                if (plCtx.ChildCount == 1 && plCtx.GetChild(0) is CSharp4Parser.Fixed_parametersContext)
+                if (plCtx.ChildCount == 1 && plCtx.GetChild(0) is CSharpParser.Fixed_parametersContext)
                 {
                     for (var j = 0; j < plCtx.GetChild(0).ChildCount; j++)
                     {
@@ -310,7 +310,7 @@ namespace NoFuture.Antlr.CSharp4
             return null;
         }
 
-        public override void ExitSpecific_catch_clause(CSharp4Parser.Specific_catch_clauseContext context)
+        public override void ExitSpecific_catch_clause(CSharpParser.Specific_catch_clauseContext context)
         {
             var slk = new StringBuilder();
 
@@ -333,7 +333,7 @@ namespace NoFuture.Antlr.CSharp4
             Results.CatchBlocks.Add(slk.ToString());
         }
 
-        public override void ExitGeneral_catch_clause(CSharp4Parser.General_catch_clauseContext context)
+        public override void ExitGeneral_catch_clause(CSharpParser.General_catch_clauseContext context)
         {
             var slk = new StringBuilder();
             slk.Append(context.CATCH().GetText());
@@ -344,7 +344,7 @@ namespace NoFuture.Antlr.CSharp4
             PrintBlockStatements(slk, cBlock);
         }
 
-        private void PrintBlockStatements(StringBuilder slk, CSharp4Parser.BlockContext cBlock)
+        private void PrintBlockStatements(StringBuilder slk, CSharpParser.BlockContext cBlock)
         {
             slk.AppendLine(cBlock.OPEN_BRACE().GetText());
             if (cBlock.statement_list() != null)
@@ -367,9 +367,9 @@ namespace NoFuture.Antlr.CSharp4
 
             var tr = System.IO.File.OpenRead(fileName);
             var input = new AntlrInputStream(tr);
-            var lexer = new CSharp4Lexer(input);
+            var lexer = new CSharpLexer(input);
             var tokens = new CommonTokenStream(lexer);
-            var parser = new CSharp4Parser(tokens);
+            var parser = new CSharpParser(tokens);
 
             var tree = parser.compilation_unit();
 

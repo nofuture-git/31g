@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using NoFuture.Antlr.CSharp;
 using NUnit.Framework;
 
-namespace NoFuture.Antlr.CSharp4.Tests
+namespace NoFuture.Antlr.CSharp.Tests
 {
     [TestFixture]
     public class TestCsharpParseTree
@@ -16,7 +17,7 @@ namespace NoFuture.Antlr.CSharp4.Tests
                 Assert.Fail($"missing test file at {testFile}");
 
             var testResult =
-                NoFuture.Antlr.CSharp4.CsharpParseTree.InvokeParse(testFile);
+                NoFuture.Antlr.CSharp.CsharpParseTree.InvokeParse(testFile);
 
             Assert.IsNotNull(testResult);
             //Assert.AreNotEqual(0, testResult.ClassNames.Count);

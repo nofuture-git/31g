@@ -8,8 +8,8 @@
     <ProjectGuid>{CB71EA5A-D457-472F-BF38-B5ED526206DC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Antlr.CSharp4.Tests</RootNamespace>
-    <AssemblyName>NoFuture.Antlr.CSharp4.Tests</AssemblyName>
+    <RootNamespace>NoFuture.Antlr.CSharp.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Antlr.CSharp.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -49,9 +49,9 @@
     <EmbeddedResource Include="SimpleExample.eg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NoFuture\Antlr\CSharp4\Antlr.CSharp4.csproj">
+    <ProjectReference Include="..\..\..\NoFuture\Antlr\CSharp4\Antlr.CSharp.csproj">
       <Project>{a6737375-69b5-4771-8666-9ad8355f99fc}</Project>
-      <Name>Antlr.CSharp4</Name>
+      <Name>Antlr.CSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

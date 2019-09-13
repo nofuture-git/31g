@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Antlr.CSharp4.Tests")]
+[assembly: AssemblyTitle("NoFuture.Antlr.CShar4.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Antlr.CSharp4.Tests")]
+[assembly: AssemblyProduct("NoFuture.Antlr.CSharp.Tests")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
