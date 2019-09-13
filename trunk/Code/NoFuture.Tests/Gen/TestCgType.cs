@@ -120,6 +120,28 @@ namespace NoFuture.Gen.Tests
             Assert.AreEqual("TakesGenericArg", testResult.Name);
         }
 
+        [Test]
+        public void TestRemoveCgMember()
+        {
+            NfConfig.UseReflectionOnlyLoad = false;
+            FxPointers.AddResolveAsmEventHandlerToDomain();
+            var testAsm = GetAdventureWorks2012();
+
+            const string testTypeName = "AdventureWorks.VeryBadCode.BasicGenerics";
+            var testType = testAsm.GetType(testTypeName);
+            Assert.IsNotNull(testType);
+
+            var testCgType = NoFuture.Gen.Etc.GetCgOfType(testAsm, testTypeName, false);
+            Assert.IsNotNull(testCgType);
+
+            var cgMem = testCgType.Methods.FirstOrDefault();
+            Assert.IsNotNull(cgMem);
+
+            var testResult = testCgType.RemoveCgMember(cgMem);
+            Assert.AreEqual(1, testResult);
+
+        }
+
         public static Assembly GetAdventureWorks2012()
         {
             var testAsm =

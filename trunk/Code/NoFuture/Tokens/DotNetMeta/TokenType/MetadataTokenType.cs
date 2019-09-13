@@ -133,7 +133,12 @@ namespace NoFuture.Tokens.DotNetMeta.TokenType
         {
             if (Items == null || !Items.Any())
                 return null;
-            return Items.FirstOrDefault(i => i.IsInterfaceType());
+            var basemtt = Items.FirstOrDefault(i => !i.IsInterfaceType());
+            return new MetadataTokenType
+            {
+                Items = new [] { basemtt },
+                Name = NfSettings.DefaultTypeSeparator.ToString()
+            };
         }
 
         /// <summary>

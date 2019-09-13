@@ -203,6 +203,8 @@ namespace NoFuture.Gen
         /// <returns></returns>
         public bool ContainsThisMember(CgMember someMember)
         {
+            if (someMember == null)
+                return false;
             if (Properties.Any(p => p.Equals(someMember)))
                 return true;
             if (Fields.Any(f => f.Equals(someMember)))
@@ -366,6 +368,34 @@ namespace NoFuture.Gen
                     return match;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Removes the members when given <see cref="cgMember"/> is present
+        /// within this instance.
+        /// </summary>
+        /// <returns>The number of members removed</returns>
+        public int RemoveCgMember(CgMember cgMember)
+        {
+            if (cgMember == null)
+                return 0;
+            var count = 0;
+
+            var listsOf = new List<List<CgMember>> {Methods, Properties, Fields, Events};
+
+            foreach (var list in listsOf)
+            {
+                for (var i = 0; i < list.Count; i++)
+                {
+                    var cgMem = list[i];
+                    if (cgMem == null || !cgMember.Equals(cgMem))
+                        continue;
+
+                    if (list.Remove(cgMem))
+                        count += 1;
+                }
+            }
+            return count;
         }
 
         private void PropagateSelfToLists()

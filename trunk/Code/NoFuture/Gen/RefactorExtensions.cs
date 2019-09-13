@@ -175,7 +175,7 @@ namespace NoFuture.Gen
         /// </summary>
         /// <param name="rmCgMems"></param>
         /// <param name="removeEmptyLines">Optional, set to true to not have the results as blank char-for-char</param>
-        public static string[] RemoveMembers(List<CgMember> rmCgMems, bool removeEmptyLines = false)
+        public static string[] RemoveMembersFromSrcCodeFiles(List<CgMember> rmCgMems, bool removeEmptyLines = false)
         {
             if (rmCgMems == null || rmCgMems.Count <= 0)
                 return new string[0];
@@ -194,7 +194,7 @@ namespace NoFuture.Gen
                 var cgMems =
                     byFile.Where(x => string.Equals(x.PdbModuleSymbols.file, fl, StringComparison.OrdinalIgnoreCase))
                         .ToList();
-                RemoveMembers(srcLines, cgMems, fl);
+                RemoveMembersFromSrcCodeFiles(srcLines, cgMems, fl);
                 modifiedFiles.Add(fl);
                 if (removeEmptyLines)
                 {
@@ -214,7 +214,7 @@ namespace NoFuture.Gen
         /// The full path to the source code file on disk
         /// </param>
         /// <param name="removeEmptyLines">Optional, set to true to not have the results as blank char-for-char</param>
-        public static void RemoveMembers(List<CgMember> rmCgMems, string sourceCodeFilePath, bool removeEmptyLines = false)
+        public static void RemoveMembersFromSrcCodeFiles(List<CgMember> rmCgMems, string sourceCodeFilePath, bool removeEmptyLines = false)
         {
             if (rmCgMems == null || rmCgMems.Count <= 0)
                 return;
@@ -226,7 +226,7 @@ namespace NoFuture.Gen
 
             var srcLines = File.ReadAllLines(sourceCodeFilePath);
 
-            RemoveMembers(srcLines, rmCgMems, sourceCodeFilePath);
+            RemoveMembersFromSrcCodeFiles(srcLines, rmCgMems, sourceCodeFilePath);
             if (removeEmptyLines)
             {
                 System.Threading.Thread.Sleep(50);
@@ -479,7 +479,7 @@ namespace NoFuture.Gen
         }
 
         //presumes all the Members are defined within the contents of srcLines
-        internal static void RemoveMembers(string[] srcLines, List<CgMember> rmCgMems, string outputFileName)
+        internal static void RemoveMembersFromSrcCodeFiles(string[] srcLines, List<CgMember> rmCgMems, string outputFileName)
         {
             if (rmCgMems == null || rmCgMems.Count <= 0)
                 return;
