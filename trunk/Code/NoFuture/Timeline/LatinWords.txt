@@ -321,7 +321,7 @@ tamen,however
 tandem,at last
 templum,temple
 teneo,hold
-terra,ground|land
+terra,ground|land|earth
 terret,frightens
 timet,is afraid|fears
 tollo|tollere|sustuli,raise|lift up
@@ -362,3 +362,18 @@ custodi,keep
 soror,sister
 manibus,hand
 mandatum,command
+veritas,truth
+sanctus,holy
+aeternum,eternal
+bellum,war
+noctis,night
+amare,love
+lux,light
+filia,daughter
+oriens,dawn
+annos,year
+aurum,gold
+mensis,month
+mortem,dead
+flumen,river
+gens,tribe|nation

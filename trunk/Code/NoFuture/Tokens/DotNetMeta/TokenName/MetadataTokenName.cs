@@ -253,15 +253,6 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         }
 
         /// <summary>
-        /// Clears any in-memory cache copies from full tree recursions.
-        /// </summary>
-        public void ClearAllCacheData()
-        {
-            _fullDepthCount = null;
-            _anyByRef = null;
-        }
-
-        /// <summary>
         /// Fills in the rest of the <see cref="Name"/> with the part which is defined by its assembly
         /// </summary>
         /// <param name="asmIndicies"></param>
@@ -298,7 +289,7 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         /// Optional, allows caller to get feedback on progress since this takes some time to run.
         /// </param>
         /// <returns></returns>
-        public MetadataTokenName BindTokens2Names(MetadataTokenId tokenIds, Action<ProgressMessage> reportProgress = null)
+        internal MetadataTokenName BindTokens2Names(MetadataTokenId tokenIds, Action<ProgressMessage> reportProgress = null)
         {
             if (tokenIds?.Items == null || !tokenIds.Items.Any())
                 return this;
@@ -476,7 +467,7 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         /// </summary>
         /// <param name="tokenName"></param>
         /// <returns></returns>
-        public MetadataTokenName GetFirstByVal(MetadataTokenName tokenName)
+        internal MetadataTokenName GetFirstByVal(MetadataTokenName tokenName)
         {
             if (tokenName == null)
                 return null;
@@ -492,7 +483,7 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         /// Gets all by-ref token names from all depths 
         /// </summary>
         /// <param name="tokenNames"></param>
-        public void GetAllByRefNames(List<MetadataTokenName> tokenNames)
+        internal void GetAllByRefNames(List<MetadataTokenName> tokenNames = null)
         {
             Func<MetadataTokenName, bool> searchFor = (v) => v.IsByRef;
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
@@ -513,7 +504,7 @@ namespace NoFuture.Tokens.DotNetMeta.TokenName
         /// </summary>
         /// <param name="tokenType"></param>
         /// <param name="tokenNames"></param>
-        public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames)
+        public void GetAllDeclNames(MetadataTokenType tokenType, List<MetadataTokenName> tokenNames = null)
         {
             tokenNames = tokenNames ?? new List<MetadataTokenName>();
             if (tokenType == null)

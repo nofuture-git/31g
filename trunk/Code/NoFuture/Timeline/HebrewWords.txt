@@ -69,7 +69,7 @@ StrongsIndex,Words,Translations
 בִנְימִין,1144,Benjamin
 בַּעַל,1167,husband|owner
 בָּקָר,1241,cattle|herd
-בֹקֶר,1242,morning
+בֹקֶר,1242,morning|dawn
 בקשׁ,1245,to seek
 בְּרית,1285,covenant
 ברךְ,1288,to bless
@@ -146,7 +146,7 @@ StrongsIndex,Words,Translations
 יוֹסף,3130,Joseph
 יַיִן,3196,wine
 יכל,3201,to be able to
-ילד,3205,give birth|beget
+ילד,3205,give birth|beget|child
 יָם,3220,sea|west
 יָמין,3225,right hand|south side
 יסף,3254,to add|continue to do
@@ -257,7 +257,7 @@ StrongsIndex,Words,Translations
 עַד,5704,as far as|until
 עֵדָה,5712,community|assembly
 עוֹד,5750,still|again
-עוֹלָם,5769,long time|duration
+עוֹלָם,5769,long time|duration|everlasting|forever|perpetual
 עָוֹן,5771,guilt|punishment
 עזב,5800,to leave
 עַיִן,5867,eye|spring of water
@@ -279,7 +279,7 @@ StrongsIndex,Words,Translations
 עֵת,6256,time
 עַתִּה,6258,now
 פֶה,6310,mouth
-פְּלִשְׁתִי,6430,mouth
+פְּלִשְׁתִי,6430,Philistine
 פֶּן,6434,otherwise|or|lest
 פנה,6437,to turn
 פּנים,6440,face

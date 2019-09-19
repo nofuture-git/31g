@@ -337,3 +337,13 @@ Words,StrongsIndex,Translations
 ωστε,5620,so that|as a result
 γινωσκω,1097,to know
 επειδη,1894,because|after that
+πολεμος,4171,war|battle
+θυγατερ,2364,daughter
+αδελφε,79,sister
+προι,4404,morning
+ορθρος,3722,dawn
+χρυσος,5557,gold
+μην,3376,month
+ποταμος,4215,river
+βιβλος,976,book|scroll
+ιππος,2462,horse
