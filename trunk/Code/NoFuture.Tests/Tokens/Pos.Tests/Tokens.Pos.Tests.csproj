@@ -8,8 +8,8 @@
     <ProjectGuid>{8A469D3B-5F26-46A0-A73B-865F1EB16ECC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Util.Pos.Tests</RootNamespace>
-    <AssemblyName>NoFuture.Util.Pos.Tests</AssemblyName>
+    <RootNamespace>NoFuture.Tokens.Pos.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Tokens.Pos.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -49,9 +49,9 @@
       <Project>{6eca48dc-fdb4-4660-9914-3b74d5975ff9}</Project>
       <Name>Shared.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\NoFuture\Util\Util.Pos\Util.Pos.csproj">
+    <ProjectReference Include="..\..\..\NoFuture\Tokens\Pos\Tokens.Pos.csproj">
       <Project>{39627590-0d97-4de2-b598-172b04587550}</Project>
-      <Name>Util.Pos</Name>
+      <Name>Tokens.Pos</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

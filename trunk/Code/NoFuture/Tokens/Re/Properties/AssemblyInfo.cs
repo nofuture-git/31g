@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Util.Re")]
+[assembly: AssemblyTitle("NoFuture.Tokens.Re")]
 [assembly: AssemblyDescription("Nf port for getting data from R")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Util.Re")]
+[assembly: AssemblyProduct("NoFuture.Tokens.Re")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +21,6 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("d572d6a3-0b77-451f-a1fe-efee1767bf9c")]
-[assembly:InternalsVisibleTo("NoFuture.Tests")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
