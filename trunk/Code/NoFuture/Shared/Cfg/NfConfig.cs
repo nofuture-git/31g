@@ -81,7 +81,7 @@ namespace NoFuture.Shared.Cfg
             {"customInvokeGraphVizTool", s => CustomTools.InvokeGraphViz = s},
             {"customInvokeAssemblyAnalysisTool", s => CustomTools.InvokeAssemblyAnalysis = s},
             {"customInvokeFlattenTool", s => CustomTools.InvokeFlatten = s},
-            {"customUtilPosHostTool", s => CustomTools.UtilPosHost = s},
+            {"customTokensPosHostTool", s => CustomTools.TokensPosHost = s},
             {"customInvokeDpxTool", s => CustomTools.InvokeDpx = s},
             {"customInvokeNfTypeNameTool", s => CustomTools.InvokeNfTypeName = s},
             {"ffmpegTool", s => PythonTools.Ffmpeg = s},
@@ -523,7 +523,7 @@ namespace NoFuture.Shared.Cfg
             public static string InvokeGraphViz { get; set; }
             public static string InvokeAssemblyAnalysis { get; set; }
             public static string InvokeFlatten { get; set; }
-            public static string UtilPosHost { get; set; }
+            public static string TokensPosHost { get; set; }
             public static string InvokeDpx { get; set; }
             public static string InvokeNfTypeName { get; set; }
         }

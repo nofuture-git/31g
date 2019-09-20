@@ -56,8 +56,8 @@ $dnd = [NoFuture.Shared.Cfg.NfConfig]::Init(([NoFuture.Shared.Cfg.NfConfig]::Fin
 
     .EXAMPLE
     PS C:\> Invoke-StanfordPostTagger -Path .\temp\testInputPosFile.txt -OutPath .\temp\posOut.txt
-    PS C:\> [NoFuture.Util.Pos.ITagset[][]]$tags = New-Object "NoFuture.Util.Pos.ITagset[][]" 0,0
-    PS C:\> [NoFuture.Util.Pos.PtTagset]::TryParse((Get-Content .\temp\posOut.txt), [ref]$tags)
+    PS C:\> [NoFuture.Tokens.Pos.ITagset[][]]$tags = New-Object "NoFuture.Tokens.Pos.ITagset[][]" 0,0
+    PS C:\> [NoFuture.Tokens.Pos.PtTagset]::TryParse((Get-Content .\temp\posOut.txt), [ref]$tags)
 #>
 function Invoke-StanfordPostTagger
 {
@@ -111,7 +111,7 @@ function Invoke-StanfordPostTagger
             Copy-Item -Path $binCopy -Destination $env:CLASSPATH.Replace("*","") -Force
         }
 
-        $separator = [NoFuture.Util.Pos.PtTagset]::TagDelimiter;
+        $separator = [NoFuture.Tokens.Pos.PtTagset]::TagDelimiter;
 
         #the data payload is sent to the StandardOut while progress from JVM is sent to StandardError
         $sp = New-Object System.Diagnostics.ProcessStartInfo;

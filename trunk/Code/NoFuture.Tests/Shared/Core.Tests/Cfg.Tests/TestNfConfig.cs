@@ -77,7 +77,7 @@ namespace NoFuture.Core.Cfg.Tests
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Gen.InvokeGraphViz.exe", NfConfig.CustomTools.InvokeGraphViz);
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.exe", NfConfig.CustomTools.InvokeAssemblyAnalysis);
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Tokens.Gia.InvokeFlatten.exe", NfConfig.CustomTools.InvokeFlatten);
-            Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Util.Pos.Host\NoFuture.Util.Pos.Host.exe", NfConfig.CustomTools.UtilPosHost);
+            Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Tokens.Pos.Host\NoFuture.Tokens.Pos.Host.exe", NfConfig.CustomTools.TokensPosHost);
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Tokens.DotNetMeta.InvokeDpx.exe", NfConfig.CustomTools.InvokeDpx);
             Assert.AreEqual(@"C:\Projects\_NoFuture\bin\NoFuture.Tokens.InvokeNfTypeName.exe", NfConfig.CustomTools.InvokeNfTypeName);
 
@@ -169,8 +169,8 @@ namespace NoFuture.Core.Cfg.Tests
                 {"customInvokeGraphVizTool", @"$(binRootDir)\NoFuture.Gen.InvokeGraphViz.exe"},
                 {"customInvokeAssemblyAnalysisTool", @"$(binRootDir)\NoFuture.Tokens.Gia.InvokeAssemblyAnalysis.exe"},
                 {"customInvokeFlattenTool", @"$(binRootDir)\NoFuture.Tokens.Gia.InvokeFlatten.exe"},
-                {"customUtilPosHostTool", @"$(binRootDir)\NoFuture.Util.Pos.Host.exe"},
-                {"customInvokeDpxTool", @"$(binRootDir)\NoFuture.Util.Binary.InvokeDpx.exe"},
+                {"customTokensPosHostTool", @"$(binRootDir)\NoFuture.Tokens.Pos.Host.exe"},
+                {"customInvokeDpxTool", @"$(binRootDir)\NoFuture.Tokens.Binary.InvokeDpx.exe"},
                 {"customInvokeNfTypeNameTool", @"$(binRootDir)\NoFuture.Tokens.InvokeNfTypeName.exe"},
                 {"binFfmpegTool", @"$(binRootDir)\ffmpeg.exe"},
                 {"binYoutubeDlTool", @"$(binRootDir)\youtube-dl.exe"},
@@ -327,7 +327,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='customInvokeGraphVizTool' value='$(binRootDir)\NoFuture.Gen.InvokeGraphViz.exe' />
             <add id='customInvokeAssemblyAnalysisTool' value='$(binRootDir)\NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.exe' />
             <add id='customInvokeFlattenTool' value='$(binRootDir)\NoFuture.Tokens.Gia.InvokeFlatten.exe' />
-            <add id='customUtilPosHostTool' value='$(binRootDir)\NoFuture.Util.Pos.Host\NoFuture.Util.Pos.Host.exe' />
+            <add id='customTokensPosHostTool' value='$(binRootDir)\NoFuture.Tokens.Pos.Host\NoFuture.Tokens.Pos.Host.exe' />
             <add id='customInvokeDpxTool' value='$(binRootDir)\NoFuture.Tokens.DotNetMeta.InvokeDpx.exe' />
             <add id='customInvokeNfTypeNameTool' value='$(binRootDir)\NoFuture.Tokens.InvokeNfTypeName.exe' />
           </custom>

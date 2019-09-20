@@ -14,7 +14,7 @@ namespace NoFuture.Tokens.Pos.Host
 {
     public class Program : SocketConsole
     {
-        private int? _utilPosHostCmdPort;
+        private int? _tokensPosHostCmdPort;
         private readonly TaskFactory _taskFactory;
         public Program(string[] args) : base(args, true)
         {
@@ -25,11 +25,11 @@ namespace NoFuture.Tokens.Pos.Host
         {
             get
             {
-                if (NfNet.IsValidPortNumber(_utilPosHostCmdPort))
-                    return _utilPosHostCmdPort;
+                if (NfNet.IsValidPortNumber(_tokensPosHostCmdPort))
+                    return _tokensPosHostCmdPort;
 
-                _utilPosHostCmdPort = ResolvePort("UtilPosHostDefaultPort");
-                return _utilPosHostCmdPort;
+                _tokensPosHostCmdPort = ResolvePort("TokensPosHostDefaultPort");
+                return _tokensPosHostCmdPort;
             }
         }
         public static void Main(string[] args)
@@ -83,7 +83,7 @@ namespace NoFuture.Tokens.Pos.Host
             Environment.Exit(0);
         }
 
-        protected override string MyName => "Util.Pos.Host";
+        protected override string MyName => "Tokens.Pos.Host";
 
         protected override string GetHelpText()
         {
@@ -126,7 +126,7 @@ namespace NoFuture.Tokens.Pos.Host
             _taskFactory.StartNew(
                 () => HostCmd(new PosParserCmd(this), CmdPort.GetValueOrDefault(NfConfig.NfDefaultPorts.PartOfSpeechPaserHost)));
             //print settings
-            PrintToConsole($"InvokeFlatten listening on port [{CmdPort}]");
+            PrintToConsole($"{MyName} listening on port [{CmdPort}]");
 
         }
     }

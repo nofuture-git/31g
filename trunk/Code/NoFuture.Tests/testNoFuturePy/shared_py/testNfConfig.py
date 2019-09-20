@@ -28,7 +28,7 @@ class TestNfConfig(unittest.TestCase):
 	    "customInvokeGraphVizTool" : "$(binRootDir)\\NoFuture.Gen.InvokeGraphViz.exe",
 	    "customInvokeAssemblyAnalysisTool" : "$(binRootDir)\\NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis.exe",
 	    "customInvokeFlattenTool" : "$(binRootDir)\\NoFuture.Tokens.Gia.InvokeFlatten.exe",
-	    "customUtilPosHostTool" : "$(binRootDir)\\NoFuture.Util.Pos.Host.exe",
+	    "customTokensPosHostTool" : "$(binRootDir)\\NoFuture.Tokens.Pos.Host.exe",
 	    "customInvokeDpxTool" : "$(binRootDir)\\NoFuture.Tokens.DotNetMeta.InvokeDpx.exe",
 	    "customInvokeNfTypeNameTool" : "$(binRootDir)\\NoFuture.Tokens.InvokeNfTypeName.exe",
 	    "binFfmpegTool" : "$(binRootDir)\\ffmpeg.exe",
