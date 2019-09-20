@@ -280,7 +280,101 @@ root@56ac8f9d4d46:/word2vec# ./distance /word2vec/corpus/GoogleNews-vectors-nega
 ----
 
 ----
-Example Youtube-Dl
- - Ubuntu for building and running Word2Vec
- - switch to Linux containers from the Docker Desktop settings
+PowerShell Start and Stop cmdlets
+ - the general idea is that to stop Docker for Windows, you begin with process, then services and finally network adapters
+ - to start Docker for Windows its all reversed
+ - the network adapter names may be different 
+ - discovered that Skype for Business will not login because its not sure which netword adapter to use
+   for its DNS 
 
+function Stop-DockerForWindows() {
+    :nextProcess foreach($processName in @("Docker Desktop")){
+        
+        $processFlag = $false
+        Get-Process | ? { $_.ProcessName -eq $processName } | % { $processFlag = $true }
+        #its not running
+        if( -not $processFlag){
+            continue nextProcess;
+        }
+
+        Write-Host "Stopping Process " -NoNewline 
+        Write-Host "$processName" -ForegroundColor Magenta
+
+        Stop-Process -Name $processName
+    }
+
+    :nextWinService foreach($serviceName in @("com.docker.service", "HvHost", "vmcompute", "vmms")){
+        
+        $serviceFlag = $false
+        Get-Service | ? { $_.Name -eq $serviceName } | % { $serviceFlag = $true }
+        if($serviceFlag){
+            continue nextWinService;
+        }
+
+        Write-Host "Stopping Service " -NoNewline 
+        Write-Host "$serviceName" -ForegroundColor Magenta
+
+        Stop-Service -Name $serviceName
+    }
+
+    :nextNetAdapter foreach($netAdapterName in @("vEthernet (Default Switch)", "vEthernet (DockerNAT)")){
+
+        $netAdapterFlag = $false
+        Get-NetAdapter | ? { $_.Name -eq $netAdapterName } | % { $netAdapterFlag = $true }
+        if(-not $netAdapterFlag){
+            continue nextNetAdapter;
+        }
+
+        Write-Host "Disabling Network Adapter " -NoNewline 
+        Write-Host "$netAdapterName" -ForegroundColor Magenta
+
+        Disable-NetAdapter -Name $netAdapterName -Confirm:$False
+    }
+}
+
+function Start-DockerForWindows() {
+    :nextNetAdapter foreach($netAdapterName in @("vEthernet (Default Switch)", "vEthernet (DockerNAT)")){
+
+        $netAdapterFlag = $false
+        Get-NetAdapter | ? { $_.Name -eq $netAdapterName } | % { $netAdapterFlag = $true }
+        if(-not $netAdapterFlag){
+            continue nextNetAdapter;
+        }
+
+        Write-Host "Enabling Network Adapter " -NoNewline 
+        Write-Host "$netAdapterName" -ForegroundColor Magenta
+
+        Enable-NetAdapter -Name $netAdapterName
+    }
+
+    :nextWinService foreach($serviceName in @("vmms", "vmcompute", "HvHost", "com.docker.service")){
+        
+        $serviceFlag = $false
+        Get-Service | ? { $_.Name -eq $serviceName } | % { $serviceFlag = $true }
+        if( -not $serviceFlag){
+            continue nextWinService;
+        }
+
+        Write-Host "Starting Service " -NoNewline 
+        Write-Host "$serviceName" -ForegroundColor Magenta
+
+        Start-Service -Name $serviceName
+    }
+
+    :nextProcess foreach($processName in @("C:\Program Files\Docker\Docker\Docker Desktop.exe")){
+        
+        $processFlag = $false
+        Get-Process | ? { $_.ProcessName -eq $processName } | % { $processFlag = $true }
+
+        #its already running
+        if($processFlag){
+            continue nextProcess;
+        }
+
+        Write-Host "Starting Process " -NoNewline 
+        Write-Host "$processName" -ForegroundColor Magenta
+
+        Start-Process -FilePath $processName
+    }
+}
+----
