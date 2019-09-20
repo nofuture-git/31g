@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
+using NoFuture.Tokens.Pos.Host.Cmds;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
-using NoFuture.Util.Pos.Host.Cmds;
 using Cfg = System.Configuration.ConfigurationManager;
 
-namespace NoFuture.Util.Pos.Host
+namespace NoFuture.Tokens.Pos.Host
 {
     public class Program : SocketConsole
     {

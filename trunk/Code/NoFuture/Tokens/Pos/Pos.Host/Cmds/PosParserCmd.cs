@@ -2,11 +2,11 @@
 using System.Text;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Pos.Host.Cmds
+namespace NoFuture.Tokens.Pos.Host.Cmds
 {
     public class PosParserCmd : CmdBase<string>, ICmd
     {
-        public PosParserCmd(NfConsole.Program myProgram): base(myProgram)
+        public PosParserCmd(Util.NfConsole.Program myProgram): base(myProgram)
         {
         }
 

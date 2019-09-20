@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Text;
-using NoFuture.Shared;
 using NoFuture.Shared.Core;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Pos
+namespace NoFuture.Tokens.Pos
 {
     public class InvokePosParserCmd : InvokeCmdBase, IInvokeCmd<TagsetBase[][]>
     {

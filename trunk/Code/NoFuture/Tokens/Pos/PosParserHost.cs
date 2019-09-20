@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Util.NfConsole;
 
-namespace NoFuture.Util.Pos
+namespace NoFuture.Tokens.Pos
 {
     /// <summary>
     /// A handle type to create the remote and use

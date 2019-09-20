@@ -9,8 +9,8 @@ using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Tokens.DotNetMeta.TokenId;
 using NoFuture.Tokens.DotNetMeta.TokenRank;
+using NoFuture.Tokens.Re;
 using NoFuture.Util.NfConsole;
-using NoFuture.Util.Re;
 
 namespace NoFuture.Tokens.DotNetMeta.InvokeDpx
 {

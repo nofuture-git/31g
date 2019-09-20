@@ -6,7 +6,7 @@ using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using RDotNet;
 
-namespace NoFuture.Util.Re
+namespace NoFuture.Tokens.Re
 {
     public class Efx
     {

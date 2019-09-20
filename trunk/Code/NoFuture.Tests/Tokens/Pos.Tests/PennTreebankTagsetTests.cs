@@ -3,7 +3,7 @@ using System.Linq;
 using NoFuture.Shared.Core;
 using NUnit.Framework;
 
-namespace NoFuture.Util.Pos.Tests
+namespace NoFuture.Tokens.Pos.Tests
 {
     [TestFixture]
     public class PennTreebankTagsetTests
@@ -28,7 +28,7 @@ namespace NoFuture.Util.Pos.Tests
             foreach (var allCode in AllCodes)
             {
                 Console.WriteLine(allCode);
-                Assert.IsNotNull(NoFuture.Util.Pos.PtTagset.GetTagset(allCode));
+                Assert.IsNotNull(PtTagset.GetTagset(allCode));
             }
         }
 
@@ -37,7 +37,7 @@ namespace NoFuture.Util.Pos.Tests
         {
             const string TEST_INPUT = "This_DT is_VBZ a_DT sample_NN sentence_NN";
             TagsetBase[] testOutList = null;
-            var testResult = NoFuture.Util.Pos.PtTagset.TryParse(TEST_INPUT, out testOutList);
+            var testResult = PtTagset.TryParse(TEST_INPUT, out testOutList);
 
             for (var i = 0; i < testOutList.Length; i++ )
             {
@@ -66,11 +66,11 @@ namespace NoFuture.Util.Pos.Tests
         [Test]
         public void TestSentenceBreakParse()
         {
-            NoFuture.Util.Pos.PtTagset.TagDelimiter = '_';
+            PtTagset.TagDelimiter = '_';
             TagsetBase[] testOutList;
 
             var testInput = @"When_WRB in_IN the_DT Course_NNP of_IN human_JJ events_NNS ,_, it_PRP becomes_VBZ necessary_JJ for_IN one_CD people_NNS to_TO dissolve_VB the_DT political_JJ bands_NNS which_WDT have_VBP connected_VBN them_PRP with_IN another_DT ,_, and_CC to_TO assume_VB among_IN the_DT powers_NNS of_IN the_DT earth_NN ,_, the_DT separate_JJ and_CC equal_JJ station_NN to_TO which_WDT the_DT Laws_NNPS of_IN Nature_NNP and_CC of_IN Nature_NNP 's_POS God_NNP entitle_VB them_PRP ,_, a_DT decent_JJ respect_NN to_TO the_DT opinions_NNS of_IN mankind_NN requires_VBZ that_IN they_PRP should_MD declare_VB the_DT causes_NNS which_WDT impel_VBP them_PRP to_TO the_DT separation_NN ._.";
-            var testResult = NoFuture.Util.Pos.PtTagset.TryParse(testInput, out testOutList);
+            var testResult = PtTagset.TryParse(testInput, out testOutList);
             Assert.IsTrue(testResult);
             Assert.IsNotNull(testOutList);
             Assert.AreNotEqual(0 ,testOutList.Length);
@@ -94,10 +94,10 @@ namespace NoFuture.Util.Pos.Tests
         [Test]
         public void TestParseResultsBySentences()
         {
-            NoFuture.Util.Pos.PtTagset.TagDelimiter = '_';
+            PtTagset.TagDelimiter = '_';
             TagsetBase[][] testOutList;
             
-            var testResult = NoFuture.Util.Pos.PtTagset.TryParse(_largeTestFile, out testOutList);
+            var testResult = PtTagset.TryParse(_largeTestFile, out testOutList);
             Assert.IsTrue(testResult);
 
             Assert.IsNotNull(testOutList);

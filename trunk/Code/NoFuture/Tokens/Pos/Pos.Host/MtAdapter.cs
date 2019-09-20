@@ -1,11 +1,10 @@
 ﻿using System.IO;
 using System.Linq;
 using edu.stanford.nlp.tagger.maxent;
-using NoFuture.Shared;
 using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 
-namespace NoFuture.Util.Pos.Host
+namespace NoFuture.Tokens.Pos.Host
 {
     /// <summary>
     /// see [http://www-nlp.stanford.edu/nlp/javadoc/javanlp/edu/stanford/nlp/tagger/maxent/MaxentTagger.html]

@@ -6,7 +6,7 @@ using System.Linq;
 using NoFuture.Shared.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
-namespace NoFuture.Util.Pos
+namespace NoFuture.Tokens.Pos
 {
     public class PtTagset
     {

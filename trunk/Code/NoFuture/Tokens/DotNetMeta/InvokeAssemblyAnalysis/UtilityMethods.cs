@@ -7,6 +7,7 @@ using NoFuture.Shared.Cfg;
 using NoFuture.Shared.Core;
 using NoFuture.Tokens.DotNetMeta.TokenId;
 using NoFuture.Tokens.DotNetMeta.TokenName;
+using NoFuture.Tokens.Re;
 using NoFuture.Util.Binary;
 using NoFuture.Util.Core;
 using NoFuture.Util.NfConsole;
@@ -404,8 +405,8 @@ namespace NoFuture.Tokens.DotNetMeta.InvokeAssemblyAnalysis
             if (tokens == null)
                 return null;
             var adjGraph = tokens.GetAsRoot().GetAdjancencyMatrix(true);
-            Util.Re.Efx.RTempDir = _myProgram.LogDirectory;
-            var pageRank = Util.Re.Efx.GetPageRank(adjGraph.Item2);
+            Efx.RTempDir = _myProgram.LogDirectory;
+            var pageRank = Efx.GetPageRank(adjGraph.Item2);
             var idx = adjGraph.Item1;
             var valsOut = new List<Tuple<int, int, double>>();
             for (var i = 0; i < idx.Count; i++)
