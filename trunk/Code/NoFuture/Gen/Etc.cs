@@ -940,7 +940,6 @@ namespace NoFuture.Gen
             return false;
         }
 
-
         /// <summary>
         /// Used in <see cref="ToPlural"/> for nouns which posses no discernable pattern
         /// for being rendered plural.

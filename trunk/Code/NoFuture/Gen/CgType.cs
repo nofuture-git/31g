@@ -7,7 +7,6 @@ using NoFuture.Shared.DiaSdk.LinesSwitch;
 using NoFuture.Tokens.DotNetMeta.TokenName;
 using NoFuture.Util.Core;
 
-
 namespace NoFuture.Gen
 {
     /// <summary>
@@ -34,20 +33,24 @@ namespace NoFuture.Gen
             } 
         }
         public string AssemblyQualifiedName { get; set; }
+
         /// <summary>
         /// <see cref="Namespace"/> for code gen purpose is not null
         /// this is a flag indicating if the <see cref="Namespace"/>
         /// was derived from the source or contrived.
         /// </summary>
         public bool IsContrivedNamespace { get; set; }
+
         /// <summary>
         /// Specifies that the original type's source was an Enum
         /// </summary>
         public bool IsEnum { get; set; }
+
         /// <summary>
         /// The original metadata token from the loaded assembly
         /// </summary>
         public int MetadataToken { get; set; }
+
         /// <summary>
         /// Returns the type's name as a regex pattern having the 
         /// Namespace portion encoded and optional.

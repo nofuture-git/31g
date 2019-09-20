@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CgMemberCompare.cs" />
     <Compile Include="Etc.cs" />
     <Compile Include="CgArg.cs" />
     <Compile Include="CgMember.cs" />

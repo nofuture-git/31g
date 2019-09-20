@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NoFuture.Util;
 using NoFuture.Util.Core;
-using NoFuture.Util.NfType;
 
 namespace NoFuture.Gen
 {

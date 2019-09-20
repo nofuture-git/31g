@@ -20,7 +20,7 @@ namespace NoFuture.Gen.LangRules
         string DeclareConstantKeyword { get; }
 
         /// <summary>
-        /// A dictionary of .NET primitive types to thier lang-specific alias.
+        /// A dictionary of .NET primitive types to their lang-specific alias.
         /// (e.g. 'System.Int32' -to- 'int' in C#)
         /// </summary>
         Dictionary<string, string> ValueTypeToLangAlias { get; }
@@ -170,7 +170,7 @@ namespace NoFuture.Gen.LangRules
         string[] ExtractNamespaceImportStatements(string[] codeFileLines);
 
         /// <summary>
-        /// Condenses a source code file down to a continous char array
+        /// Condenses a source code file down to a continuous char array
         /// containing only those chars needed by a compiler.
         /// </summary>
         /// <param name="fileContent"></param>
@@ -300,7 +300,7 @@ namespace NoFuture.Gen.LangRules
 
         /// <summary>
         /// Asserts the source code, represented by <see cref="codeBlockLines"/> is
-        /// out-of-balance on either the openning or closing tokens.
+        /// out-of-balance on either the opening or closing tokens.
         /// </summary>
         /// <param name="codeBlockLines"></param>
         /// <returns></returns>
