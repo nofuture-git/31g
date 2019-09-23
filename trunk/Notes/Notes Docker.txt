@@ -29,11 +29,11 @@ Arch basics
   - env variables
   - networking
   - console w\ std out and std err streams
- - Console output is where Docker looks for log entries
+ - console output is where Docker looks for log entries
  - images are then avail on various web hosts
  - Docker Hub is large repo for Linux distros and Microsoft Windows
  - Docker Cloud is a pub\priv repo with auth control
- - Docker Store is a commercial repo to purchase images    
+ - Docker Store is a commercial repo to purchase images   
 ----
 
 ----
@@ -127,13 +127,6 @@ CLI basics
   - give an alias to an image 
   - alias-to-image is many-to-one, same image may have many alias
   - does not create another copy, just another ref
-----
-
-----
-Swarm basics
- - a composition of two or more running docker images
- - there exist some form of interprocess comm between individual containers
-  - the over-the-wire comm is encrypted using digital certs
 ----
 
 ----
@@ -281,3 +274,68 @@ root@56ac8f9d4d46:/word2vec# ./distance /word2vec/corpus/GoogleNews-vectors-nega
 
  - from here the program is running and you enter a word and its does its thing
 ----
+
+----
+Docker Compose 
+ - next level abstraction, containers are grouped into "services"
+  - with Docker, the logical-unit will be container(s) so something is 
+    needed to form the composition of them
+ - are defined using YAML and specific file name of 'docker-compose.yml'
+ - a service is some container and all its config info declared 
+ - main section is "services" in which each service is defined
+ - the "volumes" and "network" definitions are separate since this 
+   is typically what's shared among the various services
+   - "networks" allow you to declare, and name a Docker host
+    
+ version: '3.7'
+ 
+ services:
+  some-name-here:
+   image: myuser/my-image
+   environment: 
+    - MY_ENV_VAR="default value"
+    - MY_OTHER_VAR=-someSwitchOrSomething
+   volumes:
+    - C:\Temp\corpus:/word2vec/corpus
+   networks:
+    - nd-net
+  
+  another-service-here:
+   image: myuser/my-other-image
+   depends_on:
+    - some-name-here
+   networks:
+    - nd-net
+     
+  some-top-level-thing:
+   image: myuser/over-the-top:v0.0.1
+   env_file:
+    #this would be in same dir as this docker-compose.yml file
+    - my_env_cfg.env 
+   depends_on:
+    - some-name-here
+    - another-service-here
+   networks:
+    - nd-net
+     
+ networks:
+  nd-net:
+    external:
+      name: nat
+  
+
+ - has its own CLI named "docker-compose" 
+PS C:\> docker-compose --version
+
+ - to run a docker-compose.yml
+  - host will append prefix & suffix to service name
+ {containing folder name}_{service name in compose file}_{ordinal}
+PS C:\> docker-compose up --detach
+   
+ - to scale one particular container within the host
+ - use the name declared in the docker-compose file 
+ - this will result in having three of these running on the host
+  - each with an ordinal suffix of 1, 2, 3
+ - the docker host will round-robin request to each
+PS C:\> docker-compose up --detach --scale another-service-here=3
+---- 
