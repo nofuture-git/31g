@@ -338,4 +338,18 @@ PS C:\> docker-compose up --detach
   - each with an ordinal suffix of 1, 2, 3
  - the docker host will round-robin request to each
 PS C:\> docker-compose up --detach --scale another-service-here=3
----- 
+----
+
+----
+Docker Swarm
+ - a kind of distributed computing of Docker host\services
+ - interprocess comm between all hosts throughout the swarm are encrypted (TLS)
+ - designed as manager-worker arch 
+  - dev\admin interface with manager while 
+  - users interface with the worker-containers
+ - the two main commands to manage a Docker swarm
+  - [...] is a standin, not actual syntax
+ PS C:\> docker swarm [...]
+ PS C:\> docker node [...]
+----
+

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InvokePosParserCmd.cs" />
+    <Compile Include="ITagset.cs" />
     <Compile Include="PosParserHost.cs" />
     <Compile Include="PtTagset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

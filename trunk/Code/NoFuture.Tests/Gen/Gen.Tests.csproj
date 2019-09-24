@@ -73,6 +73,10 @@
       <Project>{88a7a90f-4836-40ce-99d8-65bfe7c4cac8}</Project>
       <Name>Tokens.DotNetMeta</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\NoFuture\Tokens\Pos\Tokens.Pos.csproj">
+      <Project>{39627590-0d97-4de2-b598-172b04587550}</Project>
+      <Name>Tokens.Pos</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NoFuture\Util\Binary\Util.Binary.csproj">
       <Project>{c02e6247-e99f-4ef2-b275-12f8bb27acc7}</Project>
       <Name>Util.Binary</Name>

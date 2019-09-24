@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Etc.cs" />
-    <Compile Include="NfMapper.cs" />
     <Compile Include="NfNet.cs" />
     <Compile Include="NfPath.cs" />
     <Compile Include="NfReflect.cs" />

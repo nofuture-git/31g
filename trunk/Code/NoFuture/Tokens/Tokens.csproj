@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Etx.cs" />
+    <Compile Include="NfMapper.cs" />
     <Compile Include="XDocFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
