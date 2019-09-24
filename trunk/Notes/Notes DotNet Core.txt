@@ -1,0 +1,59 @@
+----
+Notes dotnet core
+----
+
+----
+https://docs.microsoft.com/en-us/dotnet/core/
+----
+
+----
+.NET Core in Action
+By: Dustin Metzgar
+Publisher: Manning Publications
+Pub. Date: July 20, 2018
+Print ISBN-10: 1-61729-427-6
+Print ISBN-13: 978-1-61729-427-3
+Pages in Print Edition: 288
+----
+
+----
+Overview
+ - .NET Framework is the original, Windows-only framework
+ - dotnet core is the rewrite machine-independent 
+  - Windows-only stuff is not supported
+   - registry
+   - WIN32/COM interop
+   - GAC
+   - Special folders
+  - AppDomain is out 
+   - there is stuff in System.Runtime.Loader and
+     Microsoft.Extensions.DependencyModel packages
+  - WPF/XAML is out
+  - distributed transactions are out
+  - Remoting is out 
+  - .asmx are not supported
+  - LINQ to SQL is replaced with Entity Framework
+  - WCF Services (as a host) are out 
+   - there is some stuff for client's
+  - Workflow Foundation, this depends on the other 
+    stuff already rem'ed (WCF, XAML, etc.)
+  - type reflection has changed
+   - uses new class named TypeInfo 
+ - ver. 1.0 used 'project.json', ver. 2.0 switched
+   back to MSBuild .(vb|cs|fs)proj XML
+----
+
+----
+Terminalogy (mostly NuGet in origin)
+ - Moniker: the keyword name used to specify 
+    a framework, runtime or platform (e.g. net471)
+ - Target Framework: flavor of .NET 
+  - e.g. net471, netcoreapp1.0
+ - .NET Standard: another kind of target framework
+    which works for all
+  - a kind of, "I don't need to specify the 
+    target framework because it works on all of them..."
+ - Runtime: a couple of operating system and CPU arch
+  - e.g osx.10.11-x64, linuxmint.17.1.x86
+ - Platform: used without any sense to 
+   mean runtime, framework, both or all
