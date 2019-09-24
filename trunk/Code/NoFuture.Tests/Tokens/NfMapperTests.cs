@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace NoFuture.Util.Core.Tests
+namespace NoFuture.Tokens.Tests
 {
     [TestFixture]
     public class NfReflectTests

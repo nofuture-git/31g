@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using NoFuture.Shared.Core;
+using NoFuture.Tokens.Pos;
 using NUnit.Framework;
 
 namespace NoFuture.Gen.Tests

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using NoFuture.Util.Core;
 
-namespace NoFuture.Util.Core
+namespace NoFuture.Tokens
 {
     public static class NfMapper
     {

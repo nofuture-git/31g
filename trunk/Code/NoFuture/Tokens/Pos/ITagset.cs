@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Shared.Core
+namespace NoFuture.Tokens.Pos
 {
     /// <summary>
     /// src [https://catalog.ldc.upenn.edu/docs/LDC99T42/tagguid1.pdf]
