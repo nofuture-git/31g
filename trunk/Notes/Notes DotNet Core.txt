@@ -20,6 +20,9 @@ Pages in Print Edition: 288
 Overview
  - .NET Framework is the original, Windows-only framework
  - dotnet core is the rewrite machine-independent 
+  - many dotnet SDK's may be installed on a single machine
+PS C:\> dotnet --info
+
   - Windows-only stuff is not supported
    - registry
    - WIN32/COM interop
@@ -41,6 +44,18 @@ Overview
    - uses new class named TypeInfo 
  - ver. 1.0 used 'project.json', ver. 2.0 switched
    back to MSBuild .(vb|cs|fs)proj XML
+ - idea of web.config\app.config is out 
+  - many "forms" of configuration where those
+    based on a file is but one of many
+   - for file-based, use of file named "appsettings.json" 
+     and "appsettings.{Environment}.json" 
+   - use of containers means each is an autonomous 
+     environment so the machine's environment var's
+     are used for what was, prev., defined in web.config
+ - idea of build's targeting an environment is out
+  - instead the same build is used for all
+  - the host defines its environment using environment varibles
+   - for ASP.NET Core the variable is "ASPNETCORE_ENVIRONMENT"
 ----
 
 ----
