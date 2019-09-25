@@ -45,7 +45,7 @@ Basics
   - Natural Language Generation (NLG)
    - considered second component of NLP
    - the creation of natual language from the machine
-    - in machina exspriavit
+    - in machina exspriavit (ghost in the machine)
     
   - Corpus, collection of written or spoken natural language material
    - plural is Corpora

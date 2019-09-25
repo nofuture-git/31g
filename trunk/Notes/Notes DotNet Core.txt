@@ -53,7 +53,54 @@ Terminalogy (mostly NuGet in origin)
     which works for all
   - a kind of, "I don't need to specify the 
     target framework because it works on all of them..."
- - Runtime: a couple of operating system and CPU arch
+ - Runtime: a couple, operating system and CPU arch
   - e.g osx.10.11-x64, linuxmint.17.1.x86
  - Platform: used without any sense to 
-   mean runtime, framework, both or all
+    mean runtime, framework, both or all
+----
+
+----
+.(cs|vb|fs)proj Files Differences
+ - there is no XML namespace 
+ - expected that dev's will directly modify the (cs|vb|fs)proj file 
+  - adding EmbeddedResource would need the dev to open it and add
+    the node 
+  - dev can use the MSBuild Conditional's 
+
+ <PropertyGroup Condition="'$(MyParam)' == 'true'" />
+ <PropertyGroup Condition="'$(OtherParam)' == 'false'" />
+  - involves variable nesting (e.g. single quotes inside double-quotes)
+  - can then be assigned another value at the dotnet CLI
+PS C:\> dotnet build -p:MyParam=false,OtherParam=true
+  
+ - build output paths are not defined within proj file
+  - instead are specified in the invocation of "dotnet build"
+ - each src-code file does not get added as a "Compile" node
+  - the src-code files to include in compilation is assumed 
+    from current working dir.
+ - references are of the two typical forms, binary or source-code
+  - appears only binary form is as NuGet packages 
+ - projects do not include an independent "packages.config" 
+   since those are specified in the .(cs|vb|fs)proj file itself
+ 
+PS C:\> dotnet add package Newtonsoft.Json
+ - add a nuget (binary) package reference
+ 
+PS C:\> dotnet add reference "C:\Projects\MyOtherProj\MyOtherProj.csproj"
+ - add a source-code (project) reference
+ 
+ - the new "PackageReference" node is a NuGet binary reference
+  - the "Include" attribute is the NuGet package id
+  - the "Version" attribute is the NuGet package version
+ 
+ - the old "Reference" was a ref to a .dll 
+  - the "Include" attribute was the assembly name 
+   - for NuGet packages it was the full-qual. assembly name
+   - for GAC references it was simple assembly name 
+  - the "HintPath" child-node was only present on NuGet package ref's
+ 
+ - new "ProjectReference" is mostly the same
+  - the "Project" child-node is not added from dotnet CLI
+   - probably still present when added from Visual Studio (.sln files)
+  - the "Name" child-node is not added from dotnet CLI
+----

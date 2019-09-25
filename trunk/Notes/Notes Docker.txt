@@ -140,7 +140,7 @@ Docker files
  - files are in UTF-8
  - escape-sequence is the C-style backslash so Windows file paths
    need the double-slash "\\"
- - octothrop (\x23) is to define a directive 
+ - octothrop (\x23) is to define a directive or comment
  
  FROM microsoft/dotnet AS myalias
  - example of most basic possible dockerfile - is just the base image itself
