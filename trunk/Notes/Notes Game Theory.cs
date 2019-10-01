@@ -35,20 +35,20 @@ namespace GameTheory
      - simultaneous game, means the players make choices at the same
         time or in-so-far as one player is not aware of the other 
         players choice.
-     - sequential game, where players make choices by trun
+     - sequential game, where players make choices by turn
        - adds dimension of first-move or second-move advantage
         - it can be either, depends on the game
      - dominant strategy, when a particular choice is always better 
         than all others
      - Nash equilibrium, when neither player would want to change their
         choice based on the choice of the other player "mutual best response"
-       - a payoff matrix is the simplist form of input 
+       - a payoff matrix is the simplest form of input 
        - a payoff matrix may have zero-to-many Nash equilibrium
      - the theory is a mathematical so everything still concerns numbers
      - Game Theorist's Number One Rule: Anticipate the other player's reaction
         in order to make your best choice.
      - Adverse selection, idea that an offering is only taken up 
-        by those who benifit (e.g. insurance where buyer knows their 
+        by those who benefit (e.g. insurance where buyer knows their 
           expenses will exceed the yearly premium)
          - the way its overcome is to change the offering based 
            on known info about those who wish to take it
@@ -72,7 +72,7 @@ namespace GameTheory
       |        +----+--------+--------+
       |        |Deny| -20,0  | -1,-1  |
       +--------+----+--------+--------+
-      - the strategy is explored from one players prespective at-a-time
+      - the strategy is explored from one players perspective at-a-time
        - where Clyde answers what they would do knowing the choice made by Bonnie
        - Clyde: "if Bonnie choose Rat then I would choose Rat"
        - Clyde: "if Bonnie choose to Deny then I would choose Rat"
@@ -191,9 +191,9 @@ namespace GameTheory
     ----
     Iterated Dominance and Dominated Strategies
      - idea of finding dominant strategy, removing any choices which 
-       are never choosen, and then repeating 
+       are never chosen, and then repeating 
      - from a matrix point-of-view it means finding whole rows and columns
-       which are never choosen
+       which are never chosen
      - in this example the iterations continue until there is only one choice
 
          ========== 0 ========== 

@@ -56,7 +56,7 @@ AI is presented as a kind of API
   - Hidden Markov Models: used in lang-rec being based 
     on existing math and allowed for training using 
 	speech samples.
-  - Bayesian network:  deals with probablity and 
+  - Bayesian network:  deals with probability and 
     making decisions with uncertainty involved.
  - recent changes: the knowledge base from which 
    to work seems to be as, if not more, important
@@ -72,7 +72,7 @@ Agent
  - has some means of perceiving it
  - has some means of effecting it
  - must have some kind of utility for measuring success.
- - preception is the input, action the output
+ - perception is the input, action the output
   - the relation between them is called 'mapping'
  - has autonomy, determines actions based on its
    own exp of perceptions (with some kind of useful 
@@ -85,9 +85,9 @@ Agent
    its precepts, actions, goals and environment
  - text includes example of a taxi driver
     Precepts: Cameras, speedometer, GPS, sonar, mic
-    Actions: steer, eccelerate, brake, talk to passenger
+    Actions: steer, accelerate, brake, talk to passenger
     Goals: safe, fast, legal, comfortable trip, profit
-    Envrionment: roads, traffic, peds customers
+    Environment: roads, traffic, peds customers
  - precept-action is too simple (a.k.a. reflex-agent), 
    agents will also need to have some kind of 
    register for 'internal-state'
@@ -97,7 +97,7 @@ Agent
  - in addition the agent needs some overall kind of vision to choose
    an action (a goal)
  - a more advanced agent will perceive a series of actions from actions
-   having many possiable choices and choose the one to maximize goals
+   having many possible choices and choose the one to maximize goals
   - this becomes further complicated by probability.
 ----
 
@@ -105,7 +105,7 @@ Agent
 Expressing State (Represent the Environment)
  - text divides expression of state into three modes of 
    increasing complexity
-  - atomic: each state is indivisible, a sinlge fact
+  - atomic: each state is indivisible, a single fact
     like an enum
   - factored: each state is a fixed set of attributes (variables)
   - structured: is factored states which are related to each other
@@ -140,7 +140,7 @@ Problem Solving
    returning a solution (sequence of actions) as output.
    - a successor function x, S(x) is the general form 
      of, given 'x', 'S(x)' is a set of reachable states.
-   - 'state space' is a list of all possiable states 
+   - 'state space' is a list of all possible states 
    - goal-test takes a state and determines if it meets 
      a goal.
    - path cost takes into account that more than one sequence 
@@ -151,17 +151,17 @@ Problem Solving
 	(3) goal-test
 	(4) path-cost functions
     (5) transition model: results of those actions
-   - additionaly there is a search-cost where trying to solve
+   - additionally there is a search-cost where trying to solve
      the problem is costly on its own
  - performing the actions is called execution
  - the general form is then 
     formulate, search, execute
  - agent then finds a new goal
  - a contingency problem is one where the state must be 
-   re-eval'ed after each action resulting initialy in a 
-   complex desicion tree.
+   re-eval'ed after each action resulting initially in a 
+   complex decision tree.
  - exploration problem is when the agent doesn't know the 
-   effects of its actions and must experiment to disover them
+   effects of its actions and must experiment to discover them
 ----
  
 ----
@@ -189,7 +189,7 @@ Search Strategies
  
  - there are six minor kinds of uninformed searches (aka blind search)
   (1) Breadth-first search: root node is fully expanded then its direct
-      descendents are fully expanded followed by thier descendents and so on.
+      descendants are fully expanded followed by their descendants and so on.
 	 - in general form, nodes at depth 'd' are expanded prior to nodes at depth
        'd + 1'
      - is very expensive: at level one there is 'b', at two there is 'b^2' 
@@ -248,18 +248,18 @@ Search Strategies
 Constraint Satisfaction Search
  - aka CSP
  - state is a set of variables with values
- - goal-test specifies a set of contrants the values must obey
+ - goal-test specifies a set of constraints the values must obey
   - where each value must past some list of propositions
  - in general 
   - each variable (Vi) has a domain of (Di)
-   - domain is the set of possiable values a variable may have
+   - domain is the set of possible values a variable may have
    - domains may be continuous or discrete
   - example is the 8-queens problem, where queen 1 is in the first 
     column of the board and queen two is in the second column of 
 	the board.
     - the domains for both queen 1 and queen 2 is (1 .. 8)
 	- the constraint could be represented as pairs of numbers
-	  each representing a possiable attack 
+	  each representing a possible attack 
 	   - at column 1, row 1 we could attack column 2, row 1 and 
 	     column 2, row 2, etc.
 	   - solve for allowable pairs as ((1,3),(1,4),(1,5),...(2,4),(2,5),...)
@@ -359,12 +359,12 @@ Heuristic Function:
  - tile in the middle could move 4 places
  - the rest could move 3 places
   - that averages to a branch factor of 3
- - there are 9! possiable arrangements of the tiles
- - cannot move diagonial so calc city distance is called manhattan distance
+ - there are 9! possible arrangements of the tiles
+ - cannot move diagonal so calc city distance is called manhattan distance
  - effective branching factor is an algebra eq. solved for with guess of 
    total number of nodes expanded at some depth
   - at depth 5 with 52 nodes we find a solution then effective branching factor
-    is solved using the formula from breadth-frist max possiable nodes
+    is solved using the formula from breadth-first max possible nodes
 	N = 1 + b + b^2 + b^3 + ... + b^d
    52 = 1 + b + b^2 + b^3 + b^4 + b^5 
    - solve for 'b'
@@ -386,7 +386,7 @@ Heuristic Function:
 Advanced Search 
  - Local Search: different kind of algorithm
   - current node: the base node from which Local Search ops
-  - moves about amoung neighbors of current node
+  - moves about among neighbors of current node
  - Optimization problems: "find the best state according 
    to an objective function"
    - objective function: the tautological thing which 
@@ -432,7 +432,7 @@ Advanced Search
 Nodeterministic Search
  - Percepts become useful
  - in partially observable environment
-  - percept narrow dow possiable states 
+  - percept narrow dow possible states 
  - in nondeterministic environment
   - percepts tell which possible outcomes actually occurred
  - solution becomes a matter of contingency
@@ -445,11 +445,11 @@ Nodeterministic Search
     the environment and computes the next action.
  - [exploration problem]: the agent does not know what states
    exist or what its actions do.
-   - the reuslts of action (a) at state (s) can only be known
+   - the results of action (a) at state (s) can only be known
      by being at state (s) and doing action (a)
    - the text refers to 'online search' where 'online' means
      "process input data as the are received"
- - [competitive ratio]: the actual choosen path cost compared to
+ - [competitive ratio]: the actual chosen path cost compared to
     its paragon
  - [irreversible state]: a state from which no action leads back
     to the previous state
@@ -696,7 +696,7 @@ Digression on Probability
    to sum up to 1
   - is just the calc of each over the sum of all
    
- - Marginal Independece (a.k.a. absolute independence)
+ - Marginal Independence (a.k.a. absolute independence)
    (a.k.a. just 'independence'): when one random variable
    has absolutely nothing to do with another
   - formally defined as P(X|Y) = P(X)
@@ -756,7 +756,7 @@ Bayesian Network
   - each node (a.k.a. points) (a.k.a. vertices) is a 
     random variable (discrete or continuous)
   - is acyclic so no loops or cycles
-  - each nodes proability is P(x[i]|Parents(x[i]))
+  - each nodes probability is P(x[i]|Parents(x[i]))
   - start by listing out all nodes
    - prefer obvious causes to be above their effects
   - iterate each node by drawing the edge(s) (a.k.a. links)

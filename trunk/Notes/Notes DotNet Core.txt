@@ -31,7 +31,7 @@ PS C:\> dotnet --info
   - AppDomain is out 
    - there is stuff in System.Runtime.Loader and
      Microsoft.Extensions.DependencyModel packages
-  - WPF/XAML is out
+  - XAML is out
   - distributed transactions are out
   - Remoting is out 
   - .asmx are not supported
