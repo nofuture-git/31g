@@ -167,7 +167,7 @@ namespace Whatever
 
             /*--------------------------------------
              Automapper handling a Map for a parent 
-             inteface on concrete type
+             interface on concrete type
              --------------------------------------*/
             AutoMapper.Mapper.CreateMap<UnderlyingType, ExtendedTypesTarget>()
                 .Include<ExtendsUnderlyingType, ExtendedTypesTarget>()

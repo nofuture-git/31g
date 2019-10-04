@@ -12,7 +12,7 @@ Graph Theory (Formal)
  Terms
  - vertices (nodes): is the discrete data of the graph 
  
- - edges (links): represent the relation amoung the vertices'
+ - edges (links): represent the relation among the vertices'
  
  - join: formal name for what the edge is doing; namely, joining
     two vertices.
@@ -36,13 +36,13 @@ Graph Theory (Formal)
  
  - degree: the number of edges being joined to a single vertex
  
- - density: the number of edges over the number of possiable edges
+ - density: the number of edges over the number of possible edges
  
  - connectedness: fraction of all groups of two nodes where there is an 
     edge between them
     
  - betweenness: the number of times some node was passed-through 
-    for every possiable node-pair.
+    for every possible node-pair.
     
  - subgraph: a subset of vertices and edges of another graph
  
@@ -109,7 +109,7 @@ Graph Theory (Formal)
 	clique via one edge
     
  - complete graph: every vertex is connected to every other 
-    vetex via an edge and is equal to n*(n-1)/2
+    vertex via an edge and is equal to n*(n-1)/2
     
  - path: another name for a route, also called a walk
  
@@ -153,7 +153,7 @@ Graph Theory (Formal)
 ----
 Representing a Graph
  - adjacency list: represent each vertex as a key and the value 
-    as an array of adjacent vetices.
+    as an array of adjacent vertices.
  [1], [2,3,3]	would mean vertex 1 has one edge connecting it 
                  to vertex 2 and two edges connecting it to vertex 
  [2], [1,4]     vertex 2 has one edge connecting it to vertex 1 and 

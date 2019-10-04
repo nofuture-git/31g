@@ -15,14 +15,14 @@ Source Files:
  
  Identifiers:
  --------
- > belong to a namspace
+ > belong to a namespace
  > begin with _ or letter
  > [] to reuse keyword as identifier
  
  Literals:
  --------
  Numeric:
- > w/o explict declaration
+ > w/o explicit declaration
     - integer is Integer
     - float is Double
  > D suffix for Decimal
@@ -115,7 +115,7 @@ DirectCast(var, SomeType) 'the runtime obj of var must match exactly to Type!
 
 ---- 
 Arrays: obvious
-Dim a(4) As Integer 'recieves default values
+Dim a(4) As Integer 'receives default values
 Dim a(5,10,15) As Integer
 Dim a() As Integer = {1,2,3}
 Dim a(,) As Integer ={{1,2},{3,4}}
@@ -186,7 +186,7 @@ Friend: assembly only
 Private: class only
 Protected: class and extended class only
 Protected Friend: assembly and extended class only
-Public: universial
+Public: universal
 ----
 
 ----
@@ -208,7 +208,7 @@ Arithmetic Operators: same as basic math
 "Mod" modulo
     (1) Byte, Short, Integer, Long only
     (2) returns remainder
-"^" eponentiation
+"^" exponentiation
 "+" addition
 "-" subtraction
 ----
@@ -238,7 +238,7 @@ TypeOf <object> Is <dataType>
 ----
 
 ----
-Concatination Operators: put strings together.
+Concatenation Operators: put strings together.
 "+" "&" string concatenation
 ----
 
@@ -267,7 +267,7 @@ Order of Operation: when multiple operators are in the same group - eval left to
 (1) exponentiation
 (2) negation
 (3) multiplication & float division
-(4) interger division
+(4) integer division
 (5) modulus
 (6) addition, subtraction, "+" string concat
 (7) "&" string concat
@@ -280,7 +280,7 @@ Order of Operation: when multiple operators are in the same group - eval left to
 ----
 Statements
 "_ " underscore-space: use to continue a line 
-":" colon: use to seperate multiple statements on a single line
+":" colon: use to separate multiple statements on a single line
 ----
 
 ----
@@ -290,15 +290,15 @@ Option Compare: <Binary> <Text>
     (2) text: compare text by character value
 Option Explicit <On> <Off>
     (1) on:  all variables must be declared
-    (2) off: variables use is an implict declaration
+    (2) off: variables use is an implicit declaration
 Option Strict <On> <Off>
-    (1) on:  loss of percision casting is NOT allowed
-    (2) off:  loss of percision casting is allowed
+    (1) on:  loss of precision casting is NOT allowed
+    (2) off:  loss of precision casting is allowed
 
 Exit Statement: 
 Exit Do ' exits the whole loop (not single iteration)
 Exit For 'same
-Eixt Function
+Exit Function
 Exit Property
 Exit Sub
 Exit Try ' Finally clause is still executed
@@ -343,7 +343,7 @@ End Select
 ----
 Iterations:
 
-Do: exectutes until a condition becomes true or while it remains true
+Do: executes until a condition becomes true or while it remains true
 Do While i < 10
     <body>
 Loop
@@ -412,7 +412,7 @@ Public Sub mySub() Handles myEvent ' append sub or function with Handles keyword
 ----
 
 ----
-Inheirtance: OO
+Inheritance: OO
 Public Class myClass 
       Inherits myParentClass
 
@@ -420,7 +420,10 @@ End Class
 ----
 
 ----
-Abstract class:  uses the MustInherit modifier and the methods MAY have a body. The MustOverride modifier of an abstract classes' method means the child class must give implementation to the method.  Last the NotInheritable modifier may be used on a class - like Final in Java.
+Abstract class:  uses the MustInherit modifier and the methods MAY have a body.
+ The MustOverride modifier of an abstract classes' method means the child class must 
+ give implementation to the method.  
+ Last the NotInheritable modifier may be used on a class - like Final in Java.
 
 Public MustInherit Class myClass
   Public Function myFunction(ByVal a As String)
@@ -467,7 +470,7 @@ End Function
   (3) Overloads ' this is the keyword for overloading a method
   (4) Shared ' this is the keyword - behavior is that of Static in Java
 
-[ handles _or_implements]:  w/ handles, list of events.  w/ implements, list of methords derived from interface.
+[ handles _or_implements]:  w/ handles, list of events.  w/ implements, list of methods derived from interface.
 ----
 
 ----
@@ -547,7 +550,7 @@ End Class
 Overloading Inherited methods: does require a keyword in the overloaded method.
 
 Public Class myParent
-  Publid Sub myMethod() 'no keyword used here
+  Public Sub myMethod() 'no keyword used here
     '...
   End Sub
 End Class
@@ -641,7 +644,7 @@ MyClass and Me keywords:  used in the same way most of the time.  Invoking them 
 Me.myMethod 'this calls the current instance object's implementation of myMethod
 
 MyClass.myMethod
-'this will call this classes' implementation - even if its overriden
+'this will call this classes' implementation - even if its overridden
 ----
 
 ----
@@ -712,9 +715,9 @@ End Structure
 Enumerations:  same as Java except no constant class bodies 
 Rules-
 Enums are assigned integer values by default starting at zero
-User may override interger assignment.
+User may override integer assignment.
 Therefore Enums are both ordered (0,1,2...n) and indexed.
-Comparasion operaters may be applied.
+Comparison operates may be applied.
 Enums may be looped
 
 Public Enum myEnum
@@ -754,7 +757,7 @@ End Try
 
 'Guaranteed to release all unmanaged resources
 Using resource As New UnmanagedResource()
-  'unmanaged resouce calls here
+  'unmanaged resource calls here
 End Using  
 
 Public Class myClass
@@ -801,7 +804,7 @@ Public Class myClientClass
   Public Sub itWorks
     Dim aConnector As myServerClass 'connects, assigns and invokes
     
-    Dim aClientDelegate As myServerClass.myDelegate _ 'an intance Delegate
+    Dim aClientDelegate As myServerClass.myDelegate _ 'an instance Delegate
         = AddressOf printSomething 'here is the meaningful connection
     
     aConnector.myRegistar(aClientDelegate)'instance is added to the bucket
@@ -865,20 +868,20 @@ End Class
 ----
 
 ----
-Standard Modules:  similar to Java's Static Class.  Presumes that this class is loaded only once with the start of the VM.    The members cannot be inheirited. 
+Standard Modules:  similar to Java's Static Class.  Presumes that this class is loaded only once with the start of the VM.    The members cannot be inherited. 
 Public Module myModule
   Dim a As Int32 'shared 
 End Module
 ----
 
 ----
-Attributes: used to modify the declartion.
+Attributes: used to modify the declaration.
 
 <myAttribute( )> Public Class myClass 'applied in front of access modifier
   
   <myAttribute( ), myOtherOne( )> Dim a As Int32 'can use multiple
   
-  <myThirdAttribue(n As Int32)> Dim b As Int32 'can take arguements
+  <myThirdAttribue(n As Int32)> Dim b As Int32 'can take arguments
   
   <myAttribute( )> Public Sub mySub ' enclosed in angle brackets
     '...
@@ -914,7 +917,7 @@ End Class
 ----
 
 ----
-Conditional Compilation: used to wrap code for debugging.  Can be actived from the command line.
+Conditional Compilation: used to wrap code for debugging.  Can be activated from the command line.
 
 Imports System.Thread
 
@@ -934,7 +937,7 @@ Public Class myClass
 
 End Class
 
-Solution Explorer > Solution > Properties > Debug tab > Command line arguements
+Solution Explorer > Solution > Properties > Debug tab > Command line arguments
 
 /define:DEBUG=True
 ----
@@ -946,7 +949,7 @@ XML comments (Visual Studio 2005 or higher): used like javadoc in java
 '''Here is a summary
 '''</summary>
 '''<param name="myParameter">detail about myParameter here</param>
-'''<remarks>A longer exlaination here</remarks>
+'''<remarks>A longer explanation here</remarks>
 Public Sub mySub(ByVal myParameter As String)
 '...
 End Sub

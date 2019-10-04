@@ -91,7 +91,7 @@ Tasks (of interest)
  - other DBA specific tasks for backup, moves, compression etc
  
  - every task must return an execution result of either
-    Cancelled, Failure or Success
+    Canceled, Failure or Success
 ----
 
 ----
@@ -184,7 +184,7 @@ Types of Transformations
 
 ----
 Performance Considerations 
- - for data transform, as much logic as possiable should be 
+ - for data transform, as much logic as possible should be 
    performed via a stored proc on the Data Source including 
    CAST \ CONVERT
    
@@ -199,14 +199,14 @@ Performance Considerations
    script should be used.
    
  - typically the performance goal is:
-   pass as many records as possiable through a single buffer
+   pass as many records as possible through a single buffer
    while setting configurable values to optimize buffer size.
    Further performance by typical concepts (divide-and-conquer)
 
  - Estimated Row Size is a derived value from the type info 
    from the datasource.  For example, if a column is defined
    as NVARCHAR(MAX) but it never actually approaches NVARCHAR(256)
-   then set this as such explictly.
+   then set this as such explicitly.
    
  - DefaultMaxBufferRows: is configurable and defaults to 10K. 
    By getting the product of this value to the Estimated Row Size
@@ -220,7 +220,7 @@ Performance Considerations
    OS virtual memory.  Typically its 65536 bytes (1KB).
    
  - Non-clustered index should be dropped on the 
-   destination, Clusted index should not be drop.
+   destination, Clustered index should not be drop.
 ----  
 
 ----
@@ -296,7 +296,7 @@ cmFile.Description = "A connection to my xml file";
  var mySqlTask = myTaskHost.InnerObject 
                      as Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask;
 
- //precedence contraint determines the order in which executables are performed w\i a package
+ //precedence constraint determines the order in which executables are performed w\i a package
  var constraint = myPackage.PrecedenceConstraints.Add(myExecutable, myNextExec);
  //set condition between them on the object returned from thier addition
  constraint.Value = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Completion;
@@ -313,7 +313,7 @@ cmFile.Description = "A connection to my xml file";
  - is contained in a TaskHost like the others
  - data-flow components appear to be underlying COM 
    objects and require discovery per machine
- - many of these will require explict declarations because 'var' will
+ - many of these will require explicit declarations because 'var' will
    not resolve the type.
  
  var myDataFlow = myPackage.Executables.Add("STOCK:PipelineTask");
@@ -328,12 +328,12 @@ cmFile.Description = "A connection to my xml file";
  
 ----
 /*
-  Components and Componenent Metadata
+  Components and Component Metadata
   ----
   - There is no component collection instead there is a component's metadata collection
-  - A componenets metadata contains all the info describing the component.  
+  - A components metadata contains all the info describing the component.  
   - Its from this metadata component one gains an instance of the actual component.
-  - The actual componenet, created from the metadata's Instantiate contains
+  - The actual component, created from the metadata's Instantiate contains
    - IDTSDesigntimeComponent100: contains the methods for design like setting
 	 properties and adding columns.
    - IDTSRuntimeComponent100: contains the methods for running the component
@@ -341,7 +341,7 @@ cmFile.Description = "A connection to my xml file";
 	 
   - A call to "Instantiate()" is only to begin the component, a subsequent call to
 	"ProvideComponentProperties()" actual sets up the properties specific to the 
-	given componenet.
+	given component.
 	- the property "AccessMode" is declared in 
 	  C:\Program Files (x86)\Microsoft SQL Server\100\DTS\PipelineComponents\Oledbsrc.dll
 */
@@ -349,9 +349,9 @@ cmFile.Description = "A connection to my xml file";
 /*
   Components and Connection Managers
   ----
-  - Components describe thier association to a connection manager using their 
+  - Components describe their association to a connection manager using their 
 	components metadata's RuntimeConnectionCollection.
-  - A componenet requires as many connections as the Count of their RuntimeConnectionCollection
+  - A component requires as many connections as the Count of their RuntimeConnectionCollection
 	after calling the components ProvideComponentProperties.
   - The runtime connection is associated to the connection manager by the connection 
 	manager's ID.
@@ -382,14 +382,14 @@ cmFile.Description = "A connection to my xml file";
   - Using the 'path' object the mapping is set between OutputCollection\InputCollection 
 	properties of the component's metadata object 
 	via the AttachPathAndPropagateNotifications method.
-   - Having connected the IO the destination has a sense for all the possiable input
+   - Having connected the IO the destination has a sense for all the possible input
 	 columns it could receive from its upstream component - this is the purpose of GetVirtualInput().
    - The same references passed into the path objects AttachPath~ method are the objects
 	 objects from which specific IO columns are mapped to one another.
 	 
   - A specific column in the output collection is mapped to a specific virtual input column 
 	via the output columns LineageID.
-   - The virtual input columns still requires that each of them have thier Usage Type property
+   - The virtual input columns still requires that each of them have their Usage Type property
 	 set.  This tells how the columns are used in the data buffer.
    - The SetUsageType will find the specific virtual input column using the output columns 
 	 LineageID, this same method then creates an input column on the destination component,
@@ -619,7 +619,7 @@ SSIS Variables
  - are scoped to the particular container in which they are declared
  - scope is top-down where a container has access to its parent container's
    variables
- - Tasks will have thier variables scoped to themselves only  
+ - Tasks will have their variables scoped to themselves only  
  - there are two namespaces for variables: System, User
   - most developer declared variables are in User
  
@@ -680,7 +680,7 @@ SSIS Data Types
 ----
 SSIS Casting
  - Casting may take multiple forms
- - Simpliest is like any C-based lang
+ - Simplest is like any C-based lang
  
  (DT_I4)32
  
@@ -698,8 +698,8 @@ SSIS Casting
 SSIS Expressions
 
  Boolean Operators
-  - string are binary comparisions so 
-    thier encoding cannot be taken for granted
+  - string are binary comparisons so 
+    their encoding cannot be taken for granted
  ----
  ||, &&, ==, !=, ? :
  'True', 'False', 'true', 'false'

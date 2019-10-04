@@ -1,14 +1,14 @@
 /*
 Object / Relational Impedance Mismatch
 is the idea that interconnecting data by tables/rows/columns/pk/fk is 
-incompatiable with an interconnecting schemea derived from objects.
+incompatible with an interconnecting schema derived from objects.
 
  Major problems
  - Scope: where in OO you will have more objects than DB tables
  - Inheritance & Polymorphism: in OO classes are extending each other 
     while DB has all flat matrix with key relations.
  - Identity: a datarow may be uniquely id'ed while an object requires
-    more defintion.
+    more definition.
  - Relations: DB PK/FK are not directional while OO properties are of 
     one being a HAS-A of another.  To get bi-directional both OO classes
 	must HAVE-A property to each other.
@@ -17,7 +17,7 @@ incompatiable with an interconnecting schemea derived from objects.
 /*
 Unit of Work
  - idea of an in-time series or combination
-   of operations which are consider a single logicical unit.
+   of operations which are consider a single logical unit.
 */
 
 /*
@@ -35,7 +35,7 @@ Query by Criteria
  - a declarative static-object pipe which reads like a classic SQL statement
    e.g. MyClass.MakeThis(arg).PerformFilterUsing(val).FormatResultLike(foo).As<MyType>();
    
- - by way of comparision Language Integrated Query (LINQ) is also a declarative statement
+ - by way of comparison Language Integrated Query (LINQ) is also a declarative statement
    but is formed by way of ordered key-words rather than an object pipe.
 */
 
@@ -189,7 +189,7 @@ public class MyBasicExample
 	}
 	
 	/*
-	Four ways to retreive data from NHibernate
+	Four ways to retrieve data from NHibernate
 	(1.) HQL
 	(2.) ICriteria API
 	(3.) direct SQL
@@ -401,7 +401,7 @@ public class CapitalAPI
 	
 	#region Callback interface - to react to NHibernate events
 	IInterceptor spt {get; set;} //subscribe to by persistent classes that do not implement any NH API
-	ILifecycle cyc {get; set;} //event a persistent object emmits and which only it may subscribe
+	ILifecycle cyc {get; set;} //event a persistent object emits and which only it may subscribe
 	IValidatable vtb {get; set;} //likewise.
 	#endregion
 	
@@ -463,7 +463,7 @@ public class DetailedConfigurationExample
 			else if(CFG_EMBEDDED_XML)
 			{
 				//connection.provider is a class implementing the IConnectionProvider interface
-				//dialect, handles subtlies with SQL beyond ANSI standard, comes packaged with most common
+				//dialect, handles subtleties with SQL beyond ANSI standard, comes packaged with most common
 				//connection.driver_class, a class implementing the .NET ADO Driver
 				//connection.connection_string, obvious
 
@@ -542,21 +542,21 @@ Database Axioms:
 NHibernate Assumptions:
 1.) one table is represented by one type.
 2.) complexity is introduced by axiom 6 which means foreign keys and primary keys
-    may share columns.  This affects NHibernate mapping becasue composites of columns
+    may share columns.  This affects NHibernate mapping because composites of columns
 	must be defined as a type.
 
 
 NHibernate Axioms:
 1.) an instance which is mapped to an hbm is either persistent; meaning it is associated
     to a live Session, or is transient; meaning the instance was constructed by the 
-    applicantion-code.
+    application-code.
 	
 2.) a single foreign key is represented by a single type.
 	- this means that if the FK includes many columns of the resident table
 	  to many columns of its reference - it exist on the type as one property
 	  of the given table type
 	  
-3.) a primary key whose composition is more than one column requires a seperate
+3.) a primary key whose composition is more than one column requires a separate
     type to represent it.
 	- this means the primary key of the type is, itself, a type whose definition
 	  is the various columns used to define the primary key.
@@ -567,7 +567,7 @@ NHibernate Axioms:
 	- this means that when a table has a primary key of say, c1, c2, c3 and, likewise,
 	  has a foreign key which has say, c1 and c2.  In addition the table has another
 	  foreign key of say c3 then this table's type would have a primary key which is 
-	  a seperate type, and, additionally, this seperate type would itself contain 
+	  a separate type, and, additionally, this separate type would itself contain 
 	  two properties of two types.  The first type representing the c1, c2 columns
 	  and the second representing the c3 column.
 	  
@@ -638,9 +638,9 @@ public class RepresentingDatabaseForeignKeys
 		<one-to-many class='ClassNameOfAntecendentTable' />
 	</bag>";
 	
-	//the actual IList is a protected virtual instance variable having the givnen naming pattern in the POCO
-	//this is a so in the POCO one can add custome AddSuchAndSuch(...) because in NHib. to est. a releationship on a bag 
-	//  one must have reciprical parentInstance.Child = childInstance & childInstane.Parent = parentInstance
+	//the actual IList is a protected virtual instance variable having the given naming pattern in the POCO
+	//this is a so in the POCO one can add custom AddSuchAndSuch(...) because in NHib. to est. a relationship on a bag 
+	//  one must have reciprocal parentInstance.Child = childInstance & childInstane.Parent = parentInstance
 	string HbmXmlSubsequentFkProtected = @"
 	<bag name='PropertyName' access='field.camelcase-underscore' cascade='all-delete-orphan' inverse='true' lazy='true' batch-size='512'>
 		<key column='ColumnNameOnOtherTable' />

@@ -140,7 +140,7 @@ public class Launch
   {
     //create a surrogate selector
     SurrogateSelector ss = new SurrogateSelector();
-    //now map non-serializable types to thier surrogates
+    //now map non-serializable types to their surrogates
     StreamingContext sc = new StreamingContext();
     ss.AddSurrogate(typeof(MyNotSerializable), sc, new TestSurrogates());
     ss.AddSurrogate(typeof(MyNotSerializableHasA),sc,new TestInnerSurrogate());
@@ -148,7 +148,7 @@ public class Launch
     MemoryStream ms = new MemoryStream();
     Soap.SoapFormatter sf = new Soap.SoapFormatter();
     
-    //attache the surrogate selector to the formatter
+    //attach the surrogate selector to the formatter
     sf.SurrogateSelector = ss;
 
     sf.Serialize(ms,new MyNotSerializable());

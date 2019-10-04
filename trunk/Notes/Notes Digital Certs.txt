@@ -72,11 +72,11 @@ general terms
     cipher text
   
  brute-force attack
-  - try every possiable combination of a key to get 
+  - try every possible combination of a key to get 
     the cipher-text
 
  dictionary attack
-  - when the secert key is derived from words in 
+  - when the secret key is derived from words in 
     the common language 
   - there is a lot less combinations of these
  
@@ -86,7 +86,7 @@ general terms
 	
  chosen-plaintext attack
   - the key is unknown, the input (plaintext) is 
-    choosen under some reasonable conditions and 
+    chosen under some reasonable conditions and 
 	the output (ciphertext) is known.
 ----
 
@@ -144,17 +144,17 @@ authentication
 
  challenge-response authentication protocol
   - authentication system presents some random value
-  - claiment must hash this value with a secert-key
-  - claiment presents this hashed value
+  - claimant must hash this value with a secret-key
+  - claimant presents this hashed value
   
  transformed password protocol
-  - claiment must hash thier password first and send
+  - claimant must hash their password first and send
     the hash to the authentication system
 	
  one-time password protocol
   - guards against replay attacks
-  - starts with a shared, small, secert number (n)
-  - claiment hashes password (n) times and presents it
+  - starts with a shared, small, secret number (n)
+  - claimant hashes password (n) times and presents it
   - with successful authentication (n = n-1)
   - upon reaching zero the password an (n) are reset
   
@@ -168,9 +168,9 @@ authorization
  - refers to an access-control service
   - access is read, write, execute and device
  - confidentiality: protects against communications
-   monitering 
+   monitoring 
  - integrity: protects against modifications of data
- - nonreudiation: prevents a party involved in communications 
+ - nonrepudiation: prevents a party involved in communications 
    from later falsely denying having participated.
  - availability: provides the resources are present
 ----
@@ -188,7 +188,7 @@ cryptography
   - is symmetric cryptography 
   - is like a decoder ring where the same one used
     to encrypt a message is, in turn, used to decrypt it
-  - the following are all kinds of secert keys:
+  - the following are all kinds of secret keys:
      session key
      content-encryption key
      bulk-encryption key
@@ -232,19 +232,19 @@ cryptography
 	   
  public key cryptography : 
   - invented by W.Diffie and M.Hellman in 1975.
-  - is asymectric cryptography
+  - is asymmetric cryptography
    
    public key : used to take plain text to cipher text
    private key : used to take cipher text back to plain
 	
  man-in-the-middle attack : if the sender is dupped into
-   using an imposters public key then they may, in turn,
+   using an importers public key then they may, in turn,
    decrypt the message then re-encrypt it with the intended
-   recepiant's public key and foward it on.  Neither side
-   is aware of the imposter...
+   recipient's public key and forward it on.  Neither side
+   is aware of the impostor...
    
   hybrid cryptosystems : uses the asymmetric to negotiate 
-    a secert-key (symmetric), this is because asymmetric is 
+    a secret-key (symmetric), this is because asymmetric is 
 	hundreds of times slower then symmetric.
  
   
@@ -288,7 +288,7 @@ cryptography
 ----
 Digital Certificates
  - a cert operates similar to a person's ID (DL, Passport)
-  - DL would be useless if everyone could just make thier 
+  - DL would be useless if everyone could just make their 
     own.
   - the DL has authority since it was issued by the 
     government
@@ -318,7 +318,7 @@ Digital Certificates
   - the digital content of the key
   - also the algorithm
  Thumbprint
-  - a hexdecimal value which is 
+  - a hexadecimal value which is 
     more precise than a name.
  extension fields
   - is a dictionary of key value

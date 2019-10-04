@@ -21,7 +21,7 @@ Syntax enclosures
   ?>
   
  - when a file is all PHP code the closing 
-   tag is ommitted.
+   tag is omitted.
    <?php
    //code here
    
@@ -338,7 +338,7 @@ Flow-Control
  
  goto 
   - is supported 
-  - labels are delcared with 
+  - labels are declared with 
    myLabel:
 ----
 
@@ -360,7 +360,7 @@ Functions
 	//do stuff
  }
  
- - functions may be invoked with or without thier parameters
+ - functions may be invoked with or without their parameters
  function beinLazy($a, $b){
 	//stuff
  }
@@ -629,7 +629,7 @@ Arrays
  array_slice(array, offset, length);
  
  - splitting array 
-  - the bool arg at the end is for perserving the keys
+  - the bool arg at the end is for preserving the keys
   - this creates an jagged array from a single-dim array
  array_chunk(array, per_chunk_size, [, (true|false)]); 
  
@@ -642,7 +642,7 @@ Arrays
  array_key_exists(key, array)
  
  - to quickly extract assoc. array to variables
-  - actually creates implict local variables based on the key's
+  - actually creates implicit local variables based on the key's
  $assocArray = array("firstName" => "Bob", "lastName" => "Smith", "phNum" = "555-5656");
  extract($assocArray);
  echo $firstName; //now a variable...
@@ -658,7 +658,7 @@ Arrays
  
  - any array's iterator is implied
   - the foreach uses it without invocation
-  - it may be manipulated programaticlly using more globals
+  - it may be manipulated programmaticly using more globals
  current(array); //item at iter's current location
  reset(array); //iter back to 0
  next(array); //next item after current
@@ -886,7 +886,7 @@ HTTP runtime globals
   
  - this could also be accomplished using the same name in multiple tags 
    (again with the sqr-braces)
-  <input type="checkbox" name="myStuff[]" value="somthing" />Something</input>
+  <input type="checkbox" name="myStuff[]" value="something" />Something</input>
   <input type="checkbox" name="myStuff[]" value="somthingElse" />Something Else</input>
   <input type="checkbox" name="myStuff[]" value="aThirdThing" />A Third Thing</input>
 ----
@@ -1200,7 +1200,7 @@ tmpfile()
  - creates a temp file in read-write and returns the resource handle
  
 fwrite(resource, string [, length])
- - writes string to openned file
+ - writes string to opened file
  - will stop at length if given
 touch(string [, int])
  - will update last write times to a file

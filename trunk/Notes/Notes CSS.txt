@@ -16,7 +16,7 @@ CSS Overview
 ----
 Elements
  - consider each element generating a 'Box' in which contents are contained
- - Replaced: element's content is exogeneous source (eg <img src="my.gif" />)
+ - Replaced: element's content is exogenous source (eg <img src="my.gif" />)
  - Nonreplaced: element content is w/i element tags
  - Block: elements wrapped by linebreaks above / below
  - Inline:  box is gen'ed w/i a line of text
@@ -25,12 +25,12 @@ Elements
 ----
 Style Sheets Types: 
  - declared within the <head> tag
- - precendence given to style declared closest to tag
+ - precedence given to style declared closest to tag
  
-Linked: stored on a seperate file
+Linked: stored on a separate file
  - default type
- - set in a seperate document
- - CSS syntax is contained in seperate doc
+ - set in a separate document
+ - CSS syntax is contained in separate doc
  <head>
  <link rel="stylesheet" href="myStyleSheet.css" type="text/css">
  </head>
@@ -44,7 +44,7 @@ Embedded: set at top of the html source file
  </style>
  </head>
  
-Inline: set at each occurance within source file
+Inline: set at each occurrence within source file
  - override linked or embedded for tag by tag basis
  <table style="background:black; text-align:center">
  
@@ -80,10 +80,10 @@ body {background:black;}
  - datatype:  background
  - value:  black
  - enclosed in curly braces
- - multiple html tags by comma seperator
+ - multiple html tags by comma separator
  - multiple datatype/value pairs by semi-colon seperator
- - mutiple values seperated by a space (eg h1 {text: medium Arial;} )
- - mutiple tags seperated by comma (eg h1, body {text:Arial;} )
+ - multiple values separated by a space (eg h1 {text: medium Arial;} )
+ - multiple tags separated by comma (eg h1, body {text:Arial;} )
 ----
 
 ----
@@ -105,7 +105,7 @@ table.myClass {font-style: italic;}
 .myClass.myOtherClass {background: red;}
 <p class="myClass myOtherClass">Text here </p>
   - calls to "myClass myOtherClass" will get all three values
-  - calls must have space seperator between class names
+  - calls must have space separator between class names
 ----
 
 ----
@@ -124,7 +124,7 @@ p[censorme] {foreground: black;}
 <p censorme="freedom">Freedom</p>
 <p censorme="of-speech">Of Speech</p>
  - any paragraph that has a 'censorme' attribute will get a black foreground
- - useful for XML where attibutes are custom
+ - useful for XML where attributes are custom
  - what the attribute is assigned to does not matter
   
 p[denyme] [censorme] {foreground: black;}
@@ -132,10 +132,10 @@ p[denyme] [censorme] {foreground: black;}
  
 p[censorme="top-secret"]
  - may specify attribute having value
- - attibute value must match exactly (eg top-secret vs top secret)
+ - attribute value must match exactly (eg top-secret vs top secret)
  
 p[censorme~="secret"]
- - may match using wildcard string, inclued tilde before equal sign
+ - may match using wildcard string, included tilde before equal sign
 
 p[censorme^="secret"] /*must begin with "secret"*/
 p[censorme$="secret"] /*must end with "secret"*/
@@ -143,7 +143,7 @@ p[censorme|="secret"] /*match "secret" and "secret-" */
 ----
 
 ----
-Decendent Selectors
+Descendant Selectors
 h1 em {color: gray;}
  - will color only em elements found within h1 elements
  - spacing between h1 and em is considered "found within"
@@ -202,7 +202,7 @@ Specificity
  - CSS-ID adds 1 to {n3}
  - CSS Classes, Attribute Selectors each add 1 to {n2}
  - each element in the selector adds 1 to {n1}
- - the universial selector (* {something: here;}) adds nothing to any
+ - the universal selector (* {something: here;}) adds nothing to any
  - trump all by adding !important right before the closing semicolon
  - resolve specificity equality by appearance in sheet - lowest entry wins 
 
@@ -245,19 +245,19 @@ Colors
  - to get grey's set each percent to the same value
  - may use integer values instead of percents, range from 0 to 255
  - may use hex notation in literal as #RRGGBB (eg #FFFFFF is black)
- - recommended percent values are divisable by 20
+ - recommended percent values are divisible by 20
  - background-color may be set to a picture itself
 ----
 
 ----
 Units
- - preceed the unit by a numerical value
+ - precede the unit by a numerical value
  - absolute (in, cm, mm, pt, pc)
    - pf is 'point' there are 72 points to an inch
    - pc is 'picas' equals 12 points
    - absolutes are for use in printed documents
  - em really a variable holding the value of the font size
- - ex is a varaible holding the vertical hieght of a lower case 'x'
+ - ex is a variable holding the vertical height of a lower case 'x'
  - px is pixels - number is determined by resolution of rendering monitor
 ----
 
@@ -289,7 +289,7 @@ Font-Weight
  - specified using relative string values {normal, bold, bolder, lighter}
    - relative strings map to numerical values
  - specified using numerical values of 100
- - 100 is lightest font weight, 900 is heavist
+ - 100 is lightest font weight, 900 is heaviest
  - 400 is normal weight
  - if 500 is unassigned then 500's font weight equals 400's
  - if 300 is unassigned then 300's weight is next light to 400's
@@ -323,7 +323,7 @@ Font-Style
 
 ----
 Horizontal Text Elements
- - text is contect, font is rendering thereof
+ - text is content, font is rendering thereof
  - text-indent to indent text
    - {text-indent: -4em} /*to create a opposite indent*/
    - use padding to avoid opposite indent being cropped of page
@@ -338,7 +338,7 @@ Vertical Text Elements
  - 'leading' is the difference between the line-height and the font-size
  - upon box containing multiple font-size, leading value is added to largest
  - leading is divided by 2 with one-half at top and the other at bottom
- - vertical-algin is placement of text around baseline
+ - vertical-align is placement of text around baseline
    - assume baseline ______ then normal text rest upon
    - subscript text will hang upon 
    - superscript text will rest atop baseline text
@@ -371,7 +371,7 @@ Text lining
  
 ----
 Element rendering
- - Each element has a content pane shapped as a rectangle
+ - Each element has a content pane shaped as a rectangle
  - the rectangle is layered
  - at the center is the block level element contained within
  - block level element is wrapped in a padding 
@@ -391,7 +391,7 @@ Element rendering
  - the element box is the size of the parent element's block content
  - margin and block content are auto-set
  - padding, border are default
- - should set valus be overconstrained - margin loses to become auto
+ - should set values be over-constrained - margin loses to become auto
  - margins may be negative
  - values may be set with percentages - except for borders
  - values may be set per side 
@@ -409,7 +409,7 @@ Element rendering
 
 ----
 Inline-Text rendering
- - font-size: height of single charcter boxes in which characters of text reside
+ - font-size: height of single character boxes in which characters of text reside
  - line-height: 
   - greater-than font-size  
   - (line-height - font-size)/2 is area above/below character box
@@ -468,7 +468,7 @@ Position Types
 ----
 Overflow
  - used to allow content to exceed its content box
- p {overflow: visable;} /*will let the content just 'go out' of the box */
+ p {overflow: visible;} /*will let the content just 'go out' of the box */
  p {overflow: scroll;} /*to set content into a scrollpane */
  p {overflow: hidden;} /*exceeding content is simple truncated */
 ----
@@ -476,13 +476,13 @@ Overflow
 ----
 Clip Area
  clip: rect(10px, 10px, 0, 0);
- - for setting the area of renderering w/o changing the content block size
+ - for setting the area of rendering w/o changing the content block size
  - only excepts absolute values or the keyword 'auto'
 ----
 
 ----
 Visibility
- - for setting a block to invisiable 
+ - for setting a block to invisible 
  - while not begin seen, the content block and padding still affect the layout
  p.myClass {visibility: hidden;}
  /*will remove content text, borders, colors, etc */
@@ -519,7 +519,7 @@ CSS Practice
   /******************
   LAYOUT DIVS
   ******************/
-  #top-horizontial{
+  #top-horizontal{
     /* - height, width, margins/padding, borders, background, float
        - these are specific to just layout 
        - style of elements contained within defined elsewhere
@@ -570,7 +570,7 @@ CSS Practice
   /*************
    FORM STYLES  
   **************/
-  #main-contnet form {
+  #main-content form {
     /* - padding and margins at the top here 
        - typically these are always specific to a layout div tag
     */
@@ -579,7 +579,7 @@ CSS Practice
     /* - margins, padding and also borders */
   }
   #main-content legend {
-    /* padding/margins, font and color, prehaps other text attributes */ 
+    /* padding/margins, font and color, perhaps other text attributes */ 
   }
   #main-content label{
     /* display type, padding/margins and text again */
@@ -720,7 +720,7 @@ Positioning
              border-width:thin;
              float:left;">
     <p>Here is box 2. We now have a horizontal look.  This is the opposite of 
-       what we get by specifing no float.
+       what we get by specifying no float.
   </div>
  
   <div style="border-style:groove;
@@ -733,7 +733,7 @@ Positioning
              border-width:thin;
              float:left;">
     <p>Box 2 has moved back below Box 1 because there isn't enough width 
-       to have a horizontal appearence.
+       to have a horizontal appearance.
   </div>
   
   <div style="border-style:groove;
@@ -758,8 +758,8 @@ Positioning
 Force Float Elements Into a Div
  - start with the wrapper div
  - enclose the regular floated elements
- - add another invisiable div with the clear attribute set to both
- - the invisiable div needs to be enclosed in the wrapper div
+ - add another invisible div with the clear attribute set to both
+ - the invisible div needs to be enclosed in the wrapper div
  <div style="border-style:groove;
              border-width:thin;">
   <p style="border-style:groove;
@@ -896,7 +896,7 @@ Have Link Underline Upon Selection
 </html>
 <!--
   apply these links in the order of link, visited, hover, active
-  remember with acroynm of LoVe:HAte
+  remember with acronym of LoVe:HAte
  -->
  
 Use a Border Instead of Underline
@@ -973,7 +973,7 @@ Have Link Appear As A Button
      text-indent:50px;}}
   a:hover{background-color:#369; background-position:right top;
           color:#fff;}
-  /* - instead of using a seperate image use single image
+  /* - instead of using a separate image use single image
      - left of image is simple display
      - right of image is hover display 
      - no need for reload
@@ -1052,7 +1052,7 @@ Create Vertical Nav Bar
 ----
 
 ----
-Simple Horizontial Nav Bar
+Simple Horizontal Nav Bar
 <html>
  <head>
   <style type="text/css">
@@ -1072,7 +1072,7 @@ Simple Horizontial Nav Bar
 ----
 
 ----
-Horizontial Block Nav Bar
+Horizontal Block Nav Bar
 <html>
  <head>
   <style type="text/css">
@@ -1085,7 +1085,7 @@ Horizontial Block Nav Bar
   ul {margin:0;padding:0;list-style:none;width:720px;
       background: #FAA819 url(mainNavBg.gif) repeat-x;
       float:left;text-transform:uppercase;}
-  /* - get the list horizontial using 'float:left;'*/
+  /* - get the list horizontal using 'float:left;'*/
   ul li {float:left;}
   /* - get the links to behave like buttons using 'block' 
      - remove the underlines using text-dec.. none
@@ -1126,7 +1126,7 @@ IE to Firefox - unique rendering
  - IE 7 <ul><li>.. will have block size of ul auto-expand to fit all <li>
  - Firefox <ul><li>.. will just let <li> move outside of <ul> content box
  - Firefox will auto add about 20px margin-top
-  - explict set margin-top:0; to override
+  - explicit set margin-top:0; to override
  - Firefox <ul> will auto-add left padding
 ----
 
@@ -1158,7 +1158,7 @@ Stretch Page Display
   <style type="text/css">
     body {
           /*
-            - typicaly use a div wrapper instead of body
+            - typically use a div wrapper instead of body
             - body may have a background and main div a width > 100%
           */
           width:100%;

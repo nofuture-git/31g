@@ -69,7 +69,7 @@ Define Template
 ----
 Template Here-Strings & Formatted Strings
 <xsl:template match="myNode">
-	<someNode aAttribute='randome-value'>
+	<someNode aAttribute='random-value'>
 		Some literal text here
 	</someNode>
 </xsl:template>

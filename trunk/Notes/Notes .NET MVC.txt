@@ -63,13 +63,13 @@ Differences in lifecycle from asp.net
   MyController/MyAction -> MyController.MyAction()
 - the action adds a hash value to a property found on its parent
   System.Web.Mvc.Controller.VeiwData which is itself an instance of
-  System.Web.Mvc.ViewDataDictionary which implments all the classics 
+  System.Web.Mvc.ViewDataDictionary which implements all the classics 
   of the System.Collection namespace
 - this instance returns the View() method, inherited from Controller 
   as well, which returns a System.Web.Mvc.ViewResult type which extends 
   System.Web.Mvc.ViewResultBase which, in turn, extends 
   System.Web.Mvc.ActionResult
-  - there are other, more complex, extentions of ActionResult including
+  - there are other, more complex, extensions of ActionResult including
    - ContentResult
    - EmptyResult
    - FileResult

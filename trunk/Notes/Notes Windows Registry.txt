@@ -73,7 +73,7 @@ Type:
  > similar to primitive types 
 Data:
  > value limit to 32767 bytes
- > pratical limit 2000 bytes
+ > practical limit 2000 bytes
  > are value-type variables
  > only one type is reference-type
 ----
@@ -87,7 +87,7 @@ REG_DWORD: 32 bit - two of three most used
  > intel based is little-endian
 REG_SZ: fixed-length text - three of three most used
  > string ends with 'null' character (0x00)
- > enviornment variables not expandable
+ > environment variables not expandable
 REG_EXPAND_SZ: variable length text
  > may include environment variables
  > calling program expands environment variable
@@ -95,7 +95,7 @@ REG_EXPAND_SZ: variable length text
 REG_LINK: a link value type
  > may not be created by regedit
 REG_MULTI_SZ: binary data that is an array of strings
- > null character (0x00) seperates array elements
+ > null character (0x00) separates array elements
  > double null character ends array
 [There are others not listed]
 
@@ -142,7 +142,7 @@ HKEY_CURRENT_USER:
   > Console: data for console subsystem
   > Control Panel: same as interface with a few additions
   > Environment: user-set enviro variables
-  > Indentities: Outlook Express related
+  > Identities: Outlook Express related
   > Keyboard Layout: obvious
   > Network: mapped drives
   > Printers: 
@@ -199,7 +199,7 @@ File > Export
  > Unicode characters (2 bytes)
  > text file type
  > file can be edited in text editor
- > merged into registy
+ > merged into registry
 
 Win9x/NT .REG
  > ANSI characters (1 byte) 
@@ -209,7 +209,7 @@ Win9x/NT .REG
 Hive 
  > Binary type
  > Same as physical hive on disk
- > Import, replace registy keys
+ > Import, replace registry keys
  > Load, new hive - view in regedit
  
 .TXT 

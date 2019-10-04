@@ -80,7 +80,7 @@ Terminalogy (mostly NuGet in origin)
  - expected that dev's will directly modify the (cs|vb|fs)proj file 
   - adding EmbeddedResource would need the dev to open it and add
     the node 
-  - dev can use the MSBuild Conditional's 
+  - dev can use the MSBuild Conditionals 
 
  <PropertyGroup Condition="'$(MyParam)' == 'true'" />
  <PropertyGroup Condition="'$(OtherParam)' == 'false'" />

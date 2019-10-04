@@ -36,7 +36,7 @@ Basics
    - requires analysis of
     - morphological
     - lexical
-    - syntatic
+    - syntactic
     - semantic
     - handle ambiguity
     - discourse integration
@@ -44,7 +44,7 @@ Basics
   
   - Natural Language Generation (NLG)
    - considered second component of NLP
-   - the creation of natual language from the machine
+   - the creation of natural language from the machine
     - in machina exspriavit (ghost in the machine)
     
   - Corpus, collection of written or spoken natural language material
@@ -98,7 +98,7 @@ Preprocessing
 ----
 
 ----
-Context-Free Grammer
+Context-Free Grammar
  - has four components
   - a set of non-terminal symbols (N)
   - a set of terminal symbols (T)
@@ -184,7 +184,7 @@ Syntactic Analysis
  - Constituency Grammar: classic form of grammar analysis based on 
     subject-predicate division
  - Dependency Grammar: newer idea, 
-  - deny subject-predicat division
+  - deny subject-predicate division
   - root the clause at the verb
   - forms a surjective directed tree graph
    - a graph because its made up of nodes and edges
@@ -193,7 +193,7 @@ Syntactic Analysis
    - surjective because the root node has an outdegree above 1
     - outdegree is the number of edges originating out of a node
       (think color-book sun with rays)
-  - Universial Dependencies: recent spec between Google and Stanford
+  - Universal Dependencies: recent spec between Google and Stanford
     to have a finite set of node-types used in all possible langs
     (e.g. nsubj is the label for nominal subject)
     - any given sentence of any given lang can be parsed to a
@@ -379,15 +379,15 @@ Stopwords
 NLP Parsers
  - two major approaches
   - top-down
-   - is the more familar where the parser is reading
+   - is the more familiar where the parser is reading
      a stream from left to right
-   - has backtracking where it goes foward so far, finds
-     its on the wrong rule, goes back to and starts foward again
+   - has backtracking where it goes forward so far, finds
+     its on the wrong rule, goes back to and starts forward again
   - bottom-up
    - takes each word as a starting point, finds a rule
      to match each on, the starts combining them upwards
 
- - Proability Context-Free Grammar
+ - Probability Context-Free Grammar
   - like a static grammar 
   - differs regarding the choice pattern where
     each possible choice is given a percent 
@@ -473,7 +473,7 @@ Tagging and POS Taggers
  - what part-of-speech tag they take depends on both the context and def.
  - could be applied at a phrase or clause level
  - parts of speech may be a mixture where what's tagged always per-word
-  - multiword expression is like a cliche or words which when joined by 
+  - multiword expression is like a chicle or words which when joined by 
     a hyphen would help clarify
   - name entity recognition, where the tagger should recognize a group 
     of words as a kind of proper noun (e.g. North Dakota)
@@ -508,7 +508,7 @@ Bag-of-words
 
 ----
 Term Frequency - Inverse Document Frequency (tf-idf)
- - uses linear algebra consine similarity and Euclidean distance to 
+ - uses linear algebra cosine similarity and Euclidean distance to 
    find words of similar semantic meaning.
  TF(t) = (Number of times 't' appears in a document)/(Total number of terms in a document)
  IDF(t)= log10(Total number of documents / Number of document with term 't' in it) 
@@ -561,7 +561,7 @@ Language Model
  - basic unigram calc
   - given last known word w[i-1] and guess for next word 
     as w[i]
-  - get a cound of how many times w[i-1] and w[i] appear 
+  - get a count of how many times w[i-1] and w[i] appear 
     together
   - then get a count of how many time w[i-1] occurs in total
   - divide the former by the later
@@ -662,8 +662,8 @@ Word2Vec
      with all random values which are less than
      0.1
    - WO is the same expect its N x V
-  - has two general steps per word (foward & backpropagate)
-   - foward, this is the estimate
+  - has two general steps per word (forward & backpropagate)
+   - forward, this is the estimate
     Y_estimate = softmax(X * WI * WO)
    - backpropagate 
     - t(blah) means Transpose

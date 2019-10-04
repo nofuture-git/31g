@@ -112,7 +112,7 @@ namespace TestAnythingHere
 
         private string lastErrorMessage = GetErrorMessage(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
 
-        //it is possiable to have WIN32 error turned into a thrown exceptions using the PreserveSig member of DllImport
+        //it is possible to have WIN32 error turned into a thrown exceptions using the PreserveSig member of DllImport
         [DllImport("ole32.dll", CharSet = CharSet.Unicode, EntryPoint = "ProgIDFromCLSID", PreserveSig = false)]
         public static extern void ProgIDFromCLSID([In] ref Guid clsid, out string lplpszProgID);
 
@@ -367,7 +367,7 @@ namespace TestAnythingHere
 
         /// <summary>
         /// Dynamic assembly which invokes a function pointer which was returned from 
-        /// an unmanaged, marshalled function call.
+        /// an unmanaged, marshaled function call.
         /// </summary>
         /// <param name="functionPointer"></param>
         /// <param name="returnType"></param>
@@ -424,7 +424,7 @@ namespace TestAnythingHere
     //http://msdn.microsoft.com/en-us/library/windows/desktop/ms686311(v=vs.85).aspx
     //http://msdn.microsoft.com/en-us/library/windows/desktop/ms682119(v=vs.85).aspx
 
-    //all marshalled structs not marked with a layout attribute are set to LayoutKind.Sequential
+    //all marshaled structs not marked with a layout attribute are set to LayoutKind.Sequential
 
 
 	internal struct SMALL_RECT
@@ -610,7 +610,7 @@ namespace TestAnythingHere
 
         //this only impacts the unmanaged representation, managed side still does it its way
 
-        //also possiable to define a strict memory layout as such
+        //also possible to define a strict memory layout as such
         [StructLayout(LayoutKind.Explicit)]
         internal struct MyStrictLayout
         {
@@ -972,8 +972,4 @@ namespace TestAnythingHere
         }
 
     }
-
 }
-
-
-    

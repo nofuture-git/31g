@@ -67,7 +67,7 @@ Command line
  - install packages from web
  python -m pip install some_package_name
   - behind corporate firewall
-  - if your password has (e.g. at-symbol, exclaimation, etc.) then 
+  - if your password has (e.g. at-symbol, exclamation, etc.) then 
     url encode the symbols with %-encoded format (@ is %40)
  python -m pip install --proxy DOMAIN\username:password@proxyserver:port some_package_name
    
@@ -83,7 +83,7 @@ Command line
  >>> _
  6
 
- - python is interpretated and the source code is typically part of the 
+ - python is interpreted and the source code is typically part of the 
    install (%pyInstall%\Lib\*.py) 
    
  - the python interactive within visual studio has helpful macros
@@ -114,7 +114,7 @@ Ops,
   //
   - order of op is std 
    PEMDAS
-  - each arithmatic op has a compound assignment op as well
+  - each arithmetic op has a compound assignment op as well
    
  - bitwise ops   
  << >> & | ~ ^
@@ -531,7 +531,7 @@ Lists
  L.index(X [,i [,j]]) #i,j optional index limiters, raised error if 
                       # object 'X' is not found
  L.insert(i, X)
- L.count(X) #occurances of object X
+ L.count(X) #occurrences of object X
  L.remove(X) #raises exception if not found
  L.pop([i]) #having list op like stacks, df is last item 
  L.clear()
@@ -542,7 +542,7 @@ Lists
  
  - to get only distinct elements cast the list 
    as a set and then back again
- myList = ['my', 'sentece', 'is', 'is', 'here']
+ myList = ['my', 'sentence', 'is', 'is', 'here']
  myList = list(set(myList))
  
 ----
@@ -705,7 +705,7 @@ Sets
  E1 |= E2 #adds E2's items to E1
  E1.update(E2)
  
- E.add(x) #adds single itme
+ E.add(x) #adds single item
  E.remove(x) #removes or errors
  E.discard(x) #removes when present
  x = E.pop() #removes and returns some item
@@ -737,7 +737,7 @@ Syntax Constructs & Conventions
  - single statements may span multiple lines when ending with backslash (0x5C)
  - list, dictionary, tuple and set initializers (literals) may span multiple lines
  - here-string may span multiple lines
- - names begining and ending with double-underscore have special meaning (e.g. __iamspecial__)
+ - names beginning and ending with double-underscore have special meaning (e.g. __iamspecial__)
  - top-module level names with a single underscore are scoped only to that module
  - there are enough hooks and tools in Py to do almost anything with infinite indirection
  
@@ -767,7 +767,7 @@ Syntax Constructs & Conventions
 
 ----
 Function & Call Syntax
- - have four possiable ways to declare parameters
+ - have four possible ways to declare parameters
  def my_func(positional, key=valuePair, *args, **kwargs)
   - first two are obvious
   - *args 'Arbitrary argument list' as a list or tuple
@@ -821,7 +821,7 @@ Typical Constructs Syntax
  - for i loop (i--)
  for i in range(5,0,-1): print(i)
      
- - other single statment keywords and ops
+ - other single statement keywords and ops
  pass     #noop
  ...      #also noop for 3.X
  break    #exits inner most loop 
@@ -867,7 +867,7 @@ Typical Constructs Syntax
   @decorator
   def F():
       ...
-   - or using runtime attachement
+   - or using runtime attachment
   F = decorator(F)
    
   - allow for multiple decorators by stacking them as separate lines
@@ -884,7 +884,7 @@ Typical Constructs Syntax
 Module Imports
  - use dot as path separated
  - is relative to the install dir
- - the .py extension is ommitted
+ - the .py extension is omitted
   dir00.dir01.myMod
   
   import [package.]* module [as name] 
@@ -995,7 +995,7 @@ Access Modifiers
 ----
 Class Properties
  - quite different from Java & .NET
- - kind of combo between decorators, implicity variables decl
+ - kind of combo between decorators, implicitly variables decl
    and esoteric functions
 
  class MyClass:
@@ -1081,7 +1081,7 @@ Collection Operator Overloads
  - this is similar to .NET's GetEnumerator
  __iter__(self) 
  
- - this is like calles on the enumerator.Next()
+ - this is like calls on the enumerator.Next()
  __next__(self)
  
  - for index collection access
@@ -1098,7 +1098,7 @@ Arithmetic & Bitwise Operator Overloads
    by an 'r' and are called when the 'other'
    operand doesn't have an implementation for 
    these builtins
- - it is also possiable to overload the compound
+ - it is also possible to overload the compound
    assignment operators of these, in such a case
    the builtin is prefixed with an 'i'
    

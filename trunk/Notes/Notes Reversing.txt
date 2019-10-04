@@ -28,20 +28,38 @@ Applications
 ----
 
 ----
+Back To Basics
+ - execution of a program is the runtime
+ - this runtime is called a process
+ - 'sequential processes' is having the CPU swapped from one to the next
+ - the switching of processes is called Multiprogramming
+ - Multitasking is having each process get some slice of CPU time
+  - Multiprogramming, switch made when program has to wait for something
+  - Multitasking, switch is made upon scheduling
+ - Cooperative Multitasking
+  - each process gives up its CPU time voluntarily
+ - Preemptive Multitasking
+  - use of interupts and hard timeslices of CPU
+ - Multithreading was created because programs began running multiple processes
+  - Throughput could be increased if multi-processes shared some memory space
+  - multithreading is the implementation of that idea
+----
+
+----
 Assembly Language
  - the lingua franca of reversing
  - each command is a number - meaning a number is an operation code
  - this is the 'opcode'
- - the assembler turns text assemly code into binary
+ - the assembler turns text assembly code into binary
  - disassembler turns binary back into text assembly code
- - this is straigh foward because the binary maps exactly to a text
+ - this is straight forward because the binary maps exactly to a text
 ----
 
 ----
 IA-32 Arch
  - IA-32 is complex in that single opcodes are broken down inside the CPU
   - the CPU's core is still primitive 
-  - the surrounding arch. is what makes this possiable
+  - the surrounding arch. is what makes this possible
   - the chip may have multiple cores each having multiple ALUs
   - since one core may depend on the others output
    - processor arch attempts to fill a pipe type design 
@@ -51,7 +69,7 @@ IA-32 Arch
 
 ----
 Source-code to machine code back to assembly 
- - the developer makes the source file and compilies it into machine code
+ - the developer makes the source file and compiles it into machine code
  - the disassembler then turns the machine code into assembly text code
   - since the source code is compiler made it is difficult to read
   - the difficulty is from compiler optimizations
@@ -150,7 +168,7 @@ ESI - source pointer for string operations
   31______________16 15______SI_______0    
    |________________|_________________|    
                                            
-EDI - desination pointer for string operations
+EDI - destination pointer for string operations
     - address contained w/i is assumed on ES
   31______________16 15______DI_______0
    |________________|_________________|
@@ -180,7 +198,7 @@ Segments
 CS - code segment
 SS - stack segment
 DS - data segment for current module
-ES - data segmetn for exported data from higher module
+ES - data segment for exported data from higher module
 FS - data segment for dynamic created data structs
 GS - data segment shared with other processes
 
@@ -207,7 +225,7 @@ Instructions
  
  - MOV, ADD and SUB store the results in Operand1
  - MUL, DIV, IMUL and IDIV's results are stored in EDX:EAX
- - CMP actually substracts the operands setting ZF true if result is 0
+ - CMP actually subtracts the operands setting ZF true if result is 0
   - for checking inequality using CMP, check the ZF has been set
   - EDX:EAX is a 64bit value are stored across two registers
   - IA-32 is little-endian so EDX:EAX, EDX holds the higher number
@@ -242,12 +260,12 @@ Instructions
  - only one operand may be a memory address 
  - typically a segment selector is required for memory address operand
  - the chip will make assumptions based on operand type so it may be missing
- - app mem. space is not a big chunk but is logically segement 
-  - the stack will be on one segement and data on another
-  - so a deref'ed register has to be qualified to the segement 
+ - app mem. space is not a big chunk but is logically segment 
+  - the stack will be on one segment and data on another
+  - so a deref'ed register has to be qualified to the segment 
 
  MOV EDI, [EDI+8]
- - same as before with the DS segement register implied
+ - same as before with the DS segment register implied
  - the sum of EDI+8 is performed and the data at that address is copied 
 ----
 
@@ -326,7 +344,7 @@ Back-end and Optimizer Issues
    
  - Unrolled Loops
   - effect of simply copy/paste the loop the number of times
-   - increases binary size but is more efficent then jumps and counters
+   - increases binary size but is more efficient then jumps and counters
 
  - Partial Loop Unroll
   - reduce the number of iteration
@@ -355,12 +373,12 @@ Back-end and Optimizer Issues
 Reversing Methodologies
  - Offline Code Analysis (Dead-Listing)
   - expected approach of disassembly and manual read
-  - complete restructure not the goal but rather "funtions of interest"
+  - complete restructure not the goal but rather "functions of interest"
   - tends to more advance reversing
   - lacks fluid analysis of data-structure
  
  - Live Code Analysis
-  - code is disassemblied and run in a debugger
+  - code is disassembled and run in a debugger
   - provides for flow of code
   - gives view to values of variables at run-time
 ----
@@ -368,9 +386,9 @@ Reversing Methodologies
 ----
 Disassembler Tools
  - platform specific machine code to assembly code
- - difficulty may arrise as address data read as opcode
+ - difficulty may arise as address data read as opcode
   - disassembler should check that given address is reachable by code 
-  - being unreachable places certianty that value is opcode
+  - being unreachable places certainty that value is opcode
    
   EXAMPLE
   Opcode    MOD/RM   DISPLACEMENT
@@ -405,14 +423,14 @@ Disassembler Tools
  - OllyDbg is user-mode single process debugger
   - free, well rated, great disassembler
  - WinDbg is debugger provided by Microsoft
-  - free, intergates very well with MS OS (of course)
+  - free, integrates very well with MS OS (of course)
   - allows for breaks before main() in dll linking
-  - may be run in Kernal Mode 
+  - may be run in Kernel Mode 
    - /DEBUG switch set in boot.ini
-   - debugger is actually seperate system
-   - seperate system linked with FireWire connection
+   - debugger is actually separate system
+   - separate system linked with FireWire connection
  - SoftICE
-  - Window kernal-mode driver
+  - Window kernel-mode driver
   - using hotkey entire system will break when struck
   - is hooked to system keyboard driver
   - detecting keystroke (Ctrl+D is default) system is paused and it takes over
@@ -433,11 +451,11 @@ Debugger Tools
     - place break on data-structure of interest to cause break upon r/w
     - step out to view instruction making r/w
  (3) View of Register and Memory
-   - view of relevent CPU registers at runtime
+   - view of relevant CPU registers at runtime
    - view system memory 
    - view of stack in real-time
  (4) Process View
-   - list loaded exectuables in existence now
+   - list loaded executables in existence now
    - capable of stack and register dump on each thread
 
  - types
@@ -446,13 +464,13 @@ Debugger Tools
    - run in user-mode
    - only view single process
    - only view code within given process
-   - may only begin at Main entry w/o show of kernal dll linking
+   - may only begin at Main entry w/o show of kernel dll linking
    
- (2) Kernal-mode Debugger
+ (2) Kernel-mode Debugger
    - more powerful 
    - should be performed from another machine with a target machine
-    - alternative is using a virtual machine for kernal debugging
-    - may support nonpersistent drives 
+    - alternative is using a virtual machine for kernel debugging
+    - may support non-persistent drives 
      - discards anything written to hard-drive at shutdown
      - great for debugging malicious software
      - VMWare is one brand of VM's and runs on Linux
@@ -460,7 +478,7 @@ Debugger Tools
    - full view of entire targeted system
    - only needed for interprocess communication and device communication
    - set breaks below OS API calls, rather inside them
-   - runs side-by-side with OS and destablizes it 
+   - runs side-by-side with OS and destabilizes it 
    - is overkill for most needs
 ----
 
@@ -499,8 +517,8 @@ Calling Conventions
  - compilers attempt to place local variables into a register
  
  cdecl
-  - the calling function is responsiable to unwind its parameters off the stack
-  - function calls that take parametes and just call RET without a number
+  - the calling function is responsible to unwind its parameters off the stack
+  - function calls that take parameters and just call RET without a number
 
  fastcall
   - invented by Microsoft so its common
@@ -509,12 +527,12 @@ Calling Conventions
   
  stdcall
   - most common convention
-  - function is responsiable to clear its stack frame
+  - function is responsible to clear its stack frame
   - RET with an int value typically indicates the stdcall convention
   
  C++ convention
   - id'ed by valid pointer loaded into ECX and nothing loaded to EDX
-  - the contents of ECX is the class pointer and can be used to get instace vars
+  - the contents of ECX is the class pointer and can be used to get instance vars
   - the function will use ECX w/ offset alot
   - volatile: value onto the stack because others processes may write to it
   - register: may be ignored cause compiler knows best 
@@ -569,7 +587,7 @@ Branching Examples
                         ;if equal then ZF is set 
                         ;if above then SF is cleared
 0462575 CALL 012FF1     ;program comes here because ZF is set of SF is cleared
-0462576 JMP 046257A     ;this seperates the various blocks of the conditional
+0462576 JMP 046257A     ;this separates the various blocks of the conditional
 0462577 CMP EAX, 21     ;the JAE on 0462574 happened so your here 
 0462578 JNE 046257A     ;if EAX == 21 then ZF was set 
 0462579 CALL 012FF4     ;being here means ZF was set
@@ -620,7 +638,7 @@ Switch Statement Examples
 0014A18  NOP      
 0014A19  NOP      
 0014A1A  CALL 012FFA
-0014A1B  JMP 046258D    ;the unconditional jump is a break; statment  
+0014A1B  JMP 046258D    ;the unconditional jump is a break; statement  
 0014A1C  NOP      
 0014A1D  NOP      
 0014A1E  CALL 012FFB
@@ -631,8 +649,8 @@ Switch Statement Examples
  - the method is to divide the cases in half, then subdivide until each case
           
 0462587 CMP EAX, 2200  ;binary tree starts
-0462588 JG 046260A     ;first spilt either go to 046260A or 001445A
-0462589 CALL 001445A   ; it apperas that this will be called eveytime
+0462588 JG 046260A     ;first split either go to 046260A or 001445A
+0462589 CALL 001445A   ; it appears that this will be called everytime
                        ; but the branch onto 046260A will never jump back here 
 046258A RET 6          ; instead it jumps back to here skipping the above CALL
 
@@ -645,7 +663,7 @@ Switch Statement Examples
 ----
 Loop Examples
  - compiler always wants to put test for loop iteration at the end
- - this is a performance enhancement that removes a unconditonal JMP to the end
+ - this is a performance enhancement that removes a unconditional JMP to the end
  - partial unrolls will be signaled by ADD EAX, 3 or some value > 1
  
 0462588 MOV EAX, DWORD PTR [c]         ;sets up the counter
@@ -661,7 +679,7 @@ Loop Examples
  
 ----
 Branchless Logic
- - compilers will make tricky logical test using the behaviour of NEG & SBB
+ - compilers will make tricky logical test using the behavior of NEG & SBB
  - when NEG is called on the single operand the resulting sign is placed in CF
  - SBB takes the right operand and subtracts the sum of left operand & CF
  - SETcc sets EAX based on without branching using Jcc
@@ -683,7 +701,7 @@ Generic Table API of NTDLL.dll
  - target set by prefix name of 'RTL'
   - rtl is for "run-time library"
   - is mostly tool-kit style functions
- - use DUMPBIN to get lists of possiablities
+ - use DUMPBIN to get lists of possibilities
   - visual inspection for 'RTL' and 'GenericTable' keywords
  - sub-list reveals that API works on linked-list or something
 (2) Examine Data Structure
@@ -714,7 +732,7 @@ Generic Table API of NTDLL.dll
 7C921A6F    RET 14
  - determine function entry and exit
  - entry illustrates function's 'calling convention'
-  - is the layout used for arguement passing
+  - is the layout used for argument passing
   - also defines who cleans up stack upon exit
  - entry defines number of parameters involved
  
@@ -723,10 +741,10 @@ Generic Table API of NTDLL.dll
  - is of interest in that its the exit point
  - the '14' is a stack-unwind of bytes
  - caller unwinding its own stack means its not 'cdecl' function type
-  - 'cdecl' means caller is responsiable for unwinding the stack  
+  - 'cdecl' means caller is responsible for unwinding the stack  
  - no registers are being taken from the caller
   - all registers used are init'ed from the function itself
- - '_fastcall' isn't being used because it recieves parameters on ECX and EDX
+ - '_fastcall' isn't being used because it receives parameters on ECX and EDX
  - C++ member functions are qualified and the function is not defined as such
   - C++ function would have the class name and parameter type in definition
  - process of elimination demo's that its a 'stdcall' calling convention
@@ -737,5 +755,5 @@ Generic Table API of NTDLL.dll
 7C921A3B    PUSH EBP
 7C921A3C    MOV EBP, ESP
  - EBP is pushed to the stack and then takes the value of the stack pointer
-  - now the parameters are accessable via offset of the stack pointer 
+  - now the parameters are accessible via offset of the stack pointer 
 ---- 

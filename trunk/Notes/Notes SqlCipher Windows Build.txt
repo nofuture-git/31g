@@ -56,7 +56,7 @@ Hacks involved
    OPT_FEATURE_FLAGS = $(OPT_FEATURE_FLAGS) -DSQLITE_HAS_CODEC=1
   - reassigned the variable at line 794 (was 793 but I added the line above)
    TCLLIBDIR="C:\Program Files\Git\mingw64\bin" 
-   - because this is where I fournd the copy of tcl86.dll
+   - because this is where I found the copy of tcl86.dll
   - reassigned more values at line 869, 870
    TCC = $(TCC) -DSQLITE_TEMP_STORE=2
    RCC = $(RCC) -DSQLITE_TEMP_STORE=2
@@ -87,7 +87,7 @@ Commands for building openssl
 
 ----
 Commands for building sqlcipher
- - dowloaded the zip from github
+ - downloaded the zip from github
  - unzipped it to C:\Projects\sqlcipher\
  - created the directory C:\Projects\sqlcipher\bld
  

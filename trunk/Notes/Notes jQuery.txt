@@ -36,7 +36,7 @@
 	$(".my-selector").siblings();
 	
 	//contextual query
-	$(".my-selector").find(".my-other-selector"); //finds all decendents which match, not just direct children
+	$(".my-selector").find(".my-other-selector"); //finds all decedents which match, not just direct children
 	$(".my-selector").each(function (index, element){ /*do something on each*/});
 	$(".my-selector").filter(".my-other-selector"); //contextual selection 
 
@@ -99,12 +99,12 @@
                 $("div+p");                        //by immediate preceding sibling 
                 $("div~p");                        //by any preceding sibling
                 $("[custom-attr]");                //by having attribute
-                $("span[custom-attr='myValue']");  //by element attribure having this value
+                $("span[custom-attr='myValue']");  //by element attribute having this value
                 $("span[custom-attr^='myValue']"); //by element attribute having this starting value
                 $("span[custom-attr$='myValue']"); //by element attribute having this ending value
                 $("span[custom-attr!='myValue']"); //by element attribute not being present or being present without this value
                 $("span[custom-attr*='myValue']"); //by element attribute containing this value at any substring of attribute value
-                $("span[custom-attr|='myValue']"); //by element attribute having this value followed by a hypen char
+                $("span[custom-attr|='myValue']"); //by element attribute having this value followed by a hyphen char
                 $("span[custom-attr~='myValue']"); //by element attribute having this value delimited by space chars
 
                 //jQuery Position Selectors
@@ -185,11 +185,11 @@
     </div>
     <p>paragraph after two divs</p>
     <p>
-        <span custom-attr="myValue">span with a custome attr</span>
-        <span custom-attr="myValueplus">span with same custome attr but different value</span>
+        <span custom-attr="myValue">span with a custom attr</span>
+        <span custom-attr="myValueplus">span with same custom attr but different value</span>
         <span custom-attr="lessmyValue">span with same custom attr but yet another different value</span>
         <span custom-attr="myValue-plus">span with custom attr having value with hyphen in it</span>
-        <span custom-attr=" myValue plus">span with custome attr having value with empty space on both sides</span>
+        <span custom-attr=" myValue plus">span with custom attr having value with empty space on both sides</span>
     </p>
 </body>
 </html>
@@ -329,7 +329,7 @@ OPERATIONS
                 console.log($("div#forthDiv").css("color"));            /*css(name) :: returns string value of 
                                                                                                'name' style attr*/
                 $("span#span2").width("100%");                          /*width(value) :: most common css properties 
-                                                                                                  is availabe*/
+                                                                                                  is available*/
                 $("div#forthDiv").height("60px");                       /*height(value) :: same*/
                 console.log($("div#forthDiv").width());                 /*width() :: get width value in pixels*/
                 console.log($("div#forthDiv").height());                /*height() :: get height value in pixels*/
@@ -344,7 +344,7 @@ OPERATIONS
                 console.log($("li").text());                                    /*text() :: returns string concat of inner 
                                                                                             html contents of all selector's set*/
                 $("div#forthDiv").append("<p id='p3'>paragraph 3 added</p>");   /*append(value) :: append string, 
-                                                                                                 fucntion, selector or 
+                                                                                                 function, selector or 
                                                                                                  dom element to selector's set*/
 
                 //append node already present actually performs a 'move' to the end
@@ -354,7 +354,7 @@ OPERATIONS
                 $("ul#firstul").before("<p>this p added as 'before'</p>");      /*before(content) :: adds content above each 
                                                                                                      of selector's set*/
                 $("ul#firstul").after("<p>this p added as 'after'</p>");        /*after(content) :: adds content below each 
-                                                                                                    of selectors's set*/
+                                                                                                    of selector's set*/
                 $("<span> - this added to targets</span>").appendTo($("p"));    /*appendTo(selector) :: adds given selector to 
                                                                                                         each of selector items in target*/
                 $("<span> - more yet</span>").prependTo($("p#p4"));             /*prependTo(selector) :: same*/
@@ -497,7 +497,7 @@ EVENTS
             $("div").toggle(                                                                /*TOGGLE - click events only
                                                                                                        each function is called in tandem
                                                                                                        upon each click event - has rollover
-                                                                                                       type behaviour */
+                                                                                                       type behavior */
                 function (evt) { console.log("on div :: toggle event handler 1 of 3"); },
                 function (evt) { console.log("on div :: toggle event handler 2 of 3"); },
                 function (evt) { console.log("on div :: toggle event handler 3 of 3"); }
@@ -518,7 +518,7 @@ EVENTS
                     //
                     console.log(evt.altKey);                                                /*jQuery.Event Properties, 
                                                                                                      all normal DOM event properties 
-                                                                                                     are also accessable on this object*/
+                                                                                                     are also accessible on this object*/
                     console.log(evt.ctrlKey); console.log(evt.shiftKey); console.log(evt.metaKey);
                     console.log(evt.target); console.log(evt.currentTarget); console.log(evt.relatedTarget);
                     console.log(evt.data); console.log(evt.result); console.log(evt.timestamp);

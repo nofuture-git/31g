@@ -127,12 +127,12 @@ table.myTable {background:black}
 ----
 Style Sheets Types: 
  - declared within the <head> tag
- - precendence given to style declared closest to tag
+ - precedence given to style declared closest to tag
  
-Linked: stored on a seperate file
+Linked: stored on a separate file
  - default type
- - set in a seperate document
- - CSS syntax is contained in seperate doc
+ - set in a separate document
+ - CSS syntax is contained in separate doc
  <head>
  <link rel="stylesheet" href="myStyleSheet.css" type="text/css">
  </head>
@@ -146,7 +146,7 @@ Embedded: set at top of the html source file
  </style>
  </head>
  
-Inline: set at each occurance within source file
+Inline: set at each occurrence within source file
  - override linked or embedded for tag by tag basis
  <table style="background:black; text-align:center">
  
@@ -203,7 +203,7 @@ List:
 
 Bullet List: known as unordered list
 <ul>
-    <li> first bullet </li>  -adds solid cirlce at each 
+    <li> first bullet </li>  -adds solid circle at each 
     <li> second bulluet </li>
     <li> third bullet </li>
 </ul>    
@@ -221,10 +221,10 @@ ol.myVarName {list-style-type:lower-roman} -i, ii, iii
                              :lower-alpha  -a, b, c
                              :upper-alpha  -A, B, C
                             
-Defination List:
+Definition List:
 <dl>
     <dt> Define Me </dt>
-    <dd> here is the defination </dd> -appear below and tabbed of "Define Me"
+    <dd> here is the definition </dd> -appear below and tabbed of "Define Me"
 </dl>
 ----
 
@@ -314,20 +314,17 @@ Frame reference: nest one inside the other to get even more
        name="botton" 
        id="bottom"
        frameborder="0"  -removes the frame border between the two
-       marginwidth="20" -pixals between text and frame border
-       marginheight="30" -pixals between text and top of border
+       marginwidth="20" -pixels between text and frame border
+       marginheight="30" -pixels between text and top of border
        scrollbar="no"  -also yes and auto, sets a scrollbar next to the frame
        noresize />  -this turns off the user's ability to size the frame
 
 <iframe src="myHTMLfile.html" name="inline" id="inline"></iframe>
- - tag for seting a reference directly in the HTML source file
+ - tag for setting a reference directly in the HTML source file
  
  <a href="myHTMLfile.html" target="upperLeft">Click Me</a>
   - to reference a frame within a html file
 ----
-       
-----
-
 
 ----
 Form: tags that enclose a html form
@@ -345,7 +342,7 @@ Text Box
 <!-- text only-->
 
 <input="password"  name="myName" id="myID" size="40" />
-<!-- text but hidden with astricks-->
+<!-- text but hidden with asterisks-->
 
 <input="integer"  name="myName" id="myID" size="40" />
 <!-- whole numbers only-->
@@ -423,4 +420,77 @@ Reset Button
 Hidden Data
 <input type="hidden" name="myHidden" id="myHidden" value="dataHere" />
 <!--Use to post data not displayed-->
+----
+
+----
+HTML Forgotten Nodes 
+<html>
+<head>
+	<!--used to qualify relative URLs in the page-->
+	<base href="www.myServer.com\myApp" />
+</head>
+<body>
+
+	<abbr title="Missouri">MO</abbr>
+	<br />
+	<acronym title="World Wide Web">WWW</acronym>
+	<br />
+
+	<!--for printing code samples-->
+	<code>
+	Dim MyVar As System.Object = new Object()
+	</code>
+	<br />
+
+	<!--definition list-->
+	<dl>
+	<dt>Amalgamate</dt>
+	<dd>1.Combine or unite to form one organization or structure</dd>
+	</dl>
+	<br />
+
+	<!--del and ins used to track changes to a document-->
+	<p>
+	All <del>of</del> your base<del>s now</del><ins>are</ins> belong to us.
+	</p>
+	<br />
+
+	<!--no idea-->
+	<p>
+	<dfn>Truecolor<dfn> uses 24 bits per pixel.
+	</p>
+	<br />
+
+	<!-- draws a horizontial line-->
+	<hr />
+	<br />
+
+	<pre>
+	HTMLs version of here-string
+	</pre>
+	<br />
+
+	<q>To be or not to be...</q>
+	<br />
+	
+	<span>my Normal text</span><sub>my subscript</sub>
+	<br />
+	
+	<tt>This is teletype</tt>
+	<br />
+	
+	<samp>
+	Used for sample
+	</samp>
+	<br />
+		
+	<address>
+HTML & XHTML Pocket Reference 3rd ed.
+By: Jennifer Niederst Robbins
+Publisher: O'Reilly
+Pub. Date: May 2006
+ISBN: 0-596-52727-6
+	</address>
+</body>
+</html>
 ----

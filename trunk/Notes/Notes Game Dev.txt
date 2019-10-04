@@ -19,7 +19,7 @@ Technical Terms:
  - Toys, Puzzles, Games - the subject of Play 
  - Play: wide category of nonessential, and usually recreational,
          human activities that are often socially significant
-    - Participatory Play: is Play in which one participats meaning
+    - Participatory Play: is Play in which one participates meaning
        one has the freedom to choose how to act 
     - Passive Play: is Play in which one is an audience member
  - Pretending: is the mental ability to est. an imaginary reality
@@ -65,7 +65,7 @@ Rules Define:
 
 ----
 Challenges
- - Any nontrival task set for a player to accomplish.
+ - Any nontrivial task set for a player to accomplish.
  - Must involve some form of effort
  - Are defined by the Rules
  - Take three typical forms
@@ -84,7 +84,7 @@ Actions
 
 ----
 Gameplay
- - composition of Challeges and Actions
+ - composition of Challenges and Actions
  - Symmetric Gameplay: where the game begins at a state 
     in which all players have an equal chance of winning
  - Asymmetric Gameplay: different players may play by different
@@ -97,7 +97,7 @@ Gameplay
 
 ----
 Fairness
- - a value judgement of a player on how well the actions
+ - a value judgment of a player on how well the actions
    address the challenges
  - of particular importance to video games since players
    cannot change the rules
@@ -107,7 +107,7 @@ Fairness
 Gameplay Categories
  - Physical Coordination
    - Speed and Reaction time
-   - Accuracy or percision
+   - Accuracy or precision
    - Timing and rhythm
    - Learning combination moves
  - Formal Logic
@@ -127,7 +127,7 @@ Gameplay Categories
    - Finding hidden passages
    - Mazes
  - Conflict
-   - Stategy, tactics, and logistics
+   - Strategy, tactics, and logistics
    - Survival
    - Reduction of enemy forces
    - Defending vulnerable items or units
@@ -153,7 +153,7 @@ Immersion
    outside world
  - Tactical: high-speed gameplay made up of many small 
     and similar challenges
- - Strategic: deep involvment in winning by making forward
+ - Strategic: deep involvement in winning by making forward
     thinking optimal choices
  - Spatial: being involved in a rich 3D world
  - Narrative: being inside the story
@@ -161,9 +161,9 @@ Immersion
 
 ----
 Emotional Resonance
- - The emotions a designer wants thier players to feel
+ - The emotions a designer wants their players to feel
   1 Amusement: funny
-  2 Contentment: fullfilling, satisfaction
+  2 Contentment: fulfilling, satisfaction
   3 Wonderment: amazed
   4 Excitement: a rush
   5 Curiosity: 
@@ -194,7 +194,7 @@ Gameplay Modes
  - Shell Menus: are the gameplay modes which typically 
     involve the environment settings (loading, saving, 
     setting volume\resolution)
-   - Shell Screens: are the noninteractive sequences such
+   - Shell Screens: are the non-interactive sequences such
       as the title screen & credits
  - Game Structure: the total aggregate of Gameplay Modes and Shell Menus
  - a video game is always in either a gameplay mode or a shell menu
@@ -208,17 +208,17 @@ Game Design
   2 Elaboration Stage
   3 Tuning Stage
  - text recommendations:
-  - team governence suffers the same problems as all governence 
-   - one designer should have executive authority over desecions 
+  - team governance suffers the same problems as all governance 
+   - one designer should have executive authority over decisions 
    - should be neither autocratic nor democratic
-  - a design decision should be explict to the point that a coder
+  - a design decision should be explicit to the point that a coder
     is only left determining the "how" and not the "what"
 ----
 
 ---- 
 Concept Stage 
  - a stage whose decisions define all that follows
- - these decisions are therefore permenant
+ - these decisions are therefore permanent
  - Game Concept: a general idea of how to entertain through gameplay
  - Target Audience: given the concept this follows concerning who 
     would enjoy such gameplay
@@ -256,7 +256,7 @@ Tuning Stage
  - consist in fine-tuning the overall balance of the game
    and defect fixes
  - is subtractive not additive just as polishing removes 
-   imprefections
+   imperfections
 ----
 
 ----
@@ -286,11 +286,9 @@ Team Roles
 VandenBerghe's Five Domains of Play
  - modeled on the Big Five Personality Trait model in psy
  - express the reason players play based on personality traits
- O: is Novelty, wanting new varity over sameness
+ O: is Novelty, wanting new variety over sameness
  C: is Challenge, require precision to win over fooling around
  E: is Stimulation, wanting multiplayer games over single player
  A: is Harmony, particular social harmony over straight competitiveness
  N: is Threat, seeking games that scare
 ----
-
-

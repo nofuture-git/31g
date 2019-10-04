@@ -133,7 +133,7 @@ EXEC MyProc
 --or
 EXEC MyProc 1 --will have the select statement execute
 
---write debug statments using PRINT
+--write debug statements using PRINT
 PRINT 'any ASCII text to send to client'
 
 --format function like olskool C printf - this is considered an error by ssms
@@ -399,13 +399,13 @@ set @myVar = '1145,
 --counter default to have the loop entered at least once
 set @currentCharIndex = 1
 
---assign the seperator
-set @seperator = ','
+--assign the separator
+set @separator = ','
 
 --method to turn literal into a table
 while(@currentCharIndex > 0)
 Begin
-	select @currentCharIndex = CHARINDEX(@seperator,@myVar)
+	select @currentCharIndex = CHARINDEX(@separator,@myVar)
 
 	If(@currentCharIndex > 0)
 	Begin
@@ -437,7 +437,7 @@ end
 DECLARE @LENGTH BIGINT 
 		,@I BIGINT
 
-SET @I = 1; --you must terminate this with a semicolor
+SET @I = 1; --you must terminate this with a semicolon
             -- for the below 'WITH' statement to work
 
 WITH INSERTEDINDEX --aka Common Table Expression
@@ -672,7 +672,7 @@ Performance
 /* A primary key may not be null */
 /* use this to get details about performance
  - entries concerning time is related to CPU in general
- - entries concering io reads is related to disk usage in general */
+ - entries concerning io reads is related to disk usage in general */
 set statistics time, io off
 /* SSMS provides the 'Execution Plan' which prints a 
 	a graphical diagram representing the sequence of 
@@ -685,18 +685,18 @@ set statistics time, io off
    at an exponential rate. */
 /* an index is permutation of columns - improve performance
    by supplying "something" to any values forerunning values */
-/* there may be only one clusted PK/index per table */
+/* there may be only one clustered PK/index per table */
 /* a table scan is the worst performer while a 'RID Lookup' is 
    then next worst. */
 /* all performance rules apply equally to temp tables and 
    table variables.*/
-/* an index may not be supplyed to table variables.*/
+/* an index may not be supplied to table variables.*/
 
 /*==========
 LOCKS
   ==========*/
 /*
- - locks are defined by thier 
+ - locks are defined by their 
   - SCOPE
   - MODE
   - DURATION
@@ -736,14 +736,14 @@ LOCKS
  - DURATION
   - how long, in time, will a lock be held
   - This is what Isolation Level is concerned with. 
-   - Read Uncommitted: momentary exlusive lock while no other 
+   - Read Uncommitted: momentary exclusive lock while no other 
                        exclusives exist.
-   - Read Committed: remains untill the time Commit is called.
+   - Read Committed: remains until the time Commit is called.
    - Repeatable Read: remains as long as someone has run a SELECT
    - Serializable: is a repeatable read also having a range of keys
    
  Deadlock Victim
-  - choosen by the Deadlock manager,
+  - chosen by the Deadlock manager,
   - A husband and wife are at the mall and both
     know that they will meet in the food court when
 	its time to leave - the husband is waiting for 

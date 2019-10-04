@@ -20,7 +20,7 @@ Arch basics
    - as a developer - the host is your machine
   - containers are created from images
    - a container is a running image
-  - image is single, complete and self-containted
+  - image is single, complete and self-contained
  - there are base images which are like full OS .iso
   - what is built upon it is a sequence of changes 
     (e.g. installs, commands, etc.)
@@ -195,7 +195,7 @@ Docker files
  VOLUME C:\\app\\logs
  - defines a persisted directory within an image
  - what is written\changed within it will remain
-  - differs from typicaly image-as-an-ISO where everything is always
+  - differs from typically image-as-an-ISO where everything is always
     read-only
   - useful for containers to keeps logs
   

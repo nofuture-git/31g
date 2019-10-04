@@ -150,15 +150,15 @@ ASP.NET Page Layout
 
 ----
 ASP Component Model
- - runat attribute is fundemental to ASP.NET components
+ - runat attribute is fundamental to ASP.NET components
   - determines if markup is to be rendered as-is 
-  - runat means instansiate a class and have it render the html
+  - runat means instantiate a class and have it render the html
   - runat="server" id="objectRef" is standard couple
    - objectRef is how the server-side language access the runat object
  - most all html elements have a sister ASP.NET object
   - some html elements have no sister object and are mapped to a generic 
   - custom elements are mapped to an developer's assembly 
-   - mapping custom elements to a assemply is done with @Registar in Directives
+   - mapping custom elements to a assembly is done with @Registar in Directives
 ----
 
 ----
@@ -188,7 +188,7 @@ Strategy Pattern
  
  - start with a context object that HAS A ref to object as Interface
  - have Interface with abstract API
- - have each algorithm impement interface in its own behavior
+ - have each algorithm implement interface in its own behavior
  - now may call Interface object on context object for all algorithms
  
  - Provider Model is MS implementation of Strategy Pattern
@@ -198,13 +198,13 @@ Strategy Pattern
 Provider Model
  - common task (eg user auth.) call a common, global function
  - global function ref's config, loads mapped assembly
- - mapped assembly impements global function in unique way
+ - mapped assembly implements global function in unique way
   
  - Provider Model is arch'ed as:
   - provider class: this is what implements the global function's interface
   - configuration: this mapps the assembly(provider class) to the global f(x)
-  - stoarage: this is the storage layer (oracle, sql Server,...)
- - MS named it 'Provider Model' because Stategy Pattern uses Interfaces
+  - storage: this is the storage layer (oracle, sql Server,...)
+ - MS named it 'Provider Model' because Strategy Pattern uses Interfaces
   - Provider Model uses abstract classes 
   - the assembly must inherit from the MS parent provider class
   
@@ -222,7 +222,7 @@ Provider Model
 ----
 VS 2008 
  - debugger now runs in a puesdo-webserver attached
-  - IIS is not strickly required
+  - IIS is not strictly required
   - solutions that already use IIS will continue to use IIS
  - able to copy website up to another machine through IDE
   - Overwrite Source to Target
@@ -243,7 +243,7 @@ VS 2008
 
 ----
 VS 08 Protected Directories
- - Bin:  precompiled assemblys needed for app
+ - Bin:  precompiled assembles needed for app
  - App_Browser
  - App_Code: contains vb cs source files
   - ASP.NET ISAPI always blocks HTTP request to this directory
@@ -274,9 +274,9 @@ Page Life Cycle
  - instantiate the needed class
  - compile the class
  - place compilation in an ASP.NET temp folder
- - compilation remains untill underlying class is altered
+ - compilation remains until underlying class is altered
   - change to web.config, global.asax, or any .dll in bin will force recompile
- - IIS will diretly resolve any request for static resources (html, img, ...)
+ - IIS will directly resolve any request for static resources (html, img, ...)
  - .aspx resource request is passed by IIS to aspnet_isapi.dll (ISAPI)
 ----
 
@@ -315,7 +315,7 @@ IIS 6.0 Runtime Model
 ASP.NET HTTP Runtime
  - ASP.NET 2.0 and later makes extensive use of Partial Class declarations
  - code-behind the classes are partial 
-  - the missing memebers are added at runtime
+  - the missing members are added at runtime
  - resource request is mapped to existing compiled class
   - if existing compiled class is not present then class is compiled
  - runtime enviro invokes the ProcessRequest method
@@ -346,7 +346,7 @@ ASP.NET HTTP Runtime
   - 3rd object in pipe
   - uses the virtual directory to determine the WebApp needed
   - creates or selects the needed WebApp
-  - responsiable for returning object capable of handling request
+  - responsible for returning object capable of handling request
   - returns object HttpApplication
   
  HttpApplication
@@ -355,7 +355,7 @@ ASP.NET HTTP Runtime
   - Factory maintains a queue of HttpApplication objects
   - Factory serves one for incoming request
   - creates yet another of queue is full
-  - if 1st of all request to virual directory then class is compiled by Factory
+  - if 1st of all request to virtual directory then class is compiled by Factory
    - think difference between compiling assembly and instantiating a class
   - one of these for every request (multiple objects for multiple request)
   - developer defines class by the global.asax
@@ -375,7 +375,7 @@ ASP.NET HTTP Runtime
    - .aspx use PageHandlerFactory
    - .ashx use SimpleHandlerFactory
    - .asmx use WebServiceHandlerFactory
-  - handler factory capable of compilying source code
+  - handler factory capable of compiling source code
    - only compile assembly upon change in source code
   - creates instance of object representing http request
    - calling ProcessRequest on this instance gen's markup and runs code
@@ -501,7 +501,7 @@ System.Web.Securtiy.FormsAuthentication.SetAuthCookie()
  
 ----
 Page Directives
- - configure runtime enviornment
+ - configure runtime environment
  - may locate anywhere in page
  - case-insensitive
  
@@ -519,7 +519,7 @@ Page Directives
  
  - Page directive is for page object, .aspx files only
  - Control directive is for control object, .ascx files only
-  - Page, Control are mutaully exclusive
+  - Page, Control are mutually exclusive
 
  <%@ Directive_Name attribute="value" [attribute="value"...] %>
  
@@ -552,18 +552,18 @@ Page Class
 ----
 Page Lifecycle
  - Begins with HTTP runtime calling ProcessRequest
- - all components w/i a page have thier on life cycle, nested w/i page's
+ - all components w/i a page have their on life cycle, nested w/i page's
  - stages w/i cycle may or may not be w/i developer control
  - Page lifecycle is all between runtime request & unload of full rendered html
  - more or less in this order:
   - determine type of request (vis. normal request, postback, etc)
   - class instance configured according to request type
   - PreInit event for changing Masterpage and Theme
-  - Init event: child controls init, controls are given thier unique id
+  - Init event: child controls init, controls are given their unique id
   - InitComplete event: ViewState tracking is setup 
-   - its here that the page restores the view-state of itself and contorls
+   - its here that the page restores the view-state of itself and controls
    - restoration of view-state is for postback only of course
-   - view-state literals are in pairs and amp. seperated
+   - view-state literals are in pairs and amp. separated
    Name1=value1&Name2=value2&Name3=value3
   
   - PreLoad event: present to do stuff before Load event, is for Page cls only
@@ -576,7 +576,7 @@ Page Lifecycle
     - upon postdata load ctrl will raise event to signal that ctrl data changed
     - no such event of no change
    - Ctrl that caused postback is determined
-    - RaisePostBackEvent method called on responsiable ctrl
+    - RaisePostBackEvent method called on responsible ctrl
     - only button's submit or same effect through script can cause postback
     - is a question of 'which button'
   - LoadComplete event: page level only event, no ctrls receive, next is render
@@ -585,12 +585,12 @@ Page Lifecycle
   - PreRenderComplete event: developer can't know if PreRender is done w/o this
   - SaveStateComplete event: save up the view-state for next time
    - cascade call to ctrls SaveViewState methods
-   - also is the ControlState for ctrl's behavior, not just appearence
+   - also is the ControlState for ctrl's behavior, not just appearance
     - saved here too same as view-state
    - view-state exist in markup w/i a hidden field
    - there is yet another way - saving state to server-side database
    - it is here that the markup is written to a buffer 
-   - each control is responsiable for gen'ing its own markup
+   - each control is responsible for gen'ing its own markup
   - Unload event: used for db conn closed, file close, etc...
 ----
 
@@ -598,8 +598,8 @@ Page Lifecycle
 System.Web.UI.Control
  - base class for all controls to inherit
  - implements many interfaces, most of which are for internal use
- - properties include high level control featurs
-  - IDs, is visable, parent control, view state enabled
+ - properties include high level control features
+  - IDs, is visible, parent control, view state enabled
  - ID property may be set by developer
  - ID will be set by runtime if left unspecified
   - typically in form of _ctl1, _ctl2, etc.. (underscore-C-T-L-incremented #)
@@ -612,7 +612,7 @@ System.Web.UI.Control
  - rendering is handled by the ControlAdapter class 
   - this is configurable
   - browser types - %WINDOWS%\Microsoft.NET\Framework\[version]\CONFIG\Browsers
- - specficity to a browser is possiable in tag declaration
+ - specificity to a browser is possible in tag declaration
  <asp:Button ID="myButton" runat="server" Text="Default Button"
       opera:Text="Opera Button"
       ie:Text="IE Button"
@@ -628,7 +628,7 @@ HTML Controls
  - those w/o a direct class counterpart run as HtmlGenericControl
  - Disabled ctrl is still rendered, just passed back as 'disabled="true"'
   - only applies to input elements
- - if visable="false" then no instance is created
+ - if visible="false" then no instance is created
  
  <input runat="server" id="name" type="text"/>
  <!--the runat="server" gives it an instance on the server-->
@@ -642,7 +642,7 @@ HTML Controls
  <input name="name" id="name" type="text" value="Starrett"/>
  <!--name and id present for browser compatibility-->
  
- - bind .js to ctrl using the instace var.'s Attributes collection
+ - bind .js to ctrl using the instance var.'s Attributes collection
   <script type="text/javascript">
   //<![CDATA[
     function Init(){
@@ -754,7 +754,7 @@ Save Uploaded File
 
 ----
 Input Validation
- - performed by seperate controls
+ - performed by separate controls
  - these controls inherit from BaseValidator 
  - all ref's are held in Validators col in Page cls
  - call Validate on page ref to validate it all
@@ -828,8 +828,8 @@ ASP.NET Form Generals
   <body>
  - form tag contained w/i non-container class will throw HttpException
  - multiple form tag w/o runat="server" is ok
-  - may have multiple runat="server" forms when only 1 form is declared visable
-  - .NET 2.0 and 3.5 have MultiView class to dynamicly set forms visable T/F
+  - may have multiple runat="server" forms when only 1 form is declared visible
+  - .NET 2.0 and 3.5 have MultiView class to dynamically set forms visible T/F
  - 2.0, 3.5 allow for cross-page posting 
 ----
 
@@ -865,7 +865,7 @@ Cross-Page Posting
     - allows for strong-type of binding to PreviousPage property
     - may instead specify TypeName
     - still need to open protected variables up w/i a property
-    - last is Server.Transfer("myPage.aspx") - staight-up hard transfer
+    - last is Server.Transfer("myPage.aspx") - straight-up hard transfer
   -->
  <script runat="server">
  Public Sub Page_Load(sender As Object, e As EventArgs)
@@ -919,7 +919,7 @@ Basic Error Handling
   
   <customErrors defaultRedirect="~/myGeneralError.htm"
                 mode="RemoteOnly">
-      <!-- specifiy error page for html error type-->
+      <!-- specify error page for html error type-->
       <error statusCode="404" redirect="~/err/my404Error.htm"/>
       <error statusCode="500" redirect="~/err/my500Error.htm"/>
   </customErrors>
@@ -946,7 +946,7 @@ Master Pages
  - derived-type of html markup
  - requires @Master directive
  - used for banner, nav-bar, footer, etc
- - indivdual page content rendered in asp control 'contentplaceholder'
+ - individual page content rendered in asp control 'contentplaceholder'
  
  <%@Master Language="VB"% class="SimpleMaster">
  <!-- other attributes include
@@ -1005,7 +1005,7 @@ Themes
   - Locals reside in App_Themes folder of the web app's root
  - Style Sheet Themes are same source files as Custom Themes
  - style sheet themes are for setting default appearance
-  - inline appearance defination will override style sheet themes
+  - inline appearance definition will override style sheet themes
   - custom theme will override both
   - local theme overrides global
 ----
@@ -1016,7 +1016,7 @@ Setting Theme
  - store the skin files in App_Themes dir
  - use CSS as a resource of the skin files
  - skins are applied during the Pre-Init event
- - ctrl declareation in skin appear same as aspx file, only focus upon L&F
+ - ctrl declaration in skin appear same as aspx file, only focus upon L&F
   - to apply siin to a custom ctrl, use the <% @Register ...%> directive
  - multiple L&F for single ctrl in single skin file by using SkinID attribute
   - upon multiple skin for single ctrl, one w/o a SkinID is considered default
@@ -1124,7 +1124,7 @@ Data Binding
   - ADO.NET DataSet, DataTable and DataView
   - Data Readers
   - Custom collections and arrays
- - Typlically, only one DataTable to one data bind at a time  
+ - Typically, only one DataTable to one data bind at a time  
  
  Repeater: for fast read-only table (lightest)
  DataList: for applying a Template (light)

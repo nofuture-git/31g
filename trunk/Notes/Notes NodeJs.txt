@@ -88,7 +88,7 @@ Language Quirks
  3 + 5 + "6" // "86" (3 + 5) + "6"
  (4 + 5 + "3") /3  //31 (9 + "3")/3 => 93/3
  
- - hexidecimal parse results
+ - hexadecimal parse results
  parseInt("0x16") //22
  parseInt("0x16", 10) //0
  
@@ -213,7 +213,7 @@ Creating a new proj in VSCode
  Push-Location C:\Projects
  - create a the directory to house the proj
  mkdir .\my-new-proj
- - initialze the proj with whatever
+ - initialize the proj with whatever
  npm init
  - to the needful of getting ref to the node_modules
  npm install
@@ -419,7 +419,7 @@ Error Handling
  - like performance, security and logging - you can't just "add on" 
     good error handling
  - its normal for lower layers to just propagate errors since they
-   can't do anything usefull
+   can't do anything useful
  - try-catch does not work for async anonymous enclosures
    //this will not work
    try{

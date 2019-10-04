@@ -31,7 +31,7 @@ Variant   '128 bits
 ----
 Numeric Literals:
  - Default
-    - Interger for integer value
+    - Integer for integer value
     - Single for rational value
  - Scientific Notation:  literals may be written in notation form
     - E placed between value and exponent (3.14E+8)
@@ -56,7 +56,7 @@ Misc from observation
  - components reference variable is set in 'Properties' window 'name'
  - L&F of components sized in visual editor
  - Programmer only give implementation to components event handlers
- - .frm source file contains componets hidden at file's top
+ - .frm source file contains components hidden at file's top
  - components have methods available for call beyond event handlers
  - Screen is an object - use for display issues
  - Specify startup object from Project Properties
@@ -92,7 +92,7 @@ Basics
 Event Driven Programming
  - Events pass through the Windows OS
  - Windows passes event to application
- - Each control is already registared to events
+ - Each control is already registered to events
  - Controls Properties distinguish one control from another
  - Control only responds to implemented event-handlers
 ----
@@ -108,8 +108,8 @@ Controls
 
 ----
 Control Properties:
- - Controls properties recieve default value
- - Code-only properties, not visable in properties windows
+ - Controls properties receive default value
+ - Code-only properties, not visible in properties windows
  
  Base Control Properties
    - Name: reference to the control
@@ -122,8 +122,8 @@ Control Properties:
    - BackColor:  control's back ground color
    - ForeColor:  control's foreground color
 
-   - Enabled: boolean, toggeles during app exe
-   - Visable: boolean, toggels form from view
+   - Enabled: boolean, toggles during app exe
+   - Visible: boolean, toggles form from view
 
    - Height: twips of controls height
    - Left: control's starting twip from the left edge of the form
@@ -156,7 +156,7 @@ Form Properties:
  Label Control:
   - text appearing on form
   - user cannot change
-  - may be changed at runtime programmaticlly
+  - may be changed at runtime programmaticly
   
   Base Control Properties
     - Caption:  text to display in label
@@ -175,9 +175,9 @@ Text Box Control:
     - Text: box's default value.
     - Alignment: text w/i box, alignment
     - Locked: user may not change value 
-        - unlocked programmatically @ runtime
-    - MaxLength:  number of characters allowed in string, 0 is for indefinate
-    - Multiline:  boolean, True for carragie return, scroll-bar @ runtime
+        - unlocked programmaticly @ runtime
+    - MaxLength:  number of characters allowed in string, 0 is for indefinite
+    - Multiline:  boolean, True for carriage return, scroll-bar @ runtime
     - PasswordChars:  designate character to hide string value
     - ScrollBars:  enum, 0-none, 1-horizontal, 2-vertical, 3-both
         - requires Multiline = True
@@ -197,7 +197,7 @@ Command Button Control:
         - Add '&' to set character as short-cut (eg E&xit - Alt+x will exe)
         - short-cut key will be underlined in caption
         - if short-cut key conflict then all are False but highest Focus order 
-    - Default:  booelan, set control to exe on Enter key press
+    - Default:  boolean, set control to exe on Enter key press
         - only one control per form may have Default value = True
     - Picture:  path, graphic image appear on control instead of text
     - Style:  enum, 1-Graphical, 0-Standard
@@ -213,7 +213,7 @@ Message Box: returns a integer
       - is optional
    - strBoxTitle - what appears in the Title
       - is optional
-      - defalut to the project's name
+      - default to the project's name
  
  - MsgBox Styles:
   - 0 vbOKOnly
@@ -270,7 +270,7 @@ Check Box Control:
 ----
 
 ----
-Option Buttons Contorl (aka Radio Buttons):
+Option Buttons Control (aka Radio Buttons):
  - advised for mutually-exclusive choices
  - at start run-time no option selected
  - upon select one option - at least one will remain selected during runtime
@@ -317,7 +317,7 @@ Font Dialog Box Control:
 
 ----
 Open File and Save File Dialog Box Control:
- - has many Flags avaialable
+ - has many Flags available
  - myFileDialogBox.Filter = "my FileType Description | *.myf"
     - will set the filter portion of the File Open dialog box to default filter
 ----
@@ -330,12 +330,12 @@ Printer Dialog Box Control:
 
 ----
 List Box Control:
- - Must intialize contained values at runtime
+ - Must initialize contained values at runtime
  - contained values ought be added in the Form_Load 
- - contained value appear in order of thier addition
+ - contained value appear in order of their addition
  
  myListBox.AddItem("My First List Box Item")
- myListBox.Sorted = True 'contained values in acending order
+ myListBox.Sorted = True 'contained values in ascending order
  myListBox.Text 'user select item - may hold only one value
  'values of list box are 0 based index
  myListBox.Remove(2) 
@@ -370,8 +370,8 @@ Print method:
  frmMyForm.Print("start";) 'add semicolon to continue line
  'semicolon makes Print command like System.Out.Print 
  'instead of System.Out.PrintLn
- frmMyForm.Print("a string"; Spc(5); "seperated by 5 spaces")
- frmMyForm.Print("a string"; Tab(5); "continured") 'print in tab columns
+ frmMyForm.Print("a string"; Spc(5); "separated by 5 spaces")
+ frmMyForm.Print("a string"; Tab(5); "continued") 'print in tab columns
 ----
  
 
@@ -389,7 +389,7 @@ Mouse Events:
 
 ---- 
  MouseDown, MouseUp and MoveMouse Event Parameters
-  myControl_MouseDown(intButton As Integer, intShift As Interger, _ 
+  myControl_MouseDown(intButton As Integer, intShift As Integer, _ 
                       sngX As Single, sngY As Single) 
   - intButton:  1 for left button, 2 for right button and 4 for both
   - intShift: bitwise and operator for Alt, Shft or Ctrl key state upon click
@@ -430,9 +430,9 @@ Focus:
  - Is the selected control
  - Only controls for user interaction may gain focus
  - TabIndex:  determine order of focus movement
-    - by default is the order inwhich controls were added to form
+    - by default is the order in which controls were added to form
     - all controls have TabIndex property 
-    - controls that may not recieve focus pass to next in line 
+    - controls that may not receive focus pass to next in line 
     - Add short-cut key to label to pass focus to its tandem text box
  - Focus upon load, set to control Default=True
 ----
@@ -441,10 +441,10 @@ Focus:
 Events:
  - Passed from Windows OS to the VB App
  - passed with generating control
- - both forms and controls may recieve events
+ - both forms and controls may receive events
  
  Form Events:
-  - Activate:  event handler for when form recieves focus
+  - Activate:  event handler for when form receives focus
   - Click:  handle click (right and left), will trigger Activate and Click event
   - DblClick: 
   - Deactivate: handler for form's lose of focus
@@ -465,7 +465,7 @@ Events:
 Event Handlers:
  - Syntacticly handler signature always 'controlName_eventName()'
  - signature may take parameters
- - underscore seperator is required
+ - underscore separator is required
  - always null return type (Subroutine)
  - Private access modifier by default
 ---- 

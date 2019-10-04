@@ -16,10 +16,10 @@ Constants - sounds made by interfering with the flow of air from the lungs.
    - Bilabials - sound at the lips
    - Alveolars - sound at teeth or just behind them.
    - Velum (aka Velars) - produced at the palate (like 'K').
-   - Glottal - Open your lips a bit and raise the middle of your tougue 
+   - Glottal - Open your lips a bit and raise the middle of your tongue 
      near the roof of your mouth while keeping it relaxed.  Then exhale.
-     It should make a rolling sound as the tougue virates against the 
-     roof of the mouth.  If it doesn't raise your tougue a little higher 
+     It should make a rolling sound as the tongue vibrates against the 
+     roof of the mouth.  If it doesn't raise your tongue a little higher 
      and try again.  If you make a choking sound, your tongue is pressed 
      to firmly against the roof of your mouth.
      
@@ -43,7 +43,7 @@ Etymology
   - express a quality or circumstance
  6 Preposition
   - connect words with one another
-  - condition or state of affiars between things
+  - condition or state of affairs between things
  7 Conjunction
   - used to connect sentences into one
  8 Interjection
@@ -100,7 +100,7 @@ Articles, Definitive
 ----
 Noun Modification
  - used to express properties, attributes thereof
- - nouns are modifed into four parts
+ - nouns are modified into four parts
  1 Gender
   - subdived into the two genders
   - ascribe Masculine to strong, efficacious nature
@@ -168,12 +168,12 @@ Adjectives
  - describe or modify a nouns meaning
  - subdivided into four parts
  1 Proper: derived from a proper noun
- 2 Participial: appearence as both verb and adjective
+ 2 Participial: appearance as both verb and adjective
   - append '-able' suffix to a verb makes it an adjective.
-  - mostly interchangable with the suffix '-ible'.
+  - mostly interchangeable with the suffix '-ible'.
    - the prefix 'un-' is added to negate the adjective 'unbreakable'
  3 Compound: two or more words connected by a hyphen
- 4 Numeral: express a definate number
+ 4 Numeral: express a definite number
   - subdivided into two parts
   1 Cardinal: as in counting (one, two, three)
   2 Ordinal: as in rank (first, second, third)
@@ -246,34 +246,34 @@ Verb Participles
  - convey rank by use of 'more', 'most', 'less' & 'least'
  - express in time as either 
   1 Present
-   - made with concatination of 'ing' to verb (go + ing)
+   - made with concatenation of 'ing' to verb (go + ing)
   2 Perfect (Past)
    - of two types
-   1 Regular: made w/ concatation of 'ed' or 'd' to its participle (need + ed)
+   1 Regular: made w/ concatenation of 'ed' or 'd' to its participle (need + ed)
    2 Irregular: are of a unique kind (to do, done) 
    - addition of 'ly' to past participle makes it an adverb (pointed + ly)
 ----
 
 ----
 Verb Modifications
- - verbs are modifed into four parts
+ - verbs are modified into four parts
  1 Number & Persons
   - subdivided into two parts (Plural, Singular)
-  - stricly verbs cannot be of number, used to denote agreement with subject
+  - strictly verbs cannot be of number, used to denote agreement with subject
   - plural 1st, 2nd & 3rd person has no variation
   - all plural forms are the same as 1st person singular
  3 Modes
   - of five types
   1 Indicative Mode: simply indicate or declares
   2 Subjunctive Mode: a thing under a condition, motive, wish, supposition
-   - are preceeded by a conjunction, and attended by another verb
+   - are preceded by a conjunction, and attended by another verb
    - mostly conjunctions 'if', 'though', 'unless' & 'whether' 
   3 Potential Mode: implies possibility, will or power thereof
    - by auxiliaries 
     -'may', 'can', 'must', 'will', 'shall', 'might', 'would', 'should', 'could'
   4 Infinitive Mode: express in general unlimited manner
    - w/o respect to number or person
-   - preceeded by 'to'
+   - preceded by 'to'
    - consider the verb root
   5 Imperative Mode: used for commanding, exhorting, entreating or permitting
  4 Tense
@@ -298,7 +298,7 @@ Verb Modifications
 Adverbs
  - used with a verb, adjective or another adverb
  - express quality or circumstance respecting
- - are at times interchangable with adjectives
+ - are at times interchangeable with adjectives
  
  Uses:
  - Number: 'once', 'twice', 'thrice'
@@ -339,7 +339,7 @@ Conjunctions
  Subordinating:
  - are adverbs placed infront of the subordinating clause
  - are mostly single word
- - place a comma at end of adverb phase upon it preceeding the main clause
+ - place a comma at end of adverb phase upon it preceding the main clause
  - main clause + conjunction + subordinating clause
  - conjunction + subordinating clause + comma + main clause
 ----
@@ -373,7 +373,7 @@ Subject (Clause) Types
   - may be considered a complete sentence
  Dependent Clause: in-need of another clause to have sense
   - joined with subordinating conjunction
- Restrictive Clause: propostion must remain to have any sense
+ Restrictive Clause: proposition must remain to have any sense
  Nonrestrictive Clause: proposition's removal allows for sense to remain
 ----
  

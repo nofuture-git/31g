@@ -86,7 +86,7 @@ Declarator and Declaration
      (a nested Declarator containing parts 1 2 and 3 here)
    
   (3)zero or one initializer, taking the form of 
-     = intial value here
+     = initial value here
      
  - the Declaration, in turn, has these four parts
  
@@ -249,13 +249,13 @@ Primitives
   - 16 bits
   short myShort = 138;
   short myShort(138);
-  short myShort = 1.23 \\tuncated to just be '1', but it does run!
+  short myShort = 1.23 \\truncated to just be '1', but it does run!
    
  - int (Integer 4 bytes) 
   - 32 bits
   int myInt = 12345;
   int myInt(1235);
-  int myInt = -12.3656455; \\tuncated to just 12
+  int myInt = -12.3656455; \\truncated to just 12
   
  - long (Integer 4 or 8 bytes) 
   - 32 or 64 bits
@@ -268,7 +268,7 @@ Primitives
   
  - float (Rational 4 bytes) 
   - 32 bits
-  - percision of 6 significant digits (eg 1.23456)
+  - precision of 6 significant digits (eg 1.23456)
   float myFloat = 1.23; int myInt = sizeof(myFloat); //myInt is 4
   float myFloat(1.23);
   long float myFloat = 1.99; int myInt = sizeof(myFloat); //myInt is 8 
@@ -277,14 +277,14 @@ Primitives
   
  - double (Rational 8 bytes)
   - 64 bits
-  - percision of 10 significant digits (eg 1.234567891)
+  - precision of 10 significant digits (eg 1.234567891)
   double myDouble = 1.23; int myInt = sizeof(myDouble); //myInt is 8
   double myDouble(1.23);
   long double myDouble = 1.23; //still on 8 bytes
   //long long double myDouble = 123.12; does not compile
 
- - int types declared as 'unsigned' to allow for greater positive percision
- - no arithmatic overflow errors
+ - int types declared as 'unsigned' to allow for greater positive precision
+ - no arithmetic overflow errors
   - values will be assigned as attempted assignment MOD upper limit
   - eg 336 MOD 256 = 80 where 336 is attempted assignment of a byte primitive
   - the same is true of negative numbers assigned to unsigned ints
@@ -296,8 +296,8 @@ Literals
  - Character:  enclosed in single quotes
  - Floats:  literal is followed by a 'F'
  - Longs:  literal followed by a 'L'
- - Wide Characters:  preceeded by a 'L' (eg L'h')
- - Strings:  enclosed in double qoutes
+ - Wide Characters:  preceded by a 'L' (eg L'h')
+ - Strings:  enclosed in double quotes
   - have a default constructor and are initialized upon declaration to ""
 ----
 
@@ -338,9 +338,9 @@ Pointers
   - a reference cannot exist w/o something to reference
   - a pointer may exist independent of a pointee
  - use the * to "dereference" the point
-  - this 'gets' the value contained in the referernce mem space
+  - this 'gets' the value contained in the reference mem space
   - when a type is followed by a * it means its a pointer type
-  - after decalration the * is used as a dereference 
+  - after declaration the * is used as a dereference 
  - *variableName at declaration means its going to be a pointer
  - &variableName means you want the mem-address of the pointer
  -  variableName will just give you a address-value that its pointing to
@@ -396,7 +396,7 @@ Pointers EXAMPLE
   }
  
  #include<string>
- #include<cstdlib>//this has ref to the NULL varaible name
+ #include<cstdlib>//this has ref to the NULL variable name
  using std::string;
  int main() {
   string myStr = "my string";
@@ -450,7 +450,7 @@ Pointers & Arrays
    know at compile time where to look for them.
  - with the pointer, however, you don't know what address your going to find 
    there and so don't know at compile time where to fetch the deref'ed value
- - these being termed Direct Memory Access, Indirect Memory Access respectivily  
+ - these being termed Direct Memory Access, Indirect Memory Access respectively  
  
  char *p = "qwerty";
  /*telling the compiler we have a pointer - it will perform the latter above
@@ -489,7 +489,7 @@ Basic Functions
   - int (*Foo())[]; //function returning a pointer to an array
   - int (*Foo[])(); //an array holding pointers to functions
   
- - no ref arguements are copied, ref'ed arguements are referenced
+ - no ref arguments are copied, ref'ed arguments are referenced
  
  - all functions may call 'return' to terminate
   - void type functions just call 'return;'
@@ -498,14 +498,14 @@ Basic Functions
   - zero is typically 'success'
   
  - defining the function in the header, parameters may be given a default value
-  - parameters w/ default values may be ommitted from the function call
+  - parameters w/ default values may be omitted from the function call
  - add 'static' operator to local variable to have it remain after function call
  - 'inline' operator on a function declaration 
   - compiler will replace function signature with function body
   - used to speed things up
   
  - add 'const' at the end of a class's method sig. 
-   - only relevent to class methods
+   - only relevant to class methods
    - insures that method body does not change instance variables
    int myFc(int& a) const {}
    //const char* - cannot change the value that is returned
@@ -516,7 +516,7 @@ Basic Functions
   - only functions that return an int did not need a definition
   - this is the very old 'K&R C' definition and declaration types
   //(1) Definition in K&R C 
-  double myFunction(); //no arguements, just the function and return type
+  double myFunction(); //no arguments, just the function and return type
   //(2) Declaration in K&R C
   double myFunction(myParam)
   char myParam; //this is the parameter type here...
@@ -645,10 +645,10 @@ Identifiers
 ----
 Structures
  - aggregate of primitives or other structures
- - original C manifestation for quicker arguement passing
+ - original C manifestation for quicker argument passing
  - in C++ struct and class are exactly the same except for access modifiers
-  - struct - all memebers are public no matter what
-  - class - programmer determines what modifer to assign to what
+  - struct - all members are public no matter what
+  - class - programmer determines what modifier to assign to what
  
  struct myStructure //structure tag
  {
@@ -673,12 +673,12 @@ Structures
     int myInt;
     char myChar;
    } myFunctionStruct; //this struct instance is scoped to the f(x) only!
-                       //since it is annonymous cannot init variables
+                       //since it is anonymous cannot init variables
  }
 
 // structures allow for bit fields - specifying the size of a field in bits
  struct DISK_REGISTER {
-  unsigned ready:1; //the fields are converted to interger type for computation
+  unsigned ready:1; //the fields are converted to integer type for computation
   unsigned error_occured:1;
   unsigned disk_spinning:1;
   unsigned write_protected:1;
@@ -699,7 +699,7 @@ Structures
 ----
 Unions
  - same declarative syntax as Structure
- - is a type of varient in which it may hold any one of its declared members
+ - is a type of variant in which it may hold any one of its declared members
  - the compiler makes enough memory for the largest member
  - the value of the union during run-time may change in type too  
 ----
@@ -729,7 +729,7 @@ Block Statements
 ----
 Scope Resolution
  - C++ has global, instance, local and block level scope
- - reuse of identifiers possiable with local scope overriding global
+ - reuse of identifiers possible with local scope overriding global
  - constants are in scope to the source file inwhich they are declared
  - :: scope operator
   std::string = "my string"; // std is the namespace
@@ -757,8 +757,8 @@ Scope Resolution
 
 ----
 Preprocessor Controls
- - old C souce files ran through a preprocessor to replace constants
- - offical called preprocessor control lines
+ - old C source files ran through a preprocessor to replace constants
+ - official called preprocessor control lines
   - are offset by the '#' symbol
  - is dumb in that it always just replace a string for string
  - is done by preprocessor so no ending semicolon needed
@@ -774,11 +774,11 @@ Preprocessor Controls
   #define MY_VALUE 2
   #define MY_OTHER_VALUE MY_VALUE + MY_VALUE
 
-  - a macro can take arguements
+  - a macro can take arguments
   #define MY_MACRO_FUNCTION(X) (X + X)
   //calling MY_MACRO_FUNCTION(2) will be turned to (2 + 2) by preprocessor
   
-  - may have preprocessor add double-quotes to a arguement to with another '#'
+  - may have preprocessor add double-quotes to a argument to with another '#'
   #define MY_MCR_WITH_STRING(ARG)  #ARG 
   //calling MY_MCR_WITH_STRING(2) will be turned to "2" not 2
  
@@ -800,7 +800,7 @@ Preprocessor Controls
 
 ----
 Header File Basics
- - header files are only needed when the program spans more than one souce file
+ - header files are only needed when the program spans more than one source file
  - header files are handled by the 'preprocessor'
   - before compile time
   - called via the #include <headerfile>
@@ -818,14 +818,14 @@ Header File Basics
  */
  #define HEADERFILE_H
  /* 
-   - here is the actual interface defination
+   - here is the actual interface definition
    - HEADERFILE_H is just a naming convention, anything will work be it unique
    - with this guard #include "headerfile.h" can appear many times w/o error
  */
  #endif
  
- - use 'Foward Declarations' to have a class defined before including the header
- //foward declaration is just telling compiler, "set such-&-such name aside"
+ - use 'Forward Declarations' to have a class defined before including the header
+ //forward declaration is just telling compiler, "set such-&-such name aside"
  class ToBeUsed;
  //class declaration so assume were in a header file
  class MyClass {
@@ -835,7 +835,7 @@ Header File Basics
      // the compiler doesn't know the ToBeUsed symbol yet...
      ToBeUsed* iMyUse;
  }
- - use foward declaration when you just need a ref to the class
+ - use forward declaration when you just need a ref to the class
  - have to have #include if you are calling methods thereof
 ----
 
@@ -940,7 +940,7 @@ Assignment Operator
  }
  
 Compound Assignment Operators 
- += -= *= /= %= aritmatic compound operators
+ += -= *= /= %= arithmetic compound operators
  <<= >>= &= ^= |= bitwise compound operators
 ----
 
@@ -955,9 +955,9 @@ Prefix & Postfix Operators
 Arrow Operator
  -> is used to call members on the value to which a pointer is referenced
  myCustomObject *myPointer = &myInstanceOfCustomObject;
- //to call a memeber on myCustomObject from the pointer we must 1st deref' it
+ //to call a member on myCustomObject from the pointer we must 1st deref' it
  (*myPointer).myCustomMember();
- //wrapping pointer in () deref's it first then calls memeber on value
+ //wrapping pointer in () deref's it first then calls member on value
  mypointer->myCustomMember();
  
  struct myStruct
@@ -994,7 +994,7 @@ String Operators
  - strings are never null
  - strings use pass-by-value semantics
   string myString (myOtherString); //both point to independent address space
- - string literals contain an additonal terminating null char (/0)
+ - string literals contain an additional terminating null char (/0)
  str.empty //returns true or false if the string value is ""
  str.size //returns the string's length
   - returned type is always unsigned
@@ -1110,10 +1110,10 @@ Loops
  }
  
  For Loop
- for (initializerr; condition; expression;) {
+ for (initializer; condition; expression;) {
     //for loop body
-    //expression may have multiple things happening ea. seperated by a comma
-    //multiple things may happen in the initializer as well (comma-seperated)
+    //expression may have multiple things happening ea. separated by a comma
+    //multiple things may happen in the initializer as well (comma-separated)
     //to have a null in one of the three just have a semi-colon
  }
  
@@ -1141,7 +1141,7 @@ Try / Catch Block Statements
   }
   
  Standard Exceptions
-  - located in stdexcept libary
+  - located in stdexcept library
   - exception: standard base class
   - runtime_error
   - range_error
@@ -1174,7 +1174,7 @@ main(){
 
 ----
 Defining Templates (Generics)
- - generic functions are used when arguement's type is unknown
+ - generic functions are used when argument's type is unknown
   - internal operation is the same across types
   //compare may be called with string types, int types, whatever
   //compiler figures it out by the arguments used
@@ -1239,7 +1239,7 @@ Standard Template Library
  Linked-List
   - #include <list>
   - list<MyClassType> MyList;
-  - called 'linked-list' becaus may be thought of as a chain, link by link
+  - called 'linked-list' because may be thought of as a chain, link by link
   - does not have [] or the .at() accessors
   
     begin___ ___ ___end 
@@ -1391,8 +1391,8 @@ Constructors & Destructors
  - the new operator 
   - must be followed by the object type
   - returns a pointer that points to the 1st block of mem. for the new object
- - constuctors are defined with Class Name less any return type (same as Java)
- - destructors are defined with Class Name preceeded by a '~' operator
+ - constructors are defined with Class Name less any return type (same as Java)
+ - destructors are defined with Class Name preceded by a '~' operator
  - may set instance variable init values in unique constructor syntax
   \\MyClass is th constructor because its the class's name
   \\the values following the ':' are initializers
@@ -1404,7 +1404,7 @@ Constructors & Destructors
  
  int myInt(1024); //initialized int to value of 1024
  int *myPt1 = new int(1024); //myPt1 ref's the int with value 1024
- int *myPt2 = new int; //points to an unintialized int
+ int *myPt2 = new int; //points to an uninitialized int
  int *myPt3 = new int(); //parenth's say, "initialize to default value"
  
  int *myPt4 = new int(1024);
@@ -1499,9 +1499,9 @@ The Compiler
   - builds an exe. 
  - after compile you just have a .out file (like in Java .obj)
  - older versions bound the lib binary in with the exe
- - newer dll use is familar
+ - newer dll use is familiar
  
- - typical Virual Address Layout in old C
+ - typical Virtual Address Layout in old C
  - the stack is needed for recursion (having multiple instance of a local var.)
  - used also for procedure activation records (who gets returned to...)
  highest address ------------------------- ---> ------------------- procedure
@@ -1873,5 +1873,3 @@ if(MyFile.Open(MyFileName,
   MyFile.Close();
 }
 ----
- 
-

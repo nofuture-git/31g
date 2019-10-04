@@ -10,7 +10,7 @@ Examples
  - this uses namespaces, finds the CompanyAssociation node 
    whose direct-childnode of ID has text of '1' then goes back up 
    to this particular CompanyAssociation node 
-   and then finds descendents nodes of AgencyAgentSummary
+   and then finds descendants nodes of AgencyAgentSummary
 //c:CompanyAssociation/c:ID[text()=6]/..//c:AgencyAgentSummary
 
  - this finds the 'div' tag which contains the given text then looks
@@ -47,7 +47,7 @@ Template Match Examples
 	
  myAncestor//myNode
    match any 'myNode' element 
-   that is a descendent of a 'myAncestor' element
+   that is a descendant of a 'myAncestor' element
    
  @myAttribute
 	match any attribute named 'myAttribute'

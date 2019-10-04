@@ -46,11 +46,11 @@ Activity Diagram
 |  |      |<---------------------------------------|      |                   
 |  |      | \       Send                           |   ..>|---.               
 |  |      |  \                                     |   .  |   |Receive        
-|  |      |   \first block is an explict\          |   .  |   | \             
-|  |      |     sized array              \         |   ...|<--.  \thread parks
-|  |   ..>|---.                           \        |      |                   
-|  |   .  |   |while Available > 0         \       |      |                   
-|  |   ...|<--.                             \      |      |                   
+|  |      |   \first block is an explicit\         |   .  |   | \             
+|  |      |     sized array               \        |   ...|<--.  \thread parks
+|  |   ..>|---.                            \       |      |                   
+|  |   .  |   |while Available > 0          \      |      |                   
+|  |   ...|<--.                              \     |      |                   
 |  |      |--------------------------------------->|      |                   
 |  |      |                           Send         |   ..>|---.               
 |  |      |---.                                    |   .  |   |while          
@@ -75,13 +75,13 @@ http://www.gnu.org/s/libc/manual/html_node/index.html
 Basics
  - IPv4 uses the 32bit addressing pattern handled in dotted-quad notation
   - the binary is converted to Dec and rendered as (eg) 255.255.255.255
- - IPv6 used 128bit addtessing pattern having two Hex values colon seperated
+ - IPv6 used 128bit addressing pattern having two Hex values colon seperated
   - rendered as (eg) 2000:fdb8:0000:0000:0001:853c:39a1
  - during transition period, locations have dual address (IPv4 & IPv6)
  - special address 
   - loop-back address (think echo command)
    127.0.0.1 & 0:0:0:0:0:0:0:1
-  - internal only (IPv6 doesn't have any equivelent)
+  - internal only (IPv6 doesn't have any equivalent)
    10.<anything>
    192.168.<anything>
    172.16.<anything> to 172.31.<anything>
@@ -111,23 +111,23 @@ Socket Concepts
 
 ----
 Socket Abstract Components
- - Communiction Style
-  - determines data-structue (streams, packets, etc)
+ - Communication Style
+  - determines data-structure (streams, packets, etc)
   - handle of lost data
   - number of peers
  - Namespace
   - determines how to name a socket
-  - address has meaning in namespace choosen
- - Protocal
+  - address has meaning in namespace chosen
+ - Protocol
   - defined in <sys/socket.h> file 
    AF_ is for 'Address Family'
    PF_ is for 'Protocol Family' 
   - manner on which communication is carried out
   - low-level data passing
   - must be the same on both sockets of the peers
-  - protocal is specific to an ordered pair of Style and Namespace
+  - protocol is specific to an ordered pair of Style and Namespace
    - cannot be mismatched
-   - each combination of Sytle and Namespace has a default protocol
+   - each combination of Style and Namespace has a default protocol
 ----
 
 ----
@@ -139,7 +139,7 @@ Communication Style <bits/socket.h>
 
 ----
 Socket Namespace/Address
- - name and address are interchangable
+ - name and address are interchangeable
  - using <sys/socket.h>'socket()' uncommunicable until its bound to an address
  - binding is performed by <sys/socket.h>'bind()'
  - <bits/socket.h>'struct sockaddr *' is the lower-lvl that sys/socket.h uses  
@@ -183,7 +183,7 @@ TCP/IP Socket Client/Server
    - they should be applied to sin_port, sin_addr and integer literals
 (7)inet_pton: text conversion of an IP address to binary [16.6.2.3]
   int inet_pton(int [AF_INET | AF_INET6], const char *cp, void *buf)
-   - converst to network byte order on an IP address literal (eg 204.112.154.26)
+   - converts to network byte order on an IP address literal (eg 204.112.154.26)
    - pton is for Printable TO Numeric 
     - there is also inet_ntop for Numeric TO Printable 
    - cp is the pointer to an input string

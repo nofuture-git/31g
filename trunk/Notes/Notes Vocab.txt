@@ -440,13 +440,13 @@ truculent - eager or quick to argue or fight
 vitriolic - filled with bitter criticism or malice
 pleonasm - use of more words than are necessary to convey meaning
 allusion - indirect reference 
-illusion - deception (mistaken preception of reality)
+illusion - deception (mistaken perception of reality)
 delusion - false belief (belief counter the evidence)
 Semiotics - study of meaning-making, divided into
  semantics - relation between signs and the things to which they refer
- syntactics - relation amoung or between signs in formal structure
+ syntactics - relation among or between signs in formal structure
  pragmatics - relation between signs and sign-using agents
-Mores (from Latin meaning manner or custome) - social norms of what's right and wrong
+Mores (from Latin meaning manner or custom) - social norms of what's right and wrong
 Folkways - social norms between what's right and rude.
 neologism - name for a new or isolated word
 equivocation - ambiguous language to avoid telling the truth or committing oneself
@@ -475,9 +475,9 @@ defamation - statements which damage reputation
  libel - defamation in print or broadcast media
  slander - defamation oral only
 subterfuge - deceit used in order to achieve one's goal
-disingenuous - unsincere pretender in knowledge being less than actual
+disingenuous - insincere pretender in knowledge being less than actual
 diminutive - extremely small
-ex ante - before the fact, based on forcasts rather than actual results
+ex ante - before the fact, based on forecasts rather than actual results
 ex post - after the fact
 tripartite - shared by or involving three parties
 ex cathedra - with full authority of office
@@ -553,7 +553,7 @@ sibyls: name for multiple identities controlled by one
 existence uncertainty: real identities in underlying observed data is unknown
 identity uncertainty: which symbols refer to the same object
 runtime: the actual execution of a program over some span of time
-  typically within some specific enviromental context
+  typically within some specific environmental context
 process: an ostentive definition of a runtime
 stationary process: concerns change-in-time where the state changes
  but those changes are governed by laws that do not change
@@ -583,7 +583,7 @@ event loop -vs- game loop: event loops only continue upon user input
 partial application: partial application is when the number of args 
  of a function expression are reduced.  For example in going from 
  "let pow x x = x^x" to "let sqr x = pow x 2"
-monand: a computational structure which statisfies three rules:
+monand: a computational structure which satisfies three rules:
   left identity: bind(unit(e),k) = k(e)
   right identity: bind(m,unit) = m
   associative: bind(m,x => bind(k(x),y => h(y))) 
@@ -597,7 +597,7 @@ point -vs- vector [Linear Algebra]:
 compiler -vs- transpiler: 
  - a compiler results in a direct executable artifact 
    while a transpiler results in further code which 
-   must be itself either compiled or interpretated
+   must be itself either compiled or interpretative
 pascel case -vs- camel case -vs- kabab case -vs- snake-case
  Pascel case: MyVariable
  Camel case:  MyVariable | myVariable
@@ -614,7 +614,7 @@ duck typing -vs- normal typing:
 fluent (CS): from latin fluens (flowing) synonym for state-variable
 stare decisis: doctrine of precedent is abbrev. for full latin
   "stare decisis et non quieta mvere" to stand by decided matters
-  and not to distrub settled matters.  Is only concerned with
+  and not to disturb settled matters.  Is only concerned with
   the what was decided not why
 stare dictis: to stand by or keep to what was said
 stare rationibus decidendi: to stand by the rational decisions 
@@ -623,7 +623,7 @@ sua sponte: of his, her, its or their own accord
 Ratio decidendi: the rationale for the decision
 common law (aka case law): is practice of each case forming an 
   interpretation of a statutes meaning and said meaning being a 
-  kind of fuller explaination of a statute
+  kind of fuller explanation of a statute
 civil law: is strict interpretation of statute where its meaning
   is considered obvious, exposition of law is done by professors
   and said exposition is called doctrine
@@ -638,7 +638,7 @@ sine qua non: latin for "without which nothing"
 Nikefication: a branding strategy without actual industrial processes behind it.
 reify: make something which is abstract  more concrete or real
 contrapasso: suffer the opposite, from Dante's Inferno, a punishment which resembles 
-             or contrast with the freely choosen sin itself
+             or contrast with the freely chosen sin itself
 domain: is the set of values which may go into a function
 codomain: is a set of values which may possibly come out of a function
 range: is the set of values which may come out of a function
@@ -672,7 +672,7 @@ commodum ex injuria sua nemo habere debet: No one shall profit by his own wrong
 Ex rel.: ex relatione, out of relation with
 quantum meruit: money to be paid for services when the amount due is not given in a contract.
 commensurable: measurable by the same standard
-inter alia: amoung other things.
+inter alia: among other things.
 exigent: pressing, demanding
 surreptitiously: in a way that attempts to avoid notice
 germane: relevant to a subject under consideration
@@ -688,7 +688,7 @@ curtilage: the land immediately surrounding a dwelling
 manfucturing: assembling finished products from components or raw materials
 fabrication: making of raw materials (manual or mechanized bending, cutting, joining, etc.) 
 production: the process of manufacturing, fabrication or growing goods
-machining: the process of removing material of a workpeice
+machining: the process of removing material of a workpiece
 components: are themselves manufactured products which are part of larger product
 raw materials: materials in minimally processed or unprocessed state
 surplusage: excessive or nonessential matter
@@ -702,7 +702,7 @@ pulsate: regular expand and contract movement
 undulate: regular up-and-down movement
 fluctuate: irregular up-and-down movement
 wobble: irregular side-to-side movement
-oscilate: regular side-to-side movement
+oscillate: regular side-to-side movement
 whirl: full circular round movement
 swing: partial circular round movement
 sway: regular back and forth movement
@@ -734,7 +734,7 @@ caveat emptor: buyer beware, buyer alone is responsible for checking quality
 moribund: terminal decline, lacking vitality, at-death's-door
 misfeasance: wrongful exercise of lawful authority
 nonfeasance: failure to act required by law
-equipoise: blanace of forces or interests
+equipoise: balance of forces or interests
 imbricate: arrange with an overlap (like roof tiles)
 ramify: form branches or offshoots, branch out
 scintilla: a tiny trace or spark of some quality or feeling

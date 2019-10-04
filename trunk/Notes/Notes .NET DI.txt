@@ -27,7 +27,7 @@ Design Pattern Review
  - Decorator: intercepting one implementation with another of the
 	same interface.
  - Composite: aggregate several implementations into one
- - Adapter: relates two seperate but similar interfaces to each other
+ - Adapter: relates two separate but similar interfaces to each other
  - Repository: interface which produces enumerable list of a type
 	along with methods to find, modify,etc these said objects
 ----
@@ -128,7 +128,7 @@ Windsor Container Example: Single Interface with Multiple Implementations
         {
             try
             {
-                //linchpen - this little statement is required for the whole thing to work...
+                //linchpin - this little statement is required for the whole thing to work...
                 container.AddFacility<TypedFactoryFacility>();
 				
                 container.Install(Castle.Windsor.Installer.FromAssembly.This());
@@ -378,7 +378,7 @@ namespace MyCastleExample
         {
             try
             {
-                //linchpen - this little statement is required for the whole thing to work...
+                //linchpin - this little statement is required for the whole thing to work...
                 container.AddFacility<TypedFactoryFacility>();
 
                 container.Install(Castle.Windsor.Installer.FromAssembly.This());
@@ -395,7 +395,7 @@ namespace MyCastleExample
                 //this uses MyBaseType and MyOtherBaseType
                 target.UseMyTypes(null);
 
-                //this alsow uses MyBaseType and MyOtherBaseType
+                //this also uses MyBaseType and MyOtherBaseType
                 target.UseMyTypes("HAS_NO_MATCH");
             }
             catch (Exception ex)

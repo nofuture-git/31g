@@ -32,7 +32,7 @@ WCF Address
      and depends on Berkley Sockets API  
   - IPC Pipes 
   - Microsoft Message Queuing (MSMQ): messages targeted to disconnected machines are 
-     placed in a queue awaiting the machine's revial.
+     placed in a queue awaiting the machine's revival.
   - Service Bus: related to Windows Azure and dependents on HTTP
 
  - address format is always
@@ -60,9 +60,9 @@ WCF Contracts
    - value-types implicit in an exchange
   - Fault contracts
    - what errors the services raises and 
-     how these errors propogate
+     how these errors propagate
   - Message contracts
-   - a kind of extensiable contract typically
+   - a kind of extensible contract typically
      used in an adapter design pattern
 
  - a contract *should* be defined on an Interface but doesn't have to be.
@@ -134,11 +134,11 @@ WCF IIS Hosting
   - the .svc file contains the directive for ServiceHost
   - non-IIS hosting must extend this class by hand
  - the address of the service is the path on the virtual directory
- - IIS 7+ uses the newer Windos Activation Service (WAS) 
+ - IIS 7+ uses the newer Windows Activation Service (WAS) 
   - in IIS 7+ a WCF service is still a .svc file
   - however a WAS is a system service 
-  - offers advantages over Custome Hosting by including
-   - applicaiton pooling
+  - offers advantages over Custom Hosting by including
+   - application pooling
    - recycling
    - idle time management
    - identity management
@@ -166,7 +166,7 @@ WCF Custom Hosting
  - hosting is done by implementing an extension of the System.ServiceModel.ServiceHost class
   - this class extends from ICommunictionObject <|-- CommunicationObject <|-- ServiceHostBase
  - each service will require an extension of the ServiceHost class
- - to programaticly configue a host you must do so prior to calling Open()
+ - to programmaticly configure a host you must do so prior to calling Open()
  
    <!-- app.config settings -->
    <service.serviceModel>
@@ -245,12 +245,12 @@ WCF Binding Concept
   - multiple message encodings
    - plain-text
    - binary
-   - Message Transport Oprimization Mechanism (large payloads)
+   - Message Transport Optimization Mechanism (large payloads)
   - multiple security 
   - none
   - transport-level only
   - message-level privacy
- - given the number of possiable difference WCF uses 'bindings'
+ - given the number of possible difference WCF uses 'bindings'
   - a binding provides canned options for
    - transport protocol
    - message encoding
@@ -258,7 +258,7 @@ WCF Binding Concept
    - reliability
    - security
    - transaction propagation
-   - interopability
+   - interoperability
 ----   
    
 ----
@@ -315,7 +315,7 @@ WCF Endpoints
 
 ----
 WCF Metadata Http-Get
- - publish of metadata controled from code
+ - publish of metadata controlled from code
  - using System.ServiceModel.Description.ServiceMetadatBehavior
  
  ServiceHost host = new ServiceHost(typeof(MyService));

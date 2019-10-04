@@ -74,7 +74,7 @@ EXISTS
 Combine Operators
 AND     both conditions must be true
 OR      one or both conditions must be true
-IN      any matching explict list
+IN      any matching explicit list
         ex. WHERE myID IN ('1', '2') 
 NOT     condition must be untrue
 ----
@@ -82,7 +82,7 @@ NOT     condition must be untrue
 ----
 Regular Expressions
 SOUNDEX value sounds like 
-LIKE    true when item matchs expression
+LIKE    true when item matches expression
 %       same to * in Microsoft
 ----
 
@@ -301,7 +301,7 @@ WHERE myID >= 10    --could have used a more complex WHERE to get this result
 UNION               --this brings the two queries together
 SELECT myColumn, myOtherColumn
 FROM myTable
-WHERE myColumn > 10 --UNION query will automaticly remove duplicate records
+WHERE myColumn > 10 --UNION query will automatically remove duplicate records
                     --use UNION ALL to halt auto removal of dup.'s
                     --add ORDER BY to very bottom, will order result set 
 ----
@@ -316,8 +316,8 @@ VALUES(1,'myName', null) --must have something for every column
 
 Partial Row
 INSERT INTO myTable (myID,myString) --specify columns here
-VALUES (1, 'myName')                --and thier values here
-                                    --columns ommitted must allow null value
+VALUES (1, 'myName')                --and their values here
+                                    --columns omitted must allow null value
 
 Retrieved values
 INSERT INTO myTable(
@@ -375,7 +375,7 @@ WHEN NOT MATCHED THEN
 Create table
 CREATE TABLE myTable
 (
-  myID      INTEGER(10)   NOT NULL, --column name, datatype, null possiablity
+  myID      INTEGER(10)   NOT NULL, --column name, datatype, null possibility
   myString  VARCHAR(50)   NULL,
   myNumber  DECIMAL(10,2) NULL      DEFAULT 0 
 )
@@ -417,13 +417,13 @@ WHERE myID = 1
 ----
 Procedures: actual module level-type code 
 CREATE PROCEDURE myProcedure
-(myParameter OUT INTEGER) --wild varity of declartion
+(myParameter OUT INTEGER) --wild variety of declaration
 IS
 BEGIN
     SELECT myID
     FROM myTable
     WHERE myID = 1
-    myParameter :=SQL%OUTPUT; --wild varity of var. assignment
+    myParameter :=SQL%OUTPUT; --wild variety of var. assignment
 END;
 
 EXCUTE myProcedure --this is going to return something

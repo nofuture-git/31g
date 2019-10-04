@@ -77,7 +77,7 @@ ${build}
 Command line
  - having set enviro variables, call ant from command line
 C:\src>ant
- - specify a target name seperated by a space to call a specific target
+ - specify a target name separated by a space to call a specific target
 C:\src>ant clean
  - specify command line properties with dash and ahead of target command
 C:\scr>ant -verbose clean
@@ -148,7 +148,7 @@ Practice
         
 ----
 Organize Source Files
- - have .java files in seperated dir from .class files
+ - have .java files in separated dir from .class files
  - have .jar files in root of a build dir 
  - have .class files in a sub-dir of a build dir
   - the .jar file is considered the 'build'

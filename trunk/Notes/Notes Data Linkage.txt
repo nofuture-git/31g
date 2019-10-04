@@ -23,11 +23,11 @@ Data linkage (theory)
    - Negative Predictive Value: D / (B + D); likewise for non-matches
    
  - starts with comparable records
-  - data should be atomic broken down into smallest possiable parts
+  - data should be atomic broken down into smallest possible parts
   - columns with high covariance should have one of the two removed
   
  - methods 
-  - deterministic: the more straight-foward method
+  - deterministic: the more straight-forward method
    - takes itself two forms
     - single-step: exact equality char-for-char by ordinal
 	- iterative: a set of rules taken in steps
@@ -45,11 +45,11 @@ Data linkage (theory)
 		2.1.3 middle initial
 		2.1.4 dod (date of death)
 		
-  - probabilistic (aka stochastic, fuzzy): assumes certian 
+  - probabilistic (aka stochastic, fuzzy): assumes certain 
      fields\attributes\column\properties have more discriminatory
 	 power than others.
 	- based on Fellegi & Sunter  "A Theory For Record Linkage"
-	- links designated as match, possiable match, non-match
+	- links designated as match, possible match, non-match
 	- comparison space: the cartesian product to the two
 	  record sets
 	 - each pair in the comparison space is either a 

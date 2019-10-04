@@ -23,7 +23,7 @@ Basics
  
   <!-- 
    w/o 'ko.observable' attached to the value of the property in the js object changes aren't 
-   propogated back to the DOM, but the the value in the js object does, in fact, change 
+   propagated back to the DOM, but the the value in the js object does, in fact, change 
    -->
   <p>First Name: <input data-bind="value: firstName" /></p>
   <p>Last Name: <input data-bind="value: lastName" /></p>
@@ -39,7 +39,7 @@ Basics
 	/*'
 	 'ko.observable' is the duplex binding, w/o it when the value of the 'input' tag was changed 
 	 only the string property of this object was updated, the text in the 'strong' tag remained the
-	 same; however, having added 'ko.observable' changes to the js property are, in turn, propogated back
+	 same; however, having added 'ko.observable' changes to the js property are, in turn, propagated back
 	 up to the 'strong' tag's text.
 	*/
 	
@@ -101,7 +101,7 @@ Grid Views
 		  type was an array
 		- 'foreach' is named "control flow binding" of which 'if' 
 		   'ifnot' & 'with' are also in addition.  These operate 
-		   in a different capicity to similier binding of data-to-tag 
+		   in a different capacity to simplifier binding of data-to-tag 
 		   in that they control portions of the UI itself.
 		  
 		- we have observable inner-scope, we made '.seats'
@@ -179,7 +179,7 @@ Grid Views
  </h3>
  <select data-bind="options: simpleStrings"></select>
   
- <!-- having it as "click: addSeat()" is the samething -->
+ <!-- having it as "click: addSeat()" is the something -->
  <button data-bind="click: addSeat">Reserve another seat</button>
  </body>
  </html>
@@ -315,13 +315,13 @@ function MyModel() {
 ----
 
 ----
-Array's whose items are empty upon 'docuement.ready'
+Array's whose items are empty upon 'document.ready'
  - need some array assigned to a 'ko.obervableArray([]);'
  - since this uses a table, something is need to databind each 
    table-data too
  - this implies a kind-of stack where the last item pushed
    is the ONLY item being observed, so if the 'td' contained
-   some changable value it wouldn't be observed.
+   some changeable value it wouldn't be observed.
  
  <table>
     <thead><tr>

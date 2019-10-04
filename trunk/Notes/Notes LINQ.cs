@@ -319,7 +319,7 @@ namespace original_Events
         }
 
         /// <summary>
-        /// Each worker may send a message back to thier supervisor - messages 
+        /// Each worker may send a message back to their supervisor - messages 
         /// from workers are handled here.
         /// </summary>
         /// <param name="message"></param>
@@ -384,7 +384,7 @@ namespace original_Events
     }
 
     /// <summary>
-    /// A container class reprsenting the async effort of any given <see cref="MyWorker"/> instance.
+    /// A container class representing the async effort of any given <see cref="MyWorker"/> instance.
     /// </summary>
     /// <remarks>
     /// The <see cref="GetToWork"/> delegate is bound to its respective EndInvoke handler by this class.
@@ -408,7 +408,7 @@ namespace original_Events
         }
 
         /// <summary>
-        /// Since the <see cref="MyWorker"/> is contained by this type, a view to the thread closing is possiable.
+        /// Since the <see cref="MyWorker"/> is contained by this type, a view to the thread closing is possible.
         /// The worker themselves could never report this since they are bound to the very thread that is closing.
         /// </summary>
         /// <param name="z"></param>
@@ -662,7 +662,7 @@ namespace Notes_advanced_LINQ
 			//predicate indicates a question on a subject, this is a function
 			//Predicate<double, double> willNotCompile = (x,y) => x > y; 
 			
-			//performs something using one of the args it recieves
+			//performs something using one of the args it receives
 			//this is simply as named an action that returns void.
 			Action<string, MyClass> doStuff = (s,myCls) => myCls.Letters = s;
 
@@ -895,8 +895,8 @@ namespace Notes_advanced_LINQ
             var expectingBinaryExpression = body.NodeType;
             Console.WriteLine(expectingBinaryExpression);//Divide
 
-            //System.Linq.Expressions.ExpressionVisitor is not straight-foward regarding how its 
-            // supposed to be used, an older 3.5 implemenation is available at 
+            //System.Linq.Expressions.ExpressionVisitor is not straight-forward regarding how its 
+            // supposed to be used, an older 3.5 implementation is available at 
             //http://msdn.microsoft.com/en-us/library/bb882521(v=vs.90).aspx
             //another example from the text is at
             //http://blogs.msdn.com/b/jomo_fisher/archive/2007/05/23/dealing-with-linq-s-immutable-expression-trees.aspx

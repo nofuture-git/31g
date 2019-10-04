@@ -13,10 +13,10 @@ Principles
  - refactoring: change in the internal structure that makes code easy to read
  - is a technique not just random clean-up
  - internal changes that don't improve readability is not refactoring
- - cannot change observalble behavior
+ - cannot change observable behavior
  - you do not add tests while refactoring
  - eliminate duplicate code is a major component of refactoring
- - consider succeding programers as users of your code
+ - consider succeeding programmers as users of your code
 ----
 
 ----
@@ -25,15 +25,15 @@ Source Difficulty
  - duplicate logic
  - function addition requires existing code to change
  - complex branching logic
- - performance slow-downs happen in small chuncks of code
+ - performance slow-downs happen in small chunks of code
 ----
 
 ----
 Tips
- - Break code into chuncks by syntax construct (eg Switch, Loop, If..Then)
+ - Break code into chunks by syntax construct (eg Switch, Loop, If..Then)
  - Look for comments - they display a semantic distance
- - Upon code chunck removal pay special attention to local variables
- - good Objects need to know very little about thier overall system
+ - Upon code chunk removal pay special attention to local variables
+ - good Objects need to know very little about their overall system
  - Never hesitate to change variable names
  - Write code that is as easy to read as a paragraph
  - methods should be on the object whose data it uses
@@ -45,13 +45,13 @@ Tips
  - name a method for what it does not how it does it
  - a local variable is only set once? - declare it Final and attempt compile
  - use the language's Assert.IsTrue for assumptions while debugging 
- - attempt to hide as many methods as possiable
+ - attempt to hide as many methods as possible
 ----
 
 ----
 Refactor Signpost
  - Duplicate Code
-  - same code construct in mutiple methods, same class
+  - same code construct in multiple methods, same class
   - same method in sibling classes
  
  - Long Method 
@@ -94,7 +94,7 @@ Refactor Signpost
   - only used by unit tests
 
  - Temporary Instance Variables
-  - variables are set only in certian conditions
+  - variables are set only in certain conditions
 
  - Message Chains
   - obj calls obj which calls another obj
@@ -105,8 +105,8 @@ Refactor Signpost
  - Inappropriate Intimacy
   - two classes are highly coupled
   
- - Incomplete Libary Class
-  - use of libary that doesn't have all desired features
+ - Incomplete Library Class
+  - use of library that doesn't have all desired features
    
  - Data Class
   - encaps'ed data that is being used by many obj
@@ -184,7 +184,7 @@ Inline Temporary Variable
 ----
 
 ----
-Relace Temp with Query
+Replace Temp with Query
  - replace local variable with a method
  - instance level scope helps clean up the class
  - vital to effective Extract Method
@@ -207,7 +207,7 @@ Relace Temp with Query
 
 ----
 Split Temporary Variable
- - local variable being set mutliple times
+ - local variable being set multiple times
  - not block level loop variables
  - local variables set more than once indicate method does more than one thing
  - not collecting local variables (eg strFind &= " some more.")
@@ -229,8 +229,8 @@ Split Temporary Variable
 
 ----
 Remove Assignments of Parameters
- - parameters should not have thier values set to something else in the method
- - source of confusion intailed by pass by value semantics
+ - parameters should not have their values set to something else in the method
+ - source of confusion entailed by pass by value semantics
  
  Public Sub MySub(ByVal input As Integer)
   If input > 5 Then Return input - 2
@@ -269,7 +269,7 @@ Move a Field
  
 ----
 Extract Class
- - single class needs to be split into mutiples
+ - single class needs to be split into multiples
  - many methods, lots of data
  - to split look for cluster of methods / data
   - look for data that changes together
@@ -282,7 +282,7 @@ Extract Class
 Inline Class
  - opposite of Extract Class
  - collapse a class by moving features into another class
- - best to start absorbtion by declaring interface with stubs
+ - best to start absorption by declaring interface with stubs
 ----
 
 ----
@@ -301,14 +301,14 @@ Hide Delegate
 ----
 Remove Middle Man
  - called class is doing nothing but delegation
- - with the addition of a new feature on delegate need new accessor on server
+ - with the addition of a new feature on delegate need new accessors on server
  - changes incurred over change in system
 ----
 
 ----
 Introduce Foreign Method
- - collapse various methods of a libary into a single method
- - desire for a method on a libary that does not exist
+ - collapse various methods of a library into a single method
+ - desire for a method on a library that does not exist
  
  Dim dt As Date 
  Dim nextDate As Date = New Date(dt.Month, dt.Day + 1, dt.Year)
@@ -379,7 +379,7 @@ Replace Data-Value w/ Object
  
  --Into This--
  
- '--this was just the string "Customer" in the orginal class
+ '--this was just the string "Customer" in the original class
  Public Class Customer 
   Private _customer As String
   Public Sub New(ByVal customerName As String)
@@ -467,10 +467,10 @@ Replace Type Code with State/Strategy
 
 ----
 Decompose Conditional 
- - seperate branching from execution w/i branch
+ - separate branching from execution w/i branch
  
  If ((date < ACONSTANT) OrElse (date > ANOTHERCONSTANT)) Then
-    return = quanttity * (rate + extraCharge)
+    return = quantity * (rate + extraCharge)
  Else
     return = quantity * otherRate
  End If
@@ -572,7 +572,7 @@ Replace Conditional with Polymorphism
 
 ----
 Introduce Null Object
- - remove need to test object existance
+ - remove need to test object existence
  - localize null behavior to single class
  - Null Object is inherited from object being protected against Null values
  - Null Object will handle situation of "when its nothing" 
@@ -621,7 +621,7 @@ Rename Method
 ----
 
 ----
-Seperate Query from Modifier
+Separate Query from Modifier
  - method should return a value or modify an exposed instance variable, not both
  - may induce onto further refactoring
  
@@ -673,7 +673,7 @@ Seperate Query from Modifier
 ----
 
 ----
-Replace Parameter with Explict Method
+Replace Parameter with Explicit Method
  - typically, parameters passed in determine some action
  - different action for different parameter values
  
@@ -778,3 +778,4 @@ less and less well-ordered.  Sooner or later the fixing ceases to gain any
 ground.  Each forward step is matched by a backward one.  Although in 
 principle usable forever, the system has worn out as a base for progress.
 ]
+----

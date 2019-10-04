@@ -16,7 +16,7 @@ definitions:
    the resource owner
  - [authorization server]: the server issuing access tokens to the client after
    successfully authenticating the resource owner
-  - in actual implementation the resouce server may be the authorization server 
+  - in actual implementation the resource server may be the authorization server 
  - [authorization grant]: a cred rep'ng the resource owner's authorization
  - [authorization code]: a way to skip handing the resource owner's cred's to 
    the client.
@@ -31,7 +31,7 @@ definitions:
    when its access token expires - allows them to get a new one.  Is optional
    and included with the access token.  Are only of use to auth server, not 
    resource server.
- - [client_id]: a unique string used to id registed clients with the auth server
+ - [client_id]: a unique string used to id registered clients with the auth server
  - [authorization endpoint]: the place where the resource-owner auth's with 
     the auth server.
  - [redirect_uri]: the place the auth server will tell the user-agent
@@ -232,11 +232,11 @@ Setting up Google OAuth with ASP.NET MVC
 	       context.HttpContext.GetOwinContext().Authentication.Challenge(AuthenticationProperties, string)
 		   - the second arg is a keyword is just "Google" which must be a key to some name-Uri hash somewhere 
 		     else in the framework.
-		   - the AuthenticationProperties contians the URL of where to callback to on some-site 
+		   - the AuthenticationProperties contains the URL of where to callback to on some-site 
 		     when the work at separate-site is completed.
 	   (3) the framework basically just sent a 302 back to the browser and did all the hard-work of constructing
            a massive URL both targeting separate-site and setting in the query string
-           - what is not mentioned here is the prelimiary step of setting up the part from the dialog above 
+           - what is not mentioned here is the preliminary step of setting up the part from the dialog above 
 		     "[...]tell'em some-site sent ya...wait, your gonna need these."  This was accomplished by
 			 by going to https://console.developers.google.com/project (because the example is with Google)
 			 of setting up the relationship between some-site and separate-site.  This involved telling

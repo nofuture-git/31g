@@ -85,7 +85,7 @@ R Summary
  - package version
   packageVersion("packageName")
   
- - package mangement
+ - package management
   - worked within VS 2017 R Interactive
   install.packages("packageName", lib="C:/Program Files/Microsoft/R Client/R_SERVER/library", dependencies = TRUE)
 ----
@@ -116,7 +116,7 @@ R Ops
   isTRUE(2 > 1 | 1/0) #is short-circuit logical ops
   
  -Mathematical Ops
-  +, -, *, /  (arithmatic)
+  +, -, *, /  (arithmetic)
   ** or ^     (exponent) 
   %%          (modulus)
   %*%         (matrix multiplication)
@@ -221,7 +221,7 @@ R Builtins
  B <- solve(A)
  A %*% B       #identity matrix
  
- #find determinent
+ #find determinant
  A <- matrix(c(1,0,5,1), ncol=2)
  B <- det(A)
  
@@ -295,7 +295,7 @@ R Builtins
  er<-runif(10,min=-1,max=1) #get 10 random values between -1 and1
 
  help("[[") #gets help on builtin symbols (displays in browser)
- View(data) #dislplays it like a spread sheet
+ View(data) #displays it like a spread sheet
  
  # Numeric builtins
  length(a); mean(a); min(a); max(a); var(a)
@@ -363,7 +363,7 @@ R Builtins
 ----
 My R Functions
  library(ggplot2)
- # used throughtout these notes
+ # used throughout these notes
  # placed together here to allow for cut\paste in CLI
  
  getMy.Convert.Radians2Degrees <- function(a) a * 180/pi
@@ -802,7 +802,7 @@ Convert degrees to radians
    C = 2 *pi, which is 360 degrees
  - so 180 degrees is just pi
  - degrees to radians (a / 1) * (pi / 180)
- - radians to degress a * 180/pi
+ - radians to degrees a * 180/pi
 ----
 
 ----
@@ -922,7 +922,7 @@ Vector Space
   - matrices are upper case latin letters
  - an individual item therein, with an index subscript
    is called a component
-  - a component is writtin in lowercase or italics
+  - a component is written in lowercase or italics
  - two operations are applicable to R^n 
   - componentwise addition (subtraction is just the same except minus)
    - e.g. X=Y, x1+y1, x2+y2, ... , xn+yn
@@ -1510,8 +1510,8 @@ Linear Maps and Area
    |      |      |      |      |      |      | 
    0      1      2      3      4      5      6 
  
-  - it is possiable to calc the area of each
-    triange (T, T1, T2, T3)
+  - it is possible to calc the area of each
+    triangle (T, T1, T2, T3)
    T1 = 1/2*a[1,1]*a[2,1]
    T2 = 1/2*(a[1,1] - a[1,2])*(a[2,2]-a[2,1])
    T3 = 1/2*a[1,2]*a[2,2]
@@ -1555,7 +1555,7 @@ Linear System (2X2)
   | 1,6 | * |u2 | = |4 |
   '-   -'   `- -'   `--'
  
-  - the possiable solutions is named
+  - the possible solutions is named
     solution space
   - roughly divided into 
    (1) exactly on solution vector (u)
@@ -1587,9 +1587,9 @@ Gauss Elimination
   u1 = b2/a2,2
   u1 = 1/a1,1 * (b1 - u2*a1,2)
    
- - foward elimination: the process of getting a[2,1] to equal 0
+ - forward elimination: the process of getting a[2,1] to equal 0
     which is required for back-sub to work.
- - gauss elimination: the process of foward-elim. followed by
+ - gauss elimination: the process of forward-elim. followed by
    back sub.
   - based on rule that linear maps do not change linear combos.
     which means applying a linear map to all vectors will not 
@@ -1707,7 +1707,7 @@ Affine maps
    - translation (p): an object is moved
       w/o changing its orientation
    - linear map (A)
-  - while linear maps are releated to ratios
+  - while linear maps are related to ratios
     affine maps leave ratios unchanged
    
   x' = p + x1*a1 + x2*a2
@@ -1763,7 +1763,7 @@ Newton's Optimization Method
  
  #a curvy function
  myFx <- function(x) 0.0012*x^3 - 0.0347*x^2 + 0.7401*x - 3.5533
- #an R builtin to get the derivitive of an expression 
+ #an R builtin to get the derivative of an expression 
  myFxExpr <- expression(0.0012*x^3 - 0.0347*x^2 + 0.7401*x - 3.5533, "x")
  #will write the solution as 0.0012 * (3 * x^2) - 0.0347 * (2 * x) + 0.7401
  D(myFxExpr, "x") 
@@ -1848,7 +1848,7 @@ Linear to Nonlinear
     other variables
    a*x + b*y + c*z 
    - is still linear since x,y and z are taken times constants
-   - has the convenience of being expressable in vector format
+   - has the convenience of being expressible in vector format
      because a,b,c is one vector and x,y,z is another
      .- -.   .- -.
      | a |   | x |
@@ -1860,7 +1860,7 @@ Linear to Nonlinear
    a*x^2 + 2*b*x*y + c*y^2
    - is non-linear since variables are being taken times each other
    - when every part of a function is a quadratic expression it is 
-     labelled as Quadratic Form
+     labeled as Quadratic Form
    - want to express this in vector form
              .-    -.   .- -.
    .-   -.   | a  b |   | x |
@@ -1906,7 +1906,7 @@ Hessian Matrix
 ----
 Quadratic Approximation
  - given some function f(x,y)
-   and an intial guess of (x0,y0)
+   and an initial guess of (x0,y0)
  - f is function, fx is first derivative, fxx is second deriv.
  - the full quadratic expression is
  Q(x,y) =   f(x0,y0)
@@ -1984,7 +1984,7 @@ Gauss-Newton methods
   y = m(x, data) - r
  
  - expand this into a vector for x 
- - there are two variables so the derivitive is multi-variant
+ - there are two variables so the derivative is multi-variant
  - the gradient of the objective function is 
    g = J'r 
   - where J[i,j] = ∂r[i]/∂x[j]
@@ -2019,7 +2019,7 @@ Simple Linear Regression
  #get a summary about the linear regression
  summary(LinearModel)
  
- #get just the coefficents
+ #get just the coefficients
  LinearModel$coefficients
  
  #get R-squared value
@@ -2112,7 +2112,7 @@ Categorical variables
   pch.list <- as.numeric(EmployeesSalary$)
   
   #star '*' (x2A), is to make the model by category
-  # formula is now a string literal - text offers no explaination
+  # formula is now a string literal - text offers no explanation
   LMcat <- lm('Salary~YearsExperience*LevelOfEmployee', data = EmployeesSalary)
 ----
 
@@ -2120,7 +2120,7 @@ Categorical variables
 Stochastic Gradient Descent
  - like the previous only it works by taking a sample of 
    the data at random
- - likewise imporves performance 
+ - likewise improves performance 
  
   #import stochastic gradient descent lib
   library(sgd, warn.conflicts = FALSE)
@@ -2218,7 +2218,7 @@ Logistic Regression
       +------------------------------
            observation ordinal 
 
-   - a linear regression would peirce the 0 and 1 axis and 
+   - a linear regression would pierce the 0 and 1 axis and 
      continue on - this wouldn't be right cause its senseless
    - we need the equation which goes from 0 to 1 and that's it
    
@@ -2314,9 +2314,9 @@ Back-propagation of Multi-Layer Network
 
 ----
 Generalized Linear Model (GLMs)
- - where the reponse variable is discrete and the error terms do not 
+ - where the response variable is discrete and the error terms do not 
    follow a normal dist
- - allow the mean to depned on explanatory variables through a 'link' function
+ - allow the mean to depend on explanatory variables through a 'link' function
    and the response variable to be any member of a set of distributions called 
    exponential family (i.e. Binomial, Gaussian, Poisson, etc.)
   
@@ -2467,7 +2467,7 @@ Detecting Outliers
 
 ----
 Data scaling
- - deals with problem where variables are expesses on 
+ - deals with problem where variables are expresses on 
    different scales (1-10 -vs- 1-1000)
  - typical two methods
   - normalization
@@ -2643,9 +2643,9 @@ Digression on Algebra rules
 
 ----
 Digression on Statistics 
- - Variance, how wide the obs are spead along an axis
+ - Variance, how wide the obs are spread along an axis
  - Covariance, indicates the positive or negative relationship
-    amoung obs 
+    among obs 
  - Clustering, divide obs into groups
  - Correlation, measure strength and direction of two
    obs 
@@ -2682,7 +2682,7 @@ opp|  \ hyp
    |θ___\
      adj
   - each is given a length
-   - hyp is abbrev. for hypothenuse
+   - hyp is abbrev. for hypotenuse
    - adj for adjacent leg
    - opp for opposite leg    
    

@@ -162,7 +162,7 @@ Ternary Operators
 
 ----
 Arithmetic Operators
- + for additon
+ + for addition
  - for subtraction
  * for multiplication
  / for division - always a float result
@@ -170,7 +170,7 @@ Arithmetic Operators
 ----
 
 ----
-Concatination
+Concatenation
  - uses the '+' operator
  - is overloaded, as summing with math, concat with string
  - string and numeric operands on a '+' results in a string
@@ -319,7 +319,7 @@ For In: for array of values
 
 ----
 Constructor
- - constuctor syntax:
+ - constructor syntax:
   var myNumber = new Number("10");
 ----
 
@@ -395,7 +395,7 @@ String Object
 	lastIndex : 4
  */
  
- //replace first occurance
+ //replace first occurrence
  myString.replace(/is/,"was");
  /*"Thwas is a string that is really a full sentence."*/ 
  
@@ -406,7 +406,7 @@ String Object
  myString.replace(/\sIS\s/i," was ");
  /*"This was a string that is really a full sentence."*/
  
- //use a 'g' switch to have every occurance replaced
+ //use a 'g' switch to have every occurrence replaced
  myString.replace(/\sis\s/g," was "); 
  /*"This was a string that was really a full sentence."*/
  
@@ -617,7 +617,7 @@ Function Declaration
 Modules import\export
  - added in ES6
  - driven by relative path of file system
- - file extensions are ommitted
+ - file extensions are omitted
  
  export function f(a,b) {a + b}
  export var MyVar = 9;
@@ -627,10 +627,10 @@ Modules import\export
 
 ----
 Arrays: 
- - are flexable like collections in compile-type languages
+ - are flexible like collections in compile-type languages
  
  var myArray = new Array('one', 'two');
- var myArray1 = ['one', 'two']; //use literals for annomyous  
+ var myArray1 = ['one', 'two']; //use literals for anonymous  
  var myArray2 = new Array(); //no length definition
  
  myArray2[0] = "a literal";
@@ -682,7 +682,7 @@ Arrays:
 }*/
  //operates with var-args (paramarray)
  myPush.push("X","Y",true); 
- /*pushing an array causes the recipent to become jagged, but it works
+ /*pushing an array causes the recipient to become jagged, but it works
    use .concat to make a linear addition*/
  var myAddition = ["T",new Date(),11]; 
  myPush.push(myAddition);
@@ -834,7 +834,7 @@ myFilteredArray.filter(function(element, index, array){
 
 //added in ES6
 [1,3,4,2].find(x => x > 3)
-//not sure what the usefullness of this one is
+//not sure what the usefulness of this one is
 [1,3,4,2].findIndex(x => x > 3)
 
 var myForeach = [0xA,false,new Date().getMinutes(),"my string",new Date()];
@@ -907,7 +907,7 @@ var myResult = myMap.map(function(element, index, array){
 
 //reduce is used to distill an array into something else
 // it operates affectively as a recursive function 
-// without an intial value, on first call into 
+// without an initial value, on first call into 
 // 'reduce' a is index 0 and b is index 1
  var flattened = [[0, 1], [2, 3], [4, 5]].reduce(function(a, b) {
      return a.concat(b);}); 
@@ -937,7 +937,7 @@ var flattened = [[0, 1], [2, 3], [4, 5]].reduce(function(a, b) {
 ----
 Error Handling
  - JavaScript 1.5 uses traditional try..catch..finally
- - try/catch statement appears w/i the funtion/object
+ - try/catch statement appears w/i the function/object
  - use static instanceof to test exception's type
  
 function myfunction {
@@ -974,10 +974,10 @@ Timers
 
 ----
 Object extension
- - not inheirtance
+ - not inheritance
  - simply extension of existing class functionality using prototype keyword
  - used to add a member to a function having it present on every new instance
-  - can already add any property to an instanciated object
+  - can already add any property to an instantiated object
   - prototype is for adding a member to class definition (of sorts)
   - all objects 
  - var (w/i function) makes instance variable private
@@ -1034,7 +1034,7 @@ Object inheritance
  }
  
  function MyInheritedFunction(param1, param2, param3){
-    MyFunction.call(this, param1, param2);//inheriatance happens here
+    MyFunction.call(this, param1, param2);//inheritance happens here
     getParam3{
       return param3;
     }
@@ -1049,7 +1049,7 @@ Object inheritance
         this.width = w
         this.height = h
     }
-    //override esque
+    //override'esque
     toString() {
         return "I am Cool and " + super.toString();
     }

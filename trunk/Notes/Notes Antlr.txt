@@ -42,7 +42,7 @@ HEX_FOUR : HEX (HEX (HEX (HEX)?)?)? ;
 HEX : DIGIT | [a-fA-F] ;
 DIGIT : [0-9] ;	 
 
- - explict ranges don't work when they have overlap
+ - explicit ranges don't work when they have overlap
  
 //for the classic YYYY-MM-DD, you can't have different rules
 // for month and day because every value of a month can also 
@@ -90,8 +90,8 @@ WS : ['\t' '\r' '\n' ' ' ]+ -> skip ; //all empty space chars are getting ignore
  - naming matters:
   - parser rules must be in camel-case, when the 
     rule starts with an upper case letter it will not work
-	 - returns error(99) "grammer ... has no rules"
-  - the name of the grammer and the name of the file must match 
+	 - returns error(99) "grammar ... has no rules"
+  - the name of the grammar and the name of the file must match 
     (probably since its made in Java).
 ----
 
@@ -107,7 +107,7 @@ CS Basics involved:
    ';' line terminator)
 	
  - value: an expression which cannot be evaluated any
-   futher (resolved).
+   further (resolved).
    
  - variable: concerns the storage of or storage location
    (location of the data)
@@ -119,7 +119,7 @@ Backus-Naur-Format & Extended Backus-Naur-Format
   - alternatives
   - token references
   - rule references
-  - enclosed grammer fragments thereof (Extended BNF)
+  - enclosed grammar fragments thereof (Extended BNF)
   
   - specifics of ANTLR
   Syntax						Description
@@ -139,14 +139,14 @@ Basics of Grammer file
  - has single header
  - has multiple rules that may reference each other
  
- grammer MyGrammer;
+ grammar MyGrammer;
  rule1 : <<stuff>> ;
  rule2 : <<other stuff>> ;
  
- - the name of the file must matche the header and have .g4 extension
+ - the name of the file must match the header and have .g4 extension
  - definition begins at the coarsest level and work down to atomic level
  - when working from english descriptions, the effort will focus on nouns
-  - "comma-sparated-value file is a sequence of rows terminated by newlines"
+  - "comma-separated-value file is a sequence of rows terminated by newlines"
   
   file : <<sequence of rows that are terminated by newlines>> ;
   - where the nouns on the right are yet-to-be defined tokens or rules themselves
@@ -156,12 +156,12 @@ Basics of Grammer file
   field : <<number or string>> ;
   - having run out of nouns in need of definition, a rough draft is drawn
  
- - using pseudo-code is a typical practice when drawing up a grammer
+ - using pseudo-code is a typical practice when drawing up a grammar
   - allows what would otherwise be over-detailed to be more generic
 ----
 
 ----
-Grammer file separated Lexer\Parser
+Grammar file separated Lexer\Parser
  - requires specific naming format for header and file name
   <GrammerName>Parser.g4
   <GrammerName>Lexer.g4
@@ -175,7 +175,7 @@ Grammer file separated Lexer\Parser
  - assuming output .tokens file is in same directory
  - then invoke Antlr on <GrammerName>Paser.g4
   - if .tokens is in another directory the -lib switch must be 
-    used to specifiy a path when invoking Antlr
+    used to specify a path when invoking Antlr
  - the final grammer name is neither <GrammerName>Paser
    nor <GrammerName>Lexer; rather, it is just <GrammerName>
    - this is important to remember when subsequent calls to 'grun'
@@ -224,16 +224,16 @@ Token Dependency Pattern
        | expr '[' expr ']'
 	   ;
 	   
- - for example, an overloaded function where certian args
+ - for example, an overloaded function where certain args
    may be omitted but when present they must have a certain
    order
    
-   //ignoring case-insesitive, just a partial example
+   //ignoring case-insensitive, just a partial example
    vbDateDiff :  'DateDiff' '(' ('"d"' | '"h"') ',' expr ',' expr (',' ('vbMonday' | 'vbFriday' | INT) (',' ('vbUseSystem' | 'vbFirstJan1' | INT))? )? ')' ;
    
    - in the above example only the first three args are 
-     required; however, there is a total of five possiable.
-	 If the fourth arg is present is must take a certian form 
+     required; however, there is a total of five possible.
+	 If the fourth arg is present is must take a certain form 
 	 and conforming to its form the fifth arg may manifest.
 	 
   - the general pattern is 
@@ -269,18 +269,18 @@ Nested Phrase Pattern
  - the the latter example 'stat' and 'block' are indirectly
    recursive because the refer to each other
    
- - this is as-if then entire grammer may be nested 
+ - this is as-if then entire grammar may be nested 
    within some specific statement 
    - with function calls the number of parameters could 
-     be zero-to-many so the grammer, as indirectly recursive,
+     be zero-to-many so the grammar, as indirectly recursive,
 	 appears as:
    
    ID '(' exprList? ')'        ; // this is the function call
    exprList : expr (',' expr)* ; // this is the actual arg list
    
    - with, for example, VBScript and nested If statements,
-     the entire grammer is allowable within the if-block 
-	 including more if statements and thier if-blocks
+     the entire grammar is allowable within the if-block 
+	 including more if statements and their if-blocks
    - however, the Nest-Phrase Pattern is still applicable as:
    
    //ignoring the fact the VBScript is case-insensitive
@@ -294,14 +294,14 @@ Nested Phrase Pattern
    exprBlck : expr (NL expr)* ; //the block is one-to-many expression
    
  - In both examples the idea is the same:
-  - some high-level grammer rule encompasses the whole 
+  - some high-level grammar rule encompasses the whole 
   - some sequence pattern is followed by a zero\one-to-many of 
     the high-level rule.
 ----
 
 ----
 General Symbol Semblance
- - Optional paramaters enclosed in sqr-braces
+ - Optional parameters enclosed in sqr-braces
     ORIGINAL SPEC
 	-------------
     [ schema_name ]  
@@ -325,7 +325,7 @@ General Symbol Semblance
 				;
 	propertyNameValueList : ( propertyNameValue ','? )* ;
   
- - Sequence typically has some reserverd word 
+ - Sequence typically has some reserved word 
    and is often in bold, all-caps or in a 
    terminal-style font (from ECMA)
     ORIGINAL SPEC
@@ -385,8 +385,8 @@ General Symbol Semblance
 	
  - when a new-line is the statement terminator
   - line comments cannot be skipped since they
-    are followed by the statment-terminator.
-  - in such a case the comment and thier terminator
+    are followed by the statement-terminator.
+  - in such a case the comment and their terminator
     become equivalent to just NL using the type(...)
 	ANTLR syntax.
   ANTLR
@@ -398,7 +398,7 @@ General Symbol Semblance
 
 ----
 Order of Operation
- - when more then one match is possiable on a single statement
+ - when more then one match is possible on a single statement
    ANTLR uses the first one defined in the rule as the default
    
    expr : expr '*' expr
@@ -437,16 +437,16 @@ Lexical Rules
  - lexers recognize grammatical structures in a character stream
  - grammer rules must be in lowercase (i.e. camel-case, never pascal-case)
  - lexer rules must be in uppercase
- - while order-of-precendence (top-down) matters, lexer rules
-   are always considered subordinate to grammer rules
+ - while order-of-precedence (top-down) matters, lexer rules
+   are always considered subordinate to grammar rules
    
-   grammer OrderOfPrecedence;
+   grammar OrderOfPrecedence;
    FOR   : 'for' ;
    ID    : [a-zA-Z]+ ;
    
    enumDef : 'enum' '{' ... '}' ;
    - although the regex for ID will match to the word 'enum'
-     ANTLR will consider occurances of 'enum' prior to attempting
+     ANTLR will consider occurrences of 'enum' prior to attempting
 	 base regex matches.
 	 
    - whole numbers are simply sequences of digits
@@ -458,7 +458,7 @@ Lexical Rules
 	  as well as period-digit-sequence where the right-of-period
 	  digits must be one-to-many because a simple period is not 
 	  valid
-	- ANTLR uses a sepecial lexer keyword to assist this complexity
+	- ANTLR uses a special lexer keyword to assist this complexity
    FLOAT :   DIGIT+ '.' DIGIT*
          |          '.' DIGIT+
          ;
@@ -473,7 +473,7 @@ Lexical Rules
 	
    STRING : '"' .*? '"' ;
    - the regex will consume characters up-until it finds a double-quote
-   - sepecifically, match the least amount of characters up-to a double-quote   
+   - specifically, match the least amount of characters up-to a double-quote   
 	 
    - to deal with string-terminator characters within string-literals themselves
      a manner of escape-sequence is needed, same as in the code-file itself
@@ -507,12 +507,12 @@ Abstraction of Parser-to-Lexer
 	  double's, int's, etc. are all just NUMBER)
 	- the parser is the lexer's audience so what tokens that are sent should be
 	  useful to whatever the parser is tasked to do (e.g. break apart an IP, the
-	  lexer ought to send the parser each discrete part (intergers and periods))
+	  lexer ought to send the parser each discrete part (integers and periods))
 ----
 
 ----
 Simple Text Document
- -simplest possiable example
+ -simplest possible example
  
 grammar SimpleDoc ;
 
@@ -533,7 +533,7 @@ TEXT : ~[ \n\r]+ ;
 
 ----
 Web Server Log Example
- - a web server prints each request recieved to a log
+ - a web server prints each request received to a log
  - the manner of the print is as:
  
  192.168.209.85 "GET /download/foo.html HTTP/1.0" 200
@@ -576,12 +576,12 @@ Mid Bonus,June,"$2,000"
 Total Bonuses,"","$5,000"
 
  -starts out as 
- grammer CSV:
+ grammar CSV:
  
  file : hdr row+ ;
  hdr  : row ;
  - while the header is just another row its significant 
-   and therefore is distinguished in the grammer
+   and therefore is distinguished in the grammar
    
  row : field (',' field)* '\r'? '\n' ;
  - defines row by it line-terminator, but begs the question 
@@ -613,12 +613,12 @@ JSON Example
    ]
    
  - analysis begins by mapping noun-phrases to one of the four patterns
-  - "An object [...]" indicates a grammer rule named 'object'
+  - "An object [...]" indicates a grammar rule named 'object'
   - "unordered set of name-value pairs" is a sequence of pairs
     - "unordered set [...]" refers to the semantics, or meaning of the names
-	   and that thier order is not relevant
+	   and that their order is not relevant
   - the second sentence is a form of 'token dependency'
-  - final sentence is refinedment of sequence of pairs being comma-separated.
+  - final sentence is refinement of sequence of pairs being comma-separated.
 
   object
 		: '{' pair (',' pair)* '}'
@@ -633,7 +633,7 @@ JSON Example
 	 and ends with a right bracket (]). Values are separated by a comma (,).
 	]
   
-  - again finding comma-seperated sequence and sqr-brace token dependency
+  - again finding comma-separated sequence and sqr-brace token dependency
   
   array
       : '[' value (',' value)* ']'
@@ -711,7 +711,7 @@ VBScript Example
  - the terminator for a statement is a new-line
   - just as in a C-style lang. a semi-colon is a stand-alone
     statement in itself, so must a newline be a stand-alone statement
-  - however, is should be the last possiable match for any possiable
+  - however, is should be the last possible match for any possible
     statement
  stmt :
 	 ...
@@ -732,14 +732,14 @@ VBScript Example
 
 ----
 Using ANTLR Generated Listener
- - having a valid grammer defined
+ - having a valid grammar defined
  - general pattern is 
  File Stream -> ANTLR Stream -> Lexer -> Token Stream -> Parser -> Tree -> Walker -> my implementation
- - given some input file upon which the grammer is to work
+ - given some input file upon which the grammar is to work
  
- - invoke antlr jar on a valid grammer (.g4) file
+ - invoke antlr jar on a valid grammar (.g4) file
   - implement the <grammerName>BaseListener
-  - each grammer rule will have generated an 
+  - each grammar rule will have generated an 
    
    enter<ruleName>([...]) & exit<ruleName>([...])
   - implementation should write to instance level 
@@ -770,7 +770,7 @@ Using ANTLR Generated Listener
 
 ----
 Using ANTLR Generated Visitor
- - same as above, valid gammer and input file
+ - same as above, valid grammar and input file
  - uses generics and has them as return types
    of each 'visit<ruleName>' which allows for more 
    specific application code, listeners 'enter' & 'exit'
@@ -779,7 +779,7 @@ Using ANTLR Generated Visitor
  - invoke antlr jar and include the '-visitor' switch
  - extend the <grammerName>BaseVisitor.java 
   - implement the 'visit<grammerRuleName>([...])' abstract method
-  - complile your <extensionOfBaseVisitor>.java 
+  - compile your <extensionOfBaseVisitor>.java 
   - and invoke it as 'java <extensionOfBaseVisitor> "C:\\somePath\\someFile.dat" '
   
  - the code-sequence pattern is mostly identical of
@@ -806,7 +806,7 @@ Specificity For Rule Matches
  - one rule generates one 'enter' and one 'exit' 
    listener, and only one 'visit'
  - add a Pre-processor style comment to the 
-   grammer (.g4) for the various parts of a rule
+   grammar (.g4) for the various parts of a rule
    to have ANTLR generate 'enter' & 'exit' events
    for each kind of match
    
@@ -827,7 +827,7 @@ Using ANTLR Generated Listeners Args
  - using the Specificity For Rule Matches, the 'kind' of Lexer rule
    matched will become its own function like the one above
 
-grammer MyGrammer ;
+grammar MyGrammer ;
    
 file : line* ;
 
@@ -853,7 +853,7 @@ line : STRING  #string
  - enterLine, exitLine will NOT be generated
  - ctx.getText() will return the text that matched the rule
  
- - Specificity may have multiple possiable matches
+ - Specificity may have multiple possible matches
  
  value
     :   STRING		# String
@@ -875,12 +875,12 @@ line : STRING  #string
 ----
  
 ----
-ANTLR Context Args and thier Properties
+ANTLR Context Args and their Properties
  - each visitor is given its assoc. rule context object
  - the rule context object has methods for each of the elements 
    mentioned in the rule.
    
- grammer MyGrammer ;
+ grammar MyGrammer ;
    
  value : STRING
        | ID

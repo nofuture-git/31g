@@ -13,14 +13,14 @@ Base Concepts
  - element:  is the markup tag
  - metamarkup language:
     - elements are defined
-    - no definate elements exist
+    - no definite elements exist
  - well-formed:
     - XML syntax
     - is well-formed or not well-formed - no somewhat
  - XML Application - agreed set of elements
  - schema:  like class to object 
  - valid: XML instance matches its schema
- - Document Type Defination (DTD): one of many schema syntax types
+ - Document Type Definition (DTD): one of many schema syntax types
  - unsuited for binary files (e.g. photographs, music, video)
  - XML Namespaces:  solution, use different XML App. in same XML document
  - XSL:  solution, transform XML plain text to XML html (read in browser)
@@ -51,7 +51,7 @@ Base Concepts
  <the-root>
     <parent-element>
         <child-element>text here</child-element>
-        <child-element>more than one possiable</child-element>
+        <child-element>more than one possible</child-element>
     </parent-element>
  </the-root>
 
@@ -79,7 +79,7 @@ Attributes:
 </myRoot>
  - attribute order is not important
  - allow whitespace before/after equal sign
- - no seperating character between attribute
+ - no separating character between attribute
  - is data about the element
  - is not the data itself
  - unique names per attribute
@@ -89,7 +89,7 @@ Attributes:
  XML Names:
  - must begin with a letter
  - may contain A-Z, a-z, 0-9
- - hyphen, underscore, period and colo are the only allowed characters
+ - hyphen, underscore, period and colon are the only allowed characters
  - whitespace is not allowed
  ----
  
@@ -144,7 +144,7 @@ Attributes:
 ----
 DTD:
   - not permitted is forbidden
-  - may be stored as seperate file
+  - may be stored as separate file
   - may be written into XML document itself
   
 Basic DTD
@@ -253,20 +253,20 @@ NMTOKEN         :similar to XML name
                   - may not have any white-space
                   - colon character is allowed (:) in addition
 NMTOKENS        :same rules as NMTOKEN 
-                  - each entry seperated by one space
+                  - each entry separated by one space
 ID              :unique id 
                   - must be well-formed XML name
                   - unique to each instance element in doc.
 IDREF           :reference an ID
                   - set the attribute equal to a instance ID value
-IDREFS          :same as IDREF seperate each by single white space
+IDREFS          :same as IDREF separate each by single white space
 ENTITY          :name of an entity declared in the DTD
-ENTITIES        :mutliple ENTITY seperated by single white space
+ENTITIES        :multiple ENTITY separated by single white space
 ----
 
 ----
 General Entity Definition:
-<!ENTITY var-arg "variable list of arguements" >
+<!ENTITY var-arg "variable list of arguments" >
 
 <my-root>
     <parent>
@@ -283,9 +283,9 @@ Parameter Entity Definition:
 <!ELEMENT rock-songs (%a-parametr;)>
 %dtd-subset;
 
- - useable on in External DTDs
+ - usable on in External DTDs
  - works on attribute types and element names
- - may be redifined inside the Internal DTD
+ - may be redefined inside the Internal DTD
  - when internal conflicts with external, internal wins
  - dtd-subset call will insert the contents of the DTD at this spot
 ----

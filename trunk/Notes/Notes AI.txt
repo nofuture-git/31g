@@ -279,9 +279,9 @@ Constraint Satisfaction Search
    - backtracking has shortcoming of getting to some end, finding 
      a violation and only going back a little when said violation 
 	 implies a need to go back much further
- - foward checking will reduce the choices of the yet-to-be assigned
+ - forward checking will reduce the choices of the yet-to-be assigned
    variables since the current assigned variables imply obvious limits
-   on the yet-to-be assigned variables possiable values.
+   on the yet-to-be assigned variables possible values.
    - this is a special case of "arc consistency"
    - arc consistency exhibits a form of constraint propagation
  - most-constraining-variable: in terms of heuristic the next 
@@ -325,7 +325,7 @@ Informed Search Methods
 	   in the same states while looking on at its goal
   (2) A*search: combines the greedy of biggest gain now with uniform-cost, or
       sum of cost up to now.
-	  - so we have a possiable 'next node', we add how much the total cost would 
+	  - so we have a possible 'next node', we add how much the total cost would 
 	    be to choose it to the greedy-gain from choosing it (or the amount we 
 		reduced to reach our goal [h(n) = 0]) and then choose whichever node has the lowest 
 		value.
@@ -372,7 +372,7 @@ Heuristic Function:
     has 'such-and-such heuristic f(x) dominates the other such-and-such f(x)'
  - still not clear how to derive a heuristic function - for distance it was 
    easy since we know the max straight-line distance and had something to subtract from
- - sometimes using a less restricted operator helps solve for the hueristic function
+ - sometimes using a less restricted operator helps solve for the heuristic function
   - with the block problem tile movement (operator) was limited in direction and if
     the state was empty - if we loosen these restrictions its called 'relaxed problem'
   - when the operator is written down in formal syntax, relaxing it can be automatic
@@ -491,7 +491,7 @@ Nodeterministic Search
  - In unsupervised learning, you just have data with no
    tags.  
    - Idea is to find some pattern present therein
-   - "all unintersting datasets are alike; each interesting
+   - "all uninteresting datasets are alike; each interesting
       dataset is interesting in its own way"
       - Leo Tolstoy
    - goal is to apply statistical & mathematical methods
@@ -608,7 +608,7 @@ Digression on Probability
   - these are often written as uppercase latin letters
   - is any kind of name given to something probable
   - e.g. P(Total = 11), 'Total' is the random variable
-  - text implies this is synomous with the 
+  - text implies this is synonymous with the 
     overloaded 'Proposition'
   - can be combined using boolean ops (-not, -and, -or)
  
@@ -630,12 +630,12 @@ Digression on Probability
   - e.g. a random variable named 'Weather' has the following 
    P(Weather = sunny) = 0.6, P(Weather = rain) = 0.1, 
    P(Weather = cloudy) = 0.29, P(Weather = snow) = 0.01
-   then its proability dist. is written as 
+   then its probability dist. is written as 
    P(Weather) = <0.6,0.1,0.29,0.01> (the AIMA text never 
     explains why its uses angle-brackets...)
     
  - Probability Density Function: 
-  - a random variable which is infinite and\or continous 
+  - a random variable which is infinite and\or continuous 
     cannot have its probability dist. written as a vector
   - have to parameterize the random variable with something
     else to provide some kind of limit, typically its another
@@ -840,7 +840,7 @@ Fuzzy Logic
   T(A -and B) = min(T(A),T(B))
   T(A -or B) = max(T(A),T(B))
   T(-not A) = 1 - T(A)
- - gets werid quickly
+ - gets weird quickly
  T(A) = 0.6, T(B) = 0.4
  T(A -and B) = 0.4
  T(A -and (-not A)) = min(0.6, (1 - 0.6)) 
@@ -870,15 +870,15 @@ All Numbers
  - in practice data is converted to some meaningful
    numerical representation so the whole corpus of 
    mathematical techniques may be applied.
- - similar in practice but uses regession analysis
+ - similar in practice but uses regression analysis
  - base line is the average (or the line with 0 slope)
  - the metric here is least squares
   - sum of the square diff between each actual point
     and predicted point
  - tweaking the slope and intercept (theta0, theta1)
    is called Gradient Descent
- - extermum: where the derivitive slope is 0 
- - learning rate: x[next] = x - alpha * (derivitive g(x))
+ - extermum: where the derivative slope is 0 
+ - learning rate: x[next] = x - alpha * (derivative g(x))
  
  - we are going to solve for theta0 and theta1 which gets
    closer to extermum
@@ -904,7 +904,7 @@ All Numbers
 K-Means Clustering
  - idea of instead of attempting to delimit a boundary 
    around an obvious cluster of data, we image there is
-   some centerpoint and all the occurances are just
+   some centerpoint and all the occurrences are just
    imperfect variations of it.
   - the imagined centerpoints are called centroids
  
@@ -949,8 +949,8 @@ K-Means Clustering
       - Akaike Information Criterion (AIC) uses
         2 * (number of features) * (k)
    (3) clusters don't form a round scatter-plot but 
-       more vertical or horizontial lines - this means
-       one of the axis need to be streched so the 
+       more vertical or horizontal lines - this means
+       one of the axis need to be stretched so the 
        clusters from a more rounded shape.
     - rescale is often performed with 
        x' = (x - min(x)) / (max(x) - min(x))
@@ -1076,7 +1076,7 @@ Support Vector Machines
   - is the mathematically complex form of  non-linear programming
     called, here, quadratic programming
  
- - Kernel Trick: data which cannont be divided nicely on a line
+ - Kernel Trick: data which cannot be divided nicely on a line
    can be divided if move up the dimensionality
   - AIMA Fig 18.31 explains this graphically
   - given some 2d scatter plot of white and black dots 

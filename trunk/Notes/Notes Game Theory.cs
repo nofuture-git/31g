@@ -777,7 +777,7 @@ namespace GameTheory
         [Test]
         public void BasicExample()
         {
-            //an adjancency graph where [i,j], [j,i] would be the two choices
+            //an adjacency graph where [i,j], [j,i] would be the two choices
             // [i,j] playerA likes playerB and [j,i] playerB likes playerA 
             var games = new[,]
             {

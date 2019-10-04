@@ -63,7 +63,7 @@ layer 			overlay range 		all, id or id:id
 orientation 	0.0 				node rotation angle
 peripheries 	shape-dependent 	number of node boundaries
 regular 		false 				force polygon to be regular
-shape 			ellipse 			plaintext (no outline), box, pologon, ellipse, 
+shape 			ellipse 			plaintext (no outline), box, polygon, ellipse, 
 									point, egg, triangle,
 									diamond, trapezium, parallelogram, hexagon,
 									octagon, doublecircle, tripleoctagon, invtriangle,
@@ -215,7 +215,7 @@ Examples
 	node0 -> node2;
 }
 
- - a reference to individual cells is possiable using specific syntax
+ - a reference to individual cells is possible using specific syntax
    also within the label
 
 digraph myRecordsWithPorts {
@@ -229,7 +229,7 @@ digraph myRecordsWithPorts {
 	node1 [label="{<n> some\stext | 138 |<p>}"];
 	//having the curly-braces causes the record to render left to right
 	
-	//edge will go specificly from one cell to another
+	//edge will go specifically from one cell to another
 	node0:f0 -> node1:n;
 	node0:f2 -> node1:p;
 }
@@ -246,25 +246,25 @@ digraph myRanks {
 	node [shape=box];
 	{rank = same; "225 BC to 175 BC"; 
 					"Second Punic War"; 
-					"First Macendonian War"; 
+					"First Macedonian War"; 
 					"Battle of Zama"; 
-					"Second Macendonian War"; 
-					"Third Macendonian War"; }
+					"Second Macedonian War"; 
+					"Third Macedonian War"; }
 	{rank = same; "175 BC to 75 BC"; 
 					"Third Punic War"; 
 					"City of Carthage Destroyed";}
 	{rank = same; "75 BC to 27 BC"; 
 					"Slave revolt led by Spartacus"; 
 					"First Triumvirate"; 
-					"Ceaser Assassinated";
+					"Caesar Assassinated";
 					"Second Triumvirate"; 
 					"Collapse of Roman Republic"; }
 
 	
 	//arrows will move side-to-side in the same rank, or up-and-down when nodes move in rank
 	"Second Punic War" -> "Battle of Zama" -> "Third Punic War" -> "City of Carthage Destroyed";
-	"First Macendonian War" -> "Second Macendonian War" -> "Third Macendonian War";
-	"First Triumvirate" -> "Ceaser Assassinated" -> "Second Triumvirate" -> "Collapse of Roman Republic";
+	"First Macedonian War" -> "Second Macedonian War" -> "Third Macedonian War";
+	"First Triumvirate" -> "Caesar Assassinated" -> "Second Triumvirate" -> "Collapse of Roman Republic";
 } 
 
  - cluster is a special kind of subgraph which will appear with a header label
@@ -302,7 +302,7 @@ digraph earlyChurch {
  - the html syntax for tables may be embedded into a label 
  - and what is rendered will mostly match the same as a browser would
  - the label is enclosed in a gt \ lt character not the normal double-quotes
- - has more styleablity but does not have the ability to refenece by port
+ - has more stylebility but does not have the ability to reference by port
 digraph myTable{
 // the label is enclosed in gt & lt characters, not double-quotes as normal
  firstTable [shape=record, label=<<table bgcolor="white">
@@ -350,7 +350,7 @@ digraph myTable{
 }
 
  - a label could also be used to have a node with no text
- - to have a small-cirle pointing to something
+ - to have a small-circle pointing to something
 digraph myarrows {
 	ptr01 [label="", shape=circle, height=0.12, width=0.12, fontsize=1];
 	ptr02 [label="", shape=circle, height=0.12, width=0.12, fontsize=1];
