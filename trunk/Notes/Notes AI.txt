@@ -1025,7 +1025,13 @@ Deep Networks basics
     - Sigmoid
     - Tanh
     - Hard tanh
-    - ReLU (Rectified linear unit)
+    - ReLU (Rectified linear unit): 
+     - basically like Absolute-Value but instead of -12 becoming 12, it becomes 0
+       and like Absolute-Value, nothing changes with positive values
+     - in Py
+      x if x > 0 else 0
+     - in C#
+      x > 0 ? x : 0;     
    - common output layer activation functions
     - single number, linear function
     - true\false, sigmoid function

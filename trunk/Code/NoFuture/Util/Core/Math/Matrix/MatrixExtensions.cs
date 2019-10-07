@@ -391,7 +391,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         /// Collapses the matrix by performing <see cref="expr"/> on each column
         /// </summary>
         /// <param name="a"></param>
-        /// <param name="expr">The expression of how to coalese an array into a single value</param>
+        /// <param name="expr">The expression of how to coalesce an array into a single value</param>
         /// <returns></returns>
         public static double[] CollapseTop2Bottom(this double[,] a, Func<double[], double> expr)
         {
@@ -411,7 +411,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         /// Collapses the matrix by performing <see cref="expr"/> on each row
         /// </summary>
         /// <param name="a"></param>
-        /// <param name="expr">The expression of how to coalese an array into a single value</param>
+        /// <param name="expr">The expression of how to coalesce an array into a single value</param>
         /// <returns></returns>
         public static double[] CollapseLeft2Right(this double[,] a, Func<double[], double> expr)
         {
@@ -976,7 +976,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         }
 
         /// <summary>
-        /// Getst the inner-product of matrix a which is A*Aᵀ
+        /// Gets the inner-product of matrix a which is A*Aᵀ
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
@@ -1035,7 +1035,7 @@ namespace NoFuture.Util.Core.Math.Matrix
             if (len != cols)
                 throw new NonConformableException("A Cofactor requires a square matrix (num-of-Rows = num-of-Columns).");
 
-            //use multithread for non-trival size matrix
+            //use multithread for non-trivial size matrix
             if (len >= 8)
             {
                 return new CofactorSupervisor(a).CalcCofactor();
@@ -1299,7 +1299,7 @@ namespace NoFuture.Util.Core.Math.Matrix
 
         /// <summary>
         /// Directly assigns the values of the row at <see cref="index"/> to the values
-        /// in <see cref="row"/> overwritting whatever was already there
+        /// in <see cref="row"/> overwriting whatever was already there
         /// </summary>
         /// <param name="a"></param>
         /// <param name="index"></param>
@@ -1321,7 +1321,7 @@ namespace NoFuture.Util.Core.Math.Matrix
 
         /// <summary>
         /// Directly assigns the values of the column at <see cref="index"/> to the values
-        /// in <see cref="column"/> overwritting whatever was already there.
+        /// in <see cref="column"/> overwriting whatever was already there.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="index"></param>
@@ -1593,7 +1593,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         /// <param name="iters"></param>
         /// <param name="epsilon"></param>
         /// <returns></returns>
-        public static double[,] StocasticLinearGradientDescent(this double[,] x, double[] y,
+        public static double[,] StochasticLinearGradientDescent(this double[,] x, double[] y,
             double eta = 0.1, long iters = 1000,
             double epsilon = 0.001)
         {

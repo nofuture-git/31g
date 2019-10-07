@@ -222,7 +222,7 @@ namespace NoFuture.Util.Core.Math.Matrix
         }
 
         /// <summary>
-        /// The subsampling randomly discards frequent words while keeping the ranking same
+        /// The sub-sampling randomly discards frequent words while keeping the ranking same
         /// </summary>
         /// <param name="sample"></param>
         /// <param name="trainWords"></param>

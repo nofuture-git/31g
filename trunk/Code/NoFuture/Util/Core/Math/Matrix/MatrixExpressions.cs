@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace NoFuture.Util.Core.Math.Matrix
 {
@@ -69,7 +67,7 @@ namespace NoFuture.Util.Core.Math.Matrix
 
             var d = new ConstantExpression[len, len, 2];
 
-            //get positive cross-diagonial indices
+            //get positive cross-diagonal indices
             for (var i = 0; i < len; i++)
             {
                 for (var j = 0; j < len; j++)
@@ -83,7 +81,7 @@ namespace NoFuture.Util.Core.Math.Matrix
 
             BinaryExpression addDeterminantExpr = null;
 
-            //get product of positive diagonials and add to sum
+            //get product of positive diagonals and add to sum
             for (var j = 0; j < len; j++)
             {
                 BinaryExpression productExpr = null;
@@ -112,7 +110,7 @@ namespace NoFuture.Util.Core.Math.Matrix
                     : Expression.Add(addDeterminantExpr, productExpr);
             }
 
-            //get negative cross-diagonial indices
+            //get negative cross-diagonal indices
             for (var i = len; i > 0; i--)
             {
                 for (var j = (len - i); j < (len + (len - i)); j++)
@@ -128,7 +126,7 @@ namespace NoFuture.Util.Core.Math.Matrix
 
             BinaryExpression minusDeterminantExpr = null;
 
-            //get product of negative diagonials and subtract from sum
+            //get product of negative diagonals and subtract from sum
             for (var j = 0; j < len; j++)
             {
                 BinaryExpression productExpr = null;
@@ -531,7 +529,7 @@ namespace NoFuture.Util.Core.Math.Matrix
 
         private static bool TryIsBinaryExpressWithOneConst(Expression expr, out double val, out Expression otherSide)
         {
-            return TryIsBinaryExpressWithOneConst(expr, out val, out otherSide, out var dontCare);
+            return TryIsBinaryExpressWithOneConst(expr, out val, out otherSide, out _);
         }
 
         private static bool TryIsBinaryExpressWithOneConst(Expression expr, out double val, out Expression otherSide, out bool isRightSideTheValue)

@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Core", "NoFuture\Util\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Core.Tests", "NoFuture.Tests\Util\Core.Tests\Util.Core.Tests.csproj", "{05EACDC7-C907-4BE5-AE1E-5ACD905DFDCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Core.Math.Matrix.Tests", "NoFuture.Tests\Util\Core.Tests\Math.Matrix.Tests\Util.Core.Math.Matrix.Tests.csproj", "{8F84E19B-B2EB-43D2-9636-595CC6539D11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Core.Math.Matrix.Tests", "NoFuture.Tests\Util\Core.Tests\Core.Math.Matrix.Tests\Util.Core.Math.Matrix.Tests.csproj", "{8F84E19B-B2EB-43D2-9636-595CC6539D11}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Core.Math.Matrix", "NoFuture\Util\Core\Math\Matrix\Util.Core.Math.Matrix.csproj", "{69B28C6C-378D-4E2F-A46E-C356AD416A22}"
 EndProject

@@ -70,7 +70,7 @@ Command line
   - if your password has (e.g. at-symbol, exclamation, etc.) then 
     url encode the symbols with %-encoded format (@ is %40)
  python -m pip install --proxy DOMAIN\username:password@proxyserver:port some_package_name
-   
+  - with PIP version above 10, seems to work in Windows with just proxyserver:port
 
  - test for a module being avail for import (ver. 3.4+)
  import importlib

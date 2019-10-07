@@ -2949,7 +2949,7 @@ namespace NoFuture.Util.Core.Math.Matrix.Tests
                 },
             };
 
-            var testResult = X.StocasticLinearGradientDescent(y,0.01D, 5000);
+            var testResult = X.StochasticLinearGradientDescent(y,0.01D, 5000);
             for (var i = 0; i < testResult.CountOfRows(); i++)
             {
                 var test = testResult[i, 0] > 0.0D && testResult[i, 0] < 10.0D;
