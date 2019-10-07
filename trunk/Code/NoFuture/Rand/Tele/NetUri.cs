@@ -9,12 +9,12 @@ using NoFuture.Shared.Core;
 
 namespace NoFuture.Rand.Tele
 {
-    /// <inheritdoc cref="LabelledIdentifier" />
+    /// <inheritdoc cref="LabeledIdentifier" />
     /// <summary>
     /// NoFuture Rand container for the general-use URI entity
     /// </summary>
     [Serializable]
-    public class NetUri : LabelledIdentifier
+    public class NetUri : LabeledIdentifier
     {
         #region fields
         internal const string WEB_MAIL_DOMAINS = "webmailDomains.txt";
@@ -200,7 +200,7 @@ namespace NoFuture.Rand.Tele
                     qryParam.Add(Etx.RandomConsonant(Etx.RandomCoinToss()).ToString());
 
                 }
-                qry.Add(String.Join("_", qryParam) + "=" + Uri.EscapeDataString(Etx.RandomSuprise()));
+                qry.Add(String.Join("_", qryParam) + "=" + Uri.EscapeDataString(Etx.RandomSurprise()));
             }
             
             uri.Query = String.Join("&", qry);

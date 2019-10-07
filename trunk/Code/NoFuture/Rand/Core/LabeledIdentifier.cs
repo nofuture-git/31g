@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Core
     /// <summary>
     /// Joins a label, a name (if needed) to the identifying <see cref="Identifier.Value"/>
     /// </summary>
-    public abstract class LabelledIdentifier : Identifier, IObviate
+    public abstract class LabeledIdentifier : Identifier, IObviate
     {
         public virtual string Name { get; set; }
         public KindsOfLabels? Descriptor { get; set; }

@@ -13,7 +13,7 @@ using NoFuture.Util.Core.Math;
 namespace NoFuture.Rand.Core
 {
     /// <summary>
-    /// Represents basic 'etc' like functions for generating random data.
+    /// Represents basic &quot;etc&quot; like functions for generating random data.
     /// </summary>
     public static class Etx
     {
@@ -188,7 +188,7 @@ namespace NoFuture.Rand.Core
 
         /// <summary>
         /// Picks a key at random from <see cref="tbl"/> where the 
-        /// probablity of each is the value over the sum-of-values.
+        /// probability of each is the value over the sum-of-values.
         /// </summary>
         /// <param name="tbl"></param>
         /// <returns></returns>
@@ -248,7 +248,7 @@ namespace NoFuture.Rand.Core
         /// </summary>
         /// <returns></returns>
         [RandomFactory]
-        public static string RandomSuprise()
+        public static string RandomSurprise()
         {
             var pick = RandomInteger(0, 10);
             switch (pick)
@@ -529,8 +529,8 @@ namespace NoFuture.Rand.Core
         /// </summary>
         /// <param name="plusOrMinusYears"></param>
         /// <param name="fromThisDate">Optional, will default to current system time</param>
-        /// <param name="forceInPast"
-        /// >Optional switch to force the random date to only occur in the past from <see cref="fromThisDate"/>
+        /// <param name="forceInPast">
+        /// Optional switch to force the random date to only occur in the past from <see cref="fromThisDate"/>
         /// </param>
         /// <param name="maxDaysSpread">
         /// Additional number of days to further randomize the date where the final date
@@ -552,7 +552,7 @@ namespace NoFuture.Rand.Core
         }
 
         /// <summary>
-        /// Gets a random value contrained to the normal distribution.
+        /// Gets a random value constrained to the normal distribution.
         /// </summary>
         /// <param name="eq"></param>
         /// <param name="sigma">The z-score table only goes up to the 3rd sigma</param>
@@ -583,7 +583,7 @@ namespace NoFuture.Rand.Core
                 //try getting a value with that probability
                 var isGe = attempt >= zscore;
 
-                //when succeded - return some value
+                //when succeed - return some value
                 if (isGe)
                     return someValue;
             }
@@ -591,7 +591,7 @@ namespace NoFuture.Rand.Core
         }
 
         /// <summary>
-        /// Gets a random value contrained to the normal distribution.
+        /// Gets a random value constrained to the normal distribution.
         /// </summary>
         /// <param name="mean"></param>
         /// <param name="stdDev"></param>
@@ -716,7 +716,7 @@ namespace NoFuture.Rand.Core
         /// Returns a date being between <see cref="min"/> years ago today back to <see cref="max"/> years ago today.
         /// </summary>
         /// <remarks>
-        /// The age is limited to min,max of 18,67 - generate with family to get other age sets
+        /// The age is limited to min,max of 18,67
         /// </remarks>
         [RandomFactory]
         public static DateTime RandomAdultBirthDate(int min = 18, int max = 67, int ageOfAdult = 18)

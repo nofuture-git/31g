@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Core
 
             var simpleNameValuePair = new Tuple<string, string>(propertyName ?? id.GetType().Name, id.Value);
 
-            //heirarchy of xpaths
+            //hierarchy of xpaths
             var xRefGroupXPath = $"//{X_REF_GROUP}[@{DATA_TYPE}='{xRefId.Item1.FullName}']";
             var xDataReferenceXPath = xRefGroupXPath + $"//{X_REF_ID}[text()='{xRefId.Item2}']/../..";
             var xRefAddXPath = xDataReferenceXPath + $"/{ADD}[@{NAME}='{simpleNameValuePair.Item1}']";

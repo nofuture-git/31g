@@ -7,7 +7,7 @@ using System.Xml;
 namespace NoFuture.Rand.Core
 {
     /// <summary>
-    /// Type coupled to XML's ID attribute
+    /// Type coupled to XML&apos;s ID attribute
     /// </summary>
     [Serializable]
     public class XmlDocXrefIdentifier : XrefIdentifier
@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Core
 
         /// <summary>
         /// Looks for an attribute in <see cref="elem"/> whose name is 
-        /// 'ID', 'id' or 'Id'
+        /// &quot;ID&quot;, &quot;id&quot; or &quot;Id&quot;
         /// </summary>
         /// <param name="elem"></param>
         /// <returns></returns>

@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Core
     /// Any type which could be given a name.
     /// </summary>
     /// <remarks>
-    /// Latin for 'be called'
+    /// Latin for &quot;be called&quot;
     /// </remarks>
     public interface IVoca : IObviate
     {

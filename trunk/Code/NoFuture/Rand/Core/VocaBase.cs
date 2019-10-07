@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Core

@@ -7,7 +7,7 @@ using NoFuture.Shared.Core;
 namespace NoFuture.Rand.Core
 {
     /// <summary>
-    /// Excercises control over the generation of random portions whose sum equals 1.
+    /// Exercises control over the generation of random portions whose sum equals 1.
     /// </summary>
     /// <remarks>
     /// See <see cref="GetNames2Portions"/> for more details
@@ -413,7 +413,7 @@ namespace NoFuture.Rand.Core
             //get the item sum as a ratio of the total
             foreach (var k in itemOrGroupNames)
             {
-                //we only want to reassign when value was explicity given in options
+                //we only want to reassign when value was explicitly given in options
                 if (!calcDict.ContainsKey(k))
                 {
                     continue;
