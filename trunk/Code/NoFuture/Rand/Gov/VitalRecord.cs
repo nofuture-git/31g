@@ -1,7 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Gov

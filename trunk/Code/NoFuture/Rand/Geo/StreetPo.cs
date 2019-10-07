@@ -4,7 +4,6 @@ using System.Globalization;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo.US;
-using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Geo
@@ -49,7 +48,7 @@ namespace NoFuture.Rand.Geo
 
         /// <summary>
         /// Generates at random a street address in the typical American form
-        /// like '1600 Pennesylvania Ave'.
+        /// like &quot;1600 Pennsylvania Ave&quot;.
         /// </summary>
         /// <returns></returns>
         /// <remarks>

@@ -171,7 +171,8 @@ namespace NoFuture.Rand.Opes.US
             return base.GetGroupNames2Portions(options);
         }
 
-        protected internal override NamedTradeline GetNamedReceivableForItemAndGroup(string item, string grp, AmericanDomusOpesOptions options, double rate)
+        protected internal override NamedTradeline GetNamedReceivableForItemAndGroup(string item, string grp,
+            AmericanDomusOpesOptions options, double rate)
         {
             const StringComparison OPT = StringComparison.OrdinalIgnoreCase;
             const float FED_RATE = RiskFreeInterestRate.DF_VALUE;
@@ -199,7 +200,7 @@ namespace NoFuture.Rand.Opes.US
                     : _checkingAccountRate * amtR;
                 p = DepositAccount.RandomCheckingAccount(options.PersonsName, startDate,
                     $"{Etx.RandomInteger(1, 9999):0000}");
-                ((DepositAccount)p).Deposit(startDate.AddDays(-1), (checkingAmt ?? 0).ToPecuniam());
+                ((DepositAccount) p).Deposit(startDate.AddDays(-1), (checkingAmt ?? 0).ToPecuniam());
             }
             else if (isSavingsAccount)
             {
@@ -207,18 +208,18 @@ namespace NoFuture.Rand.Opes.US
                     ? _randSavingsAcctAmt
                     : _savingsAccountRate * amtR;
                 p = DepositAccount.RandomSavingAccount(options.PersonsName, startDate);
-                ((DepositAccount)p).Deposit(startDate.AddDays(-1), (savingAmt ?? 0).ToPecuniam());
+                ((DepositAccount) p).Deposit(startDate.AddDays(-1), (savingAmt ?? 0).ToPecuniam());
             }
             else if (isMortgage || isCarLoan)
             {
                 var homeDebtAmt = amtR == null || amtR == 0
-                    ? _randHomeDebt 
+                    ? _randHomeDebt
                     : _homeDebtRate * amtR;
                 var homeEquityAmt = amtR == null || amtR == 0
                     ? _randHomeEquity
                     : _homeEquityRate * amtR;
                 var carDebtAmt = amtR == null || amtR == 0
-                    ? _randCarDebt 
+                    ? _randCarDebt
                     : _carDebtRate * amtR;
                 var carEquityAmt = amtR == null || amtR == 0
                     ? _randCarEquity
@@ -327,7 +328,7 @@ namespace NoFuture.Rand.Opes.US
         }
 
         /// <summary>
-        /// Produces the item names to rates for Tradable Security Assets (e.g. Stock and Bonds).
+        /// Produces the item names to rates for Tradeable Security Assets (e.g. Stock and Bonds).
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>

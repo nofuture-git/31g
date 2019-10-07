@@ -141,7 +141,7 @@ namespace NoFuture.Rand.Gov.US
 
         /// <summary>
         /// src [https://www.cdc.gov/nchs/data/nvsr/nvsr65/nvsr65_04.pdf] Table B.
-        /// "National Vital Statistics Reports, Vol 65 No 4, June 30, 2016"
+        /// &quot;National Vital Statistics Reports, Vol 65 No 4, June 30, 2016&quot;
         /// [https://www.cdc.gov/nchs/fastats/homicide.htm] number of homicides (15872/2626418)
         /// </summary>
         public static Dictionary<AmericanDeathCert.MannerOfDeath, double> MannerOfDeathAvgs =
@@ -188,7 +188,7 @@ namespace NoFuture.Rand.Gov.US
         /// <param name="gender"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static MaritalStatus RandomMaritialStatus(DateTime? dob, Gender gender)
+        public static MaritalStatus RandomMaritalStatus(DateTime? dob, Gender gender)
         {
             if (Etx.MyRand.NextDouble() <= AmericanData.PERCENT_UNMARRIED_WHOLE_LIFE)
                 return MaritalStatus.Single;
@@ -214,7 +214,7 @@ namespace NoFuture.Rand.Gov.US
             //spin for divorce
             var df = Etx.MyRand.NextDouble() <= AmericanData.PERCENT_DIVORCED;
 
-            //have 'separated' (whatever it means) as low probablity
+            //have 'separated' (whatever it means) as low probability
             if (df && currentAge < avgAgeMarriage + AmericanData.AVG_LENGTH_OF_MARRIAGE + AmericanData.YEARS_BEFORE_NEXT_MARRIAGE)
                 return Etx.RandomRollBelowOrAt(64, Etx.Dice.OneThousand) ? MaritalStatus.Separated : MaritalStatus.Divorced;
 

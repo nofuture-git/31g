@@ -195,7 +195,7 @@ namespace NoFuture.Rand.Domus
             }
             spouses.Add(new Spouse(this, spouse, marriedOn, separatedOn, spouses.Count + 1));
 
-            //recepricate to spouse
+            //reciprocate to spouse
             spouse.AddSpouse(this, marriedOn, separatedOn);
         }
 
@@ -333,8 +333,8 @@ namespace NoFuture.Rand.Domus
             if (!Children.Any())
                 return true;
 
-            //check the childs dob against their siblings
-            var clildDobTuple = new Tuple<DateTime, DateTime>(childDob.AddDays(-1 * PREG_DAYS), childDob);
+            //check the child's dob against their siblings
+            var childDobTuple = new Tuple<DateTime, DateTime>(childDob.AddDays(-1 * PREG_DAYS), childDob);
 
             var bdayTuples =
                 Children.Where(x => x.Est.BirthCert != null)
@@ -348,8 +348,8 @@ namespace NoFuture.Rand.Domus
                 var xDoC = s.Item1;
                 var xDoB = s.Item2;
 
-                var yDoC = clildDobTuple.Item1;
-                var yDoB = clildDobTuple.Item2;
+                var yDoC = childDobTuple.Item1;
+                var yDoB = childDobTuple.Item2;
 
                 //neither of the (y) values can appear between the x values
                 if (yDoC.IsBetween(xDoC, xDoB) || yDoB.IsBetween(xDoC, xDoB))
@@ -365,7 +365,7 @@ namespace NoFuture.Rand.Domus
         /// <param name="childDob"></param>
         protected internal bool IsValidDobOfChild2Parent(DateTime childDob)
         {
-            //check the childs dob against the parent
+            //check the child's dob against the parent
             var maxDate = Gender == Gender.Female
                 ? BirthCert.DateOfBirth.AddYears(55)
                 : BirthCert.DateOfBirth.AddYears(80);

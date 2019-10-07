@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Opes.US
                 Region = Etx.RandomPickOne(AmericanData.RegionPopulationAvgs),
                 Gender = sex,
                 DateOfBirth = dob,
-                MaritalStatus = AmericanData.RandomMaritialStatus(dob, sex)
+                MaritalStatus = AmericanData.RandomMaritalStatus(dob, sex)
             };
         }
     }

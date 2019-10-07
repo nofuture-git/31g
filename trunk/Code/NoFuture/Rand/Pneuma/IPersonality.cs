@@ -35,7 +35,7 @@
         Neuroticism Neuroticism { get; }
 
         /// <summary>
-        /// Gets a random truth-value of an irrisponsible decision based on this personality
+        /// Gets a random truth-value of an irresponsible decision based on this personality
         /// </summary>
         /// <returns></returns>
         bool GetRandomActsIrresponsible();

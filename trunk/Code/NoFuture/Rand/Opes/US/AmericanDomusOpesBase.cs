@@ -5,12 +5,7 @@ using System.Reflection;
 using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Geo.US;
-using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
-using NoFuture.Rand.Sp;
-using NoFuture.Util.Core;
-using NoFuture.Util.Core.Math;
 
 namespace NoFuture.Rand.Opes.US
 {
@@ -235,7 +230,7 @@ namespace NoFuture.Rand.Opes.US
         }
 
         /// <summary>
-        /// Tries to parse a single &apos;mereo&apos; item
+        /// Tries to parse a single item
         /// from the US Domus Opes data file
         /// </summary>
         /// <param name="xmlNode"></param>
@@ -357,10 +352,10 @@ namespace NoFuture.Rand.Opes.US
                 ? AmericanData.AVG_AGE_AMERICAN 
                 : age.Value;
 
-            //some asymetric percentage based on age
+            //some asymmetric percentage based on age
             var yVal = hookEquation.SolveForY(ageAtDt);
 
-            //get something randome near this value
+            //get something random near this value
             var randRate = Etx.RandomValueInNormalDist(yVal, 0.01921);
 
             //its income so it shouldn't be negative by definition

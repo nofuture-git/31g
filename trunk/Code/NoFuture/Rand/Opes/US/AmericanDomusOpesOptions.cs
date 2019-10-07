@@ -34,13 +34,13 @@ namespace NoFuture.Rand.Opes.US
 
         #region properties
         /// <summary>
-        /// A judgement related expense - this is too complicated 
+        /// A judgment related expense - this is too complicated 
         /// to be determined randomly
         /// </summary>
         public bool IsPayingChildSupport { get; set; }
 
         /// <summary>
-        /// A judgement related expense - this is too complicated 
+        /// A judgment related expense - this is too complicated 
         /// to be determined randomly
         /// </summary>
         public bool IsPayingSpousalSupport { get; set; }

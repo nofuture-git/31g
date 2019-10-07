@@ -63,7 +63,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Gets the <see cref="Domus.Spouse"/> at 
-        /// <see cref="dt"/>, or <see cref="days"/> befor or after <see cref="dt"/>
+        /// <see cref="dt"/>, or <see cref="days"/> before or after <see cref="dt"/>
         /// </summary>
         /// <param name="dt">Null for the current time</param>
         /// <param name="days">
@@ -111,7 +111,7 @@ namespace NoFuture.Rand.Domus
 
         /// <summary>
         /// Handles detail of adding a assigning a spouse to this instance and 
-        /// reciprocating such assignment to the <see cref="spouse"/>.  Additionaly
+        /// reciprocating such assignment to the <see cref="spouse"/>.  Additionally
         /// handles the assignment of names (i.e. <see cref="KindsOfNames.Surname"/> 
         /// and <see cref="KindsOfNames.Maiden"/>).
         /// </summary>

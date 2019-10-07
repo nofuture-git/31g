@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Gov.US

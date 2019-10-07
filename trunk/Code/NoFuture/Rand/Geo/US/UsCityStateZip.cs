@@ -111,7 +111,7 @@ namespace NoFuture.Rand.Geo.US
         public LinearEquation AverageEarnings { get; set; }
 
         /// <summary>
-        /// Dictionary parsed from zip code probablity xml data
+        /// Dictionary parsed from zip code probability xml data
         /// </summary>
         public static Dictionary<string, double> ZipCodePrefix2Population
         {
@@ -587,7 +587,7 @@ namespace NoFuture.Rand.Geo.US
         }
 
         /// <summary>
-        /// Converts the attributes data of the 'avg-earning-per-year' into 
+        /// Converts the attributes data of the &quot;avg-earning-per-year&quot; into 
         /// a <see cref="LinearEquation"/>
         /// </summary>
         /// <param name="someNode"></param>
@@ -607,9 +607,9 @@ namespace NoFuture.Rand.Geo.US
         /// </summary>
         /// <param name="cityNode"></param>
         /// <remarks>
-        /// The census.gov data's grouping of MSA\CBSA's are a higher level 
+        /// The census.gov data&apos;s grouping of MSA\CBSA&apos;s are a higher level 
         /// aggregate of cities.  The census.gov also has another type named
-        /// 'Places' which are the more common city names citizens are used to.
+        /// &quot;Places&quot; which are the more common city names citizens are used to.
         /// </remarks>
         protected internal void GetSuburbCityName(XmlNode cityNode)
         {

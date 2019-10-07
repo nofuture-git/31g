@@ -6,7 +6,6 @@ using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo.CA;
 using NoFuture.Rand.Geo.US;
 using NoFuture.Shared.Core;
-using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Geo

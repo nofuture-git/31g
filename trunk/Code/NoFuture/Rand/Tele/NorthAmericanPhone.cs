@@ -266,9 +266,9 @@ namespace NoFuture.Rand.Tele
         /// Subscriber number are all random values.
         /// </summary>
         /// <remarks>
-        /// Area Codes are of grammer [2-9][1-9][2-9].
-        /// Central Office are of grammer [2-9] ('0' '0' | [1-9] [2-9] | [2-9] [1-9] )
-        /// Subscriber number is of grammer [0-9][0-9][0-9][1-9]
+        /// Area Codes are of grammar [2-9][1-9][2-9].
+        /// Central Office are of grammar [2-9] ('0' '0' | [1-9] [2-9] | [2-9] [1-9] )
+        /// Subscriber number is of grammar [0-9][0-9][0-9][1-9]
         /// </remarks>
         /// <returns></returns>
         [RandomFactory]

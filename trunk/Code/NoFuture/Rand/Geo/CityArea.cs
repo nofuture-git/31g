@@ -144,7 +144,7 @@ namespace NoFuture.Rand.Geo
 
         /// <summary>
         /// Fetches, at random, a <see cref="RandomCanadianCity"/> in which the values are only somewhat related.
-        /// The Providence and City are related while the only first three characters of the Postal Code are actually realted.
+        /// The Providence and City are related while the only first three characters of the Postal Code are actually related.
         /// The last three are always '4Z4'.
         /// </summary>
         /// <returns></returns>

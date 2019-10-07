@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Domus.US
     /// Catalog of static utility methods related to North American
     /// </summary>
     /// <remarks>
-    /// US zip code data is derived from a list on wikipedia x-ref'ed with 
+    /// US zip code data is derived from a list on wikipedia x-ref&apos;ed with 
     /// 2010 census data.  Likewise, the first names data (both male and female)
     /// are from US Census website.
     /// https://www.census.gov/geo/maps-data/index.html
@@ -66,7 +66,8 @@ namespace NoFuture.Rand.Domus.US
         public static string RandomAmericanFirstName(Gender gender, DateTime? dateOfBirth = null)
         {
             var dt = dateOfBirth ?? DateTime.Today.AddYears(-18);
-            FirstNamesXml = FirstNamesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_FIRST_NAMES, Assembly.GetExecutingAssembly());
+            FirstNamesXml = FirstNamesXml ??
+                            XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_FIRST_NAMES, Assembly.GetExecutingAssembly());
             
             if (FirstNamesXml == null)
             {
@@ -109,7 +110,8 @@ namespace NoFuture.Rand.Domus.US
         [RandomFactory]
         public static string RandomAmericanLastName()
         {
-            LastNamesXml = LastNamesXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_LAST_NAMES, Assembly.GetExecutingAssembly());
+            LastNamesXml = LastNamesXml ??
+                           XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_LAST_NAMES, Assembly.GetExecutingAssembly());
             var lnameNodes = LastNamesXml.SelectSingleNode("//last-name");
             if (lnameNodes == null)
                 return "Doe";
@@ -218,7 +220,7 @@ namespace NoFuture.Rand.Domus.US
             //move to a date 1 - 6 years prior the Person's dob
             var dtPm = childDob.Value.AddYears(-1 * Etx.RandomInteger(1, 6)).AddDays(Etx.RandomInteger(1, 360));
 
-            //calc the age of marriable person at this time
+            //calc the age of marriageable person at this time
             var avgAgeCouldMarry =
                 age2FirstMarriageEq.SolveForY(dtPm.ToDouble());
 

@@ -14,8 +14,8 @@ namespace NoFuture.Rand.Gov.US
     /// [http://www.cdc.gov/nchs/data/nvsr/nvsr64/nvsr64_12_tables.pdf] (Table I-1.)
     /// </summary>
     /// <remarks>
-    /// FemaleAge2*Child have had thier intercepts up&apos;ed by 4.  The real data produces 
-    /// a condition where first born's are always before marriage.
+    /// FemaleAge2*Child have had their intercepts up&apos;ed by 4.  The real data produces 
+    /// a condition where first born&apos;s are always before marriage.
     /// Any <see cref="RLinearEquation"/> have a random Standard Dev between 0 and 1.0
     /// </remarks>
     public static class AmericanEquations
@@ -224,7 +224,7 @@ namespace NoFuture.Rand.Gov.US
 
         /// <summary>
         /// This is an assumed graph for the age of an american.
-        /// Its asymetric where age 44 is 0.0, age 21 is 0.14 but 
+        /// Its asymmetric where age 44 is 0.0, age 21 is 0.14 but 
         /// age 67 (being likewise 23 years difference from 44) is 0.36 - reaches 1.0 at 80
         /// </summary>
         public static IEquation ClassicHook => new ThirdDegreePolynomial(0.0000081, -0.0005986, 0.005986, 0.205625);

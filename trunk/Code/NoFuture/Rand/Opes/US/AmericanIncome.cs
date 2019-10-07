@@ -218,7 +218,7 @@ namespace NoFuture.Rand.Opes.US
         }
 
         /// <summary>
-        /// Produces the item names to rates for the Judgement related forms of Income (e.g. alimony received)
+        /// Produces the item names to rates for the Judgment related forms of Income (e.g. alimony received)
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>

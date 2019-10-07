@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Opes.US
         public IDeinde Deductions { get; set; }
 
         /// <summary>
-        /// Convenience method which is more straight-foward than <see cref="Inception"/>
+        /// Convenience method which is more straight-forward than <see cref="Inception"/>
         /// </summary>
         public virtual DateTime StartDate
         {
@@ -169,7 +169,7 @@ namespace NoFuture.Rand.Opes.US
             if (options.Inception == DateTime.MinValue)
                 options.Inception = GetYearNeg(-1);
 
-            //circle this around to this intance, need be
+            //circle this around to this instance, need be
             if (Inception == DateTime.MinValue)
                 Inception = options.Inception;
 

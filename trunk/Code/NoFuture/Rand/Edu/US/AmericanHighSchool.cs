@@ -6,7 +6,6 @@ using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov;
 using NoFuture.Rand.Gov.US;
-using NoFuture.Util.Core;
 using NoFuture.Util.Core.Math;
 using NfString = NoFuture.Util.Core.NfString;
 

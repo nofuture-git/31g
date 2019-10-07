@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Domus
         public int TotalYears => _totalYears;
 
         /// <summary>
-        /// Convenience method which is more straight-foward than <see cref="Inception"/>
+        /// Convenience method which is more straight-forward than <see cref="Inception"/>
         /// </summary>
         public DateTime MarriedOn => _marriedOn;
 
@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Domus
 
         #region methods
         /// <summary>
-        /// Detemines if this is the spouse of the <see cref="IPerson"/>
+        /// Determines if this is the spouse of the <see cref="IPerson"/>
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>

@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Gov.US.Sec
         public int NumOfShares { get; set; }
 
         /// <summary>
-        /// Returns the link to the SEC's interative version of the report.
+        /// Returns the link to the SEC's interactive version of the report.
         /// </summary>
         public Uri InteractiveFormLink
         {

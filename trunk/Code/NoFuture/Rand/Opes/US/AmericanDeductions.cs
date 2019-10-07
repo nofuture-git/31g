@@ -56,7 +56,6 @@ namespace NoFuture.Rand.Opes.US
         {
             if (d == null)
                 return;
-            //d.Expectation.Value = d.Expectation.Value.GetNeg();
             _deductions.Add(d);
         }
 
@@ -174,7 +173,7 @@ namespace NoFuture.Rand.Opes.US
             var currentTotal = expectedHealthInsCost + expectedDentalInsCost + expectedVisionInsCost;
             var otherInsCost = currentTotal * someRandRate;
 
-            //this will be used later to create Pondus so only overwrite it if is unassigned
+            //this will be used later, only overwrite it if is unassigned
             if (options.SumTotal == null || options.SumTotal == 0)
                 options.SumTotal = otherInsCost + currentTotal;
 
@@ -213,7 +212,7 @@ namespace NoFuture.Rand.Opes.US
             options.AddGivenDirectly("FICA", DeductionGroupNames.GOVERNMENT, ficaTaxAmt);
             options.AddGivenDirectly("Medicare", DeductionGroupNames.GOVERNMENT, medicareTaxAmt);
 
-            //this will be used later to create Pondus so only overwrite it if is unassigned
+            //this will be used later, only overwrite it if is unassigned
             if (options.SumTotal == null || options.SumTotal == 0)
                 options.SumTotal = (fedTaxAmt + stateTaxAmt + ficaTaxAmt + medicareTaxAmt);
 
@@ -259,7 +258,7 @@ namespace NoFuture.Rand.Opes.US
             var currentTotal = retirementAmt + unionDuesAmt;
             var someRandAmount = currentTotal * someRandRate;
 
-            //this will be used later to create Pondus so only overwrite it if is unassigned
+            //this will be used later, only overwrite it if is unassigned
             if (options.SumTotal == null || options.SumTotal == 0)
                 options.SumTotal = currentTotal + someRandAmount;
 

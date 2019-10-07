@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Gov.US.Census
     /// <summary>
     /// Metropolitan Statistical Area - a geographical region with 
     /// a relatively high population density at its core and 
-    /// close econonmic ties throughout the area.
+    /// close economic ties throughout the area.
     /// [https://en.wikipedia.org/wiki/Metropolitan_statistical_area]
     /// </summary>
     [Serializable]

@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Gov.US.TheStates;
-using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Gov.US

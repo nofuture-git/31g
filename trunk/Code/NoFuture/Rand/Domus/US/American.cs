@@ -321,7 +321,7 @@ namespace NoFuture.Rand.Domus.US
                 ResolveParents();
 
             //resolve spouse to each other
-            ResolveSpouse(AmericanData.RandomMaritialStatus(BirthCert.DateOfBirth, Gender));
+            ResolveSpouse(AmericanData.RandomMaritalStatus(BirthCert.DateOfBirth, Gender));
             //to solve for childern when gender -eq Male
             ResolveChildren();
             AlignCohabitantsHomeDataAt(dt, GetAddressAt(null));
@@ -361,7 +361,7 @@ namespace NoFuture.Rand.Domus.US
             }
 
             //resolve mother's spouse(s)
-            var motherMaritalStatus = AmericanData.RandomMaritialStatus(mother.BirthCert.DateOfBirth, Gender.Female);
+            var motherMaritalStatus = AmericanData.RandomMaritalStatus(mother.BirthCert.DateOfBirth, Gender.Female);
             myMother.ResolveSpouse(motherMaritalStatus);
             
             //resolve for siblings
@@ -589,7 +589,7 @@ namespace NoFuture.Rand.Domus.US
             //resolve spouse, no grand-children
             if (isChildAdult)
             {
-                nAmerChild.ResolveSpouse(AmericanData.RandomMaritialStatus(myChildDob, myChildGender));
+                nAmerChild.ResolveSpouse(AmericanData.RandomMaritalStatus(myChildDob, myChildGender));
                 nAmerChild.AlignCohabitantsHomeDataAt(DateTime.UtcNow, nAmerChild.GetAddressAt(null));
             }
 
