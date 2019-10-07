@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Domus
         Personality Personality { get; set; }
         IEducation Education { get; set; }
         IRelation Spouse { get; }
-        MaritialStatus MaritialStatus { get; }
+        MaritalStatus MaritalStatus { get; }
         IEnumerable<Child> Children { get; }
         IEnumerable<Parent> Parents { get; }
         PostalAddress Address { get; }
@@ -46,12 +46,12 @@ namespace NoFuture.Rand.Domus
         List<Child> GetChildrenAt(DateTime? dt);
 
         /// <summary>
-        /// Resolves the <see cref="MaritialStatus"/>
+        /// Resolves the <see cref="MaritalStatus"/>
         /// of this instance at time <see cref="dt"/>
         /// </summary>
         /// <param name="dt">Null for the current time right now.</param>
         /// <returns></returns>
-        MaritialStatus GetMaritalStatusAt(DateTime? dt);
+        MaritalStatus GetMaritalStatusAt(DateTime? dt);
 
         /// <summary>
         /// Resolve the spouse of this instance

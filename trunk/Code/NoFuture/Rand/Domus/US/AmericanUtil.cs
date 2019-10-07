@@ -341,7 +341,7 @@ namespace NoFuture.Rand.Domus.US
                 : AmericanEquations.MaleAge2FirstMarriage.SolveForY(dob.Value.ToDouble());
             var currentAge = Etc.CalcAge(dob.Value, dt);
 
-            //all other MaritialStatus imply at least one marriage in past
+            //all other MaritalStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
 
             var marriedOn = Etx.RandomDate(-1*yearsMarried, dt);

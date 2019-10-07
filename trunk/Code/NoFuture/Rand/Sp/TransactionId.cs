@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Sp
         /// <summary>
         /// Generally accepted accounting principles record a transaction on 
         /// an accrual-basis; meaning, the revenue or cost associated are 
-        /// recorded at the time the service is performaned.
+        /// recorded at the time the service is performed.
         /// </summary>
         public Enum Phase => TransactionCycle.Performant;
         public IVoca Description { get; protected internal set; }

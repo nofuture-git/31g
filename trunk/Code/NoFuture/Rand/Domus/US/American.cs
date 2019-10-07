@@ -83,25 +83,25 @@ namespace NoFuture.Rand.Domus.US
 
         #region methods
         /// <summary>
-        /// Gets this person's <see cref="MaritialStatus"/> at time <see cref="dt"/>
+        /// Gets this person's <see cref="MaritalStatus"/> at time <see cref="dt"/>
         /// </summary>
         /// <param name="dt">Null for the current time</param>
         /// <returns></returns>
-        public override MaritialStatus GetMaritalStatusAt(DateTime? dt)
+        public override MaritalStatus GetMaritalStatusAt(DateTime? dt)
         {
             var mdt = dt ?? DateTime.UtcNow;
             var spouses = GetSpouses();
             if (!IsLegalAdult(mdt) ||!spouses.Any() || spouses.All(s => s.MarriedOn > mdt))
-                return MaritialStatus.Single;
+                return MaritalStatus.Single;
 
             var spAtDt = GetSpouseAt(mdt);
             if (spAtDt == null)
-                return MaritialStatus.Divorced;
+                return MaritalStatus.Divorced;
 
             if(spAtDt.Est?.DeathCert?.DateOfDeath != null && mdt >= spAtDt.Est?.DeathCert?.DateOfDeath)
-                return  MaritialStatus.Widowed;
+                return  MaritalStatus.Widowed;
 
-            return spAtDt.Ordinal > 1 ? MaritialStatus.Remarried : MaritialStatus.Married;
+            return spAtDt.Ordinal > 1 ? MaritalStatus.Remarried : MaritalStatus.Married;
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace NoFuture.Rand.Domus.US
             var underAgeChildren =Children.Where(x => isUnderageChild(x)).ToList();
 
             var ms = GetMaritalStatusAt(dt);
-            if ((ms == MaritialStatus.Married || ms == MaritialStatus.Remarried) && GetSpouseAt(dt).Est is American)
+            if ((ms == MaritalStatus.Married || ms == MaritalStatus.Remarried) && GetSpouseAt(dt).Est is American)
             {
                 var spAtDt = (American) GetSpouseAt(dt).Est;
                 AmericanUtil.SetNAmerCohabitants(spAtDt, this);
@@ -373,7 +373,7 @@ namespace NoFuture.Rand.Domus.US
             var myFather = myMother.GetSpouseNear(BirthCert.DateOfBirth)?.Est as American;
 
             //mother not married at time of birth
-            if (motherMaritalStatus == MaritialStatus.Single || myFather == null)
+            if (motherMaritalStatus == MaritalStatus.Single || myFather == null)
             {
                 //small percent of father unknown
                 if (Etx.RandomRollAboveOrAt(98, Etx.Dice.OneHundred))
@@ -391,14 +391,14 @@ namespace NoFuture.Rand.Domus.US
         }
 
         /// <summary>
-        /// Will create a current and, possiably, past spouses for this instance.
+        /// Will create a current and, possibly, past spouses for this instance.
         /// Calc will be based on DOB and <see cref="IPerson.Gender"/>.
         /// </summary>
-        /// <param name="myMaritialStatus"></param>
+        /// <param name="myMaritalStatus"></param>
         /// <param name="atDate">Optional, defaults to now</param>
-        protected internal void ResolveSpouse(MaritialStatus myMaritialStatus, DateTime? atDate = null)
+        protected internal void ResolveSpouse(MaritalStatus myMaritalStatus, DateTime? atDate = null)
         {
-            if (myMaritialStatus == MaritialStatus.Single || myMaritialStatus == MaritialStatus.Unknown)
+            if (myMaritalStatus == MaritalStatus.Single || myMaritalStatus == MaritalStatus.Unknown)
                 return;
 
             var dt = atDate ?? DateTime.UtcNow;
@@ -412,7 +412,7 @@ namespace NoFuture.Rand.Domus.US
                 : AmericanEquations.MaleAge2FirstMarriage.SolveForY(equationDt.ToDouble());
             var currentAge = Etc.CalcAge(BirthCert.DateOfBirth, dt);
 
-            //all other MaritialStatus imply at least one marriage in past
+            //all other MaritalStatus imply at least one marriage in past
             var yearsMarried = currentAge - Convert.ToInt32(Math.Round(avgAgeMarriage));
 
             var marriedOn = Etx.RandomDate(-1*yearsMarried, dt).Date.AddHours(12);
@@ -420,10 +420,10 @@ namespace NoFuture.Rand.Domus.US
             var spouse = (American)AmericanUtil.RandomSpouse(BirthCert.DateOfBirth, Gender);
 
             //set death date if widowed
-            if (myMaritialStatus == MaritialStatus.Widowed || spouse.DeathCert != null)
+            if (myMaritalStatus == MaritalStatus.Widowed || spouse.DeathCert != null)
             {
                 var d = Convert.ToInt32(Math.Round(GetAgeAt(null) * 0.15));
-                myMaritialStatus = MaritialStatus.Widowed;
+                myMaritalStatus = MaritalStatus.Widowed;
                 spouse.DeathCert = spouse.DeathCert ??
                                    new AmericanDeathCert(Etx.RandomPickOne(AmericanData.MannerOfDeathAvgs),
                                        spouse.FullName)
@@ -432,8 +432,8 @@ namespace NoFuture.Rand.Domus.US
                                    };
             }
 
-            if (myMaritialStatus != MaritialStatus.Divorced && myMaritialStatus != MaritialStatus.Remarried &&
-                myMaritialStatus != MaritialStatus.Separated)
+            if (myMaritalStatus != MaritalStatus.Divorced && myMaritalStatus != MaritalStatus.Remarried &&
+                myMaritalStatus != MaritalStatus.Separated)
             {
                 //add internal date-range for resolution of children
                 AddSpouse(spouse, marriedOn);
@@ -447,7 +447,7 @@ namespace NoFuture.Rand.Domus.US
                 AddSpouse(spouse, marriedOn, separatedDate);
 
                 //leave when no second spouse applicable
-                if (myMaritialStatus != MaritialStatus.Remarried)
+                if (myMaritalStatus != MaritalStatus.Remarried)
                     return;
 
                 var ageSpread = 6;

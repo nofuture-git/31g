@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public abstract class DepositAccount : Account
     {
-        protected DepositAccount(Identifier acctId, DateTime dateOpenned) : base(acctId, dateOpenned, KindsOfAccounts.Asset, false)
+        protected DepositAccount(Identifier acctId, DateTime dateOpened) : base(acctId, dateOpened, KindsOfAccounts.Asset, false)
         {
         }
 
@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Sp
         /// Creates a new random Checking Account
         /// </summary>
         /// <param name="personName"></param>
-        /// <param name="dt">Date account was openned, default to now.</param>
+        /// <param name="dt">Date account was opened, default to now.</param>
         /// <param name="debitPin">
         /// Optional, when present and random instance of <see cref="CheckingAccount.DebitCard"/> is created with 
         /// this as its PIN.
@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Sp
         {
             var dtd = dt.GetValueOrDefault(DateTime.UtcNow);
             var accountId = new AccountId(Etx.RandomRChars(true));
-            return CheckingAccount.IsPossiablePin(debitPin)
+            return CheckingAccount.IsPossiblePin(debitPin)
                 ? new CheckingAccount(accountId, dtd,
                     new Tuple<ICreditCard, string>(CreditCard.RandomCreditCard(personName), debitPin))
                 : new CheckingAccount(accountId, dtd) {Name = personName?.Name};

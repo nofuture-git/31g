@@ -383,7 +383,7 @@ namespace NoFuture.Rand.Geo.US
             if (matchedNodes.Count == 1)
                 return matchedNodes[0];
 
-            //choose one with a msa-code value if possiable
+            //choose one with a msa-code value if possible
             foreach (var matchedNode in matchedNodes)
             {
                 var matchedElem = matchedNode as XmlElement;

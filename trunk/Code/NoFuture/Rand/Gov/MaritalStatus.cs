@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Gov
 {
     [Serializable]
-    public enum MaritialStatus
+    public enum MaritalStatus
     {
         Unknown,
         Single,

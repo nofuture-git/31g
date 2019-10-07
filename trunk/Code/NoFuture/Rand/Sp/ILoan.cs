@@ -2,7 +2,7 @@
 namespace NoFuture.Rand.Sp
 {
     /// <summary>
-    /// Represent finacial loan from a money-lending agent
+    /// Represent financial loan from a money-lending agent
     /// </summary>
     public interface ILoan
     {

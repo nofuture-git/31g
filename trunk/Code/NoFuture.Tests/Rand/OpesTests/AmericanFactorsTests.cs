@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             var edu = OccidentalEdu.Grad | OccidentalEdu.Bachelor; //1.16049
             var race = NorthAmericanRace.Hispanic; //0.617280
             var region = AmericanRegion.Midwest; //0.76515
-            var maritalStatus = MaritialStatus.Married;
+            var maritalStatus = MaritalStatus.Married;
             var age = 52;//0.86420
 
             var testResult = AmericanFactors.GetFactor(testFactor, edu, race, region, age, Gender.Male,

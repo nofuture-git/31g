@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Sp.Enums
         Proprietorship = 1,
         Partnership = 2,
         Limited = 4,
-        LimitedLiablity = 8,
+        LimitedLiability = 8,
         Corporation = 16,
 
         /// <summary>

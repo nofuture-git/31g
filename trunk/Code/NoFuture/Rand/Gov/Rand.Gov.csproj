@@ -58,7 +58,7 @@
     <Compile Include="US\Irs\PreparerTaxIdNumber.cs" />
     <Compile Include="US\Irs\TaxpayerIdentificationNumber.cs" />
     <Compile Include="IVitalRecord.cs" />
-    <Compile Include="MaritialStatus.cs" />
+    <Compile Include="MaritalStatus.cs" />
     <Compile Include="US\Nhtsa\VehicleDescription.cs" />
     <Compile Include="US\Nhtsa\VehicleIdSection.cs" />
     <Compile Include="US\Nhtsa\Vin.cs" />

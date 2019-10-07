@@ -69,7 +69,7 @@ namespace NoFuture.Rand.Exo
         /// <param name="rawJsonContent">The raw JSON returned from IEX</param>
         /// <param name="srcUri"></param>
         /// <param name="corp"></param>
-        /// <param name="atTime">Optional, allows caller to assign the timestamp, defaults to universial time</param>
+        /// <param name="atTime">Optional, allows caller to assign the timestamp, defaults to universal time</param>
         /// <returns></returns>
         public static bool TryParseIexKeyStatsJson(string rawJsonContent, Uri srcUri, ref PublicCompany corp, DateTime? atTime = null)
         {

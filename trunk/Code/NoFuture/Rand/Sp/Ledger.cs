@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Sp
 {
     /// <summary>
     /// The Accounting concept of a kind-of capital object that contains the 
-    /// exhuastive list of all accounts
+    /// exhaustive list of all accounts
     /// </summary>
     [Serializable]
     public class Ledger : IEnumerable<IAccount<Identifier>>

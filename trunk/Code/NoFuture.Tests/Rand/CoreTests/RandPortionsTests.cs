@@ -282,7 +282,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         {
             var testSubject = new RandPortions();
 
-            //how do the PossiableZero outs play with explict values on GivenDirectly?
+            //how do the PossibleZero outs play with explicit values on GivenDirectly?
             testSubject.AddGivenDirectly("Credit Card", "Debts", 1000D);
             testSubject.AddGivenDirectly("Health Care", "Debts", 1000D);
             testSubject.AddGivenDirectly("Other Consumer", "Debts", 1000D);
@@ -292,8 +292,8 @@ namespace NoFuture.Rand.Tests.CoreTests
 
             testSubject.AddPossibleZeroOuts("Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other");
 
-            //the PossiableZeroOuts are only considered when they are not present in the GivenDirectly 
-            // so the results are the same as if PossiableZeroOuts had nothing in it at all
+            //the PossibleZeroOuts are only considered when they are not present in the GivenDirectly 
+            // so the results are the same as if PossibleZeroOuts had nothing in it at all
             var testResult =
                 testSubject.GetNames2Portions(new[] { "Credit Card", "Health Care", "Other Consumer", "Student", "Tax", "Other" });
             Assert.IsNotNull(testResult);
@@ -310,7 +310,7 @@ namespace NoFuture.Rand.Tests.CoreTests
         {
             var testSubject = new RandPortions();
 
-            //what if the SumTotal exceeds the GivenDirectly's sum but all the other options are present in the PossiablyZeroOut's?
+            //what if the SumTotal exceeds the GivenDirectly's sum but all the other options are present in the PossiblyZeroOut's?
             // and it just so happens that they all, in fact do, get selected to be zero'ed out
             testSubject.AddGivenDirectly("Credit Card", "Debts", 1000D);
             testSubject.AddPossibleZeroOuts(s => true, "Health Care", "Other Consumer", "Student", "Tax", "Other");

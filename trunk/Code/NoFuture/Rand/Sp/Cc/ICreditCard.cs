@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Sp.Cc
 {
     /// <summary>
-    /// Represents the std properites from a card-issuer
+    /// Represents the std properties from a card-issuer
     /// </summary>
     public interface ICreditCard
     {

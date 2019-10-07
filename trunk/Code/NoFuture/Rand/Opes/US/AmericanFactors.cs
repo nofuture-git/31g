@@ -92,7 +92,7 @@ namespace NoFuture.Rand.Opes.US
             var region = options.Region;
             var age = options.GetAge();
             var gender = options.Gender;
-            var maritalStatus = options.MaritialStatus;
+            var maritalStatus = options.MaritalStatus;
 
             HomeDebtFactor = GetFactor(AmericanFactorTables.HomeDebt, edu, race, region, age, gender,
                 maritalStatus);
@@ -144,7 +144,7 @@ namespace NoFuture.Rand.Opes.US
         /// <param name="region"></param>
         /// <param name="age"></param>
         /// <param name="gender"></param>
-        /// <param name="maritialStatus"></param>
+        /// <param name="maritalStatus"></param>
         /// <returns>
         /// A scalar factor above or below the national average(s) based on the given criteria
         /// </returns>
@@ -153,7 +153,7 @@ namespace NoFuture.Rand.Opes.US
         ///     https://www2.census.gov/programs-surveys/demo/tables/wealth/2011/wealth-asset-ownership/debt-tables-2011.xlsx
         /// </remarks>
         public static double GetFactor(AmericanFactorTables tbl, OccidentalEdu edu, NorthAmericanRace race,
-            AmericanRegion region, int age, Gender gender, MaritialStatus maritialStatus)
+            AmericanRegion region, int age, Gender gender, MaritalStatus maritalStatus)
         {
             DebtXml = DebtXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc(US_PERSONAL_DEBT,
                            Assembly.GetExecutingAssembly());
@@ -194,7 +194,7 @@ namespace NoFuture.Rand.Opes.US
                 }
             }
 
-            var ageNode = maritialStatus == MaritialStatus.Married || maritialStatus == MaritialStatus.Remarried
+            var ageNode = maritalStatus == MaritalStatus.Married || maritalStatus == MaritalStatus.Remarried
                 ? xmlDoc.SelectSingleNode($"{tblXPath}/factor[@name='Age']/factor[@name='Married']")
                 : xmlDoc.SelectSingleNode($"{tblXPath}/factor[@name='Age']/factor[@name='{genderName}']");
             factorCount = factorCount <= 0 ? 1 : factorCount;

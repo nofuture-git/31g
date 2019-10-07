@@ -7,7 +7,7 @@ using NoFuture.Rand.Sp.Enums;
 namespace NoFuture.Rand.Sp
 {
     /// <summary>
-    /// Commitee on Uniform Securities Identification Procedures.
+    /// Committee on Uniform Securities Identification Procedures.
     /// A unique id for a financial security.
     /// Ref [https://en.wikipedia.org/wiki/CUSIP]
     /// Lists at [https://www.sec.gov/divisions/investment/13flists.htm]

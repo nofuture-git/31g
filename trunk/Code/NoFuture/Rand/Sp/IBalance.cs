@@ -81,7 +81,7 @@ namespace NoFuture.Rand.Sp
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="variableRate">
-        /// The dictonary keys are the dates the rate values end on, NOT begin on.
+        /// The dictionary keys are the dates the rate values end on, NOT begin on.
         /// </param>
         /// <returns></returns>
         Pecuniam GetCurrent(DateTime dt, Dictionary<DateTime, float> variableRate);

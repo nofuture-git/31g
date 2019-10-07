@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Tests.OpesTests
             Assert.AreEqual(testInputFr.DateOfBirth, testResultFt.DateOfBirth);
             Assert.AreEqual(testInputFr.EducationLevel, testResultFt.EducationLevel);
             Assert.AreEqual(testInputFr.Gender, testResultFt.Gender);
-            Assert.AreEqual(testInputFr.MaritialStatus, testResultFt.MaritialStatus);
+            Assert.AreEqual(testInputFr.MaritalStatus, testResultFt.MaritalStatus);
             Assert.AreEqual(testInputFr.Race, testResultFt.Race);
             Assert.AreEqual(testInputFr.Region, testResultFt.Region);
 

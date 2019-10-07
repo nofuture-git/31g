@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Tests.OpesTests
         {
             var testResult = AmericanFactors.GetFactor(AmericanFactorTables.HomeDebt,
                 (OccidentalEdu.Bachelor | OccidentalEdu.Grad), NorthAmericanRace.Asian, AmericanRegion.West, 38,
-                Gender.Male, MaritialStatus.Single);
+                Gender.Male, MaritalStatus.Single);
             Assert.AreNotEqual(0.0D, testResult);
             System.Diagnostics.Debug.WriteLine(testResult);
         }

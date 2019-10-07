@@ -45,14 +45,14 @@ namespace NoFuture.Rand.Sp
         Pecuniam AveragePerDueFrequency(TimeSpan? duration = null);
 
         /// <summary>
-        /// Determins the deliquency for the given <see cref="dt"/>
+        /// Determines the delinquency for the given <see cref="dt"/>
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
         PastDue? GetDelinquency(DateTime dt);
 
         /// <summary>
-        /// Calc's the minimum payment for the given <see cref="dt"/>
+        /// Calculates the minimum payment for the given <see cref="dt"/>
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>

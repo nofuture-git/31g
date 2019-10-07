@@ -175,7 +175,7 @@ namespace NoFuture.Rand.Sp
         /// <param name="totalCost">
         ///     The original value of the loan, the difference between 
         ///     this and the <see cref="remainingCost"/> determines how far in the past the loan would
-        ///     have been openned.
+        ///     have been opened.
         /// </param>
         /// <param name="rate">The interest rate</param>
         /// <param name="termInYears"></param>
@@ -204,7 +204,7 @@ namespace NoFuture.Rand.Sp
             if (termInYears == 0)
                 termInYears = 5;
 
-            //given this value and rate - calc the timespan needed to have aquired this amount of equity
+            //given this value and rate - calc the timespan needed to have acquired this amount of equity
             var firstOfYear = new DateTime(DateTime.Today.Year, 1, 1);
             var loan = new SecuredFixedRateLoan(property, firstOfYear, totalCost, rate, termInYears)
             {

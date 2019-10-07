@@ -295,9 +295,9 @@ namespace NoFuture.Rand.Core
         /// A: The PossiableZeroOuts are only considered when they are not present in the GivenDirectly.
         /// 
         /// Q: What if the SumTotal exceeds the GivenDirectly's sum but all the other item-names are present 
-        ///    in the PossiablyZeroOut's and, it just so happens, that they all get selected to be zero-ed out?
+        ///    in the PossiblyZeroOut's and, it just so happens, that they all get selected to be zero-ed out?
         /// A: It leaves one to receive the excess - in effect forcing the dice role to be false for at least 
-        ///    one of the PossiablyZeroOuts in this case no matter the odds.
+        ///    one of the PossiblyZeroOuts in this case no matter the odds.
         /// ]]>
         /// </remarks>
         public virtual List<Tuple<string, double>> GetNames2Portions(string[] itemOrGroupNames)
@@ -343,7 +343,7 @@ namespace NoFuture.Rand.Core
             //zero outs will get applied just like any other ReassignRates
             var actualZeroOuts = new List<Tuple<string, double>>();
 
-            //select actual zero outs from the possiable zero outs
+            //select actual zero outs from the possible zero outs
             if (possibleZeroOuts.Any())
             {
                 foreach (var pzo in possibleZeroOuts)
@@ -361,7 +361,7 @@ namespace NoFuture.Rand.Core
                 }
             }
 
-            //apply any GivenDirectly's of zero like PossiableZeroOuts
+            //apply any GivenDirectly's of zero like PossibleZeroOuts
             foreach (var dr in givenDirectlyItems.Where(o => o.Item2 == 0))
             {
                 if (actualZeroOuts.All(z => z.Item1 != dr.Item1.Name))

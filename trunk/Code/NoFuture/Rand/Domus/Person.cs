@@ -79,7 +79,7 @@ namespace NoFuture.Rand.Domus
         public PostalAddress Address => GetAddressAt(null);
         public IRelation Spouse => GetSpouseAt(null);
         public int Age => GetAgeAt(null);
-        public MaritialStatus MaritialStatus => GetMaritalStatusAt(null);
+        public MaritalStatus MaritalStatus => GetMaritalStatusAt(null);
         public IEnumerable<Child> Children => _children;
         public IEnumerable<Parent> Parents => _parents;
         public virtual string FullName => string.Join(" ", FirstName, LastName);
@@ -87,7 +87,7 @@ namespace NoFuture.Rand.Domus
         #endregion
 
         #region methods
-        public abstract MaritialStatus GetMaritalStatusAt(DateTime? dt);
+        public abstract MaritalStatus GetMaritalStatusAt(DateTime? dt);
 
         public abstract Spouse GetSpouseAt(DateTime? dt);
 
@@ -294,13 +294,13 @@ namespace NoFuture.Rand.Domus
         }
 
         /// <summary>
-        /// Tests if the <see cref="childDob"/> is a real possiablity 
-        /// given the presence of siblings and thier date-of-birth.
+        /// Tests if the <see cref="childDob"/> is a real possibility 
+        /// given the presence of siblings and their date-of-birth.
         /// </summary>
         /// <param name="childDob"></param>
         /// <param name="myParentalTitle"></param>
         /// <returns>
-        /// True when the <see cref="childDob"/> is possiable given 
+        /// True when the <see cref="childDob"/> is possible given 
         /// the this instance's age at this time and the date-of-birth
         /// of siblings.
         /// </returns>
@@ -429,7 +429,7 @@ namespace NoFuture.Rand.Domus
             if (_myDeathCert != null && _myBirthCert != null && _myBirthCert.DateOfBirth > _myDeathCert.DateOfDeath)
                 throw new InvalidOperationException($"This person {FullName} is assigned a date " +
                                                     $"of death as {_myDeathCert.DateOfDeath} and a birth " +
-                                                    $"date of {_myBirthCert.DateOfBirth} which is impossiable.");
+                                                    $"date of {_myBirthCert.DateOfBirth} which is impossible.");
         }
 
         public override IDictionary<string, object> ToData(KindsOfTextCase txtCase)
@@ -450,7 +450,7 @@ namespace NoFuture.Rand.Domus
                 itemData.Add(textFormat(nameof(LastName)), LastName);
 
             itemData.Add(textFormat(nameof(Gender)), Gender);
-            itemData.Add(textFormat(nameof(MaritialStatus)), MaritialStatus.ToString());
+            itemData.Add(textFormat(nameof(MaritalStatus)), MaritalStatus.ToString());
             itemData.Add(textFormat(nameof(Age)), Age);
 
             foreach (var ph in PhoneNumbers)

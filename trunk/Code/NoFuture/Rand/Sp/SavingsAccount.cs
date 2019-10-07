@@ -6,10 +6,10 @@ namespace NoFuture.Rand.Sp
     [Serializable]
     public class SavingsAccount : DepositAccount
     {
-        public SavingsAccount(string acctId, DateTime dateOpenned) : this(new AccountId(acctId),dateOpenned)
+        public SavingsAccount(string acctId, DateTime dateOpened) : this(new AccountId(acctId),dateOpened)
         {
         }
-        public SavingsAccount(Identifier acctId, DateTime dateOpenned) : base(acctId, dateOpenned)
+        public SavingsAccount(Identifier acctId, DateTime dateOpened) : base(acctId, dateOpened)
         {
         }
         public float InterestRate { get; set; }

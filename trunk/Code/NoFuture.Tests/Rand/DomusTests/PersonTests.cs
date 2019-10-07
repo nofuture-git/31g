@@ -79,8 +79,8 @@ namespace NoFuture.Rand.Tests.DomusTests
         public void TestGetAmericanMaritialStatus()
         {
             //too young 
-            Assert.AreEqual(MaritialStatus.Single, AmericanData.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Male));
-            Assert.AreEqual(MaritialStatus.Single, AmericanData.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Female));
+            Assert.AreEqual(MaritalStatus.Single, AmericanData.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Male));
+            Assert.AreEqual(MaritalStatus.Single, AmericanData.RandomMaritialStatus(DateTime.Today.AddYears(-16), Gender.Female));
 
             //cannot test further since its is random...
             Console.WriteLine(AmericanData.RandomMaritialStatus(new DateTime(1974, 11, 21), Gender.Male));
@@ -204,13 +204,13 @@ namespace NoFuture.Rand.Tests.DomusTests
 
             var testResult = testSubject.GetMaritalStatusAt(null);
 
-            Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
+            Assert.AreNotEqual(MaritalStatus.Unknown, testResult);
 
             Console.WriteLine(testResult);
 
             testResult = testSubject.GetMaritalStatusAt(DateTime.UtcNow.AddYears(-10));
 
-            Assert.AreNotEqual(MaritialStatus.Unknown, testResult);
+            Assert.AreNotEqual(MaritalStatus.Unknown, testResult);
 
             Console.WriteLine(testResult);
         }

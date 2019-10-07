@@ -44,7 +44,7 @@ namespace NoFuture.Rand.Sp
         public virtual IAccount<Identifier> Debit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
             var dt = atTime ?? LastTransaction.AtTime;
-            ThrowOnJournalizingInbalance(amt, dt);
+            ThrowOnJournalizingImbalance(amt, dt);
             WorkingDate = dt;
             if (IsOppositeForm)
                 AddNegativeValue(dt, amt, note, trace);
@@ -56,7 +56,7 @@ namespace NoFuture.Rand.Sp
         public virtual IAccount<Identifier> Credit(Pecuniam amt, IVoca note = null, DateTime? atTime = null, ITransactionId trace = null)
         {
             var dt = atTime ?? LastTransaction.AtTime;
-            ThrowOnJournalizingInbalance(amt, dt);
+            ThrowOnJournalizingImbalance(amt, dt);
             WorkingDate = dt;
             if (IsOppositeForm)
                 AddPositiveValue(dt, amt, note, trace);
@@ -77,7 +77,7 @@ namespace NoFuture.Rand.Sp
         /// happens, besides audit, there is not clear relation of one transaction being the off-set of another because
         /// these transactions are dispersed across multiple accounts.
         /// </remarks>
-        protected internal virtual void ThrowOnJournalizingInbalance(Pecuniam amt, DateTime atTime)
+        protected internal virtual void ThrowOnJournalizingImbalance(Pecuniam amt, DateTime atTime)
         {
             if (!IsDoubleBookEntry)
                 return;
@@ -89,12 +89,12 @@ namespace NoFuture.Rand.Sp
             if (sumPerDay == null || !sumPerDay.Any())
                 return;
 
-            var inbalanceDays = sumPerDay.Keys.Where(sd => sumPerDay[sd] != Pecuniam.Zero).ToList();
+            var imbalance = sumPerDay.Keys.Where(sd => sumPerDay[sd] != Pecuniam.Zero).ToList();
 
-            if (inbalanceDays.Any())
+            if (imbalance.Any())
             {
                 throw new InvalidOperationException("The following dates do not have a zero-sum " +
-                                                    $"balance {string.Join(", ", inbalanceDays.Select(d => d.ToString("d")))}.  " +
+                                                    $"balance {string.Join(", ", imbalance.Select(d => d.ToString("d")))}.  " +
                                                     $"Either correct these dates or turn off {nameof(IsDoubleBookEntry)}");
             }
         }

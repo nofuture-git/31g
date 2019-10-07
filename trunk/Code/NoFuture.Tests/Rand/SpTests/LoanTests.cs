@@ -83,7 +83,7 @@ namespace NoFuture.Rand.Tests.SpTests
             testResult = testSubject.GetStatus(DateTime.UtcNow);
             Assert.AreEqual(SpStatus.Current, testResult);
 
-            //account openned then over paid off - better be current
+            //account opened then over paid off - better be current
             testSubject = new FixedRateLoan(DateTime.UtcNow.AddYears(-3).Date, 0.0125F);
             testSubject.AddPositiveValue(DateTime.UtcNow.AddDays(-365), new Pecuniam(8000.0M));
             testSubject.AddNegativeValue(DateTime.UtcNow.AddDays(-360), new Pecuniam(-9000.0M));

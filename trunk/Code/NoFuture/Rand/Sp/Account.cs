@@ -11,7 +11,7 @@ namespace NoFuture.Rand.Sp
     /// </summary>
     public class Account : NamedTradeline, IAccount<Identifier>
     {
-        public Account(Identifier acctId, DateTime dateOpenned, KindsOfAccounts accountType, bool isOppositeForm) : base(dateOpenned)
+        public Account(Identifier acctId, DateTime dateOpened, KindsOfAccounts accountType, bool isOppositeForm) : base(dateOpened)
         {
             Id = acctId ?? throw new ArgumentNullException(nameof(acctId));
             DueFrequency = null;

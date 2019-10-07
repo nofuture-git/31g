@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Sp
                 {
                     break;
                 }
-                bal = bal + t.Cash.Amount;
+                bal += t.Cash.Amount;
                 prev = t;
             }
 
@@ -120,7 +120,7 @@ namespace NoFuture.Rand.Sp
                 //add in this date-ranges transactions to the running balance
                 bal = betwixtTs.Aggregate(bal, (current, bts) => current + bts.Cash);
 
-                //get the balance plus iterest for the number of days this rate was in effect
+                //get the balance plus interest for the number of days this rate was in effect
                 bal = new Pecuniam(bal.Amount.PerDiemInterest(variableRate[vdt], daysAtRate, DaysPerYear));
 
                 //save where we ended this time for next iteration

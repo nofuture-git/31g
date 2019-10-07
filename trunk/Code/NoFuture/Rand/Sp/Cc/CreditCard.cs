@@ -97,16 +97,16 @@ namespace NoFuture.Rand.Sp.Cc
         }
 
         /// <summary>
-        /// Returs a new, randomly gen&apos;ed, concrete instance of <see cref="ICreditCard"/>
+        /// Returns a new, randomly gen&apos;ed, concrete instance of <see cref="ICreditCard"/>
         /// </summary>
         /// <param name="cardholder"></param>
-        /// <param name="opennedDate"></param>
+        /// <param name="openedDate"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static ICreditCard RandomCreditCard(IVoca cardholder, DateTime? opennedDate = null)
+        public static ICreditCard RandomCreditCard(IVoca cardholder, DateTime? openedDate = null)
         {
             var fk = Etx.RandomInteger(0, 3);
-            var dt = opennedDate ?? Etx.RandomDate(-3, null);
+            var dt = openedDate ?? Etx.RandomDate(-3, null);
 
             switch (fk)
             {
@@ -122,15 +122,15 @@ namespace NoFuture.Rand.Sp.Cc
         }
 
         /// <summary>
-        /// Returs a new, randomly gen&apos;ed, concrete instance of <see cref="ICreditCard"/>
+        /// Returns a new, randomly gen&apos;ed, concrete instance of <see cref="ICreditCard"/>
         /// </summary>
         /// <param name="cardholder"></param>
-        /// <param name="opennedDate"></param>
+        /// <param name="openedDate"></param>
         /// <returns></returns>
         [RandomFactory]
-        public static ICreditCard RandomCreditCard(string cardholder = null, DateTime? opennedDate = null)
+        public static ICreditCard RandomCreditCard(string cardholder = null, DateTime? openedDate = null)
         {
-            return RandomCreditCard(new VocaBase(cardholder ?? ""), opennedDate);
+            return RandomCreditCard(new VocaBase(cardholder ?? ""), openedDate);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace NoFuture.Rand.Sp.Cc
         /// <param name="cardNumber"></param>
         /// <param name="cardHolder"></param>
         /// <param name="cvv"></param>
-        /// <param name="opennedDate"></param>
+        /// <param name="openedDate"></param>
         /// <param name="expiryDate"></param>
         /// <returns></returns>
         /// <remarks>
@@ -147,16 +147,16 @@ namespace NoFuture.Rand.Sp.Cc
         /// </remarks>
         [RandomFactory]
         public static ICreditCard RandomCreditCard(string cardNumber, string cardHolder, string cvv = null,
-            DateTime? opennedDate = null, DateTime? expiryDate = null)
+            DateTime? openedDate = null, DateTime? expiryDate = null)
         {
             if (MasterCardCc.IsValidNumber(cardNumber))
-                return new MasterCardCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), opennedDate, expiryDate );
+                return new MasterCardCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), openedDate, expiryDate );
             if(VisaCc.IsValidNumber(cardNumber))
-                return new VisaCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), opennedDate, expiryDate);
+                return new VisaCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), openedDate, expiryDate);
             if(AmexCc.IsValidNumber(cardNumber))
-                return new AmexCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), opennedDate, expiryDate);
+                return new AmexCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), openedDate, expiryDate);
             if(DiscoverCc.IsValidNumber(cardNumber))
-                return new DiscoverCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), opennedDate, expiryDate);
+                return new DiscoverCc(cardNumber, cvv, new VocaBase(cardNumber ?? ""), openedDate, expiryDate);
 
             throw new ArgumentException($"The card number {cardNumber} does not match any of the defined credit cards.");
 

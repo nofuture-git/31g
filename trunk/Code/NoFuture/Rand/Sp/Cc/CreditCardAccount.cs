@@ -79,11 +79,11 @@ namespace NoFuture.Rand.Sp.Cc
         }
 
         /// <summary>
-        /// Applies a purchase transation to this credit card.
+        /// Applies a purchase transaction to this credit card.
         /// </summary>
         /// <returns>
         /// True when the card is not expired and
-        /// the purchase amount <see cref="val"/>
+        /// the purchase amount <see cref="amount"/>
         /// will not cause the total balance to exceed <see cref="Max"/>.
         /// </returns>
         public override Guid AddPositiveValue(DateTime dt, Pecuniam amount, IVoca note = null, ITransactionId trace = null)

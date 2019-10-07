@@ -21,7 +21,7 @@ namespace NoFuture.Rand.Opes.US
 
         public Gender Gender { get; set; }
 
-        public MaritialStatus MaritialStatus { get; set; }
+        public MaritalStatus MaritalStatus { get; set; }
 
         public int GetAge()
         {
@@ -57,7 +57,7 @@ namespace NoFuture.Rand.Opes.US
                 Region = Etx.RandomPickOne(AmericanData.RegionPopulationAvgs),
                 Gender = sex,
                 DateOfBirth = dob,
-                MaritialStatus = AmericanData.RandomMaritialStatus(dob, sex)
+                MaritalStatus = AmericanData.RandomMaritialStatus(dob, sex)
             };
         }
     }

@@ -8,7 +8,7 @@ namespace NoFuture.Rand.Sp
 {
     /// <inheritdoc cref="IValoresTempus" />
     /// <summary>
-    /// Represents a tradable security of high liquidity
+    /// Represents a tradeable security of high liquidity
     /// </summary>
     [Serializable]
     public class Security : Pecuniam, IValoresTempus

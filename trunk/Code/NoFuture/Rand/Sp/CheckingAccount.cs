@@ -14,8 +14,8 @@ namespace NoFuture.Rand.Sp
         private readonly byte[] _pinKey;
         private readonly byte[] _pinHash;
 
-        public CheckingAccount(string acctId, DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) : this(
-            new AccountId(acctId), dateOpenned, debitCard)
+        public CheckingAccount(string acctId, DateTime dateOpened, Tuple<ICreditCard, string> debitCard = null) : this(
+            new AccountId(acctId), dateOpened, debitCard)
         {
         }
 
@@ -23,15 +23,15 @@ namespace NoFuture.Rand.Sp
         /// Creates new Checking Deposit account instance
         /// </summary>
         /// <param name="acctId"></param>
-        /// <param name="dateOpenned"></param>
+        /// <param name="dateOpened"></param>
         /// <param name="debitCard">
         /// Item2 is the PIN number and must be 4 numerical chars. 
         /// Its value is hashed and not stored within the instance.
         /// </param>
-        public CheckingAccount(Identifier acctId, DateTime dateOpenned, Tuple<ICreditCard, string> debitCard = null) :
-            base(acctId, dateOpenned)
+        public CheckingAccount(Identifier acctId, DateTime dateOpened, Tuple<ICreditCard, string> debitCard = null) :
+            base(acctId, dateOpened)
         {
-            if (debitCard?.Item1 == null || !IsPossiablePin(debitCard.Item2))
+            if (debitCard?.Item1 == null || !IsPossiblePin(debitCard.Item2))
                 return;
             DebitCard = debitCard.Item1;
             _pinKey = Encoding.UTF8.GetBytes(Path.GetRandomFileName());
@@ -64,7 +64,7 @@ namespace NoFuture.Rand.Sp
             return hmac.ComputeHash(pinBuffer);
         }
 
-        public static bool IsPossiablePin(string somestring)
+        public static bool IsPossiblePin(string somestring)
         {
             return !string.IsNullOrWhiteSpace(somestring) && Regex.IsMatch(somestring, "[0-9]{4}");
         }

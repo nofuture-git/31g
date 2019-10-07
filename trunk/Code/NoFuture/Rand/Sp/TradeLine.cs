@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Sp
             if ((Balance.GetDebitSum(justLate)).Amount < 0)
                 return null;
 
-            //the line was openned some time before 30DPD
+            //the line was opened some time before 30DPD
             if (DateTime.Compare(Inception, dt.AddDays(-30 - billingCycleDays)) > 0)
                 return null;
 

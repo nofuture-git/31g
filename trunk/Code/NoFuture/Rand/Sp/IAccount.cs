@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Sp
     /// <inheritdoc cref="IValoresTempus" />
     /// <inheritdoc cref="IVoca" />
     /// <summary>
-    /// An uniquly identified balance of some asset, liability or owner&apos;s equity.
+    /// An uniquely identified balance of some asset, liability or owner&apos;s equity.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IAccount<out T> : IValoresTempus, IVoca
