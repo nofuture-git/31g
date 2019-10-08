@@ -1061,7 +1061,11 @@ Deep Networks basics
  - concepts
   - RBMs (Restricted Boltzmann Machines)
   - Autoencoders, main task is to reproduce its own input
-     - useful to detect anomalies
+    - useful to detect anomalies
+    - typically three layers 
+     - Encoder: goes from input to Latent Code
+     - Latent Code: the output of the Encoder, typically lower dim
+     - Decoder: goes from Latent Code back to orig     
  - architectures
   - UPNs
   - CNNs (image modeling)

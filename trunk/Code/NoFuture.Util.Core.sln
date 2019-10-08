@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Tests", "_Tests", "{DCD744E4-D218-4B3C-A1E1-4D7C33401CE8}"
 EndProject
@@ -26,6 +26,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Core.Math.Matrix", "NoFuture\Util\Core\Math\Matrix\Util.Core.Math.Matrix.csproj", "{69B28C6C-378D-4E2F-A46E-C356AD416A22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Core.Math", "NoFuture\Util\Core\Math\Util.Core.Math.csproj", "{5BC9B3AA-96DF-4E29-B5B7-961D28AF76B3}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "util_py", "NoFuture\Util\util_py.pyproj", "{A6248D90-AED9-42A1-AC13-499693446336}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "util_py.core.math.matrix", "NoFuture\Util\Core\Math\Matrix\util_py.core.math.matrix.pyproj", "{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -226,6 +230,36 @@ Global
 		{5BC9B3AA-96DF-4E29-B5B7-961D28AF76B3}.Release|x64.Build.0 = Release|Any CPU
 		{5BC9B3AA-96DF-4E29-B5B7-961D28AF76B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{5BC9B3AA-96DF-4E29-B5B7-961D28AF76B3}.Release|x86.Build.0 = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Pkg|Any CPU.ActiveCfg = Pkg|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Pkg|Mixed Platforms.ActiveCfg = Pkg|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Pkg|Win32.ActiveCfg = Pkg|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Pkg|x64.ActiveCfg = Pkg|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Pkg|x86.ActiveCfg = Pkg|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|Win32.ActiveCfg = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|x64.ActiveCfg = Release|Any CPU
+		{A6248D90-AED9-42A1-AC13-499693446336}.Release|x86.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Pkg|Any CPU.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Pkg|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Pkg|Win32.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Pkg|x64.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Pkg|x86.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Release|Win32.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Release|x64.ActiveCfg = Release|Any CPU
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -237,6 +271,8 @@ Global
 		{8F84E19B-B2EB-43D2-9636-595CC6539D11} = {DCD744E4-D218-4B3C-A1E1-4D7C33401CE8}
 		{69B28C6C-378D-4E2F-A46E-C356AD416A22} = {77044E09-744B-454C-9C02-E7058ECB2851}
 		{5BC9B3AA-96DF-4E29-B5B7-961D28AF76B3} = {77044E09-744B-454C-9C02-E7058ECB2851}
+		{A6248D90-AED9-42A1-AC13-499693446336} = {77044E09-744B-454C-9C02-E7058ECB2851}
+		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9} = {77044E09-744B-454C-9C02-E7058ECB2851}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5CFF5DF-D475-4389-8A55-500295E3A426}

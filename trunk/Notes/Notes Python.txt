@@ -90,6 +90,10 @@ Command line
    $clear
    $load "C:\MyDir\MyFile.py" #loads the content directly into interactive
    $reset #resets the interactive
+   #similar to VS's "Load in Interactive" feature
+   import os
+   os.chdir("\\location\\of\\my\\python\\files")
+   import myPythonFile
    
  - with Anaconda3 you can add your project using this command at cmd
   conda develop C:\MyDir\MyProj\
@@ -278,7 +282,7 @@ String Methods
      filename, ext = "my_local_file.txt".rsplit(".",1)
 	 - this would assign 'filename' to "my_local_file" and
 	   'ext' to "txt"
- S.join(iterable)  #like .NET string.Join(S,iterable)
+ ",".join([str(v) for v in [1,2,3,4]])  #like .NET string.Join(",",new[]{1,2,3,4})
  S.replace(old, new)
  S.splitlines([keepends]) #splits string to array on line breaks
  
@@ -314,11 +318,17 @@ String formatting
  '{:*^30}'.format("pretty cool")
  '*********pretty cool**********'
  
+ #equiv C# string.Format("{0,-" + 18.ToString() + "}", "[3]") 
+ ("{: <" + str(18) + "}").format("[3]")
+ 
  '{0:#x}'.format(42)
  '0x2a'
  
  '{:,}'.format(1234567890)
  '1,234,567,890'
+ 
+ #string interpolation 
+ f",\n".join([str(v) for v in [1,2,3,4]])
  
  #full timestamp
  import datetime
@@ -740,7 +750,6 @@ Syntax Constructs & Conventions
  - names beginning and ending with double-underscore have special meaning (e.g. __iamspecial__)
  - top-module level names with a single underscore are scoped only to that module
  - there are enough hooks and tools in Py to do almost anything with infinite indirection
- 
 
  - src code is in UTF8
  - .NET properties = Py attributes
