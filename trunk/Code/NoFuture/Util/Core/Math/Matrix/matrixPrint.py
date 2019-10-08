@@ -26,8 +26,8 @@ def printCodeStyle(multidimList, style = "js"):
 
     nfStr += f"{open}\n" 
     lines = []
-    rowCount = matrixEtc.countOfRows(multidimList)
-    columnCount = matrixEtc.countOfColumns(multidimList)
+    rowCount = len(multidimList)
+    columnCount = len(multidimList[0])
     for i in range(rowCount):
         strLn = open
         vals = []
@@ -51,8 +51,8 @@ def printRstyle(multidimList):
     roundTo = 6
     maxLen = 0
     anyNeg = False
-    rowCount = matrixEtc.countOfRows(multidimList)
-    columnCount = matrixEtc.countOfColumns(multidimList)
+    rowCount = len(multidimList)
+    columnCount = len(multidimList[0])
     for i in range(rowCount):
         for j in range(columnCount):
             aij = multidimList[i][j]

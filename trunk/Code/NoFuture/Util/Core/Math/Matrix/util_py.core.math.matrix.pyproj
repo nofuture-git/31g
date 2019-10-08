@@ -25,7 +25,13 @@
     <Compile Include="matrixEtc.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="matrixOps.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="matrixPrint.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="nonConformableException.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
