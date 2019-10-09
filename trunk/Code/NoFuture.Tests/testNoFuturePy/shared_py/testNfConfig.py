@@ -84,7 +84,7 @@ class TestNfConfig(unittest.TestCase):
         print(testResult)
 
     def test_getIdValueHash(self):
-        testXml = ET.parse("C:\\Projects\\31g\\trunk\\Code\\NoFuture.Tests\\testNoFuturePy\\shared_py\\nfConfig.cfg.xml")
+        testXml = ET.parse("C:\\Projects\\31g\\trunk\\Code\\NoFuture\\Shared\\Cfg\\nfConfig.cfg.xml")
         testResult = toTest._getIdValueHash(testXml)
         self.assertIsNotNone(testResult)
         self.assertNotEqual(0, len(testResult))
@@ -103,15 +103,16 @@ class TestNfConfig(unittest.TestCase):
         #    print(k + " = " + testInput[k])
 
     def test_nfConfigInit(self):
-        toTest.init("C:\\Projects\\31g\\trunk\\Code\\NoFuture.Tests\\testNoFuturePy\\shared_py\\nfConfig.cfg.xml")
-        self.assertEqual("C:\\Projects\\31g\\trunk\\temp", toTest.TempDirectories.root)
+        toTest.init("C:\\Projects\\31g\\trunk\\Code\\NoFuture\\Shared\\Cfg\\nfConfig.cfg.xml")
+        self.assertEqual("C:\\Projects\\_NoFuture\\temp", toTest.TempDirectories.root)
         self.assertNotEqual(0, len(toTest.punctuationChars))
-        self.assertEqual("C:\\Projects\\31g\\trunk\\favicon.ico",toTest.favicon)
-        self.assertEqual(306,len(toTest.binaryFileExtensions))
-        self.assertEqual(116,len(toTest.codeFileExtensions))
-        self.assertEqual(54,len(toTest.configFileExtensions))
-        self.assertEqual(16,len(toTest.excludeCodeDirectories))
-        self.assertEqual("C:\\Projects\\31g\\trunk\\NoFuture.cer",toTest.SecurityKeys.noFutureX509Cert)
+        self.assertEqual("C:\\Projects\\_NoFuture\\favicon.ico",toTest.favicon)
+        self.assertIsNot(0,len(toTest.binaryFileExtensions))
+        self.assertIsNot(0,len(toTest.binaryFileExtensions))
+        self.assertIsNot(0,len(toTest.codeFileExtensions))
+        self.assertIsNot(0,len(toTest.configFileExtensions))
+        self.assertIsNot(0,len(toTest.excludeCodeDirectories))
+        self.assertEqual("C:\\Projects\\_NoFuture\\NoFuture.cer",toTest.SecurityKeys.noFutureX509Cert)
         
 
 if __name__ == '__main__':

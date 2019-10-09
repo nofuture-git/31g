@@ -24,16 +24,16 @@ class TestNfUtilEtc(unittest.TestCase):
 
     def test_escapeString(self):
         testInput = "I am decimal"
-        testResult = toTest.escapeString(testInput, nfConstants.EscapeStringType.DECIMAL)
+        testResult = toTest.escapeString(testInput, toTest.EscapeStringType.DECIMAL)
         self.assertEqual("&#73;&#32;&#97;&#109;&#32;&#100;&#101;&#99;&#105;&#109;&#97;&#108;", testResult)
 
-        testResult = toTest.escapeString("[regex]", nfConstants.EscapeStringType.REGEX)
+        testResult = toTest.escapeString("[regex]", toTest.EscapeStringType.REGEX)
         self.assertEqual("\\x5b\\x72\\x65\\x67\\x65\\x78\\x5d",testResult)
 
-        testResult = toTest.escapeString("¥'", nfConstants.EscapeStringType.HTML)
-        self.assertEqual("&yen;",testResult)
+        testResult = toTest.escapeString("¥'", toTest.EscapeStringType.HTML)
+        self.assertEqual("&yen;&apos;",testResult)
 
-        testResult = toTest.escapeString("F@r0ut~Du,de=",nfConstants.EscapeStringType.URI)
+        testResult = toTest.escapeString("F@r0ut~Du,de=",toTest.EscapeStringType.URI)
         self.assertEqual("F%40r0ut%7EDu%2Cde%3D",testResult)
 
     def test_toCamelCase(self):

@@ -1,5 +1,5 @@
-import matrixEtc
-import NonConformableException
+import Util.Core.Math.Matrix.matrixEtc
+import Util.Core.Math.Matrix.NonConformableException
 
 def arithmetic(a, b, expr):
     if a is None: a = [[]]

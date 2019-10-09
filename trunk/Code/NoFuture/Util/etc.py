@@ -4,6 +4,18 @@ import urllib.parse
 from enum import Enum
 from datetime import timedelta
 
+class EscapeStringType(Enum):
+    """For encoding strings"""
+    DECIMAL = 1
+    DECIMAL_LONG = 2
+    HEXDECIMAL = 3
+    UNICODE = 4
+    REGEX = 5
+    HTML = 6
+    XML = 7
+    URI = 8
+    BLANK = 9
+
 def distillString(someString):
     """Distills the continous spaces into a single space and
     replaces Cr [0x0D] and Lf [0x0A] characters with a single space.
@@ -50,7 +62,7 @@ def convertToCrLf(fileContent):
     fileContent = fileContent.replace('\n', WIN_NEW_LINE)
     return fileContent
 
-def escapeString(value, escapeType = nfConstants.EscapeStringType.REGEX):
+def escapeString(value, escapeType = EscapeStringType.REGEX):
     """Returns string ``value`` as an escape sequence.
     
     Args:
@@ -401,18 +413,7 @@ def shortestDistance(s, candidates):
         dict[c] = int(levenshteinDistance(s,c))
     minValue = min(dict.values())
     return [k for (k,v) in dict.items() if v == minValue]
-    
-class EscapeStringType(Enum):
-    """For encoding strings"""
-    DECIMAL = 1
-    DECIMAL_LONG = 2
-    HEXDECIMAL = 3
-    UNICODE = 4
-    REGEX = 5
-    HTML = 6
-    XML = 7
-    URI = 8
-    BLANK = 9
+
 
 WIN_NEW_LINE = '\r\n'
 

@@ -42,8 +42,8 @@ def findNfConfigFile(pwd = None):
 
     nfCfg = ""
     for dir in searchDirs:
-        nfCfg = os.path.join(dir, FILE_NAME)
-        if os.path.exists(nfCfg):
+        if os.path.exists(os.path.join(dir, FILE_NAME)):
+            nfCfg = os.path.join(dir, FILE_NAME)    
             break
     return nfCfg
 
