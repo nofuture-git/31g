@@ -1,5 +1,5 @@
 import string
-import matrixEtc
+import Util.Core.Math.Matrix.matrixEtc
 
 def printCodeStyle(multidimList, style = "js"):
     if style is None:

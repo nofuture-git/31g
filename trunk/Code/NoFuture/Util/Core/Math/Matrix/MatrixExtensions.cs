@@ -1077,19 +1077,15 @@ namespace NoFuture.Util.Core.Math.Matrix
             var mout = new double[a.CountOfRows(), a.CountOfColumns()];
             for (var i = 0; i < a.CountOfRows(); i++)
             {
-                var z = new List<double>();
+                double sumZExp = 0;
                 for (var j = 0; j < a.CountOfColumns(); j++)
                 {
-                    z.Add(a[i,j]);
+                    sumZExp += System.Math.Pow(System.Math.E, a[i, j]);
                 }
-
-                var zExp = z.Select(m => System.Math.Pow(System.Math.E, m)).ToArray();
-                var sumZExp = zExp.Sum();
-                var softmaxAtI = zExp.Select(m => m / sumZExp).ToArray();
 
                 for (var j = 0; j < mout.CountOfColumns(); j++)
                 {
-                    mout[i, j] = softmaxAtI[j];
+                    mout[i, j] = System.Math.Pow(System.Math.E, a[i, j]) / sumZExp;
                 }
             }
 

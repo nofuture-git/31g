@@ -27,7 +27,7 @@
     <Compile Include="shared_py\testNfConfig.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="util_py.core.math.matrix\testMatrixOps.py">
+    <Compile Include="util_py.core.math.matrix\testMatrixEtc.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="util_py\testEtc.py">

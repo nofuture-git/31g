@@ -1,0 +1,266 @@
+import unittest
+import Util.Core.Math.Matrix.matrixEtc as toTest
+
+class TestMatrixEtc(unittest.TestCase):
+    def test_dotProduct(self):
+        a = [
+            [0.838364753796889,0.937973900203581],
+            [0.27903195483565,0.323496849892427],
+            [0.977174767748068,0.358938428740454],
+            [0.00173129513940369,0.584416931301549]
+            ]
+        b = [
+            [0.310606089565254,0.5009241763041,0.607402099113633,0.520163896270173],
+            [0.860155721129922,0.531705562272903,0.922568134461794,0.149769040825669]
+            ]
+
+        testResult = toTest.dotProduct(a,b)
+        
+        expected = [
+                   [1.06720481433685,0.918683113743149,1.37456934256379,0.576566528183576],
+                   [0.364926690557728,0.311778926604136,0.467932480396477,0.193592161729709],
+                   [0.612259376446549,0.680340024714147,0.924683161720782,0.562048898716667],
+                   [0.503227317797354,0.31160498065114,0.540216030360616,0.0884281204686199]
+                   ]
+
+        for i in range(4):
+            for j in range(4):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.001, diff)
+
+    def test_dotScalar(self):
+        a = [
+            [0.838364753796889,0.937973900203581],
+            [0.27903195483565,0.323496849892427],
+            [0.977174767748068,0.358938428740454],
+            [0.00173129513940369,0.584416931301549]
+            ]
+        testResult = toTest.dotScalar(a, 1.112)
+        expected = [
+                   [0.93226160622214,1.04302697702638],
+                   [0.310283533777242,0.359728497080378],
+                   [1.08661834173585,0.399139532759385],
+                   [0.0019252001950169,0.649871627607323]
+                   ]
+        for i in range(4):
+            for j in range(2):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.001, diff)
+
+    def test_transpose(self):
+        a = [
+            [0.838364753796889,0.937973900203581],
+            [0.27903195483565,0.323496849892427],
+            [0.977174767748068,0.358938428740454],
+            [0.00173129513940369,0.584416931301549]
+            ]
+        expected = [
+                   [0.838364753796889,0.27903195483565,0.977174767748068,0.00173129513940369],
+                   [0.937973900203581,0.323496849892427,0.358938428740454,0.584416931301549]
+                   ]
+        testResult = toTest.transpose(a)
+        for i in range(2):
+            for j in range(4):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.001, diff)
+
+    def test_crossProduct(self):
+        a = [
+            [0.838364753796889,0.937973900203581],
+            [0.27903195483565,0.323496849892427],
+            [0.977174767748068,0.358938428740454],
+            [0.00173129513940369,0.584416931301549]
+            ]
+        expected = [
+                   [1.73558781633467,1.2283875902536],
+                   [1.2283875902536,1.45482519457203]
+                   ]
+
+        testResult = toTest.crossProduct(a)
+        for i in range(2):
+            for j in range(2):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.001, diff)
+
+    def test_innerProduct(self):
+        a = [
+            [0.838364753796889,0.937973900203581],
+            [0.27903195483565,0.323496849892427],
+            [0.977174767748068,0.358938428740454],
+            [0.00173129513940369,0.584416931301549]
+            ]
+        expected = [
+                    [1.58265049787204,0.537362158114426,1.15590376151827,0.549619285221219],
+                    [0.537362158114426,0.182509043709727,0.38877843666369,0.189540122966995],
+                    [1.15590376151827,0.38877843666369,1.08370732235016,0.211461472976446],
+                    [0.549619285221219,0.189540122966995,0.211461472976446,0.34154614697478]
+                    ]
+
+        testResult = toTest.innerProduct(a)
+        for i in range(4):
+            for j in range(4):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.001, diff)
+
+    def test_inverse(self):
+        a = [
+            [0.894001844590329,0.4769312498571252,0.5189747771279493,0.386991905245596],
+            [0.5265429074382078,0.35963577333059893,0.9080173807305142,0.9165244453110933],
+            [0.6110824363391651,0.2986528255669715,0.33236824373591245,0.24894181399022075],
+            [0.6900334566811653,0.10749332673866197,0.39915603620358286,0.05989391997327187]
+            ]
+
+        expected = [
+                    [-12.385650593256509,-0.2180428295818768,20.087324390144097,-0.1266717501323382],
+                    [20.85065759378134,-1.0520510744014622,-28.25367802271775,-1.1901595620570176],
+                    [18.742550887902343,0.48840430225867637,-31.77191975413348,3.481311260837718],
+                    [-19.634640354450433,1.1452880686985094,31.023341122527462,-2.909217621114645]
+                    ]
+        testResult = toTest.inverse(a)
+        for i in range(4):
+            for j in range(4):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                #match tolerance of C# counterpart test
+                self.assertGreater(0.00001, diff)
+
+    def test_determinant(self):
+        a = [
+            [-0.39235803,0.67691051,-0.60700301,0.95378656],
+            [-0.58099354,0.85133302,0.88056285,-1.96372078],
+            [0.83324444,-0.08229884,-2.0713253,0.51832857],
+            [-0.52886612,2.94227701,0.1462324,0.7010492]
+            ]
+
+        testResult = toTest.determinant(a)
+        #match tolerance of C# counterpart test
+        self.assertGreater(0.000001, (6.579618 - testResult))
+
+    def test_selectMinor(self):
+        a = [
+            [2.0,1.0,13.0,4.0],
+            [4.0,5.0,14.0,7.0],
+            [7.0,12.0,9.0,10.0],
+            [11.0,8.0,3.0,6.0]
+            ]
+        
+        testResult = toTest.selectMinor(a, 0, 0)
+        expected = [
+                    [5,14,7],
+                    [12,9,10],
+                    [8,3,6]
+                    ]
+        for i in range(3):
+            for j in range(3):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.00001, diff)
+
+        testResult = toTest.selectMinor(a, 1, 1)
+        expected = [
+                    [2,13,4],
+                    [7,9,10],
+                    [11,3,6]
+                    ]
+        for i in range(3):
+            for j in range(3):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.00001, diff)
+
+        testResult = toTest.selectMinor(a, 2, 2)
+        expected = [
+                    [2,1,4],
+                    [4,5,7],
+                    [11,8,6]
+                    ]
+        for i in range(3):
+            for j in range(3):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.00001, diff)
+
+        testResult = toTest.selectMinor(a, 3, 3)
+        expected = [
+                    [2,1,13],
+                    [4,5,14],
+                    [7,12,9]
+                    ]
+        for i in range(3):
+            for j in range(3):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.00001, diff)
+
+        testResult = toTest.selectMinor(a, 0, 1)
+        expected = [
+                    [4,14,7],
+                    [7,9,10],
+                    [11,3,6]
+                    ]
+        for i in range(3):
+            for j in range(3):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.00001, diff)
+        
+        testResult = toTest.selectMinor(a, 0, 2)
+        expected = [
+                    [4,5,7],
+                    [7,12,10],
+                    [11,8,6]
+                    ]
+        for i in range(3):
+            for j in range(3):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.00001, diff)
+
+        testResult = toTest.selectMinor(a, 0, 3)
+        expected = [
+                    [4,5,14],
+                    [7,12,9],
+                    [11,8,3]
+                    ]
+        for i in range(3):
+            for j in range(3):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.00001, diff)
+
+    def test_getSoftmax(self):
+        a = [
+            [1.0,2.0,3.0,4.0,1.0,2.0,3.0],
+            [6.0,2.0,1.0,4.0,1.0,3.0,1.0]
+            ]
+
+        testResult = toTest.getSoftmax(a)
+        expected = [
+                    [0.0236405430215914,0.0642616585104962,0.174681298595722,0.47483299974438,0.0236405430215914,0.0642616585104962,0.174681298595722],
+                    [0.817225925108085,0.0149680149347914,0.00550642496965687,0.110599502042806,0.00550642496965687,0.0406872830053471,0.00550642496965687]
+                    ]
+
+        for i in range(2):
+            for j in range(7):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.00001, diff)
