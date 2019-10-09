@@ -80,10 +80,10 @@ def printRstyle(multidimList):
         nfStr += f"[{i},]"
         for j in range(columnCount):
             aij = multidimList[i][j]
-            aijString = round(aij,roundTo)
+            aijString = str(round(aij,roundTo))
             nfFormat = (" {: <" + str(maxLen -1) + "}") if aij >= 0 and anyNeg else ("{: <" + str(maxLen) + "}")
             nfStr += nfFormat.format(aijString)
             
         nfStr += "\n"
 
-    return nfStr
+    print(nfStr)

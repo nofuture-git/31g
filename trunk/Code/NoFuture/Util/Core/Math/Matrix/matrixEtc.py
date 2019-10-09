@@ -7,10 +7,24 @@ def convFromNumpyArray(numpyNdArray):
     """Converts a, typically a numpy.ndarray, into a simple python list"""
     if numpyNdArray is None:
         return [[]]
-    numOfRows = len(numpyNdArray)
-    numOfColumns = len(numpyNdArray[0])
+    isvector = False
+    if type(numpyNdArray) is numpy.ndarray:
+        if len(numpyNdArray.shape) == 2:
+            numOfRows, numOfColumns = numpyNdArray.shape
+        else:
+            #this is a vector
+            numOfRows = len(numpyNdArray)
+            numOfColumns = 1
+            isvector = True
+    else:
+        numOfRows = len(numpyNdArray)
+        numOfColumns = len(numpyNdArray[0])
+    
     a = initMatrix(numOfRows, numOfColumns)
     for i in range(numOfRows):
+        if isvector:
+            a[i][0] = numpyNdArray[i]
+            continue
         for j in range(numOfColumns):
             a[i][j] = numpyNdArray[i][j]
     return a
@@ -164,3 +178,18 @@ def arithmetic(a, b, expr):
             arthResult[i][j] = expr(a[i][j], b[i][j])
         
     return arthResult
+
+def crossEntropy(yActual, yCalc):
+    """ one of many loss functions """
+    fd001 = lambda y, o: y * math.log10(o) + ((1 - y) * math.log10(1 -o))
+    
+    yyActual = [yActual[0]] * len(yCalc)
+    ff = []
+    for i in range(len(yCalc)):
+        mySum = 0
+        for j in range(len(yCalc[0])):
+            #print("yActual[" + str(i) + "][" + str(j) + "] = " + str(yyActual[i][j]) + "; yCalc[" + str(i) + "][" + str(j) + "] = " + str(yCalc[i][j]))
+            mySum += fd001(yyActual[i][j], yCalc[i][j])
+        ff.append(-1/len(yActual) * mySum)
+
+    return ff
