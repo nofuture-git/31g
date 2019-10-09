@@ -103,6 +103,7 @@ $(%environmentVar%) means, 'resolve this to the environment variable contained i
             <add id='pythonExe' value='$(python36)\python.exe' />
             <add id='ffmpegTool' value='$(binRootDir)\ffmpeg-4.2-win64-static\bin\ffmpeg.exe' />
             <add id='youtubeDlTool' value='$(binRootDir)\youtube-dl.exe' />
+            <add id='nfPythonPath' value='C:\Projects\31g\trunk\Code\NoFuture' />
           </python>
         </tools>
         <extensions>

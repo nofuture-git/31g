@@ -31,6 +31,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "util_py", "NoFuture\Util\ut
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "util_py.core.math.matrix", "NoFuture\Util\Core\Math\Matrix\util_py.core.math.matrix.pyproj", "{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "testNoFuturePy", "NoFuture.Tests\testNoFuturePy\testNoFuturePy.pyproj", "{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -260,6 +262,21 @@ Global
 		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Release|Win32.ActiveCfg = Release|Any CPU
 		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Release|x64.ActiveCfg = Release|Any CPU
 		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9}.Release|x86.ActiveCfg = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Pkg|Any CPU.ActiveCfg = Pkg|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Pkg|Mixed Platforms.ActiveCfg = Pkg|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Pkg|Win32.ActiveCfg = Pkg|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Pkg|x64.ActiveCfg = Pkg|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Pkg|x86.ActiveCfg = Pkg|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|Win32.ActiveCfg = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|x64.ActiveCfg = Release|Any CPU
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -273,6 +290,7 @@ Global
 		{5BC9B3AA-96DF-4E29-B5B7-961D28AF76B3} = {77044E09-744B-454C-9C02-E7058ECB2851}
 		{A6248D90-AED9-42A1-AC13-499693446336} = {77044E09-744B-454C-9C02-E7058ECB2851}
 		{45FD2AFC-2956-4299-ACC8-9FBA95BDA7C9} = {77044E09-744B-454C-9C02-E7058ECB2851}
+		{F8B3C344-7F6C-4C84-AF9A-77A180FD3F63} = {DCD744E4-D218-4B3C-A1E1-4D7C33401CE8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5CFF5DF-D475-4389-8A55-500295E3A426}

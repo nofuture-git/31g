@@ -26,6 +26,7 @@ __cfgIdName2PropertyAssignment = {
     "cmd-line-arg-switch" : lambda s: setattr(sys.modules[__name__], 'cmdLineArgSwitch', s),
     "cmd-line-arg-assign" : lambda s: setattr(sys.modules[__name__], 'cmdLineArgAssign', s),
     "punctuation-chars" : lambda s: setattr(sys.modules[__name__], 'punctuationChars', s.split(' ')),
+    "nfPythonPath" : lambda s: setattr(sys.modules[__name__], 'nfPythonPath', s),
 }
 """dict: Is the key-value hash which links the id's in `FILE_NAME` to the properties of the `nfConfig`"""
 
@@ -172,6 +173,8 @@ binaryFileExtensions = []
 excludeCodeDirectories = []
 
 favicon = ''
+
+nfPythonPath = ''
 
 class TempDirectories:
     """Paths to directories used for storing temp results of NoFuture scripts."""

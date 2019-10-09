@@ -6,12 +6,14 @@
     <ProjectGuid>f8b3c344-7f6c-4c84-af9a-77a180fd3f63</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>testNoFuturePy.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\..\NoFuture\Util;..\..\NoFuture\Shared;..\..\NoFuture\Util\Core\Math\Matrix</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>testNoFuturePy</Name>
     <RootNamespace>testNoFuturePy</RootNamespace>
+    <TestFramework>unittest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +32,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="util_py.core.math.matrix\" />
     <Folder Include="shared_py\" />
     <Folder Include="util_py\" />
   </ItemGroup>

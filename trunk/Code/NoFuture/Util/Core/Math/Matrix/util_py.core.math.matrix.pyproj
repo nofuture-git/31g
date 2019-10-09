@@ -31,7 +31,7 @@
     <Compile Include="matrixPrint.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="nonConformableException.py">
+    <Compile Include="NonConformableException.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

@@ -132,7 +132,8 @@ namespace NoFuture.Shared.Cfg
             {"punctuation-chars", s => NfSettings.PunctuationChars = s.Split(' ').Select(Convert.ToChar).ToArray()},
             {"cscExe", s => DotNet.CscCompiler = s},
             {"vbcExe", s => DotNet.VbcCompiler = s},
-            {"pythonExe", s => PythonTools.PythonExe = s}
+            {"pythonExe", s => PythonTools.PythonExe = s},
+            {"nfPythonPath", s => PythonTools.NfPythonPath = s}
         };
 
         private static int _threadSleepTime;
@@ -548,6 +549,7 @@ namespace NoFuture.Shared.Cfg
             public static string PythonExe { get; set; }
             public static string Ffmpeg { get; set; }
             public static string YoutubeDl { get; set; }
+            public static string NfPythonPath { get; set; }
         }
 
         /// <summary>
