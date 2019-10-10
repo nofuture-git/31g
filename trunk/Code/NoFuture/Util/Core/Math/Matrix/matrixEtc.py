@@ -1,5 +1,5 @@
 import random
-import numpy
+import numpy as np
 import numpy.linalg
 import math
 
@@ -8,7 +8,7 @@ def convFromNumpyArray(numpyNdArray):
     if numpyNdArray is None:
         return [[]]
     isvector = False
-    if type(numpyNdArray) is numpy.ndarray:
+    if type(numpyNdArray) is np.ndarray:
         if len(numpyNdArray.shape) == 2:
             numOfRows, numOfColumns = numpyNdArray.shape
         else:
@@ -183,6 +183,9 @@ def crossEntropy(yActual, yCalc):
     """ one of many loss functions """
     fd001 = lambda y, o: y * math.log10(o) + ((1 - y) * math.log10(1 -o))
     
+    if(isinstance(yActual[0], list) == False):
+        yActual = [yActual]
+
     yyActual = [yActual[0]] * len(yCalc)
     ff = []
     for i in range(len(yCalc)):

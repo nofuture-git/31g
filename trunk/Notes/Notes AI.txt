@@ -465,7 +465,11 @@ Nodeterministic Search
  - Machine Learning is not as the name implies.
    It starts with some data set (the-bigger-the-better)
    which is divided into two parts, one part is for 
-   training the other is for testing. 
+   training the other is for testing.
+  - deals with observational data (the predictive 
+      variables are not under the control of the learner)
+  - does not deal with experimental data (the predictive 
+      variables are under the control of the learner)
    
  - framing the question
   - what is the input data from which we want to 
@@ -473,6 +477,11 @@ Nodeterministic Search
   - what kind of model is most appropriate for this data?
   - what kind of answer would we like to elicit from new data 
     based on this model?
+   
+ - typical parts applied to a model:
+  - turn the data into some numerical rep. (Representation)
+  - have some way to numerically measure predications (Eval)
+  - have some way of updating based on past mistakes (Optimization)
    
  - In supervised learning, each data item is tagged 
    with some kind of category which is the basis of 
@@ -1019,6 +1028,7 @@ Deep Networks basics
   - parameters: these are the matrix weights which 
      are gen'ed as small doubles
   - layers: the matrices themselves
+  - bias: constants applied (arithmetic?) before an activation function 
   - activation functions: a function applied to the result 
      of some matrix dot-product
    - common hidden layer activation functions 
@@ -1028,20 +1038,28 @@ Deep Networks basics
     - ReLU (Rectified linear unit): 
      - basically like Absolute-Value but instead of -12 becoming 12, it becomes 0
        and like Absolute-Value, nothing changes with positive values
-     - in Py
-      x if x > 0 else 0
-     - in C#
-      x > 0 ? x : 0;     
+     - in Py: x if x > 0 else 0
+     - in C#: x > 0 ? x : 0;
    - common output layer activation functions
     - single number, linear function
     - true\false, sigmoid function
     - classification, softmax
-  - loss functions: the means of knowing the agreement between
-      prediction and actual
-    - regression
-    - classification
-    - reconstruction
-  - optimization methods
+  - loss functions: the means of knowing the agreement between prediction and actual
+   - Mean Absolute Error: the sum of the absolute-value differences between
+      each prediction and its actual values.
+   - Mean Squared Error: the sum of the squared difference between each prediction 
+      and its actual values.
+   - Hinge: classification loss fx 
+    - is max of 0 or 1 minus prediction times actual: max(0, 1 - yHat * y)
+   - Cross-Entropy: classification as prob. between 0 and 1
+    - to penalize predictions that are both confident and wrong 
+    - for example where actual is 1.0
+     - guess 0.0 -> log loss of 10
+     - guess 0.2 -> log loss of 1.87
+     - guess 0.8 -> log loss of 0.37
+  - optimization methods: some means of taking the results of the loss function
+     and using it to adjust the weights
+   - repeated over many, many iterations with gradual changes to weights 
    - two groups
     - First-order, uses Jacobian matrix (partial derivatives of 
        the loss-function with respect to each parameter)
@@ -1068,7 +1086,21 @@ Deep Networks basics
      - Decoder: goes from Latent Code back to orig     
  - architectures
   - UPNs
-  - CNNs (image modeling)
+  - CNN (Convolutional Neural Networks)
+   - src [http://cs231n.github.io/convolutional-networks/]
+   - intended for images by leveraging that they have width, 
+      height (in pixels) and depth (RGB)
+   - images have the challenges of scale, deformation, viewpoint\viewport,
+      lighting, background, variation-in-labels 
+  - GAN (Generative Adversarial Networks)
+   - src [https://guertl.me/post/162759264070/generative-adversarial-networks]
+   - has two main components
+    - the Generator Neural Network: takes some random input noise
+       and tries to create a sample of data
+    - the Discriminator Neural Network: takes input either from real-world example
+       or from the generator. It has to assign some percent for "real" -vs- "generated".
+    - training ends when discriminator cannot tell 
+       the difference between real and generated
   - Recurrent neural networks (sequence modeling)
   - Recursive neural networks
 ----

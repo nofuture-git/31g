@@ -264,3 +264,26 @@ class TestMatrixEtc(unittest.TestCase):
                 expect = expected[i][j]
                 diff = abs(trij - expect)
                 self.assertGreater(0.00001, diff)
+
+        a = [
+            [0.3551959799635189,0.17699255381545498,0.8213551357092245,0.38529920699314335,0.5960021066935483,0.871198147629929,0.22958585930319053,0.8156348246708918]
+            ]
+
+        testResult = toTest.getSoftmax(a)
+        expected = [[0.10126056601448626, 0.08473202506121506, 0.16139523169312137, 0.1043551810797197, 0.12883122094923555, 0.16964350807282952, 0.089307630805428, 0.16047463632396453]]
+
+        for i in range(1):
+            for j in range(8):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.00001, diff)
+
+    def test_crossEntropy(self):
+        myX = [0, 1, 2]
+        myy = [[.9, .05, .05], [.5, .89, .6], [.05, .01, .94]]
+
+        myResults = toTest.crossEntropy(myX, myy)
+        otherResults = toTest.cross_entropy(myX, myy)
+
+        
