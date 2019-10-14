@@ -1,7 +1,10 @@
 import unittest
 import Util.Core.Math.Matrix.matrixEtc as toTest
+import numpy as np
 
 class TestMatrixEtc(unittest.TestCase):
+    #Push-Location "C:\Projects\31g\trunk\Code\NoFuture.Tests\testNoFuturePy\util_py.core.math.matrix"
+    #python -m unittest testMatrixEtc
     def test_dotProduct(self):
         a = [
             [0.838364753796889,0.937973900203581],
@@ -29,6 +32,42 @@ class TestMatrixEtc(unittest.TestCase):
                 expect = expected[i][j]
                 diff = abs(trij - expect)
                 self.assertGreater(0.001, diff)
+
+    def test_dotProductWithNumpy(self):
+        a = np.array([
+                    0.930977594075248,
+                    0.386082431946919,
+                    0.73381193901124,
+                    0.0183559898372535,
+                    0.00742364302623255,
+                    0.542181266724216,
+                    0.323464508784686,
+                    0.669235478466952
+                    ])
+        b = np.array([
+                    [0.0336508625343679,0.344154772974623,0.797346453553693,0.177761182271764,0.560661230963031,0.68586849080672],
+                    [0.935625466022466,0.746055849243913,0.974116698361056,0.600079462211616,0.194954827518647,0.457079552792515],
+                    [0.362978033890472,0.0736942259006641,0.0669887787974387,0.0244248332569491,0.392087943103205,0.987495469389248],
+                    [0.667282351603397,0.461360147903375,0.618741664857949,0.408348669488145,0.860615691105191,0.180829014713331],
+                    [0.194897551645943,0.411182147176555,0.611133371298729,0.115583596804917,0.630847339812129,0.275854903401739],
+                    [0.409338821381954,0.711846289556402,0.0431064851782781,0.417331045687818,0.393213809650957,0.585508570813345],
+                    [0.324655027279935,0.543231854468226,0.209616580609985,0.694000578808598,0.295667964171464,0.206951371490467],
+                    [0.296568319805231,0.232109084833464,0.835550106519624,0.741385492841427,0.56302459983296,0.480038081053662]
+                    ])
+
+        testResult = toTest.dotProduct(a,b)
+
+        expected = [
+                    [1.19803410815944,1.3910399160369,1.83380747257839,1.37036385191042,1.59105842160941,2.25065340898145]
+                    ]
+
+        for i in range(1):
+            for j in range(6):
+                trij = testResult[i][j]
+                expect = expected[i][j]
+                diff = abs(trij - expect)
+                self.assertGreater(0.001, diff)
+        
 
     def test_dotScalar(self):
         a = [
@@ -278,12 +317,5 @@ class TestMatrixEtc(unittest.TestCase):
                 expect = expected[i][j]
                 diff = abs(trij - expect)
                 self.assertGreater(0.00001, diff)
-
-    def test_crossEntropy(self):
-        myX = [0, 1, 2]
-        myy = [[.9, .05, .05], [.5, .89, .6], [.05, .01, .94]]
-
-        myResults = toTest.crossEntropy(myX, myy)
-        otherResults = toTest.cross_entropy(myX, myy)
 
         

@@ -479,6 +479,7 @@ Nodeterministic Search
     based on this model?
    
  - typical parts applied to a model:
+  - src [https://homes.cs.washington.edu/~pedrod/papers/cacm12.pdf]
   - turn the data into some numerical rep. (Representation)
   - have some way to numerically measure predications (Eval)
   - have some way of updating based on past mistakes (Optimization)

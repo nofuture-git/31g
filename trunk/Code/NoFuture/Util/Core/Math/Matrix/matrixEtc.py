@@ -4,7 +4,7 @@ import numpy.linalg
 import math
 
 def convFromNumpyArray(numpyNdArray):
-    """Converts a, typically a numpy.ndarray, into a simple python list"""
+    """Converts a, typically a numpy array, into a simple python list"""
     if numpyNdArray is None:
         return [[]]
     isvector = False
@@ -17,8 +17,7 @@ def convFromNumpyArray(numpyNdArray):
             numOfColumns = 1
             isvector = True
     else:
-        numOfRows = len(numpyNdArray)
-        numOfColumns = len(numpyNdArray[0])
+        return numpyNdArray
     
     a = initMatrix(numOfRows, numOfColumns)
     for i in range(numOfRows):
@@ -32,6 +31,10 @@ def convFromNumpyArray(numpyNdArray):
 def initMatrix(numOfRows, numOfColumns, useOneInsteadOfZero = False):
     """Allow for matrix init to match the pattern found in .NET counterparts"""
     mi = []
+    if numOfRows <= 0:
+        numOfRows = 1
+    if numOfColumns <= 0:
+        numOfColumns = 1
     dfValue = 1 if useOneInsteadOfZero else 0
     for i in range(numOfRows):
         mj = []
@@ -42,6 +45,8 @@ def initMatrix(numOfRows, numOfColumns, useOneInsteadOfZero = False):
     return mi
 
 def randomMatrix(numOfRows, numOfColumns, expr = None):
+    """Creates a matrix of [numOfRows X numOfColumns] where each value 
+       is a random float. """
     random.seed()
     numOfRows = random.randint(4,8) if numOfRows <= 0 else numOfRows
     numOfColumns = random.randInt(4,8) if numOfColumns <= 0 else numOfColumns
@@ -61,17 +66,23 @@ def randomMatrix(numOfRows, numOfColumns, expr = None):
     return mi
 
 def dotProduct(a, b):
-    if a is None: a = [[]]
-    if b is None: b = [[]]
+    a = convFromNumpyArray(a)
+    b = convFromNumpyArray(b)
     m = len(a)
     n = len(a[0])
     p = len(b)
     q = len(b[0])
 
+    #'a' is a vertical vector and would fit if we transposed it
+    if n != p and m == p and n == 1:
+        a = transpose(a)
+        m = len(a)
+        n = len(a[0])
+
     if n != p:
         msg = "The number of columns in matrix 'a' must match the number of rows in matrix 'b' " + \
-              "in order to solve for the product of the two."
-        raise NonConformableException(msg)
+              "in order to solve for the dot-product."
+        raise ArithmeticError(msg)
 
     product = initMatrix(m,q)
     for productRows in range(m):
@@ -82,7 +93,7 @@ def dotProduct(a, b):
     return product
                 
 def dotScalar(a, scalar):
-    if a is None: a = [[]]
+    a = convFromNumpyArray(a)
     if scalar is None: scalar = 0
     iLength = len(a)
     jLength =len(a[0])
@@ -94,7 +105,7 @@ def dotScalar(a, scalar):
     return vout
 
 def transpose(a):
-    if a is None: a = [[]]
+    a = convFromNumpyArray(a)
     tpose = initMatrix(len(a[0]), len(a))
     for i in range(len(a)):
         for j in range(len(a[0])):
@@ -102,11 +113,11 @@ def transpose(a):
     return tpose
 
 def crossProduct(a):
-    if a is None: a = [[]]
+    a = convFromNumpyArray(a)
     return dotProduct(transpose(a), a)
 
 def innerProduct(a):
-    if a is None: a = [[]]
+    a = convFromNumpyArray(a)
     return dotProduct(a, transpose(a))
 
 def inverse(a):
@@ -119,7 +130,7 @@ def determinant(a):
     return numpy.linalg.det(numpy.array(a))
 
 def selectMinor(a, rowIndex, columnIndex):
-    if a is None: a = [[]]
+    a = convFromNumpyArray(a)
     rows = len(a)
     columns = len(a[0])
     if(rowIndex > rows -1 or columnIndex > columns - 1):
@@ -139,14 +150,14 @@ def selectMinor(a, rowIndex, columnIndex):
     return vout
 
 def projectionMatrix(a):
-    if a is None: a = [[]]
+    a = convFromNumpyArray(a)
     ata = crossProduct(a)
     ataInverse = inverse(ata)
     p0 = dotProduct(a, ataInverse)
     return dotProduct(p0, inverse(a))
 
 def applyToEach(a, expr):
-    if a is None: a = [[]]
+    a = convFromNumpyArray(a)
     if expr is None:
         return a
     for i in range(len(a)):
@@ -155,7 +166,7 @@ def applyToEach(a, expr):
     return a
 
 def getSoftmax(a):
-    if a is None: a = [[]]
+    a = convFromNumpyArray(a)
     mout = initMatrix(len(a), len(a[0]))
     for i in range(len(a)):
         sumZExp = 0.0
@@ -168,8 +179,8 @@ def getSoftmax(a):
     return mout
 
 def arithmetic(a, b, expr):
-    if a is None: a = [[]]
-    if b is None: b = [[]]
+    a = convFromNumpyArray(a)
+    b = convFromNumpyArray(b)
     if expr is None: expr = lambda v1, v2: v1 + v2
     
     arthResult = initMatrix(len(a), len(a[0]))
@@ -178,21 +189,3 @@ def arithmetic(a, b, expr):
             arthResult[i][j] = expr(a[i][j], b[i][j])
         
     return arthResult
-
-def crossEntropy(yActual, yCalc):
-    """ one of many loss functions """
-    fd001 = lambda y, o: y * math.log10(o) + ((1 - y) * math.log10(1 -o))
-    
-    if(isinstance(yActual[0], list) == False):
-        yActual = [yActual]
-
-    yyActual = [yActual[0]] * len(yCalc)
-    ff = []
-    for i in range(len(yCalc)):
-        mySum = 0
-        for j in range(len(yCalc[0])):
-            #print("yActual[" + str(i) + "][" + str(j) + "] = " + str(yyActual[i][j]) + "; yCalc[" + str(i) + "][" + str(j) + "] = " + str(yCalc[i][j]))
-            mySum += fd001(yyActual[i][j], yCalc[i][j])
-        ff.append(-1/len(yActual) * mySum)
-
-    return ff
