@@ -55,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyInterestFactoryTests.cs" />
     <Compile Include="QualitexCovJacobsonProductsCoTests.cs" />
+    <Compile Include="RiddlevHarmonTests.cs" />
     <Compile Include="RuckervWynnTests.cs" />
     <Compile Include="SuntrustBankvHoughtonMifflinCoTests.cs" />
     <Compile Include="WhitevBrownTests.cs" />

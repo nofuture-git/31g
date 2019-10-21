@@ -42,6 +42,6 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
         /// <summary>
         /// each cotenant is able to occupy the whole subject to the rights of the other cotenants
         /// </summary>
-        public Predicate<ILegalPerson> IsEqualRightToPossessWhole { get; set; } = lp => false;
+        public virtual Predicate<ILegalPerson> IsEqualRightToPossessWhole { get; set; } = lp => false;
     }
 }

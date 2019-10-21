@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
@@ -8,6 +9,10 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
     /// The property interest of a deceased cotenant is divided equally among the
     /// remaining cotenants
     /// </summary>
+    /// <remarks>
+    /// Under common law, the four predicates are called &quot;the four unities&quot;
+    /// as interest, time, title and possession.
+    /// </remarks>
     public class JointTenancy : TenancyInCommon
     {
         public override bool IsValid(params ILegalPerson[] persons)
@@ -51,21 +56,24 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
                     return false;
                 }
 
-                if (!creationDate.Equals(InterestCreationDate(cotenant)))
+                var nextCreationDate = InterestCreationDate(cotenant);
+                if (!creationDate.Equals(nextCreationDate))
                 {
-                    AddReasonEntry($"{title} {cotenant.Name} {nameof(InterestCreationDate)} does not equal {creationDate}");
+                    AddReasonEntry($"{title} {cotenant.Name} {nameof(InterestCreationDate)}, {creationDate} does not equal {nextCreationDate}");
                     return false;
                 }
 
-                if (!instrument.Equals(InterestCreationInstrument(cotenant)))
+                var nextInstrument = InterestCreationInstrument(cotenant);
+                if (!instrument.Equals(nextInstrument))
                 {
-                    AddReasonEntry($"{title} {cotenant.Name} {nameof(InterestCreationInstrument)} does not equal {instrument}");
+                    AddReasonEntry($"{title} {cotenant.Name} {nameof(InterestCreationInstrument)}, {instrument} does not equal {nextInstrument}");
                     return false;
                 }
 
-                if (Math.Abs(portion - InterestFraction(cotenant)) > 0.01)
+                var nextPortion = InterestFraction(cotenant);
+                if (Math.Abs(portion - nextPortion) > 0.01)
                 {
-                    AddReasonEntry($"{title} {cotenant.Name} {nameof(InterestFraction)} does not equal {portion}");
+                    AddReasonEntry($"{title} {cotenant.Name} {nameof(InterestFraction)}, {portion} does not equal {nextPortion}");
                     return false;
                 }
             }
@@ -76,11 +84,13 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
         /// <summary>
         /// All cotenants interest must have been created at the same time
         /// </summary>
+        [Aka("unity of time")]
         public virtual Func<ILegalPerson, DateTime?> InterestCreationDate { get; set; } = lp => null;
 
         /// <summary>
         /// All cotenants interest must be created in the same instrument
         /// </summary>
+        [Aka("unity of title")]
         public virtual Func<ILegalPerson, ILegalConcept> InterestCreationInstrument { get; set; } = lp => null;
 
         /// <summary>

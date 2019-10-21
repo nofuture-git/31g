@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
     /// </remarks>
     public class Ouster : TenancyInCommon, ITempore
     {
-
+        private Predicate<ILegalPerson> _isEqualRightToPossessWhole;
         public Ouster()
         {
 
@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
             if (sharedPropertyInterest == null)
                 return;
             SubjectProperty = sharedPropertyInterest.SubjectProperty;
-            IsEqualRightToPossessWhole = sharedPropertyInterest.IsEqualRightToPossessWhole;
+            _isEqualRightToPossessWhole = sharedPropertyInterest.IsEqualRightToPossessWhole;
         }
 
         /// <summary>
@@ -44,6 +44,12 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
         public Predicate<ICotenant> IsPhysicallyImpractical { get; set; } = lp => false;
         public Predicate<ICotenant> IsPeacefullyImpossible { get; set; } = lp => false;
         public Predicate<ICotenant> IsDeprivationOfUse { get; set; } = lp => false;
+
+        public override Predicate<ILegalPerson> IsEqualRightToPossessWhole
+        {
+            get => _isEqualRightToPossessWhole;
+            set => _isEqualRightToPossessWhole = value;
+        }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
