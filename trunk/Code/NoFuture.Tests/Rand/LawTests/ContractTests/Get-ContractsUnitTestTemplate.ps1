@@ -135,7 +135,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
 }
 
 $testContractDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Contract.Tests.dll")).Path
-$nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe"))
+$nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe"))
 
 function Test-NfRandLawContractMethod($MethodName){
     Invoke-Expression "$nunit $testContractDll --where `"method == $MethodName`""

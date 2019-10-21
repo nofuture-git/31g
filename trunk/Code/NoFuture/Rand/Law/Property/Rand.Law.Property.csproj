@@ -48,6 +48,7 @@
     <Compile Include="US\FormsOf\Intellectus\Patent.cs" />
     <Compile Include="US\FormsOf\Intellectus\UtilityPatent.cs" />
     <Compile Include="US\FormsOf\InTerra\Eviction.cs" />
+    <Compile Include="US\FormsOf\InTerra\Ouster.cs" />
     <Compile Include="US\FormsOf\InTerra\Sequential\AbsolutelyVestedRemainder.cs" />
     <Compile Include="US\FormsOf\InTerra\Sequential\ContingentRemainder.cs" />
     <Compile Include="US\FormsOf\InTerra\Sequential\DefeasibleFee.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="US\Terms\CoOwnership\CoOwnerBaseTerm.cs" />
     <Compile Include="US\Terms\CoOwnership\ExpensesTerm.cs" />
     <Compile Include="US\Terms\CoOwnership\NoCotenantRentTerm.cs" />
-    <Compile Include="US\Terms\CoOwnership\OusterTerm.cs" />
     <Compile Include="US\Terms\CoOwnership\ThirdPartyRentTerm.cs" />
     <Compile Include="US\Terms\CoOwnership\UndividedInterestTerm.cs" />
     <Compile Include="US\Terms\OptionTerm.cs" />

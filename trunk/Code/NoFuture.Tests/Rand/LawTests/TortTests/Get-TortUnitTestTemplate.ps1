@@ -67,7 +67,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
 }
 
 $testTortDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Tort.Tests.dll")).Path
-$nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.9.0\tools\nunit3-console.exe"))
+$nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe"))
 
 function Test-NfRandLawTortMethod($MethodName){
     Invoke-Expression "$nunit $testTortDll --where `"method == $MethodName`""

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential;
 using NoFuture.Rand.Law.US;
@@ -42,8 +38,6 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
 
         [Aka("dispossessory proceedings")]
         public Predicate<ILessor> IsJudicialProcessReentry { get; set; } = rr => false;
-
-
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

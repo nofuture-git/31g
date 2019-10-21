@@ -290,6 +290,23 @@ namespace NoFuture.Rand.Law.US
             return grantor;
         }
 
+        public static IEnumerable<ILegalPerson> Cotenants(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+            if (lc == null || !ppersons.Any())
+                return new List<ILegalPerson>();
+
+            var cotenants = ppersons.Where(p => p is ICotenant).ToList();
+
+            if (!cotenants.Any())
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(ICotenant)} in {nameTitles}");
+            }
+
+            return cotenants;
+        }
+
         public static bool PropertyOwnerIsSubjectPerson(this IRationale lc, ILegalProperty property, ILegalPerson person)
         {
             if (person == null)
@@ -480,6 +497,8 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("employer");
             if (person.Equals(Government.Value))
                 titles.Add("the government");
+            if(person is ICotenant)
+                titles.Add("cotenant");
 
             return string.Join("|", titles);
         }
