@@ -58,7 +58,7 @@ namespace NoFuture.Rand.Law.Contract.US.Defense
         }
 
         /// <summary>
-        /// English Parliament passed this in 1677 and replealed it in 1954.  
+        /// English Parliament passed this in 1677 and repealed it in 1954.  
         /// It is still active in the United States.
         /// </summary>
         public override bool IsEnforceableInCourt => true;

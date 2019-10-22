@@ -1,4 +1,4 @@
-﻿$currentDirectory = (pwd).Path
+﻿$currentDirectory = Split-Path $PSCommandPath -Parent
 $dependencies = @(
  "NoFuture.Util.Core.dll", 
  "NoFuture.Util.Core.Math.dll", 
@@ -67,7 +67,14 @@ function Get-PropertyInterestFactory
     The name of the LegalPerson
 
     .EXAMPLE
-    PS C:\> 
+    PS C:\> $myPropertyInterest = Invoke-PropertyInterestPrompt `
+	                              -PropertyName "such-and-such parcel of land" `
+								  -PersonName "Cecil B Moneybags"
+    Is Present Interest Possible Infinite? (Y/N) : Y
+    Is Present Interest Definitely Infinite? (Y/N) : N
+    Is Future Interest In Grantor? (Y/N) : Y
+    Fee Simple Subject2Executory Interest
+	PS C:\>
 
     .OUTPUTS
     NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests.ILandPropertyInterest
@@ -112,7 +119,7 @@ function Invoke-PropertyInterestPrompt
 
         $interest = $factory.GetValue()
 
-        Write-Host [NoFuture.Util.Core.NfString]::TransformCaseToSeparator($interest.GetType().Name, [char]" ")
+        Write-Host ([NoFuture.Util.Core.NfString]::TransformCaseToSeparator($interest.GetType().Name, [char]" ")) -ForegroundColor Yellow
 
         return $interest
 

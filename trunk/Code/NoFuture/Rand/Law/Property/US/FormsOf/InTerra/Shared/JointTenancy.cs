@@ -96,6 +96,10 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
         /// <summary>
         /// All cotenants interest must be equal portions
         /// </summary>
+        [Aka("unity of interest")]
         public virtual Func<ILegalPerson, double> InterestFraction { get; set; } = lp => 0D;
+
+        [Aka("unity of possession")]
+        public override Predicate<ILegalPerson> IsEqualRightToPossessWhole { get; set; } = lp => false;
     }
 }
