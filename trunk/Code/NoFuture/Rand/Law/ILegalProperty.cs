@@ -5,10 +5,15 @@ using NoFuture.Rand.Law.Attributes;
 namespace NoFuture.Rand.Law
 {
     /// <summary>
-    /// General interface to represent the concept of property (real, personal or otherwise)
+    /// Everything which is subject to ownership and possess an exchangeable value
     /// </summary>
     /// <remarks>
-    /// is entirely the creature of law ... is only a(n) expectation
+    /// <![CDATA[
+    /// For future value, it must exist presently as an enforceable expected value.
+    /// A future "mere expectancy," like an anticipated inheritance, falls outside the
+    /// limits of ownership and exchangeable value.
+    /// ]]>
+    /// 
     /// </remarks>
     public interface ILegalProperty : IVoca, IRationale, IRankable
     {
@@ -27,6 +32,14 @@ namespace NoFuture.Rand.Law
         [Aka("seisin")]
         Predicate<ILegalPerson> IsInPossessionOf { get; set; }
 
-        decimal? PropertyValue { get; set; }
+        /// <summary>
+        /// The value at the current system time
+        /// </summary>
+        decimal? CurrentPropertyValue { get; }
+
+        /// <summary>
+        /// The value at the given date-time
+        /// </summary>
+        Func<DateTime?, decimal?> PropertyValue { get; set; }
     }
 }

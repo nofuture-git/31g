@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Law
             CopyNamesFrom(property);
             _isEntitledTo = property.IsEntitledTo ?? (lp => false);
             _isInPossessionOf = property.IsInPossessionOf ?? (lp => false);
-            _propertyValue = property.PropertyValue;
+            _propertyValue = property.CurrentPropertyValue;
             foreach (var msg in property.GetReasonEntries())
             {
                 _reasons.Add(msg);
@@ -53,11 +53,9 @@ namespace NoFuture.Rand.Law
             set => _isInPossessionOf = value;
         }
 
-        public virtual decimal? PropertyValue
-        {
-            get => _propertyValue;
-            set => _propertyValue = value;
-        }
+        public virtual decimal? CurrentPropertyValue => PropertyValue(DateTime.Now);
+
+        public virtual Func<DateTime?, decimal?> PropertyValue { get; set; } = dt => 0m;
 
         public virtual IEnumerable<string> GetReasonEntries()
         {
@@ -90,7 +88,7 @@ namespace NoFuture.Rand.Law
 
         public int GetRank()
         {
-            var val = PropertyValue.GetValueOrDefault(0m);
+            var val = CurrentPropertyValue.GetValueOrDefault(0m);
             return Convert.ToInt32(Math.Round(val, 0));
         }
     }

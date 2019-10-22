@@ -106,11 +106,12 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
             set => _govProperty.IsInPossessionOf = value;
         }
 
-        public decimal? PropertyValue { get; set; }
+        public decimal? CurrentPropertyValue { get; }
+        public Func<DateTime?, decimal?> PropertyValue { get; set; } = dt => null;
 
         public int GetRank()
         {
-            var val = PropertyValue.GetValueOrDefault(0m);
+            var val = CurrentPropertyValue.GetValueOrDefault(0m);
             return Convert.ToInt32(Math.Round(val, 0));
         }
 

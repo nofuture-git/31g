@@ -42,9 +42,10 @@ namespace NoFuture.Rand.Law.Tort.Tests
 
     public class AirFreshener : PersonalProperty
     {
-        public override decimal? PropertyValue { get; set; } = 0.56m;
+        
         public override Predicate<ILegalPerson> IsEntitledTo { get; set; } = lp => lp is SmittysSuperValu;
         public override Predicate<ILegalPerson> IsInPossessionOf { get; set; } = lp => lp is SmittysSuperValu;
+        public override Func<DateTime?, decimal?> PropertyValue { get; set; } = dt => 0.56m;
     }
 
     public class Gortarez : LegalPerson, IPlaintiff

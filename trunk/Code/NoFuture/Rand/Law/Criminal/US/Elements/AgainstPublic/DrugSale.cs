@@ -28,10 +28,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
             }
 
             var acceptance = Acceptance(Offer);
-            if (acceptance?.PropertyValue == null)
+            if (acceptance?.CurrentPropertyValue == null)
             {
                 AddReasonEntry($"defendant, {defendant.Name}, {nameof(Acceptance)} " +
-                               $"or {nameof(acceptance.PropertyValue)} is null");
+                               $"or {nameof(acceptance.CurrentPropertyValue)} is null");
                 return false;
             }
 

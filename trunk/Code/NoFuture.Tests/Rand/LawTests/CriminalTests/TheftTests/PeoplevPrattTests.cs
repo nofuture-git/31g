@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
                     {
                         IsEntitledTo = lp => lp is PrattFormerGirlfriend,
                         IsInPossessionOf = lp => lp is PrattFormerGirlfriend,
-                        PropertyValue = 1000.99m
+                        PropertyValue = dt => 1000.99m
                     },
                     //court finds its stolen, by statute, regardless of intent-to-return
                     IsPresentStolen = lp => lp is Pratt

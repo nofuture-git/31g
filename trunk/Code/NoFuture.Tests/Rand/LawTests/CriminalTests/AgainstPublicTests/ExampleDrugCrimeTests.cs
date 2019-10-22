@@ -60,7 +60,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
             {
                 ActusReus = new DrugSale
                 {
-                    Acceptance = drug => drug is ScheduleI ? new LegalProperty("money"){PropertyValue = 150m} : null,
+                    Acceptance = drug => drug is ScheduleI ? new LegalProperty("money"){PropertyValue = dt => 150m} : null,
                     Assent = new Deal
                     {
                         IsApprovalExpressed = lp => true

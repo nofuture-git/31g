@@ -45,10 +45,12 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 
         public Predicate<ILegalPerson> IsEntitledTo { get; set; } = lp => false;
         public Predicate<ILegalPerson> IsInPossessionOf { get; set; } = lp => false;
-        public decimal? PropertyValue { get; set; }
+        public decimal? CurrentPropertyValue { get; }
+        public Func<DateTime?, decimal?> PropertyValue { get; set; } = dt => null;
+
         public int GetRank()
         {
-            var val = PropertyValue.GetValueOrDefault(0m);
+            var val = CurrentPropertyValue.GetValueOrDefault(0m);
             return Convert.ToInt32(Math.Round(val, 0));
         }
         public override bool IsValid(params ILegalPerson[] persons)

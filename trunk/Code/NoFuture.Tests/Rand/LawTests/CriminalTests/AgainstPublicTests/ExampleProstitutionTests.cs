@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
             {
                 ActusReus = new Prostitution
                 {
-                    Acceptance = sex => new LegalProperty("money") { PropertyValue = 500m},
+                    Acceptance = sex => new LegalProperty("money") { PropertyValue = dt => 500m},
                     Assent = new Deal
                     {
                         IsApprovalExpressed = lp => lp is JohnPayerEg || lp is SueProstitueEg
