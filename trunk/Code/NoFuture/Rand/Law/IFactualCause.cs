@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Law
 {
     /// <summary>
-    /// The direct antecedent which caused the harm\damage - the harm\damage which exist only because of it.
+    /// The direct antecedent which caused the effect - the effect which exist only because of it.
     /// </summary>
     /// <remarks>
     /// <![CDATA[

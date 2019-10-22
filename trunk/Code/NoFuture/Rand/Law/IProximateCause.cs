@@ -1,9 +1,10 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law
 {
     /// <summary>
-    /// Test the logical relationship between the act and the charged\complained harm
+    /// Test the logical relationship between the act and the charged\complained effect
     /// </summary>
     /// <remarks>
     /// <![CDATA[
@@ -17,6 +18,7 @@ namespace NoFuture.Rand.Law
     /// Palsgraf v. Long Island R. Co., 248 N.Y. 339 (N.Y. 1928)
     /// ]]>
     /// </remarks>
+    [Aka("legal cause")]
     public interface IProximateCause<T> : ILegalConcept where T: IRationale
     {
         Predicate<T> IsDirectCause { get; set; }

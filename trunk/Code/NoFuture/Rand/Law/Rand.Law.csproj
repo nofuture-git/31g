@@ -45,7 +45,7 @@
     <Compile Include="IAssent.cs" />
     <Compile Include="IAssentTerms.cs" />
     <Compile Include="IBargain.cs" />
-    <Compile Include="IBipartite.cs" />
+    <Compile Include="IBilateral.cs" />
     <Compile Include="IDuty.cs" />
     <Compile Include="IFactualCause.cs" />
     <Compile Include="IConsent.cs" />

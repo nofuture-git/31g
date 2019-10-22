@@ -46,6 +46,7 @@
     <Compile Include="CharriervBellTests.cs" />
     <Compile Include="DiamondvChakrabartyTests.cs" />
     <Compile Include="ExampleFoundPropertyTests.cs" />
+    <Compile Include="ExampleTestDeedTerm.cs" />
     <Compile Include="FeistPublicationsIncvRuralTelephoneServiceCoTests.cs" />
     <Compile Include="GruensonvGruenstepmotherTests.cs" />
     <Compile Include="MarengoCaveCovRossTests.cs" />

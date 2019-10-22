@@ -1,9 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US
 {
-    [Aka("legal cause")]
     public class ProximateCause : UnoHomine, IProximateCause<ILegalPerson>
     {
         public ProximateCause(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson)

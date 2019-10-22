@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.Criminal.US.Elements;
 
 namespace NoFuture.Rand.Law.Criminal.US
 {
-    public interface ISexBipartitie : IBipartite
+    public interface ISexBipartitie : IBilateral
     {
         /// <summary>
         /// loosely defined as vaginal, anal or oral penetration of by somebody else body part (penis, finger, etc.)

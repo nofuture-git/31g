@@ -270,7 +270,7 @@ PS C:\> $myPassword = 'Pa$sW0rd'
 PS C:\> $proxyServer = "http://myusername:$myPassword@proxy.domain.com:9090"
 PS C:\> docker image build . --build-arg proxy_server=$proxyServer --tag nofuture/word2vec:v0.0.1
 PS C:\> docker container run --interactive --tty --volume C:\Temp\corpus:/word2vec/corpus nofuture/word2vec:v0.0.1
-root@56ac8f9d4d46:/word2vec# ./distance /word2vec/corpus/GoogleNews-vectors-negative300.bin
+root@56ac8f9d4d46:/word2vec# ./distance ./corpus/GoogleNews-vectors-negative300.bin
 
  - from here the program is running and you enter a word and its does its thing
 ----

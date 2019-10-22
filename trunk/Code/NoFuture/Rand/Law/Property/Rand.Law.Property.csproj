@@ -93,6 +93,7 @@
     <Compile Include="US\Terms\CoOwnership\NoCotenantRentTerm.cs" />
     <Compile Include="US\Terms\CoOwnership\ThirdPartyRentTerm.cs" />
     <Compile Include="US\Terms\CoOwnership\UndividedInterestTerm.cs" />
+    <Compile Include="US\Terms\DeedTerm.cs" />
     <Compile Include="US\Terms\OptionTerm.cs" />
     <Compile Include="US\Terms\RightOfFirstRefusalTerm.cs" />
     <Compile Include="US\Terms\Tm\ArbitraryMark.cs" />

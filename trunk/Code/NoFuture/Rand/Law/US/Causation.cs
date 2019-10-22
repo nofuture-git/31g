@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.US
         }
 
         /// <summary>
-        /// The direct antecedent which caused the harm\damage - the harm\damage which exist only because of it.
+        /// The direct antecedent which caused the effect - the effect which exist only because of it.
         /// </summary>
         [Aka("loss causation", "causal connection")]
         public IFactualCause<ILegalPerson> FactualCause { get; set; }

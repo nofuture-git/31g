@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
     /// the unities can only be undone by agreed and concurrent joint action
     /// of the spouses.
     /// </summary>
-    public class TenancyByTheEntirety : JointTenancy
+    public class TenancyByTheEntirety : JointTenancy, IBilateral
     {
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
                 return false;
 
             var cotenants = this.Cotenants(persons).ToList();
-            if (cotenants.Count != 2 || !AreSpouses(cotenants[0], cotenants[1]))
+            if (cotenants.Count != 2 || !IsOneOfTwo(cotenants[0]) || !IsOneOfTwo(cotenants[1]))
             {
                 AddReasonEntry($"{nameof(TenancyByTheEntirety)} is only applicable between two spouses.");
                 return false;
@@ -26,11 +26,14 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
             return true;
         }
 
-        public virtual Func<ILegalPerson, ILegalPerson, bool> AreSpouses { get; set; } = (lp1, lp2) => false;
-
         /// <summary>
         /// neither spouse has a divisible interest in the property - each hold in in its entirety
         /// </summary>
         public override Func<ILegalPerson, double> InterestFraction { get; set; } = lp => 1.0D;
+
+        /// <summary>
+        /// Is the given person one of the two spouses 
+        /// </summary>
+        public Predicate<ILegalPerson> IsOneOfTwo { get; set; } = lp => false;
     }
 }
