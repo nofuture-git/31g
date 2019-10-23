@@ -740,3 +740,4 @@ ramify: form branches or offshoots, branch out
 scintilla: a tiny trace or spark of some quality or feeling
 imbroglio: an extremely confused, complicated, or embarrassing situation
 cadence: a modulation or inflection of the voice
+nunc pro tunc: Latin, now for then

@@ -9,11 +9,10 @@ namespace NoFuture.Rand.Law
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// For future value, it must exist presently as an enforceable expected value.
-    /// A future "mere expectancy," like an anticipated inheritance, falls outside the
-    /// limits of ownership and exchangeable value.
+    /// For future value, it must exist presently as an enforceable contractual right.
+    /// A future "mere expectancy" (e.g. anticipated inheritance, advanced degree) falls
+    /// outside the limits of ownership and exchangeable value.
     /// ]]>
-    /// 
     /// </remarks>
     public interface ILegalProperty : IVoca, IRationale, IRankable
     {

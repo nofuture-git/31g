@@ -47,6 +47,8 @@
     <Compile Include="US\FormsOf\Intellectus\IntellectualProperty.cs" />
     <Compile Include="US\FormsOf\Intellectus\Patent.cs" />
     <Compile Include="US\FormsOf\Intellectus\UtilityPatent.cs" />
+    <Compile Include="US\FormsOf\InTerra\Servitudes\Covenant.cs" />
+    <Compile Include="US\FormsOf\InTerra\Servitudes\Easement.cs" />
     <Compile Include="US\FormsOf\InTerra\Eviction.cs" />
     <Compile Include="US\FormsOf\InTerra\Ouster.cs" />
     <Compile Include="US\FormsOf\InTerra\Sequential\AbsolutelyVestedRemainder.cs" />
@@ -118,5 +120,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
