@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// 
+    /// Damage is NOT required for trespass to land
     /// ]]>
     /// </remarks>
     [TestFixture]

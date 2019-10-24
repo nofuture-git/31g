@@ -741,3 +741,5 @@ scintilla: a tiny trace or spark of some quality or feeling
 imbroglio: an extremely confused, complicated, or embarrassing situation
 cadence: a modulation or inflection of the voice
 nunc pro tunc: Latin, now for then
+ombudsman: appointed official who investigates maladministration
+cadastral: map showing ownership of land
