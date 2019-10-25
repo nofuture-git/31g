@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -13,9 +12,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         [Test]
         public void TestPersonalJurisdictionIsValid()
         {
-            var testSubject = new PersonalJurisdiction()
+            var testSubject = new PersonalJurisdiction("Coast City")
             {
-                IsDomicile = lp => lp is ExampleDefendant
+                GetDomicileLocation = lp => lp is ExampleDefendant ? new[] {new VocaBase("Coast City")} : null,
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());

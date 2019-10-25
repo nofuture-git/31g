@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
 using NUnit.Framework;
 
@@ -8,17 +9,33 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
     public class ExampleTestMinContact
     {
         [Test]
-        public void TestMinimumContactIsValid()
+        public void TestMinimumContactIsValid00()
         {
-            var testSubject = new MinimumContact()
+            var testSubject = new MinimumContact("Spook City NV")
             {
-                IsActiveVirtualContact = lp => lp is ExampleDefendant
+                GetActiveVirtualContactLocation = lp => lp is ExampleDefendant ? new [] {new VocaBase("Spook City NV")} : null,
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
             Assert.IsTrue(testResult);
 
             Console.WriteLine(testSubject.ToString());
+        }
+
+        [Test]
+        public void TestMinimumContactIsValid01()
+        {
+
+            var testSubject = new MinimumContact("Spook City NV")
+            {
+                GetDomicileLocation = lp => lp is ExamplePlaintiff ? new[] {new VocaBase("Spook City NV")} : null,
+                GetIntentionalTortTo = lp => lp is ExampleDefendant ? new ExamplePlaintiff() : null,
+            };
+            var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
+            Assert.IsTrue(testResult);
+
+            Console.WriteLine(testSubject.ToString());
+
         }
     }
 }

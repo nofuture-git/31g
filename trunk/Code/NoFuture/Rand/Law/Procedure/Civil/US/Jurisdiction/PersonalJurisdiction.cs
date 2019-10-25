@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
@@ -9,48 +11,47 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// <remarks>
     /// <![CDATA[ Since, Pennoyer v. Neff, 95 U.S. 714 (1877), you cannot sue someone in just any jurisdiction ]]>
     /// </remarks>
-    public class PersonalJurisdiction : UnoHomine
+    public class PersonalJurisdiction : JurisdictionBase
     {
-        public PersonalJurisdiction(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
+        public PersonalJurisdiction() { }
+        public PersonalJurisdiction(string name) :base(name) { }
 
-        public PersonalJurisdiction() : base(ExtensionMethods.DefendantFx) { }
-
-        /// <summary>
-        /// Is where the defendant physically lives or resides - all plaintiffs can
-        /// travel there and sue the defendant.
-        /// </summary>
-        public Predicate<ILegalPerson> IsDomicile { get; set; } = lp => false;
-
-        /// <summary>
-        /// If defendant is actually present in the forum state then they may be sued there.
-        /// </summary>
-        public Predicate<ILegalPerson> IsPhysicallyPresent { get; set; } = lp => false;
 
         /// <summary>
         /// The defendant agrees to it
         /// </summary>
-        public IConsent Consent { get; set; }
+        public virtual IConsent Consent { get; set; }
 
         /// <summary>
         /// Defendant meets the minimum contact with the forum state
         /// </summary>
-        public MinimumContact MinimumContact { get; set; }
+        public virtual MinimumContact MinimumContact { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var defendant = GetSubjectPerson(persons);
-            var title = defendant.GetLegalPersonTypeName();
+            if (defendant == null)
+                return false;
 
-            if (IsDomicile(defendant))
+            var title = defendant.GetLegalPersonTypeName();
+            foreach(var domicile in GetDomicileLocation(defendant) ?? new IVoca[] { })
             {
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsDomicile)} is true");
-                return true;
+                if (domicile != null && NameEquals(domicile))
+                {
+                    AddReasonEntry($"{title} {defendant.Name}, {nameof(GetDomicileLocation)} " +
+                                   $"returned a name whose {nameof(NameEquals)} is true for '{Name}'");
+                    return true;
+                }
             }
 
-            if (IsPhysicallyPresent(defendant))
+            foreach (var location in GetPhysicalLocation(defendant) ?? new IVoca[] { })
             {
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsPhysicallyPresent)} is true");
-                return true;
+                if (location != null && NameEquals(location))
+                {
+                    AddReasonEntry($"{title} {defendant.Name}, {nameof(GetPhysicalLocation)} " +
+                                   $"returned a name whose {nameof(NameEquals)} is true for '{Name}'");
+                    return true;
+                }
             }
 
             if (Consent != null && Consent.IsValid(persons))
@@ -59,10 +60,24 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return true;
             }
 
-            if (MinimumContact != null && MinimumContact.IsValid(persons))
+            if (MinimumContact != null)
             {
-                AddReasonEntryRange(MinimumContact.GetReasonEntries());
-                return true;
+                //transpose whatever is here to this sister type based on what's missing
+                if(MinimumContact.NamesCount <= 0)
+                    MinimumContact.CopyNamesFrom(this);
+
+                if (flagGetDomicileLocation && MinimumContact.flagGetDomicileLocation == false)
+                    MinimumContact.GetDomicileLocation = GetDomicileLocation;
+
+                if (flagGetPhysicalLocation && MinimumContact.flagGetPhysicalLocation == false)
+                    MinimumContact.GetPhysicalLocation = GetPhysicalLocation;
+
+                if (MinimumContact.IsValid(persons))
+                {
+                    AddReasonEntryRange(MinimumContact.GetReasonEntries());
+                    return true;
+                }
+
             }
 
             return false;

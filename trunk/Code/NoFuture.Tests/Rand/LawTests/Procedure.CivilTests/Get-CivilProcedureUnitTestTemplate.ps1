@@ -6,7 +6,10 @@
         [Parameter(Mandatory=$true,position=0)]
         [string] $Plaintiff,
         [Parameter(Mandatory=$true,position=1)]
-        [string] $Defendant
+        [string] $Defendant,
+        [Parameter(Mandatory=$false,position=2)]
+        [string] $FileNamePrefix
+
     )
     Process
     {
@@ -41,7 +44,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
     /// ]]>
     /// </remarks>
     [TestFixture]
-    public class ${safeNamePlaintiff}v${safeNameDefendant}Tests
+    public class ${FileNamePrefix}${safeNamePlaintiff}v${safeNameDefendant}Tests
     {
         [Test]
         public void ${safeNamePlaintiff}v${safeNameDefendant}()
@@ -62,7 +65,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
 }
 
 "@
-        $filename = Join-Path (Get-Location).Path  ".\${safeNamePlaintiff}v${safeNameDefendant}Tests.cs"
+        
+        $filename = Join-Path (Get-Location).Path  ".\${FileNamePrefix}${safeNamePlaintiff}v${safeNameDefendant}Tests.cs"
         [System.IO.File]::WriteAllText($filename, $someCode, [System.Text.Encoding]::UTF8)
     }
 }
