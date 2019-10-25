@@ -15,22 +15,22 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new PersonalJurisdiction()
             {
-                IsDomicile = lp => lp is ExampleDefendant00
+                IsDomicile = lp => lp is ExampleDefendant
             };
 
-            var testResult = testSubject.IsValid(new ExamplePlaintiff00(), new ExampleDefendant00());
+            var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
             Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
         }
     }
 
-    public class ExamplePlaintiff00 : LegalPerson, IPlaintiff
+    public class ExamplePlaintiff : LegalPerson, IPlaintiff
     {
-        public ExamplePlaintiff00() : base("Example P. Lantiff") { }
+        public ExamplePlaintiff() : base("Example P. Lantiff") { }
     }
 
-    public class ExampleDefendant00 : LegalPerson, IDefendant
+    public class ExampleDefendant : LegalPerson, IDefendant
     {
-        public ExampleDefendant00() : base("Example D. Fendant") {  }
+        public ExampleDefendant() : base("Example D. Fendant") {  }
     }
 }
