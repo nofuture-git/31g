@@ -9,10 +9,13 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     public abstract class JurisdictionBase : UnoHomine, IVoca
     {
         protected internal bool flagGetDomicileLocation;
-        private Func<ILegalPerson, IVoca[]> _getDomicileLocation = lp => null;
+        private Func<ILegalPerson, IVoca> _getDomicileLocation = lp => null;
 
         protected internal bool flagGetPhysicalLocation;
-        private Func<ILegalPerson, IVoca[]> _getPhysicalLocation = lp => null;
+        private Func<ILegalPerson, IVoca> _getPhysicalLocation = lp => null;
+
+        protected internal bool flagGetInjuryLocation;
+        private Func<ILegalPerson, IVoca> _getInjuryLocation = lp => null;
 
         protected JurisdictionBase() : base(ExtensionMethods.DefendantFx)
         {
@@ -25,10 +28,24 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         }
 
         /// <summary>
+        /// Is the location in which some injury occured 
+        /// </summary>
+        public virtual Func<ILegalPerson, IVoca> GetInjuryLocation
+        {
+            get => _getInjuryLocation;
+            set
+            {
+                //want to record if this was explicitly set 
+                flagGetInjuryLocation = true;
+                _getInjuryLocation = value;
+            }
+        }
+
+        /// <summary>
         /// Is where the defendant physically lives or resides - all plaintiffs can
         /// travel there and sue the defendant.
         /// </summary>
-        public virtual Func<ILegalPerson, IVoca[]> GetDomicileLocation
+        public virtual Func<ILegalPerson, IVoca> GetDomicileLocation
         {
             get => _getDomicileLocation;
             set
@@ -42,7 +59,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// <summary>
         /// If defendant is actually present in the forum state then they may be sued there.
         /// </summary>
-        public virtual Func<ILegalPerson, IVoca[]> GetPhysicalLocation
+        public virtual Func<ILegalPerson, IVoca> GetPhysicalLocation
         {
             get => _getPhysicalLocation;
             set
@@ -79,7 +96,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// </param>
         protected virtual bool TestPerson2Name(
             Tuple<string, Func<ILegalPerson, ILegalPerson>> subject2Person, 
-            Tuple<string, Func<ILegalPerson, IVoca[]>> person2Name,
+            Tuple<string, Func<ILegalPerson, IVoca>> person2Name,
             params ILegalPerson[] persons)
         {
             var defendant = GetSubjectPerson(persons);
@@ -95,17 +112,17 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (otherPerson == null)
                 return false;
 
+            var otherTitle = otherPerson.GetLegalPersonTypeName();
+
             var someOtherFunctionName = person2Name.Item1;
 
-            foreach (var voca in person2Name.Item2(otherPerson) ?? new IVoca[] { })
+            var voca = person2Name.Item2(otherPerson);
+            if (NameEquals(voca))
             {
-                if (NameEquals(voca))
-                {
-                    AddReasonEntry($"{title} {defendant.Name}, {someFunctionName} returned the person " +
-                                   $"{otherPerson.Name} with which {someOtherFunctionName} returned a " +
-                                   $"name whose {nameof(NameEquals)} is true for '{Name}'");
-                    return true;
-                }
+                AddReasonEntry($"{title} {defendant.Name}, {someFunctionName} returned '{otherPerson.Name}'");
+                AddReasonEntry($"{otherTitle} {otherPerson.Name}, {someOtherFunctionName} returned '{voca.Name}'");
+                AddReasonEntry($"'{voca.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                return true;
             }
 
             return false;

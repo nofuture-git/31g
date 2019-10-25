@@ -14,6 +14,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             var testSubject = new MinimumContact("Spook City NV")
             {
                 GetActiveVirtualContactLocation = lp => lp is ExampleDefendant ? new [] {new VocaBase("Spook City NV")} : null,
+                GetInjuryLocation = lp => new VocaBase("Spook City NV")
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
@@ -28,8 +29,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
 
             var testSubject = new MinimumContact("Spook City NV")
             {
-                GetDomicileLocation = lp => lp is ExamplePlaintiff ? new[] {new VocaBase("Spook City NV")} : null,
                 GetIntentionalTortTo = lp => lp is ExampleDefendant ? new ExamplePlaintiff() : null,
+                GetDomicileLocation = lp => lp is ExamplePlaintiff ? new VocaBase("Spook City NV") : null,
             };
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
             Assert.IsTrue(testResult);

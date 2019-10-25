@@ -20,19 +20,22 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
     [TestFixture]
     public class ExampleAustinvHealyTests
     {
+        /// <summary>
+        /// Defendant has nothing to do with North Dakota, that&apos;s the plaintiff&apos;s home state...
+        /// </summary>
         [Test]
         public void AustinvHealy01()
         {
             var testSubject = new PersonalJurisdiction("North Dakota")
             {
                 Consent = Consent.NotGiven(),
-                MinimumContact = new MinimumContact("North Dakota")
+                MinimumContact = new MinimumContact
                 {
                     GetCommerciallyEngagedLocation = lp =>
                         lp is Austin 
                             ? new[] {new VocaBase("North Dakota"), new VocaBase("South Dakota"), new VocaBase("Minnesota")} 
                             : null,
-                    GetDirectContactTo = lp => lp is Austin ? new Healy() : null
+                    GetInjuryLocation = lp => new VocaBase("Minnesota")
                 },
                 GetDomicileLocation = GetState,
                 GetPhysicalLocation = GetState
@@ -43,35 +46,65 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             Console.WriteLine(testSubject.ToString());
         }
 
+        /// <summary>
+        /// doing business is not enough - needs to be connected to the plaintiff's claim in some way
+        /// </summary>
         [Test]
-        public void AustinvHealy03()
+        public void AustinvHealy02()
         {
-            var testSubject = new PersonalJurisdiction("Minnesota")
+            var testSubject = new PersonalJurisdiction("South Dakota")
             {
                 Consent = Consent.NotGiven(),
-                MinimumContact = new MinimumContact("Minnesota")
+                MinimumContact = new MinimumContact
                 {
+                    
                     GetCommerciallyEngagedLocation = lp =>
                         lp is Austin
                             ? new[] { new VocaBase("North Dakota"), new VocaBase("South Dakota"), new VocaBase("Minnesota") }
                             : null,
-                    GetDirectContactTo = lp => lp is Austin ? new Healy() : null,
+                    GetInjuryLocation = lp => new VocaBase("Minnesota")
                 },
                 GetDomicileLocation = GetState,
                 GetPhysicalLocation = GetState
             };
 
             var testResult = testSubject.IsValid(new HealyAsPlaintiff(), new AustinAsDefendant());
-            //Assert.IsFalse(testResult);
+            Assert.IsFalse(testResult);
             Console.WriteLine(testSubject.ToString());
         }
 
-        public IVoca[] GetState(ILegalPerson lp)
+        /// <summary>
+        /// Valid because plaintiff is in Minnesota on biz and that is the location of the injury
+        /// </summary>
+        [Test]
+        public void AustinvHealy03()
+        {
+            var testSubject = new PersonalJurisdiction("Minnesota")
+            {
+                Consent = Consent.NotGiven(),
+                MinimumContact = new MinimumContact
+                {
+                    GetCommerciallyEngagedLocation = lp =>
+                        lp is Austin
+                            ? new[] { new VocaBase("North Dakota"), new VocaBase("South Dakota"), new VocaBase("Minnesota") }
+                            : null,
+                    GetInjuryLocation = lp => new VocaBase("Minnesota")
+                },
+                GetDomicileLocation = GetState,
+                GetPhysicalLocation = GetState
+            };
+
+            var testResult = testSubject.IsValid(new HealyAsPlaintiff(), new AustinAsDefendant());
+            Assert.IsTrue(testResult);
+            Console.WriteLine(testSubject.ToString());
+        }
+
+        public IVoca GetState(ILegalPerson lp)
         {
             if (lp is Austin)
-                return new[] {new  VocaBase("North Dakota")};
+                return new  VocaBase("North Dakota");
             if (lp is Healy)
-                return new[] {new VocaBase("Minnesota")};
+                return new VocaBase("Minnesota");
             return null;
         }
     }

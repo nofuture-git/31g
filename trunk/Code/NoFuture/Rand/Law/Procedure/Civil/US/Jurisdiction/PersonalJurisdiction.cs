@@ -34,25 +34,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return false;
 
             var title = defendant.GetLegalPersonTypeName();
-            foreach(var domicile in GetDomicileLocation(defendant) ?? new IVoca[] { })
-            {
-                if (domicile != null && NameEquals(domicile))
-                {
-                    AddReasonEntry($"{title} {defendant.Name}, {nameof(GetDomicileLocation)} " +
-                                   $"returned a name whose {nameof(NameEquals)} is true for '{Name}'");
-                    return true;
-                }
-            }
 
-            foreach (var location in GetPhysicalLocation(defendant) ?? new IVoca[] { })
-            {
-                if (location != null && NameEquals(location))
-                {
-                    AddReasonEntry($"{title} {defendant.Name}, {nameof(GetPhysicalLocation)} " +
-                                   $"returned a name whose {nameof(NameEquals)} is true for '{Name}'");
-                    return true;
-                }
-            }
 
             if (Consent != null && Consent.IsValid(persons))
             {
@@ -63,14 +45,17 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (MinimumContact != null)
             {
                 //transpose whatever is here to this sister type based on what's missing
-                if(MinimumContact.NamesCount <= 0)
+                if (MinimumContact.NamesCount <= 0)
                     MinimumContact.CopyNamesFrom(this);
 
-                if (flagGetDomicileLocation && MinimumContact.flagGetDomicileLocation == false)
+                if (flagGetDomicileLocation && !MinimumContact.flagGetDomicileLocation)
                     MinimumContact.GetDomicileLocation = GetDomicileLocation;
 
-                if (flagGetPhysicalLocation && MinimumContact.flagGetPhysicalLocation == false)
+                if (flagGetPhysicalLocation && !MinimumContact.flagGetPhysicalLocation)
                     MinimumContact.GetPhysicalLocation = GetPhysicalLocation;
+
+                if (flagGetInjuryLocation && !MinimumContact.flagGetInjuryLocation)
+                    MinimumContact.GetInjuryLocation = GetInjuryLocation;
 
                 if (MinimumContact.IsValid(persons))
                 {
@@ -78,6 +63,22 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                     return true;
                 }
 
+            }
+
+            var domicile = GetDomicileLocation(defendant);
+            if (domicile != null && NameEquals(domicile))
+            {
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetDomicileLocation)} returned '{domicile.Name}'");
+                AddReasonEntry($"'{domicile.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                return true;
+            }
+
+            var location = GetPhysicalLocation(defendant);
+            if (location != null && NameEquals(location))
+            {
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetPhysicalLocation)} returned '{location.Name}'");
+                AddReasonEntry($"'{location.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                return true;
             }
 
             return false;

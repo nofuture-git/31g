@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new PersonalJurisdiction("Coast City")
             {
-                GetDomicileLocation = lp => lp is ExampleDefendant ? new[] {new VocaBase("Coast City")} : null,
+                GetDomicileLocation = lp => lp is ExampleDefendant ? new VocaBase("Coast City") : null,
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());

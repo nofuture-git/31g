@@ -79,26 +79,32 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             var title = defendant.GetLegalPersonTypeName();
 
+            var injuryLocation = GetInjuryLocation(defendant);
+            var isInjuryLocation = NameEquals(injuryLocation);
+            if (!isInjuryLocation)
+                return false;
+
             foreach (var voca in GetCommerciallyEngagedLocation(defendant) ?? new IVoca[]{})
             {
                 var isCommerciallyEngaged = NameEquals(voca);
-                if (isCommerciallyEngaged)
-                {
-                    AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCommerciallyEngagedLocation)} " +
-                                   $"returned a name whose {nameof(NameEquals)} is true for '{Name}'");
-                    return true;
-                }
+                if(!isCommerciallyEngaged)
+                    continue;
+
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCommerciallyEngagedLocation)} returned '{voca.Name}'");
+                AddReasonEntry($"'{voca.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                return true;
             }
 
             foreach (var voca in GetActiveVirtualContactLocation(defendant) ?? new IVoca[] { })
             {
                 var isVirtuallyEngaged = NameEquals(voca);
-                if (isVirtuallyEngaged)
-                {
-                    AddReasonEntry($"{title} {defendant.Name}, {nameof(GetActiveVirtualContactLocation)} " +
-                                   $"returned a name whose {nameof(NameEquals)} is true for '{Name}'");
-                    return true;
-                }
+                if(!isVirtuallyEngaged)
+                    continue;
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetActiveVirtualContactLocation)} returned '{voca.Name}'");
+                AddReasonEntry($"'{voca.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                return true;
             }
 
             return false;
