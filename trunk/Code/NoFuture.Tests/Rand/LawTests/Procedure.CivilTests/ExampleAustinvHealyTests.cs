@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
                     GetInjuryLocation = lp => new VocaBase("Minnesota")
                 },
                 GetDomicileLocation = GetState,
-                GetPhysicalLocation = GetState
+                GetCurrentLocation = GetState
             };
 
             var testResult = testSubject.IsValid(new AustinAsPlaintiff(), new HealyAsDefendant());
@@ -65,7 +65,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
                     GetInjuryLocation = lp => new VocaBase("Minnesota")
                 },
                 GetDomicileLocation = GetState,
-                GetPhysicalLocation = GetState
+                GetCurrentLocation = GetState
             };
 
             var testResult = testSubject.IsValid(new HealyAsPlaintiff(), new AustinAsDefendant());
@@ -91,7 +91,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
                     GetInjuryLocation = lp => new VocaBase("Minnesota")
                 },
                 GetDomicileLocation = GetState,
-                GetPhysicalLocation = GetState
+                GetCurrentLocation = GetState
             };
 
             var testResult = testSubject.IsValid(new HealyAsPlaintiff(), new AustinAsDefendant());

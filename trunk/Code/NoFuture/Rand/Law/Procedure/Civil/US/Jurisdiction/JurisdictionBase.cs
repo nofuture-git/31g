@@ -8,13 +8,13 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
     public abstract class JurisdictionBase : UnoHomine, IVoca
     {
-        protected internal bool flagGetDomicileLocation;
+        protected bool flagGetDomicileLocation;
         private Func<ILegalPerson, IVoca> _getDomicileLocation = lp => null;
 
-        protected internal bool flagGetPhysicalLocation;
-        private Func<ILegalPerson, IVoca> _getPhysicalLocation = lp => null;
+        protected bool flagGetCurrentLocation;
+        private Func<ILegalPerson, IVoca> _getCurrentLocation = lp => null;
 
-        protected internal bool flagGetInjuryLocation;
+        protected bool flagGetInjuryLocation;
         private Func<ILegalPerson, IVoca> _getInjuryLocation = lp => null;
 
         protected JurisdictionBase() : base(ExtensionMethods.DefendantFx)
@@ -59,14 +59,14 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// <summary>
         /// If defendant is actually present in the forum state then they may be sued there.
         /// </summary>
-        public virtual Func<ILegalPerson, IVoca> GetPhysicalLocation
+        public virtual Func<ILegalPerson, IVoca> GetCurrentLocation
         {
-            get => _getPhysicalLocation;
+            get => _getCurrentLocation;
             set
             {
                 //want to record if this was explicitly set 
-                flagGetPhysicalLocation = true;
-                _getPhysicalLocation = value;
+                flagGetCurrentLocation = true;
+                _getCurrentLocation = value;
             }
         }
 
@@ -126,6 +126,25 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             }
 
             return false;
+        }
+
+        public void CopyTo(JurisdictionBase juris)
+        {
+            if (juris == null)
+                return;
+
+            //transpose whatever is here to this sister type based on what's missing
+            if (juris.NamesCount <= 0)
+                juris.CopyNamesFrom(this);
+
+            if (flagGetDomicileLocation && !juris.flagGetDomicileLocation)
+                juris.GetDomicileLocation = GetDomicileLocation;
+
+            if (flagGetCurrentLocation && !juris.flagGetCurrentLocation)
+                juris.GetCurrentLocation = GetCurrentLocation;
+
+            if (flagGetInjuryLocation && !juris.flagGetInjuryLocation)
+                juris.GetInjuryLocation = GetInjuryLocation;
         }
 
         #region IVoca IS-A HAS-A

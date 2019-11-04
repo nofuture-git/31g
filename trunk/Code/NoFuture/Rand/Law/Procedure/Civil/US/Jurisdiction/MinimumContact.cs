@@ -6,25 +6,28 @@ using NoFuture.Rand.Law.US;
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
-    /// Having some minimum contact would require one to return to the forum state.
-    /// The contact derives from some voluntary relation within a state.  A contact
-    /// in which the defendant stands to benefit from the protection of the law and is
-    /// therefore accountable to the law.
+    /// A contact in which the defendant stands to benefit from the
+    /// protection of the law and is therefore accountable to the law.
     /// </summary>
     /// <remarks>
     /// Developed from <![CDATA["International Shoe v. Washington, 326 U.S. 310 (1945)"]]>
     /// for companies it typically means they are doing business within the state.
     /// </remarks>
-    [Aka("purposeful availment")]
+    [Aka("purposeful availment", "specific in personam jurisdiction")]
     public class MinimumContact : JurisdictionBase
     {
         public MinimumContact() { }
         public MinimumContact(string name) : base(name) { }
 
         /// <summary>
-        /// A obvious or direct relationship between one person and another.
+        /// A directed attempt of one person to contact another
         /// </summary>
-        public Func<ILegalPerson, ILegalPerson> GetDirectContactTo { get; set; } = lp => null;
+        /// <remarks>
+        /// This is one-way, when Foo travels to some other jurisdiction
+        /// and attempts to sell a vacuum to Bar, then there is directed
+        /// contact between Foo to Bar but not the other way (i.e. Bar to Foo).
+        /// </remarks>
+        public Func<ILegalPerson, ILegalPerson> GetDirectedContactTo { get; set; } = lp => null;
 
         /// <summary>
         /// A contract binds one person to another
@@ -53,7 +56,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         {
 
             var isDirectContactToResident = TestPerson2Name(
-                Tuple.Create(nameof(GetDirectContactTo), GetDirectContactTo),
+                Tuple.Create(nameof(GetDirectedContactTo), GetDirectedContactTo),
                 Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
 
             if (isDirectContactToResident)

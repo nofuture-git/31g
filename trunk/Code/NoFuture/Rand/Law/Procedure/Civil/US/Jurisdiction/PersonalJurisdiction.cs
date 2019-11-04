@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using NoFuture.Rand.Core;
+﻿using System.Linq;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
@@ -39,30 +37,16 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (Consent != null && Consent.IsValid(persons))
             {
                 AddReasonEntryRange(Consent.GetReasonEntries());
+                if (!GetReasonEntries().Any())
+                {
+                    AddReasonEntry($"{title} {defendant.Name}, {nameof(Consent)} {nameof(IsValid)} returned true");
+                }
                 return true;
             }
 
-            if (MinimumContact != null)
+            if (IsMinimumContact(persons))
             {
-                //transpose whatever is here to this sister type based on what's missing
-                if (MinimumContact.NamesCount <= 0)
-                    MinimumContact.CopyNamesFrom(this);
-
-                if (flagGetDomicileLocation && !MinimumContact.flagGetDomicileLocation)
-                    MinimumContact.GetDomicileLocation = GetDomicileLocation;
-
-                if (flagGetPhysicalLocation && !MinimumContact.flagGetPhysicalLocation)
-                    MinimumContact.GetPhysicalLocation = GetPhysicalLocation;
-
-                if (flagGetInjuryLocation && !MinimumContact.flagGetInjuryLocation)
-                    MinimumContact.GetInjuryLocation = GetInjuryLocation;
-
-                if (MinimumContact.IsValid(persons))
-                {
-                    AddReasonEntryRange(MinimumContact.GetReasonEntries());
-                    return true;
-                }
-
+                return true;
             }
 
             var domicile = GetDomicileLocation(defendant);
@@ -73,10 +57,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return true;
             }
 
-            var location = GetPhysicalLocation(defendant);
+            var location = GetCurrentLocation(defendant);
             if (location != null && NameEquals(location))
             {
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetPhysicalLocation)} returned '{location.Name}'");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCurrentLocation)} returned '{location.Name}'");
                 AddReasonEntry($"'{location.Name}' & '{Name}', {nameof(NameEquals)} is true");
                 return true;
             }
@@ -84,5 +68,20 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             return false;
         }
 
+        protected virtual bool IsMinimumContact(ILegalPerson[] persons)
+        {
+            if (MinimumContact == null) 
+                return false;
+
+            CopyTo(MinimumContact);
+
+            if (MinimumContact.IsValid(persons))
+            {
+                AddReasonEntryRange(MinimumContact.GetReasonEntries());
+                return true;
+            }
+
+            return false;
+        }
     }
 }

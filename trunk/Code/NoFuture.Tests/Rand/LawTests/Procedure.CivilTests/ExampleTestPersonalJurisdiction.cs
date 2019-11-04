@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -15,6 +16,47 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             var testSubject = new PersonalJurisdiction("Coast City")
             {
                 GetDomicileLocation = lp => lp is ExampleDefendant ? new VocaBase("Coast City") : null,
+            };
+
+            var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
+            Assert.IsTrue(testResult);
+            Console.WriteLine(testSubject.ToString());
+        }
+
+        [Test]
+        public void TestIsValidWithConsent()
+        {
+            const string MA = "Massachusetts";
+            const string GA = "Georgia";
+
+            var testSubject = new PersonalJurisdiction(MA)
+            {
+                Consent = Consent.NotGiven() ,
+                GetDomicileLocation = lp => lp is ExampleDefendant ? new VocaBase(GA) : new VocaBase(MA),
+                GetCurrentLocation = lp => lp is ExampleDefendant ? new VocaBase(GA) : new VocaBase(MA),
+                GetInjuryLocation = lp => lp is ExamplePlaintiff ? new VocaBase(MA) : null
+            };
+
+            var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
+            Assert.IsFalse(testResult);
+            Console.WriteLine(testSubject.ToString());
+
+            testSubject.Consent = Consent.IsGiven();
+            testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
+            Assert.IsTrue(testResult);
+            Console.WriteLine(testSubject.ToString());
+        }
+
+        [Test]
+        public void TestBothLiveSameState()
+        {
+            const string MA = "Massachusetts";
+            const string GA = "Georgia";
+
+            var testSubject = new PersonalJurisdiction(MA)
+            {
+                GetDomicileLocation = lp => new VocaBase(MA),
+                GetInjuryLocation = lp => new VocaBase(GA)
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
