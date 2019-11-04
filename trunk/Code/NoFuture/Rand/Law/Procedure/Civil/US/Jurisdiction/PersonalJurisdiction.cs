@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
@@ -14,6 +16,15 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         public PersonalJurisdiction() { }
         public PersonalJurisdiction(string name) :base(name) { }
 
+        /// <summary>
+        /// the Legislature must still authorize the court to exercise jurisdiction
+        /// </summary>
+        /// <remarks>
+        /// Where Due-Process clause defines the outer bounds of permissible jurisdictional
+        /// power - the legislature may limit but never expand jurisdiction beyond it.
+        /// </remarks>
+        [Aka("long-arm statutes")]
+        public virtual Predicate<ILegalPerson> IsAuthorized2ExerciseJurisdiction { get; set; } = lp => true;
 
         /// <summary>
         /// The defendant agrees to it
@@ -33,6 +44,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             var title = defendant.GetLegalPersonTypeName();
 
+            if (!IsAuthorized2ExerciseJurisdiction(defendant))
+            {
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsAuthorized2ExerciseJurisdiction)} is false");
+                return false;
+            }
 
             if (Consent != null && Consent.IsValid(persons))
             {
