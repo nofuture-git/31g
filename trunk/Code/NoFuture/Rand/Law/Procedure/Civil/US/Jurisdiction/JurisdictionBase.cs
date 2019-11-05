@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
         }
 
-        protected JurisdictionBase(IVoca name) : this()
+        protected JurisdictionBase(ICourt name) : this()
         {
             _voca = name;
         }

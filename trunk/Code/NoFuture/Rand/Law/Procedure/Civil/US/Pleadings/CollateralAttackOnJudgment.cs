@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
@@ -14,7 +13,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// </remarks>
     public class CollateralAttackOnJudgment : SpecialAppearance
     {
-        public IVoca NameOfOriginalCourt { get; set; }
+        public ICourt NameOfOriginalCourt { get; set; }
 
         /// <summary>
         /// A defendant may only do this once.  In either foreign location or domicile

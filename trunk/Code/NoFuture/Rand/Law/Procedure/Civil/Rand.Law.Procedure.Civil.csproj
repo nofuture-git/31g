@@ -39,6 +39,7 @@
     <Compile Include="US\Jurisdiction\JurisdictionBase.cs" />
     <Compile Include="US\Jurisdiction\MinimumContact.cs" />
     <Compile Include="US\Jurisdiction\PersonalJurisdiction.cs" />
+    <Compile Include="US\Jurisdiction\SubjectMatterJurisdiction.cs" />
     <Compile Include="US\Pleadings\CollateralAttackOnJudgment.cs" />
     <Compile Include="US\Pleadings\Complaint.cs" />
     <Compile Include="US\Pleadings\PleadingBase.cs" />

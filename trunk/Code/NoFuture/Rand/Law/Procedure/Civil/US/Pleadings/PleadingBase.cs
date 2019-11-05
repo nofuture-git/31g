@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 {
     public abstract class PleadingBase : LegalConcept
     {
-        public IVoca NameOfCourt { get; set; }
+        public ICourt NameOfCourt { get; set; }
 
         public Predicate<ILegalPerson> IsSigned { get; set; } = lp => false;
 

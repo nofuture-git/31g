@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Law
 {
-    interface ICourt : IVoca
+    public interface ICourt : IVoca
     {
     }
 }

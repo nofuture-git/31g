@@ -7,7 +7,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// </summary>
     /// <remarks>
     /// FRCP Title II, Rule 3.
-    /// https://en.wikipedia.org/wiki/Cause_of_action
     /// </remarks>
     [Aka("civil action", "law suit", "suit of law")]
     public class Complaint : PleadingBase
