@@ -4,6 +4,7 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Courts;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -26,7 +27,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         [Test]
         public void AustinvHealy01()
         {
-            var testSubject = new PersonalJurisdiction("North Dakota")
+            var testSubject = new PersonalJurisdiction(new StateCourt("North Dakota"))
             {
                 Consent = Consent.NotGiven(),
                 MinimumContact = new MinimumContact
@@ -52,7 +53,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         [Test]
         public void AustinvHealy02()
         {
-            var testSubject = new PersonalJurisdiction("South Dakota")
+            var testSubject = new PersonalJurisdiction(new StateCourt("South Dakota"))
             {
                 Consent = Consent.NotGiven(),
                 MinimumContact = new MinimumContact
@@ -79,7 +80,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         [Test]
         public void AustinvHealy03()
         {
-            var testSubject = new PersonalJurisdiction("Minnesota")
+            var testSubject = new PersonalJurisdiction(new StateCourt("Minnesota"))
             {
                 Consent = Consent.NotGiven(),
                 MinimumContact = new MinimumContact

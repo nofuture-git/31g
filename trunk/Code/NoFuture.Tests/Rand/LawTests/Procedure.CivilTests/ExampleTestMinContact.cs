@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
+using NoFuture.Rand.Law.US.Courts;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.Tests
@@ -11,10 +12,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         [Test]
         public void TestMinimumContactIsValid00()
         {
-            var testSubject = new MinimumContact("Spook City NV")
+            var testSubject = new MinimumContact(new StateCourt("NV"))
             {
-                GetActiveVirtualContactLocation = lp => lp is ExampleDefendant ? new [] {new VocaBase("Spook City NV")} : null,
-                GetInjuryLocation = lp => new VocaBase("Spook City NV")
+                GetActiveVirtualContactLocation = lp => lp is ExampleDefendant ? new [] {new VocaBase("NV")} : null,
+                GetInjuryLocation = lp => new VocaBase("NV")
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
@@ -27,10 +28,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         public void TestMinimumContactIsValid01()
         {
 
-            var testSubject = new MinimumContact("Spook City NV")
+            var testSubject = new MinimumContact(new StateCourt("NV"))
             {
                 GetIntentionalTortTo = lp => lp is ExampleDefendant ? new ExamplePlaintiff() : null,
-                GetDomicileLocation = lp => lp is ExamplePlaintiff ? new VocaBase("Spook City NV") : null,
+                GetDomicileLocation = lp => lp is ExamplePlaintiff ? new VocaBase("NV") : null,
             };
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
             Assert.IsTrue(testResult);

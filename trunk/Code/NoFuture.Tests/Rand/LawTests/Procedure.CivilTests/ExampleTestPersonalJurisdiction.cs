@@ -2,6 +2,7 @@
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Courts;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -13,9 +14,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         [Test]
         public void TestPersonalJurisdictionIsValid()
         {
-            var testSubject = new PersonalJurisdiction("Coast City")
+            var testSubject = new PersonalJurisdiction(new StateCourt("CA"))
             {
-                GetDomicileLocation = lp => lp is ExampleDefendant ? new VocaBase("Coast City") : null,
+                GetDomicileLocation = lp => lp is ExampleDefendant ? new VocaBase("CA") : null,
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
@@ -29,7 +30,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             const string MA = "Massachusetts";
             const string GA = "Georgia";
 
-            var testSubject = new PersonalJurisdiction(MA)
+            var testSubject = new PersonalJurisdiction(new StateCourt(MA))
             {
                 Consent = Consent.NotGiven() ,
                 GetDomicileLocation = lp => lp is ExampleDefendant ? new VocaBase(GA) : new VocaBase(MA),
@@ -53,7 +54,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             const string MA = "Massachusetts";
             const string GA = "Georgia";
 
-            var testSubject = new PersonalJurisdiction(MA)
+            var testSubject = new PersonalJurisdiction(new StateCourt(MA))
             {
                 GetDomicileLocation = lp => new VocaBase(MA),
                 GetInjuryLocation = lp => new VocaBase(GA)

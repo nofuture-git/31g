@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     public class MinimumContact : JurisdictionBase
     {
         public MinimumContact() { }
-        public MinimumContact(string name) : base(name) { }
+        public MinimumContact(IVoca name) : base(name) { }
 
         /// <summary>
         /// A directed attempt of one person to contact another

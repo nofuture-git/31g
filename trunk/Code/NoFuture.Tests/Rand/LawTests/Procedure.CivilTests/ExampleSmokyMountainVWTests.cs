@@ -4,6 +4,7 @@ using System.Linq;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Courts;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -23,14 +24,14 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         [Test]
         public void HudsonvSmokyMountainVW()
         {
-            var testSubject = new PersonalJurisdiction("Ohio")
+            var testSubject = new PersonalJurisdiction(new StateCourt("Ohio"))
             {
                 Consent = Consent.NotGiven(),
                 //this fires true when the defendant lives in the state of injury
                 GetDomicileLocation = lp => lp is Hudson ? new VocaBase("Ohio") : new VocaBase("North Carolina"),
                 GetInjuryLocation = lp => lp is Hudson ? new VocaBase("Ohio") : null,
                 GetCurrentLocation = lp => lp is Hudson ? new VocaBase("Ohio") : new VocaBase("North Carolina"),
-                MinimumContact = new MinimumContact("Ohio")
+                MinimumContact = new MinimumContact(new StateCourt("Ohio"))
                 {
                     //the dealership sold the car, not entered into a contract to finance it
                     GetCommerciallyEngagedLocation = lp => lp is SmokyMountainVW ? new[]{ new VocaBase("North Carolina")} : null,
@@ -51,13 +52,13 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             const string FL = "Florida";
             const string NC = "North Carolina";
 
-            var testSubject = new PersonalJurisdiction(FL)
+            var testSubject = new PersonalJurisdiction(new StateCourt(FL))
             {
                 Consent = Consent.NotGiven(),
                 GetDomicileLocation =
                     lp => lp is FloridaFord ? new VocaBase(FL) : new VocaBase(NC),
                 GetInjuryLocation = lp => lp is FloridaFord ? new VocaBase(FL) : null,
-                MinimumContact = new MinimumContact(FL)
+                MinimumContact = new MinimumContact(new StateCourt(FL))
                 {
                     GetCommerciallyEngagedLocation = lp =>
                         lp is SmokyMountainVW ? new[] {new VocaBase(NC)} : null,
@@ -77,12 +78,12 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             const string PA = "Pennsylvania";
             const string NC = "North Carolina";
 
-            var testSubject = new PersonalJurisdiction(PA)
+            var testSubject = new PersonalJurisdiction(new StateCourt(PA))
             {
                 Consent = Consent.NotGiven(),
                 GetDomicileLocation = lp => lp is PennsylvaniaPackard ? new VocaBase(PA) : new VocaBase(NC),
                 GetInjuryLocation = lp => lp is PennsylvaniaPackard ? new VocaBase(PA) : null,
-                MinimumContact = new MinimumContact(PA)
+                MinimumContact = new MinimumContact(new StateCourt(PA))
                 {
                     GetCommerciallyEngagedLocation = lp => lp is SmokyMountainVW ? new[] {new VocaBase(NC)} : null,
                     //because the dealership reached out to the Plaintiff in PA, PA has jurisdiction

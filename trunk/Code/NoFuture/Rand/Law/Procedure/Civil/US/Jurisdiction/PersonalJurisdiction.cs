@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
@@ -14,7 +15,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     public class PersonalJurisdiction : JurisdictionBase
     {
         public PersonalJurisdiction() { }
-        public PersonalJurisdiction(string name) :base(name) { }
+        public PersonalJurisdiction(IVoca name) :base(name) { }
 
         /// <summary>
         /// the Legislature must still authorize the court to exercise jurisdiction
