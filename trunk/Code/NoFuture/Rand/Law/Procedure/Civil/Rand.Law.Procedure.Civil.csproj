@@ -40,6 +40,8 @@
     <Compile Include="US\Jurisdiction\MinimumContact.cs" />
     <Compile Include="US\Jurisdiction\PersonalJurisdiction.cs" />
     <Compile Include="US\Pleadings\Complaint.cs" />
+    <Compile Include="US\Pleadings\PleadingBase.cs" />
+    <Compile Include="US\Pleadings\Summons.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">

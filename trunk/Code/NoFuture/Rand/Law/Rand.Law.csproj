@@ -75,6 +75,7 @@
     <Compile Include="US\Persons\IBailee.cs" />
     <Compile Include="US\Persons\IChild.cs" />
     <Compile Include="US\Persons\ICotenant.cs" />
+    <Compile Include="US\Persons\ICourtOfficial.cs" />
     <Compile Include="US\Persons\IDescendant.cs" />
     <Compile Include="US\Persons\IDisseisor.cs" />
     <Compile Include="US\Persons\IDonee.cs" />

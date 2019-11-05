@@ -1,5 +1,4 @@
-﻿using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 {
@@ -10,21 +9,19 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// FRCP Title II, Rule 3.
     /// </remarks>
     [Aka("civil action", "law suit", "suit of law")]
-    public class Complaint : LegalConcept
+    public class Complaint : PleadingBase
     {
-        public IVoca NameOfCourt { get; set; }
-
         public ILegalConcept CausesOfAction { get; set; }
 
         public ILegalConcept RequestedRelief { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (NameOfCourt == null || string.IsNullOrWhiteSpace(NameOfCourt.Name))
-            {
-                AddReasonEntry($"{nameof(NameOfCourt)} is unassigned or an empty string");
+            if (!IsCourtAssigned())
                 return false;
-            }
+
+            if (IsSignedByCourtOfficial(persons))
+                return false;
 
             if (CausesOfAction == null)
             {

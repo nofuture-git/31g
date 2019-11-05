@@ -93,6 +93,11 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is IDisseisor);
         }
 
+        public static ILegalPerson CourtOfficial(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is ICourtOfficial);
+        }
+
         public static IPlaintiff Plaintiff(this IRationale lc, IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
@@ -495,6 +500,8 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("employee");
             if (person is IEmployer)
                 titles.Add("employer");
+            if (person is ICourtOfficial)
+                titles.Add("court official");
             if (person.Equals(Government.Value))
                 titles.Add("the government");
             if(person is ICotenant)
