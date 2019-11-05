@@ -6,10 +6,13 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     public class Summons : PleadingBase
     {
         /// <summary>
-        /// Federal Rules Civil Procedure Rule 4(D)
+        /// Federal Rules Civil Procedure Rule 4(a)(1)(D)
         /// </summary>
         public Func<ILegalPerson, DateTime?> GetDateOfAppearance { get; set; } = dt => null;
 
+        /// <summary>
+        ///  Federal Rules Civil Procedure Rule 4(c)
+        /// </summary>
         public LegalConcept ServingProcess { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
