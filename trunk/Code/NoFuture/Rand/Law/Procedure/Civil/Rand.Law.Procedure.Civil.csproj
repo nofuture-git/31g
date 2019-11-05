@@ -39,6 +39,7 @@
     <Compile Include="US\Jurisdiction\JurisdictionBase.cs" />
     <Compile Include="US\Jurisdiction\MinimumContact.cs" />
     <Compile Include="US\Jurisdiction\PersonalJurisdiction.cs" />
+    <Compile Include="US\Pleadings\Complaint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">
@@ -50,5 +51,6 @@
       <Name>Rand.Law</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,0 +1,49 @@
+﻿using NoFuture.Rand.Core;
+using NoFuture.Rand.Law.Attributes;
+
+namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
+{
+    /// <summary>
+    /// The initial step to starting a lawsuit adversarial 
+    /// </summary>
+    /// <remarks>
+    /// FRCP Title II, Rule 3.
+    /// </remarks>
+    [Aka("civil action", "law suit", "suit of law")]
+    public class Complaint : LegalConcept
+    {
+        public IVoca NameOfCourt { get; set; }
+
+        public ILegalConcept CausesOfAction { get; set; }
+
+        public ILegalConcept RequestedRelief { get; set; }
+
+        public override bool IsValid(params ILegalPerson[] persons)
+        {
+            if (NameOfCourt == null || string.IsNullOrWhiteSpace(NameOfCourt.Name))
+            {
+                AddReasonEntry($"{nameof(NameOfCourt)} is unassigned or an empty string");
+                return false;
+            }
+
+            if (CausesOfAction == null)
+            {
+                AddReasonEntry($"{nameof(CausesOfAction)} is unassigned");
+                return false;
+            }
+
+            if (RequestedRelief == null)
+            {
+                AddReasonEntry($"{nameof(RequestedRelief)} is unassigned");
+                return false;
+            }
+
+            var result = CausesOfAction.IsValid(persons) && RequestedRelief.IsValid(persons);
+
+            AddReasonEntryRange(CausesOfAction.GetReasonEntries());
+            AddReasonEntryRange(RequestedRelief.GetReasonEntries());
+
+            return result;
+        }
+    }
+}

@@ -54,6 +54,7 @@
     <Compile Include="IInjury.cs" />
     <Compile Include="IIntent.cs" />
     <Compile Include="ILegalConceptWithProperty.cs" />
+    <Compile Include="ILegalProcess.cs" />
     <Compile Include="IProximateCause.cs" />
     <Compile Include="ILegalProperty.cs" />
     <Compile Include="IRankable.cs" />
