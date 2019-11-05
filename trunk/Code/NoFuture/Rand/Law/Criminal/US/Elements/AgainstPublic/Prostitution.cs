@@ -10,10 +10,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
     /// <summary>
     /// Offering, agreeing, or engaging in sexual conduct for money, property, or anything of value
     /// </summary>
-    public class Prostitution : LegalConcept, IActusReus, IBargain<ILegalProperty, ISexBipartitie>
+    public class Prostitution : LegalConcept, IActusReus, IBargain<ILegalProperty, ISexBilateral>
     {
-        public ISexBipartitie Offer { get; set; }
-        public Func<ISexBipartitie, ILegalProperty> Acceptance { get; set; }
+        public ISexBilateral Offer { get; set; }
+        public Func<ISexBilateral, ILegalProperty> Acceptance { get; set; }
         public IAssent Assent { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)

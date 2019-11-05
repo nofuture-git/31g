@@ -4,11 +4,11 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 {
-    /// <inheritdoc cref="SexBipartitie"/>
+    /// <inheritdoc cref="SexBilateral"/>
     /// <summary>
     /// This seems to imply that the parties know they have some family relation
     /// </summary>
-    public class Incest : SexBipartitie, IActusReus
+    public class Incest : SexBilateral, IActusReus
     {
         /// <summary>
         /// Typically being any family member one could not marry

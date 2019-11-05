@@ -6,11 +6,11 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 {
-    /// <inheritdoc cref="ISexBipartitie"/>
+    /// <inheritdoc cref="ISexBilateral"/>
     /// <inheritdoc cref="IAssault"/>
     /// <inheritdoc cref="IBattery"/>
     [EtymologyNote("Latin", "'rapere'", "to steal or seize")]
-    public class Rape : SexBipartitie, IAssault, IBattery, IActusReus, IElement
+    public class Rape : SexBilateral, IAssault, IBattery, IActusReus, IElement
     {
         public Predicate<ILegalPerson> IsByViolence { get; set; } = lp => false;
 

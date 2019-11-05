@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.Criminal.Tests.AgainstPublicTests
                     {
                         IsApprovalExpressed = lp => lp is JohnPayerEg || lp is SueProstitueEg
                     },
-                    Offer = new SexBipartitie()
+                    Offer = new SexBilateral()
                     {
                         IsSexualIntercourse = lp => true,
                         IsOneOfTwo = lp => lp is JohnPayerEg || lp is SueProstitueEg

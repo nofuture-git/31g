@@ -3,8 +3,8 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US
 {
-    /// <inheritdoc cref="ISexBipartitie"/>
-    public class SexBipartitie : LegalConcept, ISexBipartitie
+    /// <inheritdoc cref="ISexBilateral"/>
+    public class SexBilateral : LegalConcept, ISexBilateral
     {
         public Predicate<ILegalPerson> IsOneOfTwo { get; set; } = lp => false;
 
