@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
-    public abstract class JurisdictionBase : UnoHomine, IVoca
+    public abstract class JurisdictionBase : CivilProcedureBase, IVoca
     {
         protected bool flagGetDomicileLocation;
         private Func<ILegalPerson, IVoca> _getDomicileLocation = lp => null;
@@ -17,14 +17,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         protected bool flagGetInjuryLocation;
         private Func<ILegalPerson, IVoca> _getInjuryLocation = lp => null;
 
-        protected JurisdictionBase() : base(ExtensionMethods.DefendantFx)
+        protected JurisdictionBase(ICourt name)
         {
-
-        }
-
-        protected JurisdictionBase(ICourt name) : this()
-        {
-            _voca = name;
+            if(name != null)
+                _voca = name;
         }
 
         /// <summary>
@@ -99,7 +95,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             Tuple<string, Func<ILegalPerson, IVoca>> person2Name,
             params ILegalPerson[] persons)
         {
-            var defendant = GetSubjectPerson(persons);
+            var defendant = this.Defendant(persons);
             if (defendant == null || subject2Person?.Item2 == null || person2Name?.Item2 == null) 
                 return false;
 

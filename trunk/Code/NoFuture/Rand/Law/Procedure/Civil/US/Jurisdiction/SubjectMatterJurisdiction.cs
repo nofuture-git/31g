@@ -7,6 +7,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// </summary>
     public class SubjectMatterJurisdiction : JurisdictionBase
     {
+        public SubjectMatterJurisdiction(ICourt name) : base(name)
+        {
+        }
+
         /// <summary>
         /// When either to establish a claim or present a defense relies on federal law.
         /// </summary>
@@ -21,5 +25,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         {
             throw new NotImplementedException();
         }
+
     }
 }

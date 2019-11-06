@@ -14,7 +14,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// </remarks>
     public class PersonalJurisdiction : JurisdictionBase
     {
-        public PersonalJurisdiction() { }
         public PersonalJurisdiction(ICourt name) :base(name) { }
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = GetSubjectPerson(persons);
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
 

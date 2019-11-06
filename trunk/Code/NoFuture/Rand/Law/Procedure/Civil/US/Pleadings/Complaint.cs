@@ -11,8 +11,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     [Aka("civil action", "law suit", "suit of law")]
     public class Complaint : PleadingBase
     {
-        public ILegalConcept CausesOfAction { get; set; }
-
         public ILegalConcept RequestedRelief { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)

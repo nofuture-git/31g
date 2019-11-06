@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     [Aka("purposeful availment", "specific in personam jurisdiction")]
     public class MinimumContact : JurisdictionBase
     {
-        public MinimumContact() { }
+        internal MinimumContact(): base(null) { }
         public MinimumContact(ICourt name) : base(name) { }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (isTortfeaserToResident)
                 return true;
 
-            var defendant = GetSubjectPerson(persons);
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
 
