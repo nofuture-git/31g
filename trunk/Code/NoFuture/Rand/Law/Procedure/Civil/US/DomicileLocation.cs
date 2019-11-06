@@ -10,6 +10,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
     /// <summary>
     /// A persons domicile location is a named place and is also a testable legal concept
     /// </summary>
+    /// <remarks>
+    /// U.S.C. section 1332(c) - corporations are citizens of both states where
+    /// they incorp&apos;d and where their headquarters is located.
+    /// Hertz Corp. v. Friend, 130 S. Ct. 1181 (2010)
+    /// </remarks>
     public class DomicileLocation : UnoHomine, IVoca
     {
         #region ctors

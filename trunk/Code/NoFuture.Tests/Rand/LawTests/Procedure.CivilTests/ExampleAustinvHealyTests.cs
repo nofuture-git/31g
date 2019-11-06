@@ -36,8 +36,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
                         lp is Austin 
                             ? new[] {new VocaBase("North Dakota"), new VocaBase("South Dakota"), new VocaBase("Minnesota")} 
                             : null,
-                    GetInjuryLocation = lp => new VocaBase("Minnesota")
+                    
                 },
+                GetInjuryLocation = lp => new VocaBase("Minnesota"),
                 GetDomicileLocation = GetState,
                 GetCurrentLocation = GetState
             };
@@ -58,20 +59,20 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
                 Consent = Consent.NotGiven(),
                 MinimumContact = new MinimumContact
                 {
-                    
                     GetCommerciallyEngagedLocation = lp =>
                         lp is Austin
                             ? new[] { new VocaBase("North Dakota"), new VocaBase("South Dakota"), new VocaBase("Minnesota") }
-                            : null,
-                    GetInjuryLocation = lp => new VocaBase("Minnesota")
+                            : null
+                    
                 },
+                GetInjuryLocation = lp => new VocaBase("Minnesota"),
                 GetDomicileLocation = GetState,
                 GetCurrentLocation = GetState
             };
 
             var testResult = testSubject.IsValid(new HealyAsPlaintiff(), new AustinAsDefendant());
-            Assert.IsFalse(testResult);
             Console.WriteLine(testSubject.ToString());
+            Assert.IsFalse(testResult);
         }
 
         /// <summary>
@@ -89,8 +90,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
                         lp is Austin
                             ? new[] { new VocaBase("North Dakota"), new VocaBase("South Dakota"), new VocaBase("Minnesota") }
                             : null,
-                    GetInjuryLocation = lp => new VocaBase("Minnesota")
                 },
+                GetInjuryLocation = lp => new VocaBase("Minnesota"),
                 GetDomicileLocation = GetState,
                 GetCurrentLocation = GetState
             };

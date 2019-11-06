@@ -31,7 +31,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// </remarks>
         public Predicate<ILegalConcept> IsCongressConveyedJurisdiction { get; set; } = lc => false;
 
-
         /// <summary>
         /// Asserts that the type of <see cref="CivilProcedureBase.Court"/>
         /// matches to the <see cref="CivilProcedureBase.CausesOfAction"/>

@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         #region properties
 
         /// <summary>
-        /// Is the location in which some injury occured 
+        /// Is the location from which the injury (cause of action) is located
         /// </summary>
         public virtual Func<ILegalPerson, IVoca> GetInjuryLocation
         {
@@ -74,57 +74,48 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         #region methods
 
         /// <summary>
-        /// Allows for class level overrides -default is the static VocaBase.Equals
-        /// </summary>
-        /// <param name="voca"></param>
-        /// <returns></returns>
-        public virtual bool NamesEquals(IVoca voca)
-        {
-            return VocaBase.Equals(Court, voca);
-        }
-
-        /// <summary>
         /// Helper method reduce redundant code
         /// </summary>
-        /// <param name="subject2Person">
+        /// <param name="defendant2Person">
         /// Item1 is just the name you want to appear in the reasons (e.g. nameof(SuchAndSuch)).
         /// Item2 is a function to resolve the subject person (e.g. defendant, tortfeaser) to some other person (plaintiff, victim, etc.)
         /// </param>
-        /// <param name="person2Name">
+        /// <param name="person2Location">
         /// Item1 is just the name you want to appear in the reasons (e.g. nameof(SuchAndSuch)).
-        /// Item2 is a function to resolve the other person (plaintiff, victim, etc.) to some name\location to compare to class&apos;s name
+        /// Item2 is a function to resolve the other person (plaintiff, victim, etc.) to some
+        ///       name\location to compare to to <see cref="CivilProcedureBase.Court"/> name
         /// </param>
         /// <param name="persons">
         /// The legal persons passed into the calling function (e.g. IsValid)
         /// </param>
-        protected virtual bool TestPerson2Name(
-            Tuple<string, Func<ILegalPerson, ILegalPerson>> subject2Person, 
-            Tuple<string, Func<ILegalPerson, IVoca>> person2Name,
+        protected virtual bool TestDefendant2Person2LocationIsCourt(
+            Tuple<string, Func<ILegalPerson, ILegalPerson>> defendant2Person, 
+            Tuple<string, Func<ILegalPerson, IVoca>> person2Location,
             params ILegalPerson[] persons)
         {
             var defendant = this.Defendant(persons);
-            if (defendant == null || subject2Person?.Item2 == null || person2Name?.Item2 == null) 
+            if (defendant == null || defendant2Person?.Item2 == null || person2Location?.Item2 == null) 
                 return false;
 
             var title = defendant.GetLegalPersonTypeName();
 
-            var otherPerson = subject2Person.Item2(defendant);
+            var otherPerson = defendant2Person.Item2(defendant);
 
-            var someFunctionName = subject2Person.Item1;
+            var someFunctionName = defendant2Person.Item1;
 
             if (otherPerson == null)
                 return false;
 
             var otherTitle = otherPerson.GetLegalPersonTypeName();
 
-            var someOtherFunctionName = person2Name.Item1;
+            var someOtherFunctionName = person2Location.Item1;
 
-            var voca = person2Name.Item2(otherPerson);
-            if (NamesEquals(voca))
+            var location = person2Location.Item2(otherPerson);
+            if (NamesEqual(Court, location))
             {
-                AddReasonEntry($"{title} {defendant.Name}, {someFunctionName} returned '{otherPerson.Name}'");
-                AddReasonEntry($"{otherTitle} {otherPerson.Name}, {someOtherFunctionName} returned '{voca.Name}'");
-                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NamesEquals)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {someFunctionName} returned person '{otherPerson.Name}'");
+                AddReasonEntry($"{otherTitle} {otherPerson.Name}, {someOtherFunctionName} returned '{location.Name}'");
+                AddReasonEntry($"'{location.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
                 return true;
             }
 

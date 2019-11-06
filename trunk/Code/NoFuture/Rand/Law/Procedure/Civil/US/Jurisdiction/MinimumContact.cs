@@ -55,21 +55,21 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         public override bool IsValid(params ILegalPerson[] persons)
         {
 
-            var isDirectContactToResident = TestPerson2Name(
+            var isDirectContactToResident = TestDefendant2Person2LocationIsCourt(
                 Tuple.Create(nameof(GetDirectedContactTo), GetDirectedContactTo),
                 Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
 
             if (isDirectContactToResident)
                 return true;
             
-            var isContractedToResident = TestPerson2Name(
+            var isContractedToResident = TestDefendant2Person2LocationIsCourt(
                 Tuple.Create(nameof(GetContractedTo), GetContractedTo),
                 Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
 
             if (isContractedToResident)
                 return true;
 
-            var isTortfeaserToResident = TestPerson2Name(
+            var isTortfeaserToResident = TestDefendant2Person2LocationIsCourt(
                 Tuple.Create(nameof(GetIntentionalTortTo), GetIntentionalTortTo),
                 Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
 
@@ -80,33 +80,57 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (defendant == null)
                 return false;
 
-            var title = defendant.GetLegalPersonTypeName();
+            var defendantHome = GetDomicileLocation(defendant);
+            var isDefendantHomeState = NamesEqual(Court, defendantHome);
 
-            var injuryLocation = GetInjuryLocation(defendant);
-            var isInjuryLocation = NamesEquals(injuryLocation);
-            if (!isInjuryLocation)
+            var defendantTitle = defendant.GetLegalPersonTypeName();
+
+            //you can sue a person in their home state
+            if (isDefendantHomeState)
+            {
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetDomicileLocation)} returned '{defendantHome.Name}'");
+                AddReasonEntry($"'{defendantHome.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
+                return true;
+            }
+
+            var plaintiff = this.Plaintiff(persons);
+            if (plaintiff == null)
                 return false;
+
+            var plaintiffTitle = plaintiff.GetLegalPersonTypeName();
+
+            var injuryLocation = GetInjuryLocation(plaintiff);
+            if (injuryLocation == null)
+            {
+                AddReasonEntry($"{plaintiffTitle} {plaintiff.Name}, {nameof(GetInjuryLocation)} returned nothing");
+                return false;
+            }
 
             foreach (var voca in GetCommerciallyEngagedLocation(defendant) ?? new IVoca[]{})
             {
-                var isCommerciallyEngaged = NamesEquals(voca);
+                //defendant conducts biz here and it has a meaningful connection to plaintiff's claim
+                var isCommerciallyEngaged = NamesEqual(Court, voca) && NamesEqual(Court, injuryLocation);
                 if(!isCommerciallyEngaged)
                     continue;
 
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCommerciallyEngagedLocation)} returned '{voca.Name}'");
-                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NamesEquals)} is true");
+                AddReasonEntry($"{plaintiffTitle} {plaintiff.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
+                AddReasonEntry($"'{injuryLocation.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetCommerciallyEngagedLocation)} returned '{voca.Name}'");
+                AddReasonEntry($"'{voca.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
                 return true;
             }
 
             foreach (var voca in GetActiveVirtualContactLocation(defendant) ?? new IVoca[] { })
             {
-                var isVirtuallyEngaged = NamesEquals(voca);
-                if(!isVirtuallyEngaged)
+                //defendant has active virtual contact here and it has a meaningful connection to plaintiff's claim
+                var isVirtuallyEngaged = NamesEqual(Court, voca) && NamesEqual(Court, injuryLocation);
+                if (!isVirtuallyEngaged)
                     continue;
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetActiveVirtualContactLocation)} returned '{voca.Name}'");
-                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NamesEquals)} is true");
+
+                AddReasonEntry($"{plaintiffTitle} {plaintiff.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
+                AddReasonEntry($"'{injuryLocation.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetActiveVirtualContactLocation)} returned '{voca.Name}'");
+                AddReasonEntry($"'{voca.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
                 return true;
             }
 

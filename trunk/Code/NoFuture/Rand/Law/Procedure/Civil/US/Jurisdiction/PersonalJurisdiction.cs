@@ -66,18 +66,18 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             }
 
             var domicile = GetDomicileLocation(defendant);
-            if (domicile != null && NamesEquals(domicile))
+            if (domicile != null && NamesEqual(Court, domicile))
             {
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetDomicileLocation)} returned '{domicile.Name}'");
-                AddReasonEntry($"'{domicile.Name}' & '{Court.Name}', {nameof(NamesEquals)} is true");
+                AddReasonEntry($"'{domicile.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
                 return true;
             }
 
             var location = GetCurrentLocation(defendant);
-            if (location != null && NamesEquals(location))
+            if (location != null && NamesEqual(Court, location))
             {
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCurrentLocation)} returned '{location.Name}'");
-                AddReasonEntry($"'{location.Name}' & '{Court.Name}', {nameof(NamesEquals)} is true");
+                AddReasonEntry($"'{location.Name}' & {nameof(Court)}  '{Court.Name}', {nameof(NamesEqual)} is true");
                 return true;
             }
 
@@ -91,13 +91,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             CopyTo(MinimumContact);
 
-            if (MinimumContact.IsValid(persons))
-            {
-                AddReasonEntryRange(MinimumContact.GetReasonEntries());
-                return true;
-            }
-
-            return false;
+            var result = MinimumContact.IsValid(persons);
+            AddReasonEntryRange(MinimumContact.GetReasonEntries());
+            return result;
         }
     }
 }
