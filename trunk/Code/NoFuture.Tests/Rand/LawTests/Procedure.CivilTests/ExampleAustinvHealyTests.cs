@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Law.Procedure.Civil.US;
 using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Courts;
@@ -101,9 +103,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         public IVoca GetState(ILegalPerson lp)
         {
             if (lp is Austin)
-                return new  VocaBase("North Dakota");
+                return new DomicileLocation("North Dakota", lps => lps.FirstOrDefault(l => l is Austin));
             if (lp is Healy)
-                return new VocaBase("Minnesota");
+                return new DomicileLocation("Minnesota", lps => lps.FirstOrDefault(l => l is Healy));
             return null;
         }
     }

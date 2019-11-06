@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ExampleAustinvHealyTests.cs" />
     <Compile Include="ExampleSmokyMountainVWTests.cs" />
+    <Compile Include="ExampleTestDomicileLocation.cs" />
     <Compile Include="ExampleTestMinContact.cs" />
     <Compile Include="ExampleTestPersonalJurisdiction.cs" />
     <Compile Include="ExampleTestSubjectMatterJurisdiction.cs" />

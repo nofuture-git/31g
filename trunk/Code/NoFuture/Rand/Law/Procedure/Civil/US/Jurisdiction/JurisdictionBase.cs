@@ -78,7 +78,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// </summary>
         /// <param name="voca"></param>
         /// <returns></returns>
-        public virtual bool NameOfCourtEquals(IVoca voca)
+        public virtual bool NamesEquals(IVoca voca)
         {
             return VocaBase.Equals(Court, voca);
         }
@@ -120,11 +120,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             var someOtherFunctionName = person2Name.Item1;
 
             var voca = person2Name.Item2(otherPerson);
-            if (NameOfCourtEquals(voca))
+            if (NamesEquals(voca))
             {
                 AddReasonEntry($"{title} {defendant.Name}, {someFunctionName} returned '{otherPerson.Name}'");
                 AddReasonEntry($"{otherTitle} {otherPerson.Name}, {someOtherFunctionName} returned '{voca.Name}'");
-                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NameOfCourtEquals)} is true");
+                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NamesEquals)} is true");
                 return true;
             }
 

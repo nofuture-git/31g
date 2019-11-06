@@ -50,7 +50,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             var isFedCourtRequired = IsArisingFromFederalLaw(CausesOfAction) &&
                                      IsCongressConveyedJurisdiction(CausesOfAction);
 
-            //TODO - 28 U.S.C. Section 1334, requires federal jurisdiction (intellectual property, bankruptcy, etc.)
+            //TODO - 28 U.S.C. Section 1334, exclusive federal jurisdiction (intellectual property, bankruptcy, etc.)
 
             if (isFedCourtRequired && !isFedCourt)
             {

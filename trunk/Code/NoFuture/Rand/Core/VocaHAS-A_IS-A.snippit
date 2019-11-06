@@ -1,0 +1,72 @@
+        #region IVoca IS-A HAS-A
+        private readonly IVoca _voca = new VocaBase();
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            return _voca.ToData(txtCase);
+        }
+
+        public string Name
+        {
+            get => _voca.Name;
+            set => _voca.Name = value;
+        }
+        public int NamesCount
+        {
+            get => _voca.NamesCount;
+        }
+        public void AddName(KindsOfNames k, string name)
+        {
+            _voca.AddName(k,name);
+        }
+
+        public string GetName(KindsOfNames k)
+        {
+            return _voca.GetName(k);
+        }
+
+        public bool AnyNames(Predicate<KindsOfNames> filter)
+        {
+            return _voca.AnyNames(filter);
+        }
+
+        public bool AnyNames(Predicate<string> filter)
+        {
+            return _voca.AnyNames(filter);
+        }
+
+        public bool AnyNames(Func<KindsOfNames, string, bool> filter)
+        {
+            return _voca.AnyNames(filter);
+        }
+
+        public bool AnyNames()
+        {
+            return _voca.AnyNames();
+        }
+
+        public int RemoveName(Predicate<KindsOfNames> filter)
+        {
+            return _voca.RemoveName(filter);
+        }
+
+        public int RemoveName(Predicate<string> filter)
+        {
+            return _voca.RemoveName(filter);
+        }
+
+        public int RemoveName(Func<KindsOfNames, string, bool> filter)
+        {
+            return _voca.RemoveName(filter);
+        }
+
+        public KindsOfNames[] GetAllKindsOfNames()
+        {
+            return _voca.GetAllKindsOfNames();
+        }
+
+        public void CopyNamesFrom(IVoca voca)
+        {
+            _voca.CopyNamesFrom(voca);
+        }
+
+        #endregion

@@ -83,30 +83,30 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             var title = defendant.GetLegalPersonTypeName();
 
             var injuryLocation = GetInjuryLocation(defendant);
-            var isInjuryLocation = NameOfCourtEquals(injuryLocation);
+            var isInjuryLocation = NamesEquals(injuryLocation);
             if (!isInjuryLocation)
                 return false;
 
             foreach (var voca in GetCommerciallyEngagedLocation(defendant) ?? new IVoca[]{})
             {
-                var isCommerciallyEngaged = NameOfCourtEquals(voca);
+                var isCommerciallyEngaged = NamesEquals(voca);
                 if(!isCommerciallyEngaged)
                     continue;
 
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCommerciallyEngagedLocation)} returned '{voca.Name}'");
-                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NameOfCourtEquals)} is true");
+                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NamesEquals)} is true");
                 return true;
             }
 
             foreach (var voca in GetActiveVirtualContactLocation(defendant) ?? new IVoca[] { })
             {
-                var isVirtuallyEngaged = NameOfCourtEquals(voca);
+                var isVirtuallyEngaged = NamesEquals(voca);
                 if(!isVirtuallyEngaged)
                     continue;
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetActiveVirtualContactLocation)} returned '{voca.Name}'");
-                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NameOfCourtEquals)} is true");
+                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NamesEquals)} is true");
                 return true;
             }
 
