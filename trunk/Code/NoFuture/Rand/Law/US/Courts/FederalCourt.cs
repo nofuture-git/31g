@@ -4,8 +4,9 @@ namespace NoFuture.Rand.Law.US.Courts
 {
     /// <summary>
     /// Limited subject matter jurisdiction as defined
-    /// in Article III, Section 2 of the Constitution -
-    /// otherwise it remains with the states.
+    /// in Article III, Section 2 of the Constitution;
+    /// in addition, Congress must confer jurisdiction
+    /// - otherwise it remains with the states.
     /// </summary>
     /// <remarks>
     /// <![CDATA[
@@ -20,5 +21,9 @@ namespace NoFuture.Rand.Law.US.Courts
     /// </remarks>
     public class FederalCourt : VocaBase, ICourt
     {
+        public FederalCourt(string name) : base(name)
+        {
+
+        }
     }
 }

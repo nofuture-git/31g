@@ -83,30 +83,30 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             var title = defendant.GetLegalPersonTypeName();
 
             var injuryLocation = GetInjuryLocation(defendant);
-            var isInjuryLocation = NameEquals(injuryLocation);
+            var isInjuryLocation = NameOfCourtEquals(injuryLocation);
             if (!isInjuryLocation)
                 return false;
 
             foreach (var voca in GetCommerciallyEngagedLocation(defendant) ?? new IVoca[]{})
             {
-                var isCommerciallyEngaged = NameEquals(voca);
+                var isCommerciallyEngaged = NameOfCourtEquals(voca);
                 if(!isCommerciallyEngaged)
                     continue;
 
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCommerciallyEngagedLocation)} returned '{voca.Name}'");
-                AddReasonEntry($"'{voca.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NameOfCourtEquals)} is true");
                 return true;
             }
 
             foreach (var voca in GetActiveVirtualContactLocation(defendant) ?? new IVoca[] { })
             {
-                var isVirtuallyEngaged = NameEquals(voca);
+                var isVirtuallyEngaged = NameOfCourtEquals(voca);
                 if(!isVirtuallyEngaged)
                     continue;
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetActiveVirtualContactLocation)} returned '{voca.Name}'");
-                AddReasonEntry($"'{voca.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NameOfCourtEquals)} is true");
                 return true;
             }
 

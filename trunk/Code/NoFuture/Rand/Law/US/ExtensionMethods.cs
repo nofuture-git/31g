@@ -504,6 +504,8 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("court official");
             if (person.Equals(Government.Value))
                 titles.Add("the government");
+            if(person is ICorporation)
+                titles.Add("corporation");
             if(person is ICotenant)
                 titles.Add("cotenant");
 

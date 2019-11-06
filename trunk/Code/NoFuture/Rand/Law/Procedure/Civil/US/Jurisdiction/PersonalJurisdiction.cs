@@ -66,18 +66,18 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             }
 
             var domicile = GetDomicileLocation(defendant);
-            if (domicile != null && NameEquals(domicile))
+            if (domicile != null && NameOfCourtEquals(domicile))
             {
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetDomicileLocation)} returned '{domicile.Name}'");
-                AddReasonEntry($"'{domicile.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                AddReasonEntry($"'{domicile.Name}' & '{Court.Name}', {nameof(NameOfCourtEquals)} is true");
                 return true;
             }
 
             var location = GetCurrentLocation(defendant);
-            if (location != null && NameEquals(location))
+            if (location != null && NameOfCourtEquals(location))
             {
                 AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCurrentLocation)} returned '{location.Name}'");
-                AddReasonEntry($"'{location.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                AddReasonEntry($"'{location.Name}' & '{Court.Name}', {nameof(NameOfCourtEquals)} is true");
                 return true;
             }
 

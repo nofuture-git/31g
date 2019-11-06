@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
-    public abstract class JurisdictionBase : CivilProcedureBase, IVoca
+    public abstract class JurisdictionBase : CivilProcedureBase
     {
+        #region fields
         protected bool flagGetDomicileLocation;
         private Func<ILegalPerson, IVoca> _getDomicileLocation = lp => null;
 
@@ -17,11 +16,15 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         protected bool flagGetInjuryLocation;
         private Func<ILegalPerson, IVoca> _getInjuryLocation = lp => null;
 
+        #endregion
+
         protected JurisdictionBase(ICourt name)
         {
-            if(name != null)
-                _voca = name;
+            if (name != null)
+                Court = name;
         }
+
+        #region properties
 
         /// <summary>
         /// Is the location in which some injury occured 
@@ -66,14 +69,18 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             }
         }
 
+        #endregion
+
+        #region methods
+
         /// <summary>
         /// Allows for class level overrides -default is the static VocaBase.Equals
         /// </summary>
         /// <param name="voca"></param>
         /// <returns></returns>
-        public virtual bool NameEquals(IVoca voca)
+        public virtual bool NameOfCourtEquals(IVoca voca)
         {
-            return VocaBase.Equals(this, voca);
+            return VocaBase.Equals(Court, voca);
         }
 
         /// <summary>
@@ -113,11 +120,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             var someOtherFunctionName = person2Name.Item1;
 
             var voca = person2Name.Item2(otherPerson);
-            if (NameEquals(voca))
+            if (NameOfCourtEquals(voca))
             {
                 AddReasonEntry($"{title} {defendant.Name}, {someFunctionName} returned '{otherPerson.Name}'");
                 AddReasonEntry($"{otherTitle} {otherPerson.Name}, {someOtherFunctionName} returned '{voca.Name}'");
-                AddReasonEntry($"'{voca.Name}' & '{Name}', {nameof(NameEquals)} is true");
+                AddReasonEntry($"'{voca.Name}' & '{Court.Name}', {nameof(NameOfCourtEquals)} is true");
                 return true;
             }
 
@@ -129,9 +136,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (juris == null)
                 return;
 
-            //transpose whatever is here to this sister type based on what's missing
-            if (juris.NamesCount <= 0)
-                juris.CopyNamesFrom(this);
+            if (juris.Court == null && Court != null)
+                juris.Court = Court;
 
             if (flagGetDomicileLocation && !juris.flagGetDomicileLocation)
                 juris.GetDomicileLocation = GetDomicileLocation;
@@ -141,77 +147,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             if (flagGetInjuryLocation && !juris.flagGetInjuryLocation)
                 juris.GetInjuryLocation = GetInjuryLocation;
-        }
-
-        #region IVoca IS-A HAS-A
-        private readonly IVoca _voca = new VocaBase();
-        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
-        {
-            return _voca.ToData(txtCase);
-        }
-
-        public string Name
-        {
-            get => _voca.Name;
-            set => _voca.Name = value;
-        }
-        public int NamesCount
-        {
-            get => _voca.NamesCount;
-        }
-        public void AddName(KindsOfNames k, string name)
-        {
-            _voca.AddName(k, name);
-        }
-
-        public string GetName(KindsOfNames k)
-        {
-            return _voca.GetName(k);
-        }
-
-        public bool AnyNames(Predicate<KindsOfNames> filter)
-        {
-            return _voca.AnyNames(filter);
-        }
-
-        public bool AnyNames(Predicate<string> filter)
-        {
-            return _voca.AnyNames(filter);
-        }
-
-        public bool AnyNames(Func<KindsOfNames, string, bool> filter)
-        {
-            return _voca.AnyNames(filter);
-        }
-
-        public bool AnyNames()
-        {
-            return _voca.AnyNames();
-        }
-
-        public int RemoveName(Predicate<KindsOfNames> filter)
-        {
-            return _voca.RemoveName(filter);
-        }
-
-        public int RemoveName(Predicate<string> filter)
-        {
-            return _voca.RemoveName(filter);
-        }
-
-        public int RemoveName(Func<KindsOfNames, string, bool> filter)
-        {
-            return _voca.RemoveName(filter);
-        }
-
-        public KindsOfNames[] GetAllKindsOfNames()
-        {
-            return _voca.GetAllKindsOfNames();
-        }
-
-        public void CopyNamesFrom(IVoca voca)
-        {
-            _voca.CopyNamesFrom(voca);
         }
 
         #endregion

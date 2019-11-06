@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NoFuture.Rand.Law.US.Terms
+﻿namespace NoFuture.Rand.Law.US.Terms
 {
     /// <summary>
     /// The highest level of evidence - there is no reason to believe otherwise

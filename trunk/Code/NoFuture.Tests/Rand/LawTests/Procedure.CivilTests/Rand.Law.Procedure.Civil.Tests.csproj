@@ -45,6 +45,7 @@
     <Compile Include="ExampleSmokyMountainVWTests.cs" />
     <Compile Include="ExampleTestMinContact.cs" />
     <Compile Include="ExampleTestPersonalJurisdiction.cs" />
+    <Compile Include="ExampleTestSubjectMatterJurisdiction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
