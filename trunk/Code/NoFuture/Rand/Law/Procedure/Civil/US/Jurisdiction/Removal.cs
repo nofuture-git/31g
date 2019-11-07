@@ -30,20 +30,20 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return false;
             }
 
-            FederalJurisdiction.CopyTo(this);
-
-            //test if this is even in scope for federal court based on ctor arg
-            var isFederalIssue = FederalJurisdiction.IsValidWithTestCourtType(persons);
-            AddReasonEntryRange(FederalJurisdiction.GetReasonEntries());
-            if (!isFederalIssue)
-            {
-                return false;
-            }
-
             if (Court is FederalCourt)
             {
                 AddReasonEntry($"{nameof(Court)}, '{Court?.Name}' is type " +
                                $"already type {nameof(FederalCourt)}");
+                return false;
+            }
+
+            FederalJurisdiction.CopyTo(this);
+
+            //test if this is even in scope for federal court based on ctor arg
+            var isFederalIssue = FederalJurisdiction.IsValidWithoutTestCourtType(persons);
+            AddReasonEntryRange(FederalJurisdiction.GetReasonEntries());
+            if (!isFederalIssue)
+            {
                 return false;
             }
 

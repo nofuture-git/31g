@@ -54,10 +54,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (!IsFederalCourt())
                 return false;
 
-            return IsValidWithTestCourtType(persons);
+            return IsValidWithoutTestCourtType(persons);
         }
 
-        protected internal override bool IsValidWithTestCourtType(ILegalPerson[] persons)
+        protected internal override bool IsValidWithoutTestCourtType(ILegalPerson[] persons)
         {
             if (!IsCausesOfActionAssigned())
                 return false;

@@ -11,6 +11,6 @@
         /// </summary>
         /// <param name="persons"></param>
         /// <returns></returns>
-        protected internal abstract bool IsValidWithTestCourtType(ILegalPerson[] persons);
+        protected internal abstract bool IsValidWithoutTestCourtType(ILegalPerson[] persons);
     }
 }
