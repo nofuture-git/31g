@@ -1,11 +1,12 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
     /// Defined in 28 U.S.C. section 1391
     /// </summary>
-    public class FederalVenue : Venue
+    public class FederalVenue : PersonalJurisdiction, IVenue
     {
         public FederalVenue(ICourt name) : base(name)
         {
@@ -17,7 +18,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// </summary>
         protected internal virtual bool IsValidUscB1(ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            var defendant = this.Defendant(persons);
+            if (defendant == null)
+                return false;
+            return IsCourtDomicileLocationOfDefendant(defendant);
         }
 
         /// <summary>
@@ -26,7 +30,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// </summary>
         protected internal virtual bool IsValidUscB2(ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            var plaintiff = this.Plaintiff(persons);
+            if (plaintiff == null)
+                return false;
+
+            return IsCourtInjuryLocationOfPlaintiff(plaintiff);
         }
 
         /// <summary>
@@ -35,9 +43,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// </summary>
         protected internal virtual bool IsValidUscB3(ILegalPerson[] persons)
         {
-            throw new NotImplementedException();
+            return base.IsValid(persons);
         }
-
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -47,13 +54,16 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (!IsFederalCourt())
                 return false;
 
-            if (!IsValidUscB1(persons))
-                return false;
+            if (IsValidUscB1(persons))
+                return true;
 
+            if (IsValidUscB2(persons))
+                return true;
 
-            
+            if (IsValidUscB3(persons))
+                return true;
 
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

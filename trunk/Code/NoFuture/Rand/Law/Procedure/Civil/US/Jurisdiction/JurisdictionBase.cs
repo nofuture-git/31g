@@ -127,6 +127,30 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             return false;
         }
 
+        protected internal virtual bool IsCourtInjuryLocationOfPlaintiff(ILegalPerson plaintiff, string title = null)
+        {
+            title = title ?? plaintiff.GetLegalPersonTypeName();
+
+            //is jurisdiction domicile location of defendant
+            var injuryLocation = GetInjuryLocation(plaintiff);
+
+            if (injuryLocation == null)
+            {
+                AddReasonEntry($"{title} {plaintiff.Name}, " +
+                               $"{nameof(GetInjuryLocation)} returned nothing");
+                return false;
+            }
+
+            if (NamesEqual(Court, injuryLocation))
+            {
+                AddReasonEntry($"{title} {plaintiff.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
+                AddReasonEntry($"'{injuryLocation.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
+                return true;
+            }
+
+            return false;
+        }
+
         #endregion
     }
 }

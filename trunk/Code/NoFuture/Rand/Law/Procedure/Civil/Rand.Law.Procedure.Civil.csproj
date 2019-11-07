@@ -46,7 +46,7 @@
     <Compile Include="US\Jurisdiction\PersonalJurisdiction.cs" />
     <Compile Include="US\Jurisdiction\FederalSubjectMatterJurisdiction.cs" />
     <Compile Include="US\Jurisdiction\Removal.cs" />
-    <Compile Include="US\Jurisdiction\Venue.cs" />
+    <Compile Include="US\Jurisdiction\IVenue.cs" />
     <Compile Include="US\Pleadings\CollateralAttackOnJudgment.cs" />
     <Compile Include="US\Pleadings\Complaint.cs" />
     <Compile Include="US\Pleadings\PleadingBase.cs" />

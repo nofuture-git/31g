@@ -9,10 +9,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// Is a county for state court and a district\division for federal court
     /// </remarks>
     [EtymologyNote("latin", "locus delicti", "place of delict")]
-    public abstract class Venue : JurisdictionBase
+    public interface IVenue : ILegalConcept
     {
-        protected Venue(ICourt name) : base(name)
-        {
-        }
+
     }
 }
