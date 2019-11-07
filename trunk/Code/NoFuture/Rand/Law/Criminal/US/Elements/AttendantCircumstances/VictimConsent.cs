@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
@@ -7,6 +8,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
     /// <summary>
     /// the inability or firm denial of willingness to engage
     /// </summary>
+    [Note("this is an oxymoron")]
     public class VictimConsent : AttendantCircumstanceBase, IConsent
     {
         public Predicate<ILegalPerson> IsCapableThereof { get; set; } = lp => false;

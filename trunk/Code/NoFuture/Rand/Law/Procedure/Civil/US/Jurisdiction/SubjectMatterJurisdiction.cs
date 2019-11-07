@@ -6,6 +6,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// <summary>
     /// Different kinds of courts hear different kinds of cases
     /// </summary>
+    /// <remarks>
+    /// When the subject matter jurisdiction is very broad then it is called &quot;general jurisdiction&quot;
+    /// </remarks>
     public class SubjectMatterJurisdiction : JurisdictionBase
     {
         public SubjectMatterJurisdiction(ICourt name) : base(name)
@@ -24,12 +27,18 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         public Predicate<ILegalConcept> IsArisingFromFederalLaw { get; set; } = lc => false;
 
         /// <summary>
-        /// Congress must convey jurisdiction in a federal statute
+        /// the Legislature must still authorize the court to exercise jurisdiction
         /// </summary>
         /// <remarks>
-        /// Only some statutes require a federal court like patents and copyright.
+        /// Where Due-Process clause defines the outer bounds of permissible jurisdictional
+        /// power - the legislature may limit but never expand jurisdiction beyond it.
         /// </remarks>
-        public Predicate<ILegalConcept> IsCongressConveyedJurisdiction { get; set; } = lc => false;
+        public virtual Predicate<ILegalConcept> IsAuthorized2ExerciseJurisdiction { get; set; } = lp => true;
+
+        /// <summary>
+        /// Some subjects are exclusively for federal courts including intellectual property, bankruptcy, etc.
+        /// </summary>
+        public virtual Predicate<ILegalConcept> IsExclusiveFederalJurisdiction { get; set; } = lp => false;
 
         /// <summary>
         /// Asserts that the type of <see cref="CivilProcedureBase.Court"/>
@@ -45,22 +54,29 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (!IsCourtAssigned())
                 return false;
 
-            var isFedCourt = Court is FederalCourt;
-            var isFedCourtRequired = IsArisingFromFederalLaw(CausesOfAction) &&
-                                     IsCongressConveyedJurisdiction(CausesOfAction);
-
-            //TODO - 28 U.S.C. Section 1334, exclusive federal jurisdiction (intellectual property, bankruptcy, etc.)
-
-            if (isFedCourtRequired && !isFedCourt)
+            if (!IsAuthorized2ExerciseJurisdiction(CausesOfAction))
             {
-                AddReasonEntry($"{nameof(IsArisingFromFederalLaw)} and {nameof(IsCongressConveyedJurisdiction)} are " +
-                               $"both true for {nameof(CausesOfAction)} but the {nameof(Court)}, named '{Court?.Name}', " +
+                AddReasonEntry($"{nameof(Court)} '{Court.Name}', {nameof(IsAuthorized2ExerciseJurisdiction)} " +
+                               $"for {nameof(CausesOfAction)} is false");
+                return false;
+            }
+
+            var isFedCourt = Court is FederalCourt;
+            var isAriseFedLaw = IsArisingFromFederalLaw(CausesOfAction);
+            var isExclusiveFed = IsExclusiveFederalJurisdiction(CausesOfAction);
+
+            if (isExclusiveFed && !isFedCourt)
+            {
+                AddReasonEntry($"{nameof(IsArisingFromFederalLaw)} is {isAriseFedLaw} for {nameof(CausesOfAction)} ");
+                AddReasonEntry(
+                    $"{nameof(IsExclusiveFederalJurisdiction)} is {isExclusiveFed} for {nameof(CausesOfAction)} ");
+                AddReasonEntry($"The {nameof(Court)}, named '{Court?.Name}', " +
                                $"is type {Court?.GetType().Name} not type {nameof(FederalCourt)}");
                 return false;
             }
 
             //Federal jurisdiction may also be handled by states - there is concurrent jurisdiction.
-            return Court is StateCourt;
+            return Court is FederalCourt ? isAriseFedLaw : Court is StateCourt;
         }
 
     }

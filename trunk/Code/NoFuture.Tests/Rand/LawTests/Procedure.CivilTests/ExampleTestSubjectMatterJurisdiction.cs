@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new SubjectMatterJurisdiction(new SomeOtherKindOfCourt("kangaroo"))
             {
-                IsCongressConveyedJurisdiction = lc => lc is SomeFederalLegalMatter,
+                IsAuthorized2ExerciseJurisdiction = lc => lc is SomeFederalLegalMatter,
                 IsArisingFromFederalLaw = lc => lc is SomeFederalLegalMatter,
                 CausesOfAction = new SomeFederalLegalMatter()
             };

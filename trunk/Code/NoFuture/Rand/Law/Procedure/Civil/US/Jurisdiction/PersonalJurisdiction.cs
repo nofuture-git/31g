@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
-    /// The power over person(s) to have them come to a state to be sued in court.
+    /// Jurisdiction in terms of its geographical limitations
     /// </summary>
     /// <remarks>
     /// <![CDATA[ Since, Pennoyer v. Neff, 95 U.S. 714 (1877), you cannot sue someone in just any jurisdiction ]]>
@@ -15,16 +13,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     public class PersonalJurisdiction : JurisdictionBase
     {
         public PersonalJurisdiction(ICourt name) :base(name) { }
-
-        /// <summary>
-        /// the Legislature must still authorize the court to exercise jurisdiction
-        /// </summary>
-        /// <remarks>
-        /// Where Due-Process clause defines the outer bounds of permissible jurisdictional
-        /// power - the legislature may limit but never expand jurisdiction beyond it.
-        /// </remarks>
-        [Aka("long-arm statutes")]
-        public virtual Predicate<ILegalPerson> IsAuthorized2ExerciseJurisdiction { get; set; } = lp => true;
 
         /// <summary>
         /// The defendant agrees to it
@@ -44,12 +32,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             var title = defendant.GetLegalPersonTypeName();
 
-            if (!IsAuthorized2ExerciseJurisdiction(defendant))
-            {
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsAuthorized2ExerciseJurisdiction)} is false");
-                return false;
-            }
-
+            //is consented to jurisdiction
             if (Consent != null && Consent.IsValid(persons))
             {
                 AddReasonEntryRange(Consent.GetReasonEntries());
@@ -60,11 +43,13 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return true;
             }
 
+            //is pass minimum contact test
             if (IsMinimumContact(persons))
             {
                 return true;
             }
 
+            //is jurisdiction domicile location of defendant
             var domicile = GetDomicileLocation(defendant);
             if (domicile != null && NamesEqual(Court, domicile))
             {
@@ -73,6 +58,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return true;
             }
 
+            //is defendant current present in jurisdiction
             var location = GetCurrentLocation(defendant);
             if (location != null && NamesEqual(Court, location))
             {
