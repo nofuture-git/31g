@@ -55,7 +55,17 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);
+            testSubject.ClearReasons();
+
+            testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleForeigner());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
 
         }
+    }
+
+    public class ExampleForeigner : LegalPerson, IForeigner, IDefendant
+    {
+        public ExampleForeigner() : base("Fritz C Shlaphindagen") { }
     }
 }

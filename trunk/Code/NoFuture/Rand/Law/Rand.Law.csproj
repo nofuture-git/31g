@@ -88,6 +88,7 @@
     <Compile Include="US\Persons\IEmployee.cs" />
     <Compile Include="US\Persons\IEmployer.cs" />
     <Compile Include="US\Persons\IExpert.cs" />
+    <Compile Include="US\Persons\IForeigner.cs" />
     <Compile Include="US\Persons\IGovernment.cs" />
     <Compile Include="US\Persons\IGrantee.cs" />
     <Compile Include="US\Persons\IGrantor.cs" />

@@ -40,14 +40,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
         /// <summary>
         /// Allows for class level overrides -default is the static VocaBase.Equals
         /// </summary>
-        public virtual bool NamesOfCourtEquals(IVoca voca)
-        {
-            return VocaBase.Equals(Court, voca);
-        }
-
-        /// <summary>
-        /// Allows for class level overrides -default is the static VocaBase.Equals
-        /// </summary>
         public virtual bool NamesEqual(IVoca voca1, IVoca voca2)
         {
             return VocaBase.Equals(voca1, voca2);

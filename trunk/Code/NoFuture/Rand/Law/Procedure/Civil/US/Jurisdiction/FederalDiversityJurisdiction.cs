@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Courts;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
@@ -38,17 +39,30 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return false;
             }
 
-            var defendant = this.Defendant(persons);
+            var defendant = this.Defendant(persons) as ILegalPerson;
+
             if (defendant == null)
                 return false;
 
             var defendantTitle = defendant.GetLegalPersonTypeName();
 
-            var plaintiff = this.Plaintiff(persons);
+            if (defendant is IForeigner)
+            {
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, is type {nameof(IForeigner)}");
+                return true;
+            }
+
+            var plaintiff = this.Plaintiff(persons) as ILegalPerson;
             if (plaintiff == null)
                 return false;
 
             var plaintiffTitle = plaintiff.GetLegalPersonTypeName();
+
+            if (plaintiff is IForeigner)
+            {
+                AddReasonEntry($"{plaintiffTitle} {plaintiff.Name}, is type {nameof(IForeigner)}");
+                return true;
+            }
 
             var plaintiffHome = GetDomicileLocation(plaintiff);
             if (plaintiffHome == null)

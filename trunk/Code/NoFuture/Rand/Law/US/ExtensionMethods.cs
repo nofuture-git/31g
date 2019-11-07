@@ -508,6 +508,8 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("corporation");
             if(person is ICotenant)
                 titles.Add("cotenant");
+            if(person is IForeigner)
+                titles.Add("foreigner");
 
             return string.Join("|", titles);
         }
