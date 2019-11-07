@@ -75,55 +75,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
         #region methods
 
-        /// <summary>
-        /// Helper method reduce redundant code
-        /// </summary>
-        /// <param name="defendant2Person">
-        /// Item1 is just the name you want to appear in the reasons (e.g. nameof(SuchAndSuch)).
-        /// Item2 is a function to resolve the subject person (e.g. defendant, tortfeaser) to some other person (plaintiff, victim, etc.)
-        /// </param>
-        /// <param name="person2Location">
-        /// Item1 is just the name you want to appear in the reasons (e.g. nameof(SuchAndSuch)).
-        /// Item2 is a function to resolve the other person (plaintiff, victim, etc.) to some
-        ///       name\location to compare to to <see cref="CivilProcedureBase.Court"/> name
-        /// </param>
-        /// <param name="persons">
-        /// The legal persons passed into the calling function (e.g. IsValid)
-        /// </param>
-        protected virtual bool TestDefendant2Person2LocationIsCourt(
-            Tuple<string, Func<ILegalPerson, ILegalPerson>> defendant2Person, 
-            Tuple<string, Func<ILegalPerson, IVoca>> person2Location,
-            params ILegalPerson[] persons)
-        {
-            var defendant = this.Defendant(persons);
-            if (defendant == null || defendant2Person?.Item2 == null || person2Location?.Item2 == null) 
-                return false;
-
-            var title = defendant.GetLegalPersonTypeName();
-
-            var otherPerson = defendant2Person.Item2(defendant);
-
-            var someFunctionName = defendant2Person.Item1;
-
-            if (otherPerson == null)
-                return false;
-
-            var otherTitle = otherPerson.GetLegalPersonTypeName();
-
-            var someOtherFunctionName = person2Location.Item1;
-
-            var location = person2Location.Item2(otherPerson);
-            if (NamesEqual(Court, location))
-            {
-                AddReasonEntry($"{title} {defendant.Name}, {someFunctionName} returned person '{otherPerson.Name}'");
-                AddReasonEntry($"{otherTitle} {otherPerson.Name}, {someOtherFunctionName} returned '{location.Name}'");
-                AddReasonEntry($"'{location.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
-                return true;
-            }
-
-            return false;
-        }
-
         public void CopyTo(JurisdictionBase juris)
         {
             if (juris == null)
@@ -150,7 +101,30 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             AddReasonEntry($"{nameof(Court)}, '{Court?.Name}' is type " +
                            $"{Court?.GetType().Name} not type {nameof(FederalCourt)}");
             return false;
+        }
 
+        protected internal virtual bool IsCourtDomicileLocationOfDefendant(ILegalPerson defendant, string title = null)
+        {
+            title = title ?? defendant.GetLegalPersonTypeName();
+
+            //is jurisdiction domicile location of defendant
+            var domicile = GetDomicileLocation(defendant);
+
+            if (domicile == null)
+            {
+                AddReasonEntry($"{title} {defendant.Name}, " +
+                               $"{nameof(GetDomicileLocation)} returned nothing");
+                return false;
+            }
+
+            if (NamesEqual(Court, domicile))
+            {
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetDomicileLocation)} returned '{domicile.Name}'");
+                AddReasonEntry($"'{domicile.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
+                return true;
+            }
+
+            return false;
         }
 
         #endregion

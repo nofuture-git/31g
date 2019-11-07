@@ -42,6 +42,12 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         [Aka("Calder effects test")]
         public Func<ILegalPerson, ILegalPerson> GetIntentionalTortTo { get; set; } = lp => null;
 
+        /// <summary>
+        /// Locations in which a person is actively commercially engaged.
+        /// </summary>
+        /// <remarks>
+        /// Simply owning property or the like is considered passive and does not count
+        /// </remarks>
         public Func<ILegalPerson, IVoca[]> GetCommerciallyEngagedLocation { get; set; } = lp => null;
 
         /// <summary>
@@ -55,41 +61,28 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         public override bool IsValid(params ILegalPerson[] persons)
         {
 
-            var isDirectContactToResident = TestDefendant2Person2LocationIsCourt(
-                Tuple.Create(nameof(GetDirectedContactTo), GetDirectedContactTo),
-                Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
-
-            if (isDirectContactToResident)
+            if (IsDirectContactToResident(persons))
+            {
                 return true;
-            
-            var isContractedToResident = TestDefendant2Person2LocationIsCourt(
-                Tuple.Create(nameof(GetContractedTo), GetContractedTo),
-                Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
+            }
 
-            if (isContractedToResident)
+            if (IsContractedToResident(persons))
+            {
                 return true;
+            }
 
-            var isTortfeaserToResident = TestDefendant2Person2LocationIsCourt(
-                Tuple.Create(nameof(GetIntentionalTortTo), GetIntentionalTortTo),
-                Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
-
-            if (isTortfeaserToResident)
+            if (IsTortfeaserToResident(persons))
+            {
                 return true;
+            }
 
             var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
-            var defendantHome = GetDomicileLocation(defendant);
-            var isDefendantHomeState = NamesEqual(Court, defendantHome);
-
             var defendantTitle = defendant.GetLegalPersonTypeName();
 
-            //you can sue a person in their home state
-            if (isDefendantHomeState)
+            if (IsCourtDomicileLocationOfDefendant(defendant, defendantTitle))
             {
-                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetDomicileLocation)} returned '{defendantHome.Name}'");
-                AddReasonEntry($"'{defendantHome.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
                 return true;
             }
 
@@ -99,6 +92,47 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             var plaintiffTitle = plaintiff.GetLegalPersonTypeName();
 
+            if (IsCommerciallyEngagedConnectedToInjuryLocation(defendant, plaintiff, defendantTitle, plaintiffTitle))
+            {
+                return true;
+            }
+
+            if (IsVirtualContactConnectedToInjuryLocation(defendant, plaintiff, defendantTitle, defendantTitle))
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+
+        protected internal virtual bool IsDirectContactToResident(ILegalPerson[] persons)
+        {
+            return TestDefendant2Person2LocationIsCourt(
+                Tuple.Create(nameof(GetDirectedContactTo), GetDirectedContactTo),
+                Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
+        }
+
+        protected internal virtual bool IsContractedToResident(ILegalPerson[] persons)
+        {
+            return TestDefendant2Person2LocationIsCourt(
+                Tuple.Create(nameof(GetContractedTo), GetContractedTo),
+                Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
+        }
+
+        protected internal virtual bool IsTortfeaserToResident(ILegalPerson[] persons)
+        {
+            return TestDefendant2Person2LocationIsCourt(
+                Tuple.Create(nameof(GetIntentionalTortTo), GetIntentionalTortTo),
+                Tuple.Create(nameof(GetDomicileLocation), GetDomicileLocation), persons);
+        }
+
+        protected internal virtual bool IsCommerciallyEngagedConnectedToInjuryLocation(ILegalPerson defendant, ILegalPerson plaintiff,
+            string defendantTitle = null, string plaintiffTitle = null)
+        {
+            defendantTitle = defendantTitle ?? defendant.GetLegalPersonTypeName();
+            plaintiffTitle = plaintiffTitle ?? plaintiff.GetLegalPersonTypeName();
+
             var injuryLocation = GetInjuryLocation(plaintiff);
             if (injuryLocation == null)
             {
@@ -106,11 +140,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return false;
             }
 
-            foreach (var voca in GetCommerciallyEngagedLocation(defendant) ?? new IVoca[]{})
+            foreach (var voca in GetCommerciallyEngagedLocation(defendant) ?? new IVoca[] { })
             {
                 //defendant conducts biz here and it has a meaningful connection to plaintiff's claim
                 var isCommerciallyEngaged = NamesEqual(Court, voca) && NamesEqual(Court, injuryLocation);
-                if(!isCommerciallyEngaged)
+                if (!isCommerciallyEngaged)
                     continue;
 
                 AddReasonEntry($"{plaintiffTitle} {plaintiff.Name}, {nameof(GetInjuryLocation)} returned '{injuryLocation.Name}'");
@@ -118,6 +152,22 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetCommerciallyEngagedLocation)} returned '{voca.Name}'");
                 AddReasonEntry($"'{voca.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
                 return true;
+            }
+
+            return false;
+        }
+
+        protected internal virtual bool IsVirtualContactConnectedToInjuryLocation(ILegalPerson defendant, ILegalPerson plaintiff,
+            string defendantTitle = null, string plaintiffTitle = null)
+        {
+            defendantTitle = defendantTitle ?? defendant.GetLegalPersonTypeName();
+            plaintiffTitle = plaintiffTitle ?? plaintiff.GetLegalPersonTypeName();
+
+            var injuryLocation = GetInjuryLocation(plaintiff);
+            if (injuryLocation == null)
+            {
+                AddReasonEntry($"{plaintiffTitle} {plaintiff.Name}, {nameof(GetInjuryLocation)} returned nothing");
+                return false;
             }
 
             foreach (var voca in GetActiveVirtualContactLocation(defendant) ?? new IVoca[] { })
@@ -135,7 +185,55 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             }
 
             return false;
+        }
 
+        /// <summary>
+        /// Helper method reduce redundant code
+        /// </summary>
+        /// <param name="defendant2Person">
+        /// Item1 is just the name you want to appear in the reasons (e.g. nameof(SuchAndSuch)).
+        /// Item2 is a function to resolve the subject person (e.g. defendant, tortfeaser) to some other person (plaintiff, victim, etc.)
+        /// </param>
+        /// <param name="person2Location">
+        /// Item1 is just the name you want to appear in the reasons (e.g. nameof(SuchAndSuch)).
+        /// Item2 is a function to resolve the other person (plaintiff, victim, etc.) to some
+        ///       name\location to compare to to <see cref="CivilProcedureBase.Court"/> name
+        /// </param>
+        /// <param name="persons">
+        /// The legal persons passed into the calling function (e.g. IsValid)
+        /// </param>
+        protected virtual bool TestDefendant2Person2LocationIsCourt(
+            Tuple<string, Func<ILegalPerson, ILegalPerson>> defendant2Person,
+            Tuple<string, Func<ILegalPerson, IVoca>> person2Location,
+            params ILegalPerson[] persons)
+        {
+            var defendant = this.Defendant(persons);
+            if (defendant == null || defendant2Person?.Item2 == null || person2Location?.Item2 == null)
+                return false;
+
+            var title = defendant.GetLegalPersonTypeName();
+
+            var otherPerson = defendant2Person.Item2(defendant);
+
+            var someFunctionName = defendant2Person.Item1;
+
+            if (otherPerson == null)
+                return false;
+
+            var otherTitle = otherPerson.GetLegalPersonTypeName();
+
+            var someOtherFunctionName = person2Location.Item1;
+
+            var location = person2Location.Item2(otherPerson);
+            if (NamesEqual(Court, location))
+            {
+                AddReasonEntry($"{title} {defendant.Name}, {someFunctionName} returned person '{otherPerson.Name}'");
+                AddReasonEntry($"{otherTitle} {otherPerson.Name}, {someOtherFunctionName} returned '{location.Name}'");
+                AddReasonEntry($"'{location.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
+                return true;
+            }
+
+            return false;
         }
     }
 }

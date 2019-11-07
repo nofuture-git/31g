@@ -40,11 +40,13 @@
     <Compile Include="US\DomicileLocation.cs" />
     <Compile Include="US\Jurisdiction\FederalDiversityJurisdiction.cs" />
     <Compile Include="US\Jurisdiction\FederalJurisdictionBase.cs" />
+    <Compile Include="US\Jurisdiction\FederalVenue.cs" />
     <Compile Include="US\Jurisdiction\JurisdictionBase.cs" />
     <Compile Include="US\Jurisdiction\MinimumContact.cs" />
     <Compile Include="US\Jurisdiction\PersonalJurisdiction.cs" />
     <Compile Include="US\Jurisdiction\FederalSubjectMatterJurisdiction.cs" />
     <Compile Include="US\Jurisdiction\Removal.cs" />
+    <Compile Include="US\Jurisdiction\Venue.cs" />
     <Compile Include="US\Pleadings\CollateralAttackOnJudgment.cs" />
     <Compile Include="US\Pleadings\Complaint.cs" />
     <Compile Include="US\Pleadings\PleadingBase.cs" />

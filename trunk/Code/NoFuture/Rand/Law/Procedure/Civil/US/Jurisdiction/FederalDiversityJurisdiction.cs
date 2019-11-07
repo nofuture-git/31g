@@ -50,23 +50,56 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             var defendantTitle = defendant.GetLegalPersonTypeName();
 
-            if (defendant is IForeigner)
-            {
-                AddReasonEntry($"{defendantTitle} {defendant.Name}, is type {nameof(IForeigner)}");
-                return true;
-            }
-
             var plaintiff = this.Plaintiff(persons) as ILegalPerson;
             if (plaintiff == null)
                 return false;
 
             var plaintiffTitle = plaintiff.GetLegalPersonTypeName();
 
+            if (IsEitherPartyForeigner(defendant, plaintiff, defendantTitle, plaintiffTitle))
+            {
+                return true;
+            }
+
+            if (!IsDiversityInDomicileLocations(defendant, plaintiff, defendantTitle, plaintiffTitle))
+            {
+                return false;
+            }
+
+            if (!IsMinimumClaimSufficient(plaintiff, plaintiffTitle))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        protected internal virtual bool IsEitherPartyForeigner(ILegalPerson defendant, ILegalPerson plaintiff,
+            string defendantTitle = null, string plaintiffTitle = null)
+        {
+            defendantTitle = defendantTitle ?? defendant.GetLegalPersonTypeName();
+            plaintiffTitle = plaintiffTitle ?? plaintiff.GetLegalPersonTypeName();
+
+            if (defendant is IForeigner)
+            {
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, is type {nameof(IForeigner)}");
+                return true;
+            }
+
             if (plaintiff is IForeigner)
             {
                 AddReasonEntry($"{plaintiffTitle} {plaintiff.Name}, is type {nameof(IForeigner)}");
                 return true;
             }
+
+            return false;
+        }
+
+        protected internal virtual bool IsDiversityInDomicileLocations(ILegalPerson defendant, ILegalPerson plaintiff,
+            string defendantTitle = null, string plaintiffTitle = null)
+        {
+            defendantTitle = defendantTitle ?? defendant.GetLegalPersonTypeName();
+            plaintiffTitle = plaintiffTitle ?? plaintiff.GetLegalPersonTypeName();
 
             var plaintiffHome = GetDomicileLocation(plaintiff);
             if (plaintiffHome == null)
@@ -92,6 +125,13 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return false;
             }
 
+            return true;
+        }
+
+        protected internal virtual bool IsMinimumClaimSufficient(ILegalPerson plaintiff, string plaintiffTitle = null)
+        {
+            plaintiffTitle = plaintiffTitle ?? plaintiff.GetLegalPersonTypeName();
+
             var plaintiffClaim = GetInjuryClaimDollars(plaintiff);
 
             var currentMin = GetMinimumClaimDollars(CurrentTime);
@@ -106,6 +146,5 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             return true;
         }
-
     }
 }

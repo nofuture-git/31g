@@ -24,6 +24,23 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// </summary>
         public virtual MinimumContact MinimumContact { get; set; }
 
+
+        protected internal virtual bool IsCourtCurrentLocationOfDefendant(ILegalPerson defendant, string title = null)
+        {
+            title = title ?? defendant.GetLegalPersonTypeName();
+
+            //is defendant current present in jurisdiction
+            var location = GetCurrentLocation(defendant);
+            if (location != null && NamesEqual(Court, location))
+            {
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCurrentLocation)} returned '{location.Name}'");
+                AddReasonEntry($"'{location.Name}' & {nameof(Court)}  '{Court.Name}', {nameof(NamesEqual)} is true");
+                return true;
+            }
+
+            return false;
+        }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             var defendant = this.Defendant(persons);
@@ -49,21 +66,13 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return true;
             }
 
-            //is jurisdiction domicile location of defendant
-            var domicile = GetDomicileLocation(defendant);
-            if (domicile != null && NamesEqual(Court, domicile))
+            if (IsCourtDomicileLocationOfDefendant(defendant, title))
             {
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetDomicileLocation)} returned '{domicile.Name}'");
-                AddReasonEntry($"'{domicile.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
                 return true;
             }
 
-            //is defendant current present in jurisdiction
-            var location = GetCurrentLocation(defendant);
-            if (location != null && NamesEqual(Court, location))
+            if (IsCourtCurrentLocationOfDefendant(defendant, title))
             {
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCurrentLocation)} returned '{location.Name}'");
-                AddReasonEntry($"'{location.Name}' & {nameof(Court)}  '{Court.Name}', {nameof(NamesEqual)} is true");
                 return true;
             }
 

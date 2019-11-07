@@ -60,18 +60,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return false;
             }
 
-            var defendantHome = GetDomicileLocation(defendant);
-            if (defendantHome == null)
+            if (IsCourtDomicileLocationOfDefendant(defendant, defendantTitle))
             {
-                AddReasonEntry($"{defendantTitle} {defendant.Name}, " +
-                               $"{nameof(GetDomicileLocation)} returned nothing");
-                return false;
-            }
-
-            if (NamesEqual(Court, defendantHome))
-            {
-                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetDomicileLocation)} returned '{defendantHome.Name}'");
-                AddReasonEntry($"'{defendantHome.Name}' & {nameof(Court)} '{Court.Name}', {nameof(NamesEqual)} is true");
                 return false;
             }
 
