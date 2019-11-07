@@ -9,9 +9,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// <remarks>
     /// When the subject matter jurisdiction is very broad then it is called &quot;general jurisdiction&quot;
     /// </remarks>
-    public class SubjectMatterJurisdiction : JurisdictionBase
+    public class FederalSubjectMatterJurisdiction : JurisdictionBase
     {
-        public SubjectMatterJurisdiction(ICourt name) : base(name)
+        public FederalSubjectMatterJurisdiction(ICourt name) : base(name)
         {
         }
 
@@ -53,6 +53,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             if (!IsCourtAssigned())
                 return false;
+            var isFedCourt = Court is FederalCourt;
 
             if (!IsAuthorized2ExerciseJurisdiction(CausesOfAction))
             {
@@ -61,7 +62,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return false;
             }
 
-            var isFedCourt = Court is FederalCourt;
             var isAriseFedLaw = IsArisingFromFederalLaw(CausesOfAction);
             var isExclusiveFed = IsExclusiveFederalJurisdiction(CausesOfAction);
 

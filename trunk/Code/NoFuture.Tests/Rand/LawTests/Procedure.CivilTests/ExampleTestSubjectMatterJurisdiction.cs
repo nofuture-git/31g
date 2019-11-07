@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         [Test]
         public void TestSubjectMatterJurisdictionIsValid()
         {
-            var testSubject = new SubjectMatterJurisdiction(new SomeOtherKindOfCourt("kangaroo"))
+            var testSubject = new FederalSubjectMatterJurisdiction(new SomeOtherKindOfCourt("kangaroo"))
             {
                 IsAuthorized2ExerciseJurisdiction = lc => lc is SomeFederalLegalMatter,
                 IsArisingFromFederalLaw = lc => lc is SomeFederalLegalMatter,
