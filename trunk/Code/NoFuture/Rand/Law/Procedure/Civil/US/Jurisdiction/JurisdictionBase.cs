@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Courts;
 
@@ -28,8 +29,14 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         #region properties
 
         /// <summary>
-        /// Is the location from which the injury (cause of action) is located
+        /// Is the cause-of-action location of &quot;a substantial part of the
+        /// events or omissions&quot; or the location of &quot;a
+        /// substantial part of property&quot;
         /// </summary>
+        /// <remarks>
+        /// 28 U.S.C. §1391(b)(2)
+        /// </remarks>
+        [Aka("where-the-claim-arose")]
         public virtual Func<ILegalPerson, IVoca> GetInjuryLocation
         {
             get => _getInjuryLocation;
