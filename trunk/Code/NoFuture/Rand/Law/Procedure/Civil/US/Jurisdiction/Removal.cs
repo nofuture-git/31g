@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// </remarks>
     public class Removal : JurisdictionBase
     {
-        public Removal(ICourt name, FederalJurisdictionBase fedJurisdiction) : base(name)
+        public Removal(FederalJurisdictionBase fedJurisdiction) : base(null)
         {
             FederalJurisdiction = fedJurisdiction;
         }
@@ -30,6 +30,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return false;
             }
 
+            FederalJurisdiction.CopyTo(this);
+
             //test if this is even in scope for federal court based on ctor arg
             var isFederalIssue = FederalJurisdiction.IsValidWithTestCourtType(persons);
             AddReasonEntryRange(FederalJurisdiction.GetReasonEntries());
@@ -38,7 +40,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
                 return false;
             }
 
-            if (IsFederalCourt())
+            if (Court is FederalCourt)
             {
                 AddReasonEntry($"{nameof(Court)}, '{Court?.Name}' is type " +
                                $"already type {nameof(FederalCourt)}");
