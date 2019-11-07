@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NoFuture.Rand.Law.US.Courts;
-
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
+﻿namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
     public abstract class FederalJurisdictionBase : JurisdictionBase
     {
@@ -13,15 +6,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         {
         }
 
-        protected bool IsFederalCourt()
-        {
-            if (Court is FederalCourt) 
-                return true;
-
-            AddReasonEntry($"{nameof(Court)}, '{Court?.Name}' is type " +
-                           $"{Court?.GetType().Name} not type {nameof(FederalCourt)}");
-            return false;
-
-        }
+        /// <summary>
+        /// Test validity without testing the type of <see cref="CivilProcedureBase.Court"/>
+        /// </summary>
+        /// <param name="persons"></param>
+        /// <returns></returns>
+        protected internal abstract bool IsValidWithTestCourtType(ILegalPerson[] persons);
     }
 }

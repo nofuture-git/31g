@@ -1,13 +1,12 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
-using NoFuture.Rand.Law.US.Courts;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.Tests
 {
     [TestFixture]
-    public class ExampleTestSubjectMatterJurisdiction
+    public class ExampleTestFederalSubjectMatterJurisdiction
     {
         [Test]
         public void TestSubjectMatterJurisdictionIsValid()

@@ -48,13 +48,18 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// <returns></returns>
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (!IsCausesOfActionAssigned())
-                return false;
-
             if (!IsCourtAssigned())
                 return false;
 
             if (!IsFederalCourt())
+                return false;
+
+            return IsValidWithTestCourtType(persons);
+        }
+
+        protected internal override bool IsValidWithTestCourtType(ILegalPerson[] persons)
+        {
+            if (!IsCausesOfActionAssigned())
                 return false;
 
             if (!IsAuthorized2ExerciseJurisdiction(CausesOfAction))

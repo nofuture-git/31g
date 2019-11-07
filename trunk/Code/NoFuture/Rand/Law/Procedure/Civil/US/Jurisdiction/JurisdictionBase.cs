@@ -1,6 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Courts;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
@@ -139,6 +140,17 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             if (flagGetInjuryLocation && !juris.flagGetInjuryLocation)
                 juris.GetInjuryLocation = GetInjuryLocation;
+        }
+
+        protected bool IsFederalCourt()
+        {
+            if (Court is FederalCourt)
+                return true;
+
+            AddReasonEntry($"{nameof(Court)}, '{Court?.Name}' is type " +
+                           $"{Court?.GetType().Name} not type {nameof(FederalCourt)}");
+            return false;
+
         }
 
         #endregion

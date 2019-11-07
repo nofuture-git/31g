@@ -37,6 +37,12 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (!IsFederalCourt())
                 return false;
 
+            return IsValidWithTestCourtType(persons);
+
+        }
+
+        protected internal override bool IsValidWithTestCourtType(ILegalPerson[] persons)
+        {
             var defendant = this.Defendant(persons) as ILegalPerson;
 
             if (defendant == null)
@@ -100,5 +106,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             return true;
         }
+
     }
 }

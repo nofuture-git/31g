@@ -47,7 +47,7 @@
     <Compile Include="ExampleTestFederalDiversityJurisdiction.cs" />
     <Compile Include="ExampleTestMinContact.cs" />
     <Compile Include="ExampleTestPersonalJurisdiction.cs" />
-    <Compile Include="ExampleTestSubjectMatterJurisdiction.cs" />
+    <Compile Include="ExampleTestFederalSubjectMatterJurisdiction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
