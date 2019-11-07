@@ -39,6 +39,7 @@
     <Compile Include="US\CivilProcedureBase.cs" />
     <Compile Include="US\DomicileLocation.cs" />
     <Compile Include="US\Jurisdiction\FederalDiversityJurisdiction.cs" />
+    <Compile Include="US\Jurisdiction\FederalJurisdictionBase.cs" />
     <Compile Include="US\Jurisdiction\JurisdictionBase.cs" />
     <Compile Include="US\Jurisdiction\MinimumContact.cs" />
     <Compile Include="US\Jurisdiction\PersonalJurisdiction.cs" />

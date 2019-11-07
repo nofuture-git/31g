@@ -28,9 +28,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
-            
+            Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
-            
+            testSubject.ClearReasons();
+
             testSubject.Court = new StateCourt("Ohio");
             testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
             Console.WriteLine(testSubject.ToString());

@@ -1,6 +1,5 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Courts;
 using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
@@ -8,7 +7,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// <summary>
     /// One of the categories that may be held in federal courts is between citizens of different states
     /// </summary>
-    public class FederalDiversityJurisdiction : JurisdictionBase
+    public class FederalDiversityJurisdiction : FederalJurisdictionBase
     {
         public FederalDiversityJurisdiction(ICourt name) : base(name)
         {
@@ -32,12 +31,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (!(Court is FederalCourt))
-            {
-                AddReasonEntry($"{nameof(Court)}, '{Court?.Name}' is type " +
-                               $"{Court?.GetType().Name} not type {nameof(FederalCourt)}");
+            if (!IsCourtAssigned())
                 return false;
-            }
+
+            if (!IsFederalCourt())
+                return false;
 
             var defendant = this.Defendant(persons) as ILegalPerson;
 

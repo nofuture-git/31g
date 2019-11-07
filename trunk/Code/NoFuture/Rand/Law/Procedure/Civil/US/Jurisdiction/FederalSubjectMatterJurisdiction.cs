@@ -9,7 +9,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// <remarks>
     /// When the subject matter jurisdiction is very broad then it is called &quot;general jurisdiction&quot;
     /// </remarks>
-    public class FederalSubjectMatterJurisdiction : JurisdictionBase
+    public class FederalSubjectMatterJurisdiction : FederalJurisdictionBase
     {
         public FederalSubjectMatterJurisdiction(ICourt name) : base(name)
         {
@@ -53,7 +53,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             if (!IsCourtAssigned())
                 return false;
-            var isFedCourt = Court is FederalCourt;
+
+            if (!IsFederalCourt())
+                return false;
 
             if (!IsAuthorized2ExerciseJurisdiction(CausesOfAction))
             {
@@ -65,18 +67,16 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             var isAriseFedLaw = IsArisingFromFederalLaw(CausesOfAction);
             var isExclusiveFed = IsExclusiveFederalJurisdiction(CausesOfAction);
 
-            if (isExclusiveFed && !isFedCourt)
+            if (!isAriseFedLaw && !isExclusiveFed)
             {
-                AddReasonEntry($"{nameof(IsArisingFromFederalLaw)} is {isAriseFedLaw} for {nameof(CausesOfAction)} ");
+                AddReasonEntry($"{nameof(IsArisingFromFederalLaw)} is false for {nameof(CausesOfAction)} ");
                 AddReasonEntry(
-                    $"{nameof(IsExclusiveFederalJurisdiction)} is {isExclusiveFed} for {nameof(CausesOfAction)} ");
-                AddReasonEntry($"The {nameof(Court)}, named '{Court?.Name}', " +
-                               $"is type {Court?.GetType().Name} not type {nameof(FederalCourt)}");
+                    $"{nameof(IsExclusiveFederalJurisdiction)} is false for {nameof(CausesOfAction)} ");
                 return false;
             }
 
             //Federal jurisdiction may also be handled by states - there is concurrent jurisdiction.
-            return Court is FederalCourt ? isAriseFedLaw : Court is StateCourt;
+            return true;
         }
 
     }
