@@ -45,6 +45,7 @@
     <Compile Include="ExampleSmokyMountainVWTests.cs" />
     <Compile Include="ExampleTestDomicileLocation.cs" />
     <Compile Include="ExampleTestFederalDiversityJurisdiction.cs" />
+    <Compile Include="ExampleTestFederalVenue.cs" />
     <Compile Include="ExampleTestMinContact.cs" />
     <Compile Include="ExampleTestPersonalJurisdiction.cs" />
     <Compile Include="ExampleTestFederalSubjectMatterJurisdiction.cs" />

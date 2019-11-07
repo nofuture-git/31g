@@ -151,6 +151,30 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             return false;
         }
 
+        protected internal virtual bool IsCourtCurrentLocationOfDefendant(ILegalPerson defendant, string title = null)
+        {
+            title = title ?? defendant.GetLegalPersonTypeName();
+
+            //is defendant current present in jurisdiction
+            var location = GetCurrentLocation(defendant);
+
+            if (location == null)
+            {
+                AddReasonEntry($"{title} {defendant.Name}, " +
+                               $"{nameof(GetCurrentLocation)} returned nothing");
+                return false;
+            }
+
+            if (NamesEqual(Court, location))
+            {
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetCurrentLocation)} returned '{location.Name}'");
+                AddReasonEntry($"'{location.Name}' & {nameof(Court)}  '{Court.Name}', {nameof(NamesEqual)} is true");
+                return true;
+            }
+
+            return false;
+        }
+
         #endregion
     }
 }
