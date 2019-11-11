@@ -1,4 +1,4 @@
-StrongsIndex,Words,Translations
+﻿StrongsIndex,Words,Translations
 אַב,2,father
 אבד,6,to become lost
 אֶבֶן,69,stone
@@ -360,3 +360,4 @@ StrongsIndex,Words,Translations
 תָוֶךְ,8432,midst|in the middle
 תּוֹרָה,8451,instruction
 תַּחת,8479,underneath|below|instead of
+4487,מָנָה,number|reckon|assign|dose

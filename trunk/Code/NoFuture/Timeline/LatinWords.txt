@@ -317,7 +317,7 @@ suus,his|her|their
 taberna,shop|inn
 tacet,is silent|is quiet
 tacite,quietly
-tamen,however
+tamen|autem,however
 tandem,at last
 templum,temple
 teneo,hold

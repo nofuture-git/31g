@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
     /// The ability for a defendant to have the court moved to federal when
-    /// the plaintiff chose state court
+    /// the plaintiff chose state court 28 U.S.C. §1441(a).
     /// </summary>
     /// <remarks>
     /// Idea is that both plaintiff and defendant should have the chance to opt for federal court

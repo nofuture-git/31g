@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             {
                 return true;
             }
-
+            //idea of general in personam jurisdiction
             if (IsCourtDomicileLocationOfDefendant(defendant, title))
             {
                 return true;

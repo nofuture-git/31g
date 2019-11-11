@@ -1,4 +1,6 @@
 ﻿
+using NoFuture.Rand.Law.Attributes;
+
 namespace NoFuture.Rand.Law
 {
     /// <summary>
@@ -12,16 +14,14 @@ namespace NoFuture.Rand.Law
     public delegate bool ObjectivePredicate<in T>(T obj);
 
     /// <summary>
-    /// <![CDATA[
-    /// objective test: the object itself viewed from the prespective of a reasonable person
-    /// subjective test: the object viewed from the perspective of the subject
-    /// ]]>
+    /// Main interface of various legal concepts 
     /// </summary>
     public interface ILegalConcept :  IRationale
     {
         /// <summary>
-        /// <![CDATA[valid: sufficiently supported by facts or authority (from Latin 'valere' "be strong") ]]>
+        /// <![CDATA[valid: sufficiently supported by facts or authority ]]>
         /// </summary>
+        [EtymologyNote("latin", "valere", "be strong")]
         bool IsValid(params ILegalPerson[] persons);
 
         bool IsEnforceableInCourt { get; }

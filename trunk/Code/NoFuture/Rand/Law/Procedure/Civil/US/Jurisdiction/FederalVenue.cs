@@ -6,6 +6,14 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// <summary>
     /// Defined in 28 U.S.C. section 1391
     /// </summary>
+    /// <remarks>
+    /// In addition, other laws may set venue based on subject matter
+    /// (e.g. patents, copyrights) or may be agreed in advance as
+    /// a &quot;forum selection clauses&quot;
+    /// </remarks>
+    /// <remarks>
+    /// Note, section 1391 does not apply to <see cref="Removal"/>
+    /// </remarks>
     public class FederalVenue : PersonalJurisdiction, IVenue
     {
         public FederalVenue(ICourt name) : base(name)
