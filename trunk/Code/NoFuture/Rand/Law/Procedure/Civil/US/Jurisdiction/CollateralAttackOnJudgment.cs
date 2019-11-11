@@ -1,7 +1,8 @@
 ﻿using System;
+using NoFuture.Rand.Law.Procedure.Civil.US.Pleadings;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
+namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
     /// Like <see cref="SpecialAppearance"/> except its performed in the defendant&apos;s domicile location
@@ -13,6 +14,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// </remarks>
     public class CollateralAttackOnJudgment : SpecialAppearance
     {
+        public CollateralAttackOnJudgment(ICourt name) : base(name)
+        {
+        }
+
         public ICourt NameOfOriginalCourt { get; set; }
 
         /// <summary>
