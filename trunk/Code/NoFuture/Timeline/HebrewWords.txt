@@ -361,3 +361,4 @@
 תּוֹרָה,8451,instruction
 תַּחת,8479,underneath|below|instead of
 4487,מָנָה,number|reckon|assign|dose
+7358,רֶחֶם,womb|matrix

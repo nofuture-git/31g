@@ -347,3 +347,4 @@ Words,StrongsIndex,Translations
 ποταμος,4215,river
 βιβλος,976,book|scroll
 ιππος,2462,horse
+μήτρα,3388,womb|matrix
