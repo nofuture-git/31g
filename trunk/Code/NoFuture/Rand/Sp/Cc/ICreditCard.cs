@@ -10,6 +10,7 @@ namespace NoFuture.Rand.Sp.Cc
         CreditCardNumber Number { get; }
         DateTime ExpDate { get; }
         string CardHolderName { get; }
+        //Card Verification Value
         string Cvv { get; }
         DateTime CardHolderSince { get; }
         string CcName { get; }

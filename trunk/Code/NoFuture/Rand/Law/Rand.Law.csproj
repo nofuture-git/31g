@@ -93,6 +93,7 @@
     <Compile Include="US\Persons\IGrantee.cs" />
     <Compile Include="US\Persons\IGrantor.cs" />
     <Compile Include="US\Persons\IHeir.cs" />
+    <Compile Include="US\Persons\IImpleader.cs" />
     <Compile Include="US\Persons\IInvitee.cs" />
     <Compile Include="US\Persons\IJoinder.cs" />
     <Compile Include="US\Persons\ILessee.cs" />

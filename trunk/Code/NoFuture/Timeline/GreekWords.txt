@@ -348,3 +348,4 @@ Words,StrongsIndex,Translations
 βιβλος,976,book|scroll
 ιππος,2462,horse
 μήτρα,3388,womb|matrix
+φαγειν,5315,to eat

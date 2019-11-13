@@ -49,6 +49,7 @@
     <Compile Include="US\Jurisdiction\IVenue.cs" />
     <Compile Include="US\Jurisdiction\CollateralAttackOnJudgment.cs" />
     <Compile Include="US\Pleadings\Complaint.cs" />
+    <Compile Include="US\Pleadings\ContributionClaim.cs" />
     <Compile Include="US\Pleadings\Counterclaim.cs" />
     <Compile Include="US\Pleadings\Crossclaim.cs" />
     <Compile Include="US\Pleadings\PleadingBase.cs" />

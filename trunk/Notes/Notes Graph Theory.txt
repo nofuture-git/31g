@@ -1,6 +1,16 @@
 ----
 Notes Graph Theory (formal)
 ----
+----
+A Librarian's Guide to Graphs, Data and the Semantic Web
+By: James Powell
+Publisher: Chandos Publishing
+Pub. Date: July 9, 2015
+ISBN-13: 978-1-78063-434-0
+Web ISBN-13: 978-1-78063-434-0
+Print ISBN-13: 978-1-84334-753-8
+Pages in Print Edition: 268
+----
 
 ----
 Graph Theory (Formal)
@@ -16,7 +26,9 @@ Graph Theory (Formal)
  
  - join: formal name for what the edge is doing; namely, joining
     two vertices.
-    
+ 
+ - triple: two nodes connected by one directed edge 
+ 
  - adjacent: the state between to vertices when there is one edge
     between them.
     
@@ -48,7 +60,7 @@ Graph Theory (Formal)
  
  - induced subgraph: a subgraph where only the vertices or only 
     the edges are known.
-    
+ 
  - bijection: ("by Jove its a perfect match") one and 
       only one girl for every boy and nobody is alone.
     Boys Girls
@@ -134,6 +146,8 @@ Graph Theory (Formal)
  - ancestor: again, tree graph, like a family tree
  
  - weighted graph: where the edge is the vertex pair and a weight
+ 
+ - network: a weighted directed graph
  
  - hub: a vertex having a high outdegree
  
