@@ -12,9 +12,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// between defendant and third party - there is no link
     /// between plaintiff and third party 
     /// </remarks>
-    /// <remarks>
-    /// 
-    /// </remarks>
     [Aka("impleaded")]
     public class ContributionClaim : Crossclaim
     {
