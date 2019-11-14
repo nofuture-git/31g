@@ -1,19 +1,42 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using System;
+using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 {
     /// <summary>
-    /// Like <see cref="Crossclaim"/> except its against a party
-    /// that the plaintiff did not add - the defendant is adding
-    /// them directly.
+    /// Where a defendant adds a third-party as in,
+    /// &quot;I am only liable because this person&quot;.
+    /// That third-party may then do the same concerning
+    /// some forth-party, etc.
     /// </summary>
     /// <remarks>
-    /// Civil Procedure Rule 14(a)(1) - the link (a.k.a. edge) is
-    /// between defendant and third party - there is no link
-    /// between plaintiff and third party 
+    /// Fed Civil Procedure Rule 14:
+    /// (a)(1) allows defendant to implead third-party
+    /// (a)(2)(D) allows third-party to make counter-claim
+    ///           against original plaintiff
+    /// (a)(5) third-party to forth-party
     /// </remarks>
     [Aka("impleaded")]
-    public class ContributionClaim : Crossclaim
+    public class ContributionClaim : Replaint
     {
+        public Predicate<ILegalPerson> IsShareInLiability { get; set; } = lp => false;
+
+        public override bool IsValid(params ILegalPerson[] persons)
+        {
+            var thirdParty = this.ThirdParty(persons);
+            if (thirdParty == null)
+                return false;
+
+            var isShareLiability = IsShareInLiability(thirdParty);
+            if (!isShareLiability)
+            {
+                AddReasonEntry($"{thirdParty.GetLegalPersonTypeName()} {thirdParty.Name}, " +
+                               $"{nameof(IsShareInLiability)} is false");
+                return false;
+            }
+
+            return base.IsValid(persons);
+        }
     }
 }

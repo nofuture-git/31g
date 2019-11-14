@@ -171,7 +171,7 @@ interum,again
 iudex,judge
 iuvenis,young man
 laborat,works|is working
-lacrimat,weeps|cries
+lacrimat|flens,weeps|cries
 laetus,happy
 laudat,praises
 lectus,couch
@@ -378,3 +378,4 @@ mortem,dead
 flumen,river
 gens,tribe|nation
 vulvam|utero,matrix|womb
+oravit|orabat,prayed

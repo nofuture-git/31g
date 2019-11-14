@@ -6,6 +6,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// Complaint in opposition to some other plaintiff&apos;s
     /// complaint both of which concern the same set of facts\circumstances.
     /// </summary>
+    /// <remarks>
+    /// Fed Civil Procedure Rule 13
+    /// </remarks>
     public class Counterclaim : Crossclaim
     {
         /// <summary>
