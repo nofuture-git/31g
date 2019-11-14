@@ -317,6 +317,24 @@ namespace NoFuture.Rand.Law.US
             return cotenants;
         }
 
+
+        public static IEnumerable<IAbsentee> Absentees(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+            if (lc == null || !ppersons.Any())
+                return new List<IAbsentee>();
+
+            var absentees = ppersons.Where(p => p is IAbsentee).Cast<IAbsentee>().ToList();
+
+            if (!absentees.Any())
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(IAbsentee)} in {nameTitles}");
+            }
+
+            return absentees;
+        }
+
         public static bool PropertyOwnerIsSubjectPerson(this IRationale lc, ILegalProperty property, ILegalPerson person)
         {
             if (person == null)

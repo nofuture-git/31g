@@ -10,29 +10,26 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// When another party is order by the court to be added in order to fairly make a judgment
     /// </summary>
     /// <remarks>
-    /// Fed Civil Proc Rule 19(a)
+    /// Fed Civil Proc Rule 19
     /// </remarks>
     public class OrderJoiner : Replaint
     {
-        public Predicate<ILegalPerson> IsFeasible { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsFeasible { get; set; } = lp => true;
 
         /// <summary>
         /// &quot;the court cannot accord complete relief among existing parties&quot;
         /// </summary>
-        /// <remarks>
-        /// Fed Civil Proc 19(a)(1)(A)
-        /// </remarks>
         public Predicate<ILegalPerson> IsRequiredForCompleteRelief { get; set; } = lp => false;
 
         /// <summary>
         /// the person has an interest in the cause-of-action (subject matter) and will be effected by the outcome
         /// </summary>
-        public Predicate<ILegalPerson> IsRequiredToProtectSelf { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsRequiredToProtectSelfInterest { get; set; } = lp => false;
 
         /// <summary>
         /// one of the other parties may be exposed if they are not included
         /// </summary>
-        public Predicate<ILegalPerson> IsRequiredToProtectOther { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsRequiredToProtectOthersExposure { get; set; } = lp => false;
 
 
         public override bool IsValid(params ILegalPerson[] persons)
@@ -40,19 +37,17 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
             if (persons == null)
                 return false;
 
-            var absentees = persons.Absentees().ToList();
+            var absentees = this.Absentees(persons).ToList();
             if (!absentees.Any())
             {
-                var nameTitles = persons.GetTitleNamePairs();
-                AddReasonEntry($"No one is a {nameof(IAbsentee)} among {nameTitles}");
                 return false;
             }
 
             var rules = new List<Tuple<Predicate<ILegalPerson>, string>>
             {
                 Tuple.Create(IsRequiredForCompleteRelief, nameof(IsRequiredForCompleteRelief)),
-                Tuple.Create(IsRequiredToProtectSelf, nameof(IsRequiredToProtectSelf)),
-                Tuple.Create(IsRequiredToProtectOther, nameof(IsRequiredToProtectOther)),
+                Tuple.Create(IsRequiredToProtectSelfInterest, nameof(IsRequiredToProtectSelfInterest)),
+                Tuple.Create(IsRequiredToProtectOthersExposure, nameof(IsRequiredToProtectOthersExposure)),
             };
 
             foreach (var absentee in absentees)
@@ -60,9 +55,21 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
                 if (absentee == null)
                     continue;
 
-                if (rules.All(rt => rt.Item1(absentee) == false))
+                var title = absentee.GetLegalPersonTypeName();
+
+                //when an absentee cannot be joined but they are indispensable
+                if (!IsFeasible(absentee) && absentee.IsIndispensable)
                 {
-                    AddReasonEntry($"{absentee.GetLegalPersonTypeName()} {absentee.Name}, " +
+                    AddReasonEntry($"{title} {absentee.Name}, {nameof(IsFeasible)} is false " +
+                                   $"while {nameof(IAbsentee)} {nameof(IAbsentee.IsIndispensable)} is true");
+                    return false;
+                }
+                
+                var absenteeShouldBeJoined = rules.Any(rt => rt.Item1(absentee));
+
+                if (!absenteeShouldBeJoined)
+                {
+                    AddReasonEntry($"{title} {absentee.Name}, " +
                                    $"for {string.Join(",", rules.Select(rt => rt.Item2))} are all false");
                     return false;
                 }

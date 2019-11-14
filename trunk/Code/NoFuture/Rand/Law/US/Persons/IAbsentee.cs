@@ -6,5 +6,6 @@
     /// </summary>
     public interface IAbsentee : IImpleadee
     {
+        bool IsIndispensable { get; set; }
     }
 }
