@@ -52,6 +52,7 @@
     <Compile Include="US\Pleadings\ContributionClaim.cs" />
     <Compile Include="US\Pleadings\Counterclaim.cs" />
     <Compile Include="US\Pleadings\Crossclaim.cs" />
+    <Compile Include="US\Pleadings\OrderJoiner.cs" />
     <Compile Include="US\Pleadings\PleadingBase.cs" />
     <Compile Include="US\Jurisdiction\SpecialAppearance.cs" />
     <Compile Include="US\Pleadings\Replaint.cs" />

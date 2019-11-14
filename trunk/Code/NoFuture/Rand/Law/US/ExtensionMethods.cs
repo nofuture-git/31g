@@ -33,6 +33,11 @@ namespace NoFuture.Rand.Law.US
             return persons.Where(p => p is IVictim).Cast<IVictim>().ToList();
         }
 
+        public static IEnumerable<IAbsentee> Absentees(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.Where(p => p is IAbsentee).Cast<IAbsentee>().ToList();
+        }
+
         public static ILegalPerson Offeror(this IEnumerable<ILegalPerson> persons)
         {
             return persons.FirstOrDefault(p => p is IOfferor);
