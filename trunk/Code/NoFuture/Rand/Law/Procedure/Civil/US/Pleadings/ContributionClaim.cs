@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// (a)(5) third-party to forth-party
     /// </remarks>
     [Aka("impleaded")]
-    public class ContributionClaim : Replaint
+    public class ContributionClaim : Complaint
     {
         public Predicate<ILegalPerson> IsShareInLiability { get; set; } = lp => false;
 

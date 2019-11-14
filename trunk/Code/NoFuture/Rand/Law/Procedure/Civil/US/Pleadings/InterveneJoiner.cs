@@ -15,17 +15,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     [Aka("Intervention")]
     public class InterveneJoiner : OrderJoiner
     {
-        public InterveneJoiner()
-        {
-            AnyOrRules = new List<Tuple<Predicate<ILegalPerson>, string>>
-            {
-                Tuple.Create(IsRequiredForCompleteRelief, nameof(IsRequiredForCompleteRelief)),
-                Tuple.Create(IsRequiredToProtectSelfInterest, nameof(IsRequiredToProtectSelfInterest)),
-                Tuple.Create(IsRequiredToProtectOthersExposure, nameof(IsRequiredToProtectOthersExposure)),
-                Tuple.Create(IsTimely, nameof(IsTimely)),
-            };
-        }
-
         /// <summary>
         /// When the legislature has created a right of some absentee to intervene
         /// </summary>
@@ -46,10 +35,18 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
         /// </summary>
         public Predicate<ILegalPerson> IsTimely { get; set; } = lp => false;
 
-        protected override List<Tuple<Predicate<ILegalPerson>, string>> AnyOrRules { get; }
+        protected override List<Tuple<Predicate<ILegalPerson>, string>> AnyOrRules { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            AnyOrRules = new List<Tuple<Predicate<ILegalPerson>, string>>
+            {
+                Tuple.Create(IsRequiredForCompleteRelief, nameof(IsRequiredForCompleteRelief)),
+                Tuple.Create(IsRequiredToProtectSelfInterest, nameof(IsRequiredToProtectSelfInterest)),
+                Tuple.Create(IsRequiredToProtectOthersExposure, nameof(IsRequiredToProtectOthersExposure)),
+                Tuple.Create(IsTimely, nameof(IsTimely)),
+            };
+
             if (persons == null)
                 return false;
 

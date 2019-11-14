@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
                 return false;
             }
 
-            if (IsSameTransactionOrOccurrence(OppositionCausesOfAction, CausesOfAction))
+            if (!IsSameTransactionOrOccurrence(OppositionCausesOfAction, CausesOfAction))
             {
                 AddReasonEntry($"{nameof(IsSameTransactionOrOccurrence)} for " +
                                $"{nameof(CausesOfAction)} to {nameof(OppositionCausesOfAction)} is false ");

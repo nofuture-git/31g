@@ -43,10 +43,14 @@
   <ItemGroup>
     <Compile Include="ExampleAustinvHealyTests.cs" />
     <Compile Include="ExampleSmokyMountainVWTests.cs" />
+    <Compile Include="ExampleTestContributionClaim.cs" />
+    <Compile Include="ExampleTestCounterclaim.cs" />
     <Compile Include="ExampleTestDomicileLocation.cs" />
     <Compile Include="ExampleTestFederalDiversityJurisdiction.cs" />
     <Compile Include="ExampleTestFederalVenue.cs" />
+    <Compile Include="ExampleTestInterveneJoiner.cs" />
     <Compile Include="ExampleTestMinContact.cs" />
+    <Compile Include="ExampleTestOrderJoiner.cs" />
     <Compile Include="ExampleTestPersonalJurisdiction.cs" />
     <Compile Include="ExampleTestFederalSubjectMatterJurisdiction.cs" />
     <Compile Include="ExampleTestRemoval.cs" />

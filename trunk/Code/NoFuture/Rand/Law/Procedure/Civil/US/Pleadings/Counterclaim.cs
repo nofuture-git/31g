@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
                 return false;
             }
 
-            if (IsSameQuestionOfLawOrFact(OppositionCausesOfAction, CausesOfAction))
+            if (!IsSameQuestionOfLawOrFact(OppositionCausesOfAction, CausesOfAction))
             {
                 AddReasonEntry($"{nameof(IsSameQuestionOfLawOrFact)} for " +
                                $"{nameof(CausesOfAction)} to {nameof(OppositionCausesOfAction)} is false ");

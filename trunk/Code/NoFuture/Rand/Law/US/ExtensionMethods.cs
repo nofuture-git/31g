@@ -533,6 +533,8 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("cotenant");
             if(person is IForeigner)
                 titles.Add("foreigner");
+            if(person is IAbsentee)
+                titles.Add("absentee");
 
             return string.Join("|", titles);
         }

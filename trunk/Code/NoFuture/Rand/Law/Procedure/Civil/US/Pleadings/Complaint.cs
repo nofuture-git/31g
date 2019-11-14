@@ -1,4 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using System.Linq;
+using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 {
@@ -18,7 +20,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
             if (!IsCourtAssigned())
                 return false;
 
-            if (IsSignedByCourtOfficial(persons))
+            if (persons.Any(p => p is ICourtOfficial) && !IsSignedByCourtOfficial(persons))
                 return false;
 
             if (CausesOfAction == null)

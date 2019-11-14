@@ -14,16 +14,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// </remarks>
     public class OrderJoiner : Complaint
     {
-        public OrderJoiner()
-        {
-            AnyOrRules = new List<Tuple<Predicate<ILegalPerson>, string>>
-            {
-                Tuple.Create(IsRequiredForCompleteRelief, nameof(IsRequiredForCompleteRelief)),
-                Tuple.Create(IsRequiredToProtectSelfInterest, nameof(IsRequiredToProtectSelfInterest)),
-                Tuple.Create(IsRequiredToProtectOthersExposure, nameof(IsRequiredToProtectOthersExposure)),
-            };
-        }
-
         public Predicate<ILegalPerson> IsFeasible { get; set; } = lp => true;
 
         /// <summary>
@@ -41,10 +31,17 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
         /// </summary>
         public Predicate<ILegalPerson> IsRequiredToProtectOthersExposure { get; set; } = lp => false;
 
-        protected virtual List<Tuple<Predicate<ILegalPerson>, string>> AnyOrRules { get; }
+        protected virtual List<Tuple<Predicate<ILegalPerson>, string>> AnyOrRules { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            AnyOrRules = new List<Tuple<Predicate<ILegalPerson>, string>>
+            {
+                Tuple.Create(IsRequiredForCompleteRelief, nameof(IsRequiredForCompleteRelief)),
+                Tuple.Create(IsRequiredToProtectSelfInterest, nameof(IsRequiredToProtectSelfInterest)),
+                Tuple.Create(IsRequiredToProtectOthersExposure, nameof(IsRequiredToProtectOthersExposure)),
+            };
+
             if (persons == null)
                 return false;
 
