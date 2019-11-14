@@ -12,8 +12,18 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// <remarks>
     /// Fed Civil Proc Rule 19
     /// </remarks>
-    public class OrderJoiner : Replaint
+    public class OrderJoiner : Complaint
     {
+        public OrderJoiner()
+        {
+            AnyOrRules = new List<Tuple<Predicate<ILegalPerson>, string>>
+            {
+                Tuple.Create(IsRequiredForCompleteRelief, nameof(IsRequiredForCompleteRelief)),
+                Tuple.Create(IsRequiredToProtectSelfInterest, nameof(IsRequiredToProtectSelfInterest)),
+                Tuple.Create(IsRequiredToProtectOthersExposure, nameof(IsRequiredToProtectOthersExposure)),
+            };
+        }
+
         public Predicate<ILegalPerson> IsFeasible { get; set; } = lp => true;
 
         /// <summary>
@@ -31,6 +41,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
         /// </summary>
         public Predicate<ILegalPerson> IsRequiredToProtectOthersExposure { get; set; } = lp => false;
 
+        protected virtual List<Tuple<Predicate<ILegalPerson>, string>> AnyOrRules { get; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -42,13 +53,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
             {
                 return false;
             }
-
-            var rules = new List<Tuple<Predicate<ILegalPerson>, string>>
-            {
-                Tuple.Create(IsRequiredForCompleteRelief, nameof(IsRequiredForCompleteRelief)),
-                Tuple.Create(IsRequiredToProtectSelfInterest, nameof(IsRequiredToProtectSelfInterest)),
-                Tuple.Create(IsRequiredToProtectOthersExposure, nameof(IsRequiredToProtectOthersExposure)),
-            };
 
             foreach (var absentee in absentees)
             {
@@ -65,12 +69,12 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
                     return false;
                 }
                 
-                var absenteeShouldBeJoined = rules.Any(rt => rt.Item1(absentee));
+                var absenteeShouldBeJoined = AnyOrRules.Any(rt => rt.Item1(absentee));
 
                 if (!absenteeShouldBeJoined)
                 {
                     AddReasonEntry($"{title} {absentee.Name}, " +
-                                   $"for {string.Join(",", rules.Select(rt => rt.Item2))} are all false");
+                                   $"for {string.Join(",", AnyOrRules.Select(rt => rt.Item2))} are all false");
                     return false;
                 }
             }
