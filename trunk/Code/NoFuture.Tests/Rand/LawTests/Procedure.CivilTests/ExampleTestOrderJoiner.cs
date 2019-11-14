@@ -34,14 +34,14 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             testSubject.ClearReasons();
 
             testSubject.IsRequiredToProtectOthersExposure = lp => false;
-            testSubject.IsRequiredToProtectSelfInterest = lp => lp is ExampleAbsentee;
+            testSubject.IsRequiredToAvoidContradictoryObligations = lp => lp is ExampleAbsentee;
 
             testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant(), new ExampleAbsentee());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
             testSubject.ClearReasons();
 
-            testSubject.IsRequiredToProtectSelfInterest = lp => false;
+            testSubject.IsRequiredToAvoidContradictoryObligations = lp => false;
             testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant(), new ExampleAbsentee());
             Console.WriteLine(testSubject.ToString());
             Assert.IsFalse(testResult);

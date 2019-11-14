@@ -7,7 +7,7 @@ using NoFuture.Rand.Law.US.Persons;
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 {
     /// <summary>
-    /// When another party is order by the court to be added in order to fairly make a judgment
+    /// When another party is order by the court to be added in order to fairly act
     /// </summary>
     /// <remarks>
     /// Fed Civil Proc Rule 19
@@ -22,9 +22,12 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
         public Predicate<ILegalPerson> IsRequiredForCompleteRelief { get; set; } = lp => false;
 
         /// <summary>
-        /// the person has an interest in the cause-of-action (subject matter) and will be effected by the outcome
+        /// the absentee may be subject to contradictory or inconsistent court orders
         /// </summary>
-        public Predicate<ILegalPerson> IsRequiredToProtectSelfInterest { get; set; } = lp => false;
+        /// <remarks>
+        /// No the same as court judgments, the idea is to avoid inconsistent obligations
+        /// </remarks>
+        public Predicate<ILegalPerson> IsRequiredToAvoidContradictoryObligations { get; set; } = lp => false;
 
         /// <summary>
         /// one of the other parties may be exposed if they are not included
@@ -38,7 +41,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
             AnyOrRules = new List<Tuple<Predicate<ILegalPerson>, string>>
             {
                 Tuple.Create(IsRequiredForCompleteRelief, nameof(IsRequiredForCompleteRelief)),
-                Tuple.Create(IsRequiredToProtectSelfInterest, nameof(IsRequiredToProtectSelfInterest)),
+                Tuple.Create(IsRequiredToAvoidContradictoryObligations, nameof(IsRequiredToAvoidContradictoryObligations)),
                 Tuple.Create(IsRequiredToProtectOthersExposure, nameof(IsRequiredToProtectOthersExposure)),
             };
 

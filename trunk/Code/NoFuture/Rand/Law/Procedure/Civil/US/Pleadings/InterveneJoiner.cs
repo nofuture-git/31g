@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
         /// who &quot;shares with the main action a common question of law or fact&quot;
         /// </summary>
         /// <remarks>
-        /// The much broader rule of Fed Civil Proc 24(b)(1)(B)
+        /// Fed Civil Proc 24(b)(1)(B)
         /// </remarks>
         public Predicate<ILegalPerson> IsSharesQuestionOfLawOrFact { get; set; } = lp => false;
 
@@ -42,7 +42,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
             AnyOrRules = new List<Tuple<Predicate<ILegalPerson>, string>>
             {
                 Tuple.Create(IsRequiredForCompleteRelief, nameof(IsRequiredForCompleteRelief)),
-                Tuple.Create(IsRequiredToProtectSelfInterest, nameof(IsRequiredToProtectSelfInterest)),
+                Tuple.Create(IsRequiredToAvoidContradictoryObligations, nameof(IsRequiredToAvoidContradictoryObligations)),
                 Tuple.Create(IsRequiredToProtectOthersExposure, nameof(IsRequiredToProtectOthersExposure)),
                 Tuple.Create(IsTimely, nameof(IsTimely)),
             };
