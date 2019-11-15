@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
             return false;
         }
 
-        protected internal virtual bool TryGetCauseOfAction(ILegalPerson legalPerson, out ILegalConcept causeOfAction)
+        protected internal virtual bool TryGetCauseOfAction(ILegalPerson legalPerson, out ILegalConcept causeOfAction, bool addReason = true)
         {
             causeOfAction = null;
 
@@ -41,7 +41,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
 
             var title = legalPerson.GetLegalPersonTypeName();
 
-            if (causeOfAction == null)
+            if (causeOfAction == null && addReason)
             {
                 AddReasonEntry($"{title} {legalPerson.Name}, {nameof(GetCausesOfAction)} returned nothing");
                 return false;

@@ -1,6 +1,5 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Courts;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
