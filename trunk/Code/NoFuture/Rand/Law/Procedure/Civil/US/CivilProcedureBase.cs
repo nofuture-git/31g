@@ -1,5 +1,7 @@
-﻿using NoFuture.Rand.Core;
+﻿using System;
+using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US
 {
@@ -20,6 +22,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
         [Aka("subject matter")]
         public ILegalConcept CausesOfAction { get; set; }
 
+        public Func<ILegalPerson, ILegalConcept> GetCausesOfAction { get; set; } = lp => null;
+
         protected bool IsCourtAssigned()
         {
             if (Court != null && !string.IsNullOrWhiteSpace(Court.Name))
@@ -29,12 +33,24 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
             return false;
         }
 
-        protected bool IsCausesOfActionAssigned()
+        protected internal virtual bool TryGetCauseOfAction(ILegalPerson legalPerson, out ILegalConcept causeOfAction)
         {
-            if (CausesOfAction != null) 
-                return true;
-            AddReasonEntry($"{nameof(CausesOfAction)} is unassigned");
-            return false;
+            causeOfAction = null;
+
+            if (legalPerson == null)
+                return false;
+
+            causeOfAction = GetCausesOfAction(legalPerson);
+
+            var title = legalPerson.GetLegalPersonTypeName();
+
+            if (causeOfAction == null)
+            {
+                AddReasonEntry($"{title} {legalPerson.Name}, {nameof(GetCausesOfAction)} returned nothing");
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

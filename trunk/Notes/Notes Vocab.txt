@@ -743,5 +743,6 @@ cadence: a modulation or inflection of the voice
 nunc pro tunc: Latin, now for then
 ombudsman: appointed official who investigates maladministration
 cadastral: map showing ownership of land
-ontology: structured model of some subject-area with properties and relationships
+taxonomy: data structure of single-inheritance, subject subdivision
+ontology: data structure of multi-inheritance
 indemnity: security or protection against a loss

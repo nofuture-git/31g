@@ -15,38 +15,47 @@ Pages in Print Edition: 268
 ----
 Graph Theory (Formal)
  - beyond common use, is a formal abstract concept
+ - the name for discipline concerned with study of graphs
+  - constructing
+  - exploring
+  - visualizing
+  - understandings
  - is composed of points (also called vertices or nodes)
  - has lines (also called edges or links) which connect points
  - represent structured data
+ - represent the relationships of data
  
  Terms
- - vertices (nodes): is the discrete data of the graph 
+ - nodes (vertices): is the discrete data of the graph 
  
- - edges (links): represent the relation among the vertices'
+ - edges (links): represent the relation among the nodes'
  
  - join: formal name for what the edge is doing; namely, joining
-    two vertices.
+    two nodes.
  
- - triple: two nodes connected by one directed edge 
+ - triple: the next most elementary unit, a subgraph of two nodes 
+           connected by one directed edge 
  
- - adjacent: the state between to vertices when there is one edge
+ - adjacent (abutting): the state between to nodes when there is one edge
     between them.
     
- - connected: when a indirect route connects one vertex to another
+ - connected: when a indirect route connects one node to another
  
  - distance: the number of edge traversals required to reach one
     node from another
     
  - geodesic: fancy name for shortest-distance
  
- - loop: the state of an edge connecting a vertex back to itself
+ - loop: the state of an edge connecting a node back to itself
  
  - multiple edge: when there is another edge which joins the same
-    pair of vertices
+    pair of nodes
     
  - simple graph: a graph with no loops or multiple edges
  
- - degree: the number of edges being joined to a single vertex
+ - degree: the number of edges being joined to a single node
+ 
+ - degree of separation: the average number of edges between any two nodes
  
  - density: the number of edges over the number of possible edges
  
@@ -56,9 +65,9 @@ Graph Theory (Formal)
  - betweenness: the number of times some node was passed-through 
     for every possible node-pair.
     
- - subgraph: a subset of vertices and edges of another graph
+ - subgraph: a subset of nodes and edges of another graph
  
- - induced subgraph: a subgraph where only the vertices or only 
+ - induced subgraph: a subgraph where only the nodes or only 
     the edges are known.
  
  - bijection: ("by Jove its a perfect match") one and 
@@ -101,7 +110,7 @@ Graph Theory (Formal)
  - automorphic graph: when two graphs are drawn the same
     and their underlying structured data is the same.
     
- - label: by being labeled a vertex or edge becomes definititive 
+ - label: by being labeled a node or edge becomes definititive 
     like being an instance.
     
  - directed graph (digraph): when the edges are an ordered pair
@@ -112,46 +121,49 @@ Graph Theory (Formal)
  
  - edge tail: the v2 in the ordered pair (v1,v2)
  
- - indegree: number of head-edges for a given vertex
+ - indegree: number of head-edges for a given node
  
- - outdegree: number of tail-edges for a given vertex
+ - outdegree: number of tail-edges for a given node
  
- - clique (egocentric): set of connected vertices where beginning at 
-    one vertex you may navigate to any other member of the
+ - clique (egocentric): set of connected nodes where beginning at 
+    one node you may navigate to any other member of the
 	clique via one edge
     
- - complete graph: every vertex is connected to every other 
-    vertex via an edge and is equal to n*(n-1)/2
+ - complete graph: every node is connected to every other 
+    node via an edge and is equal to n*(n-1)/2
     
  - path: another name for a route, also called a walk
  
- - simple path: if the route never visits the same vertex twice
+ - simple path: if the route never visits the same node twice
  
- - open path: when the first and last vertices are different
+ - open path: when the first and last nodes are different
  
- - closed path: when the first and last vertices are the same
+ - closed path: when the first and last nodes are the same
     also known as a cycle
     
  - simple cycle: same as simple closed path except the origin 
-    vertex is the only one visited twice (being the terminus)
+    node is the only one visited twice (being the terminus)
     
- - tree graph: has an originating root vertex
+ - tree graph: has an originating root node
  
  - parent\child: same as used in XML
  
- - leaf: a child vertex with not children of its own
+ - leaf: a child node with not children of its own
  
  - descendant: in tree graph, used the same as in a family tree
  
  - ancestor: again, tree graph, like a family tree
  
- - weighted graph: where the edge is the vertex pair and a weight
+ - weighted graph: where the edge is the node pair and a weight
  
  - network: a weighted directed graph
  
- - hub: a vertex having a high outdegree
+ - lattice: an graph which, when visualized, appears like 
+            the architectural feature of the same name 
  
- - authority: a vertex having a high indegree
+ - hub: a node having a high outdegree
+ 
+ - authority: a node having a high indegree
  
  - morphism: specific to directed graphs being another general name
     for an edge but differs by having some edges labeled and then 
@@ -161,20 +173,23 @@ Graph Theory (Formal)
     X -> Y [label="f"]
     Y -> Z [label="g"]
     X -> Z [label="g & f"] //named in terms of the other two
+    
+  - "inscrutable hairballs": when complex graphs in any visualization 
+    just looks like a hair ball
 
 ----
 
 ----
 Representing a Graph
- - adjacency list: represent each vertex as a key and the value 
-    as an array of adjacent vertices.
- [1], [2,3,3]	would mean vertex 1 has one edge connecting it 
-                 to vertex 2 and two edges connecting it to vertex 
- [2], [1,4]     vertex 2 has one edge connecting it to vertex 1 and 
-                 one edge connecting it to vertex 4
+ - adjacency list: represent each node as a key and the value 
+    as an array of adjacent nodes.
+ [1], [2,3,3]	would mean node 1 has one edge connecting it 
+                 to node 2 and two edges connecting it to node 
+ [2], [1,4]     node 2 has one edge connecting it to node 1 and 
+                 one edge connecting it to node 4
  
  - adjacency matrix: an exhaustive list of propositions concerning 
-    is vertex v_i connected to vertex v_j 
+    is node v_i connected to node v_j 
    - requires alot more memory to represent; namely n^2
 
 	.-         -.
@@ -187,7 +202,7 @@ Representing a Graph
   - use the 'sna' R package for application of many graph terms
     to actual instance of adjacency matrix
   myAdjGraph <- rgraph(n,m=1,tprob=0.5,mode="(digraph|graph)" [...]) #sna adjancency graph
-   - n is number of vertices, matrix is always square
+   - n is number of nodes, matrix is always square
    - tprop is the probability of a link
    - mode is obvious, other default value args see 'help(package="sna")'
   myIGraph <- graph.adjacency(myAdjGraph, mode="(undirected|directed") #type cast to igraph

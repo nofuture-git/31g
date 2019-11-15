@@ -379,3 +379,5 @@ flumen,river
 gens,tribe|nation
 vulvam|utero,matrix|womb
 oravit|orabat,prayed
+novacula,razor
+caput,head

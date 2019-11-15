@@ -40,12 +40,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// </summary>
         public virtual Predicate<ILegalConcept> IsExclusiveFederalJurisdiction { get; set; } = lp => false;
 
-        /// <summary>
-        /// Asserts that the type of <see cref="CivilProcedureBase.Court"/>
-        /// matches to the <see cref="CivilProcedureBase.CausesOfAction"/>
-        /// </summary>
-        /// <param name="persons"></param>
-        /// <returns></returns>
         public override bool IsValid(params ILegalPerson[] persons)
         {
             if (!IsCourtAssigned())
@@ -59,9 +53,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
         protected internal override bool IsValidWithoutTestCourtType(ILegalPerson[] persons)
         {
-            if (!IsCausesOfActionAssigned())
-                return false;
-
             if (!IsAuthorized2ExerciseJurisdiction(CausesOfAction))
             {
                 AddReasonEntry($"{nameof(Court)} '{Court.Name}', {nameof(IsAuthorized2ExerciseJurisdiction)} " +

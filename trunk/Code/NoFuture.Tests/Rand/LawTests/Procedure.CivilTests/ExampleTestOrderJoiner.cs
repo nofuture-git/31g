@@ -13,9 +13,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new OrderJoiner
             {
-                CausesOfAction = new ExampleCauseForAction(),
+                GetCausesOfAction = lp => new ExampleCauseForAction(),
                 Court = new StateCourt("CA"),
-                RequestedRelief = new ExampleRequestRelief(),
+                GetRequestedRelief = lp => new ExampleRequestRelief(),
                 IsSigned = lp => true,
                 IsRequiredForCompleteRelief = lp => lp is ExampleAbsentee
             };

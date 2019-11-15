@@ -13,11 +13,17 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new Counterclaim()
             {
-                CausesOfAction = new ExampleCauseForAction(),
+                GetCausesOfAction = lp =>
+                {
+                    if(lp is ExamplePlaintiff)
+                        return new ExampleCauseForAction();
+                    if(lp is ExampleDefendant)
+                        return new ExampleOppositionCausesOfAction();
+                    return null;
+                },
                 Court = new StateCourt("KY"),
-                RequestedRelief = new ExampleRequestRelief(),
+                GetRequestedRelief = lp => new ExampleRequestRelief(),
                 IsSigned = lp => true,
-                OppositionCausesOfAction = new ExampleOppositionCausesOfAction(),
                 IsSameTransactionOrOccurrence = (lc0,lc1) => lc0 is ExampleCauseForAction && lc1 is ExampleCauseForAction,
                 IsSameQuestionOfLawOrFact = (lc0, lc1) => lc0 is ExampleCauseForAction && lc1 is ExampleCauseForAction,
             };

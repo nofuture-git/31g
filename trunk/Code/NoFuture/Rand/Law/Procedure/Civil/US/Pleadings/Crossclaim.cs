@@ -25,23 +25,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (!IsCausesOfActionAssigned())
-                return false;
-
-            if (OppositionCausesOfAction == null)
-            {
-                AddReasonEntry($"{nameof(OppositionCausesOfAction)} is unassigned");
-                return false;
-            }
-
-            if (!IsSameTransactionOrOccurrence(OppositionCausesOfAction, CausesOfAction))
-            {
-                AddReasonEntry($"{nameof(IsSameTransactionOrOccurrence)} for " +
-                               $"{nameof(CausesOfAction)} to {nameof(OppositionCausesOfAction)} is false ");
-                return false;
-            }
-
-            return base.IsValid(persons);
+            return TestFuncEnclosure(IsSameTransactionOrOccurrence, nameof(IsSameTransactionOrOccurrence), persons) 
+                   && base.IsValid(persons);
         }
     }
 }

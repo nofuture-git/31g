@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
@@ -13,7 +15,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     [Aka("civil action", "law suit", "suit of law")]
     public class Complaint : PleadingBase
     {
-        public ILegalConcept RequestedRelief { get; set; }
+        public Func<ILegalPerson, ILegalConcept> GetRequestedRelief { get; set; } = lp => null;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -23,24 +25,42 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
             if (persons.Any(p => p is ICourtOfficial) && !IsSignedByCourtOfficial(persons))
                 return false;
 
-            if (CausesOfAction == null)
-            {
-                AddReasonEntry($"{nameof(CausesOfAction)} is unassigned");
+            var plaintiff = this.Plaintiff(persons);
+            if (plaintiff == null)
                 return false;
-            }
 
-            if (RequestedRelief == null)
-            {
-                AddReasonEntry($"{nameof(RequestedRelief)} is unassigned");
+            if (!TryGetCauseOfAction(plaintiff, out var causeOfAction))
                 return false;
-            }
 
-            var result = CausesOfAction.IsValid(persons) && RequestedRelief.IsValid(persons);
+            if (!TryGetRequestedRelief(plaintiff, out var requestedRelief))
+                return false;
 
-            AddReasonEntryRange(CausesOfAction.GetReasonEntries());
-            AddReasonEntryRange(RequestedRelief.GetReasonEntries());
+            var result = causeOfAction.IsValid(persons) && requestedRelief.IsValid(persons);
+
+            AddReasonEntryRange(causeOfAction.GetReasonEntries());
+            AddReasonEntryRange(requestedRelief.GetReasonEntries());
 
             return result;
+        }
+
+        protected internal virtual bool TryGetRequestedRelief(ILegalPerson legalPerson, out ILegalConcept causeOfAction)
+        {
+            causeOfAction = null;
+
+            if (legalPerson == null)
+                return false;
+
+            causeOfAction = GetRequestedRelief(legalPerson);
+
+            var title = legalPerson.GetLegalPersonTypeName();
+
+            if (causeOfAction == null)
+            {
+                AddReasonEntry($"{title} {legalPerson.Name}, {nameof(GetRequestedRelief)} returned nothing");
+                return false;
+            }
+
+            return true;
         }
     }
 }
