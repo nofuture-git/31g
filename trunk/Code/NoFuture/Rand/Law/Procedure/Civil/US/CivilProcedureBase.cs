@@ -16,12 +16,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
         public ICourt Court { get; set; }
 
         /// <summary>
-        /// The basis on which the procedure is being
-        /// performed - the reason to go to court in the first place.
+        /// The reason the <see cref="ILegalPerson"/> is going to court in the first place.
         /// </summary>
         [Aka("subject matter")]
-        public ILegalConcept CausesOfAction { get; set; }
-
         public Func<ILegalPerson, ILegalConcept> GetCausesOfAction { get; set; } = lp => null;
 
         protected bool IsCourtAssigned()

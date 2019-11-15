@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Courts;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
@@ -53,21 +54,30 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
         protected internal override bool IsValidWithoutTestCourtType(ILegalPerson[] persons)
         {
-            if (!IsAuthorized2ExerciseJurisdiction(CausesOfAction))
+            var plaintiff = this.Plaintiff(persons);
+            if (plaintiff == null)
+                return false;
+            var plaintiffTitle = plaintiff.GetLegalPersonTypeName();
+
+            if (!TryGetCauseOfAction(plaintiff, out var causesOfAction))
+                return false;
+
+            if (!IsAuthorized2ExerciseJurisdiction(causesOfAction))
             {
-                AddReasonEntry($"{nameof(Court)} '{Court.Name}', {nameof(IsAuthorized2ExerciseJurisdiction)} " +
-                               $"for {nameof(CausesOfAction)} is false");
+                AddReasonEntry($"{nameof(Court)} '{Court?.Name}' and {nameof(GetCausesOfAction)} from " +
+                               $"{plaintiffTitle} {plaintiff.Name}, {nameof(IsAuthorized2ExerciseJurisdiction)} is false");
                 return false;
             }
 
-            var isAriseFedLaw = IsArisingFromFederalLaw(CausesOfAction);
-            var isExclusiveFed = IsExclusiveFederalJurisdiction(CausesOfAction);
+            var isAriseFedLaw = IsArisingFromFederalLaw(causesOfAction);
+            var isExclusiveFed = IsExclusiveFederalJurisdiction(causesOfAction);
 
             if (!isAriseFedLaw && !isExclusiveFed)
             {
-                AddReasonEntry($"{nameof(IsArisingFromFederalLaw)} is false for {nameof(CausesOfAction)} ");
-                AddReasonEntry(
-                    $"{nameof(IsExclusiveFederalJurisdiction)} is false for {nameof(CausesOfAction)} ");
+                AddReasonEntry($"{nameof(GetCausesOfAction)} from {plaintiffTitle} {plaintiff.Name}, " +
+                               $"{nameof(IsArisingFromFederalLaw)} is false");
+                AddReasonEntry($"{nameof(GetCausesOfAction)} from {plaintiffTitle} {plaintiff.Name}, " +
+                               $"{nameof(IsExclusiveFederalJurisdiction)} is false");
                 return false;
             }
 
