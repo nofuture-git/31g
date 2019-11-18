@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NoFuture.Rand.Law.US.Persons
+﻿namespace NoFuture.Rand.Law.US.Persons
 {
-    interface ILawEnforcement
+    /// <summary>
+    /// General type for the many various forms of law enforcement in the U.S. (marshals, sheriff, police, FBI, etc.)
+    /// </summary>
+    public interface ILawEnforcement : ICourtOfficial
     {
     }
 }

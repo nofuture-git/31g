@@ -542,6 +542,8 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("absentee");
             if(person is INotaryPublic)
                 titles.Add("U.S. Notary");
+            if(person is ILawEnforcement)
+                titles.Add("law enforcement");
 
             return string.Join("|", titles);
         }

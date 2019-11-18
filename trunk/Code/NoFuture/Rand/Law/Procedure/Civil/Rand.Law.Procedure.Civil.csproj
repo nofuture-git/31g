@@ -59,7 +59,7 @@
     <Compile Include="US\Pleadings\Replaint.cs" />
     <Compile Include="US\Pleadings\Summons.cs" />
     <Compile Include="US\ServiceOfProcess\InPersonDelivery.cs" />
-    <Compile Include="US\ServiceOfProcess\VoluntaryEntryOfAppearance.cs" />
+    <Compile Include="US\ServiceOfProcess\VoluntaryEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Rand.Core.csproj">

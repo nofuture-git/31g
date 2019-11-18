@@ -56,6 +56,8 @@
     <Compile Include="JurisdictionTests\ExampleTestRemoval.cs" />
     <Compile Include="PleadingsTests\ExampleTestSummons.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceOfProcessTests\ExampleTestInPersonDelivery.cs" />
+    <Compile Include="ServiceOfProcessTests\ExampleTestVoluntaryEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\NoFuture\Rand\Core\Rand.Core.csproj">

@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
     /// <summary>
     /// When the defendant acknowledges receipt of court summons
     /// </summary>
-    public class VoluntaryEntryOfAppearance : CivilProcedureBase
+    public class VoluntaryEntry : CivilProcedureBase
     {
         public override bool IsValid(params ILegalPerson[] persons)
         {
