@@ -98,10 +98,12 @@
     <Compile Include="US\Persons\IImpleader.cs" />
     <Compile Include="US\Persons\IInvitee.cs" />
     <Compile Include="US\Persons\IJoinder.cs" />
+    <Compile Include="US\Persons\ILawEnforcement.cs" />
     <Compile Include="US\Persons\ILessee.cs" />
     <Compile Include="US\Persons\ILessor.cs" />
     <Compile Include="US\Persons\ILicensee.cs" />
     <Compile Include="US\Persons\IMerchant.cs" />
+    <Compile Include="US\Persons\INotaryPublic.cs" />
     <Compile Include="US\Persons\IThirdParty.cs" />
     <Compile Include="US\ExtensionMethods.cs" />
     <Compile Include="US\Persons\Government.cs" />

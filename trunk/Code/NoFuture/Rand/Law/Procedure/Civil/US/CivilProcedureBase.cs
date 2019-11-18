@@ -2,6 +2,7 @@
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US
 {
@@ -20,6 +21,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
         /// </summary>
         [Aka("subject matter")]
         public Func<ILegalPerson, ILegalConcept> GetCausesOfAction { get; set; } = lp => null;
+
+        public Predicate<ILegalPerson> IsSigned { get; set; } = lp => false;
 
         protected bool IsCourtAssigned()
         {
@@ -44,6 +47,25 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
             if (causeOfAction == null && addReason)
             {
                 AddReasonEntry($"{title} {legalPerson.Name}, {nameof(GetCausesOfAction)} returned nothing");
+                return false;
+            }
+
+            return true;
+        }
+
+        protected bool IsSignedByCourtOfficial(ILegalPerson[] persons)
+        {
+            var courtOfficial = persons.CourtOfficial() as ICourtOfficial;
+            if (courtOfficial == null)
+            {
+                var nameTitles = persons.GetTitleNamePairs();
+                AddReasonEntry($"No one is the {nameof(ICourtOfficial)} in {nameTitles}");
+                return false;
+            }
+
+            if (!IsSigned(courtOfficial))
+            {
+                AddReasonEntry($"{courtOfficial.GetLegalPersonTypeName()} {courtOfficial.Name}, {nameof(IsSigned)} is false");
                 return false;
             }
 

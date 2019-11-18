@@ -349,3 +349,4 @@ Words,StrongsIndex,Translations
 ιππος,2462,horse
 μήτρα,3388,womb|matrix
 φαγειν,5315,to eat
+οινος,3631,wine

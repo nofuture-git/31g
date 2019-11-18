@@ -1,5 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 {
@@ -13,7 +14,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
         /// <summary>
         ///  Federal Rules Civil Procedure Rule 4(c)
         /// </summary>
-        public LegalConcept ServingProcess { get; set; }
+        public Func<ILegalPerson, LegalConcept> GetServingProcess { get; set; } = lp => null;
+
+        public Predicate<ILegalPerson> IsIdentifiedParty { get; set; } = lp => lp is IPlaintiff || lp is IDefendant;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -23,27 +26,46 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
             if (IsSignedByCourtOfficial(persons))
                 return false;
 
+            var plaintiff = this.Plaintiff(persons);
+            if (plaintiff == null)
+                return false;
+
+            var plaintiffTitle = plaintiff.GetLegalPersonTypeName();
+
+            if (!IsIdentifiedParty(plaintiff))
+            {
+                AddReasonEntry($"{plaintiffTitle} {plaintiff.Name}, {nameof(IsIdentifiedParty)} is false");
+                return false;
+            }
+
             var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
 
-            var title = defendant.GetLegalPersonTypeName();
+            var defendantTitle = defendant.GetLegalPersonTypeName();
+
+            if (!IsIdentifiedParty(defendant))
+            {
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(IsIdentifiedParty)} is false");
+                return false;
+            }
 
             if (GetDateOfAppearance(defendant) == null)
             {
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(GetDateOfAppearance)} is null");
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetDateOfAppearance)} is null");
                 return false;
             }
 
-            if (ServingProcess == null)
+            var servingProcess = GetServingProcess(defendant);
+            if (servingProcess == null)
             {
-                AddReasonEntry($"{title} {defendant.Name}, {nameof(ServingProcess)} is unassigned");
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetServingProcess)} returned nothing");
                 return false;
             }
 
-            var result = ServingProcess.IsValid(persons);
+            var result = servingProcess.IsValid(persons);
 
-            AddReasonEntryRange(ServingProcess.GetReasonEntries());
+            AddReasonEntryRange(servingProcess.GetReasonEntries());
 
             return result;
         }

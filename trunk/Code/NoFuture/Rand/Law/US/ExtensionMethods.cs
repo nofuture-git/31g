@@ -103,6 +103,11 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is ICourtOfficial);
         }
 
+        public static INotaryPublic NotaryPublic(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is INotaryPublic) as INotaryPublic;
+        }
+
         public static IPlaintiff Plaintiff(this IRationale lc, IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
@@ -535,6 +540,8 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("foreigner");
             if(person is IAbsentee)
                 titles.Add("absentee");
+            if(person is INotaryPublic)
+                titles.Add("U.S. Notary");
 
             return string.Join("|", titles);
         }

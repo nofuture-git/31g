@@ -54,6 +54,7 @@
     <Compile Include="ExampleTestPersonalJurisdiction.cs" />
     <Compile Include="ExampleTestFederalSubjectMatterJurisdiction.cs" />
     <Compile Include="ExampleTestRemoval.cs" />
+    <Compile Include="ExampleTestSummons.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
