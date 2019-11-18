@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
@@ -7,22 +6,33 @@ using NoFuture.Rand.Law.US.Persons;
 namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
 {
     /// <summary>
-    /// The form of service performed by court-official, such as sheriff, U.S. Marshal, constable
+    /// The form of service performed by some person authorized by the court to deliver summons to
+    /// defendants.
     /// </summary>
     public class InPersonDelivery : CivilProcedureBase
     {
         /// <summary>
-        /// State procedure directs who is authorized to hand out summons 
+        /// Directs who is authorized to hand out summons 
         /// </summary>
         /// <remarks>
         /// Federal Civil Procedure Rule 4(c)(2) allows for any one who is
         /// over 18 years old and is not a party to the action.
         /// </remarks>
-        public Predicate<ILegalPerson> IsAuthorizedPerson { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsToDeliverAuthorized { get; set; } = lp => lp is ICourtOfficial;
 
         /// <summary>
-        /// Defines who delivered to who where expectation is law enforcement delivered to the the defendant
+        /// Directs who is authorized to receive a summons on behalf of a defendant
         /// </summary>
+        public Predicate<ILegalPerson> IsToReceiveAuthorized { get; set; } = lp => lp is IDefendant;
+
+        /// <summary>
+        /// Defines who delivered to who.
+        /// </summary>
+        /// <remarks>
+        /// Simplest example being a U.S. marshal delivering directly to defendant.
+        /// Others are delivery to appropriate 3rd party at defendant&apos;s home,
+        /// defendant&apos;s attorney, etc.
+        /// </remarks>
         public Func<ILegalPerson, ILegalPerson> GetDeliveredTo { get; set; } = lp => null;
 
         public override bool IsValid(params ILegalPerson[] persons)
@@ -31,37 +41,27 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
             if (!IsCourtAssigned())
                 return false;
 
-            var defendant = this.Defendant(persons);
-            if (defendant == null)
-                return false;
-
             var nameTitles = persons.GetTitleNamePairs();
-            var authPersons = persons.Where(p => IsAuthorizedPerson(p)).ToList();
+            var authPersons = persons.Where(p => IsToDeliverAuthorized(p)).ToList();
             if (!authPersons.Any())
             {
-                AddReasonEntry($"{nameof(IsAuthorizedPerson)} for all {nameTitles} is false");
+                AddReasonEntry($"{nameof(IsToDeliverAuthorized)} for all {nameTitles} is false");
                 return false;
             }
 
-            var deliveredDefendant = authPersons.Where(c => GetDeliveredTo(c) is IDefendant)
-                                                .Select(c => GetDeliveredTo(c))
-                                                .Cast<IDefendant>()
-                                                .ToList();
+            var deliveredTo = authPersons.Select(c => GetDeliveredTo(c)).ToList();
 
-            if (!deliveredDefendant.Any())
+            if (!deliveredTo.Any())
             {
                 nameTitles = authPersons.GetTitleNamePairs();
-                AddReasonEntry($"{nameof(ICourtOfficial)} in {nameTitles}, " +
-                               $"{nameof(GetDeliveredTo)} returned no one who " +
-                               $"is {nameof(IDefendant)}");
+                AddReasonEntry($"{nameTitles}, {nameof(GetDeliveredTo)} returned no one ");
                 return false;
             }
 
-            if (deliveredDefendant.All(df => !NamesEqual(df, defendant)))
+            if (deliveredTo.All(df => !IsToReceiveAuthorized(df)))
             {
-                nameTitles = deliveredDefendant.GetTitleNamePairs();
-                AddReasonEntry($"{defendant.GetLegalPersonTypeName()} {defendant.Name}, {nameof(NamesEqual)} for all " +
-                               $"{nameTitles} is false");
+                nameTitles = deliveredTo.GetTitleNamePairs();
+                AddReasonEntry($"{nameof(IsToReceiveAuthorized)} for all {nameTitles} is false");
                 return false;
             }
 

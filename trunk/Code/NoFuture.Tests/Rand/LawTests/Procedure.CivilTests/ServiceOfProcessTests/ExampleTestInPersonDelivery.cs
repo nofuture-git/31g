@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.ServiceOfProcessTests
         {
             var testSubject = new InPersonDelivery
             {
-                Court = new StateCourt("UT"), IsAuthorizedPerson = lp => lp is ICourtOfficial,
+                Court = new StateCourt("UT"),
                 GetDeliveredTo = lp => lp is ICourtOfficial ? new ExampleDefendant() : null,
             };
 

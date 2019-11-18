@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess;
 using NoFuture.Rand.Law.US.Courts;
 using NoFuture.Rand.Law.US.Persons;
@@ -27,7 +23,6 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.ServiceOfProcessTests
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }
-
     }
 
     public class ExampleNotaryPublic : LegalPerson, INotaryPublic
