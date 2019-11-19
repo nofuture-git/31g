@@ -8,6 +8,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
     /// </summary>
     public class VoluntaryEntry : CivilProcedureBase
     {
+        public bool IsNotaryPublicSignatureRequired { get; set; } = true;
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             if (!IsCourtAssigned())
@@ -24,6 +26,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
                 AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(IsSigned)} is false.");
                 return false;
             }
+
+            if (!IsNotaryPublicSignatureRequired)
+                return true;
 
             var notary = persons.NotaryPublic();
             if (notary == null)

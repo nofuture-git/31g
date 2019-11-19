@@ -58,6 +58,7 @@
     <Compile Include="US\Jurisdiction\SpecialAppearance.cs" />
     <Compile Include="US\Pleadings\Replaint.cs" />
     <Compile Include="US\Pleadings\Summons.cs" />
+    <Compile Include="US\ServiceOfProcess\DeliveryBase.cs" />
     <Compile Include="US\ServiceOfProcess\InPersonDelivery.cs" />
     <Compile Include="US\ServiceOfProcess\VoluntaryEntry.cs" />
   </ItemGroup>

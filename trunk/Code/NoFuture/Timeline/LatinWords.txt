@@ -381,3 +381,4 @@ vulvam|utero,matrix|womb
 oravit|orabat,prayed
 novacula,razor
 caput,head
+magister,teacher
