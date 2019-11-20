@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
     /// <summary>
     /// One of the categories that may be held in federal courts is between citizens of different states
     /// </summary>
-    public class FederalDiversityJurisdiction : FederalJurisdictionBase
+    public class FederalDiversityJurisdiction : JurisdictionBase, IFederalJurisdiction
     {
         public FederalDiversityJurisdiction(ICourt name) : base(name)
         {
@@ -37,11 +37,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
             if (!IsFederalCourt())
                 return false;
 
-            return IsValidWithoutTestCourtType(persons);
+            return IsValidAsFederalCourt(persons);
 
         }
 
-        protected internal override bool IsValidWithoutTestCourtType(ILegalPerson[] persons)
+        public virtual bool IsValidAsFederalCourt(ILegalPerson[] persons)
         {
             var defendant = this.Defendant(persons) as ILegalPerson;
 

@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
 
         protected internal virtual bool IsValidDateOfService(IList<ILegalPerson> persons)
         {
-            if (persons == null || persons.Any())
+            if (persons == null || !persons.Any())
                 return false;
 
             var defendant = this.Defendant(persons);
