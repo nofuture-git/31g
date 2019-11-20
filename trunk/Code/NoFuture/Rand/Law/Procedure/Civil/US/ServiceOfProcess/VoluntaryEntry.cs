@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.US;
+﻿using NoFuture.Rand.Law.Attributes;
+using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
@@ -6,13 +7,20 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
     /// <summary>
     /// When the defendant acknowledges receipt of court summons
     /// </summary>
-    public class VoluntaryEntry : CivilProcedureBase
+    /// <remarks>
+    /// This could be used for waiver or any process of service not requiring a delivery
+    /// </remarks>
+    [Aka("waiver")]
+    public class VoluntaryEntry : ProcessServiceBase
     {
         public bool IsNotaryPublicSignatureRequired { get; set; } = true;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
             if (!IsCourtAssigned())
+                return false;
+
+            if (!IsValidDateOfService(persons))
                 return false;
 
             var defendant = this.Defendant(persons);

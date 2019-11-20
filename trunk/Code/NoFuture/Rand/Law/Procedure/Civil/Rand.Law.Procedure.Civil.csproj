@@ -60,6 +60,7 @@
     <Compile Include="US\Pleadings\Summons.cs" />
     <Compile Include="US\ServiceOfProcess\DeliveryBase.cs" />
     <Compile Include="US\ServiceOfProcess\InPersonDelivery.cs" />
+    <Compile Include="US\ServiceOfProcess\ProcessServiceBase.cs" />
     <Compile Include="US\ServiceOfProcess\VoluntaryEntry.cs" />
   </ItemGroup>
   <ItemGroup>

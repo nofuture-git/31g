@@ -4,17 +4,15 @@ using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 {
+    /// <summary>
+    /// An official court document commanding the defendant to respond at some time and place
+    /// </summary>
     public class Summons : PleadingBase
     {
         /// <summary>
         /// Federal Rules Civil Procedure Rule 4(a)(1)(D)
         /// </summary>
         public Func<ILegalPerson, DateTime?> GetDateOfAppearance { get; set; } = dt => null;
-
-        /// <summary>
-        ///  Federal Rules Civil Procedure Rule 4(c)
-        /// </summary>
-        public Func<ILegalPerson, LegalConcept> GetServingProcess { get; set; } = lp => null;
 
         public Predicate<ILegalPerson> IsIdentifiedParty { get; set; } = lp => lp is IPlaintiff || lp is IDefendant;
 
@@ -55,19 +53,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
                 AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetDateOfAppearance)} is null");
                 return false;
             }
-
-            var servingProcess = GetServingProcess(defendant);
-            if (servingProcess == null)
-            {
-                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetServingProcess)} returned nothing");
-                return false;
-            }
-
-            var result = servingProcess.IsValid(persons);
-
-            AddReasonEntryRange(servingProcess.GetReasonEntries());
-
-            return result;
+            return true;
         }
     }
 }

@@ -25,6 +25,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
             if (!IsCourtAssigned())
                 return false;
 
+            if (!IsValidDateOfService(persons))
+                return false;
+
             var nameTitles = persons.GetTitleNamePairs();
             var authPersons = persons.Where(p => IsToDeliverAuthorized(p)).ToList();
             if (!authPersons.Any())

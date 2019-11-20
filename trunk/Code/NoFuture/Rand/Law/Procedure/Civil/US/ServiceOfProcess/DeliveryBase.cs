@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
 {
-    public abstract class DeliveryBase : CivilProcedureBase
+    public abstract class DeliveryBase : ProcessServiceBase
     {
         /// <summary>
         /// Defines who delivered to who.

@@ -128,6 +128,7 @@
 חָמֵשׁ,2568,five (m.)
 חֲמִשׁה,2568,five
 חמשים,2572,fifty
+חֵן,2580,grace|charm|favor
 חָנָה,2583,to encamp
 חֶסֶד,2618,goodness|kindness
 חֲצֵי,2680,half

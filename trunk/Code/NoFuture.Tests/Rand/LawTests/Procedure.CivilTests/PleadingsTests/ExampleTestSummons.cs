@@ -18,21 +18,12 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
                 Court = new FederalCourt("district"), IsSigned = lp => true,
                 GetCausesOfAction = lp => new ExampleCauseForAction(),
                 GetDateOfAppearance = lp => DateTime.Today.AddDays(30),
-                GetServingProcess = lp => lp is IDefendant ? new ExampleServingProcess() : null
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
 
-        }
-    }
-
-    public class ExampleServingProcess : LegalConcept
-    {
-        public override bool IsValid(params ILegalPerson[] persons)
-        {
-            return true;
         }
     }
 }

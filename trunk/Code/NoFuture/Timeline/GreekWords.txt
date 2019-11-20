@@ -326,6 +326,7 @@ Words,StrongsIndex,Translations
 φως,5457,light
 χαιρω,5463,I rejoice
 χαρα,5479,joy|delight
+χαρις,5485,grace
 χειρ,5495,hand
 χρεια,5532,a need
 χριστος,5547,Christ

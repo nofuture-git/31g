@@ -16,6 +16,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.ServiceOfProcessTests
             {
                 Court = new StateCourt("UT"),
                 GetDeliveredTo = lp => lp is ICourtOfficial ? new ExampleDefendant() : null,
+                GetToDateOfService = lp => DateTime.Today.AddDays(-14),
             };
 
             var testResult = testSubject.IsValid(new ExamplePlaintiff(), new ExampleDefendant(),

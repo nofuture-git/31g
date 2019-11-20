@@ -15,7 +15,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.ServiceOfProcessTests
             var testSubject = new VoluntaryEntry
             {
                 Court = new StateCourt("WV"), 
-                IsSigned = lp => lp is IDefendant || lp is INotaryPublic
+                IsSigned = lp => lp is IDefendant || lp is INotaryPublic,
+                GetToDateOfService = lp => DateTime.Today.AddDays(-14),
             };
 
             var testResult =
