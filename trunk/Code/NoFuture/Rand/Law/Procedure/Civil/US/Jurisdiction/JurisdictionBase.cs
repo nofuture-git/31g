@@ -6,7 +6,7 @@ using NoFuture.Rand.Law.US.Courts;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 {
-    public abstract class JurisdictionBase : CivilProcedureBase
+    public abstract class JurisdictionBase : CivilProcedureBase, IJurisdiction
     {
         #region fields
         protected bool flagGetDomicileLocation;
