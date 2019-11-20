@@ -50,6 +50,7 @@
     <Compile Include="JurisdictionTests\ExampleTestFederalVenue.cs" />
     <Compile Include="PleadingsTests\ExampleTestInterveneJoiner.cs" />
     <Compile Include="JurisdictionTests\ExampleTestMinContact.cs" />
+    <Compile Include="PleadingsTests\ExampleTestMotionToDismiss.cs" />
     <Compile Include="PleadingsTests\ExampleTestOrderJoiner.cs" />
     <Compile Include="JurisdictionTests\ExampleTestPersonalJurisdiction.cs" />
     <Compile Include="JurisdictionTests\ExampleTestFederalSubjectMatterJurisdiction.cs" />
