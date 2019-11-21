@@ -183,6 +183,7 @@ liberalis,freedman|ex-slave
 libertus,generous
 litus,sea-shore
 magnus,big
+mane,morning
 manet,remains|stays
 mare,sea
 maritus,husband
@@ -370,7 +371,7 @@ noctis,night
 amare,love
 lux,light
 filia,daughter
-oriens,dawn
+oriens|aurora,dawn
 annos,year
 aurum,gold
 mensis,month

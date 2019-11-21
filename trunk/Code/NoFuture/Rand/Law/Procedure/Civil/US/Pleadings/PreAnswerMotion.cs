@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// <summary>
     /// An optional, alternative to answering a complaint 
     /// </summary>
-    public class MotionToDismiss : Complaint
+    public class PreAnswerMotion : Complaint
     {
         /// <summary>
         /// Dismiss a complaint because the jurisdiction is invalid

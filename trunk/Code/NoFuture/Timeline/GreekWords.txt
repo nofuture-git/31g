@@ -351,3 +351,4 @@ Words,StrongsIndex,Translations
 μήτρα,3388,womb|matrix
 φαγειν,5315,to eat
 οινος,3631,wine
+γυναικα,1135,wife

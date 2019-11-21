@@ -12,7 +12,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
         [Test]
         public void TestMotionToDismissIsValid()
         {
-            var testSubject = new MotionToDismiss
+            var testSubject = new PreAnswerMotion
             {
                 Court = new StateCourt("CO"),
                 GetCausesOfAction = lp => new ExampleCauseForAction(),
@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
 
-            testSubject = new MotionToDismiss
+            testSubject = new PreAnswerMotion
             {
                 Court = new StateCourt("CO"),
                 GetCausesOfAction = lp => new ExampleCauseForAction(),
@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
 
-            testSubject = new MotionToDismiss
+            testSubject = new PreAnswerMotion
             {
                 Court = new StateCourt("CO"),
                 GetCausesOfAction = lp => new ExampleCauseForAction(),

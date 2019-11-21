@@ -361,7 +361,8 @@
 תָוֶךְ,8432,midst|in the middle
 תּוֹרָה,8451,instruction
 תַּחת,8479,underneath|below|instead of
-4487,מָנָה,number|reckon|assign|dose
-7358,רֶחֶם,womb|matrix
-8605,תְּפִלָּה,prayer
-1058,בָּכָה,weep|cry out
+מָנָה,4487,number|reckon|assign|dose
+רֶחֶם,7358,womb|matrix
+תְּפִלָּה,8605,prayer
+בָּכָה,1058,weep|cry out
+שַׁחַר,7837,dawn
