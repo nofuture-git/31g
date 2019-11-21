@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     public class PreAnswerMotion : Complaint
     {
         /// <summary>
-        /// (1) &amp; (3) of four-defenses which are waived if not raised in first response to complaint
+        /// (1) &amp; (3) of four procedural objections which are waived if not raised in first response to complaint
         /// </summary>
         /// <remarks>
         /// This is similar to <see cref="SpecialAppearance"/>, but these rules are taken
@@ -23,12 +23,12 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
         public IJurisdiction Jurisdiction { get; set; }
 
         /// <summary>
-        /// (2) of four-defenses which are waived if not raised in first response to complaint
+        /// (2) of four procedural objections which are waived if not raised in first response to complaint
         /// </summary>
         public IVenue Venue { get; set; }
 
         /// <summary>
-        /// (4) of four-defenses which are waived if not raised in first response to complaint
+        /// (4) of four procedural objections which are waived if not raised in first response to complaint
         /// </summary>
         public IProcessService ServiceOfProcess { get; set; }
 

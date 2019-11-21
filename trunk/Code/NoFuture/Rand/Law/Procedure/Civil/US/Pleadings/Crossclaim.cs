@@ -16,7 +16,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// to the original transaction\occurrence, then, and only then, can unrelated
     /// claims targeting the co-defendant\co-plaintiff be tacked on.
     /// </remarks>
-    public class Crossclaim : Replaint
+    public class Crossclaim : Complaint
     {
         /// <summary>
         /// Counter\Cross claim must concern the same transaction or occurrence
