@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
             if (!IsCourtAssigned())
                 return false;
 
-            if (!IsValidDateOfService(persons))
+            if (!IsDateOfServiceValid(this, this.Defendant(persons), out _))
                 return false;
 
             var defendant = this.Defendant(persons);

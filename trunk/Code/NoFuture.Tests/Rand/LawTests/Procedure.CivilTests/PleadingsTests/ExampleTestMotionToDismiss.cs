@@ -16,7 +16,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
             {
                 Court = new StateCourt("CO"),
                 GetCausesOfAction = lp => new ExampleCauseForAction(),
-                GetRequestedRelief = lp => new ExampleRequestRelief(),
+                LinkedTo = new Complaint
+                {
+                    GetRequestedRelief = lp => new ExampleRequestRelief(),
+                },
                 IsReliefCanBeGranted = lc => lc is ExampleRequestRelief,
                 IsSigned = lp => true,
                 Jurisdiction = new ExampleJurisdictionIsFalse()
@@ -30,7 +33,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
             {
                 Court = new StateCourt("CO"),
                 GetCausesOfAction = lp => new ExampleCauseForAction(),
-                GetRequestedRelief = lp => new ExampleRequestRelief(),
+                LinkedTo = new Complaint
+                {
+                    GetRequestedRelief = lp => new ExampleRequestRelief(),
+                },
                 IsReliefCanBeGranted = lc => false,
                 IsSigned = lp => true,
                 Jurisdiction = new ExampleJurisdictionIsTrue()
@@ -44,7 +50,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
             {
                 Court = new StateCourt("CO"),
                 GetCausesOfAction = lp => new ExampleCauseForAction(),
-                GetRequestedRelief = lp => new ExampleRequestRelief(),
+                LinkedTo = new Complaint
+                {
+                    GetRequestedRelief = lp => new ExampleRequestRelief(),
+                },
                 IsReliefCanBeGranted = lc => lc is ExampleRequestRelief,
                 IsSigned = lp => true,
                 Jurisdiction = new ExampleJurisdictionIsTrue()

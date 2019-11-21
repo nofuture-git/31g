@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
@@ -12,29 +10,27 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
         /// </summary>
         public Func<ILegalPerson, DateTime?> GetToDateOfService { get; set; } = lp => null;
 
-        protected internal virtual bool IsValidDateOfService(IList<ILegalPerson> persons)
+        public DateTime? CurrentTime { get; set; }
+
+        public static bool IsDateOfServiceValid(IProcessService serviceOfProcess, ILegalPerson person, out DateTime? dtOfService)
         {
-            if (persons == null || !persons.Any())
+            dtOfService = null;
+            if (person == null)
                 return false;
 
-            var defendant = this.Defendant(persons);
+            var defendantTitle = person.GetLegalPersonTypeName();
 
-            if (defendant == null)
-                return false;
-
-            var defendantTitle = defendant.GetLegalPersonTypeName();
-
-            var dtOfService = GetToDateOfService(defendant);
+            dtOfService = serviceOfProcess.GetToDateOfService(person);
 
             if (dtOfService == null)
             {
-                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetToDateOfService)} returned nothing");
+                serviceOfProcess.AddReasonEntry($"{defendantTitle} {person.Name}, {nameof(GetToDateOfService)} returned nothing");
                 return false;
             }
 
             if (dtOfService.Value < new DateTime(1776, 7, 4)) //close enough
             {
-                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(GetToDateOfService)} " +
+                serviceOfProcess.AddReasonEntry($"{defendantTitle} {person.Name}, {nameof(GetToDateOfService)} " +
                                $"returned invalid value of {dtOfService.Value}");
                 return false;
             }

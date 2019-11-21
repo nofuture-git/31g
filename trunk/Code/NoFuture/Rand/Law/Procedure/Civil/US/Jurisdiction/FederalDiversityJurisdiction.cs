@@ -27,7 +27,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
         /// <summary>
         /// Allows caller to specify some past or future date, default is current system UTC time
         /// </summary>
-        public DateTime CurrentTime { get; set; } = DateTime.UtcNow;
+        public DateTime? CurrentTime { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -134,12 +134,14 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             var plaintiffClaim = GetInjuryClaimDollars(plaintiff);
 
-            var currentMin = GetMinimumClaimDollars(CurrentTime);
+            var currentTime = CurrentTime ?? DateTime.UtcNow;
+
+            var currentMin = GetMinimumClaimDollars(currentTime);
 
             if (plaintiffClaim < currentMin)
             {
                 AddReasonEntry($"{plaintiffTitle} {plaintiff.Name}, {nameof(GetInjuryClaimDollars)} returned ${plaintiffClaim}");
-                AddReasonEntry($"{nameof(GetMinimumClaimDollars)} at {CurrentTime} returned ${currentMin}");
+                AddReasonEntry($"{nameof(GetMinimumClaimDollars)} at {currentTime} returned ${currentMin}");
                 AddReasonEntry($"${plaintiffClaim} is less than ${currentMin}");
                 return false;
             }

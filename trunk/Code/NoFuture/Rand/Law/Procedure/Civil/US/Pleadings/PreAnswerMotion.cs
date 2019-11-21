@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
     /// An optional, alternative to answering a complaint 
     /// </summary>
     [Aka("motion to dismiss")]
-    public class PreAnswerMotion : Complaint
+    public class PreAnswerMotion : Answer
     {
         /// <summary>
         /// (1) &amp; (3) of four procedural objections which are waived if not raised in first response to complaint
@@ -66,7 +66,15 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 
             var plaintiffTitle = plaintiff.GetLegalPersonTypeName();
 
-            if (!TryGetRequestedRelief(plaintiff, out var requestedRelief))
+            var complaint = LinkedTo as Complaint;
+
+            if (complaint == null)
+            {
+                AddReasonEntry($"{nameof(LinkedTo)} is not of type {nameof(Complaint)}");
+                return false;
+            }
+
+            if (!complaint.TryGetRequestedRelief(plaintiff, out var requestedRelief))
                 return false;
 
             if (!IsReliefCanBeGranted(requestedRelief))

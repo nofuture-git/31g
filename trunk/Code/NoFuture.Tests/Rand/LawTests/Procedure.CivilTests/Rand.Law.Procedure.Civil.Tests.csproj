@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ExampleAustinvHealyTests.cs" />
     <Compile Include="ExampleSmokyMountainVWTests.cs" />
+    <Compile Include="PleadingsTests\ExampleTestAmendment.cs" />
     <Compile Include="PleadingsTests\ExampleTestContributionClaim.cs" />
     <Compile Include="PleadingsTests\ExampleTestCounterclaim.cs" />
     <Compile Include="ExampleTestDomicileLocation.cs" />
