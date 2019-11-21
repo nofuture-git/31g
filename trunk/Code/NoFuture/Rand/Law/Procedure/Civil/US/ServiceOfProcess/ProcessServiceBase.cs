@@ -5,7 +5,7 @@ using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
 {
-    public abstract class ProcessServiceBase : CivilProcedureBase
+    public abstract class ProcessServiceBase : CivilProcedureBase, IProcessService
     {
         /// <summary>
         /// Some states use this date, instead of complaint&apos;s date-of-filing, to determine statute of limitations

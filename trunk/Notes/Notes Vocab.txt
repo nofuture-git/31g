@@ -746,3 +746,5 @@ cadastral: map showing ownership of land
 taxonomy: data structure of single-inheritance, subject subdivision
 ontology: data structure of multi-inheritance
 indemnity: security or protection against a loss
+enclitic: a word pronounced with so little emphasis this it is 
+          shortened and forms part of the preceding word (e.g. can't)
