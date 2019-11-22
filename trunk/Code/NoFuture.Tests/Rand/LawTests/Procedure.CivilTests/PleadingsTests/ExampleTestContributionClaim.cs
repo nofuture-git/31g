@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new ContributionClaim()
             {
-                GetCausesOfAction = lp => new ExampleCauseForAction(),
+                GetCauseOfAction = lp => new ExampleCauseForAction(),
                 GetRequestedRelief = lp => new ExampleRequestRelief(),
                 IsSigned = lp => true,
                 IsShareInLiability = lp => lp is ExampleThirdParty,

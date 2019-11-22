@@ -60,9 +60,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             if (!isAriseFedLaw && !isExclusiveFed)
             {
-                AddReasonEntry($"{nameof(GetCausesOfAction)} from {plaintiffTitle} {plaintiff.Name}, " +
+                AddReasonEntry($"{nameof(GetCauseOfAction)} from {plaintiffTitle} {plaintiff.Name}, " +
                                $"{nameof(IsArisingFromFederalLaw)} is false");
-                AddReasonEntry($"{nameof(GetCausesOfAction)} from {plaintiffTitle} {plaintiff.Name}, " +
+                AddReasonEntry($"{nameof(GetCauseOfAction)} from {plaintiffTitle} {plaintiff.Name}, " +
                                $"{nameof(IsExclusiveFederalJurisdiction)} is false");
                 return false;
             }

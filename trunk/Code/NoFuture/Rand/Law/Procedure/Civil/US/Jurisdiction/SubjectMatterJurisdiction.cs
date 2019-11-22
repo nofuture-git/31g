@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
 
             if (!IsAuthorized2ExerciseJurisdiction(causesOfAction))
             {
-                AddReasonEntry($"{nameof(Court)} '{Court?.Name}' and {nameof(GetCausesOfAction)} from " +
+                AddReasonEntry($"{nameof(Court)} '{Court?.Name}' and {nameof(GetCauseOfAction)} from " +
                                $"{plaintiffTitle} {plaintiff.Name}, {nameof(IsAuthorized2ExerciseJurisdiction)} is false");
                 return false;
             }

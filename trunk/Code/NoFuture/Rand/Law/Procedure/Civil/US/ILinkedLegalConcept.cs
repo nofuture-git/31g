@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NoFuture.Rand.Core;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US
 {
     public interface ILinkedLegalConcept : ILegalConcept
     {
         ILegalConcept LinkedTo { get; set; }
+
+        bool NamesEqual(IVoca voca1, IVoca voca2);
     }
 }

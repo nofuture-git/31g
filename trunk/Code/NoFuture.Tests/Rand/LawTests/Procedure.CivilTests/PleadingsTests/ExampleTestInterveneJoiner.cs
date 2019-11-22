@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new InterveneJoiner
             {
-                GetCausesOfAction = lp => new ExampleCauseForAction(),
+                GetCauseOfAction = lp => new ExampleCauseForAction(),
                 Court = new StateCourt("WY"),
                 IsStatueAuthorizedRight = lp => lp is ExampleAbsentee
             };

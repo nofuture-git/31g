@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new OrderJoiner
             {
-                GetCausesOfAction = lp => new ExampleCauseForAction(),
+                GetCauseOfAction = lp => new ExampleCauseForAction(),
                 Court = new StateCourt("CA"),
                 GetRequestedRelief = lp => new ExampleRequestRelief(),
                 IsSigned = lp => true,

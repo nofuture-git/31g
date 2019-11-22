@@ -28,7 +28,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 
             if (!test(oppositionCausesOfAction, causesOfAction))
             {
-                AddReasonEntry($"{nameof(GetCausesOfAction)} for {plaintiffTitle} {plaintiff.Name} and " +
+                AddReasonEntry($"{nameof(GetCauseOfAction)} for {plaintiffTitle} {plaintiff.Name} and " +
                                $"{defendantTitle} {defendant.Name}, {testName} is false");
                 return false;
             }

@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
             var testSubject = new PreAnswerMotion
             {
                 Court = new StateCourt("CO"),
-                GetCausesOfAction = lp => new ExampleCauseForAction(),
+                GetCauseOfAction = lp => new ExampleCauseForAction(),
                 LinkedTo = new Complaint
                 {
                     GetRequestedRelief = lp => new ExampleRequestRelief(),
@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
             testSubject = new PreAnswerMotion
             {
                 Court = new StateCourt("CO"),
-                GetCausesOfAction = lp => new ExampleCauseForAction(),
+                GetCauseOfAction = lp => new ExampleCauseForAction(),
                 LinkedTo = new Complaint
                 {
                     GetRequestedRelief = lp => new ExampleRequestRelief(),
@@ -49,7 +49,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
             testSubject = new PreAnswerMotion
             {
                 Court = new StateCourt("CO"),
-                GetCausesOfAction = lp => new ExampleCauseForAction(),
+                GetCauseOfAction = lp => new ExampleCauseForAction(),
                 LinkedTo = new Complaint
                 {
                     GetRequestedRelief = lp => new ExampleRequestRelief(),

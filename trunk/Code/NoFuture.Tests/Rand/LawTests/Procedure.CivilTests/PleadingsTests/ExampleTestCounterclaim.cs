@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new Counterclaim()
             {
-                GetCausesOfAction = lp =>
+                GetCauseOfAction = lp =>
                 {
                     if(lp is ExamplePlaintiff)
                         return new ExampleCauseForAction();

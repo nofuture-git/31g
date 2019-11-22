@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\CivilProcedureBase.cs" />
+    <Compile Include="US\Discovery\ScopeOfDiscovery.cs" />
     <Compile Include="US\DomicileLocation.cs" />
     <Compile Include="US\ILinkedLegalConcept.cs" />
     <Compile Include="US\Jurisdiction\FederalDiversityJurisdiction.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="US\Jurisdiction\IVenue.cs" />
     <Compile Include="US\Jurisdiction\CollateralAttackOnJudgment.cs" />
     <Compile Include="US\Jurisdiction\SubjectMatterJurisdiction.cs" />
+    <Compile Include="US\LinkedLegalConceptExtensions.cs" />
     <Compile Include="US\Pleadings\Amendment.cs" />
     <Compile Include="US\Pleadings\Answer.cs" />
     <Compile Include="US\Pleadings\Complaint.cs" />

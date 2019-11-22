@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess;
 using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
 {
@@ -41,7 +38,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
             if (!IsCourtAssigned())
                 return false;
 
-            if (!TryGetSubjectPerson(persons, out var subjectPerson))
+            if (!this.TryGetSubjectPerson(persons, out var subjectPerson))
                 return false;
 
             return IsValidWithLeaveOfCourt(persons, subjectPerson) || IsValidAsMatterOfCourse(persons, subjectPerson);
@@ -94,96 +91,17 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
             if (Assent == null)
                 return false;
 
-            var courtOfficial = GetPersonsLessThisOne(persons, subjectPerson).CourtOfficial();
+            var courtOfficial = LinkedLegalConceptExtensions.GetPersonsLessThisOne(this, persons, subjectPerson).CourtOfficial();
 
             if (Assent.IsApprovalExpressed(courtOfficial))
                 return true;
 
-            if (!TryGetOppositionPerson(persons, subjectPerson, out var opposition))
+            if (!this.TryGetOppositionPerson(persons, subjectPerson, out var opposition))
             {
                 return false;
             }
 
             return Assent.IsApprovalExpressed(opposition);
         }
-
-        protected internal bool TryGetSubjectPerson(ILegalPerson[] persons, out ILegalPerson person)
-        {
-            person = null;
-
-            if (persons == null || !persons.Any())
-                return false;
-
-            if (LinkedTo == null)
-            {
-                AddReasonEntry($"{nameof(LinkedTo)} is unassigned");
-                return false;
-            }
-
-            if (LinkedTo is Complaint)
-                person = this.Plaintiff(persons);
-
-            if (LinkedTo is Answer)
-                person = this.Defendant(persons);
-
-            if (person == null)
-            {
-                AddReasonEntry($"{nameof(LinkedTo)} is neither type {nameof(Complaint)} nor {nameof(Answer)}");
-                return false;
-            }
-
-            return true;
-        }
-
-        protected internal bool TryGetOppositionPerson(ILegalPerson[] persons, ILegalPerson subjectPerson,
-            out ILegalPerson person)
-        {
-            person = null;
-            if (subjectPerson == null)
-                return false;
-
-            var personsLessSubj = GetPersonsLessThisOne(persons, subjectPerson);
-            if (personsLessSubj == null || !personsLessSubj.Any())
-                return false;
-
-            if (subjectPerson is IPlaintiff)
-                person = this.Defendant(personsLessSubj);
-            if (subjectPerson is IDefendant)
-                person = this.Plaintiff(personsLessSubj);
-
-            return person != null;
-        }
-
-        private IList<ILegalPerson> GetPersonsLessThisOne(ILegalPerson[] persons, ILegalPerson exceptThisGuy)
-        {
-            var outPersons = new List<ILegalPerson>();
-
-            if (persons == null || !persons.Any())
-                return outPersons;
-
-            if (exceptThisGuy == null)
-                return persons.ToList();
-
-            foreach (var person in persons)
-            {
-                if (NamesEqual(person, exceptThisGuy))
-                    continue;
-                if (ReferenceEquals(person, exceptThisGuy))
-                    continue;
-                outPersons.Add(person);
-            }
-
-            return outPersons;
-        }
-
-        private ILegalPerson GetCourtOfficialLessThisOne(ILegalPerson[] persons, ILegalPerson exceptThisGuy)
-        {
-            if (persons == null || !persons.Any())
-                return null;
-
-
-            throw new NotImplementedException();
-        }
-
     }
 }
