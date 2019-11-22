@@ -15,7 +15,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
         {
             var testSubject = new Summons
             {
-                Court = new FederalCourt("district"), IsSigned = lp => true,
+                Court = new FederalCourt("district"),
+                IsSigned = lp => true,
                 GetCausesOfAction = lp => new ExampleCauseForAction(),
                 GetDateOfAppearance = lp => DateTime.Today.AddDays(30),
             };

@@ -384,3 +384,4 @@ novacula,razor
 caput,head
 magister,teacher
 gratia,grace
+immulatio,offering
