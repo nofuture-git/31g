@@ -353,3 +353,4 @@ Words,StrongsIndex,Translations
 οινος,3631,wine
 γυναικα,1135,wife
 θυσία,2378,sacrifice
+σιτος,4621,wheat|flour

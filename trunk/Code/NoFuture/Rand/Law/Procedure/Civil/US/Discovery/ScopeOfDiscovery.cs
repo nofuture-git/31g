@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Discovery
@@ -13,6 +10,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Discovery
     /// </summary>
     public abstract class ScopeOfDiscovery : CivilProcedureBase, ILinkedLegalConcept
     {
+        public Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
+
         /// <summary>
         /// The pleading/answer upon which the requested discovery is sought
         /// </summary>
@@ -25,6 +24,15 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Discovery
 
         public Predicate<ILegalConcept> IsLimitedByCourtOrder { get; set; } = lc => false;
 
+        /// <summary>
+        /// Relationships &quot;of sufficient social importance&quot;
+        /// </summary>
+        /// <remarks>
+        /// This also includes legal phrase of &quot;attorney work product&quot; which means each side of
+        /// adversarial divide are not privileged to the other side&apos;s work.  Specifically,
+        /// the work prepared for use in litigation.
+        /// </remarks>
+        [Eg("attorney-client", "spouse-to-spouse", "priest-penitent", "doctor-patient", "psychologist-patient")]
         public Predicate<ILegalConcept> IsPrivilegedMatter { get; set; } = lc => false;
 
         public Func<ILegalPerson, ILegalConcept, bool> IsIrrelevantToPartyClaimOrDefense { get; set; } =
@@ -49,7 +57,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Discovery
             if (!IsCourtAssigned())
                 return false;
 
-            if (!this.TryGetSubjectPerson(persons, out var subjectPerson))
+            var subjectPerson = GetSubjectPerson(persons);
+
+            if (subjectPerson == null && !this.TryGetSubjectPerson(persons, out subjectPerson))
                 return false;
 
             var subjPersonTitle = subjectPerson.GetLegalPersonTypeName();

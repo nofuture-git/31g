@@ -41,6 +41,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiscoveryTests\ExampleTestRequestForProduction.cs" />
     <Compile Include="ExampleAustinvHealyTests.cs" />
     <Compile Include="ExampleSmokyMountainVWTests.cs" />
     <Compile Include="PleadingsTests\ExampleTestAmendment.cs" />

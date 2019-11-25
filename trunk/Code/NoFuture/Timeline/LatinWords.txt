@@ -113,7 +113,7 @@ facile,easily
 facilis,easy
 facit,makes|does
 favet,supports
-femina,woman
+femina|mulier,woman
 ferociter,fiercely
 ferox,fierce
 fert,brings|carries
@@ -385,3 +385,4 @@ caput,head
 magister,teacher
 gratia,grace
 immulatio,offering
+farina,flour
