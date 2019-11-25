@@ -10,7 +10,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Discovery
     /// </summary>
     public abstract class ScopeOfDiscovery : CivilProcedureBase, ILinkedLegalConcept
     {
-        public Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; }
+        public Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; } = lps => null;
 
         /// <summary>
         /// The pleading/answer upon which the requested discovery is sought
@@ -20,7 +20,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Discovery
         /// <summary>
         /// That which is being discovered for the given person
         /// </summary>
-        public override Func<ILegalPerson, ILegalConcept> GetCauseOfAction { get; set; } = lp => null;
+        public override Func<ILegalPerson, ILegalConcept> GetAssertion { get; set; } = lp => null;
 
         public Predicate<ILegalConcept> IsLimitedByCourtOrder { get; set; } = lc => false;
 

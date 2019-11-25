@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.DiscoveryTests
             {
                 Court = new StateCourt("AL"),
                 GetSubjectPerson = lps => lps.Plaintiff(),
-                GetCauseOfAction = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
+                GetAssertion = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
                 IsLimitedByCourtOrder = lc => lc is ExampleCauseForAction
             };
 
@@ -34,7 +34,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.DiscoveryTests
             {
                 Court = new StateCourt("AL"),
                 GetSubjectPerson = lps => lps.Plaintiff(),
-                GetCauseOfAction = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
+                GetAssertion = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
                 IsIrrelevantToPartyClaimOrDefense = (lp, lc) => lc is ExampleCauseForAction
             };
 
@@ -51,7 +51,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.DiscoveryTests
             {
                 Court = new StateCourt("AL"),
                 GetSubjectPerson = lps => lps.Plaintiff(),
-                GetCauseOfAction = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
+                GetAssertion = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
                 IsPrivilegedMatter = lc => lc is ExampleCauseForAction
             };
 
@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.DiscoveryTests
             {
                 Court = new StateCourt("AL"),
                 GetSubjectPerson = lps => lps.Plaintiff(),
-                GetCauseOfAction = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
+                GetAssertion = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
                 IsUnbalancedToNeedsOfCase = lc => lc is ExampleCauseForAction
             };
 
@@ -85,7 +85,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.DiscoveryTests
             {
                 Court = new StateCourt("AL"),
                 GetSubjectPerson = lps => lps.Plaintiff(),
-                GetCauseOfAction = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
+                GetAssertion = lp => lp is IPlaintiff ? new ExampleCauseForAction() : null,
                 IsReasonablyAccessible = lc => !(lc is ExampleCauseForAction)
             };
 

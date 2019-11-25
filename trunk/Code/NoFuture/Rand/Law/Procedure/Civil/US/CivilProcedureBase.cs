@@ -19,8 +19,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
         /// <summary>
         /// The reason the <see cref="ILegalPerson"/> is going to court in the first place.
         /// </summary>
-        [Aka("subject matter")]
-        public virtual Func<ILegalPerson, ILegalConcept> GetCauseOfAction { get; set; } = lp => null;
+        [Aka("subject matter", "cause of action")]
+        public virtual Func<ILegalPerson, ILegalConcept> GetAssertion { get; set; } = lp => null;
 
         public virtual Predicate<ILegalPerson> IsSigned { get; set; } = lp => false;
 
@@ -40,13 +40,13 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US
             if (legalPerson == null)
                 return false;
 
-            causeOfAction = GetCauseOfAction(legalPerson);
+            causeOfAction = GetAssertion(legalPerson);
 
             var title = legalPerson.GetLegalPersonTypeName();
 
             if (causeOfAction == null && addReason)
             {
-                AddReasonEntry($"{title} {legalPerson.Name}, {nameof(GetCauseOfAction)} returned nothing");
+                AddReasonEntry($"{title} {legalPerson.Name}, {nameof(GetAssertion)} returned nothing");
                 return false;
             }
 

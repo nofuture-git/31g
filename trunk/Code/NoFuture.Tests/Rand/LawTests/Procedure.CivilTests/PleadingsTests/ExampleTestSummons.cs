@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             {
                 Court = new FederalCourt("district"),
                 IsSigned = lp => true,
-                GetCauseOfAction = lp => new ExampleCauseForAction(),
+                GetAssertion = lp => new ExampleCauseForAction(),
                 GetDateOfAppearance = lp => DateTime.Today.AddDays(30),
             };
 

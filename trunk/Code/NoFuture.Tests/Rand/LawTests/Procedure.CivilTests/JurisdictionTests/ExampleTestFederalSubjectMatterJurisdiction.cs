@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
             {
                 IsAuthorized2ExerciseJurisdiction = lc => lc is SomeFederalLegalMatter,
                 IsArisingFromFederalLaw = lc => lc is SomeFederalLegalMatter,
-                GetCauseOfAction = lp => new SomeFederalLegalMatter()
+                GetAssertion = lp => new SomeFederalLegalMatter()
             };
             var testResult = testSubject.IsValid();
             Console.WriteLine(testSubject.ToString());
