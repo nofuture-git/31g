@@ -15,6 +15,10 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
         /// Fed.R.Civ.P. 50(b) means the party already request
         /// a <see cref="JudgmentAsMatterOfLaw"/> before any verdict was made.
         /// </summary>
+        /// <remarks>
+        /// To preserve the idea that a judge has not &quot;reexamined&quot;
+        /// a jury&apos;s findings which against Seventh Amendment of U.S. Constitution
+        /// </remarks>
         public Predicate<ILegalPerson> IsMadeMotionPriorToVerdict { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)

@@ -287,24 +287,6 @@ namespace NoFuture.Rand.Law.US
             return offeror;
         }
 
-        public static IGrantor Grantor(this IRationale lc, IEnumerable<ILegalPerson> persons)
-        {
-            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
-
-            if (lc == null || !ppersons.Any())
-                return null;
-
-            var grantor = ppersons.Grantor() as IGrantor;
-            if (grantor == null)
-            {
-                var nameTitles = ppersons.GetTitleNamePairs();
-                lc.AddReasonEntry($"No one is the {nameof(IGrantor)} in {nameTitles}");
-                return Government.Value;
-            }
-
-            return grantor;
-        }
-
         public static IEnumerable<ILegalPerson> Cotenants(this IRationale lc, IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
@@ -321,7 +303,6 @@ namespace NoFuture.Rand.Law.US
 
             return cotenants;
         }
-
 
         public static IEnumerable<IAbsentee> Absentees(this IRationale lc, IEnumerable<ILegalPerson> persons)
         {
@@ -490,7 +471,9 @@ namespace NoFuture.Rand.Law.US
                 return string.Empty;
             var titles = new List<string>();
 
-            if(person is ILessee)
+            if (person is ICourtOfficial)
+                titles.Add("court official");
+            if (person is ILessee)
                 titles.Add("lessee");
             if (person is IDonee)
                 titles.Add("donee");
@@ -528,8 +511,6 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("employee");
             if (person is IEmployer)
                 titles.Add("employer");
-            if (person is ICourtOfficial)
-                titles.Add("court official");
             if (person.Equals(Government.Value))
                 titles.Add("the government");
             if(person is ICorporation)

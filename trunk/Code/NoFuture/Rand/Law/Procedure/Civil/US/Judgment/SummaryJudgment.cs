@@ -29,6 +29,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            if (!IsCourtAssigned())
+                return false;
+
             var subjectPerson = GetSubjectPerson(persons);
             if (subjectPerson == null)
             {

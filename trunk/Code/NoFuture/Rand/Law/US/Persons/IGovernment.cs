@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Law.US.Persons
 {
     [Aka("sovereign")]
-    public interface IGovernment : IGrantor
+    public interface IGovernment : ILegalPerson
     {
     }
 }
