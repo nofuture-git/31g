@@ -354,3 +354,5 @@ Words,StrongsIndex,Translations
 γυναικα,1135,wife
 θυσία,2378,sacrifice
 σιτος,4621,wheat|flour
+προσφορα,4376,offering
+κερας,2768,horn

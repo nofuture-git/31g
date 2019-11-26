@@ -386,3 +386,4 @@ magister,teacher
 gratia,grace
 immulatio,offering
 farina,flour
+cornu,horn

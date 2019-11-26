@@ -1,4 +1,5 @@
 ﻿using System;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
@@ -13,6 +14,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
         /// <summary>
         /// An element which is essential to prove true or false
         /// </summary>
+        [Aka("material fact")]
         public Predicate<ILegalConcept> IsEssentialElement { get; set; } = lp => false;
 
         /// <summary>
@@ -38,6 +40,14 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
 
             if (!TryGetCauseOfAction(subjectPerson, out var subject))
                 return false;
+
+            //when the claim is based on something which is not a question of law
+            if (!subject.IsEnforceableInCourt)
+            {
+                AddReasonEntry($"{title} {subjectPerson.Name}, {nameof(GetAssertion)} " +
+                               $"returned instance where {IsEnforceableInCourt} is false");
+                return true;
+            }
 
             if (!IsEssentialElement(subject))
             {
