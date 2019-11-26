@@ -12,8 +12,15 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
 
         public Predicate<ILegalPerson> IsCommittedProceduralError { get; set; } = lp => false;
 
+        /// <summary>
+        /// This could be simple irrational jury, damages greatly exceed actual
+        /// losses, etc.
+        /// </summary>
         public Predicate<ILegalConcept> IsJurySeriouslyErroneousResult { get; set; } = lc => false;
 
+        /// <summary>
+        /// This could be a verdict which is being applied to multiple defendants but its really only one of them.
+        /// </summary>
         public Predicate<ILegalConcept> IsNeededToPreventInjustice { get; set; } = lc => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
