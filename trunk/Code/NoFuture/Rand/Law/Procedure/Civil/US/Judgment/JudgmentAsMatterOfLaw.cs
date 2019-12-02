@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
     /// Is not a verdict since its not rendered by a jury.
     /// </remarks>
     [Aka("directed verdict", "motion for judgment as a matter of law")]
-    public class JudgmentAsMatterOfLaw : CivilProcedureBase
+    public class JudgmentAsMatterOfLaw : CivilProcedureBase, IJudgment
     {
         public Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; } = lps => null;
 

@@ -7,7 +7,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
     /// <summary>
     /// For when material facts already resolve to a conclusion 
     /// </summary>
-    public class SummaryJudgment : CivilProcedureBase
+    public class SummaryJudgment : CivilProcedureBase, IJudgment
     {
         public Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; } = lps => null;
 

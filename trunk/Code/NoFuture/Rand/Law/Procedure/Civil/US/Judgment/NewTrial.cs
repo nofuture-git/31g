@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
     /// <summary>
     /// Some procedural flaw has made due-process of law impossible then start things over (re-do)
     /// </summary>
-    public class NewTrial : CivilProcedureBase
+    public class NewTrial : CivilProcedureBase, IJudgment
     {
         public Func<ILegalPerson[], ILegalPerson> GetSubjectPerson { get; set; } = lps => null;
 

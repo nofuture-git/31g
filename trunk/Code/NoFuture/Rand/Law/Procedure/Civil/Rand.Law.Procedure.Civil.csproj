@@ -43,9 +43,11 @@
     <Compile Include="US\Discovery\ScopeOfDiscovery.cs" />
     <Compile Include="US\DomicileLocation.cs" />
     <Compile Include="US\ILinkedLegalConcept.cs" />
+    <Compile Include="US\Judgment\IJudgment.cs" />
     <Compile Include="US\Judgment\JudgmentAsMatterOfLaw.cs" />
     <Compile Include="US\Judgment\JudgmentNotwithstandingVerdict.cs" />
     <Compile Include="US\Judgment\NewTrial.cs" />
+    <Compile Include="US\Judgment\ResJudicata.cs" />
     <Compile Include="US\Judgment\SummaryJudgment.cs" />
     <Compile Include="US\Jurisdiction\FederalDiversityJurisdiction.cs" />
     <Compile Include="US\Jurisdiction\FederalVenue.cs" />

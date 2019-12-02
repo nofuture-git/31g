@@ -47,6 +47,7 @@
     <Compile Include="JudgmentTests\ExampleTestJnov.cs" />
     <Compile Include="JudgmentTests\ExampleTestJudgmentAsMatterOfLaw.cs" />
     <Compile Include="JudgmentTests\ExampleTestNewTrial.cs" />
+    <Compile Include="JudgmentTests\ExampleTestResJudicata.cs" />
     <Compile Include="JudgmentTests\ExampleTestSummaryJudgment.cs" />
     <Compile Include="PleadingsTests\ExampleTestAmendment.cs" />
     <Compile Include="PleadingsTests\ExampleTestContributionClaim.cs" />
