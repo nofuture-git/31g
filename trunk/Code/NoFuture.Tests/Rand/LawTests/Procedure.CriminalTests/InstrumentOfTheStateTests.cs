@@ -22,9 +22,21 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
             Assert.IsFalse(testResult);
             Console.WriteLine(testSubject.ToString());
         }
+
+        [Test]
+        public void TestInstrumentOfTheStateIsValid01()
+        {
+            var testSubject = new InstrumentOfTheState
+            {
+                GetConductorOfSearch = lps => lps.FirstOrDefault(lp => lp is ExampleCitizenSearchConductor),
+                IsAcquiescenceOfTheState = lp => true,
+                IsPromoteInterestOfTheState = lp => true
+            };
+            var testResult = testSubject.IsValid(new ExampleCitizenSearchConductor(), new ExampleLawEnforcement());
+            Assert.IsTrue(testResult);
+            Console.WriteLine(testSubject.ToString());
+        }
     }
-
-
 
     public class ExampleCitizenSearchConductor : LegalPerson
     {
