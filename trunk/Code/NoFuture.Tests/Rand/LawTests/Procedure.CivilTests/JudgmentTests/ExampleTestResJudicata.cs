@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests.JudgmentTests
                 Court = new StateCourt("KS"),
                 IsFinalJudgment = lc => true,
                 IsJudgmentBasedOnMerits = lc => true,
-                IsSameClaim = lc => lc is ExampleCauseForAction,
+                IsSameQuestionOfLawOrFact = lc => lc is ExampleCauseForAction,
                 IsSamePartyAsPrior = lp => lp is ExamplePlaintiff || lp is ExampleDefendant
             };
 

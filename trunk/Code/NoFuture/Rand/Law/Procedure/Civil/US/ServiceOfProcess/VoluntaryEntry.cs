@@ -1,4 +1,5 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using System;
+using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
@@ -14,6 +15,8 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
     public class VoluntaryEntry : ProcessServiceBase
     {
         public bool IsNotaryPublicSignatureRequired { get; set; } = true;
+
+        public virtual Predicate<ILegalPerson> IsSigned { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {

@@ -21,9 +21,11 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
         public Predicate<ILegalConcept> IsJudgmentBasedOnMerits { get; set; } = lc => false;
 
         /// <summary>
-        /// (3) the claims must be the same in the first ans second suits
+        /// (3) the claims must be the same in the first and second suits
         /// </summary>
-        public Predicate<ILegalConcept> IsSameClaim { get; set; } = lc => false;
+        /// <remarks> same rules used in pleading&apos;s joiner logic </remarks>
+        [Aka("same claim requirement")]
+        public Predicate<ILegalConcept> IsSameQuestionOfLawOrFact { get; set; } = lc => false;
 
         /// <summary>
         /// (4) the parties in the second action must be the same as those in the first
@@ -36,7 +38,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
                 return false;
 
             var plaintiff = this.Plaintiff(persons);
-            var defendant = this.Defendant(persons);
+            var defendant = this.Defendant(persons); 
 
             if (plaintiff == null || defendant == null)
             {
@@ -64,9 +66,9 @@ namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
                 return false;
             }
 
-            if (!IsSameClaim(subject))
+            if (!IsSameQuestionOfLawOrFact(subject))
             {
-                AddReasonEntry($"{prefixReason} {nameof(IsSameClaim)} is false");
+                AddReasonEntry($"{prefixReason} {nameof(IsSameQuestionOfLawOrFact)} is false");
                 return false;
             }
 
