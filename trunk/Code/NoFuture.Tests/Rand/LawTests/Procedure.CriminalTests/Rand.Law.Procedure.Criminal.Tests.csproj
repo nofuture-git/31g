@@ -41,7 +41,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InstrumentOfTheStateTests.cs" />
+    <Compile Include="ExampleInstrumentOfTheStateTests.cs" />
+    <Compile Include="ExampleSearchTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

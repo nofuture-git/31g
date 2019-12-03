@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
 {
     [TestFixture]
-    public class InstrumentOfTheStateTests
+    public class ExampleInstrumentOfTheStateTests
     {
         [Test]
         public void TestInstrumentOfTheStateIsValid00()
