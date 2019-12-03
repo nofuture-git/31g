@@ -9,6 +9,6 @@
         {
             return base.GetRank() + 1;
         }
-        protected override string CategoryName { get; } = "beyond a reasonable doubt";
+        protected override string CategoryName { get; } = "clear and convincing";
     }
 }

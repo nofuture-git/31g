@@ -108,6 +108,16 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is INotaryPublic) as INotaryPublic;
         }
 
+        public static ILawEnforcement LawEnforcement(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is ILawEnforcement) as ILawEnforcement;
+        }
+
+        public static ISuspect Suspect(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is ISuspect) as ISuspect;
+        }
+
         public static IPlaintiff Plaintiff(this IRationale lc, IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
@@ -525,6 +535,12 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("U.S. Notary");
             if(person is ILawEnforcement)
                 titles.Add("law enforcement");
+            if(person is IJudge)
+                titles.Add("judge");
+            if (person is ISuspect)
+                titles.Add("suspect");
+            if (person is IInformant)
+                titles.Add("informant");
 
             return string.Join("|", titles);
         }

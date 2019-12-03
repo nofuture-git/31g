@@ -39,6 +39,7 @@
     <Compile Include="US\ExpectationOfPrivacy.cs" />
     <Compile Include="US\InstrumentOfTheState.cs" />
     <Compile Include="US\ISearch.cs" />
+    <Compile Include="US\ProbableCause.cs" />
     <Compile Include="US\Search.cs" />
   </ItemGroup>
   <ItemGroup />
