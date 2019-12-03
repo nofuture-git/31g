@@ -68,7 +68,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
                 return false;
             }
 
-            return informant.IsInformationSufficientlyCredible && informant.IsPersonSufficientlyCredible;
+            return informant.IsInformationSufficientlyReliable && informant.IsPersonSufficientlyCredible;
         }
     }
 }

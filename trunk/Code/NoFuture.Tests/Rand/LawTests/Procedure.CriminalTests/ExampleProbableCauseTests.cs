@@ -33,7 +33,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
 
             var testResult = testSubject.IsValid(
                 new ExampleSuspect(),
-                new ExampleInformant {IsInformationSufficientlyCredible = true, IsPersonSufficientlyCredible = true},
+                new ExampleInformant {IsInformationSufficientlyReliable = true, IsPersonSufficientlyCredible = true},
                 new ExampleLawEnforcement());
             Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
@@ -50,6 +50,6 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
         public ExampleInformant():base("Info Tweeker") { }
 
         public bool IsPersonSufficientlyCredible { get; set; }
-        public bool IsInformationSufficientlyCredible { get; set; }
+        public bool IsInformationSufficientlyReliable { get; set; }
     }
 }
