@@ -26,9 +26,16 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         /// </summary>
         public ISearch ExpectationOfPrivacy { get; set; }
 
+        /// <summary>
+        /// The legal reasoning for the suspicion.
+        /// </summary>
+        public ILegalConcept SourceOfSuspicion { get; set; }
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            return TestIsAgentOrInstrumentOfState(persons) && TestIsExpectationOfPrivacy(persons);
+            return TestIsAgentOrInstrumentOfState(persons)
+                   && TestIsExpectationOfPrivacy(persons)
+                   && TestSourceOfSuspicion(persons);
         }
 
         protected bool TestIsAgentOrInstrumentOfState(ILegalPerson[] persons)
@@ -47,6 +54,17 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
             AddReasonEntryRange(InstrumentOfTheState.GetReasonEntries());
 
             return isAgtOrInstrumentOfState;
+        }
+
+        protected virtual bool TestSourceOfSuspicion(ILegalPerson[] persons)
+        {
+            //search is defined as being state conducted in private space
+            if (SourceOfSuspicion == null)
+                return true;
+
+            var sosResult = SourceOfSuspicion.IsValid(persons);
+            AddReasonEntryRange(SourceOfSuspicion.GetReasonEntries());
+            return sosResult;
         }
 
         protected bool TestIsExpectationOfPrivacy(ILegalPerson[] persons)

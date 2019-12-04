@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="US\AdministrativeCause.cs" />
     <Compile Include="US\ExpectationOfPrivacy.cs" />
     <Compile Include="US\Frisk.cs" />
     <Compile Include="US\IIntrusion.cs" />
