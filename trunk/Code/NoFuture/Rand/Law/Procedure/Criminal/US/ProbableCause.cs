@@ -11,12 +11,20 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
     public class ProbableCause : LegalConcept, IRankable
     {
         /// <summary>
-        /// Who is the source of the information passed into <see cref="IsInformationSourceCredible"/>
+        /// Who is under suspicion 
         /// </summary>
+        public Func<ILegalPerson[], ILegalPerson> GetSuspect { get; set; } = lps => lps.Suspect();
+
+        /// <summary>
+        /// Who is the source of the information concerning criminal activity 
+        /// </summary>
+        /// <remarks>
+        /// This only differs when the source is someone other than law enforcement
+        /// </remarks>
         public Func<ILegalPerson[], ILegalPerson> GetInformationSource { get; set; } = lps => lps.LawEnforcement();
 
         /// <summary>
-        /// Who is making the judgment concerning <see cref="IsFactsConcludeToCriminalActivity"/>
+        /// Who is making the judgment concerning criminal activity
         /// </summary>
         public Func<ILegalPerson[], ILegalPerson> GetLawEnforcement { get; set; } = lps => lps.LawEnforcement();
 
@@ -34,10 +42,15 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         /// <remarks>
         /// Will default to <see cref="DefaultIsInformationSourceCredible"/>
         /// </remarks>
-        public Predicate<ILegalPerson> IsInformationSourceCredible { get; set; } 
+        public Predicate<ILegalPerson> IsInformationSourceCredible { get; set; }
+
+        public IIntrusion Stop { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            if (!TestIsStopValid(persons))
+                return false;
+
             if (IsInformationSourceCredible == null)
             {
                 IsInformationSourceCredible = DefaultIsInformationSourceCredible;
@@ -78,6 +91,29 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
             return true;
         }
 
+        protected virtual bool TestIsStopValid(ILegalPerson[] persons)
+        {
+            if (Stop == null) 
+                return true;
+            if (Stop.GetSuspect == null)
+            {
+                Stop.GetSuspect = GetSuspect;
+            }
+
+            if (Stop.GetLawEnforcement == null)
+            {
+                Stop.GetLawEnforcement = GetLawEnforcement;
+            }
+            var isValidStop = Stop.IsValid(persons);
+
+            AddReasonEntryRange(Stop.GetReasonEntries());
+
+            if (!isValidStop)
+                return false;
+
+            return true;
+        }
+
         public virtual int GetRank()
         {
             return 2;
@@ -88,6 +124,13 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         /// </summary>
         protected virtual bool DefaultIsInformationSourceCredible(ILegalPerson lp)
         {
+            //assume the case when there is an actual warrant 
+            if (lp is IJudge)
+            {
+                AddReasonEntry($"{lp.GetLegalPersonTypeName()} {lp.Name}, is type {nameof(IJudge)}");
+                return true;
+            }
+
             if (lp is ILawEnforcement)
             {
                 AddReasonEntry($"{lp.GetLegalPersonTypeName()} {lp.Name}, is type {nameof(ILawEnforcement)}");

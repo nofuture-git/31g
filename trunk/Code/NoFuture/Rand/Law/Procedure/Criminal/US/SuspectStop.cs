@@ -6,17 +6,18 @@ using NoFuture.Rand.Law.US.Persons;
 namespace NoFuture.Rand.Law.Procedure.Criminal.US
 {
     /// <summary>
-    /// An encounter with law-enforcement in which a person is detained
+    /// An encounter with law-enforcement in which a person is detained and questioned
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// With motor vehicle stops: driver and passengers may be ordered out of vehicle
-    /// and a dog-sniff of the exterior is allowed (so long as it does not prolong the
-    /// stop beyond the required investigative timespan).
+    /// With motor vehicle stops: driver and passengers may be ordered out of vehicle.
+    /// In addition, so long as the stop's required investigative time is not prolonged:
+    /// immigration status may be checked, a dog-sniff of the exterior is allowed, limited
+    /// interior search is allowed for armed-and-dangerous suspects.
     /// ]]>
     /// </remarks>
     [Aka("detained")]
-    public class SuspectStop : LegalConcept
+    public class SuspectStop : LegalConcept, IIntrusion
     {
         /// <summary>
         /// Resolves who is the suspect

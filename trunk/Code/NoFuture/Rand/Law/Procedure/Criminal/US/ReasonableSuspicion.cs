@@ -4,41 +4,11 @@ using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Procedure.Criminal.US
 {
-
     /// <summary>
     /// A reasoning less than <see cref="ProbableCause"/> but above something like &quot;a hunch&quot;
     /// </summary>
-    /// <remarks> Allows for stop; however, when facts implicate someone is armed then a frisk is allowed</remarks>
     public class ReasonableSuspicion : ProbableCause
     {
-        /// <summary>
-        /// Resolves who is the suspect of law-enforcements suspicion
-        /// </summary>
-        public Func<ILegalPerson[], ILegalPerson> GetSubjectOfStop { get; set; } = lps => lps.Suspect();
-
-        public SuspectStop Stop { get; set; }
-
-        public override bool IsValid(params ILegalPerson[] persons)
-        {
-            if (Stop == null) 
-                return base.IsValid(persons);
-
-            if (Stop.GetSuspect == null)
-            {
-                Stop.GetSuspect = GetSubjectOfStop;
-            }
-
-            if (Stop.GetLawEnforcement == null)
-            {
-                Stop.GetLawEnforcement = GetLawEnforcement;
-            }
-
-            var isValidStop = Stop.IsValid(persons);
-
-            AddReasonEntryRange(Stop.GetReasonEntries());
-            return base.IsValid(persons) && isValidStop;
-        }
-
         protected override bool DefaultIsInformationSourceCredible(ILegalPerson lp)
         {
             if (lp is ILawEnforcement)
