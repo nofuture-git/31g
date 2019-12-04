@@ -14,7 +14,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
         {
             var testSubject = new ProbableCause
             {
-                IsReasonableConcludeCriminalActivity = lp => lp is ExampleLawEnforcement
+                IsFactsConcludeToCriminalActivity = lp => lp is ExampleLawEnforcement
             };
 
             var testResult = testSubject.IsValid(new ExampleSuspect(), new ExampleLawEnforcement());
@@ -28,15 +28,32 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
             var testSubject = new ProbableCause
             {
                 GetInformationSource = lps => lps.FirstOrDefault(lp => lp is IInformant),
-                IsReasonableConcludeCriminalActivity = lp => lp is ExampleInformant
+                IsFactsConcludeToCriminalActivity = lp => lp is ExampleLawEnforcement
             };
 
             var testResult = testSubject.IsValid(
                 new ExampleSuspect(),
                 new ExampleInformant {IsInformationSufficientlyReliable = true, IsPersonSufficientlyCredible = true},
                 new ExampleLawEnforcement());
-            Assert.IsTrue(testResult);
             Console.WriteLine(testSubject.ToString());
+            Assert.IsTrue(testResult);
+        }
+
+        [Test]
+        public void TestProbableCauseIsValid02()
+        {
+            var testSubject = new ProbableCause
+            {
+                GetInformationSource = lps => lps.FirstOrDefault(lp => lp is IInformant),
+                IsFactsConcludeToCriminalActivity = lp => lp is ExampleLawEnforcement
+            };
+
+            var testResult = testSubject.IsValid(
+                new ExampleSuspect(),
+                new ExampleInformant { IsInformationSufficientlyReliable = true, IsPersonSufficientlyCredible = false },
+                new ExampleLawEnforcement());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsFalse(testResult);
         }
     }
 

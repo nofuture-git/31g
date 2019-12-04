@@ -356,3 +356,4 @@ Words,StrongsIndex,Translations
 σιτος,4621,wheat|flour
 προσφορα,4376,offering
 κερας,2768,horn
+τοξον,5115,bow (archery)

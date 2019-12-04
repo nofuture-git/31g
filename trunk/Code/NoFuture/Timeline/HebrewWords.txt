@@ -353,7 +353,6 @@
 שְׁנָה,8140,year
 שֵׁנִי,8145,second
 שׁעַר,8147,gate
-שָׂפָה,8193,lip|bank of river
 שָׁפַט,8199,to judge
 שַׂר,8269,official
 שֵׁשׁ,8337,six
@@ -367,4 +366,4 @@
 בָּכָה,1058,weep|cry out
 שַׁחַר,7837,dawn
 קמח,7058,flour
-קֶרֶן,7161,horn
+קָשֶׁת,7198,bow (archery)

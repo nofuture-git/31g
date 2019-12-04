@@ -40,7 +40,9 @@
     <Compile Include="US\InstrumentOfTheState.cs" />
     <Compile Include="US\ISearch.cs" />
     <Compile Include="US\ProbableCause.cs" />
+    <Compile Include="US\ReasonableSuspicion.cs" />
     <Compile Include="US\Search.cs" />
+    <Compile Include="US\SuspectStop.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

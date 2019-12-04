@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ExampleInstrumentOfTheStateTests.cs" />
     <Compile Include="ExampleProbableCauseTests.cs" />
+    <Compile Include="ExampleReasonableSuspicionTests.cs" />
     <Compile Include="ExampleSearchTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

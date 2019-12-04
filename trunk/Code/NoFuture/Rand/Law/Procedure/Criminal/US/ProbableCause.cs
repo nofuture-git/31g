@@ -6,14 +6,34 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
 {
     /// <summary>
     /// quantity of facts and circumstances withing the police officer&apos;s knowledge that would
-    /// warrant a reasonable person to conclude criminal activity
+    /// warrant a reasonable law-enforcement officer to conclude criminal activity
     /// </summary>
-    public class ProbableCause : LegalConcept
+    public class ProbableCause : LegalConcept, IRankable
     {
+        /// <summary>
+        /// Who is the source of the information passed into <see cref="IsInformationSourceCredible"/>
+        /// </summary>
         public Func<ILegalPerson[], ILegalPerson> GetInformationSource { get; set; } = lps => lps.LawEnforcement();
 
-        public Predicate<ILegalPerson> IsReasonableConcludeCriminalActivity { get; set; } = lp => false;
+        /// <summary>
+        /// Who is making the judgment concerning <see cref="IsFactsConcludeToCriminalActivity"/>
+        /// </summary>
+        public Func<ILegalPerson[], ILegalPerson> GetLawEnforcement { get; set; } = lps => lps.LawEnforcement();
 
+        /// <summary>
+        /// Tautological nature of this concept is by design since its intended to be flexible
+        /// </summary>
+        /// <remarks>
+        /// What is &quot;reasonable&quot; will hinge on the facts and circumstances
+        /// </remarks>
+        public Predicate<ILegalPerson> IsFactsConcludeToCriminalActivity { get; set; } = lp => false;
+
+        /// <summary>
+        /// Asserts that the information-source for the reasonable conclusion of criminal activity is credible
+        /// </summary>
+        /// <remarks>
+        /// Will default to <see cref="DefaultIsInformationSourceCredible"/>
+        /// </remarks>
         public Predicate<ILegalPerson> IsInformationSourceCredible { get; set; } 
 
         public override bool IsValid(params ILegalPerson[] persons)
@@ -21,6 +41,23 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
             if (IsInformationSourceCredible == null)
             {
                 IsInformationSourceCredible = DefaultIsInformationSourceCredible;
+            }
+
+            var officer = GetLawEnforcement(persons) ?? GetInformationSource(persons);
+            if (officer == null)
+            {
+                AddReasonEntry($"{nameof(GetLawEnforcement)} and {nameof(GetInformationSource)}" +
+                               " both returned nothing");
+                return false;
+            }
+
+            var officerTitle = officer.GetLegalPersonTypeName();
+
+            if (!IsFactsConcludeToCriminalActivity(officer))
+            {
+                AddReasonEntry($"{officerTitle} {officer.Name}, " +
+                               $"{nameof(IsFactsConcludeToCriminalActivity)} is false");
+                return false;
             }
 
             var sourcePerson = GetInformationSource(persons);
@@ -31,14 +68,6 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
             }
 
             var sourcePersonTitle = sourcePerson.GetLegalPersonTypeName();
-
-            if (!IsReasonableConcludeCriminalActivity(sourcePerson))
-            {
-                AddReasonEntry($"{sourcePersonTitle} {sourcePerson.Name}, " +
-                               $"{nameof(IsReasonableConcludeCriminalActivity)} is false");
-                return false;
-            }
-
             if (!IsInformationSourceCredible(sourcePerson))
             {
                 AddReasonEntry($"{sourcePersonTitle} {sourcePerson.Name}, " +
@@ -47,6 +76,11 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
             }
 
             return true;
+        }
+
+        public virtual int GetRank()
+        {
+            return 2;
         }
 
         /// <summary>

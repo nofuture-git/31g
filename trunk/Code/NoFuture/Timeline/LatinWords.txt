@@ -387,3 +387,4 @@ gratia,grace
 immulatio,offering
 farina,flour
 cornu,horn
+arcum,bow
