@@ -8,6 +8,13 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
     /// <summary>
     /// An encounter with law-enforcement in which a person is detained
     /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// With motor vehicle stops: driver and passengers may be ordered out of vehicle
+    /// and a dog-sniff of the exterior is allowed (so long as it does not prolong the
+    /// stop beyond the required investigative timespan).
+    /// ]]>
+    /// </remarks>
     [Aka("detained")]
     public class SuspectStop : LegalConcept
     {
@@ -26,8 +33,15 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         /// </summary>
         public Predicate<ILegalPerson> IsBeliefFreeToGo { get; set; } = lp => false;
 
+        /// <summary>
+        /// The timespan for which a suspect was actually detained
+        /// </summary>
         public Func<ILegalPerson, TimeSpan?> GetDetainedTimespan { get; set; } = lp => null;
 
+        /// <summary>
+        /// The timespan required to effectuate the original purpose
+        /// of the stop (i.e. confirm or dispel original suspicion)
+        /// </summary>
         public Func<ILegalPerson, TimeSpan?> GetRequiredInvestigateTimespan { get; set; } = lp => null;
 
         public override bool IsValid(params ILegalPerson[] persons)
