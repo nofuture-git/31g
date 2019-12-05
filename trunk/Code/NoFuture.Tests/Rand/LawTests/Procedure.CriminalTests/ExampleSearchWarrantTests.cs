@@ -16,11 +16,11 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
             var testSubject = new SearchWarrant
             {
                 GetObjectiveOfSearch = () => new VocaBase("Billy's Closest on 123 Elm St"),
-                IsDescribedWithParticularity = r =>
+                IsObjectiveDescribedWithParticularity = r =>
                     string.Equals(r.Name, "Billy's Closest on 123 Elm St", StringComparison.OrdinalIgnoreCase),
                 GetIssuerOfWarrant = lps => lps.FirstOrDefault(lp => lp is ExampleJudge),
-                IsCapableDetermineProbableCause = lp => lp is ExampleJudge,
-                IsNeutralAndDetached = lp => lp is ExampleJudge,
+                IsIssuerCapableDetermineProbableCause = lp => lp is ExampleJudge,
+                IsIssuerNeutralAndDetached = lp => lp is ExampleJudge,
                 ProbableCause = new ExampleProbableCause()
             };
 

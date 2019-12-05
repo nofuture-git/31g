@@ -14,14 +14,23 @@ namespace NoFuture.Rand.Law.US
     /// </typeparam>
     public class Affidavit<T> : LegalConcept
     {
+        /// <summary>
+        /// The person who is making the statement
+        /// </summary>
         public Func<ILegalPerson[], ILegalPerson> GetAffiant { get; set; } = lps => lps.Affiant();
 
+        /// <summary>
+        /// The person authorized-by-law as a witness
+        /// </summary>
         public Func<ILegalPerson[], ILegalPerson> GetWitness { get; set; } = lps => lps.NotaryPublic();
 
         public Predicate<ILegalPerson> IsSigned { get; set; } = lp => false;
 
         public List<T> FactsThereof { get; set; }
 
+        /// <summary>
+        /// The when and where of the sworn statement
+        /// </summary>
         [Aka("jurat")]
         public Tuple<IVoca, DateTime?> Attestation { get; set; }
 

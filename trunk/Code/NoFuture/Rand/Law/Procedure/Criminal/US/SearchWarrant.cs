@@ -1,93 +1,35 @@
 ﻿using System;
 using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.Procedure.Criminal.US
 {
-    /// <summary>
-    /// to interpose a disinterest magistrate between the police and the
-    /// individual whom they seek to search or seize.
-    /// </summary>
-    public class SearchWarrant : LegalConcept
+    /// <inheritdoc cref="IWarrant{T}"/>
+    public class SearchWarrant : WarrantBase<IVoca>
     {
-        public Func<ILegalPerson[], ILegalPerson> GetIssuerOfWarrant { get; set; } = lps => null;
+        public override Func<IVoca> GetObjectiveOfSearch { get; set; } = () => null;
+
+        public override Predicate<IVoca> IsObjectiveDescribedWithParticularity { get; set; } = r => false;
 
         /// <summary>
-        /// The place and items of the person(s) being seized
+        /// when the items are not correctly described, the mistake is deemed to have be objectively reasonable
         /// </summary>
-        public Func<IVoca> GetObjectiveOfSearch { get; set; } = () => null;
+        [Aka("good faith exception")]
+        public Predicate<IVoca> IsGoodFaithException { get; set; } = r => false;
 
         /// <summary>
-        /// Required reasoning for the search
+        /// the police are permitted to seize other articles of contraband or evidence of crime that
+        /// they come upon in the ordinary course of the original search
         /// </summary>
-        public ILegalConcept ProbableCause { get; set; }
-
-        /// <summary>
-        /// The issuer must be a neutral and detached magistrate.
-        /// Who is part of the judicial apparatus and not a member of
-        /// law enforcement.
-        /// </summary>
-        public Predicate<ILegalPerson> IsNeutralAndDetached { get; set; } = lp => lp is ICourtOfficial;
-
-        /// <summary>
-        /// There must be present to the magistrate an adequate
-        /// showing probable cause (either to search or arrest)
-        /// supported by oath or affirmation.
-        /// </summary>
-        public Predicate<ILegalPerson> IsCapableDetermineProbableCause { get; set; } = lp => lp is ICourtOfficial;
-
-        /// <summary>
-        /// The warrant must describe with particularity the place to be
-        /// searched and the items or persons to be seized
-        /// </summary>
-        public Predicate<IVoca> IsDescribedWithParticularity { get; set; } = r => false;
+        /// <remarks>
+        /// needs to both obviously apparent and obviously illegal
+        /// </remarks>
+        public Predicate<IVoca> IsPlainlyApparentClearlyIllegalInPeripheral { get; set; } = r => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            if (ProbableCause == null)
-            {
-                AddReasonEntry($"{nameof(ProbableCause)} is unassigned");
+            if (!base.IsValid(persons))
                 return false;
-            }
-
-            if (!ProbableCause.IsValid(persons))
-            {
-                AddReasonEntry($"{nameof(ProbableCause)} {nameof(IsValid)} is false");
-                AddReasonEntryRange(ProbableCause.GetReasonEntries());
-                return false;
-            }
-
-            var magistrate = GetIssuerOfWarrant(persons);
-            if (magistrate == null)
-            {
-                AddReasonEntry($"{nameof(GetIssuerOfWarrant)} returned nothing");
-                return false;
-            }
-
-            var magistrateTitle = magistrate.GetAllKindsOfNames();
-
-            var isCourtOfficial = magistrate is ICourtOfficial;
-            if (!isCourtOfficial)
-            {
-                AddReasonEntry($"{magistrateTitle} {magistrate.Name}, is not of " +
-                               $"type {nameof(ICourtOfficial)}");
-                return false;
-            }
-
-            if (!IsNeutralAndDetached(magistrate))
-            {
-                AddReasonEntry($"{magistrateTitle} {magistrate.Name}, " +
-                               $"{nameof(IsNeutralAndDetached)} is false");
-                return false;
-            }
-
-            if (!IsCapableDetermineProbableCause(magistrate))
-            {
-                AddReasonEntry($"{magistrateTitle} {magistrate.Name}, " +
-                               $"{nameof(IsCapableDetermineProbableCause)} is false");
-                return false;
-            }
 
             var objective = GetObjectiveOfSearch();
             if (objective == null)
@@ -96,15 +38,17 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
                 return false;
             }
 
-            if (!IsDescribedWithParticularity(objective))
+            if (!IsObjectiveDescribedWithParticularity(objective) 
+                && !IsGoodFaithException(objective)
+                && !IsPlainlyApparentClearlyIllegalInPeripheral(objective))
             {
-                AddReasonEntry($"{objective.Name}, {nameof(IsDescribedWithParticularity)} " +
-                               $"is false");
+                AddReasonEntry($"{objective.Name}, {nameof(IsObjectiveDescribedWithParticularity)} " +
+                               $", {nameof(IsGoodFaithException)} and " +
+                               $"{nameof(IsPlainlyApparentClearlyIllegalInPeripheral)} are all false");
                 return false;
             }
 
             return true;
         }
-
     }
 }
