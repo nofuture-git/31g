@@ -3,7 +3,7 @@
     /// <summary>
     /// General type for the many various forms of law enforcement in the U.S. (marshals, sheriff, police, FBI, etc.)
     /// </summary>
-    public interface ILawEnforcement : ICourtOfficial
+    public interface ILawEnforcement : IGovernment
     {
     }
 }

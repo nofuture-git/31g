@@ -29,7 +29,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         /// <summary>
         /// The legal reasoning for the suspicion.
         /// </summary>
-        public ILegalConcept ReasonForSearch { get; set; }
+        public ILegalConcept SearchReason { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -59,11 +59,11 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         protected virtual bool TestSourceOfSuspicion(ILegalPerson[] persons)
         {
             //search is defined as being state conducted in private space
-            if (ReasonForSearch == null)
+            if (SearchReason == null)
                 return true;
 
-            var sosResult = ReasonForSearch.IsValid(persons);
-            AddReasonEntryRange(ReasonForSearch.GetReasonEntries());
+            var sosResult = SearchReason.IsValid(persons);
+            AddReasonEntryRange(SearchReason.GetReasonEntries());
             return sosResult;
         }
 
