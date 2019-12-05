@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons
 {
 
     /// <summary>

@@ -3,7 +3,7 @@ using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions
 {
     /// <summary>
     /// An encounter with law-enforcement in which a person is detained and questioned

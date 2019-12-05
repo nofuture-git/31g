@@ -1,8 +1,7 @@
-﻿using System;
-using NoFuture.Rand.Law.US;
+﻿using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons
 {
     /// <summary>
     /// A reasoning less than <see cref="ProbableCause"/> but above something like &quot;a hunch&quot;

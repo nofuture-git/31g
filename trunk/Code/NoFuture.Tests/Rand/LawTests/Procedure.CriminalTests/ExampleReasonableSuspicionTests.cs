@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Procedure.Criminal.US;
+using NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions;
+using NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
