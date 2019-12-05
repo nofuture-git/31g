@@ -68,6 +68,7 @@
     <Compile Include="Term.cs" />
     <Compile Include="TermCategory.cs" />
     <Compile Include="US\Act.cs" />
+    <Compile Include="US\Affidavit.cs" />
     <Compile Include="US\Consent.cs" />
     <Compile Include="US\Courts\FederalCourt.cs" />
     <Compile Include="US\Courts\StateCourt.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="US\Duty.cs" />
     <Compile Include="US\FactualCause.cs" />
     <Compile Include="US\Persons\IAbsentee.cs" />
+    <Compile Include="US\Persons\IAffiant.cs" />
     <Compile Include="US\Persons\IBailee.cs" />
     <Compile Include="US\Persons\IChild.cs" />
     <Compile Include="US\Persons\ICorporation.cs" />

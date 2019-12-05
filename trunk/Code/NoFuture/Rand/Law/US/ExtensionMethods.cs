@@ -118,6 +118,11 @@ namespace NoFuture.Rand.Law.US
             return persons.FirstOrDefault(p => p is ISuspect) as ISuspect;
         }
 
+        public static IAffiant Affiant(this IEnumerable<ILegalPerson> persons)
+        {
+            return persons.FirstOrDefault(p => p is IAffiant) as IAffiant;
+        }
+
         public static IPlaintiff Plaintiff(this IRationale lc, IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
@@ -541,6 +546,8 @@ namespace NoFuture.Rand.Law.US
                 titles.Add("suspect");
             if (person is IInformant)
                 titles.Add("informant");
+            if(person is IAffiant)
+                titles.Add("affiant");
 
             return string.Join("|", titles);
         }

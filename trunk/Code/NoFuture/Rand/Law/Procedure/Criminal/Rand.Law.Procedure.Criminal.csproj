@@ -42,6 +42,7 @@
     <Compile Include="US\Intrusions\IIntrusion.cs" />
     <Compile Include="US\InstrumentOfTheState.cs" />
     <Compile Include="US\ISearch.cs" />
+    <Compile Include="US\SearchReasons\ChallengeToProbableCause.cs" />
     <Compile Include="US\SearchReasons\ProbableCause.cs" />
     <Compile Include="US\SearchReasons\ReasonableSuspicion.cs" />
     <Compile Include="US\Search.cs" />

@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExampleAdministrativeCauseTests.cs" />
+    <Compile Include="ExampleAffidavitTests.cs" />
+    <Compile Include="ExampleChallengeToProbableCauseTests.cs" />
     <Compile Include="ExampleFriskTests.cs" />
     <Compile Include="ExampleInstrumentOfTheStateTests.cs" />
     <Compile Include="ExampleProbableCauseTests.cs" />

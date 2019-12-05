@@ -24,7 +24,9 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         public ILegalConcept ProbableCause { get; set; }
 
         /// <summary>
-        /// The issuer must be a neutral and detached magistrate
+        /// The issuer must be a neutral and detached magistrate.
+        /// Who is part of the judicial apparatus and not a member of
+        /// law enforcement.
         /// </summary>
         public Predicate<ILegalPerson> IsNeutralAndDetached { get; set; } = lp => lp is ICourtOfficial;
 
