@@ -36,16 +36,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="US\AdministrativeCause.cs" />
+    <Compile Include="US\SearchReasons\AdministrativeCause.cs" />
     <Compile Include="US\ExpectationOfPrivacy.cs" />
-    <Compile Include="US\Frisk.cs" />
-    <Compile Include="US\IIntrusion.cs" />
+    <Compile Include="US\Intrusions\Frisk.cs" />
+    <Compile Include="US\Intrusions\IIntrusion.cs" />
     <Compile Include="US\InstrumentOfTheState.cs" />
     <Compile Include="US\ISearch.cs" />
-    <Compile Include="US\ProbableCause.cs" />
-    <Compile Include="US\ReasonableSuspicion.cs" />
+    <Compile Include="US\SearchReasons\ProbableCause.cs" />
+    <Compile Include="US\SearchReasons\ReasonableSuspicion.cs" />
     <Compile Include="US\Search.cs" />
-    <Compile Include="US\SuspectStop.cs" />
+    <Compile Include="US\Intrusions\SuspectStop.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

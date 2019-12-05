@@ -388,3 +388,4 @@ immulatio,offering
 farina,flour
 cornu,horn
 arcum,bow
+ferveret,boiling
