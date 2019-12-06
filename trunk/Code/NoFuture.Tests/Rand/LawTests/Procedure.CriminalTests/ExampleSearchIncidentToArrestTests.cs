@@ -84,7 +84,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
                         ProbableCause = new ExampleProbableCause(),
                         IsOccurInPublicPlace = lp => true
                     },
-                    IsBeliefRelevantToCrimeEvidenceIsPresent = lp => lp is ExampleLawEnforcement,
+                    IsBeliefEvidenceToCrimeIsPresent = lp => lp is ExampleLawEnforcement,
                     GetSubjectOfSearch = lps => lps.FirstOrDefault(lp => lp is ExampleSuspect)
                 },
                 InstrumentOfTheState = new InstrumentOfTheState

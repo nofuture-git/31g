@@ -6,7 +6,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
     /// <summary>
     /// Based on the rules from Arizona v. Gant, 129 S. Ct 1710 (2009)
     /// </summary>
-    public class SearchIncidentToArrestMotorVehicle : SearchIncidentBase
+    public class SearchIncidentToArrestMotorVehicle : SearchIncidentBase, IMobileVehicleSearch
     {
         /// <summary>
         /// the arrestee is unsecured and within reaching distance of passenger compartment at time of search
@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         /// reasonable to believe that evidence relevant to the crime of arrest
         /// might be found in the vehicle
         /// </summary>
-        public Predicate<ILegalPerson> IsBeliefRelevantToCrimeEvidenceIsPresent { get; set; } = lp => false;
+        public Predicate<ILegalPerson> IsBeliefEvidenceToCrimeIsPresent { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -43,8 +43,8 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
             if (gantItem1)
                 return true;
 
-            var gantItem2 = IsBeliefRelevantToCrimeEvidenceIsPresent(suspect) ||
-                            IsBeliefRelevantToCrimeEvidenceIsPresent(officer);
+            var gantItem2 = IsBeliefEvidenceToCrimeIsPresent(suspect) ||
+                            IsBeliefEvidenceToCrimeIsPresent(officer);
 
             if (gantItem2)
                 return true;
@@ -54,7 +54,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
                            "are both false");
 
             AddReasonEntry($"{officerTitle} {officer.Name} arrest of {suspectTitle} {suspect.Name}, " +
-                           $"{nameof(IsBeliefRelevantToCrimeEvidenceIsPresent)} is false");
+                           $"{nameof(IsBeliefEvidenceToCrimeIsPresent)} is false");
 
             return false;
         }

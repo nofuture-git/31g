@@ -36,6 +36,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="US\IMobileVehicleSearch.cs" />
+    <Compile Include="US\MobileVehicleSearch.cs" />
     <Compile Include="US\Warrants\ArrestWarrant.cs" />
     <Compile Include="US\Intrusions\Arrest.cs" />
     <Compile Include="IWarrant.cs" />
