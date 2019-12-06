@@ -15,6 +15,15 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons
         [Aka("legislative or administrative standards", "special needs")]
         public Predicate<T> IsPolicyBased { get; set; } = l => false;
 
+        /// <summary>
+        /// Business industries which have a lot of government oversight
+        /// because they pose risk to public welfare.
+        /// </summary>
+        /// <remarks>
+        /// City of Los Angeles v. Patel, four identified: auto junkyards, mining, firearms and liquor
+        /// </remarks>
+        public Predicate<T> IsPervasivelyRegulated { get; set; } = l => false;
+
         public Predicate<T> IsMinimumIntrusion { get; set; } = l => false;
 
         public Predicate<T> IsSpecificDetection { get; set; } = l => false;
@@ -28,9 +37,10 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons
         {
             var objOfSearch = new T();
 
-            if (!IsPolicyBased(objOfSearch))
+            if (!IsPolicyBased(objOfSearch) && !IsPervasivelyRegulated(objOfSearch))
             {
-                AddReasonEntry($"{nameof(IsPolicyBased)} returned false");
+                AddReasonEntry($"{nameof(IsPolicyBased)} and {nameof(IsPervasivelyRegulated)} " +
+                               "both returned false");
                 AddReasonEntryRange(objOfSearch.GetReasonEntries());
                 return false;
             }
