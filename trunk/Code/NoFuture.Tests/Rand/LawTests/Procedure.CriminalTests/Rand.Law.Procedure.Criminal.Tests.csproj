@@ -50,6 +50,7 @@
     <Compile Include="ExampleInstrumentOfTheStateTests.cs" />
     <Compile Include="ExampleProbableCauseTests.cs" />
     <Compile Include="ExampleReasonableSuspicionTests.cs" />
+    <Compile Include="ExampleSearchIncidentToArrestTests.cs" />
     <Compile Include="ExampleSearchTests.cs" />
     <Compile Include="ExampleSearchWarrantTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -39,6 +39,7 @@
     <Compile Include="US\ArrestWarrant.cs" />
     <Compile Include="US\Intrusions\Arrest.cs" />
     <Compile Include="IWarrant.cs" />
+    <Compile Include="US\SearchIncidentToArrest.cs" />
     <Compile Include="US\SearchReasons\AdministrativeCause.cs" />
     <Compile Include="US\ExpectationOfPrivacy.cs" />
     <Compile Include="US\Intrusions\Frisk.cs" />
