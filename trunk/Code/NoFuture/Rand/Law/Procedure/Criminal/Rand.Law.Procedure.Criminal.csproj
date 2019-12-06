@@ -36,7 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="US\ArrestWarrant.cs" />
+    <Compile Include="US\Warrants\ArrestWarrant.cs" />
     <Compile Include="US\Intrusions\Arrest.cs" />
     <Compile Include="IWarrant.cs" />
     <Compile Include="US\SearchIncidentBase.cs" />
@@ -54,8 +54,8 @@
     <Compile Include="US\SearchReasons\ReasonableSuspicion.cs" />
     <Compile Include="US\Search.cs" />
     <Compile Include="US\Intrusions\SuspectStop.cs" />
-    <Compile Include="US\SearchWarrant.cs" />
-    <Compile Include="US\WarrantBase.cs" />
+    <Compile Include="US\Warrants\SearchWarrant.cs" />
+    <Compile Include="US\Warrants\WarrantBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
