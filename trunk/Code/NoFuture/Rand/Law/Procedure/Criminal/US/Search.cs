@@ -29,6 +29,11 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         /// <summary>
         /// The legal reasoning for the suspicion.
         /// </summary>
+        /// <remarks>
+        /// Typical forms:probable cause, reasonable suspicion,
+        /// administrative, consent, in-plain-view
+        /// <![CDATA[
+        /// ]]> </remarks>
         public ILegalConcept SearchReason { get; set; }
 
         public override bool IsValid(params ILegalPerson[] persons)

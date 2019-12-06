@@ -60,6 +60,15 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions
             if (isPublicPlace)
                 return true;
 
+            var isExigentCircumstances = ProbableCause is ExigentCircumstances;
+            if (isExigentCircumstances && ProbableCause.IsValid(persons))
+            {
+                AddReasonEntry($"{policeTitle} {police.Name}, {nameof(ProbableCause)} " +
+                               $"is type {nameof(ExigentCircumstances)}");
+                AddReasonEntryRange(ProbableCause.GetReasonEntries());
+                return true;
+            }
+
             if (Warrant == null)
             {
                 AddReasonEntry($"{policeTitle} {police.Name} arrest of " +

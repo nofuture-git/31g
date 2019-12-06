@@ -751,3 +751,4 @@ enclitic: a word pronounced with so little emphasis this it is
 intransigence: refusal to change one's view, bull-headed
 myrmidon: an unscrupulous subordinate of a powerful person
 furtive: attempting to avoid notice because doing so will lead to trouble
+conflated: combine two words or ideas into one

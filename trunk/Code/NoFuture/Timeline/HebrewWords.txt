@@ -367,4 +367,5 @@
 שַׁחַר,7837,dawn
 קמח,7058,flour
 קָשֶׁת,7198,bow (archery)
-בָּשַׁל,1310,boil,seethe,ripen
+בָּשַׁל,1310,boil|seethe|ripen
+מַזְלֵג,4207,fork|fleshhook

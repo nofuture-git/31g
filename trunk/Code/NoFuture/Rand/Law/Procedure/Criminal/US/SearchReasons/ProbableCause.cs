@@ -57,15 +57,15 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons
                 IsInformationSourceCredible = DefaultIsInformationSourceCredible;
             }
 
-            var officer = GetLawEnforcement(persons) ?? GetInformationSource(persons);
-            if (officer == null)
+            var officerTuple = GetLawEnforcementAndTitle(persons);
+            
+            if (officerTuple?.Item1 == null)
             {
-                AddReasonEntry($"{nameof(GetLawEnforcement)} and {nameof(GetInformationSource)}" +
-                               " both returned nothing");
                 return false;
             }
 
-            var officerTitle = officer.GetLegalPersonTypeName();
+            var officer = officerTuple.Item1;
+            var officerTitle = officerTuple.Item2;
 
             if (!IsFactsConcludeToCriminalActivity(officer))
             {
@@ -90,6 +90,22 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons
             }
 
             return true;
+        }
+
+        protected virtual Tuple<ILegalPerson, string> GetLawEnforcementAndTitle(ILegalPerson[] persons)
+        {
+            var officer = GetLawEnforcement(persons) ?? GetInformationSource(persons);
+            if (officer == null)
+            {
+                AddReasonEntry($"{nameof(GetLawEnforcement)} and {nameof(GetInformationSource)}" +
+                               " both returned nothing");
+                return new Tuple<ILegalPerson, string>(null, "");
+            }
+
+            var officerTitle = officer.GetLegalPersonTypeName();
+
+            return Tuple.Create(officer, officerTitle);
+
         }
 
         protected virtual bool TestIsStopValid(ILegalPerson[] persons)
