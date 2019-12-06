@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.Warrants
 {
     /// <inheritdoc cref="IWarrant{T}"/>
     public class ArrestWarrant : WarrantBase<ILegalPerson>

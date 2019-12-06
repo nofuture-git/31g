@@ -2,7 +2,7 @@
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.Warrants
 {
     /// <inheritdoc cref="IWarrant{T}"/>
     public class SearchWarrant : WarrantBase<IVoca>
