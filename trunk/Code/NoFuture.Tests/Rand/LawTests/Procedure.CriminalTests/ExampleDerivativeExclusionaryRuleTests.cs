@@ -9,12 +9,13 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
     public class ExampleDerivativeExclusionaryRuleTests
     {
         [Test]
-        public void TestExclusionaryRuleIsValid00()
+        public void TestDerivativeExclusionaryRuleIsValid00()
         {
             var testSubject = new DerivativeExclusionaryRule<IVoca>
             {
                 IsDerivedFromUnlawfulSource = v => true,
-                IsInterveningEventsAttenuated = v => v is ExampleContraband
+                IsInterveningEventsAttenuated = v => v is ExampleContraband,
+                GetDerivativeEvidence = lp => lp is ExampleSuspect ? new ExampleContraband() : null,
             };
 
             var testResult = testSubject.IsValid(new ExampleSuspect(), new ExampleLawEnforcement());
