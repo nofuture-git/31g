@@ -36,9 +36,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="US\Challenges\DerivativeExclusionaryRule.cs" />
     <Compile Include="US\IMobileVehicleSearch.cs" />
     <Compile Include="US\Intrusions\PlainViewSeizure.cs" />
     <Compile Include="US\MobileVehicleSearch.cs" />
+    <Compile Include="US\Challenges\ExclusionaryRule.cs" />
     <Compile Include="US\Warrants\ArrestWarrant.cs" />
     <Compile Include="US\Intrusions\Arrest.cs" />
     <Compile Include="IWarrant.cs" />
@@ -51,7 +53,7 @@
     <Compile Include="US\Intrusions\IIntrusion.cs" />
     <Compile Include="US\InstrumentOfTheState.cs" />
     <Compile Include="US\ISearch.cs" />
-    <Compile Include="US\SearchReasons\ChallengeToProbableCause.cs" />
+    <Compile Include="US\Challenges\ChallengeToProbableCause.cs" />
     <Compile Include="US\SearchReasons\ExigentCircumstances.cs" />
     <Compile Include="US\SearchReasons\ProbableCause.cs" />
     <Compile Include="US\SearchReasons\ReasonableSuspicion.cs" />
