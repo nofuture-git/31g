@@ -369,3 +369,4 @@
 קָשֶׁת,7198,bow (archery)
 בָּשַׁל,1310,boil|seethe|ripen
 מַזְלֵג,4207,fork|fleshhook
+שָׁרַת,8334,minister|serve

@@ -14,7 +14,6 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         /// </summary>
         public Func<ILegalPerson[], ILegalPerson> GetConductorOfSearch { get; set; } = lps => null;
 
-
         /// <summary>
         /// persons who are, themselves, government agents or persons acting
         /// at the direction of the government or pursuant to government interest

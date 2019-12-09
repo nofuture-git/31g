@@ -49,6 +49,7 @@
     <Compile Include="ExampleFriskTests.cs" />
     <Compile Include="ExampleInstrumentOfTheStateTests.cs" />
     <Compile Include="ExampleMobileVehicleSearchTests.cs" />
+    <Compile Include="ExamplePlainViewSeizureTests.cs" />
     <Compile Include="ExampleProbableCauseTests.cs" />
     <Compile Include="ExampleReasonableSuspicionTests.cs" />
     <Compile Include="ExampleSearchIncidentToArrestTests.cs" />

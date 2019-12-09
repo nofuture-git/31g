@@ -8,6 +8,9 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
     /// </summary>
     public class SearchIncidentToArrestMotorVehicle : SearchIncidentBase, IMobileVehicleSearch
     {
+
+        public IConsent Consent { get; set; }
+
         /// <summary>
         /// the arrestee is unsecured and within reaching distance of passenger compartment at time of search
         /// </summary>
@@ -26,6 +29,13 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            if (Consent != null && Consent.IsValid(persons))
+            {
+                AddReasonEntry($"{nameof(Consent)} {nameof(IsValid)} is true");
+                AddReasonEntryRange(Consent.GetReasonEntries());
+                return true;
+            }
+
             if (!IsValidBeforePredicates(persons))
                 return false;
             var suspect = GetSubjectOfSearch(persons);

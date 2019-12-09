@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Criminal.US
@@ -11,6 +7,8 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
     public class MobileVehicleSearch : LegalConcept, IMobileVehicleSearch
     {
         public Func<ILegalPerson[], ILegalPerson> GetConductorOfSearch { get; set; }
+
+        public IConsent Consent { get; set; }
 
         public Predicate<ILegalPerson> IsBeliefEvidenceToCrimeIsPresent { get; set; } = lp => false;
 
@@ -21,6 +19,13 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            if (Consent != null && Consent.IsValid(persons))
+            {
+                AddReasonEntry($"{nameof(Consent)} {nameof(IsValid)} is true");
+                AddReasonEntryRange(Consent.GetReasonEntries());
+                return true;
+            }
+
             if (GetConductorOfSearch == null)
                 GetConductorOfSearch = lps => null;
 

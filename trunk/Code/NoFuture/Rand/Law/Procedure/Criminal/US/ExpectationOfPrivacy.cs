@@ -10,6 +10,15 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
         public Func<ILegalPerson[], ILegalPerson> GetSubjectOfSearch { get; set; } = lps => null;
 
         /// <summary>
+        /// with consent law enforcement may search without any justification
+        /// to whatever scope the consenting person gives.
+        /// </summary>
+        /// <remarks>
+        /// When a 3rd party has apparent or actual authority then they may consent at the lose of the absentee
+        /// </remarks>
+        public IConsent Consent { get; set; }
+
+        /// <summary>
         /// The subjective test being if the person-searched was expecting privacy
         /// </summary>
         public SubjectivePredicate<ILegalPerson> IsPrivacyExpected { get; set; } = lp => false;
@@ -27,6 +36,13 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
+            if (Consent != null && Consent.IsValid(persons))
+            {
+                AddReasonEntry($"{nameof(Consent)} {nameof(IsValid)} is true");
+                AddReasonEntryRange(Consent.GetReasonEntries());
+                return true;
+            }
+
             var subjectPerson = GetSubjectOfSearch(persons);
 
             if (subjectPerson == null)

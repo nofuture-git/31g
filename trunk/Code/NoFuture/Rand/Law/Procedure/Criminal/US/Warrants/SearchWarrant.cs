@@ -17,15 +17,6 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Warrants
         [Aka("good faith exception")]
         public Predicate<IVoca> IsGoodFaithException { get; set; } = r => false;
 
-        /// <summary>
-        /// the police are permitted to seize other articles of contraband or evidence of crime that
-        /// they come upon in the ordinary course of the original search
-        /// </summary>
-        /// <remarks>
-        /// needs to both obviously apparent and obviously illegal
-        /// </remarks>
-        public Predicate<IVoca> IsPlainlyApparentClearlyIllegalInPeripheral { get; set; } = r => false;
-
         public override bool IsValid(params ILegalPerson[] persons)
         {
             if (!base.IsValid(persons))
@@ -39,12 +30,10 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Warrants
             }
 
             if (!IsObjectiveDescribedWithParticularity(objective) 
-                && !IsGoodFaithException(objective)
-                && !IsPlainlyApparentClearlyIllegalInPeripheral(objective))
+                && !IsGoodFaithException(objective))
             {
-                AddReasonEntry($"{objective.Name}, {nameof(IsObjectiveDescribedWithParticularity)} " +
-                               $", {nameof(IsGoodFaithException)} and " +
-                               $"{nameof(IsPlainlyApparentClearlyIllegalInPeripheral)} are all false");
+                AddReasonEntry($"{objective.Name}, {nameof(IsObjectiveDescribedWithParticularity)} and " +
+                               $" {nameof(IsGoodFaithException)} are both false");
                 return false;
             }
 
