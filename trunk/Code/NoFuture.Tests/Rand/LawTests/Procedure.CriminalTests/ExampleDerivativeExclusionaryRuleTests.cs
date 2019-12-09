@@ -6,20 +6,15 @@ using NUnit.Framework;
 namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
 {
     [TestFixture]
-    public class ExampleExclusionaryRuleTests
+    public class ExampleDerivativeExclusionaryRuleTests
     {
         [Test]
         public void TestExclusionaryRuleIsValid00()
         {
-            var testSubject = new ExclusionaryRule<IVoca>
+            var testSubject = new DerivativeExclusionaryRule<IVoca>
             {
-                GetEvidence = lp => lp is ExampleLawEnforcement ? new ExampleContraband() : null,
-                IsObtainedThroughUnlawfulMeans = v => false,
-                DerivativeExclusion = new DerivativeExclusionaryRule<IVoca>
-                {
-                    IsDerivedFromUnlawfulSource = v => true,
-                    IsInterveningEventsAttenuated = v => v is ExampleContraband
-                }
+                IsDerivedFromUnlawfulSource = v => true,
+                IsInterveningEventsAttenuated = v => v is ExampleContraband
             };
 
             var testResult = testSubject.IsValid(new ExampleSuspect(), new ExampleLawEnforcement());

@@ -21,17 +21,28 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
         public Predicate<T> IsDerivedFromUnlawfulSource { get; set; } = l => false;
 
         /// <summary>
-        /// (1) The time period between the illegality and acquisition of secondary evidence concludes to a dissipation of connection
+        /// Having at least one lawful source will override all unlawful sources
+        /// </summary>
+        public Predicate<T> IsObtainableFromIndependentSource { get; set; } = l => false;
+
+        /// <summary>
+        /// evidence would have been discovered anyway by lawful means
+        /// </summary>
+        public Predicate<T> IsInevitableDiscovery { get; set; } = l => false;
+
+        /// <summary>
+        /// The time period between the illegality and acquisition of secondary
+        /// evidence concludes to a dissipation of connection
         /// </summary>
         public Predicate<T> IsLongTimePeriodAttenuated { get; set; } = l => false;
 
         /// <summary>
-        /// (2) the more links in the chain the more attenuated the connection
+        /// The more links in the chain the more attenuated the connection
         /// </summary>
         public Predicate<T> IsInterveningEventsAttenuated { get; set; } = l => false;
 
         /// <summary>
-        /// (3) deliberate and flagrant the constitutional violation derive to greater attenuation 
+        /// Deliberate and flagrant the constitutional violation derive to greater attenuation 
         /// </summary>
         public Predicate<ILegalPerson> IsUnintentionalMinorAttenuated { get; set; } = l => false;
 
@@ -49,6 +60,18 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
             if (object.Equals(evidence, null))
             {
                 AddReasonEntry($"{officerTitle} {officer.Name}, {nameof(GetDerivativeEvidence)} returned nothing");
+                return false;
+            }
+
+            if (IsObtainableFromIndependentSource(evidence))
+            {
+                AddReasonEntry($"{officerTitle} {officer.Name}, {nameof(IsObtainableFromIndependentSource)} is true");
+                return false;
+            }
+
+            if (IsInevitableDiscovery(evidence))
+            {
+                AddReasonEntry($"{officerTitle} {officer.Name}, {nameof(IsInevitableDiscovery)} is true");
                 return false;
             }
 

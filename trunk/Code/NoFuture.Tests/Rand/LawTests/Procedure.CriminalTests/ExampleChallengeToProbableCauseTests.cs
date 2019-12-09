@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NoFuture.Rand.Law.Procedure.Criminal.US.Challenges;
 using NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;

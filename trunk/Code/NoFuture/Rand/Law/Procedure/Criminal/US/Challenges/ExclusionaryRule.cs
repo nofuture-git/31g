@@ -10,25 +10,10 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
     /// <typeparam name="T"></typeparam>
     public class ExclusionaryRule<T> : LegalConcept, IRankable
     {
-        private DerivativeExclusionaryRule<T> _derivativeExclusionary;
-
         public Func<ILegalPerson, T> GetEvidence { get; set; } = lp => default(T);
         public Func<ILegalPerson[], ILegalPerson> GetLawEnforcement { get; set; } = lps => lps.LawEnforcement();
 
         public Predicate<T> IsObtainedThroughUnlawfulMeans { get; set; } = l => false;
-
-        public DerivativeExclusionaryRule<T> DerivativeExclusion
-        {
-            get => _derivativeExclusionary;
-            set
-            {
-                _derivativeExclusionary = value;
-                if (_derivativeExclusionary == null) 
-                    return;
-                _derivativeExclusionary.GetDerivativeEvidence = GetEvidence;
-                _derivativeExclusionary.GetLawEnforcement = GetLawEnforcement;
-            }
-        }
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -48,18 +33,9 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
             }
 
             var isUnlawful = IsObtainedThroughUnlawfulMeans(evidence);
-            AddReasonEntry($"{officerTitle} {officer.Name}, {nameof(IsObtainedThroughUnlawfulMeans)} is {isUnlawful}");
+            if(isUnlawful)
+                AddReasonEntry($"{officerTitle} {officer.Name}, {nameof(IsObtainedThroughUnlawfulMeans)} is true");
 
-            if (isUnlawful)
-            {
-                return true;
-            }
-
-            if (DerivativeExclusion == null)
-                return false;
-
-            isUnlawful = DerivativeExclusion.IsValid(persons);
-            AddReasonEntryRange(DerivativeExclusion.GetReasonEntries());
             return isUnlawful;
         }
 

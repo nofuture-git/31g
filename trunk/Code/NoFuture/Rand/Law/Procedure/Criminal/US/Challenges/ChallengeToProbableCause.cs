@@ -1,8 +1,9 @@
 ﻿using System;
+using NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
 {
     /// <summary>
     /// A way to override the probable cause
