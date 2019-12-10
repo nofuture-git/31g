@@ -31,6 +31,12 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
         public Predicate<T> IsUseInCriminalTrial { get; set; } = l => false;
 
         /// <summary>
+        /// unlawful evidence can be presented to refute a defendant&apos;s testimony
+        /// </summary>
+        [Aka("impeachment exception")]
+        public Predicate<T> IsUseToImpeachDefendantTestimony { get; set; } = l => false;
+
+        /// <summary>
         /// when applicable, the search warrant, on which the evidence was seized, must be valid
         /// </summary>
         public SearchWarrant SearchWarrant { get; set; }
@@ -70,6 +76,12 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
             if (!IsObtainedThroughUnlawfulMeans(evidence))
             {
                 AddReasonEntry($"{officerTitle} {officer.Name}, {nameof(IsObtainedThroughUnlawfulMeans)} is false");
+                return false;
+            }
+
+            if (IsUseToImpeachDefendantTestimony(evidence))
+            {
+                AddReasonEntry($"{suspectTitle} {suspect.Name}, {nameof(IsUseToImpeachDefendantTestimony)} is false");
                 return false;
             }
 
