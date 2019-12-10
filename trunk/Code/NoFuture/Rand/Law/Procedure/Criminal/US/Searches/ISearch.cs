@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.Searches
 {
     public interface ISearch : ILegalConcept
     {

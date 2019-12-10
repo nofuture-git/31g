@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NoFuture.Rand.Law.Procedure.Criminal.US;
+using NoFuture.Rand.Law.Procedure.Criminal.US.Searches;
 using NUnit.Framework;
 
 namespace NoFuture.Rand.Law.Procedure.Criminal.Tests

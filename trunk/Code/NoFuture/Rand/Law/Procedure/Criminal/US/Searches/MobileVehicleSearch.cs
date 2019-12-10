@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.Searches
 {
     /// <inheritdoc cref="IMobileVehicleSearch"/>
     public class MobileVehicleSearch : LegalConcept, IMobileVehicleSearch

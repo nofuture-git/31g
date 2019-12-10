@@ -1,7 +1,7 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.Searches
 {
     /// <summary>
     /// After being placed under arrest a search of the person

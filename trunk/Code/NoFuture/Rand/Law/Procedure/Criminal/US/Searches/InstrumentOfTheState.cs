@@ -2,7 +2,7 @@
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Rand.Law.Procedure.Criminal.US.Searches
 {
     /// <summary>
     /// The concept of a private party acting as an instrument of the
