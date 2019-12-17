@@ -49,6 +49,12 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations
         /// </summary>
         public Predicate<ILegalPerson> IsIncriminatoryQuestioning { get; set; } = lp => false;
 
+        /// <summary>
+        /// New York v. Quarles, 467 U.S. 649 (1984) when overriding considerations of
+        /// public safety justify the officer&apos;s failure to provide Miranda warnings
+        /// </summary>
+        public Predicate<ILegalPerson> IsPublicSafetyException { get; set; } = lp => false;
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             if (Consent != null && Consent.IsValid(persons))
@@ -75,6 +81,12 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations
             if (!IsIncriminatoryQuestioning(suspect))
             {
                 AddReasonEntry($"{suspectTitle} {suspect.Name}, {nameof(IsIncriminatoryQuestioning)} is false");
+                return false;
+            }
+
+            if (IsPublicSafetyException(suspect))
+            {
+                AddReasonEntry($"{suspectTitle} {suspect.Name}, {nameof(IsPublicSafetyException)} is false");
                 return false;
             }
 

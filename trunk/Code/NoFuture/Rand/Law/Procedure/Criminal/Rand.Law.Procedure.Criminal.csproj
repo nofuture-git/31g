@@ -38,6 +38,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\Challenges\DerivativeExclusionaryRule.cs" />
     <Compile Include="US\Interrogations\MirandaApproach.cs" />
+    <Compile Include="US\Interrogations\RightToCounselApproach.cs" />
     <Compile Include="US\Interrogations\Voluntariness.cs" />
     <Compile Include="US\Searches\IMobileVehicleSearch.cs" />
     <Compile Include="US\Intrusions\PlainViewSeizure.cs" />

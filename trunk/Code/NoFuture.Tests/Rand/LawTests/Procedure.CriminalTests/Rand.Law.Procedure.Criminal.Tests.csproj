@@ -55,6 +55,7 @@
     <Compile Include="ExamplePlainViewSeizureTests.cs" />
     <Compile Include="ExampleProbableCauseTests.cs" />
     <Compile Include="ExampleReasonableSuspicionTests.cs" />
+    <Compile Include="ExampleRightToCounselApproachTests.cs" />
     <Compile Include="ExampleSearchIncidentToArrestTests.cs" />
     <Compile Include="ExampleSearchTests.cs" />
     <Compile Include="ExampleSearchWarrantTests.cs" />

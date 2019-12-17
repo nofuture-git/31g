@@ -370,3 +370,4 @@
 בָּשַׁל,1310,boil|seethe|ripen
 מַזְלֵג,4207,fork|fleshhook
 שָׁרַת,8334,minister|serve
+בָּעַת,1163,to kick
