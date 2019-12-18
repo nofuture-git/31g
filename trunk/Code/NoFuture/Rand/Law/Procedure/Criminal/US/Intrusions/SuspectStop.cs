@@ -53,19 +53,13 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions
             if (GetLawEnforcement == null)
                 GetLawEnforcement = lps => lps.LawEnforcement();
 
-            var suspect = GetSuspect(persons);
+            var suspect = this.Suspect(persons, GetSuspect);
             if (suspect == null)
-            {
-                AddReasonEntry($"{nameof(GetSuspect)} returned nothing");
                 return false;
-            }
 
-            var officer = GetLawEnforcement(persons);
+            var officer = this.LawEnforcement(persons, GetLawEnforcement);
             if (officer == null)
-            {
-                AddReasonEntry($"{nameof(GetLawEnforcement)} returned nothing");
                 return false;
-            }
 
             var suspectTitle = suspect.GetLegalPersonTypeName();
             var officerTitle = officer.GetLegalPersonTypeName();

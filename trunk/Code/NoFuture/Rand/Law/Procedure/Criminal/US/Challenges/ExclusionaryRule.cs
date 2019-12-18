@@ -43,19 +43,13 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var officer = GetLawEnforcement(persons);
-            var suspect = GetSuspect(persons);
+            var officer = this.LawEnforcement(persons, GetLawEnforcement);
             if (officer == null)
-            {
-                AddReasonEntry($"{nameof(GetLawEnforcement)} returned nothing");
                 return false;
-            }
 
+            var suspect = this.Suspect(persons, GetSuspect);
             if (suspect == null)
-            {
-                AddReasonEntry($"{nameof(GetSuspect)} returned nothing");
                 return false;
-            }
 
             var officerTitle = officer.GetLegalPersonTypeName();
             var suspectTitle = suspect.GetLegalPersonTypeName();

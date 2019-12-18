@@ -72,12 +72,9 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Witness
                 }
             }
 
-            var suspect = GetSuspect(persons);
+            var suspect = this.Suspect(persons, GetSuspect);
             if (suspect == null)
-            {
-                AddReasonEntry($"{nameof(GetSuspect)} returned nothing");
                 return false;
-            }
 
             var suspectTitle = suspect.GetLegalPersonTypeName();
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Procedure.Criminal.US;
 using NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions;
 using NoFuture.Rand.Law.Procedure.Criminal.US.Warrants;
 using NoFuture.Rand.Law.US.Persons;
@@ -17,7 +16,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
             var testSubject = new Arrest
             {
                 IsAwareOfBeingArrested = lp => true,
-                ProbableCause = new ExampleProbableCause(),
+                ProbableCause = new ExampleExigentCircumstances(),
                 IsOccurInPublicPlace = lp => true
             };
 
@@ -49,5 +48,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
             Assert.IsTrue(testResult);
         }
 
+
+       
     }
 }

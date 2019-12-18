@@ -273,15 +273,15 @@ namespace NoFuture.Rand.Law.US
             if (lc == null || !ppersons.Any())
                 return null;
 
-            var offeree = ppersons.Lessee() as ILessee;
-            if (offeree == null)
+            var lessee = ppersons.Lessee() as ILessee;
+            if (lessee == null)
             {
                 var nameTitles = ppersons.GetTitleNamePairs();
                 lc.AddReasonEntry($"No one is the {nameof(ILessee)} in {nameTitles}");
                 return null;
             }
 
-            return offeree;
+            return lessee;
         }
 
         public static ILessor Lessor(this IRationale lc, IEnumerable<ILegalPerson> persons)
@@ -291,15 +291,15 @@ namespace NoFuture.Rand.Law.US
             if (lc == null || !ppersons.Any())
                 return null;
 
-            var offeror = ppersons.Lessor() as ILessor;
-            if (offeror == null)
+            var lessor = ppersons.Lessor() as ILessor;
+            if (lessor == null)
             {
                 var nameTitles = ppersons.GetTitleNamePairs();
                 lc.AddReasonEntry($"No one is the {nameof(ILessor)} in {nameTitles}");
                 return null;
             }
 
-            return offeror;
+            return lessor;
         }
 
         public static IEnumerable<ILegalPerson> Cotenants(this IRationale lc, IEnumerable<ILegalPerson> persons)
@@ -334,6 +334,44 @@ namespace NoFuture.Rand.Law.US
             }
 
             return absentees;
+        }
+
+        public static ISuspect Suspect(this IRationale lc, IEnumerable<ILegalPerson> persons, Func<ILegalPerson[], ILegalPerson> func)
+        {
+            func = func ?? (lps => lps.Suspect());
+            var ppersons = persons == null ? new ILegalPerson[]{} : persons.ToArray();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var suspect = func(ppersons) as ISuspect;
+            if (suspect == null)
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(ISuspect)} in {nameTitles}");
+                return null;
+            }
+
+            return suspect;
+        }
+
+        public static ILawEnforcement LawEnforcement(this IRationale lc, IEnumerable<ILegalPerson> persons, Func<ILegalPerson[], ILegalPerson> func)
+        {
+            func = func ?? (lps => lps.LawEnforcement());
+            var ppersons = persons == null ? new ILegalPerson[] { } : persons.ToArray();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var lawEnforcement = func(ppersons) as ILawEnforcement;
+            if (lawEnforcement == null)
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(ILawEnforcement)} in {nameTitles}");
+                return null;
+            }
+
+            return lawEnforcement;
         }
 
         public static bool PropertyOwnerIsSubjectPerson(this IRationale lc, ILegalProperty property, ILegalPerson person)

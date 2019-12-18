@@ -41,6 +41,8 @@
     <Compile Include="US\Interrogations\MirandaApproach.cs" />
     <Compile Include="US\Interrogations\RightToCounselApproach.cs" />
     <Compile Include="US\Interrogations\Voluntariness.cs" />
+    <Compile Include="US\Intrusions\BodilyIntrusion.cs" />
+    <Compile Include="US\Intrusions\ImplicatingFourthAmendment.cs" />
     <Compile Include="US\Searches\IMobileVehicleSearch.cs" />
     <Compile Include="US\Intrusions\PlainViewSeizure.cs" />
     <Compile Include="US\Searches\MobileVehicleSearch.cs" />

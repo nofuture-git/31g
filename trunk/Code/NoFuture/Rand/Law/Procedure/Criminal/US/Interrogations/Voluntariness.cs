@@ -23,12 +23,9 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var suspect = GetSuspect(persons);
+            var suspect = this.Suspect(persons, GetSuspect);
             if (suspect == null)
-            {
-                AddReasonEntry($"{nameof(GetSuspect)} returned nothing");
                 return false;
-            }
 
             var suspectTitle = suspect.GetLegalPersonTypeName();
 

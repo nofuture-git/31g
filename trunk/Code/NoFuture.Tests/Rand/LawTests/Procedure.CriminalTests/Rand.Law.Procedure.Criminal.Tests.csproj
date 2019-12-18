@@ -44,6 +44,7 @@
     <Compile Include="ExampleAdministrativeCauseTests.cs" />
     <Compile Include="ExampleAffidavitTests.cs" />
     <Compile Include="ExampleArrestTests.cs" />
+    <Compile Include="ExampleBodilyIntrusionTests.cs" />
     <Compile Include="ExampleChallengeToProbableCauseTests.cs" />
     <Compile Include="ExampleDerivativeExclusionaryRuleTests.cs" />
     <Compile Include="ExampleExclusionaryRuleTests.cs" />

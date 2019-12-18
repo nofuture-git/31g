@@ -35,20 +35,11 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var suspect = GetSuspect(persons);
-            var officer = GetLawEnforcement(persons);
+            var suspect = this.Suspect(persons, GetSuspect);
+            var officer = this.LawEnforcement(persons, GetLawEnforcement);
 
-            if (suspect == null)
-            {
-                AddReasonEntry($"{nameof(GetSuspect)} returned nothing");
+            if (suspect == null || officer == null)
                 return false;
-            }
-
-            if (officer == null)
-            {
-                AddReasonEntry($"{nameof(GetLawEnforcement)} returned nothing");
-                return false;
-            }
 
             var officerTitle = officer.GetLegalPersonTypeName();
             var suspectTitle = suspect.GetLegalPersonTypeName();
