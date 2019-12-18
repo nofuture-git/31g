@@ -24,12 +24,23 @@ namespace NoFuture.Rand.Law.Contract.US.Remedy
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
-            if (IsDisproportionateToActual(offeror) || IsDisproportionateToActual(offeree))
+            var offerorTitle = offeror.GetLegalPersonTypeName();
+            var offereeTitle = offeree.GetLegalPersonTypeName();
+
+            if (IsDisproportionateToActual(offeror))
             {
-                AddReasonEntry("liquidated damage clauses that are intended as a penalty are not enforceable");
+                AddReasonEntry($"{offerorTitle} {offeror.Name}, {nameof(IsDisproportionateToActual)} is true");
+                return false;
+            }
+
+            if (IsDisproportionateToActual(offeree))
+            {
+                AddReasonEntry($"{offereeTitle} {offeree.Name}, {nameof(IsDisproportionateToActual)} is true");
                 return false;
             }
 

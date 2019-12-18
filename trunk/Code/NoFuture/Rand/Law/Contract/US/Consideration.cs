@@ -7,7 +7,6 @@ namespace NoFuture.Rand.Law.Contract.US
     /// <summary>
     /// Is intended to determine what is an enforceable promise and what is a donative one.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class Consideration<T> : LegalConcept, IConsideration<T> where T : ILegalConcept
     {
         public override bool IsEnforceableInCourt => true;
@@ -28,14 +27,16 @@ namespace NoFuture.Rand.Law.Contract.US
 
         public virtual Predicate<ILegalConcept> IsValueInEyesOfLaw { get; set; } = o => true;
 
-        public virtual Predicate<ILegalConcept> IsIllusionaryPromise { get; set; } = o => false;
+        public virtual Predicate<ILegalConcept> IsIllusoryPromise { get; set; } = o => false;
 
         public virtual Predicate<ILegalConcept> IsExistingDuty { get; set; } = o => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
             if (IsSoughtByOfferor == null)
             {
@@ -83,27 +84,27 @@ namespace NoFuture.Rand.Law.Contract.US
                 return false;
             }
 
-            var illusionPredicate = IsIllusionaryPromise ?? (o => false);
+            var illusionPredicate = IsIllusoryPromise ?? (o => false);
             if (illusionPredicate(promise))
             {
-                AddReasonEntry($"The promise given by {offeror.Name} is illusionary - it is not a promise at all.");
+                AddReasonEntry($"The promise given by {offeror.Name} is illusory - it is not a promise at all.");
                 return false;
             }
             if (illusionPredicate(returnPromise))
             {
-                AddReasonEntry($"The return promise given by {offeree.Name} is illusionary - it is not a promise at all.");
+                AddReasonEntry($"The return promise given by {offeree.Name} is illusory - it is not a promise at all.");
                 return false;
             }
 
             var existingDutyPredicate = IsExistingDuty ?? (o => false);
             if (existingDutyPredicate(promise))
             {
-                AddReasonEntry($"The promise given by {offeror.Name} is an existing duty and cannot be bargined with nor for.");
+                AddReasonEntry($"The promise given by {offeror.Name} is an existing duty and cannot be bargained with nor for.");
                 return false;
             }
             if (existingDutyPredicate(returnPromise))
             {
-                AddReasonEntry($"The return promise given by {offeree.Name} is an existing duty and cannot be bargined with nor for.");
+                AddReasonEntry($"The return promise given by {offeree.Name} is an existing duty and cannot be bargained with nor for.");
                 return false;
             }
 

@@ -27,25 +27,39 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
             
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
             if (!base.IsValid(offeror, offeree))
                 return false;
-            var rslt = false;
-            if (IsRestraintSelfServing(offeror) || IsRestraintSelfServing(offeree))
+
+            var offerorTitle = offeror.GetLegalPersonTypeName();
+            var offereeTitle = offeree.GetLegalPersonTypeName();
+
+            if (IsRestraintSelfServing(offeror))
             {
-                AddReasonEntry("the restraint is greater than necessary to protect a legitimate interest");
-                rslt = true;
+                AddReasonEntry($"{offerorTitle} {offeror.Name}, {nameof(IsRestraintSelfServing)} is true");
+                return true;
+            }
+            if (IsRestraintSelfServing(offeree))
+            {
+                AddReasonEntry($"{offereeTitle} {offeree.Name}, {nameof(IsRestraintSelfServing)} is true");
+                return true;
+            }
+            if (IsInjuriousToPublic(offeror))
+            {
+                AddReasonEntry($"{offerorTitle} {offeror.Name}, {nameof(IsInjuriousToPublic)} is true");
+                return true;
+            }
+            if (IsInjuriousToPublic(offeree))
+            {
+                AddReasonEntry($"{offereeTitle} {offeree.Name}, {nameof(IsInjuriousToPublic)} is true");
+                return true;
             }
 
-            if (IsInjuriousToPublic(offeror) || IsInjuriousToPublic(offeree))
-            {
-                AddReasonEntry("interest is outweighed by the hardship and the likely injury to the public.");
-                rslt = true;
-            }
-
-            return rslt;
+            return false;
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 
@@ -118,12 +116,10 @@ namespace NoFuture.Rand.Law.Contract.US
 
         public override string ToString()
         {
-            var allEntries = GetReasonEntries() as List<string> ?? new List<string>();
-            if (Assent != null)
-                allEntries.AddRange(Assent.GetReasonEntries());
-            if (Consideration != null)
-                allEntries.AddRange(Consideration.GetReasonEntries());
-            return string.Join(Environment.NewLine, allEntries);
+            AddReasonEntryRange(Assent?.GetReasonEntries());
+            AddReasonEntryRange(Consideration?.GetReasonEntries());
+            AddReasonEntryRange(Offer?.GetReasonEntries());
+            return base.ToString();
         }
     }
 }

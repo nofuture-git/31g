@@ -30,19 +30,10 @@ namespace NoFuture.Rand.Law.Contract.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
-            if (offeror == null)
-            {
-                AddReasonEntry($"{nameof(offeror)} is null");
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
                 return false;
-            }
-
-            if (offeree == null)
-            {
-                AddReasonEntry($"{nameof(offeree)} is null");
-                return false;
-            }
 
             if (IsApprovalExpressed == null)
             {

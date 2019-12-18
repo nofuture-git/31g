@@ -24,7 +24,7 @@ namespace NoFuture.Rand.Law.Contract.Tests.UccTests
             var testSubject00 = new BestBolt();
             var testResult00 = testSubject00.IsSkilledOrKnowledgeableOf(new Pulleys());
 
-            //this is what the trial court would have to deciede 
+            //this is what the trial court would have to decide 
             var testSubject01 = new Merchantable(new Pulleys())
             {
                 IsPassWithoutObjection = true,

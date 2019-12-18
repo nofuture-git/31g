@@ -1,5 +1,4 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
 {
@@ -13,10 +12,7 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
         }
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
-
-            if (!base.IsValid(offeror, offeree))
+            if (!base.IsValid(persons))
                 return false;
 
             throw new NotImplementedException();

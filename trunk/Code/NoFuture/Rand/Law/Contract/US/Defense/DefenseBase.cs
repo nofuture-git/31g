@@ -10,20 +10,10 @@ namespace NoFuture.Rand.Law.Contract.US.Defense
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
-
-            if (offeror == null)
-            {
-                AddReasonEntry($"The {nameof(offeror)} is unassigned");
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
                 return false;
-            }
-
-            if (offeree == null)
-            {
-                AddReasonEntry($"The {nameof(offeree)} is unassigned");
-                return false;
-            }
 
             if (Contract == null)
             {
@@ -36,7 +26,7 @@ namespace NoFuture.Rand.Law.Contract.US.Defense
 
             if (!isValidContract)
             {
-                AddReasonEntry("this defense is only applicable to valid contrax");
+                AddReasonEntry("this defense is only applicable to a valid contract");
                 return false;
             }
 

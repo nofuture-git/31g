@@ -1,7 +1,6 @@
 ﻿using System;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Exceptions;
 using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf

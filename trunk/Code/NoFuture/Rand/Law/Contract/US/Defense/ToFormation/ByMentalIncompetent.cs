@@ -16,23 +16,28 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToFormation
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
             if (!base.IsValid(offeror, offeree))
                 return false;
 
+            var offerorTitle = offeror.GetLegalPersonTypeName();
+            var offereeTitle = offeree.GetLegalPersonTypeName();
+
             var isMental = IsMentallyIncompetent ?? (lp => false);
             if (isMental(offeror))
             {
-                AddReasonEntry($"the {nameof(offeror)} named {offeror.Name} is " +
+                AddReasonEntry($"the {offerorTitle} named {offeror.Name} is " +
                                "a mentally incompetent");
                 return true;
             }
 
             if (isMental(offeree))
             {
-                AddReasonEntry($"the {nameof(offeree)} named {offeree.Name} is " +
+                AddReasonEntry($"the {offereeTitle} named {offeree.Name} is " +
                                "a mentally incompetent");
                 return true;
             }

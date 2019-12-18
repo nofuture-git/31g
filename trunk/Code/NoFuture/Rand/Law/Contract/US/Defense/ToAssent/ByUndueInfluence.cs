@@ -15,7 +15,7 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
     /// Court of Appeal of California, Second Appellate District 
     /// 246 Cal.App. 2d 123, 54 Cal.Rptr. 533 (2d Dist. 1966)    
     /// </remarks>
-    [Aka("overpersuasion")]
+    [Aka("over-persuasion")]
     public class ByUndueInfluence<T> : DefenseBase<T> where T : ILegalConcept
     {
         public ByUndueInfluence(IContract<T> contract) : base(contract)
@@ -78,8 +78,10 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
         /// <returns></returns>
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
             if (!base.IsValid(offeror, offeree))
                 return false;

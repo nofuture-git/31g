@@ -8,8 +8,6 @@ namespace NoFuture.Rand.Law.Contract.US.Excuse
         {
         }
 
-        public override bool IsEnforceableInCourt => true;
-
         /// <summary>
         /// <![CDATA[
         /// a party's performance is made impracticable without his fault

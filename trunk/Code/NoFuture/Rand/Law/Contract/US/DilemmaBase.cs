@@ -8,7 +8,6 @@ namespace NoFuture.Rand.Law.Contract.US
     /// <summary>
     /// A contract in dispute
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public abstract class DilemmaBase<T> : LegalConcept where T : ILegalConcept
     {
         public virtual IContract<T> Contract { get; }

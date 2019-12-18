@@ -514,7 +514,7 @@ namespace NoFuture.Rand.Law.US
         public static string GetTitleNamePairs(this IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
-            var titleNamePairs = ppersons.Select(p => Tuple.Create(p.GetLegalPersonTypeName(), p.Name));
+            var titleNamePairs = ppersons.Where(p => p != null).Select(p => Tuple.Create(p.GetLegalPersonTypeName(), p.Name));
             return string.Join(" ", titleNamePairs);
         }
 

@@ -2,7 +2,7 @@
 
 namespace NoFuture.Rand.Law.Contract.US
 {
-    [Aka("Social Contract")]
+    [Aka("social contract")]
     public class DonativePromise : Promise
     {
         public DonativePromise()

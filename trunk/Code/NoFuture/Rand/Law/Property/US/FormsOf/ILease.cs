@@ -7,6 +7,7 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf
     /// A contract to lease some property
     /// </summary>
     /// <typeparam name="T">The kind of property being leased</typeparam>
+    /// <inheritdoc cref="IBargain{T,M}"/>
     public interface ILease<T> : ILegalConceptWithProperty<T>, ITempore, IAssentTerms, IBargain<ILease<T>, T> where T : ILegalProperty
     {
         /// <summary>

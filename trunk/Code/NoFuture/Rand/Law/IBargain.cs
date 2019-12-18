@@ -3,6 +3,11 @@ using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law
 {
+    /// <summary>
+    /// mutual voluntary agreement between two parties to exchange this for that
+    /// </summary>
+    /// <typeparam name="T">The type of what is being given in return</typeparam>
+    /// <typeparam name="M">The type of what is being offered</typeparam>
     public interface IBargain<T, M> : ILegalConcept
     {
         /// <summary>

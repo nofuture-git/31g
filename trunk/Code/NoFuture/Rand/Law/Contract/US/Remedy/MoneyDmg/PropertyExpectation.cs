@@ -5,7 +5,7 @@ namespace NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg
 {
     /// <inheritdoc />
     /// <summary>
-    /// with property it is possible that some performance may cost alot while it adds little value.
+    /// with property it is possible that some performance may cost a lot while it adds little value.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class PropertyExpectation<T> : MoneyDmgBase<T> where T : ILegalConcept

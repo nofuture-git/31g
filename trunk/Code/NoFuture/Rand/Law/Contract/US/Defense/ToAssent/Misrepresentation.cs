@@ -76,8 +76,10 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
             return IsFraudulent(offeror) || IsFraudulent(offeree) || IsMaterial(offeror) || IsMaterial(offeree);
         }

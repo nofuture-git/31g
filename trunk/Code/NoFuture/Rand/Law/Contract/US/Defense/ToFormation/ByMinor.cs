@@ -30,24 +30,29 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToFormation
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
             if (!base.IsValid(offeror, offeree))
                 return false;
+
+            var offerorTitle = offeror.GetLegalPersonTypeName();
+            var offereeTitle = offeree.GetLegalPersonTypeName();
 
             Predicate<ILegalPerson> isMinor = lp => lp is IChild;
             var isDeclareVoid = IsDeclareVoid ?? (lp => false);
 
             if (isMinor(offeror) && isDeclareVoid(offeror))
             {
-                AddReasonEntry($"the {nameof(offeror)} named {offeror.Name} is " +
+                AddReasonEntry($"the {offerorTitle} named {offeror.Name} is " +
                                "a minor and has declared the contract void");
                 return true;
             }
             if (isMinor(offeree) && isDeclareVoid(offeree))
             {
-                AddReasonEntry($"the {nameof(offeree)} named {offeree.Name} is " +
+                AddReasonEntry($"the {offereeTitle} named {offeree.Name} is " +
                                "a minor and has declared the contract void");
                 return true;
             }

@@ -14,8 +14,10 @@ namespace NoFuture.Rand.Law.Contract.US.Breach
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
             if (!TryGetTerms(offeror, offeree))
             {

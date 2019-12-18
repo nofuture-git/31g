@@ -24,14 +24,18 @@ namespace NoFuture.Rand.Law.Contract.US.Defense
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
             if (!base.IsValid(offeror, offeree))
                 return false;
 
             Predicate<IContract<T>> dfx = c => false;
-            if (!Scope.IsValid(offeror, offeree))
+            var scope = Scope ?? new StatuteOfFraudsScope<T>(Contract);
+
+            if (!scope.IsValid(offeror, offeree))
             {
                 AddReasonEntry("Is not within Statute of Frauds");
                 //it is a valid defense

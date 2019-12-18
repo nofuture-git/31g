@@ -29,28 +29,40 @@ namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
+            if (offeree == null || offeror == null)
+                return false;
 
             if (!base.IsValid(offeror, offeree))
                 return false;
 
-            var rslt = false;
+            var offerorTitle = offeror.GetLegalPersonTypeName();
+            var offereeTitle = offeree.GetLegalPersonTypeName();
 
-            if (IsAbsenceOfMeaningfulChoice(offeror) || IsAbsenceOfMeaningfulChoice(offeree))
+            if (IsAbsenceOfMeaningfulChoice(offeror))
             {
-                AddReasonEntry("there is an absence of meaningful choice " +
-                               "on the part of one of the parties");
-                rslt = true;
+                AddReasonEntry($"{offerorTitle} {offeror.Name}, {nameof(IsAbsenceOfMeaningfulChoice)} is true");
+                return true;
+            }
+            if (IsAbsenceOfMeaningfulChoice(offeree))
+            {
+                AddReasonEntry($"{offereeTitle} {offeree.Name}, {nameof(IsAbsenceOfMeaningfulChoice)} is true");
+                return true;
             }
 
-            if (IsUnreasonablyFavorableTerms(offeror) || IsUnreasonablyFavorableTerms(offeree))
+            if (IsUnreasonablyFavorableTerms(offeror))
             {
-                AddReasonEntry("the contract terms are unreasonably favorable to the one party");
-                rslt = true;
+                AddReasonEntry($"{offerorTitle} {offeror.Name}, {nameof(IsUnreasonablyFavorableTerms)} is true");
+                return true;
             }
 
-            return rslt;
+            if (IsUnreasonablyFavorableTerms(offeree))
+            {
+                AddReasonEntry($"{offereeTitle} {offeree.Name}, {nameof(IsUnreasonablyFavorableTerms)} is true");
+                return true;
+            }
+            return false;
         }
     }
 }

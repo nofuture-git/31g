@@ -32,7 +32,7 @@ namespace NoFuture.Rand.Law.Contract.US
         /// What is bargained for must not be a choice - it must be a duty
         /// </summary>
         [Note("is not just a choice")]
-        Predicate<ILegalConcept> IsIllusionaryPromise { get; set; }
+        Predicate<ILegalConcept> IsIllusoryPromise { get; set; }
 
         /// <summary>
         /// What is bargained for must not be an existing duty.  When it 
