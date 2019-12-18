@@ -48,6 +48,7 @@
     <Compile Include="ExampleDerivativeExclusionaryRuleTests.cs" />
     <Compile Include="ExampleExclusionaryRuleTests.cs" />
     <Compile Include="ExampleExigentCircumstancesTests.cs" />
+    <Compile Include="ExampleEyewitnessIdentificationTests.cs" />
     <Compile Include="ExampleFriskTests.cs" />
     <Compile Include="ExampleInstrumentOfTheStateTests.cs" />
     <Compile Include="ExampleMirandaApproachTests.cs" />

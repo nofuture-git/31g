@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations;
 using NUnit.Framework;
 
@@ -14,7 +15,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
             {
                 IsDeliberateElicit = lp => lp is ExampleLawEnforcement,
                 CurrentDateTime =  DateTime.UtcNow.AddDays(2),
-                GetDateInitiationJudicialProceedings = lp => lp is ExampleSuspect ? new DateTime?(DateTime.UtcNow.AddDays(-2)) : null,
+                GetDateInitiationJudicialProceedings = lps => lps.Any(lp => lp is ExampleSuspect) ? new DateTime?(DateTime.UtcNow.AddDays(-2)) : null,
             };
 
             var testResult = testSubject.IsValid(new ExampleSuspect(), new ExampleLawEnforcement());

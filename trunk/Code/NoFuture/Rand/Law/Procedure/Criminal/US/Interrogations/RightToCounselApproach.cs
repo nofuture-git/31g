@@ -10,24 +10,14 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations
     /// right to counsel has attached.
     /// Massiah v. United States, 377 U.S. 201 (1964)
     /// </summary>
-    public class RightToCounselApproach : LegalConcept
+    public class RightToCounselApproach : CommencementJudicialProceedings
     {
-        public Func<ILegalPerson[], ILegalPerson> GetSuspect { get; set; } = lps => lps.Suspect();
-
         public Func<ILegalPerson[], ILegalPerson> GetLawEnforcement { get; set; } = lps => lps.LawEnforcement();
 
         /// <summary>
         /// the government deliberately elicited incriminating statements from the accused in the absence of counsel (or waiver of counsel)
         /// </summary>
         public Predicate<ILegalPerson> IsDeliberateElicit { get; set; } = lp => false;
-
-        public DateTime? CurrentDateTime { get; set; }
-
-        /// <summary>
-        /// The point at which the suspect is &quot;accused&quot;.  At the Federal level
-        /// its the point at which one is charged or appearance at arraignment or preliminary hearing
-        /// </summary>
-        public Func<ILegalPerson, DateTime?> GetDateInitiationJudicialProceedings { get; set; } = lp => null;
 
         [Aka("waiver of Miranda Rights")]
         public IConsent Consent { get; set; }
@@ -55,30 +45,7 @@ namespace NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations
                 return false;
             }
 
-            var suspect = GetSuspect(persons);
-
-            if (suspect == null)
-            {
-                AddReasonEntry($"{nameof(GetSuspect)} returned nothing");
-                return false;
-            }
-
-            var suspectTitle = suspect.GetLegalPersonTypeName();
-
-            var currentDt = CurrentDateTime ?? DateTime.UtcNow;
-
-            var initDt = GetDateInitiationJudicialProceedings(suspect) ?? GetDateInitiationJudicialProceedings(officer);
-
-            var isJudicialInit = currentDt > initDt;
-
-            if (isJudicialInit)
-            {
-                AddReasonEntry($"{suspectTitle} {suspect.Name}, {nameof(CurrentDateTime)} {currentDt} " +
-                               $"is after {nameof(GetDateInitiationJudicialProceedings)} of {initDt}");
-                return false;
-            }
-
-            return true;
+            return IsJudicialProceedingsInitiated(persons);
         }
     }
 }

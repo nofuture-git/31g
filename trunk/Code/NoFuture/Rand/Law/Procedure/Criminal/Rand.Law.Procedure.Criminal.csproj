@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="US\Challenges\DerivativeExclusionaryRule.cs" />
+    <Compile Include="US\CommencementJudicialProceedings.cs" />
     <Compile Include="US\Interrogations\MirandaApproach.cs" />
     <Compile Include="US\Interrogations\RightToCounselApproach.cs" />
     <Compile Include="US\Interrogations\Voluntariness.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="US\Intrusions\SuspectStop.cs" />
     <Compile Include="US\Warrants\SearchWarrant.cs" />
     <Compile Include="US\Warrants\WarrantBase.cs" />
+    <Compile Include="US\Witness\EyewitnessIdentification.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
