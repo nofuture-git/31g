@@ -31,7 +31,10 @@ namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
         {
             var subj = GetSubjectPerson(persons);
             if (subj == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
             var title = subj.GetLegalPersonTypeName();
 
             if (IsConductMorallyWrong(subj))

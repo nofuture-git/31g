@@ -18,7 +18,10 @@ namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
         {
             var subj = GetSubjectPerson(persons);
             if (subj == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
 
             var subjContribution = GetContributionWithReasonEntry(subj);
             var result = subjContribution > 0;

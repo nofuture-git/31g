@@ -23,7 +23,10 @@ namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential
         {
             var subj = GetSubjectPerson(persons);
             if (subj == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
 
             var title = subj.GetLegalPersonTypeName();
 

@@ -177,6 +177,24 @@ namespace NoFuture.Rand.Law.US
             return victim.FirstOrDefault();
         }
 
+        public static ITortfeasor Tortfeasor(this IRationale lc, IEnumerable<ILegalPerson> persons)
+        {
+            var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();
+
+            if (lc == null || !ppersons.Any())
+                return null;
+
+            var tortfeasor = ppersons.Tortfeasor() as ITortfeasor;
+            if (tortfeasor == null)
+            {
+                var nameTitles = ppersons.GetTitleNamePairs();
+                lc.AddReasonEntry($"No one is the {nameof(ITortfeasor)} in {nameTitles}");
+                return null;
+            }
+
+            return tortfeasor;
+        }
+
         public static IThirdParty ThirdParty(this IRationale lc, IEnumerable<ILegalPerson> persons)
         {
             var ppersons = persons == null ? new List<ILegalPerson>() : persons.ToList();

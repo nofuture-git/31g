@@ -25,7 +25,10 @@ namespace NoFuture.Rand.Law.Tort.US.Defense
         {
             var tortFeaser = GetSubjectPerson(persons);
             if (tortFeaser == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
 
             var title = tortFeaser.GetLegalPersonTypeName();
             var isNecessary = base.IsValid(persons);

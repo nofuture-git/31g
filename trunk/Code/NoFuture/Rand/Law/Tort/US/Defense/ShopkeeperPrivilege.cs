@@ -37,7 +37,10 @@ namespace NoFuture.Rand.Law.Tort.US.Defense
         {
             var person = GetSubjectPerson(persons);
             if (person == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
             var personType = person.GetLegalPersonTypeName();
 
             var rslt = WithoutConsent(persons);

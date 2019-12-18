@@ -41,7 +41,10 @@ namespace NoFuture.Rand.Law.Property.US.Acquisition
         {
             var subj = GetSubjectPerson(persons);
             if (subj == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
             var title = subj.GetLegalPersonTypeName();
 
             //there is a adversary context 

@@ -18,7 +18,7 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var tortfeasor = persons.Tortfeasor();
+            var tortfeasor = this.Tortfeasor(persons);
             if (tortfeasor == null)
                 return false;
 
@@ -28,11 +28,11 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
             var obviousEntry = IsTangibleEntry(tortfeasor);
 
             var subtleEntry = IsIntangibleEntry(tortfeasor) && IsPhysicalDamage(persons);
-
+            var title = tortfeasor.GetLegalPersonTypeName();
             if (!obviousEntry && !subtleEntry)
             {
-                AddReasonEntry($"tortfeasor, {tortfeasor.Name}, {nameof(IsTangibleEntry)} is false");
-                AddReasonEntry($"tortfeasor, {tortfeasor.Name}, {nameof(IsIntangibleEntry)} " +
+                AddReasonEntry($"{title} {tortfeasor.Name}, {nameof(IsTangibleEntry)} is false");
+                AddReasonEntry($"{title} {tortfeasor.Name}, {nameof(IsIntangibleEntry)} " +
                                $"and {nameof(PropertyDamage)} are both false");
                 return false;
             }

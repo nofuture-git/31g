@@ -23,7 +23,7 @@ namespace NoFuture.Rand.Law.Tort.US.Remedy
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var plaintiff = persons.Plaintiff() as IPlaintiff;
+            var plaintiff = this.Plaintiff(persons);
             if (plaintiff == null)
             {
                 return false;

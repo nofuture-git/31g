@@ -25,7 +25,10 @@ namespace NoFuture.Rand.Law.Tort.US.Elements
         {
             var subj = GetSubjectPerson(persons);
             if (subj == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
             var title = subj.GetLegalPersonTypeName();
 
             var thirdParty = this.ThirdParty(persons);

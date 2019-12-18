@@ -27,7 +27,10 @@ namespace NoFuture.Rand.Law.Tort.US.ReasonableCare
             var subjPerson = GetSubjectPerson(persons);
 
             if (subjPerson == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
             var title = subjPerson.GetLegalPersonTypeName();
 
             if (!IsAfflictedWith(subjPerson))

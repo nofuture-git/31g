@@ -30,7 +30,10 @@ namespace NoFuture.Rand.Law.Tort.US.Remedy
         {
             var subj = GetSubjectPerson(persons);
             if (subj == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
             var title = subj.GetLegalPersonTypeName();
 
             var cost = CalcCost(subj);

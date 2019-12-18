@@ -17,7 +17,7 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var tortfeasor = persons.Tortfeasor();
+            var tortfeasor = this.Tortfeasor(persons);
             if (tortfeasor == null)
                 return false;
 
@@ -26,11 +26,11 @@ namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
 
             var dipossed = IsCauseDispossession(tortfeasor);
             var damaged = IsPhysicalDamage(persons);
-
+            var title = tortfeasor.GetLegalPersonTypeName();
             if(!dipossed && !damaged)
             {
-                AddReasonEntry($"tortfeasor, {tortfeasor.Name}, {nameof(PropertyDamage)} is false");
-                AddReasonEntry($"tortfeasor, {tortfeasor.Name}, {nameof(IsCauseDispossession)} is false");
+                AddReasonEntry($"{title} {tortfeasor.Name}, {nameof(PropertyDamage)} is false");
+                AddReasonEntry($"{title} {tortfeasor.Name}, {nameof(IsCauseDispossession)} is false");
                 return false;
             }
             return true;

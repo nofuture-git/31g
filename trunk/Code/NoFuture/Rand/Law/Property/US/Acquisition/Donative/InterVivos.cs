@@ -21,8 +21,8 @@ namespace NoFuture.Rand.Law.Property.US.Acquisition.Donative
         public override bool IsValid(params ILegalPerson[] persons)
         {
             //get the two parties 
-            var offeror = persons.Offeror();
-            var offeree = persons.Offeree();
+            var offeror = this.Offeror(persons);
+            var offeree = this.Offeree(persons);
 
             if (offeree == null || offeror == null)
             {
