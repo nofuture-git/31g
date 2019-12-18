@@ -31,15 +31,51 @@ namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests
             var testResult = testCrime.IsValid(new WinifredEg());
             Assert.IsTrue(testResult);
 
-            var testSubject = new Entrapment
+            var testSubject = new Entrapment(testCrime)
             {
-                IsIntentOriginFromLawEnforcement = lp => lp is WinifredEg
+                GetOriginatorOfIntent = rea => new ExampleLawEnforcement(),
+                IsPredisposedToParticularIntent = lp => !(lp is WinifredEg)
             };
 
             testResult = testSubject.IsValid(new WinifredEg());
             Console.WriteLine(testSubject.ToString());
             Assert.IsTrue(testResult);
         }
+
+        [Test]
+        public void ExampleEntrapment01()
+        {
+            var testCrime = new Felony
+            {
+                ActusReus = new ActusReus
+                {
+                    IsAction = lp => lp is WinifredEg,
+                    IsVoluntary = lp => lp is WinifredEg,
+                },
+                MensRea = new GeneralIntent
+                {
+                    IsIntentOnWrongdoing = lp => lp is WinifredEg,
+                }
+            };
+
+            var testResult = testCrime.IsValid(new WinifredEg());
+            Assert.IsTrue(testResult);
+
+            var testSubject = new Entrapment(testCrime)
+            {
+                GetOriginatorOfIntent = rea => new WinifredEg(),
+                IsPredisposedToParticularIntent = lp => !(lp is WinifredEg)
+            };
+
+            testResult = testSubject.IsValid(new WinifredEg());
+            Console.WriteLine(testSubject.ToString());
+            Assert.IsFalse(testResult);
+        }
+    }
+
+    public class ExampleLawEnforcement : LegalPerson, ILawEnforcement
+    {
+        public ExampleLawEnforcement() : base("Johnny Law") { }
     }
 
     public class WinifredEg : LegalPerson, IDefendant

@@ -1,21 +1,30 @@
 ﻿using System;
 using NoFuture.Rand.Law.US;
+using NoFuture.Rand.Law.US.Persons;
 
 namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
 {
     /// <summary>
-    /// when the criminal intent originated with government 
+    /// when the whole of the criminal intent originated with government 
     /// </summary>
     public class Entrapment : DefenseBase
     {
-        public Entrapment() : base(ExtensionMethods.Defendant) { }
+        public ICrime Crime { get; }
 
-        public Entrapment(Func<ILegalPerson[], ILegalPerson> getSubjectPerson) : base(getSubjectPerson) { }
+        public Entrapment(ICrime crime) : base(ExtensionMethods.Defendant)
+        {
+            Crime = crime;
+        }
 
         /// <summary>
-        /// this may be subjective or objective depending on the jurisdiction 
+        /// gets the person who originated the criminal intent 
         /// </summary>
-        public Predicate<ILegalPerson> IsIntentOriginFromLawEnforcement { get; set; } = lp => false;
+        public Func<IMensRea, ILegalPerson> GetOriginatorOfIntent { get; set; } = mr => null;
+
+        /// <summary>
+        /// tests if defendant has a history or predisposition to this particular criminal intent
+        /// </summary>
+        public Predicate<ILegalPerson> IsPredisposedToParticularIntent { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
@@ -23,12 +32,46 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
             if (legalPerson == null)
                 return false;
 
-            if (!IsIntentOriginFromLawEnforcement(legalPerson))
+            var title = legalPerson.GetLegalPersonTypeName();
+
+            if (Crime == null)
             {
-                AddReasonEntry($"{legalPerson.GetLegalPersonTypeName()}, {legalPerson.Name}, mens rea is {nameof(IsIntentOriginFromLawEnforcement)}");
+                AddReasonEntry($"the {nameof(Entrapment)} {nameof(Crime)} is unassigned");
                 return false;
             }
 
+            var mensrea = Crime?.Concurrence?.MensRea;
+            if (mensrea == null)
+            {
+                AddReasonEntry("there is no actus reus for the given crime");
+                return false;
+            }
+
+            var originator = GetOriginatorOfIntent(mensrea);
+
+            if (originator == null)
+            {
+                AddReasonEntry($"{title} {legalPerson.Name}, " +
+                               $"{nameof(GetOriginatorOfIntent)} returned nothing");
+                return false;
+            }
+
+            var isGovtOriginator = originator is IGovernment;
+
+            if (!isGovtOriginator)
+            {
+                AddReasonEntry($"{title} {legalPerson.Name}, " +
+                               $"{nameof(GetOriginatorOfIntent)} is not of type {nameof(IGovernment)}");
+                return false;
+            }
+
+            if (IsPredisposedToParticularIntent(legalPerson))
+            {
+                AddReasonEntry($"{title}, {legalPerson.Name}, " +
+                               $"{nameof(IsPredisposedToParticularIntent)} is true");
+                return false;
+            }
+            
             return true;
         }
     }
