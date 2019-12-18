@@ -26,7 +26,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var legalPerson = persons.Defendant();
+            var legalPerson = this.Defendant(persons);
             if (legalPerson == null)
                 return false;
 

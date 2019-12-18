@@ -24,19 +24,19 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass
             if (!base.IsValid(persons))
                 return false;
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (IsBreakingForce != null && !IsBreakingForce(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTangibleEntry)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsTangibleEntry)} is false");
                 return false;
             }
 
             if (!IsStructuredEnclosure(SubjectProperty))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsStructuredEnclosure)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsStructuredEnclosure)} is false");
                 return false;
             }
 

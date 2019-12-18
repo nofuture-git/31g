@@ -26,24 +26,28 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
             var steal = criminalAct as ConsolidatedTheft;
             if (steal == null)
             {
-                AddReasonEntry($"{nameof(FiduciaryRelationship)} is an {nameof(IAttendantElement)} only upon type {nameof(ByTaking)}");
+                AddReasonEntry($"{nameof(FiduciaryRelationship)} is an {nameof(IAttendantElement)} " +
+                               $"only upon type {nameof(ByTaking)}");
                 return base.IsValid(criminalAct, persons);
             }
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var defendantTitle = defendant.GetLegalPersonTypeName();
             var victims = persons.Victims().ToList();
             if (!victims.Any())
                 return false;
 
             foreach (var victim in victims)
             {
+                var victimTitle = victim.GetLegalPersonTypeName();
                 var isTrust = IsTrustBetween(defendant, victim);
                 var isConfident = IsConfidenceBetween(defendant, victim);
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTrustBetween)} is {isTrust} for victim {victim.Name}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsConfidenceBetween)} is {isConfident} for victim {victim.Name}");
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(IsTrustBetween)} " +
+                               $"is {isTrust} for {victimTitle} {victim.Name}");
+                AddReasonEntry($"{defendantTitle} {defendant.Name}, {nameof(IsConfidenceBetween)} " +
+                               $"is {isConfident} for {victimTitle} {victim.Name}");
                 if (isTrust || isConfident)
                     return true;
             }

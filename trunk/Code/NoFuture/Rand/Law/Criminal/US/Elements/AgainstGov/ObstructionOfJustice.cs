@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
 
@@ -63,7 +63,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
             if (new [] {falseId, impersonate, refuseAid, falseEvidence,
                         refuseEvidence, isTamperWitness, isTamperJuror}.All(p => p == false))
             {
-                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsGiveFalseIdToAgent)}," +
+                AddReasonEntry($"{defendant.GetLegalPersonTypeName()} {defendant.Name}, " +
+                               $"{nameof(IsGiveFalseIdToAgent)}," +
                                $"{nameof(IsImpersonateAgent)}," +
                                $"{nameof(IsRefuseAidAgentUponRequest)}," +
                                $"{nameof(IsGiveFalseEvidence)}," +

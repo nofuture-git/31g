@@ -9,16 +9,16 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass
     {
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!WithoutConsent(persons))
                 return false;
 
             if (!IsTangibleEntry(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTangibleEntry)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsTangibleEntry)} is false");
                 return false;
             }
 

@@ -36,23 +36,23 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var gather = IsGatherer(defendant);
             var trasmit = IsTransmitor(defendant);
 
             if (!(_information is NationalDefenseInformation))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {_information.GetCategory()} " +
+                AddReasonEntry($"{title} {defendant.Name}, {_information.GetCategory()} " +
                                $"is not {nameof(NationalDefenseInformation)}");
                 return false;
             }
 
             if (!gather && !trasmit)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsGatherer)} " +
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsGatherer)} " +
                                $"and {nameof(IsTransmitor)} of {_information.GetCategory()} are false");
                 return false;
             }

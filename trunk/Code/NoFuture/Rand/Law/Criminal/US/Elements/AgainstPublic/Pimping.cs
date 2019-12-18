@@ -14,23 +14,23 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var procured = IsKnowinglyProcured(defendant);
             var received = IsKnowinglyReceived(defendant);
 
             if (!procured && !received)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsKnowinglyProcured)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsKnowinglyReceived)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsKnowinglyProcured)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsKnowinglyReceived)} is false");
                 return false;
             }
 
             if (!IsFromProstitute(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsFromProstitute)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsFromProstitute)} is false");
                 return false;
             }
 

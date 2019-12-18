@@ -23,17 +23,17 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
             if (!base.IsValid(persons))
                 return false;
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var isStolen = IsPresentStolen(defendant);
             var isBelievedStolen = IsApparentStolen(defendant);
 
             if (!isStolen && !isBelievedStolen)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsPresentStolen)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsApparentStolen)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsPresentStolen)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsApparentStolen)} is false");
                 return false;
             }
 
@@ -50,16 +50,16 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
 
         protected virtual bool InPossessionOfDefendant(ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var possess = persons.FirstOrDefault(p => SubjectProperty.IsInPossessionOf(p));
 
             if (!defendant.Equals(possess) && !ReferenceEquals(defendant, possess))
             {
                 
-                AddReasonEntry($"defendant, {defendant.Name}, does not " +
+                AddReasonEntry($"{title} {defendant.Name}, does not " +
                                $"possess {SubjectProperty?.GetType().Name} " +
                                $"named {SubjectProperty?.Name} - it is possessed " +
                                $"by {possess?.Name}");

@@ -25,19 +25,19 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsDisregardOfRisk(defendant))
             {
-                AddReasonEntry($"the defendant {defendant.Name} {nameof(IsDisregardOfRisk)} is false");
+                AddReasonEntry($"{title} {defendant.Name} {nameof(IsDisregardOfRisk)} is false");
                 return false;
             }
 
             if (!IsUnjustifiableRisk(defendant))
             {
-                AddReasonEntry($"the defendant {defendant.Name} {nameof(IsUnjustifiableRisk)} is false");
+                AddReasonEntry($"{title} {defendant.Name} {nameof(IsUnjustifiableRisk)} is false");
                 return false;
             }
 

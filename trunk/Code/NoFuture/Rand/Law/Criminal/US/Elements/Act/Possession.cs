@@ -28,25 +28,25 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (IsKnowinglyProcured(defendant))
             {
-                AddReasonEntry($"the defendant, {defendant.Name}, {nameof(IsKnowinglyProcured)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsKnowinglyProcured)} is true");
                 return true;
             }
 
             if (IsKnowinglyReceived(defendant))
             {
-                AddReasonEntry($"the defendant, {defendant.Name}, {nameof(IsKnowinglyReceived)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsKnowinglyReceived)} is true");
                 return true;
             }
 
             if (IsAwareOfControlThereof(defendant) && IsSufficientTimeToGetRid(defendant))
             {
-                AddReasonEntry($"the defendant, {defendant.Name}, {nameof(IsAwareOfControlThereof)} " +
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsAwareOfControlThereof)} " +
                                $"and {nameof(IsSufficientTimeToGetRid)} are both true");
                 return true;
             }

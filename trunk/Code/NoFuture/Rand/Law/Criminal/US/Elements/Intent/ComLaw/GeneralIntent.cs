@@ -13,15 +13,16 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
+            var title = defendant.GetLegalPersonTypeName();
             var intent = IsIntentOnWrongdoing(defendant);
             var knowledge = IsKnowledgeOfWrongdoing(defendant);
 
             if (!intent && !knowledge)
             {
-                AddReasonEntry($"defendant {defendant.Name} did not " +
+                AddReasonEntry($"{title} {defendant.Name} did not " +
                                "have intent of wrong doing nor knowledge of wrong doing");
                 return false;
             }

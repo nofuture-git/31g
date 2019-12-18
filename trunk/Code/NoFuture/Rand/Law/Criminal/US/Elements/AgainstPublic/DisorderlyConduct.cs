@@ -37,10 +37,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var loud = IsUnreasonablyLoud(defendant);
             var obscene = IsObscene(defendant);
             var combative = IsCombative(defendant);
@@ -48,7 +48,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 
             if (new[] {loud, obscene, combative, hazard}.All(p => false))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsUnreasonablyLoud)}, " +
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsUnreasonablyLoud)}, " +
                                $"{nameof(IsObscene)}, {nameof(IsCombative)} " +
                                $"and {nameof(IsIllegitimateHazardous)} is false");
                 return false;

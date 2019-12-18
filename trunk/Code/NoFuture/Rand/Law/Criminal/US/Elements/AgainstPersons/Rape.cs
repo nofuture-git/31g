@@ -20,19 +20,20 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            if (!base.IsValid(persons))
+                return false;
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
 
-            if (!base.IsValid(persons))
-                return false;
+            var title = defendant.GetLegalPersonTypeName();
 
             var isByForce = IsByViolence(defendant);
             var isByThreatOfForce = IsByThreatOfViolence(defendant);
             if (isByForce || isByThreatOfForce)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByViolence)} is {isByForce}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfViolence)} is {isByThreatOfForce}");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsByViolence)} is {isByForce}");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsByThreatOfViolence)} is {isByThreatOfForce}");
                 return true;
             }
 

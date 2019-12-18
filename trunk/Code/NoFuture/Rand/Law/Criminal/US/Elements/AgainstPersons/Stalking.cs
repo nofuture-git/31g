@@ -24,24 +24,24 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null || Occasions == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var ipa = IsPresentAbility(defendant);
             var iaa = IsApparentAbility(defendant);
 
             if (!ipa && !iaa)
             {
-                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsPresentAbility)} is false");
-                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsApparentAbility)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsPresentAbility)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsApparentAbility)} is false");
                 return false;
             }
 
             var numOccurances = Occasions.Count();
             if (numOccurances <= 1)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Occasions)} count is {numOccurances}");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(Occasions)} count is {numOccurances}");
                 return false;
             }
 

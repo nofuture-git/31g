@@ -34,16 +34,16 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var levy = IsByViolence(defendant);
             var adhere = IsAdheringToEnemy(defendant);
             var aid = IsGivingAidComfort(defendant);
             if (new[] {levy, adhere, aid}.All(p => p == false))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByViolence)}, " +
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsByViolence)}, " +
                                $"{nameof(IsAdheringToEnemy)}, {nameof(IsGivingAidComfort)} are all false");
                 return false;
             }
@@ -57,8 +57,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 
             if (one || two)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(WitnessOne)} being null is {one}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(WitnessTwo)} being null is {two}");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(WitnessOne)} being null is {one}");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(WitnessTwo)} being null is {two}");
                 return false;
             }
 

@@ -23,23 +23,23 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var isFireStarter = IsFireStarter(defendant);
             var isExploder = IsCauseOfExplosion(defendant);
 
             if (!isFireStarter && !isExploder)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsFireStarter)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsCauseOfExplosion)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsFireStarter)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsCauseOfExplosion)} is false");
                 return false;
             }
 
             if (!IsBurned(SubjectProperty))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsBurned)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsBurned)} is false");
                 return false;
             }
 

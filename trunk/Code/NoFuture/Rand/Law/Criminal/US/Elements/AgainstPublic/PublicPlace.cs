@@ -56,10 +56,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
         public override bool IsValid(params ILegalPerson[] persons)
         {
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsAccessibleToPublic)
             {
                 AddReasonEntry($"property {this.Name}, is {nameof(IsAccessibleToPublic)} is false");
@@ -67,13 +67,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
             }
             if (IsEntitledTo(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, is {nameof(IsEntitledTo)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, is {nameof(IsEntitledTo)} is true");
                 return false;
             }
 
             if (!IsWithin(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, is {nameof(IsWithin)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, is {nameof(IsWithin)} is true");
                 return false;
             }
 

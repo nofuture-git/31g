@@ -18,28 +18,28 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var lyingInWait = IsLyingInWait(defendant);
             if(lyingInWait)
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsLyingInWait)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsLyingInWait)} is true");
             var entice = IsEnticingVictimToScene(defendant);
             if (entice)
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsEnticingVictimToScene)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsEnticingVictimToScene)} is true");
             var investigate = IsInvestigatingPotentialScene(defendant);
             if (investigate)
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsInvestigatingPotentialScene)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsInvestigatingPotentialScene)} is true");
             var isEntry = IsUnlawfulEntry(defendant);
             if (isEntry)
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsUnlawfulEntry)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsUnlawfulEntry)} is true");
             var isTools = IsPossessCriminalTools(defendant);
             if (isTools)
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsPossessCriminalTools)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsPossessCriminalTools)} is true");
             var isMatl = IsPossessCriminalMaterial(defendant);
             if (isMatl)
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsPossessCriminalMaterial)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsPossessCriminalMaterial)} is true");
 
             return new[] {lyingInWait, entice, investigate, isEntry, isTools, isMatl}.Any(p => p);
         }

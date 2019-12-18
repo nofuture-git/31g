@@ -20,17 +20,17 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var beg = IsBegging(defendant);
             var gamble = IsGambling(defendant);
             var prostitue = IsProstituting(defendant);
 
             if (new[] {beg, gamble, prostitue}.All(p => p == false))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsBegging)}, " +
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsBegging)}, " +
                                $"{nameof(IsGambling)} and {nameof(IsProstituting)} are false");
                 return false;
             }

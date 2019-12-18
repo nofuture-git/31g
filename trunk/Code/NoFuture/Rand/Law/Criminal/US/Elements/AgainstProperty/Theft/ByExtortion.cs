@@ -83,14 +83,14 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             //threats for what is honestly owed is not illegal
             if (SubjectProperty?.IsEntitledTo(defendant) ?? false)
             {
-                AddReasonEntry($"defendant {defendant.Name}, is entitled to " +
+                AddReasonEntry($"{title} {defendant.Name}, is entitled to " +
                                $"{SubjectProperty?.GetType().Name} " +
                                $"named '{SubjectProperty?.Name}'");
                 return false;

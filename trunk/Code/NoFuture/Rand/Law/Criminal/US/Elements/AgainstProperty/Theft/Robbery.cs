@@ -19,16 +19,17 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
             if (!base.IsValid(persons))
                 return false;
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
+            var title = defendant.GetLegalPersonTypeName();
             var byForce = IsByViolence(defendant);
             var byThreat = IsByThreatOfViolence(defendant);
 
             if (!byForce && !byThreat)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByViolence)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsByViolence)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
                 return false;
             }
 
@@ -74,7 +75,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
             {
                 if (possess == null || possess.Equals(victim) || ReferenceEquals(possess, victim))
                     return true;
-                AddReasonEntry($"victim, {victim.Name}, is not in possession of {possess.GetType().Name} '{possess.Name}'");
+                
+                AddReasonEntry($"{victim.GetLegalPersonTypeName()} {victim.Name}, " +
+                               $"is not in possession of {possess.GetType().Name} '{possess.Name}'");
             }
 
             return false;

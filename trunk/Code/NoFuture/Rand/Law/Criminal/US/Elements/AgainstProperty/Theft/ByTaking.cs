@@ -24,13 +24,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
             if (!base.IsValid(persons))
                 return false;
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsAsportation(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAsportation)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsAsportation)} is false");
                 return false;
             }
 

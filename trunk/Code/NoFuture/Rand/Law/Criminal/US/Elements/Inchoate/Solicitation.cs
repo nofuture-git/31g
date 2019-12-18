@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
 
@@ -31,7 +31,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
                 return true;
             }
 
-            AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsInduceAnotherToCrime)} is false");
+            var title = defendant.GetLegalPersonTypeName();
+            AddReasonEntry($"{title} {defendant.Name}, {nameof(IsInduceAnotherToCrime)} is false");
             return false;
         }
 

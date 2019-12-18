@@ -23,29 +23,29 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsFalseTestimony(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsFalseTestimony)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsFalseTestimony)} is false");
                 return false;
             }
 
             if (!IsUnderOath(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsUnderOath)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsUnderOath)} is false");
                 return false;
             }
             if (!IsJudicialProceeding(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsJudicialProceeding)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsJudicialProceeding)} is false");
                 return false;
             }
             if (!IsMaterialIssue(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsMaterialIssue)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsMaterialIssue)} is false");
                 return false;
             }
 

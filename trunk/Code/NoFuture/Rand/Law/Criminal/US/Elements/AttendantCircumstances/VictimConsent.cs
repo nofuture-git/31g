@@ -28,15 +28,16 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
 
             foreach (var victim in persons.Victims())
             {
+                var title = victim.GetLegalPersonTypeName();
                 if (!IsCapableThereof(victim))
                 {
-                    AddReasonEntry($"victim, {victim.Name}, {nameof(IsCapableThereof)} is false");
+                    AddReasonEntry($"{title} {victim.Name}, {nameof(IsCapableThereof)} is false");
                     return false;
                 }
 
                 if (!IsApprovalExpressed(victim))
                 {
-                    AddReasonEntry($"victim, {victim.Name}, {nameof(IsApprovalExpressed)} is false");
+                    AddReasonEntry($"{title} {victim.Name}, {nameof(IsApprovalExpressed)} is false");
                     return false;
                 }
             }

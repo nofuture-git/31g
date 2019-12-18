@@ -32,7 +32,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
         {
             var legalPerson = GetSubjectPerson(persons);
             if (legalPerson == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
             var lpTypeName = legalPerson.GetLegalPersonTypeName();
             if (Imminence != null && !Imminence.IsValid(persons))
             {

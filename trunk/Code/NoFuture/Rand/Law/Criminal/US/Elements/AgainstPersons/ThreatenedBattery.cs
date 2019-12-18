@@ -32,7 +32,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
         {
             var defendant = GetSubjectPerson(persons);
             if (defendant == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
             var title = defendant.GetLegalPersonTypeName();
             if (!IsByThreatOfViolence(defendant))
             {

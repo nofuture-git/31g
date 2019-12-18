@@ -17,13 +17,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsUnderInfluence(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsUnderInfluence)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsUnderInfluence)} is false");
                 return false;
             }
 

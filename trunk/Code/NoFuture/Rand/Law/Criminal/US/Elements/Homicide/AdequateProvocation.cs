@@ -37,29 +37,29 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsDefendantActuallyProvoked(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsDefendantActuallyProvoked)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsDefendantActuallyProvoked)} is false");
                 return false;
             }
 
             if (!IsReasonableToInciteKilling(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsReasonableToInciteKilling)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsReasonableToInciteKilling)} is false");
                 return false;
             }
 
             if (!IsVictimSourceOfIncite(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsVictimSourceOfIncite)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsVictimSourceOfIncite)} is false");
                 return false;
             }
 
-            if (!Murder.IsHomicideConcurrance(this, this, defendant.Name))
+            if (!Murder.IsHomicideConcurrance(this, this, defendant.Name, title))
                 return false;
 
             return true;

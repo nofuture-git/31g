@@ -25,7 +25,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
             if(theft == null || persons == null || !persons.Any())
                 return base.IsValid(criminalAct, persons);
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
 
@@ -36,8 +36,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
             foreach (var victim in victims)
             {
                 var isReliance = IsReliantOnFalseRepresentation(victim);
+                var victimTitle = victim.GetLegalPersonTypeName();
                 if(isReliance)
-                    AddReasonEntry($"victim, {victim.Name}, {nameof(IsReliantOnFalseRepresentation)} is {isReliance}");
+                    AddReasonEntry($"{victimTitle} {victim.Name}, " +
+                                   $"{nameof(IsReliantOnFalseRepresentation)} is {isReliance}");
                 return isReliance;
             }
 

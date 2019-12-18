@@ -34,18 +34,19 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
                 return false;
             }
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsAgreementToCommitCrime(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAgreementToCommitCrime)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsAgreementToCommitCrime)} is false");
                 return false;
             }
 
             if (IsOvertActRequired != null && !IsOvertActRequired(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsOvertActRequired)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsOvertActRequired)} is false");
                 return false;
             }
 

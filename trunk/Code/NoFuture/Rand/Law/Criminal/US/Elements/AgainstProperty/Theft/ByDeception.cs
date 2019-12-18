@@ -44,9 +44,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
             if (!base.IsValid(persons))
                 return false;
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
+            var title = defendant.GetLegalPersonTypeName();
             var ifi = IsFalseImpression(defendant);
             var ipot = IsPreventionOfTruth(defendant);
             var iftc = IsFailureToCorrect(defendant);
@@ -54,10 +55,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
 
             if (new[] {ifi, ipot, iftc, iuli}.All(p => p == false))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsFalseImpression)} is {ifi}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsPreventionOfTruth)} is {ipot}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsFailureToCorrect)} is {iftc}");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsUndisclosedLegalImpediment)} is {iuli}");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsFalseImpression)} is {ifi}");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsPreventionOfTruth)} is {ipot}");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsFailureToCorrect)} is {iftc}");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsUndisclosedLegalImpediment)} is {iuli}");
                 return false;
             }
 
@@ -68,9 +69,9 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
             IsFalsePretense = isPossess && isTitle;
 
             if(IsLarcenyByTrick)
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsLarcenyByTrick)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsLarcenyByTrick)} is true");
             if(IsFalsePretense)
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsFalsePretense)} is true");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsFalsePretense)} is true");
             return true;
         }
     }

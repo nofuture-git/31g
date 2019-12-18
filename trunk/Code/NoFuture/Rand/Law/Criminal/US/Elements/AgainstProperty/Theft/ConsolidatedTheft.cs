@@ -24,19 +24,19 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (SubjectProperty == null)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(SubjectProperty)} is null");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(SubjectProperty)} is null");
                 return false;
             }
 
             if (SubjectProperty.IsEntitledTo(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, is the owner of property {SubjectProperty}");
+                AddReasonEntry($"{title} {defendant.Name}, is the owner of property {SubjectProperty}");
                 return false;
             }
 
@@ -56,9 +56,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
 
         protected internal bool PossessOrEntitle(ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
+            var title = defendant.GetLegalPersonTypeName();
             var isPossess = IsTakenPossession(defendant);
             if (isPossess)
                 SubjectProperty.IsInPossessionOf = lp => lp.IsSamePerson(defendant);
@@ -69,8 +70,8 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
 
             if (!isPossess && !isTitled)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsTakenPossession)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAcquiredTitle)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsTakenPossession)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsAcquiredTitle)} is false");
                 return false;
             }
 

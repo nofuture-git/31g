@@ -52,10 +52,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var ispx = IsProximity(defendant);
             var ispd = IsProbableDesistance(defendant);
             var isril = IsResIpsaLoquitur(defendant);
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
             var isAttempt = ispx || ispd || isril || isssub;
             if (!isAttempt)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, is attempt false");
+                AddReasonEntry($"{title} {defendant.Name}, is attempt false");
                 return false;
             }
 

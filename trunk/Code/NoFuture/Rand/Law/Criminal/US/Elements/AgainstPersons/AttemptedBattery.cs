@@ -15,11 +15,22 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
+            if (!base.IsValid(persons))
                 return false;
 
-            return base.IsValid(persons) || IsPresentAbility(defendant) || IsApparentAbility(defendant);
+            var defendant = this.Defendant(persons);
+            if (defendant == null)
+                return false;
+            var title = defendant.GetLegalPersonTypeName();
+
+            if (!IsPresentAbility(defendant) && !IsApparentAbility(defendant))
+            {
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsPresentAbility)} " +
+                               $"and {nameof(IsApparentAbility)} are both false");
+                return false;
+            }
+
+            return true;
         }
     }
 }

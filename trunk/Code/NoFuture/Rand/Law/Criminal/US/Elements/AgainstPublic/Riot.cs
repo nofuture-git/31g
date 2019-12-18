@@ -14,17 +14,17 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             var violent = IsByViolence(defendant);
             var threat = IsByThreatOfViolence(defendant);
 
             if (!violent && !threat)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByViolence)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsByViolence)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
             }
 
             return base.IsValid(persons);

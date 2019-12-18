@@ -52,13 +52,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsDefenseProperty && !IsWarProperty)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsDefenseProperty)} " +
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsDefenseProperty)} " +
                                $"and {nameof(IsWarProperty)} are false for property '{Name}'");
                 return false;
             }
@@ -69,7 +69,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 
             if (new[] {defect, destroy, dmg}.All(p => p == false))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsDefectiveProducerOf)}, " +
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsDefectiveProducerOf)}, " +
                                $"{nameof(IsDestroyerOf)} and {nameof(IsDamagerOf)} are false " +
                                $"for property '{Name}'");
                 return false;

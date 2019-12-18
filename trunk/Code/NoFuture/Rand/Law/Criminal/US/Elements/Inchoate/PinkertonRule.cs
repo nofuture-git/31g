@@ -20,12 +20,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
+            var title = defendant.GetLegalPersonTypeName();
             if (Conspiracy == null)
             {
-                AddReasonEntry($"defendant, {defendant}, {nameof(PinkertonRule)} " +
+                AddReasonEntry($"{title} {defendant}, {nameof(PinkertonRule)} " +
                                $"cannot be applied with {nameof(Conspiracy)}");
                 return false;
             }

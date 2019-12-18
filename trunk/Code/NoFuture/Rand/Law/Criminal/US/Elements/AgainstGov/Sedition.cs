@@ -33,19 +33,19 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsByThreatOfViolence(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsByThreatOfViolence)} is false");
                 return false;
             }
 
             if (!IsToOverthrowGovernment(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsToOverthrowGovernment)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsToOverthrowGovernment)} is false");
                 return false;
             }
 

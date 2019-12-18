@@ -15,19 +15,19 @@ namespace NoFuture.Rand.Law.Criminal.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsOneOfTwo(defendant))
             {
-                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsOneOfTwo)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsOneOfTwo)} is false");
                 return false;
             }
 
             if (!IsSexualIntercourse(defendant))
             {
-                AddReasonEntry($"defendant {defendant.Name}, {nameof(IsSexualIntercourse)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsSexualIntercourse)} is false");
                 return false;
             }
 

@@ -21,19 +21,19 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsAwareOfCrime(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAwareOfCrime)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsAwareOfCrime)} is false");
                 return false;
             }
 
             if (!IsAssistToEvadeProsecution(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAssistToEvadeProsecution)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsAssistToEvadeProsecution)} is false");
                 return false;
             }
 

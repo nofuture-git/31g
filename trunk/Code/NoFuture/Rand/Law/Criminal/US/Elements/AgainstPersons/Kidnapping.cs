@@ -23,20 +23,21 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
-            if (defendant == null)
-                return false;
-
             if (!base.IsValid(persons))
                 return false;
+
+            var defendant = this.Defendant(persons);
+            if (defendant == null)
+                return false;
+            var title = defendant.GetLegalPersonTypeName();
 
             var ia = IsAsportation(defendant);
             var ir = IsRansom(defendant);
 
             if (!ia && !ir)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsAsportation)} is false");
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsRansom)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsAsportation)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsRansom)} is false");
                 return false;
             }
 

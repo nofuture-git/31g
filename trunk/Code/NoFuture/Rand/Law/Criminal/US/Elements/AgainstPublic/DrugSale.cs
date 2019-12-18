@@ -17,20 +17,20 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (Offer == null)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Offer)} is null");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(Offer)} is null");
                 return false;
             }
 
             var acceptance = Acceptance(Offer);
             if (acceptance?.CurrentPropertyValue == null)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Acceptance)} " +
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(Acceptance)} " +
                                $"or {nameof(acceptance.CurrentPropertyValue)} is null");
                 return false;
             }
@@ -38,7 +38,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
             var isAgreed = Assent?.IsValid(persons) ?? false;
             if (!isAgreed)
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(Assent)} is invalid");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(Assent)} is invalid");
                 AddReasonEntryRange(Assent?.GetReasonEntries());
                 return false;
             }

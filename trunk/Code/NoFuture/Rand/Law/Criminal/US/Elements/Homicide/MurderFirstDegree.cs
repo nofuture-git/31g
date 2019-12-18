@@ -15,13 +15,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsPremediated(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsPremediated)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsPremediated)} is false");
                 return false;
             }
 

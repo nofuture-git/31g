@@ -25,13 +25,13 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!IsCorpusDelicti(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(IsCorpusDelicti)} is false");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(IsCorpusDelicti)} is false");
                 return false;
             }
 
@@ -41,10 +41,11 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
         public virtual bool CompareTo(IMensRea criminalIntent, params ILegalPerson[] persons)
         {
             var adequateProvocation = criminalIntent as AdequateProvocation;
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
+            var title = defendant.GetLegalPersonTypeName();
             if (adequateProvocation != null && defendant != null && adequateProvocation.IsValid(defendant))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, is criminal intent {nameof(AdequateProvocation)} " +
+                AddReasonEntry($"{title} {defendant.Name}, is criminal intent {nameof(AdequateProvocation)} " +
                                "which is only applicable to manslaughter");
                 return false;
             }
@@ -53,15 +54,15 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
         }
 
 
-        internal static bool IsHomicideConcurrance(IHomicideConcurrance hc, IRationale rationale, string defendantName = null)
+        internal static bool IsHomicideConcurrance(IHomicideConcurrance hc, IRationale rationale, string defendantName = null, string title = null)
         {
             if (hc == null || rationale == null)
                 return true;
-
+            title = title ?? "defendant";
             if (hc.TimeOfTheDeath != null && !hc.IsInRange(hc.TimeOfTheDeath.Value))
             {
 
-                rationale.AddReasonEntry($"defendant {defendantName}, crime started " +
+                rationale.AddReasonEntry($"{title} {defendantName}, crime started " +
                                          $"at {hc.Inception.ToString("O")} and ended at {hc.Terminus?.ToString("O")}, " +
                                          $"{nameof(IHomicideConcurrance.TimeOfTheDeath)} at {hc.TimeOfTheDeath?.ToString("O")} is outside this range");
                 return false;

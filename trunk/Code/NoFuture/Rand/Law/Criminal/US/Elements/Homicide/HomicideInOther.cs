@@ -47,18 +47,18 @@ namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
                 return false;
             }
 
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
-
+            var title = defendant.GetLegalPersonTypeName();
             if (!SourceCrime.IsValid(persons))
             {
-                AddReasonEntry($"defendant, {defendant.Name}, {nameof(SourceCrime)} is invalid");
+                AddReasonEntry($"{title} {defendant.Name}, {nameof(SourceCrime)} is invalid");
                 AddReasonEntryRange(SourceCrime.GetReasonEntries());
                 return false;
             }
 
-            if (!IsHomicideConcurrance(this, this, defendant.Name))
+            if (!IsHomicideConcurrance(this, this, defendant.Name, title))
                 return false;
 
             return base.IsValid(persons);

@@ -15,11 +15,12 @@ namespace NoFuture.Rand.Law.Criminal.US
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
-            var defendant = persons.Defendant();
+            var defendant = this.Defendant(persons);
             if (defendant == null)
                 return false;
+            var title = defendant.GetLegalPersonTypeName();
 
-            AddReasonEntry($"defendant, {defendant.Name}, imminence is {nameof(BatteredWomanSyndrome)}");
+            AddReasonEntry($"{title}, {defendant.Name}, imminence is {nameof(BatteredWomanSyndrome)}");
 
             return true;
         }

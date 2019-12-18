@@ -23,7 +23,10 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Justification
         {
             var legalPerson = GetSubjectPerson(persons);
             if (legalPerson == null)
+            {
+                AddReasonEntry($"{nameof(GetSubjectPerson)} returned nothing");
                 return false;
+            }
             if (!base.IsValid(persons))
                 return false;
             if (!IsBeliefProtectProperty(legalPerson))

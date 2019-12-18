@@ -40,7 +40,7 @@ namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
         {
             if (!base.IsValid(persons))
                 return false;
-            var legalPerson = persons.Defendant();
+            var legalPerson = this.Defendant(persons);
             if (legalPerson == null)
                 return false;
 
