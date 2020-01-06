@@ -371,3 +371,5 @@
 מַזְלֵג,4207,fork|fleshhook
 שָׁרַת,8334,minister|serve
 בָּעַת,1163,to kick
+אוֹת,226,sign|signal|omen
+מָשִׁיחַ,4899,christ|anointed|messiah
