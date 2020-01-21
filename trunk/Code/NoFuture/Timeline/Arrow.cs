@@ -105,7 +105,7 @@ namespace NoFuture.Timeline
             if (fromTr == null || toTr == null)
                 return tc;
 
-            System.Diagnostics.Debug.WriteLine(
+            System.Console.WriteLine(
                 $"({(!string.IsNullOrWhiteSpace(tc.Id) ? "Outer Block" : "InnerBlock")}) {fromTr.Id} -> {toTr.Id}");
 
             var arrowText = new StringBuilder();
@@ -170,7 +170,7 @@ namespace NoFuture.Timeline
             RightMaxLen = GetRightMaxLength(rightTr, ti.Ranges);
             LeftMinLen = GetLeftMinLength(leftTr, ti.Ranges);
 
-            System.Diagnostics.Debug.WriteLine($"\t Left Min {LeftMinLen}, Right Max {RightMaxLen}");
+            System.Console.WriteLine($"\t Left Min {LeftMinLen}, Right Max {RightMaxLen}");
             var aPriorLen = string.IsNullOrWhiteSpace(ExcludedRangeId)
                 ? GetLeftAPriorLen(leftTr.Id, ti.Ranges)
                 : GetLeftAPriorLen(leftTr.Id, ti.Ranges, ExcludedRangeId);
@@ -187,7 +187,7 @@ namespace NoFuture.Timeline
             RightMaxLen = GetRightMaxLength(rightTr, ti.Ranges);
             LeftMinLen = GetLeftMinLength(leftTr, ti.Ranges);
 
-            System.Diagnostics.Debug.WriteLine($"\t Left Min {LeftMinLen}, Right Max {RightMaxLen}");
+            System.Console.WriteLine($"\t Left Min {LeftMinLen}, Right Max {RightMaxLen}");
             var aPriorLen = string.IsNullOrWhiteSpace(ExcludedRangeId)
                 ? GetLeftAPriorLen(leftTr.Id, ti.Ranges)
                 : GetLeftAPriorLen(leftTr.Id, ti.Ranges, ExcludedRangeId);
@@ -218,7 +218,12 @@ namespace NoFuture.Timeline
         protected internal StringBuilder ComposeFromLeftToRightArrow(int rangeBetwixtLen, int leftAPriorLen,
             int leftBlockLen, string arrowText, int rightBlockLen = 0)
         {
-
+            Console.WriteLine($"\t{nameof(Width)}: {Width}, " +
+                              $"{nameof(rangeBetwixtLen)} {rangeBetwixtLen}, " +
+                              $"{nameof(leftAPriorLen)}: {leftAPriorLen}, " +
+                              $"{nameof(leftBlockLen)}: {leftBlockLen}, " +
+                              $"{nameof(arrowText)}: '{arrowText}', " +
+                              $"{nameof(rightBlockLen)}: {rightBlockLen}");
             var strBuilder = new StringBuilder();
             strBuilder.Append(new string((char) 0x20, (leftAPriorLen - 1 <= 0) ? 0 : leftAPriorLen - 1));
 
@@ -227,8 +232,16 @@ namespace NoFuture.Timeline
             strBuilder.Append(arrowTail);
 
             var head = FromLeftToRightArrowHead;
+
+            var maxRight = leftAPriorLen + leftBlockLen + rightBlockLen;
+
+            var currentLen = strBuilder.Length + rangeBetwixtLen + arrowText.Length;
+
+            Console.WriteLine($"currentLen: {currentLen}, maxRight: {maxRight}");
+
             //if the rbl was passed in and the text plus head won't fit in it then
-            if (rightBlockLen > 0 && arrowText.Length + head.Length > rightBlockLen)
+            if (rightBlockLen > 0 && arrowText.Length + head.Length > rightBlockLen
+                || currentLen > maxRight)
             {
                 rangeBetwixtLen = rangeBetwixtLen - rightBlockLen > 0 ? rangeBetwixtLen - rightBlockLen : 0;
             }

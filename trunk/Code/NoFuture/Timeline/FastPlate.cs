@@ -18,7 +18,7 @@ namespace NoFuture.Timeline
     /// myFPlate.Blk("Left side").Txt("yeah - bring it on").Blk("Right side").Blk(null);
     /// myFPlate.Blk("Middle side").Txt("no people,").Blk("Left side").Blk(null);
     /// myFPlate.Blk("Middle side").Txt("lets bring it off.").Blk("Right side");
-    /// System.Diagnostics.Debug.WriteLine(myFPlate.ToString());
+    /// System.Console.WriteLine(myFPlate.ToString());
     /// ]]>
     /// </example>
     [Serializable]

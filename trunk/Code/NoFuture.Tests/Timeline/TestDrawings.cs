@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
@@ -879,7 +880,6 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE1600to1200();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-
         }
         [Test]
         public void TestOccidentalPlateBCE1250to900()
@@ -888,7 +888,6 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE1250to900();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-
         }
         [Test]
         public void TestOccidentalPlateBCE922to750()

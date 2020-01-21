@@ -753,3 +753,13 @@ myrmidon: an unscrupulous subordinate of a powerful person
 furtive: attempting to avoid notice because doing so will lead to trouble
 conflated: combine two words or ideas into one
 prophylactic: intended to prevent disease
+emergence: when something has properties it parts do not have on their own
+accretion: growth process by gradual accumulation of layers
+asperity: harshness of tone and manner
+dendritic: having a branched form resembling a tree
+fractal geometry: defined as self-similarity and scale invariance
+agglomeration: a mass or collection of things
+angle of repose: the steepest angle a which a sloping surface 
+ formed of loose material is stable
+statistically stationary state: uniform loading and rapid intermittent 
+ discharge but has a temporal average over a time span

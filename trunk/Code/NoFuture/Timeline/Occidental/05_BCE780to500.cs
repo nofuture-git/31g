@@ -148,8 +148,7 @@
             rome.AddEntry(new LeaderEntry("Lucius T. Priscus", new int?[,] {{616, 578}}));
             rome.AddEntry(new LeaderEntry("Servius Tullius", new int?[,] {{578, 534}}));
             rome.AddEntry(new LeaderEntry("Lucius T Superbus", new int?[,] {{534, 510}}));
-            rome.AddEntry(509,
-                new string(Config.GraphChars.Rail, 3) + "Republic Founded" + new string(Config.GraphChars.Rail, 3));
+            rome.AddEntry(509, "Republic Founded (510)");
 
             var plate = new Plate {Ruler = rule, Name = "The Prophesy Fulfilled"};
             plate.AddArrow(new Arrow(assyria, egypt) {StartValue = 663, Text = "Thebes sacked(663)"});

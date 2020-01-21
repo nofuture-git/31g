@@ -46,21 +46,24 @@
             hittities.AddEntry(new ScienceAdvEntry("steel", "") {StartValue = 1400});
             hittities.AddEntry(1380, 1220, "Hittite Empire");
 
-            var mitanni = new Block {Ruler = rule, Title = "Mitanni"};
+            var mitanni = new Block {Ruler = rule, Title = "Mitanni", StartValue = 1500, EndValue = 1350};
             mitanni.AddEntry(new LeaderEntry("Shuttarna I", 1480));
             mitanni.AddEntry(new LeaderEntry("Saushsatar", 1455));
             mitanni.AddEntry(new LeaderEntry("Artatama", 1420));
             mitanni.AddEntry(new LeaderEntry("Shuttarna II", 1400));
             mitanni.AddEntry(new LeaderEntry("Tushratta", 1380));
-            mitanni.AddEntry(new Entry {StartValue = 1540, EndValue = 1370, Text = "*"});
 
             var assyria = new Block {Ruler = rule, Title = "Assyria"};
+            assyria.AddEntry(new LeaderEntry("Ashur-rabi", new int?[,]{{1453, 1435}}));
+            assyria.AddEntry(new LeaderEntry("Ashur-nadin-ahhe", new int?[,]{{1430,1415}}));
+            assyria.AddEntry(new LeaderEntry("Ashur-bel-nisheshu", new int?[,]{{ 1402, 1394 } }));
+            assyria.AddEntry(new LeaderEntry("Eriba-Adad I", new int?[,]{{1392,1366}}));
             assyria.AddEntry(new LeaderEntry("Asshur-uballit I", new int?[,] {{1356, 1321}}));
             assyria.AddEntry(new LeaderEntry("Adad-nirari I", new int?[,] {{1297, 1266}}));
             assyria.AddEntry(new LeaderEntry("Shalmaneser I", new int?[,] {{1265, 1235}}));
             assyria.AddEntry(new LeaderEntry("Tukulti-ninurata I", new int?[,] {{1234, 1197}}));
 
-            var greece = new Block() {Ruler = rule, Title = "Greece"};
+            var greece = new Block {Ruler = rule, Title = "Greece"};
             greece.AddEntry(1550, "Minoan & Greek first encounter");
             greece.AddEntry(1500, "Mt. Thera eruption");
             greece.AddEntry(1580, 1200, "Mycenaean Period", PrintLocation.Left);
@@ -68,7 +71,7 @@
             greece.AddEntry(1240, "Trojan War");
             greece.AddEntry(1210, "migration of Sea Peoples");
 
-            var plate = new Plate() {Ruler = rule, Name = "Near East 1600 to 1200 BCE"};
+            var plate = new Plate {Ruler = rule, Name = "Near East 1600 to 1200 BCE"};
 
             plate.AddArrow(new Arrow(egypt, palestine) {StartValue = 1457, Text = "Battle of Megiddo"});
             plate.AddArrow(new Arrow(mitanni, assyria) {StartValue = 1440, Text = "Assur sacked"});

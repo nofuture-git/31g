@@ -72,7 +72,7 @@
             plate.AddArrow(new Arrow(assyria, israel)
             {
                 StartValue = 853,
-                Text = "Battle of Qarqar" + new string(Config.GraphChars.DirectShaft, 3)
+                Text = "Battle of Qarqar"
             });
             plate.AddArrow(new Arrow(assyria, damascus) {StartValue = 796, Text = "Siege of Damascus"});
             plate.AddBlock(egypt);
