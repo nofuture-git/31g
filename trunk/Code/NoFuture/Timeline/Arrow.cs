@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using NoFuture.Util;
 using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
@@ -78,6 +79,7 @@ namespace NoFuture.Timeline
         public virtual string Id => _id;
         public virtual int RightMaxLen { get; set; }
         public virtual int LeftMinLen { get; set; }
+        public bool MoveArrowHeadToCenterOfBlock { get; set; }
 
         #endregion
 
@@ -104,9 +106,10 @@ namespace NoFuture.Timeline
 
             if (fromTr == null || toTr == null)
                 return tc;
+            var isOuterBlock = !string.IsNullOrWhiteSpace(tc.Id);
 
             System.Console.WriteLine(
-                $"({(!string.IsNullOrWhiteSpace(tc.Id) ? "Outer Block" : "InnerBlock")}) {fromTr.Id} -> {toTr.Id}");
+                $"({(isOuterBlock ? "Outer Block" : "InnerBlock")}) {fromTr.Id} -> {toTr.Id}");
 
             var arrowText = new StringBuilder();
             var arrowDirection = DetermineArrowDirection(fromTr.Id, toTr.Id, ti.Ranges);
@@ -127,38 +130,57 @@ namespace NoFuture.Timeline
             return tc;
         }
 
-        internal static int GetRightMaxLength(TextRange rightTr, List<TextRange> trs)
+        internal int GetRightMaxLength(TextRange rightTr, List<TextRange> trs)
         {
             if (rightTr == null || trs == null || !trs.Any())
                 return 0;
+            var fromInner = FromBlock.IsInnerBlock;
+            var toInner = ToBlock.IsInnerBlock;
+
             var sum = 0;
             foreach (var r in trs)
             {
-                var matchOnInner = r.InnerRanges.Any(x => x.Id == rightTr.Id);
-                sum += (matchOnInner ? GetRightMaxLength(rightTr, r.InnerRanges) : r.Length) + 1;
-                if (r.Id == rightTr.Id || matchOnInner)
+                if (Guid.TryParse(r.Id, out _))
+                    continue;
+                sum +=  r.Length + 1;
+                if (r.Id == rightTr.Id)
                     break;
             }
+            if (fromInner && toInner)
+                sum -= Width;
             return sum;
         }
 
-        internal static int GetLeftMinLength(TextRange leftTr, List<TextRange> trs)
+        internal int GetLeftMinLength(TextRange leftTr, List<TextRange> trs)
         {
             if (leftTr == null || trs == null || !trs.Any())
                 return 0;
+            var fromInner = FromBlock.IsInnerBlock;
+            var toInner = ToBlock.IsInnerBlock;
+
             var sum = 0;
             foreach (var r in trs)
             {
-                var matchOnInner = r.InnerRanges.Any(x => x.Id == leftTr.Id);
+                if(Guid.TryParse(r.Id, out _))
+                    continue;
+
                 if (r.Id == leftTr.Id)
                     break;
-                if (matchOnInner)
+                
+                if (toInner && !fromInner && r.InnerRanges.Any(ri => ri.Id == leftTr.Id))
                 {
-                    sum += GetLeftMinLength(leftTr, r.InnerRanges);
-                    break;
+                    return GetLeftMinLength(leftTr, r.InnerRanges);
                 }
+
                 sum += r.Length + 1;
             }
+
+            if (fromInner && toInner)
+            {
+                sum -= Width;
+                sum = sum - 2 > 0 ? sum - 2 : sum;
+            }
+
             return sum;
         }
 
@@ -166,33 +188,30 @@ namespace NoFuture.Timeline
         {
             var leftTr = fromTr;
             var rightTr = toTr;
+            var fromInner = FromBlock.IsInnerBlock;
+            var toInner = ToBlock.IsInnerBlock;
 
             RightMaxLen = GetRightMaxLength(rightTr, ti.Ranges);
             LeftMinLen = GetLeftMinLength(leftTr, ti.Ranges);
 
-            System.Console.WriteLine($"\t Left Min {LeftMinLen}, Right Max {RightMaxLen}");
-            var aPriorLen = string.IsNullOrWhiteSpace(ExcludedRangeId)
-                ? GetLeftAPriorLen(leftTr.Id, ti.Ranges)
-                : GetLeftAPriorLen(leftTr.Id, ti.Ranges, ExcludedRangeId);
-
-            var betwixtLen = GetRangeLenBetwixt(leftTr.Id, rightTr.Id, ti.Ranges);
-            return ComposeFromLeftToRightArrow(betwixtLen, aPriorLen, leftTr.Length, Text, rightTr.Length);
+            System.Console.WriteLine($"\t (LEFT) FromBlock.IsInnerBlock {fromInner}, ToBlock.IsInnerBlock {toInner}," +
+                                     $"  Width {Width}, Left Min {LeftMinLen}, Right Max {RightMaxLen}");
+            return ComposeFromLeftToRightArrow(leftTr.Length, Text, rightTr.Length);
         }
 
         protected internal StringBuilder GetRightArrowStrBldr(TextRange fromTr, TextRange toTr, TextItem ti)
         {
             var leftTr = toTr;
             var rightTr = fromTr;
+            var fromInner = FromBlock.IsInnerBlock;
+            var toInner = ToBlock.IsInnerBlock;
 
             RightMaxLen = GetRightMaxLength(rightTr, ti.Ranges);
             LeftMinLen = GetLeftMinLength(leftTr, ti.Ranges);
 
-            System.Console.WriteLine($"\t Left Min {LeftMinLen}, Right Max {RightMaxLen}");
-            var aPriorLen = string.IsNullOrWhiteSpace(ExcludedRangeId)
-                ? GetLeftAPriorLen(leftTr.Id, ti.Ranges)
-                : GetLeftAPriorLen(leftTr.Id, ti.Ranges, ExcludedRangeId);
-            var betwixtLen = GetRangeLenBetwixt(leftTr.Id, rightTr.Id, ti.Ranges);
-            return ComposeFromRightToLeftArrow(betwixtLen, aPriorLen, leftTr.Length, Text, rightTr.Length);
+            System.Console.WriteLine($"\t (RIGHT) FromBlock.IsInnerBlock {fromInner}, ToBlock.IsInnerBlock {toInner}," +
+                                     $"  Width {Width}, Left Min {LeftMinLen}, Right Max {RightMaxLen}");
+            return ComposeFromRightToLeftArrow(leftTr.Length, Text, rightTr.Length);
         }
 
         internal static bool TryGetTextRange(List<TextRange> ranges, string blockId, out TextRange otr)
@@ -215,161 +234,75 @@ namespace NoFuture.Timeline
             return otr != null;
         }
 
-        protected internal StringBuilder ComposeFromLeftToRightArrow(int rangeBetwixtLen, int leftAPriorLen,
-            int leftBlockLen, string arrowText, int rightBlockLen = 0)
+        protected internal StringBuilder ComposeFromLeftToRightArrow(int leftBlockLen, string arrowText, int rightBlockLen)
         {
-            Console.WriteLine($"\t{nameof(Width)}: {Width}, " +
-                              $"{nameof(rangeBetwixtLen)} {rangeBetwixtLen}, " +
-                              $"{nameof(leftAPriorLen)}: {leftAPriorLen}, " +
-                              $"{nameof(leftBlockLen)}: {leftBlockLen}, " +
-                              $"{nameof(arrowText)}: '{arrowText}', " +
-                              $"{nameof(rightBlockLen)}: {rightBlockLen}");
             var strBuilder = new StringBuilder();
-            strBuilder.Append(new string((char) 0x20, (leftAPriorLen - 1 <= 0) ? 0 : leftAPriorLen - 1));
+            var leftMaxLength = LeftMinLen + leftBlockLen;
+            var rightMinLength = RightMaxLen - rightBlockLen;
 
-            var arrowTail = ArrowTail;
-            strBuilder.Append(new string((char) 0x20, (leftBlockLen - arrowTail.Length)));
-            strBuilder.Append(arrowTail);
+            var leftPoint = leftMaxLength - 2;
+            var rightPoint = rightMinLength + 2;
 
-            var head = FromLeftToRightArrowHead;
-
-            var maxRight = leftAPriorLen + leftBlockLen + rightBlockLen;
-
-            var currentLen = strBuilder.Length + rangeBetwixtLen + arrowText.Length;
-
-            Console.WriteLine($"currentLen: {currentLen}, maxRight: {maxRight}");
-
-            //if the rbl was passed in and the text plus head won't fit in it then
-            if (rightBlockLen > 0 && arrowText.Length + head.Length > rightBlockLen
-                || currentLen > maxRight)
+            if (MoveArrowHeadToCenterOfBlock)
             {
-                rangeBetwixtLen = rangeBetwixtLen - rightBlockLen > 0 ? rangeBetwixtLen - rightBlockLen : 0;
+                rightPoint = RightMaxLen - (int)(leftBlockLen / 2D);
             }
 
-            strBuilder.Append(new string(ArrowShaft, rangeBetwixtLen));
-            strBuilder.Append(arrowText);
+            Console.WriteLine($"\t\t{nameof(leftPoint)}: {leftPoint}");
+            Console.WriteLine($"\t\t{nameof(rightPoint)}: {rightPoint}");
 
-            if (strBuilder.Length + head.Length < Width)
-                strBuilder.Append(head);
+            strBuilder.Append((char) 0x20, leftPoint);
+            strBuilder.Append(ArrowTail);
+            var span = rightPoint - FromLeftToRightArrowHead.Length - (arrowText?.Length ?? 0) - strBuilder.Length;
+            if(span > 0)
+                strBuilder.Append(ArrowShaft, span);
+            strBuilder.Append(arrowText);
+            if (strBuilder.Length + FromLeftToRightArrowHead.Length >= RightMaxLen - 1)
+            {
+                strBuilder.Append(FromLeftToRightArrowHead.ToCharArray().Last());
+            }
             else
             {
-                strBuilder.Append(head.ToCharArray().Last());
+                strBuilder.Append(FromLeftToRightArrowHead);
             }
+            
 
             return strBuilder;
         }
 
-        protected internal StringBuilder ComposeFromRightToLeftArrow(int rangeBetwixtLen, int leftAPriorLen,
-            int leftBlockLen, string arrowText, int rightBlockLen = 0)
+        protected internal StringBuilder ComposeFromRightToLeftArrow(int leftBlockLen, string arrowText, int rightBlockLen)
         {
-
             var strBuilder = new StringBuilder();
-            strBuilder.Append(new string((char) 0x20, leftAPriorLen + 1));
+            var leftMaxLength = LeftMinLen + leftBlockLen;
+            var rightMinLength = RightMaxLen - rightBlockLen;
 
-            var head = FromRightToLeftArrowHead;
+            var leftPoint = leftMaxLength - 2;
+            var rightPoint = rightMinLength + 2;
 
-            //determine number of spaces from start idx to start of arrow text
-            var padLen = leftBlockLen - (arrowText.Length + head.Length);
-            if (padLen > 0)
-                strBuilder.Append(new string((char) 0x20, padLen));
-            strBuilder.Append(head);
+            if (MoveArrowHeadToCenterOfBlock)
+            {
+                leftPoint = LeftMinLen + (int) (leftBlockLen / 2D);
+            }
+
+            Console.WriteLine($"\t\t{nameof(leftPoint)}: {leftPoint}");
+            Console.WriteLine($"\t\t{nameof(rightPoint)}: {rightPoint}");
+
+            strBuilder.Append((char)0x20, leftPoint);
+            strBuilder.Append(FromRightToLeftArrowHead);
             strBuilder.Append(arrowText);
-
-            if (Math.Abs(leftBlockLen - head.Length) < arrowText.Length)
-            {
-                var reduxRange = rangeBetwixtLen -
-                                 ((Math.Abs(leftBlockLen - head.Length)) - (arrowText.Length - 1));
-                strBuilder.Append(new string(ArrowShaft, reduxRange));
-            }
-            else
-            {
-                strBuilder.Append(new string(ArrowShaft, rangeBetwixtLen));
-            }
-            if (strBuilder.Length + ArrowTail.Length < Width && strBuilder.Length + ArrowTail.Length < RightMaxLen)
-                strBuilder.Append(ArrowTail);
-            else
+            var span = rightPoint - ArrowTail.Length - strBuilder.Length;
+            if (span > 0)
+                strBuilder.Append(ArrowShaft, span);
+            if (strBuilder.Length + ArrowTail.Length >= RightMaxLen - 1)
             {
                 strBuilder.Append(ArrowTail.ToCharArray().Last());
             }
+            else
+            {
+                strBuilder.Append(ArrowTail);
+            }
 
             return strBuilder;
-        }
-
-        internal static int GetLeftAPriorLen(string trLeftId, List<TextRange> ranges, string excludedRangeId = "")
-        {
-            var aPriorLen = 0;
-            if (ranges == null || !ranges.Any())
-                return 0;
-            foreach (var range in ranges)
-            {
-                if (range.InnerRanges.Any(y => y.Id == trLeftId))
-                {
-                    aPriorLen += GetLeftAPriorLen(trLeftId, range.InnerRanges, excludedRangeId);
-                    break;
-                }
-                if (range.Id == trLeftId)
-                    break;
-                if (range.Id == excludedRangeId)
-                    continue;
-                aPriorLen += range.Length + 2;//ranges do not encompass the joist between blocks
-            }
-
-            return aPriorLen;
-        }
-
-        internal static int GetRangeLenBetwixt(string trLeftId, string trRightId, List<TextRange> ranges)
-        {
-            var rangeLen = 0;
-            if (ranges == null || !ranges.Any())
-                return 0;
-            var inRange = false;
-            foreach (var range in ranges)
-            {
-                //continue left-to-right until the To's Id is in scope
-                if (range.Id != trLeftId && range.InnerRanges.All(x => x.Id != trLeftId) && !inRange)
-                {
-                    continue;
-                }
-
-                //enter into range
-                if (range.Id == trLeftId || range.InnerRanges.Any(x => x.Id == trLeftId))
-                {
-                    //add the ranges from right-to-left for inner ranges
-                    var innerRanges = range.InnerRanges;
-                    innerRanges.Reverse();
-                    foreach (var innerRange in innerRanges)
-                    {
-                        if (innerRange.Id == trLeftId)
-                            break;
-                        rangeLen += innerRange.Length + 2;
-                    }
-                    inRange = true;
-                    continue;
-                }
-
-                if (range.Id == trRightId || range.InnerRanges.Any(x => x.Id == trRightId))
-                {
-
-                    foreach (var innerRange in range.InnerRanges)
-                    {
-                        if (innerRange.Id == trRightId)
-                            break;
-                        rangeLen += innerRange.Length + 2;
-                    }
-                    break;
-                }
-
-                //HACK - testing for Id being a Guid
-                var isGuidId = System.Text.RegularExpressions.Regex.IsMatch(range.Id,
-                    @"[a-f0-9]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}");
-
-                if (isGuidId)
-                    continue;
-
-                //ranges do not encompass the joist between blocks
-                rangeLen += range.Length + 2;
-            }
-            return rangeLen;
         }
 
         internal static PrintLocation DetermineArrowDirection(string fromBlockId, string toBlockId, List<TextRange> ranges)

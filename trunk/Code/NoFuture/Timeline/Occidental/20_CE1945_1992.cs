@@ -196,9 +196,9 @@ namespace NoFuture.Timeline
             {
                 StartValue = 1952,
                 Text = "San Franciso Treaty (1952)",
-                FromRightToLeftArrowHead = "+```````",
+                FromRightToLeftArrowHead = "+``",
                 ArrowShaft = '`',
-                ArrowTail = "```````+"
+                ArrowTail = "``+"
             });
             plate.AddArrow(new Arrow(zho, ussr) {StartValue = 1969, Text = "border conflict"});
             plate.Notes.Add(" [1] An economic disaster resulting in millions of deaths.  [2] brought serious disaster and turmoil to the Communist Party and the Chinese people.");

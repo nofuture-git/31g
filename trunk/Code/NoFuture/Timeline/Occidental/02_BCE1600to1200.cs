@@ -4,7 +4,7 @@
     {
         public Plate BCE1600to1200()
         {
-            var rule = new Rule {StartValue = 1600, EndValue = 1200, RuleLineSpacing = 5};
+            var rule = new Rule {StartValue = 1600, EndValue = 1170, RuleLineSpacing = 5};
 
             var egypt = new Block {Ruler = rule, Title = "Egypt"};
 
@@ -26,7 +26,7 @@
             egypt.AddEntry(new LeaderEntry("Marniptah", new int?[,] {{1224, 1211}}));
             egypt.AddEntry(1211, "(weakness and anarchy)");
 
-            egypt.AddEntry(1306, 1200, "XIX Dynasty", PrintLocation.Left);
+            egypt.AddEntry(1306, 1170, "XIX Dynasty", PrintLocation.Left);
             egypt.AddEntry(1530, 1315, "XVIII Dynasty", PrintLocation.Left);
             egypt.AddEntry(1403, 1347, "The Amarna Period", PrintLocation.Center);
 
@@ -37,9 +37,9 @@
             palestine.AddEntry(1280, "Exodus");
             palestine.AddEntry(1250, 1200, "Conquest");
 
-            var hittities = new Block {Ruler = rule, Title = "Hittites"};
+            var hittities = new Block {Ruler = rule, Title = "Hittites", EndValue = 1179};
             hittities.AddEntry(new LeaderEntry("Mursilis I", 1530));
-            hittities.AddEntry(new LeaderEntry("Shuppiluliuma", new int?[,] {{1375, 1335}}));
+            hittities.AddEntry(new LeaderEntry("Shuppiluliuma", new int?[,] {{1375, 1335}}){StartValue = 1370});
             hittities.AddEntry(new LeaderEntry("Muwattalis", new int?[,] {{1306, 1282}}));
             hittities.AddEntry(new LeaderEntry("Hattusilis III", new int?[,] {{1275, 1250}}) {StartValue = 1280});
             hittities.AddEntry(1550, 1410, "Old Kingdom");
@@ -63,10 +63,10 @@
             assyria.AddEntry(new LeaderEntry("Shalmaneser I", new int?[,] {{1265, 1235}}));
             assyria.AddEntry(new LeaderEntry("Tukulti-ninurata I", new int?[,] {{1234, 1197}}));
 
-            var greece = new Block {Ruler = rule, Title = "Greece"};
+            var greece = new Block {Ruler = rule, Title = "Mycenaean Greece", EndValue = 1179};
             greece.AddEntry(1550, "Minoan & Greek first encounter");
-            greece.AddEntry(1500, "Mt. Thera eruption");
-            greece.AddEntry(1580, 1200, "Mycenaean Period", PrintLocation.Left);
+            greece.AddEntry(1500, "Mt. Thera eruption(**)");
+            greece.AddEntry(1490, 1200, "Koine era (*)", PrintLocation.Left);
             greece.AddEntry(1400, "Mycenaean invade Minoan Crete");
             greece.AddEntry(1240, "Trojan War");
             greece.AddEntry(1210, "migration of Sea Peoples");
@@ -84,6 +84,8 @@
             plate.AddBlock(mitanni);
             plate.AddBlock(assyria);
             plate.AddBlock(greece);
+            plate.Notes.Add("(*) Mycenaeans as dominant power in Aegean");
+            plate.Notes.Add("(**) results in decline of Minoan civilization");
             plate.FileName = "02_BCE1600to1200";
 
             return plate;

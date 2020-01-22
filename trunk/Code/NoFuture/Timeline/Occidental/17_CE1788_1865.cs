@@ -79,9 +79,8 @@ namespace NoFuture.Timeline
             csa.AddEntry(1864,"Atlanta razed(1864)", PrintLocation.Right);
             csa.AddEntry(1865, "fall of Richmond", PrintLocation.Left);
             csa.AddEntry(1865, "surrender @ Appomattox(1865)(f.)", PrintLocation.Right);
-            plate.Arrows.Add(new Arrow(csa, usa) {StartValue = 1861, Text = "Ft.Sumter fired on(e.)" });
-            plate.Arrows.Add(new Arrow(usa, csa) {StartValue = 1863, FromLeftToRightArrowHead = "......>"});
-            plate.Arrows.Add(new Arrow(csa, usa) { StartValue = 1863, Text = "Lee's invasion of PA", ArrowTail = ".." });
+            plate.Arrows.Add(new Arrow(csa, usa) {StartValue = 1861, Text = "Ft.Sumter fired on(e.)", MoveArrowHeadToCenterOfBlock = true});
+            plate.Arrows.Add(new Arrow(csa, usa) { StartValue = 1863, Text = "Lee's invasion of PA", MoveArrowHeadToCenterOfBlock = true});
             plate.Arrows.Add(new Arrow(usa,csa) {StartValue = 1864,Text = "Sherman's March" });
             usa.AddEntry(1866, "Lincoln assassinated(1865)");
 

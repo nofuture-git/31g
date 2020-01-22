@@ -42,7 +42,7 @@
             mus.AddEntry(new LeaderEntry("Mohammed", new int?[,] { { 569, 632 } }));
             mus.AddEntry(610, "vision @ Mt. Hira(610)");
             mus.AddEntry(627, "Mohammad takes Mecca(630)");
-            mus.AddEntry(new LeaderEntry("Abu Bekr", new int?[,] { { 633, 634 } }) {Location = PrintLocation.Center});
+            mus.AddEntry(new LeaderEntry("Abu Bekr", new int?[,] { { 633, 634 } }) {Location = PrintLocation.Right});
             mus.AddEntry(new LeaderEntry("Omar", new int?[,] { { 634, 644 } }) { StartValue = 638 });
             mus.AddEntry(new LeaderEntry("Othman", new int?[,] { { 644, 656 } }));
             mus.AddEntry(656, "war of succesion Ali/Muawiya(656-669)");
@@ -50,7 +50,7 @@
             mus.AddEntry(679, "war of succesion(680-683)");
             mus.AddEntry(new LeaderEntry("Abd-al-Malik", new int?[,] { { 683, 705 } }) { StartValue = 685 });
             mus.AddEntry(new LeaderEntry("Walid", new int?[,] { { 705, 715 } }));
-            mus.AddEntry(new LeaderEntry("Suleiman", new int?[,] { { 715, 717 } }));
+            mus.AddEntry(new LeaderEntry("Suleiman", new int?[,] { { 715, 717 } }){Location = PrintLocation.Right});
             mus.AddEntry(new LeaderEntry("Omar II", new int?[,] { { 717, 720 } }) { StartValue = 719 });
             mus.AddEntry(new LeaderEntry("Yezid II", new int?[,] { { 720, 724 } }) { StartValue = 722 });
             mus.AddEntry(new LeaderEntry("Hisham", new int?[,] { { 724, 743 } }) { StartValue = 725 });
@@ -84,7 +84,7 @@
             plate.AddBlock(sas);
             plate.FileName = "11_CE550_825";
 
-            plate.AddArrow(new Arrow(sas, byz) {StartValue = 627, Text = "seige Constantinople(626)"});
+            //plate.AddArrow(new Arrow(sas, byz) {StartValue = 627, Text = "seige Constantinople(626)"});
             plate.AddArrow(new Arrow(sas, byz) {StartValue = 614, Text = "capture Jerusalem(614)"});
             plate.AddArrow(new Arrow(byz, sas) {StartValue = 624, Text = "counter attack(624)"});
             plate.AddArrow(new Arrow(mus, sas) {StartValue = 642, Text = "battle of Nahavand(642)"});

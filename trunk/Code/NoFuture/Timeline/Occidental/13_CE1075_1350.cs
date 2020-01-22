@@ -185,12 +185,12 @@
                 FromLeftToRightArrowHead = ".....>"
             });
             plate.AddArrow(new Arrow(fr, engd) {StartValue = 1214, Text = "Battle of Bouvines(1214)**"});
-            plate.AddArrow(new Arrow(mam, engd)
+            plate.AddArrow(new Arrow(engd, mam)
             {
                 StartValue = 1314,
                 Text = "Medieval Warm Period ends***",
-                ArrowTail = "............]",
-                FromRightToLeftArrowHead = "[......"
+                ArrowTail = "[........",
+                FromLeftToRightArrowHead = "......]"
             });
             plate.AddArrow(new Arrow(mam, engd)
             {

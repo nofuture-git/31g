@@ -602,7 +602,7 @@ namespace NoFuture.Timeline.Tests
             var testArrowText = "Thebes sacked";
 
             var testSubject = new Arrow();
-            var testResult = testSubject.ComposeFromLeftToRightArrow(testRangeBetwixt, testPriorLen, testLeftBlockLen, testArrowText);
+            var testResult = testSubject.ComposeFromLeftToRightArrow(testLeftBlockLen, testArrowText, 30);
 
             Assert.IsNotNull(testResult);
 
@@ -619,82 +619,10 @@ namespace NoFuture.Timeline.Tests
             var testArrowText = "Thebes sacked";
 
             var testSubject = new Arrow();
-            var testResult = testSubject.ComposeFromRightToLeftArrow(testRangeBetwixt, testPriorLen, testRightBlockLen, testArrowText);
+            var testResult = testSubject.ComposeFromRightToLeftArrow(testRightBlockLen, testArrowText, 30);
 
             Assert.IsNotNull(testResult);
 
-            Console.WriteLine(testResult);
-        }
-
-        [Test]
-        public void PlateGetRangeLenBetwixt()
-        {
-
-            var testRange00 = new TextRange() {Id = "Range00", Length = 9, StartIndex = 7};
-            var testRange01 = new TextRange() { Id = "Range01", Length = 12, StartIndex = (testRange00.StartIndex+testRange00.Length) };
-            var testRange02 = new TextRange()
-                              {
-                                  Id = "Range02",
-                                  Length = 26,
-                                  StartIndex = (testRange01.StartIndex + testRange01.Length)
-                              };
-            var testRange03 = new TextRange()
-                              {
-                                  Id = "Range03",
-                                  Length = 18,
-                                  StartIndex = (testRange02.StartIndex + testRange02.Length)
-                              };
-            var testRange04 = new TextRange()
-                              {
-                                  Id = "Range04",
-                                  Length = 20,
-                                  StartIndex = (testRange03.StartIndex + testRange03.Length)
-                              };
-
-            var testBlockLeftId = testRange01.Id;
-            var testBlockRightId = testRange04.Id;
-            
-            var testResult = Arrow.GetRangeLenBetwixt(testBlockLeftId,
-                testBlockRightId,
-                new List<TextRange>() {testRange00, testRange01, testRange02, testRange03, testRange04});
-
-            Console.WriteLine(testResult);
-
-            Assert.AreNotEqual(0,testResult);
-
-        }
-
-        [Test]
-        public void PlateGetLeftAPriorLen()
-        {
-
-            var testRange00 = new TextRange() { Id = "Range00", Length = 9, StartIndex = 7 };
-            var testRange01 = new TextRange() { Id = "Range01", Length = 12, StartIndex = (testRange00.StartIndex + testRange00.Length) };
-            var testRange02 = new TextRange()
-            {
-                Id = "Range02",
-                Length = 26,
-                StartIndex = (testRange01.StartIndex + testRange01.Length)
-            };
-            var testRange03 = new TextRange()
-            {
-                Id = "Range03",
-                Length = 18,
-                StartIndex = (testRange02.StartIndex + testRange02.Length)
-            };
-            var testRange04 = new TextRange()
-            {
-                Id = "Range04",
-                Length = 20,
-                StartIndex = (testRange03.StartIndex + testRange03.Length)
-            };
-
-            var testLeftId = testRange02.Id;
-            var testResult = Arrow.GetLeftAPriorLen(testLeftId,
-                new List<TextRange>() {testRange00, testRange01, testRange02, testRange03, testRange04});
-
-            Assert.AreNotEqual(0,testResult);
-            Assert.AreEqual(testRange00.Length+testRange01.Length, testResult);
             Console.WriteLine(testResult);
         }
 
@@ -861,7 +789,7 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE3000to2000();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE2000to1500()
@@ -870,8 +798,7 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE2000to1500();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-
-
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE1600to1200()
@@ -880,6 +807,7 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE1600to1200();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE1250to900()
@@ -888,6 +816,7 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE1250to900();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE922to750()
@@ -896,7 +825,7 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE922to750();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE780to500()
@@ -905,6 +834,7 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE780to500();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -914,6 +844,7 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE500to325();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -923,6 +854,7 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.BCE325to27();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -932,6 +864,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE30to105();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
 
         [Test]
@@ -941,6 +875,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE105to325();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
         [Test]
         public void TestOccidentalPlateCE325to550()
@@ -949,6 +885,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE325to550();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
         [Test]
         public void TestOccidentalPlateCE550to825()
@@ -958,6 +896,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE550to825();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
         [Test]
         public void TestOccidentalPlateCE825to1075()
@@ -966,6 +906,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE825to1075();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
         [Test]
         public void TestOccidentalPlateCE1075to1350()
@@ -974,6 +916,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE1075to1350();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
         [Test]
         public void TestOccidentalPlateCE1350to1500()
@@ -982,6 +926,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE1350to1500();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
 
         }
         [Test]
@@ -991,6 +937,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE1500to1700();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
 
         [Test]
@@ -1000,6 +948,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE1700to1788();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
 
         [Test]
@@ -1009,6 +959,7 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE1788to1865();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
         }
 
         [Test]
@@ -1018,6 +969,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE1865to1914();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
         [Test]
         public void TestOccidentalPlateCE1914to1945()
@@ -1026,6 +979,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE1914to1945();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
         [Test]
         public void TestOccidentalPlateCE1945to1992()
@@ -1034,6 +989,8 @@ namespace NoFuture.Timeline.Tests
             var testPlate = testSubject.CE1945to1992();
 
             testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+
         }
         [Test]
         public void TestFastPlate()

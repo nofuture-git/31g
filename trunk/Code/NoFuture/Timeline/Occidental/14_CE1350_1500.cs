@@ -100,7 +100,7 @@
             plate.FileName = "14_CE1350_1500";
 
             plate.AddArrow(new Arrow(fr, ott) {StartValue = 1396, Text = "Crusade of Nicopolis(1396)"});
-            plate.AddArrow(new Arrow(engd, fr) {StartValue = 1415, Text = "Battle of Agincourt(1415)"});
+            plate.AddArrow(new Arrow(engd, fr) {StartValue = 1415, Text = "Battle of Agincourt(1415)", ArrowTail = "..."});
             plate.AddArrow(new Arrow(ott, byz) {StartValue = 1453, Text = "Fall of Constantinople"});
             plate.AddArrow(new Arrow(fr, engd) {StartValue = 1429, Text = "Joan of Arc[siege of Orleans](1429)"});
 

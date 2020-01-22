@@ -29,7 +29,6 @@ namespace NoFuture.Timeline
             col.AddEntry(1778, "Savannah occupied(1778)");
             col.AddEntry(1780, "Charleston occupied(1780)");
 
-
             var que = new Block {StartValue = 1703, EndValue = 1763, Title = "New France", Ruler = rule, Width = 22};
             que.AddEntry(1703, "Fr.settle Mobile AL");
             que.AddEntry(1718, "New Orleans LA(1718)");
@@ -39,12 +38,6 @@ namespace NoFuture.Timeline
             usa.AddEntry(1781, "Cornwallis surrender(1781)");
             usa.AddEntry(1783, "Peace of Paris(1783)");
             usa.AddEntry(new LiteraryWorkEntry("U.S.Constitution", "",1789) {StartValue = 1787});
-            amer.AddInnerBlock(col);
-            amer.AddInnerBlock(usa);
-            amer.AddInnerBlock(que);
-            amer.AddArrow(new Arrow(que, col) {StartValue = 1706, ArrowTail = "."});
-            amer.AddArrow(new Arrow(col, que) {StartValue = 1755, Text = "B. of the Monongahela"});
-            amer.AddArrow(new Arrow(que, col) {StartValue = 1757, Text = "massacre @ F.William Henry"});
 
             var engd = new Block {Ruler = rule, Title = "United Kingdom"};
             engd.AddEntry(new LeaderEntry("Anne", new int?[,] { { 1702, 1714 } }) {StartValue = 1704 });
@@ -112,6 +105,13 @@ namespace NoFuture.Timeline
             rus.AddEntry(new TerritoryEntry("Crimea") {StartValue = 1783});
             rus.AddEntry(1768, 1774, "1st Russio-Turkish War", PrintLocation.Right);
 
+            amer.AddInnerBlock(col);
+            amer.AddInnerBlock(usa);
+            amer.AddInnerBlock(que);
+
+            amer.AddArrow(new Arrow(que, col) { StartValue = 1706, ArrowTail = ".." });
+            amer.AddArrow(new Arrow(col, que) { StartValue = 1755, Text = "B. of the Monongahela", ArrowTail = ".." });
+            amer.AddArrow(new Arrow(que, col) { StartValue = 1757, Text = "massacre @ F.William Henry", ArrowTail = ".." });
 
             var plate = new Plate {Ruler = rule, Name = "Early Modern Age"};
             plate.AddBlock(amer);
@@ -123,66 +123,61 @@ namespace NoFuture.Timeline
             plate.AddBlock(rus);
             plate.FileName = "16_CE1700_1788";
 
-            plate.AddArrow(new Arrow(aus, fr) {StartValue = 1704, Text = "B. of Blenheim(1704)"});
-            plate.AddArrow(new Arrow(fr, de) {StartValue = 1706, Text = "B. of Ramilies(1706)"});
-            plate.AddArrow(new Arrow(fr, de) {StartValue = 1708, Text = "B. of Oudenarde(1708)"});
-            plate.AddArrow(new Arrow(engd, fr) {StartValue = 1709, Text = "B. of Malpaquet(1709)"});
-            plate.AddArrow(new Arrow(aus, ott) {StartValue = 1717, Text = "B. of Belgrad(1717)"});
-            plate.AddArrow(new Arrow(de, aus) {StartValue = 1740, Text = "invasion of Silesia(1740)"});
-            plate.AddArrow(new Arrow(engd, fr) {StartValue = 1743, Text = "B. of Dettingen(1743)(e.)"});
-            plate.AddArrow(new Arrow(de, aus) {StartValue = 1757, Text = "B. of Prague(1757)"});
-            plate.AddArrow(new Arrow(rus, ott) {StartValue = 1770, Text = "B.of Chesma & Kagus(1770)"});
+            plate.AddArrow(new Arrow(aus, fr) { StartValue = 1704, Text = "B. of Blenheim(1704)" });
+            plate.AddArrow(new Arrow(fr, de) { StartValue = 1706, Text = "B. of Ramilies(1706)" });
+            plate.AddArrow(new Arrow(fr, de) { StartValue = 1708, Text = "B. of Oudenarde(1708)" });
+            plate.AddArrow(new Arrow(engd, fr) { StartValue = 1709, Text = "B. of Malpaquet(1709)" });
+            plate.AddArrow(new Arrow(aus, ott) { StartValue = 1717, Text = "B. of Belgrad(1717)" });
+            plate.AddArrow(new Arrow(de, aus) { StartValue = 1740, Text = "invasion of Silesia(1740)" });
+            plate.AddArrow(new Arrow(engd, fr) { StartValue = 1743, Text = "B. of Dettingen(1743)(e.)" });
+            plate.AddArrow(new Arrow(de, aus) { StartValue = 1757, Text = "B. of Prague(1757)" });
+            plate.AddArrow(new Arrow(rus, ott) { StartValue = 1770, Text = "B.of Chesma & Kagus(1770)" });
 
             plate.AddArrow(new Arrow(engd, aus)
             {
                 StartValue = 1714,
                 Text = "Peace of Ulrecht(1714)(a.)",
-                ArrowTail = "[..........",
-                FromLeftToRightArrowHead = "......]",
+                ArrowTail = "[..",
+                FromLeftToRightArrowHead = "..]",
             });
             plate.AddArrow(new Arrow(aus, de)
             {
                 StartValue = 1748,
                 Text = "Treaty of Aix-la-Chapelle(1748)",
-                ArrowTail = "........]",
-                FromRightToLeftArrowHead = "[.....",
+                ArrowTail = "..]",
+                FromRightToLeftArrowHead = "[..",
             });
 
             plate.AddArrow(new Arrow(engd, fr)
             {
                 StartValue = 1763,
                 Text = "Treaty of Paris(1763)(b.)",
-                ArrowTail = "[..........",
-                FromLeftToRightArrowHead = "......]",
+                ArrowTail = "[..",
+                FromLeftToRightArrowHead = "..]",
             });
 
             plate.AddArrow(new Arrow(de, aus)
             {
                 StartValue = 1788,
                 Text = "War of Bavarian Succ.(1778\\79)",
-                ArrowTail = "[.........",
-                FromLeftToRightArrowHead = "]",
+                ArrowTail = "[..",
+                FromLeftToRightArrowHead = "..]",
             });
 
-            plate.AddArrow(new Arrow(engd, amer)
+            plate.AddArrow(new Arrow(engd, usa)
             {
                 StartValue = 1771,
-                Text = "B. of the Alamance(1771)",
-                FromRightToLeftArrowHead = "<..............................."
+                Text = "B. of the Alamance(1771)"
             });
-            plate.AddArrow(new Arrow(engd, amer)
+            plate.AddArrow(new Arrow(engd, usa)
             {
                 StartValue = 1775,
                 Text = "B. of Lexington(1775)",
-                FromRightToLeftArrowHead = "<........................",
-                ArrowTail = "."
             });
-            plate.AddArrow(new Arrow(engd, amer)
+            plate.AddArrow(new Arrow(engd, usa)
             {
                 StartValue = 1777,
                 Text = "B. at Trenton(1777)",
-                FromRightToLeftArrowHead = "<........................",
-                ArrowTail = "."
             });
 
             plate.Notes.Add("(a.)marks the end of Wars of Spanish Succession");
