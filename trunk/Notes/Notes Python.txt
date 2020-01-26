@@ -75,7 +75,7 @@ Command line
  - test for a module being avail for import (ver. 3.4+)
  import importlib
  some_spec = importlib.util.find_spec("some_spec")
- is_found = some_spec is not Null
+ is_found = some_spec is not None
  
  - the result of the last evaluation may be accessed using a single underscore
  >>> 4 + 2

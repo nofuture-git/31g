@@ -763,3 +763,6 @@ angle of repose: the steepest angle a which a sloping surface
  formed of loose material is stable
 statistically stationary state: uniform loading and rapid intermittent 
  discharge but has a temporal average over a time span
+solipsism: a view that the self is all that can be known to exist
+penultimate: the second last one in a series
+banal: so lacking in originality as to be obvious and boring
