@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notes.Chemistry", "Notes.Chemistry\Notes.Chemistry.csproj", "{57CC2842-4DF6-4128-A3A3-AAE1F0A83ADD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Notes.Chemistry", "Test.Notes.Chemistry\Test.Notes.Chemistry.csproj", "{6C5E3013-570A-429B-ABAF-43080E4CF1AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57CC2842-4DF6-4128-A3A3-AAE1F0A83ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57CC2842-4DF6-4128-A3A3-AAE1F0A83ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57CC2842-4DF6-4128-A3A3-AAE1F0A83ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57CC2842-4DF6-4128-A3A3-AAE1F0A83ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C5E3013-570A-429B-ABAF-43080E4CF1AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C5E3013-570A-429B-ABAF-43080E4CF1AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C5E3013-570A-429B-ABAF-43080E4CF1AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C5E3013-570A-429B-ABAF-43080E4CF1AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6982DA26-91BD-44AE-B7F1-F42261B305C5}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{57CC2842-4DF6-4128-A3A3-AAE1F0A83ADD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Notes.Chemistry</RootNamespace>
+    <AssemblyName>Notes.Chemistry</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Elements\Blocks\IDBlock.cs" />
+    <Compile Include="Elements\Blocks\IFBlock.cs" />
+    <Compile Include="Elements\Blocks\IPBlock.cs" />
+    <Compile Include="Elements\Blocks\ISBlock.cs" />
+    <Compile Include="Elements\Bonds\BondBase.cs" />
+    <Compile Include="Elements\Bonds\BondFactory.cs" />
+    <Compile Include="Elements\Bonds\IBond.cs" />
+    <Compile Include="Elements\Bonds\Ionic.cs" />
+    <Compile Include="Elements\Bonds\PolarCovalent.cs" />
+    <Compile Include="Elements\Bonds\PurelyCovalent.cs" />
+    <Compile Include="Elements\ElectronCfg\Electron.cs" />
+    <Compile Include="Elements\ElectronCfg\Orbitals\d_Orbitals.cs" />
+    <Compile Include="Elements\ElectronCfg\Orbitals\f_Orbitals.cs" />
+    <Compile Include="Elements\ElectronCfg\Orbitals\g_Orbitals.cs" />
+    <Compile Include="Elements\ElectronCfg\Orbitals\Orbital.cs" />
+    <Compile Include="Elements\ElectronCfg\Orbitals\OrbitalsBase.cs" />
+    <Compile Include="Elements\ElectronCfg\Orbitals\p_Orbitals.cs" />
+    <Compile Include="Elements\ElectronCfg\Orbitals\sp_hybridizedOrbitals.cs" />
+    <Compile Include="Elements\ElectronCfg\Shells\NShell.cs" />
+    <Compile Include="Elements\ElectronCfg\Shells\OShell.cs" />
+    <Compile Include="Elements\ElectronCfg\Shells\ShellBase.cs" />
+    <Compile Include="Elements\ElectronCfg\Orbitals\s_Orbitals.cs" />
+    <Compile Include="Elements\ElectronCfg\Shells\KShell.cs" />
+    <Compile Include="Elements\ElectronCfg\Shells\LShell.cs" />
+    <Compile Include="Elements\ElectronCfg\Shells\MShell.cs" />
+    <Compile Include="Elements\Groups\IActinides.cs" />
+    <Compile Include="Elements\Groups\IAlkalaiMetal.cs" />
+    <Compile Include="Elements\Groups\IAlkalineEarthMetal.cs" />
+    <Compile Include="Elements\Groups\IHalogens.cs" />
+    <Compile Include="Elements\Groups\ILanthanide.cs" />
+    <Compile Include="Elements\Groups\IMetalloids.cs" />
+    <Compile Include="Elements\Groups\INobleGas.cs" />
+    <Compile Include="Elements\Groups\IOtherNonMetal.cs" />
+    <Compile Include="Elements\Groups\ITransitionMetal.cs" />
+    <Compile Include="Elements\Groups\IPostTransitionMetal.cs" />
+    <Compile Include="Elements\Groups\IUnknownGroup.cs" />
+    <Compile Include="Elements\Groups\INumberedGroup.cs" />
+    <Compile Include="Elements\Blocks\IBlock.cs" />
+    <Compile Include="Elements\IElement.cs" />
+    <Compile Include="Elements\Groups\IGroup.cs" />
+    <Compile Include="Elements\PeriodicTable\ElementBase.cs" />
+    <Compile Include="Elements\PeriodicTable\_All.cs" />
+    <Compile Include="Elements\PeriodicTable\SyntheticElementBase.cs" />
+    <Compile Include="Elements\Periods\INumberedPeriod.cs" />
+    <Compile Include="Elements\Periods\IPeriod.cs" />
+    <Compile Include="Elements\ElementsExtensions.cs" />
+    <Compile Include="Elements\Phase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
