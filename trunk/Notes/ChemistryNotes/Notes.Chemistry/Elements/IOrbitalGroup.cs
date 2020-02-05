@@ -3,7 +3,7 @@ using Notes.Chemistry.Elements.ElectronCfg.Orbitals;
 
 namespace Notes.Chemistry.Elements
 {
-    public interface IOrbitals : IComparable<IOrbitals>
+    public interface IOrbitalGroup : IComparable<IOrbitalGroup>
     {
         IShell Shell { get; }
         int? AddElectron();

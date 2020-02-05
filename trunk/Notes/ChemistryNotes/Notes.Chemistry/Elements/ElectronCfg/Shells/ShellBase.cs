@@ -27,7 +27,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
             }
         }
 
-        public SortedSet<IOrbitals> Orbitals { get; } = new SortedSet<IOrbitals>();
+        public SortedSet<IOrbitalGroup> Orbitals { get; } = new SortedSet<IOrbitalGroup>();
 
         public abstract int CompareTo(IShell other);
 

@@ -82,7 +82,7 @@
     <Compile Include="Elements\Blocks\IBlock.cs" />
     <Compile Include="Elements\IElement.cs" />
     <Compile Include="Elements\Groups\IGroup.cs" />
-    <Compile Include="Elements\IOrbitals.cs" />
+    <Compile Include="Elements\IOrbitalGroup.cs" />
     <Compile Include="Elements\IShell.cs" />
     <Compile Include="Elements\PeriodicTable\ElementBase.cs" />
     <Compile Include="Elements\PeriodicTable\_All.cs" />

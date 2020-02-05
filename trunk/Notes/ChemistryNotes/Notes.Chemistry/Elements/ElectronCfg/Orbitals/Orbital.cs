@@ -5,14 +5,14 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
     public class Orbital
     {
-        public Orbital(IOrbitals of)
+        public Orbital(IOrbitalGroup of)
         {
             Of = of ?? throw new ArgumentNullException(nameof(of));
             SpinUp = new Electron();
             SpinDown = new Electron();
         }
 
-        public IOrbitals Of { get; }
+        public IOrbitalGroup Of { get; }
 
         public string Abbrev { get; set; }
         public Electron SpinUp { get; }

@@ -22,9 +22,9 @@ namespace Test.Notes.Chemistry
         }
     }
 
-    public class StubIOrbital : IOrbitals
+    public class StubIOrbital : IOrbitalGroup
     {
-        public int CompareTo(IOrbitals other)
+        public int CompareTo(IOrbitalGroup other)
         {
             return -1;
         }

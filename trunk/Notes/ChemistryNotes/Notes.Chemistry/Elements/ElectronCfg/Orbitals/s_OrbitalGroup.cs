@@ -46,7 +46,7 @@
             return null;
         }
 
-        public override int CompareTo(IOrbitals other)
+        public override int CompareTo(IOrbitalGroup other)
         {
             var bc = base.CompareShells(other);
             if (bc != null)

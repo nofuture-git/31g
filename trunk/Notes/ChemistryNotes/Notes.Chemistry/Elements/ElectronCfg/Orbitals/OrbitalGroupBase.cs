@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
-    public abstract class OrbitalGroupBase : IOrbitals
+    public abstract class OrbitalGroupBase : IOrbitalGroup
     {
         public IShell Shell { get; }
 
@@ -31,7 +31,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
             AssignedElectrons = refactorAssignedElectrons;
         }
 
-        protected int? CompareShells(IOrbitals other)
+        protected int? CompareShells(IOrbitalGroup other)
         {
             if (other == null)
                 return 0;
@@ -90,11 +90,11 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
             return count;
         }
 
-        public abstract int CompareTo(IOrbitals other);
+        public abstract int CompareTo(IOrbitalGroup other);
 
         public override bool Equals(object obj)
         {
-            var orbit = obj as IOrbitals;
+            var orbit = obj as IOrbitalGroup;
             if (orbit == null)
                 return base.Equals(obj);
 
