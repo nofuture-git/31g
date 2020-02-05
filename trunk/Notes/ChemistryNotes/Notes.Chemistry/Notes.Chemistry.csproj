@@ -41,10 +41,12 @@
     <Compile Include="Elements\Blocks\ISBlock.cs" />
     <Compile Include="Elements\Bonds\BondBase.cs" />
     <Compile Include="Elements\Bonds\BondFactory.cs" />
+    <Compile Include="Elements\Bonds\CovalentBase.cs" />
     <Compile Include="Elements\Bonds\IBond.cs" />
     <Compile Include="Elements\Bonds\Ionic.cs" />
     <Compile Include="Elements\Bonds\PolarCovalent.cs" />
     <Compile Include="Elements\Bonds\PurelyCovalent.cs" />
+    <Compile Include="Elements\Bonds\SigmaBond.cs" />
     <Compile Include="Elements\ElectronCfg\Electron.cs" />
     <Compile Include="Elements\ElectronCfg\Orbitals\d_Orbitals.cs" />
     <Compile Include="Elements\ElectronCfg\Orbitals\f_Orbitals.cs" />
@@ -75,6 +77,8 @@
     <Compile Include="Elements\Blocks\IBlock.cs" />
     <Compile Include="Elements\IElement.cs" />
     <Compile Include="Elements\Groups\IGroup.cs" />
+    <Compile Include="Elements\IOrbitals.cs" />
+    <Compile Include="Elements\IShell.cs" />
     <Compile Include="Elements\PeriodicTable\ElementBase.cs" />
     <Compile Include="Elements\PeriodicTable\_All.cs" />
     <Compile Include="Elements\PeriodicTable\SyntheticElementBase.cs" />

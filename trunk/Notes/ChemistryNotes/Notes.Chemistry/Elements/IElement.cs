@@ -15,13 +15,13 @@ namespace Notes.Chemistry.Elements
         Phase RoomTempPhase { get; }
         bool IsArtificial { get; }
         bool IsRadioactive { get; }
-        SortedSet<ShellBase> Shells { get; }
+        SortedSet<IShell> Shells { get; }
         double GetGrams(double countOfAtoms);
         double GetAtoms(double grams);
         bool IsCation { get; }
         bool IsAnion { get; }
         bool IsIon { get; }
-        ShellBase ValenceShell { get; }
+        IShell ValenceShell { get; }
 
         int MaxElectrons { get; }
         int? AddElectron();

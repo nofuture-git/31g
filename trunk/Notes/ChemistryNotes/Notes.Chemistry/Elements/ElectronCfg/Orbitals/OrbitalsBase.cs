@@ -5,20 +5,20 @@ using Notes.Chemistry.Elements.ElectronCfg.Shells;
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
-    public abstract class OrbitalsBase : IComparable<OrbitalsBase>
+    public abstract class OrbitalsBase : IOrbitals
     {
-        public ShellBase Shell { get; }
+        public IShell Shell { get; }
 
         protected internal abstract string Abbrev { get; }
 
-        protected internal Orbital[] AssignedElectrons { get; }
+        public Orbital[] AssignedElectrons { get; }
 
-        protected OrbitalsBase(ShellBase myShell)
+        protected OrbitalsBase(IShell myShell)
         {
             Shell = myShell ?? throw new NotImplementedException();
         }
 
-        protected OrbitalsBase(ShellBase myShell, int count) : this(myShell)
+        protected OrbitalsBase(IShell myShell, int count) : this(myShell)
         {
             if(count <= 0)
                 throw new ArgumentException($"{nameof(count)} must be greater than zero");
@@ -26,13 +26,13 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
             var refactorAssignedElectrons = new Orbital[count];
             for (var i = 0; i < count; i++)
             {
-                refactorAssignedElectrons[i] = new Orbital();
+                refactorAssignedElectrons[i] = new Orbital(this);
             }
 
             AssignedElectrons = refactorAssignedElectrons;
         }
 
-        protected int? CompareShells(OrbitalsBase other)
+        protected int? CompareShells(IOrbitals other)
         {
             if (other == null)
                 return 0;
@@ -91,20 +91,19 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
             return count;
         }
 
-        public abstract int CompareTo(OrbitalsBase other);
+        public abstract int CompareTo(IOrbitals other);
 
         public override bool Equals(object obj)
         {
-            var orbit = obj as OrbitalsBase;
+            var orbit = obj as IOrbitals;
             if (orbit == null)
                 return base.Equals(obj);
-
 
             return obj?.GetType() == GetType() && Shell.Equals(orbit.Shell);
         }
         public override int GetHashCode()
         {
-            return GetType().Name.GetHashCode();
+            return GetType().Name.GetHashCode() + Shell.GetHashCode();
         }
 
         protected internal virtual string[] GetElectronCfgLong()

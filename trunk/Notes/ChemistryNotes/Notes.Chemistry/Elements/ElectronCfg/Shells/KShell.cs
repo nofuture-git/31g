@@ -9,7 +9,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
             Orbits.Add(new s_Orbitals(this));
         }
 
-        public override int CompareTo(ShellBase other)
+        public override int CompareTo(IShell other)
         {
             return other is KShell ? 0 : -1;
         }

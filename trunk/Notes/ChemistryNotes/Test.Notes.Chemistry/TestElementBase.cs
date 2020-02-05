@@ -120,14 +120,20 @@ namespace Test.Notes.Chemistry
         {
             var carbon = new Carbon();
             carbon.HybridizeOrbits(4);
+            Assert.AreEqual(109.5D, carbon.GetBondAngle());
+            Assert.AreEqual("Tetrahedral", carbon.GetBondGeometry());
             Console.WriteLine(carbon.PrintElectronShellCfg(false));
 
             carbon = new Carbon();
             carbon.HybridizeOrbits(3);
+            Assert.AreEqual(120D, carbon.GetBondAngle());
+            Assert.AreEqual("Trigonal Planar", carbon.GetBondGeometry());
             Console.WriteLine(carbon.PrintElectronShellCfg(false));
 
             carbon = new Carbon();
             carbon.HybridizeOrbits(2);
+            Assert.AreEqual(180D, carbon.GetBondAngle());
+            Assert.AreEqual("Linear", carbon.GetBondGeometry());
             Console.WriteLine(carbon.PrintElectronShellCfg(false));
 
         }

@@ -5,11 +5,11 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
     public class s_Orbitals : OrbitalsBase
     {
-        public s_Orbitals(ShellBase myShell) : this(myShell, 1)
+        public s_Orbitals(IShell myShell) : this(myShell, 1)
         {
         }
 
-        public s_Orbitals(ShellBase myShell, int count) : base(myShell, count)
+        public s_Orbitals(IShell myShell, int count) : base(myShell, count)
         {
         }
 
@@ -49,7 +49,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
             return null;
         }
 
-        public override int CompareTo(OrbitalsBase other)
+        public override int CompareTo(IOrbitals other)
         {
             var bc = base.CompareShells(other);
             if (bc != null)

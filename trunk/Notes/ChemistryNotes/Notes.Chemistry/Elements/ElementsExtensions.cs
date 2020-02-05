@@ -1,4 +1,7 @@
-﻿using Notes.Chemistry.Elements.Groups;
+﻿using System.Linq;
+using Notes.Chemistry.Elements.ElectronCfg.Orbitals;
+using Notes.Chemistry.Elements.ElectronCfg.Shells;
+using Notes.Chemistry.Elements.Groups;
 using Notes.Chemistry.Elements.Periods;
 
 namespace Notes.Chemistry.Elements
@@ -83,6 +86,24 @@ namespace Notes.Chemistry.Elements
         public static bool IsSameElement(this IElement atom1, IElement atom2)
         {
             return atom1?.GetType() == atom2?.GetType();
+        }
+
+        public static double? GetBondAngle(this IElement atom)
+        {
+            var lShell = atom?.Shells.FirstOrDefault(s => s is LShell) as LShell;
+
+            var spOrbital = lShell?.Orbits.FirstOrDefault(o => o is sp_hybridizedOrbitals) as sp_hybridizedOrbitals;
+
+            return spOrbital?.GetBondAngle();
+        }
+
+        public static string GetBondGeometry(this IElement atom)
+        {
+            var lShell = atom?.Shells.FirstOrDefault(s => s is LShell) as LShell;
+
+            var spOrbital = lShell?.Orbits.FirstOrDefault(o => o is sp_hybridizedOrbitals) as sp_hybridizedOrbitals;
+
+            return spOrbital?.GetBondGeometry();
         }
     }
 

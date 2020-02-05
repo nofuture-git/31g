@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Notes.Chemistry.Elements;
 using Notes.Chemistry.Elements.ElectronCfg.Orbitals;
 using NUnit.Framework;
 
@@ -14,7 +11,7 @@ namespace Test.Notes.Chemistry
         [Test]
         public void TestToString()
         {
-            var testSubject = new Orbital();
+            var testSubject = new Orbital(new StubIOrbital());
             Console.WriteLine(testSubject.ToString());
 
             testSubject.SpinUp.IsPresent = true;
@@ -23,5 +20,31 @@ namespace Test.Notes.Chemistry
             testSubject.SpinDown.IsPresent = true;
             Console.WriteLine(testSubject.ToString());
         }
+    }
+
+    public class StubIOrbital : IOrbitals
+    {
+        public int CompareTo(IOrbitals other)
+        {
+            return -1;
+        }
+
+        public IShell Shell { get; }
+        public int? AddElectron()
+        {
+            return null;
+        }
+
+        public int? RemoveElectron()
+        {
+            return null;
+        }
+
+        public int GetCountElectrons()
+        {
+            return 0;
+        }
+
+        public Orbital[] AssignedElectrons { get; }
     }
 }

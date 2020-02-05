@@ -43,10 +43,10 @@ namespace Notes.Chemistry.Elements.PeriodicTable
         public virtual bool IsArtificial => false;
         public virtual bool IsRadioactive => false;
 
-        public SortedSet<ShellBase> Shells { get; } =
-            new SortedSet<ShellBase>();
+        public SortedSet<IShell> Shells { get; } =
+            new SortedSet<IShell>();
 
-        public ShellBase ValenceShell => Shells.Last();
+        public IShell ValenceShell => Shells.Last();
 
         public int MaxElectrons
         {
@@ -114,8 +114,11 @@ namespace Notes.Chemistry.Elements.PeriodicTable
         public virtual string PrintElectronShellCfg(bool shortVersion = true)
         {
             var strs = new List<string>();
-            foreach (var shell in Shells)
+            foreach (var iShell in Shells)
             {
+                var shell = iShell as ShellBase;
+                if (shell == null)
+                    continue;
                 var cfgs = shortVersion ? shell.GetElectronCfgShort() : shell.GetElectronCfgLong();
                 strs.AddRange(cfgs);
             }

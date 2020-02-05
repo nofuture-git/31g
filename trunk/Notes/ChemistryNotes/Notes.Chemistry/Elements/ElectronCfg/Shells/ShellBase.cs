@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Notes.Chemistry.Elements.ElectronCfg.Orbitals;
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 {
-    public abstract class ShellBase : IComparable<ShellBase>
+    public abstract class ShellBase : IShell
     {
         public IElement Element { get; }
 
@@ -29,9 +27,9 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
             }
         }
 
-        public SortedSet<OrbitalsBase> Orbits { get; } = new SortedSet<OrbitalsBase>();
+        public SortedSet<IOrbitals> Orbits { get; } = new SortedSet<IOrbitals>();
 
-        public abstract int CompareTo(ShellBase other);
+        public abstract int CompareTo(IShell other);
 
         protected internal abstract string Abbrev { get; }
 
@@ -69,7 +67,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 
         public override bool Equals(object obj)
         {
-            var shell = obj as ShellBase;
+            var shell = obj as IShell;
             if (shell == null)
                 return base.Equals(obj);
 
@@ -77,7 +75,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
         }
         public override int GetHashCode()
         {
-            return GetType().Name.GetHashCode();
+            return GetType().Name.GetHashCode() + Element.GetHashCode();
         }
 
         protected internal virtual string[] GetElectronCfgShort()
@@ -93,8 +91,11 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
         protected internal virtual string[] GetElectronCfg(bool shortVersion = true)
         {
             var strs = new List<string>();
-            foreach (var orbit in Orbits)
+            foreach (var iOrbit in Orbits)
             {
+                var orbit = iOrbit as OrbitalsBase;
+                if(orbit == null)
+                    continue;
                 var oos = shortVersion ? orbit.GetElectronCfgShort() : orbit.GetElectronCfgLong();
                 foreach (var oo in oos)
                     strs.Add($"{Abbrev}{oo}");

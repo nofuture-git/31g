@@ -2,7 +2,7 @@
 
 namespace Notes.Chemistry.Elements.Bonds
 {
-    public class PolarCovalent : BondBase
+    public class PolarCovalent : CovalentBase
     {
         public PolarCovalent(IElement atom1, IElement atom2) : base(atom1, atom2)
         {

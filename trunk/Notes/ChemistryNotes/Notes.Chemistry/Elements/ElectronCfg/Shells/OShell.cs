@@ -13,7 +13,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
             Orbits.Add(new g_Orbitals(this));
         }
 
-        public override int CompareTo(ShellBase other)
+        public override int CompareTo(IShell other)
         {
             switch (other)
             {

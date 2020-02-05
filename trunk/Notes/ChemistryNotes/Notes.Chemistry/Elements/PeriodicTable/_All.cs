@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Notes.Chemistry.Elements.Blocks;
+using Notes.Chemistry.Elements.ElectronCfg.Orbitals;
 using Notes.Chemistry.Elements.ElectronCfg.Shells;
 using Notes.Chemistry.Elements.Groups;
 using Notes.Chemistry.Elements.Periods;

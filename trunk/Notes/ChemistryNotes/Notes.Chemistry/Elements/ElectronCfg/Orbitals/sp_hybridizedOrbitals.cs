@@ -1,4 +1,5 @@
-﻿using Notes.Chemistry.Elements.ElectronCfg.Shells;
+﻿using System;
+using Notes.Chemistry.Elements.ElectronCfg.Shells;
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
@@ -6,12 +7,12 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
     {
         private int _superscriptNumber;
 
-        public sp_hybridizedOrbitals(ShellBase myShell, int hybridizedCount) : this(myShell, hybridizedCount, 4)
+        public sp_hybridizedOrbitals(IShell myShell, int hybridizedCount) : this(myShell, hybridizedCount, 4)
         {
 
         }
 
-        public sp_hybridizedOrbitals(ShellBase myShell, int hybridizedCount, int count) : base(myShell, count)
+        public sp_hybridizedOrbitals(IShell myShell, int hybridizedCount, int count) : base(myShell, count)
         {
             hybridizedCount = hybridizedCount < 0 ? 0 : hybridizedCount;
             hybridizedCount = hybridizedCount > count ? count : hybridizedCount;
@@ -20,6 +21,39 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
             for (var i = hybridizedCount; i < count; i++)
             {
                 AssignedElectrons[i].Abbrev = "p";
+            }
+        }
+
+        /// <summary>
+        /// Is an approximation
+        /// </summary>
+        public double? GetBondAngle()
+        {
+            switch (_superscriptNumber)
+            {
+                case 4:
+                    return 109.5D;
+                case 3:
+                    return 120D;
+                case 2:
+                    return 180D;
+                default:
+                    return null;
+            }
+        }
+
+        public string GetBondGeometry()
+        {
+            switch (_superscriptNumber)
+            {
+                case 4:
+                    return "Tetrahedral";
+                case 3:
+                    return "Trigonal Planar";
+                case 2:
+                    return "Linear";
+                default:
+                    return null;
             }
         }
 
@@ -47,7 +81,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
                 return $"sp{superscript}";
             }
         }
-        public override int CompareTo(OrbitalsBase other)
+        public override int CompareTo(IOrbitals other)
         {
             var bc = base.CompareShells(other);
             if (bc != null)

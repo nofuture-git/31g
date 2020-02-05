@@ -4,18 +4,18 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
     public class f_Orbitals : OrbitalsBase
     {
-        public f_Orbitals(ShellBase myShell) : this(myShell, 7)
+        public f_Orbitals(IShell myShell) : this(myShell, 7)
         {
 
         }
-        public f_Orbitals(ShellBase myShell, int count) : base(myShell, count)
+        public f_Orbitals(IShell myShell, int count) : base(myShell, count)
         {
 
         }
 
         protected internal override string Abbrev => "f";
 
-        public override int CompareTo(OrbitalsBase other)
+        public override int CompareTo(IOrbitals other)
         {
             var bc = base.CompareShells(other);
             if (bc != null)
