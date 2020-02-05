@@ -93,7 +93,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
             var strs = new List<string>();
             foreach (var iOrbit in Orbitals)
             {
-                var orbit = iOrbit as OrbitalsBase;
+                var orbit = iOrbit as OrbitalGroupBase;
                 if(orbit == null)
                     continue;
                 var oos = shortVersion ? orbit.GetElectronCfgShort() : orbit.GetElectronCfgLong();

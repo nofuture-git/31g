@@ -7,8 +7,8 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
     {
         public LShell(IElement element) : base(element)
         {
-            Orbitals.Add(new s_Orbitals(this));
-            Orbitals.Add(new p_Orbitals(this));
+            Orbitals.Add(new s_OrbitalGroup(this));
+            Orbitals.Add(new p_OrbitalGroup(this));
         }
 
         public override int CompareTo(IShell other)
@@ -28,7 +28,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 
         public virtual void HybridizeOrbits(int hybridizedCount)
         {
-            var hybridOrbit = new sp_hybridizedOrbitals(this, hybridizedCount);
+            var hybridOrbit = new sp_hybridizedOrbitalGroup(this, hybridizedCount);
 
             var electronCount = GetCountElectrons();
             for (var i = 0; i < electronCount; i++)

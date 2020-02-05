@@ -1,14 +1,12 @@
-﻿using Notes.Chemistry.Elements.ElectronCfg.Shells;
-
-namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
+﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
-    public class p_Orbitals : OrbitalsBase
+    public class p_OrbitalGroup : OrbitalGroupBase
     {
-        public p_Orbitals(IShell myShell) : this(myShell, 3)
+        public p_OrbitalGroup(IShell myShell) : this(myShell, 3)
         {
         }
 
-        public p_Orbitals(IShell myShell, int count) : base(myShell, count)
+        public p_OrbitalGroup(IShell myShell, int count) : base(myShell, count)
         {
         }
 
@@ -22,10 +20,10 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 
             switch (other)
             {
-                case s_Orbitals _:
-                case sp_hybridizedOrbitals _:
+                case s_OrbitalGroup _:
+                case sp_hybridizedOrbitalGroup _:
                     return 1;
-                case p_Orbitals _:
+                case p_OrbitalGroup _:
                     return 0;
                 default:
                     return -1;

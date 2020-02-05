@@ -1,15 +1,12 @@
-﻿using System.Linq;
-using Notes.Chemistry.Elements.ElectronCfg.Shells;
-
-namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
+﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
-    public class s_Orbitals : OrbitalsBase
+    public class s_OrbitalGroup : OrbitalGroupBase
     {
-        public s_Orbitals(IShell myShell) : this(myShell, 1)
+        public s_OrbitalGroup(IShell myShell) : this(myShell, 1)
         {
         }
 
-        public s_Orbitals(IShell myShell, int count) : base(myShell, count)
+        public s_OrbitalGroup(IShell myShell, int count) : base(myShell, count)
         {
         }
 
@@ -57,7 +54,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 
             switch (other)
             {
-                case s_Orbitals _:
+                case s_OrbitalGroup _:
                     return 0;
                 default:
                     return -1;

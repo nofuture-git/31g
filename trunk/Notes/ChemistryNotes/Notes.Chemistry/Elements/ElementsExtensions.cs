@@ -91,7 +91,7 @@ namespace Notes.Chemistry.Elements
         {
             var lShell = atom?.Shells.FirstOrDefault(s => s is LShell) as LShell;
 
-            var spOrbital = lShell?.Orbitals.FirstOrDefault(o => o is sp_hybridizedOrbitals) as sp_hybridizedOrbitals;
+            var spOrbital = lShell?.Orbitals.FirstOrDefault(o => o is sp_hybridizedOrbitalGroup) as sp_hybridizedOrbitalGroup;
 
             return spOrbital?.GetBondAngle();
         }
@@ -100,7 +100,7 @@ namespace Notes.Chemistry.Elements
         {
             var lShell = atom?.Shells.FirstOrDefault(s => s is LShell) as LShell;
 
-            var spOrbital = lShell?.Orbitals.FirstOrDefault(o => o is sp_hybridizedOrbitals) as sp_hybridizedOrbitals;
+            var spOrbital = lShell?.Orbitals.FirstOrDefault(o => o is sp_hybridizedOrbitalGroup) as sp_hybridizedOrbitalGroup;
 
             return spOrbital?.GetBondGeometry();
         }

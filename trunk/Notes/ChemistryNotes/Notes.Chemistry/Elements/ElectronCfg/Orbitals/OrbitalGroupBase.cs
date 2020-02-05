@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Notes.Chemistry.Elements.ElectronCfg.Shells;
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
-    public abstract class OrbitalsBase : IOrbitals
+    public abstract class OrbitalGroupBase : IOrbitals
     {
         public IShell Shell { get; }
 
@@ -13,12 +12,12 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 
         public Orbital[] AssignedElectrons { get; }
 
-        protected OrbitalsBase(IShell myShell)
+        protected OrbitalGroupBase(IShell myShell)
         {
             Shell = myShell ?? throw new NotImplementedException();
         }
 
-        protected OrbitalsBase(IShell myShell, int count) : this(myShell)
+        protected OrbitalGroupBase(IShell myShell, int count) : this(myShell)
         {
             if(count <= 0)
                 throw new ArgumentException($"{nameof(count)} must be greater than zero");

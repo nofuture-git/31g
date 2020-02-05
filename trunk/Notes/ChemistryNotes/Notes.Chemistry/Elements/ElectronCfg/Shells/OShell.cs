@@ -6,11 +6,11 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
     {
         public OShell(IElement element) : base(element)
         {
-            Orbitals.Add(new s_Orbitals(this));
-            Orbitals.Add(new p_Orbitals(this));
-            Orbitals.Add(new d_Orbitals(this));
-            Orbitals.Add(new f_Orbitals(this));
-            Orbitals.Add(new g_Orbitals(this));
+            Orbitals.Add(new s_OrbitalGroup(this));
+            Orbitals.Add(new p_OrbitalGroup(this));
+            Orbitals.Add(new d_OrbitalGroup(this));
+            Orbitals.Add(new f_OrbitalGroup(this));
+            Orbitals.Add(new g_OrbitalGroup(this));
         }
 
         public override int CompareTo(IShell other)

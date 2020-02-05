@@ -1,18 +1,15 @@
-﻿using System;
-using Notes.Chemistry.Elements.ElectronCfg.Shells;
-
-namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
+﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
-    public class sp_hybridizedOrbitals : OrbitalsBase
+    public class sp_hybridizedOrbitalGroup : OrbitalGroupBase
     {
         private int _superscriptNumber;
 
-        public sp_hybridizedOrbitals(IShell myShell, int hybridizedCount) : this(myShell, hybridizedCount, 4)
+        public sp_hybridizedOrbitalGroup(IShell myShell, int hybridizedCount) : this(myShell, hybridizedCount, 4)
         {
 
         }
 
-        public sp_hybridizedOrbitals(IShell myShell, int hybridizedCount, int count) : base(myShell, count)
+        public sp_hybridizedOrbitalGroup(IShell myShell, int hybridizedCount, int count) : base(myShell, count)
         {
             hybridizedCount = hybridizedCount < 0 ? 0 : hybridizedCount;
             hybridizedCount = hybridizedCount > count ? count : hybridizedCount;
@@ -89,9 +86,9 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 
             switch (other)
             {
-                case s_Orbitals _:
+                case s_OrbitalGroup _:
                     return 1;
-                case sp_hybridizedOrbitals _:
+                case sp_hybridizedOrbitalGroup _:
                     return 0;
                 default:
                     return -1;

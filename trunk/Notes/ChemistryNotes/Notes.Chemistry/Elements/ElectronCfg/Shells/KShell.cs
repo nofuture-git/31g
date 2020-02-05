@@ -6,7 +6,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
     {
         public KShell(IElement element) : base(element)
         {
-            Orbitals.Add(new s_Orbitals(this));
+            Orbitals.Add(new s_OrbitalGroup(this));
         }
 
         public override int CompareTo(IShell other)
