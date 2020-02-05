@@ -1,24 +1,24 @@
 ﻿using System;
 
-namespace Notes.Chemistry.Elements.Bonds
+namespace Notes.Chemistry.Elements.Bonds.KindsOf
 {
-    public class PolarCovalent : CovalentBase
+    public class PolarCovalent : BondDecorator
     {
-        public PolarCovalent(IElement atom1, IElement atom2) : base(atom1, atom2)
+        protected internal PolarCovalent(IBond bond) : base(bond)
         {
-            if (atom1.IsSameElement(atom2))
-                throw new InvalidOperationException($"Both atoms are {atom1.Name} " +
+            if (Atom1.IsSameElement(Atom2))
+                throw new InvalidOperationException($"Both atoms are {Atom1.Name} " +
                                                     $"which requires a {nameof(PurelyCovalent)} bond");
 
-            if (atom1.Electronegativity > atom2.Electronegativity)
+            if (Atom1.Electronegativity > Atom2.Electronegativity)
             {
-                DeltaPlus = atom2;
-                DeltaMinus = atom1;
+                DeltaPlus = Atom2;
+                DeltaMinus = Atom1;
             }
             else
             {
-                DeltaPlus = atom1;
-                DeltaMinus = atom2;
+                DeltaPlus = Atom1;
+                DeltaMinus = Atom2;
             }
 
             DipoleVectorSize = DeltaMinus.Electronegativity - DeltaMinus.Electronegativity;
