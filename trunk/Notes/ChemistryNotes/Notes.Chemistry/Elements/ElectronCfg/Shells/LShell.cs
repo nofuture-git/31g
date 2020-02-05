@@ -7,8 +7,8 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
     {
         public LShell(IElement element) : base(element)
         {
-            Orbits.Add(new s_Orbitals(this));
-            Orbits.Add(new p_Orbitals(this));
+            Orbitals.Add(new s_Orbitals(this));
+            Orbitals.Add(new p_Orbitals(this));
         }
 
         public override int CompareTo(IShell other)
@@ -37,8 +37,8 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
                 RemoveElectron();
             }
 
-            Orbits.Clear();
-            Orbits.Add(hybridOrbit);
+            Orbitals.Clear();
+            Orbitals.Add(hybridOrbit);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
             get
             {
                 var max = 0;
-                foreach (var orbit in Orbits)
+                foreach (var orbit in Orbitals)
                 {
                     max += orbit.AssignedElectrons.Length * 2;
                 }
@@ -27,7 +27,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
             }
         }
 
-        public SortedSet<IOrbitals> Orbits { get; } = new SortedSet<IOrbitals>();
+        public SortedSet<IOrbitals> Orbitals { get; } = new SortedSet<IOrbitals>();
 
         public abstract int CompareTo(IShell other);
 
@@ -35,7 +35,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 
         public virtual int? AddElectron()
         {
-            foreach (var orbit in Orbits)
+            foreach (var orbit in Orbitals)
             {
                 var add = orbit.AddElectron();
                 if (add != null)
@@ -47,7 +47,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 
         public virtual int? RemoveElectron()
         {
-            foreach (var orbit in Orbits.Reverse())
+            foreach (var orbit in Orbitals.Reverse())
             {
                 var remove = orbit.RemoveElectron();
                 if (remove != null)
@@ -60,7 +60,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
         public virtual int GetCountElectrons()
         {
             var count = 0;
-            foreach (var orbit in Orbits)
+            foreach (var orbit in Orbitals)
                 count += orbit.GetCountElectrons();
             return count;
         }
@@ -91,7 +91,7 @@ namespace Notes.Chemistry.Elements.ElectronCfg.Shells
         protected internal virtual string[] GetElectronCfg(bool shortVersion = true)
         {
             var strs = new List<string>();
-            foreach (var iOrbit in Orbits)
+            foreach (var iOrbit in Orbitals)
             {
                 var orbit = iOrbit as OrbitalsBase;
                 if(orbit == null)

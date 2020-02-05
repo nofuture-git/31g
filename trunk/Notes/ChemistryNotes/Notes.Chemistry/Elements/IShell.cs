@@ -7,7 +7,7 @@ namespace Notes.Chemistry.Elements
     {
         IElement Element { get; }
         int ShellMaxElectrons { get; }
-        SortedSet<IOrbitals> Orbits { get; }
+        SortedSet<IOrbitals> Orbitals { get; }
         int? AddElectron();
         int? RemoveElectron();
         int GetCountElectrons();
