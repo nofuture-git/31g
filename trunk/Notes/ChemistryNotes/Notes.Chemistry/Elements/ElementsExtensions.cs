@@ -82,7 +82,6 @@ namespace Notes.Chemistry.Elements
             }
         }
 
-
         public static bool IsSameElement(this IElement atom1, IElement atom2)
         {
             return atom1?.GetType() == atom2?.GetType();
@@ -106,6 +105,4 @@ namespace Notes.Chemistry.Elements
             return spOrbital?.GetBondGeometry();
         }
     }
-
-    
 }

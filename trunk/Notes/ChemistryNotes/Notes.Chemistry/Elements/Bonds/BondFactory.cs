@@ -49,6 +49,42 @@ namespace Notes.Chemistry.Elements.Bonds
             return new PurelyCovalent(bond);
         }
 
+        public static IBond AsSingleBond(this IBond bond)
+        {
+            bond = bond ?? throw new ArgumentNullException(nameof(bond));
+
+            if(bond.Is(typeof(DoubleBond)))
+                throw new ArgumentException($"{bond.GetBondElementNames()} " +
+                                            $"is already declared as a {nameof(DoubleBond)}");
+            if (bond.Is(typeof(TripleBond)))
+                throw new ArgumentException($"{bond.GetBondElementNames()} " +
+                                            $"is already declared as a {nameof(TripleBond)}");
+
+            return new SingleBond(bond);
+        }
+
+        public static IBond AsDoubleBond(this IBond bond)
+        {
+            if (bond.Is(typeof(SingleBond)))
+                throw new ArgumentException($"{bond.GetBondElementNames()} " +
+                                            $"is already declared as a {nameof(SingleBond)}");
+            if (bond.Is(typeof(TripleBond)))
+                throw new ArgumentException($"{bond.GetBondElementNames()} " +
+                                            $"is already declared as a {nameof(TripleBond)}");
+            return new DoubleBond(bond);
+        }
+
+        public static IBond AsTripleBond(this IBond bond)
+        {
+            if (bond.Is(typeof(DoubleBond)))
+                throw new ArgumentException($"{bond.GetBondElementNames()} " +
+                                            $"is already declared as a {nameof(DoubleBond)}");
+            if (bond.Is(typeof(SingleBond)))
+                throw new ArgumentException($"{bond.GetBondElementNames()} " +
+                                            $"is already declared as a {nameof(SingleBond)}");
+            return new TripleBond(bond);
+        }
+
         public static T GetBond<T>(this IBond bond) where T : IBond
         {
             if (bond == null)
@@ -74,6 +110,16 @@ namespace Notes.Chemistry.Elements.Bonds
                 return bond.GetType() == type;
 
             return bondDec.TestHasType(type);
+        }
+
+        public static Tuple<string, string> GetBondElementNames(this IBond bond)
+        {
+            bond = bond ?? throw new ArgumentNullException(nameof(bond));
+
+            var atom1 = bond.GetBondedAtom(null);
+            var atom2 = bond.GetBondedAtom(atom1);
+
+            return new Tuple<string, string>(atom1.Name, atom2.Name);
         }
     }
 }

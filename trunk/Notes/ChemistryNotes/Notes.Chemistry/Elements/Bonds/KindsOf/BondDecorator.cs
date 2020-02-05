@@ -11,9 +11,10 @@ namespace Notes.Chemistry.Elements.Bonds.KindsOf
             _toDecorate = toDecorate ?? throw new ArgumentNullException(nameof(toDecorate));
         }
 
-        public IElement Atom1 => _toDecorate.Atom1;
-
-        public IElement Atom2 => _toDecorate.Atom2;
+        public IElement GetBondedAtom(IElement fromHere)
+        {
+            return _toDecorate.GetBondedAtom(fromHere);
+        }
 
         protected internal bool TestHasType(Type type)
         {
@@ -30,6 +31,28 @@ namespace Notes.Chemistry.Elements.Bonds.KindsOf
 
             var decorator = _toDecorate as BondDecorator;
             return decorator?.GetBond(type);
+        }
+
+        public override int GetHashCode()
+        {
+            var atom1 = _toDecorate.GetBondedAtom(null);
+            var atom2 = _toDecorate.GetBondedAtom(atom1);
+            return GetType().Name.GetHashCode() + atom1.GetHashCode() + atom2.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var bond = obj as IBond;
+            if (bond == null)
+                return base.Equals(obj);
+
+            var atom1 = _toDecorate.GetBondedAtom(null);
+            var atom2 = _toDecorate.GetBondedAtom(atom1);
+
+            var objAtom1 = bond.GetBondedAtom(null);
+            var objAtom2 = bond.GetBondedAtom(objAtom1);
+
+            return obj?.GetType() == GetType() && atom1.Equals(objAtom1) && atom2.Equals(objAtom2);
         }
     }
 }

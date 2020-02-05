@@ -2,7 +2,6 @@
 {
     public interface IBond
     {
-        IElement Atom1 { get; }
-        IElement Atom2 { get; }
+        IElement GetBondedAtom(IElement fromHere);
     }
 }

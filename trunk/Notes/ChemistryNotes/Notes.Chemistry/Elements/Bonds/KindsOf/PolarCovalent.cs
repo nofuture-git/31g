@@ -6,19 +6,21 @@ namespace Notes.Chemistry.Elements.Bonds.KindsOf
     {
         protected internal PolarCovalent(IBond bond) : base(bond)
         {
-            if (Atom1.IsSameElement(Atom2))
-                throw new InvalidOperationException($"Both atoms are {Atom1.Name} " +
+            var atom1 = GetBondedAtom(null);
+            var atom2 = GetBondedAtom(atom1);
+            if (atom1.IsSameElement(atom2))
+                throw new InvalidOperationException($"Both atoms are {atom1.Name} " +
                                                     $"which requires a {nameof(PurelyCovalent)} bond");
 
-            if (Atom1.Electronegativity > Atom2.Electronegativity)
+            if (atom1.Electronegativity > atom2.Electronegativity)
             {
-                DeltaPlus = Atom2;
-                DeltaMinus = Atom1;
+                DeltaPlus = atom2;
+                DeltaMinus = atom1;
             }
             else
             {
-                DeltaPlus = Atom1;
-                DeltaMinus = Atom2;
+                DeltaPlus = atom1;
+                DeltaMinus = atom2;
             }
 
             DipoleVectorSize = DeltaMinus.Electronegativity - DeltaMinus.Electronegativity;
