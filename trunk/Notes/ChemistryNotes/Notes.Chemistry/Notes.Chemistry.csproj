@@ -45,13 +45,13 @@
     <Compile Include="Elements\Bonds\Covalent.cs" />
     <Compile Include="Elements\Bonds\IBond.cs" />
     <Compile Include="Elements\Bonds\Ionic.cs" />
-    <Compile Include="Elements\Bonds\KindsOf\DoubleBond.cs" />
-    <Compile Include="Elements\Bonds\KindsOf\PiBond.cs" />
+    <Compile Include="Elements\Bonds\KindsOf\DoubleCovalent.cs" />
+    <Compile Include="Elements\Bonds\KindsOf\PiCovalent.cs" />
     <Compile Include="Elements\Bonds\KindsOf\PolarCovalent.cs" />
     <Compile Include="Elements\Bonds\KindsOf\PurelyCovalent.cs" />
-    <Compile Include="Elements\Bonds\KindsOf\SigmaBond.cs" />
-    <Compile Include="Elements\Bonds\KindsOf\SingleBond.cs" />
-    <Compile Include="Elements\Bonds\KindsOf\TripleBond.cs" />
+    <Compile Include="Elements\Bonds\KindsOf\SigmaCovalent.cs" />
+    <Compile Include="Elements\Bonds\KindsOf\SingleCovalent.cs" />
+    <Compile Include="Elements\Bonds\KindsOf\TripleCovalent.cs" />
     <Compile Include="Elements\ElectronCfg\Electron.cs" />
     <Compile Include="Elements\ElectronCfg\Orbitals\d_OrbitalGroup.cs" />
     <Compile Include="Elements\ElectronCfg\Orbitals\f_OrbitalGroup.cs" />
@@ -82,6 +82,7 @@
     <Compile Include="Elements\Blocks\IBlock.cs" />
     <Compile Include="Elements\IElement.cs" />
     <Compile Include="Elements\Groups\IGroup.cs" />
+    <Compile Include="Elements\IMolecule.cs" />
     <Compile Include="Elements\IOrbitalGroup.cs" />
     <Compile Include="Elements\IShell.cs" />
     <Compile Include="Elements\PeriodicTable\ElementBase.cs" />

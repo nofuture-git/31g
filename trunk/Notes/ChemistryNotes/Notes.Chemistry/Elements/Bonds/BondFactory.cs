@@ -31,12 +31,12 @@ namespace Notes.Chemistry.Elements.Bonds
 
         public static IBond AsSigmaBond(this IBond bond)
         {
-            return new SigmaBond(bond);
+            return new SigmaCovalent(bond);
         }
 
         public static IBond AsPiBond(this IBond bond)
         {
-            return new PiBond(bond);
+            return new PiCovalent(bond);
         }
 
         public static IBond AsPolarCovalent(this IBond bond)
@@ -53,36 +53,36 @@ namespace Notes.Chemistry.Elements.Bonds
         {
             bond = bond ?? throw new ArgumentNullException(nameof(bond));
 
-            if(bond.Is(typeof(DoubleBond)))
+            if(bond.Is(typeof(DoubleCovalent)))
                 throw new ArgumentException($"{bond.GetBondElementNames()} " +
-                                            $"is already declared as a {nameof(DoubleBond)}");
-            if (bond.Is(typeof(TripleBond)))
+                                            $"is already declared as a {nameof(DoubleCovalent)}");
+            if (bond.Is(typeof(TripleCovalent)))
                 throw new ArgumentException($"{bond.GetBondElementNames()} " +
-                                            $"is already declared as a {nameof(TripleBond)}");
+                                            $"is already declared as a {nameof(TripleCovalent)}");
 
-            return new SingleBond(bond);
+            return new SingleCovalent(bond);
         }
 
         public static IBond AsDoubleBond(this IBond bond)
         {
-            if (bond.Is(typeof(SingleBond)))
+            if (bond.Is(typeof(SingleCovalent)))
                 throw new ArgumentException($"{bond.GetBondElementNames()} " +
-                                            $"is already declared as a {nameof(SingleBond)}");
-            if (bond.Is(typeof(TripleBond)))
+                                            $"is already declared as a {nameof(SingleCovalent)}");
+            if (bond.Is(typeof(TripleCovalent)))
                 throw new ArgumentException($"{bond.GetBondElementNames()} " +
-                                            $"is already declared as a {nameof(TripleBond)}");
-            return new DoubleBond(bond);
+                                            $"is already declared as a {nameof(TripleCovalent)}");
+            return new DoubleCovalent(bond);
         }
 
         public static IBond AsTripleBond(this IBond bond)
         {
-            if (bond.Is(typeof(DoubleBond)))
+            if (bond.Is(typeof(DoubleCovalent)))
                 throw new ArgumentException($"{bond.GetBondElementNames()} " +
-                                            $"is already declared as a {nameof(DoubleBond)}");
-            if (bond.Is(typeof(SingleBond)))
+                                            $"is already declared as a {nameof(DoubleCovalent)}");
+            if (bond.Is(typeof(SingleCovalent)))
                 throw new ArgumentException($"{bond.GetBondElementNames()} " +
-                                            $"is already declared as a {nameof(SingleBond)}");
-            return new TripleBond(bond);
+                                            $"is already declared as a {nameof(SingleCovalent)}");
+            return new TripleCovalent(bond);
         }
 
         public static T GetBond<T>(this IBond bond) where T : IBond
