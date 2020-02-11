@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Notes.Chemistry.Elements.ElectronCfg.Orbitals;
 using Notes.Chemistry.Elements.ElectronCfg.Shells;
 using Notes.Chemistry.Elements.Groups;
@@ -6,6 +7,9 @@ using Notes.Chemistry.Elements.Periods;
 
 namespace Notes.Chemistry.Elements
 {
+    /// <summary>
+    /// https://egonw.github.io/cdkbook/cheminfo.html
+    /// </summary>
     public static class ElementsExtensions
     {
         public static double AvogadorosNumber => 6.022 * 10E+23;
@@ -103,6 +107,67 @@ namespace Notes.Chemistry.Elements
             var spOrbital = lShell?.Orbitals.FirstOrDefault(o => o is sp_hybridizedOrbitalGroup) as sp_hybridizedOrbitalGroup;
 
             return spOrbital?.GetBondGeometry();
+        }
+
+        public static int GetIndex<T>(this ISet<T> set, T item)
+        {
+            if (set == null)
+                return -1;
+            if (!set.Contains(item))
+                return -1;
+
+            var array = set.ToArray();
+            for (var i = 0; i < array.Length; i++)
+            {
+                if (array[i].Equals(item) || object.ReferenceEquals(array[i], item))
+                    return i;
+            }
+
+            return -1;
+        }
+
+        public static T GetItem<T>(this ISet<T> set, int index)
+        {
+            if (set == null)
+                return default(T);
+
+            if (index < 0)
+                return default(T);
+
+            if (index >= set.Count)
+                return default(T);
+
+            return set.ToArray()[index];
+        }
+
+        public static T GetNextItem<T>(this SortedSet<T> set, T afterThisOne)
+        {
+            if (set == null)
+                return default(T);
+
+            if (afterThisOne == null)
+                return set.First();
+
+            var index = set.GetIndex(afterThisOne);
+            if (index < 0 || index >= set.Count)
+                return default(T);
+
+            return set.GetItem(index + 1);
+        }
+
+        public static T GetPreviousItem<T>(this SortedSet<T> set, T beforeThisOne)
+        {
+            if (set == null)
+                return default(T);
+
+            if (beforeThisOne == null)
+                return default(T);
+
+            var index = set.GetIndex(beforeThisOne);
+            if (index <= 0 || index >= set.Count)
+                return default(T);
+
+            return set.GetItem(index - 1);
         }
     }
 }
