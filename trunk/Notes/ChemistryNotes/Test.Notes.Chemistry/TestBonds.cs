@@ -40,5 +40,16 @@ namespace Test.Notes.Chemistry
             Console.WriteLine(testResult.DeltaPlus?.Name);
             Console.WriteLine(testResult.DeltaMinus?.Name);
         }
+
+        [Test]
+        public void TestAsDouble()
+        {
+            var testInput00 = new Oxygen();
+            var testInput01 = new Oxygen();
+            BondFactory.CreateBond(testInput00, testInput01).AsDoubleBond();
+            Assert.AreEqual(0, testInput00.CountValences);
+            Assert.AreEqual(0, testInput01.CountValences);
+
+        }
     }
 }

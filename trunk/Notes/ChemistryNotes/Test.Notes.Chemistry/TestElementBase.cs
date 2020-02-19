@@ -43,6 +43,170 @@ namespace Test.Notes.Chemistry
         }
 
         [Test]
+        public void TestCountValences()
+        {
+            IElement testSubject = new Hydrogen();
+            var testResult = testSubject.CountValences;
+            Console.WriteLine($"{testSubject.Name} {testResult}");
+            Assert.AreEqual(1,testResult);
+
+            testSubject = new Helium();
+            testResult = testSubject.CountValences;
+            Console.WriteLine($"{testSubject.Name} {testResult}" );
+            Assert.AreEqual(0, testResult);
+
+            testSubject = new Oxygen();
+            testResult = testSubject.CountValences;
+            Console.WriteLine($"{testSubject.Name} {testResult}");
+            Assert.AreEqual(2, testResult);
+
+            testSubject = new Nitrogen();
+            testResult = testSubject.CountValences;
+            Console.WriteLine($"{testSubject.Name} {testResult}");
+            Assert.AreEqual(3, testResult);
+
+            testSubject = new Carbon();
+            testResult = testSubject.CountValences;
+            Console.WriteLine($"{testSubject.Name} {testResult}");
+            Assert.AreEqual(4, testResult);
+
+            testSubject = new Silicon();
+            testResult = testSubject.CountValences;
+            Console.WriteLine($"{testSubject.Name} {testResult}");
+
+        }
+
+        [Test]
+        public void TestProperties()
+        {
+            IElement testSubject = new Carbon();
+            Assert.IsTrue(testSubject.AtomicNumber > 0);
+            Assert.IsNotNull(testSubject.Symbol);
+            Assert.AreNotEqual(0D, testSubject.AtomicMass);
+            Console.WriteLine(testSubject.RoomTempPhase);
+            Assert.IsFalse(testSubject.IsRadioactive);
+            Assert.IsFalse(testSubject.IsArtificial);
+        }
+
+        [Test]
+        public void TestPrintElectronShellCfg_All()
+        {
+            IElement testSubject; ;
+            testSubject = new Hydrogen();
+            Console.WriteLine($"Hydrogen {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Helium();
+            Console.WriteLine($"Helium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Lithium();
+            Console.WriteLine($"Lithium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Beryllium();
+            Console.WriteLine($"Beryllium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Boron();
+            Console.WriteLine($"Boron {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Carbon();
+            Console.WriteLine($"Carbon {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Nitrogen();
+            Console.WriteLine($"Nitrogen {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Oxygen();
+            Console.WriteLine($"Oxygen {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Fluorine();
+            Console.WriteLine($"Fluorine {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Neon();
+            Console.WriteLine($"Neon {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Sodium();
+            Console.WriteLine($"Sodium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Magnesium();
+            Console.WriteLine($"Magnesium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Aluminum();
+            Console.WriteLine($"Aluminum {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Silicon();
+            Console.WriteLine($"Silicon {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Phosphorus();
+            Console.WriteLine($"Phosphorus {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Sulfur();
+            Console.WriteLine($"Sulfur {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Chlorine();
+            Console.WriteLine($"Chlorine {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Argon();
+            Console.WriteLine($"Argon {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Potassium();
+            Console.WriteLine($"Potassium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Calcium();
+            Console.WriteLine($"Calcium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Scandium();
+            Console.WriteLine($"Scandium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Titanium();
+            Console.WriteLine($"Titanium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Vanadium();
+            Console.WriteLine($"Vanadium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Chromium();
+            Console.WriteLine($"Chromium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Manganese();
+            Console.WriteLine($"Manganese {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Iron();
+            Console.WriteLine($"Iron {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Cobalt();
+            Console.WriteLine($"Cobalt {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Nickel();
+            Console.WriteLine($"Nickel {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Copper();
+            Console.WriteLine($"Copper {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Zinc();
+            Console.WriteLine($"Zinc {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Gallium();
+            Console.WriteLine($"Gallium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Germanium();
+            Console.WriteLine($"Germanium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Arsenic();
+            Console.WriteLine($"Arsenic {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Selenium();
+            Console.WriteLine($"Selenium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Bromine();
+            Console.WriteLine($"Bromine {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Krypton();
+            Console.WriteLine($"Krypton {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Rubidium();
+            Console.WriteLine($"Rubidium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Strontium();
+            Console.WriteLine($"Strontium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Yttrium();
+            Console.WriteLine($"Yttrium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Zirconium();
+            Console.WriteLine($"Zirconium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Niobium();
+            Console.WriteLine($"Niobium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Molybdenum();
+            Console.WriteLine($"Molybdenum {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Technetium();
+            Console.WriteLine($"Technetium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Ruthenium();
+            Console.WriteLine($"Ruthenium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Rhodium();
+            Console.WriteLine($"Rhodium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Palladium();
+            Console.WriteLine($"Palladium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Silver();
+            Console.WriteLine($"Silver {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Cadmium();
+            Console.WriteLine($"Cadmium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Indium();
+            Console.WriteLine($"Indium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Tin();
+            Console.WriteLine($"Tin {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Antimony();
+            Console.WriteLine($"Antimony {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Tellurium();
+            Console.WriteLine($"Tellurium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Iodine();
+            Console.WriteLine($"Iodine {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Xenon();
+            Console.WriteLine($"Xenon {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Cesium();
+            Console.WriteLine($"Cesium {testSubject.PrintElectronShellCfg()}");
+            testSubject = new Barium();
+            Console.WriteLine($"Barium {testSubject.PrintElectronShellCfg()}");
+        }
+
+        [Test]
         public void TestGetGrams()
         {
             IElement testSubject = new Iron();
@@ -90,6 +254,15 @@ namespace Test.Notes.Chemistry
             testSubject.AddElectron();
             Assert.IsTrue(testSubject.IsAnion);
 
+        }
+
+        [Test]
+        public void TestIsIon()
+        {
+            IElement testSubject = new Carbon();
+            Assert.IsFalse(testSubject.IsIon);
+            testSubject.AddElectron();
+            Assert.IsTrue(testSubject.IsIon);
         }
 
         [Test]

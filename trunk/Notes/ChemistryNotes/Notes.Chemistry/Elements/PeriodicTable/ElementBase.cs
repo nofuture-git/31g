@@ -101,6 +101,8 @@ namespace Notes.Chemistry.Elements.PeriodicTable
             }
         }
 
+        public virtual int CountValences => (ValenceShell.ShellMaxElectrons - ValenceShell.GetCountElectrons()) % 8;
+
         public virtual double GetGrams(double countOfAtoms)
         {
             return (AtomicMass / 6.0221409e+23) * countOfAtoms;

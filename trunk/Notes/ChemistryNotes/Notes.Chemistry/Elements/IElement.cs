@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Notes.Chemistry.Elements.ElectronCfg.Shells;
 
 namespace Notes.Chemistry.Elements
 {
@@ -27,6 +26,7 @@ namespace Notes.Chemistry.Elements
         int? AddElectron();
         int? RemoveElectron();
         int CountElectrons { get; }
+        int CountValences { get; }
         string PrintElectronShellCfg(bool shortVersion = true);
     }
 }

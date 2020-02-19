@@ -53,7 +53,10 @@ namespace Notes.Chemistry.Elements.Bonds
         {
             bond = bond ?? throw new ArgumentNullException(nameof(bond));
 
-            if(bond.Is(typeof(DoubleCovalent)))
+            if (bond is Ionic)
+                return bond;
+
+            if (bond.Is(typeof(DoubleCovalent)))
                 throw new ArgumentException($"{bond.GetBondElementNames()} " +
                                             $"is already declared as a {nameof(DoubleCovalent)}");
             if (bond.Is(typeof(TripleCovalent)))
@@ -65,6 +68,11 @@ namespace Notes.Chemistry.Elements.Bonds
 
         public static IBond AsDoubleBond(this IBond bond)
         {
+            bond = bond ?? throw new ArgumentNullException(nameof(bond));
+
+            if (bond is Ionic)
+                return bond;
+
             if (bond.Is(typeof(SingleCovalent)))
                 throw new ArgumentException($"{bond.GetBondElementNames()} " +
                                             $"is already declared as a {nameof(SingleCovalent)}");
@@ -76,6 +84,11 @@ namespace Notes.Chemistry.Elements.Bonds
 
         public static IBond AsTripleBond(this IBond bond)
         {
+            bond = bond ?? throw new ArgumentNullException(nameof(bond));
+
+            if (bond is Ionic)
+                return bond;
+
             if (bond.Is(typeof(DoubleCovalent)))
                 throw new ArgumentException($"{bond.GetBondElementNames()} " +
                                             $"is already declared as a {nameof(DoubleCovalent)}");
