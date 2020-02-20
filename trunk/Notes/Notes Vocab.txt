@@ -768,8 +768,3 @@ penultimate: the second last one in a series
 banal: so lacking in originality as to be obvious and boring
 chiral: something which is distinguishable from its mirror image
 noetic: relating to mental activity or intellect
-hypernym: a word with a broad meaning that more specific words fall under 
-      (e.g. "color" is hypernym of "red")
-meronym: an word which is a part of something but is used to refer to the whole 
-       (e.g. "see many familiar faces" where "faces" is meronym for "people")
-polysemy: the coexistence of many possible meanings of a word

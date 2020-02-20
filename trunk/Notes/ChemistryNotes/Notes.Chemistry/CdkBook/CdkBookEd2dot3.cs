@@ -1,14 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Windows;
 using NCDK;
 using NCDK.Config;
 using NCDK.Default;
-using NCDK.Depict;
 using NCDK.IO;
-using NCDK.Renderers;
 using NCDK.Smiles;
 using NCDK.Tools;
 using NCDK.Tools.Manipulator;
@@ -25,8 +21,6 @@ namespace Notes.Chemistry.CdkBook
         {
             var atom = new Atom(6);
             var atom2 =  new Atom(ChemicalElement.C);
-            
-
         }
 
         public void Script3_14()
@@ -49,8 +43,6 @@ namespace Notes.Chemistry.CdkBook
                 mol.Atoms.Add(new Atom("H"));
             for (var i = 0; i < 4; i++)
                 mol.AddBond(mol.Atoms[0], mol.Atoms[i + 1], BondOrder.Single);
-
-
         }
 
         public static void Script8_3()
@@ -131,16 +123,16 @@ namespace Notes.Chemistry.CdkBook
             Console.WriteLine($"Format: {format.FormatName}");
         }
 
-        public static void Script11_6()
+        public static void Script11_6(string proxyUri)
         {
             
-            System.Net.WebRequest.DefaultWebProxy = new System.Net.WebProxy(new Uri("http://qproxy.qdx.com:9090/"))
+            System.Net.WebRequest.DefaultWebProxy = new System.Net.WebProxy(new Uri(proxyUri))
             {
                 Credentials = System.Net.CredentialCache.DefaultNetworkCredentials
             };
             var webRequest = System.Net.WebRequest.CreateHttp("https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5282253/record/XML/?record_type=2d&response_type=save");
             webRequest.UseDefaultCredentials = true;
-            webRequest.Proxy = new System.Net.WebProxy(new Uri("http://qproxy.qdx.com:9090/"));
+            webRequest.Proxy = new System.Net.WebProxy(new Uri(proxyUri));
             var webResponse = webRequest.GetResponse();
             var reader = new PCCompoundXMLReader(webResponse.GetResponseStream());
             var mol = reader.Read(new AtomContainer());
@@ -149,7 +141,6 @@ namespace Notes.Chemistry.CdkBook
             {
                 Console.WriteLine($"{keyValuePair.Key} {keyValuePair.Value}");
             }
-            
         }
 
         public static void Script12_1()
@@ -162,64 +153,6 @@ namespace Notes.Chemistry.CdkBook
             Console.WriteLine($"neighbors: {atomType.FormalNeighbourCount}");
             Console.WriteLine($"lone pairs: {atomType.GetProperty<int>(NCDK.CDKPropertyName.LonePairCount)}");
             Console.WriteLine($"pi bonds: {atomType.GetProperty<int>(NCDK.CDKPropertyName.PiBondCount)}");
-        }
-
-        /// <summary>
-        /// https://github.com/cdk/cdk/wiki/Toolkit-Rosetta
-        /// </summary>
-        public static string DepictSMILES(string canonicalSmiles, string folder = null)
-        {
-            if (string.IsNullOrWhiteSpace(canonicalSmiles))
-            {
-                return null;
-            }
-            folder = folder ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
-                                            @"NCDK\Images");
-
-            if (!Directory.Exists(folder))
-            {
-                Directory.CreateDirectory(folder);
-            }
-
-            var bldr = ChemObjectBuilder.Instance;
-            var smipar = new SmilesParser(bldr);
-
-            var mol = smipar.ParseSmiles(canonicalSmiles);
-
-            var dptgen = new DepictionGenerator { Size = new Size(300, 350), ShowMoleculeTitle = true };
-            dptgen.SymbolVisibility = SymbolVisibility.All;
-            var depiction = dptgen.Depict(mol);
-
-            var filterName = new StringBuilder();
-            foreach (var c in canonicalSmiles.ToCharArray())
-            {
-                if (Path.GetInvalidPathChars().Contains(c)
-                    || Path.GetInvalidFileNameChars().Contains(c))
-                {
-                    continue;
-                }
-                filterName.Append(c);
-            }
-
-            filterName.Append(".png");
-            var filename = Path.Combine(folder, filterName.ToString());
-            depiction.WriteTo(filename);
-
-            return filename;
-        }
-
-        public static void DepictExample01()
-        {
-            var bldr = ChemObjectBuilder.Instance;
-            var smipar = new SmilesParser(bldr);
-
-            var mol = smipar.ParseSmiles("CCC(=O)C");
-            mol.SetProperty(NCDK.CDKPropertyName.Title, "butanone");
-
-            var dptgen = new DepictionGenerator { Size = new Size(300, 350), ShowMoleculeTitle = true };
-            dptgen.SymbolVisibility = SymbolVisibility.All;
-            var depiction = dptgen.Depict(mol);
-            depiction.WriteTo(@"C:\Projects\31g\trunk\Notes\ChemistryNotes\Notes.Chemistry\CdkBook\Images\butanone.png");
         }
 
         public static AtomContainer GetProgrammaticButanone()
@@ -271,34 +204,6 @@ namespace Notes.Chemistry.CdkBook
             mol.SetProperty(NCDK.CDKPropertyName.Title, "butanone");
             return mol;
         }
-
-        public static void DepictExample02()
-        {
-            var butanone = CdkBookEd2dot3.GetProgrammaticButanone();
-            var molSig = new NCDK.Signatures.MoleculeSignature(butanone);
-            
-            var memStream = new System.IO.MemoryStream();
-            var smilesWriter = new NCDK.IO.SMILESWriter(memStream);
-            smilesWriter.Write(butanone);
-            var smilesSig = Encoding.UTF8.GetString(memStream.ToArray());
-
-            var atomMatcher = NCDK.AtomTypes.CDKAtomTypeMatcher.GetInstance();
-            foreach (var atom in butanone.Atoms)
-            {
-                var atomType = atomMatcher.FindMatchingAtomType(butanone, atom);
-                if (atomType == null)
-                    continue;
-                NCDK.Tools.Manipulator.AtomTypeManipulator.Configure(atom, atomType);
-            }
-            NCDK.Tools.CDKHydrogenAdder.GetInstance().AddImplicitHydrogens(butanone);
-
-            var dptgen = new DepictionGenerator { Size = new Size(300, 350), ShowMoleculeTitle = true };
-            dptgen.SymbolVisibility = SymbolVisibility.All;
-            var depiction = dptgen.Depict(butanone);
-
-            depiction.WriteTo(@"C:\Projects\31g\trunk\Notes\ChemistryNotes\Notes.Chemistry\CdkBook\Images\butanone2.png");
-        }
-
     }
 
     public class MyChemListener : IChemObjectListener

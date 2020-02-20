@@ -221,6 +221,8 @@ Semantic Analysis
      - "I get it" (understand)
  - metonym, a figure of speech in which a thing or concept is referred to by 
     the name of something closely associated with that thing or concept
+ - meronym, a word which is a part of something but is used to refer to the whole 
+  - e.g. "see many familiar faces" where "faces" is meronym for "people"
  - anaphora, a word whose semantic meaning is dependent on a word
    which appeared before it
  - cataphora, same as anaphora only its after it, not before it
