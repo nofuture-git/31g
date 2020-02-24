@@ -50,8 +50,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CdkBook\CdkBookEd2dot3.cs" />
-    <Compile Include="CdkBook\CdkExtensions.cs" />
+    <Compile Include="Cdk\CdkBookEd2dot3.cs" />
+    <Compile Include="Cdk\CdkExtensions.cs" />
     <Compile Include="Elements\Blocks\IDBlock.cs" />
     <Compile Include="Elements\Blocks\IFBlock.cs" />
     <Compile Include="Elements\Blocks\IPBlock.cs" />
