@@ -9,7 +9,7 @@ using NCDK.Smiles;
 using NCDK.Tools;
 using NCDK.Tools.Manipulator;
 
-namespace Notes.Chemistry.CdkBook
+namespace Notes.Chemistry.Cdk
 {
     /// <summary>
     /// https://egonw.github.io/cdkbook/

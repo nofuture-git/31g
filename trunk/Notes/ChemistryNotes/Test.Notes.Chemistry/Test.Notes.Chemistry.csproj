@@ -59,6 +59,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBonds.cs" />
     <Compile Include="TestElementBase.cs" />
+    <Compile Include="TestFunctionalGroup.cs" />
+    <Compile Include="TestMoleculeFactory.cs" />
     <Compile Include="TestOrbital.cs" />
   </ItemGroup>
   <ItemGroup>

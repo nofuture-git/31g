@@ -9,7 +9,7 @@ using NCDK.Renderers;
 using NCDK.Smiles;
 using Notes.Chemistry.Elements.PeriodicTable;
 
-namespace Notes.Chemistry.CdkBook
+namespace Notes.Chemistry.Cdk
 {
     public static class CdkExtensions
     {
@@ -293,7 +293,7 @@ namespace Notes.Chemistry.CdkBook
         /// https://github.com/cdk/cdk/wiki/Toolkit-Rosetta
         /// </summary>
         /// <returns>Full path to created .png file</returns>
-        public static string DepictMolecule(NCDK.IAtomContainer mol, string folder = null, int width = 300, int height = 350)
+        public static string DepictMolecule(this NCDK.IAtomContainer mol, string folder = null, int width = 300, int height = 350)
         {
             folder = folder ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                          @"NCDK\Images");
@@ -323,6 +323,7 @@ namespace Notes.Chemistry.CdkBook
 
             filterName.Append(".png");
             var filename = Path.Combine(folder, filterName.ToString());
+            
             depiction.WriteTo(filename);
 
             return filename;

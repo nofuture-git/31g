@@ -52,6 +52,8 @@
   <ItemGroup>
     <Compile Include="Cdk\CdkBookEd2dot3.cs" />
     <Compile Include="Cdk\CdkExtensions.cs" />
+    <Compile Include="Cdk\FunctionalGroups.cs" />
+    <Compile Include="Cdk\MoleculeFactory.cs" />
     <Compile Include="Elements\Blocks\IDBlock.cs" />
     <Compile Include="Elements\Blocks\IFBlock.cs" />
     <Compile Include="Elements\Blocks\IPBlock.cs" />
