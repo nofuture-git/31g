@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using NCDK;
 using NCDK.Default;
 using NCDK.Depict;
 using NCDK.Renderers;
@@ -271,11 +272,7 @@ namespace Notes.Chemistry.Cdk
             }
         }
 
-        /// <summary>
-        /// https://github.com/cdk/cdk/wiki/Toolkit-Rosetta
-        /// </summary>
-        /// <returns>Full path to created .png file</returns>
-        public static string DepictSMILES(string canonicalSmiles, string folder = null, int width = 300, int height = 350)
+        public static IAtomContainer ConvertCanoicalSMILES(string canonicalSmiles)
         {
             if (string.IsNullOrWhiteSpace(canonicalSmiles))
             {
@@ -285,6 +282,96 @@ namespace Notes.Chemistry.Cdk
             var smipar = new SmilesParser(bldr);
 
             var mol = smipar.ParseSmiles(canonicalSmiles);
+
+            return mol;
+        }
+
+        public static IAtomContainer AddAtomContainer(this IAtomContainer mol, IAtomContainer addThis)
+        {
+            if (mol == null)
+                return null;
+
+            if (addThis == null)
+                return mol;
+
+            foreach (var atom in addThis.Atoms)
+            {
+                if (mol.Atoms.Contains(atom))
+                    continue;
+                mol.Atoms.Add(atom);
+            }
+
+            foreach (var bond in addThis.Bonds)
+            {
+                if (mol.Bonds.Contains(bond))
+                    continue;
+                mol.Bonds.Add(bond);
+            }
+
+            return mol;
+        }
+
+        public static bool IsCarbonAtom(this IAtom atom)
+        {
+            if (atom == null)
+                return false;
+            return atom.Symbol == "C";
+        }
+
+        public static bool IsOxygenAtom(this IAtom atom)
+        {
+            if (atom == null)
+                return false;
+            return atom.Symbol == "O";
+        }
+
+        public static bool IsHydrogenAtom(this IAtom atom)
+        {
+            if (atom == null)
+                return false;
+            return atom.Symbol == "H";
+        }
+
+        public static bool IsCarbon2OxygenBond(this IBond bond)
+        {
+            return IsCarbonToThis(bond, IsOxygenAtom);
+        }
+
+        public static bool IsCarbon2HydrogenBond(this IBond bond)
+        {
+            return IsCarbonToThis(bond, IsHydrogenAtom);
+        }
+
+        public static bool IsCarbon2CarbonBond(this IBond bond)
+        {
+            return IsCarbonToThis(bond, IsCarbonAtom);
+        }
+
+        public static bool IsCarbon2NitrogenBond(this IBond bond)
+        {
+            return IsCarbonToThis(bond, atom => atom.Symbol == "N");
+        }
+
+        internal static bool IsCarbonToThis(IBond bond, Predicate<IAtom> other)
+        {
+            if (bond == null || other == null)
+                return false;
+            var combo0 = bond.Begin.IsCarbonAtom() && other(bond.End);
+            var combo1 = other(bond.Begin) && bond.End.IsCarbonAtom();
+
+            return combo0 || combo1;
+        }
+
+        /// <summary>
+        /// https://github.com/cdk/cdk/wiki/Toolkit-Rosetta
+        /// </summary>
+        /// <returns>Full path to created .png file</returns>
+        public static string DepictSMILES(string canonicalSmiles, string folder = null, int width = 300, int height = 350)
+        {
+            var mol = ConvertCanoicalSMILES(canonicalSmiles);
+
+            if (mol == null)
+                return null;
 
             return DepictMolecule(mol, folder, width, height);
         }

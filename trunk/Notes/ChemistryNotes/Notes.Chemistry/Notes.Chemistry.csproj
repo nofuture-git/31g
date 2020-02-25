@@ -50,6 +50,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AkaAttribute.cs" />
     <Compile Include="Cdk\CdkBookEd2dot3.cs" />
     <Compile Include="Cdk\CdkExtensions.cs" />
     <Compile Include="Cdk\FunctionalGroups.cs" />
