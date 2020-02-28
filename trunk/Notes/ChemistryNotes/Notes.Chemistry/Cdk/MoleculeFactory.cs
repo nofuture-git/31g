@@ -1,6 +1,8 @@
 ﻿using System;
 using NCDK;
 using NCDK.Default;
+using NCDK.QSAR.Descriptors.Atomic;
+using NCDK.Stereo;
 
 namespace Notes.Chemistry.Cdk
 {
@@ -180,7 +182,7 @@ namespace Notes.Chemistry.Cdk
         /// <returns></returns>
         public static IAtomContainer Morphine()
         {
-            var morphine = CdkExtensions.ConvertCanoicalSMILES("CN1CCC23C4C1CC5=C2C(=C(C=C5)O)OC3C(C=C4)O");
+            var morphine = CdkExtensions.ConvertSMILES("CN1CCC23C4C1CC5=C2C(=C(C=C5)O)OC3C(C=C4)O");
             morphine.SetProperty(NCDK.CDKPropertyName.Title, nameof(morphine));
             return morphine;
         }
@@ -350,58 +352,58 @@ namespace Notes.Chemistry.Cdk
         }
 
         /// <summary>
-        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/2723872#section=Canonical-SMILES]
+        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/2723872]
         /// </summary>
         /// <returns></returns>
         public static IAtomContainer Fructose()
         {
-            var fructose = CdkExtensions.ConvertCanoicalSMILES("C1C(C(C(C(O1)(CO)O)O)O)O");
+            var fructose = CdkExtensions.ConvertSMILES("C1[C@H]([C@H]([C@@H](C(O1)(CO)O)O)O)O");
             fructose.SetProperty(NCDK.CDKPropertyName.Title, nameof(fructose));
             return fructose;
         }
 
         /// <summary>
-        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/5793#section=Canonical-SMILES]
+        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/5793]
         /// </summary>
         /// <returns></returns>
         public static IAtomContainer Glucose()
         {
-            var glucose = CdkExtensions.ConvertCanoicalSMILES("C(C1C(C(C(C(O1)O)O)O)O)O");
+            var glucose = CdkExtensions.ConvertSMILES("C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O");
             glucose.SetProperty(NCDK.CDKPropertyName.Title, nameof(glucose));
             return glucose;
         }
 
         /// <summary>
-        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/5988#section=Canonical-SMILES]
+        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/5988]
         /// </summary>
         /// <returns></returns>
         [Aka("table sugar")]
         public static IAtomContainer Sucrose()
         {
-            var sucrose = CdkExtensions.ConvertCanoicalSMILES("C(C1C(C(C(C(O1)OC2(C(C(C(O2)CO)O)O)CO)O)O)O)O");
+            var sucrose = CdkExtensions.ConvertSMILES("C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O[C@]2([C@H]([C@@H]([C@H](O2)CO)O)O)CO)O)O)O)O");
             sucrose.SetProperty(NCDK.CDKPropertyName.Title, nameof(sucrose));
             return sucrose;
         }
 
         /// <summary>
-        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/6036#section=Canonical-SMILES]
+        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/6036]
         /// </summary>
         /// <returns></returns>
         public static IAtomContainer Galactose()
         {
-            var galactose = CdkExtensions.ConvertCanoicalSMILES("C(C1C(C(C(C(O1)O)O)O)O)O");
+            var galactose = CdkExtensions.ConvertSMILES("C([C@@H]1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O)O");
             galactose.SetProperty(NCDK.CDKPropertyName.Title, nameof(galactose));
             return galactose;
         }
 
         /// <summary>
         /// Is two <see cref="Glucose"/> molecules
-        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/6255#section=Canonical-SMILES]
+        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/6255]
         /// </summary>
         /// <returns></returns>
         public static IAtomContainer Maltose()
         {
-            var maltose = CdkExtensions.ConvertCanoicalSMILES("C(C1C(C(C(C(O1)OC2C(OC(C(C2O)O)O)CO)O)O)O)O");
+            var maltose = CdkExtensions.ConvertSMILES("C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O[C@@H]2[C@H](O[C@H]([C@@H]([C@H]2O)O)O)CO)O)O)O)O");
             maltose.SetProperty(NCDK.CDKPropertyName.Title, nameof(maltose));
             return maltose;
         }
@@ -605,9 +607,65 @@ namespace Notes.Chemistry.Cdk
             return appleSmell;
         }
 
+        public static IAtomContainer LemonSmell()
+        {
+            var lemonSmell = new Ring(6,"C");
+            lemonSmell.Bonds[5].Order = BondOrder.Double;
+
+            var carbonBottom = lemonSmell.Atoms[3];
+            var li00 = lemonSmell.Atoms[2];
+            var li01 = lemonSmell.Atoms[4];
+
+            var carbonAdded = lemonSmell.AddAtom("C");
+            var hydrogen = lemonSmell.AddAtom("H");
+
+            lemonSmell.AddBond(lemonSmell.Atoms[0], lemonSmell.AddAtom("C"), BondOrder.Single);
+            lemonSmell.AddBond(carbonBottom, carbonAdded, BondOrder.Single);
+
+            lemonSmell.AddBond(carbonBottom, hydrogen, BondOrder.Single);
+
+            lemonSmell.AddBond(carbonAdded, lemonSmell.AddAtom("C"), BondOrder.Double);
+            lemonSmell.AddBond(carbonAdded, lemonSmell.AddAtom("C"), BondOrder.Single);
+
+            var ligands = new[] { li00, li01, carbonAdded, hydrogen };
+            lemonSmell.StereoElements.Add(new TetrahedralChirality(carbonBottom, ligands, TetrahedralStereo.Clockwise));
+
+            lemonSmell.SetProperty(NCDK.CDKPropertyName.Title, nameof(lemonSmell));
+
+            return lemonSmell;
+        }
+
+        public static IAtomContainer OrangeSmell()
+        {
+            var orangeSmell = new Ring(6, "C");
+            orangeSmell.Bonds[5].Order = BondOrder.Double;
+
+            var carbonBottom = orangeSmell.Atoms[3];
+            var li00 = orangeSmell.Atoms[2];
+            var li01 = orangeSmell.Atoms[4];
+
+            var carbonAdded = orangeSmell.AddAtom("C");
+            var hydrogen = orangeSmell.AddAtom("H");
+
+            orangeSmell.AddBond(orangeSmell.Atoms[0], orangeSmell.AddAtom("C"), BondOrder.Single);
+            orangeSmell.AddBond(carbonBottom, carbonAdded, BondOrder.Single);
+
+            orangeSmell.AddBond(carbonBottom, hydrogen, BondOrder.Single);
+
+            orangeSmell.AddBond(carbonAdded, orangeSmell.AddAtom("C"), BondOrder.Double);
+            orangeSmell.AddBond(carbonAdded, orangeSmell.AddAtom("C"), BondOrder.Single);
+
+            var ligands = new[] { li00, li01, carbonAdded, hydrogen };
+            orangeSmell.StereoElements.Add(new TetrahedralChirality(carbonBottom, ligands, TetrahedralStereo.AntiClockwise));
+
+            orangeSmell.SetProperty(NCDK.CDKPropertyName.Title, nameof(orangeSmell));
+
+            return orangeSmell;
+        }
+
         public static IAtomContainer Penicillin()
         {
-            var penicillin = CdkExtensions.ConvertCanoicalSMILES("CC1(C(N2C(S1)C(C2=O)NC(=O)CC3=CC=CC=C3)C(=O)O)C");
+            var penicillin = CdkExtensions.ConvertSMILES("CC1(C(N2C(S1)C(C2=O)NC(=O)CC3=CC=CC=C3)C(=O)O)C");
             penicillin.SetProperty(NCDK.CDKPropertyName.Title, nameof(penicillin));
             return penicillin;
         }

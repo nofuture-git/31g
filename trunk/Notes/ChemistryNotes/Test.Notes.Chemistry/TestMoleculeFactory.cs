@@ -234,7 +234,22 @@ namespace Test.Notes.Chemistry
             var maltose = MoleculeFactory.Maltose();
             var pathToImg = maltose.DepictMolecule();
             Console.WriteLine(pathToImg);
+        }
 
+        [Test]
+        public void TestLemonSmell()
+        {
+            var lemonSmell = MoleculeFactory.LemonSmell();
+            var pathToImg = lemonSmell.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestOrangeSmell()
+        {
+            var orangeSmell = MoleculeFactory.OrangeSmell();
+            var pathToImg = orangeSmell.DepictMolecule();
+            Console.WriteLine(pathToImg);
         }
     }
 }

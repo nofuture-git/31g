@@ -14,8 +14,10 @@ namespace Test.Notes.Chemistry
             var testSubject = MoleculeFactory.Propane();
 
             var testResult = testSubject.GetCountMolecules(74.6D);
-
             Console.WriteLine(string.Format("{0:n0}", testResult));
+            
+            Assert.IsTrue(testResult > 1.018E+24);
+            Assert.IsTrue(testResult < 1.019E+24);
 
         }
     }

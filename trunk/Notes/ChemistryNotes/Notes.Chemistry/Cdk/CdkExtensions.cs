@@ -13,6 +13,10 @@ using Notes.Chemistry.Elements.PeriodicTable;
 
 namespace Notes.Chemistry.Cdk
 {
+    /// <summary>
+    /// http://cdk.github.io/cdk/2.2/docs/api/index.html
+    /// https://sourceforge.net/p/cdk/mailman/cdk-user/
+    /// </summary>
     public static class CdkExtensions
     {
         public static NCDK.IAtom ToNcdkAtom(this Elements.IElement element)
@@ -273,16 +277,16 @@ namespace Notes.Chemistry.Cdk
             }
         }
 
-        public static IAtomContainer ConvertCanoicalSMILES(string canonicalSmiles)
+        public static IAtomContainer ConvertSMILES(string smilesString)
         {
-            if (string.IsNullOrWhiteSpace(canonicalSmiles))
+            if (string.IsNullOrWhiteSpace(smilesString))
             {
                 return null;
             }
             var bldr = ChemObjectBuilder.Instance;
             var smipar = new SmilesParser(bldr);
 
-            var mol = smipar.ParseSmiles(canonicalSmiles);
+            var mol = smipar.ParseSmiles(smilesString);
 
             return mol;
         }
@@ -369,7 +373,7 @@ namespace Notes.Chemistry.Cdk
         /// <returns>Full path to created .png file</returns>
         public static string DepictSMILES(string canonicalSmiles, string folder = null, int width = 300, int height = 350)
         {
-            var mol = ConvertCanoicalSMILES(canonicalSmiles);
+            var mol = ConvertSMILES(canonicalSmiles);
 
             if (mol == null)
                 return null;
