@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NCDK;
 using NCDK.Default;
 
@@ -13,24 +12,22 @@ namespace Notes.Chemistry.Cdk
 
             var carbon = new[]
             {
-                new Atom(ChemicalElement.C),
-                new Atom(ChemicalElement.C),
-                new Atom(ChemicalElement.C)
+                propane.AddAtom("C"),
+                propane.AddAtom("C"),
+                propane.AddAtom("C")
             };
 
-            for (var i = 0; i < carbon.Length; i++)
-            {
-                propane.Atoms.Add(carbon[i]);
-                for (var j = 0; j < 3; j++)
-                {
-                    var hij = new Atom(ChemicalElement.H);
-                    propane.Atoms.Add(hij);
-                    propane.Bonds.Add(new Bond(carbon[i], hij, BondOrder.Single));
-                }
-            }
+            propane.AddBond(carbon[0], carbon[1], BondOrder.Single);
+            propane.AddBond(carbon[1], carbon[2], BondOrder.Single);
 
-            propane.Bonds.Add(new Bond(carbon[0], carbon[1], BondOrder.Single));
-            propane.Bonds.Add(new Bond(carbon[1], carbon[2], BondOrder.Single));
+            for (var j = 0; j < 3; j++)
+                propane.AddBond(carbon[0], propane.AddAtom("H"), BondOrder.Single);
+
+            for (var j = 0; j < 2; j++)
+                propane.AddBond(carbon[1], propane.AddAtom("H"), BondOrder.Single);
+
+            for (var j = 0; j < 3; j++)
+                propane.AddBond(carbon[2], propane.AddAtom("H"), BondOrder.Single);
 
             propane.SetProperty(NCDK.CDKPropertyName.Title, nameof(propane));
 
@@ -384,6 +381,29 @@ namespace Notes.Chemistry.Cdk
             var sucrose = CdkExtensions.ConvertCanoicalSMILES("C(C1C(C(C(C(O1)OC2(C(C(C(O2)CO)O)O)CO)O)O)O)O");
             sucrose.SetProperty(NCDK.CDKPropertyName.Title, nameof(sucrose));
             return sucrose;
+        }
+
+        /// <summary>
+        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/6036#section=Canonical-SMILES]
+        /// </summary>
+        /// <returns></returns>
+        public static IAtomContainer Galactose()
+        {
+            var galactose = CdkExtensions.ConvertCanoicalSMILES("C(C1C(C(C(C(O1)O)O)O)O)O");
+            galactose.SetProperty(NCDK.CDKPropertyName.Title, nameof(galactose));
+            return galactose;
+        }
+
+        /// <summary>
+        /// Is two <see cref="Glucose"/> molecules
+        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/6255#section=Canonical-SMILES]
+        /// </summary>
+        /// <returns></returns>
+        public static IAtomContainer Maltose()
+        {
+            var maltose = CdkExtensions.ConvertCanoicalSMILES("C(C1C(C(C(C(O1)OC2C(OC(C(C2O)O)O)CO)O)O)O)O");
+            maltose.SetProperty(NCDK.CDKPropertyName.Title, nameof(maltose));
+            return maltose;
         }
 
         [Aka("ether")]

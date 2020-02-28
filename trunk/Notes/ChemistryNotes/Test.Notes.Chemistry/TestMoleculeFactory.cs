@@ -219,5 +219,22 @@ namespace Test.Notes.Chemistry
             var pathToImg = acetonitrile.DepictMolecule();
             Console.WriteLine(pathToImg);
         }
+
+        [Test]
+        public void TestGalactose()
+        {
+            var galactose = MoleculeFactory.Galactose();
+            var pathToImg = galactose.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestMaltose()
+        {
+            var maltose = MoleculeFactory.Maltose();
+            var pathToImg = maltose.DepictMolecule();
+            Console.WriteLine(pathToImg);
+
+        }
     }
 }

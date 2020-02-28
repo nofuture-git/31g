@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -414,6 +415,33 @@ namespace Notes.Chemistry.Cdk
             depiction.WriteTo(filename);
 
             return filename;
+        }
+
+        public static double GetCountMolecules(this IAtomContainer mol, double grams)
+        {
+            if (mol == null || grams <= 0)
+                return 0D;
+            
+            var atom2Count = new Dictionary<IAtom, int>();
+
+            foreach (var atom in mol.Atoms)
+            {
+                var dictKey = atom2Count.Keys.FirstOrDefault(k => k.Symbol == atom.Symbol);
+
+                if (dictKey == null)
+                    atom2Count.Add(atom, 1);
+                else
+                    atom2Count[dictKey] += 1;
+            }
+
+            var molGramSum = 0D;
+            foreach (var key in atom2Count.Keys)
+            {
+                molGramSum += key.ToNfAtom().AtomicMass * atom2Count[key];
+            }
+
+            var dk = grams * 1 / molGramSum * 6.0221409e+23;
+            return dk;
         }
     }
 }
