@@ -14,6 +14,7 @@ namespace Notes.Chemistry.Cdk
     /// <summary>
     /// https://egonw.github.io/cdkbook/
     /// http://cdk.github.io/cdk/latest/docs/api/index.html
+    /// https://opsin.ch.cam.ac.uk/
     /// </summary>
     public class CdkBookEd2dot3
     {

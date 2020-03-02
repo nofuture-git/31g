@@ -251,5 +251,77 @@ namespace Test.Notes.Chemistry
             var pathToImg = orangeSmell.DepictMolecule();
             Console.WriteLine(pathToImg);
         }
+
+        [Test]
+        public void TestMuriaticAcid()
+        {
+            var muriaticAcid = MoleculeFactory.MuriaticAcid();
+            var pathToImg = muriaticAcid.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestBleach()
+        {
+            var bleach = MoleculeFactory.Bleach();
+            var pathToImg = bleach.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestSalt()
+        {
+            var salt = MoleculeFactory.Salt();
+            var path2Img = salt.DepictMolecule();
+            Console.WriteLine(path2Img);
+        }
+
+        [Test]
+        public void TestAmmonia()
+        {
+            var ammonia = MoleculeFactory.Ammonia();
+            var path2Img = ammonia.DepictMolecule();
+            Console.WriteLine(path2Img);
+        }
+
+        [Test]
+        public void TestWashingSoda()
+        {
+            var washingSoda = MoleculeFactory.WashingSoda();
+            var pathToImg = washingSoda.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestBakingSoda()
+        {
+            var bakingSoda = MoleculeFactory.BakingSoda();
+            var pathToImg = bakingSoda.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestCreamOfTartar()
+        {
+            var creamOfTartar = MoleculeFactory.CreamOfTartar();
+            var pathToImg = creamOfTartar.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestLye()
+        {
+            var lye = MoleculeFactory.Lye();
+            var pathToImg = lye.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestQuicklime()
+        {
+            var quicklime = MoleculeFactory.Quicklime();
+            var pathToImg = quicklime.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using NCDK;
+﻿using NCDK;
 using NCDK.Default;
-using NCDK.QSAR.Descriptors.Atomic;
 using NCDK.Stereo;
 
 namespace Notes.Chemistry.Cdk
@@ -685,6 +683,199 @@ namespace Notes.Chemistry.Cdk
 
             acetonitrile.SetProperty(NCDK.CDKPropertyName.Title, nameof(acetonitrile));
             return acetonitrile;
+        }
+
+        [Aka("hydrochloric acid", "hydrogen chloride")]
+        public static IAtomContainer MuriaticAcid()
+        {
+            var muriaticAcid = new AtomContainer();
+
+            muriaticAcid.AddBond(muriaticAcid.AddAtom("Cl"), muriaticAcid.AddAtom("H"), BondOrder.Single);
+
+            muriaticAcid.Title = nameof(muriaticAcid);
+
+            return muriaticAcid;
+        }
+
+        [Aka("sodium chloride")]
+        public static IAtomContainer Salt()
+        {
+            var salt = new Crystal();
+            var sodium = salt.AddAtom("Na");
+            sodium.FormalCharge = 1;
+
+            var chloride = salt.AddAtom("Cl");
+            chloride.FormalCharge = -1;
+
+            salt.Title = nameof(salt);
+
+            return salt;
+        }
+
+        [Aka("sodium hypochlorite")]
+        public static IAtomContainer Bleach()
+        {
+            var hypochlorite = new AtomContainer();
+
+            var oxygen = hypochlorite.AddAtom("O");
+
+            var chloride = hypochlorite.AddAtom("Cl");
+
+            chloride.FormalCharge = -1;
+
+            hypochlorite.AddBond(oxygen, chloride, BondOrder.Single);
+
+            var bleach = new Crystal(hypochlorite);
+
+            var sodium = bleach.AddAtom("Na");
+            sodium.FormalCharge = 1;
+
+            bleach.Title = nameof(bleach);
+
+            return bleach;
+        }
+
+        public static IAtomContainer Ammonia()
+        {
+            var ammonia = new AtomContainer();
+
+            var nitrogen = ammonia.AddAtom("N");
+
+            for(var i = 0; i < 3; i++)
+                ammonia.AddBond(nitrogen, ammonia.AddAtom("H"), BondOrder.Single);
+
+            ammonia.Title = nameof(ammonia);
+
+            return ammonia;
+        }
+
+        [Aka("sodium carbonate", "soda ash", "soda crystals")]
+        public static IAtomContainer WashingSoda()
+        {
+            var co3 = new AtomContainer();
+
+            var carbon = co3.AddAtom("C");
+            co3.AddBond(carbon, co3.AddAtom("O"), BondOrder.Double);
+
+            for (var i = 0; i < 2; i++)
+            {
+                var oxy = co3.AddAtom("O");
+                oxy.FormalCharge = -1;
+                co3.AddBond(carbon, oxy, BondOrder.Single);
+            }
+
+            var washingSoda = new Crystal(co3);
+
+            var sodium00 = washingSoda.AddAtom("Na");
+            sodium00.FormalCharge = 1;
+            var sodium01 = washingSoda.AddAtom("Na");
+            sodium01.FormalCharge = 1;
+
+            washingSoda.Title = nameof(washingSoda);
+
+            return washingSoda;
+        }
+
+        [Aka("sodium bicarbonate", "sodium hydrogen carbonate")]
+        public static IAtomContainer BakingSoda()
+        {
+            var co3h = new AtomContainer();
+
+            var carbon = co3h.AddAtom("C");
+
+            co3h.AddBond(carbon, co3h.AddAtom("O"), BondOrder.Double);
+
+            var oxy00 = co3h.AddAtom("O");
+            co3h.AddBond(carbon, oxy00, BondOrder.Single);
+            co3h.AddBond(oxy00, co3h.AddAtom("H"), BondOrder.Single);
+
+            var oxy01 = co3h.AddAtom("O");
+            oxy01.FormalCharge = -1;
+
+            co3h.AddBond(carbon, oxy01, BondOrder.Single);
+
+            var bakingSoda = new Crystal(co3h);
+            var sodium = bakingSoda.AddAtom("Na");
+            sodium.FormalCharge = 1;
+
+            bakingSoda.Title = nameof(bakingSoda);
+
+            return bakingSoda;
+        }
+
+        [Aka("potassium bitartrate", "potassium hydrogen tartrate")]
+        public static IAtomContainer CreamOfTartar()
+        {
+            var tartaricAcid = new AtomContainer();
+
+            var carbons = new[]
+            {
+                tartaricAcid.AddAtom("C"),
+                tartaricAcid.AddAtom("C"),
+                tartaricAcid.AddAtom("C"),
+                tartaricAcid.AddAtom("C")
+            };
+
+            tartaricAcid.AddBond(carbons[0], carbons[1], BondOrder.Single);
+            tartaricAcid.AddBond(carbons[1], carbons[2], BondOrder.Single);
+            tartaricAcid.AddBond(carbons[2], carbons[3], BondOrder.Single);
+
+            var oxy00 = tartaricAcid.AddAtom("O");
+            tartaricAcid.AddBond(oxy00, tartaricAcid.AddAtom("H"), BondOrder.Single);
+
+            tartaricAcid.AddBond(carbons[0], oxy00, BondOrder.Single);
+            tartaricAcid.AddBond(carbons[0], tartaricAcid.AddAtom("O"), BondOrder.Double);
+
+            for (var i = 0; i < 2; i++)
+            {
+                var oxy01 = tartaricAcid.AddAtom("O");
+                tartaricAcid.AddBond(oxy01, tartaricAcid.AddAtom("H"), BondOrder.Single);
+                tartaricAcid.AddBond(oxy01, carbons[i+1], BondOrder.Single);
+            }
+
+            tartaricAcid.AddBond(carbons[3], tartaricAcid.AddAtom("O"), BondOrder.Double);
+
+            var oxy02 = tartaricAcid.AddAtom("O");
+            oxy02.FormalCharge = -1;
+            tartaricAcid.AddBond(carbons[3], oxy02, BondOrder.Single);
+
+            var creamOfTartar = new Crystal(tartaricAcid);
+
+            var potassium = creamOfTartar.AddAtom("K");
+            potassium.FormalCharge = 1;
+
+            creamOfTartar.Title = nameof(creamOfTartar);
+
+            return creamOfTartar;
+        }
+
+        [Aka("sodium hydroxide", "caustic soda")]
+        public static IAtomContainer Lye()
+        {
+            var hydroxideAnion = new AtomContainer();
+            var oxy =  hydroxideAnion.AddAtom("O");
+            oxy.FormalCharge = -1;
+
+            hydroxideAnion.AddBond(oxy, hydroxideAnion.AddAtom("H"), BondOrder.Single);
+
+            var lye = new Crystal(hydroxideAnion);
+
+            var sodium = lye.AddAtom("Na");
+            sodium.FormalCharge = 1;
+
+            lye.Title = nameof(lye);
+
+            return lye;
+        }
+
+        [Aka("calcium oxide", "burnt lime")]
+        public static IAtomContainer Quicklime()
+        {
+            var quicklime = new AtomContainer();
+
+            quicklime.AddBond(quicklime.AddAtom("O"), quicklime.AddAtom("Ca"), BondOrder.Double);
+            quicklime.Title = nameof(quicklime);
+            return quicklime;
         }
     }
 }

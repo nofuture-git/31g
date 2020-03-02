@@ -16,6 +16,9 @@ namespace Notes.Chemistry.Cdk
     /// <summary>
     /// http://cdk.github.io/cdk/2.2/docs/api/index.html
     /// https://sourceforge.net/p/cdk/mailman/cdk-user/
+    /// reaction data https://bitbucket.org/dan2097/patent-reaction-extraction/downloads/
+    /// 135 million known molecules, 10^60 possible drug-like compounds
+    ///  (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6764164/)
     /// </summary>
     public static class CdkExtensions
     {
