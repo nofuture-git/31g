@@ -1,4 +1,5 @@
-﻿using NCDK;
+﻿using System;
+using NCDK;
 using NCDK.Default;
 using NCDK.Stereo;
 
@@ -252,103 +253,6 @@ namespace Notes.Chemistry.Cdk
             return ddt;
         }
 
-        [Aka("ethyl alcohol", "beer", "wine", "liquor")]
-        public static IAtomContainer Ethanol()
-        {
-            var ethanol = new AtomContainer();
-
-            var carbon00 = ethanol.AddAtom("C");
-
-            for (var i = 0; i < 3; i++)
-                ethanol.AddBond(carbon00, ethanol.AddAtom("H"), BondOrder.Single);
-
-            var carbon01 = ethanol.AddAtom("C");
-            ethanol.AddBond(carbon00, carbon01, BondOrder.Single);
-
-            for (var i = 0; i < 2; i++)
-                ethanol.AddBond(carbon01, ethanol.AddAtom("H"), BondOrder.Single);
-
-            var oxy = ethanol.AddAtom("O");
-            ethanol.AddBond(carbon01, oxy, BondOrder.Single);
-            ethanol.AddBond(oxy, ethanol.AddAtom("H"), BondOrder.Single);
-
-            ethanol.SetProperty(NCDK.CDKPropertyName.Title, nameof(ethanol));
-
-            return ethanol;
-        }
-
-        [Aka("isopropanol alcohol")]
-        public static IAtomContainer RubbingAlcohol()
-        {
-            var rubbingAlcohol = new AtomContainer();
-
-            var carbonTop = rubbingAlcohol.AddAtom("C");
-            for (var i = 0; i < 3; i++)
-                rubbingAlcohol.AddBond(carbonTop, rubbingAlcohol.AddAtom("H"), BondOrder.Single);
-
-            var carbonBottom = rubbingAlcohol.AddAtom("C");
-            for(var i = 0; i < 3; i++)
-                rubbingAlcohol.AddBond(carbonBottom, rubbingAlcohol.AddAtom("H"), BondOrder.Single);
-
-            var carbonCenter = rubbingAlcohol.AddAtom("C");
-
-            rubbingAlcohol.AddBond(carbonCenter, carbonTop, BondOrder.Single);
-            rubbingAlcohol.AddBond(carbonCenter, carbonBottom, BondOrder.Single);
-            rubbingAlcohol.AddBond(carbonCenter, rubbingAlcohol.AddAtom("H"), BondOrder.Single);
-
-            var oxy = rubbingAlcohol.AddAtom("O");
-            rubbingAlcohol.AddBond(carbonCenter, oxy, BondOrder.Single);
-
-            rubbingAlcohol.AddBond(oxy, rubbingAlcohol.AddAtom("H"), BondOrder.Single);
-
-            rubbingAlcohol.SetProperty(NCDK.CDKPropertyName.Title, nameof(rubbingAlcohol));
-
-            return rubbingAlcohol;
-        }
-
-        [Aka("ethylene glycol")]
-        public static IAtomContainer Antifreeze()
-        {
-            var antifreeze = new AtomContainer();
-
-            var oxy0 = antifreeze.AddAtom("O");
-            antifreeze.AddBond(antifreeze.AddAtom("H"), oxy0, BondOrder.Single);
-
-            var carbon0 = antifreeze.AddAtom("C");
-            antifreeze.AddBond(oxy0, carbon0, BondOrder.Single);
-
-            for (var i = 0; i < 2; i++)
-                antifreeze.AddBond(carbon0, antifreeze.AddAtom("H"), BondOrder.Single);
-
-            var carbon1 = antifreeze.AddAtom("C");
-            antifreeze.AddBond(carbon0, carbon1, BondOrder.Single);
-
-            for (var i = 0; i < 2; i++)
-                antifreeze.AddBond(carbon1, antifreeze.AddAtom("H"), BondOrder.Single);
-
-            var oxy1 = antifreeze.AddAtom("O");
-            antifreeze.AddBond(carbon1, oxy1, BondOrder.Single);
-
-            antifreeze.AddBond(oxy1, antifreeze.AddAtom("H"), BondOrder.Single);
-
-            antifreeze.SetProperty(NCDK.CDKPropertyName.Title, nameof(antifreeze));
-
-            return antifreeze;
-        }
-
-        public static IAtomContainer Water()
-        {
-            var water = new AtomContainer();
-
-            var oxy = water.AddAtom("O");
-            water.AddBond(oxy, water.AddAtom("H"), BondOrder.Single);
-            water.AddBond(oxy, water.AddAtom("H"), BondOrder.Single);
-
-            water.SetProperty(NCDK.CDKPropertyName.Title, nameof(water));
-
-            return water;
-        }
-
         /// <summary>
         /// See [https://pubchem.ncbi.nlm.nih.gov/compound/2723872]
         /// </summary>
@@ -369,18 +273,6 @@ namespace Notes.Chemistry.Cdk
             var glucose = CdkExtensions.ConvertSMILES("C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O");
             glucose.SetProperty(NCDK.CDKPropertyName.Title, nameof(glucose));
             return glucose;
-        }
-
-        /// <summary>
-        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/5988]
-        /// </summary>
-        /// <returns></returns>
-        [Aka("table sugar")]
-        public static IAtomContainer Sucrose()
-        {
-            var sucrose = CdkExtensions.ConvertSMILES("C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O[C@]2([C@H]([C@@H]([C@H](O2)CO)O)O)CO)O)O)O)O");
-            sucrose.SetProperty(NCDK.CDKPropertyName.Title, nameof(sucrose));
-            return sucrose;
         }
 
         /// <summary>
@@ -458,56 +350,6 @@ namespace Notes.Chemistry.Cdk
             benzaldehyde.SetProperty(NCDK.CDKPropertyName.Title, nameof(benzaldehyde));
 
             return benzaldehyde;
-        }
-
-        public static IAtomContainer Acetone()
-        {
-            var acetone = new AtomContainer();
-
-            var carbon0 = acetone.AddAtom("C");
-            for (var i = 0; i < 3; i++)
-                acetone.AddBond(carbon0, acetone.AddAtom("H"), BondOrder.Single);
-
-            var carbon1 = acetone.AddAtom("C");
-
-            acetone.AddBond(carbon0, carbon1, BondOrder.Single);
-
-            acetone.AddBond(carbon1, acetone.AddAtom("O"), BondOrder.Double);
-
-            var carbon2 = acetone.AddAtom("C");
-
-            for (var i = 0; i < 3; i++)
-                acetone.AddBond(carbon2, acetone.AddAtom("H"), BondOrder.Single);
-
-            acetone.AddBond(carbon1, carbon2, BondOrder.Single);
-
-            acetone.SetProperty(NCDK.CDKPropertyName.Title, nameof(acetone));
-
-            return acetone;
-        }
-
-        [Aka("acetic acid")]
-        public static IAtomContainer Vinegar()
-        {
-            var vinegar = new AtomContainer();
-
-            var carbon0 = vinegar.AddAtom("C");
-            for (var i = 0; i < 3; i++)
-                vinegar.AddBond(carbon0, vinegar.AddAtom("H"), BondOrder.Single);
-
-            var carbon1 = vinegar.AddAtom("C");
-            vinegar.AddBond(carbon0, carbon1, BondOrder.Single);
-
-            vinegar.AddBond(carbon1, vinegar.AddAtom("O"), BondOrder.Double);
-
-            var oxy = vinegar.AddAtom("O");
-            vinegar.AddBond(carbon1, oxy, BondOrder.Single);
-
-            vinegar.AddBond(oxy, vinegar.AddAtom("H"), BondOrder.Single);
-
-            vinegar.SetProperty(NCDK.CDKPropertyName.Title, nameof(vinegar));
-
-            return vinegar;
         }
 
         public static IAtomContainer Glycine()
@@ -683,6 +525,167 @@ namespace Notes.Chemistry.Cdk
 
             acetonitrile.SetProperty(NCDK.CDKPropertyName.Title, nameof(acetonitrile));
             return acetonitrile;
+        }
+
+        #region household chemicals
+
+        /// <summary>
+        /// See [https://pubchem.ncbi.nlm.nih.gov/compound/5988]
+        /// </summary>
+        /// <returns></returns>
+        [Aka("table sugar")]
+        public static IAtomContainer Sucrose()
+        {
+            var sucrose = CdkExtensions.ConvertSMILES("C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O[C@]2([C@H]([C@@H]([C@H](O2)CO)O)O)CO)O)O)O)O");
+            sucrose.SetProperty(NCDK.CDKPropertyName.Title, nameof(sucrose));
+            return sucrose;
+        }
+
+        public static IAtomContainer Acetone()
+        {
+            var acetone = new AtomContainer();
+
+            var carbon0 = acetone.AddAtom("C");
+            for (var i = 0; i < 3; i++)
+                acetone.AddBond(carbon0, acetone.AddAtom("H"), BondOrder.Single);
+
+            var carbon1 = acetone.AddAtom("C");
+
+            acetone.AddBond(carbon0, carbon1, BondOrder.Single);
+
+            acetone.AddBond(carbon1, acetone.AddAtom("O"), BondOrder.Double);
+
+            var carbon2 = acetone.AddAtom("C");
+
+            for (var i = 0; i < 3; i++)
+                acetone.AddBond(carbon2, acetone.AddAtom("H"), BondOrder.Single);
+
+            acetone.AddBond(carbon1, carbon2, BondOrder.Single);
+
+            acetone.SetProperty(NCDK.CDKPropertyName.Title, nameof(acetone));
+
+            return acetone;
+        }
+
+        [Aka("acetic acid")]
+        public static IAtomContainer Vinegar()
+        {
+            var vinegar = new AtomContainer();
+
+            var carbon0 = vinegar.AddAtom("C");
+            for (var i = 0; i < 3; i++)
+                vinegar.AddBond(carbon0, vinegar.AddAtom("H"), BondOrder.Single);
+
+            var carbon1 = vinegar.AddAtom("C");
+            vinegar.AddBond(carbon0, carbon1, BondOrder.Single);
+
+            vinegar.AddBond(carbon1, vinegar.AddAtom("O"), BondOrder.Double);
+
+            var oxy = vinegar.AddAtom("O");
+            vinegar.AddBond(carbon1, oxy, BondOrder.Single);
+
+            vinegar.AddBond(oxy, vinegar.AddAtom("H"), BondOrder.Single);
+
+            vinegar.SetProperty(NCDK.CDKPropertyName.Title, nameof(vinegar));
+
+            return vinegar;
+        }
+
+        [Aka("ethyl alcohol", "beer", "wine", "liquor")]
+        public static IAtomContainer Ethanol()
+        {
+            var ethanol = new AtomContainer();
+
+            var carbon00 = ethanol.AddAtom("C");
+
+            for (var i = 0; i < 3; i++)
+                ethanol.AddBond(carbon00, ethanol.AddAtom("H"), BondOrder.Single);
+
+            var carbon01 = ethanol.AddAtom("C");
+            ethanol.AddBond(carbon00, carbon01, BondOrder.Single);
+
+            for (var i = 0; i < 2; i++)
+                ethanol.AddBond(carbon01, ethanol.AddAtom("H"), BondOrder.Single);
+
+            var oxy = ethanol.AddAtom("O");
+            ethanol.AddBond(carbon01, oxy, BondOrder.Single);
+            ethanol.AddBond(oxy, ethanol.AddAtom("H"), BondOrder.Single);
+
+            ethanol.SetProperty(NCDK.CDKPropertyName.Title, nameof(ethanol));
+
+            return ethanol;
+        }
+
+        [Aka("isopropanol alcohol")]
+        public static IAtomContainer RubbingAlcohol()
+        {
+            var rubbingAlcohol = new AtomContainer();
+
+            var carbonTop = rubbingAlcohol.AddAtom("C");
+            for (var i = 0; i < 3; i++)
+                rubbingAlcohol.AddBond(carbonTop, rubbingAlcohol.AddAtom("H"), BondOrder.Single);
+
+            var carbonBottom = rubbingAlcohol.AddAtom("C");
+            for (var i = 0; i < 3; i++)
+                rubbingAlcohol.AddBond(carbonBottom, rubbingAlcohol.AddAtom("H"), BondOrder.Single);
+
+            var carbonCenter = rubbingAlcohol.AddAtom("C");
+
+            rubbingAlcohol.AddBond(carbonCenter, carbonTop, BondOrder.Single);
+            rubbingAlcohol.AddBond(carbonCenter, carbonBottom, BondOrder.Single);
+            rubbingAlcohol.AddBond(carbonCenter, rubbingAlcohol.AddAtom("H"), BondOrder.Single);
+
+            var oxy = rubbingAlcohol.AddAtom("O");
+            rubbingAlcohol.AddBond(carbonCenter, oxy, BondOrder.Single);
+
+            rubbingAlcohol.AddBond(oxy, rubbingAlcohol.AddAtom("H"), BondOrder.Single);
+
+            rubbingAlcohol.SetProperty(NCDK.CDKPropertyName.Title, nameof(rubbingAlcohol));
+
+            return rubbingAlcohol;
+        }
+
+        [Aka("ethylene glycol")]
+        public static IAtomContainer Antifreeze()
+        {
+            var antifreeze = new AtomContainer();
+
+            var oxy0 = antifreeze.AddAtom("O");
+            antifreeze.AddBond(antifreeze.AddAtom("H"), oxy0, BondOrder.Single);
+
+            var carbon0 = antifreeze.AddAtom("C");
+            antifreeze.AddBond(oxy0, carbon0, BondOrder.Single);
+
+            for (var i = 0; i < 2; i++)
+                antifreeze.AddBond(carbon0, antifreeze.AddAtom("H"), BondOrder.Single);
+
+            var carbon1 = antifreeze.AddAtom("C");
+            antifreeze.AddBond(carbon0, carbon1, BondOrder.Single);
+
+            for (var i = 0; i < 2; i++)
+                antifreeze.AddBond(carbon1, antifreeze.AddAtom("H"), BondOrder.Single);
+
+            var oxy1 = antifreeze.AddAtom("O");
+            antifreeze.AddBond(carbon1, oxy1, BondOrder.Single);
+
+            antifreeze.AddBond(oxy1, antifreeze.AddAtom("H"), BondOrder.Single);
+
+            antifreeze.SetProperty(NCDK.CDKPropertyName.Title, nameof(antifreeze));
+
+            return antifreeze;
+        }
+
+        public static IAtomContainer Water()
+        {
+            var water = new AtomContainer();
+
+            var oxy = water.AddAtom("O");
+            water.AddBond(oxy, water.AddAtom("H"), BondOrder.Single);
+            water.AddBond(oxy, water.AddAtom("H"), BondOrder.Single);
+
+            water.SetProperty(NCDK.CDKPropertyName.Title, nameof(water));
+
+            return water;
         }
 
         [Aka("hydrochloric acid", "hydrogen chloride")]
@@ -877,5 +880,37 @@ namespace Notes.Chemistry.Cdk
             quicklime.Title = nameof(quicklime);
             return quicklime;
         }
+
+        [Aka("acetylsalicylic acid")]
+        public static IAtomContainer Aspirin()
+        {
+            var aspirin = Benzene();
+
+            var carbon00 = aspirin.Atoms[0];
+            var carbon05 = aspirin.Atoms[5];
+
+            var carbon10 = aspirin.AddAtom("C");
+            aspirin.AddBond(carbon00, carbon10, BondOrder.Single);
+            aspirin.AddBond(carbon10, aspirin.AddAtom("O"), BondOrder.Double);
+
+            var oxy01 = aspirin.AddAtom("O");
+            aspirin.AddBond(oxy01, aspirin.AddAtom("H"), BondOrder.Single);
+            aspirin.AddBond(carbon10, oxy01, BondOrder.Single);
+
+            var oxy00 = aspirin.AddAtom("O");
+            aspirin.AddBond(carbon05, oxy00, BondOrder.Single);
+
+            var carbon11 = aspirin.AddAtom("C");
+            aspirin.AddBond(oxy00, carbon11, BondOrder.Single);
+
+            aspirin.AddBond(carbon11, aspirin.AddAtom("C"), BondOrder.Single);
+            aspirin.AddBond(carbon11, aspirin.AddAtom("O"), BondOrder.Double);
+
+            aspirin.Title = nameof(aspirin);
+
+            return aspirin;
+        }
+
+        #endregion
     }
 }

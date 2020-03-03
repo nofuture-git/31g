@@ -372,6 +372,7 @@ namespace Notes.Chemistry.Cdk
 
         /// <summary>
         /// https://github.com/cdk/cdk/wiki/Toolkit-Rosetta
+        /// simplified molecular input line entry system (S.M.I.L.E.S.)
         /// </summary>
         /// <returns>Full path to created .png file</returns>
         public static string DepictSMILES(string canonicalSmiles, string folder = null, int width = 300, int height = 350)

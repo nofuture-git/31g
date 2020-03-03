@@ -323,5 +323,13 @@ namespace Test.Notes.Chemistry
             var pathToImg = quicklime.DepictMolecule();
             Console.WriteLine(pathToImg);
         }
+
+        [Test]
+        public void TestAspirin()
+        {
+            var aspirin = MoleculeFactory.Aspirin();
+            var pathToImg = aspirin.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
     }
 }
