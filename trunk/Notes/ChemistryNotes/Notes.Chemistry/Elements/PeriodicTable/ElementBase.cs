@@ -62,7 +62,14 @@ namespace Notes.Chemistry.Elements.PeriodicTable
             }
         }
 
+        /// <summary>
+        /// mnemonic &apos;Cats have paws&apos; as &apos;Cations are pawsitive&apos;
+        /// </summary>
         public bool IsCation => AtomicNumber > CountElectrons;
+
+        /// <summary>
+        /// mnemonic &apos;A negative ion&apos; as &apos;An-egative-ion&apos;
+        /// </summary>
         public bool IsAnion => AtomicNumber < CountElectrons;
         public bool IsIon => IsCation || IsAnion;
 

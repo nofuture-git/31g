@@ -331,5 +331,29 @@ namespace Test.Notes.Chemistry
             var pathToImg = aspirin.DepictMolecule();
             Console.WriteLine(pathToImg);
         }
+
+        [Test]
+        public void TestEpsomSalt()
+        {
+            var epsomSalt = MoleculeFactory.EpsomSalt();
+            var pathToImg = epsomSalt.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestWoodBleach()
+        {
+            var woodBleach = MoleculeFactory.WoodBleach();
+            var pathToImg = woodBleach.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestRootKiller()
+        {
+            var rootKiller = MoleculeFactory.RootKiller();
+            var pathToImg = rootKiller.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
     }
 }

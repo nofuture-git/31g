@@ -738,6 +738,14 @@ namespace Notes.Chemistry.Cdk
             return bleach;
         }
 
+        /// <remarks>
+        /// <![CDATA[
+        /// Ammonium Acetate by neutralizing clear household ammonia with
+        ///                  distilled white vinegar and evaporating to dryness
+        /// Ammonium Chloride by neutralizing clear household ammonia with
+        ///                  hardware store muriatic acid and evaporating to dryness
+        /// ]]>
+        /// </remarks>
         public static IAtomContainer Ammonia()
         {
             var ammonia = new AtomContainer();
@@ -852,6 +860,12 @@ namespace Notes.Chemistry.Cdk
             return creamOfTartar;
         }
 
+        /// <remarks>
+        /// <![CDATA[
+        /// Sodium Acetate by neutralizing a sodium hydroxide solution with
+        ///                distilled white vinegar and evaporating to dryness
+        /// ]]>
+        /// </remarks>
         [Aka("sodium hydroxide", "caustic soda")]
         public static IAtomContainer Lye()
         {
@@ -909,6 +923,82 @@ namespace Notes.Chemistry.Cdk
             aspirin.Title = nameof(aspirin);
 
             return aspirin;
+        }
+
+        [Aka("magnesium sulfate")]
+        public static IAtomContainer EpsomSalt()
+        {
+            var mol = new AtomContainer();
+
+            var sulfur = mol.AddAtom("S");
+            for (var i = 0; i < 2; i++)
+                mol.AddBond(sulfur, mol.AddAtom("O"), BondOrder.Double);
+
+            var oxy00 = mol.AddAtom("O");
+            oxy00.FormalCharge = -1;
+            mol.AddBond(sulfur, oxy00, BondOrder.Single);
+
+            var oxy01 = mol.AddAtom("O");
+            oxy01.FormalCharge = -1;
+            mol.AddBond(sulfur, oxy01, BondOrder.Single);
+
+            var epsomSalt = new Crystal(mol);
+
+            var mg = epsomSalt.AddAtom("Mg");
+            mg.FormalCharge = 2;
+
+            epsomSalt.Title = nameof(epsomSalt);
+
+            return epsomSalt;
+        }
+
+        [Aka("copper sulfate")]
+        public static IAtomContainer RootKiller()
+        {
+            var mol = new AtomContainer();
+
+            var sulfur = mol.AddAtom("S");
+            for (var i = 0; i < 2; i++)
+                mol.AddBond(sulfur, mol.AddAtom("O"), BondOrder.Double);
+
+            var oxy00 = mol.AddAtom("O");
+            oxy00.FormalCharge = -1;
+            mol.AddBond(sulfur, oxy00, BondOrder.Single);
+
+            var oxy01 = mol.AddAtom("O");
+            oxy01.FormalCharge = -1;
+            mol.AddBond(sulfur, oxy01, BondOrder.Single);
+
+            var rootKiller = new Crystal(mol);
+
+            var mg = rootKiller.AddAtom("Cu");
+            mg.FormalCharge = 2;
+
+            rootKiller.Title = nameof(rootKiller);
+
+            return rootKiller;
+        }
+
+        [Aka("oxalic acid")]
+        public static IAtomContainer WoodBleach()
+        {
+            var woodBleach = new AtomContainer();
+
+            var carbons = new IAtom[2];
+            for (var i = 0; i < 2; i++)
+            {
+                carbons[i] = woodBleach.AddAtom("C");
+                woodBleach.AddBond(carbons[i], woodBleach.AddAtom("O"), BondOrder.Double);
+                var oxy = woodBleach.AddAtom("O");
+                woodBleach.AddBond(carbons[i], oxy, BondOrder.Single);
+                woodBleach.AddBond(oxy, woodBleach.AddAtom("H"), BondOrder.Single);
+            }
+
+            woodBleach.AddBond(carbons[0], carbons[1], BondOrder.Single);
+
+            woodBleach.Title = nameof(woodBleach);
+
+            return woodBleach;
         }
 
         #endregion
