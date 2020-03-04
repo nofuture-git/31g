@@ -14,12 +14,16 @@ using Notes.Chemistry.Elements.PeriodicTable;
 namespace Notes.Chemistry.Cdk
 {
     /// <summary>
+    /// </summary>
+    /// <remarks>
     /// http://cdk.github.io/cdk/2.2/docs/api/index.html
     /// https://sourceforge.net/p/cdk/mailman/cdk-user/
     /// reaction data https://bitbucket.org/dan2097/patent-reaction-extraction/downloads/
     /// 135 million known molecules, 10^60 possible drug-like compounds
     ///  (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6764164/)
-    /// </summary>
+    /// https://chemistry.stackexchange.com/questions/6751/how-does-one-tell-if-a-specific-molecule-is-acidic-or-basic
+    /// division between acid and base is not based on the molecule itself - those labels are tied to reactions
+    /// </remarks>
     public static class CdkExtensions
     {
         public static NCDK.IAtom ToNcdkAtom(this Elements.IElement element)
@@ -280,6 +284,98 @@ namespace Notes.Chemistry.Cdk
             }
         }
 
+        public static double Electronegativity(this IAtom atom)
+        {
+            if (atom == null)
+                return 0D;
+            return atom.ToNfAtom().Electronegativity;
+        }
+
+        public static int ValenceCount(this IAtom atom)
+        {
+            if (atom == null)
+                return 0;
+
+            return atom.ToNfAtom().CountValences;
+        }
+
+        public static IAtom GetMostElectronegativeAtom(this IBond bond)
+        {
+            if (bond == null)
+                return null;
+
+            var atom1 = bond.Begin;
+            var atom2 = bond.End;
+
+            return atom1.Electronegativity() > atom2.Electronegativity() ? atom1 : atom2;
+        }
+
+        public static IAtom GetMostElectronegativeAtom(this IAtomContainer mol)
+        {
+            if (mol == null || !mol.Atoms.Any() || !mol.Bonds.Any())
+                return null;
+
+            IAtom atomOut = null;
+            foreach (var bond in mol.Bonds)
+            {
+                var contender = bond.GetMostElectronegativeAtom();
+
+                var num = contender?.Electronegativity() ?? 0D;
+                var cur = atomOut?.Electronegativity() ?? 0D;
+
+                if (num > cur)
+                    atomOut = contender;
+            }
+
+            return atomOut;
+        }
+
+        /// <summary>
+        /// The sum of FormalCharge of each atom in <see cref="mol"/> as the difference
+        /// between valance and bonds
+        /// </summary>
+        /// <returns>The sum total of all the charges in the molecule</returns>
+        public static double? SumFormalCharge(this IAtomContainer mol)
+        {
+            if (mol == null)
+                return null;
+            if (!mol.Atoms.Any() || !mol.Bonds.Any())
+                return null;
+
+            var sum = 0;
+
+            foreach (var atom in mol.Atoms)
+            {
+                var s = mol.GetConnectedBonds(atom)?.ToList();
+                if(s == null || !s.Any())
+                    continue;
+
+                var actualBondCount = s.Count;
+                var valCount = atom.ValenceCount();
+
+                var charge = actualBondCount - valCount;
+                if (charge == 0)
+                {
+                    sum += atom.FormalCharge.GetValueOrDefault(0);
+                    continue;
+                }
+
+                //check that charge wasn't assigned for having electrons stripped off
+                if (atom.FormalCharge != null 
+                    && atom.FormalCharge.Value != 0 
+                    && Math.Abs(atom.FormalCharge.Value) == Math.Abs(charge))
+                {
+                    sum += atom.FormalCharge.Value;
+                    continue;
+                }
+
+                atom.FormalCharge = charge;
+                sum += charge;
+            }
+
+            return sum;
+        }
+
         public static IAtomContainer ConvertSMILES(string smilesString)
         {
             if (string.IsNullOrWhiteSpace(smilesString))
@@ -314,6 +410,13 @@ namespace Notes.Chemistry.Cdk
                 if (mol.Bonds.Contains(bond))
                     continue;
                 mol.Bonds.Add(bond);
+            }
+
+            foreach (var se in addThis.StereoElements)
+            {
+                if (mol.StereoElements.Contains(se))
+                    continue;
+                mol.StereoElements.Add(se);
             }
 
             return mol;

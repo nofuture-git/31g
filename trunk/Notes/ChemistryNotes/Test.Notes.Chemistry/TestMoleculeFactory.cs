@@ -355,5 +355,37 @@ namespace Test.Notes.Chemistry
             var pathToImg = rootKiller.DepictMolecule();
             Console.WriteLine(pathToImg);
         }
+
+        [Test]
+        public void TestHydronium()
+        {
+            var hydronium = MoleculeFactory.Hydronium();
+            var pathToImg = hydronium.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestMethenium()
+        {
+            var methenium = MoleculeFactory.Methenium();
+            var pathToImg = methenium.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestNitricAcid()
+        {
+            var nitricAcid = MoleculeFactory.NitricAcid();
+            var pathToImg = nitricAcid.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestAquaRegia()
+        {
+            var aquaRegia = MoleculeFactory.AquaRegia();
+            var pathToImg = aquaRegia.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
     }
 }

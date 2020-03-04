@@ -51,5 +51,19 @@ namespace Test.Notes.Chemistry
             Assert.AreEqual(0, testInput01.CountValences);
 
         }
+
+        [Test]
+        public void TestPolarCovalent()
+        {
+            var testInput00 = new Oxygen();
+            var testInput01 = new Hydrogen();
+
+            var testOutput = BondFactory.CreateBond(testInput00, testInput01).GetBond<PolarCovalent>();
+            Assert.IsNotNull(testOutput);
+            var dipole = testOutput.DipoleVectorSize;
+            Assert.IsTrue(dipole > 0D);
+
+            Console.WriteLine(dipole);
+        }
     }
 }

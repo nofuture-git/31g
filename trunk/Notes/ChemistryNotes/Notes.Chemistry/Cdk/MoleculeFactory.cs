@@ -527,6 +527,70 @@ namespace Notes.Chemistry.Cdk
             return acetonitrile;
         }
 
+        public static IAtomContainer Hydronium()
+        {
+            var hydronium = new AtomContainer();
+
+            var oxy = hydronium.AddAtom("O");
+
+            for(var i = 0; i < 3; i++)
+                hydronium.AddBond(oxy, hydronium.AddAtom("H"), BondOrder.Single);
+
+            hydronium.Title = nameof(hydronium);
+
+            return hydronium;
+        }
+
+        public static IAtomContainer Methenium()
+        {
+            var methenium = new AtomContainer();
+            var carbon = methenium.AddAtom("C");
+            for(var i = 0; i < 3; i++)
+                methenium.AddBond(carbon, methenium.AddAtom("H"), BondOrder.Single);
+
+            //the electron pair is gone 
+            carbon.FormalCharge = 1;
+            methenium.Title = nameof(methenium);
+
+            return methenium;
+        }
+
+        [Aka("aqua fortis", "spirit of niter")]
+        public static IAtomContainer NitricAcid()
+        {
+            var nitricAcid = new AtomContainer();
+
+            var nitrogen = nitricAcid.AddAtom("N");
+            nitrogen.FormalCharge = 1;
+            nitricAcid.AddBond(nitrogen, nitricAcid.AddAtom("O"), BondOrder.Double);
+            var oxy = nitricAcid.AddAtom("O");
+            oxy.FormalCharge = -1;
+            nitricAcid.AddBond(nitrogen, oxy, BondOrder.Single);
+            var oh = nitricAcid.AddBond(nitricAcid.AddAtom("O"), nitricAcid.AddAtom("H"), BondOrder.Single);
+            nitricAcid.AddBond(nitrogen, oh.Begin, BondOrder.Single);
+
+            nitricAcid.Title = nameof(nitricAcid);
+            return nitricAcid;
+        }
+
+        /// <summary>
+        /// 3:1 combo of <see cref="MuriaticAcid"/> and <see cref="NitricAcid"/>
+        /// </summary>
+        /// <remarks>
+        /// Named by alchemists since it was able to dissolve &quot;noble metals&quot; of gold and platinum
+        /// </remarks>
+        public static IAtomContainer AquaRegia()
+        {
+            var aquaRegia = NitricAcid();
+
+            for(var i = 0; i < 3; i++)
+                aquaRegia.AddAtomContainer(MuriaticAcid());
+
+            aquaRegia.Title = nameof(aquaRegia);
+
+            return aquaRegia;
+        }
+
         #region household chemicals
 
         /// <summary>
@@ -680,8 +744,13 @@ namespace Notes.Chemistry.Cdk
             var water = new AtomContainer();
 
             var oxy = water.AddAtom("O");
-            water.AddBond(oxy, water.AddAtom("H"), BondOrder.Single);
-            water.AddBond(oxy, water.AddAtom("H"), BondOrder.Single);
+            oxy.Charge = -0.5;
+            var h1 = water.AddAtom("H");
+            h1.Charge = 0.25;
+            var h2 = water.AddAtom("H");
+            h2.Charge = 0.25;
+            water.AddBond(oxy, h1, BondOrder.Single);
+            water.AddBond(oxy, h2, BondOrder.Single);
 
             water.SetProperty(NCDK.CDKPropertyName.Title, nameof(water));
 

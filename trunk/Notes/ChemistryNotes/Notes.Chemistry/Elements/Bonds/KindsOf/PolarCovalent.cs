@@ -23,7 +23,7 @@ namespace Notes.Chemistry.Elements.Bonds.KindsOf
                 DeltaMinus = atom2;
             }
 
-            DipoleVectorSize = DeltaMinus.Electronegativity - DeltaMinus.Electronegativity;
+            DipoleVectorSize = DeltaMinus.Electronegativity - DeltaPlus.Electronegativity;
         }
 
         /// <summary>
