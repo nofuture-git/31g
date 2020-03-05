@@ -169,19 +169,19 @@ namespace Test.Notes.Chemistry
         public void TestIsCarboxylicAcid()
         {
             var testSubject = MoleculeFactory.Vinegar();
-            var testResult = testSubject.IsCarboxylicAcid();
+            var testResult = testSubject.IsCarboxylic();
             Assert.IsTrue(testResult);
 
             testSubject = MoleculeFactory.Glycine();
-            testResult = testSubject.IsCarboxylicAcid();
+            testResult = testSubject.IsCarboxylic();
             Assert.IsTrue(testResult);
 
             testSubject = MoleculeFactory.Acetone();
-            testResult = testSubject.IsCarboxylicAcid();
+            testResult = testSubject.IsCarboxylic();
             Assert.IsFalse(testResult);
 
             testSubject = MoleculeFactory.Benzaldehyde();
-            testResult = testSubject.IsCarboxylicAcid();
+            testResult = testSubject.IsCarboxylic();
             Assert.IsFalse(testResult);
         }
 
@@ -263,6 +263,50 @@ namespace Test.Notes.Chemistry
             testSubject = MoleculeFactory.Ethanol();
             testResult = testSubject.IsEster();
             Assert.IsFalse(testResult);
+        }
+
+        [Test]
+        public void TestIsNitro()
+        {
+            var testSubject = MoleculeFactory.Nos();
+            var testResult = testSubject.IsNitro();
+            Assert.IsTrue(testResult);
+
+            Assert.IsFalse(MoleculeFactory.Ammonia().IsNitro());
+        }
+
+        [Test]
+        public void TestIsCyano()
+        {
+            var testSubject = MoleculeFactory.Amphetamine();
+            var testResult = testSubject.IsCyano();
+            Assert.IsTrue(testResult);
+
+            Assert.IsFalse(MoleculeFactory.Ammonia().IsCyano());
+            Assert.IsFalse(MoleculeFactory.Nos().IsCyano());
+
+        }
+
+        [Test]
+        public void TestIsSulphonic()
+        {
+            var testSubject = MoleculeFactory.MethanesulfonicAcid();
+            var testResult = testSubject.IsSulphonic();
+            Assert.IsTrue(testResult);
+
+            Assert.IsFalse(MoleculeFactory.EpsomSalt().IsSulphonic());
+        }
+
+        [Test]
+        public void TestIsPrimaryAmine()
+        {
+            var testSubject = MoleculeFactory.Methylamine();
+            var testResult = testSubject.IsPrimaryAmine();
+            Assert.IsTrue(testResult);
+
+            Assert.IsTrue(MoleculeFactory.Ammonia().IsPrimaryAmine());
+            Assert.IsFalse(MoleculeFactory.Nos().IsPrimaryAmine());
+
         }
     }
 }

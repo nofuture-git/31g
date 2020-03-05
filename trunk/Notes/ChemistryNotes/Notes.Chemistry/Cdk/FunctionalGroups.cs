@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NCDK;
 using NCDK.RingSearches;
-using NCDK.Templates;
 using Notes.Chemistry.Elements.Groups;
-using Notes.Chemistry.Elements.PeriodicTable;
 
 namespace Notes.Chemistry.Cdk
 {
@@ -52,6 +48,40 @@ namespace Notes.Chemistry.Cdk
         public static bool IsAlkyne(this IAtomContainer mol)
         {
             return TestIsAlk_x_ne(mol, BondOrder.Triple);
+        }
+
+        /// <summary>
+        /// A compound wht a nitrogen atom with two single-bonds to hydrogen atoms
+        /// </summary>
+        /// <param name="mol"></param>
+        /// <returns></returns>
+        [Aka("amino")]
+        public static bool IsPrimaryAmine(this IAtomContainer mol)
+        {
+            if (mol == null)
+                return false;
+
+            foreach (var atom in mol.Atoms)
+            {
+                if (!atom.IsNitrogenAtom())
+                    continue;
+
+                var nitrogenBonds = mol.GetConnectedBonds(atom)?.ToList();
+
+                if (nitrogenBonds == null || !nitrogenBonds.Any())
+                    continue;
+
+                if (nitrogenBonds.Count != 3)
+                    continue;
+
+                if (nitrogenBonds.Count(b =>
+                        b.Order == BondOrder.Single && (b.Begin.IsHydrogenAtom() || b.End.IsHydrogenAtom())) < 2)
+                    continue;
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -181,7 +211,7 @@ namespace Notes.Chemistry.Cdk
         /// </summary>
         /// <param name="mol"></param>
         /// <returns></returns>
-        public static bool IsCarboxylicAcid(this IAtomContainer mol)
+        public static bool IsCarboxylic(this IAtomContainer mol)
         {
             if (mol == null)
                 return false;
@@ -236,6 +266,103 @@ namespace Notes.Chemistry.Cdk
                     continue;
                 if (bond.Order == BondOrder.Triple)
                     return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// A compound with one nitrogen bound to two oxygen
+        /// </summary>
+        /// <param name="mol"></param>
+        /// <returns></returns>
+        public static bool IsNitro(this IAtomContainer mol)
+        {
+            if (mol == null)
+                return false;
+
+            foreach (var atom in mol.Atoms)
+            {
+                if(!atom.IsNitrogenAtom())
+                    continue;
+
+                var nitrogenBonds = mol.GetConnectedBonds(atom);
+
+                if (nitrogenBonds.Count(b => b.IsNitrogen2OxygenBond()) == 2)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// A compound with a carbon-nitrogen single bond
+        /// </summary>
+        /// <param name="mol"></param>
+        /// <returns></returns>
+        public static bool IsCyano(this IAtomContainer mol)
+        {
+            if (mol == null)
+                return false;
+
+            foreach (var bond in mol.Bonds)
+            {
+                if (bond.IsCarbon2NitrogenBond())
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// A compound with one sulfur atom joined to three oxygen
+        /// atoms total in which two of the three are double-bound
+        /// while the third is single bound and, in addition, said
+        /// third oxygen atom is, itself, bound to a hydrogen atom.
+        /// </summary>
+        /// <param name="mol"></param>
+        /// <returns></returns>
+        public static bool IsSulphonic(this IAtomContainer mol)
+        {
+            if (mol == null)
+                return false;
+
+            foreach (var bond in mol.Bonds)
+            {
+                if (bond.Begin.Symbol != "S" && bond.End.Symbol != "S")
+                    continue;
+
+                var sulfur = bond.Begin.Symbol == "S" ? bond.Begin : bond.End;
+
+                var sulfurBonds = mol.GetConnectedBonds(sulfur)?.ToList();
+                if(sulfurBonds == null || !sulfurBonds.Any())
+                    continue;
+
+                if (sulfurBonds.Count < 4)
+                    continue;
+
+                if (sulfurBonds.Count(b => b.Order == BondOrder.Double && (b.Begin.IsOxygenAtom() || b.End.IsOxygenAtom()) ) != 2)
+                    continue;
+
+                var sulfur2OxygenSingle = sulfurBonds.FirstOrDefault(b =>
+                    b.Order == BondOrder.Single && (b.Begin.IsOxygenAtom() || b.End.IsOxygenAtom()));
+
+                if (sulfur2OxygenSingle == null)
+                    continue;
+
+                var singleBoundOxygen = sulfur2OxygenSingle.Begin.IsOxygenAtom()
+                    ? sulfur2OxygenSingle.Begin
+                    : sulfur2OxygenSingle.End;
+
+                var singleBoundOxygenBonds = mol.GetConnectedBonds(singleBoundOxygen)?.ToList();
+                if (singleBoundOxygenBonds == null || !singleBoundOxygenBonds.Any())
+                    continue;
+
+                if (singleBoundOxygenBonds.Count(b =>
+                        b.Order == BondOrder.Single && (b.Begin.IsHydrogenAtom() || b.End.IsHydrogenAtom())) != 1)
+                    continue;
+                return true;
+
             }
 
             return false;

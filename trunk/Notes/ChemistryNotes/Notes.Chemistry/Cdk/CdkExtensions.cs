@@ -443,6 +443,13 @@ namespace Notes.Chemistry.Cdk
             return atom.Symbol == "H";
         }
 
+        public static bool IsNitrogenAtom(this IAtom atom)
+        {
+            if (atom == null)
+                return false;
+            return atom.Symbol == "N";
+        }
+
         public static bool IsCarbon2OxygenBond(this IBond bond)
         {
             return IsCarbonToThis(bond, IsOxygenAtom);
@@ -461,6 +468,15 @@ namespace Notes.Chemistry.Cdk
         public static bool IsCarbon2NitrogenBond(this IBond bond)
         {
             return IsCarbonToThis(bond, atom => atom.Symbol == "N");
+        }
+
+        public static bool IsNitrogen2OxygenBond(this IBond bond)
+        {
+            if (bond == null)
+                return false;
+
+            return bond.Begin.IsNitrogenAtom() && bond.End.IsOxygenAtom()
+                   || bond.Begin.IsOxygenAtom() && bond.End.IsNitrogenAtom();
         }
 
         internal static bool IsCarbonToThis(IBond bond, Predicate<IAtom> other)

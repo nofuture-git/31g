@@ -591,6 +591,53 @@ namespace Notes.Chemistry.Cdk
             return aquaRegia;
         }
 
+        public static IAtomContainer MethanesulfonicAcid()
+        {
+            var methanesulfonicAcid = new AtomContainer();
+
+            var sulfur = methanesulfonicAcid.AddAtom("S");
+
+            for (var i = 0; i < 2; i++)
+                methanesulfonicAcid.AddBond(sulfur, methanesulfonicAcid.AddAtom("O"), BondOrder.Double);
+
+            var oxy = methanesulfonicAcid.AddAtom("O");
+            methanesulfonicAcid.AddBond(sulfur, oxy, BondOrder.Single);
+            methanesulfonicAcid.AddBond(oxy, methanesulfonicAcid.AddAtom("H"), BondOrder.Single);
+
+            var carbon = methanesulfonicAcid.AddAtom("C");
+
+            methanesulfonicAcid.AddBond(sulfur, carbon, BondOrder.Single);
+
+            for (var i = 0; i < 3; i++)
+            {
+                methanesulfonicAcid.AddBond(carbon, methanesulfonicAcid.AddAtom("H"), BondOrder.Single);
+            }
+
+            methanesulfonicAcid.Title = nameof(methanesulfonicAcid);
+
+            return methanesulfonicAcid;
+        }
+
+        public static IAtomContainer Methylamine()
+        {
+            var methylamine = new AtomContainer();
+
+            var carbon = methylamine.AddAtom("C");
+            var nitrogen = methylamine.AddAtom("N");
+
+            for (var i = 0; i < 3; i++)
+                methylamine.AddBond(carbon, methylamine.AddAtom("H"), BondOrder.Single);
+
+            for (var i = 0; i < 2; i++)
+                methylamine.AddBond(nitrogen, methylamine.AddAtom("H"), BondOrder.Single);
+
+            methylamine.AddBond(carbon, nitrogen, BondOrder.Single);
+
+            methylamine.Title = nameof(methylamine);
+
+            return methylamine;
+        }
+
         #region household chemicals
 
         /// <summary>
@@ -1068,6 +1115,45 @@ namespace Notes.Chemistry.Cdk
             woodBleach.Title = nameof(woodBleach);
 
             return woodBleach;
+        }
+
+        [Aka("nitro")]
+        public static IAtomContainer Nos()
+        {
+            var nos = new AtomContainer();
+
+            var nitrogen = nos.AddAtom("N");
+            nos.AddBond(nitrogen, nos.AddAtom("O"), BondOrder.Single);
+            nos.AddBond(nitrogen, nos.AddAtom("O"), BondOrder.Single);
+            nos.Title = nameof(nos);
+            return nos;
+        }
+
+        public static IAtomContainer Amphetamine()
+        {
+            var amphetamine = Benzene();
+            var carbon00 = amphetamine.Atoms[0];
+
+            var carbon01 = amphetamine.AddAtom("C");
+            amphetamine.AddBond(carbon00, carbon01, BondOrder.Single);
+
+            var carbon02 = amphetamine.AddAtom("C");
+            amphetamine.AddBond(carbon01, carbon02, BondOrder.Single);
+
+            var nitrogen = amphetamine.AddAtom("N");
+
+            amphetamine.AddBond(carbon02, nitrogen, BondOrder.Single);
+            
+            amphetamine.AddBond(nitrogen, amphetamine.AddAtom("H"), BondOrder.Single);
+            amphetamine.AddBond(nitrogen, amphetamine.AddAtom("H"), BondOrder.Single);
+
+            amphetamine.AddBond(carbon02, amphetamine.AddAtom("C"), BondOrder.Single);
+
+            amphetamine.Title = nameof(amphetamine);
+
+            return amphetamine;
+
+
         }
 
         #endregion

@@ -387,5 +387,37 @@ namespace Test.Notes.Chemistry
             var pathToImg = aquaRegia.DepictMolecule();
             Console.WriteLine(pathToImg);
         }
+
+        [Test]
+        public void TestNos()
+        {
+            var nos = MoleculeFactory.Nos();
+            var pathToImg = nos.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestAmphetamine()
+        {
+            var amphetamine = MoleculeFactory.Amphetamine();
+            var pathToImg = amphetamine.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestMethanesulfonicAcid()
+        {
+            var methanesulfonicAcid = MoleculeFactory.MethanesulfonicAcid();
+            var pathToImg = methanesulfonicAcid.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestMethylamine()
+        {
+            var methylamine = MoleculeFactory.Methylamine();
+            var pathToImg = methylamine.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
     }
 }
