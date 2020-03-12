@@ -2,6 +2,10 @@
 <head>
 <!-- https://www.w3.org/TR/MathML/ -->
 <title>Notes MathML</title>
+<!-- use MathJax so the MathML is visible in all browsers -->
+<script type="text/javascript" id="MathJax-script" async 
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 </head>
 <body>
 
@@ -51,6 +55,13 @@ Common nodes
 <!-- 
 full list at
  - https://www.w3.org/TR/MathML/appendixc.html
+ - support with MathJax recommends 
+  - src https://docs.mathjax.org/en/latest/input/mathml.html
+  - best practice is to use the unicode values 
+    for interop
+  - don't use self-closed XML nodes (e.g. <my-node some="thing" /> )
+   - use open and close nodes
+ - 
 
 <mo>&#x2032;</mo> "prime"
 <mi>&#x3C0;</mi> "Pi"
@@ -95,16 +106,16 @@ full list at
           <mn> 1 </mn>
         </mrow>
       </msup>
-      <mo>&it;</mo>
+      <mo>&#x2062;</mo>
       <mi>f</mi>
-      <mo>&af;</mo>
+      <mo>&#x2062;</mo>
       <mrow>
         <mo>(</mo><mi>x</mi><mo>)</mo>
       </mrow>
-      <mo>&it;</mo>
+      <mo>&#x2062;</mo>
       <mrow>
         <mi>&#x1D41D;</mi>
-        <mo>&af;</mo>
+        <mo>&#x2062;</mo>
         <mi>x</mi>
       </mrow>
     </mrow>
@@ -127,32 +138,32 @@ full list at
     </msubsup>
     <mrow>
       <mi>g</mi>
-      <mo>&af;</mo>
+      <mo>&#x2062;</mo>
       <mrow>
         <mo>(</mo><mi>t</mi><mo>)</mo>
       </mrow>
     </mrow>
-    <mo>&it;</mo>
+    <mo>&#x2062;</mo>
     <msup>
       <mrow>
         <mn>&#x2147;</mn>
       </mrow>
       <mrow>
         <mn>-2</mn>
-        <mo>&it;</mo>
+        <mo>&#x2062;</mo>
         <mi>&#x3C0;</mi>
-        <mo>&it;</mo>
+        <mo>&#x2062;</mo>
         <mi>&#x2148;</mi>
-        <mo>&it;</mo>
+        <mo>&#x2062;</mo>
         <mi>f</mi>
-        <mo>&it;</mo>
+        <mo>&#x2062;</mo>
         <mi>t</mi>
       </mrow>
     </msup>
-    <mo>&it;</mo>
+    <mo>&#x2062;</mo>
     <mrow>
       <mi>&#x1D41D;</mi>
-      <mo>&af;</mo>
+      <mo>&#x2062;</mo>
       <mi>t</mi>
     </mrow>
   </mrow>
