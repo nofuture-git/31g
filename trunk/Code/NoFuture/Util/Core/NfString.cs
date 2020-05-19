@@ -156,8 +156,11 @@ namespace NoFuture.Util.Core
         /// <returns></returns>
         public static string DistillSpaces(this string value)
         {
-            if (String.IsNullOrWhiteSpace(value))
+            if (value == null)
                 return null;
+
+            if (String.IsNullOrWhiteSpace(value))
+                return string.Empty;
             value = value.Replace((char)0xA0, (char)0x20);
             while (true)
             {
@@ -492,6 +495,10 @@ namespace NoFuture.Util.Core
                 separator = NfSettings.DefaultTypeSeparator;
 
             name = name.Trim();
+
+            if (name.Length == 1)
+                return name.ToUpper();
+
             name =
                 new string(
                     name.ToCharArray()

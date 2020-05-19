@@ -82,5 +82,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\US_Postal_State_Abbrev.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\US_PostalStreet_Names.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

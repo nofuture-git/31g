@@ -13,7 +13,7 @@ namespace NoFuture.Rand.Tests.GeoTests
         [Test]
         public void TryParseTests()
         {
-            var testInput = "102 MAIN ST APT 101";
+            var testInput = "102 MAIN ST APT. 101";
 
             UsStreetPo testResultOut = null;
             var testResult = UsStreetPo.TryParse(testInput, out testResultOut);
@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.AreEqual("102", testResultOut.PostBox);
             Assert.AreEqual("MAIN", testResultOut.StreetName);
             Assert.AreEqual("ST", testResultOut.StreetKind);
-            Assert.AreEqual("APT 101", testResultOut.SecondaryUnit);
+            Assert.AreEqual("APT. 101", testResultOut.SecondaryUnit);
 
             testInput = "1356 EXECUTIVE DR STE 202";
             testResult = UsStreetPo.TryParse(testInput, out testResultOut);
@@ -36,7 +36,8 @@ namespace NoFuture.Rand.Tests.GeoTests
             testResult = UsStreetPo.TryParse(testInput, out testResultOut);
             Assert.IsTrue(testResult);
             Assert.AreEqual("7227", testResultOut.PostBox);
-            Assert.AreEqual("N. 16th", testResultOut.StreetName);
+            Assert.AreEqual("16th", testResultOut.StreetName);
+            Assert.AreEqual("N",testResultOut.GetData().ThoroughfareDirectional);
             Assert.AreEqual("St.", testResultOut.StreetKind);
             Assert.AreEqual("235", testResultOut.SecondaryUnit);
 
@@ -53,6 +54,10 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.AreEqual("40", testResultOut.PostBox);
             Assert.AreEqual("Commerce", testResultOut.StreetName);
             Assert.AreEqual("Street", testResultOut.StreetKind);
+
+            testInput = "9848 Upper 173rd Ct W";
+            testResult = UsStreetPo.TryParse(testInput, out testResultOut);
+            Assert.IsFalse(testResult);
 
             var oddAddrs = new[]
             {
@@ -74,6 +79,7 @@ namespace NoFuture.Rand.Tests.GeoTests
                 "P.O. BOX 1049",
                 "P.O. Box 521653",
                 "PMB 189",
+                
             };
             foreach (var addr in oddAddrs)
             {
@@ -132,7 +138,7 @@ namespace NoFuture.Rand.Tests.GeoTests
         [Test]
         public void TestUsPostalStreetKindAbbrev()
         {
-            var testResult = UsStreetPo.UsPostalStreeKindAbbrev;
+            var testResult = UsStreetPo.UsPostalStreetKindAbbrev;
             Assert.IsNotNull(testResult);
             Assert.AreNotEqual(0, testResult.Length);
         }

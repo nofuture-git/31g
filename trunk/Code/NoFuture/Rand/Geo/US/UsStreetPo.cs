@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
+using NoFuture.Util.Core;
 
 namespace NoFuture.Rand.Geo.US
 {
@@ -32,6 +33,7 @@ namespace NoFuture.Rand.Geo.US
         public string CountyTownship { get; set; }
         public string PostBox => GetData().ThoroughfareNumber;
         public string StreetName => GetData().ThoroughfareName;
+        public string Directional => GetData().ThoroughfareDirectional;
         public string StreetKind => GetData().ThoroughfareType;
         public string SecondaryUnit => $"{GetData().SecondaryUnitDesignator} {GetData().SecondaryUnitId}".Trim();
 
@@ -47,7 +49,7 @@ namespace NoFuture.Rand.Geo.US
             }
         }
 
-        internal static string[] UsPostalStreeKindAbbrev
+        internal static string[] UsPostalStreetKindAbbrev
         {
             get
             {
@@ -69,6 +71,11 @@ namespace NoFuture.Rand.Geo.US
             }
         }
 
+        internal static string[] UsPostalDirectionalAbbrev
+        {
+            get { return new[] {"N", "S", "E", "W", "NE", "NW", "SE", "SW"}; }
+        }
+
         public static string RegexUsPostalStreetKindFullName =>
             @"\x20(" + string.Join("|", UsPostalStreetKindFullNames) + @")(\x2e|\x20|$)";
 
@@ -79,10 +86,13 @@ namespace NoFuture.Rand.Geo.US
         /// see [http://pe.usps.gov/text/pub28/28apc_002.htm]
         /// </remarks>
         public static string RegexUsPostalStreeKindAbbrev =>
-            @"\x20(" + string.Join("|", UsPostalStreeKindAbbrev) + @")(\x2e|\x20|$)";
+            @"\x20(" + string.Join("|", UsPostalStreetKindAbbrev) + @")(\x2e|\x20|$)";
 
         public static string RegexUsPostalSecondaryUnits =>
-            @"\x20(" + string.Join("|", UsPostalSecondaryUnits) + @")\x20([\x21-\x7a]*)?";
+            @"\x20(" + string.Join(@"\x2e?|", UsPostalSecondaryUnits) + @")\x20([\x21-\x7a]*)?";
+
+        public static string RegexUsPostalDirectionalAbbrev =>
+            @"\x20(" + string.Join(@"|", UsPostalDirectionalAbbrev) + @")(\x2e|\x20|$)";
 
         #endregion
 
@@ -100,7 +110,13 @@ namespace NoFuture.Rand.Geo.US
                 return false;
             }
 
-            addressLine = addressLine.Trim();
+            addressLine = addressLine.DistillSpaces().Trim();
+
+            if (addressLine.ToCharArray().All(char.IsDigit))
+            {
+                streetPo = null;
+                return false;
+            }
 
             var regex = new Regex(STD_ADDR_LINE_REGEX,RegexOptions.IgnoreCase);
             if (!regex.IsMatch(addressLine))
@@ -124,7 +140,8 @@ namespace NoFuture.Rand.Geo.US
                 ThoroughfareName = string.Empty,
                 ThoroughfareType = string.Empty,
                 SecondaryUnitDesignator = string.Empty,
-                SecondaryUnitId = string.Empty
+                SecondaryUnitId = string.Empty,
+                ThoroughfareDirectional = string.Empty
             };
 
             var addrNumber = matches.Groups[1].Success && matches.Groups[1].Captures.Count > 0
@@ -190,6 +207,18 @@ namespace NoFuture.Rand.Geo.US
                 addrData.SecondaryUnitDesignator = secUnitId.Trim();
             }
 
+            regex = new Regex(RegexUsPostalDirectionalAbbrev, RegexOptions.IgnoreCase);
+            if (regex.IsMatch(addressLine))
+            {
+                matches = regex.Match(addressLine);
+                var directional = matches.Groups.Count > 0 && matches.Groups[0].Success &&
+                                  matches.Groups[0].Captures.Count > 0
+                    ? matches.Groups[0].Captures[0].Value
+                    : string.Empty;
+
+                addrData.ThoroughfareDirectional = directional;
+            }
+
             //consider whatever remains after rem of other parts as 'StreetName'
             var streetName = addressLine;
 
@@ -201,8 +230,20 @@ namespace NoFuture.Rand.Geo.US
                 streetName = streetName.Replace(addrData.SecondaryUnitDesignator, string.Empty);
             if(addrData.SecondaryUnitId.Length > 0)
                 streetName = streetName.Replace(addrData.SecondaryUnitId, string.Empty);
+            if (addrData.ThoroughfareDirectional.Length > 0)
+            {
+                streetName = streetName.Replace(addrData.ThoroughfareDirectional, string.Empty);
+                //only now do we want to drop spaces and periods from the directional
+                addrData.ThoroughfareDirectional = addrData.ThoroughfareDirectional.Replace(".", "").Trim();
+            }
 
-            addrData.ThoroughfareName = streetName.Replace("#", "").Trim();//per the standard, these should be removed
+            addrData.ThoroughfareName = streetName.Replace("#", "").DistillSpaces().Trim();//per the standard, these should be removed
+
+            if (string.IsNullOrWhiteSpace(addrData.ThoroughfareName))
+            {
+                streetPo = null;
+                return false;
+            }
 
             //consider whatever remains as the street's name
             streetPo = new UsStreetPo(addrData) {Src = addressLine};

@@ -50,3 +50,11 @@ WA
 WI
 WV
 WY
+PR
+AS
+FM
+GU
+MH
+MP
+PW
+VI
