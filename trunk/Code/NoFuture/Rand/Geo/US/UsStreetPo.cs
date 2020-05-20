@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Xml;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Util.Core;
@@ -19,9 +21,13 @@ namespace NoFuture.Rand.Geo.US
 
         public const string POUND_UNIT_ID = @"\x20\x23\x20?([0-9]+)";
 
+        internal static XmlDocument UsPostalStreetKindProbXml;
+        private static Dictionary<string, double> _streetKind2Prob = new Dictionary<string, double>();
+
         private static string[] _usPostalStreetKindFullName;
-        private static string[] _usPostalStreeKindAbbrev;
+        private static string[] _usPostalStreetKindAbbrev;
         private static string[] _usPostalSecondaryUnits;
+        private static string[] _usPostalStreetNames;
 
         #endregion
 
@@ -33,9 +39,28 @@ namespace NoFuture.Rand.Geo.US
         public string CountyTownship { get; set; }
         public string PostBox => GetData().ThoroughfareNumber;
         public string StreetName => GetData().ThoroughfareName;
-        public string Directional => GetData().ThoroughfareDirectional;
         public string StreetKind => GetData().ThoroughfareType;
-        public string SecondaryUnit => $"{GetData().SecondaryUnitDesignator} {GetData().SecondaryUnitId}".Trim();
+        public string Line1 => ToString();
+        public string Line2 => $"{GetData().SecondaryUnitDesignator} {GetData().SecondaryUnitId}".Trim();
+
+        /// <summary>
+        /// Dictionary parsed from US Postal street kinds probability xml data
+        /// </summary>
+        public static Dictionary<string, double> UsPostalStreetKind2Prob
+        {
+            get
+            {
+                if (_streetKind2Prob.Any())
+                    return _streetKind2Prob;
+                UsPostalStreetKindProbXml = UsPostalStreetKindProbXml ?? XmlDocXrefIdentifier.GetEmbeddedXmlDoc("US_PostalStreet_Kind_ProbTable.xml",
+                                                Assembly.GetExecutingAssembly());
+                if (UsPostalStreetKindProbXml == null)
+                    return null;
+                _streetKind2Prob = XmlDocXrefIdentifier.GetProbTable(UsPostalStreetKindProbXml, "us-postal-street-kind", "id");
+
+                return _streetKind2Prob;
+            }
+        }
 
         internal static string[] UsPostalStreetKindFullNames
         {
@@ -53,10 +78,10 @@ namespace NoFuture.Rand.Geo.US
         {
             get
             {
-                if (_usPostalStreeKindAbbrev != null && _usPostalStreeKindAbbrev.Any())
-                    return _usPostalStreeKindAbbrev;
-                _usPostalStreeKindAbbrev = ReadTextFileData("US_PostalStreet_Kind_Abbrev.txt");
-                return _usPostalStreeKindAbbrev;
+                if (_usPostalStreetKindAbbrev != null && _usPostalStreetKindAbbrev.Any())
+                    return _usPostalStreetKindAbbrev;
+                _usPostalStreetKindAbbrev = ReadTextFileData("US_PostalStreet_Kind_Abbrev.txt");
+                return _usPostalStreetKindAbbrev;
             }
         }
 
@@ -68,6 +93,17 @@ namespace NoFuture.Rand.Geo.US
                     return _usPostalSecondaryUnits;
                 _usPostalSecondaryUnits = ReadTextFileData("US_Postal_Secondary_Units.txt");
                 return _usPostalSecondaryUnits;
+            }
+        }
+
+        internal static string[] UsPostalStreetNames
+        {
+            get
+            {
+                if (_usPostalStreetNames != null && _usPostalStreetNames.Any())
+                    return _usPostalStreetNames;
+                _usPostalStreetNames = ReadTextFileData("US_PostalStreet_Names.txt");
+                return _usPostalStreetNames;
             }
         }
 
@@ -95,6 +131,52 @@ namespace NoFuture.Rand.Geo.US
             @"\x20(" + string.Join(@"|", UsPostalDirectionalAbbrev) + @")(\x2e|\x20|$)";
 
         #endregion
+
+        /// <summary>
+        /// Selects, at random, an American street kind (e.g. 'St', 'Road', 'Cir', etc.).
+        /// </summary>
+        [RandomFactory]
+        public static string RandomAmericanStreetKind()
+        {
+            var stKind2Prob = UsPostalStreetKind2Prob;
+
+            var val = !stKind2Prob.Any() ? "st" : Etx.RandomPickOne(stKind2Prob);
+            return val.CapWords(' ');
+        }
+
+        [RandomFactory]
+        public static string RandomAmericanStreetName()
+        {
+            var usStNames = UsPostalStreetNames;
+            return usStNames.Any() ? Etx.RandomPickOne(usStNames) : "Elm";
+        }
+
+        [RandomFactory]
+        public static string RandomAmericanAddressLine2()
+        {
+            var pickOne = Etx.MyRand.Next(0, 10);
+            switch (pickOne)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    return $"Apt {Etx.MyRand.Next(0, 999)}";
+                case 3:
+                    return $"Suite {Etx.MyRand.Next(0, 999)}";
+                case 4:
+                    return $"Apt. {Etx.MyRand.Next(0, 99)}";
+                case 5:
+                    return $"Ste. {Etx.MyRand.Next(0, 99)}";
+                case 6:
+                    return $"Unit {Etx.MyRand.Next(0, 999)}";
+                case 8:
+                    return $"P.O. Box {Etx.MyRand.Next(0, 999)}";
+                case 9:
+                    return $"PO Box {Etx.MyRand.Next(0, 999)}";
+                default:
+                    return $"Apt {Etx.MyRand.Next(0, 999)}";
+            }
+        }
 
         /// <summary>
         /// Based on the USPS Pub. 28 [http://pe.usps.gov/cpim/ftp/pubs/Pub28/pub28.pdf]
@@ -259,6 +341,17 @@ namespace NoFuture.Rand.Geo.US
                 itemData.Add(textFormat("AddressLine1"), ToString());
 
             return itemData;
+        }
+
+        /// <summary>
+        /// Prints the address-line-1 as it would appear as post marked.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            var data = GetData();
+            return NfString.DistillSpaces(string.Join(" ", data.ThoroughfareNumber, data.ThoroughfareDirectional, data.ThoroughfareName,
+                data.ThoroughfareType).Trim());
         }
     }
 }

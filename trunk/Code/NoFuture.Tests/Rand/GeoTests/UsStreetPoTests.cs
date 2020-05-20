@@ -22,7 +22,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.AreEqual("102", testResultOut.PostBox);
             Assert.AreEqual("MAIN", testResultOut.StreetName);
             Assert.AreEqual("ST", testResultOut.StreetKind);
-            Assert.AreEqual("APT. 101", testResultOut.SecondaryUnit);
+            Assert.AreEqual("APT. 101", testResultOut.Line2);
 
             testInput = "1356 EXECUTIVE DR STE 202";
             testResult = UsStreetPo.TryParse(testInput, out testResultOut);
@@ -30,7 +30,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.AreEqual("1356", testResultOut.PostBox);
             Assert.AreEqual("EXECUTIVE", testResultOut.StreetName);
             Assert.AreEqual("DR", testResultOut.StreetKind);
-            Assert.AreEqual("STE 202", testResultOut.SecondaryUnit);
+            Assert.AreEqual("STE 202", testResultOut.Line2);
 
             testInput = "7227 N. 16th St. #235";
             testResult = UsStreetPo.TryParse(testInput, out testResultOut);
@@ -39,7 +39,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.AreEqual("16th", testResultOut.StreetName);
             Assert.AreEqual("N",testResultOut.GetData().ThoroughfareDirectional);
             Assert.AreEqual("St.", testResultOut.StreetKind);
-            Assert.AreEqual("235", testResultOut.SecondaryUnit);
+            Assert.AreEqual("235", testResultOut.Line2);
 
             testInput = "250 GLEN ST";
             testResult = UsStreetPo.TryParse(testInput, out testResultOut);
@@ -90,7 +90,7 @@ namespace NoFuture.Rand.Tests.GeoTests
                 Console.WriteLine($"PostBox: '{testResultOut.PostBox}'");
                 Console.WriteLine($"StreetName: '{testResultOut.StreetName}'" );
                 Console.WriteLine($"StreetKind: '{testResultOut.StreetKind}'");
-                Console.WriteLine($"SecondaryUnit: '{testResultOut.SecondaryUnit}'");
+                Console.WriteLine($"SecondaryUnit: '{testResultOut.Line2}'");
                 Console.WriteLine($"CountyTownship: '{testResultOut.CountyTownship}'");
             }
 
@@ -190,6 +190,17 @@ namespace NoFuture.Rand.Tests.GeoTests
 
             Assert.IsTrue(testSubject.Equals(testAreEqual));
 
+        }
+
+        [Test]
+        public void TestRandomAmericanStreetKind()
+        {
+            for (var i = 0; i < 25; i++)
+            {
+                var testResult = UsStreetPo.RandomAmericanStreetKind();
+                Assert.IsNotNull(testResult);
+                Console.WriteLine(testResult);
+            }
         }
     }
 }

@@ -18,6 +18,7 @@ namespace NoFuture.Rand.Tests.GeoTests
             Assert.IsNotNull(testResult);
             Assert.IsNotNull(testResult.Street);
             Assert.IsNotNull(testResult.CityArea);
+            Console.WriteLine(testResult);
         }
 
         [Test]

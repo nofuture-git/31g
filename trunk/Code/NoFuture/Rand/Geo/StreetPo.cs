@@ -4,6 +4,7 @@ using System.Globalization;
 using NoFuture.Rand.Core;
 using NoFuture.Rand.Core.Enums;
 using NoFuture.Rand.Geo.US;
+using NoFuture.Util.Core;
 using NfString = NoFuture.Util.Core.NfString;
 
 namespace NoFuture.Rand.Geo
@@ -59,116 +60,26 @@ namespace NoFuture.Rand.Geo
         public static UsStreetPo RandomAmericanStreet()
         {
             var addressData = new AddressData();
-            var pickOne = Etx.MyRand.Next(0, 10);
-            var pickAnother = Etx.MyRand.Next(0, 20);
-            switch (pickOne)
+
+            addressData.ThoroughfareNumber = Etx.RandomCoinToss()
+                ? Etx.MyRand.Next(0, 2999).ToString(CultureInfo.InvariantCulture)
+                : Etx.MyRand.Next(0, 29999).ToString(CultureInfo.InvariantCulture);
+
+            addressData.ThoroughfareName = UsStreetPo.RandomAmericanStreetName();
+            if (!Etx.RandomRollBelowOrAt(6, Etx.Dice.OneHundred))
             {
-                case 0:
-                    addressData.ThoroughfareType = "St";
-                    break;
-                case 1:
-                    addressData.ThoroughfareType = "Rd";
-                    break;
-                case 2:
-                    addressData.ThoroughfareType = "Blvd";
-                    break;
-                case 3:
-                    addressData.ThoroughfareType = "Ln";
-                    break;
-                case 4:
-                    addressData.ThoroughfareType = "Drive";
-                    break;
-                case 5:
-                    addressData.ThoroughfareType = "Ct";
-                    break;
-                case 6:
-                    addressData.ThoroughfareType = $"Unit #{Etx.MyRand.Next(1, 99)}";
-                    break;
-                case 7:
-                    addressData.ThoroughfareType = "Hwy";
-                    break;
-                case 8:
-                    addressData.ThoroughfareType = "Avenue";
-                    break;
-                case 9:
-                    addressData.ThoroughfareType = $"Alt {Etx.MyRand.Next(0, 99):000}";
-                    break;
-                default:
-                    addressData.ThoroughfareType = string.Empty;
-                    break;
+                addressData.ThoroughfareType = UsStreetPo.RandomAmericanStreetKind();
             }
 
-            switch (pickAnother)
+            if (Etx.RandomRollBelowOrAt(20, Etx.Dice.OneHundred))
             {
-                case 0:
-                    addressData.ThoroughfareName = "Second";
-                    break;
-                case 1:
-                    addressData.ThoroughfareName = "Third";
-                    break;
-                case 2:
-                    addressData.ThoroughfareName = "First";
-                    break;
-                case 3:
-                    addressData.ThoroughfareName = "Fourth";
-                    break;
-                case 4:
-                    addressData.ThoroughfareName = "Park";
-                    break;
-                case 5:
-                    addressData.ThoroughfareName = "Main";
-                    break;
-                case 6:
-                    addressData.ThoroughfareName = "Sixth";
-                    break;
-                case 7:
-                    addressData.ThoroughfareName = "Oak";
-                    break;
-                case 8:
-                    addressData.ThoroughfareName = "Seventh";
-                    break;
-                case 9:
-                    addressData.ThoroughfareName = "Pine";
-                    break;
-                case 10:
-                    addressData.ThoroughfareName = "Maple";
-                    break;
-                case 11:
-                    addressData.ThoroughfareName = "Cedar";
-                    break;
-                case 12:
-                    addressData.ThoroughfareName = "Eighth";
-                    break;
-                case 13:
-                    addressData.ThoroughfareName = "Elm";
-                    break;
-                case 14:
-                    addressData.ThoroughfareName = "View";
-                    break;
-                case 15:
-                    addressData.ThoroughfareName = "Washington";
-                    break;
-                case 16:
-                    addressData.ThoroughfareName = "Ninth";
-                    break;
-                case 17:
-                    addressData.ThoroughfareName = "Lake";
-                    break;
-                case 18:
-                    addressData.ThoroughfareName = "Hill";
-                    break;
-                case 19:
-                    addressData.ThoroughfareName = "Manor";
-                    break;
-                case 20:
-                    addressData.ThoroughfareName = "Jefferson";
-                    break;
-                default:
-                    addressData.ThoroughfareName = string.Empty;
-                    break;
+                addressData.ThoroughfareDirectional = Etx.RandomPickOne(UsStreetPo.UsPostalDirectionalAbbrev);
             }
 
-            addressData.ThoroughfareNumber = Etx.MyRand.Next(0, 999).ToString(CultureInfo.InvariantCulture);
+            if (Etx.RandomRollBelowOrAt(13, Etx.Dice.OneHundred))
+            {
+                addressData.SecondaryUnitDesignator = UsStreetPo.RandomAmericanAddressLine2();
+            }
 
             return new UsStreetPo(addressData);
         }
