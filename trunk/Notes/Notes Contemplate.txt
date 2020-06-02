@@ -14,6 +14,9 @@ https://www.youtube.com/watch?v=lvxJoUuG018&t=1450s
 
 Moby Dick 
 Herman Melville
+
+Thinking Fast and Slow
+Daniel Kahneman
 ----
 
 ----
@@ -207,3 +210,48 @@ always weaker than the person committing the violence. (10)
  thee; from hell's heart I stab at thee; for hate's sake I spit my last breath at thee.
  Chapter 135
  ----
+ 
+----
+Heuristics & Biases
+- Law of Small Numbers:  when a conclusion is drawn for too-small a sample
+  - can mean a bias based on one-or-two personal encounters
+  - in probability, should be noticed that results from one sample are different from the next 
+
+- Anchoring Effect: a psychological phenomena where a person is given a numerical value  to 
+  some unknown quantity prior to be asked to estimate it.  The subsequent estimate, by the person,
+  will always stay near the given value.
+  - The mind interprets the given value as only 'mostly' correct, it only needs to be slightly 
+    adjusted up or down.
+    
+- Availability Heuristic: when a person is asked to estimate the likelihood of something
+  the person who is able to easily recall such an occurrence from memory will always estimate 
+  a higher numerical value.
+  
+- Affect Heuristic: an instance of substitution where its easier to answer, 
+  "how do I feel about such-and-such" than it is to answer, "what do I think about such-and-such"
+  - an unwillingness to consider complexity which requires trade-offs and compromise
+  - easily swayed by trivial details
+  - inadequately sensitive to differences between low and negligibly low probabilities
+  
+- Availability Cascade: media reports of relative minor event leads to public panic.
+   - is an iterative social process 
+   1. is a media report of some risk 
+   2. stirs emotion in some segment of the public
+   3. repeat at step one with more
+   
+- Small Risk Effect: mental phenomena where small risks are either ignored or given far to much
+
+- Representativeness Heuristic: an instance of substitution where it is easier to imagine some
+  mental stage-play then to deal with numbers
+  - a person is substituted for an easily generated mental impression
+  - the mental impression is then the actor on a stage
+  - the answer is then given as, "how plausible is this play?"
+  - this heuristic DOES produce better results than chance guess
+  
+- "We consider it morally desirable for base rates to be treated as statistical 
+   facts about the group rather than as presumptive facts about individuals."
+   Chp 16
+   
+- Regression to the Mean: a poor performance is very likely to be followed by an 
+  improvement regardless
+----  
