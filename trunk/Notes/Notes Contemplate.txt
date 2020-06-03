@@ -212,7 +212,6 @@ always weaker than the person committing the violence. (10)
  ----
  
 ----
-Heuristics & Biases
 - Law of Small Numbers:  when a conclusion is drawn for too-small a sample
   - can mean a bias based on one-or-two personal encounters
   - in probability, should be noticed that results from one sample are different from the next 
@@ -254,4 +253,23 @@ Heuristics & Biases
    
 - Regression to the Mean: a poor performance is very likely to be followed by an 
   improvement regardless
-----  
+  
+- Loss Aversion: the concept that losing hurts more than winning excites
+  
+- Endowment Effect: a person will value something more once they have attained it.
+  - example being Super Bowl tickets a buyer will pay up to $500 to get but won't sell
+    for $3000+
+    
+- Possibility Effect: a person will consider the manifestation of a 
+  possibility (e.g. 0% chance to 1%) much higher than an identical increase
+  beyond nothing (e.g. 37% to 38% - who cares)
+  
+- Certainty Effect: like the above only on the other end, the value of certainty 
+  is much higher than an identical increase 
+  elsewhere (e.g. 37% to 38% compared to 99% to 100%)
+  
+- Denominator Neglect: when the numerator is given as a mental narrative the 
+  denominator is often neglected and poor decisions result
+  
+- Sunk Cost Fallacy: not knowing that you have to sell a loser
+----
