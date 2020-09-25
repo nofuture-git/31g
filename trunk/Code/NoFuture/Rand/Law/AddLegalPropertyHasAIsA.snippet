@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Legal Property HAS-A IS-A</Title>
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+<![CDATA[
+        //TODO: implement NoFuture.Rand.Law.ILegalProperty
+        #region ILegalProperty IS-A HAS-A
+        private readonly ILegalProperty _property = new LegalProperty();
+
+        public IDictionary<string, object> ToData(KindsOfTextCase txtCase)
+        {
+            return _property.ToData(txtCase);
+        }
+
+        public string Name
+        {
+            get => _property.Name;
+            set => _property.Name = value;
+        }
+
+        public int NamesCount => _property.NamesCount;
+
+        public void AddName(KindsOfNames k, string name)
+        {
+            _property.AddName(k, name);
+        }
+
+        public string GetName(KindsOfNames k)
+        {
+            return _property.GetName(k);
+        }
+
+        public bool AnyNames(Predicate<KindsOfNames> filter)
+        {
+            return _property.AnyNames(filter);
+        }
+
+        public bool AnyNames(Predicate<string> filter)
+        {
+            return _property.AnyNames(filter);
+        }
+
+        public bool AnyNames(Func<KindsOfNames, string, bool> filter)
+        {
+            return _property.AnyNames(filter);
+        }
+
+        public bool AnyNames()
+        {
+            return _property.AnyNames();
+        }
+
+        public int RemoveName(Predicate<KindsOfNames> filter)
+        {
+            return _property.RemoveName(filter);
+        }
+
+        public int RemoveName(Predicate<string> filter)
+        {
+            return _property.RemoveName(filter);
+        }
+
+        public int RemoveName(Func<KindsOfNames, string, bool> filter)
+        {
+            return _property.RemoveName(filter);
+        }
+
+        public KindsOfNames[] GetAllKindsOfNames()
+        {
+            return _property.GetAllKindsOfNames();
+        }
+
+        public void CopyNamesFrom(IVoca voca)
+        {
+            _property.CopyNamesFrom(voca);
+        }
+
+        public int GetRank()
+        {
+            return _property.GetRank();
+        }
+
+        public ILegalPerson EntitledTo
+        {
+            get => _property.EntitledTo;
+            set => _property.EntitledTo = value;
+        }
+        public ILegalPerson InPossessionOf
+        {
+            get => _property.InPossessionOf;
+            set => _property.InPossessionOf = value;
+        }
+        public decimal? PropertyValue
+        {
+            get => _property.PropertyValue;
+            set => _property.PropertyValue = value;
+        }
+
+        #endregion
+]]>
+            </Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

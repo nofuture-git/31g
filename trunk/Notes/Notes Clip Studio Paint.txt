@@ -1,0 +1,278 @@
+Notes Clip Studio Paint
+----
+
+----
+Learn Clip Studio Paint - Second Edition
+By: Liz Staley
+Publisher: Packt Publishing
+Pub. Date: December 20, 2018
+Print ISBN-13: 978-1-78934-703-6
+Web ISBN-13: 978-1-78934-581-0
+Pages in Print Edition: 448
+
+CLIP STUDIO PAINT PRO (64-bit)
+Version 1.9.11 202004221834
+
+comic fonts avail.
+https://blambot.com/
+----
+
+----
+Terms
+ - Palette: what is called a Window in any other application
+  - can be moved, stacked, arranged, etc.
+
+ - Workspace: a defined and saved arrangement of palettes
+  - includes palette position and view-status
+  - shortcut settings
+  - command palette layout
+  - unit settings (e.g. inches, pixels)
+
+ - Icon: a simple graphic to represent some kind of command or property
+
+ - Command Bar: the horizontal bar of command-icons 
+  - is specific to the kinds of common and 
+    app-specific commands (e.g. Save, Open, Close, etc.)
+
+ - Tool Bars: the vertical bar of command-icons
+  - is specific to the various kinds of tools in the application
+  
+ - Canvas display: the main window in which the artist draws, paints, etc.
+
+ - Tool: any one of the many means of interacting with the Canvas
+
+ - Brush: all mark-making Tools to emulate the heads of 
+     pencils, pens, brushes, pastels, markers, etc.
+
+ - Sub Tool palette: single-select for the specific kind\form-of 
+    the selected tool.
+
+ - Tool Property palette: ease-of-access properties for the selected 
+    sub-tool 
+    - the user can add\remove any of these
+
+ - Sub Tool Detail: a pop-up window (palette) for _all_ the properties 
+    of a sub-tool.
+    - the Tool Property palette is some sub-set of these
+
+ - Layer: a stack data-structure of visual transparent x-y planes
+    - top-of-stack is one closest to eye-of-viewer
+  - Layer Folder: any logical taxonomic structure within the layer stack
+     - may contain zero to many layers and other folders
+  - Layer Mask: an overlay within a layer that allows for 
+      control-over and partition-of visibility of that layer's x-y plane 
+  - Clip Layer: a kind of layer mask where visibility is defined by the 
+     content of another layer, typically the one directly below it
+  - Reference Layer: a single selected layer among the entire stack of layers
+     - defined by the effect it has on the how tools behave on _other_ layers
+  - Draft Layer: a marker used in the printing process 
+    - informs printer to ignore this layer
+  - Lock Transparent pixel Layer: another kind of layer mask where visibility
+     is limited to the layer's existing content
+     - unlike a Clip Layer, the effects created while locked will remain 
+        even when the lock is removed
+
+ - Ruler: a tool used to easily match the perspective rules of 
+    visual reality (e.g. vanishing points, ellipses, symmetry, tessellation, etc.)
+
+ - Materials: a name for the taxonomic catalog of the various textures, 
+     backgrounds, 3D-models, etc. which may be placed or used within
+     the Canvas
+
+ - Viewport: a canvas layer for viewing and interacting with
+      a 3D object on a 2D computer screen
+
+ - 3D Figure Models: advanced materials for modeling a figure's pose
+   - upon placement in the Canvas, a new Viewport layer is added
+   - figures have builtin armature 
+
+ - Raster graphics: graphics defined as a lattice of pixels where the finer
+    the lattice the greater the resolution
+
+ - Vector graphics: graphics defined as mathematical vectors
+    - use-of-term matches how its used in linear algebra
+    - has additional feature of being an object itself 
+     - in Raster a line is only _implied_ by the interconnection 
+       within the lattice, the viewer makes the connection
+
+ - Text: is readable lettering for character's thoughts & words as 
+     well as onomatopoeias
+     - takes various forms to express tone, emotion, tense, etc.
+     - is a form-of-art in itself
+
+ - Balloon tools: artistic containers of Text used to express character's 
+    dialog and flow-of-conversation.
+
+ - Frame tools: divides a layer's x-y plane into independent subdivisions
+    - this is a kind-of layer mask  
+
+ - Panel: the resulting area created in a layer's subdivision from a Frame tool
+    - the active, viewable part of a layer mask
+
+ - Auto Actions: batches commands into a sequential order for replay
+    - similar macro recorders or scripts in text based applications
+
+ - Hue: the name of the color
+ - Luminosity: brightness of the color
+ - Saturation: purity of the color
+ - Value: how much white or black are mixed in
+
+ - HLS: Hue, Luminosity, Saturation
+  - the color wheel as a triangle
+ - HSV: Hue, Saturation, Value
+  - the color wheel as a square
+----
+
+
+----
+Other Art Terms 
+ - Perspective: a view defined by the location-of-viewer, viewing direction and lens
+ - Stereoscopic vision: the manner in which the mind forms depth and solidity
+    by viewing, at the same time, an external object from two slightly different 
+    angles
+ - Ground Plane: imagined plane extending from the soles of the feet of the viewer
+ - Station Point: the orthogonal height off the ground plane (z-axis) 
+    of the viewer's eye
+ - Line-of-Sight: the vector extending from viewer's eye to the viewed object
+   - when line-of-sight is parallel to ground plane then 1 or 2 point perspective 
+     results
+   - when line-of-sight is angled relative to ground-plane then 3 or 
+     5 point (i.e. fish-eye lens) perspective results
+ - Horizon Line: the visual line where the ground plane disappears into 
+    infinity or curvature
+ - Gesture figure-drawing: the initial sketch of a figure which has some simple and 
+    proportional representation of the eight body parts 
+    (viz. head, spine, rib-cage, pelvis, both arms and both legs)
+ - Foreshortening: a perspective effect where some object's length appears to 
+    become shorter when moved directly onto the line-of-sight
+----
+
+----
+Add Custom Sub Tool
+ - select a source to copy from in the Sub Tool palette
+ - select the copy icon at the bottom right of the Sub Tool palette
+ - define the name, icon, etc. in the popup Duplicate sub tool window
+  - new item will now be present in the Sub Tool palette and already selected
+ - in Sub Tool Detail, set to desired 
+----
+
+----
+Create Grey Coloring Brushes
+ - to emulate the Koi Coloring Brush Pen(s)
+ - copy from 'Brush' tool > 'Thick paint' > 'Oil paint flat brush'
+ - name to 'Koi Coloring Brush'
+ - change 'Tool icon' to 'Marker'
+ - in new marker's Sub Tool Detail
+  - set Brush Size to 10
+  - in Ink, set Opacity to 50%
+   - set the Opacity property to be visible on Tool Property palette
+  - in Brush shape > Brush tip 
+   - remove the Material copied from the Oil paint flat brush 
+   - change Tip shape to Circle
+  - remove the visibility of properties copied from Oil paint flat brush
+   - leaving only Opacity visible  
+ - click 'Save all settings as default' > punch through conf popup
+ - Cool Gray RGB 55,57,67
+ - Warm Gray RGB 55,49,44
+  - use Opacity to make Dark and Light
+ - Drag new 'Koi Coloring Brush' in Tool bar and drop onto the Pen tool icon
+----
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
