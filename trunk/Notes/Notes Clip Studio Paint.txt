@@ -55,23 +55,13 @@ Terms
     of a sub-tool.
     - the Tool Property palette is some sub-set of these
 
- - Layer: a stack data-structure of visual transparent x-y planes
-    - top-of-stack is one closest to eye-of-viewer
-  - Layer Folder: any logical taxonomic structure within the layer stack
-     - may contain zero to many layers and other folders
-  - Layer Mask: an overlay within a layer that allows for 
-      control-over and partition-of visibility of that layer's x-y plane 
-  - Clip Layer: a kind of layer mask where visibility is defined by the 
-     content of another layer, typically the one directly below it
-  - Reference Layer: a single selected layer among the entire stack of layers
-     - defined by the effect it has on the how tools behave on _other_ layers
-  - Draft Layer: a marker used in the printing process 
-    - informs printer to ignore this layer
-  - Lock Transparent pixel Layer: another kind of layer mask where visibility
-     is limited to the layer's existing content
-     - unlike a Clip Layer, the effects created while locked will remain 
-        even when the lock is removed
-
+ - Eraser: a tool which removes content from layer(s)
+  - Hard Eraser: pressure-sensitive hard-edge eraser where erased area 
+     increases as the pressure rises
+  - Soft Eraser: same as above on having a soft edge
+  - Multiple layers Eraser: based on the selected layer, all content
+     from there down is erased
+   
  - Ruler: a tool used to easily match the perspective rules of 
     visual reality (e.g. vanishing points, ellipses, symmetry, tessellation, etc.)
 
@@ -121,8 +111,105 @@ Terms
   - the color wheel as a triangle
  - HSV: Hue, Saturation, Value
   - the color wheel as a square
+  
+ - Screentone: a form of shading 
+  - an artifact from 20th century comics
+  - appears as a lattice of dots whose size 
+    and proximity define the value of the shade
+  - useful to apply to an imported photo to make it look
+    comic-like
 ----
 
+----
+Layer Terms
+ - Layer: a stack data-structure of visual transparent x-y planes
+  - top-of-stack is one closest to eye-of-viewer
+   
+ - Layer Folder: any logical taxonomic structure within the layer stack
+    - may contain zero to many layers and other folders
+    
+ - Layer Mask: an overlay within a layer that allows for 
+     control-over and partition-of visibility of that layer's x-y plane 
+     
+ - Clip Layer: a kind of layer mask where visibility is defined by the 
+    content of another layer, typically the one directly below it
+    
+ - Reference Layer: a single selected layer among the entire stack of layers
+    - defined by the effect it has on the how tools behave on _other_ layers
+    
+ - Draft Layer: a marker used in the printing process 
+   - informs printer to ignore this layer
+   
+ - Lock Transparent pixel Layer: another kind of layer mask where visibility
+    is limited to the layer's existing content
+    - unlike a Clip Layer, the effects created while locked will remain 
+       even when the lock is removed
+       
+ - Layer Effects: effects which are applied to all the content of a given layer
+ 
+  - Border effect: adds a border around all the content of a given layer
+   - three properties of color, thickness and anti-aliasing on the border
+   
+  - Tone effect: transforms the content to a screentone
+   - Frequency property controls the value of the screentone
+   
+  - Layer color effect: sets all the content of the layer to some 
+     color
+    - very useful to keep from making marks on the wrong layer
+    
+ - Layer Expression color: for controlling the color of all content of 
+    the layer.
+   - Monochrome: ideal for an ink-layer
+   - Gray: ideal for pencil layers
+   - Color: should only be used if there actually is some color
+----
+
+----
+Selection Terms
+ - Selection area: a tool used in the Canvas to select some area 
+    from one-or-more layers
+  - Selection mode: controls the relation of a selection to 
+     other selected areas already present on the canvas
+     
+ - Selection Command bar: a bar which appears in the canvas upon
+   some area being selected.
+ 
+ - perimeter based selection sub-tools
+  - work by enclosing some perimeter to from the selected area
+  - include: Rectangle, Ellipse, Lasso, Polyline
+
+ - Selection pen: a selection sub-tool used like a highlighter marker
+  - directly marking an area instead of drawing a perimeter around it
+ 
+ - Erase selection: a sub-tool to remove some part of the selected area
+  - same as selection pen only opposite in effect 
+  
+ - Shrink selection: a sub-tool which attempts to select only the content
+    within the selected area
+  - requires some clear sense of boundary 
+  - doesn't work across\through content nor on coterminous content
+  
+ - Scale/Rotate: a command in the Selection Command bar
+  - clicking this will cause a the Tool property palette to change to
+    allow for the various transformations
+  - enables a selection to be moved, flipped, expanded or shrunk
+----
+
+----
+Subview Palette
+ - a palette which can be used to load reference images 
+ - allows for various image transformations (e.g. flip, rotate, etc.)
+ - allows for color selection from the image it contains
+----
+
+----
+Snap to options
+ - controls how various marks made on the canvas are restricted to 
+   match some existing ruler or grid
+ - Snap to Ruler: for Linear ruler, Figure ruler and Ruler pen 
+ - Snap to Special Ruler: for Symmetry ruler and Perspective ruler
+ - Snap to Grid: not related to rulers, for a lattice grid canvas overlay
+----
 
 ----
 Other Art Terms 

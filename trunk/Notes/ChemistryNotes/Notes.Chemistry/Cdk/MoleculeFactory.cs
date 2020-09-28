@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NCDK;
 using NCDK.Default;
 using NCDK.Stereo;
@@ -1156,6 +1157,74 @@ namespace Notes.Chemistry.Cdk
 
         }
 
+        [Aka("citrate", "citronensaeure")]
+        public static IAtomContainer CitricAcid()
+        {
+            var citricAcid = new AtomContainer();
+
+            var carbons = Enumerable.Range(0, 6).Select(i => citricAcid.AddAtom("C")).ToList();
+            var oxygens = Enumerable.Range(0, 7).Select(i => citricAcid.AddAtom("O")).ToList();
+
+            citricAcid.AddBond(oxygens[0], citricAcid.AddAtom("H"), BondOrder.Single);
+
+            citricAcid.AddBond(oxygens[0], carbons[0], BondOrder.Single);
+
+            citricAcid.AddBond(oxygens[1], carbons[0], BondOrder.Double);
+
+            citricAcid.AddBond(carbons[0], carbons[1], BondOrder.Single);
+
+            citricAcid.AddBond(carbons[1], citricAcid.AddAtom("H"), BondOrder.Single);
+            citricAcid.AddBond(carbons[1], citricAcid.AddAtom("H"), BondOrder.Single);
+
+            citricAcid.AddBond(carbons[1], carbons[2], BondOrder.Single);
+
+            citricAcid.AddBond(oxygens[2], citricAcid.AddAtom("H"), BondOrder.Single);
+
+            citricAcid.AddBond(carbons[2], oxygens[2], BondOrder.Single);
+
+            citricAcid.AddBond(carbons[2], carbons[3], BondOrder.Single);
+
+            citricAcid.AddBond(oxygens[3], citricAcid.AddAtom("H"), BondOrder.Single);
+
+            citricAcid.AddBond(carbons[3], oxygens[3], BondOrder.Single);
+
+            citricAcid.AddBond(carbons[3], oxygens[4], BondOrder.Double);
+
+            citricAcid.AddBond(carbons[2], carbons[4], BondOrder.Single);
+
+            citricAcid.AddBond(carbons[4], citricAcid.AddAtom("H"), BondOrder.Single);
+            citricAcid.AddBond(carbons[4], citricAcid.AddAtom("H"), BondOrder.Single);
+
+            citricAcid.AddBond(carbons[4], carbons[5], BondOrder.Single);
+
+            citricAcid.AddBond(oxygens[5], citricAcid.AddAtom("H"), BondOrder.Single);
+
+            citricAcid.AddBond(carbons[5], oxygens[5], BondOrder.Single);
+
+            citricAcid.AddBond(carbons[5], oxygens[6], BondOrder.Double);
+
+            citricAcid.Title = nameof(citricAcid);
+
+            return citricAcid;
+        }
+
+        [Aka("iron(III) oxide")]
+        public static IAtomContainer Rust()
+        {
+            var rust = new AtomContainer();
+
+            var oxygen = Enumerable.Range(0, 3).Select(i => rust.AddAtom("O")).ToList();
+            var iron = Enumerable.Range(0, 2).Select(i => rust.AddAtom("Fe")).ToList();
+
+            rust.AddBond(oxygen[0], iron[0], BondOrder.Double);
+            rust.AddBond(iron[0], oxygen[1], BondOrder.Single);
+            rust.AddBond(oxygen[1], iron[1], BondOrder.Single);
+            rust.AddBond(iron[1], oxygen[2], BondOrder.Double);
+
+            rust.Title = "rust";
+
+            return rust;
+        }
         #endregion
     }
 }

@@ -419,5 +419,21 @@ namespace Test.Notes.Chemistry
             var pathToImg = methylamine.DepictMolecule();
             Console.WriteLine(pathToImg);
         }
+
+        [Test]
+        public void TestCitricAcid()
+        {
+            var citricAcid = MoleculeFactory.CitricAcid();
+            var pathToImg = citricAcid.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
+
+        [Test]
+        public void TestRust()
+        {
+            var rust = MoleculeFactory.Rust();
+            var pathToImg = rust.DepictMolecule();
+            Console.WriteLine(pathToImg);
+        }
     }
 }
