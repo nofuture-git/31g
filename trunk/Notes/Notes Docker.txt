@@ -233,6 +233,7 @@ Use Docker with existing .NET Framework apps
 ----
 Example Word2Vec
  - Ubuntu for building and running Word2Vec
+ - move the CLI working directory to some empty folder
  - switch to Linux containers from the Docker Desktop settings
  - example assumes downloaded and decompressed very large GoogleNews-vectors-negative300.bin.gz
   - up the allowed memory in Docker Desktop > Settings > Advanced to at least 4GB since

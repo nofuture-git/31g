@@ -264,8 +264,14 @@ Create Grey Coloring Brushes
   - use Opacity to make Dark and Light
  - Drag new 'Koi Coloring Brush' in Tool bar and drop onto the Pen tool icon
 ----
- 
- 
+
+----
+Perspective Rulers
+ - these are added from the menu bar
+  Layer > Ruler\Frame > Create Perspective Ruler...
+ - this opens a dialog box to specify the number
+   of vanishing points
+----
  
  
  
