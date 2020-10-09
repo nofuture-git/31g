@@ -56,6 +56,10 @@
       <Project>{39c1f7be-3c68-4b60-83ea-b4b1a3895493}</Project>
       <Name>Rand.Law.Constitutional</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Property\Rand.Law.Property.csproj">
+      <Project>{25a94905-7e58-463c-bed8-d3004135cfcc}</Project>
+      <Name>Rand.Law.Property</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Rand.Law.csproj">
       <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
       <Name>Rand.Law</Name>

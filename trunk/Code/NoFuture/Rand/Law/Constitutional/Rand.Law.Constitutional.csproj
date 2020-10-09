@@ -43,6 +43,10 @@
       <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
       <Name>Rand.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Property\Rand.Law.Property.csproj">
+      <Project>{25a94905-7e58-463c-bed8-d3004135cfcc}</Project>
+      <Name>Rand.Law.Property</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rand.Law.csproj">
       <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
       <Name>Rand.Law</Name>
