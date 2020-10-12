@@ -18,6 +18,15 @@ namespace NoFuture.Rand.Law.Constitutional.US
         /// </summary>
         public Predicate<ILegalProperty> IsPublicCommunity { get; set; } = p => false;
 
+        /// <summary>
+        /// Shelley v. Kraemer 334 U.S. 1 (1948), denial of land and home - true
+        /// Moose Lodge v. Irvis, 407 U.S. 163 (1972), denial of drinks and dinner - false
+        /// </summary>
+        public Predicate<IAct> IsInvidiousDiscrimination { get; set; } = a => false;
+
+        /// <summary>
+        /// A function, defined by the implementor, for determining what person did what action
+        /// </summary>
         public Func<ILegalPerson, IAct> GetActByPerson { get; set; } = p => null;
 
         public Predicate<IAct> IsProtectedRight { get; set; } = p => false;
@@ -55,19 +64,20 @@ namespace NoFuture.Rand.Law.Constitutional.US
                 return false;
             }
 
-            if (!IsProtectedRight(act))
-            {
-                AddReasonEntry($"The {nameof(IsProtectedRight)} returned false for the given act of person {title} {subj.Name}");
-                return false;
-            }
+            //most obvious case
+            if (IsPublicCommunity(SubjectProperty) && IsProtectedRight(act))
+                return true;
 
-            if (!IsPublicCommunity(SubjectProperty))
-            {
-                AddReasonEntry($"{IsPublicCommunity} for {nameof(SubjectProperty)} {SubjectProperty.Name} is false");
-                return false;
-            }
+            var isPrivate = !IsPublicCommunity(SubjectProperty);
 
-            return true;
+            if (isPrivate && IsInvidiousDiscrimination(act))
+                return true;
+
+            AddReasonEntry($"Act, {act.GetType().Name}, {nameof(IsInvidiousDiscrimination)} is false");
+            AddReasonEntry($"{nameof(IsPublicCommunity)} for {nameof(SubjectProperty)} {SubjectProperty.Name} is false");
+            AddReasonEntry($"Act, {act.GetType().Name}, for person {title} {subj.Name}, {nameof(IsProtectedRight)} is false");
+            return false;
+
         }
     }
 }

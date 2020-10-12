@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MarshvAlabamaTests.cs" />
+    <Compile Include="MooseLodgevIrvisTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShelleyvKraemerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

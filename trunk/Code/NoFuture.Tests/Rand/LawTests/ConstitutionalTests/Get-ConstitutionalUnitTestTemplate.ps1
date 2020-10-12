@@ -1,4 +1,4 @@
-﻿function Get-ConstitutionalUnitTestTemplate
+﻿function New-ConstitutionalUnitTest
 {
     [CmdletBinding()]
     Param

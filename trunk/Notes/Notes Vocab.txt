@@ -44,9 +44,9 @@ cake
 caliber
 calk
 cam - e.g. having an egg-shaped plate rotating on a center axis as the longer side
-      moves to the bottom-dead center the distince between the place and a fixed 
+      moves to the bottom-dead center the distance between the place and a fixed 
 	  surface underneath it would shrink - a cam is a vertical rod upon which this motion
-	  is recieved from the egg-shaped plate.
+	  is received from the egg-shaped plate.
 camber - slight sideways inclination of a road or horizontal surface
 canister - round metal container
 canopy
@@ -68,7 +68,7 @@ choke
 clamp
 cleat
 cluster
-clutch - grasp or sieze
+clutch - grasp or seize
 coaming - a raised border around the cockpit or hatch of a yacht or other boat to keep out water.
 coat
 coil
@@ -133,7 +133,7 @@ freight
 frigerant
 gain
 gangway
-gantry - bridgelike overhead structure with a platform to support equipment
+gantry - bridge-like overhead structure with a platform to support equipment
 gap
 gasket
 gate
@@ -186,7 +186,7 @@ lobe
 log
 loom
 lot
-machinary
+machinery
 mallet
 manifold
 mark
@@ -347,7 +347,7 @@ adjudicator - a person who studies and settles conflicts
 amalgamate - to unite into one whole
  compose - specific to drafting a written phrase
 ameliorations - to make better
-aphoristic - tersely pharsed statement
+aphoristic - tersely phrased statement
 asymptotes - lines that continually approach but never meet 
 cognate
 coterminous - having the same boundaries
@@ -357,10 +357,10 @@ doxology
 egregious - outstandingly bad 
 filioque - "and the son"
 fissures
-fortiori - with greater, stronger or more certian reason
+fortiori - with greater, stronger or more certain reason
 forthright
 goad
-leitmotif - recurrent theme throughout music or litature
+leitmotif - recurrent theme throughout music or literature
 logomachy
 magnate - wealthy and influential person
 meritorious - deserving reward or praise
@@ -373,7 +373,7 @@ plenitude
 praetorium - tent of a roman general
 profligacy - extravagance
 raison d etre
-recalcitrant - trait of being unmanagable
+recalcitrant - trait of being unmanageable
 refulgence - being bright sending out rays of light
 regal
 semblance - outward appearance especially when in reality is different
@@ -383,10 +383,10 @@ terseness
 nepotism
 edifice
 charlatan
-prevenient - preceeding in time or order
+prevenient - preceding in time or order
 protean
 multifarious - many and various types
-obtrude - become noticable in an unwelcome or intrusive way
+obtrude - become noticeable in an unwelcome or intrusive way
 modicum - small quality of a particular thing, esp. something desirable
 nominalist
 realism
@@ -417,10 +417,10 @@ pejorative - a word or grammatical form expressing a low opinion of someone or s
 exonym - name given to a region, peoples or language from some external source (e.g. Indians)
 surfeit - an excessive amount
 dearth - scarcity or lack of
-mammock - tear or shread
+mammock - tear or shred
 ostentation - a display of wealth
 fusty - full of dust and bad smells
-tribune - one choosen by the plebians to protect thier rights
+tribune - one chosen by the plebians to protect their rights
 extol - praise highly
 traduce - to bad mouth someone or thing
 debile - lacking strength
@@ -554,7 +554,7 @@ existence uncertainty: real identities in underlying observed data is unknown
 identity uncertainty: which symbols refer to the same object
 runtime: the actual execution of a program over some span of time
   typically within some specific environmental context
-process: an ostentive definition of a runtime
+process: an instance of a runtime
 stationary process: concerns change-in-time where the state changes
  but those changes are governed by laws that do not change
 static process: concerns time where state does not change
@@ -664,7 +664,7 @@ demurrer: objection to a point as irrelevant while granting the factual
   basis of the point
 avoirdupois: system of weights based on pound of 16 ounces
 chary: cautiously or suspiciously reluctant to do something
-confabulation: memory error of a person without intentation as such
+confabulation: memory error of a person without intention as such
 valence: emotional value of an event, object, or situation
 lout: an uncouth and aggressive man or boy
 diminution: a reduction in the size, extent, or importance of something
@@ -685,7 +685,7 @@ desiderata: something that is needed or wanted
 deontology: the study of the nature of duty and obligation
 conjecture: a conclusion formed on incomplete information
 curtilage: the land immediately surrounding a dwelling
-manfucturing: assembling finished products from components or raw materials
+manufacturing: assembling finished products from components or raw materials
 fabrication: making of raw materials (manual or mechanized bending, cutting, joining, etc.) 
 production: the process of manufacturing, fabrication or growing goods
 machining: the process of removing material of a workpiece
@@ -769,3 +769,5 @@ banal: so lacking in originality as to be obvious and boring
 chiral: something which is distinguishable from its mirror image
 noetic: relating to mental activity or intellect
 congeries: a disorderly collection, a jumble
+panoply:a complete and impressive collection of things
+imprimatur: full seal of official license
