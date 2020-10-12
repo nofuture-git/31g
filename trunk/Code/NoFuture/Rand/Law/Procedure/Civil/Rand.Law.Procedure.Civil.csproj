@@ -43,6 +43,7 @@
     <Compile Include="US\Discovery\ScopeOfDiscovery.cs" />
     <Compile Include="US\DomicileLocation.cs" />
     <Compile Include="US\ILinkedLegalConcept.cs" />
+    <Compile Include="US\Judgment\ConsentJudgment.cs" />
     <Compile Include="US\Judgment\IJudgment.cs" />
     <Compile Include="US\Judgment\JudgmentAsMatterOfLaw.cs" />
     <Compile Include="US\Judgment\JudgmentNotwithstandingVerdict.cs" />

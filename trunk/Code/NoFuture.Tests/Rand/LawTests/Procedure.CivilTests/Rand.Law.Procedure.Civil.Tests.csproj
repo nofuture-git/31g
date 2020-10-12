@@ -44,6 +44,7 @@
     <Compile Include="DiscoveryTests\ExampleTestRequestForProduction.cs" />
     <Compile Include="ExampleAustinvHealyTests.cs" />
     <Compile Include="ExampleSmokyMountainVWTests.cs" />
+    <Compile Include="JudgmentTests\ExampleTestConsentJudgment.cs" />
     <Compile Include="JudgmentTests\ExampleTestJnov.cs" />
     <Compile Include="JudgmentTests\ExampleTestJudgmentAsMatterOfLaw.cs" />
     <Compile Include="JudgmentTests\ExampleTestNewTrial.cs" />
