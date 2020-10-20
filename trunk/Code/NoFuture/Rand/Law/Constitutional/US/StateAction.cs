@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Property.US;
 using NoFuture.Rand.Law.US;
 
@@ -31,17 +32,16 @@ namespace NoFuture.Rand.Law.Constitutional.US
 
         public Predicate<IAct> IsProtectedRight { get; set; } = p => false;
 
+        /// <summary>
+        /// Jackson v. Metropolitan Edison Co., 419 U.S., at 350, there is sufficiently close
+        /// nexus between the State and the challenged action of the regulated entity so that the
+        /// action of the latter may be fairly treated as that of the State itself
+        /// </summary>
+        public Predicate<IAct> IsCloseConnectionToState { get; set; } = a => false;
+
         public override bool IsValid(params ILegalPerson[] persons)
         {
             GetSubjectPerson = GetSubjectPerson ?? ExtensionMethods.DefendantFx;
-
-            var subj = GetSubjectPerson(persons);
-            var title = subj.GetLegalPersonTypeName();
-            if (subj == null)
-            {
-                AddReasonEntry($"{GetSubjectPerson} did not return any one");
-                return false;
-            }
 
             var withConsent = !WithoutConsent(persons);
             if (withConsent)
@@ -50,15 +50,20 @@ namespace NoFuture.Rand.Law.Constitutional.US
                 return false;
             }
 
-            var act = GetActByPerson(subj);
+            var actorPerson = persons.FirstOrDefault(p => GetActByPerson(p) != null);
 
-            if (act == null)
+            var act = GetActByPerson(actorPerson);
+
+
+            if (actorPerson == null || act == null)
             {
                 AddReasonEntry($"{nameof(GetActByPerson)} returned nothing");
                 return false;
             }
 
-            if (!act.IsValid(subj))
+            var actorTitle = actorPerson.GetLegalPersonTypeName();
+
+            if (!act.IsValid(actorPerson))
             {
                 AddReasonEntryRange(act.GetReasonEntries());
                 return false;
@@ -68,14 +73,24 @@ namespace NoFuture.Rand.Law.Constitutional.US
             if (IsPublicCommunity(SubjectProperty) && IsProtectedRight(act))
                 return true;
 
+            if (IsCloseConnectionToState(act))
+            {
+                AddReasonEntry($"Act, {act.GetType().Name}, for person {actorTitle} " +
+                               $"{actorPerson.Name}, {nameof(IsCloseConnectionToState)} is true");
+
+                return true;
+            }
+
             var isPrivate = !IsPublicCommunity(SubjectProperty);
 
             if (isPrivate && IsInvidiousDiscrimination(act))
+            {
+                AddReasonEntry($"{nameof(IsPublicCommunity)} for {nameof(SubjectProperty)} {SubjectProperty.Name} is false");
+                AddReasonEntry($"Act, {act.GetType().Name}, for person {actorTitle} " +
+                               $"{actorPerson.Name}, {nameof(IsInvidiousDiscrimination)} is true");
                 return true;
+            }
 
-            AddReasonEntry($"Act, {act.GetType().Name}, {nameof(IsInvidiousDiscrimination)} is false");
-            AddReasonEntry($"{nameof(IsPublicCommunity)} for {nameof(SubjectProperty)} {SubjectProperty.Name} is false");
-            AddReasonEntry($"Act, {act.GetType().Name}, for person {title} {subj.Name}, {nameof(IsProtectedRight)} is false");
             return false;
 
         }

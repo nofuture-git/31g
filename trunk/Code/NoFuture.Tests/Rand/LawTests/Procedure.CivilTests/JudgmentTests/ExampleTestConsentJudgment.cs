@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NoFuture.Rand.Law.Procedure.Civil.US.Judgment;
 using NoFuture.Rand.Law.US.Courts;
 using NoFuture.Rand.Law.US.Persons;
