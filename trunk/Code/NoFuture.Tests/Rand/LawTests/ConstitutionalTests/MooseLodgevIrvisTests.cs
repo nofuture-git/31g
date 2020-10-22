@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Constitutional.US;
 using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
 using NoFuture.Rand.Law.US;
@@ -21,21 +22,25 @@ namespace NoFuture.Rand.Law.Constitutional.Tests
         [Test]
         public void MooseLodgevIrvis()
         {
-            var testSubject = new StateAction()
+            Func<ILegalPerson[], ILegalPerson> chargedWithDeprivation =
+                lps => lps.FirstOrDefault(lp => lp is MooseLodge);
+
+
+            var testSubject2 = new OperationOfPrivateClub()
             {
-                Consent = Consent.NotGiven(),
-                GetActByPerson = lp => new ServeDrinksDinner(),
-                IsInvidiousDiscrimination = a => !(a is ServeDrinksDinner),
-                IsProtectedRight = a => false,
-                IsPublicCommunity = p => !(p is MooseLodgeNo107),
-                SubjectProperty = new MooseLodgeNo107(),
+                FairlyDescribedAsStateActor = new StateAction2.TestIsStateActor(chargedWithDeprivation)
+                {
+                    IsTraditionalGovernmentFunction = a => !(a is OperationOfPrivateClub),
+                }
             };
 
-            var testResult = testSubject.IsValid(new MooseLodge(), new Irvis());
-            Console.WriteLine(testSubject.ToString());
-            Assert.IsFalse(testResult);
+            var testResult2 = testSubject2.IsValid(new Irvis(), new MooseLodge());
+            Console.WriteLine(testSubject2.ToString());
+            Assert.IsFalse(testResult2);
         }
     }
+
+    public class OperationOfPrivateClub : StateAction2 { }
 
     public class MooseLodge : LegalPerson, IPlaintiff
     {
@@ -45,15 +50,5 @@ namespace NoFuture.Rand.Law.Constitutional.Tests
     public class Irvis : LegalPerson, IDefendant
     {
         public Irvis(): base("Irvis") { }
-    }
-
-    public class MooseLodgeNo107 : RealProperty { }
-
-    public class ServeDrinksDinner : Act
-    {
-        public override bool IsValid(params ILegalPerson[] persons)
-        {
-            return true;
-        }
     }
 }

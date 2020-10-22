@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Constitutional.US;
 using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
-using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Persons;
 using NUnit.Framework;
 
@@ -22,31 +22,22 @@ namespace NoFuture.Rand.Law.Constitutional.Tests
         [Test]
         public void ShelleyvKraemer()
         {
-            var testSubject = new StateAction()
-            {
-                Consent = Consent.NotGiven(),
-                GetActByPerson = p =>
-                {
-                    if (p is Kraemer)
-                    {
-                        return new OwnParcelOfLand()
-                        {
-                            IsAction = lp => true,
-                            IsVoluntary = lp => true
-                        };
-                    }
+            Func<ILegalPerson[], ILegalPerson> chargedWithDeprivation =
+                lps => lps.FirstOrDefault(lp => lp is Kraemer);
 
-                    return null;
-                },
-                SubjectProperty = new SomeParcelsOfLandForRacist(),
-                IsProtectedRight = a => a is OwnParcelOfLand,
-                IsPublicCommunity = p => false,
-                IsInvidiousDiscrimination = a => a is OwnParcelOfLand
+            var testSubject2 = new OwnParcelOfLand()
+            {
+                GetPartyChargedWithDeprivation = chargedWithDeprivation,
+                IsSourceStateAuthority = lp => true,
+                FairlyDescribedAsStateActor = new StateAction2.TestIsStateActor(chargedWithDeprivation)
+                {
+                    IsInvidiousDiscrimination = a => a is OwnParcelOfLand
+                }
             };
 
-            var testResult = testSubject.IsValid(new Shelley(), new Kraemer());
-            Console.WriteLine(testSubject.ToString());
-            Assert.IsTrue(testResult);
+            var testResult2 = testSubject2.IsValid(new Shelley(), new Kraemer());
+            Console.WriteLine(testSubject2.ToString());
+            Assert.IsTrue(testResult2);
         }
     }
 
@@ -59,13 +50,7 @@ namespace NoFuture.Rand.Law.Constitutional.Tests
     {
         public Kraemer(): base("Kraemer") { }
     }
-
-    public class SomeParcelsOfLandForRacist : RealProperty
-    {
-
-    }
-
-    public class OwnParcelOfLand : Act
+    public class OwnParcelOfLand : StateAction2
     {
 
     }

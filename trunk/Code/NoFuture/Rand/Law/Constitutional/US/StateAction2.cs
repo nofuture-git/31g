@@ -80,7 +80,7 @@ namespace NoFuture.Rand.Law.Constitutional.US
 
             AddReasonEntryRange(FairlyDescribedAsStateActor.GetReasonEntries());
 
-            return lugerTestTwo;
+            return lugerTestOne && lugerTestTwo;
         }
 
         /// <summary>
@@ -95,26 +95,42 @@ namespace NoFuture.Rand.Law.Constitutional.US
             public IAct Action { get; set; }
 
             /// <summary>
-            /// Tulsa Professional Collection Services, Inc. v. Pope (1988);
-            /// Burton v. Wilmington Parking Authority (1961);
+            /// When private parties make extensive use of state procedures
+            /// with &quot;the overt, significant assistance of state officials.&quot;
             /// </summary>
             /// <remarks>
-            /// also when private parties make extensive use of state procedures
-            /// with &quot;the overt, significant assistance of state officials.&quot;
+            /// Tulsa Professional Collection Services, Inc. v. Pope (1988);
+            /// Burton v. Wilmington Parking Authority (1961);
             /// </remarks>
             public virtual Predicate<ILegalPerson> IsReliesOnGovernmentAssistance { get; set; } = lp => false;
 
             /// <summary>
+            /// The government must have traditionally and exclusively performed the function.
+            /// Furthermore, very few functions fall into this category
+            /// </summary>
+            /// <example>
+            /// Does include functions like: running elections, operating a company town
+            /// </example>
+            /// <example>
+            /// Does NOT include functions like: running sports associations, administering insurance payments,
+            /// operation nursing home, providing special education, representing indigent criminal defendants,
+            /// resolving private disputes, supplying electricity.
+            /// </example>
+            /// <remarks>
             /// Terry v. Adams (1953);
             /// Marsh v. Alabama (1946);
             /// cf. San Francisco Arts &amp; Athletics, Inc. v. United States Olympic Comm. (1987);
-            /// </summary>
+            /// </remarks>
             public virtual Predicate<IAct> IsTraditionalGovernmentFunction { get; set; } = lp => false;
 
             /// <summary>
-            /// Shelley v. Kraemer 334 U.S. 1 (1948), denial of land and home - true
-            /// Moose Lodge v. Irvis, 407 U.S. 163 (1972), denial of drinks and dinner - false
+            /// Considers the quality of the discrimination, for example:
+            /// denial of land and home - very bad; denial of drinks and dinner - no big deal
             /// </summary>
+            /// <remarks>
+            /// Shelley v. Kraemer 334 U.S. 1 (1948),  - true
+            /// Moose Lodge v. Irvis, 407 U.S. 163 (1972),  - false
+            /// </remarks>
             public Predicate<IAct> IsInvidiousDiscrimination { get; set; } = a => false;
 
             public override bool IsValid(params ILegalPerson[] persons)
@@ -149,7 +165,7 @@ namespace NoFuture.Rand.Law.Constitutional.US
                 AddReasonEntry($"{title} {subjectPerson.Name}, {nameof(IsTraditionalGovernmentFunction)} returned {traditionalGovtFx}");
                 AddReasonEntry($"{title} {subjectPerson.Name}, {nameof(IsInvidiousDiscrimination)} returned {isNasty}");
 
-                if (reliesOnGovtBenefits && traditionalGovtFx && isNasty)
+                if (reliesOnGovtBenefits || traditionalGovtFx || isNasty)
                 {
                     return true;
                 }

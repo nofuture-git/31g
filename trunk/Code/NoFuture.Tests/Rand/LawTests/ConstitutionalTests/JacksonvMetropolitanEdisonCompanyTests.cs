@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NoFuture.Rand.Law.Constitutional.US;
 using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
 using NoFuture.Rand.Law.US;
@@ -23,20 +24,25 @@ namespace NoFuture.Rand.Law.Constitutional.Tests
         [Test]
         public void JacksonvMetropolitanEdisonCompany()
         {
-            var testSubject = new StateAction
+
+            Func<ILegalPerson[], ILegalPerson> chargedWithDeprivation =
+                lps => lps.FirstOrDefault(lp => lp is MetropolitanEdisonCompany);
+
+
+            var testSubject2 = new RunElectricCompany()
             {
-                Consent = Consent.NotGiven(),
-                GetActByPerson = p => p is Jackson ? new DisconnectElectricity() : null,
-                IsInvidiousDiscrimination = a => false,
-                IsPublicCommunity = p => false,
-                IsProtectedRight = a => false,
-                SubjectProperty = new HomeElectricAccount(),
-                IsCloseConnectionToState = a => !(a is DisconnectElectricity)
+                GetPartyChargedWithDeprivation = chargedWithDeprivation,
+                IsSourceStateAuthority = lp => lp is MetropolitanEdisonCompany,
+                FairlyDescribedAsStateActor = new StateAction2.TestIsStateActor(chargedWithDeprivation)
+                {
+                    //not a traditional operation of the government
+                    IsTraditionalGovernmentFunction = a => !(a is RunElectricCompany)
+                }
             };
 
-            var testResult = testSubject.IsValid(new Jackson(), new MetropolitanEdisonCompany());
-            Console.WriteLine(testSubject.ToString());
-            Assert.IsFalse(testResult);
+            var testResult2 = testSubject2.IsValid(new Jackson(), new MetropolitanEdisonCompany());
+            Console.WriteLine(testResult2.ToString());
+            Assert.IsFalse(testResult2);
         }
     }
 
@@ -50,16 +56,5 @@ namespace NoFuture.Rand.Law.Constitutional.Tests
         public MetropolitanEdisonCompany(): base("Metropolitan Edison Company") { }
     }
 
-    public class HomeElectricAccount : RealProperty
-    {
-
-    }
-
-    public class DisconnectElectricity : Act
-    {
-        public override bool IsValid(params ILegalPerson[] persons)
-        {
-            return true;
-        }
-    }
+    public class RunElectricCompany : StateAction2 { }
 }

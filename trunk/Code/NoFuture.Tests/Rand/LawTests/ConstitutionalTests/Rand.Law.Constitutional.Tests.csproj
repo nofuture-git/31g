@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="EdmonsonvLeesvilleConcreteCompanyIncTests.cs" />
     <Compile Include="JacksonvMetropolitanEdisonCompanyTests.cs" />
+    <Compile Include="ManhattanCommunityAccessCorporationvHalleckTests.cs" />
     <Compile Include="MarshvAlabamaTests.cs" />
     <Compile Include="MooseLodgevIrvisTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

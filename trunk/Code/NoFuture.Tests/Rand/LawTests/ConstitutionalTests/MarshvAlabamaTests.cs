@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NoFuture.Rand.Law.Constitutional.US;
 using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
 using NoFuture.Rand.Law.US;
@@ -23,29 +24,27 @@ namespace NoFuture.Rand.Law.Constitutional.Tests
         [Test]
         public void MarshvAlabama()
         {
-            var testSubject = new StateAction()
+            Func<ILegalPerson[], ILegalPerson> chargedWithDeprivation =
+                lps => lps.FirstOrDefault(lp => lp is Alabama);
+            var testSubject2 = new OperationOfCompanyOwnedTown
             {
-                Consent = Consent.NotGiven(),
-                GetActByPerson = p =>
+                GetPartyChargedWithDeprivation = chargedWithDeprivation,
+                IsSourceStateAuthority = lp => lp is Alabama,
+                FairlyDescribedAsStateActor = new StateAction2.TestIsStateActor(chargedWithDeprivation)
                 {
-                    if (p is Marsh)
-                        return new DistributeReligiousLiterature()
-                        {
-                            IsAction = lp => true,
-                            IsVoluntary = lp => true
-                        };
-
-                    return null;
-                },
-                SubjectProperty = new TownOfChickasaw(),
-                IsProtectedRight = a => a is DistributeReligiousLiterature,
-                IsPublicCommunity = t => t is TownOfChickasaw
+                    IsTraditionalGovernmentFunction = a => a is OperationOfCompanyOwnedTown
+                }
             };
 
-            var testResult = testSubject.IsValid(new Alabama(), new Marsh());
-            Console.WriteLine(testSubject.ToString());
-            Assert.IsTrue(testResult);
+            var testResult2 = testSubject2.IsValid(new Marsh(), new Alabama());
+            Console.WriteLine(testSubject2.ToString());
+            Assert.IsTrue(testResult2);
         }
+    }
+
+    public class OperationOfCompanyOwnedTown : StateAction2
+    {
+
     }
 
     public class Marsh : LegalPerson, IDefendant
@@ -56,15 +55,5 @@ namespace NoFuture.Rand.Law.Constitutional.Tests
     public class Alabama : LegalPerson, IPlaintiff
     {
         public Alabama(): base("Alabama") { }
-    }
-
-    public class TownOfChickasaw : RealProperty
-    {
-        
-    }
-
-    public class DistributeReligiousLiterature : Act
-    {
-        
     }
 }
