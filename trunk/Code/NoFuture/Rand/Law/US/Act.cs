@@ -21,8 +21,8 @@ namespace NoFuture.Rand.Law.US
             }
         }
 
-        public Predicate<ILegalPerson> IsVoluntary { get; set; } = lp => false;
-        public Predicate<ILegalPerson> IsAction { get; set; } = lp => false;
+        public virtual Predicate<ILegalPerson> IsVoluntary { get; set; } = lp => false;
+        public virtual Predicate<ILegalPerson> IsAction { get; set; } = lp => false;
 
         public override bool IsValid(params ILegalPerson[] persons)
         {
