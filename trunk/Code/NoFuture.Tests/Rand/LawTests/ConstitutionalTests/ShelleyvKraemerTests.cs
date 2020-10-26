@@ -19,6 +19,7 @@ namespace NoFuture.Rand.Law.Constitutional.Tests
     [TestFixture]
     public class ShelleyvKraemerTests
     {
+
         [Test]
         public void ShelleyvKraemer()
         {
