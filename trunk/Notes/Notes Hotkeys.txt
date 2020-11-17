@@ -43,7 +43,8 @@
      "msinfo32" : "Windows Info",
      "cleanmgr.exe" : "Disk Cleanup",
      "mmc" : "add remove snap ins",
-     "osk" : "on screen keyboard"
+     "osk" : "on screen keyboard",
+     "inetmgr" : "IIS in Windows"
 },
 "windowsKey" : {
      "win + [left|right] arrow" : "move window over",
