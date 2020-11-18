@@ -1,0 +1,373 @@
+Notes TypeScript
+----
+https://www.typescriptlang.org
+----
+
+----
+Typescript basics
+ - variables declared with 'let' will behave like variables in C# & Java
+ - 'const' variables are available
+ - type declarations are defined like:
+  let mystring: string = 'some string'
+  
+ - string interpolation is available like:
+  - uses the back-tick char
+ console.log(`some thing written ${mystring}`);
+
+ - no difference between int's and floating-point numbers
+ let age: number = 37;
+ let height: number = 5.6; 
+ 
+ - boolean is the full word
+ let something: boolean = true;
+ 
+ - lists, as arrays, can also be type-cast like:
+ let myList: string[] = ['A', 'B', 'C'];
+ 
+ - dynamic types are defined using 'any' or 'unknown'
+  - 'any' allows for access arbitrary properties (existing or not)
+  - 'unknown' does not allow access to any properties
+ let myAny: any;
+ myAny = 'a string'
+ myAny = 100;
+ 
+ - intended to explicitly mark something as truly unknown
+ let myUnknown: unknown
+ 
+ - 'unknown' is the top type
+ - 'never' is the bottom type
+ 
+ - custom types are like enumerations:
+ type Animal = 'Cheetah' | 'Lion'
+ 
+ - enums are available in typical syntax like:
+ enum TimeRubric { Past, Present, Future };
+ let myVar: TimeRubric = TimeRubric.Past;
+ 
+ - tuples are built-in syntax like:
+  - they are are mutable 
+ let myTuple: [string, number]
+ 
+ - casting uses the 'as' keyword
+ let something: unknown = "actually a string";
+ let myLen: number = (something as string).length;
+----
+
+----
+Functions and Methods
+ - function return types is defined like:
+ function myFunc(): void {
+    const a = 0;
+ }
+ 
+ - anonymous enclosures are declared like:
+  - what appears after the "goes-to" (i.e. =>) is the return type
+  - documentation calls the a function type
+ let myAnon: (age: number, name: string) => string = 
+ function(age: number, name: string): string {
+    return `${name} is ${age} years old`;
+ }
+ 
+ - a function can also be a type like:
+ interface MySearchFunc {
+    (source: string, subString: string): boolean
+ }
+ 
+ let mySearch: MySearchFunc;
+
+ //the parameter names do not have to match 
+ mySearch = function(src: string, sub: string): boolean {
+    let result = src.search(sub);
+    return result > -1;
+ }
+ 
+ - nullable parameters are declared with post-fixed '?' like:
+ function myOtherFunc(name: string, salutation?: string): string {
+    if(!salutation){
+        salutation = 'Mr. or Mrs.' 
+    }
+    
+    return `${salutation} ${name}`;
+ }
+ 
+ - parameters can have default values like:
+ function pickColor(color: string = 'blue'): void {
+    //do something
+ }
+  
+ - variadic parameters can be declared like:
+  - documentation calls these "rest parameters"
+ function myVariadic(something: number, ...names: string[]): void{
+    //do something
+ }
+ 
+ - generics are supported like:
+ function myMethod<T>(arg: T[]): T[] {
+    //do something useful
+    return arg;
+ }
+ 
+ - index operators are like:
+ [index: string]: string;
+ 
+ - can have a function take or return a custom union type in line
+ function roll6d(): 1|2|3|4|5|6 {
+    return (Math.floor(Math.random() * 6) + 1) as 1|2|3|4|5|6;
+ }
+ 
+ - can whitelist parameter types using union syntax like:
+  - instead of allowing for everything (i.e. 'any'), only allow 
+    for a string or a number
+ function padLeft(value: string, padding: string | number): string {
+    //do something
+    return value;
+ }
+ 
+ - can declare a function without any implementation
+ declare function doSomething(): string
+ 
+ - method overloads is accomplished with syntactic tricks
+  - there are multiple function signature declarations stacked 
+    on top of the method's implementation
+  function pickCard(x: {suit: string, card: number}[]): number;
+  function pickCard(x: number): {suit: string, card: number};
+  function pickCard(x: any): any {
+    //body would check if typeof x is "object" or "number"
+    //return number for "object" and object for "number"
+  } 
+----
+
+----
+Unions and Intersection Types
+ - unions are a way to group types like:
+ type MyTick = { sound: "tick"; };
+ type MyTock = { sound: "tock"; };
+ type MyDing = { sound: "ding"; otherThing: false; };
+ type MyDong = { sound: "dong"; moreThing: "booty"; };
+
+ type ClockSounds = MyTick | MyTock | MyDing | MyDong;
+
+ - intersections are a way to append types 
+ 
+ interface ErrorHandling { success: boolean; error?: {message: string}; }
+ interface ProjectData { projects: {title: string}[]; }
+ interface DeveloperData {developers: {name: string}[]; }
+ 
+ type ProjectResponse = ProjectData & ErrorHandling;
+ type DeveloperResponse = DeveloperData & ErrorHandling;
+---- 
+
+----
+Classes and Interfaces 
+ - class and method declarations are like:
+  - runtime does not actually have types - just structure
+  class MyClass {
+  
+      private someDistance: number = 0;
+      private color: string;
+  
+      constructor(color: string){
+          this.color = color;
+      }
+  
+      //no access modifier means public
+      myMethod(): boolean{
+          return false;
+      }
+  
+      //same as OO - this is only avail to inherited types
+      protected myOtherMethod(somevalue: number): number {
+          //do something useful here
+          return somevalue;
+      }
+      
+      static myStaticMethod(): string{
+        return "STATIC!";
+      }
+  
+      get myProperty(): number{
+          return this.someDistance;
+      }
+  
+      set myProperty(val: number){
+          this.someDistance = val;
+      }
+  
+      //example of read-only property
+      get myColor(): string{
+          return this.color;
+      }
+  }
+  
+ - automatic fields are available from ctor syntax like:
+ class MyAutoPropertyExample {
+    //this class will now have two fields named myFirstProp and mySecondProp
+    constructor(public myFirstProp: string, public mySecondProp: string){ }
+ }
+  
+ - interfaces are also available like:
+  - fields can be optional using post-fixed question mark
+  - marking a field as readonly means its only assignable at ctor-time
+ interface MyInterface {
+     someField: number;
+     someOtherField: string;
+     someOptionalField?: string;
+     readonly someRO: string;
+ }
+ 
+ - interfaces can be extended
+ interface MySecondInterface extends MyInterface {
+    yetAnotherField: boolean;
+ }
+ 
+ - duck-typing works here - this can be passed to anything expected type 'MyInterfac'
+ class MyDuckType {
+    constructor(public someField: number, public someOtherField: string){ }
+ }
+ 
+ - abstract classes along with class inheritance like:
+ - a parent's constructor can be called using the 'super' keyword 
+ abstract class MyAbstractClass {
+    abstract anAbstractMethod(): void;
+    
+    aConcreteMethod(name: string): string{
+        return name;
+    }
+ }
+ 
+ class MyConcreteClass extends MyAbstractClass {
+    anAbstractMethod(): void {
+        //needs implementation now
+    }
+ }
+ 
+ - can allow for a mix of object\function in the same thing
+  - documentation calls these "Hybrid Types"
+  - appears strange from OO lang perspective
+ interface MyCounter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+ }
+ 
+ function getMyCounter(): MyCounter {
+    //implement the interface as a function
+    let counter = function (start: number) {} as MyCounter
+    counter.interval = 123;
+    counter.reset = function(){};
+    return counter;
+ }
+ 
+ let c = getMyCounter();
+ c(10);
+ c.reset();
+ c.interval = 5.0;
+ 
+----
+
+----
+Decorators (Attributes)
+ - decorators are also available (known as Attributes in .NET)
+ - are added to declarations on class, properties, methods and parameters
+ - use the Java-like '@' (at-symbol)
+ - function's parameters are required
+ - class decorators are like:
+ function MyClassDecorator(target: Function): void { }
+ 
+ - property decorators are like:
+ - 'key' is the name of the property, not its value
+ function MyPropertyDecorator(target: Object, key: string): void { }
+ 
+ - method decorators are like:
+ function MyMethodDecorator(target: Object, key: string, value: PropertyDescriptor): void { }
+ 
+ - parameter decorators are like:
+ function MyParameterDecorator(target: Function, key: string, parameterIndex: number): void { }
+----
+
+----
+Modules
+ - whole units of code similar to .NET assemblies
+ - what is available (i.e. variables, functions, classes, etc.) 
+   must be explicitly declared as "exported"
+ - what is in-scope within another module must be explicitly 
+   declared as "imported"
+ - export and import allow for renaming 
+ - a module may have one "default" export 
+  - is declared with keyword "default"
+ 
+ class MyCoolAssThing {
+    doStuff(): string {
+        return "awesome!";
+    }
+ }
+ 
+ export class MyClassAsIs {
+    notCoolStuff(): string {
+        return "lame!";
+    }
+ }
+ 
+ export {MyCoolAssThing as RenamedCoolThing}
+ 
+ import {MyRemoteCool} from "./TheFileItself.ts";
+ import {SomethingElse as SME } from "./SomethingElse.ts";
+ 
+ import namespaceAlias = Stuff.NamesOfStuff;
+----
+ 
+----
+Namespaces
+ - are considered internal modules 
+ - declared same as in C#
+ 
+ namespace MyNames {
+    const myConstString = "cool!";
+    export class MyClass {
+        doStuff(): string {
+            return "even cooler!";
+        }
+    }
+ }
+ 
+ - namespaces can be split across files using annotation hint
+ /// <reference path="MyNames.ts" />
+ namespace MyNames {
+    const myOtherConst = "say cool!";
+ }
+
+----
+Typescript GOTCHA's
+ - because is based on structure at runtime and 
+   not declarations at compile time - this will work
+  - MyEmptyType as nothing so anything would match it 
+    in terms of structure
+
+ class MyEmptyType { }
+ 
+ function foo(arg: MyEmptyType): void {
+    //do something
+ }
+ 
+ //this works fine
+ foo({somethingNamed: 11});
+ 
+ - object literals get special treatment called 
+   excess property checking whenever assigned or passed
+   as args
+  - error results whenever object literal has _any_ property
+    that the target type doesn't
+    
+  interface MyNextInterface {
+    name: string;
+    isCool: boolean;
+  }
+  
+  function usesMyInterface(arg: MyNextInterface){
+    console.log(`${arg.name} is cool: ${arg.isCool}`);
+  }
+  
+  //gets red squiggles on 'isWeeb: true'
+  let ss = usesMyInterface({name: 'Todd', isCool: false, isWeeb: true});
+  
+----
