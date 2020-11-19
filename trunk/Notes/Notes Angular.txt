@@ -1,0 +1,212 @@
+Notes Angular
+----
+Learning Angular - Third Edition
+By: Aristeidis Bampakos; Pablo Deeleman
+Publisher: Packt Publishing
+Pub. Date: September 7, 2020
+Print ISBN-13: 978-1-83921-066-2
+Web ISBN-13: 978-1-83921-557-5
+Pages in Print Edition: 430
+https://github.com/PacktPublishing/Learning-Angular--Third-Edition
+----
+
+----
+Angular versioning
+ - uses the standard version numbers
+  - major
+  - minor
+  - patch
+  - build-number
+----
+
+----
+Runtime dependencies
+ - node.js
+  - get the installed version of node using
+  node -v
+ - npm
+  - get the installed version of npm using  
+  npm -v 
+ - Angular CLI
+  - install Angular CLI using npm
+  npm install -g @angular/cli
+  - get the installed version of angular cli using
+  ng version
+----
+
+----
+Angular CLI common commands
+ - creates, deploys, adds, etc. to angular projects
+ - uses working directory as location
+ - is invoked from cmd line as 'ng' space and:
+   new : creates new project
+   build : transpiles a project
+   generate : creates new files for a project
+   serve : builds and serves a project from a pre-configured web server
+   test : runs unit tests on a project
+   deploy : deploys a project to a web-host provider
+   add : installs third-party lib's 
+   update : updates Angular and dependencies to the latest
+----
+
+----
+Core Project file structure
+ - core\main files
+  ~/src/app/app.component.ts
+  ~/src/index.html
+  ~/src/app.module.ts
+  ~/src/main.ts
+
+  - the whole of what is rendered is within the <body> tag
+  - a module is a collection of components 
+   - a module's components is listed in its 'declarations' array
+  
+  - html tag with uncommon names (e.g. app-root) are assumed 
+    to be components with matching 'selector' values
+  - going from unknown-tag-name to component, the component has a
+    'template' which is html content
+  - a template allows for interpolation using double-curly braces
+  - the name within the double-curly will be declared in the component
+  
+  - main.ts is the 'main(string[] args)' kind of bootstrap starting place
+    for the entire application
+----
+  
+----
+Component basics
+ - components are the main building block
+ - components control views
+ - components can be generated from the CLI
+  - the command is given while working directory is 
+    top-of-app (i.e. ~/), angular CLI adds it to the 
+    proper place in the folder structure
+  ng generate component myNameHere
+ 
+ - the component is contained in its own folder
+ - the CLI command adds the new component to the 
+   AppModule declarations
+  - this the place where components are grouped 
+    into modules
+ - the folder contains four systematic named files
+   with different extensions
+  - paths appear as:
+  ~/src/app/myNameHere/myNameHere.component.*
+  
+  - .html is the template
+  - .ts is the component's class
+  - .spec.ts are unit tests
+  - .css is the style sheet
+  
+ - a TypeScript class becomes an Angular component
+   through the use of the @Component decorator
+  - the @Component decorator provides three property
+    values:
+    selector: the id-name used inside of HTML
+    templateUrl: the relative path to the HTML file
+    styleUrls: an array of relative paths to css files
+----
+
+----
+Passing data down to component
+ - rough example, define actual value in AppComponent 
+ export class AppComponent {
+  someAlias = "Some value";
+ }
+
+ - next is AppComponent's template .html
+ <my-component-name [nameOfInputProperty] = "someAlias"></my-component-name>
+ 
+ - next is on my-component-name.ts 
+  - need to import 'Input' from angular core
+ import {Input} from '@angular/core';
+ 
+  - then add a public property decorated with @Input
+ @Input() public nameOfInputProperty: string = '';
+ 
+  - last is to use the property in my-component-name's template (i.e. html)
+ <p>{{nameOfInputProperty}} is here!</p>
+----
+
+----
+Passing event up to component
+ - first define the output on my-component-name's TypeScript class
+ - again import the dependencies 
+ import { Output, EventEmitter } from '@angular/core';
+ 
+ - and add the decorated property to the class
+ @Output() public liked = new EventEmitter();
+ 
+ - next, in  my-component-name's template (i.e. html), add a web-forms 
+   button whose click event is wired into the 'emit()' method of 
+   the EventEmitter named 'liked'
+ <button (click)="liked.emit()">Like</button>
+ 
+ - next, in the my-component-name node, present within the
+   app.component.html, tie the EventEmitter property of my-component-name
+   to a method on app.component.ts class named 'onLike()'
+  <my-component-name [nameOfInputProperty] = "someAlias" (liked)="onLike()">
+  </my-component-name>
+  
+ - last, have the event handler in app.component, here named 'onLike' do something
+ public onLike(){ console.log("on like event received."); }
+----   
+
+----
+HTML string interpolation
+ - various ways to achieve 
+ - typical is double-curly within the inner text\xml of a node
+  <span>{{title}}</span>
+  
+ - square-braces are used to access properties of the 
+   HTML (think XML) node 
+   <p [style.color]="'greenyellow'"></p>
+----
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
