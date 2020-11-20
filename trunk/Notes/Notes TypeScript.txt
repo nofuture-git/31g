@@ -5,6 +5,7 @@ https://www.typescriptlang.org
 
 ----
 Typescript basics
+ - like with JavaScript 0 == '0' is true while 0 === '0' is false
  - variables declared with 'let' will behave like variables in C# & Java
  - 'const' variables are available
  - type declarations are defined like:
@@ -208,6 +209,7 @@ Classes and Interfaces
  - interfaces are also available like:
   - fields can be optional using post-fixed question mark
   - marking a field as readonly means its only assignable at ctor-time
+  - for simple DTO like objects (no biz logic), interfaces are preferred
  interface MyInterface {
      someField: number;
      someOtherField: string;

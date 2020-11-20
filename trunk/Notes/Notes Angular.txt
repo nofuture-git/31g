@@ -114,7 +114,7 @@ Passing data down to component
  }
 
  - next is AppComponent's template .html
- <my-component-name [nameOfInputProperty] = "someAlias"></my-component-name>
+ <my-component-name [nameOfInputProperty]="someAlias"></my-component-name>
  
  - next is on my-component-name.ts 
   - need to import 'Input' from angular core
@@ -162,7 +162,57 @@ HTML string interpolation
    <p [style.color]="'greenyellow'"></p>
 ----
 
+----
+Component reference in template
+ - intended to set a variable within the template as a 
+   reference to the component
+  - as such all public members are available in the 
+    template
+  - reference is made within the html node which shares the name of the 
+    component's class 
+  - reference is an alias marked by prefix of '#' symbol
+  - using reference, public properties are in scope 
+  - use of the reference does not include the '#' symbol
+ <my-component-name #myApp [nameOfInputProperty]="someAlias" (liked)="onLike()">
+ </my-component-name>
+ <span>{{myApp.name}}</span>
+---- 
 
+----
+Component Lifecycle events
+ - similar to ASP.NET
+ - events are themselves an Interface that a class must 
+   implement
+ - the interfaces are present in angular core
+ - common event interfaces are:
+  OnInit
+  OnDestroy
+  OnChanges
+----
+
+----
+Directives 
+ - modify html elements
+ - can be places within html element's attribues
+ - is prefixed with an asterisk 
+ <!-- the "else" is kludgy embedded within the *ngIf attribute's value
+ <p *ngIf="name === 'FooBar'; else myNgTemplate"> 
+ {{name}} here 
+ </p>
+ <ng-template #myNgTemplate>
+    <p> not here dude </p>
+ </ng-template>
+
+ - a looping construct also exist with esoteric syntax
+  - the name 'order' is local to the loop
+  - the name 'orders' is defined in the component as an array
+  - the name 'index' is a built-in variable of the ngFor directive
+  - the name 'myIndex' is the local name of index in this loop
+  - other ngFor directive built-in variables are boolean:
+    'first', 'last', 'odd' and 'even'
+ <div *nfFor="let order of orders; index as myIndex">
+  {{myIndex+1}}. {{order.name}} ({{order.orderedDate}})
+ </div>
   
   
   
