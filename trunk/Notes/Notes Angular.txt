@@ -11,6 +11,10 @@ https://github.com/PacktPublishing/Learning-Angular--Third-Edition
 ----
 
 ----
+https://angular.io/tutorial
+----
+
+----
 Angular versioning
  - uses the standard version numbers
   - major
@@ -56,6 +60,9 @@ Core Project file structure
   ~/src/index.html
   ~/src/app.module.ts
   ~/src/main.ts
+
+  - in app.module.ts is the one-for-every-component NgModule
+    declaration
 
   - the whole of what is rendered is within the <body> tag
   - a module is a collection of components 
@@ -107,8 +114,22 @@ Component basics
 ----
 
 ----
+Communicating with the server
+ - this is done through the angular module HttpClient
+ - in the root module add the import 
+ - and the add 'HttpClientModule' in the import's array of the @NgModule decorator
+ import { HttpClientModule } from '@angular/common/http';
+ 
+ - npm has an in-memory web-api you can install using
+ npm install angular-in-memory-web-api --save
+---- 
+ 
+
+----
 Passing data down to component
  - rough example, define actual value in AppComponent 
+ - one example of its use is to refactor some code into its own
+   component
  export class AppComponent {
   someAlias = "Some value";
  }
@@ -152,14 +173,44 @@ Passing event up to component
 ----   
 
 ----
-HTML string interpolation
+HTML content basics
  - various ways to achieve 
  - typical is double-curly within the inner text\xml of a node
   <span>{{title}}</span>
+ 
+ - angular has builtin interpolation bindings which use a '|' (pipe) 
+   operator 
+   <span>{{title | uppercase}}</span>
   
  - square-braces are used to access properties of the 
    HTML (think XML) node 
    <p [style.color]="'greenyellow'"></p>
+----
+
+----
+Using webform controls
+ - local binding within the template can be accomplished with the 
+   # octothorp 
+ <input #someTextBox />
+ <button (click)="add(someTextBox.value); someTextBox.value=''">
+  add
+ </button>
+
+ - two binding between the underlying data and the display uses 
+   special syntax in the input attributes
+   
+   - first, add two lines to the app.module.ts
+    - one, new imports statement
+  import { FormsModule } from '@angular/forms';
+  
+    - two, line within the "imports" array of the @NgModule
+   imports: [
+    //existing stuff here
+    FormsModule
+   ]
+  
+   - last, add the two-way webform input to the html as:
+   <input [(ngModel)]="myInstanceVar.myString" placeholder="name" />
 ----
 
 ----
@@ -193,7 +244,7 @@ Component Lifecycle events
 ----
 Directives 
  - modify html elements
- - can be places within html element's attribues
+ - can be places within html element's attributes
  - is prefixed with an asterisk 
  <!-- the "else" is kludgy embedded within the *ngIf attribute's value
  <p *ngIf="name === 'FooBar'; else myNgTemplate"> 
@@ -202,6 +253,15 @@ Directives
  <ng-template #myNgTemplate>
     <p> not here dude </p>
  </ng-template>
+ 
+ - *ngIf directive can be used to exclude a block of html when some
+   variable is undefined
+  <div *ngIf="selectedSomething">
+    <!-- 
+    this is only going to be present when 'selectedSomething' is defined
+    while undefined it will not be present in the DOM
+    -->
+  </div>
 
  - a looping construct also exist with esoteric syntax
   - the name 'order' is local to the loop
@@ -210,12 +270,179 @@ Directives
   - the name 'myIndex' is the local name of index in this loop
   - other ngFor directive built-in variables are boolean:
     'first', 'last', 'odd' and 'even'
- <div *nfFor="let order of orders; index as myIndex">
-  {{myIndex+1}}. {{order.name}} ({{order.orderedDate}})
+  - 'selectedOrder' is an instance variable in the component
+  - 'onSelect(order)' is a method on the component that handles the
+     selected event of an item in the list
+  - [class.selected] sets the CSS class of an item whenever the loop-local 
+    'order' is the instance variable 'selectedOrder'
+    
+ <li *nfFor="let order of orders; index as myIndex"
+      [class.selected]="order === selectedOrder"
+      (click)="onSelect(order)">
+  <span class="someStyleHere">{{myIndex+1}}. {{order.name}}</span> ({{order.orderedDate}})
+ </li>
+----
+
+----
+Using and injecting Services
+ - are for exogenous things like authentication, data-service, etc.
+ - are by nature async and therefore Observable 
+ - can be created from Angular CLI
+ ng generate service hero
+ 
+ - Angular CLI will place the service file at the ~/src/app 
+ - will add the required @Injectable decorator 
+ - the @Injectable decorator defines who provides the service 
+   and how it is managed in-memory
+  - the default 'providedIn' property is 'root' which is 
+    basically global singleton 
+  - to scope to a particular module you need to assign 'providedIn' 
+    to the module and also add it in the @NgModule's providers array
+ 
+ - the pattern for injection is slightly different from C#
+  - the dependency is still present in the ctor 
+  - uses the TypeScript shortcut to declare a private field in the 
+    ctor's parameters
+ constructor(private myService: MyService) {}
+ 
+  - the diff comes in at this point where instance level var's 
+    are assigned on the lifecycle ngInInit() event and not within
+    the constructor's body itself
+  - this is considered best practice in TypeScript(?)
+  - when a service returns an Observable then its not direct assignment 
+    but rather an anon enclosure on the .subscribe method
+   - the .subscribe method is available on Observable in the rxjs 
+   - as a rule Observable does nothing until something subscribes to it
+  this.myService.getData().subscribe(d => this.myInstanceData = d);
+   
+   -to use this you need to import Observable and "of" like:
+  import {Observable, of} from 'rxjs';
+----
+
+----
+Routing
+ - has dependency on RouterModule and Routes for routing functionality
+ - a "route" is typically a dictionary of a path string and a handling
+   component
+ - for this example localhost:4200/someUriPath displays 'MyComponent'
+ - next example of having the URI root path redirect to a 'someUriPath'
+   which, in turn, goes to 'MyComponent'
+ - third route is for passing an Id into the URI path (denoted by the ":id")
+  - the get this value back out in-code, use ActivatedRoute type in @angular/router
+ - the 'forRoot' method is routes from the app's root dir
+ - the export of RouterModule available to app.component.ts & .html
+ - the Angular CLI command for gen of a router is 
+  - --flat is for the location of code file in src/app folder
+  - --module=app tells the CLI to add a register 
+                  entry in the imports array of AppModule
+ ng generate module app-routing --flat --module=app
+
+ import { NgModule } from '@angular/core';
+ import { RouterModule, Routes } from '@angular/router';
+ import { MyComponent } from './my-component/my.component';
+ 
+ const routes: Routes = [
+   {path: 'someUriPath', component: MyComponent },
+   {path: '', redirectTo: '/someUriPath', pathMatch: 'full'},
+   {path: 'someUriPath/:id', component: MyDetailComponent }
+ ]
+ 
+ @NgModule({
+    imports: [RouterModule.forRoot(routes),
+    exports: [RouterModule]
+ })
+ export class MyRoutingModule { }
+ 
+ - from here there is an esoteric html node named 'router-outlet'
+   which is a kind of place holder for content which the router 
+   will handle
+   
+ - to use a router based path 
+ <a routerLink='/someUriPath'>Click Me</a>
+----
+   
+----
+Wiring in autocomplete search to server
+ - has a dependency on 'rxjs' and 'rxjs/operators'
+ - requires special syntax on the template
+ - needs to pause or too many calls to server will result
+ 
+ - first in the template
+  - #searchBox is a local var to get the value and pass to the 
+     search function on the template's class
+  - the array name has a "$" suffix to indicate its an Observable and
+     not an array
+  - the " | async" is required and performs some auto-magic subscription 
+ <div>
+  <input #searchBox id="search-box" (input)="search(searchBox.value)" />
+  <ul>
+   <li *ngFor="let item of items$ | async">
+    <a routerLink="/detail/{{item.id}}">
+     {{item.name}}
+    </a>
+   </li>
+  </ul>
  </div>
-  
-  
-  
+ 
+ - second it the class
+  - need some service to perform the web calls which is typically
+     injected in the ctor
+  - need instance var to wrap the search content of type "Subject<T>"
+  - boilerplate code to pipe how to perform the search in the Subject 
+   - this uses various 'operators' from 'rxjs'
+ 
+ import { Component, OnInit } from '@angular/core'; 
+ import { Observable, Subject } from 'rxjs';
+ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+ //the general DTO object received from the server
+ import { MyItem } from '../myItem';
+ //the service that makes the http calls
+ import { MyService } from '../my.service'
+ 
+ @Component({
+   selector: 'app-item-search' ,
+   templateUrl: './item-search.component.html',
+   sytleUrls: [ './item-search.component.css' ]
+ })
+ export class ItemSearchComponent implements OnInit {
+   
+   //this is the array from the template - init'ed below
+   public myItems$: Observable<MyItem[]>;
+   
+   //this is the black-box that handles the search (sorta)
+   private searchTerms = new Subject<string>();
+   
+   //inject the service (typical) to make http calls
+   constructor(private myService: MyService) {}
+   
+   //this the the method the (input) from the template is wired into
+   public search(term: string): void {
+   
+    //searchTerms is used like a buffer
+    this.searchTerms.next(term)
+   }
+   
+   ngOnInit(): void {
+   
+    //where it gets weird
+    this.myItems$ = this.searchTerms.pipe(
+    
+      // number of milliseconds to pause 
+      // the full search string is building-up during this time...
+      debounceTime(300),
+      
+      // don't search same thing again
+      distinctUntilChanged(),
+      
+      // handles timing problems of multiple searches still pending
+      // returns the latest observables - older ones are simple GC'ed
+      switchMap((term: string) => this.myService.searchItems(term)),
+    );
+   }
+ }
+----
+   
+    
   
   
   
