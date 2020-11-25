@@ -120,7 +120,8 @@ Communicating with the server
  - and the add 'HttpClientModule' in the import's array of the @NgModule decorator
  import { HttpClientModule } from '@angular/common/http';
  
- - npm has an in-memory web-api you can install using
+ - npm has an in-memory web-api
+  - intended for local testing
  npm install angular-in-memory-web-api --save
 ---- 
  
@@ -178,13 +179,53 @@ HTML content basics
  - typical is double-curly within the inner text\xml of a node
   <span>{{title}}</span>
  
- - angular has builtin interpolation bindings which use a '|' (pipe) 
-   operator 
-   <span>{{title | uppercase}}</span>
   
  - square-braces are used to access properties of the 
    HTML (think XML) node 
    <p [style.color]="'greenyellow'"></p>
+----
+
+----
+Using Pipes in the template
+ - allows for filtering & transforming output at the view-level only
+ - data in the component is unchanged
+ - a pipe may have further options after its keyword name sep'ed by a colon
+  - further options will also have a color in-front
+   <!-- 'title' on the component isn't being changed to uppercase -->
+   <span>{{title | uppercase}}</span>
+ 
+ - there are various template pipes builtin
+  - 'uppercase' & 'lowercase': transform a string 
+  - 'percent': displays 0.1234 as 12%
+  - 'currency': displays 100 as $100
+  - 'slice:1:5': would filter any array to only 1 through 5
+  - 'date': displays a date as 'MMMM d, Y' format
+   - other options at https://angular.io/api/common/DatePipe#pre-defined-format-options
+  - 'json': transforms an object into JSON format
+   - mostly for debugging
+  - 'async': used in autocomplete async operations
+
+ - custom pipes can be written by the dev
+  - can use Angular CLI to create a new one
+  - the generate will have the required decorators and method implementations
+ ng generate pipe my-pipe
+ 
+ import {Pipe, PipeTransform } from '@angular/core';
+ 
+ @Pipe({name: 'myPipe'})
+ export class MyPipePipe implements PipeTransform {
+   
+   // the variadic 'args' is what is passed in after each colon
+   // the 'unknown' type on 'value' is replaced with a custom type (typically)
+   // while the 'unknown' array on 'args' is replaced by a string array
+   // last, the return type is changed to an array of the same type as 'value'
+   transform(value: MyItem, ...args: string[]): MyItem[] {
+   
+     //perform the transform here
+     
+     return null;
+   }
+ }
 ----
 
 ----
