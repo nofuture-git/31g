@@ -51,37 +51,69 @@ Angular CLI common commands
    deploy : deploys a project to a web-host provider
    add : installs third-party lib's 
    update : updates Angular and dependencies to the latest
+ - for build, serve and test, a specific environment 
+   can be targeted using '--configuration=' param
 ----
 
 ----
-Core Project file structure
- - core\main files
-  ~/src/app/app.component.ts
-  ~/src/index.html
-  ~/src/app.module.ts
-  ~/src/main.ts
-
-  - in app.module.ts is the one-for-every-component NgModule
-    declaration
-
-  - the whole of what is rendered is within the <body> tag
-  - a module is a collection of components 
-   - a module's components is listed in its 'declarations' array
+Project files structure
+ - 'src' all the source files of my Angular app
+  - where most of everything generated will go
+ - 'e2e' is for end-to-end testing
+ - 'node_modules' all the npm dependencies needed by Angular
+ - '.browserslistrc' browsers and version supported
+ - '.editorconfig' coding style
+ - '.gitignore' files\folders Git should not track
+ - 'angular.json' config file of Angular CLI workspace
+ - 'karma.conf.js' config file for running unit tests
+ - 'package.json' & 'package-lock.json' definitions of exact 
+    npm packages plus version required to run and test the app
+ - 'tsconfig.*.json' TypeScript configurations
+  - '.base' is used by Angular CLI
+  - '.spec' is used for unit tests
   
-  - html tag with uncommon names (e.g. app-root) are assumed 
-    to be components with matching 'selector' values
-  - going from unknown-tag-name to component, the component has a
-    'template' which is html content
-  - a template allows for interpolation using double-curly braces
-  - the name within the double-curly will be declared in the component
+ - 'assets' for fonts, images and icons
+ - 'environments' folder for targeting a specific deployment environment
+  - uses a naming convention of "environment.myName.ts' 
+  - is tied in at the 'angular.json' config file
+  - at the location of projects.my-application-name.architect.configurations
+  - names are expected to match from file to JSON
   
-  - main.ts is the 'main(string[] args)' kind of bootstrap starting place
-    for the entire application
+ - 'index.html' & 'main.ts' the entry places for the whole app
+ - 'polyfills.ts' scripts to enable support of features on 
+    various browsers because not all browsers 
+    support all the latest features
+ - 'sytles.css' app-wide styles
+ - 'test.ts' the main entry for unit tests
+----
+
+----
+Module basics
+ - modules are the main domain container space of Angular
+ - modules may contain further modules, etc.
+ ng generate module my-namespace
+ 
+ - further, to generate a directive, component or pipe within a module
+  - either set working dir to that module's folder
+  - invoke the generate command with a the --module param
+ ng generate component my-namespace/my-item ----module=my-namespace
+ 
+ - module's use the @NgModule to define themselves to other modules
+  - in @NgModule decorator:
+   - 'exports' defines what is exposed to others
+    - this will be available to other modules
+    - this is not the same as the 'export' keyword on a class declaration
+   - 'imports' defines what is defined elsewhere
+    - this will then be available within this module
+    - this is not the same thing as a the 'imports' statement 
+      at the top of a .ts file
 ----
   
 ----
 Component basics
- - components are the main building block
+ - directives are the main building block
+ - a component is a directive with a view 
+ - template is the named used for just the view portion of a component
  - components control views
  - components can be generated from the CLI
   - the command is given while working directory is 
@@ -211,6 +243,7 @@ Using Pipes in the template
  ng generate pipe my-pipe
  
  import {Pipe, PipeTransform } from '@angular/core';
+ import { MyItem } from './myItem';
  
  @Pipe({name: 'myPipe'})
  export class MyPipePipe implements PipeTransform {
@@ -219,7 +252,7 @@ Using Pipes in the template
    // the 'unknown' type on 'value' is replaced with a custom type (typically)
    // while the 'unknown' array on 'args' is replaced by a string array
    // last, the return type is changed to an array of the same type as 'value'
-   transform(value: MyItem, ...args: string[]): MyItem[] {
+   transform(value: MyItem[], ...args: string[]): MyItem[] {
    
      //perform the transform here
      
@@ -337,8 +370,12 @@ Using and injecting Services
    and how it is managed in-memory
   - the default 'providedIn' property is 'root' which is 
     basically global singleton 
-  - to scope to a particular module you need to assign 'providedIn' 
-    to the module and also add it in the @NgModule's providers array
+  - to scope to a module:
+   - you need to assign 'providedIn' to the module 
+   - add it in the @NgModule's providers array
+  - to scope to a component:
+   - add the service to the @Component's providers array 
+   - likewise, use ctor injection
  
  - the pattern for injection is slightly different from C#
   - the dependency is still present in the ctor 
@@ -358,6 +395,10 @@ Using and injecting Services
    
    -to use this you need to import Observable and "of" like:
   import {Observable, of} from 'rxjs';
+  
+ - dependency resolution 
+  - first leap-frogs over modules to parent components
+  - second leap-frogs over components to parent modules
 ----
 
 ----
@@ -483,16 +524,66 @@ Wiring in autocomplete search to server
  }
 ----
    
-    
-  
-  
-  
-  
-  
-  
-  
-  
-  
+----
+Directives
+ - are intended for some kind of reuseable code that is 
+   not bound to a particular template (i.e. .html)
+ - appears in html as an element called native host element
+  - Angular CLI appends a prefix to the name to avoid collision with 
+    native html element names - typically 'app'
+ - generated using Angular CLI command 
+ ng generate directive my-directive
+ 
+ import { Directive, ElementRef, Renderer2, HostBinding, HostListener } from '@angular/core';
+ 
+ //'selector' is the name used in the html as a element
+ @Directive({
+   selector: '[appCopyright]'
+ })
+ export class CopyrightDirective {
+ 
+   //this gets access to the this native host element's 'class' attribute 
+   @HostBinding('class')
+   public currentClass: string;
+   
+   //this decorator accepts two params, 
+    // name of the native event 
+    // the args being passed to the method 
+   @HostListener('keypress', ['$event'])
+   public onKeyPress(event: KeyboardEvent): void {
+   
+     //get the numeric value of the keypress
+     const charCode = event.key.charCodeAt(0);
+     
+     //test it for being in range of numeric characters 
+     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+     
+       // actually use the other binding here
+       this.currentClass = 'invalid';
+       
+       //undo of the user's input
+       event.preventDefault();
+        
+     } else {
+        this.currentClass = 'valid';
+     }
+   }
+ 
+   //'el' is type 'ElementRef' and is used to get the current element in the DOM
+   //'renderer' is type 'Renderer2', best practice, use this instead of global DOM
+   constructor(el: ElementRef, renderer: Renderer2) {
+   
+     //the 'copyright' style class is defined in the global src/styles.css
+     renderer.addClass(el.nativeElement, 'copyright');
+     renderer.setProperty(
+       el.nativeElement,
+       'textContent',
+       `Copyright ©${new Date().getFullYear()} All Rights Reserved.`
+     );
+   }
+ }
+----
+
   
   
   
