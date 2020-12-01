@@ -391,6 +391,8 @@ Using and injecting Services
     but rather an anon enclosure on the .subscribe method
    - the .subscribe method is available on Observable in the rxjs 
    - as a rule Observable does nothing until something subscribes to it
+   - whenever an instance variable is an Observable, itself, then its often
+     suffixed with a dollar-sign
   this.myService.getData().subscribe(d => this.myInstanceData = d);
    
    -to use this you need to import Observable and "of" like:
@@ -584,7 +586,24 @@ Directives
  }
 ----
 
-  
+----
+Using Promises
+ - replaces callback hell where higher order functions 
+   are returning and passing functions and\or anon enclosures 
+   are nested
+ - uses the type named 'Promise'
+  - the 'Promise' type is present without any import statements
+ - as example replacing this
+ getTop(f => {
+  getMiddle(f, a => {
+   getBottom(a, p => {
+     //nasty
+   });
+  });
+ });
+   
+ - with this
+  getTop().then(getMiddle).then(getBottom);
   
   
   
