@@ -11,7 +11,44 @@ https://github.com/PacktPublishing/Learning-Angular--Third-Edition
 ----
 
 ----
+Angular for Enterprise-Ready Web Applications - Second Edition
+by Doguhan Uluca
+Publisher: Packt Publishing
+Release Date: May 2020
+ISBN: 9781838648800
+https://github.com/duluca/local-weather-app
+https://github.com/duluca/lemon-mart
+https://github.com/duluca/lemon-mart-server
+----
+
+----
 https://angular.io/tutorial
+----
+
+----
+StackBlitz.io
+ - interactive VS Code inside the browser
+----
+
+----
+Pertinent history
+ 2004 Asynchronous JavaScript and XML (AJAX)
+ 2006 jQuery
+ 2008 iPhone revolution
+ 2009 ASP.NET MVC
+ 2012 evergreen browsers (self-updating)
+ 2016 Angular (actually Angular 2 since prev. ver. was AngularJs)
+----
+
+----
+Angular code structure
+ - code is contained within Modules
+ - other entities are 
+  - Components
+  - Services
+  - Directives 
+  - Pipes
+  - User Controls
 ----
 
 ----
@@ -114,7 +151,6 @@ Component basics
  - directives are the main building block
  - a component is a directive with a view 
  - template is the named used for just the view portion of a component
- - components control views
  - components can be generated from the CLI
   - the command is given while working directory is 
     top-of-app (i.e. ~/), angular CLI adds it to the 
@@ -146,6 +182,34 @@ Component basics
 ----
 
 ----
+Component reference in template
+ - intended to set a variable within the template as a 
+   reference to the component
+ - expressions are presented in a template in four forms
+ {{ expression }}              : interpolation
+ [target]="expression"         : bind class var to html attribute
+ (event)="expression"          : event handler assignment
+ *ngDirective="expression"     : angular directives
+ 
+ - two-way data-binding combines all of them
+ [(ngModel)]="somePropertyOnClass"
+  - square-braces are class-to-template
+  - parenthesis are template-event-to-class
+  - 'ngModel' is a directive
+ 
+ - as such all public members are available in the 
+   template
+ - reference is made within the html node which shares the name of the 
+   component's class 
+ - reference another component's class as an alias 
+   marked by prefix of '#' symbol
+ - using reference, public properties are in scope 
+ - use of the reference does not include the '#' symbol 
+ <app-myother #myOther></app-myother>
+ <span> {{ myOther.someProprty }} </span>
+---- 
+
+----
 Communicating with the server
  - this is done through the angular module HttpClient
  - in the root module add the import 
@@ -157,7 +221,6 @@ Communicating with the server
  npm install angular-in-memory-web-api --save
 ---- 
  
-
 ----
 Passing data down to component
  - rough example, define actual value in AppComponent 
@@ -204,18 +267,6 @@ Passing event up to component
  - last, have the event handler in app.component, here named 'onLike' do something
  public onLike(){ console.log("on like event received."); }
 ----   
-
-----
-HTML content basics
- - various ways to achieve 
- - typical is double-curly within the inner text\xml of a node
-  <span>{{title}}</span>
- 
-  
- - square-braces are used to access properties of the 
-   HTML (think XML) node 
-   <p [style.color]="'greenyellow'"></p>
-----
 
 ----
 Using Pipes in the template
@@ -288,22 +339,6 @@ Using webform controls
 ----
 
 ----
-Component reference in template
- - intended to set a variable within the template as a 
-   reference to the component
-  - as such all public members are available in the 
-    template
-  - reference is made within the html node which shares the name of the 
-    component's class 
-  - reference is an alias marked by prefix of '#' symbol
-  - using reference, public properties are in scope 
-  - use of the reference does not include the '#' symbol
- <my-component-name #myApp [nameOfInputProperty]="someAlias" (liked)="onLike()">
- </my-component-name>
- <span>{{myApp.name}}</span>
----- 
-
-----
 Component Lifecycle events
  - similar to ASP.NET
  - events are themselves an Interface that a class must 
@@ -316,7 +351,7 @@ Component Lifecycle events
 ----
 
 ----
-Directives 
+Use of Directives 
  - modify html elements
  - can be places within html element's attributes
  - is prefixed with an asterisk 
@@ -408,13 +443,7 @@ Routing
  - has dependency on RouterModule and Routes for routing functionality
  - a "route" is typically a dictionary of a path string and a handling
    component
- - for this example localhost:4200/someUriPath displays 'MyComponent'
- - next example of having the URI root path redirect to a 'someUriPath'
-   which, in turn, goes to 'MyComponent'
- - third route is for passing an Id into the URI path (denoted by the ":id")
-  - the get this value back out in-code, use ActivatedRoute type in @angular/router
- - the 'forRoot' method is routes from the app's root dir
- - the export of RouterModule available to app.component.ts & .html
+ - routing is used to deffer loading additional modules via child-routers 
  - the Angular CLI command for gen of a router is 
   - --flat is for the location of code file in src/app folder
   - --module=app tells the CLI to add a register 
@@ -426,13 +455,22 @@ Routing
  import { MyComponent } from './my-component/my.component';
  
  const routes: Routes = [
+   //this example localhost:4200/someUriPath displays 'MyComponent'
    {path: 'someUriPath', component: MyComponent },
+   
+   //next example of having the URI root path redirect to a 'someUriPath' which, in turn, goes to 'MyComponent'
    {path: '', redirectTo: '/someUriPath', pathMatch: 'full'},
+   
+   //third route is for passing an Id into the URI path (denoted by the ":id")
+   //the get this value back out in-code, use ActivatedRoute type in @angular/router
    {path: 'someUriPath/:id', component: MyDetailComponent }
  ]
  
  @NgModule({
+    //the 'forRoot' method is routes from the app's root dir
     imports: [RouterModule.forRoot(routes),
+    
+    //the export of RouterModule available to app.component.ts & .html
     exports: [RouterModule]
  })
  export class MyRoutingModule { }
@@ -527,7 +565,7 @@ Wiring in autocomplete search to server
 ----
    
 ----
-Directives
+Declaration of Directives
  - are intended for some kind of reuseable code that is 
    not bound to a particular template (i.e. .html)
  - appears in html as an element called native host element
@@ -585,56 +623,3 @@ Directives
    }
  }
 ----
-
-----
-Using Promises
- - replaces callback hell where higher order functions 
-   are returning and passing functions and\or anon enclosures 
-   are nested
- - uses the type named 'Promise'
-  - the 'Promise' type is present without any import statements
- - as example replacing this
- getTop(f => {
-  getMiddle(f, a => {
-   getBottom(a, p => {
-     //nasty
-   });
-  });
- });
-   
- - with this
-  getTop().then(getMiddle).then(getBottom);
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
