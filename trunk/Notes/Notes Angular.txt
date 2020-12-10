@@ -314,6 +314,19 @@ Using Pipes in the template
 
 ----
 Using webform controls
+ - two approaches to webforms data
+  - Template-Driven
+   - has declarations within the template 
+     and the class variables implicitly created
+   - is HTML syntax and therefore limited
+   - there is no access to these declarations in the class file
+    
+  - Reactive
+   - explicit declarations in class file
+    - using types from '@angular/forms'
+   - linked to template using builtin directives
+  
+  
  - local binding within the template can be accomplished with the 
    # octothorp 
  <input #someTextBox />
@@ -336,6 +349,115 @@ Using webform controls
   
    - last, add the two-way webform input to the html as:
    <input [(ngModel)]="myInstanceVar.myString" placeholder="name" />
+----
+
+----
+Basics of Template-Driven webforms
+ <!-- 
+   onSubmit is actually implemented in the class 
+    - contents are JSON of value pairs
+     - names match what is declared in template
+  -->
+ <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+   <div>Username: 
+    <!-- "ngModel" connects it back to the "f.value" by name "username" -->
+    <input type="text" name="username" ngModel />
+   </div>
+   <!-- 
+     - this produces another object inside of "f.value" named "passwordGroup"
+     - "passwordGroup" will now have name-value pairs within it named 
+       "password" and "pconfirm"
+    -->
+   <div ngModelGroup="passwordsGroup">
+    <div>Password: 
+     <input type="password" name="password" ngModel />
+    </div>
+    <div>
+     <input type="password" name="pconfirm" ngModel />
+    </div>
+   </div>
+   <button type="submit">Submit</button>
+ </form>
+----
+
+----
+Basics of Reactive webforms
+ - import "ReactiveFormsModule" from '@angular/forms'
+ - add the "ReactiveFormsMosule" to the "imports" array of the 
+   "@NgModule" decorator on the component's class
+ - compose the form in-code using three types 
+  - "FormControl" the basic unit like <input> node
+  - "FormGroup" the collection of "FromControls"
+   - may contain further "FromGroup"s within itself
+  - "FormArray" for a group whose size may change 
+   - example, adding another email address
+   - array items are accessed by index, not name
+
+import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+
+@Component({
+    selector: 'app-root',
+    template: `
+    <!-- notice: only this node has the square-braces -->
+    <form [formGroup]="myFormModel" (ngSubmit)="onSubmit()">
+    
+      <!-- adding square-braces here to formControlName will cause an error -->
+      <div>Username: <input type="text" formControlName="username" /></div>
+      <div>SSN: <input type="text" formControlName="ssn" /> </div>
+      <div formGroupName="passwordGroup">
+        <div>Password: <input type="password" formControlName="password" /> </div>
+        <div>Confirm password: <input type="password" formControlName="pconfirm" /> </div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+    
+    <!--
+     this is possible, to declare a form control outside of a form group
+     <input type="text" [formControl]="myInstanceVarName" />
+     -->
+    `
+})
+export class AppComponent {
+
+    //dynamic access to values avail through methods
+    // - reset(): sets various change-tracking flags back to default
+    // - setValue({  }): change everything by passing in a new object
+    // - patchValue({username: '----'): change some selected value of the object 
+    public myFormModel: FromGroup;
+    
+    constructor() {
+    
+      //these names must match what is in the template
+      this.myFormModel = new FormGroup({
+        username: new FormControl(),
+        ssn: new FormControl(),
+        passwordGroup: new FormGroup({
+          password: new FormControl(''),
+          pconfirm: new FormControl('')
+        })
+      });
+    }
+    
+    public onSubmit() {
+        console.log(this.myFormModel.value);
+    }
+}
+
+ - there is another more terse way to construct a reactive webform in 
+   code using a "FormBuilder"
+  - this is a service that is injected into the ctor
+  
+  constructor(fb: FormBuilder) {
+    this.myFormModel = fg.group({
+      username: [''],
+      ssn: [''],
+      passwordGroup: fb.group({
+        pasword: [''],
+        pconfirm: ['']
+      })
+    });
+  }
 ----
 
 ----
@@ -393,6 +515,66 @@ Use of Directives
 ----
 
 ----
+Declaration of Directives
+ - are intended for some kind of reuseable code that is 
+   not bound to a particular template (i.e. .html)
+ - appears in html as an element called native host element
+  - Angular CLI appends a prefix to the name to avoid collision with 
+    native html element names - typically 'app'
+ - generated using Angular CLI command 
+ ng generate directive my-directive
+ 
+ import { Directive, ElementRef, Renderer2, HostBinding, HostListener } from '@angular/core';
+ 
+ //'selector' is the name used in the html as a element
+ @Directive({
+   selector: '[appCopyright]'
+ })
+ export class CopyrightDirective {
+ 
+   //this gets access to the this native host element's 'class' attribute 
+   @HostBinding('class')
+   public currentClass: string;
+   
+   //this decorator accepts two params, 
+    // name of the native event 
+    // the args being passed to the method 
+   @HostListener('keypress', ['$event'])
+   public onKeyPress(event: KeyboardEvent): void {
+   
+     //get the numeric value of the keypress
+     const charCode = event.key.charCodeAt(0);
+     
+     //test it for being in range of numeric characters 
+     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+     
+       // actually use the other binding here
+       this.currentClass = 'invalid';
+       
+       //undo of the user's input
+       event.preventDefault();
+        
+     } else {
+        this.currentClass = 'valid';
+     }
+   }
+ 
+   //'el' is type 'ElementRef' and is used to get the current element in the DOM
+   //'renderer' is type 'Renderer2', best practice, use this instead of global DOM
+   constructor(el: ElementRef, renderer: Renderer2) {
+   
+     //the 'copyright' style class is defined in the global src/styles.css
+     renderer.addClass(el.nativeElement, 'copyright');
+     renderer.setProperty(
+       el.nativeElement,
+       'textContent',
+       `Copyright ©${new Date().getFullYear()} All Rights Reserved.`
+     );
+   }
+ }
+----
+
+----
 Using and injecting Services
  - are for exogenous things like authentication, data-service, etc.
  - are by nature async and therefore Observable 
@@ -443,7 +625,7 @@ Routing
  - has dependency on RouterModule and Routes for routing functionality
  - a "route" is typically a dictionary of a path string and a handling
    component
- - routing is used to deffer loading additional modules via child-routers 
+ - routing is used to defer loading additional modules via child-routers 
  - the Angular CLI command for gen of a router is 
   - --flat is for the location of code file in src/app folder
   - --module=app tells the CLI to add a register 
@@ -564,62 +746,4 @@ Wiring in autocomplete search to server
  }
 ----
    
-----
-Declaration of Directives
- - are intended for some kind of reuseable code that is 
-   not bound to a particular template (i.e. .html)
- - appears in html as an element called native host element
-  - Angular CLI appends a prefix to the name to avoid collision with 
-    native html element names - typically 'app'
- - generated using Angular CLI command 
- ng generate directive my-directive
- 
- import { Directive, ElementRef, Renderer2, HostBinding, HostListener } from '@angular/core';
- 
- //'selector' is the name used in the html as a element
- @Directive({
-   selector: '[appCopyright]'
- })
- export class CopyrightDirective {
- 
-   //this gets access to the this native host element's 'class' attribute 
-   @HostBinding('class')
-   public currentClass: string;
-   
-   //this decorator accepts two params, 
-    // name of the native event 
-    // the args being passed to the method 
-   @HostListener('keypress', ['$event'])
-   public onKeyPress(event: KeyboardEvent): void {
-   
-     //get the numeric value of the keypress
-     const charCode = event.key.charCodeAt(0);
-     
-     //test it for being in range of numeric characters 
-     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-     
-       // actually use the other binding here
-       this.currentClass = 'invalid';
-       
-       //undo of the user's input
-       event.preventDefault();
-        
-     } else {
-        this.currentClass = 'valid';
-     }
-   }
- 
-   //'el' is type 'ElementRef' and is used to get the current element in the DOM
-   //'renderer' is type 'Renderer2', best practice, use this instead of global DOM
-   constructor(el: ElementRef, renderer: Renderer2) {
-   
-     //the 'copyright' style class is defined in the global src/styles.css
-     renderer.addClass(el.nativeElement, 'copyright');
-     renderer.setProperty(
-       el.nativeElement,
-       'textContent',
-       `Copyright ©${new Date().getFullYear()} All Rights Reserved.`
-     );
-   }
- }
-----
+
