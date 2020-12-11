@@ -215,10 +215,15 @@ Communicating with the server
  - in the root module add the import 
  - and the add 'HttpClientModule' in the import's array of the @NgModule decorator
  import { HttpClientModule } from '@angular/common/http';
+ import { Observable, Subscription } from 'rxjs';
+ import { Component, OnInit } from '@angular/core';
  
- - npm has an in-memory web-api
-  - intended for local testing
- npm install angular-in-memory-web-api --save
+ interface Product {
+    id: number,
+    description: string,
+    price: number
+ }
+ 
 ---- 
  
 ----
@@ -325,30 +330,6 @@ Using webform controls
    - explicit declarations in class file
     - using types from '@angular/forms'
    - linked to template using builtin directives
-  
-  
- - local binding within the template can be accomplished with the 
-   # octothorp 
- <input #someTextBox />
- <button (click)="add(someTextBox.value); someTextBox.value=''">
-  add
- </button>
-
- - two binding between the underlying data and the display uses 
-   special syntax in the input attributes
-   
-   - first, add two lines to the app.module.ts
-    - one, new imports statement
-  import { FormsModule } from '@angular/forms';
-  
-    - two, line within the "imports" array of the @NgModule
-   imports: [
-    //existing stuff here
-    FormsModule
-   ]
-  
-   - last, add the two-way webform input to the html as:
-   <input [(ngModel)]="myInstanceVar.myString" placeholder="name" />
 ----
 
 ----
