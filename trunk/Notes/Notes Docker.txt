@@ -208,6 +208,10 @@ Docker files
    
   C:\> docker container inspect --format '{{ json .Mounts }}' myalias | ConvertFrom-Json
   
+ ENTRYPOINT ["rar"]
+ - sets a kind of default program-to-run within the image 
+ - see hub.docker.com/r/klutchell/rar/dockerfile for a simple example
+  
  HEALTHCHECK --interval=5s --retries=5 CMD powershell -command "Get-HeathOfWebsite"
  - repeated command to tell Docker how to check the container
  - the results of the CMD needs to be '0' for healthy, '1' otherwise
