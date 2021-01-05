@@ -127,6 +127,14 @@ CLI basics
   - give an alias to an image 
   - alias-to-image is many-to-one, same image may have many alias
   - does not create another copy, just another ref
+  
+ C:\> docker login -username myuser -password P@s$w0rd00A
+  - logs in the terminal instance to Docker Hub to allow for pushing images
+  
+ C:\> docker push myuser\my-image:5.5.1
+  - logging into to Docker Hub (hub.docker.com) will not have a copy of this
+    image
+  - from within the hub.docker.com, add the description, tags etc.
 ----
 
 ----
@@ -135,7 +143,9 @@ Docker files
    sequence of statements
  - is a token-word kind of lang
   (e.g. FROM, COPY, RUN, CMD, WORKDIR)
+ - all Dockerfile's start with a FROM statement
  - require some base images\OS either locally or from Docker Hub
+ 
  - statement delimiter is LF 
  - files are in UTF-8
  - escape-sequence is the C-style backslash so Windows file paths
@@ -150,6 +160,15 @@ Docker files
  COPY --from myalias C:\somewhere\on\microsoft\dotnet\drive C:\to\location\on\microsoft\aspnet\drive
  - example of using COPY where the source is actually another image scoped within the 
    Dockerfile 
+   
+ ADD https://somewhere.mycdn.net/mypath/mything.cab /install/here/on/image/mything.cab
+ - copies files from remote URLs and adds them to the file system of the image
+ 
+ LABEL myVersionOfThis="2.3.5.12154"
+ LABEL myDescription="My multi-line description \
+ is continued here, no problem"
+ - for adding meta-data to an image 
+ - can be used for anything as a name-value pair delimited by a '='
  
  # escape=`
  - "escape=`" would redefine esc-char to match powershell, allow for
@@ -297,6 +316,8 @@ Docker Compose
  services:
   some-name-here:
    image: myuser/my-image
+   ports:
+    - "8080:80"
    environment: 
     - MY_ENV_VAR="default value"
     - MY_OTHER_VAR=-someSwitchOrSomething
