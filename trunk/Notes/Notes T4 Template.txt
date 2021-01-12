@@ -1,0 +1,122 @@
+Notes T4 Text Templates
+http://msdn.microsoft.com/en-us/library/bb126478.aspx
+----
+
+----
+Visual Studio Integration
+ - integrated in VS using Extension named 't4 editor'
+ - is shipped as part of Visual Studio itself
+ - the editor allows for intellisense and debugging
+----
+
+----
+Command Line 
+ - compile with command line using
+ C:\Program Files\Common Files\Microsoft Shared\TextTemplating\10.0\TextTransform.exe
+----
+
+----
+General Purpose
+ - intended for Code generation
+ - more powerfull than simple formated here-strings
+ - code fragements my be intertwined with template code
+ - templates may contain code themselves
+ - extendable and allows for importing of templates
+ - first class access to file-system
+----
+
+----
+Overview
+ - divided into three parts
+  Directives - control over the eval of the tt script itself
+  Text blocks - here-strings that will be copied into the result
+  Control blocks - code-mixture within the here-string
+   - think "my string {0}" and "my string %s" where {0} and %s
+     are place-holders which are expected to be resolved
+   - templates operate in a reverse capicity where the string
+     is the implicit part and the code must be escaped with it.
+----
+
+----
+Directives
+ - escape-sequence of <#@ ... #>
+ - perform evaluation control on questions regarding
+  - the computer language to be found in control-blocks
+  - the assemblies the said language will depend on
+  - import statements for namespace scoping
+  - include statements whose value is a path to another tt script
+  - parameters that may be passed into the command line evaluator
+  
+ - Examples
+   <#@ template language="C#" hostspecific="true" #>
+   <#@ parameter type="MyType.FullName" name="ParameterName" #>
+   <#@ output extension=".a" encoding="UTF8" #>
+   <#@ assembly name="MyAssembly.FullName.or.Filepath" #>
+   <#@ import namespace="System.File.IO" #>
+   <#@ include file="C:\Projects\MyFile.tt" #>
+----
+
+----
+Text blocks
+ - are that which is not anything else or the negative space 
+   between the other two directives
+ - require no enclosures
+----
+
+----
+Control blocks
+ - are resolvable code - the rubric of the template
+ - Flow-Control block is the default appearing as
+  - is delimited by not having any symbol after the opening
+    token
+ <#
+	for(int i = 0;i<4;i++)
+	{
+  #>
+   Print me!
+  <#
+	}
+  #>
+  
+ - Resolve-Control block returns a string output
+  - is delimited by an equal-sign after the opening token 
+  - the following would result in '5' being in the standard output
+ <#= 3 + 2 #>
+   
+ - Denotive-Control block is internally scoped functions
+   used by the template as helpers or as reuseable code nexsis
+  - is delimited by plus-sign after the opening token
+  - best-practice is to include them in another file and then 
+    add the said file using an include directive
+  <#+
+  public string MyInclusiveDenotive(int Arg)
+  {
+	return String.Format("You wrote '{0}'", Arg);
+  }
+  #>
+  
+  <#+
+	public void MyMixedDenotive()
+	{
+  #>
+	Here-string foobar again.
+  <#
+	}
+  #>
+  
+  <#
+	for (int i=0;i<4;i++)
+	{
+  #>
+	Here-string, foobar	<#= MyInclusiveDenotive(i) #>.
+  <#
+	}
+  #>
+  <#= MyMixedDenotive() #>
+----
+
+----
+Appendix
+ - a static global method named 'Write([...])' is always available
+   and is effectively the standard output
+----

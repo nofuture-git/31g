@@ -24,7 +24,7 @@ namespace NoFuture.Hbm.SortingContainers
         protected internal string hbmDataType;
         protected internal string sqlUdtTypeName;
         protected internal string dotNetType;
-        protected internal bool isOpenToSqlInj;
+        protected internal bool? isOpenToSqlInj;
 
         public string ProcSchema { get { return procSchema; } set { procSchema = value; } }
         public string ProcName { get { return procName; } set { procName = value; } }
@@ -37,7 +37,7 @@ namespace NoFuture.Hbm.SortingContainers
         public int Ordinal { get { return ordinal; } set { ordinal = value; } }
         public bool IsUserDefinedType { get { return isUserDefinedType; } set { isUserDefinedType = value; } }
         public string SqlUdtTypeName { get { return sqlUdtTypeName; } set { sqlUdtTypeName = value; } }
-        public bool IsOpenToSqlInj { get { return isOpenToSqlInj; } set { isOpenToSqlInj = value; } }
+        public bool? IsOpenToSqlInj { get { return isOpenToSqlInj; } set { isOpenToSqlInj = value; } }
 
         public string HbmDataType
         {

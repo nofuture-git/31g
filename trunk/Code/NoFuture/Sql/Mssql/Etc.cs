@@ -130,7 +130,7 @@ namespace NoFuture.Sql.Mssql
                 {
                     var currentCatalogs = _sqlServers[serverName].ToList();
                     currentCatalogs.AddRange(catalogs);
-                    _sqlServers[serverName] = currentCatalogs.ToArray();
+                    _sqlServers[serverName] = currentCatalogs.Distinct().ToArray();
                 }
                 else
                 {

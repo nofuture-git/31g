@@ -158,7 +158,7 @@ namespace NoFuture.Hbm.SortingContainers
                     randStr.Append(Convert.ToChar((byte)myRand.Next(0x61, 0x7A)));
                 }
 
-                if (param.IsOpenToSqlInj)
+                if (param.IsOpenToSqlInj.GetValueOrDefault(false))
                 {
                     randStr.Clear();
                     //we just want the schema not the data...

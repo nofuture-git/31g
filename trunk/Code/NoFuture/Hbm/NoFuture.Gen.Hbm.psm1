@@ -3,10 +3,17 @@ $dependencies = @{
     "NoFuture.Shared.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Shared.Core.dll");
     "NoFuture.Shared.Cfg, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Shared.Cfg.dll");
     "NoFuture.Shared, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Shared.dll");
-    "NoFuture.Util.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $noFutureBin "NoFuture.Util.Core.dll");
-    "Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4" = (Join-Path $noFutureBin "Iesi.Collections.dll");
-    "NHibernate, Version=5.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4" = (Join-Path $noFutureBin "NHibernate.dll");
-    "NoFuture.Hbm, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $noFutureBin "NoFuture.Hbm.dll");
+    "NoFuture.Util.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.Core.dll");
+    "NoFuture.Util.Binary, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.Binary.dll");
+    "NoFuture.Util.NfConsole, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.NfConsole.dll");
+    "Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4" = (Join-Path $myScriptLocation "Iesi.Collections.dll");
+    "NHibernate, Version=5.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4" = (Join-Path $myScriptLocation "NHibernate.dll");
+    "Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849" = (Join-Path $myScriptLocation "Antlr4.Runtime.dll");
+    "NoFuture.Antlr.DotNetIlTypeName, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Antlr.DotNetIlTypeName.dll");
+    "NoFuture.Util.NfType, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Util.NfType.dll");
+    "NoFuture.Gen, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Gen.dll");
+    "NoFuture.Sql, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Sql.dll");
+    "NoFuture.Hbm, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" = (Join-Path $myScriptLocation "NoFuture.Hbm.dll");
 }
 
 $loadedAsms = ([appdomain]::CurrentDomain.GetAssemblies() | % {$_.FullName}  | Sort-Object -Unique)
@@ -28,7 +35,11 @@ $dependencies.Keys | % {
 
 #=====================================
 #intialize paths from nfConfig.cfg.xml
-$dnd = [NoFuture.Shared.Cfg.NfConfig]::Init(([NoFuture.Shared.Cfg.NfConfig]::FindNfConfigFile($noFutureBin)))
+$dnd = [NoFuture.Shared.Cfg.NfConfig]::Init(([NoFuture.Shared.Cfg.NfConfig]::FindNfConfigFile($myScriptLocation)))
+
+#this is independent of the global Nf configuration
+[NoFuture.Hbm.Settings]::T4Templates = (Join-Path $myScriptLocation "Templates")
+[NoFuture.Hbm.Settings]::TextTransformExeFullName = "C:\Program Files (x86)\Common Files\microsoft shared\TextTemplating\14.0\TextTransform.exe"
 #=====================================
 
 #------------------
@@ -43,6 +54,185 @@ if($Global:invokeMgrEvent -ne $null){
 $Global:invokeMgrEvent = Register-ObjectEvent -InputObject ([NoFuture.Hbm.Mapping]::StoredProcManager) -EventName "CommLinkToPs" -Action {
     $mgrMsg = $event.SourceArgs
     $Global:SpResultSetXsdProgress = ("[{0}] {1} Percent Complete {2}" -f $mgrMsg.Status, $mgrMsg.Activity, $mgrMsg.ProgressCounter)
+}
+
+<#
+    .SYNOPSIS
+    Sets the MSSQL Database connection used throughout this module.
+   
+    .DESCRIPTION
+    Sets the MSSQL Database connection used throughout this module.
+    Since many of the cmdlets herein are invoked in a sequential manner,
+    the database connection remains unchanged.
+
+    .PARAMETER Host
+    The hostname where the instance of MSSQL is being hosted
+
+    .PARAMETER Port
+    The optional port used one the given host.
+
+    .PARAMETER Catalog
+    The database catalog within the MSSQL Database
+#>
+function Set-HbmDbConnection
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=0)]
+        [string] $Host,
+        [Parameter(Mandatory=$false,position=1)]
+        [int] $Port,
+        [Parameter(Mandatory=$true,position=2)]
+        [string] $Catalog
+    )
+    Process
+    {
+        if($Port -gt 0){
+            $hostPort = "$Host,$Port"
+        }
+        else {
+            $hostPort = $Host
+        }
+        [NoFuture.Sql.Mssql.Etc]::AddSqlServer($hostPort,@($Catalog));
+        [NoFuture.Shared.Cfg.NfConfig]::SqlServer = $hostPort
+        [NoFuture.Shared.Cfg.NfConfig]::SqlCatalog = $Catalog
+    }
+}
+
+<#
+    .SYNOPSIS
+    Gets the current the MSSQL Database connection string used throughout this module.
+#>
+function Get-HbmDbConnection
+{
+    [CmdletBinding()]
+    Param
+    (
+    )
+    Process
+    {
+        return [NoFuture.Shared.Cfg.NfConfig]::SqlServerDotNetConnString
+    }
+}
+
+<#
+    .SYNOPSIS
+    Runs a valid select sql query against the current server/catalog.
+    
+    .DESCRIPTION
+    Runs a valid select sql query against the current settings' catalog & server.
+    The script will error on any query that does not start with 'select'.
+    
+    The fully qualified table name is NOT required for the ADO object.
+    
+    Due to limitations in powershell the return type is an array in which the 
+    object at index 1 is the actual datatable object so any calls to this function
+    must use the index syntax on the results to get to the real ado datatable object.
+    
+    No try/catch is included within the body of the function; calling assemblies must
+    handle the errors themselves.
+    
+    .PARAMETER Expression
+    A string which is a valid sql select query.
+    
+    .EXAMPLE
+    C:\PS>$myReturn = Get-DataTable -Expression "select max(an_id) from myTable where an_id > 1000"
+    
+    .OUTPUTS
+    System.Data.DataTable
+    
+#>
+function Get-DataTable
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$false,position=1)]
+        [string] $ServerName,
+        [Parameter(Mandatory=$false,position=2)]
+        [string] $CatalogName,
+        [Parameter(Mandatory=$true,position=0)]
+        [string] $Expression
+    )
+    Process
+    {
+        if(-not([System.String]::IsNullOrWhiteSpace($ServerName)) -and  -not([System.String]::IsNullOrWhiteSpace($CatalogName))){
+            $connStr = "Server=$ServerName;Database=$CatalogName;Trusted_Connection=True;"
+        }
+        else{
+            $connStr = [NoFuture.Shared.Cfg.NfConfig]::SqlServerDotNetConnString
+        }
+        
+    	$sqlCon = New-Object System.Data.SqlClient.SqlConnection $connStr
+        $sqlCon.Open()
+    	$sqlCmd = $sqlCon.CreateCommand()
+    	$sqlCmd.CommandText = $Expression
+    	$dt = New-Object System.Data.DataTable 
+    	$da = New-Object System.Data.SqlClient.SqlDataAdapter
+    	$da.SelectCommand = $sqlCmd
+    	$doNotDisplay = $da.Fill($dt)
+    	$sqlCon.Close()
+    	return $dt
+    }
+}
+
+<#
+    .SYNOPSIS
+    Optionally, allows for setting the default output directory for the 
+    intermediate files generated by this module.
+
+    .DESCRIPTION
+    The module will produce many intermediate files, all of which are 
+    stored in meaningful directories based on the current MSSQL connection.
+    The location set here will then be used as a base directory 
+    in which all the other intermediate files are placed.
+    NOTE: this differs from the value at NoFuture.Hbm.Settings.HbmDirectory. 
+    The latter is _specific_ to the current MSSQL connection.
+
+    .PARAMETER OutputDir
+    The default directory in which the module's intermediate files are kept
+
+#>
+function Set-HbmDefaultOutputDirectory
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=1)]
+        [string] $OutputDir
+    )
+    Process
+    {
+        $OutputDir = Resolve-Path $OutputDir
+
+        if(-not (Test-Path $OutputDir)){
+            mkdir -Path $OutputDir -Force
+        }
+
+        [NoFuture.Shared.Cfg.NfConfig+TempDirectories]::Hbm = $OutputDir
+    }
+}
+
+<#
+    .SYNOPSIS
+    Gets the default root directory being used by this module.
+
+    .DESCRIPTION
+    The root default directory where this module keeps all its intermediate files.
+    NOTE: this differs from the value at NoFuture.Hbm.Settings.HbmDirectory. 
+    The latter is _specific_ to the current MSSQL connection.
+#>
+function Get-HbmDefaultOutputDirectory
+{
+    [CmdletBinding()]
+    Param
+    (
+    )
+    Process
+    {
+        return [NoFuture.Shared.Cfg.NfConfig+TempDirectories]::Hbm
+    }
 }
 
 <#
@@ -67,8 +257,9 @@ $Global:invokeMgrEvent = Register-ObjectEvent -InputObject ([NoFuture.Hbm.Mappin
     Apply this switch if you want the subsequent cmdlets to 
     produce hbm.xml\.cs files for stored prox.
     
-    .OUTPUTS
-    null
+    .EXAMPLE
+    C:\PS> Set-HbmDbConnection -Host "localhost" -Port 1421 -Catalog "MyCatalog"
+    C:\PS> Get-HbmDbData
 #>
 function Get-HbmDbData
 {
@@ -130,7 +321,7 @@ function Get-HbmDbData
         }
     }
 
-}#end Get-HbmDbData
+}
 
 function Get-HbmMetadataDump(){
         [NoFuture.Hbm.Settings]::LoadOutputPathCurrentSettings();
@@ -147,7 +338,7 @@ function Get-HbmMetadataDump(){
         $counter = 0
         $allHbmItems | % {
             
-            $pcount = ([NoFuture.Util.Core.NfString]::CalcProgressCounter($counter, $allHbmItems.Count)) 
+            $pcount = ([NoFuture.Util.Core.Etc]::CalcProgressCounter($counter, $allHbmItems.Count)) 
             Write-Progress -Activity ("Saving data to '{0}'" -f $_.OutputPath) -Status "Metadata Dump: Fetching Metadata [Step 1 of $script:numOfSteps]" -PercentComplete $pcount
             $doNotDisplay = (Get-SingleHbmMetadataDump $_)
             $counter += 1
@@ -160,7 +351,7 @@ function Get-SingleHbmMetadataDump($HbmValues){
 
         $outRslt = @()
 
-        $rslt = (ado $HbmValues.SelectStatement)
+        $rslt = (Get-DataTable $HbmValues.SelectStatement)
 
         ($rslt) | % {
             $adoRecord = $_ 
@@ -180,7 +371,7 @@ function Get-SingleHbmMetadataDump($HbmValues){
 
         return $outRsltJson
 
-}#end Get-SingleHbmMetadataDump
+}
 
 function Write-SpResultSetXsdProgress(){
     Write-Host $Global:SpResultSetXsdProgress -ForegroundColor Cyan
@@ -215,9 +406,6 @@ function Write-SpResultSetXsdProgress(){
     .PARAMETER IncludeStoredProx
     Produces hbm.xml sql-query files for each stored proc.
     SEE Get-HbmDbData for more info.
-
-    .OUTPUTS
-    null
 #>
 function Get-AllHbmXml
 {
@@ -312,7 +500,7 @@ function Get-AllHbmXml
         }#end Include stored prox
 
     }#end Process
-}#end Get-AllHbmXml
+}
 
 <#
     .SYNOPSIS
@@ -392,8 +580,6 @@ function Get-SingleHbmXml
     This will induce the cmdlet to generate sql-query hbm.xml's for all
     the applicable stored prox 
 
-    .OUTPUTS
-    null
 #>
 function Get-AllHbmCs
 {
@@ -484,8 +670,6 @@ function Get-AllHbmCs
     .PARAMETER OutputDir
     Optional, will default to NoFuture.Hbm.Settings.HbmDirectory
     
-    .OUTPUTS
-    null
 #>
 function Get-HbmCs
 {
@@ -507,7 +691,7 @@ function Get-HbmCs
             $OutputDir = [NoFuture.Hbm.Settings]::HbmDirectory
         }
 
-        $pocoTemplate = Join-Path ([NoFuture.Shared.Cfg.NfConfig+BinDirectories]::T4Templates) "HbmCsClass.tt"
+        $pocoTemplate = Join-Path ([NoFuture.Hbm.Settings]::T4Templates) "HbmCsClass.tt"
 
         if(-not (Test-Path $pocoTemplate)){
             Write-Host "couldn't find the T4 template at '$pocoTemplate'" -ForegroundColor Yellow
@@ -525,7 +709,7 @@ function Get-HbmCs
         $hbmXmlContent = New-Object NoFuture.Hbm.SortingContainers.HbmFileContent($hbmXmlPath)
 
         if($hbmXmlContent.IsCompositeKey){
-            $compKeyTemplate = Join-Path ([NoFuture.Shared.Cfg.NfConfig+BinDirectories]::T4Templates) "HbmCompKeyCsClass.tt"
+            $compKeyTemplate = Join-Path ([NoFuture.Hbm.Settings]::T4Templates) "HbmCompKeyCsClass.tt"
             if(-not (Test-Path $compKeyTemplate)){
                 Write-Host "couldn't find the T4 template at '$compKeyTemplate'" -ForegroundColor Yellow
                 break;
@@ -536,7 +720,7 @@ function Get-HbmCs
 
         Get-T4TextTemplate -InputFile $pocoTemplate -OutputFile $pocoCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
     }
-}#end Get-HbmCs
+}
 
 <#
     .SYNOPSIS
@@ -553,8 +737,6 @@ function Get-HbmCs
     The directory where the generated POCO and EF Mapping code files
     will be deposited.
     
-    .OUTPUTS
-    null
 #>
 function Get-EfFluentCs
 {
@@ -578,8 +760,8 @@ function Get-EfFluentCs
             break;
         }
 
-        $mappingTemplate = Join-Path ([NoFuture.Shared.Cfg.NfConfig+BinDirectories]::T4Templates) "Ef6xFluentMapping.tt"
-        $pocoTemplate = Join-Path ([NoFuture.Shared.Cfg.NfConfig+BinDirectories]::T4Templates) "Ef6xPoco.tt"
+        $mappingTemplate = Join-Path ([NoFuture.Hbm.Settings]::T4Templates) "Ef6xFluentMapping.tt"
+        $pocoTemplate = Join-Path ([NoFuture.Hbm.Settings]::T4Templates) "Ef6xPoco.tt"
         if(-not (Test-Path $mappingTemplate)){
             Write-Host "couldn't find the T4 template at '$mappingTemplate'" -ForegroundColor Yellow
             break;
@@ -603,7 +785,7 @@ function Get-EfFluentCs
         Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
         
     }
-}#end Get-EfFluentCs
+}
 
 <#
     .SYNOPSIS
@@ -618,8 +800,6 @@ function Get-EfFluentCs
     .PARAMETER OutputDir
     The directory where the generated code file will be deposited.
     
-    .OUTPUTS
-    null
 #>
 function Get-Ef35Cs
 {
@@ -643,7 +823,7 @@ function Get-Ef35Cs
             break;
         }
 
-        $mappingTemplate = Join-Path ([NoFuture.Shared.Cfg.NfConfig+BinDirectories]::T4Templates) "Ef35Mapping.tt"
+        $mappingTemplate = Join-Path ([NoFuture.Hbm.Settings]::T4Templates) "Ef35Mapping.tt"
         if(-not (Test-Path $mappingTemplate)){
             Write-Host "couldn't find the T4 template at '$mappingTemplate'" -ForegroundColor Yellow
             break;
@@ -660,7 +840,7 @@ function Get-Ef35Cs
         Get-T4TextTemplate -InputFile $mappingTemplate -OutputFile $mappingCsFile -ParamNameValues @{$t4ParamName=$HbmXmlPath; $p2Name=$p2Val}
         
     }
-}#end Get-Ef35Cs
+}
 
 <#
     .SYNOPSIS
@@ -718,7 +898,7 @@ function Write-CsCodeHbmCommand
             break;
         }
 
-        $t4Template = Join-Path ([NoFuture.Shared.Cfg.NfConfig+BinDirectories]::T4Templates) "HbmCommand.tt"
+        $t4Template = Join-Path ([NoFuture.Hbm.Settings]::T4Templates) "HbmCommand.tt"
         $outputCsFile = Join-Path $OutputDir ("{0}Command.cs" -f $className)
         $idType = $idProp.PropertyType.FullName
 
@@ -730,7 +910,7 @@ function Write-CsCodeHbmCommand
         Get-T4TextTemplate -InputFile $t4Template -OutputFile $outputCsFile -ParamNameValues @{$param1=$TypeName; $param2=$idType; $p2Name=$p2Val}
 
     }
-}# end Write-CsCodeHbmCommand
+}
 
 #------------------
 # hbm configuration cmdlets
@@ -748,8 +928,6 @@ function Write-CsCodeHbmCommand
     .PARAMETER OutputDllName
     The binary dll's file name.
     
-    .OUTPUTS
-    null
 #>
 function Invoke-HbmCsCompile
 {
@@ -875,7 +1053,7 @@ function Invoke-HbmCsCompile
         } #end hbm xml dir compile
 
     }#end Process
-}#end Invoke-HbmCsCompile
+}
 
 <#
     .SYNOPSIS
@@ -956,7 +1134,7 @@ function New-HbmAppConfig
         return $hbmConfigFilePath
 
     }
-}#end New-HbmAppConfig
+}
 
 <#
     .SYNOPSIS
@@ -972,8 +1150,6 @@ function New-HbmAppConfig
     A simple check is made on the appDomain to verify the NHibernate
     and Iesi.Collections binaries are loaded prior to any attempts 
     to create such objects.
-
-
 #>
 function Import-HbmConfiguration
 {
@@ -1066,7 +1242,7 @@ function Import-HbmConfiguration
         $donotDisplay = [NoFuture.Hbm.Globals]::HbmCfg.AddAssembly("NoFuture.Hbm.Sid, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
 
     }#end Process
-}#end Import-HbmConfiguration
+}
 
 <#
     .SYNOPSIS
@@ -1154,7 +1330,7 @@ function Import-HbmSessionFactory
         }
 
     }
-}#end Import-HbmSessionFactory
+}
 
 <#
     .SYNOPSIS
@@ -1189,7 +1365,7 @@ function Get-HbmSession
         return [NoFuture.Hbm.Globals]::HbmSessionFactory.OpenSession()
 
     }#end Process
-}#end Get-HbmSession
+}
 
 
 #------------------
@@ -1271,4 +1447,82 @@ function Get-HbmDb
         return Get-HbmSession
 
     }
-}#end Get-HbmDb
+}
+
+<#
+    .SYNOPSIS
+    Encapsulates the TextTransform.exe
+    
+    .DESCRIPTION
+    Directly calls the TextTransform.exe matching the cmdlet's 
+    args to the exe's args
+    
+    .PARAMETER InputFile
+    This command runs a transform using this text template.
+    
+    .PARAMETER OutputFile
+    The file to write the output of the transform to.
+
+    .PARAMETER ParamNameValues
+    An hashtable of parameter names to values.
+
+    .LINK
+    https://msdn.microsoft.com/en-us/library/bb126245.aspx
+#>
+function Get-T4TextTemplate
+{
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true,position=0)]
+        [string] $InputFile,
+        [Parameter(Mandatory=$true,position=1)]
+        [string] $OutputFile,
+        [Parameter(Mandatory=$false,position=2)]
+        [Hashtable] $ParamNameValues
+    )
+    Process
+    {
+        #test TestTransform.exe is installed
+        if(-not(Test-Path ([NoFuture.Hbm.Settings]::TextTransformExeFullName)))
+        {
+            throw ("The Microsoft tool named 'TextTransform.exe' is required and was expected at '{0}'" -f ([NoFuture.Hbm.Settings]::TextTransformExeFullName))
+        }
+    
+        #set a flag when parameter directive are being used
+        $parametersWereSet = $false
+        
+        $paramSwitch = New-Object System.Text.StringBuilder
+        if($ParamNameValues -ne $null){
+            
+            $ParamNameValues.Keys | % {
+                $param = $_
+                $value = $ParamNameValues[$param]
+                $dnd = $paramSwitch.Append("-a !!")
+                $dnd = $paramSwitch.Append($param)
+                $dnd = $paramSwitch.Append("!")
+                $dnd = $paramSwitch.Append($value)
+                $dnd = $paramSwitch.Append(" ")
+            }
+            
+            $parametersWereSet = $true
+        }
+        
+        
+        #draft the command string
+        if($parametersWereSet)
+        {
+            $cmd = ("& `"{0}`" -out `"{1}`" {2}`"{3}`"" -f ([NoFuture.Hbm.Settings]::TextTransformExeFullName),$OutputFile,$paramSwitch,$InputFile)
+        }
+        else
+        {
+            $cmd = ("& `"{0}`" -out `"{1}`" `"{2}`"" -f ([NoFuture.Hbm.Settings]::TextTransformExeFullName),$OutputFile,$InputFile)        
+        }
+        
+        #send a copy of the command to the host
+        Write-Host $cmd
+        
+        #invoke TextTransform.exe
+        $donotdisplay = (Invoke-Expression -Command $cmd)
+    }
+}

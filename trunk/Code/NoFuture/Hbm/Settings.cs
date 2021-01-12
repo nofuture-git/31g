@@ -37,6 +37,16 @@ namespace NoFuture.Hbm
         internal static List<string> DoNotReference { get; } = new List<string>();
 
         /// <summary>
+        /// The location of the templates used in code generation
+        /// </summary>
+        public static string T4Templates { get; set; }
+
+        /// <summary>
+        /// The file-path location of the TextTransform.exe
+        /// </summary>
+        public static string TextTransformExeFullName { get; set; }
+
+        /// <summary>
         /// A context specific path directory which acts as the working directory of all NoFuture.Hbm and hbm.ps1
         /// functionality.
         /// </summary>

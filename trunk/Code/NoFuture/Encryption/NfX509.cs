@@ -100,7 +100,7 @@ namespace NoFuture.Encryption
             serverAuth.InitializeFromValue("1.3.6.1.5.5.7.3.1");
 
             var clientAuth = new CObjectId();
-            docSign.InitializeFromValue("1.3.6.1.5.5.7.3.2");
+            clientAuth.InitializeFromValue("1.3.6.1.5.5.7.3.2");
 
             var fileCrypt = new CObjectId();
             fileCrypt.InitializeFromValue("1.3.6.1.4.1.311.10.3.4");
