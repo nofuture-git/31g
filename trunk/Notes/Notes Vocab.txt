@@ -773,3 +773,8 @@ panoply:a complete and impressive collection of things
 imprimatur: full seal of official license
 inimitable: so good or unusual as to be impossible to copy
 inter alia: among other things
+metonym: a word, name, or expression used as a substitute for 
+         something else with which it is closely associated
+Cornelian dilemma: forced to choose between two choices both of which
+                   detrimental in effect
+Hobson's Choice: a free choice in which only one thing is offered, take-it-or-leave-it
