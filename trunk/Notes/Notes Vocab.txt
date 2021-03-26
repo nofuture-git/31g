@@ -778,3 +778,4 @@ metonym: a word, name, or expression used as a substitute for
 Cornelian dilemma: forced to choose between two choices both of which
                    detrimental in effect
 Hobson's Choice: a free choice in which only one thing is offered, take-it-or-leave-it
+consanguinity: the fact of being descended from the same ancestor

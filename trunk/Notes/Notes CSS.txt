@@ -6,13 +6,70 @@ Print ISBN-10: 0-596-52733-0
 Print ISBN-13: 978-0-59-652733-4 
 Pages: 536
 
+CSS Mastery: Advanced Web Standards Solutions 
+by Andy Budd; Cameron Moll; Simon Collison 
+Publisher: Apress 
+Pub Date: February 2006 
+Print ISBN: 978-1-59059-614-2 
+Web ISBN: 1-59059-614-5 
+Pages: 280 
+
+Modern CSS: Master the Key Concepts of CSS for Modern Web Development
+by Joe Attardi
+Publisher: Apress
+Release Date: October 2020
+ISBN: 9781484262948
+
 ----
 CSS Overview
  - HTML was intended as a Markup language, not a presentation language
  - CSS is intended as the complement presentation language
- - Think internal structure versus visual structure
+ - initial standard published in late 1996
+ - second publication in May 1998
+ - third publications (CSS 2.1) in June 2011
+ - MIME type is text/css
 ----
 
+----
+CSS Syntax
+ - CSS style sheet consist of Rules
+ - Rules target HTML elements via Selectors
+ - each Rule has one or more Selector(s)
+ - each Rule has one Body enclosed by curly-braces
+ - within the Body are the Properties of the CSS Rule
+ - Properties are delimited from each other by a semi-colon
+ - each Property is a name-value pair separated by a colon
+ - the Property-Value may one or more items separated by a space
+
+    Selector
+       |
+       V                      --+
+    .header {                   |
+      background-color: red;    +- Rule
+      border: 1px solid blue;   |
+    } .    .  .             . --+
+      |_____________________| 
+      .    .  . |           .
+      .    .  . Property    .
+      |____|  .             .
+        |     .             .
+Property Name .             .
+              .             .
+              |_____________|
+                     |
+                Property Value
+----
+
+----
+CSS Directives At-Rule
+ - are a kind of preprocessor which instructs the CSS interpretor 
+ - called "At-Rule" because they start with '@' symbol
+ - the are not Rules,
+ - are defined and limited list available
+ - are delimited by semi-colon
+@charset "utf-8";
+----
+       
 ----
 Elements
  - consider each element generating a 'Box' in which contents are contained
@@ -50,7 +107,6 @@ Inline: set at each occurrence within source file
  
 ----
 
-
 ----
 Link Tag
  <link rel="stylesheet" type="text/css" href="sheet.css" media="all" />
@@ -74,20 +130,13 @@ Comments
 ----
 
 ----
-CSS Syntax:
-body {background:black;}
- - associated html tag:  body
- - datatype:  background
- - value:  black
- - enclosed in curly braces
- - multiple html tags by comma separator
- - multiple datatype/value pairs by semi-colon seperator
- - multiple values separated by a space (eg h1 {text: medium Arial;} )
- - multiple tags separated by comma (eg h1, body {text:Arial;} )
+Universal Selector
+* { margin:0; padding0;}
+ - override the entire sheet
 ----
 
 ----
-CSS Class:
+Class Selector
 table.myTable {background:black;}
   - declare myTable css class within the <style> html tag
   - table is html tag reference
@@ -109,7 +158,7 @@ table.myClass {font-style: italic;}
 ----
 
 ----
-CSS ID
+Id Selector
 #my-id {background: blue;}
 <p id="my-id">A blue background here </p>
  - similar effect as CSS Classes
@@ -150,53 +199,122 @@ h1 em {color: gray;}
  
 ul ol ul {color: gray;}
  - specific to and only to nodes in this order
+----
+
+----
+Multiple Independent Selectors
+.class-one, .class-two {color: gray;}
+ - will apply the style to any element of class 'class-one' 
+   and any element of class 'class-two'
+----
  
-ul ol, h1 em {color: gray;}
- - combine selectors into one statement
- 
+----
+Child Selectors
 h1 > em {color: gray;}
  - only em nodes that are children of h1 
  - affective upon h1 direct child nodes, not em's child nodes
+----
+
+----
+General Sibling Selector
+.header ~ div
+ - would match to div elements that are direct siblings after 
+   the element with the 'header' class
+ - would not match the element with the 'header' class itself
+----
  
+----
+Adjacent Sibling Selectors
 h1 + p {color: gray;}
  - given h1 and p having same parent node, affect p element that follows h1
  - h1 and p are siblings
  - p element must follow h1 sibling immediately
  - such order is known as "source order" as in source-code order
- 
-* { margin:0; padding0;}
- - override the entire sheet
 ----
  
 ----
-Event-Driven selectors 
- - selectors for state of page during user visit in time
-a:visited {color: purple;}
- - colon character specifies apply style upon event
-   
-a:link -unvisited links
-a:visited -visited links
-a:active -while active
-a:hover -while hover
-a:focus - with focus
+Pseudo-Classes
+ - often used as event selectors
+ - concern the state of an element
+ - may be used alone or with another selector
+----
 
-input:focus {color: gray;}
- - for use in other elements
- - will change upon event 
+----
+UI State Pseudo-Classes
+:active 
+ - matches elements that are currently being activated
+ 
+:checked
+ - matches radio-button, checkbox or option inside a 'select' element 
+ 
+:focus
+ - matches an element that currently has focus, typically buttons, links and text
 
-h1:first-letter {color: red;}
- - first letter of any h1 will be red
-p:first-line {color: gray;}
- - first line is always gray 
-h2:before {content: "[";}
-h2:after {content:"]";}
+:hover
+ - matches elements that are currently being hovered by the mouse cursor
+ 
+:valid, :invalid
+ - used with HTML5 validation
+
+:visited {color: purple;}
+ - matches link elements that have already been visited 
+----
+
+----
+Document Structure Pseudo-Classes
+:first-child, :last-child
+ - matches an element that is the first or last child of a parent element
+ 
+:nth-child(1)
+ - matches the first child element of the parent
+ - index begins at 1 not 0 
+ 
+:nth-child(2n)
+ - matches every other child element of the parent
+ 
+:nth-child(4n)
+ - matches every forth child element of the parent
+ 
+:nth-child(odd)
+ - matches every child element whose ordinal is odd
+ 
+:nth-child(even)
+ - matches every child element whose ordinal is even
+ 
+:root
+ - matches to the root element of the DOM
+----
+
+----
+Negation Pseudo-Class
+:not(.my-class)
+ - would select any element that is not of class 'my-class'
+----
+
+----
+Pseudo-Element
+ - apply to block elements only
+ - allows for match to only part of the element
+ - have a double-colon instead of just a single colon
+  - this changed in CSS3, in CSS2 there was only one-colon
+
+h1::first-letter {color: red;}
+ - first letter of any h1 element will be red
+
+p::first-line {color: gray;}
+ - first line of any p element is always gray 
+ 
+ - special case pseudo-elements actually create new elements 
+   by appending content to the end of the block 
+h2::before {content: "[";}
+h2::after {content:"]";}
 ----
 
 ---- 
 Specificity
  - resolves element with more than one selector
  - valued by ordered four-set (n4,n3,n2,n1)
- - determined left to right (eg 0,1,0,0 still greater than 0,0,0,9)
+ - determined left to right (e.g. 0,1,0,0 still greater than 0,0,0,9)
  - highest value is what is selected by browser
  - inline declaration adds one to {n4}
  - CSS-ID adds 1 to {n3}
@@ -630,16 +748,6 @@ CSS Practice
     */
   }
 ----
-  
- 
-CSS Mastery: Advanced Web Standards Solutions 
-by Andy Budd; Cameron Moll; Simon Collison 
-Publisher: Apress 
-Pub Date: February 2006 
-Print ISBN: 978-1-59059-614-2 
-Web ISBN: 1-59059-614-5 
-Pages: 280 
-
 
 ----
 Basics
