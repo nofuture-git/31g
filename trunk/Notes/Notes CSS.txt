@@ -347,19 +347,55 @@ Cascade determination
 ----
 
 ----
-Literals
- - signed integers (eg 5)
- - signed rationals (eg 32.007)
- - percent of another value (eg 95%) 
+CSS Variables
+ - are officially called 'CSS custom properties'
+ - useful for avoiding shotgun surgery changes and magic numbers
+ - are defined within the body of a rule 
+ - are defined same as a property except they are prefixed with two dashes
+ - are resolved using the CSS var() Function 
+ - variable scope is is preserved in Descendant Selectors
+ - global variables are defined in the 'root' pseudo-class
+ 
+ :root {
+  --my-variable: blue;
+ }
+ 
+  - variables may be assigned value from other variables
+  :root {
+    --border-color: red;
+    --border-style: solid;
+    --border-width: 3px;
+    --border: var(--border-color) var(--border-style) var(--border-width)
+  }
 ----
 
 ----
-Colors
+CSS Functions
+ - are builtin and global scoped
+ - most common are the var(), calc() and the various color functions
+  - calc() will resolve some value
+  - var() will resolve some variable back to its value
+ 
+ :root {
+   --some-variable: 0.5rem;
+ }
+ 
+ .some-class {
+   padding: calc(var(--some-variable) * 2);
+ }
+----
+
+----
+CSS Colors and Color Functions
  - 17 standard colors supported in CSS2.1
  - 140 colors supported in CSS3.0
  - rgb(100%, 100%, 100%) is white
  - rgb(0%, 0%, 0%) is black
  - rgb([red],[green],[blue]) is the order, hence 'rgb'
+ - opacity may be set as a float separated by a forward slash
+  rgb(255 0 0 / 0.5) is red with 50% opacity
+  rgb(#FF00007F); is the exact same as the above
+  
  - to get grey's set each percent to the same value
  - may use integer values instead of percents, range from 0 to 255
  - may use hex notation in literal as #RRGGBB (eg #FFFFFF is black)
@@ -369,14 +405,34 @@ Colors
 
 ----
 Units
- - precede the unit by a numerical value
+ - are equivalent to different units of measurement
+ 
+ - px is 'pixel'
+  - is assigned a whole number
+  - is resolution of rendering device
+  - since device resolution is so high 1px is barely visible
+ 
+ - em is 'emphemeral unit'
+  - is assigned a float
+  - is some percentage of the font-size
+ 
+ - rem is 'root emphemeral unit'
+  - is assigned a float
+  - is some percentage of the base-font size
+ 
+ - vw & vh is 'viewport width' & 'viewport height'
+  - is assigned a whole number between 1-100
+  - each unit is 1% of the total viewport
+  - for responsive design mostly
+  
+ - % is 'percentage'
+  - is assigned a whole number between 1-100
+  - is relative to some other unit (e.g. element's width)
+ 
  - absolute (in, cm, mm, pt, pc)
-   - pf is 'point' there are 72 points to an inch
+   - pt is 'point' there are 72 points to an inch
    - pc is 'picas' equals 12 points
    - absolutes are for use in printed documents
- - em really a variable holding the value of the font size
- - ex is a variable holding the vertical height of a lower case 'x'
- - px is pixels - number is determined by resolution of rendering monitor
 ----
 
 ----
@@ -488,7 +544,7 @@ Text lining
 ----
  
 ----
-Element rendering
+The Box Model
  - Each element has a content pane shaped as a rectangle
  - the rectangle is layered
  - at the center is the block level element contained within
@@ -504,12 +560,6 @@ Element rendering
     |  |  | ______________
     |  |  | |block content
     
- - width/height affects the block content only
- - height value exceeding parent block content - browser will add scrollbars
- - the element box is the size of the parent element's block content
- - margin and block content are auto-set
- - padding, border are default
- - should set values be over-constrained - margin loses to become auto
  - margins may be negative
  - values may be set with percentages - except for borders
  - values may be set per side 
@@ -523,6 +573,65 @@ Element rendering
    li{margin-top 5px; margin-bottom 10px;}
    /*distance between each row is 10, not 15*/
  - percentage value will calculate off parent width only (not height)
+----
+
+----
+Box-Sizing
+ - box-sizing is a CSS rule property whose value may 
+   be either content-box or border-box
+  - this will effect what height and width is applied to 
+  .my-box {
+    box-sizing: content-box; /* this is the default */
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border: 2px solid red
+  }
+   - the sum-total width and height is 124 (2px + 10px + 100px + 10px + 2px)
+ 
+  .my-other-box {
+    box-sizing: border-box;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border: 2px solid red    
+  }
+   - here the sum-total is 100 and the content-area is 76 (100px - (2px + 10px + 10px + 2px))
+----
+
+----
+Box-Model Display
+ - each html element follows the Block-Model
+ - there are three forms-of-display for an html Box-Model
+  - block, inline, inline-block
+ - each html element is already associated to one of the three 
+   forms-of-display by default
+   - e.g. div is a 'block', span is 'inline'
+ - an element's form-of-display may be changed using the 'display'
+   property in a CSS rule
+  
+  /* would cause all div's to display as inline - bad idea */
+  div {
+    display: inline;
+  }
+   
+ - a 'block' element always appears on its own line
+ - a 'block' element's width will take up the full width of its parent element
+ - a 'block' element's height will default to the least-required to fits its content 
+   
+ - an 'inline' element appears within the same line
+ - an 'inline' element's height and width are always least-required to fit its content
+ - an 'inline' element's height and width cannot be assigned
+ - an 'inline' element's height and width values, if assigned, have no effect
+ - an 'inline' element's padding-left and padding-right may be set and will have an
+   effect
+ - an 'inline' element's padding-top and padding-bottom may be set but will only cause
+   problems
+   
+ - an 'inline-block' element appears within the same line
+ - an 'inline-block' element's height and width may be assigned and will have an effect
+ - an 'inline-block' element's padding and margins may, also, be set and will have an 
+   effect
 ----
 
 ----
@@ -585,7 +694,8 @@ Position Types
 
 ----
 Overflow
- - used to allow content to exceed its content box
+ - for the condition of an explicit height in which the content does not fit
+ - when content does not fit it will wrap to a new line
  p {overflow: visible;} /*will let the content just 'go out' of the box */
  p {overflow: scroll;} /*to set content into a scrollpane */
  p {overflow: hidden;} /*exceeding content is simple truncated */
