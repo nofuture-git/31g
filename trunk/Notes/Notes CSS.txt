@@ -40,6 +40,7 @@ CSS Syntax
  - Properties are delimited from each other by a semi-colon
  - each Property is a name-value pair separated by a colon
  - the Property-Value may one or more items separated by a space
+  - space-separated property values is known as 'shorthand properties'
 
     Selector
        |
@@ -68,15 +69,6 @@ CSS Directives At-Rule
  - are defined and limited list available
  - are delimited by semi-colon
 @charset "utf-8";
-----
-       
-----
-Elements
- - consider each element generating a 'Box' in which contents are contained
- - Replaced: element's content is exogenous source (eg <img src="my.gif" />)
- - Nonreplaced: element content is w/i element tags
- - Block: elements wrapped by linebreaks above / below
- - Inline:  box is gen'ed w/i a line of text
 ----
 
 ----
@@ -370,11 +362,20 @@ CSS Variables
 ----
 
 ----
+CSS Global Keywords
+ - built-in property values as keywords
+ - are assigned to a Rule's property value
+  - initial: the initial value assigned by the browser
+  - inherit: the value of the parent element
+  - unset: combines the latter two giving 'inherit' precedence
+----
+
+----
 CSS Functions
  - are builtin and global scoped
- - most common are the var(), calc() and the various color functions
-  - calc() will resolve some value
-  - var() will resolve some variable back to its value
+ - calc() will resolve some value
+ - var() will resolve some variable back to its value
+ - url() will lookup an image based on URI (abs or rel)
  
  :root {
    --some-variable: 0.5rem;
@@ -529,7 +530,8 @@ Spacing
  
 ----
 Transform text
- - for use in converting text to all-caps / lower from the style sheet
+ - a rule property named 
+  - text-transform: ['uppercase' | 'lowercase']
  - default display is 'as is' within source html
  - useful in quick change of elements
 ----
@@ -645,17 +647,126 @@ Inline-Text rendering
 ----
 Borders
  - always present - set to as 'none' value
- - has width, style and color
+ - has width, style, color and, optionally, radius
   - border-width
   - border-style
   - border-color
+  - border-radius
  - extends to edge of background color (aka padding's edge)
   - margin area does not have contents background color
  - lay atop the padding so dotted line style have background's color between
  - styles: solid; dotted; dashed; double; groove; ridge; inset; outset
   - inset, outset look like border's on buttons
- - different borders may be set per side
+ - curved corners are assigned using border-radius
+ - border-radius is defined as radius 
+  - for round corners a single value 
+  - for elliptical corners two values separated by a forward slash
+   - first value is horizontal radius, second is vertical radius
+  - radius may be defined for each corner of the box
 ----
+
+----
+Box Shadows
+ - allows for a box to appear to be have a shadow or shading
+ - are defined using:
+  - X offset: how far the shadow will appear of the x-axis
+  - Y offset: how far the shadow will appear of the y-axis
+  - Blur radius: how far out the shadow is blurred
+  - Spread radius: how far the shadow extends beyond the element's dimensions
+  - Color: the color of the shadow
+  - 'inset': allows for the shadow inside the element instead of behind it
+  
+  - setting the X & Y offsets to zero will have the shadow appear all the way around 
+    the element
+  - an element can have both an outer and inner shadow separated with a comma and
+    one have the 'inset' added
+  
+  .my-shadow {
+   box-shadow: 0 0 10px 0 black, 0 0 25px red inset;
+   background: #CCCCCC;
+   width: 10rem;
+   height: 5rem;
+  }
+----
+
+----
+Backgrounds
+ - backgrounds cover the area of the content, padding and border
+ - margins are not included in the background
+ 
+ - background-color: [any CSS color, e.g. hex, named, rgb() function, etc.) 
+ - background-image: [url() function, radial-gradient() function, linear-gradient() function]
+  - this property can take more than one value and will combine them for graphic effect
+ - background-repeat: [ 'no-repeat' | 'repeat-x' | 'repeat-y'] 
+  - default is to just tile the image to cover the area 
+ - background-position: ['top' | 'bottom' | 'left' | 'right' | 'center']
+  - can also specify a x,y coord as a unit (e.g. 50px)
+ - background-size: cover (will stretch the image to fit the area)
+ - background-clip: ['border-box' | 'padding-box' | 'content-box' ]
+  - border-box: will extend the image to the border (i.e. default behavior)
+  - padding-box: will extend the image to the padding but not the border
+  - content-box: will extend the image to just the content box
+ - background: is the shorthand property
+  - few rules background-size's value must come directly after background-position's 
+    value and the two are separated by a slash
+  - background-color must always come last  
+----
+
+----
+Gradients
+ - are now builtin features of CSS
+ - are CSS functions linear-gradient() and radial-gradient()
+  - linear, gradient goes top to bottom, left to right, or some angle)
+  - radial, starts at a center point and radiates outward
+ - gradient functions are assigned as the value of the background-image's property
+ - each function is overloaded to control all the varieties available
+ - the background-image's value can be given multiple value separated by a comma
+  background-image: radial-gradient(
+                     ellipse at top left,
+                     white 25%,
+                     transparent),
+                    url('my-image.jpg);
+----
+ 
+----
+Linear Gradient
+ - basic example
+  background-image: linear-gradient(red, blue);
+  
+ - three color gradient
+  background-image: linear-gradient(red, blue, green);
+  
+ - using transparent in place of a color
+  background-image: linear-gradient(transparent, blue);
+ 
+ - having gradient move right to left
+  background-image: linear-gradient(to right, red, blue);
+ 
+ - have gradient at an angle
+  background-image: linear-gradient(45deg, red, blue);
+  
+ - control over gradient's rate-of-change
+  - the percent unit following the color is where the color is supposed to 'begin'
+  - in this case, like a progress bar, red starts at 0 and blue starts at 25 moving
+    left to right
+  background-image: linear-gradient(to right, red 0%, blue 25%)
+----
+
+----
+Radial Gradient
+ - basic example
+  background-image: radial-gradient(red, blue); 
+  
+ - have the gradient radiate in a circle instead of default ellipse
+  background-image: radial-gradient(circle, red, blue);
+  
+ - to move the center of the radiance 
+  - the center of the radiance would begin 25% from the left (think, like a progress-bar)
+  background-image: radial-gradient(circle at 25%, red, blue);
+
+ - to move the center of radiance up, down, left, right
+  - the gradient would radiate from the top left corner
+  background-image: radial-gradient(circle at top left, red, blue);
 
 ----
 Padding
