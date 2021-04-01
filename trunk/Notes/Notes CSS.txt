@@ -594,18 +594,23 @@ Text-Transform
 ----
 Text-Decoration
  - regards lines on, through, below text
-   text-decoration: underline
+  text-decoration: underline
    
  - underline, overline and line-through supported 
  - may also specify none to undo any existent lining
-   text-decoration: none; 
+  text-decoration: none; 
    
  - specify 'underline overline' to enclose text in lines
  - the text-decoration is not inherited
  - may specify different kinds of underline styles 
    (solid, double, dotted, dashed, wavy)
  - may specify the color of the text-decoration line
-   text-decoration: underline wavy red
+  text-decoration: underline wavy red
+   
+ - another decoration is text-shadow
+  - works similar to box-shadow
+  - example would add a red haze around each letter of the text
+  text-shadow: 0px 0px 5px red; 
 ----
  
 ----
