@@ -65,10 +65,15 @@ Property Name .             .
 CSS Directives At-Rule
  - are a kind of preprocessor which instructs the CSS interpretor 
  - called "At-Rule" because they start with '@' symbol
- - the are not Rules,
- - are defined and limited list available
- - are delimited by semi-colon
-@charset "utf-8";
+ - have a regular form 
+  @charset "utf-8";
+  
+ - there is also a nested form
+ @font-face {
+   font-family: 'SomeNameGiven';
+   src: url('/some-font.woff2') format('woff2'),
+        url('/some-font-woff') format('woff);
+ }
 ----
 
 ----
@@ -445,7 +450,6 @@ Units
    - absolutes are for use in printed documents
 ----
 
-
 ----
 Fonts
  - font family is term to describe many similar varied fonts
@@ -460,6 +464,29 @@ Fonts
  - enclose font value in single-quotes if value is string 
    eg 'New Century Schoolbook'
  - use the 'font' element to adjust weight, size and style written in any order
+----
+
+----
+Web-Fonts
+ - are defined using the @font-face CSS at-rule (a.k.a. a directive)
+ - will download a font from the server as a binary file 
+ - both versions of Web Open Font Format are supported (viz. .woff, woff2)
+ - each file will only contain one font-style (e.g. italic, normal, etc.)
+ - separate @font-face at-rules are needed to get the other font-styles
+ 
+ /* get the normal font */
+ @font-face {
+   font-family: 'SomeNameGiven';
+   src: url('/some-web-font.woff2') format('woff2);
+   font-style: normal;
+ }
+ 
+ /* get the italic font (note: the font-family name is the same) */
+ @font-face {
+   font-family: 'SomeNameGiven';
+   src: url('/some-web-italic-font.woff2') format('woff2);
+   font-style: italic;
+ }
 ----
 
 ----
@@ -552,7 +579,6 @@ Spacing
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  
 ----
  
 ----
