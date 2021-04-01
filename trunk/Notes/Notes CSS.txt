@@ -368,6 +368,7 @@ CSS Global Keywords
   - initial: the initial value assigned by the browser
   - inherit: the value of the parent element
   - unset: combines the latter two giving 'inherit' precedence
+  - currentColor: this resolves to the 'color' value of the text 
 ----
 
 ----
@@ -405,6 +406,14 @@ CSS Colors and Color Functions
 ----
 
 ----
+URIs
+ - is a CSS function
+ - relative URI is w/ respect to CSS doc, not HTML doc
+ - url(protocol://server/pathname) /*absolute*/
+ - url(pathname) /*relative*/
+----
+
+----
 Units
  - are equivalent to different units of measurement
  
@@ -436,12 +445,6 @@ Units
    - absolutes are for use in printed documents
 ----
 
-----
-URIs
- - relative URI is w/ respect to CSS doc, not HTML doc
- - url(protocol://server/pathname) /*absolute*/
- - url(pathname) /*relative*/
-----
 
 ----
 Fonts
@@ -461,7 +464,7 @@ Fonts
 
 ----
 Font-Weight
- - specified using relative string values {normal, bold, bolder, lighter}
+ - specified using relative string values (normal, bold, bolder, lighter)
    - relative strings map to numerical values
  - specified using numerical values of 100
  - 100 is lightest font weight, 900 is heaviest
@@ -476,35 +479,28 @@ Font-Weight
 ----
 Font-Size
  - specified using relative string values 
-   {xx-small, x-small, small, medium, large, x-large, xx-large}
+   (xx-small, x-small, small, medium, large, x-large, xx-large)
  - also specify with relative string values in relation to parent value
-   {smaller, larger}
+   (smaller, larger)
+   font-size: larger;
+ - size may be specified in emphemeral unit'
+   font-size: 0.87em;
  - also specify using exact pixel values
-   {14px}
+  - default is 16px
+   font-size: 14px; 
  - specify using percentage value in relation to parent value
-   {135%}
+   font-size: 125%
 ----
 
 ----
 Font-Style
- - specify using keyword {italic, normal, oblique}
+ - specify using keyword (italic, normal, oblique)
  - italic has slant and slight texture change 
  - oblique is simply normal with a slant
  - italic may substituted for oblique
  - oblique may not be substituted for italic
  - use font-variant to specify small-caps 
    - simply an all caps setting where implied capital letter are just larger
-----
-
-----
-Horizontal Text Elements
- - text is content, font is rendering thereof
- - text-indent to indent text
-   - {text-indent: -4em} /*to create a opposite indent*/
-   - use padding to avoid opposite indent being cropped of page
-   - use any unit in text-indent
- - text-align is the alignment of the text block
-   - values are standard {right, left, center, justify}
 ----
 
 ----
@@ -518,31 +514,72 @@ Vertical Text Elements
    - subscript text will hang upon 
    - superscript text will rest atop baseline text
    - bottom will align text upon bottom of element box
+   - middle will align text along a center line through inline element
+   
+ - text-align is the common idea from word-processors with 
+   values of left, right, center and justify
 ----
 
 ----
 Spacing
+ - various properties to effect spacing of text content
  - word-spacing uses integer value as additive to normal word spacing
- - a 'word' is string without whitespace character
+  - double space the words
+  word-spacing: 2;
+   
  - letter-spacing also uses an integer, same as word-spacing
- - text-align will affect spacing
+  - stretches out the word 
+  letter-spacing: 5px;  
+  
+ - text-indent adds indentation to the front of the text content 
+  - can be given a negative number to have the opposite effect
+  text-indent: 50px;
+  
+ - white-space determines how whitespace is handled within the text of an element
+  - white-space value of 'normal' is default
+  - with default all redundant whitespace is striped
+  - white-space value of 'pre' will stop the stripping of any whitespace
+  white-space: pre;
+  
+  - other white-space values are 
+   - nowrap: changes default behavior of having text content word-wrap to a newline
+   - pre-wrap: same as pre but performs word-wrap as needed
+   - pre-line: only preserves newlines, redundant whitespace is striped
+   
+ - text-overflow is used with other properties to add '...' to the end
+   of a truncated text
+  - requires overflow: hidden; and white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  
 ----
  
 ----
-Transform text
- - a rule property named 
-  - text-transform: ['uppercase' | 'lowercase']
- - default display is 'as is' within source html
+Text-Transform
+ - changes the case of a text content
+  text-transform: uppercase;
+  text-transform: lowercase;
+   
+ - default display text casing 'as is' from source html
  - useful in quick change of elements
 ----
 
 ----
-Text lining
- - {text-decoration: underline} /*example*/
+Text-Decoration
+ - regards lines on, through, below text
+   text-decoration: underline
+   
  - underline, overline and line-through supported 
  - may also specify none to undo any existent lining
+   text-decoration: none; 
+   
  - specify 'underline overline' to enclose text in lines
- - the decoration is not inherited
+ - the text-decoration is not inherited
+ - may specify different kinds of underline styles 
+   (solid, double, dotted, dashed, wavy)
+ - may specify the color of the text-decoration line
+   text-decoration: underline wavy red
 ----
  
 ----
@@ -767,6 +804,7 @@ Radial Gradient
  - to move the center of radiance up, down, left, right
   - the gradient would radiate from the top left corner
   background-image: radial-gradient(circle at top left, red, blue);
+----
 
 ----
 Padding
