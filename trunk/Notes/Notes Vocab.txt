@@ -779,3 +779,9 @@ Cornelian dilemma: forced to choose between two choices both of which
                    detrimental in effect
 Hobson's Choice: a free choice in which only one thing is offered, take-it-or-leave-it
 consanguinity: the fact of being descended from the same ancestor
+attribute: is additive, a decorator
+property: is a defining value
+aspect: is a subjective view from a certain position
+characteristic: intrinsic value of a character, a subset of a property
+method -vs- function: method is a subset of function distinguished by
+ it being contained in an object

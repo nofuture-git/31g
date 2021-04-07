@@ -684,24 +684,27 @@ Box-Model Display
   div {
     display: inline;
   }
+ 
+ - for 'block' 
+  - element always appears on its own line
+  - width will take up the full width of its parent element
+  - height will default to the least-required to fits its content 
+  
+ - for 'inline'  
+  - element appears within the same line
+  - height and width are always least-required to fit its content
+  - height and width cannot be assigned
+  - height and width values, if assigned, have no effect
+  - padding-left and padding-right may be set and will have an
+    effect
+  - padding-top and padding-bottom may be set but will only cause
+    problems
    
- - a 'block' element always appears on its own line
- - a 'block' element's width will take up the full width of its parent element
- - a 'block' element's height will default to the least-required to fits its content 
-   
- - an 'inline' element appears within the same line
- - an 'inline' element's height and width are always least-required to fit its content
- - an 'inline' element's height and width cannot be assigned
- - an 'inline' element's height and width values, if assigned, have no effect
- - an 'inline' element's padding-left and padding-right may be set and will have an
-   effect
- - an 'inline' element's padding-top and padding-bottom may be set but will only cause
-   problems
-   
- - an 'inline-block' element appears within the same line
- - an 'inline-block' element's height and width may be assigned and will have an effect
- - an 'inline-block' element's padding and margins may, also, be set and will have an 
-   effect
+ - for 'inline-block' 
+  - element appears within the same line
+  - height and width may be assigned and will have an effect
+  - padding and margins may, also, be set and will have an 
+    effect
 ----
 
 ----
@@ -731,6 +734,37 @@ Borders
   - for elliptical corners two values separated by a forward slash
    - first value is horizontal radius, second is vertical radius
   - radius may be defined for each corner of the box
+----
+
+----
+Padding
+ - will expand background color
+ - paddings do not collapse
+ - paddings are not inherited from parent (unlike margins which are)
+ - are default to zero for most elements
+ - calculate on width only (like margins)
+ - may be set on a per-side basis
+ - inline padding may extend over adjacent lines
+----
+
+----
+Margins 
+ - will not expand the background color
+ - setting margin to 'auto' will cause the child element
+   to be centered horizontally within its parent
+  - the child element will _not_ be centered vertically
+  
+ - margins do collapse 
+  - when vertical margins butt up against one another
+    they will collapse to just one margin
+  - a parent's horizontal margins will collapse 
+    when the parent has zero border and zero padding
+    
+ - margins are inherited from parent 
+ - are default to zero
+ - may be assigned to the value 'auto'
+  - causes the inner-box whose margin is auto 
+    to be centered inside it parent
 ----
 
 ----
@@ -829,22 +863,13 @@ Radial Gradient
   background-image: radial-gradient(circle, red, blue);
   
  - to move the center of the radiance 
-  - the center of the radiance would begin 25% from the left (think, like a progress-bar)
+  - the center of the radiance would begin 25% from the left (think, like 
+    a progress-bar)
   background-image: radial-gradient(circle at 25%, red, blue);
 
  - to move the center of radiance up, down, left, right
   - the gradient would radiate from the top left corner
   background-image: radial-gradient(circle at top left, red, blue);
-----
-
-----
-Padding
- - will expand background color
-  p {padding: 10px;}
- - paddings do not collapse (unlike margins)
- - calculate on width only (like margins)
- - may be set on a per-side basis
- - inline padding may extend over adjacent lines
 ----
 
 ----
@@ -859,17 +884,56 @@ Layout management
 ----
 
 ----
-Position Types
- - static: default, same as none at all
- - relative: content acts like default except an off-set is now set 
- - absolute: content is specific in its size 
-  - box is not sized in relation to its parent content area
-  - box is positioned in relation to its parent content area
-  - box is positioned in relation to the containing block (probably window)
-  - is removed from the document flow
- - fixed: content is viewport
- - elements may be positioned outside thier content area
- - limit with min-width; min-height; max-width; max-height
+Positioning
+ - is defined by the 'position' property of a rule
+ - is moved around using assign values to generic left, right, top and bottom
+  - conflicts between top & bottom, top wins
+  - conflicts between left & right, left wins  
+  
+ - 'static' position is the default, same as none at all
+  - any element with a position value other than 'static'
+    is considered as 'positioned'
+    
+ - 'relative' position is relative to where the element _would_ 
+   be if its position was static
+  position: relative:
+  top: 10px;
+  left: 10px;
+  
+ - 'absolute' is removed from the document flow 
+  - is not sized in relation to its parent content area
+  - is positioned in relation to its closest ancestor's positioned element
+   - meaning, if no ancestor (parent or higher) has some value for 'position'
+     other than static the closest ancestor becomes the document root
+   - will behave differently based the some ancestor's position value
+  
+ - 'fixed' is positioned in relation to the viewport 
+  - this will cause an element to remain in its position even if the 
+    user scrolls down
+    
+ - 'sticky' is a combination of relative and fixed
+ 
+ - 'z-index' will override previous relative, fixed and absolute positioned 
+   elements 
+  - the higher the z-index value the closer it will appear to the user
+  - the z-index is not global, it is relative to other elements 
+----
+
+----
+Stacking Context
+ - represents the z-axis of any element
+ - default is only one z-axis from the root <html> element
+ - various rules may establish a new stacking context
+  - any element with a position value other than 'static' _and_ 
+    a z-index value other than 'auto'
+  - any element with an opacity less than 1
+  - any element which is a child of a flex or grid container _and_ 
+    a z-index value other than 'auto'
+
+ - stacking context, may, in turn, themselves stack (i.e. one context 
+   over top another)
+  - z-index, in one stacking context will not override another despite
+    it having a higher value
 ----
 
 ----
