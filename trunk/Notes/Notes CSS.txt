@@ -875,12 +875,16 @@ Radial Gradient
 ----
 Layout management
  - floating places element in content forcing content to flow around it
-  p img{float: left;}
+ - values can be left, right, inline-start, inline-end (for other 
+    languages that read right-to-left)
+ .my-float { float: right; }
  - floating element's margins do not collapse
  - a floated element is contained w/i its parent's content block
- - position places element in content with respect to its parent content block
- p img{position:relative; top: 50%; bottom: 0; left: 50%; right: 0;}
- - offset is position with respect to left side / top side
+ - can be used in combination with 'clear' property
+ - using clear makes it so the element does not flow around some
+   floating element 
+ - values of 'clear' can be  none (default), left, right, 
+    both, inline-start, inline-end
 ----
 
 ----
@@ -951,6 +955,53 @@ Clip Area
  - for setting the area of rendering w/o changing the content block size
  - only excepts absolute values or the keyword 'auto'
 ----
+
+----
+Transforms
+ - are CSS functions 
+ - are applied to the property named 'transform'
+ - multiple transforms are stacked as space-separated calls to 
+   the various transform functions
+----
+
+----
+Rotation functions 
+ - rotate function
+  - takes a value as a CSS unit of deg, grad, rad and turn
+  - is based (0,0) of Cartesian graph as top-left corner
+  - rotation point is defaulted to the center of an element
+  - rotation point can be moved using the transform-origin property
+   - transform-origin can take the CSS units of px and % or discrete
+     values of left, center, right, top and bottom
+ transform: rotate(45deg);
+
+ - perspective function
+  - applies a kind of vanishing point perspective to an element
+  - used in conjunction with other transform functions
+ 
+ - rotateX function
+  - imagines the x-axis as a kind-of pole on which the element swings around
+  - illustrated best when used with the 'perspective' function
+ transform: perspective(200px) rotateX(45deg);
+ 
+ - rotateY function
+  - same as its counterpart, rotateX, only the 'pole' is now the y-axis
+  
+ - rotate3d function 
+  - like other rotate functions; however, option to specify 'pole' upon
+    which rotation is centered as a vector in 3d space (x,y,z) in the form of
+    a float value between 0 and 1
+ transform: rotate3d(0.5,0.25,0,45deg) perspective(200px);
+----
+
+----
+Translate functions
+ - moves and element from its original position
+ - has more options than position: relative
+ 
+
+----
+    
 
 ----
 Visibility
