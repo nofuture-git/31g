@@ -490,6 +490,16 @@ Web-Fonts
 ----
 
 ----
+Font and color
+ - color property applies to both the text and text decorations
+ - color value is inherited from the direct parent element
+ - using 'initial' will set color to whatever the _browser_ 
+   considers the default
+ - currentColor can be used to apply color to a parent based
+   on the child element's color
+---- 
+
+----
 Font-Weight
  - specified using relative string values (normal, bold, bolder, lighter)
    - relative strings map to numerical values
@@ -966,6 +976,7 @@ Transforms
 
 ----
 Rotation functions 
+ - is a kind of CSS Transform
  - rotate function
   - takes a value as a CSS unit of deg, grad, rad and turn
   - is based (0,0) of Cartesian graph as top-left corner
@@ -996,12 +1007,22 @@ Rotation functions
 
 ----
 Translate functions
- - moves and element from its original position
+ - is another kind of CSS Transform
+ - moves an element from its original position
  - has more options than position: relative
  
+ - translate (translateX, translateY) function
+  - does the basics just like position relative
+  
+ - translateZ function
+  - causes the element to appear as if it is hovering 
+    above the other elements in 3d space  
+ transform: translateZ(2rem);
 
+ - translate3d function
+  - takes 3 parameters for offsets of the x, y and z-axis
+ transform: translate3d(1rem, 2rem, 3rem);
 ----
-    
 
 ----
 Visibility
