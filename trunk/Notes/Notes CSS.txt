@@ -444,6 +444,12 @@ Units
   - is assigned a whole number between 1-100
   - is relative to some other unit (e.g. element's width)
  
+ - deg is 'degrees'
+ 
+ - ms is 'milliseconds'
+ 
+ - s is 'seconds'
+ 
  - absolute (in, cm, mm, pt, pc)
    - pt is 'point' there are 72 points to an inch
    - pc is 'picas' equals 12 points
@@ -976,6 +982,7 @@ Transforms
 
 ----
 Rotation functions 
+ - are CSS functions
  - is a kind of CSS Transform
  - rotate function
   - takes a value as a CSS unit of deg, grad, rad and turn
@@ -1007,6 +1014,7 @@ Rotation functions
 
 ----
 Translate functions
+ - are CSS functions 
  - is another kind of CSS Transform
  - moves an element from its original position
  - has more options than position: relative
@@ -1022,6 +1030,87 @@ Translate functions
  - translate3d function
   - takes 3 parameters for offsets of the x, y and z-axis
  transform: translate3d(1rem, 2rem, 3rem);
+----
+
+----
+Scale functions
+ - are CSS functions
+ - is another kind of CSS Transform
+ - scales an element along one of the 3 axis 
+ 
+ - scale (scaleX, scaleY) function
+ transform: scale(2,3);
+ 
+ - scaleZ function
+  - must be used in combination with one of the other
+    transform functions
+ transform: perspective(200px) scaleZ(5) rotateX(45deg)
+ 
+ - scale3d function
+  - performs scaling effect along a specified vector 
+----
+
+----
+Skew functions
+ - are CSS functions
+ - is another kind of CSS Transform
+ - skews an element (making a square look like a diamond)
+ 
+ - skew function
+ transform: skew(45deg, 20deg);
+----
+
+----
+Transitions
+ - is a CSS property which allows control for the rate-of-change
+   of other CSS property values
+ - is expressed in a the CSS unit of milliseconds
+ 
+ - simplest example is just one ms unit value
+ transition: 500ms;
+ 
+ - transition can be specified to specific properties of a rule
+  - example would transition color over half-a-second and 
+    while the transformation would delay for half-a-second then
+    change, likewise, over half-a-second
+  - the property value's format is <property-name> <duration> <delay>
+ transition: background-color 500ms 
+             transform 500ms 500ms;
+             
+ - long-hand specification is possible like most CSS properties
+ transition-property: background-color, transform;
+ transition-duration: 500ms, 500ms;
+ transition-delay: 0ms, 500ms;
+----
+
+----
+Transition Easing functions
+ - are CSS functions
+ - deal with the duration timing of some property's state-change
+ - may be specified as discrete steps 
+ - or may be expressed as a cubic-bezier (continuous) function
+  - cubic-bezier are specifying to coordinates as x and y
+ transition-timing-function: cubic-bezier(0.14, 0.26, 0.3, 0.4);
+ 
+ - linear cubic-bezier value
+  - same as cubic-bezier(0, 0, 1, 1);
+ transition-timing-function: linear;
+ 
+ - ease cubic-bezier value
+  - same as cubic-bezier(0.25, 0.1, 0.25, 1.0);
+ transition-timing-function: linear;
+
+ - ease-in cubic-bezier value
+  - same as cubic-bezier(0.42, 0.1, 1.0, 1.0);
+ transition-timing-function: ease-in;
+ 
+ - ease-out cubic-bezier value
+  - same as cubic-bezier(0.0, 0.0, 0.58, 1.0);
+ transition-timing-function: ease-out;
+
+ - ease-in-out cubic-bezier value
+  - same as cubic-bezier(0.42, 0.0, 0.58, 1.0);
+ transition-timing-function: ease-in;
 ----
 
 ----
