@@ -65,6 +65,7 @@ Property Name .             .
 CSS Directives At-Rule
  - are a kind of preprocessor which instructs the CSS interpretor 
  - called "At-Rule" because they start with '@' symbol
+ - play a large role in defining animation
  - have a regular form 
   @charset "utf-8";
   
@@ -73,6 +74,14 @@ CSS Directives At-Rule
    font-family: 'SomeNameGiven';
    src: url('/some-font.woff2') format('woff2'),
         url('/some-font-woff') format('woff);
+ }
+ 
+ - for testing accessibility (e.g. vestibular or seizure 
+   disorders related to rapidly moving element) 
+ @media (prefers-reduced-motion: reduce) {
+  .my-css-animation-class {
+    animation: none;
+  }
  }
 ----
 
@@ -1111,6 +1120,70 @@ Transition Easing functions
  - ease-in-out cubic-bezier value
   - same as cubic-bezier(0.42, 0.0, 0.58, 1.0);
  transition-timing-function: ease-in;
+----
+
+----
+Animations
+ - like transition only with many discrete steps 
+ - use special at-rule called @keyframes
+ - @keyframes is nesting of two or more rules in which 
+   the selector is percentage or some keyword (e.g. from, to)
+ - multiple animations can be defined, all will begin with
+   the @keyframes at-rule
+ - the selector name given in the @keyframes is then
+   assigned to the 'animation' property of a CSS Rule
+ - the animation property is short-hand for many animation-related 
+   values
+  - ordinal of animation-related values are mostly all different
+    CSS units so the browser figures out what is what
+  - one exception is two values that are both 'ms' or 's' time units
+   - the first one is always treated as duration, the second as delay
+ - animation is performance heavy, can hint to browser what may be 
+   animated using the 'will-change' property whose value is the other
+   CSS Rule properties that are animated (e.g. will-change: opacity; )   
+ 
+ @keyframes my-colors {
+  0% { background: red;} 
+  50% { background: blue; }
+  100% { background: green; }
+ }
+ .box00 {
+   animation: my-colors 2s;
+   width: 10rem;
+   height: 10rem;
+ }
+ /* animation properties long-hand */
+ .box01 {
+   animation-name: my-colors;
+   animation-duration: 2500ms;
+   
+   /* same as values in transition */
+   animation-timing-function: ease-in;
+   
+   /* how long before animation begins */
+   animation-delay: 4s;
+   
+   /* 
+    changes the fill behavior, default is none, other 
+    values include forward, backwards and both
+   */
+   animation-fill-mode: none;
+   
+   /* how many times to replay, default is 1 */
+   animation-iteration-count: infinite;
+   
+   /* 
+    direction to play the animation, default is normal, other
+    values include reverse, alternate, and alternate-reverse
+   */
+   animation-direction: normal;
+   
+   /* 
+    intended to allow JavaScript to assign as either 
+    running or paused
+   */
+   animation-play-state: running;
+ }
 ----
 
 ----
