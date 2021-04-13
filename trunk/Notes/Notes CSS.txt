@@ -1187,6 +1187,57 @@ Animations
 ----
 
 ----
+Flexible Box Layout Module
+ - commonly known as flexbox
+ - is one-dimensional layout of elements either
+   horizontally or vertically (but not both)
+ - using flexbox 
+  - containing element is called 'flex container'
+  - items therein are called 'flex items'
+ - create a flex container by assigning the display to flex
+  - inline elements use 'inline-flex'
+ - specify the direction of the flex container using flex-direction
+ - flex-grow value of 1 will force each item to take an equal
+   portion of the flex-container
+ display: flex;
+ flex-direction: row;
+ flex-grow: 1;
+----
+
+---- 
+Justify Content of Flex Container
+ - 'justify-content' how the flex items are arranged 
+   along the main axis of a flex container
+  - flex-start: the default, flex items start on left
+    extra space appears on the right
+  - flex-end: just the opposite of flex-start
+  - center: flex-items are arranged at the center
+  - space-between: maximizes the space between each flex item
+  - space-around: maximizes the space between each flex item
+    with extra space between first and last flex item and the 
+    edge of the flex container
+  - space-evenly: maximizes the space between each edge of the 
+    flex container and the space between each flex item
+ justify-content: center
+----
+
+----
+Align Items of Flex Container
+ - 'align-items' how the flex items are arranged 
+   along the cross axis of a flex container
+  - stretch: flex items are stretched to fill available
+    space along cross axis
+  - flex-start: flex items are arranged a the start of the
+    cross axis
+  - flex-end: just the opposite of flex-start
+  - center: flex items are arranged along the center 
+    of the cross axis
+  - baseline: flex items are arranged along the baseline
+    of their own text
+ align-items: center;
+----
+
+----
 Visibility
  - for setting a block to invisible 
  - while not begin seen, the content block and padding still affect the layout
