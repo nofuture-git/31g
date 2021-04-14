@@ -83,6 +83,13 @@ CSS Directives At-Rule
     animation: none;
   }
  }
+ 
+ - for specifying a set of CSS rules for a given screen size
+ @media screen and (max-width: 400px) {
+   /* 
+    Rules for just this media rule
+   */
+ }
 ----
 
 ----
@@ -458,6 +465,9 @@ Units
  - ms is 'milliseconds'
  
  - s is 'seconds'
+ 
+ - fr is 'fraction'
+  - for use in CSS Grid
  
  - absolute (in, cm, mm, pt, pc)
    - pt is 'point' there are 72 points to an inch
@@ -1235,6 +1245,128 @@ Align Items of Flex Container
   - baseline: flex items are arranged along the baseline
     of their own text
  align-items: center;
+----
+
+----
+Responsive Design
+ - requires a meta tag added in the head element
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+ - media query is a CSS At-Rule that specifies a medium (viz. all,
+   print, screen, speech) and a condition
+  - media query values are pragmatic based on crowding of content 
+    and not targeting specific devices
+ @media screen 
+    and (min-width: 600px)
+    and (orientation: landscape) {
+   /*
+     the rules for this screen here
+   */  
+ }
+    
+ - clamp function
+  - used to specify a min, preferred and max size
+ font-size: clamp(48px, 4.8vw, 64px); 
+----
+
+----
+CSS Grid
+ - for a lattice like layout
+ - create a grid container by assigning the display to grid
+  - inline elements use 'inline-grid'
+ - using CSS Grid
+  - containing element is called 'grid container'
+  - items therein are called 'grid items'
+  - the lines that divide one grid item from another is called 'grid lines'
+   - grid lines are ordinal numbered starting at 1 from 
+     left to right/top to bottom
+  - the rows and columns formed from grid items are called 'grid tracks'
+   - are also ordinal numbered starting at 1 from 
+     left to right/top to bottom
+  - any space enclosed by 4 grid lines is called a 'grid area'
+  - any explicit definition of grid tracks are called 'explicit grid'
+  - additional tracks added are called 'implicit grid'
+ .container {
+   display: grid;
+   
+   /* 
+    this is defining both the size and number of columns
+     - 1fr means each column is split equally within total space 
+       of the grid container
+   */
+   grid-template-columns: 1fr 1fr 1fr;
+   
+   /* 
+    this is defining the size and number or rows
+     - repeat function to repeat a number of tracks (count, size-thereof)
+     - minmax function to stretch size to avoid overflow
+     - auto-fill keyword will adjust the number of rows
+       to match the number of HTML entries
+     - auto-fit keyword will adjust both the number to match 
+       the HTML and fit them to fill the track
+   */
+   grid-template-rows: repeat(auto-fill, minmax(3rem, auto));
+   
+   /* default size of any additional rows */
+   grit-auto-rows: 5rem;
+   gap: 5px;
+ }
+ 
+ - gain direct reference to a grid item via index (one-based)
+  - the values of grid-row and grid-column, etc are the grid lines
+ .my-grid-item {
+   background-color: skyblue;
+   grid-row: 2;
+   grid-column: 3;
+ }
+ 
+ - have a single grid item span multiple rows or columns
+  - is with reference to the grid lines 
+  .my-multi-grid-item-1 {
+    grid-row: 2;
+    gird-column-start: 3;
+    grid-column-end: 5;
+  }
+  
+ - short-hand version of multiple rows or columns
+ .my-multi-grid-item-2 {
+   grid-row: 2;
+   
+   /* start at grid line 3 and stop at grid line 5 */
+   grid-column: 3 / 5
+ }
+ 
+ - another short-hand version of multiple rows or columns
+ .my-multi-grid-item-2 {
+   grid-row: 2;
+   
+   /* start at grid line 3 and continue for two more gird lines */
+   grid-column: 3 / span 2;
+ }
+ 
+ - give grid lines an alias during declaration of a grid container
+ .grid-container-with-named-lines {
+   display: grid;
+   grid-template-rows :
+    [header-start] 2rem
+    [content-start] 10rem
+    [footer-start] 2rem
+    [footer-end];
+   grid-template-columns:
+    [sidebar-start] 5rem
+    [content-start] 1fr
+    [content-end];
+ }
+ 
+ - reference to the grid line's alias without the square braces
+ .header {
+   grid-row: header-start / content-start;
+   grid-column: sidebar-start / content-end;
+ }
+ 
+ .footer {
+   grid-column: sidebar-start / content-end;
+ }
 ----
 
 ----
