@@ -1,0 +1,93 @@
+Notes Terraform
+----
+
+----
+Terraform: Up & Running, 2nd Edition
+by Yevgeniy Brikman
+Publisher: O'Reilly Media, Inc.
+Release Date: September 2019
+ISBN: 9781492046905
+----
+
+----
+Terraform basics
+ - is a single executable binary
+ - is written in Go
+ - performs API calls to a known cloud provider (AWS, Azure, 
+   Google Cloud, DigitalOcean, OpenStack and more)
+----
+
+----
+Infrastructure as Code (IAC)
+ - idea of how code is hosted, managed, deployed and monitored 
+   is all considered a software problem is is handled as code
+   itself
+ - benefits include:
+  - self-service: by the developers without assistance from a sysadmin
+  - speed: steps as code will run faster than any human user
+  - safety: steps as code are not prone to typos and manual errors
+  - documentation: the infrastructure is clearly defined in as code
+    and not hindered by tribal knowledge
+  - version control: infrastructure changes are under source control
+    with logs, commit comments, user names, etc.
+  - validation: IAC can be code reviewed
+----
+ 
+----
+Ad hoc scripts
+ - IAC as bash, python, powershell scripts 
+  - tends to lack a standard API for standard IAC tasks
+  - quickly becomes overwhelming 
+----
+
+----
+Configuration Management Tools 
+ - IAC as applications to install and manage software on existing servers
+ - examples include: Chef, Puppet, Ansible and SaltStack
+ - is convention based for common IAC tasks like file 
+   layout, secrets mgmt, etc 
+ - idempotence: code that runs correctly no matter how many 
+   times its run\re-run
+ - intended for distributed networks of remote machines
+----
+
+----
+Server Templating Tools
+ - IAC as fully self-container snap-shots of a whole machine from OS up
+ - examples include: Docker, Packer and Vagrant
+ - developed the idea of immutable infrastructure 
+  - don't change images, just make a whole new one
+ - virtual machines and containers
+  - a VM is virtualizing the very hardware 
+  - container is virtualizing just the user space
+   - user space being the part of virtual memory used by applications
+   - in contrast to kernel space being the part of the virtual memory
+     used by the kernel
+----
+
+----
+Orchestration Tools
+ - IAC as a configuration management tool of all the template servers
+ - examples include: Kubernetes, Marathon/Mesos, Amazon Elastic Container 
+   Service (Amazon ECS), Docker Swarm and Nomad
+ - handle the updates to existing templates in a rolling fashion
+  - blue-green deployment
+  - canary deployment
+ - auto-healing: idea of an orchestration tool replacing poor performing 
+   running templates with new ones
+ - auto-scaling: idea of an orchestration tool adding\removing running 
+   templates based on demand-load
+ - load-balancing: idea of orchestration tool distributing demand-load 
+   efficiently across the running templates
+ - service discovery: idea of orchestration tool allowing for running 
+   templates to find and communicate with other running templates
+----
+
+----
+Provisioning Tools
+ - IAC as creation the infrastructure itself
+ - examples include: Terraform, CloudFormation and OpenStack Heat
+ - creates the servers, databases, caches, load balancers, queues, 
+   monitoring, subnet cfg, firewall settings, routing rules, 
+   digital certs, etc.
+----   
