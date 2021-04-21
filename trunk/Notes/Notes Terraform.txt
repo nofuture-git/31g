@@ -15,6 +15,21 @@ Terraform basics
  - is written in Go
  - performs API calls to a known cloud provider (AWS, Azure, 
    Google Cloud, DigitalOcean, OpenStack and more)
+ - is a single .exe in Windows without any installer 
+  - needs to be added to the PATH variable
+ - uses environment variables for AWS IAM users
+ [System.Environment]::SetEnvironmentVariable("AWS_ACCESS_KEY_ID", `
+                                              "ABCDEFGHIJKLMNOPQRS", `
+                                              [System.EnvironmentVariableTarget]::Process)
+                                              
+ [System.Environment]::SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", `
+                                              "c3VwZXJfL1NlY3JldF9uZWVkc1RvQmUxMTExMTExMTE=", `
+                                              [System.EnvironmentVariableTarget]::Process)
+                                              
+ - Terraform code is a syntax named HashiCorp Configuration Language (HCL)
+ - is expected file extension of .tf
+ - documentation at https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+ - terraform.exe will look for a file named 'main.tf" in the working directory
 ----
 
 ----
@@ -90,4 +105,22 @@ Provisioning Tools
  - creates the servers, databases, caches, load balancers, queues, 
    monitoring, subnet cfg, firewall settings, routing rules, 
    digital certs, etc.
-----   
+----
+
+----
+Terraform HCL Resource Syntax
+ - a first-class, kind-of, type is a 'resource'
+ - syntax example:
+ resource "aws_instance" "myExample" {
+  ami = "ami-0c55b159cbfafe1f0"
+  instance_type = "t2.micro"
+ }
+ 
+ - 'resource' is a keyword
+ - "aws_instance" is a naming convention of provider_type
+ - "myExample" is the name is something I assign
+ - what is within the body is specific config key-value pairs
+   for that provider_type
+  
+ 
+ 
