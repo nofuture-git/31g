@@ -30,6 +30,7 @@ Terraform basics
  - is expected file extension of .tf
  - documentation at https://registry.terraform.io/providers/hashicorp/aws/latest/docs
  - terraform.exe will look for a file named 'main.tf" in the working directory
+ - typical ignore files of Terraform are: .terraform *.tfstate *.tfstate.backup
 ----
 
 ----
@@ -108,8 +109,13 @@ Provisioning Tools
 ----
 
 ----
-Terraform HCL Resource Syntax
+Terraform Resource Syntax
  - a first-class, kind-of, type is a 'resource'
+ - looks similar to a CSS Rule
+ resource "<PROVIDER>_<TYPE>" "<NAME>" {
+  [CONFIG ...]
+ }
+ 
  - syntax example:
  resource "aws_instance" "myExample" {
   ami = "ami-0c55b159cbfafe1f0"
@@ -121,6 +127,66 @@ Terraform HCL Resource Syntax
  - "myExample" is the name is something I assign
  - what is within the body is specific config key-value pairs
    for that provider_type
+----
+
+----
+Terraform Resource Attribute Reference
+ - a string interpolation schema
+ - a reference to some value defined elsewhere
+ - uses a snake-plus-dot notation
+  - <PROVIDER_<TYPE> are same as always
+  - <NAME> is the name of the resource 
+  - <ATTRIBUTE> is some key-value in the body of 
+    the resource
+ <PROVIDER>_<TYPE>.<NAME>.<ATTRIBUTE>
+ 
+ - assignment of some value to a reference 
+   is accomplished by enclosing it in square-braces
+  vpc_security_group_ids = [aws_security_group.instance.id]  
   
+  - this would mean some other resource is defined 
+    for the 'aws_security_group' 
+  - the name of this resource is 'instance'
+  - lastly, this resource has config attribute named 'id'
+----   
+
+----
+Terraform Input Variables
+ - allow for programmatic declaration of variable 
+   in a .tf file
+ - uses the 'variable' keyword
+ 
+ variable "my-port-number" {
+  description = "Basic example of a programmatic terraform variable"
+  type = number
+  value = 8080
+ }
+ 
+
+
+----
+Running terraform
+ - working directory contains a main.tf file
+ - one-time run to download dependencies on given provider 
+  - as defined in the main.tf 'provider'
+  - will also create various other files and folder in working dir
+ terraform init
+ 
+ - next is the command 'plan'
+  - like a 'WhatIf' parameter in PowerShell
+  - determines what terraform _will_ do
+  - console output has three ascii chars to indicate
+    expected future state
+   - '+' means something will be created
+   - '-' means something will be removed
+   - '~' means something will be modified
+   - '-/+' means something will be replaced
+ terraform plan
+ 
+ - 'apply' command will push what was planned to the 
+   cloud provider
+  - within the cloud providers console verify it worked
+ terraform apply
+---- 
  
  
