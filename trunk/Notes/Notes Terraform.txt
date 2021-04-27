@@ -7,6 +7,8 @@ by Yevgeniy Brikman
 Publisher: O'Reilly Media, Inc.
 Release Date: September 2019
 ISBN: 9781492046905
+
+code examples: https://github.com/brikis98/terraform-up-and-running-code
 ----
 
 ----
@@ -154,7 +156,16 @@ Terraform Resource Attribute Reference
 Terraform Input Variables
  - allow for programmatic declaration of variable 
    in a .tf file
- - uses the 'variable' keyword
+ - can pass in values of input variables using the '-var' param
+   when invoking terraform.exe
+ - values can also be given using a naming convention of an
+   environment variable 
+  - convention is 'TF_VAR_' + variable name
+ - can also assign the value of an input 
+ - variables may be eval'ed inside of string's within a .tf file 
+   using PowerShell'esque string interpolation 
+ - input variables use 'variable' keyword
+ - output variables use 'output' keyword
  
  variable "my-port-number" {
   description = "Basic example of a programmatic terraform variable"
@@ -162,6 +173,56 @@ Terraform Input Variables
   value = 8080
  }
  
+ variable "my_list" {
+  description = "A list example"
+  type = list(number)
+  default = [1,2,3]
+ }
+ 
+ variable "my_map" {
+  description = "A map (aka assoc. array, hashtable, dictionary) example"
+  type = map(string)
+  
+  default = {
+    key1 = "value1"
+    key2 = "value2"
+    key3 = "value3"
+  }
+ }
+
+ - here is a complex example where a type is being declared then 
+   given a default value
+ variable "my_object" {
+  description = "An example of an object"
+  type = object({
+   name = string
+   age = number
+   tags = list(string)
+   enabled = bool
+  })
+  
+  default = {
+   name = "value1"
+   age = 15
+   tags = ["a", "b", "c"]
+   enabled = true
+  }
+ }
+ 
+ - input variables can be referenced using special 'var' syntax within 
+   a .tf file
+ variable "my_other_variable" {
+   description = "yet another way"
+   type = number
+   value = var.my-port-number
+ } 
+ 
+ - this allows for something to be printed after invoking terraform.exe
+ output "something_out" {
+  value = aws_instance.example.public_ip
+  description = "Something useful here"  
+ }
+----
 
 
 ----
@@ -175,18 +236,86 @@ Running terraform
  - next is the command 'plan'
   - like a 'WhatIf' parameter in PowerShell
   - determines what terraform _will_ do
+  - handles the implicit dependencies so resources can be
+    declared in .tf files in any order
   - console output has three ascii chars to indicate
     expected future state
    - '+' means something will be created
    - '-' means something will be removed
    - '~' means something will be modified
    - '-/+' means something will be replaced
- terraform plan
+ terraform plan -var "my_magic_number=90"
  
  - 'apply' command will push what was planned to the 
    cloud provider
   - within the cloud providers console verify it worked
  terraform apply
----- 
  
+ - 'output' command can be used to query some value of 
+   a defined output variable
+ terraform output something_out
+----
+
+----
+Basic AWS EC2 instance example
+
+# port 8080 because any port less than 1024 requires root user privs.
+variable "my_server_port" {
+    description = "The port used in this example"
+    type = number
+    default = 8080
+}
+
+#define the aws instance of a full web server
+resource "aws_instance" "example" {
+    
+    #this is the Id for Ubuntu 18.04 Amazon Machine Image (AMI)
+    ami = "ami-0c55b159cbfafe1f0"
+    
+    #1 virtual CPU and 1 GB of memory
+    instance_type = "t2.micro"
+    
+    #need to attach a security policy (defined below) to this instance
+    vpc_security_group_ids = [aws_security_group.instance.id]
+    
+    #a Bash script to act as the web content and server
+    # uses terraform's string interpolation to assign the port
+    user_data = <<-EOF
+              #!/bin/bash
+              echo "Alive" > index.html
+              nohup busybox httpd -f -p ${var.my_server_port} &
+              EOF
+    
+    #this name will appear in my AWS Console's EC2's Instances list
+    tags = {
+        Name = "terraform-example"
+    }
+}
+
+#AWS does not allow in nor out traffic by default
+# a security setting is needed and then attached to port 8080
+resource "aws_security_group" "instance" {
+    name = "terraform-example-instance"
+    
+    #ingress for traffic coming in (as opposed to egress - traffic going out)
+    ingress {
+    
+        #using a variable reference to assign the port
+        from_port = var.my_server_port
+        to_port = var.my_server_port
+        protocol = "tcp"
+        
+        #on any IP
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+}
+
+#this will print the IP after invoking the 'apply' command
+output "public_ip" {
+
+    #NOTE: 'example' is the name _we_ gave the resource above
+    value = aws_instance.example.public_ip
+    description = "The public IP address of the web server"
+}
+----
  
