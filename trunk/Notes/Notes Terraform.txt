@@ -224,6 +224,26 @@ Terraform Input Variables
  }
 ----
 
+----
+Provider Data
+ - this is data defined by provider 
+ - examples include Virtual Private Cloud data, subnet data, Amazon 
+   Machine Image Ids, IP Address ranges, current user identity, etc.
+ - similar syntax to 'resource'
+ - body of rule typically defines the filtering used to find the data
+ 
+ data "aws_vpc" "default" {
+    default = true
+ }
+ 
+ data "aws_subnet_ids" "default" {
+    vpc_id = data.aws_vpc.default.id
+ }
+ 
+ data "aws_iam_user" "example" {
+    user_name = "noFuture.aws.app00"
+ }
+----
 
 ----
 Running terraform
@@ -257,7 +277,7 @@ Running terraform
 ----
 
 ----
-Basic AWS EC2 instance example
+Basic AWS Elastic Compute Cloud (EC2) instance example
 
 # port 8080 because any port less than 1024 requires root user privs.
 variable "my_server_port" {
@@ -276,6 +296,7 @@ resource "aws_instance" "example" {
     instance_type = "t2.micro"
     
     #need to attach a security policy (defined below) to this instance
+    # VPC stands for Virtual Private Cloud
     vpc_security_group_ids = [aws_security_group.instance.id]
     
     #a Bash script to act as the web content and server
@@ -305,8 +326,8 @@ resource "aws_security_group" "instance" {
         to_port = var.my_server_port
         protocol = "tcp"
         
-        #on any IP
-        cidr_blocks = ["0.0.0.0/0"]
+        #Classless Inter Domain Routing (CIDR) 
+        cidr_blocks = ["0.0.0.0/0"]#on any IP
     }
 }
 
@@ -318,4 +339,69 @@ output "public_ip" {
     description = "The public IP address of the web server"
 }
 ----
- 
+
+----
+Creating an AWS EC2 cluster 
+ - involves the idea of launch configuration
+ - and the idea of auto-scaling group (ASG)
+
+variable "my_server_port" {
+    description = "The port used in this example"
+    type = number
+    default = 8080
+}
+
+resource "aws_launch_configuration" "example" {
+    
+    #this was called 'ami' in the 'aws_instance' 
+    image_id = "ami-0c55b159cbfafe1f0"
+    
+    #this was called 'vpc_security_group_ids' in 'aws_instance' 
+    security_groups = [aws_security_group.instance.id]
+    
+    instance_type = "t2.micro"
+    user_data = <<-EOF
+              #!/bin/bash
+              echo "Alive" > index.html
+              nohup busybox httpd -f -p ${var.my_server_port} &
+              EOF
+    
+    #given immutable nature, first create new, then delete old
+    lifecycle {
+        create_before_destroy = true
+    }
+}
+
+#boilerplate code for subnet ids
+data "aws_vpc" "default" {
+   default = true
+}
+
+#more boilerplate code for subnet ids
+data "aws_subnet_ids" "default" {
+   vpc_id = data.aws_vpc.default.id
+}
+
+resource "aws_autoscaling_group" "example" {
+    #use an implicit reference (again, 'example' was what we named it)
+    launch_configuration = aws_launch_configuration.example.name
+    
+    #subnet ids, distributes the group across various availability zones
+    # so that if a data-center goes down the others are still up
+    vpc_zone_identifier = data.aws_subnet_ids.default.ids
+    
+    min_size = 2
+    max_size = 10
+    
+    tag {
+        key = "Name"
+        value = "terraform-asg-example"
+        propagate_at_launch
+    }
+}
+----
+
+----
+Elastic Load Balancer
+ - upon use of an auto-scaling-group (ASG), a load-balancer is needed
+ - 
