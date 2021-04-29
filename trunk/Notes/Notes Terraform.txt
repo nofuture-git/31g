@@ -274,6 +274,9 @@ Running terraform
  - 'output' command can be used to query some value of 
    a defined output variable
  terraform output something_out
+ 
+ - 'destroy' command will remove whatever apply created
+ terraform destroy
 ----
 
 ----
@@ -344,64 +347,197 @@ output "public_ip" {
 Creating an AWS EC2 cluster 
  - involves the idea of launch configuration
  - and the idea of auto-scaling group (ASG)
+ - an the idea of a load balancer
+  - Application Load Balancer: for HTTP, HTTPS traffic
+  - Network Load Balancer: for TCP, UDP and TLS traffic
+  - load balancers work as:
+    Request -> Listeners -> Listener Rules -> Target Groups
 
-variable "my_server_port" {
+provider "aws" {
+  region = "us-east-2"
+}
+
+#variable declaration
+variable "server_port" {
     description = "The port used in this example"
     type = number
     default = 8080
 }
-
+#the part that is copied and distributed to each 
+# item in the cluster
 resource "aws_launch_configuration" "example" {
-    
-    #this was called 'ami' in the 'aws_instance' 
-    image_id = "ami-0c55b159cbfafe1f0"
-    
-    #this was called 'vpc_security_group_ids' in 'aws_instance' 
-    security_groups = [aws_security_group.instance.id]
-    
-    instance_type = "t2.micro"
-    user_data = <<-EOF
+
+  #this was called 'ami' in the 'aws_instance'   
+  image_id        = "ami-0c55b159cbfafe1f0"
+  instance_type   = "t2.micro"
+
+  #this was called 'vpc_security_group_ids' in 'aws_instance' 
+  security_groups = [aws_security_group.instance.id]
+
+  user_data = <<-EOF
               #!/bin/bash
-              echo "Alive" > index.html
-              nohup busybox httpd -f -p ${var.my_server_port} &
+              echo "Hello, World" > index.html
+              nohup busybox httpd -f -p ${var.server_port} &
               EOF
-    
-    #given immutable nature, first create new, then delete old
-    lifecycle {
-        create_before_destroy = true
-    }
+
+  #given immutable nature, first create new, then delete old
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+#define the actual group with its upper and lower limits
+resource "aws_autoscaling_group" "example" {
+
+  #use an implicit reference (again, 'example' was what we named it)
+  launch_configuration = aws_launch_configuration.example.name
+
+  #subnet ids, distributes the group across various availability zones
+  # so that if a data-center goes down the others are still up
+  vpc_zone_identifier  = data.aws_subnet_ids.default.ids
+
+  #the load balancer's target group
+  target_group_arns = [aws_lb_target_group.asg.arn]
+
+  #this overrides the default health check of "EC2"
+  # "ELB" is better since it uses the target group's health check
+  health_check_type = "ELB"
+
+  min_size = 2
+  max_size = 10
+
+  tag {
+    key                 = "Name"
+    value               = "terraform-asg-example"
+    propagate_at_launch = true
+  }
+}
+
+#the security group for the launch configuration
+resource "aws_security_group" "instance" {
+  name = "my-security-group-A"
+
+  ingress {
+    from_port   = var.server_port
+    to_port     = var.server_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 #boilerplate code for subnet ids
 data "aws_vpc" "default" {
-   default = true
+  default = true
 }
 
 #more boilerplate code for subnet ids
 data "aws_subnet_ids" "default" {
-   vpc_id = data.aws_vpc.default.id
+  vpc_id = data.aws_vpc.default.id
 }
 
-resource "aws_autoscaling_group" "example" {
-    #use an implicit reference (again, 'example' was what we named it)
-    launch_configuration = aws_launch_configuration.example.name
-    
-    #subnet ids, distributes the group across various availability zones
-    # so that if a data-center goes down the others are still up
-    vpc_zone_identifier = data.aws_subnet_ids.default.ids
-    
-    min_size = 2
-    max_size = 10
-    
-    tag {
-        key = "Name"
-        value = "terraform-asg-example"
-        propagate_at_launch
+#define the load balancer itself
+resource "aws_lb" "example" {
+
+  name               = "my-lb"
+
+  load_balancer_type = "application"
+
+  #continuation of AWS EC2 cluster examples above
+  subnets            = data.aws_subnet_ids.default.ids
+
+  #defined below, required to allow traffic
+  security_groups    = [aws_security_group.alb.id]
+}
+
+#define the listener for the load balancer
+resource "aws_lb_listener" "http" {
+
+  #this implicit reference to the resource defined above
+  load_balancer_arn = aws_lb.example.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  #by default return 404
+  default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "404: page not found"
+      status_code  = 404
     }
+  }
 }
-----
+
+#define the target group for the load balancer
+resource "aws_lb_target_group" "asg" {
+
+  name = "my-lb-target-group"
+
+  port     = var.server_port
+  protocol = "HTTP"
+  vpc_id   = data.aws_vpc.default.id
+
+  #used to check each member of the ASG
+  health_check {
+    path                = "/"
+    protocol            = "HTTP"
+    matcher             = "200"
+    interval            = 15
+    timeout             = 3
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
+}
+
+#define the listener rule for the load balancer
+resource "aws_lb_listener_rule" "asg" {
+
+  #"http" is the name given to our aws_lb_listener above
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 100
+
+  condition {
+    path_pattern {
+      values = ["*"]
+    }
+  }
+
+  action {
+    type             = "forward"
+    #another implicit reference 
+    target_group_arn = aws_lb_target_group.asg.arn
+  }
+}
+
+#security for the load balancer itself, previous security group was for
+#each item in the cluster
+resource "aws_security_group" "alb" {
+
+  name = "my-security-group-B"
+
+  # Allow inbound HTTP requests
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow all outbound requests
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+#need to print the output DNS name
+output "alb_dns_name" {
+   value = aws_lb.example.dns_name
+   description = "The domain name of the load balancer"
+}
+
 
 ----
-Elastic Load Balancer
- - upon use of an auto-scaling-group (ASG), a load-balancer is needed
- - 
