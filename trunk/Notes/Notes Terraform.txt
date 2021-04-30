@@ -13,7 +13,6 @@ code examples: https://github.com/brikis98/terraform-up-and-running-code
 
 ----
 Terraform basics
- - is a single executable binary
  - is written in Go
  - performs API calls to a known cloud provider (AWS, Azure, 
    Google Cloud, DigitalOcean, OpenStack and more)
@@ -248,9 +247,10 @@ Provider Data
 ----
 Running terraform
  - working directory contains a main.tf file
- - one-time run to download dependencies on given provider 
+ - run to download dependencies on given provider 
   - as defined in the main.tf 'provider'
   - will also create various other files and folder in working dir
+  - is idempotent so can run whenever
  terraform init
  
  - next is the command 'plan'
@@ -538,6 +538,118 @@ output "alb_dns_name" {
    value = aws_lb.example.dns_name
    description = "The domain name of the load balancer"
 }
+----
 
+----
+Terraform State management
+ - each run of Terraform records its state in a file 
+   named 'terraform.tfstate'
+ - this state file is known as 'backend'
+ - .tfstate file is JSON
+ - output of the 'plan' command is the diff of .tf files
+   and actual state on cloud provider
+ - two kinds of backend
+  - Local Backend
+   - the default of saving .tfstate file to working directory
+   - doesn't work for a team-setting
+  - Remote Backend
+   - these are within the cloud providers
+   - examples include: Azure Storage, Google Cloud Storage, 
+     Amazon Simple Storage Service (S3), etc.
+----
 
+----
+Setting up Remote Backend with Amazon S3
+ - this should be performed in clean directory 
+   with no prior .tfstate files
+ - a call to 'terraform init' is required to download
+   the dependencies
+
+#specify the provider 
+provider "aws" {
+  region = "us-east-2"
+}
+
+#specify the remote storage place
+resource "aws_s3_bucket" "terraform_state" {
+  
+  #this is globally unique name for _all_ AWS
+  bucket = "nofuture-aws-s3-terraform-bucket"
+  
+  #this is a kind-of lock, invoking 'terraform destroy' 
+  # will error out
+  lifecycle {
+    prevent_destroy = true
+  }
+  
+  #this needs to be enabled so that the remote backend 
+  # .tfstate files are versioned
+  versioning {
+    enabled = true
+  }
+  
+  #enable server-side encryption 
+  # this means the file is encrypted on the remote drive
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+}
+
+#specify the manner of remote storage file locking
+resource "aws_dynamodb_table" "terraform_locks" {
+  name = "nofuture-aws-dynamodb-terraform-locks"
+  billing_mode = "PAY_PER_REQUEST"
+  
+  #this hash key value must match this (case-sensitive)
+  hash_key = "LockID"
+  
+  #every 'hash_key' must also be defined as an attribute
+  #type is 'S' for string, 'N' for number and 'B' for binary
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+}
+----
+
+----
+Configure Terraform to Store State in S3 Bucket
+ - this must be run after the previous 
+   section (i.e. 'Setting up Remote Backend with Amazon S3')
+   has already been applied
+ - previous step was to create resources needed for 
+   Remote Backend 
+ - this step is configuring terraform to use the Remote Backend
+
+#specify the provider 
+provider "aws" {
+  region = "us-east-2"
+}  
+
+#need to config terraform to use Remote Backend 
+# NOTE: no variables can be used here
+terraform {
+  backend "s3" {
+    
+    #implicit reference to the S3 bucket defined above
+    bucket = "nofuture-aws-s3-terraform-bucket"
+    
+    #file path within the S3 bucket
+    key = "global/s3/terraform.tfstate"
+  
+    #also needs to match the S3 bucket defined above
+    region = "us-east-2"
+    
+    #implicit reference to the dynamodb table defined above
+    dynamodb_table = "nofuture-aws-dynamodb-terraform-locks"
+    
+    #this is a second layer of encryption, .tfstate file 
+    # is encrypted, in addition to the S3 bucket being encrypted
+    encrypt = true
+  }
+}
 ----
