@@ -245,6 +245,51 @@ Provider Data
 ----
 
 ----
+Terraform Builtin Functions
+ - reference at https://www.terraform.io/docs/language/functions/index.html
+ - variety of buildin functions within terraform
+ - there are numeric, string, collection, encoding, file, date-time,
+   crypto, network and conversion functions
+----
+
+----
+Declaring a Terraform File as Data
+ - example of a bash or PowerShell script file 
+
+ data "template_file" "user_data" {
+   template = file("my-script.sh")
+   
+   #declaring these here allows for string 
+   # interpolation _inside_ the script file
+   vars = {
+   
+     #using a combo of implicit and input variables
+     server_port = var.server_port
+     
+     #these assume some data resource with 
+     # outputs saved to terraform.tfstate
+     db_address = data.terraform_remote_state.db.outputs.address
+     db_port = data.terraform_remote_state.db.outputs.port
+   }
+ }
+ 
+ - now within the content of 'my-script.sh', terraform 
+   will perform string interpolation
+  - not clear how this would work with PowerShell since
+    it uses the same form of interpolation
+ 
+ #!/bin/bash
+ 
+ cat > index.html <<EOF
+ <h1>Alive</h1>
+ <p>DB address: ${db_address}</p>
+ <p>DB port: ${db_port}</p>
+ EOF
+ 
+ nohup busybox httpd -f -p ${server_port} &
+----
+
+----
 Running terraform
  - working directory contains a main.tf file
  - run to download dependencies on given provider 
