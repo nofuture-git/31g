@@ -224,6 +224,65 @@ Terraform Input Variables
 ----
 
 ----
+Terraform Local Variables
+ - likewise variable declaration within a .tf file
+ - the scope is limited to the module (i.e. the directory)
+ - they can be referenced similar to input variables 
+ - they are more concise and don't require a type
+
+ #declaration and assignment of local variables
+ locals {
+   any_port = 0
+   any_protocol = "-1"
+   all_ips = ["0.0.0.0/0"]
+ }
+ 
+ resource "aws_security_group_rule" "allow_http_inbound" {
+    type = "ingress"
+    security_group_id = aws_security_group.alb.id
+    
+    #local variables referenced using keyword 'local'
+    from_port = local.any_port
+    to_port = local.any_port
+    protocol = local.any_protocol
+    cidr_blocks = local.all_ips
+ }
+----
+
+----
+Terraform Output Variables
+ - allows for variables resolved within terraform's apply, 
+   init, etc to be made as output
+ - output variables receive a value through a terraform expression
+ - an output variable can be queried 
+   using 'terraform output my_output_variable'
+ - module output variables can be resolved, within a .tf file,
+   using 'module.my_module_dir_name.my_module_output_variable'
+  - starts with keyword 'module' followed by the name of the module
+    and then the name of the output variable
+ 
+ #an output variable declaration
+ output "my_output_variable" {
+ 
+   #assigning the output variable a value with an expression
+   value = aws_instance.example.public_ip
+   description = "The public IP address of the the web server"
+ }
+ 
+ #outputs can also be declared on the module
+ output "my_module_output_variable" {
+   value = aws_autoscaling_group.example.name
+   description = "Some name here"
+ }
+ 
+ #output values can be by-ref 
+ output "my_enviro_output_variable" {
+   value = module.my_module_dir_name.my_module_output_variable
+   description = "Same as the last one"
+ }
+----
+
+----
 Provider Data
  - this is data defined by provider 
  - examples include Virtual Private Cloud data, subnet data, Amazon 
@@ -288,6 +347,50 @@ Declaring a Terraform File as Data
  
  nohup busybox httpd -f -p ${server_port} &
 ----
+
+----
+Terraform Path Variable
+ - are a kind of global variable relating to the path
+ - common uses:
+  - path.module: the path of the module in which this expression 
+                 appears
+  - path.root:   the path to the root module
+  - path.cwd:    the path to the current working directory
+  
+ - use looks like: 
+  template = file("${path.module}/something.ps1")
+----
+
+----
+Terraform Modules
+ - for reusable units of .tf code
+ - the general unit is a whole directory with .tf files therein
+ - the name of the directory must match the name appearing after
+   'module' 
+  - it appears, that '-' is, in the dir name, replaced with '_' 
+    in the resource name
+ 
+ provider "aws" {
+   region = "us-east-2"
+ }
+ 
+ #this would be a directory named 'webserver-cluster'
+ module "webserver_cluster" {
+ 
+   #again, directory name matches module name
+   source = "../modules/webserver-cluster"
+   
+   #'cluster_name' would be a in the 'variables.tf' 
+   #  of the 'webserver-cluster' directory, but it
+   #  would not be assigned any value with 'default'
+   #'cluster_name' would also be in the 'variables.tf'
+   #  of _this_ working directory and here it _would_
+   #  have a 'default' value
+   cluster_name = var.cluster_name
+ }
+----
+ 
+
 
 ----
 Running terraform
