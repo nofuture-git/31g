@@ -125,7 +125,7 @@ Terraform Resource Syntax
  
  - 'resource' is a keyword
  - "aws_instance" is a naming convention of provider_type
- - "myExample" is the name is something I assign
+ - "myExample" is an identifier of this instance of this resource
  - what is within the body is specific config key-value pairs
    for that provider_type
 ----
@@ -378,6 +378,7 @@ Terraform Modules
  module "webserver_cluster" {
  
    #again, directory name matches module name
+   #could be an URL 'github.com/myRepo/modules/webserver-cluster'
    source = "../modules/webserver-cluster"
    
    #'cluster_name' would be a in the 'variables.tf' 
@@ -389,8 +390,104 @@ Terraform Modules
    cluster_name = var.cluster_name
  }
 ----
- 
 
+----
+Terraform 'count' Language Construct
+ - a meta-parameter present on every resource declaration
+  - does not work _within_ an inline block
+ - indicates the number of copies to make of a resource
+ - using 'count' in a resource declaration still results
+   in _one_ resource, that _one_ resource is an array 
+ - an array resource must be accessed by ordinal
+  
+ resource "aws_iam_user" "example" {
+ 
+   #specify three copies
+   count = 3
+   
+   #use string interpolation in the naming convention
+   name = "iam_user_${count.index}"
+ }
+ 
+ - 'count' can also be used to access array's by ordinal
+ 
+ #would define the names-array 
+ variable "iam_user_names" {
+   description = "The names of IAM users"
+   type = list(string)
+   default = ["abraham", "issac", "jacob"]
+ }
+ 
+ resource "aws_iam_user" "another_example" {
+   
+   #the reference the variable 
+   count = length(var.iam_user_names)
+   
+   #here the iteration is tied back to the length
+   # of the variable
+   name = var.iam_user_names[count.index]
+ }
+ 
+ - to access an array-of-resources, ordinal is the 
+   only workable identifier
+ output "user_0_arn" {
+ 
+  #to access a specific item in the array
+  #  can use '[*]' to apply to all items in the array
+  value = aws_iam_user.another_example[0].arn
+  description = "The ARN of the first IAM user"
+ }
+----
+
+----
+Terraform Resources 'for_each' Language Construct 
+ - creates new resources not an array of resources
+ - allows for iteration over lists, sets, or hashtables
+ - can make multiple copies of an entire resource
+ 
+ variable "my_names" {
+   description = "My Names"
+   type = list(string)
+   default = ["Caesar", "Pompey", "Crassus"]
+ }
+ 
+ resource "aws_iam_user" "my_imperators" {
+   
+   #reference the variable boxed in a function
+   for_each = toset(var.my_names)
+   
+   #access the iteration value 
+   name = each.value
+ }
+ 
+ #to access resources created in the for_each
+ output "all_arns" {
+ 
+   #box the reference in another builtin 'values' function
+   value = values(aws_iam_user.my_imperators)[*].arn
+ }
+----
+
+----
+Terraform Inline 'for' Expression
+ - an inline loop expression
+ 
+ variable "my_names" {
+   description = "My Names"
+   type = map(string)
+   default = {
+    Pompey = "the good"
+    Caesar = "the bad"
+    Crassus = "the ugly"
+   }
+ }
+ 
+ output "my_names" {
+ 
+   #where 'k,v' is ref to the current iteration as a tuple
+   value = [for k,v in var.my_names : upper(k)]  
+ }
+----
 
 ----
 Running terraform
