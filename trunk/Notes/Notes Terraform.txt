@@ -413,7 +413,7 @@ Terraform 'count' Language Construct
  
  #would define the names-array 
  variable "iam_user_names" {
-   description = "The names of IAM users"
+   description = "The names of Identity and Access Management (IAM) users"
    type = list(string)
    default = ["abraham", "issac", "jacob"]
  }
@@ -486,6 +486,28 @@ Terraform Inline 'for' Expression
  
    #where 'k,v' is ref to the current iteration as a tuple
    value = [for k,v in var.my_names : upper(k)]  
+ }
+----
+
+----
+Terraform Conditional with 'count'
+ - when meta-parameter 'count' is '0' 
+   (zero), no resource gets made 
+ - add this to tertiary inline op to get
+   conditional creation of resouces
+   
+ #define some input variable to toggle
+ variable "enable_my_feature" {
+   description = "Used to enable some feature"
+   type = bool
+ }
+
+ resource "aws_autoscaling_schedule" "scale_off_hours" {
+ 
+   #when bool is false, count is 0 so nothing is created
+   count = var.enable_my_feature ? 1 : 0
+   
+   #rest of resource config here
  }
 ----
 
