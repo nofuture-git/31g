@@ -12,6 +12,10 @@ code examples: https://github.com/brikis98/terraform-up-and-running-code
 ----
 
 ----
+https://aws.amazon.com/getting-started/fundamentals-core-concepts/?e=gs2020&p=gsrc
+----
+
+----
 Terraform basics
  - is written in Go
  - performs API calls to a known cloud provider (AWS, Azure, 
@@ -306,7 +310,7 @@ Provider Data
 ----
 Terraform Builtin Functions
  - reference at https://www.terraform.io/docs/language/functions/index.html
- - variety of buildin functions within terraform
+ - variety of builtin functions within terraform
  - there are numeric, string, collection, encoding, file, date-time,
    crypto, network and conversion functions
 ----
@@ -346,6 +350,49 @@ Declaring a Terraform File as Data
  EOF
  
  nohup busybox httpd -f -p ${server_port} &
+----
+
+----
+Terraform AWS Policy Actions
+ - uses builtin terraform function 'jsonencode' which 
+    transforms HCL into JSON
+  - allows for less double-quotes and required commas 
+ - AWS Policy Actions
+  - uses a kind of fully qualified namespace property 
+    to scope in on an action (e.g. iam, s3, ec2)
+  - each AWS resource has its own set of applicable actions
+  - the Actions follow a naming convention 
+    of Verb-Noun (e.g. DeleteRole)
+  - '*' can then be used as a wild-card op to include
+    all verbs (e.g. Delete*) or all nouns (e.g. *Role*)
+ 
+ #define a user for the load balancer
+ resource "aws_iam_user" "lb" {
+   name = "loadbalancer"
+   path = "/system/"
+ }
+ 
+ #define the IAM policy
+ resource "aws_iam_user_policy" "lb_ro" {
+   name = "example"
+   user = aws_iam_user.lb.name
+   
+   #'ec2:Describe*' means this policy allows 
+   # within the Elastic Compute Cloud, Allow all 
+   # actions, starting with the verb, "Describe"
+   policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+         "ec2:Describe*"
+        ]
+        Effect = "Allow"
+        Resource = "*"
+      },
+    ]
+   })
+ }
 ----
 
 ----
