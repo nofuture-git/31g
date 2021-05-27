@@ -16,6 +16,14 @@ https://aws.amazon.com/getting-started/fundamentals-core-concepts/?e=gs2020&p=gs
 ----
 
 ----
+Infrastructure as Code, 2nd Edition
+by Kief Morris
+Publisher: O'Reilly Media, Inc.
+Release Date: December 2020
+ISBN: 9781098114671
+----
+
+----
 Terraform basics
  - is written in Go
  - performs API calls to a known cloud provider (AWS, Azure, 
@@ -52,6 +60,34 @@ Infrastructure as Code (IAC)
   - version control: infrastructure changes are under source control
     with logs, commit comments, user names, etc.
   - validation: IAC can be code reviewed
+----
+
+----
+Principle Layers of Cloud Computing
+ - first layer is the Infrastructure Platform:
+ - second layer is Application Runtime Platform:
+  - servers
+  - container clusters
+  - database clusters
+ - third, top, layer is Applications Platform:
+  - application packages
+  - container instances
+  - serverless code
+----
+
+----
+Infrastructure as a Service
+ - abbreviated as IaaS
+ - at a minimum, it provides three principle services:
+  - compute
+  - storage
+  - networking
+ - often called Cloud Providers (e.g. AWS, Azure, etc.)
+ - Platform as a Service (PaaS) is IaaS plus the 
+   deployment pipelines, code-repo, automated tests, 
+   project mgmt tools (e.g. KANBAN board), etc.
+ - Function as a Service (FaaS) is serverless functions
+ - Database as a Service (DBaaS) is for database's
 ----
  
 ----
@@ -541,7 +577,7 @@ Terraform Conditional with 'count'
  - when meta-parameter 'count' is '0' 
    (zero), no resource gets made 
  - add this to tertiary inline op to get
-   conditional creation of resouces
+   conditional creation of resources
    
  #define some input variable to toggle
  variable "enable_my_feature" {

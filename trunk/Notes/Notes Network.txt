@@ -1,3 +1,4 @@
+----
 Network Warrior, 1st Edition 
 by Gary A. Donahue 
 Publisher: O'Reilly 
@@ -5,11 +6,83 @@ Pub Date: June 21, 2007
 Print ISBN-10: 0-596-10151-1 
 Print ISBN-13: 978-0-596-10151-0 
 Pages: 598 
+----
+
+----
+TCP/IP Network Administration, 3rd Edition
+by Craig Hunt
+Publisher: O'Reilly Media, Inc.
+Release Date: April 2002
+ISBN: 9780596002978
+----
 
 ----
 Basics
  - computer network is two or more computers that may share information
  - involves addressing - not just a flash drive in the usb
+----
+
+----
+Internet Protocol Suite
+ - the layers between Network Access Layer and Application Layer
+ - TCP: Transmission Control Protocol 
+ - IP: Internet Protocol
+ - UDP: User Datagram Protocol
+ - ARP: Address REsolution Protocol
+  - resolves a MAC Address to an IP Address
+  - is part of the Network Access Layer
+ - NIC: Network Interface Controller
+ - MAC Address: Media Access Control Address
+  - unique id assigned to a NIC
+ - Gateways: where a datagram is sent when 
+    the destination address is external
+ - NAT: Network Address Translation
+  - used to map an internal IP to an generic external one
+  - requires the re-writing device (e.g. router, gateway, etc.)
+    to keep track of its rewrites to handle responses
+ - Socket: combination of IP address and port number
+---- 
+
+----
+Internet Protocol Suite Units
+                     |  TCP      | UDP     |  
+---------------------+-----------+---------+
+Application Layer    | stream    | message |
+---------------------+-----------+---------+
+Transport Layer      | segment   | packet  |
+---------------------+-----------+---------+
+Internet Layer       | datagram  | datagram|
+---------------------+-----------+---------+
+Network Access Layer | frame     | frame   |
+---------------------+-----------+---------+
+ - the datagram contains the source and destination address
+ - datagram also contains a protocol number to 
+   determine TCP, UDP or otherwise
+ - the segment/packet contains the port number
+----
+
+----
+SubNet Mask
+ - Subnet mask is series of consecutive 1's followed by 0's
+ 11111111.11111111.11111111.00000000 (ie 255.255.255.0)
+ - used via bitwise AND operator to reveal what portion of IP is Host Address
+ 10100000.11010011.10110000.00010000 --IP
+ 11111111.11111111.11111111.00000000 --Subnet Mask
+ 10100000.11010011.10110000.00000000 --Network Portion
+ 00000000.00000000.00000000.00010000 --Host Portion
+----
+
+----
+Classless Inter-Domain Routing (CIDR)
+ - a short hand way to write both host and subnet mask
+ - is in format of address/prefix-length
+ - example:
+ 172.31.26.32/27
+  - means IP 172.31.26.32, subnet mask 255.255.255.224
+ 10101100.00011111.00011010.00100000
+ 11111111.11111111.11111111.11100000
+ |____________________________|
+          27 bits long
 ----
 
 ----
@@ -89,19 +162,6 @@ Spanning Tree
  - MAC address is a unique id assigned by the manufacturer
  - tree constructed of bridges forming into a 'tree' based on bridge priority
  - not a routing protocol, used to eliminate loops in data passing
-----
-
-----
-SubNet Mask
- - Subnet mask is series of consecutive 1's followed by 0's
- 11111111.11111111.11111111.00000000 (ie 255.255.255.0)
- - used via bitwise AND operator to reveal what portion of IP is Host Address
- 10100000.11010011.10110000.00010000 --IP
- 11111111.11111111.11111111.00000000 --Subnet Mask
- 10100000.11010011.10110000.00000000 --Network Portion
- 00000000.00000000.00000000.00010000 --Host Portion
- 
- - convention of 10.0.0.0/8 means subnet mask is 255.0.0.0 
 ----
 
 ----
