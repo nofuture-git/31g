@@ -28,10 +28,11 @@ Internet Protocol Suite
  - TCP: Transmission Control Protocol 
  - IP: Internet Protocol
  - UDP: User Datagram Protocol
- - ARP: Address REsolution Protocol
-  - resolves a MAC Address to an IP Address
+ - ARP: Address Resolution Protocol
+  - resolves a MAC Address to an IP Address & vice versa
   - is part of the Network Access Layer
  - NIC: Network Interface Controller
+  - the physical link of a machine to a network
  - MAC Address: Media Access Control Address
   - unique id assigned to a NIC
  - Gateways: where a datagram is sent when 
@@ -41,6 +42,8 @@ Internet Protocol Suite
   - requires the re-writing device (e.g. router, gateway, etc.)
     to keep track of its rewrites to handle responses
  - Socket: combination of IP address and port number
+ - DNS: Domain Name System 
+  - a distributed database of names to IPs
 ---- 
 
 ----
@@ -76,6 +79,7 @@ SubNet Mask
 Classless Inter-Domain Routing (CIDR)
  - a short hand way to write both host and subnet mask
  - is in format of address/prefix-length
+ - is pronounced 'cider'
  - example:
  172.31.26.32/27
   - means IP 172.31.26.32, subnet mask 255.255.255.224
@@ -84,6 +88,19 @@ Classless Inter-Domain Routing (CIDR)
  |____________________________|
           27 bits long
 ----
+
+----
+Domain Name System
+ - a DNS server is public and translates IP's to names & vice versa
+ - when a DNS server does not have a name-to-IP on file it forwards
+   the request to an Authoritative Server 
+ - Authoritative Server is responsible for maintaining accurate info
+ - DNS communication is UDP on port 53
+ - Berkeley Internet Name Domain (BIND)
+  - divided between resolvers and name servers
+  - resolvers: software that forms a DNS query
+  - name servers: process that responds the resolver's query
+----  
 
 ----
 HUB
