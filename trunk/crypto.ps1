@@ -54,8 +54,21 @@ function Get-Md5CheckSum
     }
 }
 
-Set-Alias md5sum Get-Md5CheckSum
+ function Get-Sha1Hash($clearText){
+    $sha1 = [System.Security.Cryptography.SHA1]::Create()
+    $hash = ""
+    $byteText = [System.Text.Encoding]::UTF8.GetBytes($clearText)
+    $buffer = $sha1.ComputeHash($byteText)
+    
+    foreach($b in $buffer){
+        $hash += $b.ToString("x2")
+    }
+    
+    return $hash
+ }
 
+Set-Alias md5sum Get-Md5CheckSum
+Set-Alias shasum Get-Sha1Hash
 <#
     .SYNOPSIS
     Encrypts the given file

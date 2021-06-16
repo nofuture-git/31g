@@ -1,0 +1,62 @@
+----
+Notes Git
+Complete Git Guide: Understand and Master Git and GitHub
+Bogdan Stashchuk
+Released February 2020
+21h21m
+----
+
+----
+Basics
+ - is a distributed source control system
+ - control of changes is through hidden .git folder 
+ - 'config' file in hidden .git folder is INI file
+ - is its own file system
+----
+
+----
+Git Object Types
+ - allows for tracking all forms of change to 
+   any file therein
+ 
+ - Blob
+  - actual files
+  - text and binary files
+  
+ - Tree
+  - the directories (aka folders)
+  
+ - Commit
+  - tracking of changes 
+  
+ - Annotated Tag
+  - persistent pointer to a specific commit
+----
+
+----
+Git Object binary format
+ - git will store the kind of object and the size 
+   of the object at the front of the binary 
+ - file content of "Hello, Git" will be hashed
+   as "blob 11`0Hello, Git"
+----
+
+----
+Common Git Commands
+ - init a new repo
+ git init
+  
+ - calc a git file hash
+ git hash-object .\my-file.txt
+  
+ - reflect on kind of object
+  - '-t' for the type of object
+  - '-p' for content of object
+  - '-s' for size of object
+ git cat-file -t 6fe402b35d6e80a187adc393f36ce10e4fdd259f
+----
+ 
+  
+ 
+ 
+ 
