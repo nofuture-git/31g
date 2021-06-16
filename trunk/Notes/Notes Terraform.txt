@@ -151,6 +151,22 @@ Provisioning Tools
 ----
 
 ----
+Common IaC Stacks
+ - "stack" meaning everything needed to delivery the solution 
+ 
+ - Stack Configuration Files
+  - the variables are kept in independent files
+  - one variable file per environment
+  
+ - Wrapper Stack
+  - each environment is its own project 
+  - shared code is imported as modules
+  
+ - Pipeline Stack Parameters
+  - the variables are assigned within the pipeline
+----
+
+----
 Terraform Resource Syntax
  - a first-class, kind-of, type is a 'resource'
  - looks similar to a CSS Rule
@@ -175,7 +191,7 @@ Terraform Resource Syntax
 Terraform Resource Attribute Reference
  - a string interpolation schema
  - a reference to some value defined elsewhere
- - uses a snake-plus-dot notation
+ - uses a snake-and-dot notation
   - <PROVIDER_<TYPE> are same as always
   - <NAME> is the name of the resource 
   - <ATTRIBUTE> is some key-value in the body of 
