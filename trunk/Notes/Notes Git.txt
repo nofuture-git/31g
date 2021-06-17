@@ -18,6 +18,7 @@ Basics
 Git Object Types
  - allows for tracking all forms of change to 
    any file therein
+ - all objects are defined as a SHA1 hash
  
  - Blob
   - actual files
@@ -35,25 +36,150 @@ Git Object Types
 
 ----
 Git Object binary format
+ - actual content is compressed and not readable in text editor
  - git will store the kind of object and the size 
    of the object at the front of the binary 
- - file content of "Hello, Git" will be hashed
+ - blob content of "Hello, Git" will be hashed
    as "blob 11`0Hello, Git"
+ - tree headers are the same only named 'tree'
+ - tree content, per line, is: 
+   - the permissions, object-type, sha1 hash, folder\file name
+ - blob file names are not in the blob itself, only in the tree 
+ - commit objects are likewise prefixed (type, length, `0, content)
+ - commit objects content is:
+  - tree-pointer, author-name, author-email, description, parent-commit, 
+  - parent is optional 
+  - commit objects wraps a tree object 
+  
 ----
 
 ----
-Common Git Commands
+Git Areas
+ - git divides three distinct "areas"
+ - Git Repo
+  - this is where all the objects (e.g. blobs, trees, etc.)
+    are stored as SHA1 hash
+ - Staging Area 
+  - also known as Index
+ - Working Directory
+----
+
+----
+Git File Status
+ - each file in working directory will have one
+   of four status
+  - Untracked
+  - Unmodified
+  - Modified
+  - Staged
+ - tracked files will be one of the latter three
+ - Untracked & Modified files can only exist 
+   in the Working Directory
+ - Staged files will only exist in Staging Area
+ - Git Repo objects (i.e. files) are always Unmodified
+----
+
+----
+Git Branches
+ - root branch is called 'master'
+ - branches are text reference to a specific Git Commit object
+ - branch names cannot contain spaces 
+  - replace with '-' (dashes)
+ - the text reference link between a branch-name and
+   a Git Commit object is within .git/refs/heads
+  - the name of the branch is the file-name
+  - the Git Commit it points to is the single line SHA1
+    hash within the file
+----
+
+----
+Git HEAD
+ - can be only one locally
+ - determines which branch is currently in context
+   in the Working Directory
+ - the link between HEAD and branch is the path
+   present on the .git/HEAD file
+ - the HEAD determines the perspective of time 
+  - moving HEAD to a past commit will cause
+    any subsequent commits (those coming after 
+    the past commit HEAD is currently on) as 
+    unseen
+----
+
+----
+Git Commands
  - init a new repo
  git init
-  
+ 
+ - state of Git Repo
+ git status
+ 
+ - history of commits
+ git log
+ 
+ - is used for both adding Unmodified and Modified 
+    files to Staging Area
+ git add myNewFile.txt
+ 
+ - when a file is deleted from Working Directory 
+    and the 'deleted' status is to be moved
+    to the Staging Area
+ git add .
+ 
+ - change a file in Staging Area back to Untracked
+ git rm --cached myNewFile.txt 
+ 
+ - writes changes from Staging Area to Git Repo
+ git commit -m "Here is my commit description"
+ 
+ - copies from Git Repo to Working Directory
+  - 'master' would be replaced by branch name
+ git checkout master
+ 
+ - to move to a previous commit of a branch
+  - 'detached HEAD' state will result
+  - the branch in .git/refs/heads will remain unchanged
+  - .git/HEAD file will now point to this '0d592...' commit
+ git checkout 0d592
+ 
  - calc a git file hash
  git hash-object .\my-file.txt
-  
+ 
  - reflect on kind of object
   - '-t' for the type of object
   - '-p' for content of object
   - '-s' for size of object
+  - only first four characters of SHA1 hash are required
  git cat-file -t 6fe402b35d6e80a187adc393f36ce10e4fdd259f
+
+ - list all the files in the Staging Area (aka Index)
+  - the '-s' parameter prints tree 
+    content (i.e. perms, type, hash, etc.)
+ git ls-files -s
+  
+ - move objects (e.g. files, folders) from Git 
+   Repo to Staging Area
+ git read-tree 045e
+ 
+ - move objects from Staging Area to Working Directory
+  - the '-a' parameter is for "all files"
+ git checkout-index -a
+ 
+ - set the git project's user-name and email
+ git config user.name MY_NAME_HERE
+ git config user.email MY_EMAIL_HERE
+ 
+ - list branches
+ git branch
+ 
+ - create branch 
+ git branch MY_BRANCH_NAME_HERE
+ 
+ - rename a branch
+ git branch -m OLD_NAME NEW_NAME
+ 
+ - both create new branch and switch over to it
+ git checkout -b NEW_BRANCH_NAME
 ----
  
   
