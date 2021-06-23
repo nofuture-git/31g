@@ -43,13 +43,13 @@ Windows CLI Reference
   ftype MyApp.MoreName=C:\Somewhere\MyApp.exe %1 %*
  
  cipher [{/e|/d}] [/s:dir] [/a] [/i] [/f] [/q] [/h] [/k] [/u[/n]] [PathName [...]] | [/r:PathNameWithoutExtension] | [/w:PathName]
-  - encrypts folder, they still appear visable to the user who invoked them but not anyone else (pretty cool).
+  - encrypts folder, they still appear visible to the user who invoked them but not anyone else (pretty cool).
    - the /s:yourDirectory will encrypt the whole directory, 
    - the /w:yourDirectory does something scary
    - the 'PathName' can be a specific file or wild-card pattern
    
  comp file0, file1
-  - byte-for-byte file comparision
+  - byte-for-byte file comparison
   
  compact (/c | /u) FileName
   - /c for compress, /u for uncompress
@@ -129,6 +129,13 @@ Windows CLI Reference
   
  type C:\Projects\MyFile.xml
   - like PowerShell's Get-Content and bash cat
+  
+ icacls "C:\Projects\MyPath.txt" /grant 'SOME_DOMAIN\my_user_name:F'
+  - the last arg is a Windows AD account 
+  - the ':F' if for 'full-control'
+  - others are 'W' for write
+  - 'X' for execute
+  - and 'R' for read
 ----
 
 ----

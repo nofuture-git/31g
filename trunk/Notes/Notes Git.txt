@@ -66,8 +66,7 @@ Git Areas
 
 ----
 Git File Status
- - each file in working directory will have one
-   of four status
+ - each file will have one of four status
   - Untracked
   - Unmodified
   - Modified
@@ -107,9 +106,34 @@ Git HEAD
 ----
 
 ----
+Git Merge
+ - Fast-forward Merge
+  - simple linear 
+  - changes on feature can simply be concat'ed to master 
+    with nothing between 
+  - git simply moves the 'master' pointer to the end of 
+    the feature branch
+  
+ - 3-way Merge
+  - git creates a new commit for this merge
+   - therefore, a commit message is typically required
+  - one, the common commit where the branches first split
+   - this is the most-recent commit the two branches have in common
+  - two, the most-recent commit of the first branch
+   - this is one of the two parent's of the merge commit
+  - three, the most-recent commit of the second branch
+   - this is the other parent in the merge commit
+ 
+----
+
+----
 Git Commands
  - init a new repo
  git init
+ 
+ - clone an existing repo
+  - .git\objects folder will contain a compressed .pack file
+ git clone https://github.com/leachim6/hello-world.git
  
  - state of Git Repo
  git status
@@ -121,7 +145,8 @@ Git Commands
     files to Staging Area
  git add myNewFile.txt
  
- - when a file is deleted from Working Directory 
+ - move all changes into the Staging Area
+  - when a file is deleted from Working Directory 
     and the 'deleted' status is to be moved
     to the Staging Area
  git add .
@@ -180,6 +205,9 @@ Git Commands
  
  - both create new branch and switch over to it
  git checkout -b NEW_BRANCH_NAME
+ 
+ - remove a branch
+ git branch -d NAME_OF_BRANCH
 ----
  
   

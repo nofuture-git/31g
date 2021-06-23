@@ -566,6 +566,18 @@ Font-Style
 ----
 
 ----
+Font parts 
+ - X-height: the height of the body of a lower-case letter less the
+    any ascenders or descenders
+  - good readability will have font's with the larger x-height
+ - Counter: the empty space in letters such as 'p', 'a', 'o', etc.
+  - good readability will have font's with open and consistent counters
+ - Serifs: the swooshes and feet on a letter form
+  - good readability will avoid fonts with these
+  - 'sans-serif' means without-serifs
+----
+
+----
 Vertical Text Elements
  - text-height is total area in which text is rendered
  - 'leading' is the difference between the line-height and the font-size
