@@ -106,6 +106,17 @@ Git HEAD
 ----
 
 ----
+Git FETCH_HEAD
+ - per line is the SHA1 hash of a commit, a 'branch' 
+   or 'not-for-merge' label, branch name and remote 
+   URL
+ - is used in the 'git pull' command in the second step
+ - local Working Directory will be updated with changes
+   from the one-and-only line _NOT_ labeled 
+   with 'not-for-merge'
+----
+
+----
 Git Merge
  - Fast-forward Merge
   - simple linear 
@@ -123,7 +134,56 @@ Git Merge
    - this is one of the two parent's of the merge commit
   - three, the most-recent commit of the second branch
    - this is the other parent in the merge commit
- 
+----
+
+----
+Git Merge Conflicts
+ - merge conflict only possible with 3-way Merge
+ - git places 3 copies of the files in the Staging Area
+  - one is the file from the common origin
+  - one is from the receiving branch (i.e. your copy)
+  - the last one is from the incoming branch
+ - git will make a mess of the file(s) in the working directory
+  - will mark conflicted lines in a similar manner as SVN
+ - user must clean up the conflicted files themselves
+ - upon resolution use 'git add' to mark as resolved in 
+   Staging Area
+ - git will create a new file at .git/MERGE_HEAD
+  - this file points to the last commit of the incoming branch
+  - is transient while conflict persist
+----
+
+----
+Git Remote Repo
+ - Push
+  - to move changes from local Git Repo to remote Git Repo
+  - creds will be saved and only first Push will require entry
+ - Fetch
+  - to move changes from remote Git Repo to local Git Repo
+  - this command does not update local Working Directory
+  - nor does it update the Staging Area (index)
+  - this is also used to get new branches on the remote Git
+    Repo and copy them to the local Git Repo
+ - Pull
+  - updates all areas: local Git Repo, 
+    Staging Area and Working Directory
+  - two step, first is Fetch, second is Merge
+   - actual commands are 'git fetch' & 'git merge FETCH_HEAD'
+  - the second step, Merge, is only performed on current
+    checked-out tracking branch
+----
+
+----
+Git Tracking Branch
+ - the local branch that is connected to a remote branch
+ - upon git clone remote repo, Git creates only one local
+   branch with the same name as the default branch of the 
+   remote repo
+ - connection can be viewed with either 'git branch -vv' 
+   or 'git remote show origin'
+ - a branch created locally that does not have a tracking 
+   branch on remote repo requires special git push command
+ git push -u origin MY_BRANCH_NAME
 ----
 
 ----
@@ -143,6 +203,8 @@ Git Commands
  
  - is used for both adding Unmodified and Modified 
     files to Staging Area
+  - this is also used to mark a merge-conflict file
+    as resolved
  git add myNewFile.txt
  
  - move all changes into the Staging Area
@@ -151,15 +213,27 @@ Git Commands
     to the Staging Area
  git add .
  
+ - merge MY_BRANCH into current local branch
+  - git will decide on which merge method 
+    (viz. Fast-Foward, 3-way)
+ git merge MY_BRANCH
+ 
  - change a file in Staging Area back to Untracked
  git rm --cached myNewFile.txt 
  
  - writes changes from Staging Area to Git Repo
- git commit -m "Here is my commit description"
+  - the '-a' performs all 'git add' 
+  - the '-m' if for the commit message 
+ git commit -a -m "Here is my commit description"
  
  - copies from Git Repo to Working Directory
   - 'master' would be replaced by branch name
  git checkout master
+ 
+ - switch to another branch
+  - if MY_BRANCH is remote, Git will pull it down from 
+    remote repo
+ git checkout MY_BRANCH
  
  - to move to a previous commit of a branch
   - 'detached HEAD' state will result
@@ -197,7 +271,11 @@ Git Commands
  - list branches
  git branch
  
- - create branch 
+ - list branches both remote and local
+  - use '-r' for 'just-remote branches' 
+ git branch -a
+ 
+ - create branch
  git branch MY_BRANCH_NAME_HERE
  
  - rename a branch
@@ -208,6 +286,12 @@ Git Commands
  
  - remove a branch
  git branch -d NAME_OF_BRANCH
+ 
+ - view remote source of Git Repo
+ git remote -v
+ 
+ - view details between local and remote branches
+ git remote show origin
 ----
  
   
