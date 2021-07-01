@@ -183,7 +183,30 @@ Git Tracking Branch
    or 'git remote show origin'
  - a branch created locally that does not have a tracking 
    branch on remote repo requires special git push command
- git push -u origin MY_BRANCH_NAME
+ git push --set-upstream origin MY_BRANCH_NAME
+ 
+ - when a remote branch is deleted but is still tracking
+   as a local branch
+  - this command will only stop tracking, the branch remains
+    present in the Working Directory
+  - to remove, likewise, in Working Dir, use the remove command
+ git remote update origin --prune
+ 
+ - to quickly test if a local branch is different from its remote
+   tracking branch
+ git show-ref NAME_OF_BRANCH
+----
+
+----
+Git Pull Request
+ - this is a feature of the git hosting service, not Git itself
+ - Pull Request is a proposal of the potential changes
+ - actual mechanics is request code-review + merge-into-master
+ - GitLabs more appropriately calls this a Merge Request
+ - "Pull Request" is more appropriate for pulling in a whole 
+   forked repo
+----
+ 
 ----
 
 ----
@@ -284,8 +307,15 @@ Git Commands
  - both create new branch and switch over to it
  git checkout -b NEW_BRANCH_NAME
  
- - remove a branch
+ - remove a local branch
+  - use '-D' to force remove
  git branch -d NAME_OF_BRANCH
+ 
+ - remove a remote branch
+ git push origin -d NAME_OF_BRANCH
+ 
+ - see tracking branch (local to remote)
+ git branch -vv
  
  - view remote source of Git Repo
  git remote -v
