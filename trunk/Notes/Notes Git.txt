@@ -206,14 +206,34 @@ Git Pull Request
  - "Pull Request" is more appropriate for pulling in a whole 
    forked repo
 ----
- 
-----
 
+----
+Git Forked Repo
+ - is a feature of the git hosting service
+ - exist as a copy of a public repo to your GitHub user account
+  - 'microsoft/dotnet' -> forked to -> 'my_gitHub_username/dotnet'
+  - in such case, 'microsoft/dotnet' is named "upstream" repo
+ 
+ - to associate another remote repo of a Local Git Repo  
+ git remote add upstream https://github.com/microsoft/dotnet.git
+  
+ - to then fetch in changes of upstream remote repo
+ git fetch upstream -v
+  - the '-v' is for verbose output
+  - this would fetch the changes into Local Git Repo
+   - no changes to are made to Staging Area nor Working Directory
+ 
+ - to move changes from upstream remote repo
+ git pull upstream master
+  - this would pull the changes from 
+    the upstream's remote repo's master branch
+---- 
+  
 ----
 Git Commands
  - init a new repo
  git init
- 
+  
  - clone an existing repo
   - .git\objects folder will contain a compressed .pack file
  git clone https://github.com/leachim6/hello-world.git

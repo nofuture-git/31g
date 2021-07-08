@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Law
 {
     /// <summary>
-    /// To agree with proposition(s) often with enthusiasm (e.g. desires, wishes, is eager to, etc.)
+    /// A form of agreement that is an act of the understanding
     /// </summary>
     public interface IAssent : IIntent
     {

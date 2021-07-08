@@ -3,7 +3,7 @@
 namespace NoFuture.Rand.Law
 {
     /// <summary>
-    /// To grant permission for some action often with reluctance
+    /// A form of agreement that is distinctly the act of the will 
     /// </summary>
     public interface IConsent : IAssent
     {
