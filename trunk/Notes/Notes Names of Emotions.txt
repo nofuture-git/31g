@@ -1,0 +1,88 @@
+Adored
+Angry
+ - Enraged: 0.770507
+Annoyed
+ - Irritated: 0.813721
+Anxious
+Apologetic
+Ashamed
+Blessed
+Blissful
+Bored
+Bothered
+Broken
+Bubbly
+Cautious
+Cheerful
+Confident
+Content
+Curious
+Delighted
+ - Thrilled: 0.866916
+ - Pleased: 0.838397
+Depressed
+Determined
+Disappointed
+Disgusted
+Disturbed
+Embarrassed
+Empty
+Energetic
+Enlightened
+Enlivened
+Enthusiastic
+Envious
+Excited
+ - Thrilled: 0.841103
+Exhausted
+Flirtatious
+Foolish
+Fragile
+Frustrated
+Glad
+Guilty
+Happy
+Hopeful
+Hopeless
+Horrified
+Hurt
+Hysterical
+Indifferent
+Infatuated
+Interested
+Jealous
+Joyful
+Lively
+Lonely
+Loved
+Loving
+Mad
+Nervous
+Obsessed
+Proud
+Regretful
+Relieved
+Respected
+Restless
+Sad
+Satisfied
+Scared
+ - Frightened: 0.827214
+ - Afraid: 0.794664
+ - Terrified: 0.773252
+Scattered
+Secure
+Shy
+Smart
+Sorry
+Strong
+Surprised
+Suspicious
+Tired
+Unsure
+Upset
+Vivacious
+Vulnerable
+Worried
+Worthless
+Worthy

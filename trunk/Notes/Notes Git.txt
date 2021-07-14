@@ -32,6 +32,17 @@ Git Object Types
   
  - Annotated Tag
   - persistent pointer to a specific commit
+  - tag names must be unique across entire repo
+  
+   - lightweight tags
+    - stored in .git/refs/tags
+    - cannot determine who nor when lightweight tag was
+      created
+    - will not be pushed to remote repo
+ 
+   - annotated tags
+    - stored in both .git/refs/tags & .git/objects
+    - allow for adding tag message, author & date
 ----
 
 ----
@@ -71,11 +82,13 @@ Git File Status
   - Unmodified
   - Modified
   - Staged
+  - Ignored
  - tracked files will be one of the latter three
  - Untracked & Modified files can only exist 
    in the Working Directory
  - Staged files will only exist in Staging Area
  - Git Repo objects (i.e. files) are always Unmodified
+ - Ignored files are neither Tracked nor Untracked
 ----
 
 ----
@@ -154,6 +167,22 @@ Git Merge Conflicts
 ----
 
 ----
+Git Rebasing
+ - the intent is to simplify the commit history into 
+   a linear one
+  - each commit will have only one parent commit
+ - is a destructive process in that history is being 
+   re-written with some commits being deleted
+ - general process
+  - checkout feature branch
+  - rebase the master branch 
+  - checkout the master branch
+  - merge feature branch into master 
+   - will result in a fast-forward merge instead of
+     3-way
+----
+
+----
 Git Remote Repo
  - Push
   - to move changes from local Git Repo to remote Git Repo
@@ -228,7 +257,23 @@ Git Forked Repo
   - this would pull the changes from 
     the upstream's remote repo's master branch
 ---- 
-  
+
+----
+Git Ignore
+ - are within specially named ".gitignore" file at the root 
+   of the repo
+ 
+ - to ignore files of a particular extension use classic
+ *.dll
+
+ - ignore all files in some folder
+  - folder name followed by forward-slash
+ bin/
+ 
+ - line-comments are allowed with '#' 
+ # python ignores 
+----
+
 ----
 Git Commands
  - init a new repo
@@ -342,6 +387,21 @@ Git Commands
  
  - view details between local and remote branches
  git remote show origin
+ 
+ - list tags of a repo
+ git tag
+ 
+ - create a lightweight tag
+ git tag v1.0.0
+
+ - create an annotated tag
+ git tag -a v1.0.0 -m "my message"  
+ 
+ - get details of an annotated tag
+ git tag -v v1.0.0
+ 
+ - concise log 
+ git lg
 ----
  
   

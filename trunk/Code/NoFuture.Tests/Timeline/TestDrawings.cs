@@ -9,7 +9,17 @@ namespace NoFuture.Timeline.Tests
     [TestFixture]
     public class TestDrawings
     {
-        public static string UnitTestsRoot { get; } = @"C:\Projects\31g\trunk\Code\NoFuture.Tests";
+        public static string UnitTestsRoot
+        {
+            get
+            {
+                var folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    @"NoFuture\Timelines");
+                if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
+                return folderPath;
+            }
+        }
 
         public static string RootBin { get; } = @"C:\Projects\31g\trunk\bin";
 
@@ -788,8 +798,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.BCE3000to2000();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE2000to1500()
@@ -797,8 +807,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.BCE2000to1500();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE1600to1200()
@@ -806,8 +816,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.BCE1600to1200();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE1250to900()
@@ -815,8 +825,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.BCE1250to900();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE922to750()
@@ -824,8 +834,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.BCE922to750();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
         }
         [Test]
         public void TestOccidentalPlateBCE780to500()
@@ -833,8 +843,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.BCE780to500();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -843,8 +853,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.BCE500to325();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -853,8 +863,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.BCE325to27();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -863,8 +873,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE30to105();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
 
@@ -874,8 +884,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE105to325();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -884,8 +894,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE325to550();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -895,8 +905,8 @@ namespace NoFuture.Timeline.Tests
 
             var testPlate = testSubject.CE550to825();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -905,8 +915,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE825to1075();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -915,8 +925,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1075to1350();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -925,8 +935,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1350to1500();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
 
         }
@@ -936,8 +946,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1500to1700();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
 
@@ -947,8 +957,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1700to1788();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
 
@@ -958,8 +968,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1788to1865();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
         }
 
         [Test]
@@ -968,8 +978,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1865to1914();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -978,8 +988,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1914to1945();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]
@@ -988,8 +998,8 @@ namespace NoFuture.Timeline.Tests
             var testSubject = new Occidental();
             var testPlate = testSubject.CE1945to1992();
 
-            testPlate.ToPdf(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.pdf");
-            System.IO.File.WriteAllText(UnitTestsRoot + $@"\Timeline\{testPlate.FileName}.txt", testPlate.ToString());
+            testPlate.ToPdf(UnitTestsRoot + $@"\{testPlate.FileName}.pdf");
+            System.IO.File.WriteAllText(UnitTestsRoot + $@"\{testPlate.FileName}.txt", testPlate.ToString());
 
         }
         [Test]

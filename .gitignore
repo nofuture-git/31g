@@ -1,22 +1,24 @@
 *.db
-/trunk/temp/
-/trunk/Notes/misc/
-/trunk/Code/.vscode
-/trunk/Code/.vs
-/trunk/Code/packages
+trunk/temp/
+.vscode/
+.vs/
+packages/
 *.suo
 *.user
-/trunk/Code/DIA SDK/Samples/DIA2Dump/Debug
-/bin
-/obj
+trunk/Code/DIA SDK/Samples/DIA2Dump/Debug/
+bin/
+obj/
+TestResult.xml
+NuGet.exe
 
 #for ANTLR generated files
 *.tokens
 
 #python compiled files
 __pycache__/
+*.pyc
 
 #fsharp data files
-/trunk/Code/NoFuture/Rand/Src/Data/
-/trunk/Code/NoFuture/Rand/Src/libiomp5md.dll
-/trunk/Code/NoFuture/Rand/Src/MathNet.Numerics.MKL.dll
+trunk/Code/NoFuture/Rand/Src/Data/
+libiomp5md.dll
+MathNet.Numerics.MKL.dll
