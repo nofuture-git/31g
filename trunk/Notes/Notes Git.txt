@@ -262,6 +262,7 @@ Git Forked Repo
 Git Ignore
  - are within specially named ".gitignore" file at the root 
    of the repo
+ - common templates are available at gitignore.io
  
  - to ignore files of a particular extension use classic
  *.dll
@@ -272,6 +273,45 @@ Git Ignore
  
  - line-comments are allowed with '#' 
  # python ignores 
+ 
+ - more complex regex patterns are possible 
+ report.[0-9]*.json
+----
+
+----
+Git Reset
+ - to hard-set the state of just some or all of the 
+   Git Areas (Working Dir, Staging, Git Repo)
+ - is destructive in removing history
+ 
+ - Mixed Reset
+ git reset --mixed 276c0829c
+  - discards commits in Git Repo
+  - discard changes in Staging Area
+  - keep changes in Working Directory
+  - is the default reset
+  
+ - Soft Reset
+ git reset --soft 276c0829c
+  - discards commits in Git Repo
+  - keeps changes in Staging Area
+  - keeps changes in Working Directory
+  
+ - Hard Reset
+ git reset --hard 276c0829c
+  - discards commits in Git Repo
+  - discards changes in Staging Area
+  - discards changes in Working Directory
+----  
+
+----
+Git Revert
+ - to rollback a particular commit
+ - is addition of commit as a negation of the 
+   previous commit
+ - no entries are removed from history
+  - is idempotent 
+ git revert 276c0829c
 ----
 
 ----
@@ -288,6 +328,11 @@ Git Commands
  
  - history of commits
  git log
+ 
+ - advanced git log search and print
+ git log --grep="3.12.1" --pretty="format:%cn %h %cd"
+  - full list of variables for 'format' at 
+    https://devhints.io/git-log-format
  
  - is used for both adding Unmodified and Modified 
     files to Staging Area
@@ -399,12 +444,4 @@ Git Commands
  
  - get details of an annotated tag
  git tag -v v1.0.0
- 
- - concise log 
- git lg
 ----
- 
-  
- 
- 
- 
