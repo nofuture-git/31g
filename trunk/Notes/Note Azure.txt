@@ -1,0 +1,241 @@
+Notes Azure
+----
+Exam AZ-900 Microsoft Azure Fundamentals, Second Edition
+Jim Cheshire
+----
+
+----
+Basic Cloud Concepts 
+ - cloud computing: computation as 
+   an inter-networked distribution of machines
+
+ - high availability
+  - availability is application being accessible to users
+  - loss of availability 
+   - network outage
+   - power outage
+   - system outage
+    - e.g. VM hosting 
+   - application problem
+    - e.g. configuration 
+   - dependency problem 
+    - e.g. database
+  - SLA: Service Level Agreement
+   - contract for availability by some percentage
+   
+ - scalability
+  - computing is not free so buy only-what-you-need
+  - horizontal scaling 
+   - "scale out"
+   - add more machines
+  - vertical scaling
+   - "scale up"
+   - more powerful machines
+  - elasticity: having both horizontal and vertical scaling
+
+ - fault tolerance: provider auto-moves off bad machines
+  - small scale problems managed by cloud provider
+  
+ - disaster recovery
+  - BCDR: Business continuity and disaster recovery
+  
+ - On-Premises Model
+  - physical computer hardware
+  - network infrastructure
+  - physical storage of server racks
+  - capital expenses (big-money)
+  
+ - Cloud Model
+  - Rent computing resources 
+  - operating expenses 
+  - cloud provider exp. economies-of-scale by
+    purchasing huge number of machines  
+----
+
+----
+Kinds of Cloud Services
+ - shared responsibility model
+ - cloud-pyramid 
+  - idea of more control equals more responsibility
+  
+ - IaaS: infrastructure-as-a-service
+  - highest level of control and responsibility
+  - control over the VM itself
+   - must perform updates
+   - manage users thereof
+   - actual remote into the VM
+   - create Remote Desktop Connection files (RDP)
+     for other VM users
+  - can shutdown VMs and not be charged
+   
+ - PaaS: platform-as-a-service
+  - mid-level control and responsibility
+  - cloud provider handles VMs
+  - typical resource is Azure App Service
+  - you handle application running therein
+  
+ - SaaS: software-as-a-service
+  - least control and responsibility
+  - these are cloud-based web applications
+  - common example is Office365
+  - paying in subscription-model
+  
+ - serverless computing
+  - idea of borrowing some VM to run a 
+    program once
+  - typical resources
+   - Azure Functions
+   - Logic Apps
+   - Cognitive Services
+----
+
+----
+Access of Cloud Computing
+ - Public Cloud
+  - is shared infrastructure
+  - called 'multi-tenant' environments
+ 
+ - Private Cloud
+  - is single, dedicated infrastructure
+  - called 'single-tenant' environments
+  - basically a private network that
+    is not on-premises
+  
+ - Mixed (Hybrid)
+  - application is hosted on public cloud
+  - uses resources that are hosted on private cloud
+  - inter-networking of two clouds is very complex
+----
+
+----
+Azure Core Architectural Components
+ - Geographies: groupings of Regions
+  - US Geography's Regions:
+    - Central US
+    - East US
+    - West US
+    - South Central US
+    - North Central US
+    - US Gov Texas
+
+ - Regions
+  - specific data-centers spaced across globe
+   - are physical buildings
+   - cloud provider owns data-centers
+   - cloud provider owns fiber-cables connecting them
+   
+ - Region Pairs
+  - Microsoft defined pairings of regions which 
+    experience updates in a staggered approach
+   - a kind of blue-green deployment of a data-center(?)
+  - defined at https://bit.ly/az900-regionpairs
+  
+ - Availability Zones
+  - designed to protect against data-center failures
+  - subdivision of a Region
+  - are defined by being unique physical locations 
+  - at least three in each region
+  - exclusive sources of:
+   - water source
+   - power source
+   - infrastructure cables
+  - Zonal services: deployed into availability zones explicitly
+  - Zone-redundant: Azure deploys to multiple availability zones  
+  
+ - Resource Groups
+  - are arbitrary groupings of Azure resources under a 
+    single subscription Id
+  - allows tagging so its clear on invoice
+  - allows for removal as-a-whole (all resources therein)
+  - in Terraform:
+   - azurerm_resource_group
+ 
+ - Subscription Management Groups
+  - are arbitrary groupings of multiple Azure Subscriptions
+  - may contain other Management Groups
+ 
+ - Azure Resource Manager (ARM)
+  - all requests are JSON, declarative templates
+  - portal to all Azure resources
+  - is used by
+   - Azure Portal
+   - Azure Command Line
+   - Visual Studio
+ 
+ - Availability Sets
+  - fault tolerance for Azure VMs
+  - based on concepts of physical machines 
+    stacked on physical racks in a datacenter
+   - forms a kind of matrix of rows and columns
+  - Fault Domain: a logical representation of 
+    a physical rack in which a VM is hosted 
+  - Update Domain: logical representation of
+    physical machine in which VM is hosted
+    
+ - Scale Sets
+  - rule-based limits on when creation\removal of 
+    Azure VMs
+---- 
+
+----
+Azure Core Resources
+ - a manageable item that is available through Azure
+ - each instance of a resource will have a URI
+  - similar concept to, "what is an object" in OOP
+
+ - Azure Subscription
+  - highest level Azure resource
+  - is defined by a unique subscription Id
+  - is associated to limits-of-resources (quotas)
+   - Free Trial
+   - Pay-As-You-Go
+   - Pay-As-You-Go Dev/Test
+    - for devs in Visual Studio
+
+ - Azure Virtual Machines (VMs)
+  - most common resource
+  - in Terraform
+   - azurem_linux_virtual_machine 
+   - azurerm_windows_virtual_machine
+ 
+ - Azure App Service
+  - is a PaaS
+  - choose an OS, and runtime(s) 
+   - e.g. Linux, DotNet Core
+  - App Service Plan: a logical container of VMs to 
+    run the Azure App Service
+  - in Terraform:
+   - azurerm_app_service
+ 
+ - Azure Container Instances (ACI)
+ 
+ - Azure Kubernetes Service (AKS)
+ 
+ - Windows Virtual Desktop
+ 
+ - Virtual Networks
+ 
+ - VPN Gateway
+ 
+ - virtual network peering
+ 
+ - ExpressRoute
+ 
+ - Container (blob) storage
+ 
+ - Disk storage
+ 
+ - Azure Files
+ 
+ - Storage tiers
+ 
+ - Cosmos DB
+ 
+ - Azure SQL Database
+ 
+ - Azure Database for MySQL
+ 
+ - Azure Database for PostgreSQL 
+ 
+ - Azure Marketplace
+ 

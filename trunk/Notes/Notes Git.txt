@@ -444,4 +444,9 @@ Git Commands
  
  - get details of an annotated tag
  git tag -v v1.0.0
+ 
+ - to force garbage collection
+  - will move many files into the .git/objects/pack 
+    pack files
+ git gc
 ----
