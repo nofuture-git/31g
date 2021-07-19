@@ -208,34 +208,100 @@ Azure Core Resources
    - azurerm_app_service
  
  - Azure Container Instances (ACI)
+  - don't have to pay for the VM running the instance
+  - in Terraform
+   - azurerm_container_group
  
  - Azure Kubernetes Service (AKS)
+  - PaaS to simplify a Kubernetes cluster
+  - in Terraform:
+   - azurerm_kubernetes_cluster
  
- - Windows Virtual Desktop
+ - Windows Virtual Desktop (WVD)
+  - virtualization of a Windows desktop
+  - has many complex dependencies
  
- - Virtual Networks
+ - Virtual Networks (VNets)
+  - software implementation of physical networks
+   - NIC(s)
+   - IP Addresses
+   - Subnets
+  - typical setup is three-tier (viz. Web, Biz-Logic, Data)
+   - is controlled where each is a subnet
  
  - VPN Gateway
+  - intended to solve problem cloud communicating with
+    on-premises network
+  - billed on amount of time used (hourly)
+  - has band-width restrictions
+  - allows for three kinds of connections
+   - VNet-to-VNet
+   - Site-to-Site
+   - Point-to-Site
  
- - virtual network peering
+ - Virtual Network Peering (VNet Peering)
+  - intended to connect one VNet to another
+  - is across Microsoft's internal backbone infrastructure
+  - is low-latency & high-bandwidth
  
  - ExpressRoute
+  - focused on high bandwidth 10Gbps
+   - high-end (expensive) version is 100Gbps
+  - is dedicated fiber connections
+  - connects to a Microsoft Enterprise Edge router (MSEE)
+  - connection is through a 3rd party service provider
+    who already has the fiber connection
+   - on-premises is direct-connected to 3rd party
  
  - Container (blob) storage
+  - unstructured storage
+  - types of blobs
+   - block blobs: typical files, etc.
+   - append blobs: e.g. logs
+   - page blobs: disk storage
  
- - Disk storage
+ - Disk storage (Azure disks)
+  - for when VM's need persistent disk
+  - can be either HDD or SSD
  
  - Azure Files
+  - uses Managed Server Message Block (SMB) protocol
+   - allows for simple file operations on any OS
  
  - Storage tiers
+  - depends on:
+   - how long to store 
+   - how often to access what is stored
+  - kinds of Container Storage
+   - Hot tier: access a lot
+   - Cool tier: 30-day storage
+   - Archive tier: 180-day storage
  
  - Cosmos DB
+  - NoSQL database
+  - can be adapted to the various kinds of NoSQL
+   - key-value, column, document, graph, etc.
+  - various APIs for the various NoSQL implementations 
+   - e.g. MongoDB, Cassandra, GraphQL, SQL
  
  - Azure SQL Database
+  - SQL Server in the cloud
+  - Microsoft manages the DB server
+  - two pay-models
+   - Database Transaction Unit (DTU): customer
+     doesn't get to specify the CPU and power
+   - Virtual Core customer can scale the CPU, memory
+     and storage
  
  - Azure Database for MySQL
+  - MySQL in the cloud
  
  - Azure Database for PostgreSQL 
+  - PostgreSQL in the cloud
  
  - Azure Marketplace
+  - part of the Azure portal that allows for
+    searching and purchasing "templates" which
+    bundle up various resources (e.g. WordPress)
+----
  
