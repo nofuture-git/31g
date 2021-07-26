@@ -664,6 +664,20 @@ FROM   (SELECT  ID
 WHERE  mySub._my_sort_row > 10 /* this goes up by some increment of number-of-results-per-page per page click */ 
 ORDER  BY mySub._my_sort_row; 
 
+/*==========
+Add SQL Server traditional user for .NET connection string
+- first need the Server Properties > Security > Server authentication > 'SQL Server and Windows Authentication mode'
+- HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQLServer
+ ==========*/
+CREATE LOGIN [myLocalSqlServerUser] WITH PASSWORD = 'L6sqF0H_zUuF'
+
+CREATE USER [myLocalSqlServerUser] FOR LOGIN [myLocalSqlServerUser]
+
+ALTER ROLE db_datareader ADD MEMBER [myLocalSqlServerUser]
+
+ALTER ROLE db_datawriter ADD MEMBER [myLocalSqlServerUser]
+
+GRANT EXECUTE TO [myLocalSqlServerUser]
 
 /*==========
 Performance

@@ -303,5 +303,65 @@ Azure Core Resources
   - part of the Azure portal that allows for
     searching and purchasing "templates" which
     bundle up various resources (e.g. WordPress)
+    
+ - Azure Functions
+  - serverless, trigger-based code execution
+   - service bus message enqueued 
+   - web request received 
+   - file added\modified
+   - timer-based
+   - api specific like Twitter tweet posted
+  - runs on Azure App Service infrastructure
+  - multiple runtimes are supported
+  
+ - Azure Logic Apps
+  - the next attempt to program with GUI's 
+  - also trigger based like Azure Functions
+  
+ - Azure DevOps
+  - a suite of tools for sprint-management (KANBAN), CI\CD, 
+    unit-test, code-repo, binary artifacts
 ----
+
+----
+Azure Management Tools
+ - Azure Portal
+  - web based gui to manage Azure
+  - portal.azure.com
+  
+ - PowerShell Az module
+  - documentation at https://aka.ms/azps
+  - install the module
+ Install-Module -Name Az -Repository PSGallery
+  - login to Azure Account through module
+   - tenet Id
+    - in the Azure Portal, click on Azure Active Directory
+   - subscription id
+    - use the global search in Azure portal 
+ Connect-AzAccount -Tenant $myTenentId -Subscription $mySubscriptionId
  
+ - Azure CLI
+  - login is through a browser
+  - browser will launch 
+ az login
+  - find help in common manner
+ az --help
+ 
+ - Azure Cloud Shell
+  - is a shell through the cloud 
+  - also has a builtin text editor 
+  
+ - Azure Mobile App
+  - an app available in the Google & Apple stores
+  - the Cloud Shell is available in the mobile app
+   - the file-editor is not available
+
+ - Azure Advisor
+  - a kind of automated audit that finds various
+    issues with performance, security, etc.
+    
+ - ARM Templates
+  - JSON files that are declarative for the resource 
+    to create
+  - can be created but the structure is still expected
+----
