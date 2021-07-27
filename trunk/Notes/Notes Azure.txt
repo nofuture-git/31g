@@ -365,3 +365,91 @@ Azure Management Tools
     to create
   - can be created but the structure is still expected
 ----
+
+----
+Azure Security
+ - Azure Security Center
+  - allows for portal monitoring of security
+  - Security Center agents can be installed on-premises 
+    to integrate them likewise
+  - through audit functionality by comparison of 
+    various security best practice
+ 
+ - Key Vault
+  - storage of secrets, keys and certificates
+  - items within are encrypted with keys unknown to Microsoft
+  - Hardware Security Modules (HSM), a separate piece of hardware
+    to store encrypted content
+   - HSMs are required for Federal Information Processing Standard
+     (FIPS 140)
+ 
+ - Azure Sentinel
+  - based on security best practices named:
+   - Security Orchestration, Automation and Response (SOAR)
+   - Security Information and Event Management (SIEM)
+  - input is based on Azure Log Analytics
+ 
+ - Azure Dedicated Host
+  - VMs run on dedicated hardware isolation
+----
+
+----
+Azure Network Security
+ - best practice is Defense in Depth
+  - also called Castle Approach
+  
+ - Network Security Groups (NSGs)
+  - are used to separate logical layers from 
+    one another (e.g. web, biz, data)
+  - inbound and outbound rules being based on:
+   - IP addresses
+   - IP ranges
+   - subnet(s)
+   - network interface (NIC)
+   - service tags: are tags provided by Microsoft
+     for other Azure networks or outside Internet
+    - intended when the IP addresses are unknown
+   
+ - Azure Firewall
+  - a resource defined outside of Azure Virtual Network
+  - is a PaaS offering
+  - uses rules to determine what traffic is allowed
+   - Network address translation (NAT) rules 
+    - a this-to-that address (forward traffic)
+    - take precedence
+   - Network rules
+    - allow traffic on specific IP ranges and ports
+   - Application rules
+    - ambiguous rules based on some application (e.g. Windows Update)
+
+ - Distributed Denial of Service Protection
+  - a two tier service that attempts to mitigate this attack vector
+----
+
+----
+Azure Identity Services
+ 
+ - Azure Active Directory 
+  - traditional idea of users and roles
+  
+ - Azure Conditional Access
+  - uses a policy to define conditions 
+  - only available in premium tier
+ 
+ - Azure MFA
+  - traditional multi-factor auth
+  - only available in premium tier
+  
+ - Azure Single Sign-On
+  - based on traditional SSO 
+   - credentials are transformed into a token
+   - token is used to auth with other apps & services
+   - token's content provides for the claims 
+   
+ - Azure Role-Based Access Control (RBAC)
+  - IAM is Identity and Access Management
+  - idea that a scope and role are applied to 
+    a security principal to define the access-control
+  - common built-in roles
+   - owner, contributor, reader
+----
