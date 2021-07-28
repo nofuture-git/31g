@@ -394,10 +394,36 @@ Azure Security
 ----
 
 ----
-Azure Network Security
- - best practice is Defense in Depth
-  - also called Castle Approach
-  
+Azure Network
+ - networking exist within a single region 
+ - top level entity is Azure Virtual Network (VNet)
+ - VNet is divided into subnets
+  - e.g. web, biz, db
+  - 
+ - within each subnet are virtual machines each 
+   with their own NIC 
+ - external load-balancers exist outside a subnet 
+ - internal load-balancers exist within a subnet
+ - NSGs are applied to a subnet
+ - Virtual Network typically defined with CIDR 10.1.0.0/16
+  00001010.00000001.00000000.00000000
+  11111111.11111111.00000000.00000000
+                   |_________________|
+                            |
+                    total VNet's possible IPs
+                    256 * 256 = 65536 possible IPs
+ - each subnet is typically divided as CIDR 10.1.0.0/24
+  00001010.00000001.00000000.00000000
+  11111111.11111111.11111111.00000000
+                             |______|
+                                |
+                             256 possible IPs per Subnet   
+ 
+ - Azure Routing Tables
+  - as within a subnet, between subnets in the same VNet
+  - to the internet
+  - VNet to VPN  
+
  - Network Security Groups (NSGs)
   - are used to separate logical layers from 
     one another (e.g. web, biz, data)
@@ -421,9 +447,15 @@ Azure Network Security
     - allow traffic on specific IP ranges and ports
    - Application rules
     - ambiguous rules based on some application (e.g. Windows Update)
+    
+ - Custom Network Routing
+ 
+ - Load Balancing Solutions
+ 
+ - Traffic Manager
+ 
+ - Hybrid Network Connectivity
 
- - Distributed Denial of Service Protection
-  - a two tier service that attempts to mitigate this attack vector
 ----
 
 ----
