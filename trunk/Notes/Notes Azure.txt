@@ -399,7 +399,7 @@ Azure Network
  - top level entity is Azure Virtual Network (VNet)
  - VNet is divided into subnets
   - e.g. web, biz, db
-  - 
+  - by default any machine in the same VNet can communicate
  - within each subnet are virtual machines each 
    with their own NIC 
  - external load-balancers exist outside a subnet 
@@ -422,20 +422,23 @@ Azure Network
  - Azure Routing Tables
   - as within a subnet, between subnets in the same VNet
   - to the internet
-  - VNet to VPN  
+  - VNet to VPN
+  - custom routing tables are used to control traffic
+    flow through specific resources
 
  - Network Security Groups (NSGs)
   - are used to separate logical layers from 
     one another (e.g. web, biz, data)
+   - assigned a Priority in which lower number is 
+     higher rank
   - inbound and outbound rules being based on:
-   - IP addresses
    - IP ranges
    - subnet(s)
    - network interface (NIC)
    - service tags: are tags provided by Microsoft
      for other Azure networks or outside Internet
     - intended when the IP addresses are unknown
-   
+
  - Azure Firewall
   - a resource defined outside of Azure Virtual Network
   - is a PaaS offering
@@ -447,15 +450,26 @@ Azure Network
     - allow traffic on specific IP ranges and ports
    - Application rules
     - ambiguous rules based on some application (e.g. Windows Update)
-    
- - Custom Network Routing
- 
- - Load Balancing Solutions
- 
- - Traffic Manager
- 
- - Hybrid Network Connectivity
+----
 
+----
+Azure Load Balancer
+ - Azure Load Balancer 
+  - layer 4
+  - can be either Internal or External
+  - cannot be both Internal and External
+  - External will have internet facing IP address
+ 
+ - Azure Application Gateway 
+  - layer 7
+  - is only external facing 
+  - only allows 80 & 443 ports
+ 
+ - Network Virtual Appliance (e.g. Kemp, Barracuda, F5)
+ 
+ - Azure Traffic Manager
+  - to load balance across different VNets 
+  - also across different regions
 ----
 
 ----

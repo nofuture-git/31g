@@ -669,7 +669,14 @@ Add SQL Server traditional user for .NET connection string
 - first need the Server Properties > Security > Server authentication > 'SQL Server and Windows Authentication mode'
 - HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQLServer
  ==========*/
+--run this on the [master] database
+USE [master]
+GO
 CREATE LOGIN [myLocalSqlServerUser] WITH PASSWORD = 'L6sqF0H_zUuF'
+
+--repeat this for every database as needed
+USE [MyDatabase]
+GO
 
 CREATE USER [myLocalSqlServerUser] FOR LOGIN [myLocalSqlServerUser]
 
