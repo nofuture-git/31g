@@ -43,6 +43,24 @@ namespace Test.Notes.Chemistry
         }
 
         [Test]
+        public void TestPrintOrbitalToString()
+        {
+            IElement testSubject = new Carbon();
+            foreach (var shell in testSubject.Shells)
+            {
+                foreach (var orbitalGrp in shell.Orbitals)
+                {
+                    Console.WriteLine($"{shell.GetType().Name} {orbitalGrp.GetType().Name}");
+                    foreach (var orbital in orbitalGrp.AssignedElectrons)
+                    {
+                        Console.Write(orbital.ToString());
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+
+        [Test]
         public void TestCountValences()
         {
             IElement testSubject = new Hydrogen();

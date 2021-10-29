@@ -1,5 +1,13 @@
 ﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
+    /// <summary>
+    /// These are mixed orbitals where the s-orbital is combined with the p-orbital
+    /// </summary>
+    /// <remarks>
+    /// The combined shape is like the shape of p-orbitals but the two tear-drops are not
+    /// identical.  They are still joined at their tips but one is short and stubby while the
+    /// other is larger and elongated.
+    /// </remarks>
     public class sp_hybridizedOrbitalGroup : OrbitalGroupBase
     {
         private int _superscriptNumber;

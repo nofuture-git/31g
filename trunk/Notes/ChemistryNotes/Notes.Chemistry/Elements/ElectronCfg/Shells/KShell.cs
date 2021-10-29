@@ -2,6 +2,9 @@
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 {
+    /// <summary>
+    /// The first shell which has only one s-orbital
+    /// </summary>
     public class KShell : ShellBase
     {
         public KShell(IElement element) : base(element)

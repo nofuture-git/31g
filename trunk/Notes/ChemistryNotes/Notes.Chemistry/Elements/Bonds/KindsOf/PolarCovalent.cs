@@ -2,6 +2,10 @@
 
 namespace Notes.Chemistry.Elements.Bonds.KindsOf
 {
+    /// <summary>
+    /// The covalent bond where electronegativity difference is
+    /// small (between 0 and 2) and the electrons are shared but not equally
+    /// </summary>
     public class PolarCovalent : BondDecorator
     {
         protected internal PolarCovalent(IBond bond) : base(bond)
@@ -12,6 +16,7 @@ namespace Notes.Chemistry.Elements.Bonds.KindsOf
                 throw new InvalidOperationException($"Both atoms are {atom1.Name} " +
                                                     $"which requires a {nameof(PurelyCovalent)} bond");
 
+            //dipole moment: the separation of charge in the bonds formation
             if (atom1.Electronegativity > atom2.Electronegativity)
             {
                 DeltaPlus = atom2;

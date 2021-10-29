@@ -46,6 +46,9 @@ namespace Notes.Chemistry.Elements.PeriodicTable
         public SortedSet<IShell> Shells { get; } =
             new SortedSet<IShell>();
 
+        /// <summary>
+        /// The outermost electron shell of an atom
+        /// </summary>
         public IShell ValenceShell => Shells.Last();
 
         public int MaxElectrons

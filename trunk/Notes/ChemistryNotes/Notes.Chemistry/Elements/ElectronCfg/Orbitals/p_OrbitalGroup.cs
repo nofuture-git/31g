@@ -1,5 +1,9 @@
 ﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
+    /// <summary>
+    /// The second orbital after <see cref="s_OrbitalGroup"/> and is shaped
+    /// like two identical tear drops joined at the tips.
+    /// </summary>
     public class p_OrbitalGroup : OrbitalGroupBase
     {
         public p_OrbitalGroup(IShell myShell) : this(myShell, 3)

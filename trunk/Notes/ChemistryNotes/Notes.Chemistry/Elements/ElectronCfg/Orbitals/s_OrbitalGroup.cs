@@ -1,5 +1,8 @@
 ﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
+    /// <summary>
+    /// The first orbital closest shaped like a sphere.
+    /// </summary>
     public class s_OrbitalGroup : OrbitalGroupBase
     {
         public s_OrbitalGroup(IShell myShell) : this(myShell, 1)

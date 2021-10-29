@@ -3,6 +3,9 @@ using Notes.Chemistry.Elements.ElectronCfg.Orbitals;
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 {
+    /// <summary>
+    /// The second shell which has one s-orbital and three p-orbitals (one for each 3D axis).
+    /// </summary>
     public class LShell : ShellBase
     {
         public LShell(IElement element) : base(element)
