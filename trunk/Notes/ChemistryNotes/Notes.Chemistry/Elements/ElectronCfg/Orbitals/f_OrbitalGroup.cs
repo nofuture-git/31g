@@ -1,5 +1,8 @@
 ﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
+    /// <summary>
+    /// The forth orbital group after the <see cref="d_OrbitalGroup"/> and its shape varies.
+    /// </summary>
     public class f_OrbitalGroup : OrbitalGroupBase
     {
         public f_OrbitalGroup(IShell myShell) : this(myShell, 7)

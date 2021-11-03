@@ -1,5 +1,8 @@
 ﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
+    /// <summary>
+    /// The fifth orbital group after <see cref="f_OrbitalGroup"/>.
+    /// </summary>
     public class g_OrbitalGroup : OrbitalGroupBase
     {
         public g_OrbitalGroup(IShell myShell) : this(myShell, 9)

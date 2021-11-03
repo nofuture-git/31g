@@ -1,5 +1,9 @@
 ﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
+    /// <summary>
+    /// The third orbital group after <see cref="p_OrbitalGroup"/> and is shaped
+    /// like a clover.
+    /// </summary>
     public class d_OrbitalGroup : OrbitalGroupBase
     {
         public d_OrbitalGroup(IShell myShell) : this(myShell, 5)

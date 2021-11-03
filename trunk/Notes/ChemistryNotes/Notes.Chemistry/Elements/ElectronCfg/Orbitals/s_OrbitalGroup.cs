@@ -1,7 +1,7 @@
 ﻿namespace Notes.Chemistry.Elements.ElectronCfg.Orbitals
 {
     /// <summary>
-    /// The first orbital closest shaped like a sphere.
+    /// The first orbital group closest to the nucleus and is shaped like a sphere.
     /// </summary>
     public class s_OrbitalGroup : OrbitalGroupBase
     {
