@@ -51,10 +51,8 @@ namespace Notes.Chemistry.Cdk
         }
 
         /// <summary>
-        /// A compound wht a nitrogen atom with two single-bonds to hydrogen atoms
+        /// A compound with a nitrogen atom with two single-bonds to hydrogen atoms
         /// </summary>
-        /// <param name="mol"></param>
-        /// <returns></returns>
         [Aka("amino")]
         public static bool IsPrimaryAmine(this IAtomContainer mol)
         {
@@ -163,8 +161,6 @@ namespace Notes.Chemistry.Cdk
         /// <summary>
         /// Organic compound has an oxygen between two carbon atoms
         /// </summary>
-        /// <param name="mol"></param>
-        /// <returns></returns>
         public static bool IsEther(this IAtomContainer mol)
         {
             Func<IAtom, IAtom, bool> expr = (end0, end1) => end0.IsCarbonAtom() && end1.IsCarbonAtom();
@@ -209,8 +205,6 @@ namespace Notes.Chemistry.Cdk
         /// <summary>
         /// Compound which is both <see cref="IsCarbonyl"/> and <see cref="IsAlcohol"/>
         /// </summary>
-        /// <param name="mol"></param>
-        /// <returns></returns>
         public static bool IsCarboxylic(this IAtomContainer mol)
         {
             if (mol == null)
@@ -253,8 +247,6 @@ namespace Notes.Chemistry.Cdk
         /// <summary>
         /// A compound with a carbon-nitrogen triple bond
         /// </summary>
-        /// <param name="mol"></param>
-        /// <returns></returns>
         public static bool IsNitrile(this IAtomContainer mol)
         {
             if (mol == null)
@@ -274,8 +266,6 @@ namespace Notes.Chemistry.Cdk
         /// <summary>
         /// A compound with one nitrogen bound to two oxygen
         /// </summary>
-        /// <param name="mol"></param>
-        /// <returns></returns>
         public static bool IsNitro(this IAtomContainer mol)
         {
             if (mol == null)
@@ -298,8 +288,6 @@ namespace Notes.Chemistry.Cdk
         /// <summary>
         /// A compound with a carbon-nitrogen single bond
         /// </summary>
-        /// <param name="mol"></param>
-        /// <returns></returns>
         public static bool IsCyano(this IAtomContainer mol)
         {
             if (mol == null)
@@ -320,8 +308,6 @@ namespace Notes.Chemistry.Cdk
         /// while the third is single bound and, in addition, said
         /// third oxygen atom is, itself, bound to a hydrogen atom.
         /// </summary>
-        /// <param name="mol"></param>
-        /// <returns></returns>
         public static bool IsSulphonic(this IAtomContainer mol)
         {
             if (mol == null)

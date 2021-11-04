@@ -2,6 +2,9 @@
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 {
+    /// <summary>
+    /// The third shell which has one s-orbital, three p-orbitals and five d-orbitals
+    /// </summary>
     public class MShell : ShellBase
     {
         public MShell(IElement element) : base(element)

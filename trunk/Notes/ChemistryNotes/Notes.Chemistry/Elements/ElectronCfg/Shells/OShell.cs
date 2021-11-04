@@ -2,6 +2,9 @@
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 {
+    /// <summary>
+    /// The fifth shell having on s-orbital, three p-orbitals, five d-orbitals, seven f-orbitals and nine g-orbitals
+    /// </summary>
     public class OShell : ShellBase
     {
         public OShell(IElement element) : base(element)

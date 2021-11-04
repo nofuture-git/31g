@@ -2,6 +2,9 @@
 
 namespace Notes.Chemistry.Elements.ElectronCfg.Shells
 {
+    /// <summary>
+    /// The forth shell having one s-orbital, three p-orbitals, five d-orbitals and seven f-orbitals
+    /// </summary>
     public class NShell : ShellBase
     {
         public NShell(IElement element) : base(element)
