@@ -1,0 +1,69 @@
+----
+Notes Go
+Learning Go
+First Edition And Idiomatic Approach to Real-World Go Programming
+by Jon Bodner
+O'Reilly Media 
+978-1-492-07721-3
+----
+
+----
+Overview
+ Go does not have:
+  - inheritance
+  - generics
+  - function overloading
+  - operator overloading
+  - pattern matching
+  - named parameters
+  - exceptions
+
+ Go does have Pointers
+----
+
+----
+Basics
+ - download the installer from 
+  https://go.dev/dl/
+  
+ - the installer adds the necessary environment variables
+  
+ - to explicitly set the GOPATH environment variable
+ [System.Environment]::SetEnvironmentVariable("GOPATH",(Join-Path $env:USERPROFILE "go") ,"Machine")
+
+ - get installed version
+ go version
+
+ - get go environment settings
+ go env
+
+ - get third party components
+  - this will install a .exe in \bin folder of you GOPATH
+  - Go seems to have no problems with corporate firewalls (?)
+ go install github.com/rakyll/hey@latest
+ 
+ - in Go the formatting is explicit 
+  - best-practices at https://go.dev/doc/effective_go
+ - the Go compiler will add semi-colons to all statements
+ - the dev has to explicitly call a formatting command prior to compiling
+ go fmt
+ 
+ - another code scanning command used to find things like
+  - wrong number of parameters
+  - unused variables with assignment
+  - run the vetting tool across your entire project 
+ go vet ./...
+ 
+ - third party linting tool 
+  - one-time install command
+ go install golang.org/x/lint/golint@latest
+ 
+  - run the linter across your entire project
+ golint ./...
+----
+
+
+ 
+
+ 
+ 
