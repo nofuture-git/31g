@@ -36,6 +36,12 @@ Basics
 
  - get go environment settings
  go env
+ 
+ - to run a go file like a script
+ go run myGoFile.go
+ 
+ - to build a go .exe
+ go build myGoFile.go
 
  - get third party components
   - this will install a .exe in \bin folder of you GOPATH
@@ -62,7 +68,65 @@ Basics
  golint ./...
 ----
 
+----
+Go Module Basics
+ - modules are the main domain container 
+ - a module is defined by a top-level file named go.mod
+  - this file will name the module along with dependencies and such
+  - the first line will define the modules path
+module github.com/nofuture/somejunk
 
+ - installed modules will be at the $env:GOPATH\pkg\mod
+  - within this folder the folder structure will match
+    the modules definitional structure (like Java packages)
+    
+ - to create a module the go command line is used
+ 
+ go mod init github.com/nofuture/somejunk 
+----
+
+----
+Go Primitives
+ - integer
+  - has the common 8 types (4 signed, 4 unsigned)
+  - can be written in decimal, binary, octal or hex
+  - binary is prefixed with 0b
+  - octal is prefixed with 0o
+  - hex is prefixed with 0x
+  - go allows for underscore to be present 
+    in integer literal for readability
+   - for example, speed of light m/s
+  299_792_458
+
+ - floats
+  - can be written in decimal or hex
+  - scientific notation is allowed
+   - for example Avogadoros Number
+  6.022e23
+  
+ - chars
+  - these are called 'runes' in Go
+  - uses single quotes like C#
+  - are Unicode 
+   - literals can be 8, 16 or 32 bit
+  '\x61' '\u0061' '\U00000061'
+  
+ - strings
+  - literals are enclosed in double quotes
+  - verbatim strings are enclosed in back-tick (0x61)
+  `here is my 
+  Here-String in go`
+  
+ - booleans
+  - same as elsewhere
+  - literal values are keywords 'true' and 'false'
+  - default value is false
+----
+
+----
+Go Operators
+  
+ 
  
 
  
