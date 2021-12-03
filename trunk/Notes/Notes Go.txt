@@ -9,7 +9,7 @@ O'Reilly Media
 
 ----
 Overview
- Go does not have:
+ - Go does not have:
   - inheritance
   - generics
   - function overloading
@@ -18,7 +18,12 @@ Overview
   - named parameters
   - exceptions
 
- Go does have Pointers
+
+ - Go does have Pointers
+ - Go will compile its own runtime into 
+   every executable
+  - dotnet v 5.0.403 "Hello World" is 123KB
+  - go v 1.17.3 "Hello World" is 1881KB
 ----
 
 ----
@@ -100,6 +105,7 @@ Go Primitives
 
  - floats
   - can be written in decimal or hex
+  - actual types are float32 and float64
   - scientific notation is allowed
    - for example Avogadoros Number
   6.022e23
@@ -125,6 +131,117 @@ Go Primitives
 
 ----
 Go Operators
+
+ - arithmetic 
+  + - * / %
+  
+ - compound assignment ops
+ += -= *= /= %=
+
+ - comparison ops
+ == != > >= < <=
+
+ - bitwise ops
+ << >> & | ^ &^ (logical AND NOT)
+ 
+ - empty and nothing
+  - Go has 'nil' and 'null'
+  - nil is an identifier that lacks a 
+    value for some known type
+
+ - global builtin functions
+  - len, various uses for getting a "length"
+  - append, used to extend a slice
+  - etc.
+  
+ - variadic parameters 
+  - uses the three-dot convention '...'
+----
+
+----
+Variable Decl and Assignment
+ - most explicit declaration and assignment
+ var x int = 10
+ 
+ - implicit type 
+ var x = 10
+ 
+ - declaration without assignment
+ var int x
+ 
+ - decomp decl and assignment
+ var x, y int = 10, 20
+ 
+ - implicit decomp decl and assignment
+ var x, y = 10, "foo"
+ 
+ - unique concept called declaration list
+ var (
+     x    int
+     y        = 20
+     z    int = 30
+     d, e     = 40, "bar"
+     f, g string
+ )
+ 
+ - within the body of a function a 
+   syntax short-hand is ":="
+ x := 10
+ 
+ - constants are the same as in C#
+  - if the constant is being used mathematically
+    it should be declared implicitly so to avoid 
+    casting
+ const magicNumber = 42;
+ 
+ - arrays
+  - Go considers the length of an array as part of 
+    its type
+   - arrays of different lengths cannot be converted
+ var x = [3]int
+ var y = [3]int{2, 4, 6}
+ 
+ - slices
+  - Go has this idea as what most langs call an array
+ var z = []int{10, 20, 30}
+ 
+  - can specify indices in a slice-literal
+ var m = []int{1, 5: 4, 6, 10: 100, 15}
+   - the following would make the array
+     [1, 0, 0, 0, 0, 4, 6, 0, 0, 0, 100, 15]
+     
+  - to expand an array the global 'append' 
+    function is used  
+ var c = []int
+ c = append(c, 10) 
+ d = []int{88, 89, 90}
+ c = append(c, d...)
+   - this will append all of d to the tail of c
+   
+  - use the global 'cap' function to get 
+    a slice's total capacity
+  fmt.Println(cap(c))
+  
+  - use global 'make' function to init 
+    a slice with an explicit size
+  f := make([]int, 5)
+   - makes a new slice with 'cap' of 5
+ 
+  - a zero-length slice is not nil
+ v := []int{}
+
+ 
+   
+ 
+----
+
+----
+Conventions
+ - variable names are camelCase
+ 
+ 
+ 
+ 
   
  
  
