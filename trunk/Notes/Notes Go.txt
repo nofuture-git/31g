@@ -259,6 +259,94 @@ Array Slices
 ----
 
 ----
+Maps (a.k.a. Dictionary, Hashtable, Assoc. Array)
+ - typical key-value pair
+ - decl key-word 'map' with the key's type in sqr-braces
+   followed by the value's type
+ - will grow automatically
+ 
+ myMap := map[string]int{}
+ myMap["first-key"] = 12
+ myMap["second-key"] = 42
+ 
+ - map declaration with init
+ var myTable = map[string][]string {
+    "A-Team": []string{"BA", "Hannibal", "Mad Murdock", "Face"},
+    "B-Team": []string{"Foo", "Bar"}
+ }
+ 
+ - key-value decomp has second decl as a bool 
+   for testing if the key was present
+  - 'v' would be the value of the pair if 
+     the key is present
+  - 'ok' is a bool which verifies that the key 
+     was found
+ v, ok := myMap["third-key"]
+ 
+ - to remove an item from a map
+  - returns 'nil' if key was not present
+ delete(myMap, "first-key")
+----
+
+----
+Structs
+ - same as in other C-style langs
+ - Go has no classes
+ - structs are used to declare custom
+   data-types
+ 
+ - struct type-def
+  - no commas in the the type-def
+ type person struct {
+    name string
+    age int
+    pet string
+ }
+ 
+ - declaration and init of a struct
+  - commas are present in init
+ myPerson := person{
+    "Fred",
+    28,
+    "cat",
+ }
+ 
+ - declaration of an anon struct is 
+   allowed
+ var myCustomStruct struct {
+    prop00 string
+    prop01 bool
+    prop02 int
+ }
+ 
+ myCustomStruct.prop00 = "some string"
+ myCustomStruct.prop01 = true
+ myCustomStruct.prop02 = 37
+ 
+ - a declaration and init of an anon struct
+ pet := struct {
+    name string
+    kind string
+ }{
+    name: "Princess",
+    kind: "cat",
+ }
+ 
+ - struct conversion is very limited
+  - the declaration order, name and type
+    _MUST_ match exactly 
+ type firstPersonType struct {
+    name string
+    age int
+ }
+ 
+ type secondPersonType struct {
+    name string
+    age int
+ }
+----
+
+----
 Conventions
  - variable names are camelCase
  
