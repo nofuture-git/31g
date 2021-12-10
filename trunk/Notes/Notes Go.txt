@@ -24,6 +24,8 @@ Overview
    every executable
   - dotnet v 5.0.403 "Hello World" is 123KB
   - go v 1.17.3 "Hello World" is 1881KB
+  
+ - only has 25 keywords
 ----
 
 ----
@@ -349,11 +351,108 @@ Structs
 ----
 Conventions
  - variable names are camelCase
- 
- 
- 
- 
+ - 'block' is considered any enclosure where
+   a variable can be declared
+  - every occurrence of a curly brace opens
+    a new block
+   - a switch statement's 'case' block is also a 
+     true block but has no curly-braces inclosing it
+  - the top-level block is called 'universe block'
+  - the universe block contains many 
+    "predeclared identifiers" 
+   - 'int', 'string', 'true', 'nil', etc are 
+     all predeclared identifiers 
+    - as such, its possible to shadow these 
+ - shadowed variables are when a variable 
+   of the same name is declared within an
+   inner-block.  
+  - operates as expected, outer variable is 
+    not accessible until inner variable goes
+    out of scope
+----
+
+----
+Branching
+ - classic if statement is as expected
+  - actual condition is not enclosed in parenthes 
+  - a variable can be declared within an if statement
   
+  if n := rand.Intn(10); n == 0 {
+    fmt.Println("Too Low")
+  } else if n > 5 {{
+    fmt.Println("Too high")
+  } else {
+    fmt.Println("Too slow")
+  }
+  
+ - an enhanced switch statement
+  - variables may be declared within a case's 
+    block and is only scoped to it
+  - Go's switch statements do _not_ have classic
+    fall-through behavior
+  - switch will work with anything comparable
+    with the '==' op  
+  var myWord = "something like this"
+  switch size := len(myWord); size {
+  case 1, 2, 3, 4:
+  	fmt.Println(size, "whatnot")
+  case 5:
+  	var newVariable = 87
+  	fmt.Println(size, newVariable)
+  default:
+    //newVariable will cause an error if used here
+  	fmt.Println(size, "too big")
+  }
+----
+
+----
+Looping
+ - Go does not have either 'while' nor 'do-while' loops
+ - Go has the classic break and continue
+  - the classic
+ for i := 0; i < 10; i++ {
+ 
+ }
+  - the infinite 
+ for { //ever
+    fmt.Println("Hello")
+ }
+ 
+ - the 'do-while' replacement
+ for {
+    if someCondition == false {
+        break
+    }
+ }
+ 
+ - the for-each
+  - uses a esoteric variable decomp decl
+  - 'i' is the counter (a.k.a. index)
+  - 'v' is the variable of iteration
+ var myVals = []int{2, 4, 6, 8, 10, 12}
+ for i, v := range myVals {
+    fmt.Println(i, v)
+ } 
+
+ - when you don't care about the counter
+ for _, v := range myVals {
+    fmt.Println(v)
+ }
+ 
+ - when using a map, the variable decomp decl 
+   is the key-value
+ var myMap = map[string]bool{"Foo": false, "Bar": true, "Shoo": false}
+ for k, v := range myMap {
+    fmt.Println(k, v)
+ }
+ 
+ - go supports labels to specify the break and continues
+ outer:
+    for i, v := range myVals {
+        if i = 3 {
+            continue outer
+        }
+    }
  
  
 
