@@ -238,6 +238,13 @@ Array Slices
  - a slice will be another variable to some
    part of an existing array
  - the memory is the same only the ref changes
+ - on-the-stack a slice is a three-property struct 
+   having a pointer to some array, a current-length and
+   a capacity
+  - when passed to a func changes: 
+   - within the array _will_ be reflected 
+   - to the current-length and capacity _will not_ be reflected
+    
  
  var x = []int{1, 2, 3, 4}
  y := x[1:3]
@@ -356,7 +363,7 @@ Conventions
   - every occurrence of a curly brace opens
     a new block
    - a switch statement's 'case' block is also a 
-     true block but has no curly-braces inclosing it
+     true block but has no curly-braces enclosing it
   - the top-level block is called 'universe block'
   - the universe block contains many 
     "predeclared identifiers" 
@@ -520,6 +527,42 @@ Functions
 ----
 
 ----
+Methods 
+ - methods may be defined for a type using a 
+   special kind of function declaration
+  - methods are different in-that they have 
+    another part named "receiver" specification
+  - the receiver appears after the 'func' and 
+    before the method's name
+  - when a method modifies its type its a pointer-receiver
+  - when a method is read-only of its type its a value-receiver
+ - declaration of methods must happen within the 
+   same package 
+    
+ type Person struct {
+    name string
+    age int
+    pet string
+ }
+
+ //a value-receiver with as string return-type
+ func (p Person) ToString() string {
+    return fmt.Sprintf("%s, age %d, pet %s", p.name, p.age, p.pet)
+ }
+ 
+ type MyCounter struct {
+    total int
+    lastUpdated time.Time
+ }
+ 
+ //a pointer-receiver with void return-type
+ func (c *MyCounter) IncrementMe() {
+    c.total += 1
+    c.lastUpdated = time.Now()
+ }
+----
+
+----
 Function body cleanup
  - uses the keyword 'defer'
  - is automatic to execute upon exiting the function
@@ -541,3 +584,49 @@ Function body cleanup
  }
  //do more things here
 ----
+
+----
+Go Pointers
+ - basically the same as most managed langs pass-by-value semantics
+  - only now allowed to de-ref a pointer
+ - in a function\method signature having a pointer indicates 
+   that the parameter _may_ be modified
+ - the zero pointer is 'nil'
+  - the same as with slices, maps and functions
+ var mySlice = []int{1, 2, 3, 4}
+ 
+ //declare a pointer using 'address-of' op '&'
+ var myPointer = &mySlice
+ 
+ //de-reference the pointer using 'indirection' op '*'
+ fmt.Println(*myPointer)
+ 
+ 
+ func failedUpdate(px *int) {
+ 
+    //x, px and x2 all exist on the stack here
+ 	var x2 = 20
+    //updating px to point somewhere else
+ 	px = &x2
+    //stack unwinds and only x is left
+ }
+ 
+ func successUpdate(px *int){
+ 
+    //px and x exists on the stack here
+    //updating the value-of what px is pointing-to
+ 	*px = 20
+    //stack unwinds and only x is left
+ }
+ 
+ func main() {
+ 	var x = 10
+    //here only the value of the parameter is changed
+ 	failedUpdate(&x) //10
+ 	fmt.Println(x)
+    //here the value of what the parameter is pointing-to changed
+ 	successUpdate(&x) //20
+ 	fmt.Println(x)
+ }
+----
+
