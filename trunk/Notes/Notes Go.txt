@@ -560,6 +560,20 @@ Methods
     c.total += 1
     c.lastUpdated = time.Now()
  }
+ 
+ - a method can be treated as a function pointer with ease
+ c := MyCounter{
+ 	total:       0,
+ 	lastUpdated: time.Now(),
+ }
+ 
+ func (c MyCounter) ToString() string {
+	return fmt.Sprintf("total: %d, last updated: %v", c.total, c.lastUpdated)
+ }
+ 
+ myFx := c.ToString
+ fmt.Println(myFx())
+ 
 ----
 
 ----
@@ -630,3 +644,24 @@ Go Pointers
  }
 ----
 
+----
+Enums
+ - is a two step declaration (typically)
+ - is best practice to only use enums on internal code
+ - like enums, will begin numbering at zero
+ 
+ - first step is declare a type "based on" int
+ - then declare a const and use some esoteric keywords (e.g. "iota")
+ 
+ type MyRubric int
+ 
+ const (
+    DistantPast MyRubric = iota
+    Past
+    NearPast
+    Present
+    NearFuture
+    Future
+    DistantFuture
+ )
+----
