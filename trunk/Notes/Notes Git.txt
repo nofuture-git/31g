@@ -450,3 +450,11 @@ Git Commands
     pack files
  git gc
 ----
+
+----
+Break Repo Up
+ - from working directory of what is being split off
+ - following command will copy all the history of this 
+   directory and make it as-if its the root of the repo
+ git filter-branch --prune-empty --subdirectory-filter my_new_repo_dir/ -- master
+----
