@@ -79,7 +79,9 @@ Nouns
 	- verbs (usage from use)
 	- nouns (childhood from child)
   3 Participal
-   - verb used as a noun (ie beginning)
+   - verb used as a noun (e.g. beginning)
+   - agent-noun where something performs the action (e.g. driver)
+    - often ends with "er"
 ---- 
 
 ----

@@ -665,3 +665,93 @@ Enums
     DistantFuture
  )
 ----
+
+----
+Embedding Structs
+ - a counterpart to the common idea of inheritance
+ - is object composition, not object inheritance
+ - does not allow for polymorphic arg passing
+ - does not override embedded type's method\props 
+ 
+ type Employee struct {
+ 	Name string
+ 	ID   string
+ }
+ 
+ func (e Employee) Description() string {
+ 	return fmt.Sprintf("%s (%s)", e.Name, e.ID)
+ }
+ 
+ type Hourly struct {
+ 	Rate int
+ }
+ 
+ type Salary struct {
+ 	AnnualPay int
+ }
+ 
+ type Manager struct {
+    //multi embedded types are allowed
+ 	Employee
+ 	Salary
+ 	DirectReports []Employee
+ }
+ 
+ func main() {
+    // assignment requires specifying the embedded type
+ 	m := Manager{
+ 		Employee: Employee{
+ 			Name: "Tim McDleen",
+ 			ID:   "8675309",
+ 		},
+ 	}
+ 
+    // the "promotion" is just a syntactic shortcut during invocation 
+ 	fmt.Println(m.Description())
+    // for this
+    fmt.Println(m.Employee.Description())
+ }
+----
+
+----
+Interfaces
+ - only abstract type in Go
+ - unimplemented methods are allowed on the type's declaration
+ - are implemented implicitly
+  - allows for type-safe duck-typing
+ - are typically defined as agent-nouns
+  - e.g. fmt.Stringer, io.Reader, http.Handler, json.Marshaler
+ - the flexibility of interfaces makes it so that every 
+   input _should_ be an interface
+  - while the output _should_ be a struct
+  
+ type SomeInterface interface {
+ 	Process(data string) string
+ }
+ 
+ type SomeConcreteType struct {}
+ 
+ //at this point SomeConcreteType IS-A implementation of SomeInterface
+ func (lp LogicProvider) Process(data string) string {
+ 	return fmt.Sprintf("---%s", data)
+ }
+----
+
+----
+Embedding Interfaces
+ - just like embedding structs, interfaces can be embedded
+
+ type MyBegin interface {
+    Open()
+ }
+ 
+ type MyEnd interface {
+    Close()
+ }
+ 
+ type MyBeginAndEnd interface {
+    MyBegin
+    MyEnd
+ }
+----
+ 
