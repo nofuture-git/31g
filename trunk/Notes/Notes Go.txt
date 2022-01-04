@@ -524,6 +524,13 @@ Functions
  sort.Slice(mySlice, func(i int, j int) bool {
     return mySlice[i] < mySlice[j]
  })
+ 
+ - a function can be a type itself (like a delegate in .NET)
+ type HandlerFunc func(string)
+ 
+ func (f HandlerFunc) GetFunc(s string) {
+    f(s)
+ }
 ----
 
 ----
@@ -715,6 +722,7 @@ Embedding Structs
 
 ----
 Interfaces
+ - the true gem of this lang
  - only abstract type in Go
  - unimplemented methods are allowed on the type's declaration
  - are implemented implicitly
@@ -724,16 +732,34 @@ Interfaces
  - the flexibility of interfaces makes it so that every 
    input _should_ be an interface
   - while the output _should_ be a struct
-  
+ - is on the stack as two pointers 
+  - one is the underlying type
+  - the other is the underlying value
+ 
+ //an abstract type which has one method named "PrintThis"
  type SomeInterface interface {
- 	Process(data string) string
+ 	PrintThis(string) string
  }
  
- type SomeConcreteType struct {}
+ //a concrete type 
+ type SomeConcreteType struct{}
  
  //at this point SomeConcreteType IS-A implementation of SomeInterface
- func (lp LogicProvider) Process(data string) string {
+ func (lp SomeConcreteType) PrintThis(data string) string {
  	return fmt.Sprintf("---%s", data)
+ }
+ 
+ //a container which HAS-A of "SomeInterface"
+ type MyHasAType struct {
+ 	MyProcess SomeInterface
+ }
+ 
+ func main() {
+ 	mine := MyHasAType{
+ 		//however, we can assign it to this since it implements "PrintThis"
+ 		MyProcess: SomeConcreteType{},
+ 	}
+ 	fmt.Println(mine.MyProcess.PrintThis("something"))
  }
 ----
 
@@ -754,4 +780,30 @@ Embedding Interfaces
     MyEnd
  }
 ----
+
+----
+Interface Type Assertions
+ - a way to say that a variable could store _anything_
+ - to then assert its type is a runtime-only known fact
+  - a type-conversion is known at compile time
+  - type assertions can only be applied, therefore, to interfaces
  
+ //variable declaration for anything
+ type Name struct {
+ 	FirstName string
+ 	LastName  string
+ }
+ 
+ func main() {
+ 	var i interface{}
+ 	i = 20
+ 	i = "word"
+ 	i = Name{"Tim", "McDleen"}
+ 
+ 	//if you are know the concrete type assertion will work
+ 	i2 := i.(Name)
+ 
+    //this will cause a "Panic" if you get it wrong
+ 	fmt.Println(i2.FirstName, i2.LastName)
+ }
+----
