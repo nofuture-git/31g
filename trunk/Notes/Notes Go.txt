@@ -526,6 +526,7 @@ Functions
  })
  
  - a function can be a type itself (like a delegate in .NET)
+  - therefore a method can be added to it just like any other type
  type HandlerFunc func(string)
  
  func (f HandlerFunc) GetFunc(s string) {
@@ -807,3 +808,25 @@ Interface Type Assertions
  	fmt.Println(i2.FirstName, i2.LastName)
  }
 ----
+
+----
+Error Handling
+ - is based around returned errors
+  - not thrown exceptions
+ - is based on an interface type named "error"
+  - this interface only has one method name Error 
+    which has no-args and returns a string
+ 
+ - is instantiated using errors package
+ errors.New("my error message")
+ 
+ - or with formatting using fmt package
+ fmt.Errorf("%d is out of range", i)
+ 
+ - errors can be checked against 'nil'
+ if err != nil {
+    fmt.Println(err)
+    os.Exit(1)
+ }
+ 
+ 
