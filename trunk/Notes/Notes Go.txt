@@ -134,6 +134,9 @@ Go Primitives
 ----
 Go Operators
 
+ - logical
+ && || !
+
  - arithmetic 
   + - * / %
   
@@ -356,6 +359,18 @@ Structs
 ----
 
 ----
+Type Checking\Casting
+ - is limited and used sparingly
+ - the type being tested is after the variable 
+   with a dot and in parenthesis  
+   
+ //testing if "i" is an "int"
+ // "ok" will be true if it is and "myInt" will 
+ //  be "cast" as an int
+ if myInt, ok := i.(int)
+----
+
+----
 Conventions
  - variable names are camelCase
  - 'block' is considered any enclosure where
@@ -391,6 +406,11 @@ Branching
   } else {
     fmt.Println("Too slow")
   }
+  
+ -likewise, multiple variable may be declared with the conditional
+ if myInt, ok = i.(int); ok {
+    //here is code that will run if the "cast" worked
+ }
   
  - an enhanced switch statement
   - variables may be declared within a case's 
@@ -597,14 +617,16 @@ Function body cleanup
  - defer can be used on an anon closure
  - whatever is in-scope within the function's body may be
    in-scope within the defer 
- 
- //inside a function here
- defer func() {
-    if err != nil {
-        myDb.Rollback()
-    }
+
+ func myExample() {
+    //inside a function here
+    defer func() {
+        if err != nil {
+            myDb.Rollback()
+        }
+    }()
+    //do more things here
  }
- //do more things here
 ----
 
 ----
@@ -783,7 +805,7 @@ Embedding Interfaces
 ----
 
 ----
-Interface Type Assertions
+Interface As Variant
  - a way to say that a variable could store _anything_
  - to then assert its type is a runtime-only known fact
   - a type-conversion is known at compile time
@@ -810,14 +832,18 @@ Interface Type Assertions
 ----
 
 ----
-Error Handling
+Error Creation
  - is based around returned errors
   - not thrown exceptions
  - is based on an interface type named "error"
   - this interface only has one method name Error 
     which has no-args and returns a string
+ - package-level defined errors are called Sentinel Errors
+  - they typically have a naming convention starting with 'Err'
+  - these are "self-evident" like 'EOF' 
+    and require no contextual explanation
  
- - is instantiated using errors package
+ - may be instantiated using errors package's New factory method
  errors.New("my error message")
  
  - or with formatting using fmt package
@@ -829,4 +855,84 @@ Error Handling
     os.Exit(1)
  }
  
+ - a custom error using explicit status
+ - the return type of any function\method should still 
+   be the "error" type and not this custom "LoginStatusErr"
  
+ //a custom int type 
+ type LoginCode int
+ 
+ //an "enum" of the various status of said type
+ const (
+ 	InvalidLogin status = iota + 1
+ 	NotFound
+ )
+ 
+ //another type to hold the status and a message
+ type LoginStatusErr struct {
+ 	Status Status
+ 	Message string
+ }
+ 
+ //implement this method, then this IS-A "error" type
+ func (se LoginStatusErr) Error() string {
+ 	return se.Message
+ }
+ 
+ //return type is always "error" 
+ func MakeItError(flag bool) error {
+ 
+    //nor should the declaration be the custom error's type
+    var genErr error
+    if flag {
+        genErr = LoginStatusErr {
+            Status: NotFound,
+        }
+    }
+    return genErr
+ }
+----
+
+----
+Error Nesting
+ - like in .NET's concept of inner-exception
+ - is esoteric use of factory methods in the "errors" & "fmt" packages
+  - the use of the "%w" within the fmt.Errorf("in Somemethod: %w", err)
+ 
+ f, err = os.Open("somefile.txt")
+ if err != nil {
+    //this concat's the error messages and "wraps" one error into another
+    return fmt.Errorf("sum ting wong: %w", err)
+ }
+ 
+ //the "Unwrap" method will return the error within an error
+ wrappedErr := errors.Unwrap(err); 
+ if wrappedErr != nil {
+    fmt.Println(wrappedErr)
+ }
+----
+
+----
+Error Type Checking 
+ - uses methods within the "error" package
+ 
+ - "errors.Is" will check if an error is a specific 
+    instance or has specific values
+  - test is applied to ever wrapped error therein
+ 
+ //first arg is the error, second is the type
+ errors.Is(err, os.ErrNotExist)
+ 
+ - "errors.As" will check if an error is a specific type
+  - test is applied to ever wrapped error therein
+ 
+ //using a declared, "anything with this method" trick
+ var someVariant interface {
+    Code() int
+ }
+ 
+ //first arg is the error, second is a pointer to the decl
+ if errors.As(err, &someVariant) {
+    fmt.Println(coder.Code())
+ }
+----
