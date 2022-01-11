@@ -76,23 +76,6 @@ Basics
 ----
 
 ----
-Go Module Basics
- - modules are the main domain container 
- - a module is defined by a top-level file named go.mod
-  - this file will name the module along with dependencies and such
-  - the first line will define the modules path
-module github.com/nofuture/somejunk
-
- - installed modules will be at the $env:GOPATH\pkg\mod
-  - within this folder the folder structure will match
-    the modules definitional structure (like Java packages)
-    
- - to create a module the go command line is used
- 
- go mod init github.com/nofuture/somejunk 
-----
-
-----
 Go Primitives
  - integer
   - has the common 8 types (4 signed, 4 unsigned)
@@ -372,7 +355,6 @@ Type Checking\Casting
 
 ----
 Conventions
- - variable names are camelCase
  - 'block' is considered any enclosure where
    a variable can be declared
   - every occurrence of a curly brace opens
@@ -832,7 +814,7 @@ Interface As Variant
 ----
 
 ----
-Error Creation
+Error Handling
  - is based around returned errors
   - not thrown exceptions
  - is based on an interface type named "error"
@@ -849,12 +831,41 @@ Error Creation
  - or with formatting using fmt package
  fmt.Errorf("%d is out of range", i)
  
+ - closest thing to the idea of "throwing an exception" is 'panic'
+  - invoking 'panic' will produce a stack-trace
+  - once a 'panic' happens only 'defer' blocks will executed
+  - its not the same as an exception
+  - the running program is expected to shutdown
+  
+ if err != null {
+    panic(err)
+ }
+ 
+ - closest thing to the idea of "catch" is 'recover'
+  - must be called within the body of a defer block
+  - 'recover' is intended for graceful shutdown
+  - panics should not escape an api
+ 
+ func errHandlingExample(i int) {
+    defer func() {
+        if v := recover(); v != nil {
+            //this is like the body of a catch block
+            fmt.Println(v)
+        }
+    }()
+    //any panic(s) happening here will invoke the 
+    // defer declared above
+ }
+ 
  - errors can be checked against 'nil'
  if err != nil {
     fmt.Println(err)
     os.Exit(1)
  }
+----
  
+----
+Custom Error Types 
  - a custom error using explicit status
  - the return type of any function\method should still 
    be the "error" type and not this custom "LoginStatusErr"
@@ -936,3 +947,62 @@ Error Type Checking
     fmt.Println(coder.Code())
  }
 ----
+
+----
+Go Library Mgmt
+ - Go is organized around 
+  - repositories:  common meaning
+  - modules: the root folder of a repo
+  - packages: the subdivision of a module
+ 
+ - typical practice is to have one-module-to-one-repo
+  
+ - a module is defined by a top-level file named go.mod
+  - this file will name the module along with dependencies and such
+  - the first line will define the modules path
+  - also includes a minimum version of Go 
+  - the optional declarations are: 
+   - 'require' for dependent modules
+   - 'replace' for overriding the location of dependent modules
+   - 'exclude' for preventing a specific version of the module 
+      from being used
+  
+  module github.com/nofuture/somejunk
+  
+  go 1.16
+  
+  require (
+    github.com/somedependent/thing
+  )
+
+ - installed modules will be at the $env:GOPATH\pkg\mod
+  - within this folder the folder structure will match
+    the modules definitional structure (like Java packages)
+    
+ - to create a module the go command line is used
+ 
+ go mod init github.com/nofuture/somejunk
+----
+
+----
+Access Modifiers
+ - are based on naming convention
+  - camelCase identifiers are package-level scoped
+  - PascalCase identifiers are exported and can be 
+    imported by other modules
+----
+
+----
+Package Declaration
+ - is declared as the first line of the code-file
+ - is keyword "package"
+ - the first line is called "the package clause"
+ 
+ package myPackage
+ 
+ import "fmt"
+ 
+ func DoStuff(i int) string {
+    return fmt.Sprintf("The number is %d", i)
+ }
+ 
