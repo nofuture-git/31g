@@ -147,6 +147,14 @@ Go Operators
 ----
 
 ----
+Access Modifiers
+ - are based on naming convention
+  - camelCase identifiers are package-level scoped
+  - PascalCase identifiers are exported and can be 
+    imported by other modules
+----
+
+----
 Variable Decl and Assignment
  - most explicit declaration and assignment
  var x int = 10
@@ -956,10 +964,13 @@ Go Library Mgmt
   - packages: the subdivision of a module
  
  - typical practice is to have one-module-to-one-repo
+  - a single module may have multiple applications
+  - along with multiple packages
   
  - a module is defined by a top-level file named go.mod
   - this file will name the module along with dependencies and such
-  - the first line will define the modules path
+  - the first line will define the modules root-path
+   - packages are imported by this root plus relative path
   - also includes a minimum version of Go 
   - the optional declarations are: 
    - 'require' for dependent modules
@@ -967,7 +978,7 @@ Go Library Mgmt
    - 'exclude' for preventing a specific version of the module 
       from being used
   
-  module github.com/nofuture/somejunk
+  module github.com/nofuture
   
   go 1.16
   
@@ -976,20 +987,13 @@ Go Library Mgmt
   )
 
  - installed modules will be at the $env:GOPATH\pkg\mod
-  - within this folder the folder structure will match
-    the modules definitional structure (like Java packages)
-    
+     
  - to create a module the go command line is used
- 
- go mod init github.com/nofuture/somejunk
-----
-
-----
-Access Modifiers
- - are based on naming convention
-  - camelCase identifiers are package-level scoped
-  - PascalCase identifiers are exported and can be 
-    imported by other modules
+  - this will simply create the .mod file
+  - nothing is created on github
+  - no directories are created either
+  - this name will be the root-path for all packages
+ go mod init github.com/nofuture
 ----
 
 ----
@@ -997,12 +1001,54 @@ Package Declaration
  - is declared as the first line of the code-file
  - is keyword "package"
  - the first line is called "the package clause"
+ - every file in a directory must have the same package clause
+ - the package clause determines its name, not the directory name
+  - its expected that the package clause always matches the directory
+ - package naming should be verb-noun'esque
+  - e.g. avoid a "util" package 
+  - contain functionality within descriptive package names
+
+ package myPackage 
  
- package myPackage
- 
- import "fmt"
+ import (
+    //only package in the standard lib are imported like this
+    "fmt"
+    
+    //the "github.com/nofuture" is the module's root-path
+    // declared in the go.mod file
+    "github.com/nofuture/math"
+    "github.com/nofuture/util"
+ )
  
  func DoStuff(i int) string {
     return fmt.Sprintf("The number is %d", i)
  }
  
+ - the "main" package is the starting point
+  - this follows a naming convention
+  
+ package main
+ 
+ import (
+    "fmt"
+    "github.com/nofuture/mypackage"
+ )
+ 
+ func main() {
+    num := 2
+    output := mypackage.DoStuff(num)
+    fmt.Println(output)
+ }
+----
+
+----
+Package Organization
+ - no real paradigm 
+ - should be consistent 
+ - should be transitive in that how it works
+   matches how its organized
+ - hexagonal arch 
+  - applications are contained in top-lvl "cmd" folder
+   - each folder within the cmd folder is for a single application
+  - all packages are contained in top-lvl "pkg" folder
+  
