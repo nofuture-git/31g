@@ -8,6 +8,11 @@ O'Reilly Media
 ----
 
 ----
+Kat Zien GopherCon 2018
+https://youtu.be/oL6JBUk6tj0
+----
+
+----
 Overview
  - Go does not have:
   - inheritance
@@ -152,6 +157,8 @@ Access Modifiers
   - camelCase identifiers are package-level scoped
   - PascalCase identifiers are exported and can be 
     imported by other modules
+  - naming a package "internal" will make it only 
+    accessible to the parent package
 ----
 
 ----
@@ -347,6 +354,10 @@ Structs
     name string
     age int
  }
+ 
+ - to alias a type to another name
+  - alias will allow for different type assignment
+ type Foo = Bar
 ----
 
 ----
@@ -1004,9 +1015,9 @@ Package Declaration
  - every file in a directory must have the same package clause
  - the package clause determines its name, not the directory name
   - its expected that the package clause always matches the directory
- - package naming should be verb-noun'esque
-  - e.g. avoid a "util" package 
-  - contain functionality within descriptive package names
+ - circular dependencies are not allowed 
+  - if package A imports package B directly or indirectly
+    then package B cannot import package A directly or indirectly
 
  package myPackage 
  
@@ -1017,7 +1028,9 @@ Package Declaration
     //the "github.com/nofuture" is the module's root-path
     // declared in the go.mod file
     "github.com/nofuture/math"
-    "github.com/nofuture/util"
+    //is possible to alias a package's name
+    // aliasing a package with "_" will cause its "init" function to execute
+    nfUtil "github.com/nofuture/util"
  )
  
  func DoStuff(i int) string {
@@ -1047,8 +1060,43 @@ Package Organization
  - should be consistent 
  - should be transitive in that how it works
    matches how its organized
+ - special named "init" with no-args and no return type
+   will run once the first time a package is referenced
+  - its use should be avoided
+  - multiple "init" functions _could_ be declared within
+    a single package 
+  
+ - package naming should be verb-noun'esque
+  - e.g. avoid a "util" package 
+  - contain functionality within descriptive package names
+  
  - hexagonal arch 
   - applications are contained in top-lvl "cmd" folder
    - each folder within the cmd folder is for a single application
   - all packages are contained in top-lvl "pkg" folder
+ 
+ - package documentation is based on comments
+  - requires a line comment(s) just above the declared symbol
+  - line breaks in doc will be blank line comments in code
+  - formatting will get preserved 
   
+ // Package money provides currency related functionality
+ package money
+ 
+ // Money represents an amount and a currency type
+ type Money struct {
+ 	Value    float32
+ 	Currency string
+ }
+ 
+ // ToCurrency converts one currency into another
+ //
+ // More information here
+ func (m Money) ToCurrency(to string) (Money, error) {
+ 	var nm = Money{
+ 		Value:    m.Value,
+ 		Currency: to,
+ 	}
+ 	return nm, nil
+ }
+----
