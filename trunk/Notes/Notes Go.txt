@@ -78,6 +78,9 @@ Basics
  
   - run the linter across your entire project
  golint ./...
+ 
+ - to create a module in the working directory
+ go mod init github.com/nofuture
 ----
 
 ----
@@ -1100,3 +1103,26 @@ Package Organization
  	return nm, nil
  }
 ----
+
+----
+Package Versioning
+ - upon multiple dependencies having, themselves, a 
+   dependency on another module with different versions.
+  - Go will import the higher of the two versions 
+    since it considers that version as the minimum
+ - when a module has a major release its root-path must
+   be appended with the "/v2" (for major release '2')
+   
+  module github.com/nofuture/v2
+
+ - no central repo but a central kinda wiki is 
+  available at pkg.go.dev
+  
+ - Go uses proxy servers to store dependencies and
+   has a database of each dependencies check-sum
+  - invocation of 'go build', 'go test' or 'go get'
+    will verify dependencies check-sum
+----
+
+  
+ 
