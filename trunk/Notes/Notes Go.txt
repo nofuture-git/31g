@@ -13,6 +13,12 @@ https://youtu.be/oL6JBUk6tj0
 ----
 
 ----
+Concurrency in Golang: A Simple, Practical Example
+Rohit Awate
+https://www.youtube.com/watch?v=3atNYmqXyV4
+----
+
+----
 Overview
  - Go does not have:
   - inheritance
@@ -1124,5 +1130,83 @@ Package Versioning
     will verify dependencies check-sum
 ----
 
-  
+----
+Concurrency
+ - part of Go's primary implementation
+ - intended to take advantage of multi-core processors 
+ - works off features of
+  - go routines
+  - channels
+  - 'select' keyword
  
+ - Go's concurrency model 
+  - has its own scheduler
+  - has its own runtime managed threads
+   - go threads will queue into OS threads
+    - many go threads are being context-switched atop OS threads
+    - OS threads are being reused by the scheduler
+   - limit of OS threads is number of processor's cores
+   - go threads are 2KB init and grow as needed
+   - communicate via Go's channels
+  
+ package main
+ 
+ import (
+ 	"fmt"
+ 	"log"
+ 	"net/http"
+ 	"os"
+ 	"sync"
+ )
+ 
+ //global wait-group
+ var wg sync.WaitGroup
+ 
+ //an mutex for thread safety
+ var mut sync.Mutex
+ 
+ func sendRequest(url string) {
+ 	//this is the counterpart of "wg.Add(1)"
+ 	defer wg.Done()
+ 
+ 	res, err := http.Get(url)
+ 	if err != nil {
+ 		panic(err)
+ 	}
+ 
+ 	//this is getting a lock - threads will line-and-park here waiting for a turn
+ 	mut.Lock()
+ 
+ 	//part of the function's cleanup is to release the lock
+    // last-in-first rule for defer means this runs before the defer at the top
+ 	defer mut.Unlock()
+ 
+ 	//this is what we want thread-locking around
+ 	fmt.Printf("[%d] %s\n", res.StatusCode, url)
+ 
+ }
+ 
+ func main() {
+ 	if len(os.Args) < 2 {
+ 		log.Fatalln("Usage: go run main.go <url1> <url2> ... <urlN>")
+ 	}
+ 
+ 	for _, url := range os.Args[1:] {
+ 
+ 		//using the 'go' keyword to launch a managed thread
+ 		go sendRequest("https://" + url)
+ 
+ 		//increment the wait group
+ 		wg.Add(1)
+ 	}
+ 
+ 	//make the main thread wait for all the other threads to finish
+ 	wg.Wait()
+ }
+ 
+ //Measure-Command {Invoke-Expression "go run main.go google.com github.com quora.com bing.com youtube.com heroku.com dev.to twitter.com facebook.com gitlab.com"}
+ 
+ //Benchmark
+ // 1 | TotalSeconds      : 5.956342
+ // 2 | TotalSeconds      : 1.5620971
+----
