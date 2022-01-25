@@ -1133,6 +1133,7 @@ Package Versioning
 ----
 Concurrency
  - part of Go's primary implementation
+ - is called "Goroutines"
  - intended to take advantage of multi-core processors 
  - works off features of
   - go routines
@@ -1210,3 +1211,78 @@ Concurrency
  // 1 | TotalSeconds      : 5.956342
  // 2 | TotalSeconds      : 1.5620971
 ----
+
+----
+Channels
+ - the manner in which Goroutines communicate
+ - the Goroutine that writes to a channel is responsible for 
+   closing it
+ - comes in two kinds
+  - unbuffered: which are blocking
+  - buffered: do not block
+ - use global "make" and "close" functions to open and close
+ - have one operator to push and pop values 
+  - send-channel operator (write)
+   - "<-" is placed to the right of the channel variable
+  - receive-channel operator (read)
+   - "<-" is placed to the left of the channel variable
+ 
+ package main
+ 
+ import "fmt"
+ 
+ func SendValue(c chan string) {
+ 
+ 	//use the send-channel operator
+ 	c <- "hello world"
+ }
+ 
+ func main() {
+ 	//instantiate unbuffered channel
+ 	values := make(chan string)
+ 
+ 	//close the channel upon exit of main
+ 	defer close(values)
+ 
+ 	//unbuffered channel are blocking operations
+ 	go SendValue(values)
+ 
+ 	//use the receive-channel operator
+ 	value := <-values
+ 
+ 	fmt.Println(value)
+ }
+ 
+ - to read from a channel which may be closed 
+  - use the "comma ok idiom"
+  - if 'ok' is true, the channel is open
+ myValue, ok <- myChannel
+----
+
+----
+Channels 'select' Statement
+ - a unique syntax for go's concurrency
+ - intended to keep developer from favoring one 
+   channel operation over another
+  - this is a CS concept called "starvation"
+ - when multiple channels may be read from at the same
+   time
+  - the go runtime will select one of the readable cases
+    at random
+ 
+ select {
+ //read from channel 'ch00' and write its value to 'v'
+ case v := <-ch00
+    fmt.Println(v)
+ // read from channel 'ch01' and write its value to 'v'
+ case v := <-ch01
+    fmt.Println(v)
+ // write the value of 'x' to channel 'ch02'
+ case ch02 <- x
+    fmt.Println("wrote to channel 2",x)
+ //read and gc from channel 'ch03'
+ case <-ch03
+    fmt.Println("read from ch03 and ignored it")
+ }
+----
+ 
