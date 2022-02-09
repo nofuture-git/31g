@@ -19,6 +19,14 @@ https://www.youtube.com/watch?v=3atNYmqXyV4
 ----
 
 ----
+Ultimate Go Programming, Second Edition
+By William Kennedy
+Addison-Wesley Professional
+September 2018
+https://github.com/ardanlabs/gotraining/tree/master/topics/go
+----
+
+----
 Overview
  - Go does not have:
   - inheritance
@@ -31,6 +39,8 @@ Overview
 
 
  - Go does have Pointers
+ - is UTF-8 based language 
+  - source code files should be saved as UTF-8
  - Go will compile its own runtime into 
    every executable
   - dotnet v 5.0.403 "Hello World" is 123KB
@@ -131,6 +141,13 @@ Go Primitives
 ----
 Go Operators
 
+ - comments 
+  - classic C-style
+ // line comment
+ /*
+  block comment
+ */
+
  - logical
  && || !
 
@@ -214,7 +231,7 @@ Variable Decl and Assignment
  var y = [3]int{2, 4, 6}
  
  - slices
-  - Go has this idea as what most langs call an array
+  - decl looks similar but without and explicit length
  var z = []int{10, 20, 30}
  
   - can specify indices in a slice-literal
@@ -247,14 +264,14 @@ Variable Decl and Assignment
 Array Slices
  - a slice will be another variable to some
    part of an existing array
- - the memory is the same only the ref changes
- - on-the-stack a slice is a three-property struct 
-   having a pointer to some array, a current-length and
-   a capacity
-  - when passed to a func changes: 
-   - within the array _will_ be reflected 
-   - to the current-length and capacity _will not_ be reflected
-    
+ - uses an array as its backing memory
+ - consist of a three-property struct 
+   1. a pointer to some array
+   2. a current-length and
+   3. a capacity
+ - when passed to a func changes: 
+  - within the array _will_ be reflected 
+  - to the current-length and capacity _will not_ be reflected
  
  var x = []int{1, 2, 3, 4}
  y := x[1:3]
@@ -583,7 +600,7 @@ Methods
     pet string
  }
 
- //a value-receiver with as string return-type
+ //a value-receiver with a string return-type
  func (p Person) ToString() string {
     return fmt.Sprintf("%s, age %d, pet %s", p.name, p.age, p.pet)
  }
@@ -762,6 +779,7 @@ Interfaces
   - allows for type-safe duck-typing
  - are typically defined as agent-nouns
   - e.g. fmt.Stringer, io.Reader, http.Handler, json.Marshaler
+  - should only describe behavior  
  - the flexibility of interfaces makes it so that every 
    input _should_ be an interface
   - while the output _should_ be a struct
@@ -799,6 +817,7 @@ Interfaces
 ----
 Embedding Interfaces
  - just like embedding structs, interfaces can be embedded
+  - this is more composition than inheritance
 
  type MyBegin interface {
     Open()
