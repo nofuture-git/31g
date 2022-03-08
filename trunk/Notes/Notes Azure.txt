@@ -499,3 +499,33 @@ Azure Identity Services
   - common built-in roles
    - owner, contributor, reader
 ----
+
+----
+Azure Functions
+ - idea that the runtime should only exist when its triggered
+ - an Azure Function only has one input so everything has to be
+   wrapped into some type
+ 
+ - Trigger
+  - how an Azure Function gets invoked
+  - one-to-one trigger to function
+  - trigger may have assoc. input data types
+  
+ - Bindings
+  - a declarative JSON concerning trigger to function
+  - can be actual function.json file are through 
+    attributes (decorator) in a .cs file 
+   - with attribute approach, function.json is a build
+     output artifact
+
+ - Azure Durable Functions
+  - idea of multiple Azure Functions calling\waiting\responding to 
+    other Azure Functions
+  - is all defined within source code files
+  - is based on Microsoft.Azure.WebJobs.Extensions.DurableTask.IDurableOrchestrationContext
+    being passed into each Azure Function
+   - allows one function to call another 
+   - takes the name of the other function as a string
+   
+ var myDurableOutput = await context.CallActivityAsync(nameof(MyOtherDurableFunction), inputs2otherFunc);
+----
