@@ -27,7 +27,7 @@ blade
 block
 blower
 boost
-booster
+boohester
 booth
 bouy
 bow
@@ -785,3 +785,7 @@ aspect: is a subjective view from a certain position
 characteristic: intrinsic value of a character, a subset of a property
 method -vs- function: method is a subset of function distinguished by
  it being contained in an object
+helix: a corkscrew\spiral staircase shape in three dim
+helical: having the shape of a helix
+centripetal: inward collapse of helical
+centrifugal: outward expansion of helical
