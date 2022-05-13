@@ -5,6 +5,30 @@ Jim Cheshire
 ----
 
 ----
+Hands-on Azure Functions with C#
+Build Function as a Service (FaaS) Solutions 1st ed.
+Ashirwad Satapathi
+Abhishek Mishra
+ISBN 978-1-4842-7121-6
+e-ISBN 978-1-4842-7122-3
+https://doi.org/10.1007/978-1-4842-7122-3
+----
+
+----
+Versions at the time
+ - pwsh        7.2.3
+ - choco       1.1.0
+ - npm         8.3.1
+ - node        16.14.0
+ - dotnet      6.0.201
+ - az          2.36.0
+ - func        4.0.4483
+ - ng          11.0.0
+ - terraform   1.1.9
+----
+
+
+----
 Basic Cloud Concepts 
  - cloud computing: computation as 
    an inter-networked distribution of machines
@@ -73,6 +97,7 @@ Kinds of Cloud Services
   - cloud provider handles VMs
   - typical resource is Azure App Service
   - you handle application running therein
+  - you also handle the scaling of the app
   
  - SaaS: software-as-a-service
   - least control and responsibility
@@ -83,10 +108,12 @@ Kinds of Cloud Services
  - serverless computing
   - idea of borrowing some VM to run a 
     program once
+  - vendor handles hosting and scaling
   - typical resources
-   - Azure Functions
+   - Azure Durable Functions
    - Logic Apps
    - Cognitive Services
+   - AWS Lambda Functions
 ----
 
 ----
@@ -505,6 +532,8 @@ Azure Functions
  - idea that the runtime should only exist when its triggered
  - an Azure Function only has one input so everything has to be
    wrapped into some type
+ - command util at: https://github.com/Azure/azure-Functions-core-tools
+  - this is similar to how "ag" cmd line util for Angular works
  
  - Trigger
   - how an Azure Function gets invoked
@@ -528,4 +557,97 @@ Azure Functions
    - takes the name of the other function as a string
    
  var myDurableOutput = await context.CallActivityAsync(nameof(MyOtherDurableFunction), inputs2otherFunc);
+----
+
+----
+Azure App Configuration
+ - idea of controlling the cfg settings of multiple app-stacks 
+   in one location
+ - the App Configuration then has reference to the Azure Key Vault
+ - each app-stack (e.g. App Service, Function App, etc.) has 
+   a reference to the App Configuration.
+ - each App Configuration will be given a globally unique URL
+   https://nf-appCfg-helloworld-00.azconfig.io
+   
+ - each App Configuration will have a "connection string" like:
+ Endpoint=https://nf-appCfg-helloworld-00.azconfig.io;Id=blahblah;Secret=supersecret
+
+ - programmatic access is gained by adding a dotnet package
+ dotnet add package Microsoft.Extensions.Configuration.AzureAppConfiguration 
+ 
+ - then by instantiating a new ConfigurationBuilder and passing in this "connection string"
+  - typical practice is to use a machine-wide environment variable
+ 
+ var builder = new ConfigurationBuilder();
+ builder.AddAzureAppConfiguration(Environment.GetEnvironmentVariable("SomeNameHere"));
+ 
+ var config = builder.Build();
+ var value = config["KeyNameHere"];
+----
+
+----
+Example Create a Service Principal using Azure CLI
+ #set context and antecedent values 
+ az login
+ 
+ #set the current context
+ az account set --subscription "Visual Studio Professional Subscription"
+ 
+ $mySubscription = az account list | ConvertFrom-Json | `
+  Where-Object { $_.name -eq "Visual Studio Professional Subscription"}
+ 
+ #naming convention [root namespace]-[resource type]-[application name]-[region]-[instance]
+ $myResourceGroup = "nf-rg-helloworld-centus-001"
+ 
+ #create a new resource group
+ az group create -l centralus -n $myResourceGroup
+ 
+ #get reference to created resource group
+ $myResourceGroup = az group list | ConvertFrom-Json | Where-Object {$_.name -eq $myResourceGroup}
+ 
+ #pick a name of the service principal
+ $nameOfServicePrincipal = "nf-svcPrincpal-helloworld-001"
+ 
+ 
+ #create the service principal scoped to just this resource group
+ $servicePrincipal = az ad sp create-for-rbac -n $nameOfServicePrincipal `
+                                              --role Contributor `
+                                              --scopes $myResourceGroup.id
+ #NOTE this is the only time you will get the password from Azure to 
+ # be sure to save it somewhere safe
+----
+
+
+----
+Example Azure Durable Function
+
+ #a directory to house the project
+ mkdir azure-hello-world
+ push-location .\azure-hello-world\
+ 
+ #initialize the new project
+ func init --worker-runtime dotnet
+ 
+ #move into VS Code
+ code .
+ 
+ #create a new Durable Function
+ func Function new --template HttpTrigger --name TestTrigger
+ 
+ #launch it locally - this will tie up this PowerShell instance
+ #func host start
+ 
+ #restore, build, publish and zip the Functions app
+ dotnet restore
+ dotnet build
+ dotnet publish
+ 
+ #should make a zip file one dir up
+ Compress-Archive -Path .\bin\Debug\net6.0\publish\* -DestinationPath .
+ 
+ #push the function app to Azure using Azure CLI
+ $myAzureFunctionAppZip = (ls ..\*.zip | Select-Object -First 1).FullName
+ az functionapp deployment source config-zip -g "nf-rg-helloworld-centus-001" `
+                                             -n "nf-funcApp-helloworld-centus-001" `
+                                             --src $myAzureFunctionAppZip
 ----
