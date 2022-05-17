@@ -617,7 +617,6 @@ Example Create a Service Principal using Azure CLI
  # be sure to save it somewhere safe
 ----
 
-
 ----
 Example Azure Durable Function
 
@@ -650,4 +649,91 @@ Example Azure Durable Function
  az functionapp deployment source config-zip -g "nf-rg-helloworld-centus-001" `
                                              -n "nf-funcApp-helloworld-centus-001" `
                                              --src $myAzureFunctionAppZip
+----
+
+----
+Add CosmosDB to Azure Function App
+
+ #add the package to the existing function app
+ dotnet add package Microsoft.Azure.Cosmos
+ 
+ #wrap the cosmos client in an injectable interface
+ Set-Content -Path .\IMyCosmosService.cs -Value @"
+using Microsoft.Azure.Cosmos;
+
+namespace MyFuncApp;
+
+public interface IMyCosmosService 
+{
+    CosmosClient CosmosClient {get;}
+}
+"@
+
+ #implement the CosmosClient wrapper interface
+ Set-Content -Path .\MyCosmosService.cs -Value @"
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Fluent;
+
+namespace MyFuncApp;
+
+//some object to hold various settings 
+public class MyCosmosSettings
+{
+    public string ConnectionString {get; set;}
+    public string DatabaseName {get; set;}
+}
+
+//the injectable concrete implementation of the simple wrapper around CosmosClient
+public class MyCosmosService : IMyCosmosService
+{
+    private readonly CosmosClient _cosmosClient;
+    public MyCosmosService(MyCosmosSettings settings)
+    {
+        _cosmosClient = new CosmosClientBuilder(settings.ConnectionString)
+                                      .WithSerializerOptions(new CosmosSerializationOptions
+                                       {PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase})
+                                      .Build();
+    }
+
+    public CosmosClient CosmosClient => _cosmosClient;
+}
+"@
+----
+
+----
+DI, CosmosDB in Azure Function App
+ - this assumes the prior section (i.e. Add CosmosDB to Azure Function App)
+ 
+ #this contains an abstract FunctionsStartup type, must implement "Configure"
+ dotnet add package Microsoft.Azure.Functions.Extensions
+ 
+ #add the startup class file
+ New-Item -Path .\Startup.cs
+ 
+ #add the boilerplate startup file to the project
+ Set-Content -Path .\Startup.cs -Value @"
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+
+[assembly: FunctionsStartup(typeof(MyFuncApp.Startup))]
+
+namespace MyFuncApp;
+public class Startup : FunctionsStartup
+{
+    public override void Configure(IFunctionsHostBuilder builder)
+    {
+        //this will read from the 'Values' section of the local.settings.json 
+        builder.Services.AddOptions<MyCosmosSettings>().Configure<IConfiguration>(
+            (settings, config) => config.GetSection("Cosmos").Bind(settings));
+
+        //the prior line is needed to instantiate the MyCosmosService
+        builder.Services.AddSingleton<IMyCosmosService, MyCosmosService>();
+    }
+}
+"@
+
+ - if using Azure App Configuration then the values would not be from local.settings.json
+        builder.ConfigurationBuilder.AddAzureAppConfiguration(options => 
+         options.Connect(Environment.GetEnvironmentVariable("AppConfigConnectionString")));
 ----
