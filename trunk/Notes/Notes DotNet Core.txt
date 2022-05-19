@@ -4,6 +4,7 @@ Notes dotnet core
 
 ----
 https://docs.microsoft.com/en-us/dotnet/core/
+https://docs.microsoft.com/en-us/aspnet/core/client-side/spa/angular?view=aspnetcore-6.0&tabs=netcore-cli
 ----
 
 ----
@@ -119,3 +120,27 @@ PS C:\> dotnet add reference "C:\Projects\MyOtherProj\MyOtherProj.csproj"
    - probably still present when added from Visual Studio (.sln files)
   - the "Name" child-node is not added from dotnet CLI
 ----
+
+----
+Creating an Angular SPA with ASP.NET MVC backend
+
+PS> dotnet new angular -o my-new-app
+ - to create a new Angular and ASP.NET MVC app
+
+PS> code .\my-new-app\
+ - open in the VS Code IDE
+ 
+PS> dotnet build
+ - this will add the node_modules folder to the Angular project
+ 
+PS> dotnet run
+ - this will launch the ASP.NET MVC host _and_ a host to serve the
+    Angular app 
+
+PS> cd ClientApp
+    npm start
+ - to launch an independent Angular host 
+ - subsequent calls to 'dotnet run' will _not_ open the Angular app host
+----
+
+ 

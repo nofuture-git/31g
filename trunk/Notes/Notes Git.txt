@@ -363,10 +363,11 @@ Git Commands
   - 'master' would be replaced by branch name
  git checkout master
  
- - switch to another branch
+ - create a branch and switch to it
   - if MY_BRANCH is remote, Git will pull it down from 
     remote repo
- git checkout MY_BRANCH
+ git branch My_New_Branch
+ git checkout My_New_Branch
  
  - to move to a previous commit of a branch
   - 'detached HEAD' state will result

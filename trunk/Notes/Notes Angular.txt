@@ -133,7 +133,8 @@ Module basics
  - further, to generate a directive, component or pipe within a module
   - either set working dir to that module's folder
   - invoke the generate command with a the --module param
- ng generate component my-namespace/my-item ----module=my-namespace
+   - the module's name is its file-name, not its TypeName
+ ng generate component my-namespace/my-item --module=my-namespace
  
  - module's use the @NgModule to define themselves to other modules
   - in @NgModule decorator:
@@ -155,7 +156,9 @@ Component basics
   - the command is given while working directory is 
     top-of-app (i.e. ~/), angular CLI adds it to the 
     proper place in the folder structure
-  ng generate component myNameHere
+  - when there is more than one file decorated with @NgModule 
+    then you have to specify the module's file name
+  ng generate component myNameHere --module=app.module
  
  - the component is contained in its own folder
  - the CLI command adds the new component to the 
