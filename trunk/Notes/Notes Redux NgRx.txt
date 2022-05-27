@@ -1,0 +1,439 @@
+Notes Redux & ngRx
+
+Architecting Reactive Angular Applications with Redux and NgRx
+
+Christoffer Noring
+Published by Packt Publishing
+----
+
+----
+Reactive Programming
+ - Responsive: responds in timely manner
+ - Resilient: stays responsive in the face of failure
+ - Elastic: stays responsive under varying workload
+ - Message Driven: boundaries are communicated via messages
+----
+
+----
+Core concepts 
+ - Immutability and pure functions
+ 
+ - Unidirectional flow
+  - UI component to a storage-location
+  - storage-location then publishes out to subscribers
+---- 
+
+----
+Redux Pattern:
+ - is a design-pattern for the implementation of Reactive Programming
+
+ - Action:what the user is trying to do and with what data
+  - type: indicates the intent of the user
+  - payload: the data of the action
+  - dispatched as an object 
+  
+ - Reducer: a function with two params 
+  - the previous state 
+  - an Action object
+  - returns a new state in an immutable manner
+  
+ - Store: the data source
+  - only reducers are allowed change the store
+  - the store has subscribers to which is will
+    publish any state-changes
+----
+    
+----
+RxJs core concepts:
+ - Observables: unifying concept for all things asynchronous
+  - based on the idea of a stream of events in time
+  - subscribe means to begin observing for events
+  - unsubscribe means to end observing
+  
+ - RxJs operators: 
+  - to receive emitted values of an observable
+  - also to control the behavior of an observable
+  - operators are passed into an observable's 'pipe' method
+   - each subsequent RxJs operator within the 'pipe' are
+     linked in that the next operators input is the previous
+     operators output
+    - there is special operator of 'tap' which  receives the 
+      previous operator's output but does not pass its operation 
+      onto the next pipe-op
+of(1,2,3,4,5).pipe(
+  tap(value => console.log('before map', value)),
+  map(value => value + 1),
+  filter(value => value % 2 === 0)
+  );
+      
+ - Subject: a kind of combo of Observable and observer
+  - observer having ability to send events into the stream
+    using functions like 'next', 'error' and 'complete'
+----
+
+----
+Ngrx
+ - is an Angular implementation of the Redux Pattern
+ - uses RxJs's Observables
+
+ - requires a package install
+ npm install @ngrx/store
+ 
+/*=======================
+ (1) first would be the actual data-model 
+  - file named "flavor.interfaces.ts"
+ ========================*/
+export interface IceCreamFlavor {
+  name: string;
+  amount: number;
+}
+
+export interface IceCreamFlavors {
+  flavors: Array<IceCreamFlavor>;
+}  
+
+/*=======================
+ (2) Declare Actions 
+  - file named "flavor.actions.ts"
+ ========================*/
+import { createAction, props } from "@ngrx/store";
+import { IceCreamFlavor } from './flavor.interfaces';
+
+export const addProductToInventory = createAction('Add Product To Inventory',
+                                                   props<IceCreamFlavor>());
+ 
+/*=======================
+ (3) Declare and Implement Reducers
+  - file named "flavor.reducer.ts"
+ ========================*/
+import { Action, createReducer, on} from '@ngrx/store';
+import { IceCreamFlavor, IceCreamFlavors } from './flavor.interfaces';
+import * as FlavorActions from './flavor.action';
+
+export const initialState: IceCreamFlavors = {
+  flavors: [
+    {name: 'Vanilla', amount: 0},
+    {name: 'Chocolate', amount: 0},
+    {name: 'CookieDough', amount: 0},
+    {name: 'CookiesAndCream', amount: 0},
+    {name: 'Mocha', amount: 0},
+    {name: 'Pistachio', amount: 0},
+    {name: 'SaltedCaramel', amount: 0},
+    {name: 'Strawberry', amount: 0},
+  ]
+};
+
+const flavorActionReducer = createReducer(
+  initialState,
+  on(FlavorActions.addProductToInventory, addToInventory)
+);
+
+// do this the old fashioned way
+function addToInventory(currentInventory: IceCreamFlavors, toBeAdded: IceCreamFlavor) :IceCreamFlavors{
+  let newInventory: IceCreamFlavors = {flavors:[]}
+  let wasFound = false;
+  
+  //add the current inventory back in
+  currentInventory.flavors.forEach(fl => {
+    if(fl.name === toBeAdded.name){
+      newInventory.flavors.push({name:fl.name, amount: fl.amount + toBeAdded.amount});
+      wasFound = true;
+    }
+    else{
+      newInventory.flavors.push({name: fl.name, amount: fl.amount})
+    }
+  });
+
+  //when its a new product append to the inventory
+  if(!wasFound){
+    newInventory.flavors.push({name: toBeAdded.name, amount: toBeAdded.amount});
+  }
+
+  return newInventory;
+}
+
+export function flavorReducer(state: IceCreamFlavors | undefined, action: Action){
+  return flavorActionReducer(state, action);
+}
+
+/*=======================
+ (4) Import the StoreModule into the @NgModule
+  - file named "../app.module.ts"
+ ========================*/
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { HomeComponent } from './home/home.component';
+import { CounterComponent } from './counter/counter.component';
+import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { FlavorComponent } from './flavor/flavor.component';
+import { StoreModule } from '@ngrx/store';
+import { flavorReducer } from './flavor/flavor.reducer';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    NavMenuComponent,
+    HomeComponent,
+    CounterComponent,
+    FetchDataComponent,
+    FlavorComponent
+  ],
+  imports: [
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    HttpClientModule,
+    FormsModule,
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'counter', component: CounterComponent },
+      { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'flavor', component: FlavorComponent },
+    ]),
+    StoreModule.forRoot({inventory: flavorReducer})
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+/*=======================
+ (5) Wire in the component's class to use NgRx
+  - file named "flavor.component.ts"
+ ========================*/
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IceCreamFlavors, IceCreamFlavor } from './flavor.interfaces';
+import { Store } from '@ngrx/store';
+import { addProductToInventory } from './flavor.action';
+
+@Component({
+  selector: 'app-flavor',
+  templateUrl: './flavor.component.html',
+  styleUrls: ['./flavor.component.css']
+})
+export class FlavorComponent implements OnInit {
+
+  inventory$: Observable<IceCreamFlavors>;
+  flavors: Array<IceCreamFlavor> = [];
+  newProduct:string = '';
+
+  constructor(private store: Store<{inventory: IceCreamFlavors}>){
+
+    //here we are est. a link between the Reducer and this store via
+    // the mapping in the NgModule
+    this.inventory$ = this.store.select('inventory');
+
+    //observables are based in-time, therefore is not a matter of simple assignment
+    this.inventory$.subscribe(sl => this.updateLocalFlavors(sl));
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  save() {
+    //instead of directly updating instance variable, "flavors"
+    // we instantiate an Action,
+    // dispatch it to a Store,
+    // which was mapped to a Reducer in the NgModule,
+    // which then _creates_ a new state,
+    // which is then, in turn, broadcast to all the Store's subscribers
+    this.store.dispatch(addProductToInventory({name:this.newProduct, amount:1}));
+  }
+
+  updateLocalFlavors(inventory: IceCreamFlavors ){
+
+    //and _THEN_ updates the instance variable, "flavors"
+    console.log("subscription called ", inventory.flavors)
+    this.flavors = inventory.flavors
+  }
+}
+
+<!--=======================
+ (6) Display the values in the template
+  - file named "flavor.component.html"
+  =======================-->
+<h1 id="tableLabel">Inventory</h1>
+
+<table class='table table-striped' aria-labelledby="tableLabel">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let f of flavors">
+      <td>{{ f.name }}</td>
+      <td>{{ f.amount }}</td>
+    </tr>
+  </tbody>
+</table>
+<input type="text" [(ngModel)]="newProduct" />
+<button (click)="save()">Save</button>
+----    
+    
+----
+Basics of Reactive webforms
+ - import "ReactiveFormsModule" from '@angular/forms'
+ - add the "ReactiveFormsMosule" to the "imports" array of the 
+   "@NgModule" decorator on the component's class
+ - compose the form in-code using three types 
+  - "FormControl" the basic unit like <input> node
+  - "FormGroup" the collection of "FromControls"
+   - may contain further "FromGroup"s within itself
+  - "FormArray" for a group whose size may change 
+   - example, adding another email address
+   - array items are accessed by index, not name
+
+import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+
+@Component({
+    selector: 'app-root',
+    template: `
+    <!-- notice: only this node has the square-braces -->
+    <form [formGroup]="myFormModel" (ngSubmit)="onSubmit()">
+    
+      <!-- adding square-braces here to formControlName will cause an error -->
+      <div>Username: <input type="text" formControlName="username" /></div>
+      <div>SSN: <input type="text" formControlName="ssn" /> </div>
+      <div formGroupName="passwordGroup">
+        <div>Password: <input type="password" formControlName="password" /> </div>
+        <div>Confirm password: <input type="password" formControlName="pconfirm" /> </div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+    
+    <!--
+     this is possible, to declare a form control outside of a form group
+     <input type="text" [formControl]="myInstanceVarName" />
+     -->
+    `
+})
+export class AppComponent {
+
+    //dynamic access to values avail through methods
+    // - reset(): sets various change-tracking flags back to default
+    // - setValue({  }): change everything by passing in a new object
+    // - patchValue({username: '----'): change some selected value of the object 
+    public myFormModel: FormGroup;
+    
+    constructor() {
+    
+      //these names must match what is in the template
+      this.myFormModel = new FormGroup({
+        username: new FormControl(),
+        ssn: new FormControl(),
+        passwordGroup: new FormGroup({
+          password: new FormControl(''),
+          pconfirm: new FormControl('')
+        })
+      });
+    }
+    
+    public onSubmit() {
+        console.log(this.myFormModel.value);
+    }
+}
+
+ - there is another more terse way to construct a reactive webform in 
+   code using a "FormBuilder"
+  - this is a service that is injected into the ctor
+  
+  constructor(fb: FormBuilder) {
+    this.myFormModel = fg.group({
+      username: [''],
+      ssn: [''],
+      passwordGroup: fb.group({
+        pasword: [''],
+        pconfirm: ['']
+      })
+    });
+  }
+----
+
+----
+Wiring in autocomplete search to server
+ - has a dependency on 'rxjs' and 'rxjs/operators'
+ - requires special syntax on the template
+ - needs to pause or too many calls to server will result
+ 
+ - first in the template
+  - #searchBox is a local var to get the value and pass to the 
+     search function on the template's class
+  - the array name has a "$" suffix to indicate its an Observable and
+     not an array
+  - the " | async" is required and performs some auto-magic subscription 
+ <div>
+  <input #searchBox id="search-box" (input)="search(searchBox.value)" />
+  <ul>
+   <li *ngFor="let item of items$ | async">
+    <a routerLink="/detail/{{item.id}}">
+     {{item.name}}
+    </a>
+   </li>
+  </ul>
+ </div>
+ 
+ - second it the class
+  - need some service to perform the web calls which is typically
+     injected in the ctor
+  - need instance var to wrap the search content of type "Subject<T>"
+  - boilerplate code to pipe how to perform the search in the Subject 
+   - this uses various 'operators' from 'rxjs'
+ 
+ import { Component, OnInit } from '@angular/core'; 
+ import { Observable, Subject } from 'rxjs';
+ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+ //the general DTO object received from the server
+ import { MyItem } from '../myItem';
+ //the service that makes the http calls
+ import { MyService } from '../my.service'
+ 
+ @Component({
+   selector: 'app-item-search' ,
+   templateUrl: './item-search.component.html',
+   sytleUrls: [ './item-search.component.css' ]
+ })
+ export class ItemSearchComponent implements OnInit {
+   
+   //this is the array from the template - init'ed below
+   public myItems$: Observable<MyItem[]>;
+   
+   //this is the black-box that handles the search (sorta)
+   private searchTerms = new Subject<string>();
+   
+   //inject the service (typical) to make http calls
+   constructor(private myService: MyService) {}
+   
+   //this the the method the (input) from the template is wired into
+   public search(term: string): void {
+   
+    //searchTerms is used like a buffer
+    this.searchTerms.next(term)
+   }
+   
+   ngOnInit(): void {
+   
+    //where it gets weird
+    this.myItems$ = this.searchTerms.pipe(
+    
+      // number of milliseconds to pause 
+      // the full search string is building-up during this time...
+      debounceTime(300),
+      
+      // don't search same thing again
+      distinctUntilChanged(),
+      
+      // handles timing problems of multiple searches still pending
+      // returns the latest observables - older ones are simple GC'ed
+      switchMap((term: string) => this.myService.searchItems(term)),
+    );
+   }
+ }
+----
