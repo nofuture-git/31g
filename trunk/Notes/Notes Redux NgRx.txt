@@ -8,14 +8,16 @@ Published by Packt Publishing
 
 ----
 Reactive Programming
- - Responsive: responds in timely manner
- - Resilient: stays responsive in the face of failure
- - Elastic: stays responsive under varying workload
- - Message Driven: boundaries are communicated via messages
+ - a general programming paradigm 
+ - built on core concepts:
+  - Responsive: responds in timely manner
+  - Resilient: stays responsive in the face of failure
+  - Elastic: stays responsive under varying workload
+  - Message Driven: boundaries are communicated via messages
 ----
 
 ----
-Core concepts 
+Other Core concepts 
  - Immutability and pure functions
  
  - Unidirectional flow
@@ -26,6 +28,11 @@ Core concepts
 ----
 Redux Pattern:
  - is a design-pattern for the implementation of Reactive Programming
+ - is based on the older pattern named Flux
+  - was first presented by Facebook (a.k.a. Meta)
+  - core to the pattern was the idea of Unidirectional flow
+  - actions are dispatched to stores to update it
+  - updated store is then comm'ed to subscribers
 
  - Action:what the user is trying to do and with what data
   - type: indicates the intent of the user
@@ -50,6 +57,10 @@ RxJs core concepts:
   - subscribe means to begin observing for events
   - unsubscribe means to end observing
   
+ - Observer: any object that implements at least the 'next'
+   method
+  - may also implement the methods 'error' and 'complete'
+   
  - RxJs operators: 
   - to receive emitted values of an observable
   - also to control the behavior of an observable
@@ -66,13 +77,13 @@ of(1,2,3,4,5).pipe(
   filter(value => value % 2 === 0)
   );
       
- - Subject: a kind of combo of Observable and observer
+ - Subject: a kind of combo of Observable and Observer
   - observer having ability to send events into the stream
     using functions like 'next', 'error' and 'complete'
 ----
 
 ----
-Ngrx
+Ngrx Basics
  - is an Angular implementation of the Redux Pattern
  - uses RxJs's Observables
 
@@ -276,6 +287,373 @@ export class FlavorComponent implements OnInit {
 <input type="text" [(ngModel)]="newProduct" />
 <button (click)="save()">Save</button>
 ----    
+
+----
+NgRx Using Service with Effects
+ - is a continuation of "Ngrx Basics" above
+ - uses three new files to make calls back to the server
+  - <something>.store.ts
+  - <something>.effects.ts
+  - <something>.service.ts
+ - general idea: keep the services (e.g. http.get\post) 
+   out of the components
+ - components instead work through "<something>.store.ts"
+  - "<something>.store.ts" receives the injected @ngrx/store/Store
+ - the store class calls, having the only copy of 
+   @ngrx/store/Store, calls the "dispatch" using some action
+ - "<something>.effects.ts" has a bunch of instance level 
+    variables each which are listening for a particular action
+ - "<something>.effects.ts" has an instance of "<something>.service.ts" 
+    injected in the constructor
+ - each of "<something>.effects.ts"'s instance level 
+    variables are tuned into all dispatched actions, _but_ 
+    they each only care about one action in particular
+ - once one of "<something>.effects.ts"'s instance level 
+    variable's actions is noticed:
+  - within the enclosure the particular 
+    "<something>.effects.ts"'s instance level variable, 
+     there is a call to one of "<something>.service.ts" methods'
+  - the server response from the particular 
+    "<something>.service.ts" method is then passed to another
+    Action
+  - this latest Action is then handled by a Reducer, which, 
+    as before, returns a new state
+  - and this new state is then broadcast to all subscribers
+  
+ - requires an additional package install
+ npm install @ngrx/effects
+ 
+/*=======================
+ (1) first would be the actual data-model 
+  - nothing changed here from last example
+  - file named "flavor.interfaces.ts"
+ ========================*/
+export interface IceCreamFlavor {
+  name: string;
+  amount: number;
+}
+
+export interface IceCreamFlavors {
+  flavors: Array<IceCreamFlavor>;
+}  
+
+/*=======================
+ (2) Declare Actions 
+  - file named "flavor.actions.ts"
+ ========================*/
+import { createAction, props } from "@ngrx/store";
+import { IceCreamFlavor, IceCreamFlavors } from './flavor.interfaces';
+
+export const addProductToInventory = createAction('Add Product To Inventory',
+                                                 props<IceCreamFlavor>());
+
+//this action has _no_ handler in the Reducer,
+// its only used by in "flavor.effects.ts" to call to the server
+export const initializeInventory = createAction('Initialize Product Inventory',
+                                                 props<IceCreamFlavors>());
+
+//this is handled by the Reducer because its what is 
+// invoked, by the Effect, upon getting a response from the server
+export const initializeInventorySuccess = createAction('Initialize Product Inventory Success',
+                                                       props<IceCreamFlavors>());
+ 
+/*=======================
+ (3) Declare and Implement Reducers
+  - only change here is with "FlavorActions.initializeInventorySuccess"
+   - there are three actions but only two Reducer handlers
+  - file named "flavor.reducer.ts"
+ ========================*/
+import { Action, createReducer, on} from '@ngrx/store';
+import { IceCreamFlavor, IceCreamFlavors } from './flavor.interfaces';
+import * as FlavorActions from './flavor.action';
+
+export const initialState: IceCreamFlavors = {
+  flavors: [
+    {name: 'Vanilla', amount: 0},
+    {name: 'Chocolate', amount: 0},
+    {name: 'CookieDough', amount: 0},
+    {name: 'CookiesAndCream', amount: 0},
+    {name: 'Mocha', amount: 0},
+    {name: 'Pistachio', amount: 0},
+    {name: 'SaltedCaramel', amount: 0},
+    {name: 'Strawberry', amount: 0},
+  ]
+};
+
+const flavorActionReducer = createReducer(
+  initialState,
+  on(FlavorActions.addProductToInventory, addToInventory),
+  on(FlavorActions.initializeInventorySuccess, resetInventory)
+);
+
+function resetInventory(currentInventory: IceCreamFlavors, newInventory: IceCreamFlavors): IceCreamFlavors {
+  return newInventory;
+}
+
+function addToInventory(currentInventory: IceCreamFlavors, toBeAdded: IceCreamFlavor) :IceCreamFlavors{
+  let newInventory: IceCreamFlavors = {flavors:[]}
+  let wasFound = false;
+  //add the current inventory back in
+  currentInventory.flavors.forEach(fl => {
+    if(fl.name === toBeAdded.name){
+      newInventory.flavors.push({name:fl.name, amount: fl.amount + toBeAdded.amount});
+      wasFound = true;
+    }
+    else{
+      newInventory.flavors.push({name: fl.name, amount: fl.amount})
+    }
+  });
+
+  //when its a new product append to the inventory
+  if(!wasFound){
+    newInventory.flavors.push({name: toBeAdded.name, amount: toBeAdded.amount});
+  }
+
+  return newInventory;
+}
+
+export function flavorReducer(state: IceCreamFlavors | undefined, action: Action){
+  return flavorActionReducer(state, action);
+}
+
+/*=======================
+ (4) Wrap the store in a calls likewise named
+  - file named "./flavor.store.ts"
+ ========================*/
+import { Store } from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IceCreamFlavors } from './flavor.interfaces';
+import * as FlavorActions from './flavor.action';
+import { initialState } from './flavor.reducer';
+
+
+@Injectable()
+export class FlavorStore {
+  inventory$: Observable<IceCreamFlavors>;
+
+  constructor(private store: Store<{inventory: IceCreamFlavors}>){
+    this.inventory$ = this.store.select('inventory');
+  }
+
+  addProductToInventory(name:string, amount:number) {
+    this.store.dispatch(FlavorActions.addProductToInventory({name:name, amount:amount}));
+  }
+
+  //this is what the component(s) call to avoid use of "flavor.service.ts"
+  loadFromServer(){
+    this.store.dispatch(FlavorActions.initializeInventory(initialState));
+  }
+}
+
+/*=======================
+ (5) Implement a service to make the http calls
+  - file named "./flavor.service.ts"
+ ========================*/
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Inject } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { IceCreamFlavors } from './flavor.interfaces';
+
+@Injectable()
+export class FlavorService {
+  constructor(
+    private http: HttpClient,
+    @Inject('BASE_URL') private baseUrl: string
+    )
+  {}
+
+  loadAll() {
+    const requestUrl = this.baseUrl + 'flavor/getInitialInventory';
+    console.log("loadAll called on:  '" + requestUrl + "'");
+
+    return this.http.get<IceCreamFlavors>(requestUrl).pipe(
+      map(rspn => {
+        return rspn;
+      })
+    );
+  }
+}
+
+/*=======================
+ (6) Implement the effects listening for particular actions
+  - file named "./flavor.effects.ts"
+ ========================*/
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { map, switchMap, catchError } from 'rxjs/operators';
+import { FlavorService } from './flavor.service';
+import * as FlavorActions from './flavor.action';
+
+@Injectable()
+export class FlavorEffects {
+  constructor(private actions$: Actions,
+              private flavorService: FlavorService)
+  {
+  }
+
+  //while declared, these are never called directly
+  loadInventory$ = createEffect(() => this.actions$.pipe(
+
+    //this determines the particular action this effect is listening for
+    ofType(FlavorActions.initializeInventory),
+
+    switchMap(() =>
+      //here the service is being used
+      this.flavorService.loadAll().pipe(
+
+        //the server's response is passed into an action
+        // which is handled by a Reducer
+        // which is broadcast to Subscribers
+        // which causes a component's instance variables to update
+        map(res => FlavorActions.initializeInventorySuccess(res))
+    ))
+  ));
+}
+ 
+
+/*=======================
+ (7) Import the EffectsModule into the @NgModule
+  - file named "../app.module.ts"
+ ========================*/
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { HomeComponent } from './home/home.component';
+import { CounterComponent } from './counter/counter.component';
+import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { FreezerComponent } from './freezer/freezer.component';
+import { FlavorComponent } from './flavor/flavor.component';
+import { StoreModule } from '@ngrx/store';
+import { flavorReducer } from './flavor/flavor.reducer';
+import { FlavorService } from './flavor/flavor.service';
+import { FlavorStore } from './flavor/flavor.store';
+import { EffectsModule } from '@ngrx/effects';
+import { FlavorEffects } from './flavor/flavor.effects';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    NavMenuComponent,
+    HomeComponent,
+    CounterComponent,
+    FetchDataComponent,
+    FreezerComponent,
+    FlavorComponent
+  ],
+  imports: [
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    HttpClientModule,
+    FormsModule,
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'counter', component: CounterComponent },
+      { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'flavor', component: FlavorComponent },
+    ]),
+    StoreModule.forRoot({inventory: flavorReducer}),
+
+    //this is new, and is required 
+    EffectsModule.forRoot([FlavorEffects])
+  ],
+  providers: [FlavorService, FlavorStore],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+/*=======================
+ (8) Wire in the component's class to use NgRx
+  - file named "flavor.component.ts"
+ ========================*/
+import { Component, OnInit } from '@angular/core';
+import { IceCreamFlavors, IceCreamFlavor } from './flavor.interfaces';
+import { FlavorStore } from './flavor.store';
+
+@Component({
+  selector: 'app-flavor',
+  templateUrl: './flavor.component.html',
+  styleUrls: ['./flavor.component.css']
+})
+export class FlavorComponent implements OnInit {
+
+  flavors: Array<IceCreamFlavor> = [];
+  newProduct:string = '';
+  newCount:number = 0;
+
+  constructor(
+    private flavorStore: FlavorStore
+    ){
+
+    //here we are est. a link between the Reducer and this store via
+    // the mapping in the NgModule
+    //observables are based in-time, therefore is not a matter of simple assignment
+    this.flavorStore.inventory$.subscribe(sl => this.updateLocalFlavors(sl));
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  save() {
+    //instead of directly updating instance variable, "flavors"
+    // we instantiate an Action,
+    // dispatch it to a Store,
+    // which was mapped to a Reducer in the NgModule,
+    // which then _creates_ a new state,
+    // which is then, in turn, broadcast to all the Store's subscribers
+    this.flavorStore.addProductToInventory(this.newProduct, this.newCount);
+  }
+
+  updateLocalFlavors(inventory: IceCreamFlavors ){
+
+    //and _THEN_ updates the instance variable, "flavors"
+    console.log("subscription called ", inventory.flavors)
+    this.flavors = inventory.flavors
+  }
+
+  reset(){
+    //this will call the Store
+    // which dispatches an Action
+    // which is being listened-for on an Effect
+    // which will make a call to the server via a Service
+    // which will then send the server's response to another Action
+    // which is handled by a Reducer
+    // which then _creates_ a new state,
+    // which is then, in turn, broadcast to all the Store's subscribers
+    this.flavorStore.loadFromServer();
+  }
+}
+
+<!--=======================
+ (9) Display the values in the template
+  - file named "flavor.component.html"
+  =======================-->
+<h1 id="tableLabel">Inventory</h1>
+
+<table class='table table-striped' aria-labelledby="tableLabel">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let f of flavors">
+      <td>{{ f.name }}</td>
+      <td>{{ f.amount }}</td>
+    </tr>
+  </tbody>
+</table>
+<input type="text" [(ngModel)]="newProduct" />
+<input type="number" [(ngModel)]="newCount" />
+<button (click)="save()">Save</button>
+<button (click)="reset()">Reset</button>
+---- 
     
 ----
 Basics of Reactive webforms

@@ -135,7 +135,9 @@ PS> dotnet build
  
 PS> dotnet run
  - this will launch the ASP.NET MVC host _and_ a host to serve the
-    Angular app 
+    Angular app
+ - NOTE: when you add new controllers to the ASP.NET MVC proj, you
+    need to add them likewise into the .\ClientApp\proxy.conf.js file
 
 PS> cd ClientApp
     npm start

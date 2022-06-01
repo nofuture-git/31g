@@ -151,7 +151,7 @@ Module basics
 Component basics
  - directives are the main building block
  - a component is a directive with a view 
- - template is the named used for just the view portion of a component
+ - template is the name used for just the view portion of a component
  - components can be generated from the CLI
   - the command is given while working directory is 
     top-of-app (i.e. ~/), angular CLI adds it to the 
