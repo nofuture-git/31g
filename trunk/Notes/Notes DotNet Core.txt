@@ -145,4 +145,163 @@ PS> cd ClientApp
  - subsequent calls to 'dotnet run' will _not_ open the Angular app host
 ----
 
+----
+Adding a Unit Test Project
+ - ref: https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test
+ - you can _not_ nest a unit test project in its test-target's project folder
  
+ - add the unit test project
+PS> dotnet new xunit -o MyProj.Tests
+
+ - add a reference to the unit test proj of what is being tested
+PS> dotnet add ./MyProj.Tests.csproj reference ./MyProj.csproj
+----
+
+----
+Creating a Solution
+ - the command will create a folder of the same name to house the .sln file
+ - will allow for 'dotnet build' to build all projects on the solution
+ 
+PS> dotnet new sln MySolution
+
+ - add projects to the solution 
+
+PS> dotnet sln add .\MyFirstProject\MyFirstProject.csproj
+
+ - delete any PLATFORM environment variables 
+PS> [System.Environment]::SetEnvironmentVariable("PLATFORM", $null, "User")
+PS> [System.Environment]::SetEnvironmentVariable("PLATFORM", $null, "Machine")
+----
+
+----
+Using CLI for DI types
+ - there is a lot of hand-waving regarding DI in dotnet
+ - typical DI types are configurations and logging
+ ls .\MyProject.Cli\bin\Debug\net6.0\ -Filter *.dll `
+  | foreach {[System.Reflection.Assembly]::Load([System.IO.File]::ReadAllBytes($_.FullName))}
+ - the required packages 
+ 
+PS> dotnet add package Microsoft.Extensions.Logging.Console
+PS> dotnet add package Microsoft.Extensions.Configuration
+PS> dotnet add package Microsoft.Extensions.Configuration.Json
+
+ - will need to include the appsettings.json file to be copied to the 
+   output directory by modifying the .csproj and adding
+   
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+ 
+ - example static methods to get DI types
+using System;
+using System.IO;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Configuration;
+
+namespace MyProject.Cli;
+
+public class Etc
+{
+    private static ILoggerFactory _loggerFactory;
+    public static IConfiguration GetCfgFromFile(string cfgFile)
+    {
+        if(string.IsNullOrWhiteSpace(cfgFile))
+            throw new ArgumentNullException(nameof(cfgFile));
+        
+        if(!Path.IsPathRooted(cfgFile))
+            cfgFile = Path.GetFullPath(cfgFile);
+        
+        if(!File.Exists(cfgFile))
+            throw new FileNotFoundException("File missing or not found", cfgFile);
+
+        var builder = new ConfigurationBuilder().AddJsonFile(cfgFile);
+        var cfg = builder.Build();
+
+        return cfg;
+    }
+
+    public static ILoggerFactory LoggerFactory 
+    {
+        get
+        {
+            if(_loggerFactory == null)
+                _loggerFactory = new LoggerFactory();
+            return _loggerFactory;
+        }
+    }
+
+    public static ILogger<T> GetLogger<T>()
+    {
+        var logger = new Logger<T>(LoggerFactory);
+        return logger;
+    }
+}
+----
+
+----
+Using Custom Types for appsettings.json
+ - custom types will be automatically deserialized 
+
+ - requires an additional package
+PS> dotnet add package Microsoft.Extensions.Configuration.Binder
+
+ - example "appsettings.json"
+{
+    "Settings": {
+        "Parent": {
+            "FavoriteNumber": 7,
+            "Child" :{
+                "Name": "Example",
+                "Grandchild": {
+                    "Age": 3
+                }
+            }
+        }
+    }
+}
+
+ - followed by the actual types themselves
+public sealed class Settings {
+    public Parent Parent {get; set;}
+}
+
+public class Parent {
+    public int FavoriteNumber {get; set;}
+    public Child Child {get; set;}
+}
+public class Child {
+    public string Name {get; set;}
+    public Grandchild Grandchild {get; set;}
+}
+
+public class Grandchild {
+    public int Age {get; set;}
+} 
+ 
+ - two different ways of getting the values out of the 
+   appsettings.json
+   
+public class Program {
+    public static void Main(string[] args ){
+        try{
+            var cfg = Etc.GetCfgFromFile("appsettings.json");
+
+            Console.WriteLine($"Example 1 appsettings.json value {cfg["Settings:Parent:Child:Name"]}");
+
+            var settings = cfg.GetRequiredSection("Settings").Get<Settings>();
+
+            Console.WriteLine($"Example 2 appsettings.json value {settings.Parent.Child.Name}");
+
+            var k = Console.ReadKey();
+        }
+        catch(Exception ex){
+            Console.WriteLine(ex.Message);
+        }
+    }
+}
+----
+  

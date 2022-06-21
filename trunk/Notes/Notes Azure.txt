@@ -593,8 +593,7 @@ Example Create a Service Principal using Azure CLI
  #set the current context
  az account set --subscription "Visual Studio Professional Subscription"
  
- $mySubscription = az account list | ConvertFrom-Json | `
-  Where-Object { $_.name -eq "Visual Studio Professional Subscription"}
+ $mySubscription = az account list --query "[?name=='Visual Studio Professional Subscription']"
  
  #naming convention [root namespace]-[resource type]-[application name]-[region]-[instance]
  $myResourceGroup = "nf-rg-helloworld-centus-001"
@@ -603,13 +602,14 @@ Example Create a Service Principal using Azure CLI
  az group create -l centralus -n $myResourceGroup
  
  #get reference to created resource group
- $myResourceGroup = az group list | ConvertFrom-Json | Where-Object {$_.name -eq $myResourceGroup}
+ $myResourceGroup = az group list --query "[?name=='$myResourceGroup']"
  
  #pick a name of the service principal
  $nameOfServicePrincipal = "nf-svcPrincpal-helloworld-001"
  
  
  #create the service principal scoped to just this resource group
+ #rbac stands for Role Based Access Control
  $servicePrincipal = az ad sp create-for-rbac -n $nameOfServicePrincipal `
                                               --role Contributor `
                                               --scopes $myResourceGroup.id
@@ -652,52 +652,120 @@ Example Azure Durable Function
 ----
 
 ----
-Add CosmosDB to Azure Function App
+Basic CosmosDB
+ - a property named 'id' (in lower case) is required on 
+   every item's type
+ - when defining the partition key's path, you add a foward-slash
+  - the slash is not included when querying a value
 
- #add the package to the existing function app
- dotnet add package Microsoft.Azure.Cosmos
- 
- #wrap the cosmos client in an injectable interface
- Set-Content -Path .\IMyCosmosService.cs -Value @"
-using Microsoft.Azure.Cosmos;
-
-namespace MyFuncApp;
-
-public interface IMyCosmosService 
-{
-    CosmosClient CosmosClient {get;}
-}
-"@
-
- #implement the CosmosClient wrapper interface
- Set-Content -Path .\MyCosmosService.cs -Value @"
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Azure.Cosmos.Linq;
 
-namespace MyFuncApp;
+namespace CosmosDbExample;
 
-//some object to hold various settings 
-public class MyCosmosSettings
-{
-    public string ConnectionString {get; set;}
-    public string DatabaseName {get; set;}
+public class MyItem {
+    //this will work since nameof is pre-compile resolution
+    public const string PartitionKey = nameof(Name);
+
+    //this is the required property
+    public virtual string id {get; set;}
+
+    //the actual properties for the purpose
+    public string Name {get; set;}
+    public int Amount {get; set;}
 }
 
-//the injectable concrete implementation of the simple wrapper around CosmosClient
-public class MyCosmosService : IMyCosmosService
-{
-    private readonly CosmosClient _cosmosClient;
-    public MyCosmosService(MyCosmosSettings settings)
-    {
-        _cosmosClient = new CosmosClientBuilder(settings.ConnectionString)
-                                      .WithSerializerOptions(new CosmosSerializationOptions
-                                       {PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase})
-                                      .Build();
+public class Program {
+    public static void Main(string[] args ){
+        try{
+            var adapter = new CosmosDataAdapter("AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
+            var dbRspn = adapter.AddDatabase("StoreFreezer");
+            dbRspn.Wait();
+            var db = dbRspn.Result.Database;
+            var containerRspn = adapter.AddContainer(db, "IceCreamFlavors");
+            containerRspn.Wait();
+            var container = containerRspn.Result.Container;
+            var addItemRspn = adapter.AddItem(container, new MyItem{id= "123", Name = "Vanilla", Amount = 5});
+            addItemRspn.Wait();
+            var addItem = addItemRspn.Result;
+            var getItemRspn = adapter.GetItem(container, "Vanilla");
+            getItemRspn.Wait();
+            var item = getItemRspn.Result;
+            Console.WriteLine($" Name: {item.Name}, Amount: {item.Amount} ");
+
+            var dnd = Console.Read();
+        }
+        catch(Exception ex){
+            Console.WriteLine(ex.Message);
+        }
     }
+}
+
+public class CosmosDataAdapter {
+    public readonly CosmosClient _cosmosClient;
 
     public CosmosClient CosmosClient => _cosmosClient;
+
+    public CosmosDataAdapter(string connectionString) {
+         _cosmosClient = new CosmosClientBuilder(connectionString).Build();
+    }
+
+    public async Task<DatabaseResponse> AddDatabase(string database){
+        if(string.IsNullOrWhiteSpace(database))
+            throw new ArgumentNullException(nameof(database));
+        return await _cosmosClient.CreateDatabaseIfNotExistsAsync(database);
+    }
+
+    public async Task<ContainerResponse> AddContainer(Database db, 
+                                                      string containerName, 
+                                                      string partitionKey = MyItem.PartitionKey){
+        if(db == null)
+            throw new ArgumentNullException(nameof(db));
+        if(string.IsNullOrWhiteSpace(containerName))
+            throw new ArgumentNullException(nameof(containerName));
+        
+        return await db.CreateContainerIfNotExistsAsync(
+            id: containerName,
+            //the path-separator is only added here
+            partitionKeyPath: "/" + partitionKey,
+            throughput: 400
+        );
+    }
+    
+    public async Task<ItemResponse<MyItem>> AddItem(Container contianer, MyItem item){
+        if(contianer == null)
+            throw new ArgumentNullException(nameof(contianer));
+        
+        if(item == null)
+            throw new ArgumentNullException(nameof(item));
+
+        //the Partition Key is the value of _this_ instance
+        return await contianer.CreateItemAsync<MyItem>(
+            item: item, 
+            partitionKey: new PartitionKey(item.Name)
+        );
+    }
+
+    public async Task<MyItem> GetItem(Container contianer, string name){
+        if(contianer == null)
+            throw new ArgumentNullException(nameof(contianer));
+        
+        if(string.IsNullOrWhiteSpace(name))
+            throw new ArgumentNullException(nameof(name));
+
+        //allows for more robust queries 
+        var feedIterator = contianer.GetItemLinqQueryable<MyItem>()
+                                    .Where(i => i.Name == name)
+                                    .ToFeedIterator();
+
+        if(feedIterator.HasMoreResults){
+            var rspn = await feedIterator.ReadNextAsync();
+            return rspn.Resource.FirstOrDefault();
+        }
+        return null;
+    }
 }
-"@
 ----
 
 ----
