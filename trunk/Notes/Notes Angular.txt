@@ -213,6 +213,36 @@ Component reference in template
 ---- 
 
 ----
+Interpolation 
+ - simplist binding between a component and a template
+ - the body between the two curlys is an expression 
+ 
+ <h3>{{ myTitle }}</h3>
+ 
+  - "myTitle" would be defined in the component like
+ myTitle:string = 'A Title';
+ 
+ - if used with an expression for a type like 
+ export interface MyFancyName {
+  Surname: string;
+  CommonName: string;
+  Salutation: string;
+ }
+ 
+ - the field in the component would be defined like
+ myName:MyFancyName = {Surname:"Brigman", CommonName:"Duplicitious", Salutation:"Esquire"}
+ 
+ - the interpolation becomes an expression 
+ <p>{{ myName.CommonName + " " + myName.Surname + ", " + myName.Salutation }}</p>
+----
+
+----
+Property Binding
+ - to bind some standard HTML's property to a value defined in
+   the component
+ 
+
+----
 Communicating with the server
  - this is done through the angular module HttpClient
  - in the root module add the import 

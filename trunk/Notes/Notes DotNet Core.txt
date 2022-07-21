@@ -22,6 +22,8 @@ Overview
  - .NET Framework is the original, Windows-only framework
  - dotnet core is the rewrite machine-independent 
   - many dotnet SDK's may be installed on a single machine
+ - .NET Standard allows for references to both dotnet and .NET Framework
+ - after version dotnet 5.0, MS began just calling it .NET
 PS C:\> dotnet --info
 
   - Windows-only stuff is not supported
