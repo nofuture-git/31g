@@ -805,3 +805,35 @@ public class Startup : FunctionsStartup
         builder.ConfigurationBuilder.AddAzureAppConfiguration(options => 
          options.Connect(Environment.GetEnvironmentVariable("AppConfigConnectionString")));
 ----
+
+----
+Azure Kusto Examples
+ - quick reference at:
+ https://docs.microsoft.com/en-us/azure/data-explorer/kql-quick-reference
+
+ - same as a SQL using LIKE '%Starting Orchestration%'
+ traces | where message has "Starting Orchestration"
+ 
+ - look for Message Template values
+  - uses esoteric suffix of "prop__"
+  - are saved within the 'customDimensions' property of the table
+ traces | where customDimensions.prop__OBU == "LMNOP" 
+ 
+ - having strange names in customDimensions
+  - uses index-style syntax
+ traces
+ | where message has "Updated Order Status"
+   and customDimensions['prop__@Rejected'] == "[]"
+ | sort by timestamp desc 
+ 
+ - between a date-time range
+ exceptions
+ | where timestamp between(datetime("2022-07-20 17:00:00") .. datetime("2022-07-20 18:30:00"))
+ | take 100 
+----
+ 
+----
+Misc. Commands
+ - this is to dump whatever local state the durable functions are in
+ func durable delete-task-hub --task-hub-name MyDurTasksNameHere
+----
