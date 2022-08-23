@@ -450,6 +450,10 @@ Git Commands
   - will move many files into the .git/objects/pack 
     pack files
  git gc
+ 
+ - to force a local repo to match a remote one
+ git fetch origin
+ git reset --hard origin/main
 ----
 
 ----

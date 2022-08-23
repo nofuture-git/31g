@@ -172,6 +172,8 @@ Azure Core Architectural Components
  - Resource Groups
   - are arbitrary groupings of Azure resources under a 
     single subscription Id
+  - top-level logical grouping of other Azure resources 
+    (e.g. app service plan, app cfg, network security group, etc.)
   - allows tagging so its clear on invoice
   - allows for removal as-a-whole (all resources therein)
   - in Terraform:

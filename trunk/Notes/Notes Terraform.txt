@@ -42,6 +42,7 @@ Terraform basics
  - Terraform code is a syntax named HashiCorp Configuration Language (HCL)
  - is expected file extension of .tf
  - documentation at https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+   Azure docx at https://registry.terraform.io/providers/hashicorp/azurerm/latest
  - terraform.exe will look for a file named 'main.tf' in the working directory
  - typical ignore files of Terraform are: .terraform *.tfstate *.tfstate.backup
 ----
@@ -176,13 +177,17 @@ Terraform Resource Syntax
  
  - syntax example:
  resource "aws_instance" "myExample" {
+  name = "my-aws-instance"
   ami = "ami-0c55b159cbfafe1f0"
   instance_type = "t2.micro"
  }
  
  - 'resource' is a keyword
  - "aws_instance" is a naming convention of provider_type
- - "myExample" is an identifier of this instance of this resource
+ - "myExample" is this the name of the resource used within the 
+    resulting terraform plan file
+ - name = "my-aws-instance" is name of the resource on the cloud
+   provider itself
  - what is within the body is specific config key-value pairs
    for that provider_type
 ----
@@ -212,6 +217,9 @@ Terraform Resource Attribute Reference
 Terraform Variable Assignment
  - three methods to assign variables
   - using 'someName.tfvars'
+   - still requires a command line arg
+ terraform plan -var-file=some_other_dir/MyEnv.tfvars -out MyTfPlanFile20250511.tfplan
+  
   - using environment variables which begin with 'TF_VAR_'
   - passing into the command line
    - this is given precedence over all other 
@@ -558,6 +566,10 @@ Terraform Resources 'for_each' Language Construct
  - allows for iteration over lists, sets, or hashtables
  - can make multiple copies of an entire resource
  
+ provider "aws" {
+   region = "us-east-1"
+ }
+ 
  variable "my_names" {
    description = "My Names"
    type = list(string)
@@ -625,6 +637,91 @@ Terraform Conditional with 'count'
 ----
 
 ----
+Nested Variable definition
+ - for when a resource's id is needed to create a child resource
+ - defined at a local to allow for key's in a map to be the 
+   same as a name
+ 
+ provider "azurerm" {
+   subscription_id = "65b8e6b0-fe67-484b-9a78-a5e1a9934939"
+   tenant_id       = "c2b28251-2119-4d73-b870-164acc3a1182"
+   features {}
+ }
+
+ locals {
+    az_svc_bus_topics = {
+      "svcBus_topic_00" = {
+        "svcBus_topic_00_sub_00" = {
+          "prop00" = "noop",
+          "prop01" = "true"
+        },
+        "svcBus_topic_00_sub_01" = {
+          "prop00" = "manual",
+        }
+      },
+      "svcBus_topic_01" = {
+        "svcBus_topic_01_sub_00" = {
+        
+        },
+        "svcBus_topic_01_sub_01" = {
+          "prop00" = "noop",
+          "prop01" = "true",
+          "prop02" = "^[a-zA-Z0-9]$"
+        }
+      }
+    }
+ }
+
+ #assumes this already exist
+ resource "azurerm_servicebus_namespace" "first" {
+   location            = "eastus"
+   resource_group_name = "nfimperium.visualStudioSub.ServiceBus"
+   name                = "nfimperium-visualStudioSub-ServiceBus"
+   sku                 = "Standard"
+   capacity            = 1
+ }
+ 
+ resource "azurerm_servicebus_topic" "svcbusTopic" {
+  
+   for_each          = local.az_svc_bus_topics
+   name              = each.key
+   namespace_id      = azurerm_servicebus_namespace.first.id
+ 
+   depends_on = [
+     azurerm_servicebus_namespace.first
+   ]
+ }
+
+ 
+ locals {
+    topics_and_subscriptions = flatten([
+     for topic_key, topic in local.az_svc_bus_topics : [
+       for sub_key, sub in topic : {
+         topic_name        = topic_key
+
+         #NOTE: this is the name of the resource and an index thereof
+         topic_id          = azurerm_servicebus_topic.svcbusTopic[topic_key].id
+         subscription_name = sub_key
+       }
+     ]
+   ])
+ }
+
+ resource "azurerm_servicebus_subscription" "svcbusSub" {
+ 
+   #have to cast the list as a map with unique keys 
+   #see https://www.terraform.io/language/functions/flatten#flattening-nested-structures-for-for_each
+   for_each = {
+     for tas in local.topics_and_subscriptions : "${tas.topic_name}.${tas.subscription_name}" => tas
+   }
+   
+   name                = each.value.subscription_name
+   topic_id            = each.value.topic_id
+   max_delivery_count  = 1
+ }
+----
+
+----
 Running terraform
  - working directory contains a main.tf file
  - run to download dependencies on given provider 
@@ -632,6 +729,10 @@ Running terraform
   - will also create various other files and folder in working dir
   - is idempotent so can run whenever
  terraform init
+ 
+  - we using some backend .tfstate file 
+  - see https://www.terraform.io/language/settings/backends/azurerm for an example
+ terraform init -reconfigure -backend-config="backendconfig/sandbox.tfvars"
  
  - next is the command 'plan'
   - like a 'WhatIf' parameter in PowerShell
@@ -645,6 +746,9 @@ Running terraform
    - '~' means something will be modified
    - '-/+' means something will be replaced
  terraform plan -var "my_magic_number=90"
+ 
+  - can also pass in a .tfvars file
+ terraform plan -var-file="myVars.tfvars"
  
  - 'apply' command will push what was planned to the 
    cloud provider
