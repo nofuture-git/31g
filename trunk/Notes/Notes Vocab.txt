@@ -789,3 +789,4 @@ helix: a corkscrew\spiral staircase shape in three dim
 helical: having the shape of a helix
 centripetal: inward collapse of helical
 centrifugal: outward expansion of helical
+jeremiad:  a long, mournful complaint or lamentation; a list of woes

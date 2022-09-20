@@ -38,10 +38,11 @@
             amer.AddEntry(1661, "Charlestown SC(1663)");
             amer.AddEntry(1664, "English take New Amsterdam-rename New York(1664)");
             amer.AddEntry(new ExplorerEntry("La.Salle", "Ohio Riv.&Lake Mich.", 1669));
+            amer.AddEntry(1675, "King Philip's War(1675)");
             amer.AddEntry(1682, "Philadelphia, PA founded(1682)");
             amer.AddEntry(new ExplorerEntry("La.Salle", "Mid West N.Amer", 1683) { StartValue = 1685 });
 
-            var engd = new Block {Ruler = rule, Title = "England", Width = 36};
+            var engd = new Block {Ruler = rule, Title = "England", Width = 42};
             engd.AddEntry(new LeaderEntry("Henry VIII", new int?[,] { { 1509, 1547 } }));
             engd.AddEntry(new LeaderEntry("Edward VI", new int?[,] { { 1547, 1553 } }));
             engd.AddEntry(new LeaderEntry("Mary", new int?[,] { { 1553, 1558 } }));
