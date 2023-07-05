@@ -151,38 +151,29 @@ $evt.AddEventHandler($proc,$myEventHandler)
 
 <#
     example send keystrokes from Powershell
-	http://msdn.microsoft.com/en-us/library/8c6yea83%28v=vs.84%29.aspx
 #>
-function LaunchClassicWebsite($url, $proj){
-    $objShell = New-Object -ComObject WScript.Shell
-    $objShell.Run("vs05")
-    $name = (Get-Process -Name "devenv" | ? {$_.Description -like "*Studio 2005"}).Name
-    $loaded = $objShell.AppActivate($name)
-    [System.Threading.Thread]::Sleep(1000)
+Add-Type -TypeDefinition @"
 
-    $objShell.SendKeys("%")
-    [System.Threading.Thread]::Sleep(1000)
+namespace NoFuture.Cli
+{
+    public class BusyMouse
+    {
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int SetForegroundWindow(System.IntPtr hwnd);
 
-    $objShell.SendKeys("f")
-    [System.Threading.Thread]::Sleep(1000)
-
-    $objShell.SendKeys("e")
-    [System.Threading.Thread]::Sleep(1000)
-
-    $objShell.SendKeys($proj)
-    [System.Threading.Thread]::Sleep(1000)
-
-    $objShell.SendKeys("{ENTER}")
-    [System.Threading.Thread]::Sleep(1000)
-
-    Write-Progress -activity $("Starting Internet Explorer.") -status $("Waiting...");
-    $myie = New-Object -ComObject InternetExplorer.Application
-    [System.Threading.Thread]::Sleep(4000)
-    Write-Progress -activity $("Navigating to '{0}'." -f $url) -status $("Waiting...") 
-    $myie.Navigate($url);
-    $myie.Visible = $true;
-    $myie.Top = 0;
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int SetFocus(System.IntPtr hwnd);
+    }
 }
+"@
+$bProcesses = [System.Diagnostics.Process]::GetProcessesByName("Notepad")
+
+#need the one with a non-zero value
+$bProcess = $bProcesses | Where-Object { $_.MainWindowHandle -ne [System.IntPtr]::Zero} | Select-Object -First 1
+
+$dnd = [NoFuture.Cli.BusyMouse]::SetForegroundWindow($bProcess.MainWindowHandle)
+$dnd = [NoFuture.Cli.BusyMouse]::SetFocus($bProcess.MainWindowHandle)
+$dnd = [System.Windows.Forms.SendKeys]::SendWait("123");
 
 <#
     example Windows Security
