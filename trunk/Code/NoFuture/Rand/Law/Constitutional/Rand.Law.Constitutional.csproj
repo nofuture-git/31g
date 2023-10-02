@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NoFuture.Rand.Law.Constitutional</RootNamespace>
     <AssemblyName>NoFuture.Rand.Law.Constitutional</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,10 +40,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Rand.Core.csproj">
-      <Project>{3c5df49d-ae94-431c-85a5-7f5b71ac777f}</Project>
-      <Name>Rand.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Property\Rand.Law.Property.csproj">
       <Project>{25a94905-7e58-463c-bed8-d3004135cfcc}</Project>
       <Name>Rand.Law.Property</Name>
