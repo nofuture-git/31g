@@ -200,7 +200,7 @@ namespace NoFuture.Rand.Law.Tests
             }
             var txtSr = new StreamReader(liSteam);
             var content = txtSr.ReadToEnd();
-            content = Util.Core.NfString.ConvertToLf(content);
+            content = NoFuture.Util.Core.NfString.ConvertToLf(content);
             return content.Split((char)0xA);
         }
 
