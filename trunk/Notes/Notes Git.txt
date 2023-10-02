@@ -462,4 +462,11 @@ Break Repo Up
  - following command will copy all the history of this 
    directory and make it as-if its the root of the repo
  git filter-branch --prune-empty --subdirectory-filter my_new_repo_dir/ -- master
+ 
+ -use the git-filter-repo python instead
+  - located at https://github.com/newren/git-filter-repo/
+  - need to add to the $PATH variable 
+ python C:/Projects/git-filter-repo/git-filter-repo --path trunk/Code/NoFuture/Timeline --to-subdirectory-filter Timeline
+   - make a fresh clone first  
+   - this is at the command is at the root directory
 ----
