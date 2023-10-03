@@ -63,7 +63,6 @@
     <Compile Include="KindsOfNames.cs" />
     <Compile Include="KindsOfTextCase.cs" />
     <Compile Include="LegalProperty.cs" />
-    <Compile Include="NfString.cs" />
     <Compile Include="Rationale.cs" />
     <Compile Include="TemporeComparer.cs" />
     <Compile Include="TermCategoryBoolOps.cs" />
