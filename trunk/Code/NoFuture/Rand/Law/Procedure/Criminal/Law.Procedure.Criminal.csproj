@@ -72,9 +72,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Rand.Law.csproj">
+    <ProjectReference Include="..\..\Law.csproj">
       <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
-      <Name>Rand.Law</Name>
+      <Name>Law</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

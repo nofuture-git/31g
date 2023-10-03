@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6B5FB4C2-16EB-4341-9164-04CF02B448D6}</ProjectGuid>
+    <ProjectGuid>{F4B14397-090C-4EAE-A746-717796D15D98}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Law.Procedure.Criminal.Tests</RootNamespace>
-    <AssemblyName>NoFuture.Law.Procedure.Criminal.Tests</AssemblyName>
+    <RootNamespace>NoFuture.Law.Constitutional.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Law.Constitutional.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,40 +42,29 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExampleAdministrativeCauseTests.cs" />
-    <Compile Include="ExampleAffidavitTests.cs" />
-    <Compile Include="ExampleArrestTests.cs" />
-    <Compile Include="ExampleBodilyIntrusionTests.cs" />
-    <Compile Include="ExampleChallengeToProbableCauseTests.cs" />
-    <Compile Include="ExampleDerivativeExclusionaryRuleTests.cs" />
-    <Compile Include="ExampleExclusionaryRuleTests.cs" />
-    <Compile Include="ExampleExigentCircumstancesTests.cs" />
-    <Compile Include="ExampleEyewitnessIdentificationTests.cs" />
-    <Compile Include="ExampleFriskTests.cs" />
-    <Compile Include="ExampleInstrumentOfTheStateTests.cs" />
-    <Compile Include="ExampleMirandaApproachTests.cs" />
-    <Compile Include="ExampleMobileVehicleSearchTests.cs" />
-    <Compile Include="ExamplePlainViewSeizureTests.cs" />
-    <Compile Include="ExampleProbableCauseTests.cs" />
-    <Compile Include="ExampleReasonableSuspicionTests.cs" />
-    <Compile Include="ExampleRightToCounselApproachTests.cs" />
-    <Compile Include="ExampleSearchIncidentToArrestTests.cs" />
-    <Compile Include="ExampleSearchTests.cs" />
-    <Compile Include="ExampleSearchWarrantTests.cs" />
-    <Compile Include="ExampleVoluntarinessTests.cs" />
+    <Compile Include="EdmonsonvLeesvilleConcreteCompanyIncTests.cs" />
+    <Compile Include="JacksonvMetropolitanEdisonCompanyTests.cs" />
+    <Compile Include="ManhattanCommunityAccessCorporationvHalleckTests.cs" />
+    <Compile Include="MarshvAlabamaTests.cs" />
+    <Compile Include="MooseLodgevIrvisTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShelleyvKraemerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Procedure\Criminal\Rand.Law.Procedure.Criminal.csproj">
-      <Project>{e0f6d6a3-23fb-44ef-8247-89b6ca07c905}</Project>
-      <Name>Rand.Law.Procedure.Criminal</Name>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Constitutional\Law.Constitutional.csproj">
+      <Project>{39c1f7be-3c68-4b60-83ea-b4b1a3895493}</Project>
+      <Name>Law.Constitutional</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Rand.Law.csproj">
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Property\Law.Property.csproj">
+      <Project>{25a94905-7e58-463c-bed8-d3004135cfcc}</Project>
+      <Name>Law.Property</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Law.csproj">
       <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
-      <Name>Rand.Law</Name>
+      <Name>Law</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

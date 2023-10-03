@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F4B14397-090C-4EAE-A746-717796D15D98}</ProjectGuid>
+    <ProjectGuid>{106C2C8F-B342-4A1D-9797-97B40F0CBF12}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Law.Constitutional.Tests</RootNamespace>
-    <AssemblyName>NoFuture.Law.Constitutional.Tests</AssemblyName>
+    <RootNamespace>NoFuture.Law.Procedure.Civil.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Law.Procedure.Civil.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,31 +42,47 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EdmonsonvLeesvilleConcreteCompanyIncTests.cs" />
-    <Compile Include="JacksonvMetropolitanEdisonCompanyTests.cs" />
-    <Compile Include="ManhattanCommunityAccessCorporationvHalleckTests.cs" />
-    <Compile Include="MarshvAlabamaTests.cs" />
-    <Compile Include="MooseLodgevIrvisTests.cs" />
+    <Compile Include="DiscoveryTests\ExampleTestRequestForProduction.cs" />
+    <Compile Include="ExampleAustinvHealyTests.cs" />
+    <Compile Include="ExampleSmokyMountainVWTests.cs" />
+    <Compile Include="JudgmentTests\ExampleTestConsentJudgment.cs" />
+    <Compile Include="JudgmentTests\ExampleTestJnov.cs" />
+    <Compile Include="JudgmentTests\ExampleTestJudgmentAsMatterOfLaw.cs" />
+    <Compile Include="JudgmentTests\ExampleTestNewTrial.cs" />
+    <Compile Include="JudgmentTests\ExampleTestResJudicata.cs" />
+    <Compile Include="JudgmentTests\ExampleTestSummaryJudgment.cs" />
+    <Compile Include="PleadingsTests\ExampleTestAmendment.cs" />
+    <Compile Include="PleadingsTests\ExampleTestContributionClaim.cs" />
+    <Compile Include="PleadingsTests\ExampleTestCounterclaim.cs" />
+    <Compile Include="ExampleTestDomicileLocation.cs" />
+    <Compile Include="JurisdictionTests\ExampleTestFederalDiversityJurisdiction.cs" />
+    <Compile Include="JurisdictionTests\ExampleTestFederalVenue.cs" />
+    <Compile Include="PleadingsTests\ExampleTestInterveneJoiner.cs" />
+    <Compile Include="JurisdictionTests\ExampleTestMinContact.cs" />
+    <Compile Include="PleadingsTests\ExampleTestMotionToDismiss.cs" />
+    <Compile Include="PleadingsTests\ExampleTestOrderJoiner.cs" />
+    <Compile Include="JurisdictionTests\ExampleTestPersonalJurisdiction.cs" />
+    <Compile Include="JurisdictionTests\ExampleTestFederalSubjectMatterJurisdiction.cs" />
+    <Compile Include="JurisdictionTests\ExampleTestRemoval.cs" />
+    <Compile Include="PleadingsTests\ExampleTestSummons.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShelleyvKraemerTests.cs" />
+    <Compile Include="ServiceOfProcessTests\ExampleTestInPersonDelivery.cs" />
+    <Compile Include="ServiceOfProcessTests\ExampleTestVoluntaryEntry.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Procedure\Civil\Law.Procedure.Civil.csproj">
+      <Project>{3527cf45-740b-4175-bc1f-ff2eb3675e7c}</Project>
+      <Name>Law.Procedure.Civil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Law.csproj">
+      <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
+      <Name>Law</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Constitutional\Rand.Law.Constitutional.csproj">
-      <Project>{39c1f7be-3c68-4b60-83ea-b4b1a3895493}</Project>
-      <Name>Rand.Law.Constitutional</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Property\Rand.Law.Property.csproj">
-      <Project>{25a94905-7e58-463c-bed8-d3004135cfcc}</Project>
-      <Name>Rand.Law.Property</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Rand.Law.csproj">
-      <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
-      <Name>Rand.Law</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -91,17 +91,17 @@
     <Compile Include="US\Terms\StandardsTerm.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Criminal\Rand.Law.Criminal.csproj">
+    <ProjectReference Include="..\Criminal\Law.Criminal.csproj">
       <Project>{b034d93f-b140-40c0-a640-bba4fb8b85e3}</Project>
-      <Name>Rand.Law.Criminal</Name>
+      <Name>Law.Criminal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Property\Rand.Law.Property.csproj">
+    <ProjectReference Include="..\Property\Law.Property.csproj">
       <Project>{25a94905-7e58-463c-bed8-d3004135cfcc}</Project>
-      <Name>Rand.Law.Property</Name>
+      <Name>Law.Property</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Rand.Law.csproj">
+    <ProjectReference Include="..\Law.csproj">
       <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
-      <Name>Rand.Law</Name>
+      <Name>Law</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

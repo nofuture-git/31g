@@ -142,13 +142,13 @@
     <Compile Include="UccTests\TousleyBixlervColgateTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Contract\Rand.Law.Contract.csproj">
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Contract\Law.Contract.csproj">
       <Project>{4510e186-a2de-46b4-a29c-c171ef17a690}</Project>
-      <Name>Rand.Law.Contract</Name>
+      <Name>Law.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Rand.Law.csproj">
+    <ProjectReference Include="..\..\..\..\NoFuture\Rand\Law\Law.csproj">
       <Project>{4667e45a-0eb2-40cf-b431-319d2960f469}</Project>
-      <Name>Rand.Law</Name>
+      <Name>Law</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
