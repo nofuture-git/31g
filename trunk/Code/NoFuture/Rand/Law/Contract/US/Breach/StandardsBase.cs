@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.US;
+﻿using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Contract.US.Breach
+namespace NoFuture.Law.Contract.US.Breach
 {
     /// <inheritdoc />
     public abstract class StandardsBase<T> : DilemmaBase<T> where T : ILegalConcept

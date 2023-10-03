@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Enums;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Enums;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf
+namespace NoFuture.Law.Property.US.FormsOf
 {
     /// <summary>
     /// Property which belongs to the government

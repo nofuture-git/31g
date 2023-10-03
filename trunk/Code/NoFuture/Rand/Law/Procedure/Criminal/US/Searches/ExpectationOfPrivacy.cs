@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Searches
+namespace NoFuture.Law.Procedure.Criminal.US.Searches
 {
     public class ExpectationOfPrivacy : LegalConcept, ISearch
     {

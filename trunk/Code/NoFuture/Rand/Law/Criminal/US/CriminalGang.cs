@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Enums;
-using NoFuture.Rand.Law.Criminal.US.Terms;
+using NoFuture.Law;
+using NoFuture.Law.Enums;
+using NoFuture.Law.Criminal.US.Terms;
 
-namespace NoFuture.Rand.Law.Criminal.US
+namespace NoFuture.Law.Criminal.US
 {
     /// <summary>
     /// An ongoing group, club, organization, or association of five or more

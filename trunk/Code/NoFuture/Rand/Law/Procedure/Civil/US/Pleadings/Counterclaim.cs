@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
+namespace NoFuture.Law.Procedure.Civil.US.Pleadings
 {
     /// <summary>
     /// Complaint in opposition to some other plaintiff&apos;s

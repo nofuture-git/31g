@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
+namespace NoFuture.Law.Criminal.US.Defense.Excuse
 {
     /// <summary>
     /// the facts as the defendant believes them to be negate the requisite intent for the crime at issue

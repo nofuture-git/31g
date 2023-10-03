@@ -1,7 +1,7 @@
-﻿using NoFuture.Rand.Law.Enums;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Enums;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
+namespace NoFuture.Law.Property.US.FormsOf.InTerra
 {
     /// <summary>
     /// Land property or that which is attached to it permanently, more-or-less.

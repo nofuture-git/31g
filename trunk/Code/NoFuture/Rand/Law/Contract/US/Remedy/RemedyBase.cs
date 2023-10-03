@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Contract.US.Remedy
+﻿namespace NoFuture.Law.Contract.US.Remedy
 {
     /// <inheritdoc />
     /// <summary>

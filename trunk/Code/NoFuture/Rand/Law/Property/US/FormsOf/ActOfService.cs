@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Enums;
+using NoFuture.Law.Enums;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf
+namespace NoFuture.Law.Property.US.FormsOf
 {
     public class ActOfService : LegalProperty, IAct
     {

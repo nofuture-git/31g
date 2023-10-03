@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Terms
+﻿namespace NoFuture.Law.US.Terms
 {
     /// <summary>
     /// <![CDATA[

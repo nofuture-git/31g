@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense
+namespace NoFuture.Law.Criminal.US.Defense
 {
     /// <summary>
     /// Assumes the government asserted some incorrect fact in their paperwork submitted to the court

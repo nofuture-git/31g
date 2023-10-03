@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Procedure.Criminal.US.Intrusions;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons
+namespace NoFuture.Law.Procedure.Criminal.US.SearchReasons
 {
     /// <summary>
     /// quantity of facts and circumstances withing the police officer&apos;s knowledge that would

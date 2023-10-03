@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
+namespace NoFuture.Law.Contract.US.Defense.ToPublicPolicy
 {
     /// <summary>
     /// contracts that impair family law obligations

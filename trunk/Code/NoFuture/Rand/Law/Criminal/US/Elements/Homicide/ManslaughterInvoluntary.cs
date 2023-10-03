@@ -1,7 +1,7 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
+﻿using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.Criminal.US.Elements.Intent.PenalCode;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
+namespace NoFuture.Law.Criminal.US.Elements.Homicide
 {
     /// <summary>
     /// this is homicide which lacks intent

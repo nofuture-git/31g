@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.ReasonableCare
+namespace NoFuture.Law.Tort.US.ReasonableCare
 {
     /// <summary>
     /// A higher standard of reasonable care, beyond fortuity, when one is an expert of said thing.

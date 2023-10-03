@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Semiosis;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Semiosis;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
+namespace NoFuture.Law.Contract.Tests.SemiosisTests
 {
     /// <summary>
     /// RANDOM HOUSE, INC. v. ROSETTA BOOKS LLC United States District Court for the Southern District of New York 150 F.Supp. 2d 613 (S.D.N.Y. 2001)

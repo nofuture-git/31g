@@ -1,12 +1,12 @@
 ﻿using System;
-using NoFuture.Rand.Core.Enums;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Enums;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.AgainstGov;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.AgainstGovTests
+namespace NoFuture.Law.Criminal.Tests.AgainstGovTests
 {
     [TestFixture]
     public class ExampleTreasonTests

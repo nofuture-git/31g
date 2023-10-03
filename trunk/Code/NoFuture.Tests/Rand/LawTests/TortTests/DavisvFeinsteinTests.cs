@@ -1,10 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.ReasonableCare;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.Tort.US.ReasonableCare;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Davis v. Feinstein, 88 A.2d 695 (Pa. 1952)

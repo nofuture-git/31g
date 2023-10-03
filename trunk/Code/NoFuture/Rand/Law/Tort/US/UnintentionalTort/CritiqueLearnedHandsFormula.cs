@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.Tort.US.Elements;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Tort.US.Elements;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
+namespace NoFuture.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// Critics objections to the utilitarian philosophy of the formula.

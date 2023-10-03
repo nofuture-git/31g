@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <summary>
     /// An implementation to order <see cref="ITempore"/>

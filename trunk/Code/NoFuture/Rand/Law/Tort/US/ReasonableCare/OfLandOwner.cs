@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.Tort.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Property.US;
+using NoFuture.Law.Tort.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.ReasonableCare
+namespace NoFuture.Law.Tort.US.ReasonableCare
 {
     /// <summary>
     /// The common law rules regarding if a duty of care is required of a land owner towards visitors

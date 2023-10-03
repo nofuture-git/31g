@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Law.US
 {
     /// <summary>
     /// A voluntary sworn statement of fact given under oath with a authorized-by-law witness

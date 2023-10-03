@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <summary>
     /// Test the logical relationship between the act and the charged\complained effect

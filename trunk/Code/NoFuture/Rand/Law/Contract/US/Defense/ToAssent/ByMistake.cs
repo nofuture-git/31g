@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Contract.US.Defense.ToAssent
+﻿namespace NoFuture.Law.Contract.US.Defense.ToAssent
 {
     /// <summary>
     /// <![CDATA[

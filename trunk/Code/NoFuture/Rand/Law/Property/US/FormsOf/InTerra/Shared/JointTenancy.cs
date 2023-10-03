@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
+namespace NoFuture.Law.Property.US.FormsOf.InTerra.Shared
 {
     /// <summary>
     /// The property interest of a deceased cotenant is divided equally among the

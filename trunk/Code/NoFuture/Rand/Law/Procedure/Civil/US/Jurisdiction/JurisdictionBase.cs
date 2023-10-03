@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Courts;
+using NoFuture.Law;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Courts;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
+namespace NoFuture.Law.Procedure.Civil.US.Jurisdiction
 {
     public abstract class JurisdictionBase : CivilProcedureBase, IJurisdiction
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US.Terms;
+using NoFuture.Law.Contract.US.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests
+namespace NoFuture.Law.Contract.Tests
 {
     [TestFixture]
     public class ContractTermTests

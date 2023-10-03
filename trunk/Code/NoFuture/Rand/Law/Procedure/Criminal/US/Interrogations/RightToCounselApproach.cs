@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations
+namespace NoFuture.Law.Procedure.Criminal.US.Interrogations
 {
     /// <summary>
     /// Prohibits the police from deliberately eliciting incriminating

@@ -1,8 +1,8 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Terms;
-using NoFuture.Rand.Law.Criminal.US.Terms.Violence;
+﻿using NoFuture.Law.Criminal.US.Terms;
+using NoFuture.Law.Criminal.US.Terms.Violence;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.TermsTests
+namespace NoFuture.Law.Criminal.Tests.TermsTests
 {
     [TestFixture]
     public class ForceTests

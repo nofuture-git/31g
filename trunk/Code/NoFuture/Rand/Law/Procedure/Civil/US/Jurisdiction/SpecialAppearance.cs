@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Procedure.Civil.US.Pleadings;
+﻿using NoFuture.Law.Procedure.Civil.US.Pleadings;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
+namespace NoFuture.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
     /// A response to a <see cref="Summons"/> in which defendant

@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Persons
+namespace NoFuture.Law.US.Persons
 {
     [EtymologyNote("Latin", "'ex' + 'peritus'", "out-of + experienced, tested")]
     public interface IExpert<T> : ILegalPerson where T: IRationale

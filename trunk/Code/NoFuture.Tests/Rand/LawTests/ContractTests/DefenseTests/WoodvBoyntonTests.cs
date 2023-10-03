@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Defense.ToAssent;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Defense.ToAssent;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
+namespace NoFuture.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// WOOD v. BOYNTON Supreme Court of Wisconsin 64 Wis. 265, 25 N.W. 42 (1885)

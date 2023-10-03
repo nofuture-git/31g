@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law;
+﻿using NoFuture.Law;
 
-namespace NoFuture.Rand.Law.US.Courts
+namespace NoFuture.Law.US.Courts
 {
     /// <summary>
     /// Limited subject matter jurisdiction as defined

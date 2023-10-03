@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Procedure.Criminal.US;
-using NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions;
+using NoFuture.Law.Procedure.Criminal.US;
+using NoFuture.Law.Procedure.Criminal.US.Intrusions;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
+namespace NoFuture.Law.Procedure.Criminal.Tests
 {
     [TestFixture]
     public class ExampleFriskTests

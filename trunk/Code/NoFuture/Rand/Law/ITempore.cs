@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <summary>
     /// Any type which is tied to a discrete range of linear time

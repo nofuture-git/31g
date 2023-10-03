@@ -1,12 +1,12 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.Act;
+using NoFuture.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.CausationTests
+namespace NoFuture.Law.Criminal.Tests.CausationTests
 {
     /// <summary>
     /// Bullock v. State, 775 A.2d. 1043 (2001)

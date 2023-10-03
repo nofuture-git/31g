@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess;
-using NoFuture.Rand.Law.US.Courts;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Procedure.Civil.US.ServiceOfProcess;
+using NoFuture.Law.US.Courts;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.Tests.ServiceOfProcessTests
+namespace NoFuture.Law.Procedure.Civil.Tests.ServiceOfProcessTests
 {
     [TestFixture]
     public class ExampleTestVoluntaryEntry

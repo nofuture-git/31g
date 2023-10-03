@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Breach;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.Contract.US.Ucc;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Breach;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.Contract.US.Ucc;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
+namespace NoFuture.Law.Contract.Tests.BreachTests
 {
     /// <summary>
     /// KCA ELECTRONICS, INC. v. LEGACY ELECTRONICS, INC. Court of Appeal of California, Fourth Appellate District 2007 Cal.App.Unpub.LEXIS 6107 (Ct.App.)

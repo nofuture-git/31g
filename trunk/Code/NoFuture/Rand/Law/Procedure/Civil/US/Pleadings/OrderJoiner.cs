@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
+namespace NoFuture.Law.Procedure.Civil.US.Pleadings
 {
     /// <summary>
     /// When another party is order by the court to be added in order to fairly act

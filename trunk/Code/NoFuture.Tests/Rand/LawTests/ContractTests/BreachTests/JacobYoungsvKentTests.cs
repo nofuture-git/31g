@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Breach;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Breach;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
+namespace NoFuture.Law.Contract.Tests.BreachTests
 {
     /// <summary>
     /// JACOB & YOUNGS, INC. v. KENT  Court of Appeals of New York 230 N.Y. 239, 129 N.E. 889 (1921)

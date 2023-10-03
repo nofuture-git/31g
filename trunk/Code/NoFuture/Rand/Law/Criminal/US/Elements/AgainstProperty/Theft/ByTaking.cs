@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
+namespace NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft
 {
     /// <summary>
     /// A union of the various ways of directly stealing;  Model Penal Code 223.2. and 223.7.

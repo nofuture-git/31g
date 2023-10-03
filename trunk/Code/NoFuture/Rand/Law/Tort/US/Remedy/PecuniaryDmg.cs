@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.Remedy
+namespace NoFuture.Law.Tort.US.Remedy
 {
     /// <summary>
     /// reproduce the amount of money lost by the plaintiff 

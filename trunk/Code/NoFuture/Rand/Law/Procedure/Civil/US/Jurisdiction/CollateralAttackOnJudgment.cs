@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Procedure.Civil.US.Pleadings;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Procedure.Civil.US.Pleadings;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
+namespace NoFuture.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
     /// Like <see cref="SpecialAppearance"/> except its performed in the defendant&apos;s domicile location

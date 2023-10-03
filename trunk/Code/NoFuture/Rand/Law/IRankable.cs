@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law
+﻿namespace NoFuture.Law
 {
     public interface IRankable
     {

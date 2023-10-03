@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements;
+﻿using NoFuture.Law.Criminal.US.Elements;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
+namespace NoFuture.Law.Criminal.US.Elements.AttendantCircumstances
 {
     /// <summary>
     /// A declaration by the President per  National Emergencies Act (NEA)

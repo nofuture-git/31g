@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Inchoate
+namespace NoFuture.Law.Criminal.US.Elements.Inchoate
 {
     /// <summary>
     /// an agreement to commit any criminal offense

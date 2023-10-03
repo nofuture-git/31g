@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
+﻿namespace NoFuture.Law.Criminal.US.Elements.Intent
 {
     /// <summary>
     /// intent in participation prior to or during crime

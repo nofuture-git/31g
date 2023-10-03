@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Contract.US
+namespace NoFuture.Law.Contract.US
 {
     /// <summary>
     /// A contract common law concept.  A contract always has an Offeror and an

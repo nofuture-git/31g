@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions;
-using NoFuture.Rand.Law.Procedure.Criminal.US.Warrants;
+using NoFuture.Law.Procedure.Criminal.US.Intrusions;
+using NoFuture.Law.Procedure.Criminal.US.Warrants;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
+namespace NoFuture.Law.Procedure.Criminal.Tests
 {
     [TestFixture]
     public class ExampleBodilyIntrusionTests

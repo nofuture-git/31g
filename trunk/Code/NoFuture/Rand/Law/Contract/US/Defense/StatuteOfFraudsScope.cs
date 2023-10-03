@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Contract.US.Defense
+namespace NoFuture.Law.Contract.US.Defense
 {
     public class StatuteOfFraudsScope<T> : DefenseBase<T> where T : ILegalConcept
     {

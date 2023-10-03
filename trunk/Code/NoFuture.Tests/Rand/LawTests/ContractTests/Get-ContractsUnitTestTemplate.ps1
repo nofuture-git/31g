@@ -24,12 +24,12 @@
 $someCode = @"
 using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US.Contracts;
-using NoFuture.Rand.Law.US.Contracts.Terms;
+using NoFuture.Law;
+using NoFuture.Law.US.Contracts;
+using NoFuture.Law.US.Contracts.Terms;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
+namespace NoFuture.Law.Tests.ContractTests.BreachTests
 {
     /// <summary>
     /// 
@@ -134,7 +134,7 @@ namespace NoFuture.Rand.Law.Tests.ContractTests.BreachTests
     }
 }
 
-$testContractDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Contract.Tests.dll")).Path
+$testContractDll = (Resolve-Path (".\bin\Debug\NoFuture.Law.Contract.Tests.dll")).Path
 $nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe"))
 
 function Test-NfRandLawContractMethod($MethodName){

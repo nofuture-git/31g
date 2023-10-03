@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Attributes
+namespace NoFuture.Law.Attributes
 {
     public class AkaAttribute : Attribute
     {

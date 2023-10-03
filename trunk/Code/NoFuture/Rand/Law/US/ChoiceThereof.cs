@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Law.US
 {
     /// <summary>
     /// Represents the concept of picking one <see cref="T"/> among many possible choices thereof

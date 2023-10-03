@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Criminal
+namespace NoFuture.Law.Criminal
 {
     /// <summary>
     /// Action or conduct which is constituent element of a crime

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
+namespace NoFuture.Law.Procedure.Civil.US.ServiceOfProcess
 {
     /// <summary>
     /// The form of service performed by some person authorized by the court to deliver summons to

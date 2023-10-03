@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <summary>
     /// &quot;The main difference between a term and a word is the nature of reference&quot;

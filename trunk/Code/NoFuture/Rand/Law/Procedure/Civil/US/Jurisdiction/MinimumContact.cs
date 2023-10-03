@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
+namespace NoFuture.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
     /// A contact in which the defendant stands to benefit from the

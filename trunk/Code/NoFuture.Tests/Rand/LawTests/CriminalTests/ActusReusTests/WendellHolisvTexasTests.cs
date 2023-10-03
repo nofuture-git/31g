@@ -1,12 +1,12 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements;
+using NoFuture.Law.Criminal.US.Elements.Act;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.ActusReusTests
+namespace NoFuture.Law.Criminal.Tests.ActusReusTests
 {
     /// <summary>
     /// 998 S.W.2d 363 (1999) Wendell Hollis OLER, Appellant, v. The STATE of Texas, Appellee. No. 05-97-01229-CR. Court of Appeals of Texas, Dallas.

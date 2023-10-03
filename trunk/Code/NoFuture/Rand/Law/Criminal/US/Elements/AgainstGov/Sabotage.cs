@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Enums;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.Property.US.FormsOf;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law;
+using NoFuture.Law.Enums;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Law.Property.US.FormsOf;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstGov
+namespace NoFuture.Law.Criminal.US.Elements.AgainstGov
 {
     /// <summary>
     /// <![CDATA[ 18 U.S.C. § 2151 et seq., ]]> 

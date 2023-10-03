@@ -1,10 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.UnintentionalTort;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.Tort.US.UnintentionalTort;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Byrne v. Boadle, 159 Eng. Rep. 299 (Court of Exchequer and Exchequer Chamber, 1863)

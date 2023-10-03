@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
+﻿namespace NoFuture.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// there should be a recourse for a definite injury to a

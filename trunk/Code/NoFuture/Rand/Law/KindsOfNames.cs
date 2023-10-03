@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Enums
+namespace NoFuture.Law.Enums
 {
     [Serializable]
     [Flags]

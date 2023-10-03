@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Criminal.US.Terms.Malice
+namespace NoFuture.Law.Criminal.US.Terms.Malice
 {
     [Note("wrong by virtue of statute")]
     public class MalumProhibitum : TermCategory

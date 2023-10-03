@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law
+﻿namespace NoFuture.Law
 {
     /// <inheritdoc cref="ILegalConcept"/>
     public abstract class LegalConcept : Rationale, ILegalConcept

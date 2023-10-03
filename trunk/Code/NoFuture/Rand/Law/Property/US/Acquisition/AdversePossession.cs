@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.Acquisition
+namespace NoFuture.Law.Property.US.Acquisition
 {
     /// <summary>
     /// Possession of someone else&apos;s property as hostile, actual, visible, exclusive, and continuous.

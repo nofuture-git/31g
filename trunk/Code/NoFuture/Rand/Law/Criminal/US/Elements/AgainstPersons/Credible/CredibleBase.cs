@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons.Credible
+namespace NoFuture.Law.Criminal.US.Elements.AgainstPersons.Credible
 {
     public abstract class CredibleBase : LegalConcept, IAgitate
     {

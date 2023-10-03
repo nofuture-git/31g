@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <summary>
     /// a duty in acting to behave reasonably in the actions one does undertake

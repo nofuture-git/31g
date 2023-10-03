@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
+﻿namespace NoFuture.Law.Criminal.US.Elements.Intent
 {
     /// <inheritdoc cref="IMensRea"/>
     public abstract class MensRea : LegalConcept, IMensRea, IElement

@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
+namespace NoFuture.Law.Criminal.US.Defense.Excuse
 {
     /// <summary>
     /// when the whole of the criminal intent originated with government 

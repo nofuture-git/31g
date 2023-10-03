@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Remedy;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Remedy;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
+namespace NoFuture.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// LAKE RIVER CORPORATION v. CARBORUNDUM COMPANY United States Court of Appeals, Seventh Circuit 769 F.2d 1284 (7th Cir. 1985).

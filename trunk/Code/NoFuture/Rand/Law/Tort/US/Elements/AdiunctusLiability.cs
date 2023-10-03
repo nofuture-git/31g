@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Law.Tort.US.Elements
 {
     /// <summary>
     /// Liability through some kind of association of relationship

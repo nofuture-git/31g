@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Breach;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Breach;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
+namespace NoFuture.Law.Contract.Tests.BreachTests
 {
     /// <summary>
     /// SMITH v. BRADY Court of Appeals of New York 17 N.Y. 173 (1858)

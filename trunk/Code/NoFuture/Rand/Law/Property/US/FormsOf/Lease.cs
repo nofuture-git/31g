@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf
+namespace NoFuture.Law.Property.US.FormsOf
 {
     /// <inheritdoc cref="ILease{T}"/>
     public abstract class Lease<T> : PropertyBase, ILease<T> where T : ILegalProperty

@@ -1,13 +1,13 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Defense.Excuse.Insanity;
+using NoFuture.Law.Criminal.US.Elements.Act;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.InsanityTests
+namespace NoFuture.Law.Criminal.Tests.DefenseTests.InsanityTests
 {
     /// <summary>
     /// State v. Guido, 191 A.2d 45 (1993)

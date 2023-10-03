@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Persons
+﻿namespace NoFuture.Law.US.Persons
 {
     /// <summary>
     /// The offeror in a donative exchange (i.e. a gift)

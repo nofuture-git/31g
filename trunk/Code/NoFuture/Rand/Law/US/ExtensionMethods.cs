@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Law.US
 {
     /// <summary>
     /// https://www.cali.org/

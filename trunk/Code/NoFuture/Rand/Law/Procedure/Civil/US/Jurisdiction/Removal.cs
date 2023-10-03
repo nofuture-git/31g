@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Courts;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Courts;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
+namespace NoFuture.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
     /// The ability for a defendant to have the court moved to federal when

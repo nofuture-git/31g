@@ -1,11 +1,11 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.Tort.US.Elements;
-using NoFuture.Rand.Law.Tort.US.IntentionalTort;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.Tort.US.Elements;
+using NoFuture.Law.Tort.US.IntentionalTort;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Desnick v. American Broadcasting Companies, Inc., 44 F.3d 1345 (7th Cir. 1995).

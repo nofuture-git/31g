@@ -1,10 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.Elements;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.Tort.US.Elements;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Ira S. Bushey & Sons, Inc. v. United States, 398 F.2d 167 (2d Cir. 1968)

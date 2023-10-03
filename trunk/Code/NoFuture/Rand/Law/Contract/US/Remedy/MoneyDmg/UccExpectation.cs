@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Contract.US.Ucc;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Contract.US.Ucc;
 
-namespace NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg
+namespace NoFuture.Law.Contract.US.Remedy.MoneyDmg
 {
     /// <inheritdoc />
     [Aka("UCC 2-708")]

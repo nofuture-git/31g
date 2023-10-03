@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense
+namespace NoFuture.Law.Criminal.US.Defense
 {
     /// <summary>
     /// The capacity of the states to regulate behavior and enforce order

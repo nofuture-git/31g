@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Remedy
+namespace NoFuture.Law.Tort.US.Remedy
 {
     /// <summary>
     /// Damages which are meant to punish the defendant typically for some intentional tort.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US
+namespace NoFuture.Law.Procedure.Criminal.US
 {
     public abstract class CommencementJudicialProceedings : LegalConcept
     {

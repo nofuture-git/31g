@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
+namespace NoFuture.Law.Procedure.Civil.US.Judgment
 {
     /// <summary>
     /// Some procedural flaw has made due-process of law impossible then start things over (re-do)

@@ -29,11 +29,11 @@ $someCode = @"
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.Tests
+namespace NoFuture.Law.Procedure.Civil.Tests
 {
     /// <summary>
     /// 
@@ -71,7 +71,7 @@ namespace NoFuture.Rand.Law.Procedure.Civil.Tests
     }
 }
 
-$testPropertyDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Procedure.Civil.Tests.dll")).Path
+$testPropertyDll = (Resolve-Path (".\bin\Debug\NoFuture.Law.Procedure.Civil.Tests.dll")).Path
 $nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe"))
 
 function Test-NfRandLawCivilProcedureMethod($MethodName){

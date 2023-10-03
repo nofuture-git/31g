@@ -1,11 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US.Acquisition;
-using NoFuture.Rand.Law.Property.US.FormsOf.Intellectus;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Property.US.Acquisition;
+using NoFuture.Law.Property.US.FormsOf.Intellectus;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     /// <summary>
     /// Suntrust Bank v. Houghton Mifflin Co., 268 F.3d 1257 (11th Cir. 2001)

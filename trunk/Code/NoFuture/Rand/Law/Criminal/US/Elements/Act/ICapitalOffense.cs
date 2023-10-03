@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
+﻿namespace NoFuture.Law.Criminal.US.Elements.Act
 {
     /// <summary>
     /// criminal acts which can be punished by death

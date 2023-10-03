@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Property.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage
+namespace NoFuture.Law.Criminal.US.Elements.AgainstProperty.Damage
 {
     /// <summary>
     /// general case for damaging other property being less heinous than <see cref="Arson"/>

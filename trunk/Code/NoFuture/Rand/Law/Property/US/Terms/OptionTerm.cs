@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Property.US.Terms
+﻿namespace NoFuture.Law.Property.US.Terms
 {
     /// <summary>
     /// unilateral contract which gives the option holder the right to purchase under the terms and conditions of the option agreement.

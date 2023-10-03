@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Criminal.US
+namespace NoFuture.Law.Criminal.US
 {
     public interface ISexBilateral : IBilateral
     {

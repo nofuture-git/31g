@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law;
+using NoFuture.Law;
 
-namespace NoFuture.Rand.Law.Property.US.Terms.CoOwnership
+namespace NoFuture.Law.Property.US.Terms.CoOwnership
 {
     public abstract class CoOwnerBaseTerm : Term<ILegalProperty>
     {

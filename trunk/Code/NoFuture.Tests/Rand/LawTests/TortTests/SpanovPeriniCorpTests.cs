@@ -1,10 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.IntentionalTort;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.Tort.US.IntentionalTort;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Spano v. Perini Corp., 250 N.E.2d 31 (N.Y. 1969)

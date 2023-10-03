@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law
+﻿namespace NoFuture.Law
 {
     /// <summary>
     /// boolean ops taken from PowerShell - same meaning

@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.Terms.Convenants
+namespace NoFuture.Law.Property.US.Terms.Convenants
 {
     /// <summary>
     /// assure the grantee that the grantor is, at the time of the conveyance, lawfully seized

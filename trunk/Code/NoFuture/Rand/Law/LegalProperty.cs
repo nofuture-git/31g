@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Enums;
+using NoFuture.Law;
+using NoFuture.Law.Enums;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     public class LegalProperty : VocaBase, ILegalProperty
     {

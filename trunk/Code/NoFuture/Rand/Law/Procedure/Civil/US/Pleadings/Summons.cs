@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
+namespace NoFuture.Law.Procedure.Civil.US.Pleadings
 {
     /// <summary>
     /// An official court document commanding the defendant to respond at some time and place

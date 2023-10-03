@@ -1,11 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Ucc;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Ucc;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.UccTests
+namespace NoFuture.Law.Contract.Tests.UccTests
 {
     /// <summary>
     /// COMPUTER NETWORK, LTD. v. PURCELL TIRE & RUBBER COMPANY Missouri Court of Appeals 747 S.W.2d 669 (Mo.App. 1988)

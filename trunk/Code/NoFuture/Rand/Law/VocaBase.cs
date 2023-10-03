@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NoFuture.Rand.Law.Enums;
+using NoFuture.Law.Enums;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <inheritdoc />
     /// <summary>
-    /// Base implementation of <see cref="T:NoFuture.Rand.Law.IVoca" />
+    /// Base implementation of <see cref="T:NoFuture.Law.IVoca" />
     /// </summary>
     [Serializable]
     public class VocaBase : IVoca

@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Property.US.Terms.CoOwnership
+﻿namespace NoFuture.Law.Property.US.Terms.CoOwnership
 {
     /// <summary>
     /// Cotenants are not obligated to pay rent to each other unless one has been ousted the other. 

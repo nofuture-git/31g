@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Law.US
 {
     /// <summary>
     /// Composition class of legal-concept and term-category

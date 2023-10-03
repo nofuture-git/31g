@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law;
+using NoFuture.Law.Procedure.Criminal.US.SearchReasons;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions
+namespace NoFuture.Law.Procedure.Criminal.US.Intrusions
 {
     public abstract class ImplicatingFourthAmendment<T> : LegalConcept, IIntrusion
     {

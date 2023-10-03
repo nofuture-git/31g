@@ -1,18 +1,18 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Defense;
-using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
-using NoFuture.Rand.Law.Criminal.US.Elements;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.Criminal.US.Terms;
-using NoFuture.Rand.Law.Criminal.US.Terms.Violence;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Defense;
+using NoFuture.Law.Criminal.US.Defense.Justification;
+using NoFuture.Law.Criminal.US.Elements;
+using NoFuture.Law.Criminal.US.Elements.Act;
+using NoFuture.Law.Criminal.US.Elements.Intent;
+using NoFuture.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Law.Criminal.US.Terms;
+using NoFuture.Law.Criminal.US.Terms.Violence;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
+namespace NoFuture.Law.Criminal.Tests.DefenseTests.DefenseOfSelfTests
 {
     /// <summary>
     /// Shuler v. Babbitt, 49 F.Supp.2d 1165 (1998)

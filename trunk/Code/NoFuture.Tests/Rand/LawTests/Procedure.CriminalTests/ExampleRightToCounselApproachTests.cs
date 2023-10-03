@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations;
+using NoFuture.Law.Procedure.Criminal.US.Interrogations;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.Tests
+namespace NoFuture.Law.Procedure.Criminal.Tests
 {
     [TestFixture]
     public class ExampleRightToCounselApproachTests

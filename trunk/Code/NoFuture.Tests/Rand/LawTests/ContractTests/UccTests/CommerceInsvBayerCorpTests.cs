@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.Contract.US.Ucc;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.Contract.US.Ucc;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.UccTests
+namespace NoFuture.Law.Contract.Tests.UccTests
 {
     /// <summary>
     /// COMMERCE & INDUSTRY INS. CO. v. BAYER CORP. Supreme Judicial Court of Massachusetts 433 Mass. 388, 742 N.E.2d 567 (2001)

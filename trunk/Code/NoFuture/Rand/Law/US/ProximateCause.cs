@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Law.US
 {
     public class ProximateCause : UnoHomine, IProximateCause<ILegalPerson>
     {

@@ -1,13 +1,13 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Property.US.Acquisition;
-using NoFuture.Rand.Law.Property.US.Acquisition.Found;
-using NoFuture.Rand.Law.Property.US.FormsOf;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Property.US.Acquisition;
+using NoFuture.Law.Property.US.Acquisition.Found;
+using NoFuture.Law.Property.US.FormsOf;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     /// <summary>
     /// Popov v. Hayashi, No. 400545, 2002 WL 31833731 (Cal. Superior, Dec. 18, 2002)

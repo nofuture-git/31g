@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Elements.Inchoate;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Criminal.US.Elements.Inchoate;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
+namespace NoFuture.Law.Criminal.US.Elements.AgainstPersons
 {
     /// <summary>
     /// Attempting to make physical contact but does not 

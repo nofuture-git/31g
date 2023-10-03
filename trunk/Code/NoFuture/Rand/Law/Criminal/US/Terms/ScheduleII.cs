@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Terms
+﻿namespace NoFuture.Law.Criminal.US.Terms
 {
     /// <summary>
     /// High potential for abuse drugs which have some medical use (e.g. Fentanyl, Amphetamine, etc.)

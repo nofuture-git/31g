@@ -1,11 +1,11 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.Terms;
-using NoFuture.Rand.Law.Tort.US.UnintentionalTort;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.Tort.US.Terms;
+using NoFuture.Law.Tort.US.UnintentionalTort;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Brune v. Belinkoff, 235 N.E.2d 793 (Mass. 1968)

@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Terms
+﻿namespace NoFuture.Law.Criminal.US.Terms
 {
     public interface IDrugSchedule : ITermCategory
     {

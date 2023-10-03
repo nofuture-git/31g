@@ -1,13 +1,13 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US.FormsOf;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
-using NoFuture.Rand.Law.Tort.US.Defense;
+using NoFuture.Law.Property.US.FormsOf;
+using NoFuture.Law.Property.US.FormsOf.InTerra;
+using NoFuture.Law.Tort.US.Defense;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.IntentionalTort;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.Tort.US.IntentionalTort;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Vincent v. Lake Erie Transp. Co., 109 Minn. 456, 124 N.W. 221 (1910)

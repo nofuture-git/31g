@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Contract.US.Terms
+﻿namespace NoFuture.Law.Contract.US.Terms
 {
     public class WrittenTerm : OralTerm
     {

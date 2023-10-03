@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.US;
+﻿using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Contract.US.Defense
+namespace NoFuture.Law.Contract.US.Defense
 {
     public abstract class DefenseBase<T> : DilemmaBase<T>, IVoidable, IDefense where T : ILegalConcept
     {

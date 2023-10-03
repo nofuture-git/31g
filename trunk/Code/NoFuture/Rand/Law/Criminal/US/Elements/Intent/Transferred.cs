@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Criminal.US.Elements.Act;
+﻿using NoFuture.Law.Criminal.US.Elements.Act;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
+namespace NoFuture.Law.Criminal.US.Elements.Intent
 {
     /// <summary>
     /// A way to allow there to still be intent whenever the original 

@@ -1,11 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Ucc;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Ucc;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.UccTests
+namespace NoFuture.Law.Contract.Tests.UccTests
 {
     /// <summary>
     /// GARED HOLDINGS, LLC v. BEST BOLT PRODUCTS, INC. Court of Appeals of Indiana. 991 N.E.2d 1005 (Ind.Ct.App. 2013)

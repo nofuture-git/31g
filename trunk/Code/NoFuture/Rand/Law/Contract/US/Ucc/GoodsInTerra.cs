@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Contract.US.Ucc
+namespace NoFuture.Law.Contract.US.Ucc
 {
     /// <inheritdoc />
     /// <summary>

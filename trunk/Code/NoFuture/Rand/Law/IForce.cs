@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law
+﻿namespace NoFuture.Law
 {
     /// <summary>
     /// The amount of effort required to compel compliance by an unwilling subject

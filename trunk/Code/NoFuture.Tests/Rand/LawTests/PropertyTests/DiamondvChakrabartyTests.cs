@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US.FormsOf.Intellectus;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Property.US.FormsOf.Intellectus;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     /// <summary>
     /// Diamond v. Chakrabarty, 447 U.S. 303 (1980)

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Semiosis;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Semiosis;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.SemiosisTests
+namespace NoFuture.Law.Contract.Tests.SemiosisTests
 {
     /// <summary>
     /// FRIGALIMENT IMPORTING CO. v. B.N.S. INTERNATIONAL SALES CORP. United States District Court for the Southern District of New York 190 F.Supp. 116 (S.D.N.Y. 1960)

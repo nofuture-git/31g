@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Enums;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Enums;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
+namespace NoFuture.Law.Property.US.FormsOf.Intellectus
 {
     /// <summary>
     /// 35 U.S.C. Section 101, promoting &quot;the Progress of Science and the useful Arts&quot;

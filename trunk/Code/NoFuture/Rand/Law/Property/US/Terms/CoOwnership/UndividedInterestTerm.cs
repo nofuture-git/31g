@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Property.US.Terms.CoOwnership
+﻿namespace NoFuture.Law.Property.US.Terms.CoOwnership
 {
     /// <summary>
     /// Each owner has full rights to occupy and use all the property regardless of the size of their share (e.g. 25/75)

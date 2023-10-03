@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law;
+﻿using NoFuture.Law;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     public interface ICourt : IVoca
     {

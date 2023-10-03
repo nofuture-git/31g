@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
+namespace NoFuture.Law.Criminal.US.Elements.Intent
 {
     /// <summary>
     /// intent from assistance given after the crime

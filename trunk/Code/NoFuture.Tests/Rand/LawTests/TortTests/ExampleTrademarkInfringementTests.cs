@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NoFuture.Rand.Law.Property.US.FormsOf.Intellectus;
-using NoFuture.Rand.Law.Property.US.Terms;
-using NoFuture.Rand.Law.Property.US.Terms.Tm;
-using NoFuture.Rand.Law.Tort.US.IntentionalTort;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Property.US.FormsOf.Intellectus;
+using NoFuture.Law.Property.US.Terms;
+using NoFuture.Law.Property.US.Terms.Tm;
+using NoFuture.Law.Tort.US.IntentionalTort;
+using NoFuture.Law.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     [TestFixture]
     public class ExampleTrademarkInfringementTests

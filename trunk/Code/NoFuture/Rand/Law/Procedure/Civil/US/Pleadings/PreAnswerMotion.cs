@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
-using NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Procedure.Civil.US.Jurisdiction;
+using NoFuture.Law.Procedure.Civil.US.ServiceOfProcess;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
+namespace NoFuture.Law.Procedure.Civil.US.Pleadings
 {
     /// <summary>
     /// An optional, alternative to answering a complaint 

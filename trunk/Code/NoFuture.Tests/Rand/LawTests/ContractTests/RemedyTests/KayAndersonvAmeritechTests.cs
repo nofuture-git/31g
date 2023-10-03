@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Remedy.MoneyDmg;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
+namespace NoFuture.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// KAY & ANDERSON, S.C. v. AMERITECH PUBLISHING, INC. Court of Appeals of Wisconsin 2005 Wisc.App.LEXIS 216

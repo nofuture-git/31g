@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential
+namespace NoFuture.Law.Property.US.FormsOf.InTerra.Sequential
 {
     public abstract class DefeasibleFee : LandPropertyInterestBase
     {

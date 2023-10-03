@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Criminal
+namespace NoFuture.Law.Criminal
 {
     /// <summary>
     /// Unlawful application of violent force

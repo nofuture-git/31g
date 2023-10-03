@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.Terms
+namespace NoFuture.Law.Property.US.Terms
 {
     /// <summary>
     /// The legal written document which transfers title from person(s) to person(s)

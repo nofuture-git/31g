@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Procedure.Civil.US;
+using NoFuture.Law.Procedure.Civil.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.Tests
+namespace NoFuture.Law.Procedure.Civil.Tests
 {
     [TestFixture]
     public class ExampleTestDomicileLocation

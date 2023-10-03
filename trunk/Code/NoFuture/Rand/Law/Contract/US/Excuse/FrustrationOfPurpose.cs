@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Contract.US.Excuse
+namespace NoFuture.Law.Contract.US.Excuse
 {
     /// <summary>
     /// <![CDATA[ 

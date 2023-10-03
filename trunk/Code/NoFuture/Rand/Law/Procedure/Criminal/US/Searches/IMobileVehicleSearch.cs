@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Searches
+namespace NoFuture.Law.Procedure.Criminal.US.Searches
 {
     /// <summary>
     /// Any kind of mobile vehicle is assumed to have a lower

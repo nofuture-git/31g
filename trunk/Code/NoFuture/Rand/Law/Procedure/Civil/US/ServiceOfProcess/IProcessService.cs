@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
+namespace NoFuture.Law.Procedure.Civil.US.ServiceOfProcess
 {
     public interface IProcessService : ILegalConcept
     {

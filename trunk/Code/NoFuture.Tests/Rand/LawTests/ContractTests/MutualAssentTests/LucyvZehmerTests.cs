@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.MutualAssentTests
+namespace NoFuture.Law.Contract.Tests.MutualAssentTests
 {
     /// <summary>
     /// LUCY v. ZEHMER Supreme Court of Virginia 196 Va. 493; 84 S.E.2d 516 (1954)

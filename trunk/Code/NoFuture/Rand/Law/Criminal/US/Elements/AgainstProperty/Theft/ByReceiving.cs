@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
+namespace NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft
 {
     /// <summary>
     /// Model Penal Code 223.6.

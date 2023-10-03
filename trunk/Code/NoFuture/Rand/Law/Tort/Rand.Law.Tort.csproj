@@ -7,8 +7,8 @@
     <ProjectGuid>{E09B2CCE-C5BB-4760-8A42-BAB0B69EB3F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Rand.Law.Tort</RootNamespace>
-    <AssemblyName>NoFuture.Rand.Law.Tort</AssemblyName>
+    <RootNamespace>NoFuture.Law.Tort</RootNamespace>
+    <AssemblyName>NoFuture.Law.Tort</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

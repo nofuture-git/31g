@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Property.US;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
+namespace NoFuture.Law.Tort.US.IntentionalTort
 {
     /// <summary>
     /// unreasonable interferences with the use and enjoyment of land

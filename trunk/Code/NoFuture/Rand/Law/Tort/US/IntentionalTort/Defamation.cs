@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
+namespace NoFuture.Law.Tort.US.IntentionalTort
 {
     /// <summary>
     /// An injury to one&apos;s social standing.

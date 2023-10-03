@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
-using NoFuture.Rand.Law.Procedure.Civil.US.Pleadings;
-using NoFuture.Rand.Law.US.Courts;
+using NoFuture.Law.Procedure.Civil.US.Jurisdiction;
+using NoFuture.Law.Procedure.Civil.US.Pleadings;
+using NoFuture.Law.US.Courts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
+namespace NoFuture.Law.Procedure.Civil.Tests.PleadingsTests
 {
     [TestFixture]
     public class ExampleTestMotionToDismiss

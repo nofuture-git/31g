@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <summary>
     /// I type to record the reasoning of any conclusion.

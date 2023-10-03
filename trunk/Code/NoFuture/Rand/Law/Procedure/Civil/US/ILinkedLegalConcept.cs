@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law;
+﻿using NoFuture.Law;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US
+namespace NoFuture.Law.Procedure.Civil.US
 {
     public interface ILinkedLegalConcept : ILegalConcept
     {

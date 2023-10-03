@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Defense.ToAssent;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Defense.ToAssent;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
+namespace NoFuture.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// STANDARD FINANCE CO. v. ELLIS Intermediate Court of Appeals of Hawaii 3 Haw.App. 614, 657 P.2d 1056 (Haw.Ct.App. 1983)

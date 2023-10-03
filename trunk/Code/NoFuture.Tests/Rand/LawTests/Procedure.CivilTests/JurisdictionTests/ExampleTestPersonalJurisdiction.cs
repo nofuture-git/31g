@@ -1,12 +1,12 @@
 ﻿using System;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Courts;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law;
+using NoFuture.Law.Procedure.Civil.US.Jurisdiction;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Courts;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.Tests
+namespace NoFuture.Law.Procedure.Civil.Tests
 {
     [TestFixture]
     public class ExampleTestPersonalJurisdiction

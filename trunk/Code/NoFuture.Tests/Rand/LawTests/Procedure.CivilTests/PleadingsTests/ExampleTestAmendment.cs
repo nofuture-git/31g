@@ -1,12 +1,12 @@
 ﻿using System;
-using NoFuture.Rand.Law.Procedure.Civil.US.Pleadings;
-using NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Courts;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Procedure.Civil.US.Pleadings;
+using NoFuture.Law.Procedure.Civil.US.ServiceOfProcess;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Courts;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.Tests.PleadingsTests
+namespace NoFuture.Law.Procedure.Civil.Tests.PleadingsTests
 {
     [TestFixture]
     public class ExampleTestAmendment

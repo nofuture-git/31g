@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions
+namespace NoFuture.Law.Procedure.Criminal.US.Intrusions
 {
     public interface IIntrusion : ILegalConcept
     {

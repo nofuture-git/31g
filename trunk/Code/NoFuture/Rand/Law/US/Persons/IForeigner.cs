@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Persons
+namespace NoFuture.Law.US.Persons
 {
     /// <summary>
     /// Citizen of another nation-state other than the United States

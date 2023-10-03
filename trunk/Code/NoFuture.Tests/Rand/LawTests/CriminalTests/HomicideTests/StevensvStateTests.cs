@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Homicide;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.Homicide;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.HomicideTests
+namespace NoFuture.Law.Criminal.Tests.HomicideTests
 {
     /// <summary>
     /// Stevens v. State, 691 N.E.2d 412 (1997)

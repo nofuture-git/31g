@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoFuture.Rand.Law.US.Persons
+namespace NoFuture.Law.US.Persons
 {
     public interface ISuspect : ILegalPerson
     {

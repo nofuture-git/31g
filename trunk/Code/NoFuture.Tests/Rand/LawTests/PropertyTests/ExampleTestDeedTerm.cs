@@ -1,9 +1,9 @@
-﻿using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
-using NoFuture.Rand.Law.Property.US.Terms;
-using NoFuture.Rand.Law.US.Persons;
+﻿using NoFuture.Law.Property.US.FormsOf.InTerra;
+using NoFuture.Law.Property.US.Terms;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     [TestFixture]
     public class ExampleTestDeedTerm

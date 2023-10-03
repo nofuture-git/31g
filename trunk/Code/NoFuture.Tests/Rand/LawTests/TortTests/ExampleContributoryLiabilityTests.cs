@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Tort.US.Elements;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Tort.US.Elements;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     [TestFixture]
     public class ExampleContributoryLiabilityTests

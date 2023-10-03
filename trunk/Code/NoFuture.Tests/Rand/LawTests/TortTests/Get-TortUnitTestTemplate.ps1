@@ -25,11 +25,11 @@
 $someCode = @"
 using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.Property.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// 
@@ -66,7 +66,7 @@ namespace NoFuture.Rand.Law.Tort.Tests
     }
 }
 
-$testTortDll = (Resolve-Path (".\bin\Debug\NoFuture.Rand.Law.Tort.Tests.dll")).Path
+$testTortDll = (Resolve-Path (".\bin\Debug\NoFuture.Law.Tort.Tests.dll")).Path
 $nunit = (Resolve-Path ("..\..\..\..\packages\NUnit.ConsoleRunner.3.10.0\tools\nunit3-console.exe"))
 
 function Test-NfRandLawTortMethod($MethodName){

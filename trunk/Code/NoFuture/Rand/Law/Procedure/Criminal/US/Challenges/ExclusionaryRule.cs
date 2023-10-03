@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons;
-using NoFuture.Rand.Law.Procedure.Criminal.US.Warrants;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Procedure.Criminal.US.SearchReasons;
+using NoFuture.Law.Procedure.Criminal.US.Warrants;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
+namespace NoFuture.Law.Procedure.Criminal.US.Challenges
 {
     /// <summary>
     /// requires the suppression of evidence obtained in violation of the defendant&apos;s constitutional rights

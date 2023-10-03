@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
+namespace NoFuture.Law.Contract.Tests.ConsiderationTests
 {
     /// <summary>
     /// HARRINGTON v. TAYLOR Supreme Court of North Carolina 225 N.C. 690, 36 S.E.2d 227 (1945)

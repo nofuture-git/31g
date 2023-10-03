@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Defense.ToAssent;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Defense.ToAssent;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
+namespace NoFuture.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// AUSTIN INSTRUMENT, INC. v. LORAL CORP. Court of Appeals of New York 29 N.Y.2d 124, 272 N.E.2d 533, 324 N.Y.S.2d 22 (1971)

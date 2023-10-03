@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
+namespace NoFuture.Law.Procedure.Civil.US.Jurisdiction
 {
     /// <summary>
     /// Jurisdiction in terms of its geographical limitations

@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
+namespace NoFuture.Law.Criminal.US.Defense.Excuse.Insanity
 {
     /// <summary>
     /// Insanity defense named after Daniel M'Naghten from England (1843).

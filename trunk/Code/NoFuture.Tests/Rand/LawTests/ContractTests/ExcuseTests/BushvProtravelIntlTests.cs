@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Excuse;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Excuse;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.ExcuseTests
+namespace NoFuture.Law.Contract.Tests.ExcuseTests
 {
     /// <summary>
     /// BUSH v. PROTRAVEL INTERNATIONAL, INC. Civil Court of the City of New York 192 Misc. 2d 743, 746 N.Y.S.2d 790 (Civ.Ct. 2002)

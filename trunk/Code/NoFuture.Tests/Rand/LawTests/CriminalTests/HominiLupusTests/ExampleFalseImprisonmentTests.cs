@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.AgainstPersons;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.HominiLupusTests
+namespace NoFuture.Law.Criminal.Tests.HominiLupusTests
 {
     [TestFixture]
     public class ExampleFalseImprisonmentTests

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Searches
+namespace NoFuture.Law.Procedure.Criminal.US.Searches
 {
     /// <summary>
     /// The right of the people to be secure in their persons, houses, papers,

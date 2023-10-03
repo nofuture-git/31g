@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
+namespace NoFuture.Law.Procedure.Civil.US.Judgment
 {
     /// <summary>
     /// Capacity of a judge to withdraw a case from a jury when there is no meaningful question of law

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Defense.ToAssent;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Defense.ToAssent;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
+namespace NoFuture.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// SHERWOOD v. WALKER Supreme Court of Michigan 66 Mich. 568, 33 N.W. 919 (1887)

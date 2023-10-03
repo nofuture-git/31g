@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests
+namespace NoFuture.Law.Tests
 {
     [TestFixture]
     public class TermCategoryTests

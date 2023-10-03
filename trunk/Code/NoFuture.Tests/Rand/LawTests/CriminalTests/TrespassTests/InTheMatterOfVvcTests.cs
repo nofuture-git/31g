@@ -1,12 +1,12 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Defense;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Damage;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Defense;
+using NoFuture.Law.Criminal.US.Elements.AgainstProperty.Damage;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
+namespace NoFuture.Law.Criminal.Tests.TrespassTests
 {
     /// <summary>
     /// In the Matter of V.V.C., No. 04-07-00166 CV (Tex.: Court of Appeals, 2008).

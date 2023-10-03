@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Enums;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Enums;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.Intellectus
+namespace NoFuture.Law.Property.US.FormsOf.Intellectus
 {
     /// <summary>
     /// Like patent only dealing with works of artistic creation

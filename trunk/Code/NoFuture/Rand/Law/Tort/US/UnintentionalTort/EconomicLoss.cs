@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
+namespace NoFuture.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// Economic loss requires definite foreseeability concerns who, where, what, etc.

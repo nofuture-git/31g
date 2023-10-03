@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse.Insanity
+namespace NoFuture.Law.Criminal.US.Defense.Excuse.Insanity
 {
     /// <summary>
     /// A combination of <see cref="MNaghten"/> and <see cref="IrresistibleImpulse"/> 

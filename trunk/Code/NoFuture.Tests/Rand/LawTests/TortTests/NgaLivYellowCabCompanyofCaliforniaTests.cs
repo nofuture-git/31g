@@ -1,11 +1,11 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.Elements;
-using NoFuture.Rand.Law.Tort.US.UnintentionalTort;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.Tort.US.Elements;
+using NoFuture.Law.Tort.US.UnintentionalTort;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Li v. Yellow Cab Company of California, 532 P.2d 1226 (Cal. 1975)

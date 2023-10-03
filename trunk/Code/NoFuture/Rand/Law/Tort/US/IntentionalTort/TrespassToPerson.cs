@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
+namespace NoFuture.Law.Tort.US.IntentionalTort
 {
     /// <summary>
     /// Either of defamation or physical assault, battery or imprisonment.

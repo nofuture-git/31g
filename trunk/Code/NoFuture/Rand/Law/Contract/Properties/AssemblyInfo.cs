@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Rand.Law.Contract")]
+[assembly: AssemblyTitle("NoFuture.Law.Contract")]
 [assembly: AssemblyDescription("Contains types to represent legal concepts of contract law")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Rand.Law.Contract")]
+[assembly: AssemblyProduct("NoFuture.Law.Contract")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-[assembly:InternalsVisibleTo("NoFuture.Rand.Law.Contract.Tests")]
+[assembly:InternalsVisibleTo("NoFuture.Law.Contract.Tests")]
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("4510e186-a2de-46b4-a29c-c171ef17a690")]
 

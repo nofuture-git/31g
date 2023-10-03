@@ -1,11 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.Act;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
+namespace NoFuture.Law.Criminal.Tests.MensReaTests
 {
     /// <summary>
     /// State v. Horner, 126 Ohio St.3d 466, 2010-Ohio-3830

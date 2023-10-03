@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Enums;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law;
+using NoFuture.Law.Enums;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US
+namespace NoFuture.Law.Procedure.Civil.US
 {
     /// <summary>
     /// A persons domicile location is a named place and is also a testable legal concept

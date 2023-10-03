@@ -1,7 +1,7 @@
 ﻿
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <summary>
     /// Subjective Test: the object viewed from the perspective of the subject

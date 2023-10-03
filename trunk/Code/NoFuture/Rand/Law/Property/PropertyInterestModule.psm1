@@ -1,14 +1,14 @@
 ﻿$currentDirectory = Split-Path $PSCommandPath -Parent
 $dependencies = @(
- "NoFuture.Rand.Law.dll", 
- "NoFuture.Rand.Law.Property.dll")
+ "NoFuture.Law.dll", 
+ "NoFuture.Law.Property.dll")
 
 $dependencies | ? {Test-Path (Join-Path $currentDirectory $_) } | % {
     [System.Reflection.Assembly]::Load([System.IO.File]::ReadAllBytes((Join-Path $currentDirectory $_)))
 }
 
-$truePredicate = [NoFuture.Rand.Law.US.ExtensionMethods]::TruePredicateFx
-$falsePredicate = [NoFuture.Rand.Law.US.ExtensionMethods]::FalsePredicateFx
+$truePredicate = [NoFuture.Law.US.ExtensionMethods]::TruePredicateFx
+$falsePredicate = [NoFuture.Law.US.ExtensionMethods]::FalsePredicateFx
 
 <#
     .SYNOPSIS
@@ -22,7 +22,7 @@ $falsePredicate = [NoFuture.Rand.Law.US.ExtensionMethods]::FalsePredicateFx
     The name of the RealProperty
 
     .EXAMPLE
-    PS C:\> $person = New-Object NoFuture.Rand.Law.LegalPerson("some person")
+    PS C:\> $person = New-Object NoFuture.Law.LegalPerson("some person")
     PS C:\> $factory = Get-PropertyInterestFactory -PropertyName "some land"
     PS C:\> $factory = $factory.IsPresentInterestPossibleInfinite($truePredicate, $person)
     PS C:\> $factory = $factory.IsPresentInterestDefinitelyInfinite($falsePredicate, $person)
@@ -31,7 +31,7 @@ $falsePredicate = [NoFuture.Rand.Law.US.ExtensionMethods]::FalsePredicateFx
     PS C:\> $interest = $factory.GetValue()
 
     .OUTPUTS
-    NoFuture.Rand.Law.Property.US.FormsOf.InTerra.PropertyInterestFactory
+    NoFuture.Law.Property.US.FormsOf.InTerra.PropertyInterestFactory
     
 #>
 function Get-PropertyInterestFactory
@@ -44,8 +44,8 @@ function Get-PropertyInterestFactory
     )
     Process
     {
-        $property = New-Object NoFuture.Rand.Law.Property.US.FormsOf.InTerra.RealProperty($PropertyName)
-        return New-Object NoFuture.Rand.Law.Property.US.FormsOf.InTerra.PropertyInterestFactory($property, [NoFuture.Rand.Law.US.ExtensionMethods]::FirstOne)
+        $property = New-Object NoFuture.Law.Property.US.FormsOf.InTerra.RealProperty($PropertyName)
+        return New-Object NoFuture.Law.Property.US.FormsOf.InTerra.PropertyInterestFactory($property, [NoFuture.Law.US.ExtensionMethods]::FirstOne)
     }
 }
 
@@ -73,7 +73,7 @@ function Get-PropertyInterestFactory
 	PS C:\>
 
     .OUTPUTS
-    NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Interests.ILandPropertyInterest
+    NoFuture.Law.Property.US.FormsOf.InTerra.Interests.ILandPropertyInterest
     
 #>
 function Invoke-PropertyInterestPrompt
@@ -89,7 +89,7 @@ function Invoke-PropertyInterestPrompt
     )
     Process
     {
-        $person = New-Object NoFuture.Rand.Law.LegalPerson($PersonName)
+        $person = New-Object NoFuture.Law.LegalPerson($PersonName)
 
         $factory = Get-PropertyInterestFactory -PropertyName $PropertyName
 
@@ -99,7 +99,7 @@ function Invoke-PropertyInterestPrompt
 
             $questionMethodName = $questionMethod.Name
 
-            $questionPrompt = [NoFuture.Rand.Law.VocaBase]::TransformCaseToSeparator($questionMethodName, [char]" ")
+            $questionPrompt = [NoFuture.Law.VocaBase]::TransformCaseToSeparator($questionMethodName, [char]" ")
 
             $answer = Read-Host -Prompt ("{0}? (Y/N) " -f $questionPrompt) 
 
@@ -115,7 +115,7 @@ function Invoke-PropertyInterestPrompt
 
         $interest = $factory.GetValue()
 
-        Write-Host ([NoFuture.Rand.Law.VocaBase]::TransformCaseToSeparator($interest.GetType().Name, [char]" ")) -ForegroundColor Yellow
+        Write-Host ([NoFuture.Law.VocaBase]::TransformCaseToSeparator($interest.GetType().Name, [char]" ")) -ForegroundColor Yellow
 
         return $interest
 

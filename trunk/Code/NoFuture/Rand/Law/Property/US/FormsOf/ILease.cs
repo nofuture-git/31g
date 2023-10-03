@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law;
+using NoFuture.Law;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf
+namespace NoFuture.Law.Property.US.FormsOf
 {
     /// <summary>
     /// A contract to lease some property

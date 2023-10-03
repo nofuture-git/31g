@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Terms
+﻿namespace NoFuture.Law.US.Terms
 {
     /// <summary>
     /// The highest level of evidence - there is no reason to believe otherwise

@@ -1,7 +1,7 @@
-﻿using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
+﻿using NoFuture.Law.Attributes;
+using NoFuture.Law.Criminal.US.Elements.Act;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements
+namespace NoFuture.Law.Criminal.US.Elements
 {
     /// <summary>
     /// concurrence (i.e. at-the-same-time) of an evil-meaning mind with an evil-doing hand

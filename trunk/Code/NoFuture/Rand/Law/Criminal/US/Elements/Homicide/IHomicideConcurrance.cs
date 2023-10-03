@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law;
+using NoFuture.Law;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
+namespace NoFuture.Law.Criminal.US.Elements.Homicide
 {
     /// <summary>
     /// A in-time limiting factor in which the homicide occurs within

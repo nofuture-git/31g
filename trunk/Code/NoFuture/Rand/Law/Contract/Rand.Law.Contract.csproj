@@ -7,8 +7,8 @@
     <ProjectGuid>{4510E186-A2DE-46B4-A29C-C171EF17A690}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Rand.Law.Contract</RootNamespace>
-    <AssemblyName>NoFuture.Rand.Law.Contract</AssemblyName>
+    <RootNamespace>NoFuture.Law.Contract</RootNamespace>
+    <AssemblyName>NoFuture.Law.Contract</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

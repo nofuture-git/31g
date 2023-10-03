@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law
+﻿namespace NoFuture.Law
 {
     /// <summary>
     /// Something a person was legally required to do

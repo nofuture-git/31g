@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Property.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
+namespace NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft
 {
     /// <summary>
     /// Explanatory Note for Sections 223.1-223.9 of Model Penal Code

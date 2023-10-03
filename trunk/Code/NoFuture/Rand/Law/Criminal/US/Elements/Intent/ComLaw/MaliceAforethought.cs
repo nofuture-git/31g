@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw
+namespace NoFuture.Law.Criminal.US.Elements.Intent.ComLaw
 {
     /// <summary>
     /// intent designated only for murder - means premeditated

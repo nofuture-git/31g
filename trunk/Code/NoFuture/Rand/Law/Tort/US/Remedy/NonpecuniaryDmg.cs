@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.Remedy
+namespace NoFuture.Law.Tort.US.Remedy
 {
     /// <summary>
     /// the legal fiction that money damages can compensate for a victim&apos;s injury.

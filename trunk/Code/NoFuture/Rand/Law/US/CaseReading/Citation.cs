@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace NoFuture.Rand.Law.US.CaseReading
+namespace NoFuture.Law.US.CaseReading
 {
     public static class Citation
     {

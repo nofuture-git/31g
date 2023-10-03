@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Defense.ToFormation;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Defense.ToFormation;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.DefenseTests
+namespace NoFuture.Law.Contract.Tests.DefenseTests
 {
     /// <summary>
     /// ORTELERE v. TEACHERS’ RETIREMENT BOARD New York Court of Appeals 25 N.Y.2d 196, 250 N.E.2d 460, 303 N.Y.S.2d 362 (1969)

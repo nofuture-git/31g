@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Contract.US.Ucc
+namespace NoFuture.Law.Contract.US.Ucc
 {
     /// <inheritdoc cref="IMerchant{T}"/>
     public abstract class Merchant : LegalPerson, IMerchant<Goods>

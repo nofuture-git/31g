@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Procedure.Criminal.US.SearchReasons;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Procedure.Criminal.US.SearchReasons;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Challenges
+namespace NoFuture.Law.Procedure.Criminal.US.Challenges
 {
     /// <summary>
     /// when the source of evidence is from some other unlawful evidence 

@@ -1,11 +1,11 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.Tort.US.IntentionalTort;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.Property.US;
+using NoFuture.Law.Tort.US.IntentionalTort;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Hinman v. Pacific Air Transport, 84 F.2d 755 (9th Cir. 1936)

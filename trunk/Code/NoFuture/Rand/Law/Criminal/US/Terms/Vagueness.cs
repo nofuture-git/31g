@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Terms
+﻿namespace NoFuture.Law.Criminal.US.Terms
 {
     /// <summary>
     /// A means by which a <see cref="DisorderlyConduct"/> is found to be unconstitutional

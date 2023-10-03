@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.Intent;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
+namespace NoFuture.Law.Criminal.US.Elements.Homicide
 {
     /// <summary>
     /// A death or deaths that result from the commission of some other crime

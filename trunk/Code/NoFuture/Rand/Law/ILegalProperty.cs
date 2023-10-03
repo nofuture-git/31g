@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <summary>
     /// Everything which is subject to ownership and possess an exchangeable value

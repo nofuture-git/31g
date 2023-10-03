@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
+namespace NoFuture.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// Negligence by the explicit standard laid down by the Legislature

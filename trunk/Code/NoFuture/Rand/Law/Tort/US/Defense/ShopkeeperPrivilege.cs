@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Property.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Defense
+namespace NoFuture.Law.Tort.US.Defense
 {
     /// <summary>
     /// a shopkeeper is allowed to detain a suspected shoplifter on store

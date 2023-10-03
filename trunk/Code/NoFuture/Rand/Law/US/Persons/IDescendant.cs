@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US.Persons
+namespace NoFuture.Law.US.Persons
 {
     /// <summary>
     /// a relational position of one person to another through hereditary means 

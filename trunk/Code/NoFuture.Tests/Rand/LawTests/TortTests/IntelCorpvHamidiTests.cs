@@ -1,11 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US.FormsOf;
+using NoFuture.Law.Property.US.FormsOf;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.IntentionalTort;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.Tort.US.IntentionalTort;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Intel Corp. v. Hamidi, 71 P.3d 296 (Cal. 2003)

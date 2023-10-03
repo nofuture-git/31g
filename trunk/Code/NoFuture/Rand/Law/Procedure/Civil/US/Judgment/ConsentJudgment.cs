@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
+namespace NoFuture.Law.Procedure.Civil.US.Judgment
 {
     /// <summary>
     /// Judgment issued by a judge based on the agreement between the parties to a lawsuit to settle the matter

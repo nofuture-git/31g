@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Criminal;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
+namespace NoFuture.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// Emotional trauma from being a witness to violence against loved ones.

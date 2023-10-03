@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Law.US
 {
     /// <summary>
     /// Template for the concept of reasonable proportionality

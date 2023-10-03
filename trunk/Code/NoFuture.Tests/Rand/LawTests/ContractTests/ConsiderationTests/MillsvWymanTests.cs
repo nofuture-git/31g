@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
+namespace NoFuture.Law.Contract.Tests.ConsiderationTests
 {
     /// <summary>
     /// MILLS v. WYMAN Supreme Court of Massachusetts 20 Mass. (3 Pick.) 207 (1825)

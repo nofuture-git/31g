@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Elements
+﻿namespace NoFuture.Law.Criminal.US.Elements
 {
     /// <summary>
     /// That which the prosecution must prove beyond a reasonable doubt.

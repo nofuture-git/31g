@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <summary>
     /// mutual voluntary agreement between two parties to exchange this for that

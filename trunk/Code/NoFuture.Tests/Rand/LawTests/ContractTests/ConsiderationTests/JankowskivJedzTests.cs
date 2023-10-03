@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
+namespace NoFuture.Law.Contract.Tests.ConsiderationTests
 {
     /// <summary>
     /// JANKOWSKI v. MONCLOVA-MAUMEE-TOLEDO JOINT ECONOMIC DEVELOPMENT ZONE Court of Appeals of Ohio 185 Ohio App. 3d 568, 924 N.E.2d 932 (2010)

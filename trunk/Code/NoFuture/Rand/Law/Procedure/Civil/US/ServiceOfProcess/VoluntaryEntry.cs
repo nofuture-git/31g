@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
+namespace NoFuture.Law.Procedure.Civil.US.ServiceOfProcess
 {
     /// <summary>
     /// When the defendant acknowledges receipt of court summons

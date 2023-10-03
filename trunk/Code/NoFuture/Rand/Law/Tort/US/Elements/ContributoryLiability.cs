@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Law.Tort.US.Elements
 {
     /// <summary>
     /// by intentionally inducing or encouraging direct infringement,

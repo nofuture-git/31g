@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Servitudes
+namespace NoFuture.Law.Property.US.FormsOf.InTerra.Servitudes
 {
     /// <summary>
     /// Servitude regarding the use of another&apos;s land

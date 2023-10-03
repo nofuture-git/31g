@@ -1,14 +1,14 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
-using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.Property.US.FormsOf;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft;
+using NoFuture.Law.Criminal.US.Elements.AttendantCircumstances;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.Property.US.FormsOf;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
+namespace NoFuture.Law.Criminal.Tests.TheftTests
 {
     /// <summary>
     /// State v. Larson, 605 N.W. 2d 706 (2000)

@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US.Acquisition.Found;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Property.US.Acquisition.Found;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     /// <summary>
     /// Charrier v. Bell, 496 So. 2d 601 (La. App. 1 Cir. 1986)

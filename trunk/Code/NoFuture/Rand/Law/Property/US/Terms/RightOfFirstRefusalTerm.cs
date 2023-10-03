@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.Terms
+namespace NoFuture.Law.Property.US.Terms
 {
     /// <summary>
     /// Given some bargain, its the right to inject yourself in place of the buyer.

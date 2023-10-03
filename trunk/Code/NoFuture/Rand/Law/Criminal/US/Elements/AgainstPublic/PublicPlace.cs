@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Enums;
-using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law;
+using NoFuture.Law.Enums;
+using NoFuture.Law.Criminal.US.Elements.AttendantCircumstances;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPublic
+namespace NoFuture.Law.Criminal.US.Elements.AgainstPublic
 {
     /// <summary>
     /// a place which a substantial group has access like highways,

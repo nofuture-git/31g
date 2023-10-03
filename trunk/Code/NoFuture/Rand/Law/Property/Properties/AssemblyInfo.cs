@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Rand.Law.Property")]
+[assembly: AssemblyTitle("NoFuture.Law.Property")]
 [assembly: AssemblyDescription("Contains types to represent legal concepts of property law")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Rand.Law.Property")]
+[assembly: AssemblyProduct("NoFuture.Law.Property")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("25a94905-7e58-463c-bed8-d3004135cfcc")]
-[assembly: InternalsVisibleTo("NoFuture.Rand.Law.Property.Tests")]
+[assembly: InternalsVisibleTo("NoFuture.Law.Property.Tests")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

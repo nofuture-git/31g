@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons.Credible
+namespace NoFuture.Law.Criminal.US.Elements.AgainstPersons.Credible
 {
     /// <summary>
     /// acts which are not themselves illegal - typical friction of the world

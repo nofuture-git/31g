@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Contract.US.Defense.ToPublicPolicy
+namespace NoFuture.Law.Contract.US.Defense.ToPublicPolicy
 {
     /// <summary>
     /// contracts that limit tort liability

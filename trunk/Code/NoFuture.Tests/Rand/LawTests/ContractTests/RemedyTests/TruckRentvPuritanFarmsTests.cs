@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Remedy;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Remedy;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
+namespace NoFuture.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// TRUCK RENT-A-CENTER, INC. v. PURITAN FARMS 2nd, INC. Court of Appeals of New York 41 N.Y.2d 420, 393 N.Y.S.2d 365 (1977)

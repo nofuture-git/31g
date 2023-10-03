@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Contract.US
+namespace NoFuture.Law.Contract.US
 {
     /// <inheritdoc />
     /// <summary>

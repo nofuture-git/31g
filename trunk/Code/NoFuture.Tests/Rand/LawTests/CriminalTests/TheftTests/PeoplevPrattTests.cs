@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
+namespace NoFuture.Law.Criminal.Tests.TheftTests
 {
     /// <summary>
     /// People v. Pratt, 656 N.W.2d 866 (2002)

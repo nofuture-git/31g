@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Procedure.Civil.US.Pleadings;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Procedure.Civil.US.Pleadings;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US
+namespace NoFuture.Law.Procedure.Civil.US
 {
     public static class LinkedLegalConceptExtensions
     {

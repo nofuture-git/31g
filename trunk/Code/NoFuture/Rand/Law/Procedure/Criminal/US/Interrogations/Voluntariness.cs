@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations
+namespace NoFuture.Law.Procedure.Criminal.US.Interrogations
 {
     /// <summary>
     /// a statement must be obtained as a product of voluntary choice

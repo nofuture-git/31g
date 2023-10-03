@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
-using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
+using NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft;
+using NoFuture.Law.Criminal.US.Elements.AttendantCircumstances;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
+namespace NoFuture.Law.Criminal.Tests.TheftTests
 {
     [TestFixture()]
     public class ExampleRobberyTests

@@ -1,11 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.Procedure.Civil.US.Discovery;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Courts;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Procedure.Civil.US.Discovery;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Courts;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.Tests.DiscoveryTests
+namespace NoFuture.Law.Procedure.Civil.Tests.DiscoveryTests
 {
     [TestFixture]
     public class ExampleTestRequestForProduction

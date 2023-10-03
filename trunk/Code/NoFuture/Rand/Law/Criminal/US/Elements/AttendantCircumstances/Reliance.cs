@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances
+namespace NoFuture.Law.Criminal.US.Elements.AttendantCircumstances
 {
     /// <summary>
     /// An attendant circumstance in which the <see cref="IVictim"/> was not only 

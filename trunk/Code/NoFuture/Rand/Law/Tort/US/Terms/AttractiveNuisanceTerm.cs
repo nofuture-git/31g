@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.Terms
+namespace NoFuture.Law.Tort.US.Terms
 {
     /// <summary>
     /// <![CDATA[ Section 339 of the Restatement (Second) of Torts (1965). ]]>

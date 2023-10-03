@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Persons
+﻿namespace NoFuture.Law.US.Persons
 {
     /// <summary>
     /// a person who has possession of some property but is not the owner.

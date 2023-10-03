@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Persons
+﻿namespace NoFuture.Law.US.Persons
 {
     /// <summary>
     /// a person who brings a civil case against another in a court of law

@@ -1,10 +1,10 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.Property.US.Acquisition;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.Property.US.Acquisition;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     /// <summary>
     /// Marengo Cave Co. v. Ross, 10 N.E.2d 917 (Ind. 1937)

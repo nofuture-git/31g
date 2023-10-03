@@ -1,7 +1,7 @@
-﻿using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
+﻿using NoFuture.Law.Attributes;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode
+namespace NoFuture.Law.Criminal.US.Elements.Intent.PenalCode
 {
     /// <summary>
     /// <![CDATA[

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
+namespace NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft
 {
     /// <summary>
     /// Model Penal Code 223.4 Theft by Extortion

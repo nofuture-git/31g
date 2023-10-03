@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg
+namespace NoFuture.Law.Contract.US.Remedy.MoneyDmg
 {
     /// <inheritdoc />
     /// <summary>

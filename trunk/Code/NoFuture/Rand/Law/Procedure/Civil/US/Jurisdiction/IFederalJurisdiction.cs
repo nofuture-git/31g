@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
+﻿namespace NoFuture.Law.Procedure.Civil.US.Jurisdiction
 {
     public interface IFederalJurisdiction : ILegalConcept
     {

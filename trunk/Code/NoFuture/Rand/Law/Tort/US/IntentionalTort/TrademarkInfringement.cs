@@ -1,11 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Property.US.FormsOf.Intellectus;
-using NoFuture.Rand.Law.Property.US.Terms;
-using NoFuture.Rand.Law.Property.US.Terms.Tm;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Property.US.FormsOf.Intellectus;
+using NoFuture.Law.Property.US.Terms;
+using NoFuture.Law.Property.US.Terms.Tm;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.IntentionalTort
+namespace NoFuture.Law.Tort.US.IntentionalTort
 {
     /// <summary>
     /// Infringement on the trademark or celebrity rights of another 

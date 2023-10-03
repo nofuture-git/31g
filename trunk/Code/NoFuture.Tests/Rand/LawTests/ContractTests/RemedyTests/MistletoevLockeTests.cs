@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Remedy.MoneyDmg;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
+namespace NoFuture.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// MISTLETOE EXPRESS SERVICE OF OKLAHOMA CITY v. LOCKE Court of Appeals of Texas, Sixth District 762 S.W.2d 637 (Tex. App.—Texarkana 1988)

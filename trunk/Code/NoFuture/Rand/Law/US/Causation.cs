@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Law.US
 {
     public class Causation : UnoHomine
     {

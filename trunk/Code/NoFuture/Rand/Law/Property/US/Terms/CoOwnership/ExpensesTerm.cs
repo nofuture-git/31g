@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoFuture.Rand.Law.Property.US.Terms.CoOwnership
+namespace NoFuture.Law.Property.US.Terms.CoOwnership
 {
     /// <summary>
     /// Each 

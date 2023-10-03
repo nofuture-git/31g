@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft
+namespace NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft
 {
     public class Robbery : ByTaking, IBattery, IAssault, IElement
     {

@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Procedure.Civil.US.Pleadings;
-using NoFuture.Rand.Law.US.Courts;
+using NoFuture.Law.Procedure.Civil.US.Pleadings;
+using NoFuture.Law.US.Courts;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.Tests
+namespace NoFuture.Law.Procedure.Civil.Tests
 {
     [TestFixture]
     public class ExampleTestCounterclaim

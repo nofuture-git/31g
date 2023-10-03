@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Constitutional.US;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Constitutional.US;
+using NoFuture.Law.Property.US.FormsOf.InTerra;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Constitutional.Tests
+namespace NoFuture.Law.Constitutional.Tests
 {
     /// <summary>
     /// Marsh v. Alabama 326 U.S. 501 (1946)

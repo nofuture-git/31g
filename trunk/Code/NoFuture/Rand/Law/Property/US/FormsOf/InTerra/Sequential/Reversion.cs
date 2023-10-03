@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential
+namespace NoFuture.Law.Property.US.FormsOf.InTerra.Sequential
 {
     public class Reversion : LifeEstate
     {

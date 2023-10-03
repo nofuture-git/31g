@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Attributes
+namespace NoFuture.Law.Attributes
 {
     [EtymologyNote("Latin", "conferatur", "compare")]
     public class CfAttribute : Attribute

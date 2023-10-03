@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Terms.Violence
+﻿namespace NoFuture.Law.Criminal.US.Terms.Violence
 {
     /// <summary>
     /// <![CDATA[

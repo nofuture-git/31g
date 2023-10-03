@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Persons
+﻿namespace NoFuture.Law.US.Persons
 {
     /// <summary>
     /// a person who swears to an affidavit

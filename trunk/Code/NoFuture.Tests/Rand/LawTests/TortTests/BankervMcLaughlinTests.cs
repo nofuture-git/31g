@@ -1,12 +1,12 @@
 ﻿using System;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.Tort.US.Elements;
-using NoFuture.Rand.Law.Tort.US.ReasonableCare;
-using NoFuture.Rand.Law.Tort.US.Terms;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.Tort.US.Elements;
+using NoFuture.Law.Tort.US.ReasonableCare;
+using NoFuture.Law.Tort.US.Terms;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Banker v. McLaughlin, 146 Tex. 434 (1948)

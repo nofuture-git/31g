@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
+using NoFuture.Law.Criminal.US.Defense.Justification;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Courvoisier v. Raymond, 47 P. 284 (Colo. 1896)

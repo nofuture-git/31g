@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Criminal.US.Defense.Excuse
+namespace NoFuture.Law.Criminal.US.Defense.Excuse
 {
     /// <summary>
     /// Defendant is not subject to criminal prosecution because, being so young, they cannot form criminal intent

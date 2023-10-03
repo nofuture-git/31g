@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law
+﻿namespace NoFuture.Law
 {
     /// <summary>
     /// Simple interface to bind a legal concept to some form of legal property

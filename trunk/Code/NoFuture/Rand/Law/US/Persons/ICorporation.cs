@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Persons
+﻿namespace NoFuture.Law.US.Persons
 {
     /// <summary>
     /// Article III section 1332 of U.S. Constitution,

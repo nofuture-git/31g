@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw
+namespace NoFuture.Law.Criminal.US.Elements.Intent.ComLaw
 {
     /// <summary>
     /// without the additional desire to cause a result

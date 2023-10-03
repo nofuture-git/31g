@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using NoFuture.Rand.Law.US.CaseReading;
+using NoFuture.Law.US.CaseReading;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests
+namespace NoFuture.Law.Tests
 {
     [TestFixture]
     public class CitationTests
@@ -200,8 +200,26 @@ namespace NoFuture.Rand.Law.Tests
             }
             var txtSr = new StreamReader(liSteam);
             var content = txtSr.ReadToEnd();
-            content = NoFuture.Util.Core.NfString.ConvertToLf(content);
+            content = ConvertToLf(content);
             return content.Split((char)0xA);
+        }
+
+        /// <summary>
+        /// Converts line endings to Lf
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        private static string ConvertToLf(string content)
+        {
+            const char LF = (char)0xA;
+            const char CR = (char)0xD;
+
+            if (content == null)
+                return null;
+            content = content.Replace(new string(new[] { CR, LF }),
+                new string(new[] { LF }));
+            content = content.Replace(new string(new[] { CR }), new string(new[] { LF }));
+            return content;
         }
 
     }

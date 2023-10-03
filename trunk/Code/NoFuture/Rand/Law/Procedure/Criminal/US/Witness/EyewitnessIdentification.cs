@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Procedure.Criminal.US.Interrogations;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Procedure.Criminal.US.Interrogations;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Witness
+namespace NoFuture.Law.Procedure.Criminal.US.Witness
 {
     /// <summary>
     /// A observer of a crime which may discriminate a suspect from a group.

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Property.US.FormsOf.InTerra;
+using NoFuture.Law.Property.US.FormsOf.InTerra.Shared;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     /// <summary>
     /// Olivas v. Olivas, 108 N.M. 814 (1989)

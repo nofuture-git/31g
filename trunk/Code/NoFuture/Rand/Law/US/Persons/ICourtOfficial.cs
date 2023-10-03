@@ -1,5 +1,5 @@
 ﻿
-namespace NoFuture.Rand.Law.US.Persons
+namespace NoFuture.Law.US.Persons
 {
     /// <summary>
     /// Any person in an official position within the US court system

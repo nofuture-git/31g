@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.Terms
+namespace NoFuture.Law.Tort.US.Terms
 {
     /// <summary>
     /// a manner or procedure which reflects the judgment, experience and conduct of many

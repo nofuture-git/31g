@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Property.US.FormsOf;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Property.US.FormsOf;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.Acquisition.Found
+namespace NoFuture.Law.Property.US.Acquisition.Found
 {
     /// <summary>
     /// When possession is voluntarily forsaken by the owner

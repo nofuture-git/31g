@@ -1,7 +1,7 @@
-﻿using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.US.Courts
+namespace NoFuture.Law.US.Courts
 {
     /// <summary>
     /// A trial court for general subject matter jurisdiction

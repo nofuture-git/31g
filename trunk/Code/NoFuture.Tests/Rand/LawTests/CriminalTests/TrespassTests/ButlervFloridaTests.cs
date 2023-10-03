@@ -1,13 +1,13 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Defense.Justification;
+using NoFuture.Law.Criminal.US.Elements.AgainstProperty.Trespass;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.TrespassTests
+namespace NoFuture.Law.Criminal.Tests.TrespassTests
 {
     /// <summary>
     /// Butler v. Florida, No. 1D08-0958 (Fla: Dist. Court of Appeals, 2009).

@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.US.Terms
+﻿namespace NoFuture.Law.US.Terms
 {
     /// <summary>
     /// The term for being highly probable but does not negate all reasonable doubt.

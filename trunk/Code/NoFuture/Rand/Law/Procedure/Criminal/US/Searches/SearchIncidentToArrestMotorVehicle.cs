@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Searches
+namespace NoFuture.Law.Procedure.Criminal.US.Searches
 {
     /// <summary>
     /// Based on the rules from Arizona v. Gant, 129 S. Ct 1710 (2009)

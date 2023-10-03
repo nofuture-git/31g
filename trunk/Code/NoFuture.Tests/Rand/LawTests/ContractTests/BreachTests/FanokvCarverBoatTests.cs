@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Breach;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.Contract.US.Ucc;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Breach;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.Contract.US.Ucc;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.BreachTests
+namespace NoFuture.Law.Contract.Tests.BreachTests
 {
     /// <summary>
     /// FANOK v. CARVER BOAT CORP. United States District Court for the Eastern District of New York 576 F.Supp. 2d 404 (E.D.N.Y. 2008)

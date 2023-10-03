@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
+namespace NoFuture.Law.Procedure.Civil.US.ServiceOfProcess
 {
     public abstract class DeliveryBase : ProcessServiceBase
     {

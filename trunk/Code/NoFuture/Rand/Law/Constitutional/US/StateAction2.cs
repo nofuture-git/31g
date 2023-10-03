@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Constitutional.US
+namespace NoFuture.Law.Constitutional.US
 {
     /// <summary>
     /// The US Constitution doctrine of when a person is protected against incursions by government 

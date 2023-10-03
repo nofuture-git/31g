@@ -1,11 +1,11 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Terms.Violence;
+using NoFuture.Law.Criminal.US.Terms.Violence;
 using NUnit.Framework;
-using NoFuture.Rand.Law.US.Persons;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.Criminal.US.Defense.Justification;
+using NoFuture.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.Criminal.US.Defense.Justification;
 
-namespace NoFuture.Rand.Law.Tort.Tests
+namespace NoFuture.Law.Tort.Tests
 {
     /// <summary>
     /// Ploof v. Putnam, 71 A. 188 (Vt. 1908)

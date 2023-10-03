@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Procedure.Civil.US.Judgment
+﻿namespace NoFuture.Law.Procedure.Civil.US.Judgment
 {
     public interface IJudgment : ILegalConcept
     {

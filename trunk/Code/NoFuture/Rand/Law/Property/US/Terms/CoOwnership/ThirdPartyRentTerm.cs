@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Property.US.Terms.CoOwnership
+﻿namespace NoFuture.Law.Property.US.Terms.CoOwnership
 {
     /// <summary>
     /// Each cotenant is due a portion of any 3rd party rent payed according to their fraction-share

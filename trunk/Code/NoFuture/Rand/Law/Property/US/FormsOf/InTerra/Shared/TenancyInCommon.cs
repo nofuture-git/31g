@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Shared
+namespace NoFuture.Law.Property.US.FormsOf.InTerra.Shared
 {
     /// <summary>
     /// Neither tenant can lawfully exclude the other

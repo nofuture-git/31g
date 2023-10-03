@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.US;
+﻿using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
+namespace NoFuture.Law.Criminal.US.Elements.Homicide
 {
     /// <summary>
     /// This is the same as <see cref="Murder"/> only the intent must be <see cref="AdequateProvocation"/>

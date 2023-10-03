@@ -1,12 +1,12 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US.FormsOf;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Property.US.FormsOf;
+using NoFuture.Law.Property.US.FormsOf.InTerra;
+using NoFuture.Law.Property.US.FormsOf.InTerra.Sequential;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     /// <summary>
     /// White v. Brown, 559 S.W.2d 938 (Tenn. 1977)

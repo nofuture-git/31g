@@ -8,8 +8,8 @@
     <ProjectGuid>{6B5FB4C2-16EB-4341-9164-04CF02B448D6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NoFuture.Rand.Law.Procedure.Criminal.Tests</RootNamespace>
-    <AssemblyName>NoFuture.Rand.Law.Procedure.Criminal.Tests</AssemblyName>
+    <RootNamespace>NoFuture.Law.Procedure.Criminal.Tests</RootNamespace>
+    <AssemblyName>NoFuture.Law.Procedure.Criminal.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

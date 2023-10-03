@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Tort.US.Terms
+﻿namespace NoFuture.Law.Tort.US.Terms
 {
     /// <summary>
     /// open-ended and flexible criteria like &quot;reasonable care&quot;

@@ -1,10 +1,10 @@
-﻿using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+﻿using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.Act;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
+namespace NoFuture.Law.Criminal.Tests.MensReaTests
 {
     /// <summary>
     /// Dean v. United States, 556 U.S. 568 (2009)

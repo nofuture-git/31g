@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Tort.US.Elements;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Tort.US.Elements;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.UnintentionalTort
+namespace NoFuture.Law.Tort.US.UnintentionalTort
 {
     /// <summary>
     /// the Learned Hand test is an ex ante, reasonable person formula for evaluating by

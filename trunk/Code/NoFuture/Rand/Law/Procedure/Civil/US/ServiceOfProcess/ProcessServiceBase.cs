@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.ServiceOfProcess
+namespace NoFuture.Law.Procedure.Civil.US.ServiceOfProcess
 {
     public abstract class ProcessServiceBase : CivilProcedureBase, IProcessService
     {

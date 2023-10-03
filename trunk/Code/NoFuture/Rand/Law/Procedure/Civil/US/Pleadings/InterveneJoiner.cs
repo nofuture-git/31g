@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
+namespace NoFuture.Law.Procedure.Civil.US.Pleadings
 {
     /// <summary>
     /// When another party has a right or makes a request to be added to a claim.

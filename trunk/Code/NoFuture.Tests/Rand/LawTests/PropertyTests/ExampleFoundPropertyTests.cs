@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Property.US.Acquisition.Found;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Property.US.Acquisition.Found;
+using NoFuture.Law.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     [TestFixture]
     public class ExampleFoundPropertyTests

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.Contract.US.Remedy.MoneyDmg;
-using NoFuture.Rand.Law.Contract.US.Terms;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.Contract.US.Remedy.MoneyDmg;
+using NoFuture.Law.Contract.US.Terms;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.RemedyTests
+namespace NoFuture.Law.Contract.Tests.RemedyTests
 {
     /// <summary>
     /// UNITED STATES NAVAL INSTITUTE v. CHARTER COMMUNICATIONS, INC. United States Court of Appeals for the Second Circuit 936 F.2d 692 (2d Cir. 1991)

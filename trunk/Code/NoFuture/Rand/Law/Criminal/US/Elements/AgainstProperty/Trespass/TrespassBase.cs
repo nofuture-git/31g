@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Property.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Trespass
+namespace NoFuture.Law.Criminal.US.Elements.AgainstProperty.Trespass
 {
     public abstract class TrespassBase : PropertyConsent
     {

@@ -1,13 +1,13 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.AgainstProperty.Theft;
-using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;
-using NoFuture.Rand.Law.Property.US.FormsOf;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.AgainstProperty.Theft;
+using NoFuture.Law.Criminal.US.Elements.AttendantCircumstances;
+using NoFuture.Law.Criminal.US.Elements.Intent.PenalCode;
+using NoFuture.Law.Property.US.FormsOf;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.TheftTests
+namespace NoFuture.Law.Criminal.Tests.TheftTests
 {
     [TestFixture]
     public class ExampleByDeceptionTest

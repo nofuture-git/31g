@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Property.US.Acquisition.Donative
+namespace NoFuture.Law.Property.US.Acquisition.Donative
 {
     public class GiftByWill : PropertyConsent
     {

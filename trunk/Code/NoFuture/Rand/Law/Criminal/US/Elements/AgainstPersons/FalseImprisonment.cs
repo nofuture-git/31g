@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
+namespace NoFuture.Law.Criminal.US.Elements.AgainstPersons
 {
     [Aka("felonious restraint")]
     public class FalseImprisonment : LegalConcept, IActusReus

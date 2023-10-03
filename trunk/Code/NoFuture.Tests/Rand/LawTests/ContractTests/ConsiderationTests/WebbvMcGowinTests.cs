@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.ConsiderationTests
+namespace NoFuture.Law.Contract.Tests.ConsiderationTests
 {
     /// <summary>
     /// WEBB v. McGOWIN Court of Appeals of Alabama 27 Ala.App. 82, 168 So. 196 (1935), aff’d 232 Ala. 374, 168 So. 199 (1936)

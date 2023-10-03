@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Procedure.Civil.US.Pleadings
+﻿namespace NoFuture.Law.Procedure.Civil.US.Pleadings
 {
     /// <summary>
     /// The response of a defendant to the complaint of the plaintiff

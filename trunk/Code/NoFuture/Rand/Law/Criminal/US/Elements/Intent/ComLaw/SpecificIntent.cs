@@ -1,5 +1,5 @@
 ﻿
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw
+namespace NoFuture.Law.Criminal.US.Elements.Intent.ComLaw
 {
     /// <summary>
     /// A more sophisticated level of awareness

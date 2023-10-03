@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
+using NoFuture.Law;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Tests
+namespace NoFuture.Law.Tests
 {
     [TestFixture]
     public class TermTests

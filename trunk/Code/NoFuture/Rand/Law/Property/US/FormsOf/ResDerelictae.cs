@@ -1,7 +1,7 @@
-﻿using NoFuture.Rand.Law.Enums;
-using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Enums;
+using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf
+namespace NoFuture.Law.Property.US.FormsOf
 {
     /// <summary>
     /// things voluntarily abandoned by their owner with the intention

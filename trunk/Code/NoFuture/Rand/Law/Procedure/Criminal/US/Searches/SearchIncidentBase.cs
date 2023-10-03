@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions;
+using NoFuture.Law.Procedure.Criminal.US.Intrusions;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Searches
+namespace NoFuture.Law.Procedure.Criminal.US.Searches
 {
     /// <summary>
     /// Base type to isolate each child type&apos;s predicates

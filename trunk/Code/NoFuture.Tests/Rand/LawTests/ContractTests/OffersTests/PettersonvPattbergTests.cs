@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
+namespace NoFuture.Law.Contract.Tests.OffersTests
 {
     /// <summary>
     /// PETTERSON v. PATTBERG Court of Appeals of New York 248 N.Y. 86, 161 N.E. 428 (1928)

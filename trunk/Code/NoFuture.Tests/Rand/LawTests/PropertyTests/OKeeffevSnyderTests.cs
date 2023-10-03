@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US.Acquisition;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Property.US.Acquisition;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Property.Tests
+namespace NoFuture.Law.Property.Tests
 {
     /// <summary>
     /// O’Keeffe v. Snyder, 83 N.J. 478 (1980)

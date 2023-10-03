@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Property.US.FormsOf.InTerra.Sequential;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Property.US.FormsOf.InTerra.Sequential;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.FormsOf.InTerra
+namespace NoFuture.Law.Property.US.FormsOf.InTerra
 {
     public interface IPropertyInterestFactory : IRationale
     {

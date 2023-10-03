@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Law.Property.US;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Property.US;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Tort.US.Elements
+namespace NoFuture.Law.Tort.US.Elements
 {
     /// <summary>
     /// Typically when one builds upon the land of another

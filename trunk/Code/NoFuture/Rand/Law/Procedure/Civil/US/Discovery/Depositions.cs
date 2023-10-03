@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Discovery
+namespace NoFuture.Law.Procedure.Civil.US.Discovery
 {
     /// <summary>
     /// The taking of testimony from a witness under oath.

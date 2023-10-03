@@ -1,7 +1,7 @@
-﻿using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+﻿using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Contract.US.Ucc
+namespace NoFuture.Law.Contract.US.Ucc
 {
     /// <summary>
     /// <![CDATA[

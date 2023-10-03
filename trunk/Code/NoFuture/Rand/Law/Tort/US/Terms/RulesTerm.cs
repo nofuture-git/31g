@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Tort.US.Terms
+﻿namespace NoFuture.Law.Tort.US.Terms
 {
     /// <summary>
     /// clear predicates concerning some state or fact (e.g. required to wear a seatbelt)

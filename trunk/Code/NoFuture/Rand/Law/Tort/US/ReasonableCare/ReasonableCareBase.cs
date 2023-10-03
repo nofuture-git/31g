@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Tort.US.ReasonableCare
+namespace NoFuture.Law.Tort.US.ReasonableCare
 {
     /// <summary>
     /// Abstract idea or caution of the hypothetical reasonable person

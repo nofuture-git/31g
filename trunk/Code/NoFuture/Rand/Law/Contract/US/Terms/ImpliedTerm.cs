@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Contract.US.Terms
+namespace NoFuture.Law.Contract.US.Terms
 {
     /// <summary>
     /// conditions read into a contract by courts (e.g. Notice)

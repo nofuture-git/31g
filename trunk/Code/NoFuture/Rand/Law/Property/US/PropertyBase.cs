@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US
+namespace NoFuture.Law.Property.US
 {
     public abstract class PropertyBase : UnoHomine, ILegalConceptWithProperty<ILegalProperty>
     {

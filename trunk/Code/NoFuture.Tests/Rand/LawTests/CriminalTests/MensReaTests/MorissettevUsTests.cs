@@ -1,12 +1,12 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US;
-using NoFuture.Rand.Law.Criminal.US.Elements.Act;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Criminal.US;
+using NoFuture.Law.Criminal.US.Elements.Act;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests.MensReaTests
+namespace NoFuture.Law.Criminal.Tests.MensReaTests
 {
     /// <summary>
     /// 342 U.S. 246 (1952) MORISSETTE v. UNITED STATES. No. 12. Supreme Court of United States. Argued October 9-10, 1951. Decided January 7, 1952.

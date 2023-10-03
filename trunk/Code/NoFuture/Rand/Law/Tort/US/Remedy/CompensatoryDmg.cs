@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Tort.US.Remedy
+namespace NoFuture.Law.Tort.US.Remedy
 {
     /// <summary>
     /// Money paid to restore the injured party, to the extent possible, to the

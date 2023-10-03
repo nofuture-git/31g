@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions
+namespace NoFuture.Law.Procedure.Criminal.US.Intrusions
 {
     /// <summary>
     /// An encounter with law-enforcement in which a person is detained, questioned and frisked (pat-down)

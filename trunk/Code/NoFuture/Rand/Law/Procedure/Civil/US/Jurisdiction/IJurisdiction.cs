@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law;
+using NoFuture.Law;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction
+namespace NoFuture.Law.Procedure.Civil.US.Jurisdiction
 {
     public interface IJurisdiction : ILegalConcept
     {

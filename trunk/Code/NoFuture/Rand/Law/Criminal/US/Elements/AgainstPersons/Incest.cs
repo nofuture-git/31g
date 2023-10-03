@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
+namespace NoFuture.Law.Criminal.US.Elements.AgainstPersons
 {
     /// <inheritdoc cref="SexBilateral"/>
     /// <summary>

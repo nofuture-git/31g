@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Contract.US.Semiosis
+namespace NoFuture.Law.Contract.US.Semiosis
 {
     /// <summary>
     /// A type to handle the problem of a court having to pick one of two

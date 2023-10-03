@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons.Credible
+﻿namespace NoFuture.Law.Criminal.US.Elements.AgainstPersons.Credible
 {
     /// <summary>
     /// in words only communicate intent to do someone harm

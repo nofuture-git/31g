@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <inheritdoc cref="IRationale"/>
     public class Rationale : IRationale

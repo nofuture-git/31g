@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Enums;
+using NoFuture.Law;
+using NoFuture.Law.Enums;
 
-namespace NoFuture.Rand.Law
+namespace NoFuture.Law
 {
     /// <inheritdoc cref="ILegalPerson"/>
     public class LegalPerson : VocaBase, ILegalPerson

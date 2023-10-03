@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal
+namespace NoFuture.Law.Procedure.Criminal
 {
     /// <summary>
     /// to interpose a disinterest magistrate between the police and the

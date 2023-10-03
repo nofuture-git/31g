@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Law.US
 {
     public abstract class UnoHomine : LegalConcept
     {

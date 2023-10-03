@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Act
+namespace NoFuture.Law.Criminal.US.Elements.Act
 {
     public interface IPossession : IActusReus
     {

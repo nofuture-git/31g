@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 
-namespace NoFuture.Rand.Law.Contract.US.Defense.ToFormation
+namespace NoFuture.Law.Contract.US.Defense.ToFormation
 {
     /// <summary> Contracts of minors are voidable </summary>
     public class ByMinor<T> : DefenseBase<T> where T : ILegalConcept

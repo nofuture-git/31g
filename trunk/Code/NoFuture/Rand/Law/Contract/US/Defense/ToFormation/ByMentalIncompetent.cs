@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Contract.US.Defense.ToFormation
+namespace NoFuture.Law.Contract.US.Defense.ToFormation
 {
     public class ByMentalIncompetent<T> : DefenseBase<T> where T : ILegalConcept
     {

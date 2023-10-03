@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoFuture.Rand.Law.US
+namespace NoFuture.Law.US
 {
     /// <summary>
     /// The idea of some <see cref="ILegalProperty"/> being impaired in value, usefulness or function

@@ -1,9 +1,9 @@
 ﻿using System;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Law.Procedure.Civil.US.Jurisdiction;
+using NoFuture.Law;
+using NoFuture.Law.Procedure.Civil.US.Jurisdiction;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.Tests
+namespace NoFuture.Law.Procedure.Civil.Tests
 {
     [TestFixture]
     public class ExampleTestFederalSubjectMatterJurisdiction

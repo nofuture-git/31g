@@ -1,10 +1,10 @@
 ﻿using System;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.Criminal.US.Elements.AttendantCircumstances;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.Criminal.US.Elements.AttendantCircumstances;
+using NoFuture.Law.Criminal.US.Elements.Intent;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.AgainstPersons
+namespace NoFuture.Law.Criminal.US.Elements.AgainstPersons
 {
     /// <inheritdoc cref="ISexBilateral"/>
     /// <inheritdoc cref="IAssault"/>

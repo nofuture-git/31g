@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NoFuture.Rand.Law.Constitutional")]
+[assembly: AssemblyTitle("NoFuture.Law.Constitutional")]
 [assembly: AssemblyDescription("Contains types to represent legal concepts of constitutional law")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NoFuture.Rand.Law.Constitutional")]
+[assembly: AssemblyProduct("NoFuture.Law.Constitutional")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

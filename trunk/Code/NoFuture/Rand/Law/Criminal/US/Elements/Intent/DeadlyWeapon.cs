@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Criminal.US.Elements.Intent.ComLaw;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Criminal.US.Elements.Intent
+namespace NoFuture.Law.Criminal.US.Elements.Intent
 {
     /// <summary>
     /// Inference of <see cref="IMensRea"/> (intent) when the defendant uses a deadly weapon

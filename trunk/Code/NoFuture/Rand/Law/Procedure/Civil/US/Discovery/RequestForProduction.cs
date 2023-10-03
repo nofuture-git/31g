@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Civil.US.Discovery
+namespace NoFuture.Law.Procedure.Civil.US.Discovery
 {
     /// <summary>
     /// Authorize one party to required an opponent to produce

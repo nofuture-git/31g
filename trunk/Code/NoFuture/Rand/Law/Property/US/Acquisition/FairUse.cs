@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Attributes;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law.Attributes;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Property.US.Acquisition
+namespace NoFuture.Law.Property.US.Acquisition
 {
     /// <summary>
     /// Idea of using some material without being considered an infringement on the author&apos;s copyright

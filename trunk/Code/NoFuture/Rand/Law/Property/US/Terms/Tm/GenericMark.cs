@@ -1,6 +1,6 @@
-﻿using NoFuture.Rand.Law.Attributes;
+﻿using NoFuture.Law.Attributes;
 
-namespace NoFuture.Rand.Law.Property.US.Terms.Tm
+namespace NoFuture.Law.Property.US.Terms.Tm
 {
     /// <summary>
     /// Refer to class or groups of indefinite articles.

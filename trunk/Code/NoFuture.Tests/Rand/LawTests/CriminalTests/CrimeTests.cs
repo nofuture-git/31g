@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.Criminal.US;
+using NoFuture.Law;
+using NoFuture.Law.Criminal.US;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Criminal.Tests
+namespace NoFuture.Law.Criminal.Tests
 {
     [TestFixture]
     public class CrimeTests

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Law.Contract.US;
-using NoFuture.Rand.Law.US;
-using NoFuture.Rand.Law.US.Persons;
+using NoFuture.Law.Contract.US;
+using NoFuture.Law.US;
+using NoFuture.Law.US.Persons;
 using NUnit.Framework;
 
-namespace NoFuture.Rand.Law.Contract.Tests.OffersTests
+namespace NoFuture.Law.Contract.Tests.OffersTests
 {
     /// <summary>
     /// LEONARD v. PEPSICO, INC. United States District Court for the Southern District of New York 88 F.Supp. 2d 116 (S.D.N.Y. 1999)

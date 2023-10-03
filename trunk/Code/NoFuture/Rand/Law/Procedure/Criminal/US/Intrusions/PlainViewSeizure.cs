@@ -1,8 +1,8 @@
 ﻿using System;
-using NoFuture.Rand.Law;
-using NoFuture.Rand.Law.US;
+using NoFuture.Law;
+using NoFuture.Law.US;
 
-namespace NoFuture.Rand.Law.Procedure.Criminal.US.Intrusions
+namespace NoFuture.Law.Procedure.Criminal.US.Intrusions
 {
     /// <summary>
     /// the police are permitted to seize other articles of contraband or evidence of crime that
