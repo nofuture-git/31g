@@ -1,5 +1,5 @@
 ﻿using System;
-using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Law.Enums;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US.Persons;
 

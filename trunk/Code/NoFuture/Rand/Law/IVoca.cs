@@ -1,7 +1,7 @@
 ﻿using System;
-using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Law.Enums;
 
-namespace NoFuture.Rand.Core
+namespace NoFuture.Rand.Law
 {
     /// <inheritdoc cref="IObviate" />
     /// <summary>

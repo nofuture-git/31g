@@ -1,5 +1,5 @@
 ﻿using System;
-using NoFuture.Rand.Core;
+using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.US;
 using NoFuture.Rand.Law.US.Courts;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Law.Enums;
 
-namespace NoFuture.Rand.Core
+namespace NoFuture.Rand.Law
 {
     public interface IObviate
     {

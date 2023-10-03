@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Law.Enums;
 
-namespace NoFuture.Rand.Core
+namespace NoFuture.Rand.Law
 {
     /// <inheritdoc />
     /// <summary>
-    /// Base implementation of <see cref="T:NoFuture.Rand.Core.IVoca" />
+    /// Base implementation of <see cref="T:NoFuture.Rand.Law.IVoca" />
     /// </summary>
     [Serializable]
     public class VocaBase : IVoca
@@ -223,7 +223,7 @@ namespace NoFuture.Rand.Core
         /// <param name="camelCaseString"></param>
         /// <param name="separator"></param>
         /// <returns></returns>
-        private static string TransformCaseToSeparator(string camelCaseString, char separator)
+        public static string TransformCaseToSeparator(string camelCaseString, char separator)
         {
             if (String.IsNullOrWhiteSpace(camelCaseString))
                 return String.Empty;
@@ -248,7 +248,7 @@ namespace NoFuture.Rand.Core
         /// <param name="name"></param>
         /// <param name="perserveSep"></param>
         /// <returns></returns>
-        private static string ToCamelCase(string name, bool perserveSep = false)
+        public static string ToCamelCase(string name, bool perserveSep = false)
         {
             //is empty
             if (String.IsNullOrWhiteSpace(name))
@@ -312,7 +312,7 @@ namespace NoFuture.Rand.Core
         /// <param name="name"></param>
         /// <param name="preserveSep">Optional, set to true to have punctuation marks preserved</param>
         /// <returns></returns>
-        private static string ToPascalCase(string name, bool preserveSep = false)
+        public static string ToPascalCase(string name, bool preserveSep = false)
         {
             if (String.IsNullOrWhiteSpace(name))
                 return String.Empty;

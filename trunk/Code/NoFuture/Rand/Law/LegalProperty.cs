@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Law;
+using NoFuture.Rand.Law.Enums;
 
 namespace NoFuture.Rand.Law
 {

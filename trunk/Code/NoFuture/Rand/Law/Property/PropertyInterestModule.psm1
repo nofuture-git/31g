@@ -1,9 +1,5 @@
 ﻿$currentDirectory = Split-Path $PSCommandPath -Parent
 $dependencies = @(
- "NoFuture.Util.Core.dll", 
- "NoFuture.Util.Core.Math.dll", 
- "NoFuture.Shared.Core.dll", 
- "NoFuture.Rand.Core.dll", 
  "NoFuture.Rand.Law.dll", 
  "NoFuture.Rand.Law.Property.dll")
 
@@ -103,7 +99,7 @@ function Invoke-PropertyInterestPrompt
 
             $questionMethodName = $questionMethod.Name
 
-            $questionPrompt = [NoFuture.Util.Core.NfString]::TransformCaseToSeparator($questionMethodName, [char]" ")
+            $questionPrompt = [NoFuture.Rand.Law.VocaBase]::TransformCaseToSeparator($questionMethodName, [char]" ")
 
             $answer = Read-Host -Prompt ("{0}? (Y/N) " -f $questionPrompt) 
 
@@ -119,7 +115,7 @@ function Invoke-PropertyInterestPrompt
 
         $interest = $factory.GetValue()
 
-        Write-Host ([NoFuture.Util.Core.NfString]::TransformCaseToSeparator($interest.GetType().Name, [char]" ")) -ForegroundColor Yellow
+        Write-Host ([NoFuture.Rand.Law.VocaBase]::TransformCaseToSeparator($interest.GetType().Name, [char]" ")) -ForegroundColor Yellow
 
         return $interest
 

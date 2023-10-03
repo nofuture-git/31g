@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using NoFuture.Rand.Core;
+using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Attributes;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.ComLaw;
 using NoFuture.Rand.Law.Criminal.US.Elements.Intent.PenalCode;

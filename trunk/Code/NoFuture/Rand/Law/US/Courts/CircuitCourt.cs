@@ -1,4 +1,4 @@
-﻿using NoFuture.Rand.Core;
+﻿using NoFuture.Rand.Law;
 using NoFuture.Rand.Law.Attributes;
 
 namespace NoFuture.Rand.Law.US.Courts

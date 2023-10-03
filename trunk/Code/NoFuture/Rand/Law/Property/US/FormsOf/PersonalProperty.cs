@@ -1,4 +1,4 @@
-﻿using NoFuture.Rand.Core.Enums;
+﻿using NoFuture.Rand.Law.Enums;
 
 namespace NoFuture.Rand.Law.Property.US.FormsOf
 {

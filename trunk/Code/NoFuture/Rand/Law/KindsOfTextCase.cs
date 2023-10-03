@@ -1,4 +1,4 @@
-﻿namespace NoFuture.Rand.Core.Enums
+﻿namespace NoFuture.Rand.Law.Enums
 {
     public enum KindsOfTextCase
     {

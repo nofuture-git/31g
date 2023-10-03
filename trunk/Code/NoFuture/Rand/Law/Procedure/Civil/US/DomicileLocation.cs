@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NoFuture.Rand.Core;
-using NoFuture.Rand.Core.Enums;
+using NoFuture.Rand.Law;
+using NoFuture.Rand.Law.Enums;
 using NoFuture.Rand.Law.US;
 
 namespace NoFuture.Rand.Law.Procedure.Civil.US

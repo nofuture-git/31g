@@ -1,5 +1,5 @@
 ﻿using System;
-using NoFuture.Rand.Core;
+using NoFuture.Rand.Law;
 
 namespace NoFuture.Rand.Law.Criminal.US.Elements.Homicide
 {
